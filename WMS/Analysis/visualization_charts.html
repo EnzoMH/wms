@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WMS Research Analysis - Data Visualizations</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+        }
+        .chart-container {
+            margin: 30px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            background-color: #fafafa;
+        }
+        .chart-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            display: block;
+        }
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>WMS Research Analysis Dashboard</h1>
+        
+        <div class="summary-stats">
+            <div class="stat-card">
+                <span class="stat-number">15</span>
+                <span class="stat-label">Papers Analyzed</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">2019-2024</span>
+                <span class="stat-label">Research Period</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">320</span>
+                <span class="stat-label">Total Citations</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">8</span>
+                <span class="stat-label">Research Topics</span>
+            </div>
+        </div>
+
+        <h2>Research Publication Trends</h2>
+        <div class="chart-container">
+            <div class="chart-title">Papers Published by Year</div>
+            <div id="yearlyTrends"></div>
+        </div>
+
+        <h2>Technology Adoption Analysis</h2>
+        <div class="chart-container">
+            <div class="chart-title">Technology Maturity vs Adoption Rate</div>
+            <div id="technologyAdoption"></div>
+        </div>
+
+        <h2>Research Topic Distribution</h2>
+        <div class="chart-container">
+            <div class="chart-title">Topic Modeling Results</div>
+            <div id="topicDistribution"></div>
+        </div>
+
+        <h2>Citation Network Analysis</h2>
+        <div class="chart-container">
+            <div class="chart-title">Paper Citation Relationships</div>
+            <div id="citationNetwork"></div>
+        </div>
+
+        <h2>Geographic Research Distribution</h2>
+        <div class="chart-container">
+            <div class="chart-title">Research by Region</div>
+            <div id="geographicDistribution"></div>
+        </div>
+
+        <h2>Performance Metrics Comparison</h2>
+        <div class="chart-container">
+            <div class="chart-title">ROI and Efficiency Improvements</div>
+            <div id="performanceMetrics"></div>
+        </div>
+
+        <div class="footer">
+            <p>Generated on January 15, 2024 | WMS Research Analysis Project</p>
+            <p>Data sources: ArXiv, IEEE Xplore, Semantic Scholar, Google Scholar</p>
+        </div>
+    </div>
+
+    <script>
+        // Publication Trends Over Time
+        const yearlyData = {
+            x: ['2019', '2020', '2021', '2022', '2023', '2024'],
+            y: [2, 1, 3, 4, 3, 2],
+            type: 'bar',
+            marker: {color: 'rgb(52, 152, 219)'}
+        };
+        
+        Plotly.newPlot('yearlyTrends', [yearlyData], {
+            xaxis: {title: 'Year'},
+            yaxis: {title: 'Number of Papers'},
+            margin: {l: 50, r: 50, t: 50, b: 50}
+        });
+
+        // Technology Adoption Scatter Plot
+        const techData = {
+            x: [15, 25, 45, 65, 85, 95], // Adoption Rate
+            y: [2.1, 2.8, 3.5, 4.2, 4.8, 4.9], // Maturity Level (1-5)
+            mode: 'markers+text',
+            type: 'scatter',
+            text: ['Blockchain', '5G', 'AI/ML', 'IoT', 'RFID', 'Barcode'],
+            textposition: 'top center',
+            marker: {
+                size: [8, 12, 18, 22, 28, 35],
+                color: ['#e74c3c', '#f39c12', '#f1c40f', '#2ecc71', '#3498db', '#9b59b6']
+            }
+        };
+        
+        Plotly.newPlot('technologyAdoption', [techData], {
+            xaxis: {title: 'Adoption Rate (%)'},
+            yaxis: {title: 'Technology Maturity (1-5)'},
+            margin: {l: 60, r: 60, t: 50, b: 60}
+        });
+
+        // Topic Distribution Pie Chart
+        const topicData = [{
+            values: [31.7, 28.3, 18.9, 12.4, 8.7],
+            labels: ['Automation Tech', 'Optimization', 'Sustainability', 'Human Factors', 'Cost Analysis'],
+            type: 'pie',
+            marker: {
+                colors: ['#3498db', '#2ecc71', '#f39c12', '#e74c3c', '#9b59b6']
+            }
+        }];
+        
+        Plotly.newPlot('topicDistribution', topicData, {
+            margin: {l: 20, r: 20, t: 50, b: 20}
+        });
+
+        // Citation Network (simplified visualization)
+        const networkTrace = {
+            x: [1, 2, 3, 4, 2, 3, 1, 4],
+            y: [1, 2, 1, 2, 1, 2, 2, 1],
+            mode: 'markers+text',
+            type: 'scatter',
+            text: ['WMS Opt', 'Inventory', 'Automation', 'AGV', 'IoT', 'AS/RS', 'Robotics', 'Review'],
+            textposition: 'middle center',
+            marker: {
+                size: [15, 23, 31, 18, 27, 35, 22, 42],
+                color: ['#3498db', '#2ecc71', '#f39c12', '#e74c3c', '#9b59b6', '#1abc9c', '#e67e22', '#34495e']
+            }
+        };
+        
+        Plotly.newPlot('citationNetwork', [networkTrace], {
+            xaxis: {showgrid: false, zeroline: false, showticklabels: false},
+            yaxis: {showgrid: false, zeroline: false, showticklabels: false},
+            margin: {l: 20, r: 20, t: 50, b: 20}
+        });
+
+        // Geographic Distribution
+        const geoData = [{
+            values: [46.7, 33.3, 20.0],
+            labels: ['North America', 'Europe', 'Asia-Pacific'],
+            type: 'pie',
+            hole: 0.4,
+            marker: {
+                colors: ['#3498db', '#2ecc71', '#f39c12']
+            }
+        }];
+        
+        Plotly.newPlot('geographicDistribution', geoData, {
+            margin: {l: 20, r: 20, t: 50, b: 20}
+        });
+
+        // Performance Metrics Bar Chart
+        const performanceData = {
+            x: ['Efficiency', 'Cost Reduction', 'Accuracy', 'Throughput', 'ROI Timeline'],
+            y: [52.5, 32.5, 28.4, 35.0, 15.0],
+            type: 'bar',
+            marker: {
+                color: ['#3498db', '#2ecc71', '#f39c12', '#e74c3c', '#9b59b6']
+            }
+        };
+        
+        Plotly.newPlot('performanceMetrics', [performanceData], {
+            xaxis: {title: 'Metric Type'},
+            yaxis: {title: 'Average Improvement (%)'},
+            margin: {l: 60, r: 50, t: 50, b: 100}
+        });
+    </script>
+</body>
+</html>

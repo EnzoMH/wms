@@ -1,0 +1,296 @@
+{
+  "source": "ArXiv",
+  "filename": "002_Box_Pose_and_Shape_Estimation_and_Domain_Adaptatio.pdf",
+  "total_chars": 33261,
+  "total_chunks": 48,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "=== 페이지 1 ===\n5202\nluJ\n1\n]OR.sc[\n1v48900.7052:viXra\nBox Pose and Shape Estimation and Domain\nAdaptation for Large-Scale Warehouse\nAutomation\nXihang Yu1, Rajat Talak1, Jingnan Shi1, Ulrich Viereck2,\nIgor Gilitschenski2,3, and Luca Carlone1\n1 Laboratory for Information & Decision Systems (LIDS)\nMassachusetts Institute of Technology, Cambridge, USA,\n{jimmyyu,talak,jnshi,lcarlone}@mit.edu\n2 Symbotic, Wilmington, Massachusetts,\nuviereck@symbotic.com\n3 Vector Institute\nUniversity of Toronto, Ontario, Canada,\ngilitschenski@cs.toronto.edu\nAbstract.",
+      "size": 546,
+      "sentences": 1
+    },
+    {
+      "id": 2,
+      "content": ",\n{jimmyyu,talak,jnshi,lcarlone}@mit.edu\n2 Symbotic, Wilmington, Massachusetts,\nuviereck@symbotic.com\n3 Vector Institute\nUniversity of Toronto, Ontario, Canada,\ngilitschenski@cs.toronto.edu\nAbstract. Modern warehouse automation systems rely on fleets of in-\ntelligentrobotsthatgeneratevastamountsofdata—mostofwhichre-\nmainsunannotated.Thispaperdevelopsaself-superviseddomainadap-\ntationpipelinethatleveragesreal-world,unlabeleddatatoimproveper-\nceptionmodelswithoutrequiringmanualannotations.Ourworkfocuses\nspecifically on estimating the pose and shape of boxes and presents a\ncorrect-and-certify pipeline for self-supervised box pose and shape esti-\nmation.Weextensivelyevaluateourapproachacrossarangeofsimulated\nand real industrial settings, including adaptation to a large-scale real-\nworld dataset of 50,000 images. The self-supervised model significantly\noutperforms models trained solely in simulation and shows substantial\nimprovements over a zero-shot 3D bounding box estimation baseline.",
+      "size": 996,
+      "sentences": 3
+    },
+    {
+      "id": 3,
+      "content": "aset of 50,000 images. The self-supervised model significantly\noutperforms models trained solely in simulation and shows substantial\nimprovements over a zero-shot 3D bounding box estimation baseline. Keywords: Certifiable models, computer vision, 3D robot vision, object pose\nestimation, safe perception, self-supervised learning. 1 Introduction and Problem Statement\nWarehouse automation has the potential to increase operational efficiency and\naccuracy while reducing labor costs and human errors. A key task in this pro-\ncessinvolvesrobotspicking,transporting,andplacingboxesbetweenbufferand\nstorage shelves (see Figure 1). Executing such tasks reliably over long durations\nwithout failure requires accurate perception in the operating domain. In this work, we consider the problem of estimating the pose and shape of\nboxes encountered in warehouse automation applications.",
+      "size": 876,
+      "sentences": 7
+    },
+    {
+      "id": 4,
+      "content": "without failure requires accurate perception in the operating domain. In this work, we consider the problem of estimating the pose and shape of\nboxes encountered in warehouse automation applications. We parameterize the\nbox as a cuboid and aim to simultaneously estimate its pose T SE(3) and\n∈\nshape S (i.e., width, height, and depth). Automated warehouses are a source\nof large amounts of unannotated data, collected by the robots during operation. Our aim is to use the large-scale unannotated data collected by robots and enable\nself-supervised domain adaptation to improve the perception results. === 페이지 2 ===\n2 Xihang Yu et al. Fig.1: (left) Robot in a Symbotic warehouse picking up a box from a shelf. (right) A real-world pick-up task using a model trained entirely in simulation\nand adapted with our self-supervised pipeline on unlabeled data. Contributions.",
+      "size": 867,
+      "sentences": 9
+    },
+    {
+      "id": 5,
+      "content": "warehouse picking up a box from a shelf. (right) A real-world pick-up task using a model trained entirely in simulation\nand adapted with our self-supervised pipeline on unlabeled data. Contributions. Our contributions are threefold: (1) We propose a pipeline\nthat can accurately estimate the pose and shape of a box from stereo images. (2) We implement a self-training pipeline, leveraging the correct-and-certify\napproachfrom [1,2,3,4,5].Theapproachutilizescorrectedandcertifiedestimates\nto self-train the model and avoids the need for data annotation. (3) We report\nan industry-scale demonstration of accurate box pose and shape estimation in\nthedesiredoperatingdomain.Thisismadepossiblebyself-trainingonadataset\nof 50,000 images collected from Symbotic warehouses. 2 Related Work\n2.1 Category-Level Object Pose and Shape Estimation\nObject pose and shape estimation involves recovering the 3D pose and shape\nof an object.",
+      "size": 923,
+      "sentences": 7
+    },
+    {
+      "id": 6,
+      "content": "images collected from Symbotic warehouses. 2 Related Work\n2.1 Category-Level Object Pose and Shape Estimation\nObject pose and shape estimation involves recovering the 3D pose and shape\nof an object. Existing methods can be classified based on whether they assume\naccess to known instance-level shape priors. Approaches that rely on known\nshapepriorstypicallyusepredefinedCADmodelsofeachobjectinstance[3,2].In\ncontrast,category-levelmethodsaimtogeneralizeacrossunseeninstanceswithin\nthesameobjectcategory,withoutrequiringinstance-specificCADmodels.These\napproaches often learn to model shape deformations or normalized coordinate\nrepresentations to capture intra-class variation [6,7,8,9,4]. In this work, we focus on estimating the pose and shape of box-like ob-\njects without relying on instance-level shape priors. Several prior methods have\naddressed this problem from different perspectives. For example, [10] proposes\nFrontFaceShot(FFS),amethodthatestimatesboxposefromfront-viewRGB\nimages.",
+      "size": 994,
+      "sentences": 7
+    },
+    {
+      "id": 7,
+      "content": "e-level shape priors. Several prior methods have\naddressed this problem from different perspectives. For example, [10] proposes\nFrontFaceShot(FFS),amethodthatestimatesboxposefromfront-viewRGB\nimages. While FFS generalizes well to unseen pallet appearances, it depends\nheavily on accurate front-face visibility and bounding box detection, which lim-\nits its robustness in the presence of occlusion. Another approach, Cube R-CNN\n[11], is a zero-shot RGB-only method trained on the large-scale Omni3D bench-\nmark for general 3D bounding box prediction. However, in our experiments, it\nsuffers from substantial performance degradation due to domain shift, making\nit less effective for our target setting.",
+      "size": 700,
+      "sentences": 6
+    },
+    {
+      "id": 8,
+      "content": "ch-\nmark for general 3D bounding box prediction. However, in our experiments, it\nsuffers from substantial performance degradation due to domain shift, making\nit less effective for our target setting. === 페이지 3 ===\nBOSS 3\nKeypoint Predictor BOSS: Certifiable Box pOse and Shape estimation with Self-training Self-Supervised\nLearning\nLearned\nStereo RGB Images Robust Pose and Segmentation Keypoint\nShape Estimator Predictor\nKeypoint RCNN(\",$,%) Pose and Shape 2D\n(+*,.-) Certificate BOSS\nEpipolar Reprojected Predicted\nConstraint Pseudo-label Pseudo-label\nCertificate Pseudo-\nKeypoint RCNN(\",$,%) '= Π Re +* si , d .- u / als −$ C R e e rt s i i f d ic u a a t l e B la u b ff e e l r\nBackpropagation\nFig.2: Illustration of the proposed pipeline. We take stereo images as input and\nuse two keypoint prediction networks — one for each view — to predict the\nbox corners. Only high-confidence confidence keypoints are used for pose and\nshape estimation.",
+      "size": 948,
+      "sentences": 5
+    },
+    {
+      "id": 9,
+      "content": "ake stereo images as input and\nuse two keypoint prediction networks — one for each view — to predict the\nbox corners. Only high-confidence confidence keypoints are used for pose and\nshape estimation. The box pose and shape estimation problem is formulated as\na two-view Perspective-n-Point optimization. Then, pose and shape estimates\nthat pass certain checks are used to generate pseudo-labels for self-supervised\nlearning.Inparticular,apredictedkeypointisconsideredavalidpseudo-labelfor\nself-supervised learning if it passes a number of image-level and keypoint-level\nchecks (certificates). To ensure robustness against outliers, we apply Geman-\nMcClure [21] as a robust loss in the pose and shape estimator. 2.2 Test-Time Adaptation\nTest-timeadaptationhasbeenexploredthroughvariousstrategies.Relatedworks\n[12,13] leverage auxiliary tasks, e.g., image rotation prediction, to guide feature\nlearning during test time.",
+      "size": 918,
+      "sentences": 6
+    },
+    {
+      "id": 10,
+      "content": "-Time Adaptation\nTest-timeadaptationhasbeenexploredthroughvariousstrategies.Relatedworks\n[12,13] leverage auxiliary tasks, e.g., image rotation prediction, to guide feature\nlearning during test time. [14] generalizes this idea to reinforcement learning,\nwhere action-observation pairs naturally serve as feedback signals. Another line\nofworkfocusesondomain-levelconsistencyacrossamini-batchoftestinputsby\nminimizing softmax-entropy loss at test time [15,16]. To handle the more chal-\nlengingscenarioofhavingonlyasingletestsample,[17]usesdataaugmentation\nto synthesize a mini-batch. Temporal consistency has also been leveraged as a\nsource of self-supervision [18,19]. These methods maintain a coherent 3D scene\nover time and render it into 2D views to provide consistent supervisory signals\nfor 2D vision tasks.",
+      "size": 811,
+      "sentences": 6
+    },
+    {
+      "id": 11,
+      "content": "been leveraged as a\nsource of self-supervision [18,19]. These methods maintain a coherent 3D scene\nover time and render it into 2D views to provide consistent supervisory signals\nfor 2D vision tasks. Anotherstreamofmethodsfollowsacorrect-and-certifyparadigm[1,2,3,4,5],\nwhere model outputs are first corrected, and only those that pass certain certi-\nfication criteria are used as pseudo-labels for self-training. These methods often\nrely on auxiliary sensor inputs such as CAD models [5], depth maps [4], or seg-\nmentation masks [2]. In contrast, our approach does not assume additional sen-\nsormodalities.Instead,itreliesontheSAM2model[20],makingtheframework\nsimple and easily adaptable to a variety of warehouse automation tasks. 3 Technical Approach\nWe consider a robot operating in a warehouse environment, equipped with two\ncalibratedRGBstereo-cameras.ThesecamerascaptureRGBimagesof3Dscenes\nthat contain an object of interest.",
+      "size": 932,
+      "sentences": 6
+    },
+    {
+      "id": 12,
+      "content": "3 Technical Approach\nWe consider a robot operating in a warehouse environment, equipped with two\ncalibratedRGBstereo-cameras.ThesecamerascaptureRGBimagesof3Dscenes\nthat contain an object of interest. We assume the object to be a storage box\nparametrized by its width, height, and depth (a,b,c). Let S = diag(a,b,c) rep-\nresenttheanisotropicscalingfactorstoaunitcube(i.e.,acuboidwithalledges\n[표 데이터 감지됨]\n\n=== 페이지 4 ===\n4 Xihang Yu et al. of length 1). The goal is to compute the pose and shape of the box. Figure 2\nshows our pipeline. It consists of a pre-trained stereo keypoint detection model\ntrained on the small labeled dataset or in simulation, an estimator to compute\ntheposeT andtheshapeS oftheboxinthe3Dscene,andaself-trainingproce-\ndure for the keypoint detection model to improve pose estimation on unlabelled\ndata.WecalltheresultingapproachBOSS(BoxpOseandShapeestimationwith\nSelf-training). Keypoint Predictor.",
+      "size": 921,
+      "sentences": 8
+    },
+    {
+      "id": 13,
+      "content": "elf-trainingproce-\ndure for the keypoint detection model to improve pose estimation on unlabelled\ndata.WecalltheresultingapproachBOSS(BoxpOseandShapeestimationwith\nSelf-training). Keypoint Predictor. We use Keypoint-RCNN as our keypoint predictor net-\nwork [22], with one network for each view. The network outputs the corners of\nthe boxes as keypoints with confidence scores. We only keep keypoints with a\nconfidence score greater than a specified threshold ϵ . conf\nStereo Box Pose and Shape Estimator. We estimate the box pose and shape\nthrough a two-view Perspective-n-Point (PnP) optimization problem. The ob-\njective is to estimate the object pose and scaling factors that align the repro-\njected keypoints with their predicted keypoints in the two camera views.",
+      "size": 768,
+      "sentences": 8
+    },
+    {
+      "id": 14,
+      "content": "e-n-Point (PnP) optimization problem. The ob-\njective is to estimate the object pose and scaling factors that align the repro-\njected keypoints with their predicted keypoints in the two camera views. The\noptimization problem is formulated as:\n \nmin (cid:88)\nNl\n(cid:13) (cid:13)δl(cid:13) (cid:13) 2 + (cid:88)\nNr\nδr 2  , (1)\nT,S  i 2 ∥ i∥2 \ni=1 i=1\nwhere δl = Πl(T Su ) y˜l and δr = Πr(Tr T Su ) y˜r are the dis-\ni · i − i i l · · i − i\ntances between the ith reprojected and predicted keypoints. Nl and Nr are the\nnumbers of keypoints in the left and right images, respectively, u are the 3D\ni\nkeypoints on the unit cube centered at the origin of the object frame, y˜l and y˜r\ni i\nare the observed 2D keypoint positions in the left and right images, Tr is the\nl\nknowntransformationfromthe lefttotherightcameraframe, Πl and Πr repre-\nsent the projection models of the left and right cameras, respectively.",
+      "size": 912,
+      "sentences": 4
+    },
+    {
+      "id": 15,
+      "content": "oint positions in the left and right images, Tr is the\nl\nknowntransformationfromthe lefttotherightcameraframe, Πl and Πr repre-\nsent the projection models of the left and right cameras, respectively. In words,\nEquation (1) minimizes the mismatch between the projections of the estimated\nbox corners (parametrized by the pose T and shape S) and the keypoint mea-\nsurements. The optimization is solved via gradient descent in PyTorch [23]. We\nrelaxtherotationmatrixconstraintand,ineachiteration,projecttheoptimized\nrotation back onto SO(3) using SVD. Self-Training. To self-train, we use certificates to select pseudo-labels. We use\na 2D certificate, a residual certificate, and an epipolar constraint certificate. We\nadmit keypoints as pseudo-labels only if they pass all three certificates. LetTˆ andSˆbetheestimatedposeandshapefromEquation(1)respectively.",
+      "size": 856,
+      "sentences": 9
+    },
+    {
+      "id": 16,
+      "content": "al certificate, and an epipolar constraint certificate. We\nadmit keypoints as pseudo-labels only if they pass all three certificates. LetTˆ andSˆbetheestimatedposeandshapefromEquation(1)respectively. Our 2D certificate is based on intersection over union (IoU), given by\n(cid:40) (cid:41)\nar(M Mˆ)\n(Sˆ,Tˆ)=I ∩ >1 ϵ , (2)\nOC 2D ar(M Mˆ) − 2D\n∪\nwhere ar(M) denotes the pixel area of all pixels (i,j) in the mask M with\nM(i,j)=1, and ϵ is a given threshold. IoU is computed using a reprojected\n2D\n3D model Mˆ and ground truth (GT) or detected segmentation mask M.\n=== 페이지 5 ===\nBOSS 5\nOur residual certificate filters keypoints based on residuals in Equation (1). Let δ represent the residuals in the pose and shape estimator, indexed as δl\nandδr fortheleftandrightviews,respectively.Theresidual-basedcertificateis\ndefined as\n(y˜,T¯)=I δ <ϵ . (3)\nOC res {∥ ∥2 res }\nwhere is l2-norm and ϵ is a tunable threshold. If (y˜,T¯) = 1, we\nuse y˜ a ∥ s ·∥ a 2 pseudo-label.",
+      "size": 962,
+      "sentences": 8
+    },
+    {
+      "id": 17,
+      "content": "iews,respectively.Theresidual-basedcertificateis\ndefined as\n(y˜,T¯)=I δ <ϵ . (3)\nOC res {∥ ∥2 res }\nwhere is l2-norm and ϵ is a tunable threshold. If (y˜,T¯) = 1, we\nuse y˜ a ∥ s ·∥ a 2 pseudo-label. Oth r e e r s wise, if (y˜,T¯) = 0, we O u C s r e es the reprojected\nres\nOC\nkeypoint Π(T¯ Sˆu ) as a pseudo-label, where T¯ = Tˆ for the left view and\ni\n·\nT¯ =Tr Tˆ for the right view. l ·\nWe use an epipolar constraint certificate as a final check. Given the known\nintrinsicsandextrinsicsofbothcameras,werectifythekeypointssothatepipolar\nlines align with the x-axis, ensuring corresponding points share the same y-\ncoordinates.Wethenverifytheconsistencyofthesey-coordinatesintherectified\nframes.Denotetherectifiedkeypointsy˜ andy˜ bey˜′ andy˜′,respectively.Then\nl r l r\nepipolar constraint certificate is defined as:\n(y˜,y˜ )=I (y˜′ y˜′)[2]<ϵ . (4)\nOC epi l r { l− r epi }\nwhere ()[2] denotes the y-coordinate and ϵ is a given threshold.",
+      "size": 938,
+      "sentences": 7
+    },
+    {
+      "id": 18,
+      "content": "ndy˜′,respectively.Then\nl r l r\nepipolar constraint certificate is defined as:\n(y˜,y˜ )=I (y˜′ y˜′)[2]<ϵ . (4)\nOC epi l r { l− r epi }\nwhere ()[2] denotes the y-coordinate and ϵ is a given threshold. epi\n·\n4 Certificate Validation\nIn this section, we empirically validate the three certificates. Over an annotated\ndatasetweshowthatthecertificatescorescorrelatehighlywiththeground-truth\nmetrics such as the keypoint root mean square error (RMSE). We compare the\nthree certificate values: (i) IoU (see Equation (2)), (ii) δ (see Equation (3)),\nand (iii) (y˜′ y˜′)[2] (see Equation (4)), with the keypo ∥ in ∥ t 2 RMSE. l− r\n4.1 Validation of 2D Certificates\nFigure 4a validates the effectiveness of the 2D certificate . This plot helps\n2D\nOC\nus compare how the IoU score, which can be computed at test time, correlates\nwith the RMSE with the ground-truth keypoints.",
+      "size": 863,
+      "sentences": 7
+    },
+    {
+      "id": 19,
+      "content": "a validates the effectiveness of the 2D certificate . This plot helps\n2D\nOC\nus compare how the IoU score, which can be computed at test time, correlates\nwith the RMSE with the ground-truth keypoints. A clear trend is observed:\nhigherIoUscorescorrespondtolowerRMSEvalues.Notably,pseudo-labelswith\nIoU values exceeding 0.95 yield average keypoint errors below 10 pixels, which\nis small relative to the image resolution (1640 1232). This empirical relation-\n×\nship supports the use of as a reliable proxy for keypoint accuracy during\n2D\nOC\npseudo-label validation. 4.2 Validation of Residual Certificates\nIn Figure 4b we validate the residual certificate . We plot the residual\nres\nOC\ncertificate value δ (see Equation (3)) on the x-axis. On the y-axis, we plot\n∥ ∥2\nthe count of instances where the predicted RMSE is either greater than (blue\ncurve) or less than (red curve) the reprojected RMSE, across varying residual\ncertificate values.",
+      "size": 938,
+      "sentences": 7
+    },
+    {
+      "id": 20,
+      "content": "the y-axis, we plot\n∥ ∥2\nthe count of instances where the predicted RMSE is either greater than (blue\ncurve) or less than (red curve) the reprojected RMSE, across varying residual\ncertificate values. The predicted RMSE is the RMSE of the predicted keypoints\nthatareoutputdirectlyfromthekeypointnetwork,andthereprojectedRMSEis\n=== 페이지 6 ===\n6 Xihang Yu et al. 1.0\n0.8\n0.6\n0.4\n0.2\n0.0\n0.2 0.4 0.6 0.8 1.0 IoUValues\nytilibaborPevitalumuC\nAxis-AlignedCoordinate BarycentricSimplex\nUniformAxis-AlignedCoordinate 1.0 1.0\nAdaptiveSimplex\nUniformSimplex\n0.5 0.5\n0.0 0.0\n0.5 0.5\n− −\n1.0 1.0 − 1.0 0.5 0.0 0.5 1.0 − 1.0 0.5 0.0 0.5 1.0\n− − − −\n(a) (b)\nFig.3: Analysis of SAM2 sampling strategies. (a) Cumulative distribution of\nIoU values for three SAM2 sampling strategies. The x-axis shows the IoU be-\ntweenpredictedandground-truthsegmentations,andthey-axisindicatescumu-\nlativeprobability.UniformSimplexmethodoutperformsbothAdaptiveSimplex\nand Uniform Axis-Aligned Coordinate.",
+      "size": 969,
+      "sentences": 5
+    },
+    {
+      "id": 21,
+      "content": "-axis shows the IoU be-\ntweenpredictedandground-truthsegmentations,andthey-axisindicatescumu-\nlativeprobability.UniformSimplexmethodoutperformsbothAdaptiveSimplex\nand Uniform Axis-Aligned Coordinate. (b) Visual comparison of two sampling\nstrategieswithinaregularoctagon.Withthesamenumberofsamples,theAxis-\nAligned Coordinate sampling is densely concentrated near the center, while the\nBarycentric Simplex sampling provides more uniform coverage of the polygon. theRMSEoftheoptimizedkeypointsreprojectedfromthePnPposeandshape\nestimator. Note that the x-axis is the certificate value that can be computed at\ntest time, whereas the y-axis (i.e., predicted and reprojected RMSE) requires\nknowledge of the ground truth. We again observe a clear trend. For low residual values (left side of the x-\naxis),themajorityofinstancesfallundertheredcurve,indicatingthatpredicted\nkeypoints are more accurate than reprojected ones.",
+      "size": 915,
+      "sentences": 6
+    },
+    {
+      "id": 22,
+      "content": "e again observe a clear trend. For low residual values (left side of the x-\naxis),themajorityofinstancesfallundertheredcurve,indicatingthatpredicted\nkeypoints are more accurate than reprojected ones. As the residual certificate\nincreases,thetrendreverses—beyondaresidualvalueofapproximately42pixels,\nthe reprojected keypoints tend to outperform the predicted ones, as indicated\nby the rising blue curve. This transition point around 42 suggests an empirical\nthresholdatwhichtheresidualcertificatereliablyfiltershigh-qualitypredictions. 4.3 Validation of Epipolar Constraint Certificates\nIn Figure 4c, we validate the epipolar constraint certificates. We plot the epipo-\nlar certificate value (i.e., Equation (4)) on the x-axis. The corresponding mean\nRMSE of the selected pseudo-label keypoints and ground-truth keypoints (in\npixels) are plotted on the y-axis.",
+      "size": 860,
+      "sentences": 7
+    },
+    {
+      "id": 23,
+      "content": "e epipo-\nlar certificate value (i.e., Equation (4)) on the x-axis. The corresponding mean\nRMSE of the selected pseudo-label keypoints and ground-truth keypoints (in\npixels) are plotted on the y-axis. Note that while the epipolar certificate value\ncan be computed at test time without the knowledge of the ground truth, the\nmean RMSE requires ground truth. We again observe a clear trend. As shown\nin Figure 4c, we report the mean RMSE (in pixels) across test samples as a\nfunction of the epipolar certificate values. At low thresholds (e.g., <20 pixels),\nthe RMSE remains consistently low. However, as the value increases beyond 20\npixels,theRMSEgrowsrapidly,alongwithitsvariance.Thisbehaviorhighlights\nthe importance of enforcing epipolar certificates.",
+      "size": 753,
+      "sentences": 7
+    },
+    {
+      "id": 24,
+      "content": "the RMSE remains consistently low. However, as the value increases beyond 20\npixels,theRMSEgrowsrapidly,alongwithitsvariance.Thisbehaviorhighlights\nthe importance of enforcing epipolar certificates. [표 데이터 감지됨]\n\n=== 페이지 7 ===\nBOSS 7\n102\n101\n0.0 0.2 0.4 0.6 0.8 1.0\n2DCertificateValues(IoU)\n)slexiPforebmuN(ESMR\n102\n101\n100\n0\n−100\n−101\n−102\n0 20 40 60 80 100\nResidualCertificateValue(NumberofPixels)\n(a)\n)ESMRdetcejorpeR>ESMRdetciderP(stnuoC 102\n101\n100\n0\n−100\n−101\n−102\n)ESMRdetcejorpeR<ESMRdetciderP(stnuoC 3500\n3000\n2500\n2000\n1500\n1000\n500\n0\n10−1 100 101 102\nEpipolarCertificateValues(NumberofPixels)\n(b)\n)slexiPforebmuN(ESMRnaeM\n(c)\nFig.4: (a)Validation of the 2D Certificate (i.e., Equation (2)). The x-axis is the\nIoU score in the certificate. The y-axis is the RMSE error of the pseudo-\n2D\nOC\nlabels averaged across one image sample. We use ground-truth segmentation for\nIoU calculation.",
+      "size": 893,
+      "sentences": 6
+    },
+    {
+      "id": 25,
+      "content": "(2)). The x-axis is the\nIoU score in the certificate. The y-axis is the RMSE error of the pseudo-\n2D\nOC\nlabels averaged across one image sample. We use ground-truth segmentation for\nIoU calculation. Pseudo-labels with IoU values larger than 0.95 have average\nkeypoint errors of fewer than 10 pixels which is small relative to the image size\n(1640 1232). (b)ValidationoftheResidualCertificate(i.e.,Equation(3)).The\n×\nx-axis is the residual value and the y-axis is the counts of keypoints that either\npredicted ones are more accurate (red) or reprojected ones are more accurate\n(blue).Wefoundthatthereisaheuristicthresholdthatenableshybridkeypoint\nselection. (c) Validation of Epipolar Constraint Certificate (i.e., Equation (4)). The x-axis is the discrepancy of the y coordinates between rectified selected\npseudo-label keypoints and ground truth keypoints in the certificate. Y-\nepi\nOC\naxis is the RMSE error of the pseudo-labels averaged across one bin batch.",
+      "size": 961,
+      "sentences": 9
+    },
+    {
+      "id": 26,
+      "content": "the y coordinates between rectified selected\npseudo-label keypoints and ground truth keypoints in the certificate. Y-\nepi\nOC\naxis is the RMSE error of the pseudo-labels averaged across one bin batch. This\nfigure highlights the importance of enforcing epipolar constraint certificates. 4.4 Impact of Sampling Strategies\nIn scenarios where the ground truth mask M is unavailable—commonly the\ncaseinindustrialsettings—weleveragetheSAM2model[20]togeneratepseudo-\ngroundtruthmasksforobjectboxes.Toproducemasks,SAM2requiressamples\nin the pixel space. In this section, we examine how various sampling strategies\ninfluence the quality of the resulting pseudo-ground truth masks. Figure 3 analyzes the effect of different sampling strategies on SAM2 seg-\nmentationsfora2Dconvexpolygon.Weonlydiscuss2Dconvexpolygonbecause\nthe 2D projection of a box is a polygon.",
+      "size": 852,
+      "sentences": 6
+    },
+    {
+      "id": 27,
+      "content": "ound truth masks. Figure 3 analyzes the effect of different sampling strategies on SAM2 seg-\nmentationsfora2Dconvexpolygon.Weonlydiscuss2Dconvexpolygonbecause\nthe 2D projection of a box is a polygon. We consider three strategies: (1) Uni-\nform Axis-Aligned Coordinate: Candidates are generated by taking convex\ncombinations of the polygon’s vertices. Specifically, we sample a non-negative\nweightforeachvertexfromauniformdistributionover[0,1],thennormalizethe\nweightssothattheysumto1. (2) Uniform Simplex:Candidatesaresampled\nuniformly from the convex hull of the polygon’s vertices using a triangulation-\nbasedapproach.Thepolygonisfirstdecomposedintosimplices(i.e.,trianglesin\n2D),andasimplexisselectedviaimportancesampling,withtheselectionprob-\nability proportional to its area. A point is then sampled uniformly within the\nchosen simplex using barycentric coordinates, ensuring uniform coverage across\ntheentirepolygon[24].",
+      "size": 926,
+      "sentences": 6
+    },
+    {
+      "id": 28,
+      "content": "ththeselectionprob-\nability proportional to its area. A point is then sampled uniformly within the\nchosen simplex using barycentric coordinates, ensuring uniform coverage across\ntheentirepolygon[24]. (3) Adaptive Simplex:SimilartoUniform Simplex,\nbut with a key difference: while Uniform Simplex uses a constant number of\n[표 데이터 감지됨]\n\n=== 페이지 8 ===\n8 Xihang Yu et al. (a) Simulation (b) inbound buffer (c) storage aisles\nFig.5: Sample images from the simulated and real datasets used in the experi-\nments. samples regardless of the area of the triangle, Adaptive Simplex scales the\nnumber of samples proportionally to the triangle’s area.",
+      "size": 638,
+      "sentences": 5
+    },
+    {
+      "id": 29,
+      "content": "es from the simulated and real datasets used in the experi-\nments. samples regardless of the area of the triangle, Adaptive Simplex scales the\nnumber of samples proportionally to the triangle’s area. In Figure 3a, the cumulative IoU distribution shows that Uniform Sim-\nplex sampling significantly outperforms both Uniform Axis-Aligned Coordinate\nand Adaptive Simplex, achieving a higher proportion of accurate segmentation\nmasks.Figure3bvisualizesthecoredifferencebysimulatingsamplinginaregu-\nlaroctagon.InAxis-AlignedCoordinatesampling,pointstendtoclusterdensely\nnearthecenterofthefeasibleregionandaresparselydistributednearitsbound-\naries while Simplex sampling generates points uniformly in the polygon. 5 Experiments\nWe conducted three sets of experiments to evaluate BOSS. First, we validated\nthe effectiveness of our pipeline on a synthetic dataset (Section 5.1). Next, we\ndemonstrated its ability to bridge the sim-to-real gap (Section 5.2).",
+      "size": 949,
+      "sentences": 6
+    },
+    {
+      "id": 30,
+      "content": "xperiments to evaluate BOSS. First, we validated\nthe effectiveness of our pipeline on a synthetic dataset (Section 5.1). Next, we\ndemonstrated its ability to bridge the sim-to-real gap (Section 5.2). Finally, we\nwilldemonstrateitsabilitytoperformself-supervisedlearningusingalarge-scale\nunlabeled dataset (Section 5.3). PoseandShapeEstimationComparison\nSim2Sim Sim2Real\nApproach APE[m] ARE[rad] ASE[m] APE[m] ARE[rad] ASE[m]\nModel w/o SSL 0.584 0.219 0.369 2.080 0.554 1.589\nBOSS-SAM2 0.038 0.069 0.084 0.134 0.223 0.238\nBOSS-GT 0.041 0.063 0.078 0.148 0.239 0.259\nBOSS-SAM2 (50k) - - - 0.135 0.217 0.247\nModel Supervised 0.024 0.053 0.045 0.111 0.212 0.208\nTable 1: Pose and shape estimation for self-supervised pipeline and other base-\nlines.APEdenotestheaveragepositionerror;AREdenotestheaveragerotation\nerror; ASE denotes the average shape error.",
+      "size": 850,
+      "sentences": 5
+    },
+    {
+      "id": 31,
+      "content": "0.208\nTable 1: Pose and shape estimation for self-supervised pipeline and other base-\nlines.APEdenotestheaveragepositionerror;AREdenotestheaveragerotation\nerror; ASE denotes the average shape error. === 페이지 9 ===\nBOSS 9\n5.1 Validation on Synthetic Dataset\nSetup.WeuseBlendertogenerateadatasetcomprisingatrainingdatasetof75\nimages and a test dataset of 375 images featuring five types of boxes. A typical\nexample from the synthetic dataset is shown in Figure 5a. The training dataset\nincludes images captured from a fixed viewpoint of a single object type with\nvarying lighting conditions and randomized object poses, while the test dataset\nfeatures both novel views of known objects and entirely new objects. We test\nBOSS’ ability to perform self-supervised learning on the test dataset. Results and Insights. Keypoint detection results are shown in Figure 6a.",
+      "size": 860,
+      "sentences": 7
+    },
+    {
+      "id": 32,
+      "content": "iews of known objects and entirely new objects. We test\nBOSS’ ability to perform self-supervised learning on the test dataset. Results and Insights. Keypoint detection results are shown in Figure 6a. The baseline model without self-supervised learning Model w/o SSL is trained\nsolelyonthesimulationtrainingdataset.Incontrast,theself-supervisedmodels\nare trained on the same dataset but also perform self-supervised learning on\nthe test dataset without annotations. This model has two variations: one using\nground truth segmentation for the 2D certificate BOSS-GT and another using\nSAM2 masks [20] BOSS-SAM2. Finally, the supervised model Model Supervised\nistraineddirectlyonthesimulationtestdataset(i.e.,thisisthebestachievable\nperformancewiththearchitecture).Ourgoalistofilltheareabetweencurvesof\nModel w/o SSL and Model Supervised, commonly known as the domain gap.",
+      "size": 867,
+      "sentences": 7
+    },
+    {
+      "id": 33,
+      "content": "ctlyonthesimulationtestdataset(i.e.,thisisthebestachievable\nperformancewiththearchitecture).Ourgoalistofilltheareabetweencurvesof\nModel w/o SSL and Model Supervised, commonly known as the domain gap. Notably,SSLeffectivelybridgesthisgap,withupto90%ofkeypointsexhibiting\nerrors below 20 pixels—remarkably small relative to the image resolution of\n1640 1232.Table1presentstheposeandshapestatistics.ThemodelwithSSL\n×\nsignificantly enhances poseand shapeestimation, achieving accuracy morethan\n10timeshigher—nearlymatchingthatofasupervisedmodel—withonlyaround\n4cmaverageerrorforpositionestimation;forreference,theaveragedimensionof\nthesimulatedboxesis0.23m.Notably,forbothkeypointdetectionandposeand\nshape estimation, the SAM2 variant performs comparably to the GT variant. 5.2 Adaptation to Real Dataset\nSetup.",
+      "size": 807,
+      "sentences": 3
+    },
+    {
+      "id": 34,
+      "content": "eaveragedimensionof\nthesimulatedboxesis0.23m.Notably,forbothkeypointdetectionandposeand\nshape estimation, the SAM2 variant performs comparably to the GT variant. 5.2 Adaptation to Real Dataset\nSetup. Symbotic provided a dataset with 9,000 images (Symbotic-9k), includ-\ning various types of boxes in two industrial environments: buffer shelves at in-\nbound(Figure5b)andstorageaisles(Figure5c).Thedatasetprovideskeypoint\nannotations for stereo images, with keypoints predefined as the box corners. Symbotic-9k is split into 7k/0.5k/1.5k images for train/val/test respectively. ResultsandInsights.Weevaluateallmodelsonthetestdatasetsplitandshow\nresults in Figure 6b. Model w/o SSL, trained solely on synthetic data, serves as\na lower bound. The upper bound model Model Supervised is trained and val-\nidated on the train/val dataset. The area between Model w/o SSL and Model\nSupervised is referred to as a sim-to-real gap. BOSS has two variations using\nGT segmentation BOSS-GT or SAM2 BOSS-SAM2.",
+      "size": 991,
+      "sentences": 9
+    },
+    {
+      "id": 35,
+      "content": "val-\nidated on the train/val dataset. The area between Model w/o SSL and Model\nSupervised is referred to as a sim-to-real gap. BOSS has two variations using\nGT segmentation BOSS-GT or SAM2 BOSS-SAM2. Both models are first trained\non synthetic data and then refined through self-supervised learning on the train\nand validation datasets. For comparison, we include Cube R-CNN, an RGB-only\nzero-shot bounding box prediction model trained on the large-scale Omni3D\nbenchmark [11] (234k images) using 48 V100 GPUs, covering both indoor and\noutdoor environments. The results clearly show that the SSL models, initially\ntrainedonsyntheticdataandadaptedusingGTorSAM2-learnedsegmentation,\nsuccessfullybridgethesim-to-realgap.ItalsooutperformsCube R-CNNbyalarge\nmargin.Table1presentsdetailedresultsontheposeandshapeestimation.Since\nground truth pose and shape are unavailable for the real dataset, we generate\n=== 페이지 10 ===\n10 Xihang Yu et al.",
+      "size": 934,
+      "sentences": 6
+    },
+    {
+      "id": 36,
+      "content": "be R-CNNbyalarge\nmargin.Table1presentsdetailedresultsontheposeandshapeestimation.Since\nground truth pose and shape are unavailable for the real dataset, we generate\n=== 페이지 10 ===\n10 Xihang Yu et al. 1.0\n0.8\n0.6\n0.4\n0.2\n0.0\n0 100 200 300 400\nRMSE(NumberofPixels)\nytilibaborPevitalumuC\n1.0\n0.8\n0.6\n0.4\nModelw/oSSL\n0.2 BOSS-GT\nBOSS-SAM2\nModelSupervised\n0.0\n0 250 500 750 1000 1250\nRMSE(NumberofPixels)\n(a) Sim2Sim keypoint detection\ncomparisons for the proposed self-\nsupervised architecture with upper\nbound and other baselines. ytilibaborPevitalumuC\nModelw/oSSL\nCubeR-CNN\nBOSS-GT\nBOSS-SAM2\nBOSS-SAM2(50k)\nBOSS-SAM2(50k-oc)\nModelSupervised\n(b) Sim2Real keypoint detection\ncomparisons for the proposed self-\nsupervised architecture with zero-shot\nlarge model and other baselines. Fig.6: Comparison of keypoint detection performance in Sim2Sim (left) and\nSim2Real (right) scenarios. pseudo ground truth by running our pose and shape estimator on ground truth\nkeypoints.",
+      "size": 966,
+      "sentences": 5
+    },
+    {
+      "id": 37,
+      "content": "baselines. Fig.6: Comparison of keypoint detection performance in Sim2Sim (left) and\nSim2Real (right) scenarios. pseudo ground truth by running our pose and shape estimator on ground truth\nkeypoints. Notably, the self-supervised model consistently improves both pose\nand shape estimation with significantly lower errors for all position, rotation,\nand shape estimation. Self-supervised baseline also approaches the performance\nof the supervised upper bound. We also observe that, for both keypoint detec-\ntion and the pose and shape estimation, the SAM2 variation has a very similar\nperformance to the GT variation. 5.3 Adaptation to Large-scale Dataset\nSetup.Weareinterestedinhowperformancescaleswiththesizeofthedataset. Symbotic provides an additional dataset of about 50,000 images, referred to\nas Symbotic-50k, which however has no ground-truth keypoint annotations.",
+      "size": 870,
+      "sentences": 8
+    },
+    {
+      "id": 38,
+      "content": "stedinhowperformancescaleswiththesizeofthedataset. Symbotic provides an additional dataset of about 50,000 images, referred to\nas Symbotic-50k, which however has no ground-truth keypoint annotations. BOSS-SAM2 (50k) is first pre-trained on synthetic data and then refined via\nself-supervisedlearningusingacombinationofthetrainandvalidationdatasets,\nalongwithSymbotic-50k.NotethatforallBOSS-GT,BOSS-SAM2,andBOSS-SAM2\n(50k), we use the same certificate thresholds to have a fair comparison. We ad-\nditionally report the performance of the model when evaluated only on outputs\nthat pass all certificate checks, denoted as BOSS-SAM2 (50k-oc). We present\nthe keypoint detection results on the test split in Figure 6b. Pose and shape\nestimation results are presented in Table 1. ResultsandInsights.Interestingly,BOSS-SAM2 (50k)outperformsBOSS-SAM2\nand BOSS-GT by a small margin.",
+      "size": 872,
+      "sentences": 7
+    },
+    {
+      "id": 39,
+      "content": "results on the test split in Figure 6b. Pose and shape\nestimation results are presented in Table 1. ResultsandInsights.Interestingly,BOSS-SAM2 (50k)outperformsBOSS-SAM2\nand BOSS-GT by a small margin. This suggests that keypoint detection perfor-\nmancescaleswithdatasetsize.Wecangainfurtherperformanceimprovementby\nfiltering out bad labels during inference as shown BOSS-SAM2 (50k-oc), whose\nperformance is quite close to that of the supervised baseline. However, the im-\nprovementof BOSS-SAM2 (50k)comparedwithBOSS-SAM2islimited.Webelieve\n[표 데이터 감지됨]\n\n=== 페이지 11 ===\nBOSS 11\nthis can be improved in the future by an automatic certificate threshold update\nscheme during training. The current training uses a fixed threshold profile. 6 Conclusions\nA self-supervised approach can train a box pose and shape estimation model\nusing large-scale, unannotated data collated by a robot fleet in a warehouse.",
+      "size": 898,
+      "sentences": 7
+    },
+    {
+      "id": 40,
+      "content": "uses a fixed threshold profile. 6 Conclusions\nA self-supervised approach can train a box pose and shape estimation model\nusing large-scale, unannotated data collated by a robot fleet in a warehouse. Implementing a simple pipeline to estimate the pose and shape of a box, we\nshowthatitcanbeself-trainedleveragingourcorrect-and-certifyapproach.The\ncorrect-and-certify approach implements certificates to pseudo-label instances\nduring training but requires hard thresholds to be set apriori for training. We\ndevise an empirical way to choose these thresholds and demonstrate that our\ntraining can bridge a large domain gap. Several avenues remain open for future\nresearch. First, rather than applying hard thresholds to model outputs, can we\nusesoftpseudo-labelstoretainmoreinformation?Thisideaismotivatedbythe\nobservation that certificate values naturally reflect the confidence level of each\npseudo-label.",
+      "size": 904,
+      "sentences": 6
+    },
+    {
+      "id": 41,
+      "content": "resholds to model outputs, can we\nusesoftpseudo-labelstoretainmoreinformation?Thisideaismotivatedbythe\nobservation that certificate values naturally reflect the confidence level of each\npseudo-label. Second, we are interested in extending pose and shape estimation\nto irregularly shaped objects, which would significantly improve generalization\nacross diverse warehouse tasks. Potential solutions include incorporating shape\nparametrization [25] or learning a latent shape representation [26,27]. References\n1. H. Yang, W. Dong, L. Carlone, and V. Koltun, “Self-supervised geometric per-\nception,” in Proceedings of the IEEE/CVF Conference on Computer Vision and\nPattern Recognition, 2021, pp. 14350–14361. 2. J. Shi, R. Talak, D. Maggio, and L. Carlone, “A correct-and-certify approach to\nself-supervise object pose estimators via ensemble self-training,” arXiv preprint\narXiv:2302.06019, 2023. 3.",
+      "size": 898,
+      "sentences": 9
+    },
+    {
+      "id": 42,
+      "content": "–14361. 2. J. Shi, R. Talak, D. Maggio, and L. Carlone, “A correct-and-certify approach to\nself-supervise object pose estimators via ensemble self-training,” arXiv preprint\narXiv:2302.06019, 2023. 3. R.Talak,L.R.Peng,andL.Carlone,“Certifiableobjectposeestimation:Founda-\ntions,learningmodels,andself-training,” IEEE Transactions on Robotics,vol.39,\nno. 4, pp. 2805–2824, 2023. 4. J.Shi,R.Talak,H.Zhang,D.Jin,andL.Carlone,“Crisp:Objectposeandshape\nestimation with test-time adaptation,” arXiv preprint arXiv:2412.01052, 2024. 5. M. Jawaid, R. Talak, Y. Latif, L. Carlone, and T.-J. Chin, “Test-time certifiable\nself-supervisiontobridgethesim2realgapinevent-basedsatelliteposeestimation,”\nin 2024 IEEE/RSJ International Conference on Intelligent Robots and Systems\n(IROS). IEEE, 2024, pp. 4534–4541. 6. G. Pavlakos, X. Zhou, A. Chan, K. G. Derpanis, and K. Daniilidis, “6-dof object\nposefromsemantickeypoints,” in2017 IEEE international conference on robotics\nand automation (ICRA). IEEE, 2017, pp.",
+      "size": 996,
+      "sentences": 17
+    },
+    {
+      "id": 43,
+      "content": "6. G. Pavlakos, X. Zhou, A. Chan, K. G. Derpanis, and K. Daniilidis, “6-dof object\nposefromsemantickeypoints,” in2017 IEEE international conference on robotics\nand automation (ICRA). IEEE, 2017, pp. 2011–2018. 7. H.Wang,S.Sridhar,J.Huang,J.Valentin,S.Song,andL.J.Guibas,“Normalized\nobject coordinate space for category-level 6d object pose and size estimation,” in\nProceedings of the IEEE/CVF conference on computer vision and pattern recogni-\ntion, 2019, pp. 2642–2651. 8. M. Tian, M. H. Ang Jr, and G. H. Lee, “Shape prior deformation for categorical\n6dobjectposeandsizeestimation,” inEuropean Conference on Computer Vision. Springer, 2020, pp. 530–546. 9. Y.FuandX.Wang,“Category-level6dobjectposeestimationinthewild:Asemi-\nsupervisedlearningapproachandanewdataset,” AdvancesinNeuralInformation\nProcessing Systems, vol. 35, pp. 27469–27483, 2022. === 페이지 12 ===\n12 Xihang Yu et al. 10. N. Kai, H. Yoshida, and T. Shibata, “Pallet pose estimation based on front face\nshot,” IEEE Access, 2025. 11.",
+      "size": 998,
+      "sentences": 19
+    },
+    {
+      "id": 44,
+      "content": "rocessing Systems, vol. 35, pp. 27469–27483, 2022. === 페이지 12 ===\n12 Xihang Yu et al. 10. N. Kai, H. Yoshida, and T. Shibata, “Pallet pose estimation based on front face\nshot,” IEEE Access, 2025. 11. G. Brazil, A. Kumar, J. Straub, N. Ravi, J. Johnson, and G. Gkioxari, “Omni3D:\nA large benchmark and model for 3D object detection in the wild,” in CVPR. Vancouver, Canada: IEEE, June 2023. 12. Y. Sun, E. Tzeng, T. Darrell, and A. A. Efros, “Unsupervised domain adaptation\nthrough self-supervision,” arXiv preprint arXiv:1909.11825, 2019. 13. Y. Sun, X. Wang, Z. Liu, J. Miller, A. Efros, and M. Hardt, “Test-time training\nwith self-supervision for generalization under distribution shifts,” in International\nconference on machine learning. PMLR, 2020, pp. 9229–9248. 14. N. Hansen, R. Jangir, Y. Sun, G. Alenyà, P. Abbeel, A. A. Efros, L. Pinto, and\nX. Wang, “Self-supervised policy adaptation during deployment,” arXiv preprint\narXiv:2007.04309, 2020. 15.",
+      "size": 957,
+      "sentences": 23
+    },
+    {
+      "id": 45,
+      "content": "229–9248. 14. N. Hansen, R. Jangir, Y. Sun, G. Alenyà, P. Abbeel, A. A. Efros, L. Pinto, and\nX. Wang, “Self-supervised policy adaptation during deployment,” arXiv preprint\narXiv:2007.04309, 2020. 15. D.Wang,E.Shelhamer,S.Liu,B.Olshausen,andT.Darrell,“Tent:Fullytest-time\nadaptation by entropy minimization,” arXiv preprint arXiv:2006.10726, 2020. 16. S.Goyal,M.Sun,A.Raghunathan,andJ.Z.Kolter,“Testtimeadaptationviacon-\njugatepseudo-labels,” AdvancesinNeuralInformationProcessingSystems,vol.35,\npp. 6204–6218, 2022. 17. M. Zhang, S. Levine, and C. Finn, “Memo: Test time robustness via adaptation\nand augmentation,” Advances in neural information processing systems, vol. 35,\npp. 38629–38642, 2022. 18. R. Zurbrügg, H. Blum, C. Cadena, R. Siegwart, and L. Schmid, “Embodied ac-\ntivedomainadaptationforsemanticsegmentationviainformativepathplanning,”\nIEEE Robotics and Automation Letters, vol. 7, no. 4, pp. 8691–8698, 2022. 19.",
+      "size": 927,
+      "sentences": 20
+    },
+    {
+      "id": 46,
+      "content": "Cadena, R. Siegwart, and L. Schmid, “Embodied ac-\ntivedomainadaptationforsemanticsegmentationviainformativepathplanning,”\nIEEE Robotics and Automation Letters, vol. 7, no. 4, pp. 8691–8698, 2022. 19. N. Merrill, Y. Guo, X. Zuo, X. Huang, S. Leutenegger, X. Peng, L. Ren, and\nG. Huang, “Symmetry and uncertainty-aware object slam for 6dof object pose\nestimation,” in Proceedings of the IEEE/CVF Conference on Computer Vision\nand Pattern Recognition, 2022, pp. 14901–14910. 20. N. Ravi, V. Gabeur, Y.-T. Hu, R. Hu, C. Ryali, T. Ma, H. Khedr, R. Rädle,\nC. Rolland, L. Gustafson, E. Mintun, J. Pan, K. V. Alwala, N. Carion, C.-Y. Wu, R. Girshick, P. Dollár, and C. Feichtenhofer, “Sam 2: Segment anything in\nimages and videos,” arXiv preprint arXiv:2408.00714, 2024. [Online]. Available:\nhttps://arxiv.org/abs/2408.00714\n21. J. T. Barron, “A general and adaptive robust loss function,” in Proceedings of\nthe IEEE/CVF conference on computer vision and pattern recognition, 2019, pp. 4331–4339. 22.",
+      "size": 992,
+      "sentences": 15
+    },
+    {
+      "id": 47,
+      "content": "rxiv.org/abs/2408.00714\n21. J. T. Barron, “A general and adaptive robust loss function,” in Proceedings of\nthe IEEE/CVF conference on computer vision and pattern recognition, 2019, pp. 4331–4339. 22. K.He,G.Gkioxari,P.Dollár,andR.Girshick,“Maskr-cnn,” inProceedingsofthe\nIEEE international conference on computer vision, 2017, pp. 2961–2969. 23. A.Paszke,S.Gross,F.Massa,A.Lerer,J.Bradbury,G.Chanan,T.Killeen,Z.Lin,\nN. Gimelshein, L. Antiga et al., “Pytorch: An imperative style, high-performance\ndeeplearninglibrary,” Advances in neural information processing systems,vol.32,\n2019. 24. M.Pharr,W.Jakob,andG.Humphreys,Physically based rendering: From theory\nto implementation. MIT Press, 2023. 25. M. Shan, Q. Feng, Y.-Y. Jau, and N. Atanasov, “Ellipsdf: Joint object pose and\nshape optimization with a bi-level ellipsoid and signed distance function descrip-\ntion,” in Proceedings of the IEEE/CVF International Conference on Computer\nVision, 2021, pp. 5946–5955. 26.",
+      "size": 967,
+      "sentences": 16
+    },
+    {
+      "id": 48,
+      "content": "pose and\nshape optimization with a bi-level ellipsoid and signed distance function descrip-\ntion,” in Proceedings of the IEEE/CVF International Conference on Computer\nVision, 2021, pp. 5946–5955. 26. P. Mittal, Y.-C. Cheng, M. Singh, and S. Tulsiani, “Autosdf: Shape priors for\n3d completion, reconstruction and generation,” in Proceedings of the IEEE/CVF\nconference on computer vision and pattern recognition, 2022, pp. 306–315. 27. M. Liu, R. Shi, K. Kuang, Y. Zhu, X. Li, S. Han, H. Cai, F. Porikli, and H. Su,\n“Openshape: Scaling up 3d shape representation towards open-world understand-\ning,” Advancesinneuralinformationprocessingsystems,vol.36,pp.44860–44879,\n2023.",
+      "size": 671,
+      "sentences": 7
+    }
+  ]
+}
