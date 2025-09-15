@@ -1,0 +1,156 @@
+프로젝트명: WMS VectorDB 업데이트 시스템
+========================================
+
+개요: Langchain Framework 기반의 Python FastAPI + ChatOllama 애플리케이션을 위한 VectorDB를 업데이트하는 시스템
+
+프로젝트 디렉토리 구조
+====================
+
+├── 🚀 main.py                                     # FastAPI 서버 (개발 중)
+├── 📋 requirements.txt                              # Python 패키지 의존성
+├── 🔧 wms_start.py                                 # 프로젝트 구조 생성 도구
+├── 📝 .gitignore                                   # Git 무시 파일
+├── 📊 directory.txt                                # 이 파일 (프로젝트 구조 설명)
+│
+├── 🧠 LLM/                                        # RAG 시스템 (Langchain 기반)
+│   ├── 🤖 llm.py                                  # 기본 ChromaDB + ChatOllama RAG
+│   └── 🚀 advanced_rag.py                         # 고급 RAG (하이브리드 검색, RAGAS 평가)
+│
+└── 🏗️ WMS/                                        # 메인 WMS 데이터 수집 및 처리 시스템
+    ├── 🎯 main.py                                 # 산업용 협동로봇 전문 파이프라인
+    ├── 📋 requirements.txt                         # WMS 전용 패키지 의존성
+    ├── 📊 scraping_report.txt                      # 데이터 수집 보고서
+    ├── 📝 README.md                               # WMS 프로젝트 설명서
+    │
+    ├── 📚 Papers/                                 # 논문 저장소
+    │   ├── 📝 README.md                          # 논문 저장소 설명
+    │   ├── 🔬 ArXiv/                             # arXiv 논문들
+    │   │   └── 📊 results/                       # arXiv 수집 결과
+    │   ├── 🏛️ IEEE/                              # IEEE Xplore 논문들
+    │   │   ├── 📖 citations.bib                  # IEEE 논문 인용정보
+    │   │   └── 📊 results/                       # IEEE 수집 결과
+    │   ├── 🌐 GoogleScholar/                      # Google Scholar 논문들
+    │   │   ├── 📄 abstracts.txt                  # 논문 초록 모음
+    │   │   └── 📊 results/                       # Google Scholar 수집 결과
+    │   └── 🔍 SemanticScholar/                    # Semantic Scholar 논문들
+    │       ├── 📊 results/                       # Semantic Scholar 수집 결과
+    │       └── 📋 search_results.json            # 검색 결과 메타데이터
+    │
+    ├── 📊 ProcessedData/                          # 처리된 텍스트 데이터
+    │
+    ├── 📈 Analysis/                               # 연구 동향 및 분석 결과
+    │   ├── 📝 README.md                          # 분석 결과 설명
+    │   ├── 📊 citation_analysis_report.md        # 인용 분석 보고서
+    │   ├── 📊 citation_edges.csv                 # 인용 네트워크 엣지 데이터
+    │   ├── 🌐 citation_network.gexf              # 인용 네트워크 그래프
+    │   ├── 📸 citation_network.png               # 인용 네트워크 시각화
+    │   ├── 📊 network_metrics.json               # 네트워크 메트릭
+    │   ├── 📄 research_gaps.txt                  # 연구 공백 분석
+    │   ├── 🌐 similarity_network.gexf            # 유사도 네트워크
+    │   ├── 📸 similarity_network.png             # 유사도 네트워크 시각화
+    │   ├── 📊 topic_modeling_results.json        # 토픽 모델링 결과
+    │   ├── 📊 trend_analysis.csv                 # 트렌드 분석 데이터
+    │   ├── 📊 visualization_charts.html          # 대화형 시각화
+    │   └── 📊 results/                          # 기타 분석 결과
+    │
+    ├── 🛠️ Tools/                                  # 데이터 수집 및 처리 도구들
+    │   ├── 📝 README.md                          # 도구들 설명서
+    │   ├── 🔧 __init__.py                        # 패키지 초기화
+    │   ├── 📡 paper_scraper.py                   # 다중 소스 논문 수집기
+    │   ├── 📊 paper_scraper.log                  # 논문 수집 로그
+    │   ├── 🔍 text_extractor.py                  # PDF/텍스트 추출기
+    │   ├── 📊 text_extractor.log                 # 텍스트 추출 로그
+    │   ├── 📈 citation_analyzer.py               # 인용 분석기
+    │   ├── 📊 citation_analyzer.log              # 인용 분석 로그
+    │   ├── 📊 trend_visualizer.py                # 트렌드 시각화 도구
+    │   ├── 🗄️ chromadb_builder.py                # ChromaDB 벡터DB 구축기
+    │   ├── 📊 chromadb_builder.log               # ChromaDB 구축 로그
+    │   ├── 🚀 rag_chat_system.py                 # RAG 채팅 시스템
+    │   └── 📂 __pycache__/                       # Python 캐시
+    │
+    ├── 🗄️ VectorDB/                              # 벡터 데이터베이스 저장소
+    │   └── 💾 chroma_storage/                     # ChromaDB 저장 폴더
+    │       ├── 🗃️ chroma.sqlite3                  # ChromaDB SQLite 파일
+    │       └── 📁 55fb351f-8ed6.../              # ChromaDB 인덱스 파일들
+    │           ├── 📊 data_level0.bin            # 벡터 데이터
+    │           ├── 📊 header.bin                 # 헤더 정보
+    │           ├── 📊 index_metadata.pickle      # 인덱스 메타데이터
+    │           ├── 📊 length.bin                 # 길이 정보
+    │           └── 📊 link_lists.bin             # 링크 리스트
+    │
+    ├── 🧪 tests/                                 # 테스트 코드
+    │   ├── 📝 README.md                          # 테스트 설명서
+    │   ├── 🔧 __init__.py                        # 테스트 패키지 초기화
+    │   ├── 🏃 run_all_tests.py                   # 전체 테스트 실행기
+    │   ├── 🧪 test_paper_scraper.py              # 논문 수집기 테스트
+    │   ├── 🧪 test_text_extractor.py             # 텍스트 추출기 테스트
+    │   ├── 🧪 test_citation_analyzer.py          # 인용 분석기 테스트
+    │   ├── 🧪 test_trend_visualizer.py           # 트렌드 시각화 테스트
+    │   └── 📊 paper_scraper.log                  # 테스트 로그
+    │
+    ├── 🔄 enhanced_migrate_to_main_project.py     # 메인 프로젝트 마이그레이션 도구
+    │
+    └── 🏗️ WMS/ (중첩 디렉토리)                     # 이동된 도구들 및 추가 기능
+        ├── 📚 Papers/                            # 논문 저장소 (중복)
+        ├── 🧪 tests/                            # 테스트 (중복)
+        ├── 📋 requirements.txt                    # 요구사항 (중복)
+        ├── 📊 scraping_report.txt                # 스크래핑 보고서 (중복)
+        └── 🛠️ Tools/                             # 추가 도구들
+            ├── 🔧 __init__.py                    # 패키지 초기화
+            ├── 🔧 chroma_to_faiss_migrator.py    # ChromaDB → Faiss 변환기
+            ├── 📋 enhanced_wms_keywords.py       # 고급 WMS 키워드 세트
+            ├── 🔗 langchain_faiss_integration.py # Langchain + Faiss 통합
+            ├── 📊 vector_dimension_analyzer.py   # 벡터 차원 분석기
+            └── 📝 README.md                      # 도구 설명
+
+추가 파일들
+==========
+├── 📂 __pycache__/                              # Python 바이트코드 캐시
+└── 📊 로그 파일들 (*.log)                        # 각종 처리 로그
+
+주요 기능 및 워크플로우
+=====================
+
+1. 📡 데이터 수집 단계:
+   - paper_scraper.py: 다중 학술 DB에서 WMS 관련 논문 수집
+   - enhanced_wms_keywords.py: 산업용 협동로봇 전문 키워드 세트
+
+2. 📝 데이터 처리 단계:
+   - text_extractor.py: PDF에서 텍스트 추출 및 청킹
+   - citation_analyzer.py: 인용 관계 분석 및 네트워크 구축
+
+3. 🗄️ 벡터DB 구축 단계:
+   - chromadb_builder.py: ChromaDB 벡터 데이터베이스 구축
+   - chroma_to_faiss_migrator.py: Faiss 형식으로 변환
+
+4. 🤖 RAG 시스템 단계:
+   - llm.py: 기본 ChromaDB + ChatOllama RAG
+   - advanced_rag.py: 하이브리드 검색 + 평가가 포함된 고급 RAG
+
+5. 📊 분석 및 시각화 단계:
+   - trend_visualizer.py: 연구 트렌드 시각화
+   - citation_analyzer.py: 네트워크 분석 및 시각화
+
+데이터 플로우
+=============
+Papers (수집) → ProcessedData (추출/청킹) → VectorDB (임베딩) → LLM RAG (검색/생성)
+                                    ↓
+                              Analysis (분석/시각화)
+
+기술 스택
+=========
+- 🐍 Python 3.x
+- 🚀 FastAPI (웹 API)
+- 🦜 Langchain (RAG 프레임워크)
+- 🤖 ChatOllama (로컬 LLM)
+- 🗄️ ChromaDB (벡터 데이터베이스)
+- 🔍 Faiss (고성능 벡터 검색)
+- 📊 Sentence Transformers (임베딩)
+- 📈 NetworkX, Matplotlib (분석/시각화)
+
+목적
+====
+이 시스템은 WMS(창고관리시스템) 분야의 최신 연구 동향을 파악하고,
+산업용 협동로봇(AMR, AGV, CNV, RTV) 관련 전문 지식을 구축하여
+Langchain 기반의 다른 애플리케이션에서 사용할 수 있는 
+고품질 VectorDB를 제공하는 것입니다.

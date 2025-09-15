@@ -184,13 +184,15 @@ class WMSPaperScraper:
         base_url = "https://api.semanticscholar.org/graph/v1/paper/search"
         
         try:
-            for keyword in self.wms_keywords[:3]:  # Limit to avoid rate limits
+            # Rate limiting 개선: 더 적은 키워드와 더 긴 대기 시간
+            for keyword in self.wms_keywords[:2]:  # Limit to 2 keywords to avoid rate limits
                 params = {
                     "query": keyword,
-                    "limit": min(max_results // 3, 100),
+                    "limit": min(max_results // 2, 50),  # 더 작은 배치 크기
                     "fields": "paperId,title,authors,year,venue,citationCount,abstract,url"
                 }
                 
+                self.logger.info(f"Querying Semantic Scholar for: {keyword}")
                 response = self.session.get(base_url, params=params)
                 response.raise_for_status()
                 
@@ -211,7 +213,8 @@ class WMSPaperScraper:
                     }
                     papers.append(paper_data)
                 
-                time.sleep(1)  # 속도 제한
+                self.logger.info(f"Found {len(data.get('data', []))} papers for keyword: {keyword}")
+                time.sleep(3)  # 더 긴 대기 시간으로 rate limiting 회피
             
             # Save search results
             with open(f"{self.output_dir}/SemanticScholar/search_results.json", 'w', encoding='utf-8') as f:
@@ -335,7 +338,10 @@ class WMSPaperScraper:
         all_papers['semantic_scholar'] = self.scrape_semantic_scholar(max_results_per_source)
         time.sleep(5)
         
-        all_papers['google_scholar'] = self.scrape_google_scholar(max_results_per_source)
+        # Google Scholar는 captcha 문제로 비활성화
+        # all_papers['google_scholar'] = self.scrape_google_scholar(max_results_per_source)
+        self.logger.info("Google Scholar scraping skipped due to captcha issues")
+        all_papers['google_scholar'] = []
         
         # Generate citation files
         self.generate_citation_file(all_papers.get('google_scholar', []), "IEEE")
