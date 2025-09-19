@@ -1,0 +1,266 @@
+{
+  "source": "ArXiv",
+  "filename": "026_DoUnseen__Tuning-Free_Class-Adaptive_Object_Detect.pdf",
+  "total_chars": 28447,
+  "total_chunks": 43,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "=== 페이지 1 ===\nDoUnseen: Tuning-Free Class-Adaptive Object Detection\nof Unseen Objects for Robotic Grasping\nAnas Gouda and Moritz Roidl\nAbstract—How can we segment varying numbers of objects\nwhere each specific object represents its own separate class? To make the problem even more realistic, how can we add\nand delete classes on the fly without retraining or fine-tuning? Thisisthecaseofroboticapplicationswherenodatasetsofthe\nobjects exist or application that includes thousands of objects\n(E.g.,inlogistics)whereitisimpossibletotrainasinglemodel\nto learn all of the objects. Most current research on object segmentation for robotic\ngrasping focuses on class-level object segmentation (E.g., box,\ncup,bottle),closedsets(specificobjectsofadataset;forexam-\nple, YCB dataset), or deep learning-based template matching. Inthiswork,weareinterestedinopensetswherethenumberof\nclasses is unknown, varying, and without pre-knowledge about\nthe objects’ types.",
+      "size": 951,
+      "sentences": 5
+    },
+    {
+      "id": 2,
+      "content": "xam-\nple, YCB dataset), or deep learning-based template matching. Inthiswork,weareinterestedinopensetswherethenumberof\nclasses is unknown, varying, and without pre-knowledge about\nthe objects’ types. We consider each specific object as its own\nseparate class. Our goal is to develop an object detector that requires no\nfine-tuningandcanaddanyobjectasaclassjustbycapturing\na few images of the object. Our main idea is to break the seg-\nmentation pipelines into two steps by combining unseen object\nsegmentation networks cascaded by class-adaptive classifiers. We evaluate our class-adaptive object detector on unseen Fig.1. Ourobjectdetectorbuildingblocks.Firststage,imageissegmented\ndatasets and compare it to a trained Mask R-CNN on those intoobjectsregardlessoftheirclass.Secondstage,aclass-adaptiveclassifier\ndatasets.",
+      "size": 821,
+      "sentences": 7
+    },
+    {
+      "id": 3,
+      "content": "Ourobjectdetectorbuildingblocks.Firststage,imageissegmented\ndatasets and compare it to a trained Mask R-CNN on those intoobjectsregardlessoftheirclass.Secondstage,aclass-adaptiveclassifier\ndatasets. The results show that the performance varies from classifiesthesegmentedmasksintothebest-matchedobjectfromthegallery\npractical to unsuitable depending on the environment setup set. The frame color of the objects in the segmented image represents the\nand the objects being handled. predictedclassfromthegalleryset. The code is available in our DoUnseen library repository 1.\nonce, and it may be impossible if many objects are highly\nI. INTRODUCTION similar.Anobjectdetectorthatcanflexiblychangethesubset\nofclassesusedisamust.Third,havingadeeplearning-based\nSome robotic grasping applications do not require explic-\nobject detector without doing data collection and without\nitly learning the object classes; they only require classifica-\ntraining would be more convenient and easier.",
+      "size": 980,
+      "sentences": 6
+    },
+    {
+      "id": 4,
+      "content": "ications do not require explic-\nobject detector without doing data collection and without\nitly learning the object classes; they only require classifica-\ntraining would be more convenient and easier. tion or re-identification from a set of images of the object\n(galleryset).Thisconceptisreferredtoastemplatematching The difference between deep learning-based template\nin classical non-learning based methods. The type of classes matchingnetworksandclass-adaptiveobjectdetectorsisthat\nhere differs from standard object detector classes (E.g., box, the class-adaptive object detectors should be able to detect\ncup,bottle).Inourcase,eachobjectwouldrepresentitsown many object classes at once. In contrast, deep learning-\nclass, and object classes differ if objects are not identical (A basedtemplatematchingaimstodetectasingleobjectclass. whole-fat milk box and a low-fat milk box would be two Detecting a single object means linear time complexity for\ndifferent classes).",
+      "size": 969,
+      "sentences": 5
+    },
+    {
+      "id": 5,
+      "content": "identical (A basedtemplatematchingaimstodetectasingleobjectclass. whole-fat milk box and a low-fat milk box would be two Detecting a single object means linear time complexity for\ndifferent classes). The gallery set consists of a few images multipleobjects;thisisevenmorerepellingasdeeplearning-\nof each object covering all its unique faces. There are many based template matching networks are a sort of brute force. cases where this concept would be the key to the solution. Also,class-adaptiveobjectdetectorsshouldbeawareofother\nThe first case is applications in which collecting a dataset is objects in the environment that are not in the gallery set and\nnot possible for reasons such as lack of technical expertise cannot be classified. or time constraints. Second, are the applications where the Recent research in [1] [2] [3] focused mainly on deep\nnumber of objects is large (in thousands). This is a real case template matching.",
+      "size": 936,
+      "sentences": 9
+    },
+    {
+      "id": 6,
+      "content": "ed. or time constraints. Second, are the applications where the Recent research in [1] [2] [3] focused mainly on deep\nnumber of objects is large (in thousands). This is a real case template matching. In this work, we are interested in going\nthat happens in logistics and industry. Even if a dataset of one step further than just deep template matching by devel-\nthesethousandsofobjectsexists,itwouldbechallengingfor oping a class-adaptive object detector for robotic grasping. an object detector to learn all the objects in a warehouse at The building blocks for our detector are shown in figure 1. Unlike deep template matching methods that do the search\nBothauthorswithTUDortmundUniversity,44227Dortmund,Germany in the whole embedding space, our method is more natural\nfirstname.lastname@tu-dortmund.de\nin the human sense as all objects are first segmented then\n1https://github.com/AnasIbrahim/image_agnostic_\nsegmentation the search is done per segmented mask.",
+      "size": 963,
+      "sentences": 8
+    },
+    {
+      "id": 7,
+      "content": "atural\nfirstname.lastname@tu-dortmund.de\nin the human sense as all objects are first segmented then\n1https://github.com/AnasIbrahim/image_agnostic_\nsegmentation the search is done per segmented mask. 3202\nvoN\n72\n]VC.sc[\n2v33820.4032:viXra\n=== 페이지 2 ===\nFig.2. Ourclass-adaptiveobjectdetector.Theunseennetworksegmentationispre-trainedin[4].Theclass-adaptiveclassifierisasiameseneuralnetwork. Duringtesting,Thegalleryimagesareaugmented,andtheirfeaturesareextractedandbufferedandonlyrecomputedwhenthegalleryischanged(dark\ngreenblocks).Thissavesrunningtimeconsiderablyforthesiamesenetwork. TABLEI\nII. RELATEDWORK\nCOMPARINGDIFFERENTARCHITECTUREASABACKBONEFORTHE\nThere are different problems that work with unseen ob- CLASS-ADAPTIVECLASSIFIERONDOPOSEANDHOPEDATASETS. jects.",
+      "size": 767,
+      "sentences": 7
+    },
+    {
+      "id": 8,
+      "content": "hesiamesenetwork. TABLEI\nII. RELATEDWORK\nCOMPARINGDIFFERENTARCHITECTUREASABACKBONEFORTHE\nThere are different problems that work with unseen ob- CLASS-ADAPTIVECLASSIFIERONDOPOSEANDHOPEDATASETS. jects. Face detection, person re-identification, Deep template\nbackbone DoPose HOPE\nmatching, unseen object instance segmentation and unseen mAP R1 R5 R10 R20 mAP R1 R5 R10 R20\nResNet[20] 64.2 94.0 98.5 99.0 99.7 29.6 53.6 72.7 80.7 89.0\n6D pose estimation are examples of such problems. DenseNet[21] 60.9 93.2 98.6 99.4 99.8 28.6 59.3 76.5 82.5 88.8\nEfficientNet[22] 57.9 94.3 98.0 99.1 99.7 28.0 53.7 70.4 77.6 85.3\nSeveral works study the problem of deep template match- Wide-ResNet[23] 62.4 93.4 98.1 99.0 99.4 27.9 45.0 62.1 70.6 78.9\nViT[24] 56.5 91.5 97.5 98.7 99.4 28.6 62.6 79.2 87.1 91.4\ning in the context of robotic grasping.",
+      "size": 830,
+      "sentences": 6
+    },
+    {
+      "id": 9,
+      "content": "the problem of deep template match- Wide-ResNet[23] 62.4 93.4 98.1 99.0 99.4 27.9 45.0 62.1 70.6 78.9\nViT[24] 56.5 91.5 97.5 98.7 99.4 28.6 62.6 79.2 87.1 91.4\ning in the context of robotic grasping. DTOID [1] based MaxVit[25] 61.9 91.8 97.3 98.5 99.4 24.0 43.5 54.8 60.9 69.3\nSwinTransformer[26] 70.3 95.9 99.2 99.5 99.6 32.3 55.7 69.5 77.2 82.1\non TDID [5] introduced a network using RGB images for OSNet-AIN[27] 63.0 96.5 98.4 98.9 99.3 28.0 52.0 67.9 76.3 84.4\ntemplate matching network that uses a global template to\nspecialize early features in the detection backbone and a to train variants of Mask R-CNN. UCN [9] used a CNN to\nlocaltemplatethatextractsview-pointrelatedfeatures.Then compute embeddings followed by classical clustering. UOIS\na second stage is responsible for regressing the BBOX and [10] used a 2 stage segmentation method, the first stage\nthe segmentation mask. HU et al.",
+      "size": 896,
+      "sentences": 5
+    },
+    {
+      "id": 10,
+      "content": "e embeddings followed by classical clustering. UOIS\na second stage is responsible for regressing the BBOX and [10] used a 2 stage segmentation method, the first stage\nthe segmentation mask. HU et al. [3] used a similar network used only depth to produce an initial mask and the second\nofDTOID[1]butenhancedtheperformancebyconstructing stageusedRGBtoproducethefinalmask.MSMFormer[11]\naNeRFmodelfromthetargetobjectimagesforsynthesizing usedatransformerarchitecturethatsimulatesthevonMises-\nmoreviewsofthetargetobject.MTTM[2]usedRGBimages Fisher (vMF) mean shift clustering algorithm. UOAIS [12]\nfor segmentation and pose estimation and used depth for went a step further by predicting the amodal segmentation\nICP refinement. These methods performed their evaluation mask (hidden parts of the object). Instead of RGB or\nmainly on the Linemod dataset [6].",
+      "size": 851,
+      "sentences": 7
+    },
+    {
+      "id": 11,
+      "content": "t a step further by predicting the amodal segmentation\nICP refinement. These methods performed their evaluation mask (hidden parts of the object). Instead of RGB or\nmainly on the Linemod dataset [6]. The Linemod dataset RGB-D, INSTR [13] used stereo image with a transformer\ntest set contains 15 objects and 15 scenes, with the goal is architecture. to detect one object in each scene. This case of Linemod Several applications require classification/re-identification\nis closer to template matching tests as the goal is to detect of unknown classes. Face detection [14], person re-\none object in the image. So, we opt out from testing on the identification [15], Vehicle re-identification [16], Fashion\nLinemoddatasetanduseotherdatasetswithmultipleobjects classification [17], and pallet re-identification [18] are ex-\nplaced in different environments. amples of such problems.",
+      "size": 878,
+      "sentences": 9
+    },
+    {
+      "id": 12,
+      "content": "tification [16], Fashion\nLinemoddatasetanduseotherdatasetswithmultipleobjects classification [17], and pallet re-identification [18] are ex-\nplaced in different environments. amples of such problems. Class-adaptive classification for\nRelated research for our object detector is based on two robotic grasping is a similar problem to this category of\ndifferent research problems. The first problem is ”unseen problems. objectinstancesegmentation”forroboticgrasping,wherethe Another work that presented a very close problem to\ngoal of the network is to segment all objects in the image our class-adaptive object detection is FewSol [19]. They\nwithout any knowledge about their type/class. The second created a dataset from existing datasets and newly collected\nrelated problem is class-adaptive classification. data.",
+      "size": 813,
+      "sentences": 8
+    },
+    {
+      "id": 13,
+      "content": "tion is FewSol [19]. They\nwithout any knowledge about their type/class. The second created a dataset from existing datasets and newly collected\nrelated problem is class-adaptive classification. data. FewSol benchmarked several few-shot object detectors\nThe research on unseen object segmentation (also known and proposed the problem of joint object segmentation by\nas category-agnostic segmentation) is still an open problem, combiningunseenobjectsegmentationandfew-shotclassifi-\nas it is hard to generalize between different environment cation.ThedifferencebetweenourworkandFewsolisthatit\nsetups. Different ideas were introduced for unseen object usesfew-shottolearnnewgenericobjectclasses(box,power\nsegmentation networks. SD Mask R-CNN [7] and Gouda et drill, etc. ), and we use the class-adaptive object detector to\nal. [4][8]useddepthimagesandRGBimagesconsecutively detect the gallery objects. [표 데이터 감지됨]\n\n=== 페이지 3 ===\nTABLEII\nA.",
+      "size": 935,
+      "sentences": 10
+    },
+    {
+      "id": 14,
+      "content": "N [7] and Gouda et drill, etc. ), and we use the class-adaptive object detector to\nal. [4][8]useddepthimagesandRGBimagesconsecutively detect the gallery objects. [표 데이터 감지됨]\n\n=== 페이지 3 ===\nTABLEII\nA. Training and Evaluation Datasets\nVALIDATIONOFTHECLASS-ADAPTIVECLASSIFIERONTHEHOPE\nDATASET. As our object detector consists of two modules, we use\ndifferent datasets to train each module. We test the entire\nHOPE\nTrainDataset mAP R1 R5 R10 object detector on datasets different than the ones used for\nImageNet 28.6 62.6 79.2 87.1 the training. The unseen object segmentation network in [4]\nFewSol 38.8 56.0 73.9 81.5 thatweuseforourobjectdetectoristrainedonNVIDIAFAT\nsynthetic dataset [29] only. For training our class-adaptive\nIII. METHOD\nclassifier, we require a dataset with many objects, with each\nobject captured from many perspectives.",
+      "size": 839,
+      "sentences": 10
+    },
+    {
+      "id": 15,
+      "content": "ctoristrainedonNVIDIAFAT\nsynthetic dataset [29] only. For training our class-adaptive\nIII. METHOD\nclassifier, we require a dataset with many objects, with each\nobject captured from many perspectives. This dataset needs\nAspre-mentioned,therearetwomethodstohandleunseen to be parsed first to isolate objects to suit the expected input\nobjectsinroboticgrasping;FirstDeeptemplatematchingand oftheclassifier.Eachobjectineachimageiscroppedaround\nsecondclass-adaptiveobjectdetection.Otherthanthebenefit its BBox then superimposed by its binary segmentation\nof the class-adaptive classifier of simultaneously detecting mask. Then all patches of each object from all images are\nmultiple objects. More benefits include allowing the two combined as a class regardless of their original image. building blocks (segmentation and classification) to be de-\nThere are two possibilities for datasets to train the clas-\nvelopedseparately,givingwiderspaceforexplainability,and\nsifier.",
+      "size": 965,
+      "sentences": 7
+    },
+    {
+      "id": 16,
+      "content": "original image. building blocks (segmentation and classification) to be de-\nThere are two possibilities for datasets to train the clas-\nvelopedseparately,givingwiderspaceforexplainability,and\nsifier. The first possibility is the datasets from the related\ndifferent methods to be tested on each problem. Moreover,\nproblem of 6D Pose estimation. DoPose [8], HOPE [30],\nthe second method can easily adapt solutions from related\nLinemod [6], T-Less [31], HomeBrew [32], YCB-V [33]\nproblems (E.g., person re-identification, and face detection)\nare examples of such datasets. Each dataset contains 18,\nand allow using refinement methods on each block (E.g.,\n28, 15, 30, 33, and 21 objects, respectively. The second\nmergingandsplittingofover/under-segmentedobjects[28]). possibility is the FewSol dataset [19] for few-shot learning. Our class-adaptive object detector consists of two stages.",
+      "size": 884,
+      "sentences": 9
+    },
+    {
+      "id": 17,
+      "content": "espectively. The second\nmergingandsplittingofover/under-segmentedobjects[28]). possibility is the FewSol dataset [19] for few-shot learning. Our class-adaptive object detector consists of two stages. TheportionofFewSolsuitableforourproblemincludes666\nFor the first stage (unseen object segmentation), we use a objects(336realobjectsand330syntheticobjectsfromMeta\nprevious work from [4]. Other more sophisticated methods dataset[34]). The number of occurrences of objects in the\n[9] [10] [11] for unseen object segmentation exists, however pre-mentioned 6D Pose estimation datasets is low (18-33),\nthey don’t generalize well on complex test environment. butthenumberofoccurrencesperobjectishigh(hundredsto\nWhile these methods still could be fine-tuned/tweaked for thousands; as per comparison in [8]).",
+      "size": 800,
+      "sentences": 8
+    },
+    {
+      "id": 18,
+      "content": "don’t generalize well on complex test environment. butthenumberofoccurrencesperobjectishigh(hundredsto\nWhile these methods still could be fine-tuned/tweaked for thousands; as per comparison in [8]). On the other hand, the\nthevarioustestenvironments,thisisoutsidethescopeofthis number of objects in FewSol is high (666), but the number\nwork.Forthesecondstage(theclass-adaptiveclassifier),we of occurrences is low (only 9 images per object). The ideal\ndevelop a siamese neural network. Both the segmentation datasetwouldcontain alargenumberofobjects withalarge\nand classification methods are RGB only. The training of numberofoccurrencesindifferentconditionsandposes.We\nboth the segmentation network and the the classifier cannot use the FewSol dataset to train our classifier as the number\ninclude any test objects and cannot use the test objects for of objects is more crucial to the training, and we depend on\nfine-tuning. dataaugmentationtointroducemoreoccurrencesperobject.",
+      "size": 976,
+      "sentences": 7
+    },
+    {
+      "id": 19,
+      "content": "the number\ninclude any test objects and cannot use the test objects for of objects is more crucial to the training, and we depend on\nfine-tuning. dataaugmentationtointroducemoreoccurrencesperobject. Figure2showsourclass-adaptiveobjectdetectorindetail. For the validation of our classifier, we use the DoPose\nThe detector first segments all the objects in the image and the HOPE datasets. The first reason for this choice\nwithout any knowledge about their classes. Second, the is that DoPose and HOPE datasets scenes are captured in\ndetectorclassify/matchthesesegmentedpatchestooneofthe several environments and record a few images per each\nobjectsinthegalleryset.Thisway,adatasetisnotrequired; uniquescenegivingmorevarianceinthetestingdata.Unlike\nonly a few images of each object are enough. Changing other datasets (Linemod, T-Less, HomeBrew, YCB, TYO-\nthe classes would be possible by just changing the gallery L), which are captured in video frames generating hundreds\nset.",
+      "size": 976,
+      "sentences": 7
+    },
+    {
+      "id": 20,
+      "content": "ct are enough. Changing other datasets (Linemod, T-Less, HomeBrew, YCB, TYO-\nthe classes would be possible by just changing the gallery L), which are captured in video frames generating hundreds\nset. Handling thousands of objects from a big gallery would of frames per each unique scene. The second reason is that\nbe possible by using a candidate subset only from that big bothdatasetsrepresentthehardestandeasiestcases.Figure3\ngallery for the ongoing situation. For example, a big gallery plotstheobjectsfrombothdatasetonthedominantcoloraxis\nwouldbeallobjectsinawarehouse,andthecandidatesubset and shape axis. The DoPose dataset objects have distinctive\nwouldbethelistofobjectsstoredinabinduringbinpicking. shapes with distinctive colors. In contrast, many object from\nThis big gallery of object images typically exist for most the HOPE dataset exhibit much higher similarity or identity\nwarehouses and retailers.",
+      "size": 914,
+      "sentences": 8
+    },
+    {
+      "id": 21,
+      "content": "with distinctive colors. In contrast, many object from\nThis big gallery of object images typically exist for most the HOPE dataset exhibit much higher similarity or identity\nwarehouses and retailers. forbothshapeandcolor.ThismakestheDoPosedataseteasy\nThe image to be segmented can include any number todifferentiateandtheHOPEdatasetmorechallenging.Our\nof objects with any number of instances per object. The classifierrequiresagallerysetandqueryset.Thegalleryset\nsegmentationmethodmustdifferentiatebetweenthedifferent consists of 2-10 real images per object in isolation covering\ninstances of the same object. The gallery set is not limited all its unique faces. The gallery images are augmented by\nto the objects present in the scene and can include other rotatingmultiplesof45degrees,generating8Xmoreimages. objects not presented (in our experiments we include all The query set consists of cropping each occurrence of each\nobjects from the test datasets).",
+      "size": 958,
+      "sentences": 7
+    },
+    {
+      "id": 22,
+      "content": "tatingmultiplesof45degrees,generating8Xmoreimages. objects not presented (in our experiments we include all The query set consists of cropping each occurrence of each\nobjects from the test datasets). Each object in the gallery object around its BBOX and superimposing its binary mask. set should include N number of images of each object. Then all occurrences of each object represent a class in the\n[표 데이터 감지됨]\n\n=== 페이지 4 ===\nTABLEIII\nEVALUATIONOFOUROBJECTDETECTORAGAINSTATRAINEDMETHODONDOPOSEANDHOPEDATASETSUSINGCOCOMETRICS. DoPose HOPE\nBBox Seg BBox Seg\nmAP AP50 AP75 AR mAP AP50 AP75 AR mAP AP50 AP75 AR mAP AP50 AP75 AR\nMaskR-CNN 84.5 99.3 96.5 88.3 74.7 97.1 86.4 79.0 23.8 34.9 27.9 35.5 9.5 17.7 10.0 15.7\nGTmask+ourclass. 79.0 79.0 79.0 86.0 79.0 79.0 79.0 86.0 47.1 47.1 47.1 62.3 47.1 47.1 47.1 62.3\nUnseenseg.[4]+ourclass. 51.0 69.5 61.2 62.0 45.1 68.1 52.9 55.3 28.4 40.4 33.8 37.3 30.3 40.3 31.3 39.5\nquery set.",
+      "size": 925,
+      "sentences": 8
+    },
+    {
+      "id": 23,
+      "content": "ass. 79.0 79.0 79.0 86.0 79.0 79.0 79.0 86.0 47.1 47.1 47.1 62.3 47.1 47.1 47.1 62.3\nUnseenseg.[4]+ourclass. 51.0 69.5 61.2 62.0 45.1 68.1 52.9 55.3 28.4 40.4 33.8 37.3 30.3 40.3 31.3 39.5\nquery set. the validation of the training compared to the pretraining\nFor testing the whole object detector, we also use the on ImageNet. We notice that the mean average precision\nDoPose and the HOPE datasets. increased by 10.2%, but the rank-1 decreased by 6.6%. This\nmeansthatthemodelgivesabetterscorebetweengalleryand\nB. The Classifier Architecture and Evaluation Metrics\nquery images but a lower score for the closest image.",
+      "size": 617,
+      "sentences": 8
+    },
+    {
+      "id": 24,
+      "content": "but the rank-1 decreased by 6.6%. This\nmeansthatthemodelgivesabetterscorebetweengalleryand\nB. The Classifier Architecture and Evaluation Metrics\nquery images but a lower score for the closest image. This\nThe class-adaptive classifier is a siamese neural network, shows that our network is effective, but there is a need for a\ngivingascoreforthesimilaritybetween2images(onequery dataset with a large number of objects with a large number\nimageandonegalleryimage).Forvalidationoftheclassifier, ofimages(occurrences)perobject.AchievingahighermAP\nweusetheCumulativeMatchingCharacteristics(CMC)met- could be made by depending on the centroid of the gallery\nricswhichareusedforsimilarre-identification/classification image in the feature space rather than the closest image. problems. We use the evaluator from the Torchreid library\nB. Evaluation against Trained Methods\n[35].",
+      "size": 870,
+      "sentences": 7
+    },
+    {
+      "id": 25,
+      "content": "similarre-identification/classification image in the feature space rather than the closest image. problems. We use the evaluator from the Torchreid library\nB. Evaluation against Trained Methods\n[35]. The CMC metrics ranking (R1:R20) represent the\naccuracy of the top-k samples being correctly matched from How would our class-adaptive object detector perform\nthe gallery images for each query image. against a model trained on the test objects? We train a Mask\nBut which backbone is more suitable for our problem? R-CNN model using the DoPose and the HOPE datasets. Table I shows the evaluation of different backbones pre- Table III shows the comparison using COCO metrics. We\ntrained on ImageNet on the validation sets of the DoPose first conduct the evaluation with the GT masks (Ground\nand the HOPE datasets. This evaluation is carried out using Truth) and our class-adaptive classifier. Then Second, with\nthe Torchreid library.",
+      "size": 931,
+      "sentences": 12
+    },
+    {
+      "id": 26,
+      "content": "e first conduct the evaluation with the GT masks (Ground\nand the HOPE datasets. This evaluation is carried out using Truth) and our class-adaptive classifier. Then Second, with\nthe Torchreid library. We use the biggest instance of all theunseensegmentationmethodfrom[4]combinedwithour\nbackbone architectures (ResNet-152, etc.). As expected, all class-adaptive classifier. backbones score higher on the DoPose dataset than on the For the DoPose dataset, the performance drops from the\nHOPE dataset. For the DoPose dataset, SwinTransformer trained method from 84.5% to 79.0% when using GT masks\nscores highest on mAP, and OSNET-AIN scores the highest and our class-adaptive classifier and drops from 84.5% to\nrank-1 even if the OSNet uses only 2.3 million parameters, 51.0%whenusingbothunseenobjectsegmentationfrom[4]\nconsiderably less than all other architectures. For the HOPE and our class-adaptive classifier.",
+      "size": 911,
+      "sentences": 8
+    },
+    {
+      "id": 27,
+      "content": "1 even if the OSNet uses only 2.3 million parameters, 51.0%whenusingbothunseenobjectsegmentationfrom[4]\nconsiderably less than all other architectures. For the HOPE and our class-adaptive classifier. This shows that our classi-\ndataset, SwinTransformer scores highest for mAP, and ViT fication is comparable to trained methods when segmented\nscores the highest rank-1. Classification of DoPose objects masks are accurate and objects are easy to distinguish. For\nlooks like an easy challenge for most backbones, while the HOPE dataset, we can see that the performance of our\nHOPE is not. So the backbone we choose for our classifier untrained method is higher than the trained methods. An\nis ViT, as it is the most promising in classifying the more important note here is that the images of the HOPE-Image\nchallenging case of the HOPE dataset.",
+      "size": 842,
+      "sentences": 7
+    },
+    {
+      "id": 28,
+      "content": "ethod is higher than the trained methods. An\nis ViT, as it is the most promising in classifying the more important note here is that the images of the HOPE-Image\nchallenging case of the HOPE dataset. datasetareblurry,andthisreducestheaccuracyofthetrained\nFor our Siamese network, we use the ViT backbone methods(MaskR-CNN).EvenwiththeGTmaskstheclass-\n’vit b 16’instancefromthePyTorchlibrary.Thereisafully adaptive classification performance is still low. connectedlayercascadedaftereachbackbonewiththesame\nV. CONCLUSIONANDFUTUREWORK\noutput size as the input size (768). Then the output from\nboth FC layers is passed to the cosine similarity as shown In this work, we illustrated how a class-adaptive object\nin figure 2. detector for robotic grasping is realized. Our detector could\nWe carry out an evaluation of the whole object detector be practical to use if the dataset is not highly cluttered and\n(segmentation + classification).",
+      "size": 933,
+      "sentences": 6
+    },
+    {
+      "id": 29,
+      "content": "obotic grasping is realized. Our detector could\nWe carry out an evaluation of the whole object detector be practical to use if the dataset is not highly cluttered and\n(segmentation + classification). For this evaluation, we use objectsareeasilydistinguishable.Increasingtheperformance\nthe COCO metrics, which will allow us to compare our of class-adaptive object detectors can evolve in two ways. class-adaptiveobjectdetectorwithastandardtrainableobject First, for the segmentation methods to generalize on envi-\ndetector. ronment setups. Second, for the classification methods to be\nabletohandleahigherdegreeofsimilarity.Abighurdlethat\nIV. EVALUATION\nfaces the development of the class-adaptive classifier is the\nA. Class Adaptive Classifier Training datasets. Either large (thousands) high-quality CAD models\nneed to be collected to produce a synthetic dataset, or a\nThe training runs for 10 epochs on the FewSol dataset,\nhuge real dataset needs to be collected.",
+      "size": 964,
+      "sentences": 9
+    },
+    {
+      "id": 30,
+      "content": "her large (thousands) high-quality CAD models\nneed to be collected to produce a synthetic dataset, or a\nThe training runs for 10 epochs on the FewSol dataset,\nhuge real dataset needs to be collected. Such huge dataset\nwiththeViTbackbonefrozenforthefirstepoch.Thetraining\ncollection was recently published in the ArmBench dataset\ndataissampledtofeed50%aqueryandagalleryimagefrom\n[36]. thesameclass,withtheoutputbeingsettooneand50%from\ndifferent classes, with the output being zero. Table II shows\n[표 데이터 감지됨]\n\n=== 페이지 5 ===\nVI. ACKNOWLEDGEMENT [19] J. J. P, Y.-W. Chao, and Y. Xiang, “Fewsol: A dataset for few-shot\nobject learning in robotic environments,” 2022. [Online].",
+      "size": 672,
+      "sentences": 6
+    },
+    {
+      "id": 31,
+      "content": "g zero. Table II shows\n[표 데이터 감지됨]\n\n=== 페이지 5 ===\nVI. ACKNOWLEDGEMENT [19] J. J. P, Y.-W. Chao, and Y. Xiang, “Fewsol: A dataset for few-shot\nobject learning in robotic environments,” 2022. [Online]. Available:\nThis work is funded by the German Federal Ministry https://arxiv.org/abs/2207.03333\nof Education and Research (BMBF) in the course of the [20] K.He,X.Zhang,S.Ren,andJ.Sun,“Deepresiduallearningforimage\nrecognition,” in Proceedings of the IEEE conference on computer\nthe Lamarr Institute for Machine Learning and Artificial\nvisionandpatternrecognition,2016,pp.770–778. Intelligence under grant number LAMARR23B. [21] G. Huang, Z. Liu, L. Van Der Maaten, and K. Q. Weinberger,\n“Densely connected convolutional networks,” in Proceedings of the\nIEEE conference on computer vision and pattern recognition, 2017,\nREFERENCES pp.4700–4708. [22] M. Tan and Q.",
+      "size": 860,
+      "sentences": 8
+    },
+    {
+      "id": 32,
+      "content": ", and K. Q. Weinberger,\n“Densely connected convolutional networks,” in Proceedings of the\nIEEE conference on computer vision and pattern recognition, 2017,\nREFERENCES pp.4700–4708. [22] M. Tan and Q. Le, “Efficientnet: Rethinking model scaling for con-\n[1] J.-P.Mercier,M.Garon,P.Gigue`re,andJ.-F.Lalonde,“Deeptemplate- volutional neural networks,” in International conference on machine\nbasedobjectinstancedetection,”in2021IEEEWinterConferenceon learning. PMLR,2019,pp.6105–6114. ApplicationsofComputerVision(WACV),2021,pp.1506–1515. [23] S. Zagoruyko and N. Komodakis, “Wide residual networks,” arXiv\n[2] K. Park, T. Patten, J. Prankl, and M. Vincze, “Multi-task template preprintarXiv:1605.07146,2016.\nmatchingforobjectdetection,segmentationandposeestimationusing [24] A. Dosovitskiy, L. Beyer, A. Kolesnikov, D. Weissenborn, X. Zhai,\ndepth images,” in 2019 International Conference on Robotics and T.Unterthiner,M.Dehghani,M.Minderer,G.Heigold,S.Gellyetal.,\nAutomation(ICRA),2019,pp.7207–7213.",
+      "size": 997,
+      "sentences": 6
+    },
+    {
+      "id": 33,
+      "content": "A. Kolesnikov, D. Weissenborn, X. Zhai,\ndepth images,” in 2019 International Conference on Robotics and T.Unterthiner,M.Dehghani,M.Minderer,G.Heigold,S.Gellyetal.,\nAutomation(ICRA),2019,pp.7207–7213. “Animageisworth16x16words:Transformersforimagerecognition\n[3] Z.Hu,R.Tan,Y.Zhou,J.Woon,andC.Lv,“Template-basedcategory- atscale,”arXivpreprintarXiv:2010.11929,2020.\nagnosticinstancedetectionforroboticmanipulation,”IEEERobotics [25] Z.Tu,H.Talebi,H.Zhang,F.Yang,P.Milanfar,A.Bovik,andY.Li,\nandAutomationLetters,vol.7,no.4,pp.12451–12458,2022. “Maxvit: Multi-axis vision transformer,” in Computer Vision–ECCV\n[4] A.Gouda,A.Ghanem,P.Kaiser,andM.TenHompel,“Objectclass- 2022: 17th European Conference, Tel Aviv, Israel, October 23–27,\nagnosticsegmentationforpracticalcnnutilizationinindustry,”in2021 2022,Proceedings,PartXXIV. Springer,2022,pp.459–479.",
+      "size": 848,
+      "sentences": 4
+    },
+    {
+      "id": 34,
+      "content": "el,“Objectclass- 2022: 17th European Conference, Tel Aviv, Israel, October 23–27,\nagnosticsegmentationforpracticalcnnutilizationinindustry,”in2021 2022,Proceedings,PartXXIV. Springer,2022,pp.459–479. 6thInternationalConferenceonMechanicalEngineeringandRobotics [26] Z. Liu, Y. Lin, Y. Cao, H. Hu, Y. Wei, Z. Zhang, S. Lin, and\nResearch(ICMERR),2021,pp.97–105. B. Guo, “Swin transformer: Hierarchical vision transformer using\n[5] P.Ammirato,C.-Y.Fu,M.Shvets,J.Kosecka,andA.C.Berg,“Target shifted windows,” in Proceedings of the IEEE/CVF international\ndriveninstancedetection,”arXivpreprintarXiv:1803.04610,2018. conferenceoncomputervision,2021,pp.10012–10022. [6] S.Hinterstoisser,V.Lepetit,S.Ilic,S.Holzer,G.Bradski,K.Konolige, [27] K.Zhou,Y.Yang,A.Cavallaro,andT.Xiang,“Learninggeneralisable\nand N.Navab, “Model basedtraining, detection andpose estimation omni-scalerepresentationsforpersonre-identification,”IEEEtransac-\nof texture-less 3d objects in heavily cluttered scenes,” vol.",
+      "size": 984,
+      "sentences": 5
+    },
+    {
+      "id": 35,
+      "content": "lisable\nand N.Navab, “Model basedtraining, detection andpose estimation omni-scalerepresentationsforpersonre-identification,”IEEEtransac-\nof texture-less 3d objects in heavily cluttered scenes,” vol. 7724, 10 tionsonpatternanalysisandmachineintelligence,vol.44,no.9,pp. 2012. 5056–5069,2021. [7] M. Danielczuk, M. Matl, S. Gupta, A. Li, A. Lee, J. Mahler, and [28] C.Xie,A.Mousavian,Y.Xiang,andD.Fox,“Rice:Refininginstance\nK.Goldberg,“Segmentingunknown3dobjectsfromrealdepthimages masks in cluttered environments with graph neural networks,” in\nusingmaskr-cnntrainedonsyntheticdata,”inProc.IEEEInt.Conf. ConferenceonRobotLearning(CoRL),2021. RoboticsandAutomation(ICRA),2019.",
+      "size": 675,
+      "sentences": 7
+    },
+    {
+      "id": 36,
+      "content": "ages masks in cluttered environments with graph neural networks,” in\nusingmaskr-cnntrainedonsyntheticdata,”inProc.IEEEInt.Conf. ConferenceonRobotLearning(CoRL),2021. RoboticsandAutomation(ICRA),2019. [29] J. Tremblay, T. To, and S. Birchfield, “Falling things: A synthetic\n[8] A.Gouda,A.Ghanem,andC.Reining,“Category-agnosticsegmenta- dataset for 3d object detection and pose estimation,” in Proceedings\ntionforroboticgrasping,”Proceedingsofthe21stIEEEInternational oftheIEEEConferenceonComputerVisionandPatternRecognition\nConferenceonMachineLearningandApplications(ICMLA),2022. Workshops,2018,pp.2038–2041.",
+      "size": 607,
+      "sentences": 5
+    },
+    {
+      "id": 37,
+      "content": "forroboticgrasping,”Proceedingsofthe21stIEEEInternational oftheIEEEConferenceonComputerVisionandPatternRecognition\nConferenceonMachineLearningandApplications(ICMLA),2022. Workshops,2018,pp.2038–2041. [9] Y.Xiang,C.Xie,A.Mousavian,andD.Fox,“Learningrgb-dfeature [30] S. Tyree, J. Tremblay, T. To, J. Cheng, T. Mosier, J. Smith, and\nembeddingsfor unseenobjectinstancesegmentation,” inConference S.Birchfield,“6-dofposeestimationofhouseholdobjectsforrobotic\nonRobotLearning(CoRL),2020. manipulation:Anaccessibledatasetandbenchmark,”inarXivpreprint\n[10] C. Xie, Y. Xiang, A. Mousavian, and D. Fox, “Unseen object in-\narXiv:2203.05701,2022.\nstancesegmentationforroboticenvironments,”IEEETransactionson [31] T. Hodanˇ, P. Haluza, Sˇ. Obdrzˇa´lek, J. Matas, M. Lourakis, and\nRobotics(T-RO),2021.",
+      "size": 788,
+      "sentences": 4
+    },
+    {
+      "id": 38,
+      "content": "Fox, “Unseen object in-\narXiv:2203.05701,2022.\nstancesegmentationforroboticenvironments,”IEEETransactionson [31] T. Hodanˇ, P. Haluza, Sˇ. Obdrzˇa´lek, J. Matas, M. Lourakis, and\nRobotics(T-RO),2021. X. Zabulis, “T-LESS: An RGB-D dataset for 6D pose estimation\nof texture-less objects,” IEEE Winter Conference on Applications of\n[11] Y. Lu, Y. Chen, N. Ruozzi, and Y. Xiang, “Mean shift mask\nComputerVision(WACV),2017. transformerforunseenobjectinstancesegmentation,”2022.[Online]. [32] R.Kaskman,S.Zakharov,I.Shugurov,andS.Ilic,“Homebreweddb:\nAvailable:https://arxiv.org/abs/2211.11679\nRgb-d dataset for 6d pose estimation of 3d objects,” in Proceedings\n[12] S.Back,J.Lee,T.Kim,S.Noh,R.Kang,S.Bak,andK.Lee,“Unseen\noftheIEEE/CVFInternationalConferenceonComputerVisionWork-\nobjectamodalinstancesegmentationviahierarchicalocclusionmod-\nshops,2019,pp.0–0. eling,”in2022InternationalConferenceonRoboticsandAutomation\n[33] Y. Xiang, T. Schmidt, V. Narayanan, and D. Fox, “Posecnn: A\n(ICRA).",
+      "size": 985,
+      "sentences": 6
+    },
+    {
+      "id": 39,
+      "content": "nstancesegmentationviahierarchicalocclusionmod-\nshops,2019,pp.0–0. eling,”in2022InternationalConferenceonRoboticsandAutomation\n[33] Y. Xiang, T. Schmidt, V. Narayanan, and D. Fox, “Posecnn: A\n(ICRA). IEEE,2022,pp.5085–5092. convolutionalneuralnetworkfor6dobjectposeestimationincluttered\n[13] M. Durner, W. Boerdijk, M. Sundermeyer, W. Friedl, Z.-C. Ma´rton,\nscenes,”2018. and R. Triebel, “Unknown object segmentation from stereo images,”\n[34] E. Triantafillou, T. Zhu, V. Dumoulin, P. Lamblin, U. Evci, K. Xu,\nin2021IEEE/RSJInternationalConferenceonIntelligentRobotsand\nR. Goroshin, C. Gelada, K. Swersky, P.-A. Manzagol et al., “Meta-\nSystems(IROS),2021,pp.4823–4830.",
+      "size": 668,
+      "sentences": 6
+    },
+    {
+      "id": 40,
+      "content": "V. Dumoulin, P. Lamblin, U. Evci, K. Xu,\nin2021IEEE/RSJInternationalConferenceonIntelligentRobotsand\nR. Goroshin, C. Gelada, K. Swersky, P.-A. Manzagol et al., “Meta-\nSystems(IROS),2021,pp.4823–4830. dataset:Adatasetofdatasetsforlearningtolearnfromfewexamples,”\n[14] F. Schroff, D. Kalenichenko, and J. Philbin, “Facenet: A unified\narXivpreprintarXiv:1903.03096,2019.\nembeddingforfacerecognitionandclustering,”inProceedingsofthe\n[35] K.ZhouandT.Xiang,“Torchreid:Alibraryfordeeplearningperson\nIEEE conference on computer vision and pattern recognition, 2015,\nre-identificationinpytorch,”arXivpreprintarXiv:1910.10093,2019.\npp.815–823.",
+      "size": 633,
+      "sentences": 3
+    },
+    {
+      "id": 41,
+      "content": "K.ZhouandT.Xiang,“Torchreid:Alibraryfordeeplearningperson\nIEEE conference on computer vision and pattern recognition, 2015,\nre-identificationinpytorch,”arXivpreprintarXiv:1910.10093,2019.\npp.815–823. [36] C. Mitash, F. Wang, S. Lu, V. Terhuja, T. Garaas, F. Polido, and\n[15] K. Zhou, Y. Yang, A. Cavallaro, and T. Xiang, “Omni-scale feature\nM. Nambi, “Armbench: An object-centric benchmark dataset for\nlearningforpersonre-identification,”inProceedingsoftheIEEE/CVF\nrobotic manipulation,” in 2023 IEEE International Conference on\ninternationalconferenceoncomputervision,2019,pp.3702–3712. RoboticsandAutomation(ICRA),2023,pp.9132–9139. [16] X.Liu,W.Liu,T.Mei,andH.Ma,“Adeeplearning-basedapproach\nto progressive vehicle re-identification for urban surveillance,” in\nComputer Vision – ECCV 2016, B. Leibe, J. Matas, N. Sebe, and\nM.Welling,Eds. Cham:SpringerInternationalPublishing,2016,pp. 869–884.",
+      "size": 895,
+      "sentences": 6
+    },
+    {
+      "id": 42,
+      "content": "o progressive vehicle re-identification for urban surveillance,” in\nComputer Vision – ECCV 2016, B. Leibe, J. Matas, N. Sebe, and\nM.Welling,Eds. Cham:SpringerInternationalPublishing,2016,pp. 869–884. [17] Z.Liu,P.Luo,S.Qiu,X.Wang,andX.Tang,“Deepfashion:Powering\nrobust clothes recognition and retrieval with rich annotations,” in\nProceedings of IEEE Conference on Computer Vision and Pattern\nRecognition(CVPR),June2016. [18] J. Rutinowski, C. Pionzewski, T. Chilla, C. Reining, and M. Roidl,\n“Deep learning based re-identification of wooden euro-pallets,” Pro-\nceedings of the 21st IEEE International Conference on Machine\nLearningandApplications(ICMLA),2022. === 페이지 6 ===\nAPPENDIX\nFig. 3. Testingdataset: DoPose (left) and HOPE(right). The twodatasets exhibit differentdifficulty levels.",
+      "size": 789,
+      "sentences": 9
+    },
+    {
+      "id": 43,
+      "content": "ernational Conference on Machine\nLearningandApplications(ICMLA),2022. === 페이지 6 ===\nAPPENDIX\nFig. 3. Testingdataset: DoPose (left) and HOPE(right). The twodatasets exhibit differentdifficulty levels. DoPoseincludes 18objects that areeasily\ndistinguishedasthecolorandshapeoftheobjectsarequitedifferent.HOPEdatasetincludes28objectsthatarehardtodistinguishasthecolorandshape\nofmanyobjectsaresimilaroridentical.Thesedatasetswillenableustostudytheextremes,theeasiercaseofDoPose,andthemorechallengingcaseof\nHOPE.",
+      "size": 506,
+      "sentences": 6
+    }
+  ]
+}

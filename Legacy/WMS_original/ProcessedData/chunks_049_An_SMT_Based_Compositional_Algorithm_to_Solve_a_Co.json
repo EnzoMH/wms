@@ -1,0 +1,386 @@
+{
+  "source": "ArXiv",
+  "filename": "049_An_SMT_Based_Compositional_Algorithm_to_Solve_a_Co.pdf",
+  "total_chars": 42945,
+  "total_chunks": 63,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "=== 페이지 1 ===\nAn SMT Based Compositional Algorithm to Solve a Conflict-Free\nElectric Vehicle Routing Problem\nSabino Francesco Roselli1 and Martin Fabian1 and Knut A˚kesson1\nAbstract—TheVehicleRoutingProblem(VRP)isthecombi- windows, or VRPTW [4]), limited operating range of the\nnatorial optimization problem of designing routes for vehicles vehicles and possibility to recharge at the charging stations\nto visit customers in such a fashion that a cost function,\n(Electric VRP, or E-VRP [5]), and limitations on the capacity\ntypically the number of vehicles, or the total travelled distance\nof the road segments that vehicles drive on (dispatch and\nis minimized. The problem finds applications in industrial\nscenarios, for example where Automated Guided Vehicles run conflict-free routing problem (DCFRP) [6]). The problem\nthrough the plant to deliver components from the warehouse.",
+      "size": 881,
+      "sentences": 3
+    },
+    {
+      "id": 2,
+      "content": "plications in industrial\nscenarios, for example where Automated Guided Vehicles run conflict-free routing problem (DCFRP) [6]). The problem\nthrough the plant to deliver components from the warehouse. we are tackling in this work, henceforth called the Electric\nThis specific problem, henceforth called the Electric Conflict- Conflict-Free Vehicle Routing Problem (CF-EVRP), involves\nFreeVehicleRoutingProblem(CF-EVRP),involvesconstraints\nall these features and also additional constraints related to\nsuch as limited operating range of the vehicles, time windows\nthe customers’ service. on the delivery to the customers, and limited capacity on the\nnumberofvehiclestheroadsegmentscanaccommodateatthe For relatively small size problem instances, mixed integer\nsame time. Such a complex system results in a large model linear programming solvers (MILP, [7]) can provide good so-\nthat cannot easily be solved to optimality in reasonable time.",
+      "size": 938,
+      "sentences": 5
+    },
+    {
+      "id": 3,
+      "content": "ces, mixed integer\nsame time. Such a complex system results in a large model linear programming solvers (MILP, [7]) can provide good so-\nthat cannot easily be solved to optimality in reasonable time. lutionstoVRPsinashorttime.However,forlargerproblems,\nWe therefore developed a compositional algorithm that breaks\nMILP solvers are often not fast enough and specific-purpose\ndown the problem into smaller and simpler sub-problems and\nalgorithms involving local search [8], column generation [9]\nprovidessub-optimal,feasiblesolutionstotheoriginalproblem. The algorithm exploits the strengths of SMT solvers, which orstochasticmethods[10],[11]areusedinstead.Recentwork\nprovedinourpreviousworktobeanefficientapproachtodeal focusingonfleetsofelectricvehicles[12],aswellasconflict-\nwith scheduling problems. Compared to a monolithic model free routing [13] show applications of such approaches to\nfor the CF-EVRP, written in the SMT standard language and\nreal-world problems.",
+      "size": 969,
+      "sentences": 5
+    },
+    {
+      "id": 4,
+      "content": "lict-\nwith scheduling problems. Compared to a monolithic model free routing [13] show applications of such approaches to\nfor the CF-EVRP, written in the SMT standard language and\nreal-world problems. solved using a state-of-the-art SMT solver the compositional\nIn our previous work [14], we presented a monolithic\nalgorithm was found to be significantly faster. formulation (MonoMod) to model the CF-EVRP; based on\nI. INTRODUCTION our previous findings from [15], we decided to formulate\nthe model in SMT standard Language (Satisfiability Modulo\nThe use of Automated Guided Vehicles (AGVs) for just-in-\nTheory,[16],[17])andsolveitusingthestate-of-the-artSMT\ntimedeliveriesisbecomingcommoninmodernmanufacturing\nsolver Z3 [18]; as expected, our approach was not able to\nfacilities [1]. Adopting this solution, rather than storing all\nsolve large problem instances in reasonable time.",
+      "size": 881,
+      "sentences": 6
+    },
+    {
+      "id": 5,
+      "content": "commoninmodernmanufacturing\nsolver Z3 [18]; as expected, our approach was not able to\nfacilities [1]. Adopting this solution, rather than storing all\nsolve large problem instances in reasonable time. In fact,\nthe components by the assembly line, makes the environment\nthough Z3 has proven very efficient in solving combinatorial\nmore worker-friendly and using AGVs instead of fixed\noptimization problems [19], our formulation quickly leads to\ntransportation belts (or similar) makes it more flexible [2]. a state-space explosion as the number of vehicles and jobs,\nA system like this requires a Scheduler that guarantees\nandthetimehorizon(afixedpointoftimeinthefuturewhen\nthat the deadlines for the delivery of components are met,\ncertainprocesseswillbeevaluatedorassumedtoend)forthe\nbut also that AGVs do not create queues by the workstations\njobs’ execution increases. This is mainly due to the necessity\nby arriving too early.",
+      "size": 929,
+      "sentences": 5
+    },
+    {
+      "id": 6,
+      "content": "certainprocesseswillbeevaluatedorassumedtoend)forthe\nbut also that AGVs do not create queues by the workstations\njobs’ execution increases. This is mainly due to the necessity\nby arriving too early. Also, AGVs are battery-powered so\nof discretizing time in order to keep track of the vehicle’s\ntheir operating range is limited. Therefore they need to\nlocations and avoid collisions. The compositional algorithm\nrecharge occasionally, and this must be taken into account\n(ComSat)wepresentinthisworkbreaksdowntheCF-EVRP\nwhen designing the schedule. Finally, though AGVs are\ninto sub-problems so that time discretization can be avoided\nusuallyequippedwithlow-levelcontrollerstoavoiddangerous\nand a feasible solution can be reached quickly. The algorithm\nconditions, they may not be able to avoid deadlocks, i.e. exploits the strengths of the SMT solvers by reducing the\ngetting stuck due to circular waiting between them. Hence\nproblem to smaller Job Shop Problems [20] (JSPs).",
+      "size": 974,
+      "sentences": 9
+    },
+    {
+      "id": 7,
+      "content": "be able to avoid deadlocks, i.e. exploits the strengths of the SMT solvers by reducing the\ngetting stuck due to circular waiting between them. Hence\nproblem to smaller Job Shop Problems [20] (JSPs). It first\nthe scheduler must ensure such situations are avoided. selects a set of paths to uniquely connect any two customers,\nThistypeofproblemcanbemodelledasaVehicleRouting\nsince in a real plant there can exists multiple paths; it then\nProblem (VRP) [3], the combinatorial optimization problem\nsolves a VRP to design routes to serve all customers within\nof designing routes for vehicles to visit customers, such\ntheirtimewindows;ifsuchasolutionexists,itmatchessome\nthat a cost function is optimized.",
+      "size": 699,
+      "sentences": 5
+    },
+    {
+      "id": 8,
+      "content": "a VRP to design routes to serve all customers within\nof designing routes for vehicles to visit customers, such\ntheirtimewindows;ifsuchasolutionexists,itmatchessome\nthat a cost function is optimized. There exist extensions\nof the available vehicles with the generated routes; finally, if\nof the VRP that involve additional constraints, such as\nthis phase is also successful, it checks the current solution\ntime windows for the customers’ service (VRP with time\nagainst the capacity constraints on the road segments (in\nterms of number of vehicles that can travel through them\nWegratefullyacknowledgefinancialsupportfromChalmersAIResearch\nat the same time).",
+      "size": 655,
+      "sentences": 2
+    },
+    {
+      "id": 9,
+      "content": "ime\nagainst the capacity constraints on the road segments (in\nterms of number of vehicles that can travel through them\nWegratefullyacknowledgefinancialsupportfromChalmersAIResearch\nat the same time). Whenever one sub-problem turns out to\nCentre (CHAIR), AB Volvo (Project ViMCoR), the support from Per-\nLage Go¨tvall at Volvo Group Truck Operation, and the Wallenberg AI, be infeasible, the algorithm backtracks and finds a different\nAutonomousSystemsandSoftwareprogram(WASP)fundedbytheKnutand solution for the previous phase that will hopefully lead to a\nAliceWallenbergFoundation.1DepartmentElectricalEngineering,Chalmers\nUniversity of Technology, Go¨teborg, Sweden {rsabino, fabian, feasible solution for the current phase. It terminates when\nknut}@chalmers.se the last phase is feasible or all the combinations have been\n1202\nnuJ\n03\n]IA.sc[\n2v78370.6012:viXra\n=== 페이지 2 ===\nchecked (in which case it declares the problem infeasible).",
+      "size": 937,
+      "sentences": 3
+    },
+    {
+      "id": 10,
+      "content": "es when\nknut}@chalmers.se the last phase is feasible or all the combinations have been\n1202\nnuJ\n03\n]IA.sc[\n2v78370.6012:viXra\n=== 페이지 2 ===\nchecked (in which case it declares the problem infeasible). O: the origin node\nThe contributions of this paper are: (i) Designing an • Edge: a road segment that connects two nodes. algorithm for the CF-EVRP that can quickly provide feasible\nE ⊆N ×N: the set of edges\nsolutions; (ii) Compare the performance of ComSat against d , ∀n,n(cid:48) ∈N: the length of the edge connecting\nnn(cid:48)\nMonoMod, presented in [14] over a set of generate instances nodes n and n(cid:48)\nof the CF-EVRP. g ,∀n,n(cid:48) ∈N:thecapacityoftheedgeconnecting\nnn(cid:48)\nInthefollowing,SectionIIprovidesaformaldescriptionof nodes n and n(cid:48)\ntheproblem,andSectionIIIintroducesthealgorithmtogether\nThe requirements of the problem are summarized as follows:\nwith a mathematical model and detailed descriptions of its\nconstraints.",
+      "size": 950,
+      "sentences": 4
+    },
+    {
+      "id": 11,
+      "content": "and n(cid:48)\ntheproblem,andSectionIIIintroducesthealgorithmtogether\nThe requirements of the problem are summarized as follows:\nwith a mathematical model and detailed descriptions of its\nconstraints. Finally, conclusions are drawn in Section V. • all jobs have to be completed; for a job to be completed\na vehicle has to be assigned to it and visit the locations\nII. PROBLEMFORMULATION of the job’s tasks within their respective time windows. In the CF-EVRP the plant layout is represented by a • when a vehicle is assigned to more than one job, it has\nto execute the job’s tasks sequentially; all tasks of a job\nstrongly connected, weighted, directed graph, where road\nmust be completed before it can execute any task of\nsegments are represented by the edges and the intersections\nanother job. between them are represented by the nodes.",
+      "size": 837,
+      "sentences": 5
+    },
+    {
+      "id": 12,
+      "content": "ted, directed graph, where road\nmust be completed before it can execute any task of\nsegments are represented by the edges and the intersections\nanother job. between them are represented by the nodes. Customers are\nlocated at nodes and they are defined by a name (typically • vehicles are powered by batteries with limited capacity\nbut with the ability to recharge at a charging station. It\na number) and time window, i.e., a lower and an upper\nisassumedthatcharginganddischargingofthebatteries\nbound that represents the earliest and latest arrival allowed\nis linear with respect to distance. to serve the customer. Edges have two attributes representing\nrespectively the road segment’s length, and its capacity in • there is only one depot, which is also the charging\nstation; vehicles have to return to the depot they were\nterms of number of vehicles that can simultaneously travel\ndispatched from. through it.",
+      "size": 911,
+      "sentences": 7
+    },
+    {
+      "id": 13,
+      "content": "n • there is only one depot, which is also the charging\nstation; vehicles have to return to the depot they were\nterms of number of vehicles that can simultaneously travel\ndispatched from. through it. The following definitions are provided: • different road segments in the plant have different\ncapacities in terms of number of vehicles they can\n• Task: either a pickup or a delivery operation. A task is\naccommodate. always associated with a node (see below) where the\n• pickup and delivery duration (the time when the pickup\ntaskisexecuted.Eachandeverytaskhasatimewindow\nand delivery tasks respectively are executed) are con-\nas an attribute, indicating the earliest and latest time at\nsidered to be zero, as these times can be considered\nwhich a vehicle can execute the task. Unless explicitly\nnegligible compared to the travelling time. stated, the time window for a task is the time horizon. • not all vehicles are eligible to execute all jobs.",
+      "size": 948,
+      "sentences": 8
+    },
+    {
+      "id": 14,
+      "content": "ehicle can execute the task. Unless explicitly\nnegligible compared to the travelling time. stated, the time window for a task is the time horizon. • not all vehicles are eligible to execute all jobs. K , ∀j ∈J : the set of tasks of job j\nj • It is assumed that one unit of distance is covered in one\nL ,∈N ∀j ∈J,k ∈K : the location of task k of\njk j time-step, hence distance and duration are interchange-\njob j\nable when talking about vehicles’ movements. P ⊂ K , ∀j ∈ J,k ∈ K : the set of tasks to\njk j j • For the algorithm to work, two additional jobs, both\nexecute before task k of job j\nhaving only one task located at the depot, are added:\nl , ∀j ∈J,k ∈K :thetimewindow’slowerbound\njk j start and end; they are needed in the routing problem\nfor task k of job j\nto make sure that routes begin and end at the depot. u , ∀j ∈J,k ∈K :thetimewindow’supperbound\njk j\nfor task k of job j Example of the CF-EVRP\n• Job: one or more pickup tasks and one delivery task. Fig.",
+      "size": 970,
+      "sentences": 8
+    },
+    {
+      "id": 15,
+      "content": "make sure that routes begin and end at the depot. u , ∀j ∈J,k ∈K :thetimewindow’supperbound\njk j\nfor task k of job j Example of the CF-EVRP\n• Job: one or more pickup tasks and one delivery task. Fig. 1 shows an example of the CF-EVRP, where four\nPickup may have precedence constraints among them, AGVs (the circles at the bottom of the plant) are available\nwhile the delivery task for a job always happens after to execute four jobs, each composed by two tasks (the\nall pickups for that job are completed. squaresdistributedovertheplant).Eachtaskismarkedbyan\nJ: the set of jobs alphanumeric code where the letter refers to the job and the\ndigit indicates the order to execute them. Next to the code,\n• Vehicle: a transporter, e.g. an AGV, that is able to move\nin between square brackets is indicated the time window for\nbetween locations in the plant and perform pickup and\nthe execution of the tasks. The numbers inside each square\ndelivery operations.",
+      "size": 953,
+      "sentences": 8
+    },
+    {
+      "id": 16,
+      "content": "move\nin between square brackets is indicated the time window for\nbetween locations in the plant and perform pickup and\nthe execution of the tasks. The numbers inside each square\ndelivery operations. indicate which AGV is eligible to execute that task. On the\nV: the set of all vehicles\nright, it is shown how the plant layout is abstracted into a\nV ⊆V, ∀j ∈J: set of vehicles eligible for job j\nj strongly connected, directed, weighted graph (see more about\nOR: the maximum operating range of the vehicles\nthis below). The nodes represent the intersections of road\nC: the charging coefficient\nsegments in the plant; if a task’s location is close enough to\nD: the discharging coefficient\nan intersection, then the task will be assigned that location,\n• Node:alocationintheplant.Anodecanonlyaccommo- otherwise a new node is added to the graph (e.g., Node 14\ndate one vehicle at the time unless otherwise specified. for task C2).",
+      "size": 926,
+      "sentences": 6
+    },
+    {
+      "id": 17,
+      "content": "ssigned that location,\n• Node:alocationintheplant.Anodecanonlyaccommo- otherwise a new node is added to the graph (e.g., Node 14\ndate one vehicle at the time unless otherwise specified. for task C2). Also, Node 19 is added to the graph to locate\nN: the set of nodes the depot. The edges weight represent the segments’ length\n• Depot: a node at which one or more vehicles start in centimeters (regular font), and their capacity (subscript). and must return to after completing the assigned jobs. The problem, described using the notation declared above,\nThe depot can by definition accommodate an arbitrary is as follows:\nnumber of vehicles at the same time.",
+      "size": 657,
+      "sentences": 6
+    },
+    {
+      "id": 18,
+      "content": "after completing the assigned jobs. The problem, described using the notation declared above,\nThe depot can by definition accommodate an arbitrary is as follows:\nnumber of vehicles at the same time. N ={1,...,21}\n=== 페이지 3 ===\nD1[0,∞] 1751 4252 1502\nC1[0,∞]\n1251 1251 1751\nB2\n[10,15]\n3002\nA2[7,12]\nB1[0,∞]\n1252 1252\nC2\n[18,25]\nA1[0,∞]\nD2[20,30]\n1752 2252 1502\n2752\n3752\n1252\n1252\n1002\n1251\n1502\n2752\n1502\n4001\n1002\n5001\n1501\n11 2 3 4\n3\n1\n4\n2\n4\n1 2 5 6 7 8\n9 10\n1\n4\n12\n11 12 13\n4\n2 14\n3\n1 1 15 16\nR1 R2 R3 R4 2002\n17 18 19 20 21\nFig.1:ProbleminstanceoftheCF-EVRPpicturingahypotheticalplant(totheleft)wherefourAGVs(R1,R2,R3,R4),locatedatthebottomareavailable\ntoexecutefourjobs(A,B,C,D),eachcomposedbytwotasks(1,2).Theplantroadsegmentsareabstractedintoastronglyconnected,directed,weighed\ngraph(totheright). O =19 The algorithm begins with a pre-processing phase where a\nE ={(1,2),(2,3),(3,4),(5,6),(6,7),(7,8),(9,10), numberofpathstoconnectanypairofcustomersiscomputed.",
+      "size": 966,
+      "sentences": 4
+    },
+    {
+      "id": 19,
+      "content": ",directed,weighed\ngraph(totheright). O =19 The algorithm begins with a pre-processing phase where a\nE ={(1,2),(2,3),(3,4),(5,6),(6,7),(7,8),(9,10), numberofpathstoconnectanypairofcustomersiscomputed. (1,12),(12,13),(17,18),(18,19),(19,20),(20,21), In theory we would like to compute all possible paths for\n(1,9),(2,5),(3,8),(6,10),(7,13),(8,16),(9,17), each pair of customers, but in practice this is not efficient\n(11,15),(15,18),(16,20),(14,21)} becausetherecanbetoomany.Also,manyofthesepathsare\nJ ={A,B,C,D} not going to be used, since we are interested in the shortest\nK ={1,2} ∀i∈{A,B,C,D} ones to connect customers. i\nL =18, L =10, L =11, L =8, The first sub-problem aims at selecting one path for each\nA1 A2 B1 B2\nL =6, L =14, L =2, L =16 pair of customers among all the paths computed in the pre-\nC1 C2 D1 D2\nP =∅,P =1,P =∅,P =1 processing phase.",
+      "size": 854,
+      "sentences": 4
+    },
+    {
+      "id": 20,
+      "content": "first sub-problem aims at selecting one path for each\nA1 A2 B1 B2\nL =6, L =14, L =2, L =16 pair of customers among all the paths computed in the pre-\nC1 C2 D1 D2\nP =∅,P =1,P =∅,P =1 processing phase. This is an optimization problem whose\nA1 A2 B1 B2\nP =∅,P =1,P =∅,P =1 goal is to find one path for each pair of customers such\nC1 C2 D1 D2\nl =0, l =7, l =0, l =10, that the cumulative length of all paths is minimal. If we had\nA1 A2 B1 B2\nl =0, l =18, l =0, l =20 computed too many paths in the pre-processing phase, this\nC1 C2 D1 D2\nu =∞, u =12, u =∞, u =15, phasewouldberatherslow,sincetherecaneasilybemillions\nA1 A2 B1 B2\nu =∞, u =25, u =∞, u =30 of possible paths to connect any two customers, even for a\nC1 C2 D1 D2\nV ={R1,R2,R3,R4} rather small graph, and each of them is a variable for this\nV ={R1}, V ={R1,R2,R4}, optimization problem.",
+      "size": 842,
+      "sentences": 3
+    },
+    {
+      "id": 21,
+      "content": "u =30 of possible paths to connect any two customers, even for a\nC1 C2 D1 D2\nV ={R1,R2,R3,R4} rather small graph, and each of them is a variable for this\nV ={R1}, V ={R1,R2,R4}, optimization problem. A B\nV ={R2,R4}, V ={R1,R3} Oncewehaveonlyonepathbetweenanypairofcustomers,\nC D\nOR =50m we can treat the problem as a VRPTW, with some additional\nThe vehicles can travel at a speed of 1m/s. A feasible constraints on the order in which we serve customers. schedule for the problem can be obtained by assigning R1 to Therefore we can set up an optimization problem to find\nA, R4 to C, R2 to B, and R3 to D. the smallest number of routes to serve the customers within\ntheir time windows. If we cannot find a feasible set of routes,\nIII. THECOMPOSITIONALALGORITHM\nwe need to go back one step and change the paths we are\nIn this section we are going to introduce the sub-problems currently using to connect the customers.",
+      "size": 915,
+      "sentences": 6
+    },
+    {
+      "id": 22,
+      "content": "of routes,\nIII. THECOMPOSITIONALALGORITHM\nwe need to go back one step and change the paths we are\nIn this section we are going to introduce the sub-problems currently using to connect the customers. that form ComSat and are iteratively solved to find a feasible In the next phase, we check whether we can match the\nsolution to the CF-EVRP. In the implementation, each sub- routes we computed with the available vehicles. A route may\nproblem is formulated using the SMT standard language and involve more than one job, and since not all vehicles are\nsolved using Z3. Therefore, for each sub-problem, a set of eligible to execute one route, we have to find a vehicle that\nvariables is declared and as well as a set of constraints over can execute all jobs involved in a route.",
+      "size": 774,
+      "sentences": 6
+    },
+    {
+      "id": 23,
+      "content": ", for each sub-problem, a set of eligible to execute one route, we have to find a vehicle that\nvariables is declared and as well as a set of constraints over can execute all jobs involved in a route. Also, routes have a\nthose variables; the solver takes variables and constraints latest starting time that depends on the time windows of their\nand returns an assignment for each variable such that no jobs, so we have to make sure that by that time, the vehicle\nconstraint is broken. selected has enough charge to finish the route. If we cannot\nThe following logical operators are used to express cardi- find a feasible match, we re-run the routing problem and find\nnality constraints [21] in the sub-problems: another set of routes that combines the jobs differently.",
+      "size": 767,
+      "sentences": 4
+    },
+    {
+      "id": 24,
+      "content": "erators are used to express cardi- find a feasible match, we re-run the routing problem and find\nnality constraints [21] in the sub-problems: another set of routes that combines the jobs differently. EO(a): exactly one variable of the set a is true; Finally, if a match between vehicles and routes can be\nEN(a,n): exactly n variables of the set a are true; found, the last sub-problem ensures that there is no conflict\nIf(c,o ,o ): if c is true returns o , else returns o . among the vehicles while they execute the routes, i.e., there\n1 2 1 2\n[표 데이터 감지됨]\n\n=== 페이지 4 ===\nis never a larger number of vehicles on a location of the rc : integer variable that tracks the remaining charge\njk\ngraph (node or edge) than the number of vehicles allowed of a vehicle when at the location of task k of job j\n(based on the location’s capacity). The model is as follows:\nA.",
+      "size": 860,
+      "sentences": 4
+    },
+    {
+      "id": 25,
+      "content": "s the remaining charge\njk\ngraph (node or edge) than the number of vehicles allowed of a vehicle when at the location of task k of job j\n(based on the location’s capacity). The model is as follows:\nA. The Path Finder (cs ≥0∧rc ≥0∧rc ≤OR) ∀j ∈J,k ∈K (4)\njk jk jk j\nIn this phase the goal is to find a sequence of edges ¬dir ∀j ∈J,k ∈K (5)\njkjk j\nconnecting any tasks’ locations such the overall sum of\n¬dir ∀j ∈J,k ∈K (6)\ndistances of each path is minimized. Let Q be the set of\nj,k,start,kstart j\n¬dir ∀j ∈J,k ∈K (7)\nall pairs of task’s locations. For any pair of points q\ni\n∈ Q, end,kend,j,k j\nall possible non-cyclic paths are computed and then stored in dir j1k1j2k2 =⇒ cs j2k2 ≥cs j1k1 +d j1k1j2k2\na list f i . The paths are then stored in the list Paths: p i (cid:55)→f i .",
+      "size": 777,
+      "sentences": 6
+    },
+    {
+      "id": 26,
+      "content": "end,kend,j,k j\nall possible non-cyclic paths are computed and then stored in dir j1k1j2k2 =⇒ cs j2k2 ≥cs j1k1 +d j1k1j2k2\na list f i . The paths are then stored in the list Paths: p i (cid:55)→f i . ∀j 1 ,j 2 ∈J,k 1 ∈K j1 ,k 2 ∈K j2 (8)\nIn order to find the sequence of paths, it is possible to set\n(cs ≥l ∧cs ≤u ) ∀j ∈J,k ∈K (9)\nup an optimization problem that uses the following decision jk jk jk jk j\ndir =⇒ rc ≤rc −D×d\nvariables: j1k1j2k2 j2k2 j1k1 j1k1j2k2\npath\nqr\n: Booleans that are True if the r-th path of the ∀j 1 ,j 2 ∈J,k 1 ∈K j1 ,k 2 ∈K j2 (10)\nq-th pair of points is selected.",
+      "size": 590,
+      "sentences": 3
+    },
+    {
+      "id": 27,
+      "content": "k jk jk jk j\ndir =⇒ rc ≤rc −D×d\nvariables: j1k1j2k2 j2k2 j1k1 j1k1j2k2\npath\nqr\n: Booleans that are True if the r-th path of the ∀j 1 ,j 2 ∈J,k 1 ∈K j1 ,k 2 ∈K j2 (10)\nq-th pair of points is selected. EO (dir ) ∀j ∈J,j (cid:54)=j ,k ∈K (11)\nj2∈J j1k1j2k2 1 1 2 1 j1\nThe model is as follows: k2∈Kj2\nEN (dir ,n) =⇒\nj2∈J j1k1j2k2\nEO\nr∈fq\n(path\nqr\n) ∀q ∈Q (1) k2∈Kj2\n(cid:88) EN (dir ,n)\nIf(path\nqr\n,|r|,0) ∀q ∈Q,r ∈f\nq\n(2)\nk\nj\n2\n2\n∈\n∈\nK\nJ\nj2\nj2k2j1k1\n∀j ∈J,k ∈K ,n=1,...,|J| (12)\nConstraint (1) ensures that only one path per pair can be 1 1 j1\n \nselected; (2) is the cost function that minimizes the overall\nlength of the paths (in terms of nodes to visit), where |r| is (cid:95)  (cid:94) \nthe length of a path r. \n\ndir jk1jk2 \n\n∀j ∈J (13)\nSince the solution found may not be feasible for the ordi∈Permj k1,k2∈ordi\nfollowing steps of the algorithm, it is necessary to store (cid:94)\nk1≥k2\ncs ≥cs ∀j ∈J (14)\nit so that it can be ruled out in the next iteration.",
+      "size": 966,
+      "sentences": 2
+    },
+    {
+      "id": 28,
+      "content": "und may not be feasible for the ordi∈Permj k1,k2∈ordi\nfollowing steps of the algorithm, it is necessary to store (cid:94)\nk1≥k2\ncs ≥cs ∀j ∈J (14)\nit so that it can be ruled out in the next iteration. Let jk jk(cid:48)\nS\npath\n= (cid:83)\nq∈Q\n{path∗\nqr\n} be the optimal solution to the Pjk\nproblem; als\nr\no\n∈\n,\nfq\nlet UsedPaths be a list containing all the (4) restricts the variables to be positive integers and the\nprevious solutions.",
+      "size": 433,
+      "sentences": 2
+    },
+    {
+      "id": 29,
+      "content": ")\nq∈Q\n{path∗\nqr\n} be the optimal solution to the Pjk\nproblem; als\nr\no\n∈\n,\nfq\nlet UsedPaths be a list containing all the (4) restricts the variables to be positive integers and the\nprevious solutions. In order to find another feasible solution, remaining charge to be lower than the maximum operating\nthe following constraint must be added to the model: range; (5) forbids to travel from and to the same location;\n(6) and (7) state that a vehicle can never travel to the start,\n(cid:95)\n¬path ∀S ∈UsedPaths (3) nor travel from the end: start and end are physically located\nqr path\npathqr∈Spath at the same node, but they play different roles in the routing\nproblem,hencetwodifferentjobs;(8)regulatesthedifference\nBasedonthemodeldescribedabove,itispossibletodefine\nin the arrival time based on the distance for a direct travel\nthe function pathfinder that takes the list Paths of all non-\nbetween two points; (9) enforces the time windows on the\ncyclic paths between any two points and the list UP that\nroutes; (10) defines the decrease of charge based on the\ncontains the previously used paths as inputs, and returns CP,\ndistance travelled; (11) states that each customer must be\nthe shortest feasible combination of non-cyclic paths that\nvisited exactly once; (12) guarantees the flow conservation\nhas not been selected yet (CP is empty if the problem is\nbetween start and end; (13) states that if a number of tasks\nunfeasible).",
+      "size": 1428,
+      "sentences": 2
+    },
+    {
+      "id": 30,
+      "content": "ths that\nvisited exactly once; (12) guarantees the flow conservation\nhas not been selected yet (CP is empty if the problem is\nbetween start and end; (13) states that if a number of tasks\nunfeasible). belongs to one job, they have to take place in sequence; (14)\nguarantees that deliveries take place after pickups. B. The Routing Problem\nFinally, the cost function for the model to minimize (15)\nThe goal is now to find feasible routes using the non-\nis the total number of vehicles:\ncyclic paths currently provided by the pathfinder function\n(cid:88)\nto calculate the distance d between tasks’ locations. If(dir ,1,0) ∀j ∈J,k ∈K (15)\nj1k1j2k2 start,kstart,j,k j\nAlso, let M be the set of mutually exclusive jobs for job\nj\nj (i.e.",
+      "size": 730,
+      "sentences": 5
+    },
+    {
+      "id": 31,
+      "content": "er function\n(cid:88)\nto calculate the distance d between tasks’ locations. If(dir ,1,0) ∀j ∈J,k ∈K (15)\nj1k1j2k2 start,kstart,j,k j\nAlso, let M be the set of mutually exclusive jobs for job\nj\nj (i.e. the same vehicles cannot execute job j and any of If the solution of the routing problem turns out to be\nthe jobs in M due to requirements on the vehicle type); let inconsistent with the vehicles’ assignment or the conflict-free\nj\nPerm be the set of possible orderings of tasks belonging to constraints in the next two phases, a new solution must be\nj\njob j, where each possible ordering ord ∈Perm contains computed in order to find alternative routes for the same\nm j\nall tasks of job j sorted differently. The set of variables used combination of non-cyclic paths.",
+      "size": 766,
+      "sentences": 4
+    },
+    {
+      "id": 32,
+      "content": "ch possible ordering ord ∈Perm contains computed in order to find alternative routes for the same\nm j\nall tasks of job j sorted differently. The set of variables used combination of non-cyclic paths. Therefore it is necessary to\nto build the model for the routing problem are: keep track of the combinations of routes that have already\nbeen generated so that we can rule them out when solving\ndir j1k1j2k2 : Boolean variable that is true if a vehicle the routing problem again. Let Routes = (cid:83) {cs∗ } be\ntravels from the location of task k of job j to the j∈J jk\n1 1 k∈K\nlocation of task k of job j the optimal solution to the routing problem found at iteration\n2 2\ncs : integer variable that tracks the arrival time of a n and PR the set containing the optimal solutions found until\njk\nvehicle at the location of task k of job j the (n−1)-th iteration.",
+      "size": 859,
+      "sentences": 4
+    },
+    {
+      "id": 33,
+      "content": "eration\n2 2\ncs : integer variable that tracks the arrival time of a n and PR the set containing the optimal solutions found until\njk\nvehicle at the location of task k of job j the (n−1)-th iteration. In order to find the optimal set of\n=== 페이지 5 ===\nroutes, different from the ones found before, the following follows:\nconstraint must be added:\nend =start +length ∀r ∈R (17)\nr r r\nstart ≤late ∀r ∈R; (18)\nr r\n(cid:95)\n¬dir j1k1j2k2 ∀Routes∈PR (16) EO i∈\n(cid:95)\nV (allo ir ) ∀r ∈R (19)\ndirj1k1j2k2 ∈Routes allo\nir\n∀r ∈R (20)\ni∈Elr\n(allo ∧allo ) =⇒\nir ir(cid:48)\nBasedonthemodeldescribedabove,itispossibletodefine ((start ≥end +C·length )∨\nr r(cid:48) r\nthe function router that takes the current combination of non-\n(start ≥end +C·length ))\ncyclic paths CP and the set PR, and returns a set of routes\nr(cid:48) r r(cid:48)\n∀i∈V,r,r(cid:48) ∈R,r (cid:54)=r(cid:48) (21)\nthat have not been selected yet CR (if the problem is unsat,\nCR is empty).",
+      "size": 944,
+      "sentences": 2
+    },
+    {
+      "id": 34,
+      "content": "lic paths CP and the set PR, and returns a set of routes\nr(cid:48) r r(cid:48)\n∀i∈V,r,r(cid:48) ∈R,r (cid:54)=r(cid:48) (21)\nthat have not been selected yet CR (if the problem is unsat,\nCR is empty). (17) connects the start and end variables based on the route’s\nlength; (18) sets the latest start time of a route based on the\nstricter time window among the ones of its jobs; (19) states\nthat exactly one vehicle must be assigned to a route; (20)\nstates that one (or more) among the eligible vehicles must be\nC. The Assignment Problem\nassigned to a route; (21) states that any two routes assigned\nto the same vehicle cannot overlap in time; either one ends\nbefore the other starts or the other way around. TheassignmentproblemallocatesvehiclestotheroutesCR\nBased on the (17)-(21) it is possible to define the function\ngenerated in the routing problem, based on the time window\nassign that takes the routes CR from the routing problem as\nand eligibility requirements.",
+      "size": 966,
+      "sentences": 3
+    },
+    {
+      "id": 35,
+      "content": "he (17)-(21) it is possible to define the function\ngenerated in the routing problem, based on the time window\nassign that takes the routes CR from the routing problem as\nand eligibility requirements. In the previous phase routes\ninput and returns AS, which states which vehicle will drive\nwere generated based only on the time windows and on the\non which route (and, of course, execute its jobs) and when\nvehicles’ operating range; now the actual availability of each\nit starts (if the assignment problem is unfeasible AS will be\ntype of vehicle is given. Moreover, the router may generate\nempty). routesthatinvolvemutuallyexclusivejobsand,whileitwould\nbe possible to avoid this by adding additional constraints, it\nD. The Scheduling Problem\nwould be inconvenient to do in the routing problem, since\nFinally, in this phase a feasible schedule is found for\nthere is no information about the vehicles assigned to the\nthe vehicles, meaning that the routes they are assigned to\nroutes.",
+      "size": 981,
+      "sentences": 4
+    },
+    {
+      "id": 36,
+      "content": "ng problem, since\nFinally, in this phase a feasible schedule is found for\nthere is no information about the vehicles assigned to the\nthe vehicles, meaning that the routes they are assigned to\nroutes. On the other hand, once a set of routes is given, it\nare checked to verify that they are conflict-free. In order to\ncan be easily checked in the assignment problem whether a\ndo this, we generate a list of nodes that each route visits\nvehicle is actually eligible for a route. AN ∀r ∈Routes, and one list of edges AE ∀r ∈Routes,\nr r\nTherefore, for each route r, we can define a list of jobs since so far the focus was only on the tasks’ locations. Note\nJr ⊆J that are executed by the vehicle assigned to r, and that for the same route r, AE will always be one element\n(cid:84) r\nthe list of eligible vehicles for r El r = j∈Jr V j .",
+      "size": 831,
+      "sentences": 5
+    },
+    {
+      "id": 37,
+      "content": "ks’ locations. Note\nJr ⊆J that are executed by the vehicle assigned to r, and that for the same route r, AE will always be one element\n(cid:84) r\nthe list of eligible vehicles for r El r = j∈Jr V j . Also, shorter than AN r since there is an edge in between two\nbased on the time windows of the jobs forming the routes, it nodes: this way the first edge in AE is always the edge\nr\nis possible to work out the latest start of a route late r ; for following the first node in AN r , the second edge in AE r is\ninstance, if the time window’s upper bound for the delivery always the edge following the second node in AN and so\nr\ntask of a job is at time t and the distance between the task’s on.",
+      "size": 691,
+      "sentences": 3
+    },
+    {
+      "id": 38,
+      "content": "edge in AE r is\ninstance, if the time window’s upper bound for the delivery always the edge following the second node in AN and so\nr\ntask of a job is at time t and the distance between the task’s on. Also, for each node in AN it is necessary to specify\nr\nlocation and the depot is d, then the latest start is t−d whether there exist a time window, since some of the nodes\n(remember that we assume time and distance travelled to be are only intersection of road segments in the real plant, while\ninterchangeable). Since a route can include more than one others are actual pickup or delivery points). Let l and u\nrn rn\njob, the stricter deadline will define the latest start for the be the earliest and latest arrival time at node n on route\nroute. r respectively.",
+      "size": 762,
+      "sentences": 5
+    },
+    {
+      "id": 39,
+      "content": "actual pickup or delivery points). Let l and u\nrn rn\njob, the stricter deadline will define the latest start for the be the earliest and latest arrival time at node n on route\nroute. r respectively. Finally, let len(e) be the length to travel of\nTheassignmentproblemisthereforetreatedasaJSPwhere edge e and let e(1) and e(2) be the source and sink node of\nroutes are jobs (whose duration depends on their length the edge respectively (since it is a directed graph, the edge\nlength ) and vehicles are resources, with some additional connecting n and n’ is different from the one connecting n’\nr\nrequirements on the jobs staring time. The set of variables and n). used to build the model are: This phase is also treated as a JSP, where jobs are routes,\ntasks within the jobs are the different nodes and edges to\nallo : Boolean variable that is True if vehicle i is visit along the route while nodes and edges themselves are\nir\nassigned to route r, False otherwise ; the resources.",
+      "size": 978,
+      "sentences": 6
+    },
+    {
+      "id": 40,
+      "content": "e different nodes and edges to\nallo : Boolean variable that is True if vehicle i is visit along the route while nodes and edges themselves are\nir\nassigned to route r, False otherwise ; the resources. Also, each route has a starting time start r\nstart : A Non-negative integer variable that is the start defined by the assignment model.",
+      "size": 335,
+      "sentences": 2
+    },
+    {
+      "id": 41,
+      "content": "es are\nir\nassigned to route r, False otherwise ; the resources. Also, each route has a starting time start r\nstart : A Non-negative integer variable that is the start defined by the assignment model. The decision variables in\nr\ntime of route r; the scheduling problem are:\nend :Non-negativeintegervariablesthatkeepistheend node : Non-negative integer variables to keep track of\nr rn\ntime of route r. when route r is using node n;\nedge : Non-negative integer variables to keep track of\nre\nThe model formulation for the assignment problem is as when route r is using edge e;\n=== 페이지 6 ===\nThe model for the scheduling problem is defined as follows: Start\nnode ≥start ∀r ∈ Routes (22)\nrO r\nUP = {}, PR = {}\nedge ≥node ∀r ∈ Routes,i=1,...,|AE | (23)\nri ri r\nnode ≥edge +len(e)\nri+1 ri CP = pathfinder(Paths, UP)\n∀r ∈ Routes,i=1,...,|AE | (24)\nr\nPR = {}\n(node ≥l ∧node ≤u )\nri ri ri ri No\n∀r ∈ Routes,i∈AN (25) Yes\nr Yes CP = {} Unsat\n(node r1i ≥edge r2i +1 ∨ edge r2i ≥node r1i +1) Unsat PR={}\nNo\n∀r ,r ∈ Routes,r (cid:54)=r ,i∈AE ∩AE (26)\n1 2 1 2 r1 r2\nUP ← CP\n(edge ≥edge +1 ∨ edge ≥edge +1)\nr1i r2i r2i r1i\n∀r 1 ,r 2 ∈Routes,r 1 (cid:54)=r 2 ,i∈AE r1 ∩AE r2 (27) CR = router(PR,CP)\n(edge ≥edge +len(e ) ∨\nr1i1 r2i2 2\nedge ≥edge +len(e )) Yes\nr2i2 r1i1 1 CR = {}\n∀r ,r ∈R,i ∈AE ,i ∈AE ,\n1 2 1 r1 2 r2\nNo\nr (cid:54)=r ,e (1)=e (2),e (2)=e (1) (28)\n1 2 1 2 1 2 PR ← CR\n(22) constraints the beginning time of a route; (23) and\n(24) define the precedence among nodes and edges to visit AS = assign(CR)\nin a route; (25) enforces time windows on the nodes that\ncorrespondtopickupordeliverypoints;(26)preventsvehicles Yes\nAS = {}\nfor using the same node at the same time (the +1 in the\nconstraints forbids swapping of positions between a node and\nNo\nthe previous or following edge) (27) and (28) constraints the\nSC = scheduler(AS)\ntransit of vehicles over the same edge.",
+      "size": 1861,
+      "sentences": 3
+    },
+    {
+      "id": 42,
+      "content": "(the +1 in the\nconstraints forbids swapping of positions between a node and\nNo\nthe previous or following edge) (27) and (28) constraints the\nSC = scheduler(AS)\ntransit of vehicles over the same edge. If two vehicles are\ncrossing the same edge from the same node, one has to start\nat least one time step later than the other and if two vehicles Yes SC = {} No SC\nare traversing the same edge from opposite nodes, one has\nto be done transiting, before the next one can start. Fig.2:FlowchartofComSat. Based on the (22)-(28) it is possible to define the function\nscheduler that takes the AS from the assignment problem as\ninput and returns SC, a list that expresses where each vehicle\nis at each time step (and, as for the previous phases, is empty\nif the problem is unfeasible). • PR is empty: the algorithm terminates and returns unsat;\n• PRisnon-empty:anewcombinationofnon-cyclicpaths\nE. The Algorithm is computed. In this section, the compositional algorithm to solve the\nCF-EVRP is presented.",
+      "size": 994,
+      "sentences": 6
+    },
+    {
+      "id": 43,
+      "content": "algorithm terminates and returns unsat;\n• PRisnon-empty:anewcombinationofnon-cyclicpaths\nE. The Algorithm is computed. In this section, the compositional algorithm to solve the\nCF-EVRP is presented. The input for the algorithm is a The condition on the emptiness of PR can save time based\nproblem instance, consisting of a weighted, directed graph on one assumption: every time a new combination of non-\nrepresenting the plant layout and a list of jobs. The function cyclicpathsiscomputed,itistheshorteststillavailable.Ifno\npath enumerator takes the graph and the jobs as input routing is possible, i.e. time windows could not be met with\nand, using Dijkstra’s algorithm [22] returns the previously the current paths, there is no other combination of paths that\nmentioned list Paths. willsatisfytheroutingproblem,sincetheywillbelongerthan\nTheoutputofthealgorithmistwofold:thevariablesolution, the current one.",
+      "size": 909,
+      "sentences": 6
+    },
+    {
+      "id": 44,
+      "content": "paths, there is no other combination of paths that\nmentioned list Paths. willsatisfytheroutingproblem,sincetheywillbelongerthan\nTheoutputofthealgorithmistwofold:thevariablesolution, the current one. On the other hand, if PR is not empty, this\nwhich is initialized as unknown and will possibly become means that routing is possible with the current combination\neither sat or unsat, and the schedule, which contains the of non-cyclic paths and it would be premature to declare the\ninformation about the location of each vehicle at each time instance unsat. Instead, the list PR is emptied, since it only\nstep if the problem is sat or is empty otherwise. makessensetostoretheoldroutesaslongasthecombination\nFirst, the algorithm finds a feasible combination of non- of non-cyclic paths is the same.",
+      "size": 794,
+      "sentences": 5
+    },
+    {
+      "id": 45,
+      "content": "t only\nstep if the problem is sat or is empty otherwise. makessensetostoretheoldroutesaslongasthecombination\nFirst, the algorithm finds a feasible combination of non- of non-cyclic paths is the same. If a solution to the routing\ncyclic paths to connect any two tasks’s locations: this is done problem does exist, the current routes CR are added to PR\nthrough the function pathfinder; if no combination of paths and then checked against the assignment problem and the\ncan be found (either because there are none or because all scheduling problem. If one of these problems turns out to\nfeasible solutions have been used already), the algorithm be unfeasible, then the function router will look for another\nterminates and the solution is unsat.",
+      "size": 741,
+      "sentences": 4
+    },
+    {
+      "id": 46,
+      "content": "em. If one of these problems turns out to\nfeasible solutions have been used already), the algorithm be unfeasible, then the function router will look for another\nterminates and the solution is unsat. If a path list can be solution; otherwise, when both assign and scheduler return\nfound, then such solution is added to the UP and it is used feasible solutions a feasible, sub-optimal schedule for the\nas an input to generate feasible routes, if such exist; if no overall problem has been found. The flow chart in Fig. 2\nsolution exists to the routing problem, there are two possible shows graphically how the different sub-problems interact\noutcomes depending on the list PR: with each other.",
+      "size": 692,
+      "sentences": 5
+    },
+    {
+      "id": 47,
+      "content": ". The flow chart in Fig. 2\nsolution exists to the routing problem, there are two possible shows graphically how the different sub-problems interact\noutcomes depending on the list PR: with each other. === 페이지 7 ===\nTABLEI:ComparisonofComSatandMonoModfortheCF-EVRPoverasetofgeneratedprobleminstances.InstancesaresortedbytheparametersN-V-J\n(nodes,vehicles,jobs),valueofedgereduction,andtimehorizon.Foreachresultingclass,fiveinstancesareevaluatedandthenumberoffeasibleand\nunfeasibleonesisreported,togetherwiththeaveragesolvingtime(inseconds)forthatspecificclass.Theaveragegenerationtime(inseconds)isalso\nreported.Thesymbol“-”meansthatnoinstanceforthatcategorywaseitherfeasibleorfeasible,dependingonwherethesymbolappears. N-V-J 15-3-5\nT EdgeRed. 0 25 50\nFeas Av. (sec) Unfeas Av. (sec) Gen.(sec) Feas Av. (sec) Unfeas Av. (sec) Gen.(sec) Feas Av. (sec) Unfeas Av.",
+      "size": 858,
+      "sentences": 11
+    },
+    {
+      "id": 48,
+      "content": "itherfeasibleorfeasible,dependingonwherethesymbolappears. N-V-J 15-3-5\nT EdgeRed. 0 25 50\nFeas Av. (sec) Unfeas Av. (sec) Gen.(sec) Feas Av. (sec) Unfeas Av. (sec) Gen.(sec) Feas Av. (sec) Unfeas Av. (sec) Gen.(sec)\nComSat 4/5 4.96 1/5 9.2 0.36 3/5 6.58 2/5 8.9 0.33 1/5 2.35 3/5 3.46 0.08\n20\nMonoMod 4/5 11.05 1/5 1.16 22.85 3/5 8.63 2/5 4.59 22.94 1/5 10.98 4/5 4.24 22.38\nComSat 4/5 5.83 1/5 17.55 0.33 3/5 6.91 2/5 14.14 0.35 3/5 3.99 2/5 3.71 0.12\n25\nMonoMod 4/5 20.79 1/5 2.18 41.98 3/5 24.02 2/5 33.95 40.88 3/5 39.42 2/5 21.7 43.38\nComSat 4/5 6.06 1/5 21.69 0.36 3/5 7.25 2/5 16.49 0.34 3/5 3.41 2/5 4.25 0.1\n30\nMonoMod 5/5 913.15 0/5 - 64.74 3/5 66.87 1/5 845.16 70.68 3/5 65.85 1/5 5.06 65.5\nComSat 4/5 6.23 1/5 22.97 0.32 3/5 8.35 2/5 19.96 0.36 3/5 4.05 2/5 4.02 0.09\n40 MonoMod 5/5 162.33 0/5 - 94.36 3/5 178.07 0/5 - 98.15 3/5 240.75 1/5 901.82 102.1\nN-V-J 25-4-7\nT EdgeRed. 0 25 50\nFeas Av. (sec) Unfeas Av. (sec) Gen.(sec) Feas Av. (sec) Unfeas Av. (sec) Gen.(sec) Feas Av.",
+      "size": 989,
+      "sentences": 14
+    },
+    {
+      "id": 49,
+      "content": "5/5 162.33 0/5 - 94.36 3/5 178.07 0/5 - 98.15 3/5 240.75 1/5 901.82 102.1\nN-V-J 25-4-7\nT EdgeRed. 0 25 50\nFeas Av. (sec) Unfeas Av. (sec) Gen.(sec) Feas Av. (sec) Unfeas Av. (sec) Gen.(sec) Feas Av. (sec) Unfeas Av. (sec) Gen.(sec)\nComSat 2/5 582.1 3/5 35.13 1.24 0/5 - 5/5 38.6 1.09 0/5 - 5/5 17.92 0.84\n20\nMonoMod 2/5 42.09 3/5 26.91 75.04 0/5 - 5/5 23.93 67.66 0/5 - 5/5 24.38 70.36\nComSat 5/5 44.61 0/5 - 1.2 4/5 63.11 1/5 75.48 1.17 1/5 20.99 4/5 227.08 0.92\n25\nMonoMod 5/5 182.52 0/5 - 125.76 4/5 163.15 1/5 333.66 109.85 1/5 110.78 4/5 113.66 99.82\nComSat 5/5 41.39 0/5 - 1.23 4/5 177.0 1/5 84.86 1.13 1/5 34.72 4/5 303.96 0.87\n30\nMonoMod 5/5 1160.64 0/5 - 195.9 4/5 995.07 0/5 - 169.96 2/5 479.7 1/5 1197.42 191.34\nComSat 5/5 66.63 0/5 - 1.11 4/5 139.65 1/5 101.52 1.14 1/5 30.29 4/5 351.01 0.85\n40 MonoMod 4/5 2312.39 0/5 - 285.38 4/5 3147.12 0/5 - 275.71 2/5 318.09 0/5 - 293.11\nN-V-J 35-6-8\nT EdgeRed. 0 25 50\nFeas Av. (sec) Unfeas Av. (sec) Gen.(sec) Feas Av. (sec) Unfeas Av.",
+      "size": 988,
+      "sentences": 12
+    },
+    {
+      "id": 50,
+      "content": "/5 351.01 0.85\n40 MonoMod 4/5 2312.39 0/5 - 285.38 4/5 3147.12 0/5 - 275.71 2/5 318.09 0/5 - 293.11\nN-V-J 35-6-8\nT EdgeRed. 0 25 50\nFeas Av. (sec) Unfeas Av. (sec) Gen.(sec) Feas Av. (sec) Unfeas Av. (sec) Gen.(sec) Feas Av. (sec) Unfeas Av. (sec) Gen.(sec)\nComSat 1/5 16.15 4/5 22.26 2.46 0/5 - 5/5 26.99 2.13 0/5 - 5/5 32.31 1.77\n20\nMonoMod 1/5 80.24 4/5 97.01 167.36 0/5 - 5/5 134.58 132.39 0/5 - 5/5 82.83 131.8\nComSat 4/5 177.73 1/5 22.28 2.32 4/5 81.2 1/5 30.37 2.32 4/5 216.74 1/5 33.99 1.56\n25\nMonoMod 4/5 896.66 1/5 48.93 220.63 4/5 636.35 1/5 32.75 203.98 4/5 644.79 1/5 31.24 201.95\nComSat 4/5 113.54 1/5 24.32 2.27 4/5 188.78 1/5 27.8 2.15 4/5 103.26 1/5 34.29 1.9\n30\nMonoMod 4/5 2268.8 1/5 138.78 425.56 4/5 937.94 1/5 77.62 376.42 4/5 890.02 1/5 125.29 347.38\nComSat 4/5 216.67 1/5 21.65 2.29 4/5 116.29 1/5 29.81 2.45 4/5 167.9 1/5 32.84 1.6\n40 MonoMod 4/5 2689.35 0/5 - 586.41 4/5 1167.67 1/5 913.9 597.01 4/5 1261.64 1/5 210.42 492.4\nIV.",
+      "size": 954,
+      "sentences": 8
+    },
+    {
+      "id": 51,
+      "content": "1/5 125.29 347.38\nComSat 4/5 216.67 1/5 21.65 2.29 4/5 116.29 1/5 29.81 2.45 4/5 167.9 1/5 32.84 1.6\n40 MonoMod 4/5 2689.35 0/5 - 586.41 4/5 1167.67 1/5 913.9 597.01 4/5 1261.64 1/5 210.42 492.4\nIV. COMPUTATIONALANALYSIS solved instances in each category, whether they turned out to\nbe sat or unsat, it is possible to notice that there is a number\nIn order to compare MonoMod and ComSat we generated\nof instances that were determined unknown by ComSat but\na set of problem instances. The parameters we used are the\nwere declared unsat by MonoMod. On the other hand, both\nnumber of nodes, vehicles, and jobs (grouped in an index\nmethods usually agree on the feasibility of the sat instances,\ncalled N-J-V), as well as the time horizon and the value\nexcept for some cases with high values of N-J-V and time\ncalled ’edge reduction’, which indicates the connectivity of\nhorizon where MonoMod run out of time. The reason for the\nthe graph (the higher the value, the fewer edges).",
+      "size": 974,
+      "sentences": 5
+    },
+    {
+      "id": 52,
+      "content": "high values of N-J-V and time\ncalled ’edge reduction’, which indicates the connectivity of\nhorizon where MonoMod run out of time. The reason for the\nthe graph (the higher the value, the fewer edges). For each\nunknown responses lies in the termination criterion we set up\ncombination of these parameters, five different problems are\nfor the algorithm. By running early experiments we noticed\nrandomly generated. that the algorithm was rather slow in evaluating unsatisfiable\nFor the analysis we used Z3 4.8.9. The time limit\nproblem instances; therefore we decided to limit the number\nfor MonoMod is set to 10800 seconds (three hours); the\nofiterationsbetweentheRoutingProblemandtheAssignment\nmodel generation time is measured separately, since it is\nProblem. On average, ComSat is between 10 and 100 times\nimplementation-dependent and can be dealt with using more\nfaster than the at solving instances that are intrinsically sat. efficient formulations, as discussed in our previous work [23].",
+      "size": 992,
+      "sentences": 8
+    },
+    {
+      "id": 53,
+      "content": "nd 100 times\nimplementation-dependent and can be dealt with using more\nfaster than the at solving instances that are intrinsically sat. efficient formulations, as discussed in our previous work [23]. As for ComSat, we only computed ten paths for each pair of\nV. CONCLUSION\ncustomers. We also set an upper bound of ten to the number\nofiterationsbetweentheRoutingProblemandtheAssignment In this paper we have presented a compositional algorithm\nProblem. Also, the generation time refers to the time taken to solve the Conflict-Free Electric Vehicle Routing Problem\nto generate the paths between each pair of customers. All the (CF-EVRP). We have evaluated the performance of the\nexperiments were performed on an Intel Core i7 6700K, 4.0 algorithminhandlingprobleminstancesoftheCF-EVRPand\nGHZ, 32GB RAM running Ubuntu-18.04 LTS. we have compared it with a monolithic model we presented\nThoughZ3allowsforoptimizationoftheobjectivefunction, in our previous work.",
+      "size": 957,
+      "sentences": 8
+    },
+    {
+      "id": 54,
+      "content": "leminstancesoftheCF-EVRPand\nGHZ, 32GB RAM running Ubuntu-18.04 LTS. we have compared it with a monolithic model we presented\nThoughZ3allowsforoptimizationoftheobjectivefunction, in our previous work. The implementation of the model\nthesizeoftheproblemsevaluatedwithMonoModissuchthat presented in Section II, as well as the problem instances are\nno optimum is expected to be found in any reasonable time. available at https://github.com/sabinoroselli/\nTherefore Z3 is set to find feasible, sub-optimal solutions 1. VRP.git. The algorithm proved to be significantly faster\nTable I summarizes the results of the computational analy- than the monolithic model to solve problem instances that\nsis. The generation time for ComSat is actually negligible, are inherently satisfiable, while its performance was rather\nwhereas for MonoMod it increases with N-J-V (nodes, slow for unsatisfiable instances.",
+      "size": 894,
+      "sentences": 7
+    },
+    {
+      "id": 55,
+      "content": "e generation time for ComSat is actually negligible, are inherently satisfiable, while its performance was rather\nwhereas for MonoMod it increases with N-J-V (nodes, slow for unsatisfiable instances. For this reason we set up a\nvehicles, and jobs), and time horizon and it decreases with terminationcriterionbasedonthenumberofiterationssothat,\nthe edge reduction, presumably because fewer edges means if the algorithm cannot prove the problem either satisfiable or\nfewer constraints to declare. By comparing the number of unsatisfiable within a certain number of iterations, it declares\n[표 데이터 감지됨]\n\n=== 페이지 8 ===\nit unknown. We are currently working on figuring out the [10] B.M.BakerandM.Ayechew,“Ageneticalgorithmfor\nright conditions for the algorithm to spot unsatisfiability thevehicleroutingproblem,”Computers&Operations\nquicker. Also, as of today, we generate a limited number of Research, vol. 30, no. 5, pp.",
+      "size": 916,
+      "sentences": 7
+    },
+    {
+      "id": 56,
+      "content": "or\nright conditions for the algorithm to spot unsatisfiability thevehicleroutingproblem,”Computers&Operations\nquicker. Also, as of today, we generate a limited number of Research, vol. 30, no. 5, pp. 787–800, 2003.\npaths to connect each pair of customers for the sub-problem [11] Y.-J. Gong, J. Zhang, O. Liu, R.-Z. Huang, H. S.-H. Path Finder to select one path for each pair of customers Chung, and Y.-H. Shi, “Optimizing the vehicle routing\nand proceed to the next sub-problems. However, in order problemwithtimewindows:Adiscreteparticleswarm\nto correctly declare a problem instance unsatisfiable, the optimizationapproach,”IEEETransactionsonSystems,\nalgorithm should check all possible combinations of paths. Man, and Cybernetics, Part C (Applications and\nSince the number of possible paths between two nodes can Reviews), vol. 42, no. 2, pp.",
+      "size": 846,
+      "sentences": 12
+    },
+    {
+      "id": 57,
+      "content": "stems,\nalgorithm should check all possible combinations of paths. Man, and Cybernetics, Part C (Applications and\nSince the number of possible paths between two nodes can Reviews), vol. 42, no. 2, pp. 254–267, 2011.\nincrease exponentially with the graph size, finding all paths [12] F. Rossi, R. Iglesias, M. Alizadeh, and M. Pavone,\nbetween all pairs of nodes would be untractable. Even if “On the interaction between autonomous mobility-on-\nfinding all paths could be done instantly, having too many demand systems and the power network: Models and\npaths to choose from would make the Path Finder the bottle- coordination algorithms,” IEEE Trans. on Control of\nneck of the algorithm. Therefore we are working on an Network Systems, vol. 7, no. 1, pp. 384–397, 2019.\nalgorithm to provide the next shortest combination of paths [13] E. Thanos, T. Wauters, and G. Vanden Berghe, “Dis-\ngiven the current state, without enumerating all of them.",
+      "size": 940,
+      "sentences": 11
+    },
+    {
+      "id": 58,
+      "content": "no. 1, pp. 384–397, 2019.\nalgorithm to provide the next shortest combination of paths [13] E. Thanos, T. Wauters, and G. Vanden Berghe, “Dis-\ngiven the current state, without enumerating all of them. patch and conflict-free routing of capacitated vehicles\nwith storage stack allocation,” Journal of the Opera-\nREFERENCES tional Research Society, pp. 1–14, 2019. [1] K Azadeh, M. deKoster, and D Roy, “Robotized [14] S. Roselli, M. Fabian, and K. A˚kesson, “Solving the\nwarehouse systems: Developments and research oppor- Electric-Conflict Free-Vehicle Routing Problem Using\ntunities,”ERIMReportSeriesResearchinManagement, SMT Solvers,” MED 2021, The 29th Mediterranean\nno. ERS-2017-009-LIS, 2017.",
+      "size": 696,
+      "sentences": 7
+    },
+    {
+      "id": 59,
+      "content": "nts and research oppor- Electric-Conflict Free-Vehicle Routing Problem Using\ntunities,”ERIMReportSeriesResearchinManagement, SMT Solvers,” MED 2021, The 29th Mediterranean\nno. ERS-2017-009-LIS, 2017. Conference on Control and Automation,\n[2] J. Theunissen, H. Xu, R. Y. Zhong, and X. Xu, “Smart [15] S. Roselli, K. Bengtsson, and K. A˚kesson, “SMT\nAGVsystemformanufacturingshopfloorinthecontext solvers for job-shop scheduling problems: Models\nofindustry4.0,”in201825thInternationalConference comparison and performance evaluation,” in Congress\non Mechatronics and Machine Vision in Practice ofCASE,thePortugueseOperationalResearchSociety,\n(M2VIP), IEEE, 2018, pp. 1–6. 2017. [3] K. Braekers, K. Ramaekers, and I. Van Nieuwenhuyse, [16] C. W. Barrett, R. Sebastiani, S. A. Seshia, C. Tinelli,\n“Thevehicleroutingproblem:Stateoftheartclassifica- et al., “Satisfiability modulo theories,” Handbook of\ntion and review,” Computers & Industrial Engineering, satisfiability, vol. 185, pp.",
+      "size": 981,
+      "sentences": 8
+    },
+    {
+      "id": 60,
+      "content": ". Tinelli,\n“Thevehicleroutingproblem:Stateoftheartclassifica- et al., “Satisfiability modulo theories,” Handbook of\ntion and review,” Computers & Industrial Engineering, satisfiability, vol. 185, pp. 825–885, 2009.\nvol. 99, pp. 300–313, 2016. [17] L. De Moura and N. Bjørner, “Satisfiability modulo\n[4] M. Desrochers, J. Desrosiers, and M. Solomon, “A theories: Introduction and applications,” Commun. new optimization algorithm for the vehicle routing ACM, vol. 54, no. 9, pp. 69–77, Sep. 2011.\nproblem with time windows,” Operations research, [18] L. De Moura and N. Bjørner, “Z3: An efficient\nvol. 40, no. 2, pp. 342–354, 1992. SMT solver,” in International conference on Tools\n[5] M. Schneider, A. Stenger, and D. Goeke, “The elec- and Algorithms for the Construction and Analysis of\ntric vehicle-routing problem with time windows and Systems, Springer, 2008, pp. 337–340. recharging stations,” Transportation Science, vol. 48, [19] N. Bjørner, A.-D. Phan, and L. Fleckenstein, “νZ-an\nno. 4, pp.",
+      "size": 999,
+      "sentences": 19
+    },
+    {
+      "id": 61,
+      "content": "-routing problem with time windows and Systems, Springer, 2008, pp. 337–340. recharging stations,” Transportation Science, vol. 48, [19] N. Bjørner, A.-D. Phan, and L. Fleckenstein, “νZ-an\nno. 4, pp. 500–520, 2014. optimizing SMT solver,” in International Conference\n[6] N. N. Krishnamurthy, R. Batta, and M. H. Kar- on Tools and Algorithms for the Construction and\nwan, “Developing conflict-free routes for automated Analysis of Systems, Springer, 2015, pp. 194–199. guided vehicles,” Operations Research, vol. 41, no. 6, [20] J. Carlier and E´. Pinson, “An algorithm for solving\npp. 1077–1090, 1993. the job-shop problem,” Management science, vol. 35,\n[7] N. Brahimi and T. Aouam, “Multi-item production no. 2, pp. 164–176, 1989.\nroutingproblemwithbackordering:AMILPapproach,” [21] C.Sinz,“TowardsanoptimalCNFencodingofboolean\nInternational Journal of Production Research, vol. 54, cardinality constraints,” in International conference on\nno. 4, pp.",
+      "size": 951,
+      "sentences": 17
+    },
+    {
+      "id": 62,
+      "content": "ckordering:AMILPapproach,” [21] C.Sinz,“TowardsanoptimalCNFencodingofboolean\nInternational Journal of Production Research, vol. 54, cardinality constraints,” in International conference on\nno. 4, pp. 1076–1093, 2016. principles and practice of constraint programming,\n[8] O. Bra¨ysy and M. Gendreau, “Vehicle routing problem Springer, 2005, pp. 827–831. withtimewindows,partI:Routeconstructionandlocal [22] E. W. Dijkstra et al., “A note on two problems\nsearch algorithms,” Transportation science, vol. 39, in connexion with graphs,” Numerische mathematik,\nno. 1, pp. 104–118, 2005. vol. 1, no. 1, pp. 269–271, 1959. [9] S. Riazi, T. Diding, P. Falkman, K. Bengtsson, and B.",
+      "size": 674,
+      "sentences": 13
+    },
+    {
+      "id": 63,
+      "content": "ransportation science, vol. 39, in connexion with graphs,” Numerische mathematik,\nno. 1, pp. 104–118, 2005. vol. 1, no. 1, pp. 269–271, 1959. [9] S. Riazi, T. Diding, P. Falkman, K. Bengtsson, and B. [23] S. F. Roselli, K. Bengtsson, and K. A˚kesson, “Com-\nLennartson,“SchedulingandroutingofAGVsforlarge- pact representation of time-index job shop problems\nscale flexible manufacturing systems,” in 2019 IEEE using a bit-vector formulation,” in 2020 IEEE 16th\n15th International Conference on Automation Science International Conference on Automation Science and\nand Engineering (CASE), IEEE, 2019, pp. 891–896. Engineering (CASE), IEEE, 2020, pp. 1590–1595.",
+      "size": 658,
+      "sentences": 12
+    }
+  ]
+}

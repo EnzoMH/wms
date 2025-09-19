@@ -1,0 +1,356 @@
+{
+  "source": "ArXiv",
+  "filename": "001_MK-Pose__Category-Level_Object_Pose_Estimation_via.pdf",
+  "total_chars": 39743,
+  "total_chunks": 58,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "=== 페이지 1 ===\nMK-Pose: Category-Level Object Pose Estimation via\nMultimodal-Based Keypoint Learning\nYifan Yang1, Peili Song1, Enfan Lan1, Dong Liu1 and Jingtai Liu1∗, Senior Member, IEEE\nAbstract—Category-level object pose estimation, which pre-\ndictstheposeofobjectswithinaknowncategorywithoutprior\nknowledge of individual instances, is essential in applications\nlike warehouse automation and manufacturing. Existing meth-\nods relying on RGB images or point cloud data often struggle\nwith object occlusion and generalization across different in-\nstancesandcategories.Thispaperproposesamultimodal-based\n(a) Occlusion challenge (b) Symmetry challenge\nkeypoint learning framework (MK-Pose) that integrates RGB\nimages, point clouds, and category-level textual descriptions. The model uses a self-supervised keypoint detection module\nenhancedwithattention-basedquerygeneration,softheatmap\nmatching and graph-based relational modeling.",
+      "size": 930,
+      "sentences": 3
+    },
+    {
+      "id": 2,
+      "content": "nd category-level textual descriptions. The model uses a self-supervised keypoint detection module\nenhancedwithattention-basedquerygeneration,softheatmap\nmatching and graph-based relational modeling. Additionally,\na graph-enhanced feature fusion module is designed to in-\ntegrate local geometric information and global context. MK-\nPose is evaluated on CAMERA25 and REAL275 dataset, and\nis further tested for cross-dataset capability on HouseCat6D\ndataset. The results demonstrate that MK-Pose outperforms (c) Generalization challenge\nexisting state-of-the-art methods in both IoU and average\nprecision without shape priors. Codes will be released at Fig.1. Threemainchallengesincategory-levelobjectposeestimation. (a)\nhttps://github.com/yangyifanYYF/MK-Pose. showstheissueofmutualocclusionamongbowl,can,andmug;Themug\nin(b)isanasymmetricobjectwhenthehandleisvisible,andasymmetric\nI.",
+      "size": 882,
+      "sentences": 9
+    },
+    {
+      "id": 3,
+      "content": "gory-levelobjectposeestimation. (a)\nhttps://github.com/yangyifanYYF/MK-Pose. showstheissueofmutualocclusionamongbowl,can,andmug;Themug\nin(b)isanasymmetricobjectwhenthehandleisvisible,andasymmetric\nI. INTRODUCTION object when the handle is not visible; In (c), when the type of camera\nchanges,theoriginalkeypointsdonotgeneralizewell. In modern robotics, robotic arm grasping is a funda-\nmental task, with applications spanning industries such as\nwarehouse automation, manufacturing, and healthcare [29],\nandcategories.Thisnecessityhasgivenrisetocategory-level\n[30]. Robotic arms are tasked with perceiving objects in\nobject pose estimation, which aims to estimate the pose of\nthe environment, accurately localizing them, and performing\nobjects within a given category without prior knowledge of\ngrasping actions. As automation levels increase, robots need\ntheir specific instances.",
+      "size": 880,
+      "sentences": 7
+    },
+    {
+      "id": 4,
+      "content": "vironment, accurately localizing them, and performing\nobjects within a given category without prior knowledge of\ngrasping actions. As automation levels increase, robots need\ntheir specific instances. to interact with a wide variety of objects in dynamic and\nDespite the significant advances in category-level pose\ncluttered environments, where these objects can vary greatly\nestimation in previous work [9], [11]–[22], [24]–[27], there\ninshape,size,andmaterial.Therefore,obtainingprecisepose\nare still some challenges. Firstly, the majority of current\ninformation of these objects becomes crucial for successful\napproaches rely solely on RGB images or point cloud\nand reliable grasping. data without incorporating prior knowledge about object\nObject pose estimation involves determining the rotation\ncategories, which hinders the ability to generalize across\nand translation of an object relative to a reference frame. diverseinstancesandrecovertheoccludedobject(Fig.1(a)).",
+      "size": 973,
+      "sentences": 6
+    },
+    {
+      "id": 5,
+      "content": "determining the rotation\ncategories, which hinders the ability to generalize across\nand translation of an object relative to a reference frame. diverseinstancesandrecovertheoccludedobject(Fig.1(a)). In our previous work [31], we have introduced a point\nSecondly, many keypoint-based methods require manually\ncloud based symmetry-aware 6D pose estimation method,\nannotatedkeypointsforeachobjectinstance,whichhampers\nwhich deals with challenges such as rust, high reflectivity,\ngeneralization to unseen objects, as the learned keypoint\nand absent textures. However, instance-level pose estimation\nextraction strategies may not be transferable, and acquir-\nmethods [1], [2], [5]–[8], [31] rely on prior knowledge of\ning precise keypoint annotations for every possible object\nspecific object models, making them highly accurate but\ninstance is labor-intensive and impractical in large-scale\ninflexible when dealing with novel objects. Real-world ap-\napplications (Fig. 1(c)).",
+      "size": 971,
+      "sentences": 6
+    },
+    {
+      "id": 6,
+      "content": "specific object models, making them highly accurate but\ninstance is labor-intensive and impractical in large-scale\ninflexible when dealing with novel objects. Real-world ap-\napplications (Fig. 1(c)). Thirdly, extracted features often\nplicationsoftenrequirerobotstointeractwithunseenobjects\nfail to effectively integrate global shape information with\nfine-grained local details. Also, most existing approaches\nThis work is supported by the National Natural Science Foundation of\nChinaunderGrant62173189. primarily handle infinite axial symmetry. The lack of a\n1The authors are with the Institute of Robotics and Automatic comprehensive, generalizable solution for handling diverse\nInformation System, Tianjin Key Laboratory of Intelligent Robotics,\nsymmetry types leads to ambiguities and incorrect pose\nand also with TBI center, Nankai University, Tianjin 300350,\nChina. Emails: yangyifan@mail.nankai.edu.cn; predictions (Fig. 1(b)).",
+      "size": 933,
+      "sentences": 9
+    },
+    {
+      "id": 7,
+      "content": "ent Robotics,\nsymmetry types leads to ambiguities and incorrect pose\nand also with TBI center, Nankai University, Tianjin 300350,\nChina. Emails: yangyifan@mail.nankai.edu.cn; predictions (Fig. 1(b)). peilisong@mail.nankai.edu.cn; In response to the above challenges, we propose a\nlef@mail.nankai.edu.cn; dongliu@nankai.edu.cn;\nmultimodal-basedkeypointlearningframeworkforcategory-\nliujt@nankai.edu.cn. *Correspondingauthor level pose estimation (MK-Pose). MK-Pose processes RGB\n5202\nluJ\n9\n]VC.sc[\n1v26660.7052:viXra\n=== 페이지 2 ===\nimages, point clouds, and object category text information incomplexscenarios.Despitetheimpressiveperformanceof\nto generate a unified object representation. In the self- instance-level6Dposeestimationinknownobjectscenarios,\nsupervised keypoint detection module, the fused feature it requires a pre-existing 3D CAD model of the object,\nenhanced with positional encoding and global context is making it unsuitable for scenes with novel objects.",
+      "size": 972,
+      "sentences": 7
+    },
+    {
+      "id": 8,
+      "content": "detection module, the fused feature it requires a pre-existing 3D CAD model of the object,\nenhanced with positional encoding and global context is making it unsuitable for scenes with novel objects. interactedwithlearnablequeriesviaanattentionmechanism\nB. Category-level Object Pose Estimation\nto generate refined keypoint features. Keypoint positions are\ndetermined through a soft heatmap matching process, with Category-level object pose estimation aims to estimate\na graph-based network refining the relationships between the pose of objects from the same category but different\nkeypoints. In the graph-enhanced local&global feature fu- instances, without the need for a complete 3D CAD model\nsion module, relative positional encodings enhance spatial in advance. This task is more challenging due to significant\nrelationships, while a cross-attention mechanism integrates variationsinobjectshape,size,andtexture.Thefirstbatchof\nlocal details.",
+      "size": 946,
+      "sentences": 5
+    },
+    {
+      "id": 9,
+      "content": "spatial in advance. This task is more challenging due to significant\nrelationships, while a cross-attention mechanism integrates variationsinobjectshape,size,andtexture.Thefirstbatchof\nlocal details. Absolute positional encodings and a global category-level 6D pose estimation methods borrowed ideas\nfeature vector are leveraged through self-attention to further from instance-level keypoint detection. For example, NOCS\nrefinekeypointfeatures.Finally,forposeandsizeestimation, [9] introduced a Normalized Object Coordinate Space to\na specialized loss function accounts for object symmetry, recover6Dposesbypredictingthenormalizedcoordinatesof\nconsidering predefined symmetric transformations and an theobject.InspiredbyNOCS,multipleworks[15]–[20]have\ninfinite symmetry vector. been proposed to better address the problem of category-\nlevel pose estimation.",
+      "size": 857,
+      "sentences": 5
+    },
+    {
+      "id": 10,
+      "content": "edefined symmetric transformations and an theobject.InspiredbyNOCS,multipleworks[15]–[20]have\ninfinite symmetry vector. been proposed to better address the problem of category-\nlevel pose estimation. To better adapt to shape variations\nIn summary, the main contributions of this work are as\nacross different instances, some researchers also introduce\nfollows:\nshape modeling-based approaches [11]–[14], [24]. A series\n1) We propose MK-Pose that processes multimodal input\nof methods represented by GenPose [21], [22] leverage\nincludingRGBimages,pointcloudsandtexts,achiev-\nscore-based diffusion models, framing pose estimation as\ning excellent zero-shot performance when encounter-\na multi-hypothesis problem, which allow for more robust\ning previously unseen objects. predictions by exploring different possible solutions.",
+      "size": 823,
+      "sentences": 5
+    },
+    {
+      "id": 11,
+      "content": "on as\ning excellent zero-shot performance when encounter-\na multi-hypothesis problem, which allow for more robust\ning previously unseen objects. predictions by exploring different possible solutions. Some\n2) We employ learnable queries and graph-based net-\nresearchers also train their models using only simulation\nworks in MK-Pose, ensuring accurate and generaliz-\ndata and test them on real-world datasets, demonstrating the\nable self-supervised keypoint detection. algorithm’s cross-domain capability [25]–[27]. 3) We evaluate MK-Pose on REAL275 and CAMERA25\ndataset, and test it for cross-dataset capability on III. METHOD\nHouseCat6D dataset. The results shows that MK-Pose\nA. Architecture Overview and Problem Formulation\noutperforms other state-of-the-art methods. AsshowninFig.2,theinputofMK-PoseconsistsofRGB\nimage I, point cloud P, and object category information c.\nII.",
+      "size": 879,
+      "sentences": 9
+    },
+    {
+      "id": 12,
+      "content": "Architecture Overview and Problem Formulation\noutperforms other state-of-the-art methods. AsshowninFig.2,theinputofMK-PoseconsistsofRGB\nimage I, point cloud P, and object category information c.\nII. RELATEDWORK\nThe output is rotation matrix R, translation vector t, size\nA. Instance-level Object Pose Estimation\ns. The pipeline of the proposed method consists of three\nInstance-level object pose estimation aims to recover the major modules. 1) The keypoint detection module encodes\n6D pose of known object instances from data acquired and fuses multimodal inputs, and obtains keypoint positions\nby visual sensors, given the CAD model of the object. and features via self-supervised approach. 2) The feature\nEarly methods primarily rely on feature-based matching fusion module refines keypoint features by fusing local and\napproaches, such as 3D model alignment using features global features. 3) The pose&size estimation module finally\nlike SIFT and ORB.",
+      "size": 955,
+      "sentences": 7
+    },
+    {
+      "id": 13,
+      "content": "tching fusion module refines keypoint features by fusing local and\napproaches, such as 3D model alignment using features global features. 3) The pose&size estimation module finally\nlike SIFT and ORB. [2] Additionally, ICP (Iterative Closest estimates the pose and size of the target object. Point) and its variants are widely used to optimize poses in In keypoint detection module, I, P, and c are encoded\n3D point clouds. [3] However, these methods tend to fail into F RGB , F PC , and F text , which are fused to form F obj . in cases with low texture or significant lighting changes. F obj incorporatespositionalencodingandglobalinformation\nWith the development of deep learning, researchers begin to form F′ . Learnable keypoint queries Fin interact with\nobj kpt\nusing neural networks to directly regress 6D poses. Dense- F′ obj via attention to produce Fo k u p t t .",
+      "size": 872,
+      "sentences": 9
+    },
+    {
+      "id": 14,
+      "content": "learning, researchers begin to form F′ . Learnable keypoint queries Fin interact with\nobj kpt\nusing neural networks to directly regress 6D poses. Dense- F′ obj via attention to produce Fo k u p t t . Keypoint positions P kpt\nFusion [5] introduces a strategy of fusing RGB and point andfeaturesF kpt arederivedthroughsoftheatmapmatching\ncloud features, enhancing robustness against occlusions and and a Graph Attention Network (GAN). complexbackgrounds.PVNet[6]performedkeypointregres- In feature fusion module, relative position encodings Prel\nkpt\nsion and employed RANSAC post-processing to improve and Prel are added to F and k-nearest neighbor features\nknn kpt\npose estimation stability. In recent years, researchers have F . Using a cross-attention mechanism, we fuse local\nknn\nalso started exploring ways to reduce dependence on large- informationtoupdateF ,whichisfurtherrefinedbyadding\nkpt\nscale annotated datasets.",
+      "size": 922,
+      "sentences": 7
+    },
+    {
+      "id": 15,
+      "content": "e F . Using a cross-attention mechanism, we fuse local\nknn\nalso started exploring ways to reduce dependence on large- informationtoupdateF ,whichisfurtherrefinedbyadding\nkpt\nscale annotated datasets. For instance, Self6D [1] used self- absolutepositionencodingP andconcatenatingtheglobal\nkpt\nsupervised learning to improve generalization. OVE6D [8] feature Fglobal. kpt\nestimates the 6D object pose from a single depth image Additionally, we design a general loss function L that\nps\nand the target object mask. SyMFM6D [7] a symmetry- considers symmetry. By leveraging a set of symmetric rota-\naware multi-directional fusion approach for multi-view 6D tion matrices R and an infinite symmetry vector v, it can\nS\nobject pose estimation, enhancing accuracy and robustness be applied to both finitely and infinitely symmetric objects.",
+      "size": 831,
+      "sentences": 7
+    },
+    {
+      "id": 16,
+      "content": "h for multi-view 6D tion matrices R and an infinite symmetry vector v, it can\nS\nobject pose estimation, enhancing accuracy and robustness be applied to both finitely and infinitely symmetric objects. === 페이지 3 ===\nKeypoint Detection Module\nSoft\nFeature\nExtractor\n... Heatmap\nMatcher\nLaptop\nF\nobj\nFeature Fusion Module Pose&Size Estimation\nModule\nP\nkpt NOCS GAT C MLPS\nPredictor\nF F kpt AvgPooling kpt P kpt Pose&Size\nMultimodal-Based Self-Supervised Keypoint\nDetection Module\nC A ...\nPointNet++\nLaptop Text\nF obj\nC A\nFglobal Fin\nobj kpt\nF out kpt S\nF obj\nP kpt\nGraph-Enhanced Local&Global Feature Fusion Module\nP kpt\nF kpt\nF kpt\nP\n−\nrel kpt\n1N  P\nobj\nQ KNN\nk,v F obj\nMLP\nP\nF\nknn\nknn\nRepeat\n− P kpt P rel knn MLP\nk,v\nQ\nA\nP kpt\nCategory Embbeding\nC Concat\nA Attention\nA F kpt + Add DINO + N C S Similarity\n+ Frozen Weight CLIP\nMLP AvgPooling Keypoints\nMLP\nAvgPooling Category + + KNN\nEmbbeding Neighbours\nFig.2.",
+      "size": 910,
+      "sentences": 2
+    },
+    {
+      "id": 17,
+      "content": "P\nk,v\nQ\nA\nP kpt\nCategory Embbeding\nC Concat\nA Attention\nA F kpt + Add DINO + N C S Similarity\n+ Frozen Weight CLIP\nMLP AvgPooling Keypoints\nMLP\nAvgPooling Category + + KNN\nEmbbeding Neighbours\nFig.2. ArchitectureofMK-Pose.Theframeworktakesmultimodalinputs,includingRGBimages,pointclouds,andtext.Itestimatestheobject’spose\nandsizethroughmultimodal-basedself-supervisedkeypointdetectionmoduleandthegraph-enhancedlocal&globalfeaturefusionmodule. B. Multimodal-Based Self-Supervised Keypoint Detection A laptop is a\nrectangular, flat, and\nModule\nfoldable device with A photo of a\na hinged design, ${Category}. RGBfeaturesconveyappearancedetailssuchascolorand laptop typically consisting ${Shape\ntexture, while depth features contain geometric structure. Category of a screen on one Description}\nHowever, they may misalign—e.g., objects with similar side and a keyboard\nText\ntextures may have different shapes, and vice versa. Text Use a sentence to on the other.",
+      "size": 958,
+      "sentences": 6
+    },
+    {
+      "id": 18,
+      "content": "of a screen on one Description}\nHowever, they may misalign—e.g., objects with similar side and a keyboard\nText\ntextures may have different shapes, and vice versa. Text Use a sentence to on the other. descriptions provide a shared semantic space that can help describe the shape of a Shape Description\nbridge this gap. Additionally, occlusions complicate pose ${Category} for easier\nsubsequent extraction of\nestimation with RGB-D alone, while text remains invariant,\nkeypoints and feature. offering a stable reference. Aligning RGB-D features with\nPrompt\ntext enhances the model’s robustness and consistency in\ncategory-level representation. Fig.3.",
+      "size": 647,
+      "sentences": 7
+    },
+    {
+      "id": 19,
+      "content": "emains invariant,\nkeypoints and feature. offering a stable reference. Aligning RGB-D features with\nPrompt\ntext enhances the model’s robustness and consistency in\ncategory-level representation. Fig.3. Textgenerationprocessbasedonobjectcategories.Givenanobject\nGiven an input RGB image I∈RH×W×3, we utilize the category (e.g., ”laptop”), a large language model is prompted to generate\nDINOv2-ViT-S/14modelF [32]toextractvisualfeatures atextualdescriptionofitsshape.Thisshapedescription,whichdetailsthe\nRGB object’sgeometricandstructuralcharacteristics,isthenincorporatedintoa\nformattedtextpromptfordownstreamfeatureextraction. F =F (I)∈RN×d1. (1)\nRGB RGB\nThe depth information D∈RH×W is first transformed into\na point cloud P∈RN×3 using camera intrinsics. We apply attention mechanism\nPointNet++ F [33] to extract geometric features\nPC\nQ=W cat(F ,F ),\nQ RGB PC\nF =F (P)∈RN×d2, (2)\nPC PC K=W F , V=W F ,\nK text V text (4)\n(cid:18) QK⊤(cid:19)\nwhere N is the number of sampled points.",
+      "size": 980,
+      "sentences": 8
+    },
+    {
+      "id": 20,
+      "content": "m\nPointNet++ F [33] to extract geometric features\nPC\nQ=W cat(F ,F ),\nQ RGB PC\nF =F (P)∈RN×d2, (2)\nPC PC K=W F , V=W F ,\nK text V text (4)\n(cid:18) QK⊤(cid:19)\nwhere N is the number of sampled points. We leverage\nF =softmax √ V.\nobj\ncategory-level textual information to provide semantic con- d\ntext. As is shown in Fig. 3, given a category name c, we use\nalargelanguagemodel(LLM)GPT-4otogenerateadetailed\nKeypoints are detected using a combination of attention-\ntextual description, and use the CLIP text encoder F [34]\ntext\nbased query generation, soft heatmap matching and graph-\nto obtain the text feature representation\nbased relational modeling. F =F (LLM(c))∈RN×d. (3) To enhance position and global awareness, the raw input\ntext text\nfeatures F are first combined with positional encodings\nobj\nThe fused F ∈ RN×d is finally obtained by a cross- derived from point cloud coordinates and global features\nobj\n[표 데이터 감지됨]\n\n=== 페이지 4 ===\nfrom average pooling keypoint.",
+      "size": 970,
+      "sentences": 6
+    },
+    {
+      "id": 21,
+      "content": "with positional encodings\nobj\nThe fused F ∈ RN×d is finally obtained by a cross- derived from point cloud coordinates and global features\nobj\n[표 데이터 감지됨]\n\n=== 페이지 4 ===\nfrom average pooling keypoint. Let N ={j ,j ,...,j } represent the indices of\ni 1 2 k\nthe k-nearest neighbors for the i-th keypoint. N\n1 (cid:88)\nF′ =MLP([F +MLP(P), (F +MLP(P)) ]). obj obj N obj i,: k\n(cid:88)\ni=1 N =argmin D (11)\n(5) i {j1,j2,...,jk} i,jm\nEach learnable keypoint feature query Fin ∈ RNkpt×d m=1\nkpt\ngenerated from category embeddings attends to the object\nThese nearest neighbor points P (where m ∈\nfeature F′ using an attention mechanism, so that we can\njm\nget Fo k u p t t ∈\nob\nR\nj\nNkpt×d guided by category information\n{\nw\n1\nh\n,\ne\n2\nr\n,\ne\n...,k}) correspond to the smallest k distances D i,jm ,\nFo k u p t t =Attn(Fi k n pt ,F′ obj ). (6) D i,j =∥P kpt,i −P obj,j ∥ 2 .",
+      "size": 860,
+      "sentences": 5
+    },
+    {
+      "id": 22,
+      "content": "t ∈\nob\nR\nj\nNkpt×d guided by category information\n{\nw\n1\nh\n,\ne\n2\nr\n,\ne\n...,k}) correspond to the smallest k distances D i,jm ,\nFo k u p t t =Attn(Fi k n pt ,F′ obj ). (6) D i,j =∥P kpt,i −P obj,j ∥ 2 . (12)\nThe keypoint coordinates P kpt ∈ RNkpt×3 and keypoint The coordinates P knn,i ∈ Rk×3 and features F knn,i ∈ Rk×d\nfeatures F kpt ∈RNkpt×d are obtained by weighted sum ofthek nearestneighborscorrespondingtothei-thkeypoint\ncan be indexed as\nP =HP, F =HF , (7)\nkpt kpt obj\nP ={P ,P ,...,P },\nwhere H ∈ RNkpt×N is a heatmap predicted by the cosine knn,i j1 j2 jk (13)\nF ={F ,F ,...,F }. similarity between Fo\nk\nu\np\nt\nt\nand F\nobj\n.",
+      "size": 630,
+      "sentences": 4
+    },
+    {
+      "id": 23,
+      "content": "indexed as\nP =HP, F =HF , (7)\nkpt kpt obj\nP ={P ,P ,...,P },\nwhere H ∈ RNkpt×N is a heatmap predicted by the cosine knn,i j1 j2 jk (13)\nF ={F ,F ,...,F }. similarity between Fo\nk\nu\np\nt\nt\nand F\nobj\n. It is defined as knn,i obj,j1 obj,j2 obj,jk\nS Tobettercapturethegeometricinformationsuchastheshape\nH=Softmax( ), (8)\nof the object, we incorporate relative position encoding into\nτ\nand the cosine similarity S is calculated as\nF\nkpt\n∈RNkpt×d and F\nknn\n∈RNkpt×k×d\nF ·F F =F +MLP(Prel),\nS = kpt,i obj,j , i∈[1,N ], j ∈[1,N], (9) kpt kpt kpt (14)\nij ∥F kpt,i ∥ 2 ∥F obj,j ∥ 2 +ϵ kpt F knn =F knn +MLP(Pr k e n l n ). whereτ isatemperatureparameter,andϵisasmallpositive\nwhere Prel is keypoints’ position relative to the object\nconstant. kpt\ncenter, while Prel is the neighbors’ position relative to the\nTo model structural relationships between keypoints, a knn\ncorresponding keypoint\nGraph Attention Network (GAT) is applied.",
+      "size": 920,
+      "sentences": 5
+    },
+    {
+      "id": 24,
+      "content": "constant. kpt\ncenter, while Prel is the neighbors’ position relative to the\nTo model structural relationships between keypoints, a knn\ncorresponding keypoint\nGraph Attention Network (GAT) is applied. We define a\ngraph G=(V,E), where V =F represents the keypoints\nkpt N\nasnodes.E ⊆V×V representstheedgesbetweenkeypoints, Prel =P − 1 (cid:88) P ,\nwhich is defined based on fully connected topology. The kpt kpt N j (15)\nj=1\nnetwork update process is\nPrel =P −P . knn knn kpt\n \nh′ i =σ j∈N (cid:88) i∪{i} α ij Wh j, (10) B F y knn re i p s e t t r i a ti n o s n fo a r n m d e r d ea in rr t a o n R ge ( m Nk e p n t t ·k , ) t × h d e . d T im he en k s e i y o p n o o in f t F fe k a pt tu a r n e d s\nF serve as queries, while neighbor features F act as\nkpt knn\nwhere h i represents the feature vector of node i. W is keys and values in a multi-head attention mechanism\na learnable weight matrix. N denotes the neighbors of\ni\nnode i. σ is a non-linear activation function.",
+      "size": 979,
+      "sentences": 7
+    },
+    {
+      "id": 25,
+      "content": "epresents the feature vector of node i. W is keys and values in a multi-head attention mechanism\na learnable weight matrix. N denotes the neighbors of\ni\nnode i. σ is a non-linear activation function. α ij is the F kpt =Attn(F kpt ,F knn ). (16)\nattention coefficient, determining the importance of node j\ntonodei.Insteadofusingfixedadjacencyweights,weusea\nIn the second stage, to fuse global information, the global\nlearnable attention mechanism to dynamically determine the feature of the keypoints, denoted as Fglobal, is obtained\nimportance of each neighbor, and finally obtain the updated kpt\nby calculating the mean of the keypoint features with the\nfeatures F .",
+      "size": 667,
+      "sentences": 4
+    },
+    {
+      "id": 26,
+      "content": "ne the feature of the keypoints, denoted as Fglobal, is obtained\nimportance of each neighbor, and finally obtain the updated kpt\nby calculating the mean of the keypoint features with the\nfeatures F . kpt additionoftheabsolutepositionalencodingofthekeypoints\nC. Graph-Enhanced Local&Global Feature Fusion Module\nF =F +MLP(P ), (17)\nkpt kpt kpt\nAccurately capturing both local geometric relationships\nandglobalcontextualinformationiscrucialforenhancingthe\nqualityofkeypointfeaturerepresentations.However,achiev- Fglobal = 1 (cid:88)\nNkpt\nF . (18)\ning this balance in feature processing remains a challenge, kpt N kpt,i\nkpt\ni=1\nparticularlywhendealingwithspatiallydistributeddatasuch\nas keypoints and point clouds.",
+      "size": 711,
+      "sentences": 3
+    },
+    {
+      "id": 27,
+      "content": "lobal = 1 (cid:88)\nNkpt\nF . (18)\ning this balance in feature processing remains a challenge, kpt N kpt,i\nkpt\ni=1\nparticularlywhendealingwithspatiallydistributeddatasuch\nas keypoints and point clouds. This global feature is broadcasted to all keypoints and fused\nIn the first stage of feature fusion module, to extract local with the local keypoint features via an MLP, and then\ninformation, a K-Nearest Neighbors (KNN) graph is built the feature representation is enhanced using a self-attention\nbased on the sorted pairwise Euclidean distance for each mechanism. === 페이지 5 ===\nD. Symmetry-AwarePose&SizeEstimationModuleandLoss Each keypoint expands into a local point cloud with N\np\nIn pose&size estimation module, we predict the keypoint\npoints, forming the reconstructed set P\nrec\n∈R3×(NkptNp) and\noffsets ∆P.",
+      "size": 812,
+      "sentences": 4
+    },
+    {
+      "id": 28,
+      "content": "nModuleandLoss Each keypoint expands into a local point cloud with N\np\nIn pose&size estimation module, we predict the keypoint\npoints, forming the reconstructed set P\nrec\n∈R3×(NkptNp) and\noffsets ∆P. The reconstruction loss L enforces consis-\nNOCS coordinates from the obtained keypoint features via rec\ntency between P and the observed point cloud P\nMLPs and attention, and finally regress the object’s rotation rec\nmatrix R, translation vector t, size s following [24]. To ad- N\n1 (cid:88)\ndresstheissueofsymmetryambiguityintheposeestimation L = min ∥P −P ∥ +\ntask,basedonourpreviouswork[31],weproposeageneral rec N j=1 i∈[1,NkptNp] i rec,j 2\n(26)\nsymmetry-aware loss function L ps for pose and size that can 1 N (cid:88) kptNp\nuniformlyhandleobjectswithnosymmetry,finitesymmetry, min ∥P −P ∥ .",
+      "size": 796,
+      "sentences": 3
+    },
+    {
+      "id": 29,
+      "content": "roposeageneral rec N j=1 i∈[1,NkptNp] i rec,j 2\n(26)\nsymmetry-aware loss function L ps for pose and size that can 1 N (cid:88) kptNp\nuniformlyhandleobjectswithnosymmetry,finitesymmetry, min ∥P −P ∥ . and infinite symmetry N kpt N p j=1 i∈[1,N] rec,i j 2\nL ps = R m S∈ i R n S (cid:13) (cid:13)RgtvR S −Rpredv (cid:13) (cid:13) 2 (19) L re ∆ co e n n st s r u u r c e t s io t n hattherewillbenosignificantdeviationduring\n+\n(cid:13) (cid:13)tgt−tpred(cid:13)\n(cid:13) +\n(cid:13) (cid:13)sgt−spred(cid:13)\n(cid:13) . L =E[∥∆P∥ ]. (27)\n2 2 ∆ 2\nFor each finitely symmetric object (e.g., a prism), a set of\nIV. EXPERIMENT\nsymmetric rotation matrices R can be computed, while for\nS\nA. Experimental Setup\nother objects, R contains only the identity matrix.",
+      "size": 749,
+      "sentences": 6
+    },
+    {
+      "id": 30,
+      "content": "finitely symmetric object (e.g., a prism), a set of\nIV. EXPERIMENT\nsymmetric rotation matrices R can be computed, while for\nS\nA. Experimental Setup\nother objects, R contains only the identity matrix. Objects\nS\nwith infinite rotational symmetry around an axis (e.g., a Implementation details In the data preparation phase,\ncylinder) are abstracted as directed line segments located on we use a mixture of synthetic and real data as the training\nthe symmetry axis. v∈{0,1}3×1 is the vector representing set. For RGB images, we crop and scale them to 224 ×\nthe infinite symmetry of the object 224. For depth data, we convert them into point clouds\n  based on camera intrinsic parameters, with the number of\n1−I(x)\nsampled points N =1024.",
+      "size": 736,
+      "sentences": 7
+    },
+    {
+      "id": 31,
+      "content": "le them to 224 ×\nthe infinite symmetry of the object 224. For depth data, we convert them into point clouds\n  based on camera intrinsic parameters, with the number of\n1−I(x)\nsampled points N =1024. In the training phase, the feature\nv=1−I(y), (20)\ndimensions are d = d = 128 and d = 256, the number\n1 2\n1−I(z)\nof keypoints N =96, the temperature parameter τ =0.1,\nkpt\nwhere ϵ=10−7,thenumberofneighborsk =16,andthediversity\n(cid:40) thresholdT =0.01.Theweightsforthelossfunctionsareset\n1, if infinitely symmetric about the a axis\nI(a)= . as λ 1 =0.3, λ 2 =2.0, λ 3 =10.0, λ 4 =15.0, λ 5 =1.0, and\n0, otherwise λ =2.0. The batch size is set to 32 during training. In the\n6\n(21)\ntestingphase,similartopreviouswork,themethodfirstuses\nMaskRCNN [35] to segment the observed scene and obtain\nE. Overall Loss Function\ninstance masks. All training and testing are conducted on a\nThe overall loss function can be represented as follows\nsingle RTX3090Ti GPU.",
+      "size": 951,
+      "sentences": 7
+    },
+    {
+      "id": 32,
+      "content": "egment the observed scene and obtain\nE. Overall Loss Function\ninstance masks. All training and testing are conducted on a\nThe overall loss function can be represented as follows\nsingle RTX3090Ti GPU. L =λ L +λ L +λ L +λ L +λ L +λ L , Datasets Following previous works on category-level\nall 1 ps 2 cd 3 div 4 rec 5 ∆ 6 nocs\n(22) pose estimation [9], [11]–[21], [24]–[27], We evaluate our\nwhereλ ,λ ,...,λ areweightsforeachcorrespondingloss approach on two widely used datasets: CAMERA25 and\n1 2 6\nfunction, and L is from [24]. REAL275 [9]. CAMERA25 is a synthetic dataset derived\nnocs\nThe loss functions L and L constrain keypoint de- fromtheShapeNetdataset,consistingofsixobjectcategories\ncd div\n(bottle, can, bowl, laptop, camera, and mug) with a total of\ntection in a self-supervised manner, without requiring true\nkeypoint locations. L ensures each predicted keypoint 1,085 instances rendered under various poses and lighting\ncd\nis near at least one observed point, while L promotes conditions.",
+      "size": 997,
+      "sentences": 6
+    },
+    {
+      "id": 33,
+      "content": "out requiring true\nkeypoint locations. L ensures each predicted keypoint 1,085 instances rendered under various poses and lighting\ncd\nis near at least one observed point, while L promotes conditions. Among them, 184 instances are designated for\ndiv\nvalidation. In total, 300K composited images are generated,\ndiversity, preventing keypoints from collapsing. with 25K reserved for validation. REAL275 is a real-world\n1 (cid:88)\nNkpt\ndataset collected using a structure sensor in cluttered indoor\nL = min ∥P −P ∥ , (23)\ncd N kpt i∈[1,N] i kpt,j 2 environments. It consists of 7,000 images from 13 distinct\nj=1 scenes. Out of these, 2,750 images from six scenes are\n1 (cid:88)\nNkpt\n(cid:88)\nNkpt set aside for validation, including three novel instances per\nL = L , (24) categorythatwerenotpresentinthetrainingset.Byutilizing\ndiv N (N −1) ij\nkpt kpt both datasets, we assess our method’s ability to generalize\ni=1j=1,j̸=i\nfrom synthetic to real-world data.",
+      "size": 953,
+      "sentences": 8
+    },
+    {
+      "id": 34,
+      "content": "L = L , (24) categorythatwerenotpresentinthetrainingset.Byutilizing\ndiv N (N −1) ij\nkpt kpt both datasets, we assess our method’s ability to generalize\ni=1j=1,j̸=i\nfrom synthetic to real-world data. To demonstrate the cross-\nwhere a threshold T and a linear mapping are applied to\ndataset capability of our method, we also choose to test\nconstrain the loss\nit on the HouseCat6D dataset [36]. This test set consists\nmin(∥P −P ∥ ,T)\nL =1− kpt,i kpt,j 2 . (25) of five test scenes (3k frames) containing objects from 10\nij T household categories, including photometrically challenging\nOur self-supervised method for 3D keypoint detection en- objects such as glass and cutlery, with occlusions. sures geometric consistency by using MLPs to predict local Evaluation metrics Following NOCS [9], for symmetric\noffsets for keypoints, generating a dense 3D reconstruction.",
+      "size": 863,
+      "sentences": 5
+    },
+    {
+      "id": 35,
+      "content": "cutlery, with occlusions. sures geometric consistency by using MLPs to predict local Evaluation metrics Following NOCS [9], for symmetric\noffsets for keypoints, generating a dense 3D reconstruction. object categories like bottles, bowls, and cans, we permit\n=== 페이지 6 ===\nTABLEI\nCOMPARISONOFDIFFERENTMETHODSONREAL275DATASET\nMethod Use of Shape Priors IoU50 IoU75 5°/2cm 10°/2cm 10°/5cm\nNOCS [9] ✗ 78.0 30.1 7.2 13.8 25.2\nDualPoseNet [15] ✗ 79.8 62.2 29.3 50.0 66.8\nGPV-Pose [16] ✗ — 64.4 32.0 — 73.3\nIST-Net [17] ✗ 82.5 76.6 47.5 72.1 80.5\nQuery6DoF [18] ✗ 82.5 76.1 49.0 68.7 83.0\nLaPose [20] ✗ 47.9 15.8 — 37.4 57.4\nGenPose [21] ✗ — — 52.1 72.4 84.0\nAG-Pose [19] ✗ 83.7 79.5 54.7 74.7 83.1\nSPD [11] ✓ 77.3 53.2 19.3 43.2 54.1\nSGPA [12] ✓ 80.1 61.9 35.9 61.3 70.7\nSAR-Net [13] ✓ 79.3 62.4 31.6 50.3 68.3\nRBP-Pose [14] ✓ — 67.8 38.2 63.1 79.1\nDPDN [24] ✓ 83.4 70.6 46.0 70.4 78.4\nMK-Pose(Ours) ✗ 84.0 80.3 60.8 78.0 84.6\nTABLEII\n\u0000\u0014\u0000\u0013\u0000\u0013\nCOMPARISONOFDIFFERENTMETHODSONCAMERA25DATASET\nMethod IoU50 IoU75 5°/2cm 10°/2cm 10°/5cm\n\u0000\u001b\u0000\u0013\nNOCS[9] 83.9 69.5 32.3 48.2 64.4\nDualPoseNet[15] 92.4 86.4 64.7 77.2 84.7\nGPV-Pose[16] 93.4 88.3 72.1 — 89 \u0000\u0019\u0000\u0013\nQuery6DoF[18] 91.9 88.1 78.0 83.9 90\nLaPose[20] 49.4 14.1 — 42.4 73.1\n\u0000\u0017\u0000\u0013\nGenPose[21] — — 79.9 84.6 89.4\nAG-Pose[19] 93.8 91.3 77.8 85.5 91.6\nSPD[11] 93.2 83.1 54.3 73.3 81.5\n\u0000\u0015\u0000\u0013\nSGPA[12] 93.2 88.1 70.7 82.7 88.4\nSAR-Net[13] 86.8 79 66.7 75.3 80.3\nRBP-Pose[14] 93.1 89 73.5 82.1 89.5 \u0000\u0013\n\u0000E\u0000R\u0000[ \u0000E\u0000R\u0000W\u0000W\u0000O\u0000H \u0000F\u0000D\u0000Q \u0000F\u0000X\u0000S \u0000U\u0000H\u0000P\u0000R\u0000W\u0000H\u0000W\u0000H\u0000D\u0000S\u0000R\u0000W\u0000F\u0000X\u0000W\u0000O\u0000H\u0000U\u0000\\ \u0000J\u0000O\u0000D\u0000V\u0000V \u0000V\u0000K\u0000R\u0000H \u0000W\u0000X\u0000E\u0000H\nMK-Pose(Ours) 94.1 92.2 77.9 86.1 91.7 \u0000&\u0000D\u0000W\u0000H\u0000J\u0000R\u0000U\u0000\\\nthe predicted 3D bounding box to rotate freely around\nthe object’s vertical axis.",
+      "size": 1669,
+      "sentences": 3
+    },
+    {
+      "id": 36,
+      "content": "\u0000R\u0000W\u0000H\u0000W\u0000H\u0000D\u0000S\u0000R\u0000W\u0000F\u0000X\u0000W\u0000O\u0000H\u0000U\u0000\\ \u0000J\u0000O\u0000D\u0000V\u0000V \u0000V\u0000K\u0000R\u0000H \u0000W\u0000X\u0000E\u0000H\nMK-Pose(Ours) 94.1 92.2 77.9 86.1 91.7 \u0000&\u0000D\u0000W\u0000H\u0000J\u0000R\u0000U\u0000\\\nthe predicted 3D bounding box to rotate freely around\nthe object’s vertical axis. For the mug, we consider it a\nsymmetric object when the handle is not visible. To assess\n3D detection, we employ the intersection over union (IoU)\nmetric with a 25%, 50% and 75% threshold, which can\nbe represented as IoU , IoU and IoU respectively. For\n25 50 75\npose estimation, we present the average precision of object\ninstances where the translation error is less than m cm and\nthe rotation error is below n°, which is represented as n°/m\ncm in the results tables. B. Comparison Results\nMK-Pose is compared with existing state-of-the-art meth-\nods to demonstrate its effectiveness. Tab. I presents a\ncomparison of different methods on the REAL275 dataset,\nevaluating their performance based on IoU and pose esti-\nmation average precision at various error thresholds.",
+      "size": 970,
+      "sentences": 8
+    },
+    {
+      "id": 37,
+      "content": "effectiveness. Tab. I presents a\ncomparison of different methods on the REAL275 dataset,\nevaluating their performance based on IoU and pose esti-\nmation average precision at various error thresholds. The\nproposedmethod,MK-Pose,achievesstate-of-the-artperfor-\nmance without using shape priors. Among the shape-prior-\nfree methods, GenPose [21] and AG-Pose [19] have demon-\nstrated strong performance. However, MK-Pose surpasses\n\u0000H\u0000X\u0000O\u0000D\u00009\n\u00000\u0000.\u0000\u0010\u00003\u0000R\u0000V\u0000H\u0000\u0003\u0000\u0010\u0000\u0003\u0000,\u0000R\u00008\n25\n\u00000\u0000.\u0000\u0010\u00003\u0000R\u0000V\u0000H\u0000\u0003\u0000\u0010\u0000\u0003\u0000,\u0000R\u00008\n50\n\u0000$\u0000*\u0000\u0010\u00003\u0000R\u0000V\u0000H\u0000\u0003\u0000\u0010\u0000\u0003\u0000,\u0000R\u00008 25\n\u0000$\u0000*\u0000\u0010\u00003\u0000R\u0000V\u0000H\u0000\u0003\u0000\u0010\u0000\u0003\u0000,\u0000R\u00008\n50\nFig.4. ComparisononHouseCat6Ddataset.ThebarchartshowstheIoU25\nandIoU50 ofMK-PoseandAG-Posefordifferentcategoriesofobjects. both in multiple aspects, highlighting its effectiveness in\npose estimation. For example, at 5°/2cm, MK-Pose achieves\n60.8%,exceedingGenPose’s52.1%by8.7%andAG-Pose’s\n54.7% by 6.1%. Methods utilizing shape priors generally\nperform well, but MK-Pose achieves superior results despite\nnot relying on them.",
+      "size": 983,
+      "sentences": 10
+    },
+    {
+      "id": 38,
+      "content": "-Pose achieves\n60.8%,exceedingGenPose’s52.1%by8.7%andAG-Pose’s\n54.7% by 6.1%. Methods utilizing shape priors generally\nperform well, but MK-Pose achieves superior results despite\nnot relying on them. Even compared to the best shape-\nprior-based method, DPDN [24], MK-Pose performs better,\nwith an improvement of 14.8% at 5°/2cm. Tab. II presents\na comparison of different methods for category-level pose\nestimationonthesyntheticCAMERA25dataset.Despitenot\nusing shape priors, MK-Pose surpasses all other methods in\nIoU50,IoU75,10°/2cmand10°/5cm,andachievescompara-\nble results to Gen-Pose in 5°/2cm, demonstrating that it can\nachievehigh-precisionresultswithouttheneedforadditional\nshape priors. To evaluate the cross-dataset generalization ability of our\napproach, we trained the model on REAL275 and CAM-\nERA25, and tested it on the HouseCat6D dataset. The\n[표 데이터 감지됨]\n\n=== 페이지 7 ===\nAG-Pose\nMK-Pose\n(Ours)\nFig.5.",
+      "size": 914,
+      "sentences": 7
+    },
+    {
+      "id": 39,
+      "content": "s-dataset generalization ability of our\napproach, we trained the model on REAL275 and CAM-\nERA25, and tested it on the HouseCat6D dataset. The\n[표 데이터 감지됨]\n\n=== 페이지 7 ===\nAG-Pose\nMK-Pose\n(Ours)\nFig.5. Visualizationresultscomparisonofourmethodandtheofthemostadvancedmethodsincurrentcategory-levelposeestimation.Theredbounding\nboxrepresentsthepredictedresult,whilethegreenboundingboxrepresentsthegroundtruth.Bowls,cans,andbottlesexhibitinfiniterotationalsymmetry\naroundthey-axis,soanyboundingboxerrorsaroundthey-axisareconsideredcorrect. TABLEIII\nresults are presented in Fig. 4, comparing our method, MK-\nRESULTSOFABLATIONSTUDY\nPose, with AG-Pose across IoU and IoU . Our method\n25 50\nsignificantly outperforms AG-Pose in all categories. For Method 5°/2cm 10°/2cm 10°/5cm\ncategories not present in the training set, such as box, shoe,\nw/o text 53.3 72.4 83.2\nand tube, MK-Pose demonstrates a considerable advantage.",
+      "size": 913,
+      "sentences": 7
+    },
+    {
+      "id": 40,
+      "content": "se in all categories. For Method 5°/2cm 10°/2cm 10°/5cm\ncategories not present in the training set, such as box, shoe,\nw/o text 53.3 72.4 83.2\nand tube, MK-Pose demonstrates a considerable advantage. w/o sym 58.4 72.9 82.0\nSpecifically, MK-Pose achieves an IoU of 37.5%, nearly\n50 w/o feature fusion 54.1 73.4 83.7\n1.9× improvement over AG-Pose (19.7%). Similarly, for\nw/o reconstructor 55.2 72.8 81.8\nIoU ,MK-Poseattains80.1%,surpassingAG-Pose(63.6%)\n25\nw/o global 57.8 74.8 82.6\nby 16.5%. This indicates that when faced with objects never\nseen in the training set, MK-Pose demonstrates a strong MK-Pose(Ours) 60.8 78.0 84.6\nadvantage in a zero-shot setting. These results demonstrate\nthe robustness and superior generalization ability of our\nmethod, allowing it to accurately handle novel objects with-\ndealing with objects that are occluded or with complex and\nout requiring prior exposure during training. unclear textures.",
+      "size": 927,
+      "sentences": 7
+    },
+    {
+      "id": 41,
+      "content": "ability of our\nmethod, allowing it to accurately handle novel objects with-\ndealing with objects that are occluded or with complex and\nout requiring prior exposure during training. unclear textures. While AG-Pose struggles with objects that\narepartiallyhidden,oftenpredictingincorrectorientationsor\nC. Ablation Study\nmisalignments, our method successfully captures plausible\nTab.IIIpresentsanablationstudyoncategory-levelobject\nposes. This suggests that our approach effectively leverages\npose estimation, comparing full MK-Pose with five ablated\ncontextual and geometric cues beyond visible keypoints,\nversions,where”w/o”meanswithout,i.e.,removingthespe-\nleadingtomorereliableposepredictionsinclutteredenviron-\ncific module only. The variant ”w/o text” omits text feature\nments. Furthermore, our method handles symmetric objects\ngenerated from CLIP, leading to a decrease in performance,\nin a more practical and efficient manner.",
+      "size": 930,
+      "sentences": 6
+    },
+    {
+      "id": 42,
+      "content": "The variant ”w/o text” omits text feature\nments. Furthermore, our method handles symmetric objects\ngenerated from CLIP, leading to a decrease in performance,\nin a more practical and efficient manner. AG-Pose tends to\nwhich highlights the importance of text-based features in\nexpend considerable effort in regressing a pose that is closer\nrestoring occluded objects and providing a shared semantic\nto the ground truth in terms of a specific canonical orien-\nspace. ”w/o sym” uses plain L loss instead of symmetry-\n2 tation. However, for symmetric objects, multiple equivalent\naware pose&size loss function, indicating the necessity of\nposesexist,andforcingthemodeltopredictaparticularone\nsymmetry perception for pose estimation. The absence of\ncan introduce unnecessary errors.",
+      "size": 776,
+      "sentences": 6
+    },
+    {
+      "id": 43,
+      "content": "are pose&size loss function, indicating the necessity of\nposesexist,andforcingthemodeltopredictaparticularone\nsymmetry perception for pose estimation. The absence of\ncan introduce unnecessary errors. In contrast, our approach\nfeature fusion module in ”w/o feature fusion” leads to a\nnaturally converges to one of the valid poses, leading to\nfurther reduction in performance, highlighting the value of\na more stable and consistent performance across different\na balanced integration of local geometric information and\ninstances. global context to keypoint features. The ”w/o reconstructor”\nsettingresultsindicatesthatthereconstructionmodulerefines\nV. CONCLUSION\npose estimation by enforcing geometric consistency. Re-\nmoving global features in keypoint detection module (”w/o Inthispaper,weproposeMK-Pose,amultimodalkeypoint\nglobal”) suggests that global contextual information plays a learningframeworkforcategory-levelobjectposeestimation. key role in stable keypoint predictions.",
+      "size": 981,
+      "sentences": 7
+    },
+    {
+      "id": 44,
+      "content": "aper,weproposeMK-Pose,amultimodalkeypoint\nglobal”) suggests that global contextual information plays a learningframeworkforcategory-levelobjectposeestimation. key role in stable keypoint predictions. ByintegratingRGBimages,pointclouds,andcategory-level\ntextual descriptions, MK-Pose constructs a unified object\nD. Visualization\nrepresentationtoenhanceaccuracyandgeneralizationability. To evaluate the performance of our category-level object Aself-supervisedkeypointdetectionmoduleobtainsfeatures\npose estimation approach, we conduct qualitative visual- using learnable queries and a graph-based network, while a\nization experiments, comparing our method with the most graph-enhanced feature fusion module improves robustness\nadvanced method AG-Pose [19]. As shown in Fig. 5, our against occlusions and intra-category variations.",
+      "size": 829,
+      "sentences": 6
+    },
+    {
+      "id": 45,
+      "content": "ts, comparing our method with the most graph-enhanced feature fusion module improves robustness\nadvanced method AG-Pose [19]. As shown in Fig. 5, our against occlusions and intra-category variations. Addition-\nmethoddemonstratessuperiorprecisionandrobustnesswhen ally, a symmetry-aware general pose&size loss function is\n[표 데이터 감지됨]\n\n=== 페이지 8 ===\nintroducedtohandlebothfiniteandinfinitesymmetry,boost- [15] J.Lin,Z.Wei,Z.Li,S.Xu,K.Jia,andY.Li,“Dualposenet:Category-\ning performance on symmetric objects. Extensive experi- level6dobjectposeandsizeestimationusingdualposenetworkwith\nrefinedlearningofposeconsistency,”inProceedingsoftheIEEE/CVF\nments on REAL275 and CAMERA25 show that MK-Pose\nInternationalConferenceonComputerVision,2021,pp.3560–3569. achieves state-of-the-art performance, outperforming shape- [16] Y.Di,R.Zhang,Z.Lou,F.Manhardt,X.Ji,N.Navab,andF.Tombari,\nprior-free methods and its shape-prior-based counterparts.",
+      "size": 930,
+      "sentences": 6
+    },
+    {
+      "id": 46,
+      "content": "2021,pp.3560–3569. achieves state-of-the-art performance, outperforming shape- [16] Y.Di,R.Zhang,Z.Lou,F.Manhardt,X.Ji,N.Navab,andF.Tombari,\nprior-free methods and its shape-prior-based counterparts. “Gpv-pose:Category-levelobjectposeestimationviageometry-guided\npoint-wise voting,” in Proceedings of the IEEE/CVF Conference on\nCross-dataset tests on HouseCat6D demonstrate its strong\nComputerVisionandPatternRecognition,2022,pp.6781–6791. zero-shot generalization ability to unseen objects, showcas-\n[17] J. Liu, Y. Chen, X. Ye, and X. Qi, “Prior-free category-level pose\ning its effectiveness in real-world applications. estimationwithimplicitspacetransformation,”inIEEEInternational\nConferenceonComputerVision2023(02/10/2023-06/10/2023,Paris),\n2023.",
+      "size": 752,
+      "sentences": 5
+    },
+    {
+      "id": 47,
+      "content": "category-level pose\ning its effectiveness in real-world applications. estimationwithimplicitspacetransformation,”inIEEEInternational\nConferenceonComputerVision2023(02/10/2023-06/10/2023,Paris),\n2023. [18] R.Wang,X.Wang,T.Li,R.Yang,M.Wan,andW.Liu,“Query6dof:\nREFERENCES\nLearning sparse queries as implicit shape prior for category-level\n6dofposeestimation,”inProceedingsoftheIEEE/CVFInternational\n[1] G. Wang, F. Manhardt, J. Shao, X. Ji, N. Navab, and F. Tombari, ConferenceonComputerVision,2023,pp.14055–14064. “Self6d: Self-supervised monocular 6d object pose estimation,” in [19] X. Lin, W. Yang, Y. Gao, and T. Zhang, “Instance-adaptive and\nComputer Vision–ECCV 2020: 16th European Conference, Glasgow, geometric-aware keypoint learning for category-level 6d object pose\nUK, August 23–28, 2020, Proceedings, Part I 16. Springer, 2020, estimation,”inProceedingsoftheIEEE/CVFConferenceonComputer\npp.108–125. VisionandPatternRecognition,2024,pp.21040–21049.",
+      "size": 958,
+      "sentences": 6
+    },
+    {
+      "id": 48,
+      "content": "6d object pose\nUK, August 23–28, 2020, Proceedings, Part I 16. Springer, 2020, estimation,”inProceedingsoftheIEEE/CVFConferenceonComputer\npp.108–125. VisionandPatternRecognition,2024,pp.21040–21049. [2] B. Drost, M. Ulrich, N. Navab, and S. Ilic, “Model globally, match [20] R. Zhang, Z. Huang, G. Wang, C. Zhang, Y. Di, X. Zuo, J. Tang,\nlocally:Efficientandrobust3dobjectrecognition,”in2010IEEEcom- andX.Ji,“Lapose:Laplacianmixtureshapemodelingforrgb-based\nputersocietyconferenceoncomputervisionandpatternrecognition. category-level object pose estimation,” in European Conference on\nIeee,2010,pp.998–1005. ComputerVision. Springer,2024,pp.467–484.",
+      "size": 649,
+      "sentences": 8
+    },
+    {
+      "id": 49,
+      "content": "b-based\nputersocietyconferenceoncomputervisionandpatternrecognition. category-level object pose estimation,” in European Conference on\nIeee,2010,pp.998–1005. ComputerVision. Springer,2024,pp.467–484. [3] S.Hinterstoisser,V.Lepetit,S.Ilic,S.Holzer,G.Bradski,K.Konolige, [21] J. Zhang, M. Wu, and H. Dong, “Generative category-level object\nand N.Navab, “Model basedtraining, detection andpose estimation poseestimationviadiffusionmodels,”AdvancesinNeuralInformation\nof texture-less 3d objects in heavily cluttered scenes,” in Computer ProcessingSystems,vol.36,2024. Vision–ACCV 2012: 11th Asian Conference on Computer Vision, [22] J. Zhang, W. Huang, B. Peng, M. Wu, F. Hu, Z. Chen, B. Zhao,\nDaejeon, Korea, November 5-9, 2012, Revised Selected Papers, Part and H. Dong, “Omni6dpose: a benchmark and model for universal\nI11. Springer,2013,pp.548–562. 6dobjectposeestimationandtracking,” inEuropeanConferenceon\n[4] Y. Xiang, T. Schmidt, V. Narayanan, and D. Fox, “Posecnn: A ComputerVision.",
+      "size": 987,
+      "sentences": 8
+    },
+    {
+      "id": 50,
+      "content": "hmark and model for universal\nI11. Springer,2013,pp.548–562. 6dobjectposeestimationandtracking,” inEuropeanConferenceon\n[4] Y. Xiang, T. Schmidt, V. Narayanan, and D. Fox, “Posecnn: A ComputerVision. Springer,2024,pp.199–216. convolutionalneuralnetworkfor6dobjectposeestimationincluttered [23] J. Cai, Y. He, W. Yuan, S. Zhu, Z. Dong, L. Bo, and Q. Chen,\nscenes,”arXivpreprintarXiv:1711.00199,2017. “Open-vocabulary category-level object pose and size estimation,”\n[5] C. Wang, D. Xu, Y. Zhu, R. Mart´ın-Mart´ın, C. Lu, L. Fei-Fei, and IEEERoboticsandAutomationLetters,2024. S.Savarese,“Densefusion:6dobjectposeestimationbyiterativedense [24] J. Lin, Z. Wei, C. Ding, and K. Jia, “Category-level 6d object\nfusion,” in Proceedings of the IEEE/CVF conference on computer poseandsizeestimationusingself-superviseddeeppriordeformation\nvisionandpatternrecognition,2019,pp.3343–3352. networks,” in European Conference on Computer Vision.",
+      "size": 931,
+      "sentences": 9
+    },
+    {
+      "id": 51,
+      "content": "the IEEE/CVF conference on computer poseandsizeestimationusingself-superviseddeeppriordeformation\nvisionandpatternrecognition,2019,pp.3343–3352. networks,” in European Conference on Computer Vision. Springer,\n[6] S. Peng, Y. Liu, Q. Huang, X. Zhou, and H. Bao, “Pvnet: Pixel- 2022,pp.19–34. wisevotingnetworkfor6dofposeestimation,”inProceedingsofthe [25] P.Wang,T.Ikeda,R.Lee,andK.Nishiwaki,“Gs-pose:Category-level\nIEEE/CVF conference on computer vision and pattern recognition, object pose estimation via geometric and semantic correspondence,”\n2019,pp.4561–4570. in European Conference on Computer Vision. Springer, 2024, pp. [7] F. Duffhauss, S. Koch, H. Ziesche, N. A. Vien, and G. Neumann, 108–126. “Symfm6d: Symmetry-aware multi-directional fusion for multi-view [26] Y.You,R.Shi,W.Wang,andC.Lu,“Cppf:Towardsrobustcategory-\n6d object pose estimation,” IEEE Robotics and Automation Letters, level9dposeestimationinthewild,”inProceedingsoftheIEEE/CVF\n2023.",
+      "size": 960,
+      "sentences": 8
+    },
+    {
+      "id": 52,
+      "content": "ti-view [26] Y.You,R.Shi,W.Wang,andC.Lu,“Cppf:Towardsrobustcategory-\n6d object pose estimation,” IEEE Robotics and Automation Letters, level9dposeestimationinthewild,”inProceedingsoftheIEEE/CVF\n2023. Conference on Computer Vision and Pattern Recognition, 2022, pp. [8] D.Cai,J.Heikkila¨,andE.Rahtu,“Ove6d:Objectviewpointencoding 6866–6875. for depth-based 6d object pose estimation,” in Proceedings of the [27] T.Ikeda,S.Zakharov,T.Ko,M.Z.Irshad,R.Lee,K.Liu,R.Ambrus,\nIEEE/CVFConferenceonComputerVisionandPatternRecognition, and K. Nishiwaki, “Diffusionnocs: Managing symmetry and uncer-\n2022,pp.6803–6813. taintyinsim2realmulti-modalcategory-levelposeestimation,”in2024\n[9] H.Wang,S.Sridhar,J.Huang,J.Valentin,S.Song,andL.J.Guibas, IEEE/RSJInternationalConferenceonIntelligentRobotsandSystems\n“Normalizedobjectcoordinatespaceforcategory-level6dobjectpose (IROS),2024,pp.7406–7413.",
+      "size": 881,
+      "sentences": 5
+    },
+    {
+      "id": 53,
+      "content": "S.Sridhar,J.Huang,J.Valentin,S.Song,andL.J.Guibas, IEEE/RSJInternationalConferenceonIntelligentRobotsandSystems\n“Normalizedobjectcoordinatespaceforcategory-level6dobjectpose (IROS),2024,pp.7406–7413. andsizeestimation,”inProceedingsoftheIEEE/CVFConferenceon [28] H. Zhang, J. Peeters, E. Demeester, and K. Kellens, “Deep learning\nComputerVisionandPatternRecognition,2019,pp.2642–2651. reactive robotic grasping with a versatile vacuum gripper,” IEEE\n[10] W. Chen, X. Jia, H. J. Chang, J. Duan, L. Shen, and A. Leonardis, TransactionsonRobotics,vol.39,no.2,pp.1244–1259,2022. “Fs-net: Fast shape-based network for category-level 6d object pose [29] Y. Yang, H. Yu, X. Lou, Y. Liu, and C. Choi, “Attribute-based\nestimationwithdecoupledrotationmechanism,”inProceedingsofthe roboticgraspingwithdata-efficientadaptation,”IEEETransactionson\nIEEE/CVFConferenceonComputerVisionandPatternRecognition, Robotics,2024. 2021,pp.1581–1590.",
+      "size": 925,
+      "sentences": 5
+    },
+    {
+      "id": 54,
+      "content": "coupledrotationmechanism,”inProceedingsofthe roboticgraspingwithdata-efficientadaptation,”IEEETransactionson\nIEEE/CVFConferenceonComputerVisionandPatternRecognition, Robotics,2024. 2021,pp.1581–1590. [30] W. Wei, P. Wang, S. Wang, Y. Luo, W. Li, D. Li, Y. Huang, and\n[11] M. Tian, M. H. Ang, and G. H. Lee, “Shape prior deformation for H. Duan, “Learning human-like functional grasping for multi-finger\ncategorical6dobjectposeandsizeestimation,”inComputerVision– hands from few demonstrations,” IEEE Transactions on Robotics,\nECCV2020:16thEuropeanConference,Glasgow,UK,August23–28, 2024. 2020,Proceedings,PartXXI16. Springer,2020,pp.530–546.",
+      "size": 641,
+      "sentences": 5
+    },
+    {
+      "id": 55,
+      "content": "n,”inComputerVision– hands from few demonstrations,” IEEE Transactions on Robotics,\nECCV2020:16thEuropeanConference,Glasgow,UK,August23–28, 2024. 2020,Proceedings,PartXXI16. Springer,2020,pp.530–546. [31] Y. Yang, Z. Cui, Q. Zhang, and J. Liu, “Ps6d: Point cloud based\n[12] K. Chen and Q. Dou, “Sgpa: Structure-guided prior adaptation for symmetry-aware 6d object pose estimation in robot bin-picking,” in\ncategory-level 6d object pose estimation,” in Proceedings of the 2024 IEEE/RSJ International Conference on Intelligent Robots and\nIEEE/CVF International Conference on Computer Vision, 2021, pp. Systems(IROS),2024,pp.7167–7174. 2773–2782.",
+      "size": 643,
+      "sentences": 6
+    },
+    {
+      "id": 56,
+      "content": "on,” in Proceedings of the 2024 IEEE/RSJ International Conference on Intelligent Robots and\nIEEE/CVF International Conference on Computer Vision, 2021, pp. Systems(IROS),2024,pp.7167–7174. 2773–2782. [32] M.Oquab,T.Darcet,T.Moutakanni,H.Vo,M.Szafraniec,V.Khali-\n[13] H. Lin, Z. Liu, C. Cheang, Y. Fu, G. Guo, and X. Xue, “Sar-net: dov,P.Fernandez,D.Haziza,F.Massa,A.El-Noubyetal.,“Dinov2:\nShape alignment and recovery network for category-level 6d object Learning robust visual features without supervision,” arXiv preprint\nposeandsizeestimation,”inProceedingsoftheIEEE/CVFconference arXiv:2304.07193,2023.\noncomputervisionandpatternrecognition,2022,pp.6707–6717. [33] C. R. Qi, L. Yi, H. Su, and L. J. Guibas, “Pointnet++: Deep\n[14] R. Zhang, Y. Di, Z. Lou, F. Manhardt, F. Tombari, and X. Ji, hierarchicalfeaturelearningonpointsetsinametricspace,”Advances\n“Rbp-pose:Residualboundingboxprojectionforcategory-levelpose inneuralinformationprocessingsystems,vol.30,2017.",
+      "size": 968,
+      "sentences": 6
+    },
+    {
+      "id": 57,
+      "content": "t, F. Tombari, and X. Ji, hierarchicalfeaturelearningonpointsetsinametricspace,”Advances\n“Rbp-pose:Residualboundingboxprojectionforcategory-levelpose inneuralinformationprocessingsystems,vol.30,2017. estimation,”inEuropeanConferenceonComputerVision. Springer, [34] A.Radford,J.W.Kim,C.Hallacy,A.Ramesh,G.Goh,S.Agarwal,\n2022,pp.655–672. G.Sastry,A.Askell,P.Mishkin,J.Clarketal.,“Learningtransferable\n=== 페이지 9 ===\nvisual models from natural language supervision,” in International\nconferenceonmachinelearning. PMLR,2021,pp.8748–8763. [35] K. He, G. Gkioxari, P. Dolla´r, and R. Girshick, “Mask r-cnn,” in\nProceedingsoftheIEEEinternationalconferenceoncomputervision,\n2017,pp.2961–2969.",
+      "size": 683,
+      "sentences": 6
+    },
+    {
+      "id": 58,
+      "content": "erenceonmachinelearning. PMLR,2021,pp.8748–8763. [35] K. He, G. Gkioxari, P. Dolla´r, and R. Girshick, “Mask r-cnn,” in\nProceedingsoftheIEEEinternationalconferenceoncomputervision,\n2017,pp.2961–2969. [36] H. Jung, S.-C. Wu, P. Ruhkamp, G. Zhai, H. Schieber, G. Rizzoli,\nP. Wang, H. Zhao, L. Garattoni, S. Meier, D. Roth, N. Navab, and\nB. Busam, “Housecat6d-a large-scale multi-modal category level 6d\nobjectperceptiondatasetwithhouseholdobjectsinrealisticscenarios,”\ninProceedingsoftheIEEE/CVFConferenceonComputerVisionand\nPatternRecognition,2024,pp.22498–22508.",
+      "size": 562,
+      "sentences": 4
+    }
+  ]
+}

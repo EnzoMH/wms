@@ -1,0 +1,248 @@
+{
+  "source": "ArXiv",
+  "filename": "003_JENGA__Object_selection_and_pose_estimation_for_ro.pdf",
+  "total_chars": 27846,
+  "total_chunks": 40,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "=== 페이지 1 ===\n5202\nnuJ\n61\n]OR.sc[\n1v52431.6052:viXra\nThis paper has been accepted for publication at the\nIEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) 2025\nJENGA: Object selection and pose estimation\nfor robotic grasping from a stack\nSai Srinivas Jeevanandam1, Sandeep Inuganti1,2, Shreedhar Govil1, Didier Stricker1,2, Jason Rambach1\n1German Research Center for Artificial Intelligence (DFKI), 2RPTU Kaiserslautern\nAbstract—Vision-based robotic object grasping is typically\ninvestigated in the context of isolated objects or unstructured\nobject sets in bin picking scenarios. However, there are several\nsettings,suchasconstructionorwarehouseautomation,wherea\nrobotneedstointeractwithastructuredobjectformationsuch\nas a stack.",
+      "size": 755,
+      "sentences": 2
+    },
+    {
+      "id": 2,
+      "content": "nstructured\nobject sets in bin picking scenarios. However, there are several\nsettings,suchasconstructionorwarehouseautomation,wherea\nrobotneedstointeractwithastructuredobjectformationsuch\nas a stack. In this context, we define the problem of selecting\nsuitableobjectsforgraspingalongwithestimatinganaccurate\n6DoFposeoftheseobjects.Toaddressthisproblem,wepropose\na camera-IMU based approach that prioritizes unobstructed\nobjectsonthehigherlayersofstacksandintroduceadatasetfor\nbenchmarkingandevaluation,alongwithasuitableevaluation\nmetric that combines object selection with pose accuracy. Experimental results show that although our method can\nperformquitewell,thisisachallengingproblemifacompletely\nerror-free solution is needed. Finally, we show results from the\ndeployment of our method for a brick-picking application in a\nconstruction scenario. Index Terms—Robotic Grasping, Object Pose, Object Pick- Fig.",
+      "size": 910,
+      "sentences": 6
+    },
+    {
+      "id": 3,
+      "content": "solution is needed. Finally, we show results from the\ndeployment of our method for a brick-picking application in a\nconstruction scenario. Index Terms—Robotic Grasping, Object Pose, Object Pick- Fig. 1: When performing robotic grasping from an object\ning, Pose Estimation, Picking from a Stack stack, detection and 6DoF object pose are not sufficient. We\npresent an approach that is able to select suitable objects for\nI. INTRODUCTION grasping. In modern robotic applications, such as warehouse au-\ntomation and domestic assistance, robots frequently en-\ncounter scenes where objects are stacked rather than merely object detection and pose estimation with object suitability\nscattered or isolated. Stacked arrangements introduce sub- forgrasping.Weinvestigateandevaluatebaselineapproaches\nstantial occlusion and partial observability, often leading to for the object selection, such as relying on the confidence of\nambiguous or erroneous pose estimates.",
+      "size": 954,
+      "sentences": 8
+    },
+    {
+      "id": 4,
+      "content": "igateandevaluatebaselineapproaches\nstantial occlusion and partial observability, often leading to for the object selection, such as relying on the confidence of\nambiguous or erroneous pose estimates. Although a state- the object detector to select objects of lower occlusion or on\nof-the-art 6DoF (6 Degrees of Freedom) pose estimation inertial sensor measurements to locate the objects on the top\nalgorithm [1] can generate poses for multiple objects, many of the stack. Finally, we propose a novel method to select\nofthesemightbeunreliableorphysicallyobstructed,making suitablegraspingcandidatesthatcombinesposeinformation,\nthem unsuitable for grasping. Specifically, objects may be object mask visibility, and inertial sensor cues. In summary,\nnestled beneath or alongside other objects in the stack, this work introduces the following contributions:\ncreating challenges that most pose estimation methods do • Weformallydefinetheproblemofobjectgraspingfrom\nnot adequately address.",
+      "size": 983,
+      "sentences": 5
+    },
+    {
+      "id": 5,
+      "content": "jects in the stack, this work introduces the following contributions:\ncreating challenges that most pose estimation methods do • Weformallydefinetheproblemofobjectgraspingfrom\nnot adequately address. structuredstacksasopposedtothecommonbin-picking\nOn the other hand, research on robotic grasping has put scenario. significant effort on the bin-picking scenario where objects • Weintroduceanovel,procedurallygenerateddatasetfor\nareplacedinanunorderedmannerinsideacontainerandare the stacked object pose estimation and grasping task\ngrasped from above [2], [3]. In this case object grasping is along with a suitable evaluation protocol to quantita-\nless challenging and has less potential impact on a failed tively benchmark solutions. grasp than picking from a stack.",
+      "size": 766,
+      "sentences": 5
+    },
+    {
+      "id": 6,
+      "content": "case object grasping is along with a suitable evaluation protocol to quantita-\nless challenging and has less potential impact on a failed tively benchmark solutions. grasp than picking from a stack. Since object stacks are • We propose a novel visual-inertial method for stacked\ncommon structures encountered in daily life, we advocate object selection and pose estimation and an evaluation\nthe need for the development of robotic grasping policies against appropriate baselines. for such structures as well. To achieve this, we initially created a synthetic dataset of II. RELATEDWORK\nstacked objects (bricks in our case) representing a common\nA. Object Pose Estimation\nuse-caseofobjectsstackedinpalletsinconstruction.Further,\nObject pose estimation plays a crucial role in robotic\nweformallydefinetheproblemofobjectpickingfromstacks\ngrasping, enabling robots to localize and manipulate objects\nanddesignappropriatemetricsforitsevaluationthatcombine\nin various environments accurately.",
+      "size": 986,
+      "sentences": 7
+    },
+    {
+      "id": 7,
+      "content": "rmallydefinetheproblemofobjectpickingfromstacks\ngrasping, enabling robots to localize and manipulate objects\nanddesignappropriatemetricsforitsevaluationthatcombine\nin various environments accurately. Since robotic grasping\nContact:{saisrinivas.jeevanandam,jason.rambach}@dfki.de is a task that requires highly accurate poses, we focus on\n=== 페이지 2 ===\ninstance-levelposeestimationmethodswherea3Dreference R ∈R3×3istherotationmatrixfromtheglobalcoordinate\nsg\nmodel of the exact object whose pose we wish to estimate, frame G to the sensor coordinate frame S.\nisavailable.Traditionalobjectposeestimationmethodssuch The rigid transformation between camera and inertial\nasIterativeClosestPoint(ICP)[4]havebeenwidelyadopted sensor coordinate systems, is given by T =[R ,c ]. sc sc s\nfor aligning known 3D models to observed point clouds or\nimage features. However, these methods often struggle in\ncluttered or occluded environments.",
+      "size": 927,
+      "sentences": 4
+    },
+    {
+      "id": 8,
+      "content": "ordinate systems, is given by T =[R ,c ]. sc sc s\nfor aligning known 3D models to observed point clouds or\nimage features. However, these methods often struggle in\ncluttered or occluded environments. Recently, deep learning\napproaches have significantly improved object pose estima-\ntion by leveraging large datasets. While some early methods\ndirectlyregressedobjectposesor3Dboundingboxes[5],[6],\nmethods such as PoseCNN [7], and HiPose [1] utilize deep\nfeature representations to improve robustness to occlusions\nand lighting variations. ZebraPose [8] uses a binary surface\nencoding representation to establish image-to-model (2D-\n3D) correspondences leading to a high accuracy method\nwhile being computationally efficient and suitable for real-\ntime applications. A complete overview of the state-of-the-\nart in the topic can be found in the report of the BOP\nchallenge [9]. B. Robotic Grasping\nFig.",
+      "size": 901,
+      "sentences": 8
+    },
+    {
+      "id": 9,
+      "content": "utationally efficient and suitable for real-\ntime applications. A complete overview of the state-of-the-\nart in the topic can be found in the report of the BOP\nchallenge [9]. B. Robotic Grasping\nFig. 2: Illustration of the coordinate systems in our pipeline\nRobotic grasping has been extensively studied in diverse and their transformations\nsettings—suchaspickingobjectsfromtables,bins,andcon-\nveyorbelts.Inthesescenarios,robotsemployacombination\nof grasping and localization techniques to manipulate or B. Problem Definition\nretrieve objects. Given an RGB image I containing a set of N stacked\nRobot grasping methods can be broadly classified into\nobjects O = [O ,··· ,O ] and optionally a corresponding\ntwo categories: geometric-based and data-driven [10], [11].",
+      "size": 764,
+      "sentences": 6
+    },
+    {
+      "id": 10,
+      "content": "containing a set of N stacked\nRobot grasping methods can be broadly classified into\nobjects O = [O ,··· ,O ] and optionally a corresponding\ntwo categories: geometric-based and data-driven [10], [11]. 1 N\ninertial acceleration measurement αI, the goal is to identify\nGeometric(orsometimescalledanalytical)methodstypically s\nandestimatethe6DoFposesoftheobjectsthataregraspable,\nfirstanalyzetheshapeofthetargetobjectstoplananappro-\nboth in terms of occlusion and stability of the stack. priate grasping pose. Meanwhile, data-driven (or sometimes\nFormally, given a set of pose hypotheses\ncalledempirical)methodsarebasedonmachinelearningand\nhavebecomeincreasinglypopular.Theyhavemadesubstan-\ntial improvement in recent years owing to the increased data Π={T1 ,T2 ,...,Tn }, (1)\nco co co\navailability, better computational resources, and algorithmic\nimprovements.",
+      "size": 857,
+      "sentences": 4
+    },
+    {
+      "id": 11,
+      "content": "popular.Theyhavemadesubstan-\ntial improvement in recent years owing to the increased data Π={T1 ,T2 ,...,Tn }, (1)\nco co co\navailability, better computational resources, and algorithmic\nimprovements. We refer the reader to standard surveys on weaimtofilter therawsetofposeestimationsΠtoyield\nthe subject for a more complete treatment [10], [12], [13]. a smaller, physically consistent set of graspable poses:\nDespite substantial progress in various grasping methods,\nthe challenge of handling objects in stacks remains under-\nG =F(Π,I,M,α ), (2)\nexplored. Stacked objects introduce unique difficulties, such s\nas ensuring stability and executing precise grasps without\ndisturbing neighboring items. In this paper, we tackle these where M represents 3D object models. challenges by proposing a novel camera-IMU based ap- Figure 2 illustrates the different coordinate frames and their\nproach and presenting an evaluation benchmark dataset.",
+      "size": 937,
+      "sentences": 6
+    },
+    {
+      "id": 12,
+      "content": "represents 3D object models. challenges by proposing a novel camera-IMU based ap- Figure 2 illustrates the different coordinate frames and their\nproach and presenting an evaluation benchmark dataset. transformations including the pose between the camera and\nthe object. III. PROBLEMFORMULATION\nA. Notation IV. METHODOLOGY\nWedefinea6DoFposeasatransformationT =[R ∈\nco co A. Overview\nR3×3,o ∈ R3] between the camera coordinate system C\nc\nand an object coordinate system O. Our approach consists of four major components: (i) de-\nAn inertial sensor (IMU) measures linear acceleration tectionof2Dregionsofinterest(RoIs),(ii)6DoFobjectpose\nα ∈ R3 and angular velocity ω ∈ R3 with respect to the estimation, (iii) Vision-based object filtering, and (iv) IMU-\nsensorcoordinatesystemS.Whennolinearaccelerationdue based object height filtering.",
+      "size": 835,
+      "sentences": 8
+    },
+    {
+      "id": 13,
+      "content": "∈ R3 and angular velocity ω ∈ R3 with respect to the estimation, (iii) Vision-based object filtering, and (iv) IMU-\nsensorcoordinatesystemS.Whennolinearaccelerationdue based object height filtering. This pipeline refines the raw\ntosensormotionispresent,themeasuredaccelerationcorre- pose hypotheses from (i)-(ii) into a final set of unobstructed\nspondstothegravityvectorg =[0,0,−9.81]projected andvisuallyconsistentgraspingcandidates.Themodulesare\nglobal\non the sensor coordinate system as α =R g , where detailed below:\ns sg global\n=== 페이지 3 ===\nB. 2D Detection ofthegravityvector.Toretrievethis,firsttheobjectposition\nis transformed to the sensor coordinate system as:\nAnRoIdefinesthesubregionofanimagethatishypothe-\nsized to contain an object. To achieve this, we use YOLOv8 oi =Ti oi. (5)\ns sc c\n[14] as the 2D detector. For an input image I, the detector\nyieldsasetofboundingboxesD foreachrecognizedobject.",
+      "size": 911,
+      "sentences": 6
+    },
+    {
+      "id": 14,
+      "content": "pothe-\nsized to contain an object. To achieve this, we use YOLOv8 oi =Ti oi. (5)\ns sc c\n[14] as the 2D detector. For an input image I, the detector\nyieldsasetofboundingboxesD foreachrecognizedobject. The object position in the global frame o g would be given\nThese bounding boxes provide the RoIs needed as input to as:\nthe pose estimation algorithm. oi g =Ti gs oi s . (6)\nHowever, since we are only interested in the position along\nC. 6DoF Object Pose Estimation\nthe gravity axis (height of object position), Eq. (6) is simpli-\nFrom each bounding box d ∈ D, we crop or resize\nfied to:\nthe RoI and feed it into a state-of-the-art pose estimation oi,z =α o . (7)\nalgorithm.",
+      "size": 673,
+      "sentences": 9
+    },
+    {
+      "id": 15,
+      "content": "ty axis (height of object position), Eq. (6) is simpli-\nFrom each bounding box d ∈ D, we crop or resize\nfied to:\nthe RoI and feed it into a state-of-the-art pose estimation oi,z =α o . (7)\nalgorithm. In this work we use the RGB-only variant of g s s\nZebraPose by Su et al [8] due to its accuracy (despite We can thus rank all T ∈ Π by their descending height\ni\nusing just an RGB input), computational efficiency(see BOP oi,z (descending) and keep only the top-k poses with the\ng\nchallenge results [9]) and its design to handle challenging highest values, forming the subset G ⊆ Π. This is defined\nh\nviewpoints and occlusions. ZebraPose encodes every point as\non a 3D model with a binary code, then trains a network to G = F (Π,I,M,α ) (8)\nh h s\npredict those codes for each object pixel in an RGB image,\nF. Final Set of Graspable Poses\nbeforesolvingaPnPproblemusing2D-3Dcorrespondences\nto recover the pose.",
+      "size": 906,
+      "sentences": 6
+    },
+    {
+      "id": 16,
+      "content": "network to G = F (Π,I,M,α ) (8)\nh h s\npredict those codes for each object pixel in an RGB image,\nF. Final Set of Graspable Poses\nbeforesolvingaPnPproblemusing2D-3Dcorrespondences\nto recover the pose. The output of each bounding box is We combine both the IMU-based height filtering with\nproduced as a 6DoF pose Ti , forming the set of pose vision based filtering by applying them one after the other. co\nestimations Π as described in Eq. (1). Typically, we first apply the inertial filter to obtain G h ⊆Π,\nfollowed by the vision filter to the get final set of graspable\nD. Vision-based Object Filtering poses G ⊆ G . The final filtering function F = F ◦F ,\nh v h\nIn the vision-based filtering we adopt a mask-based strat- given as\negy to assess how much of the object is actually visible.",
+      "size": 789,
+      "sentences": 6
+    },
+    {
+      "id": 17,
+      "content": "ect Filtering poses G ⊆ G . The final filtering function F = F ◦F ,\nh v h\nIn the vision-based filtering we adopt a mask-based strat- given as\negy to assess how much of the object is actually visible. As there is a strong correlation between object visibility and G = F(Π,I,M,α s ) (9)\ngraspability, eliminating predicted pose estimates with low\nThis final set G contains filtered object poses prioritizing\nvisibility is expected to lead to an improvement of our set\nunobstructed objects on the top of a stack to ensure higher\nof grasping candidates. For each pose Ti ∈Π we use the:\nco grasping success rates. 1) Amodal Mask (Mi): We render the full silhouette of\na\nthe object (including occluded parts) from the known V. DATASETANDGROUNDTRUTHGENERATION\n3D model M using pose Ti . Due to the absence of publicly available stacked object\nco\n2) Modal Mask (Mi ):Weobtainthevisiblemaskfrom datasets,weconstructacomprehensivesyntheticdatasetwith\nm\nthe pose estimator’s segmentation output.",
+      "size": 984,
+      "sentences": 6
+    },
+    {
+      "id": 18,
+      "content": "o the absence of publicly available stacked object\nco\n2) Modal Mask (Mi ):Weobtainthevisiblemaskfrom datasets,weconstructacomprehensivesyntheticdatasetwith\nm\nthe pose estimator’s segmentation output. 6DoF object pose and binary graspability labels using con-\nUsing the amodal and modal masks we can define a Visibil- struction bricks as our example object. The data generation\nity ratio as: and annotation process is described in the following subsec-\n|Mi | tions.Thedatasetwillbemadeavailableuponacceptanceof\nri = m , (3)\n|Mi| the paper. a\nwhere |·| denotes the pixel area. A higher ri indicates the A. Synthetic Dataset Creation\nobject is more exposed and thus more graspable. If ri falls We generated a synthetic and procedurally designed\nbelowathresholdϵ vis ,wediscardTiasinsufficientlyvisible. dataset using BlenderProc [15] designed for the BOP chal-\nTheremainingsetG v ⊆Πwhichcontainstheposesthatpass lenge [9].",
+      "size": 919,
+      "sentences": 8
+    },
+    {
+      "id": 19,
+      "content": "procedurally designed\nbelowathresholdϵ vis ,wediscardTiasinsufficientlyvisible. dataset using BlenderProc [15] designed for the BOP chal-\nTheremainingsetG v ⊆Πwhichcontainstheposesthatpass lenge [9]. the visibility threshold is given as To replicate real-world construction scenarios, we utilized\na scanned 3D model of a brick preserving geometry and\nG = F (Π,I,M)\nv v texture details. We created 3×3 brick units and procedurally\n(cid:110) (cid:12) (cid:111) (4)\n= Ti ∈Π(cid:12)ri ≥ ϵ . stacked them to form various configurations, including reg-\n(cid:12) vis\nular and irregular stacks with different levels of occlusion. E. IMU-based height filtering UtilizingBlenderProc,wesimulatedreal-worldlightingcon-\nditions along with randomized textures for walls and floors. Theobjectpositionsaredescribedbytheposeestimatorin\nthe camera coordinate systems, i.e.",
+      "size": 854,
+      "sentences": 7
+    },
+    {
+      "id": 20,
+      "content": "lizingBlenderProc,wesimulatedreal-worldlightingcon-\nditions along with randomized textures for walls and floors. Theobjectpositionsaredescribedbytheposeestimatorin\nthe camera coordinate systems, i.e. for object i we have oi, The bricks were stacked in the middle of a room, and\nc\ncamera poses were sampled within a predefined spherical\nwhich describes the position of the object coordinate origin\nradius around the scene center. The process yields RGB\nin the camera coordinate system. However, using the IMU\ninformation it is possible to recover oi,z, i.e. the position of images,depthmaps,segmentationmasks,andaccurate6DoF\ng\nobject pose annotations. Synthetic data examples from our\nthe object in the global frame with respect to the direction\ndataset are shown in Figure 3.",
+      "size": 775,
+      "sentences": 7
+    },
+    {
+      "id": 21,
+      "content": "ges,depthmaps,segmentationmasks,andaccurate6DoF\ng\nobject pose annotations. Synthetic data examples from our\nthe object in the global frame with respect to the direction\ndataset are shown in Figure 3. === 페이지 4 ===\nAlgorithm 1: Ground Truth Generation for graspable\nBricks\nInput: Brick poses P = { Ti }n , 3D model points M\nwo i=1\nOutput: Set of graspable brick centers Q\n2 Initialize: B←[], C ←[], S ←[];\n3 for i=1 to n do\n4 Pi←Ti wo M; Bi←BBoxCorners(Pi)\nci←mean(Bi);// Compute center\n5 si←max(Bi)−min(Bi);// Compute Size\n6 AppendBi,ci,si toB,C,S;\n7 Build KD-Tree T from centers C;\n8 Q←∅;\n9 for i=1 to n do\n110 m←0;\n11 for direction d∈{X,Y,Z,−X,−Y,−Z} do\n12 c˜i ← ci + sid˜ ; // d˜ is unit vector in\ndirection d\nFig.3:Exampleimagesfromthesyntheticdatasetofstacked 13 B˜i←Bi shiftedbysid˜;\nobjects. We simulate different stack topologies with varying 14 Ni←T.query(c˜i);// get neighbors\nlighting conditions, poses, and backgrounds.",
+      "size": 931,
+      "sentences": 4
+    },
+    {
+      "id": 22,
+      "content": "fromthesyntheticdatasetofstacked 13 B˜i←Bi shiftedbysid˜;\nobjects. We simulate different stack topologies with varying 14 Ni←T.query(c˜i);// get neighbors\nlighting conditions, poses, and backgrounds. Clutter objects 15\nifforallj∈Ni,j̸=i,IoU(B˜i,Bj)>0then\n16 m←m+1;\nare added in some of the images. 17 if m≥4 then\n18 Add ci to Q;\nB. Ground Truth Generation 19 return Q\nTo produce ground truth annotations of graspable objects,\nwe employ a KD-Tree based method combined with an IoU\nbased validation. Each object i is represented by its 6DoF functionsAverageDistanceofModelPoints(ADD)[16]and\npose in world scene coordinates, represented as Ti wo . Maximum Symmetry-Aware Surface Distance (MSSD) [9]. Using this transformation, the eight corner points of a\nobject are used to form a bounding box. A KD-Tree is 1) ADD-S: ADDquantifieshowclosethealignmentisbe-\nconstructed from the centers of these bounding boxes, en- tween a predicted pose and a ground-truth pose.",
+      "size": 960,
+      "sentences": 9
+    },
+    {
+      "id": 23,
+      "content": "re used to form a bounding box. A KD-Tree is 1) ADD-S: ADDquantifieshowclosethealignmentisbe-\nconstructed from the centers of these bounding boxes, en- tween a predicted pose and a ground-truth pose. Concretely,\nablingefficientnearestneighborqueries.Foreachobjectwith ADD measures the average pairwise distance between each\ncenter ci and corresponding bounding box Bi, the algorithm modelpointx∈Munderthesetwoposes.Forobjectswith\n“moves”thecenteralongeachofthesixprincipaldirections indistinguishable symmetries (e.g., rotational or reflective),\n(i.e.,±X,±Y,±Z)byanamountequaltotheobject’ssizein the standard ADD metric may mistakenly penalize correct\nthat dimension. For each shifted bounding box, we compute poses. To handle this we use the symmetric variant of ADD\nthe bounding boxes of its neighboring objects in the scene.",
+      "size": 827,
+      "sentences": 5
+    },
+    {
+      "id": 24,
+      "content": "akenly penalize correct\nthat dimension. For each shifted bounding box, we compute poses. To handle this we use the symmetric variant of ADD\nthe bounding boxes of its neighboring objects in the scene. called ADD for Symmetric Objects (ADD-S) [16] where the\nWe then verify if the shifted bounding box falls within the distance of each projected 3D point x under the predicted\n1\nbounds of any other neighbors. This is done by checking if poseiscomparedtoitsclosestsymmetricpointx underthe\n2\nthe shifted box has positive IoU with any of its neighbors. ground-truth pose. The error score ei for a predicted\nADD−S\nIf no such neighbors exist, then we consider this a missing pose Ti is defined as\nco\nneighbor in that direction. An object is then classified as\ng t\nd\nh r\ni\ne\nr\na\ne\ns\nc\np s\nt\ni a\ni\nx\no\nb\nn\nle p\ns\nr i i\na\nf n\nr\nc\ne\ni i t p\nm\na is l\nis\nm d\nsi\ni i\nn\nr s e\ng\ns c\n,\nin ti\na\ng o\nd\nn\nd\nn s\ni\ne .",
+      "size": 896,
+      "sentences": 8
+    },
+    {
+      "id": 25,
+      "content": "hbor in that direction. An object is then classified as\ng t\nd\nh r\ni\ne\nr\na\ne\ns\nc\np s\nt\ni a\ni\nx\no\nb\nn\nle p\ns\nr i i\na\nf n\nr\nc\ne\ni i t p\nm\na is l\nis\nm d\nsi\ni i\nn\nr s e\ng\ns c\n,\nin ti\na\ng o\nd\nn\nd\nn s\ni\ne . t\ni\ni\ng\no\nIn h\nn\nb\na\nc\nl\no a r\ns\ns s\nt\ne\nr\ns i\nu\nn\nc\nw\nt\na\nu\nh t\nra\ne l\nl\nr e e a\nc\ns\no\ne t\nn\nx f\ns\na o\nt\nc\nr\nu t\na\nr l\ni\ny\nn\no\nts\nu th t r\na\ne o\nr\ne\ne\nf e A i DD-S = |M 1 |\nx\n(cid:88)\n1∈M\nx m 2∈ i M n (cid:13) (cid:13)Ti co x 1 − Tˆ co x 2 (cid:13) (cid:13) 2 . (10)\napplied: (i) there must be no neighbor in the upward (Z+) 2) Maximum Symmetry-Aware Surface Distance (MSSD):\ndirection; (ii) at least one of the left/right (X+ or X−) MSSD is a pose error metric that focuses on the largest\ndirections must be missing a neighbor; and (iii) at least one deviationbetweentheground-truthandpredictedsurfacesof\nof the front/back (Y+ or Y−) directions must be missing an object, while accounting for global symmetries. This is\na neighbor.",
+      "size": 933,
+      "sentences": 5
+    },
+    {
+      "id": 26,
+      "content": "(iii) at least one deviationbetweentheground-truthandpredictedsurfacesof\nof the front/back (Y+ or Y−) directions must be missing an object, while accounting for global symmetries. This is\na neighbor. The detailed pseudo code of the ground truth especiallycriticalinrobotics,wherelocalmisalignmentscan\ngeneration process is provided in Algorithm 1. lead to collisions or failed grasps. The error score ei\nMSSD\nbetweenaestimatedposeTi andthegroundtruthposeTˆ\nco co\nVI. EXPERIMENTS\nis defined as\nA. Evaluation Metrics\n(cid:13) (cid:13)\nIn this section we define the metrics we use to evaluate ei = max min (cid:13)Ti x − Tˆ Sx(cid:13) . (11)\nMSSD (cid:13) co co (cid:13)\nthe correctness of the filtered candidate poses G. Given an S∈SM x∈M 2\nestimated candidate pose from Ti ∈ G and a ground truth where the set S consists of global symmetry transformation\nco\npose Tˆ , we compute a score between them using the error of the object model M.\nco\n=== 페이지 5 ===\nFig.",
+      "size": 959,
+      "sentences": 7
+    },
+    {
+      "id": 27,
+      "content": "ose from Ti ∈ G and a ground truth where the set S consists of global symmetry transformation\nco\npose Tˆ , we compute a score between them using the error of the object model M.\nco\n=== 페이지 5 ===\nFig. 4: Qualitative results of object selection and pose estimation with our algorithm. (i) shows all the pose estimates Π (ii)\nshows the graspable candidates G using our filtering algorithm F (iii) shows the poses from the Ground Truth. 3) Accuracy Score: Unlike the typical evaluation of ob- dataset into 10K, 1K and 1K images for train, val and\nject pose estimation methods where the pose estimates are test splits respectively. In our experiments, for the filtering\nevaluated using Average Recall (AR) scores [9], in our task function F we set ϵ to 0.80, as this allows only the bricks\nvis\nwe need to incorporate the graspability aspect of the object with the high visibility and thus least occlusions. Note that\nin to the evaluation.",
+      "size": 933,
+      "sentences": 6
+    },
+    {
+      "id": 28,
+      "content": "F we set ϵ to 0.80, as this allows only the bricks\nvis\nwe need to incorporate the graspability aspect of the object with the high visibility and thus least occlusions. Note that\nin to the evaluation. Thus, we focus on the filtered pose our approach is generic and independent of the selection of\nestimates set G and check if they are actually graspable the exact detector and pose estimator. candidates by comparing with the ground truth graspability\nC. Benchmark evaluation\nlabels. Therefore, we focus on the Precision values as the\nThe benchmark results for our approach are shown in\nproposed metric and compute the Average Precision (AP). Table I. We first run an evaluation directly on the pose\nA higher AP tells us how well the filtered pose candidates\nestimatessetΠpredictedbytheposeestimator.Wecompare\nactually correspond to the ground truth candidates.",
+      "size": 860,
+      "sentences": 7
+    },
+    {
+      "id": 29,
+      "content": "un an evaluation directly on the pose\nA higher AP tells us how well the filtered pose candidates\nestimatessetΠpredictedbytheposeestimator.Wecompare\nactually correspond to the ground truth candidates. the unfiltered poses with the ground truth using the metrics\nAn estimated pose is deemed correct if its corresponding\ndefined in Section VI-A. Then, we evaluate with top k=1\nerror e satisfies e < (θ ∈ Θ ), where e ∈ {e , e }\ne ADD-S MSSD\ni.e. the top brick from the filtered pose estimates is selected\nand Θ is the set predefined thresholds for correctness. To\ne\nfor evaluation. Next, we also check for top k=2,3 where\ncompute Precision values, we perform optimal matching\n2 and 3 best bricks from the filtered pose estimates is\nbetween predicted candidate poses and ground-truth candi-\nselected for evaluation with ground truth. The results show\ndates using the Hungarian (Kuhn-Munkres) algorithm [17]\nthatourmethodachievesgoodprecisionforselectingasingle\napplied to a cost matrix of error scores.",
+      "size": 998,
+      "sentences": 7
+    },
+    {
+      "id": 30,
+      "content": "evaluation with ground truth. The results show\ndates using the Hungarian (Kuhn-Munkres) algorithm [17]\nthatourmethodachievesgoodprecisionforselectingasingle\napplied to a cost matrix of error scores. True Positives (TP)\ncandidate for grasping and acceptable precision when we\nare matched poses whose error scores are below θ, False\nattempt to select more than one object for grasping from a\nPositives (FP) are predicted poses that either fail to match\nsingle image. Qualitative examples are shown in Figure 4.\nany ground-truth or whose error scores are above θ . The\nAverage Precision AP is then defined as the average of\ne AP ↑ AP ↑ mAP↑\nADD MSSD\nthe Precision rates calculated for multiple settings of the\nallposes 0.19 0.16 0.17\nthreshold θ e .",
+      "size": 746,
+      "sentences": 5
+    },
+    {
+      "id": 31,
+      "content": "are above θ . The\nAverage Precision AP is then defined as the average of\ne AP ↑ AP ↑ mAP↑\nADD MSSD\nthe Precision rates calculated for multiple settings of the\nallposes 0.19 0.16 0.17\nthreshold θ e . The Precision and the AP are defined as OURS(topk=1) 0.84 0.74 0.79\nTP 1 (cid:88) OURS(topk=2) 0.74 0.66 0.70\nPrecision = , AP = Precision(θ) OURS(topk=3) 0.68 0.62 0.65\nTP +FP e |Θ |\ne\nθ∈Θe TABLE I: Evaluation of precision over ADD and MSSD\n(12)\nof filtered 6DoF pose estimates for grasping. all poses\nThe settings for the Θ are similar to the BOP [9]. e\ncorresponds to no filtering, top k corresponds to selecting\nB. Implementation Details k grasp candidates. For training and evaluating our methods, we generate a\nD. Ablation Study\nsynthetic dataset with 12K images in total, consisting of\n6DoFposes,modal&amodalmasks,depthandRGBimages Table II shows our ablation experiments where we com-\nsaved in BOP [9] and COCO [18] formats.",
+      "size": 931,
+      "sentences": 7
+    },
+    {
+      "id": 32,
+      "content": "y\nsynthetic dataset with 12K images in total, consisting of\n6DoFposes,modal&amodalmasks,depthandRGBimages Table II shows our ablation experiments where we com-\nsaved in BOP [9] and COCO [18] formats. We split our pare to baselines and to partial versions of our algorithm. [표 데이터 감지됨]\n\n=== 페이지 6 ===\nThese experiments include: (i) Selecting random pose from REFERENCES\nthe list of pose estimates (ii) Selecting the pose with highest\n[1] Y.Lin,Y.Su,P.Nathan,S.Inuganti,Y.Di,M.Sundermeyer,F.Man-\ndetector confidence (iii) Only using the IMU information hardt, D. Stricker, J. Rambach, and Y. Zhang, “Hipose: Hierarchical\ni.e., using only the height based filtering G as explained in binary surface encoding and correspondence pruning for rgb-d 6dof\nh\nobjectposeestimation,”inProceedingsoftheIEEE/CVFConference\nIV-E and (iv) Only using the visual information i.e., using\non Computer Vision and Pattern Recognition (CVPR), 2024, pp. the vision based filter G v as explained in Section IV-D. 10148–10158.",
+      "size": 999,
+      "sentences": 4
+    },
+    {
+      "id": 33,
+      "content": "ference\nIV-E and (iv) Only using the visual information i.e., using\non Computer Vision and Pattern Recognition (CVPR), 2024, pp. the vision based filter G v as explained in Section IV-D. 10148–10158. The results clearly indicate the superiority of the combined [2] A. Cordeiro, L. F. Rocha, C. Costa, P. Costa, and M. F. Silva, “Bin\npickingapproachesbasedondeeplearningtechniques:Astate-of-the-\nvisual-inertial method for object selection. art survey,” in 2022 IEEE International Conference on Autonomous\nRobot Systems and Competitions (ICARSC). IEEE, 2022, pp. 110–\nAP ↑ AP ↑ mAP↑ 117. ADD MSSD\n[3] B. Drost, M. Ulrich, P. Bergmann, P. Hartinger, and C. Steger, “In-\nRandomchoice 0.18 0.17 0.17\ntroducingmvtecitodd-adatasetfor3dobjectrecognitioninindustry,”\nDetectorconfidence 0.64 0.57 0.60\nin Proceedings of the IEEE International Conference on Computer\nOURS-inertialonly(G h) 0.68 0.55 0.61 VisionWorkshops,2017,pp.2200–2208.",
+      "size": 929,
+      "sentences": 7
+    },
+    {
+      "id": 34,
+      "content": "bjectrecognitioninindustry,”\nDetectorconfidence 0.64 0.57 0.60\nin Proceedings of the IEEE International Conference on Computer\nOURS-inertialonly(G h) 0.68 0.55 0.61 VisionWorkshops,2017,pp.2200–2208. OURS-visiononly(Gv) 0.81 0.66 0.73 [4] P.BeslandN.D.McKay,“Amethodforregistrationof3-dshapes,”\nOURS(G)(topk=1) 0.84 0.74 0.79 IEEE Transactions on Pattern Analysis and Machine Intelligence,\nvol.14,no.2,pp.239–256,1992. TABLE II: Ablation study. We compare to two baselines for\n[5] M. Rad and V. Lepetit, “Bb8: A scalable, accurate, robust to partial\nobjectselection,randomselectionfromalldetectionsandtop occlusion method for predicting the 3d poses of challenging objects\nconfidence detection selection. We also evaluate our visual withoutusingdepth,”inProceedingsoftheIEEEInternationalCon-\nferenceonComputerVision(ICCV),2017,pp.3828–3836. and inertial approaches separately and combined.",
+      "size": 889,
+      "sentences": 6
+    },
+    {
+      "id": 35,
+      "content": "ion selection. We also evaluate our visual withoutusingdepth,”inProceedingsoftheIEEEInternationalCon-\nferenceonComputerVision(ICCV),2017,pp.3828–3836. and inertial approaches separately and combined. [6] Y.Su,J.Rambach,A.Pagani,andD.Stricker,“Synpo-net—accurate\nandfastcnn-based6dofobjectposeestimationusingsynthetictrain-\ning,”Sensors,vol.21,no.1,p.300,2021. E. Deployment experiments [7] Y. Xiang, T. Schmidt, V. Narayanan, and D. Fox, “Posecnn: A\nconvolutionalneuralnetworkfor6dobjectposeestimationincluttered\nInadditiontotheevaluationonthesyntheticdatasetshown scenes,”inRobotics:ScienceandSystems,2018. above, we show in the supplementary video: 1) Qualitative [8] Y. Su, M. Saleh, T. Fetzer, J. Rambach, N. Navab, B. Busam,\nD. Stricker, and F. Tombari, “Zebrapose: Coarse to fine surface\nexamples from the use of our object selection and pose\nencoding for 6dof object pose estimation,” in Proceedings of the\nestimation approach in a real video of a brick stack.",
+      "size": 967,
+      "sentences": 6
+    },
+    {
+      "id": 36,
+      "content": "e: Coarse to fine surface\nexamples from the use of our object selection and pose\nencoding for 6dof object pose estimation,” in Proceedings of the\nestimation approach in a real video of a brick stack. 2) IEEE/CVF Conference on Computer Vision and Pattern Recognition\nVideos from the deployment of the algorithm on a robot (CVPR),2022,pp.6738–6748. [9] T. Hodan, M. Sundermeyer, Y. Labbe, V. N. Nguyen, G. Wang,\narm for brick selection and grasping from a stack. To\nE. Brachmann, B. Drost, V. Lepetit, C. Rother, and J. Matas, “Bop\ndemonstrateinareal-worldscenario,weusedourmethodat challenge2023ondetectionsegmentationandposeestimationofseen\na construction site to select the best graspable bricks from andunseenrigidobjects,”inProceedingsoftheIEEE/CVFConference\nonComputerVisionandPatternRecognition(CVPR),2024,pp.5610–\na brick pallette. We deployed it on the Yaskawa six-axis\n5619.",
+      "size": 882,
+      "sentences": 5
+    },
+    {
+      "id": 37,
+      "content": "spable bricks from andunseenrigidobjects,”inProceedingsoftheIEEE/CVFConference\nonComputerVisionandPatternRecognition(CVPR),2024,pp.5610–\na brick pallette. We deployed it on the Yaskawa six-axis\n5619. HC20DTPcollaborativerobotarmwithahorizontalreachof [10] J. Bohg, A. Morales, T. Asfour, and D. Kragic, “Data-driven grasp\n1700mm, a vertical reach of 3400mm and payload capacity synthesis—asurvey,”IEEETransactionsonRobotics,vol.30,no.2,\npp.289–309,2014. of20kgwithacustomtwoprongedgripper.WeuseanIntel\n[11] A. Sahbani, S. El-Khoury, and P. Bidaud, “An overview of 3d\nRealsense d435i as our camera and IMU sensors which is objectgraspsynthesisalgorithms,”RoboticsandAutonomousSystems,\nconnected to the flange of the robot. vol.60,no.3,pp.326–336,2012,autonomousGrasping. [12] H. Zhang, J. Tang, S. Sun, and X. Lan, “Robotic grasping\nVII. CONCLUSION from classical to modern: A survey,” 2022. [Online].",
+      "size": 900,
+      "sentences": 8
+    },
+    {
+      "id": 38,
+      "content": "flange of the robot. vol.60,no.3,pp.326–336,2012,autonomousGrasping. [12] H. Zhang, J. Tang, S. Sun, and X. Lan, “Robotic grasping\nVII. CONCLUSION from classical to modern: A survey,” 2022. [Online]. Available:\nhttps://arxiv.org/abs/2202.03631\nIn this paper, we formally introduced the problem of [13] K. Kleeberger, R. Bormann, W. Kraus, and M. F. Huber, “A survey\nselecting an object to grasp from a stack and estimating its\nonlearning-basedroboticgrasping,”CurrentRoboticsReports,vol.1,\nno.4,pp.239–249,2020. pose. Due to the novelty of the problem, it was necessary\n[14] G. Jocher, A. Chaurasia, and J. Qiu, “Ultralytics yolov8,” 2023.\nto develop a new dataset with ground truth object pose and [Online].Available:https://github.com/ultralytics/ultralytics\ngraspability labels to serve as a benchmark for evaluations.",
+      "size": 821,
+      "sentences": 8
+    },
+    {
+      "id": 39,
+      "content": "cs yolov8,” 2023.\nto develop a new dataset with ground truth object pose and [Online].Available:https://github.com/ultralytics/ultralytics\ngraspability labels to serve as a benchmark for evaluations. [15] M. Denninger, D. Winkelbauer, M. Sundermeyer, W. Boerdijk,\nM. Knauer, K. H. Strobl, M. Humt, and R. Triebel, “Blenderproc2:\nOurproposedapproachcombinesvisualandinertialinforma- A procedural pipeline for photorealistic rendering,” Journal of Open\ntiontofavorobjectswithlowocclusionthatarealsosituated SourceSoftware,vol.8,no.82,p.4901,2023. on the higher levels of the stacks to minimize grasping risk. [16] S.Hinterstoisser,V.Lepetit,S.Ilic,S.Holzer,G.Bradski,K.Konolige,\nand N.Navab, “Model basedtraining, detection andpose estimation\nThe quantitative evaluation shows that the proposed method of texture-less 3d objects in heavily cluttered scenes,” in 11th Asian\nis highly effective compared to baseline approaches, while Conference on Computer Vision (ACCV). Springer, 2013, pp.",
+      "size": 987,
+      "sentences": 5
+    },
+    {
+      "id": 40,
+      "content": "osed method of texture-less 3d objects in heavily cluttered scenes,” in 11th Asian\nis highly effective compared to baseline approaches, while Conference on Computer Vision (ACCV). Springer, 2013, pp. 548–\nalso confirming that the introduced problem is complex and 562. [17] H. W. Kuhn, “The hungarian method for the assignment problem,”\nworthy of additional future research attention due to its sig- Navalresearchlogisticsquarterly,vol.2,no.1-2,pp.83–97,1955. nificanceforreal-worldroboticapplicationtasks.Thisisalso [18] T.-Y. Lin, M. Maire, S. Belongie, J. Hays, P. Perona, D. Ramanan,\ndemonstrated in the deployment of the method on a robotic P. Dolla´r, and C. L. Zitnick, “Microsoft coco: Common objects in\ncontext,” in 13th European conference on Computer Vision (ECCV). arm in a construction-domain brick grasping scenario. Springer,2014,pp.740–755. [표 데이터 감지됨]",
+      "size": 868,
+      "sentences": 9
+    }
+  ]
+}

@@ -1,0 +1,710 @@
+{
+  "source": "ArXiv",
+  "filename": "043_Using_Deep_Reinforcement_Learning_with_Automatic_C.pdf",
+  "total_chars": 86515,
+  "total_chunks": 117,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "=== 페이지 1 ===\nUSING DEEP REINFORCEMENT LEARNING WITH AUTOMATIC\nCURRICULUM LEARNING FOR MAPLESS NAVIGATION IN\nINTRALOGISTICS\nHonghuXue BenediktHein\nInstituteforRoboticsandCognitiveSystems KIONGroupAG,TechnologyandInnovation\nUniversityofLuebeck Hamburg\nxue@rob.uni-luebeck.de benedikt.hein@hsu-hh.de\nMohamedBakr GeorgSchildbach\nKIONGroupAG,TechnologyandInnovation InstituteforElectricalEngineeringinMedicine\nHamburg UniversityofLuebeck\nmohamed.bakr@still.de georg.schildbach@uni-luebeck.de\nBengtAbel ElmarRueckert\nKIONGroupAG,TechnologyandInnovation InstituteforCyberPhysicalSystems\nHamburg MontanuniversitätLeoben\nbengt.abel@still.de rueckert@unileoben.ac.at\nMarch17,2022\nABSTRACT\nWeproposeadeepreinforcementlearningapproachforsolvingamaplessnavigationproblemin\nwarehousescenarios. Inourapproach,anautomationguidedvehicleisequippedwithLiDARand\nfrontalRGBsensorsandlearnstoperformatargetednavigationtask.",
+      "size": 902,
+      "sentences": 2
+    },
+    {
+      "id": 2,
+      "content": "mentlearningapproachforsolvingamaplessnavigationproblemin\nwarehousescenarios. Inourapproach,anautomationguidedvehicleisequippedwithLiDARand\nfrontalRGBsensorsandlearnstoperformatargetednavigationtask. Thechallengesresideinthe\nsparsenessofpositivesamplesforlearning,multi-modalsensorperceptionwithpartialobservability,\nthedemandforaccuratesteeringmaneuverstogetherwithlongtrainingcycles. Toaddressthese\npoints,weproposeNavACL-Qasamethodforautomaticcurriculumlearningincombinationwith\nadistributedversionofthesoftactor-criticalgorithm. Theperformanceofthelearningalgorithm\nis evaluated exhaustively in an unseen warehouse environment to validate both robustness and\ngeneralizabilityofthelearnedpolicy. ResultsinNVIDIAIsaacSimdemonstratesthatourtrained\nagentsignificantlyoutperformsamap-basednavigationpipelineprovidedbyNVIDIAIsaacSim\nwithanincreasedagent-goaldistanceof3mandwiderinitialrelativeagent-goalrotationsof45◦.",
+      "size": 916,
+      "sentences": 6
+    },
+    {
+      "id": 3,
+      "content": "acSimdemonstratesthatourtrained\nagentsignificantlyoutperformsamap-basednavigationpipelineprovidedbyNVIDIAIsaacSim\nwithanincreasedagent-goaldistanceof3mandwiderinitialrelativeagent-goalrotationsof45◦. The ablation studies also suggests that NavACL-Q greatly facilitates the learning process with a\nperformancegainofroughly40%comparedtotrainingwithrandomstartsandthattheutilizationof\napre-trainedfeatureextractormanifestlybooststheperformancebyapproximately60%. 1 Introduction\nMobilerobotnavigationhasreceivedbroadapplicationsandhasbeenintensivelystudiedinrecentdecades,ranging\nfromurbandriving[1,2]toindoornavigation[3]. OnepopularapproachisSimultaneousLocalizationandMapping\n(SLAM)[4]viaacombinationofvariousalgorithms. IntheSLAMprocedure,themapisgeneratedviasensors,and\nplanningalgorithms[5]areusedontopofthemap. Nonetheless,thelimitationsarealsomanifest. Inparticular,the\nefforts to build a map can be expensive in case of dynamic environments.",
+      "size": 946,
+      "sentences": 7
+    },
+    {
+      "id": 4,
+      "content": "generatedviasensors,and\nplanningalgorithms[5]areusedontopofthemap. Nonetheless,thelimitationsarealsomanifest. Inparticular,the\nefforts to build a map can be expensive in case of dynamic environments. Usually, disparate sensory sources are\nnecessaryfornon-stationaryenvironment,whichadditionallyrequiressensorfusion[6,7],complicatingtheprocess. 2202\nraM\n61\n]OR.sc[\n2v21511.2022:viXra\n=== 페이지 2 ===\nAPREPRINT-MARCH17,2022\nFigure1: AnIllustrationofthedolly(blue)andtherobotinoursimulatedwarehouseenvironment. Thelinesconnected\ntotherobot’schassisvisualizetheLiDARdistancemeasuringbeams. Inthisfigure,NVIDIAOmniverse™[17]isused\nforvisualization. Thefront-facingcameraisplacedrightinthecenterofthechassisofthevehicle,highlightedbythe\nredsquareandcapturesimageswitharesolutionof80×80pixels. TwoadditionalLiDARsensorsareplacedatthe\ndiagonalcornersofthevehicle,witheachemitting128beamsandcoveringafieldofviewof225◦respectively.",
+      "size": 919,
+      "sentences": 9
+    },
+    {
+      "id": 5,
+      "content": "tedbythe\nredsquareandcapturesimageswitharesolutionof80×80pixels. TwoadditionalLiDARsensorsareplacedatthe\ndiagonalcornersofthevehicle,witheachemitting128beamsandcoveringafieldofviewof225◦respectively. Thegeneratedmapaccuracyalsoplaysavitalrolefornavigationqualityandtogenerateasufficientlyaccuratemap,\nextrahumanengagementsfordataacquisitionareentailed[8]. Ontheotherhand,DeepReinforcementLearning(DRL)hasfoundsuccessfulapplicationingames[9,10]androbotic\napplications such as robot manipulation [11, 12] and navigation [13, 14] by combining the power of Deep Neural\nNetwork(DNN)andReinforcementLearning(RL)[15]. ThecomponentRLservesasanapproachforoptimaldecision\nmakingbasedonaMarkovdecisionprocess,wheretheagentlearnstoactgiventheobservationsinalooptomaximize\nthelong-termutility. DNNsempowertheRLwithextensiontohigh-dimensionalobservations,forinstance,visual\ndata,LiDARreadingsandetc.",
+      "size": 885,
+      "sentences": 6
+    },
+    {
+      "id": 6,
+      "content": "sionprocess,wheretheagentlearnstoactgiventheobservationsinalooptomaximize\nthelong-termutility. DNNsempowertheRLwithextensiontohigh-dimensionalobservations,forinstance,visual\ndata,LiDARreadingsandetc. OnemajorappealingpointofDRListheabilitytolearnfromscratchwithoutexpert\ndemonstration, whichmakesDRLanend-to-endlearningapproach. Asecondbenefitliesinitsnon-relianceona\ntransitionmodel(model-free). Theagentlearnsviainteractionswiththeenvironmentinatrial-and-errormanner. In\ncontrast,optimalcontrolalgorithmslikemodelpredictivecontrol[16]necessitateacarefullyderivedphysicalmodel,\nwhichcanbedemandingforcomputing. Thiscouldbeparticularlyhelpfulinthecaseofmulti-sensorobservations,\nwhereitisextremelysophisticatingtomanuallydefinetherulesforsensorfusionandtocalculatetransitiondynamics. Wegiveanillustrationofpreviousworksonmodel-freeDRLalgorithmsinSection2.",
+      "size": 855,
+      "sentences": 8
+    },
+    {
+      "id": 7,
+      "content": "ti-sensorobservations,\nwhereitisextremelysophisticatingtomanuallydefinetherulesforsensorfusionandtocalculatetransitiondynamics. Wegiveanillustrationofpreviousworksonmodel-freeDRLalgorithmsinSection2. Inourwork,weaimtoaddressanavigationprobleminawarehousescenario,wheretheAutomaticGuidedVehicle\n(AGV)aimstonavigateunderneathadollypurelyrelyingonitsownsensorreadings. Themobilerobotisequipped\nwith frontal Red-Green-Blue (RGB) camera and two LiDAR sensors measuring the distance, illustrated in Figure\n1. Basedonthesetwotypesofsensorreadouts,i.e.,multi-modalsensorperceptions,theAGVissupposedtosteer\ntowardsthetarget. Inatypicalwarehousesetting,theenvironmentisnon-stationary,wherethelocationofthetarget\nandobstaclesaresubjecttochange. Inthiswork,weareespeciallyinterestedintheabilityofDRLtodirectlymapthe\nagent’smulti-modalsensoryreadingtothecontrolcommandsvianeuralnetworks,withouttheeffortstogenerateamap\norhumandemonstrationsormanuallyprocessingmulti-modalsensorfusions.",
+      "size": 972,
+      "sentences": 7
+    },
+    {
+      "id": 8,
+      "content": "heabilityofDRLtodirectlymapthe\nagent’smulti-modalsensoryreadingtothecontrolcommandsvianeuralnetworks,withouttheeffortstogenerateamap\norhumandemonstrationsormanuallyprocessingmulti-modalsensorfusions. Moreover,itisdesiredthatthelearned\nstrategyshowsgeneralizabilitywithrespecttodifferentinteriorsettings,e.g.,roomsizes,positionoftheobstacles,etc. FormulatingthenavigationtaskfulfillingtheaforementionedcriteriaasaDRLproblemintroducesalotofdifficulties. Afirstchallengeisthesparsenessofpositivesamples,wherethesparsenessstemsfromthelowlikelihoodofreaching\n2\n=== 페이지 3 ===\nAPREPRINT-MARCH17,2022\naconstrictedgoalspace(underneaththedolly). Itisshownin[18]thatDRLalgorithmslearnarobustpolicyonly\nwhenbothsufficientpositiveandnegativesamplesareprovidedforlearning. Asecondchallengeisthemulti-modal\nsensorperceptiontogetherwithpartialobservability,wherethemobileagentmaynotperceivethetargetgivenonly\nthefrontalRGBcameraandthereforelosesthegoalinformation.",
+      "size": 948,
+      "sentences": 6
+    },
+    {
+      "id": 9,
+      "content": "learning. Asecondchallengeisthemulti-modal\nsensorperceptiontogetherwithpartialobservability,wherethemobileagentmaynotperceivethetargetgivenonly\nthefrontalRGBcameraandthereforelosesthegoalinformation. Therobotneedstolearntobehaverationallyto\nsearchforthegoalandtoinferwhetherthegoalispresentmerelyfromitsownsensoryreadings. Moreover,DRL\nalgorithmsconvergetoareasonableperformanceafterhugeamountsofinteractionexperience[19],resultinginalong\ntrainingcycle. Hence,weinvestigatepotentialapproachestoreducetheoveralltrainingdurationwithoutcompromising\ntherewarddesignthatcanfacilitatethetraining,whichisonlyfeasibleinsimulationbutnotinrealapplication. Itis\nnoteworthythatparkingunderthedollyisdemandingasitrequiresaccuratesteeringmaneuversandtherobotdirectly\nlearnsthelow-leveldifferentialdrivecommandinsteadofasetofpre-definedmovementprimitives.",
+      "size": 840,
+      "sentences": 6
+    },
+    {
+      "id": 10,
+      "content": "ion. Itis\nnoteworthythatparkingunderthedollyisdemandingasitrequiresaccuratesteeringmaneuversandtherobotdirectly\nlearnsthelow-leveldifferentialdrivecommandinsteadofasetofpre-definedmovementprimitives. Toaddressthesechallenges,weproposedadistributedversionofSoftActor-Criticwithautomaticcurriculumlearning\n(ACL)toincreasethenumberofpositivesamplestheandtoreducetheoveralltrainingcycle. WeextendoneACL\nalgorithmNavACL[20]toamoregeneralcase,namedasNavACL-Q.Theperformanceofthelearnedpolicyisalso\nsystematicallyevaluatedinadifferenttestingscenarioforrobustnessandgeneralizabilitycheck. Theablationstudies\nareconductedtochecktheeffectsofapre-trainedfeatureextractorandACLontheperformancegainrespectively. We\nfinallyshowthatourapproachoutperformsabaselinemap-basednavigationpipelineprovidedbyNVIDIASDK[21]. 2 RelatedWork\nInthissection,wepresentanoverviewontherecentprogressofDRLalgorithmsandtheirapplicationsinnavigation\ntasks. Moreover,previousworkoncurriculumlearningonRLtasksarealsoinvestigated.",
+      "size": 991,
+      "sentences": 8
+    },
+    {
+      "id": 11,
+      "content": "DK[21]. 2 RelatedWork\nInthissection,wepresentanoverviewontherecentprogressofDRLalgorithmsandtheirapplicationsinnavigation\ntasks. Moreover,previousworkoncurriculumlearningonRLtasksarealsoinvestigated. 2.1 Model-freeDeepReinforcementLearningAlgorithms\nModel-freeDRLalgorithmshavebecomeincreasinglysuccessfulinsolvingcomplextasksfeaturinghighdimensional\nobservationswithouttheneedofknowingthetransitiondynamicsoftheenvironment. Inthefirstimpressivework,\nDeepQ-network(DQN)[19],anagentwastrainedtoplayAtarivideogamesandreachedhuman-levelperformance. They applied a DNN to map raw-pixel visual input to the corresponding Q-values. The work introduced a frozen\ntargetnetworktoalleviatethedeadly-triadproblem[22,15]. Anothermajorcontributionistheusageofanexperience\nreplaybuffertodecorrelatethetemporaldependencebetweensampleswithinoneepisode,thereforeenhancingthe\nperformance. Thesecomponentsarewidelyusedinotheroff-policyDRLalgorithms. ThereareseveralimprovementsproposedtoenhancetheperformanceofDQNs.",
+      "size": 996,
+      "sentences": 10
+    },
+    {
+      "id": 12,
+      "content": "pendencebetweensampleswithinoneepisode,thereforeenhancingthe\nperformance. Thesecomponentsarewidelyusedinotheroff-policyDRLalgorithms. ThereareseveralimprovementsproposedtoenhancetheperformanceofDQNs. DoubleDeepQ-networks(DDQNs)\n[23] address the problem of the maximization bias analogously to Double Q-learning [15]. Noisy networks [24]\nimprovestheexplorationstrategyoftheagentbyreplacingthestandard(cid:15)-greedyalgorithmsbythenoisynetworks,\nwheretheweightsofnetworkareinjectedwithzero-meanGaussiannoises,resultinginrandomnessinchoosingthe\naction. Allpreviousmethodsaredesignedfordiscreteactionspaces. Otherapproachesgeneralizetocontinuousactionspace. Thesealgorithms,so-calledPolicy-Gradient(PG)methods,haveanadditionallearnablecomponent,actor,whichmaps\nstatestoactionsmaximizingthereturn.",
+      "size": 792,
+      "sentences": 8
+    },
+    {
+      "id": 13,
+      "content": "ionspaces. Otherapproachesgeneralizetocontinuousactionspace. Thesealgorithms,so-calledPolicy-Gradient(PG)methods,haveanadditionallearnablecomponent,actor,whichmaps\nstatestoactionsmaximizingthereturn. Theon-policyalgorithmAsynchronousAdvantageActor-Critic(A3C)[25]\nreducesthevarianceonactorlearningcomparedtoREINFORCE[15]andreducestheoveralltrainingcyclebyhaving\nmultiplethreadscollectingtheexperienceinparallel. A3CoutperformsvanillaDQNonAtariGames. Proximalpolicy\noptimization(PPO)[26]triestoachievemonotonicpolicyimprovementswhileavoidingalargechangeofthepolicy\nthatcouldcauseperformancecollapse. ItupdatesthepolicybyadditionallypenalizingtheKL-divergencebetween\npreviouspolicyandthenewpolicy. Despite the success of on-policy PG algorithms, they are not as sample-efficient as off-policy variants [27]. This\ndisadvantage becomes more apparent in case of an expensive simulator. The off-policy policy algorithm Deep\nDeterministicPolicy-Gradient(DDPG)[28]extendsDQNtothecontinuousactioncase.",
+      "size": 992,
+      "sentences": 10
+    },
+    {
+      "id": 14,
+      "content": "riants [27]. This\ndisadvantage becomes more apparent in case of an expensive simulator. The off-policy policy algorithm Deep\nDeterministicPolicy-Gradient(DDPG)[28]extendsDQNtothecontinuousactioncase. ThealgorithmTwin-Delayed\nDeepDeterministicPolicyGradient(TD3)[29]furtherimprovesDDPGbyaddressingmaximizationbiasandproposes\ntoaddnoisetotheactionwithdelayedpolicyupdateforamorestabletraining. However,theshortageofDDPGandTD3isthattheexplorationschememustbedoneexplicitlyandthattheycan\nonlymodeldeterministicoptimalpolicies. Intheiroriginalwork,theyappliedGaussiannoisetoenableexploration. A\nsufficientexplorationiscrucialforthefinalperformanceforanyRLalgorithm. However,incontrasttosomeexplicit\nexplorationstrategies[30,10,31,32],theworkin[33,34]proposedanewcategoryofRLalgorithms,maximal-entropy\nreinforcement learning, in particular, the Soft Actor-Critic (SAC) algorithm.",
+      "size": 873,
+      "sentences": 8
+    },
+    {
+      "id": 15,
+      "content": "trasttosomeexplicit\nexplorationstrategies[30,10,31,32],theworkin[33,34]proposedanewcategoryofRLalgorithms,maximal-entropy\nreinforcement learning, in particular, the Soft Actor-Critic (SAC) algorithm. SAC tries to address the exploration\nproblem by incorporating the entropy of policy as an exploration bonus into the return, equivalent to an implicit\nexplorationschedule. AsecondbenefitofSACistheabilitytomodelmulti-modaloptimalpolicieswithaprobabilistic\n3\n=== 페이지 4 ===\nAPREPRINT-MARCH17,2022\ncharacterization. SACwasreportedtooutperformDDPGandTD3insomecontinuouscontrolproblemsinMujoco\n[35]e.g.,HalfCheetah,Humanoid. Inourtaskofintralogisticsnavigation,themobilerobotrequiresaccuratesteeringabilities,i.e.,continuousaction\ncommands,tonavigatebeneaththetargetdolly. Moreover,theagentonlyshowssignsoflearningwiththepresenceof\nadequatesuccessfultrials,whichrequiressufficientexplorationintheenvironment. Forthesereasons,wechooseSAC\nforourusecase.",
+      "size": 945,
+      "sentences": 7
+    },
+    {
+      "id": 16,
+      "content": "neaththetargetdolly. Moreover,theagentonlyshowssignsoflearningwiththepresenceof\nadequatesuccessfultrials,whichrequiressufficientexplorationintheenvironment. Forthesereasons,wechooseSAC\nforourusecase. 2.2 DeepReinforcementLearningforRobotNavigationTasks\nDRLhasbeeninvestigatedforthetaskofrobotnavigationinrecentyears. Thecontributionof[36]proposesvirtual-to-\nrealDRLformaplessnavigationonmobilerobotswithcontinuousactions. Intheirwork,themobilerobotsacquire\nLiDARobservations,relativeanglesanddistancesfromthecurrentrobotposetothegoal. Theytrainedtheagentusing\nA3CanddemonstratedbothsuccessandgeneralizabilityinnewenvironmentsinGazebosimulator[37]. However,their\nstateandrewardformulationisimpracticalfortrainingdirectlyinrealenvironments,astheyassumetheknowledge\nofgoalpositionandcurrentrobotpose,whichareexpensivetoacquireintherealworld. Theworkof[38]explores\nthepotentialofusingdiscreteactionsfornavigatingandtheyadoptedthesimilarproblemsettingas[36].",
+      "size": 953,
+      "sentences": 9
+    },
+    {
+      "id": 17,
+      "content": "nowledge\nofgoalpositionandcurrentrobotpose,whichareexpensivetoacquireintherealworld. Theworkof[38]explores\nthepotentialofusingdiscreteactionsfornavigatingandtheyadoptedthesimilarproblemsettingas[36]. Intheir\nfindings, trainingdiscreteactionspaceusingDDQNandPERismoreefficientthanacontinuousactionspacevia\nDDPGandPPO.However,theirapproachhasrestrictedthedegreeoffreedomintrajectoryspaceduetothechoiceof\ndiscreteactionsandalsoencountersthesameprobleminrealapplicationas[36]. Theauthorsof[39]applythesimilar\nproblemformulationonamulti-agentscenario,whereaswarmofrobotslearntonavigatetotheirowntargets(ingroup\nformation)withoutcollidingwitheachother. Despitetheimpressiveresultinsimulation,theinformationonrelative\nposetogoalisstillrequired. Wealsoseesuchsettingsin[40,41]. Some other work implements a target-driven approach for visual navigation, where an image of the target is also\nprovidedasapartoftheobservation.",
+      "size": 914,
+      "sentences": 7
+    },
+    {
+      "id": 18,
+      "content": "togoalisstillrequired. Wealsoseesuchsettingsin[40,41]. Some other work implements a target-driven approach for visual navigation, where an image of the target is also\nprovidedasapartoftheobservation. In[42],theyusedapre-trainednetworkResNet-50[43]totransformboththe\ncurrentandtargetvisualobservationintotheembeddingspaceandafterwardsmappedtopolicyandcriticvalues. Their\nworkmainlyaddressesthegeneralizabilityamongdifferentscenesandthelearnedagentdemonstratestheabilityto\nreachmanifoldtargetsinvariousinteriorenvironments. However,theactoroutputsonlyfourdiscretehigh-levelactions,\nwhichgreatlyalleviatesthedifficultyofDRLtraining. Theworkof[44]alsoexploitsthesameideawithtwomajor\nimprovements. Firstly,theyresortedtoadditionalauxiliarytasks,e.g.,learningmeaningfulsegmentationandreward\nprediction,forperformanceboost,wheretheconvolutionalencodersarelearnedend-to-end.",
+      "size": 866,
+      "sentences": 8
+    },
+    {
+      "id": 19,
+      "content": "ithtwomajor\nimprovements. Firstly,theyresortedtoadditionalauxiliarytasks,e.g.,learningmeaningfulsegmentationandreward\nprediction,forperformanceboost,wheretheconvolutionalencodersarelearnedend-to-end. Secondly,theymitigated\npartialobservabilitybykeepingalongerhistoricalobservationusinglongshort-termmemory(LSTM)[45]insteadof\nframestacking. Theperformanceboostcouldbeseenwiththeirproposedapproach. BothofthetwoworksusedA3C\nasDRLalgorithm. Athirdcategoryimplementsmap-basedDRL,wherethemapiseithergivenorgeneratedonline. Theworkof[46]\ngeneratesegocentriclocaloccupancymapsforlocalcollisionavoidanceviaSLAM.Asecondcomponentlocalplanner\nproposeslocalgoalsgiventhefinaltargetposition. ThisisensuedbyaDRLalgorithmthatmapstheagent’svelocity,\ntheplannedlocalgoalandlocaloccupancymapsto28discreteactions. TheyusedDuelingDDQN[47]withPERand\nrandomizedthenumberofobstaclesandinitialpositiontofacilitatelearning.",
+      "size": 898,
+      "sentences": 9
+    },
+    {
+      "id": 20,
+      "content": "gorithmthatmapstheagent’svelocity,\ntheplannedlocalgoalandlocaloccupancymapsto28discreteactions. TheyusedDuelingDDQN[47]withPERand\nrandomizedthenumberofobstaclesandinitialpositiontofacilitatelearning. However,theirproblemformulation\nonlyenablesrobottonavigatetothelocalgoalinsteadofthefinaltarget,whichgreatlyalleviatesthedifficultyinRL,\nbutheavilyreliesonthequalityofSLAMandthelocalplanner. Incomparison,ourapproachdoesnotrequireany\ncomplicatedSLAM-relatedinformationoranylocalplanners. Itonlyresortstomulti-modalsensorreadouts,fuses\nthem,andmapstocontinuouscontrolcommandsforreachingthefinalgoalinablackboxfashion,wherewepurelyrely\nonthepowerofDNNs. 2.3 CurriculumLearningforReinforcementLearningTasks\nOnemainchallengeofRListhatitrequiresprohibitivenumberofinteractionsstepswiththeenvironmenttoreach\nareasonableconvergence.",
+      "size": 824,
+      "sentences": 6
+    },
+    {
+      "id": 21,
+      "content": "elyrely\nonthepowerofDNNs. 2.3 CurriculumLearningforReinforcementLearningTasks\nOnemainchallengeofRListhatitrequiresprohibitivenumberofinteractionsstepswiththeenvironmenttoreach\nareasonableconvergence. Moreover, itisalsocrucialthattheagentkeepsareasonableproportionofthepositive\nexperienceleadingtohighreturnsandnegativeexperienceswithlowreturnssoastogranttheagentaeffectivelearning\nsignal. In our navigation task, where the robot has to go through a long time-horizon to reach its target state, the\nprobabilityofpositiveexperiences,i.e.,reachinggoalstate, ismerelymarginal. Insuchsettings,theagentsuffers\nseverelyfromtheclassimbalanceproblemandwillmostlylearnfromnegativeexperience,onlyavoidingobstacles\nbutfailingtoarriveatthegoal. Onesolutionistoresorttoexpertdemonstrations. Nevertheless,itbreaksthenice\npropertyoflearningfromscratch. Insomechallengingtasks,itisevenhardforahumantodemonstrate. Inthiswork,\nwefocusonlearningfromscratch.",
+      "size": 937,
+      "sentences": 9
+    },
+    {
+      "id": 22,
+      "content": "utionistoresorttoexpertdemonstrations. Nevertheless,itbreaksthenice\npropertyoflearningfromscratch. Insomechallengingtasks,itisevenhardforahumantodemonstrate. Inthiswork,\nwefocusonlearningfromscratch. ThesecondalternativeisCurriculumLearning(CL).Itproposesasetofcurricula\n(intermediatetasks)startingfromeasytasksandprogressivelyincreasingthetaskdifficultyuntilthedesiredtaskis\nsolved. Withsuchcurricula,theagentismorelikelytogetpositiveexperiencefromeasytasksandcantransferthe\n4\n=== 페이지 5 ===\nAPREPRINT-MARCH17,2022\ngainedknowledgetotheupcomingtasks,whichdecreasestheoveralltrainingtimeascomparedtodirectlylearning\nfromscratchonahardtask[48]. Forthesereasons,wealsoapplyCLtogetherwithDRLforourcase. ThetermCurriculumLearningwasfirstproposedby[49]. Theyfindprovidinganorderedsequenceofthetraining\nsamplesratherthanrandomsequencecanfacilitatethelearningspeedandgeneralizability. Suchideaswerepresentin\nPrioritizedExperienceReplay(PER)[50],wherethesampleswithhighTD-errorsgethigherprioritiestobesampled.",
+      "size": 999,
+      "sentences": 10
+    },
+    {
+      "id": 23,
+      "content": "esratherthanrandomsequencecanfacilitatethelearningspeedandgeneralizability. Suchideaswerepresentin\nPrioritizedExperienceReplay(PER)[50],wherethesampleswithhighTD-errorsgethigherprioritiestobesampled. Thisisequivalenttoanimplicitcurriculumonthesamples. PERisreportedtohavebetterperformancethannormal\nreplay buffer in DQN. Alternatives for different definition of priorities on sample-level are also presented in [51],\nwheretheyfurtherconsideredauser-definedself-pacedpriorityfunctionandacoveragefunctiontoavoidrepetitive\nsamplingofonlyhighprioritysamples. In[52],thePERisextendedinanothermannerbyusinganetworktopredict\nthesignificanceofeachtrainingsample. Itcanthereforeevenpredicttheimportanceofunseentrainingsamples. Theaboveworkmainlyproposesvariousheuristicstoreachsample-levelcurriculumlearning. Otherworkinvolveshow\ntogenerateintermediatetasks,howthetaskscanbesequenceproperlytoacceleratetrainingandhowtotransferthe\nknowledgebetweentasks.",
+      "size": 943,
+      "sentences": 9
+    },
+    {
+      "id": 24,
+      "content": "variousheuristicstoreachsample-levelcurriculumlearning. Otherworkinvolveshow\ntogenerateintermediatetasks,howthetaskscanbesequenceproperlytoacceleratetrainingandhowtotransferthe\nknowledgebetweentasks. In[53],anumberofmethodsareintroducedtocreateintermediatetaskswiththeassumption\nthatallthetaskscanbeparameterizedasavectoroffeatures. Theoverallprocessisincrementallydevelopingsubtasks\nthat are dependent on the trajectories of learned policies and the current tasks. They propose several heuristics to\ngeneratenewsubtasks,i.e.,TaskDimensionSimplification,PromisingInitializationstodealwithsparse-rewardsignals,\nMistake-DrivenSubtaskswithafocusonavoidingunwantedbehaviorsetc. HindsightExperienceReplay(HER)[54]\nformsacurriculumbystoringadditionaltrajectorieswithimaginarygoalstatesastrainingsamples. HERincorporates\nthegoalstategtogetherwiththecurrentstatestolearnthevaluefunctionv (s,g).",
+      "size": 886,
+      "sentences": 7
+    },
+    {
+      "id": 25,
+      "content": "rienceReplay(HER)[54]\nformsacurriculumbystoringadditionaltrajectorieswithimaginarygoalstatesastrainingsamples. HERincorporates\nthegoalstategtogetherwiththecurrentstatestolearnthevaluefunctionv (s,g). Thetargettaskmaybeoriginally\nπ\nhardtoachieve,butpositiveexperiencecouldbeeasilyobtainedwhenthegoalstateischangedtotheterminalstateof\nthisepisode. RelyingontheexpressivenessofDNNs,thepolicylearnedfromtheever-changinggoalstatescanbe\nbeneficialforgeneralizingtothedesiredgoaltasks. ThealgorithmCurriculum-guidedHER(CHER)[55]improves\ntheHERbyadaptivelyselectingtheimaginarygoalstate. Theselectioncriteriaaregoaldiversityandproximityto\nthedesiredgoalstate. Thecurriculumiscreatedbyinitiallyallowingfordiverseimaginarygoalsetsandgradually\nconvergingtotheproximitytothetruegoal. However,theseHER-variantsnecessitatetheexplicitknowledgeofthe\ngoalstateandthefictitiousrewardfunctionforarbitrarygoalstates. Someotherworkdefinesthecurriculumbygeneratingasetofinitialstatesinsteadofgoalstates.",
+      "size": 981,
+      "sentences": 9
+    },
+    {
+      "id": 26,
+      "content": "eseHER-variantsnecessitatetheexplicitknowledgeofthe\ngoalstateandthefictitiousrewardfunctionforarbitrarygoalstates. Someotherworkdefinesthecurriculumbygeneratingasetofinitialstatesinsteadofgoalstates. Theworkof[56]\nproposesreversecurriculumgeneration,wherethedistributionoftheinitialstatesbecomefartherawayfromthegoal\nstates. Candidatesofinitialstatesforthenextepisodearegeneratedbyrandomwalkfromtheexistingstartingstates. To\nselecttheexactstartingstate,theexpectedreturnforthesecandidatesiscomputedandtheonelyinginthepre-defined\nintervalisselected. Theapproachin[57]sharesasimilaridea,whereasitgeneratesthecandidatestartingstatesnotby\nrandomwalkbutviaapproximatedtransitiondynamics,i.e.,estimatingthenumberofstepstoreachthegoal. They\nsampledfromamixtureofsuccessfully-trainedtasksandnewcandidatestoavoidcatastrophicforgetting. Our work also generalizes a recent ACL approach NavACL [20].",
+      "size": 887,
+      "sentences": 8
+    },
+    {
+      "id": 27,
+      "content": "stimatingthenumberofstepstoreachthegoal. They\nsampledfromamixtureofsuccessfully-trainedtasksandnewcandidatestoavoidcatastrophicforgetting. Our work also generalizes a recent ACL approach NavACL [20]. NavACL generates a set of curricula based on a\nparallelly-learnedsuccesspredictionnetworkthatestimatestheprobabilityoftheagenttoreachgoalgiventhecurrent\npolicy. Intheoriginalwork,NavACLisreportedtogreatlyimprovethewholelearningprocedureintermsofsuccess\nprobabilityofthenavigationtask. ThedetailsarepresentedinSection3.4. 3 MaterialsandMethods\nThetaskofloadcarrierdockinginthecontextofintralogisticsconsidersthetargetednavigationofatransportrobot\nunderneathatargetdolly. Afirstchallengeofourtaskistolearnaccuratesteeringcommandssoastoreachavery\nconstricted goal space, where the area underneath the target dolly is deemed as the goal.",
+      "size": 833,
+      "sentences": 8
+    },
+    {
+      "id": 28,
+      "content": "nsportrobot\nunderneathatargetdolly. Afirstchallengeofourtaskistolearnaccuratesteeringcommandssoastoreachavery\nconstricted goal space, where the area underneath the target dolly is deemed as the goal. We provide the detailed\nspecificationofnavigationvehicleandthetargetdollytogetherwiththesimulationenvironmentinSection3.2for\na direct view on how challenging the task is. In a goal-reaching task, one key for any DRL algorithm to reach a\nreasonableperformanceisthattheagenthasanadequatenumberofsuccessfultrails. Afirstsolutionistodeploy\nefficientexplorationstrategy,whereweusedsoftactor-critic[34],introducedinSection3.1. Withamoreinformative\nexplorationstrategy, theagentwillreachthetargetgivensufficientnumberoftrials. Softactor-criticalsofeatures\ncontinuous action output and for accurate control. However, the agent behaves more exploratorily at the onset of\ntraining.",
+      "size": 871,
+      "sentences": 8
+    },
+    {
+      "id": 29,
+      "content": "illreachthetargetgivensufficientnumberoftrials. Softactor-criticalsofeatures\ncontinuous action output and for accurate control. However, the agent behaves more exploratorily at the onset of\ntraining. Themajorityofexplorativetrialscanendupwithfailure,interpretedasnegativeexperience,especiallywhen\ntherequiredtimehorizonforreachingthegoalislongandaconstrictedgoalspace. Thisresultsinsparsenessofpositive\nexperience,potentiallymakingDRLfailinlearning. Therefore,weapplyautomaticcurriculumlearningtoincreasethe\nprobabilityofpositiveexperiencebystartingtrainingfromeasytasks. Weelaborateourproposedautomaticcurriculum\nlearningalgorithmNavACl-QasageneralizationofNavAClinSection3.4. TofurtheraccelerateDRLtraining,we\nfirstparallelizemultipleagentscollectingtheexperience,givingrisetoadistributedsoftactor-critic. Moreover,some\nablation variants are conducted to examine if the performance can be further enhanced, shown in Section 3.5.",
+      "size": 930,
+      "sentences": 9
+    },
+    {
+      "id": 30,
+      "content": "tipleagentscollectingtheexperience,givingrisetoadistributedsoftactor-critic. Moreover,some\nablation variants are conducted to examine if the performance can be further enhanced, shown in Section 3.5. A\n5\n=== 페이지 6 ===\nAPREPRINT-MARCH17,2022\ncompleteformulationoftheintralogisticsnavigationtaskasaDRLproblemandalgorithmhyperparametersarealso\nelaboratedinSection3.3. 3.1 MaximumEntropyReinforcementLearning–SoftActor-Critic\nAnRLproblemcanbeseenasasequentialdecisionprobleminaMarkovDecisionProcess(MDP).Itisdefinedasa\ntuple(S,A,P,R,γ),whereS andAarerespectivelythesetofstatesandactions,P denotesstatetransitionprobability\nmatrix,specifically,theprobabilityoftransitingtoasuccessorstates fromthestates bytakingactiona . The\nt+1 t t\nrewardfunctionR:S×A→R,whichreturnsanumberindicatingtheutilityofperforminganactioninthecurrent\nstate. Thelastelementisthediscountfactorγ ∈[0,1],whichleveragestheimportanceonshort-termrewardsagainst\nlong-termrewards.",
+      "size": 942,
+      "sentences": 6
+    },
+    {
+      "id": 31,
+      "content": ":S×A→R,whichreturnsanumberindicatingtheutilityofperforminganactioninthecurrent\nstate. Thelastelementisthediscountfactorγ ∈[0,1],whichleveragestheimportanceonshort-termrewardsagainst\nlong-termrewards. InRL,theagentinteractswiththeenvironmenttocollectexperienceandtriestolearnanoptimalpolicyπ(cid:63)suchthat\nthereturn,namelycumulativereward,ismaximized. (cid:34) T (cid:35)\n(cid:88)\nπ∗ =argmax E γtr ,\nt+1\nπ τ∼π\nt=0\nwhere r refers to the immediate reward at time point t, τ is the trajectory, characterized as a sequence of\nt\n{s ,a ,r ,...,s ,a ,r }followingthepolicyπandT isthetimehorizontoreachtheterminalstate. 0 0 1 T T T+1\nThemaximumentropyRLalgorithmSoftActorCritic(SAC)[33,34]differsfromthestandardRLinthatitchanges\nthegoalbyincorporatinganadditionalweightedpolicyentropytermH(π(·|s )). Thepolicyentropydescribesthe\nt\nstochasticityofthepolicy,indicatingthedegreeofexploration.",
+      "size": 882,
+      "sentences": 6
+    },
+    {
+      "id": 32,
+      "content": "iffersfromthestandardRLinthatitchanges\nthegoalbyincorporatinganadditionalweightedpolicyentropytermH(π(·|s )). Thepolicyentropydescribesthe\nt\nstochasticityofthepolicy,indicatingthedegreeofexploration. Inthismanner,thegreedypolicyreturnedbySAC\nincludesaninternalexplorationbonus,whichisadvantageousformaximumentropyRL,asnoexplicitexploration\nstrategyneedstobeformulated. TheobjectivefunctionofSACisdefinedas:\n(cid:34) T (cid:35)\n(cid:88)\nπ∗ =argmax E γt(r +αH(π(·|s ))) ,\nt+1 t\nπ τ∼π\nt=0\nwhere α is the temperature coefficient determining the weight for policy entropy. In [33], the weights are pre-\ndetermined by the users and need manual tunning for different tasks. As an improvement, the work [34] pro-\nposed automatically adjusting α for different tasks. To enable a learnable α, they simply impose a constraint that\nE [H(π(·|s ))]≥H,whereHisapre-definedentropylowerboundtoensureaminimallevelofexploration.",
+      "size": 909,
+      "sentences": 7
+    },
+    {
+      "id": 33,
+      "content": "automatically adjusting α for different tasks. To enable a learnable α, they simply impose a constraint that\nE [H(π(·|s ))]≥H,whereHisapre-definedentropylowerboundtoensureaminimallevelofexploration. (st,at)∼ρπ t\nTheconstraintcanbecastintoadualoptimizationproblemshownbelowsothatthetemperatureαturnsalearnable\nparameter. Foranexacttheoreticalderivation,pleaserefertotheoriginalwork[34]. α∗ =argminE (cid:2) −α logπ∗(a |s ;α )−α H (cid:3) . t αt at∼π t ∗ t t t t t t\nThecriticpartlearnstheQ-valueswiththeadditionalpolicyentropytermbasedonare-definedBellmanupdate:\n(cid:16) (cid:17)\nQˆ(s ,a )=r +γ Q (s ,a˜ )−αlogπ (a˜ |s ) ,\nt t t+1 φ˜ t+1 t+1 θ t+1 t+1\nwherea˜ ∼ π (·|s ),φandφ˜referrespectivelytotherunningandtargetcriticnetworkfortrainingstability\nt+1 θ t+1\nsimilartoDQN.ThecriticlossisthencomputedbysamplingaminibatchfromthereplaybufferD. (cid:20) 1(cid:16) (cid:17)2 (cid:21)\nJ (θ)=E Q (s ,a )−Qˆ(s ,a ) .",
+      "size": 908,
+      "sentences": 7
+    },
+    {
+      "id": 34,
+      "content": "targetcriticnetworkfortrainingstability\nt+1 θ t+1\nsimilartoDQN.ThecriticlossisthencomputedbysamplingaminibatchfromthereplaybufferD. (cid:20) 1(cid:16) (cid:17)2 (cid:21)\nJ (θ)=E Q (s ,a )−Qˆ(s ,a ) . Q (st,at)∼D 2 φ t t t t\nIn the policy improvement step, the actor is updated towards an exponential of the Q-values to still allow for a\ndistributionofthepolicyviaKullback–Leiblerdivergence. (cid:20) (cid:18) (cid:19)(cid:21)\nexp(Q (s ,·))\nJ (φ)=E D π (·|s )(cid:107) φ t . π se∼D KL θ t Z (s )\nθ t\nIn our implementation, we also apply similar tricks as Double Q-learning [58, 59] to avoid maximization bias. Furthermore, SAC with a learnable temperature coefficient α [34] is used, as a fixed one requires good domain\nknowledgewhichisassumedtobeunknowninmostcases.",
+      "size": 765,
+      "sentences": 6
+    },
+    {
+      "id": 35,
+      "content": "rning [58, 59] to avoid maximization bias. Furthermore, SAC with a learnable temperature coefficient α [34] is used, as a fixed one requires good domain\nknowledgewhichisassumedtobeunknowninmostcases. 6\n=== 페이지 7 ===\nAPREPRINT-MARCH17,2022\nU\nU\nFigure2: AnillustrationoftheCriticnetworkarchitecture,consistingofResNetblocks[43]forfeatureextraction\n(highlightedbytheyellowshape)andfully-connectedlayersforLiDARinputsandhistoricalactionandrewards. We\nconcatenatetheoutputsofthethreeparts(illustratedbythe∪symbol)toestablishalearnedsensorfusion. Foractor\npart,onlytheoutputlayerischanged. ThedetailsofResNetblocksareshowninAppendixA. 3.2 SimulationEnvironment\nWerunourexperimentsonthesimulatorNVIDIAIsaacSDKTM[21]. Thetargetdollyconsistsofasteelframethatcan\nbeloadedwithapallet. Thedollystandsonfourpassivewheels,whichmakesittransportable. Figure1illustratesthe\nmobilerobotandthedollyusedforthispaper.",
+      "size": 896,
+      "sentences": 10
+    },
+    {
+      "id": 36,
+      "content": "acSDKTM[21]. Thetargetdollyconsistsofasteelframethatcan\nbeloadedwithapallet. Thedollystandsonfourpassivewheels,whichmakesittransportable. Figure1illustratesthe\nmobilerobotandthedollyusedforthispaper. Thesimulatedvehicleisaplatformrobotwhichisspecificallybuiltfor\nloadcarrierdockingandisactuatedbyadifferentialdrive. ThevehicleanddollyspecificationisshowninAppendixD. Itisnoteworthythatthewidthofthedollyisonly21cmwiderthanvehiclesothatveryaccuratesteeringeffortsare\nrequiredtosuccessfullynavigateunderneaththedolly,correspondingtoaconstrictedgoalspace. 3.3 ReinforcementLearningProblemSetup\nHerewepresenthowtheAVGnavigationproblemcanbeformulatedasanDRLproblem. Inthiswork,theobservation\nspaceOisdefinedasaconcatenationof[O ,O ,O ]. Todealwithpartialobservability,westack4mostrecentRGB\nv l ar\nimageO alongthechanneldimensionexactlyashowDQNprocessedAtarigames[19]. Thesecondobservation\nv\ncomponentisLiDARobservationO ,sinceitmostlyreachesfully-observability,wejustretainthemostrecentLiDAR\nl\nreadings.",
+      "size": 998,
+      "sentences": 11
+    },
+    {
+      "id": 37,
+      "content": "alongthechanneldimensionexactlyashowDQNprocessedAtarigames[19]. Thesecondobservation\nv\ncomponentisLiDARobservationO ,sinceitmostlyreachesfully-observability,wejustretainthemostrecentLiDAR\nl\nreadings. Tofurtherincreasetheinformationcontent,wealsokeepthesamelengthofhistoricalactionsandrewardsas\napartofobservationsimilarlyto[60]. Notethatnoadditionalhandcraftedhigh-levelinformation,e.g.,thepositionof\ntherobotorthedollyisgiven. Furthermore,neitheramethodforlocalizationnormappingisused. Thecompletestate\ndesignissummarizedinTable1. ThevisualperceptionO andtheLiDARreadingsO arerescaledto[0,1]. Allthese\nv l\npostprocessedfeaturesserveasinputtocriticandactornetworkinSAC,asshowninFigure2. (cid:2) (cid:3)\nTheactionspaceAisdefinedasdifferentialdrivecommandfortheAGV,whichisa2-dimensionalinputa(cid:126) = v ,ω\nt t t\nwith v ∈ [−1 m/s,1 m/s] and ω ∈ [−1 rad/s,1 rad/s]. Here v and ω are linear and angular target velocity\nt t t t\ninputsforthedifferentialdrive.",
+      "size": 955,
+      "sentences": 10
+    },
+    {
+      "id": 38,
+      "content": "theAGV,whichisa2-dimensionalinputa(cid:126) = v ,ω\nt t t\nwith v ∈ [−1 m/s,1 m/s] and ω ∈ [−1 rad/s,1 rad/s]. Here v and ω are linear and angular target velocity\nt t t t\ninputsforthedifferentialdrive. Theactionsarecarriedoutfor180ms,resultinginanapproximately5.5Hzoperation\nfrequency. 7\n=== 페이지 8 ===\nAPREPRINT-MARCH17,2022\nTherewardfunctionisformulatedas:\nr(t)=r (t)+1 r (t)+1 r (t)+1 r (t)+1 r (t),\nS CD CD C C F F G G\nwherer =−0.1representsanegativerewardforeachtimestep,r =−0.1denotesasmallnegativerewardfor\nS CD\ncollisionwiththedolly,andr =−10correspondstoalargepenaltyforcollisionwithnon-dollyobjects,i.e. wallsor\nC\notherobstacles. Wesetasmallpenaltyforcollisionwithdollysoastoencouragetheagenttoreachtheproximitiesto\nthedolly. Thetermr =10isapositiverewardwhentheforkliftendsupwithsuccessfullyreachingunderneaththe\nG\ndolly. Thelastcomponentr =−0.05actsasapenaltyofnotdrivingforwards,i.e.,whenthevelocityoftheAGVis\nF\nbelow0.3m/s.",
+      "size": 934,
+      "sentences": 8
+    },
+    {
+      "id": 39,
+      "content": "etermr =10isapositiverewardwhentheforkliftendsupwithsuccessfullyreachingunderneaththe\nG\ndolly. Thelastcomponentr =−0.05actsasapenaltyofnotdrivingforwards,i.e.,whenthevelocityoftheAGVis\nF\nbelow0.3m/s. Thesymbol1 ,1 ,1 and1 denotesthecorrespondingindicatorfunctionofwhetherthatevent\nCD C F G\nhappens. Notethatourrewarddesigndoesnotrequireanymapinformation,e.g.,thedistancebetweenthedollyandthe\nagent,sothatitcanbewellapplicablealsotoreal-worldtraining. TerminalstateisreachedoncetheEuclideandistance\nbetweenthecenterofthedollyandthecenteroftherobotislessthan0.3m. Collisionswithanyobjectswillalsoresult\ninaninstantterminationofthetask. Toincreasethegeneralizabilityofthelearnedpolicy,weinjectdomainrandomizationforeachworkerenvironment,\ne.g.,shiftoflightsources,shapeofcells,patternofthefloorsandwallsetc. ThedesignedarenaisshowninFigure3. Particularly,werandomizethenumberofobstacles,thepositionoftargetdollyandinitialposeoftheAGVinthecell\ntoavoidoverfittingofthesensorreadingsonasingleenvironment.",
+      "size": 997,
+      "sentences": 9
+    },
+    {
+      "id": 40,
+      "content": "setc. ThedesignedarenaisshowninFigure3. Particularly,werandomizethenumberofobstacles,thepositionoftargetdollyandinitialposeoftheAGVinthecell\ntoavoidoverfittingofthesensorreadingsonasingleenvironment. Theexactrandomizationschemeisdemonstratedin\nAppendixC. Toacceleratetraining,wealsoimplementproportional-basedPER[50]aswellasdistributedRL,whereweparallelize9\nagentsforcollectingtheexperienceindifferentenvironmentsandamaintrainingprocess.Wefollowedanasynchronous\nupdateapproach. Theworkerthreadsendsthetrajectoryexperiencetothemaintrainingthreadandgetsanupdated\nmodelcopiedfromaslongasitfinishesanepisode,thetrainingthreadisinchargeofupdatingtheactorandcritic\nnetworks. ThedetailsofdistributedversionofSACanditshyper-parametersettingaredescribedinAppendixA.",
+      "size": 756,
+      "sentences": 7
+    },
+    {
+      "id": 41,
+      "content": "ted\nmodelcopiedfromaslongasitfinishesanepisode,thetrainingthreadisinchargeofupdatingtheactorandcritic\nnetworks. ThedetailsofdistributedversionofSACanditshyper-parametersettingaredescribedinAppendixA. 3.4 AutomaticCurriculumLearning: ExtensionofNavACLtoNavACL-Q\nInthispart,weintroduceourimprovedAutomaticCurriculumLearningapproachNavACL-Qbasedontheoriginal\nstudyNavACL.NavACL[20]isanAutomaticCurriculumLearningmethodthatspeciallyaddressesthechallenges\nofroboticnavigation. TheideaofNavACListoautonomouslyproposetasksofsuitabledifficultytoreduceoverall\ntrainingcycleandenhancethefinalperformance. Toautomaticallyformacurriculum,NavACLusesaneuralnetwork\nf toestimatetheprobabilityofthecurrentpolicyπsolvingtaskl,withf ∗(l)=0forcertainfailureandf ∗(l)=1\nπ π π\nforcertainsuccess.",
+      "size": 774,
+      "sentences": 5
+    },
+    {
+      "id": 42,
+      "content": "hefinalperformance. Toautomaticallyformacurriculum,NavACLusesaneuralnetwork\nf toestimatetheprobabilityofthecurrentpolicyπsolvingtaskl,withf ∗(l)=0forcertainfailureandf ∗(l)=1\nπ π π\nforcertainsuccess. Thesuccessprobabilityf ∗(l)isestimatedbasedonalistofpre-definedtask-specificgeometric\nπ\npropertiesl relevantofmapknowledge,i.e.,geodesicdistancebetweengoalandinitialstate,agent/goalclearance,\nrelativeinitialangleandetc.,altogether5properties. Theneuralnetworkf isupdatedconcurrentlywiththetrainingofthepolicyπ. Fortraining,thenetworkisprovided\nπ\nwiththeinputoflfromthemostrecenttrainedtaskandabinarylabelthatindicateswhetherornottherespectivetask\nwassolvedsuccessfully. Todeterminewhichcurriculumshouldbeposednext,NavACLsamplesoneasy,frontier,andrandomtaskswithsome\ndefinedprobabilities. Frontiertasksrefertochallengingsituationsandrandomtasksencourageexploration,whileeasy\ntaskpreventsthecatastrophicforgetting.",
+      "size": 912,
+      "sentences": 7
+    },
+    {
+      "id": 43,
+      "content": ",NavACLsamplesoneasy,frontier,andrandomtaskswithsome\ndefinedprobabilities. Frontiertasksrefertochallengingsituationsandrandomtasksencourageexploration,whileeasy\ntaskpreventsthecatastrophicforgetting. Sinceagent’sabilitytosolvethetaskchangesdynamicallyduringthetraining,\ntheauthorsofNavACLusedadaptivefiltering(AF)asacriteriontoevaluateinwhichcategorythegeneratedcandidate\ntasksfallinto. Specifically,AFproposesasetofcandidatetaskscharacterizedbytheirrespectivegeometricproperties\nL areforwardedthroughthenetworkf . Thenanormaldistributionisfittedtotheestimatedsuccessprobabilities,\nc π\nwhichisformallyexpressedasµ ,σ ←FitNormal(f ∗(L )).Ataskisregardedaseasyiff ∗(l)>µ +βσ and\nf f π c π f f\nisclassifiedasfrontierwhenµ −ησ <f ∗(l)<µ +ησ . Thecoefficientsηandβ arehyper-parameters. f f π f f\nTable1: Summaryofthesensoryobservationsandadditionalstatisticsthatdescribethestatedesignofthisthesis.",
+      "size": 892,
+      "sentences": 7
+    },
+    {
+      "id": 44,
+      "content": "classifiedasfrontierwhenµ −ησ <f ∗(l)<µ +ησ . Thecoefficientsηandβ arehyper-parameters. f f π f f\nTable1: Summaryofthesensoryobservationsandadditionalstatisticsthatdescribethestatedesignofthisthesis. ObservationComponents\nDescription Dimensions\nSequenceofthefourmostrecentcameraRGBimages R4×3×80×80\nCurrentLiDARsensorinput\nR1×256\n(frontandbacksensorconcatenated)\nHistoryofthefourpreviouslytaken\nR4×2\nactions\nHistoryofthefourpreviouslyreceived\nR4×1\nrewards\n8\n[표 데이터 감지됨]\n\n=== 페이지 9 ===\nAPREPRINT-MARCH17,2022\nFigure3: AnIllustrationofthedesignedtrainingarena. Itconsistsof9totalcellsofdifferentsizesandlayouts. For\ninstance,thewallsandfloorsfeaturedifferentcolorsandpatterns,thelightsourcesdifferalsoineachcell. Theinitial\nposeofrobot,targetdollyandtheobstaclesarealsoplacedwithsomerandomsettings. Fordetails,pleasereferto\nAppendixC. NowweillustrateourimprovementsandextensionsofNavACL algorithmtoNavACL-Qalgorithm. Weadaptthe\n5geometricpropertiesofthenetworktoourusecaseasshowninTable2.",
+      "size": 986,
+      "sentences": 10
+    },
+    {
+      "id": 45,
+      "content": "settings. Fordetails,pleasereferto\nAppendixC. NowweillustrateourimprovementsandextensionsofNavACL algorithmtoNavACL-Qalgorithm. Weadaptthe\n5geometricpropertiesofthenetworktoourusecaseasshowninTable2. Amongthem,wereducethenumberof\ngeometricpropertiesbyone,andcombineourproposedidea. Ratherthanfullyrelyingonthemapproperties,itis\nmorefavorablethattheinputfeaturestosuccessprobabilitynetworkcanbemoregeneralizablefortasksindifferent\ndomains,e.g.,navigationtasks,roboticmanipulationtasks,games,etc. Incontrast,thecurrentinputfeatures(geometric\nproperties)needredesigningtofitothertasks. Tocopewiththis,weproposeusingtheinitialQ-valuefromthecritic\nnetwork, as the learned Q-value should give a good estimate on how well the initial pose is. Thus, the Q-value is\nhighlycorrelatedtothesuccessgiventheinitialstate. Inthiswork,weappendtheestimatedinitialQ-valuewithother\ngeometricpropertiestogetherastheinputtoNavACL.",
+      "size": 908,
+      "sentences": 10
+    },
+    {
+      "id": 46,
+      "content": "well the initial pose is. Thus, the Q-value is\nhighlycorrelatedtothesuccessgiventheinitialstate. Inthiswork,weappendtheestimatedinitialQ-valuewithother\ngeometricpropertiestogetherastheinputtoNavACL. Table2: Theinputsforthesuccesspredictionnetworkf inNavACL-Q\nπ\nAgent-GoalDistance Euclideandistancefroms tos\n0 g\nAgentClearance Distancefroms tothenearestobstacle\n0\nGoalClearance Distancefroms tothenearestobstacle\ng\n−−−→\nRelativeAngle Theanglebetweenthestartingorientationands ,s\n0 g\nInitialQ-Value ThepredictedQ-valueQ (s ,a )fromSACcriticnetwork\nφ 0 0\nMoreover,wespotthatAFcouldresultinanundersamplingontheeasytasksifµ +βσ >1. Thiscouldhappen\nf f\nwheneitherµ approaches1orσ islarge. Thefirstcaseindicatesthattheagentreachesnear-finalperformanceandis\nf f\nthusofminorimportance. Herewesimplyintroduceanadditionalhyperparameterχ∈[0,1),whichactsasathreshold\nforeasytasksduringthefinalstageofthetraining. Thesecondcornercaseishandledbyanadditionalconditionthat\nchecksforthecasethatµ +βσ >1.",
+      "size": 985,
+      "sentences": 8
+    },
+    {
+      "id": 47,
+      "content": "plyintroduceanadditionalhyperparameterχ∈[0,1),whichactsasathreshold\nforeasytasksduringthefinalstageofthetraining. Thesecondcornercaseishandledbyanadditionalconditionthat\nchecksforthecasethatµ +βσ >1. Ifso,theeasyconditionisreplacedwithf ∗(l)>µ . f f π f\nIntheoriginalwork,theyusedPPO[26],anon-policyDRLalgorithm,whereasweimplementSAC[34].Theadvantage\nofSACismentionedinSection3.1. Weelaborateonthehyper-parameterofNavACL-QinAppendixB. 3.5 Pre-trainingoftheFeatureExtractor\nWealsoinvestigateotheralternativestopotentiallyincreasethetrainingspeedbesidesautomaticcurriculumlearning. Onepotentialwayistopre-traintheconvolutionalencoderinunsupervisedlearningmanner,e.g.,viaautoencoders[61]. Afterpre-training,weinitializeandfixedtheweightsofconvolutionalblocksshowninFigure2duringthewholeDRL\ntrainingphaseandthedecoderarediscarded. Weexaminewhetherameaningfulfeaturerepresentationcanfacilitate\nthelearningornot.",
+      "size": 906,
+      "sentences": 9
+    },
+    {
+      "id": 48,
+      "content": "nitializeandfixedtheweightsofconvolutionalblocksshowninFigure2duringthewholeDRL\ntrainingphaseandthedecoderarediscarded. Weexaminewhetherameaningfulfeaturerepresentationcanfacilitate\nthelearningornot. 9\n[표 데이터 감지됨]\n\n=== 페이지 10 ===\nAPREPRINT-MARCH17,2022\nAlgorithm1:GetDynamicTask-Q\ninput :Trainingtimestept;f ;µ ;σ ;Hyperparametersβ,γ,χ,n\nπ f f T\noutput:Taskl\n1 taskType←GetTasktype(t);\n2 fori=0ton T do\n3 l←RandomTask();\n4 switchtaskTypedo\n5 caseeasydo\n6 ifµ f +βσ f <1then\n7 iff π ∗(l)>µ f +βσ f orf π ∗(l)>χthen\n8 returnl;\n9 endif\n10 else\n11 if f π ∗(l)>µ f then\n12 returnl;\n13 endif\n14 endif\n15 endcase\n16 casefrontierdo\n17 ifµ f −γσ f <f π ∗(l)<µ f +γσ f then\n18 returnl;\n19 endif\n20 endcase\n21 caserandomdo\n22 returnl;\n23 endcase\n24 endswitch\n25 endfor\n26 returnRandomTask()\nHerewedemonstratethedetailsofpre-trainingtheconvolutionalencodersinactorandcriticnetwork. Theencoder\nstructureismentionedabove. Fordecoder,weusesymmetricarchitecturewithtransposedconvolution[62]toincrease\nfeaturemapsize.",
+      "size": 1000,
+      "sentences": 5
+    },
+    {
+      "id": 49,
+      "content": "etailsofpre-trainingtheconvolutionalencodersinactorandcriticnetwork. Theencoder\nstructureismentionedabove. Fordecoder,weusesymmetricarchitecturewithtransposedconvolution[62]toincrease\nfeaturemapsize. Theoutputofthedecoderhasexactlythesameshapeasinputwith4channels,i.e.,4consecutive\nframes. Thelossfunctionisdefinedasl2pixel-lossbetweenthereconstructedimageandgroundtruthimageaveraged\noverallchannelssothattheunderlyingtemporalrelationbetweeneachframeisalsoreckonedwith.Thedatasetconsists\nof50,000interactionsequencesfromtheagent’srandominteractionwiththetrainingenvironment. 4 Results\nInthissection,thetrainingandtestingresultsofourDRLapproachonthenavigationtaskarepresented. Westart\nbyshowingthetrainingperformanceofthebestvariantinSection4.1. Fortesting,weevaluatethelearnedpolicy\nsystematicallyinanunseenenvironmentfeaturinglargerspacewithdifferentlayoutandobstaclesinSection4.2.",
+      "size": 882,
+      "sentences": 8
+    },
+    {
+      "id": 50,
+      "content": "byshowingthetrainingperformanceofthebestvariantinSection4.1. Fortesting,weevaluatethelearnedpolicy\nsystematicallyinanunseenenvironmentfeaturinglargerspacewithdifferentlayoutandobstaclesinSection4.2. The\ntestingalsoextrapolatesthetrainingscenariosincaseofhigherrelativeorientationsbetweenvehicleanddollysothat\ntherobustnessofthelearnedpolicycanbeseen. InSection4.3,asetofablationstudiesareconducted,wheretheeffects\nofourACLapproachNavACL-Qandapre-trainedfeatureextractorontheperformancegainandtrainingefficiency\nareinvestigated. Werevealtheireffectsbothintermoftrainingandtestingexperiments. Specifically,NavACL-Qis\ncomparedwithtrainingwithrandomstartsandapre-trainedconvolutionalencoderiscomparedwithacompletely\nend-to-endtrainingfashion. InSection4.4,wecompareallablationvariantstoamap-basedpipelineapproachprovided\nby NVIDIA Isaac SDK [63] as a baseline approach to validate whether our DRL agent outperforms the standard\napproachfornavigationtask.",
+      "size": 950,
+      "sentences": 7
+    },
+    {
+      "id": 51,
+      "content": ",wecompareallablationvariantstoamap-basedpipelineapproachprovided\nby NVIDIA Isaac SDK [63] as a baseline approach to validate whether our DRL agent outperforms the standard\napproachfornavigationtask. 4.1 TrainingResults\nDuringtheexperimentalphase,weinvestigatethreevariantsforablationstudies. Wenamethevariantthatcombines\nbothNavACL-Qalgorithmandpre-trainedconvolutionalblocksasNavACL-Qp.t.,thevariantwithNavACL-Qalgorithm\n10\n=== 페이지 11 ===\nAPREPRINT-MARCH17,2022\nbutwithend-to-endtraining(i.e.,theconvolutionalencoderisalsolearnedfromscratch)asNavACL-Qe.t.e.,whilethe\nvariantwithpre-trainedconvolutionalencoderbutwithrandominitialposesisabbreviatedasRND.Weappendour\nabbreviationlistalsoattheendofourscript. Acomprehensivecomparisonamong3variantsrevealshowautomatic\ncurriculumlearningandpre-trainedfeatureextractorcanfacilitatelearningprocess,whichispresentedinSection4.3. Inthissection,wefirstdemonstratethetrainingresultofthebestvariantNavACL-Qp.t.",
+      "size": 950,
+      "sentences": 5
+    },
+    {
+      "id": 52,
+      "content": "lshowautomatic\ncurriculumlearningandpre-trainedfeatureextractorcanfacilitatelearningprocess,whichispresentedinSection4.3. Inthissection,wefirstdemonstratethetrainingresultofthebestvariantNavACL-Qp.t. 4.1.1 Pre-trainedConvolutionalEncoders\nInthissection,wearepresentingthequalityofthepre-trainedconvolutionalblocksusingautoencoderinFigure4with\nthetrainingprocedurementionedinSection3.5. After100epochsoftraining,theauto-encoderisabletoreconstruct\ntheimagesequenceswithreasonableaccuracy. Weusethesetrainedweightsasinitializationforactorandcriticnetwork\nofSACandfreezethemduringtraining. (a)\n(b)\nFigure4: Comparisonof(a)groundtruthimagesequenceand(b)reconstructedimagesequencefromauto-encoders. 4.1.2 PerformanceofNavACL-QSACwithPre-trainedConvolutionalEncoders\nWe are presenting the learning curves of the best DRL variant during the complete training episodes in Figure 6. Thealgorithmisrunatotalnumberofthreetimes,witheachrunconsistingof0.25M episodes.",
+      "size": 953,
+      "sentences": 8
+    },
+    {
+      "id": 53,
+      "content": "oders\nWe are presenting the learning curves of the best DRL variant during the complete training episodes in Figure 6. Thealgorithmisrunatotalnumberofthreetimes,witheachrunconsistingof0.25M episodes. Thisapproximately\ncorrespondstothewallclocktimeof28hoursand5M frames,wherethetrainingissplitacrossthreeGPUs(Quadro\nRTX800048GB)withtheCPUIntelXeonGold5217. Figure6outlinestheepisodicreturnandsuccessprobabilityof\nreachingunderneaththedolly. Itcanbeobservedthatthefinalsuccessprobabilityapproached1,i.e.,themobilerobot\nsucceedsmostlyinnavigationfromarbitrarydefinedinitialpositiondomainasshowninTableC.Theepisodicreturn\nalsoconvergestothefinalvaluestably,whichcanbeinterpretedasconvergingtoanear-optimalpolicy. Thevarianceof\nepisodicreturnandsuccessprobabilityissmallattheendoftraining,signifyingthelearnedpolicyregisterssimilar\npatternsamongthreeruns. Therobustnessofouralgorithmisthereforeevident. Moreover,ourtrainedDRLagent\nfurtherexhibitstheadaptabilitytoanon-stationaryenvironment.",
+      "size": 985,
+      "sentences": 8
+    },
+    {
+      "id": 54,
+      "content": "gnifyingthelearnedpolicyregisterssimilar\npatternsamongthreeruns. Therobustnessofouralgorithmisthereforeevident. Moreover,ourtrainedDRLagent\nfurtherexhibitstheadaptabilitytoanon-stationaryenvironment. Weshowthattheagentisevenabletoreachthegoal\ndollythatchangesitslocationduringthenavigationprocess. Forinstance,thedollyisoriginallyplacedleftfronttothe\nAGV,andtheagentsteerstowardsthegoaldirection. Thenthetargetdollyisshiftedfromtheleftfrontoftheagentto\nitsrightfront,theAGVdrivesfirstbackwardsandadjustsitsorientationtowardsthegoaldirectionandthenadvances\ntothegoal. Thevideoillustrationsofleanedpolicyareavailableontheonlinedatarepository1. Thegeneralizabilityof\nthetrainedagentservesasagreatadvantageofDRLandwillbefurtherdiscussedinSection5.1.",
+      "size": 745,
+      "sentences": 8
+    },
+    {
+      "id": 55,
+      "content": "nadvances\ntothegoal. Thevideoillustrationsofleanedpolicyareavailableontheonlinedatarepository1. Thegeneralizabilityof\nthetrainedagentservesasagreatadvantageofDRLandwillbefurtherdiscussedinSection5.1. 1Some demonstrations of our trained DRL agent can be found in https://github.com/ai-lab-science/\nDeep-Reinforcement-Learning-for-mapless-navigation-in-intralogistics\n11\n=== 페이지 12 ===\nAPREPRINT-MARCH17,2022\n4.2 Grid-BasedTestingScenarios\nToexactlyexaminetherobustnessandthegeneralizabilityofthetrainedpolicy,weperformasystematictestinginan\narenadistinctfromtraining. Thetestenvironmentdiffersfromthetrainingenvironmentsintermsofshape,texture,and\nlightingconditionstoenabletheanalysisofthemethodsgeneralizationpotential. Wesettheinitialposeofthe(2D\nlocationandorientation)inanexhaustivegrid-basedmannerandcheckedthesuccessprobabilityofeachinitialposition. Theexhaustivetestingfeaturesa5m×5mgrid,partitionedinto0.5mgrid-cells,centeredinfrontofthedolly.",
+      "size": 950,
+      "sentences": 7
+    },
+    {
+      "id": 56,
+      "content": "ationandorientation)inanexhaustivegrid-basedmannerandcheckedthesuccessprobabilityofeachinitialposition. Theexhaustivetestingfeaturesa5m×5mgrid,partitionedinto0.5mgrid-cells,centeredinfrontofthedolly. The\ngridthusrepresents11×11initialpositionsforthemobilerobot. Figure5illustratesaschematicrepresentationofthe\ntestingscenario. Furthermore,wetesteachinitialpositionswitheightdifferentinitialrobotorientations,givenbythe\nfollowinglist: {0◦,±45◦,±90◦,±135◦,180◦}. Forsimplicity,theorientationof0◦canbeapproximatelyunderstood\nasthecasewheretherobotisfacingstraighttowardsthegoaland180◦correspondstofacingbackwardsfromthegoal. PleaserefertoAppendixCfordetails. Theeffectofpartialobservabilityaggregateswiththeincreasingangle. Each\ncombinationofpositionandrotationistested9timestoobtainanaveragedestimationofthesuccessprobabilityfor\neachconfiguration(x,y,orientation),whichcorrespondstothetotalnumberof11×11×8×9=8712runsforeach\nablationvariant.. Figure5visualizesthetest-scenariographically.",
+      "size": 985,
+      "sentences": 9
+    },
+    {
+      "id": 57,
+      "content": "agedestimationofthesuccessprobabilityfor\neachconfiguration(x,y,orientation),whichcorrespondstothetotalnumberof11×11×8×9=8712runsforeach\nablationvariant.. Figure5visualizesthetest-scenariographically. ItisnoteworthythatthetestingcasefeatureswiderinitialAGVorientation,lyingbetweentheintervalof[−180◦,180◦],\nwhich extrapolates the defined one of [−90◦,90◦] in the training phase. In this way, one can also examine the\nperformanceoflearnedpolicyundertheeffectofpartialobservability. X\nD\nY\nGrid\n(a) (b)\nFigure5: Schematicrepresentationofthegrid-basedtest-scenario. Thecoordinatesystemtowhichthetest-scenario\nrefersisshowninred. Thefixeddollypositionismarkedwith“D”.Thebluegridrepresentsthetestzonedivided\ninto11×11positions. Thegridandthedollyarescaledupforthisillustrationtoimprovevisibility. (b)Graphical\nillustrationofa0◦rotationtest,conductedinthesimulatedtesting-environment. ThebestrunamongthethreerunsofNavACLp.t. isillustratedinFigure7(a).",
+      "size": 943,
+      "sentences": 10
+    },
+    {
+      "id": 58,
+      "content": "aledupforthisillustrationtoimprovevisibility. (b)Graphical\nillustrationofa0◦rotationtest,conductedinthesimulatedtesting-environment. ThebestrunamongthethreerunsofNavACLp.t. isillustratedinFigure7(a). Itismanifestthattheagentscores\napproximately 100% probability to reach the dolly from a favorable initial starting position. The term ‘favorable’\nstandsforarelativelysmallinitialrobotorientationfromthetargetdolly,e.g.,0◦,±45◦,−90◦. Thesecasessuffer\nminimallyfrompartialobservationandtheagentcanreachgoalmostlywithproperturningandmaneuvering. With\naforementionedfavorableinitialrotationangle,themobileagentmostlysucceedsinnavigatingtothegoal,exceptfor\nleft/rightuppercornercases,i.e. theregionnear−3minx-axisand−2miny-axisforrotationangle−90◦.",
+      "size": 742,
+      "sentences": 9
+    },
+    {
+      "id": 59,
+      "content": "ith\naforementionedfavorableinitialrotationangle,themobileagentmostlysucceedsinnavigatingtothegoal,exceptfor\nleft/rightuppercornercases,i.e. theregionnear−3minx-axisand−2miny-axisforrotationangle−90◦. Thisresult\nisreasonableassuchcornercaseisdeemedasdifficultstartpositionastherobotcannotcapturethetargetfromthe\nRGBcameraandthemobilerobothastomakeaseriesofadjustingmaneuverstoreachuprightunderneaththedolly,\nsimilartoparkingthecarstoanarrowslot,henceresultinginasub-optimalpolicy. Additionally,suchcornercasesare\nnotsufficientlyfrequentlysampled,resultinginapotentialclassimbalanceproblem. Consequentially,DRLalgorithm\nfailstolearnfromthesesampleswell. Withtheincreasinginitialrotationangleof±135◦ and180◦,whichextrapolatesthedefinedorientationdomainof\n[−90◦,90◦]duringtraining,thesuccessprobabilitydropssignificantlyandthepartialobservabilityseverelyaffects\ntheperformance.",
+      "size": 873,
+      "sentences": 6
+    },
+    {
+      "id": 60,
+      "content": "alrotationangleof±135◦ and180◦,whichextrapolatesthedefinedorientationdomainof\n[−90◦,90◦]duringtraining,thesuccessprobabilitydropssignificantlyandthepartialobservabilityseverelyaffects\ntheperformance. Forthemajorityoffailurecases,themobilerobotexhibitsoneoffollowingbehaviorpatterns: (i)\nConsistentlymakingcyclingmovement,withsomerunstendingtograduallyapproachthetarget,butendingupwith\nreachingmaximalallowedsteps. (ii)Goingstraighttowardscollisionwithoutmovingforwardsorbackwards. (iii)\nGoingtowardsanobstacle,butcirclingaroundinitsproximity,exceedingmaximalallowedsteps. Apotentialreason\n12\n[표 데이터 감지됨]\n\n=== 페이지 13 ===\nAPREPRINT-MARCH17,2022\np.t. p.t. (a) (b)\nFigure 6: Learning curves of the three variants. (a) The episodic return, (b) The docking success probability per\nepisode. Thesetwostatisticsarepresentedasamoving-averageover500episodes,wherethesolidlineandshadedarea\nillustratesrespectivelythemeanandthevarianceoverthreeruns.",
+      "size": 936,
+      "sentences": 9
+    },
+    {
+      "id": 61,
+      "content": ") The docking success probability per\nepisode. Thesetwostatisticsarepresentedasamoving-averageover500episodes,wherethesolidlineandshadedarea\nillustratesrespectivelythemeanandthevarianceoverthreeruns. forsuchfailurecasesisthatthelearnedpolicycannotgeneralizewelltoextrapolatedtasksnotseenintraining,whereas\ntheforintrapolatedtasks(±45◦and0◦),thepolicygeneralizeswell. 4.3 AblationStudies\nIntheabovesections,wedemonstratethetrainingandtestingresultsofthebestvariantNavACL-Qp.t. Inthissection,\nwe examine the effect of a pre-trained convolutional encoder and NavACL-Q on the learning performance, which\nrespectivelycorrespondstotwoadditionalvariantsRNDandNavACLe.t.e. Wealsoruntheremainingtwovariantsin\ntheexactsettingasNavACL-Qp.t. alsowiththreerunsforeachvariantanddemonstratethecompletetrainingand\ntestingresultsinFigure6and7.",
+      "size": 826,
+      "sentences": 7
+    },
+    {
+      "id": 62,
+      "content": "oadditionalvariantsRNDandNavACLe.t.e. Wealsoruntheremainingtwovariantsin\ntheexactsettingasNavACL-Qp.t. alsowiththreerunsforeachvariantanddemonstratethecompletetrainingand\ntestingresultsinFigure6and7. 4.3.1 AblationStudies: EffectsofAutomaticCurriculumLearning\nToinvestigatetheeffectsofourautomaticcurriculumapproachNavACL-Q,wecompareitwiththevariantRND,where\nRNDhasthesamesettingasNavACL-Qp.t. exceptthatitsamplestheinitialstaterandomlyfromthedefinedboundary. ItisfirsttobenotedthatRNDisalreadyanapproachencouragingtheexplorationandalleviatesthetaskdifficulty\ncomparedtoafixeddistantinitialpositionfromthetarget[15]. Ifabettertrainingperformancecanbewitnessedfrom\nNavACL-Q,thentheeffectivenessofourautomaticcurriculumlearningapproachcanbeverified. Wedemonstratethe\ncomparisonbothintrainingandtestingperformance. Figure6revealsthatinthetrainingphasetheRNDmethodimposesthehighesttrainingvariance.",
+      "size": 894,
+      "sentences": 9
+    },
+    {
+      "id": 63,
+      "content": "ourautomaticcurriculumlearningapproachcanbeverified. Wedemonstratethe\ncomparisonbothintrainingandtestingperformance. Figure6revealsthatinthetrainingphasetheRNDmethodimposesthehighesttrainingvariance. Oneofthethree\ntrialsmeetsthe90%thresholdintheRND case, thoughtheothertwotrialshavenotexceeded40%performance,\nresultinginanaveragefinalperformanceofapproximately50%. Incontrast,thevarianceofNavACL-Qe.t.e. remains\nsmall, i.e., more robust. This can also be validated from the variant NavACL-Q e.t.e., which also incorporates the\ncomponentofNavACL-Q.Moreover,theNavACL-Qp.t. exhibitsaconsistentlyfasterimprovementattheinitialstage\nof training. With 1M steps, RND just starts to show a sign of improving in terms of success probability whereas\nNavACL-Qp.t. hasalreadyreachedtheaveragesuccessprobabilityof30%inFigure6(b). Fromtheseobservations,\nitcanbeconcludedthatNavACL-Qindeedfacilitatesthetrainingintermsofbothfinalconvergedvalueandrateof\nconvergence.",
+      "size": 950,
+      "sentences": 11
+    },
+    {
+      "id": 64,
+      "content": ". hasalreadyreachedtheaveragesuccessprobabilityof30%inFigure6(b). Fromtheseobservations,\nitcanbeconcludedthatNavACL-Qindeedfacilitatesthetrainingintermsofbothfinalconvergedvalueandrateof\nconvergence. WefurtherpresentasummarystatisticsforacomparisononthetestingperformanceinTable3,NavACL-Qp.t. achieves\napproximately90%successrateinnavigatingunderneaththedollyamong4outof5intrapolatedinitialorientations,\noutperforming RND by at least 30%. Moreover, NavACL-Q p.t. reveals the best performance averaged over all\norientations, surpassingRNDby11%foralltestedorientationsincludingtheextrapolatedones. Overallspeaking,\nNavACL-Qp.t. convergestoabetterpolicythanRNDinthetestingcase. Moreover,bothRNDandNavACL-Qp.t. suggestgeneraldecreasingtendenciesofsuccessrateswithincreasingrelativeinitialorientations,whichisreasonable\nastheeffectofpartialobservabilityaggregateswithhigherrelativeorientations.",
+      "size": 889,
+      "sentences": 11
+    },
+    {
+      "id": 65,
+      "content": "DandNavACL-Qp.t. suggestgeneraldecreasingtendenciesofsuccessrateswithincreasingrelativeinitialorientations,whichisreasonable\nastheeffectofpartialobservabilityaggregateswithhigherrelativeorientations. 13\n=== 페이지 14 ===\nAPREPRINT-MARCH17,2022\n(a)\n(b)\n(c)\nFigure7: Color-codedillustrationonthegrid-basedtestingresultofonefullytrainedNavACL-Qagent. Theaverage\nperformanceforeachpositiononthegridisrepresentedbyacolorizedcircle,whereyellowcolorindicatesahigh\nsuccessrateandbluecolorindicatesnear-zerosuccessprobability. (a)ThetestingresultofNavACL-Qp.t. (b)The\ntestingresultofRND(c)ThetestingresultofNavACL-Qe.t.e. 14\n=== 페이지 15 ===\nAPREPRINT-MARCH17,2022\nTable3: Thestatisticsoftestingresultsarepresented. Theaveragedsuccessrateofreachingthetargetforeachablation\nvariantandbaselineapproachareshown. Theaveragedsuccessrateiscalculatedasthemeansuccessratesover11×11\ngridpointsfromFigure7. RelativeOrientation AverageSuccessRate\nofAVGtoTarget NavACLp.t. RND NavACLe.t.e.",
+      "size": 963,
+      "sentences": 11
+    },
+    {
+      "id": 66,
+      "content": "ntandbaselineapproachareshown. Theaveragedsuccessrateiscalculatedasthemeansuccessratesover11×11\ngridpointsfromFigure7. RelativeOrientation AverageSuccessRate\nofAVGtoTarget NavACLp.t. RND NavACLe.t.e. Baseline\n0◦ 86.6% 58.5% 50.3% 16.5%\n−45◦ 93.7% 55.6% 25.5% 3.3%\n+45◦ 88.0% 52.2% 53.5% 5.0%\n−90◦ 90.5% 43.2% 8.9% 0%\n+90◦ 18.5% 45.5% 32.0% 0%\n−135◦ 48.2% 36.9% 2.2% 0%\n+135◦ 11.9% 37.1% 19.8% 0%\n+180◦ 15.7% 34.2% 8.0% 0%\nMeanof{0◦,±45◦,±90◦}\n75.5% 51.1% 34.1% 5.0%\n(IntrapolatedTasks)\nMeanof{±135◦,180◦}\n25.3% 36.1% 10.0% 0%\n(ExtrapolatedTasks)\nMeanofallrelativeorientations 56.6% 45.4% 25.0% 3.1%\nWetakeacloserlookatwhetherthesuccesspredictionnetworkf inNavACL-Qp.t. showsmeaningfulpredicted\nπ\nsuccessprobabilityandhowitevolveswiththetrainingstages. Toexaminethiseffect,theoutputsoff areevaluated\nπ\nacrossdifferentstagesoftrainingfromoneofthethreeruns.",
+      "size": 854,
+      "sentences": 7
+    },
+    {
+      "id": 67,
+      "content": "nNavACL-Qp.t. showsmeaningfulpredicted\nπ\nsuccessprobabilityandhowitevolveswiththetrainingstages. Toexaminethiseffect,theoutputsoff areevaluated\nπ\nacrossdifferentstagesoftrainingfromoneofthethreeruns. Figure8illustratespredictedtasksuccessrateinthedefinedregionswithrespecttotwogeometricproperties,initial\nrobotorientationandtheEuclideandistancebetweeninitialrobotposeandtargetdolly. Thesetwopropertiesgivea\nstraightforwardviewonthetaskdifficulty. Forinstance,asmallinitialrotationanglewithclosedistanceisregarded\nasoptimisticinitialposition. Itishypothesizedthatawell-learnedf shouldshowaincreasingtendencyonsuccess\nπ\nprobabilityasthetrainingprogresses. Besides,thepredictionnetworkshouldalsodistinguishfavorableinitialposes\nfromunfavorableones. AscanbeobservedfromFigure8,attheinitialtrainingstage,e.g.,episode0,theagentbehavestotallyinarandom\nfashionandagenerallowpredictedsuccessvaluecanbeexpected.",
+      "size": 901,
+      "sentences": 9
+    },
+    {
+      "id": 68,
+      "content": "hfavorableinitialposes\nfromunfavorableones. AscanbeobservedfromFigure8,attheinitialtrainingstage,e.g.,episode0,theagentbehavestotallyinarandom\nfashionandagenerallowpredictedsuccessvaluecanbeexpected. Withthetrainingprogressing,e.g.,episodes50,000\nand100,000,thepredictionnetworksuggestsanincrementinsuccessrateintheregionsoffavorableinitialposes,\nwhere the increment also spreads to non-favorable initial pose. In both cases, tasks with low relative rotation and\ndistanceslessthan4mexhibitsasignificantlyhighersuccessprobability. Towardstheendoftraining,theentiretask\nspacereachesanestimatedsuccessprobabilitycloseto100%. Figure8: Two-dimensionalinterpolationofthesuccessprobabilityestimatedbyf atdifferentstagesoftraining,where\nπ\nredareasindicatehighsuccessprobabilityestimatesandblueareasindicatelowsuccessprobabilityestimates. Inthis\ncase,theplotisgeneratedacrossthegeometricpropertiesAgent-GoalDistanceandRelativeAngle.",
+      "size": 923,
+      "sentences": 7
+    },
+    {
+      "id": 69,
+      "content": "here\nπ\nredareasindicatehighsuccessprobabilityestimatesandblueareasindicatelowsuccessprobabilityestimates. Inthis\ncase,theplotisgeneratedacrossthegeometricpropertiesAgent-GoalDistanceandRelativeAngle. Theindividual\nplotsconsistofthesuccesspredictionsofthe10,000tasksthatfollowedthedisplayedepisode. Wefurtherinspecttaskdistributionfromthecurriculumindifferenttrainingstages.Figure9displaysasetofhistograms,\nwhichaccountsforthenumberoftasksintermsofonegeometricpropertyAgent-GoalDistance. Inthefirst10,000\nepisodes,arandompatternwithrespecttotheAgent-GoalDistancefortheagentNavACLp.t. ispresent. Thisis\n15\n[표 데이터 감지됨]\n\n=== 페이지 16 ===\nAPREPRINT-MARCH17,2022\nreasonableastheagentbehavesmorerandomlyatthebeginningandmostlyendsupwithnotreachingthetarget. With\nmerely negative experience, the success prediction network cannot distinguish easy task from frontier task, hence\nreachingamoreorlessrandompattern.",
+      "size": 901,
+      "sentences": 8
+    },
+    {
+      "id": 70,
+      "content": "inningandmostlyendsupwithnotreachingthetarget. With\nmerely negative experience, the success prediction network cannot distinguish easy task from frontier task, hence\nreachingamoreorlessrandompattern. Intheintermediatestage,representedbyepisodes50,000 :60,000,where\ntheagentstartstolearnintheinitialpositionswithsmallrelativedistancebutstillfailsinlargeinitialdistance. This\ncanadditionallybeverifiedinFigure8. Inthisphase,easyandfrontier taskcorrespondstotheregionswithclose\ndistances. Thisisreferredtoasamoreconcentrateddistributionthatcanbefoundwiththefeaturedgoaldistancesinthe\nrangeof1.5mto2.5m. Notethatthedefinitionofeasyandfrontiertaskalsoevolveswiththetrainingstage. Inalater\ntrainingstage,representedbyepisodes150,000:160,000,thesuccesspredictionnetworkf hasmostlysuccessful\nπ\npredictionscoveringalltherelativedistancesinFigure8. Inthiscase,largeinitialdistancescanalsobeclassifiedas\neasytaskorfrontierone,resultinginarandomsampling.",
+      "size": 942,
+      "sentences": 9
+    },
+    {
+      "id": 71,
+      "content": "sspredictionnetworkf hasmostlysuccessful\nπ\npredictionscoveringalltherelativedistancesinFigure8. Inthiscase,largeinitialdistancescanalsobeclassifiedas\neasytaskorfrontierone,resultinginarandomsampling. Thistendencyisinaccordancewiththeanticipatedbehavior\nofNavACL-Q.TheRNDagentontheotherhand,istrainedbasedonrandomlysampledtasksonly,thereforeitshows\nauniformdistributionacrossthedefineddistancedomain. 4.3.2 AblationStudies: EffectsofPre-trainedConvolutionalEncoder\nForthetrainingperformance,Figure6demonstratesthatNavACL-QandNavACL-Qe.t.e. performsimilarlyinterms\nof return and success rate during the first quarter of the training stage. Intermediate training performance with an\napproximately 30% success rate is reliably achieved by both approaches. Nevertheless, robust policies with final\nperformanceover90%areexclusivelylearnedbyagentsthatutilizethepre-trainedfeatureextractor. NavACL-Qe.t.e. attainsimilarvariancesasNavACL-Q,butthefinalperformancestagnatesaround30%.",
+      "size": 972,
+      "sentences": 9
+    },
+    {
+      "id": 72,
+      "content": "policies with final\nperformanceover90%areexclusivelylearnedbyagentsthatutilizethepre-trainedfeatureextractor. NavACL-Qe.t.e. attainsimilarvariancesasNavACL-Q,butthefinalperformancestagnatesaround30%. Inanadditionalexperiment,the\nmaximumnumberofepisodesisincreasedto0.4M,yetstillnorobustpolicywithsuccessratesabove60%canbe\nachievedintheNavACL-Qe.t.e. case. Inthegridtestcase,NavACL-Qe.t.e. alsoendsupwithoverallworseperformancethanNavACL-Qp.t. andRND.Table\n3demonstratesthatNavACL-Qe.t.eachieves41%lowersuccessrateinnavigationthanNavACL-Qp.t. amongall\nintrapolatedtasksand31%lowerforalltestedorientations.Themostsuccessfulnavigationtrialshappenwhentheinitial\nrobotrotationis0◦,correspondingtotheeasiestscenario. Astherotationanglesincreases,thesuccessfulprobability\ndropsquickly. Withsuchcomparison,itisobviousthatthepre-trainednetworkgreatlybooststheperformanceaswell\nasreducestheoverallcomputationexpense. WediscussthiseffectinSection5.2.",
+      "size": 939,
+      "sentences": 12
+    },
+    {
+      "id": 73,
+      "content": "thesuccessfulprobability\ndropsquickly. Withsuchcomparison,itisobviousthatthepre-trainednetworkgreatlybooststheperformanceaswell\nasreducestheoverallcomputationexpense. WediscussthiseffectinSection5.2. Interesting,itcanbealsoobserved\nthattheperformancegainofapre-trainedconvolutionalencoderismoresignificantthanhowNavACL-Qbooststhe\n(a) (b)\nFigure9: ComparisonofthetaskselectionhistogramswithrespecttotheAgent-GoalDistancegeometricproperty\nofexemplarytrainingoutcomes. WehaverecordedthestatisticsofinitialpositionintermsofAgent-GoalDistance\namongdifferenttrainingstages,eachwith10,000episodes. Thehistogramcountsthecorrespondingnumberofinitial\nstatesinthedefineddistancebinsamongeach10,000episodes. (a)representstaskdistributionofaNavACL-Qagent\nand(b)illustratesthetaskdistributionofanRNDagent.",
+      "size": 791,
+      "sentences": 7
+    },
+    {
+      "id": 74,
+      "content": "hehistogramcountsthecorrespondingnumberofinitial\nstatesinthedefineddistancebinsamongeach10,000episodes. (a)representstaskdistributionofaNavACL-Qagent\nand(b)illustratesthetaskdistributionofanRNDagent. 16\n[표 데이터 감지됨]\n\n=== 페이지 17 ===\nAPREPRINT-MARCH17,2022\nperformance,especiallyinthetestcase,asTable3demonstratesthatNavACL-Qe.t.eexhibits16.4%lowersuccessrate\nthanRNDamongallintrapolatedtasksand20%lowerrateaveragedforallorientations. 4.4 ComparisontoaMap-basedNavigationApproach\nWefurthercomparetheresultofourlearningapproachtoafullperceptionandnavigationpipelineprovidedbyNVIDIA\nIsaacSDK™[21],whichisdeemedasabaselineapproach. Thisbaselineapplicationisspecificallydesignedforthe\nloadcarrierdockingtask. Incontrasttooursolution,thebaselineusesaglobalmapformulti-LiDARLocalization\noftherobot. Thetargetposefortherobotisdeterminedbyobjectdetectionfollowedby3Dposeestimationofthe\ndolly.",
+      "size": 881,
+      "sentences": 7
+    },
+    {
+      "id": 75,
+      "content": "carrierdockingtask. Incontrasttooursolution,thebaselineusesaglobalmapformulti-LiDARLocalization\noftherobot. Thetargetposefortherobotisdeterminedbyobjectdetectionfollowedby3Dposeestimationofthe\ndolly. Inthebaselineapplicationthecameraresolutionis720×1280andthenumberoftheLiDARbeamsusedfor\nlocalizationis577persensor,whichhaveamaximumdetectablerangeof20m. Theusedmobilerobotexceptforthe\ncameraandtheLiDARresolution,remainsthesame. Tofindthegoalpositionfortherobot,theposeofthedollyisinferredfromthefrontalfacingcameraoftherobot. This\nposesaconstraintthatthedollyhastobedetectedintheinputimage. Forthebaselineapproach,thisisdonebyusing\nDetectNetv2[64],whichwaspre-trainedonrealimagesandthenfine-tunedfordollydetectionbyusingrandomized\nimagesofthedolly,createdwithIsaacSimUnity3D[21]. DetectNetv2generatesa2Daxis-alignedboundingboxfora\ndetecteddolly. Thedetectedboundingboxisusedtocreateacroppedimageofthedolly,whichformstheinputintoa\nposeestimationmodel.",
+      "size": 951,
+      "sentences": 10
+    },
+    {
+      "id": 76,
+      "content": "atedwithIsaacSimUnity3D[21]. DetectNetv2generatesa2Daxis-alignedboundingboxfora\ndetecteddolly. Thedetectedboundingboxisusedtocreateacroppedimageofthedolly,whichformstheinputintoa\nposeestimationmodel. Inthiscase,theposeestimationmodelisbasedonPoseCNN[65]. TheoutputofthePoseCNN\nnetworkisanestimatedorientationandtranslationofthedolly. Givenanimageofthedolly,theperceptionpipeline\nestimatesthe3Dposeofthedolly. Thisposeistransformedintotheglobalcoordinate-frameandservesasatargetpose. Then,alocalplannerbasedonthelinearquadraticregulatornavigatestherobotunderthedolly. We also conduct the same grid testing as mentioned in Section 4.2 for the baseline approach. Since the baseline\napproachenforcesthatthetargetdollymustbecapturedwithaRGBcamera,itisonlypossibletoshowtheresult\nwiththeinitialorientationangleof0◦ and±45◦.",
+      "size": 817,
+      "sentences": 10
+    },
+    {
+      "id": 77,
+      "content": "in Section 4.2 for the baseline approach. Since the baseline\napproachenforcesthatthetargetdollymustbecapturedwithaRGBcamera,itisonlypossibletoshowtheresult\nwiththeinitialorientationangleof0◦ and±45◦. Thebaselinemethodachievesthesuccessrateof100%inthe0◦\norientationcaseundertheconditionthatthedisplacementonx-axisremainsbelow1m,andthedistanceiny-direction\nremainsbelow5m,whichisillustratedinFigure10. However,thebaselineapproachprovesincapableofperforming\nthedockingmaneuveroncethedistanceonthex-ory-axissurpassesthementionedlimitations. Inthe±45◦ case,\nonlyfewpositionsaresolvedsuccessfully,allofwhichprovidefullvisibilityofthedolly. The±45◦ casesrequire\ny-displacementsbetween−2mand−4mforsuccessfuldockingmaneuvers. FromTable3,itcanalsobewitnessed\nthatthebaselineapproachachievesoverallmuchworseperformancecomparedtoallotherDRLvariantsinallinitial\norientations. Asaconclusion,ourlearningapproachdefinitelyoutperformsthebaselinewithlargerinitialorientation\nanddistancestothetarget.",
+      "size": 981,
+      "sentences": 8
+    },
+    {
+      "id": 78,
+      "content": "erallmuchworseperformancecomparedtoallotherDRLvariantsinallinitial\norientations. Asaconclusion,ourlearningapproachdefinitelyoutperformsthebaselinewithlargerinitialorientation\nanddistancestothetarget. 5 Discussion\nInthissection,wediscusstheprosandconsofourlearningapproachcomparedtothemap-basedbaselineapproachin\nSection5.1. Additionally,weprovidesomeintuitivelearnedtrajectoriesofourablationvariantsandbaselineapproach\nforaqualitativedescription. InSection5.2,weinterprettheresultsfromablationstudiesaswellasitscorrelationto\notherrelatedworks. ForSection5.3and5.4,theresultofintermediatetrialsandpotentialimprovementsofNavACL-Q\napproachasfutureworkarediscussed. 2\n3\n4\n5\n6\n7\n2 0 2\nx [m]\n]m[\ny\nRobot Rotation: 0° Robot Rotation: -45° Robot Rotation: 45°\n1.0\n2 2\n0.8\n3 3\n4 4 0.6\n5 5 0.4\n6 6 0.2\n7 7 0.0\n2 0 2 2 0 2\nFigure10: SimilartoFigure7,wedemonstrateacolor-codedillustrationofthegrid-basedtestingresultofthebaseline\napproach.",
+      "size": 927,
+      "sentences": 7
+    },
+    {
+      "id": 79,
+      "content": "45° Robot Rotation: 45°\n1.0\n2 2\n0.8\n3 3\n4 4 0.6\n5 5 0.4\n6 6 0.2\n7 7 0.0\n2 0 2 2 0 2\nFigure10: SimilartoFigure7,wedemonstrateacolor-codedillustrationofthegrid-basedtestingresultofthebaseline\napproach. Theyellowcolorindicatesahighsuccessrateandbluecolorindicatesnear-zerosuccessprobability. 17\n=== 페이지 18 ===\nAPREPRINT-MARCH17,2022\n5.1 LearnedBehavioroftheAgent\nAsmentionedinSection4.1.2,onemajoradvantageofasuccessfully-trainedDRLagentonthenavigationtaskisthe\nadaptabilitytoanon-stationaryenvironment. Themappingfromrawsensoryobservationtotheactionfullyrelieson\nthelearnedDNN.Asacomparison,map-basedapproachesrequireupdatingofamapandperformre-planning,which\ncausesadditionalcomputationoverheadandsuffersfrompotentialerrorofaninaccuratemap. Thecorrectivemaneuver\nofDRLagentisnaturallyacquiredfromtheexperienceencounteredduringtraininggivensufficientexploration,i.e.,\nlearningfromtrialanderror. Inaddition,weareillustratingthelearnedtrajectoriesofthemap-basedbaselineapproachandDRLvariants.",
+      "size": 987,
+      "sentences": 6
+    },
+    {
+      "id": 80,
+      "content": "edfromtheexperienceencounteredduringtraininggivensufficientexploration,i.e.,\nlearningfromtrialanderror. Inaddition,weareillustratingthelearnedtrajectoriesofthemap-basedbaselineapproachandDRLvariants. Forafair\ncomparison,threescenarioshavebeenchoseninawaythatthebaselineisabletoperformthenavigationsuccessfully,\ni.e.,dollyvisibilityinthefrontalRGBcameraisgiven. EachofsubplotsinFigure11illustratesonescenariowiththe\nleanedtrajectoriesfromNavACL-Qp.t.,NavACL-Qe.t.e.,RNDandbaselinegiventhesameinitialandgoalstate. The quantitative illustration shows that the map-based approach provided by NVIDIA Isaac SDK returns optimal\ntrajectory with minimal maneuvers in orientation adjustments, while DRL agents exhibit near-optimal ones. This\nsinusoidalbehaviorisnaturalastheDNNscanhardlyeliminateapproximationerrorsto0.Additionally,SACencourages\ntheagenttoshowstochasticbehaviorbymaximizingthepolicyentropyandtheillustratedtrajectoryisonesample\nfromthelearnedpolicydistribution.",
+      "size": 968,
+      "sentences": 6
+    },
+    {
+      "id": 81,
+      "content": "anhardlyeliminateapproximationerrorsto0.Additionally,SACencourages\ntheagenttoshowstochasticbehaviorbymaximizingthepolicyentropyandtheillustratedtrajectoryisonesample\nfromthelearnedpolicydistribution. Ourintermediatetrialsalsorevealsthatagoodrandomizationofthetrainingisessentialtoamoregeneralizedpolicy. Inoursetting,thepositionofthegoaldollyneedstobesufficientlyrandomizedinthecells. Insomeintermediate\ntrials,wherethedegreeoftherandomizationofthegoaldollyislimited,e.g.,moreconcentratedononeareainthe\ncell,theultimatelylearnedagenttendstomerelyreachthedefinedtargetregionsintraining,butnottowardsthetrue\ntargetpositionintesting. ThisinterestingphenomenonindicatesthattherobotissometimemorereliantontheLiDAR\nreadingstoinferthegoalpositioninsteadofvisualobservation. Therefore,agoodrandomizationofthetarget’sposition\ninthearenahelpspreventtheagentfromrelyingmerelyontheLiDARdistancereadingtoinferthegoalposition.",
+      "size": 912,
+      "sentences": 6
+    },
+    {
+      "id": 82,
+      "content": "ingstoinferthegoalpositioninsteadofvisualobservation. Therefore,agoodrandomizationofthetarget’sposition\ninthearenahelpspreventtheagentfromrelyingmerelyontheLiDARdistancereadingtoinferthegoalposition. Wehavealsotestedtheagent’sabilitytonavigatefromveryfardistancetothegoal,i.e.,largerthan10m. Itisfirst\nspottedthattheagentalsomakescyclingmovementswithatendencyofapproachingthetarget,whentheagentis\nwithinthedistanceofroughly4maway. Thenitceasesthecyclingmotionandbehavesnear-optimallytowardsthe\ngoal. Thismotionpatterncanbeinterpretedashavingnotyetlearnedtoreachthegoalpositionsinextrapolatedtask\nwithlargerinitialdistancethaninthetrainingtask. Hence,ourhypothesisforfurtherimprovingthegeneralizabilityof\nlearnedpolicyistoequatethetrainingdomaintothetargetdomain,otherwisetheDRLislikelytoexhibitverylimited\nperformanceinextrapolatedtasks. 5.2 EffectsofPre-trainedFeatureextractor\nWe have already seen that the variant NavACL-Q p.t. definitely outperforms NavACL-Q e.t.e.",
+      "size": 969,
+      "sentences": 9
+    },
+    {
+      "id": 83,
+      "content": "etheDRLislikelytoexhibitverylimited\nperformanceinextrapolatedtasks. 5.2 EffectsofPre-trainedFeatureextractor\nWe have already seen that the variant NavACL-Q p.t. definitely outperforms NavACL-Q e.t.e. Such findings are\nalsoconsistentwithotherresearchwork. In[66],thecar(agent)learnstodriveinthestreetrationallywithfrontal\ncamerasanditisexpectedtostopattheredlight. Theypre-trainafeatureextractionlayersimilartoanauto-encoder\nversionwithadditionallossonthetrafficlights,sothattheinformationfromtrafficlightsisaccentuated. Hence,the\nFigure11: Aselectionofdriventrajectoriesfromthreedifferentinitialpositions,wheretheorangelinerepresentsthe\nbaselinetrajectory,thebluelinerepresentstheNavACL-Qe.t.e. trajectory,thegreenlineillustratestheNavACL-Q\ntrajectoryandtheredlinedepictsthetrajectoryoftheRNDcase. Someclippedtrajectoriessignifiesthattheagent\nendedupwithcollision. 18\n[표 데이터 감지됨]\n\n=== 페이지 19 ===\nAPREPRINT-MARCH17,2022\ncarhaslearnedtoreactcorrectlytothetrafficlightsignal.",
+      "size": 972,
+      "sentences": 10
+    },
+    {
+      "id": 84,
+      "content": "etrajectoryoftheRNDcase. Someclippedtrajectoriessignifiesthattheagent\nendedupwithcollision. 18\n[표 데이터 감지됨]\n\n=== 페이지 19 ===\nAPREPRINT-MARCH17,2022\ncarhaslearnedtoreactcorrectlytothetrafficlightsignal. Theyreportasignificantlybettertrainingefficiencyand\nconvergedperformancewithapre-trainedsemanticsegmentationfeatureextractionlayerthanlearningfromscratch. Theworkof[67]furtherexploresthepossibilityofperformanceenhancementwhendecouplingfeatureextractionfrom\npolicylearning. Theyproposelearningmeaningfulfeatureextractionviaconsideringinversedynamicsp(a |s ,s ),\nt t t+1\nrewardpredictionp(r |s ,a )andreconstructionfromvisualobservations. Intheirablationstudies,thevariants\nt+1 t t\nofauto-encoder,randomfeatureextractionandend-to-endlearningarealsocomparedjointly. Theresultshowsthat\nthereisnovariantdominatingotherpre-trainedfeatureextractor,butwithpre-trainedfeatureextraction,itgenerally\noutperformsend-to-endlearning.",
+      "size": 919,
+      "sentences": 8
+    },
+    {
+      "id": 85,
+      "content": "dend-to-endlearningarealsocomparedjointly. Theresultshowsthat\nthereisnovariantdominatingotherpre-trainedfeatureextractor,butwithpre-trainedfeatureextraction,itgenerally\noutperformsend-to-endlearning. Thisisalsosimilartothefindingsof[68],wheretheagentbehavesbetterwithaset\nofpre-trainedfeatureextractorsthanitscounterpart. Inaddition,differentsetsofpre-trainedfeatureextractorsare\nbeneficialtodifferentpurposes,e.g.,exploringtheenvironmentorreachingthegoalstate. Withapre-trainednetwork,\ntheoveralltrainingtimeisalsogreatlyreduced,however,atacostofbeingnomoreend-to-endlearning. 5.3 PotentialimprovementsonNavACL-Q\nWehaveindeedverifiedtheeffectivenessofourautomaticcurriculumlearningapproachNavACL-QinSection4.3.1. Nonetheless,westillspotsomecaseswhereNavACL-QmayfaildespitetheimprovementsontheoriginalNavACL\nalgorithm. Thishappenswhentheagentfailsevenintheinitialoptimisticregionsquiteoften,endingupwithmuch\nmorenegativesamplesthanpositiveones.",
+      "size": 944,
+      "sentences": 8
+    },
+    {
+      "id": 86,
+      "content": "swhereNavACL-QmayfaildespitetheimprovementsontheoriginalNavACL\nalgorithm. Thishappenswhentheagentfailsevenintheinitialoptimisticregionsquiteoften,endingupwithmuch\nmorenegativesamplesthanpositiveones. Asaresult,NavACLcannotdistinguisheasytasksfromfrontieronesor\nrandomtasksduetosevereclassimbalanceproblems. Underthesecircumstances,theinitialposeswithlowsuccess\nprobabilityareinterpretedaseasy. Consequentially,thecurriculumfailstoproposebeneficialintermediatetasks,andis\nbehavingsimilarlytorandomstarts. Onepotentialsolutiontothisissueistostartcurriculumproposingwhentheagentperformssufficientlywellonthe\nfavorableinitialstate. Withguaranteedsuccessonafavorableinitialtask,theNavACLalgorithmcandistinguisheasy\ntaskfromfrontiertask. Thisideawillbeinvestigatedinourfuturework. TheotherimprovementisthegeneralizationofNavACL-Qtobedomainindependent.",
+      "size": 845,
+      "sentences": 9
+    },
+    {
+      "id": 87,
+      "content": "essonafavorableinitialtask,theNavACLalgorithmcandistinguisheasy\ntaskfromfrontiertask. Thisideawillbeinvestigatedinourfuturework. TheotherimprovementisthegeneralizationofNavACL-Qtobedomainindependent. Thecurrentinputofthesuccess\npredictionnetworkf stillconsidersthedomaindependentpropertiessuchasdistancetogoalandinitialrotation,\nπ\nwhichrequiresadditionalmanualdesign. Amoremeaningfulapproachistoleaveoutdomain-dependenthandcrafted\nfeaturesandtoretainonlydomain-independentones,forinstance,Q-valueoftheinitialstate-actionpair,whichwillbe\nusedinmostDRLalgorithms. SuchsettingswilleasilygeneralizeNavACL-Qtoothertasks,whichisworthfuture\ninvestigation. 5.4 EffectsofProblemFormulationsonthePerformance\nToaddressthepartialobservability,wehavetakenasimpleapproachbystacking3previousframesalongthechannel\ndimensionaccordingto[19]. However,thetrainedagentstillshowslimitedperformancewithlargerinitialrotation\nangleawayfromthetargetdolly.",
+      "size": 929,
+      "sentences": 8
+    },
+    {
+      "id": 88,
+      "content": ",wehavetakenasimpleapproachbystacking3previousframesalongthechannel\ndimensionaccordingto[19]. However,thetrainedagentstillshowslimitedperformancewithlargerinitialrotation\nangleawayfromthetargetdolly. Onepotentialexplanationisthatthehistoricalobservationisstillnotlongenoughto\nmitigatepartialobservability. Intheworkof[44],theyuseLSTMwithincreasingthehistoricallengthof20steps. The\nperformanceisreportedtobebetterthanstacking3previousframes. Thisapproachbepotentiallyeffective,butatthe\ncostofalongertrainingduration. Wehavealsotriedasimplerenvironmentalsetting,wheretheagenttriestonavigatetothedoorandthemobilerobotis\nonlyequippedwithfrontalgrey-scaledcameraand3previousframesarestacked. Importantly,thedoorisdesigned\nwithdistinctgrey-scaledcolorfromotherobjectssothattheagentcanrecognizethetargetstatefromthegrey-scaled\nobservation. We have merely implementedthe SAC algorithmwith random starts, but without pre-trained feature\nencoders.",
+      "size": 937,
+      "sentences": 9
+    },
+    {
+      "id": 89,
+      "content": "edcolorfromotherobjectssothattheagentcanrecognizethetargetstatefromthegrey-scaled\nobservation. We have merely implementedthe SAC algorithmwith random starts, but without pre-trained feature\nencoders. Interestingly,thelearnedpolicyismostlyoptimalandtheagentlearnstorotateatthebeginningtosearchfor\nthegoalandmovestowardsthedoorassoonasitgetsdetected. Aninvestigationofwhetherincreasinghistoricallength\ncansignificantlyincreasetheperformancewithlargerinitialrotationangleswillbeinvestigatedfurther. In some intermediate trials, we have found that the agent relies on the LiDAR readings to infer the goal position\ninsteadofrelyingonthevisualobservations. Therefore,wehavetriedonevariantforcingourRLagenttoperform\ngoaldetectionviavisualobservation,whereasLiDARreadingsareonlyintendedforcollisionavoidance. Tothisend,\nthemaximaldetectablerangeofLiDARshasbeensettoamaximumof1.5m,andthepre-processingoftheLiDAR\nobservationisalsorescaledinto[0,1]correspondingly.",
+      "size": 953,
+      "sentences": 7
+    },
+    {
+      "id": 90,
+      "content": "Rreadingsareonlyintendedforcollisionavoidance. Tothisend,\nthemaximaldetectablerangeofLiDARshasbeensettoamaximumof1.5m,andthepre-processingoftheLiDAR\nobservationisalsorescaledinto[0,1]correspondingly. Strangely,onlywiththischange,thecompletetrainingends\nupwithfailure. Theagentfailshighlyfrequentlyevenwiththesimplestoptimisticinitialstate. Thereasonforthisis\nstillunknown,mightbepotentiallyrelatedwithnetworkinitializationasmostlyofbeamsendsupwiththemaximal\nreadingsof1afterrescaling,breakingtheassumptionthattheinputfeaturesanormaldistributiononwhichmostweight\ninitializationisbased. 19\n=== 페이지 20 ===\nAPREPRINT-MARCH17,2022\nWehavealsoconductedsomesimpletrialsforrewardshaping. Inoneattempt,therewardtermr hasbeensettobe\nCD\nofthesameasr ,namely,notdistinguishingcollisionwithdollyorotherobstacles. Ourfindingsshowthatthesmall\nC\npenaltyofdollycollisiondefinitelyencouragestheagenttoapproachthatareaandsimplifiesthetraining.",
+      "size": 923,
+      "sentences": 8
+    },
+    {
+      "id": 91,
+      "content": "ofthesameasr ,namely,notdistinguishingcollisionwithdollyorotherobstacles. Ourfindingsshowthatthesmall\nC\npenaltyofdollycollisiondefinitelyencouragestheagenttoapproachthatareaandsimplifiesthetraining. 6 Conclusions\nInthispaper,wehavedemonstratedanapproachofdeepreinforcementlearningwithautomaticcurriculumlearningon\nsolvingchallengingnavigationtaskswithLiDARandfrontal-viewvisualsensorsinintralogistics. Thekeychallengeof\ntaskliesinaDRLproblemformulationtodealwithsparsepositiveexperience,multi-modalsensoryperceptionwith\npartialobservability,longtrainingcyclesandtheneedforaccuratemaneuvering. Toaddresstheseproblems,distributed\nsoftactor-criticwithNavACL-Qalgorithmhavenbeenproposed. Ourlearningapproachiscompletelymapless(no\neffortsformapping andlocalization)andwithouthuman demonstration andreliesentirelyonthe powerofneural\nnetworkstodirectlymapmulti-modalsensoryreadoutstothecontinuoussteeringcommand. Inaddition,thereward\nformulationhasbeendesignedinamannerthatcanbedirectlyusedinrealcase.",
+      "size": 994,
+      "sentences": 7
+    },
+    {
+      "id": 92,
+      "content": "liesentirelyonthe powerofneural\nnetworkstodirectlymapmulti-modalsensoryreadoutstothecontinuoussteeringcommand. Inaddition,thereward\nformulationhasbeendesignedinamannerthatcanbedirectlyusedinrealcase. heresultsshowthatourDRL-agenthasasignificantlybetterperformancethanthebaselinemap-basednavigation\napproachprovidedbyNVIDIA.ThebaselineapproachisonlyapplicabletothecasewherethefrontalRGBcamera\ncapturesthetargetdollyandismerelywithin3mdistancefromthegoal. Incontrast,ourDRL-agenthasmanaged\nnavigationtaskfromupto3mfurtherdistancesandupto45◦higherrelativeanglescomparedtothebaselineapproach. Intestingcase,ourlearningapproachachievesthetaskwithaveragesuccessratefordifferentinitialrobotorientations,\noutperformingthebaselineapproachby53%.",
+      "size": 735,
+      "sentences": 5
+    },
+    {
+      "id": 93,
+      "content": "5◦higherrelativeanglescomparedtothebaselineapproach. Intestingcase,ourlearningapproachachievesthetaskwithaveragesuccessratefordifferentinitialrobotorientations,\noutperformingthebaselineapproachby53%. Furthermore,ourablationstudiesrevealthatourautomaticcurriculum\nlearningapproachNavACL-Qfacilitatesthelearningefficiencycomparedtorandomstartswithafinalperformance\ngainofroughly40%intrainingand11%intestingonaverage,andapre-trainedfeatureextractorboostsfinaltraining\nandtestingperformancebyapproximately60%and31%respectively. References\n[1] ShuYang,JinglinLi,JieWang,ZhihanLiu,andFangchunYang. Learningurbannavigationviavalueiteration\nnetwork. In2018IEEEIntelligentVehiclesSymposium(IV),pages800–805.IEEE,2018. [2] KristijanMacek,DizanVasquez,ThierryFraichard,andRolandSiegwart. Safevehiclenavigationindynamic\nurban scenarios. In 2008 11th International IEEE Conference on Intelligent Transportation Systems, pages\n482–489.IEEE,2008. [3] HaoshengHuangandGeorgGartner.",
+      "size": 965,
+      "sentences": 10
+    },
+    {
+      "id": 94,
+      "content": "dSiegwart. Safevehiclenavigationindynamic\nurban scenarios. In 2008 11th International IEEE Conference on Intelligent Transportation Systems, pages\n482–489.IEEE,2008. [3] HaoshengHuangandGeorgGartner. Asurveyofmobileindoornavigationsystems. InCartographyinCentral\nandEasternEurope,pages305–319.Springer,2009. [4] SebastianThrun. Probabilisticrobotics. CommunicationsoftheACM,45(3):52–57,2002. [5] StevenMLaValle. Planningalgorithms. Cambridgeuniversitypress,2006. [6] MosheKam,XiaoxunZhu,andPaulKalata. Sensorfusionformobilerobotnavigation. ProceedingsoftheIEEE,\n85(1):108–119,1997. [7] JelenaKocic´,NenadJovicˇic´,andVujoDrndarevic´. Sensorsandsensorfusioninautonomousvehicles. In2018\n26thTelecommunicationsForum(TELFOR),pages420–425.IEEE,2018. [8] JingweiZhang,JostTobiasSpringenberg,JoschkaBoedecker,andWolframBurgard. Deepreinforcementlearning\nwithsuccessorfeaturesfornavigationacrosssimilarenvironments.",
+      "size": 907,
+      "sentences": 20
+    },
+    {
+      "id": 95,
+      "content": "orum(TELFOR),pages420–425.IEEE,2018. [8] JingweiZhang,JostTobiasSpringenberg,JoschkaBoedecker,andWolframBurgard. Deepreinforcementlearning\nwithsuccessorfeaturesfornavigationacrosssimilarenvironments. In2017IEEE/RSJInternationalConference\nonIntelligentRobotsandSystems(IROS),pages2371–2378.IEEE,2017. [9] DavidSilver,ThomasHubert,JulianSchrittwieser,IoannisAntonoglou,MatthewLai,ArthurGuez,MarcLanctot,\nLaurentSifre,DharshanKumaran,ThoreGraepel,etal. Masteringchessandshogibyself-playwithageneral\nreinforcementlearningalgorithm. arXivpreprintarXiv:1712.01815,2017. [10] AdriàPuigdomènechBadia,BilalPiot,StevenKapturowski,PabloSprechmann,AlexVitvitskyi,ZhaohanDaniel\nGuo,andCharlesBlundell. Agent57: Outperformingtheatarihumanbenchmark. InInternationalConferenceon\nMachineLearning,pages507–517.PMLR,2020. [11] HaiNguyenandHungLa. Reviewofdeepreinforcementlearningforrobotmanipulation. In2019ThirdIEEE\nInternationalConferenceonRoboticComputing(IRC),pages590–595.IEEE,2019.",
+      "size": 969,
+      "sentences": 13
+    },
+    {
+      "id": 96,
+      "content": "Learning,pages507–517.PMLR,2020. [11] HaiNguyenandHungLa. Reviewofdeepreinforcementlearningforrobotmanipulation. In2019ThirdIEEE\nInternationalConferenceonRoboticComputing(IRC),pages590–595.IEEE,2019. [12] Shixiang Gu, Ethan Holly, Timothy Lillicrap, and Sergey Levine. Deep reinforcement learning for robotic\nmanipulation. arXivpreprintarXiv:1610.00633,1,2016. 20\n=== 페이지 21 ===\nAPREPRINT-MARCH17,2022\n[13] GregoryKahn,AdamVillaflor,BosenDing,PieterAbbeel,andSergeyLevine.Self-superviseddeepreinforcement\nlearningwithgeneralizedcomputationgraphsforrobotnavigation. In2018IEEEInternationalConferenceon\nRoboticsandAutomation(ICRA),pages5129–5136.IEEE,2018. [14] XiaogangRuan,DingqiRen,XiaoqingZhu,andJingHuang.Mobilerobotnavigationbasedondeepreinforcement\nlearning. In2019Chinesecontrolanddecisionconference(CCDC),pages6174–6178.IEEE,2019. [15] RichardSSuttonandAndrewGBarto. Reinforcementlearning: Anintroduction. MITpress,2018. [16] EduardoFCamachoandCarlosBordonsAlba. Modelpredictivecontrol.",
+      "size": 993,
+      "sentences": 16
+    },
+    {
+      "id": 97,
+      "content": "nconference(CCDC),pages6174–6178.IEEE,2019. [15] RichardSSuttonandAndrewGBarto. Reinforcementlearning: Anintroduction. MITpress,2018. [16] EduardoFCamachoandCarlosBordonsAlba. Modelpredictivecontrol. Springerscience&businessmedia,\n2013. [17] Nvidiaomniverseplatform. https://developer.nvidia.com/nvidia-omniverse-platform. [18] Volodymyr Mnih, Koray Kavukcuoglu, David Silver, Alex Graves, Ioannis Antonoglou, Daan Wierstra, and\nMartinRiedmiller. Playingatariwithdeepreinforcementlearning. arXivpreprintarXiv:1312.5602,2013. [19] Volodymyr Mnih, Koray Kavukcuoglu, David Silver, Andrei A Rusu, Joel Veness, Marc G Bellemare, Alex\nGraves, Martin Riedmiller, Andreas K Fidjeland, Georg Ostrovski, et al. Human-level control through deep\nreinforcementlearning. nature,518(7540):529–533,2015. [20] StevenDMorad,RobertoMecca,RudraPKPoudel,StephanLiwicki,andRobertoCipolla. Embodiedvisual\nnavigationwithautomaticcurriculumlearninginrealenvironments. IEEERoboticsandAutomationLetters,\n6(2):683–690,2021.",
+      "size": 996,
+      "sentences": 18
+    },
+    {
+      "id": 98,
+      "content": "venDMorad,RobertoMecca,RudraPKPoudel,StephanLiwicki,andRobertoCipolla. Embodiedvisual\nnavigationwithautomaticcurriculumlearninginrealenvironments. IEEERoboticsandAutomationLetters,\n6(2):683–690,2021. [21] Nvidiaisaacsdk,release: 2021.1.version2021.1. https://developer.nvidia.com/isaac-sdk. [22] HadoVanHasselt,YotamDoron,FlorianStrub,MatteoHessel,NicolasSonnerat,andJosephModayil. Deep\nreinforcementlearningandthedeadlytriad. arXivpreprintarXiv:1812.02648,2018. [23] Hado Van Hasselt, Arthur Guez, and David Silver. Deep reinforcement learning with double q-learning. In\nProceedingsoftheAAAIConferenceonArtificialIntelligence,volume30,2016. [24] Meire Fortunato, Mohammad Gheshlaghi Azar, Bilal Piot, Jacob Menick, Ian Osband, Alex Graves, Vlad\nMnih,RemiMunos,DemisHassabis,OlivierPietquin,etal. Noisynetworksforexploration. arXivpreprint\narXiv:1706.10295,2017. [25] VolodymyrMnih,AdriaPuigdomenechBadia,MehdiMirza,AlexGraves,TimothyLillicrap,TimHarley,David\nSilver, and Koray Kavukcuoglu.",
+      "size": 990,
+      "sentences": 15
+    },
+    {
+      "id": 99,
+      "content": "etal. Noisynetworksforexploration. arXivpreprint\narXiv:1706.10295,2017. [25] VolodymyrMnih,AdriaPuigdomenechBadia,MehdiMirza,AlexGraves,TimothyLillicrap,TimHarley,David\nSilver, and Koray Kavukcuoglu. Asynchronous methods for deep reinforcement learning. In International\nconferenceonmachinelearning,pages1928–1937.PMLR,2016. [26] JohnSchulman,FilipWolski,PrafullaDhariwal,AlecRadford,andOlegKlimov. Proximalpolicyoptimization\nalgorithms. arXivpreprintarXiv:1707.06347,2017. [27] AbbasAbdolmaleki,JostTobiasSpringenberg,YuvalTassa,RemiMunos,NicolasHeess,andMartinRiedmiller. Maximumaposterioripolicyoptimisation. arXivpreprintarXiv:1806.06920,2018. [28] TimothyPLillicrap,JonathanJHunt,AlexanderPritzel,NicolasHeess,TomErez,YuvalTassa,DavidSilver,and\nDaanWierstra. Continuouscontrolwithdeepreinforcementlearning. arXivpreprintarXiv:1509.02971,2015. [29] ScottFujimoto,HerkeHoof,andDavidMeger. Addressingfunctionapproximationerrorinactor-criticmethods.",
+      "size": 950,
+      "sentences": 17
+    },
+    {
+      "id": 100,
+      "content": "aanWierstra. Continuouscontrolwithdeepreinforcementlearning. arXivpreprintarXiv:1509.02971,2015. [29] ScottFujimoto,HerkeHoof,andDavidMeger. Addressingfunctionapproximationerrorinactor-criticmethods. InInternationalConferenceonMachineLearning,pages1587–1596.PMLR,2018. [30] YuriBurda,HarrisonEdwards,AmosStorkey,andOlegKlimov. Explorationbyrandomnetworkdistillation. arXivpreprintarXiv:1810.12894,2018. [31] HaoranTang,ReinHouthooft,DavisFoote,AdamStooke,XiChen,YanDuan,JohnSchulman,FilipDeTurck,\nandPieterAbbeel. #exploration: Astudyofcount-basedexplorationfordeepreinforcementlearning. In31st\nConferenceonNeuralInformationProcessingSystems(NIPS),volume30,pages1–18,2017. [32] Deepak Pathak, Pulkit Agrawal, Alexei A Efros, and Trevor Darrell. Curiosity-driven exploration by self-\nsupervisedprediction. InInternationalConferenceonMachineLearning,pages2778–2787.PMLR,2017. [33] TuomasHaarnoja,AurickZhou,PieterAbbeel,andSergeyLevine.",
+      "size": 934,
+      "sentences": 16
+    },
+    {
+      "id": 101,
+      "content": "Darrell. Curiosity-driven exploration by self-\nsupervisedprediction. InInternationalConferenceonMachineLearning,pages2778–2787.PMLR,2017. [33] TuomasHaarnoja,AurickZhou,PieterAbbeel,andSergeyLevine. Softactor-critic: Off-policymaximumentropy\ndeepreinforcementlearningwithastochasticactor. InInternationalConferenceonMachineLearning,pages\n1861–1870.PMLR,2018. [34] Tuomas Haarnoja, Aurick Zhou, Kristian Hartikainen, George Tucker, Sehoon Ha, Jie Tan, Vikash Kumar,\nHenryZhu,AbhishekGupta,PieterAbbeel,etal. Softactor-criticalgorithmsandapplications. arXivpreprint\narXiv:1812.05905,2018. [35] EmanuelTodorov,TomErez,andYuvalTassa. Mujoco: Aphysicsengineformodel-basedcontrol. In2012\nIEEE/RSJInternationalConferenceonIntelligentRobotsandSystems,pages5026–5033.IEEE,2012. 21\n=== 페이지 22 ===\nAPREPRINT-MARCH17,2022\n[36] LeiTai,GiuseppePaolo,andMingLiu. Virtual-to-realdeepreinforcementlearning: Continuouscontrolofmobile\nrobotsformaplessnavigation.",
+      "size": 943,
+      "sentences": 14
+    },
+    {
+      "id": 102,
+      "content": "ages5026–5033.IEEE,2012. 21\n=== 페이지 22 ===\nAPREPRINT-MARCH17,2022\n[36] LeiTai,GiuseppePaolo,andMingLiu. Virtual-to-realdeepreinforcementlearning: Continuouscontrolofmobile\nrobotsformaplessnavigation. In2017IEEE/RSJInternationalConferenceonIntelligentRobotsandSystems\n(IROS),pages31–36.IEEE,2017. [37] NathanKoenigandAndrewHoward. Designanduseparadigmsforgazebo,anopen-sourcemulti-robotsimulator. In2004IEEE/RSJInternationalConferenceonIntelligentRobotsandSystems(IROS)(IEEECat.No.04CH37566),\nvolume3,pages2149–2154.IEEE,2004. [38] EnricoMarchesiniandAlessandroFarinelli. Discretedeepreinforcementlearningformaplessnavigation. In\n2020IEEEInternationalConferenceonRoboticsandAutomation(ICRA),pages10688–10694.IEEE,2020. [39] PinxinLong,TingxiangFan,XinyiLiao,WenxiLiu,HaoZhang,andJiaPan. Towardsoptimallydecentralized\nmulti-robot collision avoidance via deep reinforcement learning. In 2018 IEEE International Conference on\nRoboticsandAutomation(ICRA),pages6252–6259.IEEE,2018.",
+      "size": 975,
+      "sentences": 13
+    },
+    {
+      "id": 103,
+      "content": "ndJiaPan. Towardsoptimallydecentralized\nmulti-robot collision avoidance via deep reinforcement learning. In 2018 IEEE International Conference on\nRoboticsandAutomation(ICRA),pages6252–6259.IEEE,2018. [40] OleksiiZhelo,JingweiZhang,LeiTai,MingLiu,andWolframBurgard. Curiosity-drivenexplorationformapless\nnavigationwithdeepreinforcementlearning. arXivpreprintarXiv:1804.00456,2018. [41] Linhai Xie, Sen Wang, Stefano Rosa, Andrew Markham, and Niki Trigoni. Learning with training wheels:\nspeeding up training with a simple controller for deep reinforcement learning. In 2018 IEEE International\nConferenceonRoboticsandAutomation(ICRA),pages6276–6283.IEEE,2018. [42] YukeZhu,RoozbehMottaghi,EricKolve,JosephJLim,AbhinavGupta,LiFei-Fei,andAliFarhadi.Target-driven\nvisualnavigationinindoorscenesusingdeepreinforcementlearning. In2017IEEEinternationalconferenceon\nroboticsandautomation(ICRA),pages3357–3364.IEEE,2017. [43] KaimingHe,XiangyuZhang,ShaoqingRen,andJianSun.",
+      "size": 962,
+      "sentences": 12
+    },
+    {
+      "id": 104,
+      "content": "alnavigationinindoorscenesusingdeepreinforcementlearning. In2017IEEEinternationalconferenceon\nroboticsandautomation(ICRA),pages3357–3364.IEEE,2017. [43] KaimingHe,XiangyuZhang,ShaoqingRen,andJianSun. Deepresiduallearningforimagerecognition. In\nProceedingsoftheIEEEconferenceoncomputervisionandpatternrecognition,pages770–778,2016. [44] JonášKulhánek,ErikDerner,TimDeBruin,andRobertBabuška. Vision-basednavigationusingdeepreinforce-\nmentlearning. In2019EuropeanConferenceonMobileRobots(ECMR),pages1–8.IEEE,2019. [45] SeppHochreiterandJürgenSchmidhuber. Longshort-termmemory. Neuralcomputation,9(8):1735–1780,1997. [46] Guangda Chen, Lifan Pan, Pei Xu, Zhiqiang Wang, Peichen Wu, Jianmin Ji, Xiaoping Chen, et al. Robot\nnavigationwithmap-baseddeepreinforcementlearning. In2020IEEEInternationalConferenceonNetworking,\nSensingandControl(ICNSC),pages1–6.IEEE,2020. [47] Ziyu Wang, Tom Schaul, Matteo Hessel, Hado Hasselt, Marc Lanctot, and Nando Freitas.",
+      "size": 949,
+      "sentences": 15
+    },
+    {
+      "id": 105,
+      "content": "orcementlearning. In2020IEEEInternationalConferenceonNetworking,\nSensingandControl(ICNSC),pages1–6.IEEE,2020. [47] Ziyu Wang, Tom Schaul, Matteo Hessel, Hado Hasselt, Marc Lanctot, and Nando Freitas. Dueling network\narchitecturesfordeepreinforcementlearning. InInternationalconferenceonmachinelearning,pages1995–2003. PMLR,2016. [48] SanmitNarvekar,BeiPeng,MatteoLeonetti,JivkoSinapov,MatthewETaylor,andPeterStone. Curriculum\nlearningforreinforcementlearningdomains: Aframeworkandsurvey. arXivpreprintarXiv:2003.04960,2020. [49] YoshuaBengio,JérômeLouradour,RonanCollobert,andJasonWeston. Curriculumlearning. InProceedingsof\nthe26thannualinternationalconferenceonmachinelearning,pages41–48,2009. [50] TomSchaul,JohnQuan,IoannisAntonoglou,andDavidSilver. Prioritizedexperiencereplay. arXivpreprint\narXiv:1511.05952,2015. [51] Li H Chen C Zhipeng Ren Daoyi Dong Huaxiong Li Chunlin Chen Dong D Li H Chen C Ren Z Ren Z,\nDongD.",
+      "size": 923,
+      "sentences": 16
+    },
+    {
+      "id": 106,
+      "content": "nisAntonoglou,andDavidSilver. Prioritizedexperiencereplay. arXivpreprint\narXiv:1511.05952,2015. [51] Li H Chen C Zhipeng Ren Daoyi Dong Huaxiong Li Chunlin Chen Dong D Li H Chen C Ren Z Ren Z,\nDongD. Self-pacedprioritizedcurriculumlearningwithcoveragepenaltyindeepreinforcementlearning. IEEE\nTRANSACTIONSONNEURALNETWORKSANDLEARNINGSYSTEMS,29(6):2216–2226,2018. [52] Tae-HoonKimandJonghyunChoi. Screenernet: Learningself-pacedcurriculumfordeepneuralnetworks. arXiv\npreprintarXiv:1801.00904,2018. [53] SanmitNarvekar,JivkoSinapov,MatteoLeonetti,andPeterStone.Sourcetaskcreationforcurriculumlearning.In\nProceedingsofthe2016InternationalConferenceonAutonomousAgents&MultiagentSystems,pages566–574,\n2016. [54] MarcinAndrychowicz,FilipWolski,AlexRay,JonasSchneider,RachelFong,PeterWelinder,BobMcGrew,Josh\nTobin,PieterAbbeel,andWojciechZaremba. Hindsightexperiencereplay. arXivpreprintarXiv:1707.01495,\n2017. [55] MengFang,TianyiZhou,YaliDu,LeiHan,andZhengyouZhang.",
+      "size": 958,
+      "sentences": 14
+    },
+    {
+      "id": 107,
+      "content": "RachelFong,PeterWelinder,BobMcGrew,Josh\nTobin,PieterAbbeel,andWojciechZaremba. Hindsightexperiencereplay. arXivpreprintarXiv:1707.01495,\n2017. [55] MengFang,TianyiZhou,YaliDu,LeiHan,andZhengyouZhang. Curriculum-guidedhindsightexperiencereplay. 2019. [56] Carlos Florensa, David Held, Markus Wulfmeier, Michael Zhang, and Pieter Abbeel. Reverse curriculum\ngenerationforreinforcementlearning. InConferenceonrobotlearning,pages482–495.PMLR,2017. 22\n=== 페이지 23 ===\nAPREPRINT-MARCH17,2022\n[57] BorisIvanovic,JamesHarrison,ApoorvaSharma,MoChen,andMarcoPavone. Barc: Backwardreachability\ncurriculumforroboticreinforcementlearning. In2019InternationalConferenceonRoboticsandAutomation\n(ICRA),pages15–21.IEEE,2019. [58] HadoHasselt. Doubleq-learning. Advancesinneuralinformationprocessingsystems,23:2613–2621,2010. [59] JoshuaAchiam. SpinningUpinDeepReinforcementLearning. 2018. [60] NikhilMishra,MostafaRohaninejad,XiChen,andPieterAbbeel. Asimpleneuralattentivemeta-learner.",
+      "size": 966,
+      "sentences": 20
+    },
+    {
+      "id": 108,
+      "content": "onprocessingsystems,23:2613–2621,2010. [59] JoshuaAchiam. SpinningUpinDeepReinforcementLearning. 2018. [60] NikhilMishra,MostafaRohaninejad,XiChen,andPieterAbbeel. Asimpleneuralattentivemeta-learner. arXiv\npreprintarXiv:1707.03141,2017. [61] DorBank,NoamKoenigstein,andRajaGiryes. Autoencoders. arXivpreprintarXiv:2003.05991,2020. [62] JonathanLong,EvanShelhamer,andTrevorDarrell. Fullyconvolutionalnetworksforsemanticsegmentation. In\nProceedingsoftheIEEEconferenceoncomputervisionandpatternrecognition,pages3431–3440,2015. [63] Nvidiatao.version3.0. https://docs.nvidia.com/tao/tao-toolkit/text/overview.html. [64] Detectnet : Deep neural network for object detection in digits. https://developer.nvidia.com/blog/\ndetectnet-deep-neural-network-object-detection-digits/. [65] YuXiang,TannerSchmidt,VenkatramanNarayanan,andDieterFox. Posecnn: Aconvolutionalneuralnetwork\nfor6dobjectposeestimationinclutteredscenes. arXivpreprintarXiv:1711.00199,2017.",
+      "size": 949,
+      "sentences": 20
+    },
+    {
+      "id": 109,
+      "content": "t-detection-digits/. [65] YuXiang,TannerSchmidt,VenkatramanNarayanan,andDieterFox. Posecnn: Aconvolutionalneuralnetwork\nfor6dobjectposeestimationinclutteredscenes. arXivpreprintarXiv:1711.00199,2017. [66] MarinToromanoff,EmilieWirbel,andFabienMoutarde. End-to-endmodel-freereinforcementlearningforurban\ndrivingusingimplicitaffordances. InProceedingsoftheIEEE/CVFConferenceonComputerVisionandPattern\nRecognition,pages7153–7162,2020. [67] AntoninRaffin,AshleyHill,RenéTraoré,TimothéeLesort,NataliaDíaz-Rodríguez,andDavidFilliat.Decoupling\nfeatureextractionfrompolicylearning: assessingbenefitsofstaterepresentationlearningingoalbasedrobotics. arXivpreprintarXiv:1901.08651,2019. [68] AlexanderSax,JeffreyOZhang,BradleyEmi,AmirZamir,SilvioSavarese,LeonidasGuibas,andJitendraMalik. Learningtonavigateusingmid-levelvisualpriors. arXivpreprintarXiv:1912.11121,2019. [69] JostTobiasSpringenberg,AlexeyDosovitskiy,ThomasBrox,andMartinRiedmiller. Strivingforsimplicity: The\nallconvolutionalnet.",
+      "size": 985,
+      "sentences": 14
+    },
+    {
+      "id": 110,
+      "content": "tonavigateusingmid-levelvisualpriors. arXivpreprintarXiv:1912.11121,2019. [69] JostTobiasSpringenberg,AlexeyDosovitskiy,ThomasBrox,andMartinRiedmiller. Strivingforsimplicity: The\nallconvolutionalnet. arXivpreprintarXiv:1412.6806,2014. [70] VinodNairandGeoffreyEHinton. Rectifiedlinearunitsimproverestrictedboltzmannmachines. InIcml,2010. 23\n=== 페이지 24 ===\nAPREPRINT-MARCH17,2022\nAppendices\nAppendixA DetailsforTrainingviaSoftActor-Critic\nInthispart,weelaborateonthesettingsofdistributedSACasourDRLalgorithm. Thenetworkarchitectureofactorandcriticisfirstlyshown. Figure2hasalreadydemonstratedanoverallnetwork\ndesign,andthedetailedstructureofconvolutionalblocksisillustratedinFigure12. Wealsoperformzero-paddingfor\nallpreviousrewardsandactionsO whenthecurrenttimehorizonissmallerthanthedefinedhistoricallength,i.e. 4\nar\ninourcase. ForthevisualobservationO ,weperformreplicatepaddingsoftheRGBimageatt=0.",
+      "size": 900,
+      "sentences": 14
+    },
+    {
+      "id": 111,
+      "content": "-paddingfor\nallpreviousrewardsandactionsO whenthecurrenttimehorizonissmallerthanthedefinedhistoricallength,i.e. 4\nar\ninourcase. ForthevisualobservationO ,weperformreplicatepaddingsoftheRGBimageatt=0. v\n4 x 3 x 80 x 80\nResidual Block\n64 x 40 x 40 Stacked\nCamera Images\nConv2d (3x3) Padding =1\nReLU\nConv2d (3x3) Padding =1 Conv2d (1x1)\n128 x 40 x 40 128 x 40 x 40 Residual Block, 64\n64x40x40\nResidual Block, 128\n128 x 40 x 40\n128 x 20 x 20\nReLU\nResidual Block, 256\nConv2d (2x2)\nReLU 256 x 10 x 10\n128 x 20 x 20\nResidual Block, 128\nFlatten(128 x 5 x 5)\n1 x 3200\nFigure12: Illustrationofencoderpartforthestackedcameraimages. FourResidualblocksareused. Intheleftpanel,\nthearchitectureoftheresidualblocksisillustrated. Thefirsttwoconvolutionsuse(3×3)filters,thentheidentityis\nconcatenatedtotheoutputofthefirsttwoconvolutions. Finally,wedown-sampletheimagebyhalfusingaconvolution\nwithafilterof(2×2)andastrideof2accordingto[69].",
+      "size": 920,
+      "sentences": 8
+    },
+    {
+      "id": 112,
+      "content": "twoconvolutionsuse(3×3)filters,thentheidentityis\nconcatenatedtotheoutputofthefirsttwoconvolutions. Finally,wedown-sampletheimagebyhalfusingaconvolution\nwithafilterof(2×2)andastrideof2accordingto[69]. AsdescribedinSection3.2,weacceleratethetrainingspeedandimprovethegeneralizabilityoftheagentbyparalleling\n9agents,resultinginadistributedversionofSAC.WeshowthepseudocodeinAlgorithm2and3forbothworker\nprocess and master process. The asynchronous method for experience gathering is analogous to A3C [25]. Each\nworkerprocessgetsacopyofthesharedactorfromthemainprocessandcollectsexperienceasynchronously. After\noneworkerhascompletedanepisode,thegatheredexperienceisstoredinasharedepisodereplayqueue,andanew\nversionofthesharedpolicyisobtainedfromthemasterprocess. Concurrently,themasterprocessupdatestheactor\nandcriticnetworksandgathersallworkers’experiencefromthesharedepisodereplayqueuetofillaPERbuffer. The\nhyper-parametersettingsaredemonstratedinTable4.",
+      "size": 950,
+      "sentences": 8
+    },
+    {
+      "id": 113,
+      "content": "cess. Concurrently,themasterprocessupdatestheactor\nandcriticnetworksandgathersallworkers’experiencefromthesharedepisodereplayqueuetofillaPERbuffer. The\nhyper-parametersettingsaredemonstratedinTable4. 24\n[표 데이터 감지됨]\n\n=== 페이지 25 ===\nAPREPRINT-MARCH17,2022\nTable4: HyperparametersettingsofSACalgorithm\nDistributedSoftActor-CriticHyperparameters\nParameter Value\nDiscountfactorγ 0.999\nTargetsmoothingcoefficientτ 1(hardupdate)\nTargetnetworkupdateintervalη 1000\nInitialtemperaturecoefficientα 0.2\n0\nLearningratesfornetworkoptimizerλ ,λ ,λ 2×10−4\nQ α π\nOptimizer Adam\nReplaybuffercapacity 220(BinaryTree)\n(PER)prioritizationparameterc 0.6\n(PER)initialprioritizationweightb 0.4\n0\n(PER)finalprioritizationweightb 0.6\n1\nAppendixB DetailsfortrainingtheNavACL-QAlgorithm\nHere,weshowthehyper-parametersofNavACL-Qalgorithm. Thesuccesspredictionnetworkf consistsoftwodense\nπ\nhiddenlayerswith32nodeseachandtheReLU[70]asnon-linearactivationfunction.",
+      "size": 932,
+      "sentences": 5
+    },
+    {
+      "id": 114,
+      "content": "iningtheNavACL-QAlgorithm\nHere,weshowthehyper-parametersofNavACL-Qalgorithm. Thesuccesspredictionnetworkf consistsoftwodense\nπ\nhiddenlayerswith32nodeseachandtheReLU[70]asnon-linearactivationfunction. Weuseasigmoidfunctionfor\ntheoutputlayertolimittheoutput-rangeto[0,1]togetherwithbinaryentropyloss. RelevantdetailsarelistedinTable\n5. Table5: Hyper-parametersettingsrelatedtotheNavACL-Qalgorithm. NavACL-QHyperparameters\nParameter Value\nBatchsizem 16\nUpper-confidencecoefficientforeasytaskβ 1.0\nUpper-confidencecoefficientforfrontiertaskγ 0.1\nAdditionalthresholdforeasytaskχ 0.95\nMaximalnumberoftrialstogenerateataskn 100\nT\nLearningrateforf 4×10−4\nπ\nAppendixC ArenaRandomization\nInthispart,weshowtherandomizationforeachtrainingarenacellsincludingtheinitialposeofmobilerobotandthe\ntargetdollyinTable6.",
+      "size": 799,
+      "sentences": 6
+    },
+    {
+      "id": 115,
+      "content": "togenerateataskn 100\nT\nLearningrateforf 4×10−4\nπ\nAppendixC ArenaRandomization\nInthispart,weshowtherandomizationforeachtrainingarenacellsincludingtheinitialposeofmobilerobotandthe\ntargetdollyinTable6. Forinstance,theinitialYaw-Rotation(eitherrobotordolly)of0◦correspondstoalignmentwith\nthey-axisillustratedbyFigure5(frontalrobotcameraheadstowardsthedolly),and−90◦correspondstoalignment\nwiththex-axis(frontalcamerapointstowardstherightwall). AppendixD MobileRobotandTargetDollySpecification\nInTable8,weshowthespecificationofmobilerobotsandthetargetdolly. Onecanseethatthegoalstateforthemobile\nrobotisstrictandthereforeposinggreatchallengestoDRLalgorithms. 25\n[표 데이터 감지됨]\n\n=== 페이지 26 ===\nAPREPRINT-MARCH17,2022\nTable 6: Summary of the task randomization, including the initial pose of AGV, the pose of the target dolly and\nobstacles.",
+      "size": 830,
+      "sentences": 5
+    },
+    {
+      "id": 116,
+      "content": "lengestoDRLalgorithms. 25\n[표 데이터 감지됨]\n\n=== 페이지 26 ===\nAPREPRINT-MARCH17,2022\nTable 6: Summary of the task randomization, including the initial pose of AGV, the pose of the target dolly and\nobstacles. InducedRandomization\nDescription Randomization withrespectto\nGeometricProperty\nUniformsampledfromthe\nInitialRobotYaw-Rotation RelativeRotation:\ninterval[−90◦,90◦]\n[1.5m,5m]\nUniformsampledfromthe\nInitialDollyYaw-Rotation\ninterval[−15◦,15◦]\nNumberofObstacles 1to4 AgentClearance/\nRandomlyplacedleftandright GoalClearance:\nofthedolly,withadistance [2m,8m]\nPositionofObstacles\nuniformlysampledfromthe\ninterval[2m,5m]\n−0.5mto0.5m\nInitialRobotPosition Agent-GoalDistance:\nony-andx-axis\n[1.5m,5m]\nUniformlysampledfromacircle\nsegmentwithradius=5mand\ncentralangle30◦,where\nInitialDollyPosition thecenterofthesegment\ncorrespondstothecenterof\ntherobot,withminimum1.5m\ndistancetotherobot\nTable8: Technicaldetailsofthemobilerobotandthetargetdolly.",
+      "size": 934,
+      "sentences": 3
+    },
+    {
+      "id": 117,
+      "content": "=5mand\ncentralangle30◦,where\nInitialDollyPosition thecenterofthesegment\ncorrespondstothecenterof\ntherobot,withminimum1.5m\ndistancetotherobot\nTable8: Technicaldetailsofthemobilerobotandthetargetdolly. MobileRobot\nLength,Width,Height 1,273mm×630mm×300mm\nMaximumSpeed 1.2m/s\n2x128Beams,eachFOV225°,\nLiDARSensor\nMaxDistance: 6m\nFrontalRGBCamera 80×80×3pixel,FOV47◦\nDolly\nLength,Width 1,230mm×820mm\nAlgorithm2:DistributedSoftActor-Critic—WorkerProcess\ninput :φ,θ,f π ,E s ,env; (cid:46) Shared parameters for the policy, the Q-Function and the NavACL-Q\nnetwork, shared episode replay queue, and a target environment for interaction\ninput :L; (cid:46) A task database consisting of initial states based on env\n1 whileTruedo\n2 E ←∅; (cid:46) Initialize an empty local episode replay buffer\n3 φ←φ; (cid:46) Create a local policy network copy φ for the next episode\n4 L r ←randomlysample100tasksfromLµ f ,σ f ←FitNormal(f π ∗(H r ))\ntask =GetDynamikTask−Q(θ,µ f ,σ f ,H); (cid:46) Use Nav-ACL-Q to get a task that fits the\ncurrent ability of φ\n5 whilemaximalepisodiclengthnotreacheddo\n6 a t ∼π φ (a t |s t ); (cid:46) Sample an action according to the local policy\n7 s t+1 ∼p(s t+1 |s t ,a t ); (cid:46) Sample transition from the environment\n8 E ←E ∪{(s t ,a t ,r t ,s t+1 )}; (cid:46) Store the transition in the local episode replay buffer\n9 endwhile\n10 E s ←E s ∪E ; (cid:46) Append the locally recorded episode to the shared episode replay queue\n11 endwhile\n26\n[표 데이터 감지됨]\n\n=== 페이지 27 ===\nAPREPRINT-MARCH17,2022\nAlgorithm3:DistributedSoftActor-Critic—MasterProcess\ninput :θ 1 ,θ 2 ,φ,Env,b,m; (cid:46) List of environments and the batch sizes for the SAC and the NavACL\nupdates\n1 θ 1 ←θ 1 ,θ 2 ←θ 2 ; (cid:46) Initialize target network weights\n2 D ←∅; (cid:46) Initialize an empty PER replay buffer\n3 E s ←∅; (cid:46) Initialize an empty, shared episode replay queue\n4 L m ←∅; (cid:46) Initialize an empty task result set\n5 init(f π ); (cid:46) Initialize the NavACL-Q network weights\n6 n_updates←0; (cid:46) Number of SAC updates\n7 foragent_index←0tonum_agentsdo\n8 SpawnProcess\n9 AsynchronousExperienceGathering(φ,θ,f π ,E s ,env =Env[agent_index])\n10 end\n11 endfor\n12 whileTruedo\n13 foragent_index←0tonum_agentsdo\n14 ifE s (cid:54)=∅then\n15 Ep←E s .pop(); (cid:46) Pop one episode from E s\n16 D ←D∪Ep; (cid:46) Append the episode to the PER buffer\n17 L m ←T m ∪Ep l ; (cid:46) Append the task of Ep and the result of Ep to L m\n18 endif\n19 ifL m containsmtasksandtask-resultsthen\n20 f π ←Train(f π ,L m ); (cid:46) Train f π\n21 L m ←∅\n22 endif\n23 endfor\n24 B,w i ←sample(D,b); (cid:46) Sample a batch of interactions from the PER replay buffer\n25 foreachiterationinBdo\n26 foreachgradientstepdo\n27 θ i ←θ i −λ Q ∇ˆ θi w i J Q (θ i )fori∈{1,2}; (cid:46) Update the Q-function parameters\n28 φ←φ−λ π ∇ˆ φ J π (φ); (cid:46) Update policy weights\n29 α←α−λ∇ˆ α J(α); (cid:46) Adjust Temperature\n30 endfor\n31 endfor\n32 n_updates←n_updates+1;\n33 ifn_updates%η =0then\n34 θ i ←θ i for{1,2}; (cid:46) Hard Update since τ =1\n35 endif\n36 endwhile\n27",
+      "size": 3032,
+      "sentences": 2
+    }
+  ]
+}

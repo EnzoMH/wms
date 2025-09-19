@@ -1,0 +1,308 @@
+{
+  "source": "ArXiv",
+  "filename": "040_Recovering_feasibility_in_real-time_conflict-free_.pdf",
+  "total_chars": 41198,
+  "total_chunks": 50,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "=== 페이지 1 ===\nRecovering feasibility in real-time conflict-free\nvehicle routing\nTommaso Adamo1, Gianpaolo Ghiani ∗1, and Emanuela Guerriero1\n1Dipartimento di Ingegneria dell’Innovazione, Universit`a del\nSalento\nSeptember 21, 2022\nAbstract\nConflict-Free Vehicle Routing Problems (CF-VRPs) arise in manufac-\nturing, transportation and logistics facilities where Automated Guided Ve-\nhicles (AGVs) are utilized to move loads. Unlike Vehicle Routing Problems\narising in distribution management, CF-VRPs explicitly consider the lim-\nitedcapacityofthearcsoftheguidepathnetworktoavoidcollisionsamong\nvehicles. AGV applications have two peculiar features. First, the uncer-\ntainty affecting both travel times and machine ready times may result in\nvehicle delays or anticipations with respect to the fleet nominal plan.",
+      "size": 810,
+      "sentences": 4
+    },
+    {
+      "id": 2,
+      "content": "ications have two peculiar features. First, the uncer-\ntainty affecting both travel times and machine ready times may result in\nvehicle delays or anticipations with respect to the fleet nominal plan. Sec-\nond, the relatively high vehicle speed (in the order of one or two meters\nper second) requires vehicle plans to be revised in a very short amount of\ntime (usually few milliseconds) in order to avoid collisions. In this paper\nwe present fast exact algorithms to recover plan feasibility in real-time. In particular, we identify two corrective actions that can be implemented\nin real-time and formulate the problem as a linear program with the aim\nto optimize four common performance measures (total vehicle delay, total\nweighted delay, maximum route duration and total lateness). Moreover, we\ndevelop tailored algorithms which, tested on randomly generated instances\nof various sizes, prove to be three orders of magnitude faster than using\noff-the-shelf solvers.",
+      "size": 967,
+      "sentences": 6
+    },
+    {
+      "id": 3,
+      "content": "otal lateness). Moreover, we\ndevelop tailored algorithms which, tested on randomly generated instances\nof various sizes, prove to be three orders of magnitude faster than using\noff-the-shelf solvers. ∗corresponding author\n1\n2202\npeS\n02\n]CO.htam[\n1v39790.9022:viXra\n=== 페이지 2 ===\n1 Introduction\nConflict-Free Vehicle Routing and Scheduling Problems (CF-VRPs)ariseinmanu-\nfacturingplants(Ullrichetal.,2015),warehouses(VandenBerg&Zijm,1999)and\nautomated port terminals (Stahlbock & Voβ, 2008; Schwientek et al., 2017) where\ndriverless vehicles (usually referred to as Automated Guided Vehicles, AGVs) are\nused to move materials, components and finished products, often in the form of\npalletized and containerized loads. Independently of the guidance system (e.g.,\nmagnet spot, laser or GPS navigation), an AGV may be assumed to move along\nthearcsofagraphwhosevertexsetrepresentsloading/unloadingstations, storage\npositions as well as intersections of segments of the guide path network.",
+      "size": 983,
+      "sentences": 4
+    },
+    {
+      "id": 4,
+      "content": "PS navigation), an AGV may be assumed to move along\nthearcsofagraphwhosevertexsetrepresentsloading/unloadingstations, storage\npositions as well as intersections of segments of the guide path network. A distinc-\ntive feature of these systems is that, in order to avoid collisions among vehicles, a\nnumber of non-overlapping constraints have to be imposed. For instance, one may\nrequire that at most one vehicle occupies an arc at any given time or that vehi-\ncles must keep a minimum distance, etc. Relevant contributions to the solution of\nCF-VRPs have been proposed by Krishnamurthy et al. (1993), Desaulniers et al. (2003), Corr´ea et al. (2007) and Miyamoto & Inoue (2016). More recently, Adamo\net al. (2018) have studied the problem of determining vehicle routes (and vehicle\nspeeds on routes segments) in such a way that no conflict arise, time windows are\nmet, and the total energy consumption is minimized.",
+      "size": 913,
+      "sentences": 9
+    },
+    {
+      "id": 5,
+      "content": "ve studied the problem of determining vehicle routes (and vehicle\nspeeds on routes segments) in such a way that no conflict arise, time windows are\nmet, and the total energy consumption is minimized. In most industrial applications, arc travel times and machine ready times are\nnot known exactly in advance since they depend, to some extent, on a number of\nvariables that cannot be controlled (e.g., enable signals from automatic machines,\nbattery levels, dirt on the floor, etc.) or on unpredictable events (e.g., a worker\ncuttingtheroadtoanAGV,amachinebreakdown). Consequently, itmayhappen\nthataninitiallyfeasibleCF-VRPsolution(fleetnominal plan)becomesunfeasible\nas a result of the delays (or anticipations) accumulated by some vehicles. The\nproblemstudiedinthispaperishowtorecoverplanfeasibilityaftersuchvariations\nhave occurred. The objective is to avoid conflicts by implementing somecorrective\nactions.",
+      "size": 909,
+      "sentences": 6
+    },
+    {
+      "id": 6,
+      "content": "accumulated by some vehicles. The\nproblemstudiedinthispaperishowtorecoverplanfeasibilityaftersuchvariations\nhave occurred. The objective is to avoid conflicts by implementing somecorrective\nactions. We consider two corrective actions, namely (a) imposing a delay to\nsome vehicles and (b) accelerating some vehicles. The aim is to minimize four\nof the most common performance measures: (1) total vehicle delay, (2) total\nweighted delay, (3) maximum route duration (makespan) and (4) total lateness\nw.r.t. specified due dates. Before delving into the description of our contribution, we position our paper\ntowards a number of related research lines. The need to coordinate the routes and\nschedules of a fleet of vehicles to maintain a minimum distance from each other at\nany time arises in several sectors, including air traffic control and railway traffic\nmanagement.",
+      "size": 866,
+      "sentences": 8
+    },
+    {
+      "id": 7,
+      "content": "ate the routes and\nschedules of a fleet of vehicles to maintain a minimum distance from each other at\nany time arises in several sectors, including air traffic control and railway traffic\nmanagement. In air traffic control, aircraft move in a shared airspace and can\nnot get closer to each other than a given safety distance in order to avoid possible\nconflicts. Ribeiro et al. (2020) review conflict resolution methods for manned and\n2\n=== 페이지 3 ===\nunmanned aviation. In this line of research, a significant contribution is proposed\nby Pallottino et al. (2002) that consider the path planning problem among given\nwaypoints avoiding all possible conflicts with the objective to minimize the total\nflight time. The authors propose two formulations as a mixed-integer linear pro-\ngram(MILP):inthefirst, onlyvelocity changesare admissible maneuverswhilein\nthe second only heading angle changes are allowed. Solutions were obtained with\nstandard optimization software.",
+      "size": 965,
+      "sentences": 8
+    },
+    {
+      "id": 8,
+      "content": "linear pro-\ngram(MILP):inthefirst, onlyvelocity changesare admissible maneuverswhilein\nthe second only heading angle changes are allowed. Solutions were obtained with\nstandard optimization software. Unlike our contribution, this line of research as-\nsumes that aircraft move in a continuous (Euclidean) airspace. Another difference\nis that several seconds are usually allowed to generate a feasible solution. In railway traffic management, initial relatively small delays of some trains\nmay propagate and generate conflicts. As a result, especially during congested\ntraffic situations where the infrastructure capacity is completely exploited for\ntrains circulation, some trains must be stopped or slowed down to ensure safety,\nthus generating further delays. If deviations are relatively small, they can be\nhandled by modifying the timetable, with no changes to the duties for rolling\nstock and crew.",
+      "size": 901,
+      "sentences": 7
+    },
+    {
+      "id": 9,
+      "content": "ed down to ensure safety,\nthus generating further delays. If deviations are relatively small, they can be\nhandled by modifying the timetable, with no changes to the duties for rolling\nstock and crew. On the other hand, massive disruptions of service (due, e.g., to\nstrikes or technical issues) require both the timetable and the duties for rolling\nstock and crew to be modified. See Cacchiani et al. (2014) for a review. Unlike\nthe AGV applications our paper is motivated by, several minutes are usually\nallowed to generate a feasible solution which often makes feasible to use standard\noptimization software. Finally, our paper is related to the problem of coordinating the motions of\nmultiple robots operating in a shared workspace (e.g., robotic arms working in\nwelding and painting workcells) without collisions. In this line of research, Akella\n& Hutchinson (2002) study the problem when only the robot start times can be\nvaried.",
+      "size": 934,
+      "sentences": 8
+    },
+    {
+      "id": 10,
+      "content": "e.g., robotic arms working in\nwelding and painting workcells) without collisions. In this line of research, Akella\n& Hutchinson (2002) study the problem when only the robot start times can be\nvaried. They show that, even when the robot trajectories are specified, mini-\nmum time coordination of multiple robots is NP-hard, and define a Mixed Integer\nLinear Programming formulation. This work has been subsequently extended\nby Peng & Akella (2005) that determine velocity profiles for given paths that\nobey the kinematic constraints of robots and avoid collisions while minimizing\nmakespan. Unlike the fast exact algorithms presented in this paper, these au-\nthors use standard optimization software which make their approach impractical\nin large-scale real-time AGV applications. For an up-to-date state-of-the-art of\nrobot coordination, see Spensieri et al. (2021).",
+      "size": 866,
+      "sentences": 7
+    },
+    {
+      "id": 11,
+      "content": "standard optimization software which make their approach impractical\nin large-scale real-time AGV applications. For an up-to-date state-of-the-art of\nrobot coordination, see Spensieri et al. (2021). As anticipated, in this paper we focus on recovering feasibility in Conflict-Free\nVehicle Routing Problems in industrial settings, like those arising in intralogistics\napplications (Fragapane et al., 2021), where vehicles (AGVs) move at high speed\n(up to two meters per second) along relatively short “segments” (e.g., aisles) of\nthe guide path network. As a result, when deviations are observed, plans have\nto be revised in a few milliseconds to avoid collisions among vehicles. In this\npaper we identify two corrective actions and present fast exact algorithms to\n3\n=== 페이지 4 ===\nrecover plan feasibility in real-time under four different objectives. In Section\n2, we define the notation used throughout the paper and model the problem.",
+      "size": 937,
+      "sentences": 7
+    },
+    {
+      "id": 12,
+      "content": "t fast exact algorithms to\n3\n=== 페이지 4 ===\nrecover plan feasibility in real-time under four different objectives. In Section\n2, we define the notation used throughout the paper and model the problem. In Section 3, we study the problem of recovering feasibility with proper vehicle\ncorrective delays. In particular, we first present a model and then show that it\ncan be cast as a shortest path problem on a suitably defined auxiliary graph for\nfour distinct objective functions. In Section 4, we extend the previous results to\nrecovering feasibility with both vehicle delays and anticipations. In particular, we\nshow that, under mild hypotheses, the problem can be solved with a two-stage\napproach in which a shortest path problem is solved at each stage. Finally, in\nSection 5, we compare experimentally our tailored exact algorithms with solving\nthe proposed formulations with off-the-shelf solvers.",
+      "size": 900,
+      "sentences": 7
+    },
+    {
+      "id": 13,
+      "content": "hich a shortest path problem is solved at each stage. Finally, in\nSection 5, we compare experimentally our tailored exact algorithms with solving\nthe proposed formulations with off-the-shelf solvers. 2 Problem definition and notation\nLet G(V,A) be the graph representing the internal transportation network of a\nfacility served by a fleet of vehicles. Vertex set V represents loading/unloading\nstations, storage positions as well as intersections while A describes the segments\nof the material handling network. In practice, some complicating issues may be\npresent to account for peculiar features of the vehicles (e.g., orientation as it is\nthe case of automated forklifts). However, we neglect these aspects since they do\nnot affect our findings.",
+      "size": 748,
+      "sentences": 6
+    },
+    {
+      "id": 14,
+      "content": "may be\npresent to account for peculiar features of the vehicles (e.g., orientation as it is\nthe case of automated forklifts). However, we neglect these aspects since they do\nnot affect our findings. In this article, we assume that a nominal plan has been previously generated\nfor a given Conflict-Free Vehicle Routing and Scheduling Problem on G. As a\nresult, each vehicle has been assigned a route and a schedule, including possible\nstops at some vertices in V. The individual vehicle plans constitute a nominal\nplan which is conflict-free, and hopefully optimizes some performance measure. We also assume that the position of the vehicles is monitored periodically to\nidentify possible delays or anticipations w.r.t. the nominal plan. If one or more\nvehicles come up to be early or late, the nominal plan may become unfeasible and\nsome corrective actions need to be promptly identified and implemented in order\nto avoid collisions.",
+      "size": 933,
+      "sentences": 6
+    },
+    {
+      "id": 15,
+      "content": "n. If one or more\nvehicles come up to be early or late, the nominal plan may become unfeasible and\nsome corrective actions need to be promptly identified and implemented in order\nto avoid collisions. In large-scale AGV applications, where computing time cannot exceed few\nmilliseconds, feasibility recovery cannot include any route change and the only\ncorrective actions are delaying some vehicles and possibly (depending on AGV\ntechnology) speeding up some vehicles. Let V = {1,...,n} be the set of vehicles and ξ (t) the planned position of\nc h\nvehicle h ∈ V in G at time t. Moreover, let x (t) be the observed position of\nc h\nvehicle h ∈ V in G at time t. Then, the deviation observed at time t is\nc\nd (t) = t−ξ−1(x (t)). h h h\n4\n=== 페이지 5 ===\nIt is worth noting that d (t) can be either positive, negative or zero: if d (t) > 0,\nh h\nvehicle h is late w.r.t. the nominal plan; if d (t) < 0, it is ahead of its schedule;\nh\notherwise, it is on time.",
+      "size": 950,
+      "sentences": 5
+    },
+    {
+      "id": 16,
+      "content": "s worth noting that d (t) can be either positive, negative or zero: if d (t) > 0,\nh h\nvehicle h is late w.r.t. the nominal plan; if d (t) < 0, it is ahead of its schedule;\nh\notherwise, it is on time. In what follows, for the sake of simplicity, we omit the\ntime instant t at which the AGV positions were last observed. For every pair h,k of vehicles, let s (≥ 0) be the maximum delay (slack)\nh,k\nthat vehicle h may accumulate, w.r.t. the nominal plan, without conflicting with\nvehicle k. Equivalently, s represents the maximum conflict-free anticipation of\nh,k\nvehicle k on vehicle h allowed by the current nominal plan. Slacks can be easily\ncomputed starting from the nominal plan. Finally, it is worth noting that slacks\nare not symmetric: e.g., s = 5 and s = +∞. h,k k,h\nIn order to model the relationship among vehicles in the nominal plan, we\ndefine a conflict graph G (V ,A ) where vertex h ∈ V represents vehicle h and an\nc c c c\narc (h,k) exists in A if and only if s < +∞.",
+      "size": 981,
+      "sentences": 8
+    },
+    {
+      "id": 17,
+      "content": "to model the relationship among vehicles in the nominal plan, we\ndefine a conflict graph G (V ,A ) where vertex h ∈ V represents vehicle h and an\nc c c c\narc (h,k) exists in A if and only if s < +∞. In this case the arc is assigned\nc h,k\na weight equal to s . It is worth noting that graph G may be cyclic and/or\nh,k c\ndisconnected as shown in Figure 1. In order to avoid that deviations d may cause vehicle conflicts, we impose to\nh\neachvehicleh ∈ V adelayoranticipationatthebeginningofitsroute. Letu ∈ R\nc h\nbe the delay/anticipation of vehicle h w.r.t. the nominal plan after feasibility has\nbeen recovered. Hence,\nδ = u −d\nh h h\nrepresents the corrective action imposed to vehicle h. If δ > 0, a stop of duration\nh\nδ will be inserted in the plan of the vehicle; if δ < 0, vehicle h will be accelerated\nh h\nin such a way as to generate an anticipation of |δ |.",
+      "size": 863,
+      "sentences": 7
+    },
+    {
+      "id": 18,
+      "content": "n imposed to vehicle h. If δ > 0, a stop of duration\nh\nδ will be inserted in the plan of the vehicle; if δ < 0, vehicle h will be accelerated\nh h\nin such a way as to generate an anticipation of |δ |. When a vehicle h does not\nh\nrespect its nominal plan (d (cid:54)= 0), it might be necessary to delay or anticipate\nh\nother vehicles in order to recover feasibility. For instance, in Figure 1, if d = 5,\n1\nd = 1 and d = ··· = d = 0, the initial delay of vehicles 1 and 2 may be\n2 3 7\ncompensated by further delaying vehicle 2 of 3 time units (δ = 3, u = 4) which\n2 2\nin turns requires vehicle 4 to be delayed of 2 time units (δ = u = 2) which\n4 4\nultimately requires vehicle 3 to be delayed of 1 time units (δ = u = 1). It is\n3 3\nworth noting that vehicle 3 is delayed because of the interference between its route\nand that of vehicle 4 (not vehicle 2 because s = 5 was greater than the difference\n23\nbetween u = 4 and u = 0).",
+      "size": 924,
+      "sentences": 4
+    },
+    {
+      "id": 19,
+      "content": "3\nworth noting that vehicle 3 is delayed because of the interference between its route\nand that of vehicle 4 (not vehicle 2 because s = 5 was greater than the difference\n23\nbetween u = 4 and u = 0). Finally, vehicle 5, 6 and 7 were not affected by the\n2 3\ninitial plan perturbation. 3 Recovering feasibility with corrective delays\nWe first model the problem of finding an optimal recovery plan under the hypoth-\nesis that only delays can be imposed to vehicles. Assuming that the objective is\n5\n=== 페이지 6 ===\nFigure 1: A conflict graph\nto minimize the sum of vehicle delays, the problem can be formulated as follows:\n(cid:88)\n(PD) minz = u (1)\n1 1 h\nh∈Vc\ns.t. u −u ≤ s (h,k) ∈ A , (2)\nh k h,k c\nu ≥ d h ∈ V , (3)\nh h c\nwhere constraints (2) impose that collisions between pairs of vehicles are avoided,\nwhile inequalities (3) require that the total delay of a vehicle is no less that its\nobserved deviation. A second objective is the minimization of a weighted sum of the vehicle delays.",
+      "size": 987,
+      "sentences": 6
+    },
+    {
+      "id": 20,
+      "content": "s are avoided,\nwhile inequalities (3) require that the total delay of a vehicle is no less that its\nobserved deviation. A second objective is the minimization of a weighted sum of the vehicle delays. Let w ≥ 0 be the cost of having vehicle h delayed by a time unit. Then, the\nh\nmodel can be reformulated as:\n(cid:88)\n(PD) minz = w u\n2 2 h h\nh∈Vc\ns.t. (2) - (3). A third objective is the minimization of the longest vehicle route (makespan). Let c be the completion time of vehicle h in the nominal plan. Then, the model\nh\ncan be rewritten as:\n(PD) minz = max(c +u )\n3 3 h h\nh∈Vc\ns.t. (2) - (3),\n6\n=== 페이지 7 ===\nor equivalently:\n(PD) minz\n3 3\ns.t. (2) - (3), and\nz ≥ c +u h ∈ V . 3 h h c\nFinally, we consider the case in which a due date ρ is specified for each vehicle\nh\nh ∈ V and the objective is the minimization of the total lateness of the vehicles\nc\nw.r.t. their due dates:\n(cid:88)\n(PD) minz = max(0,u −ρ )\n4 4 h h\nh∈Vc\ns.t. (2) - (3),\nor equivalently:\n(cid:88)\n(PD) minz = y\n4 4 h\nh∈Vc\ns.t.",
+      "size": 997,
+      "sentences": 13
+    },
+    {
+      "id": 21,
+      "content": "the minimization of the total lateness of the vehicles\nc\nw.r.t. their due dates:\n(cid:88)\n(PD) minz = max(0,u −ρ )\n4 4 h h\nh∈Vc\ns.t. (2) - (3),\nor equivalently:\n(cid:88)\n(PD) minz = y\n4 4 h\nh∈Vc\ns.t. (2) - (3), and\ny ≥ u −ρ h ∈ V ,\nh h h c\ny ≥ 0 h ∈ V . h c\nWe now prove some propositions that will be helpful to derive tailored fast\nexact algorithms for recovering plan feasibility. Proposition 1. Problems (PD)-(PD) are feasible. 1 4\nProof. We prove this proposition for problem (PD). Solution\n1\nu = maxd h ∈ V , (4)\nh i c\ni∈Vc\nmakes the left-hand sides of constraints (2) null and satisfies constraints (3). For\nproblems (PD)-(PD), the proof is similar. 2 4\nSolution (4) is equivalent to impose to vehicle h an additional delay equal to\nδ = maxd −d .",
+      "size": 753,
+      "sentences": 12
+    },
+    {
+      "id": 22,
+      "content": "s of constraints (2) null and satisfies constraints (3). For\nproblems (PD)-(PD), the proof is similar. 2 4\nSolution (4) is equivalent to impose to vehicle h an additional delay equal to\nδ = maxd −d . (5)\nh i h\ni∈Vc\nFor instance, if the first vehicle is 1 unit of time late and the other vehicles are\non time (d = 1 and d = 0 for h = 2,...,n), then a feasible solution (4) is:\n1 h\nu − d = 0 and u − d = 1 for h = 2,...,n. On the other hand, if the first\n1 1 h h\nvehicle is one unit of time ahead and the other vehicles are on time (d = −1 and\n1\nd = 0 for h = 2,...,n), then feasible solution (4) is: u −d = 1 and u −d = 0\nh 1 1 h h\nfor h = 2,...,n.\n7\n=== 페이지 8 ===\nProposition 2. Problem (PD) is the dual of a one-to-all shortest path problem\n1\non a suitably defined auxiliary graph. ˆ ˆ ˆ\nProof. We define an auxiliary graph G = (V ,A ) with an additional (source)\nc c c\nvertex 0 and |V | additional arcs from 0 to any other node h ∈ V having weight\nc c\nequal to −d .",
+      "size": 967,
+      "sentences": 7
+    },
+    {
+      "id": 23,
+      "content": "xiliary graph. ˆ ˆ ˆ\nProof. We define an auxiliary graph G = (V ,A ) with an additional (source)\nc c c\nvertex 0 and |V | additional arcs from 0 to any other node h ∈ V having weight\nc c\nequal to −d . In other terms:\nh\nˆ\nV = V ∪{0},\nc c\nˆ\nA = A ∪{(0,h) | h ∈ V },\nc c c\ns = −d h ∈ V ,\n0,h h c\ns = +∞ h ∈ V . h,0 c\nGiven a vertex k ∈ V ˆ , we denote with δ−(k) = {h : (h,k) ∈ A ˆ } and δ+(k) =\nc c\nˆ\n{h : (k,h) ∈ A } the set of in-neighbors and out-neighbors of k, respectively. c\nObviously:\n|δ−(0)| = 0,\n|δ+(0)| = |V |,\nc\nu = d = 0. 0 0\nTherefore, for any k ∈ V :\nc\nu ≥ u −s h ∈ δ−(k), (6)\nk h h,k\nu ≥ d . (7)\nk k\nConstraints (6) and (7) imply\nu ≥ max (u −s ) k ∈ V . (8)\nk h h,k c\nh∈δ−(k)\nIn order to minimize (1), the recursive inequality (8) must be satisfied as an\nequality, i.e. :\nu∗ = max (u∗ −s ) k ∈ V , (9)\nk h h,k c\nh∈δ−(k)\nwhere the asterisk indicates an optimal solution. For h (cid:54)= 0 relationship (9) can\nbe written as:\n(cid:18) (cid:19)\nu∗ = max max (u∗ −s )−s k ∈ V .",
+      "size": 986,
+      "sentences": 11
+    },
+    {
+      "id": 24,
+      "content": "= max (u∗ −s ) k ∈ V , (9)\nk h h,k c\nh∈δ−(k)\nwhere the asterisk indicates an optimal solution. For h (cid:54)= 0 relationship (9) can\nbe written as:\n(cid:18) (cid:19)\nu∗ = max max (u∗ −s )−s k ∈ V . k (cid:96) (cid:96),h h,k c\nh∈δ−(k) (cid:96)∈δ−(h)\nBy iterating until vertex 0 is reached, the following expression is obtained:\n \n|p|−1\n(cid:88)\nu∗ k = m\nh∈\na\nV\nx\nc p\nm\n∈Π\na\nh\nx\nk\nd h − s vi,vi+1  k ∈ V c ,\ni=1\n8\n=== 페이지 9 ===\nwhere Π ((h,k ∈ V ) denotes the set of all paths in G departing from h ∈ V\nhk c c c\nand arriving in k ∈ V , and v ∈ V is the i-th vertex along path p ∈ Π . Hence,\nc i c hk\nthe optimal solution u∗ corresponds to the shortest path between vertex 0 and\nk\nˆ\nvertex k on G . c\nProposition 3. Let u∗ (k ∈ V ) be an optimal solution for problem (PD). Then,\nk c 1\nu∗ (k ∈ V ) is also optimal for problems (PD)-(PD) (albeit obviously with different\nk c 2 4\nobjective function values). Proof. Let u∗ be a feasible solution minimizing z .",
+      "size": 958,
+      "sentences": 9
+    },
+    {
+      "id": 25,
+      "content": "r problem (PD). Then,\nk c 1\nu∗ (k ∈ V ) is also optimal for problems (PD)-(PD) (albeit obviously with different\nk c 2 4\nobjective function values). Proof. Let u∗ be a feasible solution minimizing z . k 1\nCase z - Because of (9), solution u∗ remains optimal if weights w are any\n2 k h\nnonnegative numbers. ¯ ¯ ¯\nCase z - We define a new graph G = (V ,A ) with an additional (sink) vertex\n3 c c c\nn+1 as well as with |V | additional arcs going from each vertex h ∈ V to n+1\nc c\nwith weight equal to maxc −c :\nk h\nk∈Vc\n¯\nV = V ∪{n+1},\nc c\n¯\nA = A ∪{(h,n+1) | h ∈ V },\nc c c\ns = maxc −c h ∈ V ,\nh,n+1 k h c\nk∈Vc\ns = +∞ h ∈ V . n+1,h c\nBy setting d = 0, an optimal solution corresponds to the shortest path tree\nn+1\non G ¯ originating in n+1. It is worth noting that u∗ represents the minimum\nc n+1\nincrease of the maximum completion time, i.e. minz = maxc +u∗ .",
+      "size": 857,
+      "sentences": 9
+    },
+    {
+      "id": 26,
+      "content": "l solution corresponds to the shortest path tree\nn+1\non G ¯ originating in n+1. It is worth noting that u∗ represents the minimum\nc n+1\nincrease of the maximum completion time, i.e. minz = maxc +u∗ . 3 k n+1\nk∈Vc\n˜ ˜ ˜\nCase z - A new graph G = (V ,A ) is defined by adding (to G ) |V | additional\n4 c c c c c\n(sink) vertices and the corresponding incoming arcs as follows:\n˜\nV = V ∪{n+1,...,2n},\nc c\n˜\nA = A ∪{(h,n+h) | h ∈ V },\nc c c\ns = ρ h ∈ V ,\nh,n+h h c\ns = +∞ h ∈ V . n+h,h c\nThen, by setting d = 0 for h ∈ V , an optimal solution corresponds to a one-to-\nn+h c\nall shortest path tree on G ˜ . It is worth noting that u∗ represents the optimal\nc n+h\nvalue of variable y in the definition of z , i.e. :\nh 4\ny∗ = u∗ . h n+h\n9\n=== 페이지 10 ===\n4 Recovering feasibility with corrective delays\nand anticipations\nIn the previous section we examined how to recover the feasibility of a nominal\nplan by imposing corrective delays to vehicles.",
+      "size": 938,
+      "sentences": 8
+    },
+    {
+      "id": 27,
+      "content": "0 ===\n4 Recovering feasibility with corrective delays\nand anticipations\nIn the previous section we examined how to recover the feasibility of a nominal\nplan by imposing corrective delays to vehicles. In this section we consider the case\nthat vehicles may also be accelerated, resulting in corrective anticipations with\nrespect to the current plan. As before, the aim is to minimize four of the most\ncommon performance measures: (1) total vehicle delay, (2) total weighted delay,\n(3) maximum route duration (makespan) and (4) total lateness w.r.t. specified\ndue dates. For the sake of simplicity, we assume there are just two speed levels, a nominal\nspeed v and a higher speed\n1\nv = k ·v ,\n2 1\nwith k > 1, which can be hold for at most T seconds (to limit energy consumption\nas well as to reduce the wear and tear of vehicles). Let x be a nonnegative continuous variable representing the corrective antic-\nh\nipation imposed to vehicle h to recover plan feasibility.",
+      "size": 964,
+      "sentences": 6
+    },
+    {
+      "id": 28,
+      "content": "sumption\nas well as to reduce the wear and tear of vehicles). Let x be a nonnegative continuous variable representing the corrective antic-\nh\nipation imposed to vehicle h to recover plan feasibility. Two factors impose an\nupper bound on x : T and the time tc after which a conflict would occur if vehicle\nh h\nh continued moving at speed v . As for the first factor, the maximum anticipation\n1\nis achieved by using speed v (instead of v ) for T instants and amounts to\n2 1\nv T\n2\n−T = (k −1)T.\nv\n1\nAs for the second factor, the distance from the current position of vehicle h to the\nfirst conflict on its route is v tc. So speed v can be kept for at most\n1 h 2\nv tc tc\n1 h = h\nv k\n2\ninstants, resulting into a maximum anticipation equal to:\ntc k −1\ntc − h = tc. h k k h\nHence, the upper bound on x is\nh\nx ≤ L ,\nh h\nwhere\nk −1\nL = min((k −1)T, tc).",
+      "size": 845,
+      "sentences": 6
+    },
+    {
+      "id": 29,
+      "content": "t most\n1 h 2\nv tc tc\n1 h = h\nv k\n2\ninstants, resulting into a maximum anticipation equal to:\ntc k −1\ntc − h = tc. h k k h\nHence, the upper bound on x is\nh\nx ≤ L ,\nh h\nwhere\nk −1\nL = min((k −1)T, tc). h k h\nThe objective function is defined as the weighted sum, with parameters α > 0\nand β ≥ 0, of performance measure z (i = 1,...,4) and the total anticipation\ni\n10\n=== 페이지 11 ===\n(cid:80) x imposed to vehicles. Problem PD, (i = 1,...,4) is then re-formulated as\nh i\nh∈Vc\nfollows:\n(cid:88)\n(PAD) min z(cid:48) = αz +β x (10)\ni i i h\nh∈Vc\ns.t. u −x −u +x ≤ s (h,k) ∈ A , (11)\nh h k k h,k c\nu ≥ d h ∈ V , (12)\nh h c\n0 ≤ x ≤ L h ∈ V , (13)\nh h c\nwhere constraints (11) prevent collisions between pairs of vehicles, inequalities\n(12) impose the observed delays/anticipations and constraints (13) define upper\nbounds on vehicle anticipations. We now prove some propositions. Proposition 4. Problems PAD (i = 1,...,4) are feasible. i\nProof.",
+      "size": 934,
+      "sentences": 9
+    },
+    {
+      "id": 30,
+      "content": "e the observed delays/anticipations and constraints (13) define upper\nbounds on vehicle anticipations. We now prove some propositions. Proposition 4. Problems PAD (i = 1,...,4) are feasible. i\nProof. Solution x = 0 (h ∈ V ) and u = max d (h ∈ V ) satisfies all con-\nh c h i∈Vc i c\nstraints. Proposition 5. Each basic feasible solution of formulation (10)-(13) has either\nδ = u −d = 0 or x = 0 (or both) for any h ∈ V . h h h h c\nProof. Let u be the vector of u associated to vehicles h ∈ V . We prove the\nh c\nstatement by contradiction. Let us assume that it exists an optimal solution with\nu −d ≥ x > 0 for a vehicle h ∈ V . A new feasible solution can be defined as\nh h h c\nfollows:\nu(cid:48) = u −x ,\nh h h\nx(cid:48) = 0,\nh\nEvaluating both solutions w.r.t.",
+      "size": 759,
+      "sentences": 13
+    },
+    {
+      "id": 31,
+      "content": "xists an optimal solution with\nu −d ≥ x > 0 for a vehicle h ∈ V . A new feasible solution can be defined as\nh h h c\nfollows:\nu(cid:48) = u −x ,\nh h h\nx(cid:48) = 0,\nh\nEvaluating both solutions w.r.t. objective function z(cid:48) (i = 1,...,n), the following\ni\nrelationship is obtained:\nα·z (u(cid:48))+β ·0 < α·z (u)+βx i = 1,...,4.\ni i h\nSince the new feasible solution has a lower objective function value than the\noptimal one, the hypothesis is contradicted. On the other hand, if an optimal\nsolution is such that x ≥ u −d > 0, then a new feasible solution can be defined\nh h h\nas follows:\nu(cid:48) = d ,\nh h\nx(cid:48) = x −u +d . h h h h\n11\n=== 페이지 12 ===\nOnce again, evaluating both solutions w.r.t. objective function z(cid:48) (i = 1,...,n),\ni\nα·z (u(cid:48))+β(x −u +d ) < α·z (u)+βx i = 1,...,4,\ni h h h i h\ncontradicts the hypothesis. Proposition 6.",
+      "size": 860,
+      "sentences": 7
+    },
+    {
+      "id": 32,
+      "content": "Once again, evaluating both solutions w.r.t. objective function z(cid:48) (i = 1,...,n),\ni\nα·z (u(cid:48))+β(x −u +d ) < α·z (u)+βx i = 1,...,4,\ni h h h i h\ncontradicts the hypothesis. Proposition 6. If L = +∞, problem PAD (i = 1,...,4) with only anticipations\nh i\nis the dual of a one-to-all shortest path problem on a suitably defined graph. Proof. For u = d , formulation (10)-(13) becomes:\nh h\n(cid:88) (cid:88)\nαz +β d +βmin x¯ (14)\ni h h\nh∈Vc h∈Vc\ns.t. x¯ −x¯ ≤ s (h,k) ∈ A (15)\nk h h,k c\nx¯ ≥ −d h ∈ V (16)\nh h c\nwhere x¯ = x − d . Therefore, formulation (14)-(16) is equivalent to (1)-(3)\nh h h\nformulated on the reverse graph G−1 = (V ,A−1) with\nc c c\nA−1 = {(k,h) | (h,k) ∈ A },\nc c\nand observed delays/anticipations −d . h\nThe following proposition allows to decompose problem PAD (i = 1,...,4)\ni\nin case minimizing z is more of a priority than minimizing the sum of the x\ni h\n(h ∈ V ) variables. c\nProposition 7.",
+      "size": 924,
+      "sentences": 10
+    },
+    {
+      "id": 33,
+      "content": "s −d . h\nThe following proposition allows to decompose problem PAD (i = 1,...,4)\ni\nin case minimizing z is more of a priority than minimizing the sum of the x\ni h\n(h ∈ V ) variables. c\nProposition 7. If α (cid:29) β ≥ 0 (in particular, if β = 0), problem PAD (i =\ni\n1,...,4) decomposes into two independent (one-to-all shortest path) subproblems. Proof. Initially, we prescribe that each vehicle is imposed an anticipation equal\nto the maximum allowed (e.g., x = L ). Then formulation (10)-(13) becomes:\nh h\n(cid:88)\nαminz +β L (17)\ni h\nh∈Vc\ns.t. u¯ −u¯ ≤ s (h,k) ∈ A (18)\nh k h,k c\nu¯ ≥ d −L h ∈ V (19)\nh h h c\nwhereu¯ = u −L . Problem(17)-(19)is equivalent toproblem(1)-(3) on agraph\nh h h\ncoincidentwithG , exceptthatobserveddelays/anticipationsareequaltod −L . c h h\nHence, it can be solved as a one-to-all shortest path problem. The corresponding\n12\n=== 페이지 13 ===\noptimal corrective delays δ = u¯ −d +L are feasible for (10)-(13). Moreover, if\nh h h h\nβ = 0 they are also optimal.",
+      "size": 986,
+      "sentences": 12
+    },
+    {
+      "id": 34,
+      "content": "solved as a one-to-all shortest path problem. The corresponding\n12\n=== 페이지 13 ===\noptimal corrective delays δ = u¯ −d +L are feasible for (10)-(13). Moreover, if\nh h h h\nβ = 0 they are also optimal. Otherwise, this solution has to be corrected in order\nto minimize the total anticipation. To do so, it has to be noted that, because\nof Proposition 5, the overall corrective delay determined by model (17)-(19) is\nthe optimal one also for (10)-(13), i.e. δ\nh\n∗ = max{0,u¯\nh\n−d h(cid:8)+(cid:8)L (cid:8) h(cid:8)−(cid:8)L (cid:8)\nh\n}, while the\noverall corrective anticipation will be x\nh\n= max{0,(cid:26)L(cid:26)\nh\n−u¯\nh\n+d h(cid:8)−(cid:8)L (cid:8)\nh\n}. However, because the anticipations x (h ∈ V ) prescribed in (10)-(13) can be\nh c\nlarger than the optimal ones, this formulation with u = δ∗ +d becomes:\nh h h\n(cid:88) (cid:88)\nαz +β (δ∗ +d )+βmin x¯ (20)\ni h h h\nh∈Vc h∈Vc\ns.t. x¯ −x¯ ≤ s (h,k) ∈ A (21)\nk h h,k c\nx¯ ≥ −δ∗ −d h ∈ V (22)\nh h h c\nwhere corrective actions are x¯ +δ∗+d = x .",
+      "size": 991,
+      "sentences": 8
+    },
+    {
+      "id": 35,
+      "content": "∗ +d becomes:\nh h h\n(cid:88) (cid:88)\nαz +β (δ∗ +d )+βmin x¯ (20)\ni h h h\nh∈Vc h∈Vc\ns.t. x¯ −x¯ ≤ s (h,k) ∈ A (21)\nk h h,k c\nx¯ ≥ −δ∗ −d h ∈ V (22)\nh h h c\nwhere corrective actions are x¯ +δ∗+d = x . Solution of model (17)-(19) ensures\nh h h h\nfeasibility of model (20)-(22). Moreover,\nx¯ +δ∗ +d ≤ L\nh h h h\nis surely satisfied by that solution. Then applying proposition 6 the thesis is\nproved. Summingup, ifβ = 0, only(17)-(19)hastobesolved. Otherwise, itisrequired\nto solve (20)-(22) in a second stage. Both problems are equivalent to solving a\none-to-all shortest path problem. 5 Computational Results\nThe aim of our computational experiments was to assess whether our approach\ncan be valuable to recover plan feasibility in a real-time setting like those arising\nwhen using AGVs in manufacturing, transportation and logistics applications.",
+      "size": 844,
+      "sentences": 9
+    },
+    {
+      "id": 36,
+      "content": "s was to assess whether our approach\ncan be valuable to recover plan feasibility in a real-time setting like those arising\nwhen using AGVs in manufacturing, transportation and logistics applications. In\nparticular, we compared the performance of the tailored approach described in\nSections (3) and (4) versus finding exact solutions to problems PD-PD and PAD-\n1 4 1\nPAD with two off-the-shelf solvers: commercial solver IBM ILOG CPLEX 22.1\n4\n(IBM, 2022) and open-source solver SCIP 8.0 (Bestuzheva et al., 2021). All the experiments were run on a standalone Linux machine with an Intel\nCore i7 processor composed by 4 cores clocked at 2.5 GHz and equipped with 16\nGB of RAM. All algorithms have been coded in C++. Shortest paths on auxiliary\ngraphs were determined by the Dijkstra’s algorithm (Dijkstra et al., 1959) with a\nFibonacci heap min-priority queue. 13\n=== 페이지 14 ===\nWe first describe the generation of input data, and then present the results.",
+      "size": 954,
+      "sentences": 6
+    },
+    {
+      "id": 37,
+      "content": "etermined by the Dijkstra’s algorithm (Dijkstra et al., 1959) with a\nFibonacci heap min-priority queue. 13\n=== 페이지 14 ===\nWe first describe the generation of input data, and then present the results. Instances have been randomly generated with a number of vehicles n = |V | =\nc\n50,100,150,200,250,300. A parameter p, defined as\n|A |\nc\np = −1,\nn2 −n\nwas used to control the sparsity level of the conflict graph. In particular, p was set\nequalto{0,0.25,0.50,0.75}. Vehicle(observed)deviationsfromthenominalplans\nd (n = 1,...,n) were randomly generated according to a uniform distribution\nh\nin the [-10, 10] range. Vehicle slacks s ((h,k) ∈ A ) were uniformly generated\nh,k c\nin interval [0,13]. As far as z is concerned, weights w (n = 1,...,n) were\n2 h\nuniformly generated in [0,1]. As for z , completion times c (n = 1,...,n) were\n3 h\nderived from a uniform distribution in [100, 110]. Regarding objective function z ,\n4\ndue dates ρ (n = 1,...,n) were uniformly generated in interval [0,10].",
+      "size": 991,
+      "sentences": 10
+    },
+    {
+      "id": 38,
+      "content": "completion times c (n = 1,...,n) were\n3 h\nderived from a uniform distribution in [100, 110]. Regarding objective function z ,\n4\ndue dates ρ (n = 1,...,n) were uniformly generated in interval [0,10]. Finally,\nh\nwhen corrective anticipations are allowed, we set α = 1000 and β = 1. For any\npair (n,p) we generated 10 instances, for a total of 240 instances. All test files\nare available at https://tdrouting.com/cfpdp. The results of our experiments are reported in Tables 1 to 4 for objective\nfunctions z to z . In all tables, the first two columns are self-explanatory and the\n1 4\nvalues reported are averaged across all instances.",
+      "size": 631,
+      "sentences": 7
+    },
+    {
+      "id": 39,
+      "content": "our experiments are reported in Tables 1 to 4 for objective\nfunctions z to z . In all tables, the first two columns are self-explanatory and the\n1 4\nvalues reported are averaged across all instances. The remaining column headings\nare as follows:\n• SP : time (in milliseconds) spent by the tailored approach whenever only\nD\ncorrective delays are allowed;\n• SP : time (in milliseconds) spent by the tailored approach whenever both\nAD\ncorrective anticipations and corrective delays are allowed;\n• CPLEX : time (in milliseconds) spent by the IBM ILOG CPLEX 22.1\nD\nsolver on problem PD (i = 1,...,4));\ni\n• SCIP : time (in milliseconds) spent by the SCIP 8.0 solver on problem PD\nD i\n(i = 1,...,4));\n• CPLEX : time (in milliseconds) spent by the IBM ILOG CPLEX 22.1\nAD\nsolver on problem PAD (i = 1,...,4));\ni\n• SCIP : time (in milliseconds) spent by the SCIP 8.0 solver on problem\nAD\nPAD (i = 1,...,4));\ni\n• DEV : percentage deviation between the z values of the solutions with and\ni i\nwithout corrective anticipations allowed, i.e.",
+      "size": 1026,
+      "sentences": 3
+    },
+    {
+      "id": 40,
+      "content": "econds) spent by the SCIP 8.0 solver on problem\nAD\nPAD (i = 1,...,4));\ni\n• DEV : percentage deviation between the z values of the solutions with and\ni i\nwithout corrective anticipations allowed, i.e. zD −zAD\nDEV = 100· i i ,\ni zD\ni\n14\n=== 페이지 15 ===\nwhere zAD and zD are the values of objective function z when recovering\ni i i\nfeasibility with and without corrective anticipations, respectively. Above all, computational results show that, in terms of computing time, our\ntailored exact approach outperformed both IBM ILOG CPLEX 22.1 and SCIP 8.0\nsolvers, independently of the objective function. Even for small fleet sizes (n=50),\nour procedures were able to recover feasibility in less than a millisecond while\nthe CPLEX and SCIP solvers took something between 40 and 200 milliseconds,\ndepending mainly on the sparsity of the conflict graph and less on the objective\nfunction.",
+      "size": 879,
+      "sentences": 4
+    },
+    {
+      "id": 41,
+      "content": "in less than a millisecond while\nthe CPLEX and SCIP solvers took something between 40 and 200 milliseconds,\ndepending mainly on the sparsity of the conflict graph and less on the objective\nfunction. For moderate fleet sizes (n=100) the approach based on off-the-shelf\nsolvers became no more viable (with a computing time between 100 and 600\nmilliseconds) while our approach was still able to recover feasibility in less than a\nmillisecond. The performance gap became even more relevant for large fleets in\nwhich case the approach based on off-the-shelf solvers became impractical. More in detail, Tables 1-4 show that, as a rule, computing times were lower\nfor sparser conflict graphs (p = 0.75). For instance, when minimizing z with cor-\n1\nrective delays, CPLEX took 612.07 milliseconds on average to obtain the optimal\nsolution with p = 0.75 versus 2487.02 milliseconds with p = 0. This trend was\nconfirmed for z , z and z , with or without corrective anticipations.",
+      "size": 968,
+      "sentences": 6
+    },
+    {
+      "id": 42,
+      "content": "12.07 milliseconds on average to obtain the optimal\nsolution with p = 0.75 versus 2487.02 milliseconds with p = 0. This trend was\nconfirmed for z , z and z , with or without corrective anticipations. 2 3 4\nAnother aspect to be considered is that on average both SP and SP were\nD AD\nnot affected by the objective function to be minimized. Moreover, SP was\nAD\n2.5 times greater than SP , while still remaining very moderate (at most 0.48\nD\nmillisecond for n=300). From a managerial point of view, allowing vehicles to speed up to avoid con-\nflicts was beneficial in terms of all objective functions. However, while the reduc-\ntions in total delay, total weighted delay and lateness were significant (14.4 %,\n14.4 %, 24.90 % on average, respectively), the impact on makespan minimization\nwas negligible (1.1 %).",
+      "size": 808,
+      "sentences": 6
+    },
+    {
+      "id": 43,
+      "content": "ile the reduc-\ntions in total delay, total weighted delay and lateness were significant (14.4 %,\n14.4 %, 24.90 % on average, respectively), the impact on makespan minimization\nwas negligible (1.1 %). 15\n=== 페이지 16 ===\nTable 1: Computational results - minimizing z (total delay)\n1\nCorrective delays Corrective anticipations and delays\nInstances SP CPLEX SCIP SP CPLEX SCIP DEV\nD D D AD AD AD\np n [ms] [ms] [ms] [ms] [ms] [ms] [%]\n0 50 0.01 150.02 85.84 0.03 204.89 127.87 19.0\n100 0.02 577.64 306.15 0.08 606.52 489.50 16.5\n150 0.05 1316.73 679.56 0.13 1399.28 1476.53 13.8\n200 0.08 2347.16 1201.17 0.18 2713.41 3185.72 12.8\n250 0.12 3928.97 1901.89 0.26 4598.07 5718.10 11.0\n300 0.16 6601.63 2715.84 0.37 6702.86 8978.28 10.0\n0.25 50 0.01 106.05 70.99 0.03 146.69 94.45 23.5\n100 0.03 443.90 231.14 0.08 477.93 404.10 14.8\n150 0.05 949.17 523.53 0.13 1049.86 1010.91 11.7\n200 0.07 1728.66 924.57 0.19 1875.75 1712.98 11.8\n250 0.10 2729.27 1452.90 0.27 3043.46 3495.32 12.9\n300 0.15 4058.68 2162.66 0.39 4264.78 4468.80 9.9\n0.50 50 0.01 90.15 53.89 0.03 84.00 67.71 26.4\n100 0.03 324.10 213.07 0.09 318.45 254.37 16.0\n150 0.06 683.22 374.80 0.14 722.09 765.84 10.9\n200 0.09 1193.58 647.02 0.21 1297.74 1282.30 13.0\n250 0.13 2056.36 1111.71 0.31 1937.82 1888.44 9.9\n300 0.16 2935.56 1595.95 0.43 2955.88 2785.92 11.8\n0.75 50 0.01 45.33 30.39 0.03 51.35 42.16 25.8\n100 0.04 150.79 106.25 0.10 188.10 146.78 15.4\n150 0.07 342.28 230.57 0.18 405.06 358.31 15.8\n200 0.10 622.10 431.28 0.25 729.30 813.81 10.1\n250 0.17 1071.23 678.36 0.38 1139.11 1299.99 10.0\n300 0.19 1440.69 945.51 0.48 1556.97 1921.71 12.1\nAVERAGE 0.08 1495.55 778.13 0.20 1602.88 1782.91 14.4\n16\n[표 데이터 감지됨]\n\n=== 페이지 17 ===\nTable 2: Computational results - minimizing z (total weighted delay)\n2\nCorrective delays Corrective anticipations and delays\nInstances SP CPLEX SCIP SP CPLEX SCIP DEV\nD D D AD AD AD\np n [ms] [ms] [ms] [ms] [ms] [ms] [%]\n0 50 0.01 140.65 90.40 0.03 151.53 121.86 19.1\n100 0.02 570.53 295.62 0.08 594.22 469.01 16.0\n150 0.05 1306.04 656.59 0.13 1359.35 1400.32 14.0\n200 0.08 2367.73 1175.33 0.18 2455.25 2536.37 13.0\n250 0.12 3965.93 1853.67 0.26 3901.06 4474.88 11.0\n300 0.16 6656.24 2673.13 0.37 5685.01 7172.66 10.0\n0.25 50 0.01 115.33 70.60 0.03 119.47 87.59 23.7\n100 0.03 439.93 232.99 0.08 451.78 375.09 15.0\n150 0.05 1015.91 507.37 0.13 1047.64 938.06 12.0\n200 0.07 1769.17 910.15 0.19 1836.91 1597.90 12.0\n250 0.10 2787.87 1406.95 0.27 2892.88 3031.46 13.0\n300 0.15 4024.27 2038.38 0.39 4159.17 4226.66 10.0\n0.50 50 0.01 108.66 52.40 0.03 112.88 63.06 26.3\n100 0.03 289.31 180.71 0.09 302.22 248.92 15.1\n150 0.06 652.11 361.32 0.14 684.88 697.68 11.0\n200 0.09 1169.77 616.04 0.21 1228.86 1164.55 13.0\n250 0.13 1844.79 960.09 0.31 1938.11 1830.03 10.0\n300 0.16 2670.26 1382.90 0.43 2798.06 2447.01 12.0\n0.75 50 0.01 40.88 27.18 0.03 43.21 36.93 25.6\n100 0.04 139.51 100.16 0.10 146.83 134.53 15.9\n150 0.07 332.19 224.70 0.18 349.67 312.36 16.1\n200 0.10 587.61 409.05 0.25 616.49 646.27 10.0\n250 0.14 915.13 580.78 0.38 961.58 1133.95 10.0\n300 0.19 1351.54 818.13 0.48 1394.44 1538.65 12.0\nAVERAGE 0.08 1469.22 734.36 0.20 1467.98 1528.57 14.4\n17\n[표 데이터 감지됨]\n\n=== 페이지 18 ===\nTable 3: Computational results - minimizing z (maximum route duration)\n3\nCorrective delays Corrective anticipations and delays\nInstances SP CPLEX SCIP SP CPLEX SCIP DEV\nD D D AD AD AD\np n [ms] [ms] [ms] [ms] [ms] [ms] [%]\n0 50 0.01 141.80 87.19 0.03 157.64 92.15 1.5\n100 0.02 582.44 297.14 0.08 604.55 345.81 1.3\n150 0.05 1305.45 670.45 0.13 1356.92 954.05 1.2\n200 0.08 2357.89 1184.54 0.18 2444.40 1655.04 1.1\n250 0.12 3977.72 1862.65 0.26 3848.72 2558.27 0.9\n300 0.16 6697.59 2692.51 0.37 5495.73 3679.66 0.8\n0.25 50 0.01 134.99 72.70 0.03 141.89 82.47 1.9\n100 0.03 440.30 238.24 0.08 446.43 316.78 1.3\n150 0.05 967.83 511.27 0.13 1006.07 895.67 1.0\n200 0.07 1769.53 914.28 0.19 1834.56 1488.75 1.0\n250 0.10 2776.47 1421.74 0.27 2880.65 2420.99 1.1\n300 0.15 4014.25 2066.91 0.39 4173.16 3453.27 0.8\n0.50 50 0.01 74.39 54.60 0.03 77.33 64.33 1.9\n100 0.03 298.07 184.66 0.09 308.33 245.71 1.2\n150 0.06 659.08 358.32 0.14 687.23 659.39 0.9\n200 0.09 1180.71 620.85 0.21 1226.90 1110.35 1.1\n250 0.13 1866.16 967.59 0.31 1939.64 1695.69 0.8\n300 0.16 2672.27 1391.01 0.43 2792.27 2502.10 1.0\n0.75 50 0.01 61.83 30.04 0.03 63.28 37.07 1.2\n100 0.04 196.10 105.34 0.10 205.19 138.50 1.3\n150 0.07 342.35 237.18 0.18 352.69 321.32 1.2\n200 0.10 596.75 398.47 0.25 617.89 655.02 0.8\n250 0.14 928.92 608.53 0.38 959.61 1052.39 0.8\n300 0.19 1366.83 842.93 0.48 1387.70 1650.93 1.0\nAVERAGE 0.08 1475.40 742.46 0.20 1458.70 1169.82 1.1\n18\n[표 데이터 감지됨]\n\n=== 페이지 19 ===\nTable 4: Computational results - minimizing z (total lateness)\n4\nCorrective delays Corrective anticipations and delays\nInstances SP CPLEX SCIP SP CPLEX SCIP DEV\nD D D AD AD AD\np n [ms] [ms] [ms] [ms] [ms] [ms] [%]\n0 50 0.01 153.23 87.77 0.03 163.045 95.94 31.5\n100 0.02 588.34 300.91 0.08 617.637 347.33 26.5\n150 0.05 1319.74 668.03 0.13 1380.705 947.73 25.0\n200 0.08 2373.19 1192.34 0.18 2467.960 1663.02 23.1\n250 0.12 3984.24 1871.59 0.26 3871.128 2572.47 20.3\n300 0.16 6749.59 2707.37 0.37 5574.294 3674.64 18.3\n0.25 50 0.01 113.05 71.92 0.03 117.086 87.87 39.2\n100 0.03 458.40 237.54 0.08 466.384 326.79 25.9\n150 0.05 1020.14 516.81 0.13 1056.351 908.94 20.9\n200 0.07 1757.49 944.92 0.19 1831.170 1682.39 21.6\n250 0.10 2785.57 1434.06 0.27 2913.645 3283.40 23.2\n300 0.15 4020.14 2070.30 0.39 4194.527 4055.17 18.3\n0.50 50 0.01 74.26 54.09 0.03 78.165 68.48 44.3\n100 0.03 295.42 184.98 0.09 306.283 266.42 26.2\n150 0.06 660.25 363.06 0.14 691.131 708.29 20.7\n200 0.09 1190.09 626.48 0.21 1246.885 1186.81 23.2\n250 0.13 1849.15 980.66 0.31 1939.435 1908.06 18.2\n300 0.16 2696.32 1405.35 0.43 2829.059 2654.74 21.5\n0.75 50 0.01 43.19 29.39 0.03 45.024 43.01 38.0\n100 0.04 143.70 102.76 0.10 151.063 151.51 27.1\n150 0.07 342.50 232.38 0.18 356.111 345.88 27.3\n200 0.10 600.56 414.04 0.25 626.077 712.76 17.8\n250 0.14 934.83 602.25 0.38 969.996 1143.79 18.4\n300 0.19 1367.17 835.19 0.48 1401.898 1708.89 21.3\nAVERAGE 0.08 1480.02 747.26 0.20 1470.63 1272.68 24.90\n6 Conclusions\nIn this paper we have dealt with recovering plan feasibility in Conflict-Free Vehi-\ncle Routing and Scheduling Problems whenever some vehicles are ahead or behind\nof schedule.",
+      "size": 6269,
+      "sentences": 2
+    },
+    {
+      "id": 44,
+      "content": ".68 24.90\n6 Conclusions\nIn this paper we have dealt with recovering plan feasibility in Conflict-Free Vehi-\ncle Routing and Scheduling Problems whenever some vehicles are ahead or behind\nof schedule. The problem is of the outmost importance in manufacturing, trans-\nportation and logistics facilities where AGVs are utilized to move loads between\nstations. In such settings, vehicles move at speeds in the order of one-two meter\nper second and feasibility has to be recovered in a few milliseconds. In this pa-\nper we have presented fast exact algorithms to solve this problem with respect\nto two corrective actions (introducing corrective delays/anticipations) with the\nobjective to optimize four common performance measures (total vehicle delay, to-\ntal weighted delay, maximum route duration and total lateness).",
+      "size": 815,
+      "sentences": 4
+    },
+    {
+      "id": 45,
+      "content": "(introducing corrective delays/anticipations) with the\nobjective to optimize four common performance measures (total vehicle delay, to-\ntal weighted delay, maximum route duration and total lateness). An extensive\nempirical study has shown that, in terms of computing time, our tailored exact\nalgorithms are at least three orders of magnitude faster than IBM ILOG CPLEX\n19\n[표 데이터 감지됨]\n\n=== 페이지 20 ===\n22.1 (IBM, 2022) and SCIP 8.0 (Bestuzheva et al., 2021) solvers and are suitable\nfor large intralogistics applications. Conflict of interest\nThe authors declare that they have no conflict of interest. References\nAdamo, T., Bekta¸s, T., Ghiani, G., Guerriero, E., & Manni, E. (2018). Path and\nspeed optimization for conflict-free pickup and delivery under time windows. Transportation Science, 52, 739–755. Akella, S., & Hutchinson, S. (2002). Coordinating the motions of multiple robots\nwith specified trajectories. In Proceedings 2002 IEEE International Confer-\nence on Robotics and Automation (Cat.",
+      "size": 1000,
+      "sentences": 9
+    },
+    {
+      "id": 46,
+      "content": "755. Akella, S., & Hutchinson, S. (2002). Coordinating the motions of multiple robots\nwith specified trajectories. In Proceedings 2002 IEEE International Confer-\nence on Robotics and Automation (Cat. No. 02CH37292) (pp. 624–631). IEEE\nvolume 1. Bestuzheva, K., Besan¸con, M., Chen, W.-K., Chmiela, A., Donkiewicz, T., van\nDoornmalen, J., Eifler, L., Gaul, O., Gamrath, G., Gleixner, A., Gottwald,\nL., Graczyk, C., Halbig, K., Hoen, A., Hojny, C., van der Hulst, R., Koch, T.,\nLu¨bbecke, M., Maher, S.J., Matter, F., Mu¨hmer, E., Mu¨ller, B., Pfetsch, M.E.,\nRehfeldt, D., Schlein, S., Schlo¨sser, F., Serrano, F., Shinano, Y., Sofranac, B.,\nTurner, M., Vigerske, S., Wegscheider, F., Wellner, P., Weninger, D., & Witzig,\nJ. (2021). The SCIP Optimization Suite 8.0. Technical Report Optimization\nOnline. Cacchiani, V., Huisman, D., Kidd, M., Kroon, L., Toth, P., Veelenturf, L., &\nWagenaar, J. (2014). An overview of recovery models and algorithms for real-\ntime railway rescheduling.",
+      "size": 982,
+      "sentences": 15
+    },
+    {
+      "id": 47,
+      "content": "timization\nOnline. Cacchiani, V., Huisman, D., Kidd, M., Kroon, L., Toth, P., Veelenturf, L., &\nWagenaar, J. (2014). An overview of recovery models and algorithms for real-\ntime railway rescheduling. Transportation Research Part B: Methodological, 63,\n15–37. Corr´ea, A. I., Langevin, A., & Rousseau, L.-M. (2007). Scheduling and routing\nof automated guided vehicles: A hybrid approach. Computers & operations\nresearch, 34, 1688–1707. Desaulniers, G., Langevin, A., Riopel, D., & Villeneuve, B. (2003). Dispatching\nand conflict-free routing of automated guided vehicles: An exact approach. International Journal of Flexible Manufacturing Systems, 15, 309–331. Dijkstra, E. W. et al. (1959). A note on two problems in connexion with graphs. Numerische mathematik, 1, 269–271. 20\n=== 페이지 21 ===\nFragapane, G., De Koster, R., Sgarbossa, F., & Strandhagen, J. O. (2021). Plan-\nning and control of autonomous mobile robots for intralogistics: Literature\nreview and research agenda.",
+      "size": 976,
+      "sentences": 19
+    },
+    {
+      "id": 48,
+      "content": "=== 페이지 21 ===\nFragapane, G., De Koster, R., Sgarbossa, F., & Strandhagen, J. O. (2021). Plan-\nning and control of autonomous mobile robots for intralogistics: Literature\nreview and research agenda. European Journal of Operational Research, 294,\n405–426. IBM (2022). v22.1: User’s manual for CPLEX. https://www.ibm.com/docs/en/\nicos/22.1.0. Krishnamurthy, N. N., Batta, R., & Karwan, M. H. (1993). Developing conflict-\nfree routes for automated guided vehicles. Operations Research, 41, 1077–1090. Miyamoto, T., & Inoue, K. (2016). Local and random searches for dispatch and\nconflict-free routing problem of capacitated agv systems. Computers & Indus-\ntrial Engineering, 91, 1–9. Pallottino, L., Feron, E. M., & Bicchi, A. (2002). Conflict resolution problems for\nair traffic management systems solved with mixed integer programming. IEEE\ntransactions on intelligent transportation systems, 3, 3–11. Peng, J., & Akella, S. (2005).",
+      "size": 930,
+      "sentences": 18
+    },
+    {
+      "id": 49,
+      "content": "Conflict resolution problems for\nair traffic management systems solved with mixed integer programming. IEEE\ntransactions on intelligent transportation systems, 3, 3–11. Peng, J., & Akella, S. (2005). Coordinating multiple robots with kinodynamic\nconstraints along specified paths. The International Journal of Robotics Re-\nsearch, 24, 295–310. Ribeiro, M., Ellerbroek, J., & Hoekstra, J. (2020). Review of conflict resolution\nmethods for manned and unmanned aviation. Aerospace, 7, 79. Schwientek, A. K., Lange, A.-K., & Jahn, C. (2017). Literature classification\non dispatching of container terminal vehicles. In Digitalization in Maritime\nand Sustainable Logistics: City Logistics, Port Logistics and Sustainable Sup-\nply Chain Management in the Digital Age. Proceedings of the Hamburg Inter-\nnational Conference of Logistics (HICL), Vol. 24 (pp. 3–36). Berlin: epubli\nGmbH. Spensieri, D., ˚Ablad, E., Bohlin, R., Carlson, J. S., & So¨derberg, R. (2021).",
+      "size": 956,
+      "sentences": 17
+    },
+    {
+      "id": 50,
+      "content": "ge. Proceedings of the Hamburg Inter-\nnational Conference of Logistics (HICL), Vol. 24 (pp. 3–36). Berlin: epubli\nGmbH. Spensieri, D., ˚Ablad, E., Bohlin, R., Carlson, J. S., & So¨derberg, R. (2021). Modeling and optimization of implementation aspects in industrial robot coor-\ndination. Robotics and Computer-Integrated Manufacturing, 69, 102097. Stahlbock, R., & Voβ, S. (2008). Vehicle routing problems and container termi-\nnal operations–an update of research. In The vehicle routing problem: latest\nadvances and new challenges (pp. 551–589). Springer. Ullrich, G. et al. (2015). Automated guided vehicle systems. Springer-Verlag\nBerlin Heidelberg. doi, 10, 978–3. 21\n=== 페이지 22 ===\nVan den Berg, J. P., & Zijm, W. H. (1999). Models for warehouse management:\nClassification and examples. International journal of production economics, 59,\n519–528. 22",
+      "size": 854,
+      "sentences": 22
+    }
+  ]
+}

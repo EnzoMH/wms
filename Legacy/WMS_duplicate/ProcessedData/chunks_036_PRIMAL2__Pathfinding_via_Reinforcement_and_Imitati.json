@@ -1,0 +1,458 @@
+{
+  "source": "ArXiv",
+  "filename": "036_PRIMAL2__Pathfinding_via_Reinforcement_and_Imitati.pdf",
+  "total_chars": 51108,
+  "total_chunks": 75,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "=== 페이지 1 ===\nIEEEROBOTICSANDAUTOMATIONLETTERS.PREPRINTVERSION.RECEIVEDOCTOBER,2020 1\nPRIMAL : Pathfinding via Reinforcement and\n2\nImitation Multi-Agent Learning - Lifelong\nMehul Damani1,∗, Zhiyao Luo1,∗, Emerson Wenzel1, Guillaume Sartoretti1,†\nAbstract—Multi-agent path finding (MAPF) is an indispens-\nable component of large-scale robot deployments in numer- Obstacle\nous domains ranging from airport management to warehouse\nAgent\nautomation. In particular, this work addresses lifelong MAPF\nGoal\n(LMAPF) – an online variant of the problem where agents are\nimmediately assigned a new goal upon reaching their current\none – in dense and highly structured environments, typical of\nreal-world warehouse operations. Effectively solving LMAPF\nin such environments requires expensive coordination between\nagents as well as frequent replanning abilities, a daunting task\nfor existing coupled and decoupled approaches alike.",
+      "size": 919,
+      "sentences": 3
+    },
+    {
+      "id": 2,
+      "content": "tively solving LMAPF\nin such environments requires expensive coordination between\nagents as well as frequent replanning abilities, a daunting task\nfor existing coupled and decoupled approaches alike. With the\npurpose of achieving considerable agent coordination without\nany compromise on reactivity and scalability, we introduce\nPRIMAL , a distributed reinforcement learning framework for\n2\nLMAPF where agents learn fully decentralized policies to re-\nactively plan paths online in a partially observable world. We\nextend our previous work, which was effective in low-density\nsparsely occupied worlds, to highly structured and constrained\nworlds by identifying behaviors and conventions which improve\nFigure1. Exampleofthetypeofhighlystructuredenvironmentsweconsider. implicit agent coordination, and enable their learning through\nthe construction of a novel local agent observation and various\ntraining aids.",
+      "size": 909,
+      "sentences": 5
+    },
+    {
+      "id": 3,
+      "content": "Exampleofthetypeofhighlystructuredenvironmentsweconsider. implicit agent coordination, and enable their learning through\nthe construction of a novel local agent observation and various\ntraining aids. We present extensive results of PRIMAL in both 2 a variant of MAPF where agents are repeatedly assigned\nMAPF and LMAPF environments and compare its performance\nnew goal locations and are required to reactively compute\nto state-of-the-art planners in terms of makespan and through-\nput.WeshowthatPRIMAL significantlysurpassesourprevious paths online [3], [4], [5], [6], [7], [8]. The performance\n2\nworkandperformscomparablytothesebaselines,whileallowing of LMAPF is generally measured in terms of throughput,\nreal-time re-planning and scaling up to 2048 agents. i.e., the average number of targets reached per unit time.",
+      "size": 819,
+      "sentences": 5
+    },
+    {
+      "id": 4,
+      "content": "lytothesebaselines,whileallowing of LMAPF is generally measured in terms of throughput,\nreal-time re-planning and scaling up to 2048 agents. i.e., the average number of targets reached per unit time. In\nIndex Terms—Multi-Robot Systems; Deep Learning in contrast to conventional one-shot MAPF, LMAPF, typical of\nRobotics and Automation; Distributed Robot Systems factory-like environments, poses additional challenges as it\nrequires online algorithms capable of frequently replanning\nI. INTRODUCTION as goals change. LMAPF becomes even more challenging in\ndensely populated, structured worlds typical of factory-like\nMulti-agent pathfinding (MAPF) is a challenging NP-hard\nenvironments due to the high number of conflicts between\nproblem with numerous real-life applications such as surveil-\nindividual agent paths.",
+      "size": 814,
+      "sentences": 5
+    },
+    {
+      "id": 5,
+      "content": "Multi-agent pathfinding (MAPF) is a challenging NP-hard\nenvironments due to the high number of conflicts between\nproblem with numerous real-life applications such as surveil-\nindividual agent paths. The main contribution of this paper\nlance,searchandrescue,andwarehouses[1],[2].Inparticular,\nis the introduction of PRIMAL , a distributed reinforcement\nthegoalofone-shot MAPFistofindcollision-freepathsfora 2\nlearning framework that extends our previous work in one-\nteamofagentsfromtheirstartpositionstotheirgoalpositions\nshot MAPF, PRIMAL [9], to LMAPF for dense, structured\nwith the aim of minimizing a defined objective function, such\nwarehouse-like environments. In this new framework, special\nas the makespan (i.e., the time until all robots are on target)\nemphasis is laid on achieving extensive implicit agent co-\nor the sum of their path lengths.",
+      "size": 854,
+      "sentences": 3
+    },
+    {
+      "id": 6,
+      "content": "vironments. In this new framework, special\nas the makespan (i.e., the time until all robots are on target)\nemphasis is laid on achieving extensive implicit agent co-\nor the sum of their path lengths. However, many real-world\nordination during lifelong MAPF for arbitrarily large team\nproblems are dynamic and often require agents to tackle a\nsizes,whileremainingfullydecentralizedandrelyingonlocal\nseries of targets instead of staying stationary after reaching\ninteractions only. the first one. Lifelong multi-agent pathfinding (LMAPF), is\nWefocusonplanningdecentralizedpathsforalargepopula-\nManuscript received: October, 15, 2020; Revised January, 26, 2021; Ac- tionofagentsinhighlystructuredgridworlds,whereobstacles\nceptedFebruary,19,2021. compose narrow corridors that only allow one agent to pass\nThispaperwasrecommendedforpublicationbyEditorM.AniHsiehupon\nevaluationoftheAssociateEditorandReviewers’comments. at a time.",
+      "size": 925,
+      "sentences": 7
+    },
+    {
+      "id": 7,
+      "content": "ebruary,19,2021. compose narrow corridors that only allow one agent to pass\nThispaperwasrecommendedforpublicationbyEditorM.AniHsiehupon\nevaluationoftheAssociateEditorandReviewers’comments. at a time. To this end, we rely on a threefold approach:\n∗Theseauthorscontributedequallytothiswork. first, we identify ideal behaviors and conventions that bring\n†Correspondingauthor,towhomcorrespondenceshouldbeaddressed. harmonytothemovementsofcompletelydecentralizedagents\n1 MehulDamani,ZhiyaoLuo,EmersonWenzel,andGuillaumeSartoretti\narewiththedepartmentofMechanicalEngineeringattheNationalUniversity andenablethelearningofsuchbehaviorthroughtrainingaids\nof Singapore, 117575 Singapore. damanimehul24@gmail.com, and an observation consisting of rich feature maps. Second,\ne0452733@u.nus.edu, emersonwenzel@gmail.com,\nwe provide agents with an intuition about future states of\nmpegas@nus.edu.sg\nDigitalObjectIdentifier(DOI):seetopofthispage.",
+      "size": 931,
+      "sentences": 8
+    },
+    {
+      "id": 8,
+      "content": "of rich feature maps. Second,\ne0452733@u.nus.edu, emersonwenzel@gmail.com,\nwe provide agents with an intuition about future states of\nmpegas@nus.edu.sg\nDigitalObjectIdentifier(DOI):seetopofthispage. their surroundings, by giving each of them accesses to their\n1202\nraM\n4\n]OR.sc[\n3v48180.0102:viXra\n=== 페이지 2 ===\n2 IEEEROBOTICSANDAUTOMATIONLETTERS.PREPRINTVERSION.RECEIVEDOCTOBER,2020\nneighbors’ predicted future movements (using single-agent learn local communication and decision making policies in\nA* and ignoring other agents). Third, and drawing from the constrained environments using graph neural networks [17]. lessons of PRIMAL, we rely on imitation learning through However, these communication learning methods often suffer\na centralized planner to instill favorable behaviors that are from poor scalability to larger teams. difficult to learn through vanilla RL.",
+      "size": 873,
+      "sentences": 6
+    },
+    {
+      "id": 9,
+      "content": "However, these communication learning methods often suffer\na centralized planner to instill favorable behaviors that are from poor scalability to larger teams. difficult to learn through vanilla RL. We also present a new\ndistributed training code which relies on Ray [10] and shows\nB. Lifelong Multi-Agent Pathfinding\nsignificant speed gains over our previous works, by allowing\nOne of the common approaches to solve LMAPF involves\nus to train models in about 12 hours, compared to 10 days\nstitching one-shot MAPF instances together by using a (usu-\npreviously. ally complete, bounded suboptimal) MAPF planner to recom-\nWe present results of an extensive set of simulations con-\npute paths at each timestep at least one agent is assigned\ntaining up to 2048 agents for both one-shot MAPF and\na new goal [5], [20], [4]. However, replanning time grows\nLMAPF in dense, highly-structured environments.",
+      "size": 896,
+      "sentences": 5
+    },
+    {
+      "id": 10,
+      "content": "timestep at least one agent is assigned\ntaining up to 2048 agents for both one-shot MAPF and\na new goal [5], [20], [4]. However, replanning time grows\nLMAPF in dense, highly-structured environments. There, we\nexponentially with the number of agents, and resources are\nexperimentally demonstrate that PRIMAL agents success-\n2\nwastedintheredundantcomputationofpathsforagentswhose\nfully learn to adhere to necessary conventions and execute\ngoals are unaffected. Svancara et al. [7] adapted one-shot\ncoordinated manoeuvres which maximize joint performance\nMAPF solvers for LMPAF, which reuse paths from previous\nwithout any explicit communication. Our results also show\nplanning iterations. However, dense, high-traffic worlds may\nthatPRIMAL isabletosignificantlysurpasstheperformance\n2\ncontain many agents with conflicting paths, where signifi-\nof our previous work and perform on par with state-of-the-art\ncant replanning is still required.",
+      "size": 938,
+      "sentences": 7
+    },
+    {
+      "id": 11,
+      "content": "sabletosignificantlysurpasstheperformance\n2\ncontain many agents with conflicting paths, where signifi-\nof our previous work and perform on par with state-of-the-art\ncant replanning is still required. Some planners plan new\nplannersinmultiplescenarios,whichresemblereal-lifemulti-\npaths for only the agents that have a new goal location, but\nrobot deployments in structured environments. have to resort to non-optimal techniques such as holding an\nThe paper is structured as follows: Section II discusses the\nagent’s position or providing a dummy path [3]. Another\nstate-of-the-art in one-shot and lifelong MAPF. Section III\nvery recent and promising approach is to plan paths within\nformulates the specific one-shot and LMAPF problems con-\na finite window, which leads to better scalability and a more\nsidered. Section IV proposes PRIMAL and details the RL\n2\nreactive algorithm [8], but at the cost of completeness.",
+      "size": 915,
+      "sentences": 6
+    },
+    {
+      "id": 12,
+      "content": "and LMAPF problems con-\na finite window, which leads to better scalability and a more\nsidered. Section IV proposes PRIMAL and details the RL\n2\nreactive algorithm [8], but at the cost of completeness. This\nframework, while Section V describes how learning is carried\nphenomenonworsenswhentheplanningwindowsizeissmall\nout.Finally,SectionVIpresentsanddiscussestheresultsfrom\nincomparisontotheaveragedistancetogoal,asagentscannot\noursimulations,andSectionVIIcontainstheclosingremarks. anticipatethesituationoutsidetheplanningwindowandmight\nplangreedyshort-termpathsthatleadtounsolvablescenarios. II. PRIORWORKS\nA. One-shot Multi-Agent Pathfinding III. PROBLEMFORMULATION\nMAPFplannerscanbebroadlydividedintothreecategories: A. Environment Setup\ncoupled, decoupled, and dynamically coupled.",
+      "size": 784,
+      "sentences": 9
+    },
+    {
+      "id": 13,
+      "content": "arios. II. PRIORWORKS\nA. One-shot Multi-Agent Pathfinding III. PROBLEMFORMULATION\nMAPFplannerscanbebroadlydividedintothreecategories: A. Environment Setup\ncoupled, decoupled, and dynamically coupled. Coupled plan-\nIn line with standard MAPF tasks, our environments are\nnersusethehigh-dimensionaljointspacetofindcompleteand\nformulated as 2D discrete 4-connected grid worlds where\n(bounded sub)optimal paths but at a high computational cost,\nagents, goals, and obstacles occupy one grid cell respectively. which scales exponentially with the number of agents [11],\nAteachtimestep,everyagentcaneithermovetoaneighbour-\n[12]. On the other hand, decoupled planners plan in the low\ning location in one of the cardinal directions or wait at its\ndimensional space of each agent, and adjust paths to avoid\ncurrent location (more details on the state/action spaces can\ncollisions [13], [14], [15].",
+      "size": 886,
+      "sentences": 9
+    },
+    {
+      "id": 14,
+      "content": "in one of the cardinal directions or wait at its\ndimensional space of each agent, and adjust paths to avoid\ncurrent location (more details on the state/action spaces can\ncollisions [13], [14], [15]. In particular, many recent works\nbefoundinSectionIV).Weconsiderhighlystructuredworlds\nhave started looking to machine learning methods to learn\nwith moderate to high obstacle densities and long corridors\ndecentralized policies for MAPF [9], [16], [17]. Although\nwhich are created using a simple maze-generation algorithm\nsignificantly faster than coupled approaches, decoupled plan-\nparameterized by the world size, the average obstacle density,\nners do not guarantee optimal solutions and are typically\nand the typical corridor length. Corridors impart structure to\nnot complete.",
+      "size": 779,
+      "sentences": 4
+    },
+    {
+      "id": 15,
+      "content": "-\nparameterized by the world size, the average obstacle density,\nners do not guarantee optimal solutions and are typically\nand the typical corridor length. Corridors impart structure to\nnot complete. Dynamically coupled approaches lie between\nthe world, but they are also potential bottlenecks as they\ncoupledanddecoupledapproaches,byseekingtoonlyincrease\ncan lead to deadlocks, and prudent planning is required to\nthesearchspacewhenneeded[18],[19].Theyareabletofind\nefficiently navigate them. A typical example of the worlds we\n(boundedsub)optimalsolutionswithoutexploringthefulljoint\nconsider can be found in Fig. 1. We consider two variants of\nconfiguration space.",
+      "size": 667,
+      "sentences": 6
+    },
+    {
+      "id": 16,
+      "content": "fficiently navigate them. A typical example of the worlds we\n(boundedsub)optimalsolutionswithoutexploringthefulljoint\nconsider can be found in Fig. 1. We consider two variants of\nconfiguration space. MAPF:one-shotMAPFandlifelongMAPF(LMAPF).While\nIn particular, our recent work, PRIMAL [9], proposed to\nthe focus of this work is on the lifelong variant of MAPF,\naddress the trade-off between high-quality paths and scalabil-\nity by relying on distributed reinforcement learning (RL) to\nteach agents fully decentralized reactive policies capable of Obstacles\ncomputing individual paths online. Although PRIMAL scales Corridor\nwell to arbitrarily large team sizes, it performs poorly in\nDecision Point\nstructured, densely occupied worlds that require substantial\nEnd Point\nagent coordination to be solved effectively. To address this\n(a) (b) (c)\nlimitation of communication-free, decentralized MAPF plan-\nFigure 2.",
+      "size": 911,
+      "sentences": 7
+    },
+    {
+      "id": 17,
+      "content": "ensely occupied worlds that require substantial\nEnd Point\nagent coordination to be solved effectively. To address this\n(a) (b) (c)\nlimitation of communication-free, decentralized MAPF plan-\nFigure 2. Corridor examples: (a) dead-end, (b) usual corridor with two\nners, recent works have also proposed allowing agents to endpoints,and(c)combinationof3corridorsformingaT-junction. [표 데이터 감지됨]\n\n=== 페이지 3 ===\nDAMANIetal. :PRIMAL2:PATHFINDINGVIAREINFORCEMENTANDIMITATIONMULTI-AGENTLEARNING-LIFELONG 3\nObservation\nState Map Local FOV\nPRIMAL Maps Path Length Map A* Map(s) Delta Map Blocking Map\nOptimal path of A Normalize Observation range Corridor Start Point\nObstacle Corridor End Point\nOptimal path of B Agent A’s Position Agent A’s Goal\nOptimal path of C Agent B’s Position Agent B’s Goal\nAgent C’s Position Agent C’s Goal\nFigure 3. Observation space of the agents (here for agent A, in red), as detailed in Section IV-A.",
+      "size": 919,
+      "sentences": 6
+    },
+    {
+      "id": 18,
+      "content": "Agent A’s Goal\nOptimal path of C Agent B’s Position Agent B’s Goal\nAgent C’s Position Agent C’s Goal\nFigure 3. Observation space of the agents (here for agent A, in red), as detailed in Section IV-A. The first four maps are identical to our previous work,\nproviding information about obstacles, the agent’s own goal, and nearby agents and their goals (e.g., agent B, in blue). The path length map displays the\n(normalized) shortest-path distance to the agent’s own goal from all non-obstacle cells in the FOV. npred (here, 3) A* maps provide the future position of\nnearbyagents,onepertimestep,predictedfromsingle-agentA*.Finally,corridorinformationisencodedthroughthe∆X,∆Y,andblockingmaps. we also considered a variant of one-shot MAPF to enable a A. Observation Space\ndiscussion on solution quality and to ease comparison with We consider a partially observable world where each agent\nbaseline centralized methods.",
+      "size": 915,
+      "sentences": 7
+    },
+    {
+      "id": 19,
+      "content": "nt of one-shot MAPF to enable a A. Observation Space\ndiscussion on solution quality and to ease comparison with We consider a partially observable world where each agent\nbaseline centralized methods. can access the state of its surroundings within a limited\nsquarefield-of-view(FOV)centeredarounditself(inpractice,\nB. One-shot MAPF\n11×11). We believe that such a partially observable assump-\nIn the one-shot MAPF variant, each agent is required to tion is representative of real-world scenarios, where robots\nfind a path to a unique goal assigned to it. Immediately upon often only have access to incomplete information from their\nreachingitsgoal,theagentdisappearsfromthemapandceases onboard sensors. Additionally, having a fixed, local FOV can\nto be a part of the state space of other agents.",
+      "size": 794,
+      "sentences": 7
+    },
+    {
+      "id": 20,
+      "content": "o incomplete information from their\nreachingitsgoal,theagentdisappearsfromthemapandceases onboard sensors. Additionally, having a fixed, local FOV can\nto be a part of the state space of other agents. Meanwhile, helpuslearnarobustpolicythatcangeneralizetoawiderange\nthe unit grid cell occupied by the agent also frees up and of world sizes while maintaining the same neural network\ncan be accessed by other agents. An episode terminates when structure. all agents have reached their goals. Although uncommon, In this limited FOV, information is separated into several\nthis MAPF formulation is valid when an agent can reach its channels to aid learning. Based on our previous works, four\ngoal and stay there without interfering with others, such as binarymatricesprovideinformationaboutobstacles,positions\ncars reaching a parking space [7] or trains entering a station of other agents, goals of those observable agents, and the\nwith parallel tracks [21], [22].",
+      "size": 958,
+      "sentences": 7
+    },
+    {
+      "id": 21,
+      "content": "esprovideinformationaboutobstacles,positions\ncars reaching a parking space [7] or trains entering a station of other agents, goals of those observable agents, and the\nwith parallel tracks [21], [22]. In this variant, our goal is to agent’s own current goal position if within the FOV; three\nminimize the makespan, i.e., the time needed for all agents to scalar values provide each agent with a unit vector pointing\nreach their goal. towards its goal and the absolute magnitude of the distance to\nits goal at all times [9]. We also provide each agent with a\nC. Lifelong MAPF path length map that contains the (normalized) shortest-path\nTheLMAPFvariantworksinanonlinesettingwhereagents distancetoitsgoalfromeachnon-obstaclecellwithinitsFOV. do not have information about their subsequent tasks a priori, Thesedistancesarecalculatedusingsingle-agentA*,ignoring\ni.e., agents only know their current goal location and are all other agents in the environment.",
+      "size": 953,
+      "sentences": 5
+    },
+    {
+      "id": 22,
+      "content": "ormation about their subsequent tasks a priori, Thesedistancesarecalculatedusingsingle-agentA*,ignoring\ni.e., agents only know their current goal location and are all other agents in the environment. We believe that such a\nassigned a new goal only upon arrival to their current one. map resembles a gradient flow, enabling the agent to chart\nThese new goal locations are assigned randomly and are an effective (individual) trajectory even when its goal is not\nconstrained to be some minimum Euclidean distance away observable within the agent’s FOV. from the agent’s current goal. The LMAPF environment can We further introduce three smaller spatial maps (5×5 in\nberunindefinitelyorterminatedafteracertaindesirednumber practice, surrounded with zeros to reach 11×11) centered\nof timesteps. The objective in LMAPF is the maximization of aroundtheagentsandencodinginformationaboutneighboring\nthroughput,i.e.,theaveragenumberoftargetsreachedperunit corridors.",
+      "size": 956,
+      "sentences": 6
+    },
+    {
+      "id": 23,
+      "content": "ch 11×11) centered\nof timesteps. The objective in LMAPF is the maximization of aroundtheagentsandencodinginformationaboutneighboring\nthroughput,i.e.,theaveragenumberoftargetsreachedperunit corridors. Because of their narrow structure, corridors are\nof time. Our constructed LMAPF environment aims to mimic potential bottlenecks in the world, and hence need to be\nreal-world robot deployments in distribution centers, where efficiently navigated. Corridors are regions where agents have\nrobots are dynamically assigned new tasks and are constantly at most two possible actions, excluding staying stationary. in motion to complete them. Eachcorridorhastwoentrycells,barringcorridorscontaining\na dead-end that only have one. We refer to these entry cells\nIV. (L)MAPFASARLPROBLEM as Endpoints and the cells outside the corridor connected\nIn this section, we cast the (L)MAPF problem into the RL to these endpoints as Decision Points. Decision points are\nframework.",
+      "size": 960,
+      "sentences": 10
+    },
+    {
+      "id": 24,
+      "content": "PFASARLPROBLEM as Endpoints and the cells outside the corridor connected\nIn this section, we cast the (L)MAPF problem into the RL to these endpoints as Decision Points. Decision points are\nframework. In particular, we detail the observation and action named so, as agents occupying these cells have to take the\nspaces, the reward structure, and the policy network. criticaldecisionofenteringthecorridor,whichcanpotentially\n=== 페이지 4 ===\n4 IEEEROBOTICSANDAUTOMATIONLETTERS.PREPRINTVERSION.RECEIVEDOCTOBER,2020\nresult in a future deadlock inside the corridor. Fig. 2 contains Section V-A1). A supervised loss function (i.e., valid loss)\nsome examples of corridors and illustrates the special points aids in learning valid actions. We experimentally observed\ndiscussed above. All information about a specific corridor is that learning valid actions does not depend on the preceding\nencoded in the endpoint cells of that corridor.",
+      "size": 926,
+      "sentences": 9
+    },
+    {
+      "id": 25,
+      "content": ". We experimentally observed\ndiscussed above. All information about a specific corridor is that learning valid actions does not depend on the preceding\nencoded in the endpoint cells of that corridor. The first two trajectory, and hence, bootstrapping with rewards can cause\nmaps,namelythedeltamaps,whichcontainvaluesfor∆ and delayedandunfavorableconvergence.Therefore,asupervised\nX\n∆ ,provideacorridor’sorientationasadisplacementbetween lossfunctionworksbetterinpracticethanrewardsforlearning\nY\nthetwoendpointsofthatcorridor.Toconstructthesemaps,the thesetofvalidactions.Additionally,topreventconvergenceto\ncoordinatesoftheendpointsofacorridorarefirstobtained.∆ oscillating policies that prevent exploration and stall learning,\nX\nis then defined as the difference of the x coordinates of these agents are not allowed to return to the location they occupied\ntwo endpoints and ∆ is the difference of the y coordinates of at the last timestep.",
+      "size": 940,
+      "sentences": 4
+    },
+    {
+      "id": 26,
+      "content": "ined as the difference of the x coordinates of these agents are not allowed to return to the location they occupied\ntwo endpoints and ∆ is the difference of the y coordinates of at the last timestep. However, agents are allowed to stay still\nY\nthese two endpoints. If a corridor is a dead-end, then it only during multiple successive timesteps. has one endpoint and the delta values are 0. The delta maps\nare very sparse and only contain non zero values in the grid C. Reward Structure\ncells which are the endpoints of a corridor. For example, in\nTomotivateagentstoreachtheirgoalsquickly,wepenalize\nFig. 2 (b), the delta maps will only contain non-values in the\nthem at every timestep they are not on goal (r =−0.3), as is\nendpoint cells which are highlighted in blue. For the endpoint t\ncommon in most reward functions for grid worlds. Agents are\nat the bottom-left, ∆ =2 and ∆ =2.",
+      "size": 882,
+      "sentences": 9
+    },
+    {
+      "id": 27,
+      "content": "p they are not on goal (r =−0.3), as is\nendpoint cells which are highlighted in blue. For the endpoint t\ncommon in most reward functions for grid worlds. Agents are\nat the bottom-left, ∆ =2 and ∆ =2. X Y also given a sizeable positive reward upon reaching their goal\nThethirdmap,namelytheblockingmap,containsinforma-\n(r =+5),whicheffectivelyreinforcestheimmediatetrajecto-\nt\ntion about other agents currently within a corridor. Similar to\nries leading up to their goal. Finally, although agents are not\nthe delta maps, the blocking map is a sparse map which only\nallowed to take invalid actions as discussed in Section IV-B,\ncontainsnon-zerovaluesattheendpointsofacorridor.Foran\nit is still possible for them to collide with other agents in\nagent currently outside and close to a particular endpoint of\nspecific scenarios, such as two agents trying to move into the\na corridor, the blocking map contains a 1 at that endpoint, if\nsame empty cell.",
+      "size": 945,
+      "sentences": 6
+    },
+    {
+      "id": 28,
+      "content": "currently outside and close to a particular endpoint of\nspecific scenarios, such as two agents trying to move into the\na corridor, the blocking map contains a 1 at that endpoint, if\nsame empty cell. In such cases, agents are given a collision\nand only if there is at least one agent currently inside that\npenalty (r =−2). t\ncorridor moving in a direction that would cause it to exit\nthe corridor from that endpoint. The conventions detailed in\nD. Network Structure\nSection V-A1 restrict agents from turning back in a corridor\nand thus, it is possible to ascertain the endpoint from which Our work relies on the asynchronous advantage actor-critic\nan agent would exit the corridor. For example, in Fig.",
+      "size": 701,
+      "sentences": 5
+    },
+    {
+      "id": 29,
+      "content": "ning back in a corridor\nand thus, it is possible to ascertain the endpoint from which Our work relies on the asynchronous advantage actor-critic\nan agent would exit the corridor. For example, in Fig. 3, the (A3C) algorithm [23], and use the same network structure as\nred agent should not enter the corridor since the blue agent is our previous work [9], parameterized by the set of weights θ.\nmoving towards the endpoint close to it and this would lead The local observation channels are passed through two\ntoadeadlock.Consequently,theblockingmaptakesthevalue VGG-blocks [24], followed by one last convolutional layer\n1 at the endpoint in the observation of the red agent. to finally obtain a one-dimensional vector of features. In\nIn addition to specific corridor data, we believe that agents parallel, the goal unit vector and magnitude are first passed\ncan benefit from having an idea about other agents’ future through one fully-connected (fc) layer.",
+      "size": 954,
+      "sentences": 5
+    },
+    {
+      "id": 30,
+      "content": "corridor data, we believe that agents parallel, the goal unit vector and magnitude are first passed\ncan benefit from having an idea about other agents’ future through one fully-connected (fc) layer. The concatenation of\nmovements.Tothisend,weleteachagentconstructanumber, both of these pre-processed inputs is then passed through two\nn , of maps containing the predicted future position of fully connected layers, and finally fed into a long-short-term\npred\nother agents within its local FOV, one per map (n =3 in memory (LSTM) cell. A residual shortcut [25] connects the\npred\npractice). In other words, n refers to the number of future output of the concatenation layer to the input layer of the\npred\ntimesteps that an agent looks ahead to. For each timestep, the LSTM.Theoutputlayersconsistofthepolicyvector(discrete\npredicted future position of all visible neighbouring agents at probabilitydistributionoverthe5possibleactionsconsidered)\nthat timestep is shown in the map.",
+      "size": 975,
+      "sentences": 5
+    },
+    {
+      "id": 31,
+      "content": "putlayersconsistofthepolicyvector(discrete\npredicted future position of all visible neighbouring agents at probabilitydistributionoverthe5possibleactionsconsidered)\nthat timestep is shown in the map. These maps are generated with softmax activation and the value. usingsingle-agentA*,undertheassumptionthateachagentis The value outputV is updated to match the total long-term\nalone in the world, and in practice would only require agents cumulative discounted return R r =∑k i=0 γir t+i at every visited\nlocally share goal information with their neighbors. Thus, state during the most recent episode, using a standard L2 loss\nthese maps are imprecise but can still provide considerable L value . The policy gradient loss (training the actor output π of\npredictive power to the agent. the network) reads\n1 T (cid:16) (cid:17)\nLactor= ∑σH ·H(π(ot))−log π(at|π,o;θ)A(ot,at;θ)) , (1)\nT\nB.",
+      "size": 884,
+      "sentences": 6
+    },
+    {
+      "id": 32,
+      "content": "L value . The policy gradient loss (training the actor output π of\npredictive power to the agent. the network) reads\n1 T (cid:16) (cid:17)\nLactor= ∑σH ·H(π(ot))−log π(at|π,o;θ)A(ot,at;θ)) , (1)\nT\nB. Action Space where σ\nH\n· t H =1 (π(o\nt\n))=−σ\nH\nπ\nt\n(a\nt\n)·∑5\ni=1\nlog(π\nt\n(a\ni\n)), ( σ\nH\n=\nWe allow agents to take one out of five discrete actions in 0.01 in practice), is an entropy term to encourage exploration\nthe grid world at every timestep: Moving one cell in any of and discourage premature convergence [26], and A(o t ,a t ;θ)\nthe four cardinal directions or staying still. During training, an estimate of the advantage function (see Eq.(2)). actions are sampled from a list of valid actions, and agents As is standard in the advantage actor-critic algorithm, we\nare prevented from taking invalid actions, examples of which use an approximation of the advantage function by bootstrap-\nare moving into another obstacle or agent.",
+      "size": 934,
+      "sentences": 6
+    },
+    {
+      "id": 33,
+      "content": "vantage actor-critic algorithm, we\nare prevented from taking invalid actions, examples of which use an approximation of the advantage function by bootstrap-\nare moving into another obstacle or agent. Moreover, we also ping using the value function (i.e., the output of the critic\ndefine some actions which fail to adhere to ideal predefined network):\nconventions about navigating corridors as invalid (detailed in A(o,a;θ)=r +γV(o ;θ)−V(o;θ)). (2)\nt t t t+1 t\n=== 페이지 5 ===\nDAMANIetal. :PRIMAL2:PATHFINDINGVIAREINFORCEMENTANDIMITATIONMULTI-AGENTLEARNING-LIFELONG 5\nBesides the policy loss, we also rely on an additional loss\nwith more coordinated movements. However, these conven-\nto speed up the actor training, namely L , which aims at\nvalid tions are not evident to agents and are very difficult to learn\nreducing the log likelihood of selecting an invalid move.",
+      "size": 865,
+      "sentences": 5
+    },
+    {
+      "id": 34,
+      "content": "these conven-\nto speed up the actor training, namely L , which aims at\nvalid tions are not evident to agents and are very difficult to learn\nreducing the log likelihood of selecting an invalid move. using pure policy gradient methods, mainly because agents\n1 T 5 learn selfish policies, and rewards cannot effectively capture\nL = ∑∑log(v(t))·π˜ (a)+log(1−v(t))·(1−π˜(a)),\nvalid T i t i i i and reinforce such conventions. t=1i=1\n(3) To enable learning such conventions, we rely on our super-\nwhere v(t) denotes the ground truth of action i’s validity at visedvalidlossfunctionEq.",
+      "size": 579,
+      "sentences": 3
+    },
+    {
+      "id": 35,
+      "content": "i t i i i and reinforce such conventions. t=1i=1\n(3) To enable learning such conventions, we rely on our super-\nwhere v(t) denotes the ground truth of action i’s validity at visedvalidlossfunctionEq. (3),whichteachesagentstoavoid\ni\ntimet (1ifvalid,0otherwise),andπ˜ istheresultofaSigmoid takingactionsthatgoagainsttheaboveconventions.Ametric\nfunction being applied on π. called valid rate keeps track of the fraction of actions chosen\nThe final, combined training loss for the actor and critic by agents which are valid, i.e., the success rate in selecting a\noutputs of the network reads L =α·L +β·L +ζ· validaction.Whilethevalidratestartsoutlowduringtraining,\nfinal value actor\nL , with α,β,ζ ∈R manually tuned weights. agents are eventually able to learn to adhere to conventions\nvalid\nand achieve a near perfect valid rate (>99.5%).",
+      "size": 835,
+      "sentences": 4
+    },
+    {
+      "id": 36,
+      "content": "rtsoutlowduringtraining,\nfinal value actor\nL , with α,β,ζ ∈R manually tuned weights. agents are eventually able to learn to adhere to conventions\nvalid\nand achieve a near perfect valid rate (>99.5%). Interestingly,\nwe observe that agents can also learn when they are inside\nV. LEARNING\ncorridorseventhoughthisinformationisnotprovidedtothem\nIn this section, we detail the methods used to achieve explicitlythroughtheobservation(i.e.,onlytheendpointsofa\nimplicit agent coordination, and the actual training process. corridorareevidentintheobservation).Webelievethatthisis\nmade possible by the LSTM cell in the network architecture,\nand future work will explore the integration of more powerful\nA. Coordination Learning\nrecurrent networks with our current architecture.",
+      "size": 766,
+      "sentences": 5
+    },
+    {
+      "id": 37,
+      "content": "is\nmade possible by the LSTM cell in the network architecture,\nand future work will explore the integration of more powerful\nA. Coordination Learning\nrecurrent networks with our current architecture. Inhighlydenseandconstrainedworldswithhightrafficlike 2) Imitation Learning: The combination of RL and Imita-\nthose we consider, agents often find themselves in situations tion Learning (IL) has been shown to lead to faster conver-\nwhere coordination becomes necessary to find effective paths. genceandhigherqualitysolutionsinroboticapplications[28],\nWhile centralized planners can achieve this explicitly by [29].",
+      "size": 613,
+      "sentences": 4
+    },
+    {
+      "id": 38,
+      "content": "o faster conver-\nwhere coordination becomes necessary to find effective paths. genceandhigherqualitysolutionsinroboticapplications[28],\nWhile centralized planners can achieve this explicitly by [29]. In LMAPF, IL from centralized near-optimal planners\nplanning in the high dimensional joint space, decentralized whichplaninthejointspacecaninstillgoodqualitycoordina-\npolicies require agents to learn coordination implicitly with tionbehaviorinagents,whichischallengingtoaccomplishby\nlimited information about the environment and without direct decentralizedRL.TheratioofRLtoILepisodesismaintained\ncontrol over other agents’ actions. In the absence of any close to 50%, as in our previous work.",
+      "size": 693,
+      "sentences": 4
+    },
+    {
+      "id": 39,
+      "content": "ormation about the environment and without direct decentralizedRL.TheratioofRLtoILepisodesismaintained\ncontrol over other agents’ actions. In the absence of any close to 50%, as in our previous work. decentralized coordination learning, such as the techniques Expert demonstrations in IL episodes are generated by the\ndetailed in this section, we observed that agents distributively bounded suboptimal centralized planner ODrM* (with infla-\nlearn to act selfishly, merely trying to take the shortest A* tion ε =2) [18], and a trajectory of observations and actions\npaths to their goal and showing no coordinating behavior or is attained. We use these trajectories and the corresponding\nregard for other agents’ actions (even though coordination observations to minimize a standard behavior cloning loss:\ncould lead to more optimal paths for themselves and a higher 1 T\nL =− ∑log(P(a|π,o;θ)). (4)\ntotal reward for everyone).",
+      "size": 923,
+      "sentences": 5
+    },
+    {
+      "id": 40,
+      "content": "though coordination observations to minimize a standard behavior cloning loss:\ncould lead to more optimal paths for themselves and a higher 1 T\nL =− ∑log(P(a|π,o;θ)). (4)\ntotal reward for everyone). bc T t t\nt=0\nInordertoimplicitlyteachagentscoordination,weusethree SinceODrM*isaone-shotMAPFplanner,severalone-shot\ntechniques: 1) identifying and forcing agents to learn certain MAPF instances need to be combined for a single LMAPF\nconventions and exemplary behavior by using a supervised environment as is common when adapting one-shot planners\nloss function (Convention Learning), 2) using expert demon- toLMAPF[4],[5].Asaresult,duringtrainingintheLMAPF\nstrations from centralized planners during training (Imitation environment, ODrM* is called at all timesteps where path\nLearning),and3)samplingfromawiderangeofenvironments replanning is required, i.e., all timesteps where at least one\nduring training to enable learning of a robust, generalizable agent reaches its goal location.",
+      "size": 985,
+      "sentences": 3
+    },
+    {
+      "id": 41,
+      "content": "and3)samplingfromawiderangeofenvironments replanning is required, i.e., all timesteps where at least one\nduring training to enable learning of a robust, generalizable agent reaches its goal location. policy (Episode Randomization). 3) Environment Randomization: To ensure that agents en-\n1) ConventionLearning: Inhighlyconstrainedworldswith counter diverse environments during training, we randomize\na large number of long corridors, agents can drastically im- the world size, density, and typical corridor length at the\nprove the quality of their paths if they learn a common policy beginning of each episode. Specifically, the size of our square\nthat adheres to a certain set of conventions and effectively worlds is uniformly sampled between 10 and 70, the average\nbreakssymmetries[27].Wehaveidentifiedcertainconventions obstacle density between 20% and 70%, and the typical corri-\nthat are highly applicable to completely decentralized agents.",
+      "size": 947,
+      "sentences": 4
+    },
+    {
+      "id": 42,
+      "content": "and 70, the average\nbreakssymmetries[27].Wehaveidentifiedcertainconventions obstacle density between 20% and 70%, and the typical corri-\nthat are highly applicable to completely decentralized agents. dorlengthbetween3and21.Wefindthatuniformlysampling\nFor example, an agent A should never enter a narrow corridor these parameters works well in practice. Curriculum learning\nif another agent is currently moving inside that corridor in withincreasingdifficultyofenvironmentshasalsobeenshown\na direction opposite to that of agent A, as this will lead to to be effective in practice [30]. However, our experiments\na deadlock. Similarly, agents moving inside a corridor should with implementations of curriculum learning did not yield\nneverreversetheirmovementsabruptlyandretracetheirpaths significant performance improvements. Future works might\nunless there is a deadlock (i.e., most other scenarios where investigate this technique.",
+      "size": 930,
+      "sentences": 6
+    },
+    {
+      "id": 43,
+      "content": "everreversetheirmovementsabruptlyandretracetheirpaths significant performance improvements. Future works might\nunless there is a deadlock (i.e., most other scenarios where investigate this technique. In our environment randomization\nagents follow such behavior are bound to be non-optimal). If process, we believe larger-sized worlds are necessary for\nagentslearntofollowtheconventionsabove,theycannavigate agentstolearntonavigatetotheirgoalevenifitisasignificant\ncorridors much more efficiently and find higher quality paths distance away, while the smaller sized worlds expose agents\n=== 페이지 6 ===\n6 IEEEROBOTICSANDAUTOMATIONLETTERS.PREPRINTVERSION.RECEIVEDOCTOBER,2020\ntoclutteredscenarioswhichrequirecoordinationandcollision infeasible combinations, and average the results in our plots. avoidance to be solved effectively.",
+      "size": 827,
+      "sentences": 5
+    },
+    {
+      "id": 44,
+      "content": "ETTERS.PREPRINTVERSION.RECEIVEDOCTOBER,2020\ntoclutteredscenarioswhichrequirecoordinationandcollision infeasible combinations, and average the results in our plots. avoidance to be solved effectively. The positions of agents, Specifically, we do not run tests containing 64 agents or more\nobstacles, and goals are set randomly across the world, with in20-sizedworlds,256agentsormorein40-sizedworlds,and\ntheconstraintsthateachagenthasatleastonepathtoitsgoal, 1024 agents in 80-sized worlds. To eliminate any bias in our\nand the goal is some minimum Euclidean distance away from results, all planners encounter the same test scenarios. We use\nthe agent (2 cells in practice). In addition to this, the agents’ makespan (i.e., time until all robots are on target) and success\ninitialpositionsareconstrained,suchthatthereisnomorethan rate as our primary evaluation metrics. one agent inside any narrow corridor.",
+      "size": 905,
+      "sentences": 7
+    },
+    {
+      "id": 45,
+      "content": "makespan (i.e., time until all robots are on target) and success\ninitialpositionsareconstrained,suchthatthereisnomorethan rate as our primary evaluation metrics. one agent inside any narrow corridor. This is primarily done We select CBSH-RCT [27] as our optimal planner and\nto ensures that the conventions discussed in Section V-A1 are ODrM* (with ε =10) as our bounded suboptimal centralized\nadhered to since the beginning of the episode. planner [18], with a timeout of 60s to remain consistent with\nother works in the field. We also use PRIMAL as a baseline\nMARL-based decentralized planner [9]. For PRIMAL and\nB. Training\nPRIMAL , we allow a maximum of 320 timesteps for 20 and\n2\n1) General Training Parameters: In line with standard RL\n40-sized worlds, 480 timesteps for 80-sized worlds, and 640\nparameterchoices,weuseadiscountfactor(γ)of0.95andan\ntimesteps for 160-sized worlds. We trained separate dedicated\nepisode length of 256.",
+      "size": 937,
+      "sentences": 8
+    },
+    {
+      "id": 46,
+      "content": "RL\n40-sized worlds, 480 timesteps for 80-sized worlds, and 640\nparameterchoices,weuseadiscountfactor(γ)of0.95andan\ntimesteps for 160-sized worlds. We trained separate dedicated\nepisode length of 256. However, IL episodes have a length of\nmodelsforone-shotandLMAPFfortheseplanners.Notethat,\n64 because of the high cost associated with repeatedly calling\nwhile centralized planners have access to the full state of the\nODrM*.Inadditiontoperformingagradientupdateattheend\nsystem, agents in PRIMAL and PRIMAL only have access\n2\noftheepisode,wealsoperformoneimmediatelyafteranagent\nto a limited FOV. reaches its goal. As a result, an agent may be trained more\nOneofourrecentstudiesintoPRIMALshowedthatunsuc-\nthan once per episode, depending on the number of targets\ncessful episodes still often drive an overwhelming majority\nit reaches. We use the NAdam Optimizer with learning rate\nof agents to their goal [31].",
+      "size": 908,
+      "sentences": 6
+    },
+    {
+      "id": 47,
+      "content": "nce per episode, depending on the number of targets\ncessful episodes still often drive an overwhelming majority\nit reaches. We use the NAdam Optimizer with learning rate\nof agents to their goal [31]. Therefore, in our one-shot MAPF\n2.10−5anddecaythelearningrateproportionallytotheinverse\ntestings,wefurtherprovidePRIMAL/PRIMAL resultswhere\n2\nsquare root of the episode count. we consider an episode to be successful when 100% and\n2) Distributed Training Framework: We train our model\n95% of agents reach their goals successfully. The primary\nutilizing Ray, a distributed framework for machine learn-\nmotive of adding the 95% success metric is to better gauge\ning [10]. Ray allows us to bypass Python’s Global Interpreter\ntheperformanceofdecentralizedplannerslikePRIMAL ,and\n2\nLock and easily scale to a cluster using multiple GPUs. In\nis not meant to replace the standard 100% binary metric\npractice, the final policy was trained on a single workstation\nthat remains the norm in one-shot MAPF.",
+      "size": 993,
+      "sentences": 7
+    },
+    {
+      "id": 48,
+      "content": "ale to a cluster using multiple GPUs. In\nis not meant to replace the standard 100% binary metric\npractice, the final policy was trained on a single workstation\nthat remains the norm in one-shot MAPF. In order to ensure\nequipped with a i9-10980XE CPU (18 cores, 36 threads) and\nfairness, we also adapted centralized planners to the 95%\none NVIDIA Titan RTX GPU. The code employs 9 remote\nsuccessmetric.Atthestartofeachepisode,wesampleasubset\ntraining nodes, 4 of them calculating gradients via imitation\nof agents which consists of only 95% of the total agents. We\nlearningwithODrM*,whiletheother5runpureRLepisodes\nremove the remaining agents from the map and plan for the\nusingthemostup-to-datepolicy.Thechoiceofthesenumbers\nreduced subset of agents only. We run 10 such iterations for\nhas been made experimentally to keep the RL to IL episodes\nevery episode (i.e, with 10 different subsets of 95% of the\nratio close to 50%.",
+      "size": 924,
+      "sentences": 6
+    },
+    {
+      "id": 49,
+      "content": "reduced subset of agents only. We run 10 such iterations for\nhas been made experimentally to keep the RL to IL episodes\nevery episode (i.e, with 10 different subsets of 95% of the\nratio close to 50%. agents) and classify that episode as a success if the planner is\nEach node is equivalent to a single meta-agent of the\nable to successfully find a solution in any of the 10 runs. All\noverall A3C architecture and contains a copy of the LMAPF\nresult plots are available at https://bit.ly/PRIMAL2 and in the\nenvironment in which 8 agents are learning to plan paths. All\nsupplementalmaterial,includingLMAPFresults.Fig.4shows\n9 nodes run in parallel and pass gradients to the master node\nthe success rates and path lengths in a representative case. to be applied to the global network asynchronously.",
+      "size": 795,
+      "sentences": 6
+    },
+    {
+      "id": 50,
+      "content": "gLMAPFresults.Fig.4shows\n9 nodes run in parallel and pass gradients to the master node\nthe success rates and path lengths in a representative case. to be applied to the global network asynchronously. Training\nBased on our results, we first notice that all planners have\nlasts around 10 hours and converges within 35k episodes\nvery high success rates in worlds with low densities and short\n(nearly 10x fewer episodes and 24x shorter training time than\ncorridors. Next and as expected, we observe that the perfor-\nour previous work). The full training code for PRIMAL is\n2 mance of all planners drops with increasing obstacle density\navailableathttps://bit.ly/PRIMAL2,andcaneasilybeadapted\nand corridor lengths. This is because highly constrained en-\nto other MARL tasks. vironments have increased conflict in agent paths and require\nextensive inter-agent coordination to solve effectively. While\nVI.",
+      "size": 898,
+      "sentences": 8
+    },
+    {
+      "id": 51,
+      "content": "r lengths. This is because highly constrained en-\nto other MARL tasks. vironments have increased conflict in agent paths and require\nextensive inter-agent coordination to solve effectively. While\nVI. RESULTS all planners perform nearly equivalently in small team sizes\n(up to 16 agents), we observe that PRIMAL with success\nThis section presents our one-shot and LMAPF results 2\nmetric 100% is slightly outperformed by centralized planners\ncomparing PRIMAL to state-of-the-art planners. 2\nin moderate team sizes (16-128 agents). In large team sizes\n(>128 agents), the performance of centralized planners drops\nA. One-Shot MAPF Results\nsharply, which is a common problem faced by many central-\nFor all of our experiments (one-shot and LMAPF), we izedplanners,duetotheexponentialincreaseinthedimension\nsystematically tested team sizes in {4,8,16,....1024}, world of the joint configuration space to be searched.",
+      "size": 909,
+      "sentences": 8
+    },
+    {
+      "id": 52,
+      "content": "periments (one-shot and LMAPF), we izedplanners,duetotheexponentialincreaseinthedimension\nsystematically tested team sizes in {4,8,16,....1024}, world of the joint configuration space to be searched. As a result,\nsizes in {20,40,80,160}, densities in {0.3,0.65}, and typical PRIMAL is able to outperform centralized planners as team\n2\ncorridor lengths in {1,10,20}. We run 50 tests for each sizesscaleabove128agents.WealsonotethatPRIMAL also\n2\npossible combination of the above parameters, barring a few comfortablyoutperformsourpreviouswork,PRIMAL,inboth\n=== 페이지 7 ===\nDAMANIetal. :PRIMAL2:PATHFINDINGVIAREINFORCEMENTANDIMITATIONMULTI-AGENTLEARNING-LIFELONG 7\nB. LMAPF Results\nIn LMAPF, agents aim at continually planning paths online\nand maximizing the throughput (i.e., the average number\nof targets reached per timestep). To implement conventional\nbaselines for LMAPF, we decompose the problem into a\nseries of one-shot MAPF instances as is commonly done\n[20].",
+      "size": 964,
+      "sentences": 5
+    },
+    {
+      "id": 53,
+      "content": "(i.e., the average number\nof targets reached per timestep). To implement conventional\nbaselines for LMAPF, we decompose the problem into a\nseries of one-shot MAPF instances as is commonly done\n[20]. We select CBSH-RCT as a constrained-environment-\noptimizedoptimalplanner[27],aswellasODrM*(withε=3)\nand Windowed-PBS (with w=5 and h=5) as our bounded\nsuboptimal planners [18], [8] and use a timeout of 60s per\n(re-)planning instance. For all planners, our experiments last\n128 timesteps in 20- and 40-sized worlds, 192 timesteps in\n80-sized worlds, and 256 timesteps in 160-sized worlds. For\nthe conventional baselines, we compute the team’s average\nthroughput until that maximum number of timesteps, or until\nFigure 4. Success rate and plan lengths of the considered planners in a\nrepresentative one-shot MAPF scenario. As expected, PRIMAL2 is slightly one (re-)planning instance times out, whichever happens first.",
+      "size": 915,
+      "sentences": 7
+    },
+    {
+      "id": 54,
+      "content": "4. Success rate and plan lengths of the considered planners in a\nrepresentative one-shot MAPF scenario. As expected, PRIMAL2 is slightly one (re-)planning instance times out, whichever happens first. outperformedbycentralizedplannersinsmallerteams,butoutperformsthem By doing that, we note that early timeouts do not impact\nin larger teams (≥256 agents). Due to its decentralized nature, PRIMAL2\nthe throughput negatively. Fig. 5 presents our results in two\ntrajectoriesareconsiderablylongerthancentralizedplanners. representative scenarios. moderate and large team sizes. Interestingly, we observe that We first observe that both centralized and decentralized\nwhiletheperformanceofPRIMAL with100%successmetric planners have high throughput in worlds with low density,\n2\ndropsoffgraduallyasthenumberofagentsareincreased,that small team sizes, and short corridors. PRIMAL, PRIMAL 2 ,\nof PRIMAL with 95% success metric stays nearly constant.",
+      "size": 939,
+      "sentences": 11
+    },
+    {
+      "id": 55,
+      "content": "in worlds with low density,\n2\ndropsoffgraduallyasthenumberofagentsareincreased,that small team sizes, and short corridors. PRIMAL, PRIMAL 2 ,\nof PRIMAL with 95% success metric stays nearly constant. and windowed PBS scale remarkably well to larger teams,\n2\nUponcarefulinspectionoftheresults,weoftenfindthatafew while the performance of ODrM* and CBSH-RCT drops\nagentsgetstuckinundesirableloopingbehaviourwhichcould sharply above 128 agents. However, as the typical corridor\nbe corrected with the introduction of a centralized planner length and the average obstacle density is increased to make\nat this stage, and will be the focus of future works. Thus, the worlds more constrained and challenging, we see drops\nalthough PRIMAL is outperformed by centralized planners in performance for all planners.",
+      "size": 801,
+      "sentences": 5
+    },
+    {
+      "id": 56,
+      "content": "stage, and will be the focus of future works. Thus, the worlds more constrained and challenging, we see drops\nalthough PRIMAL is outperformed by centralized planners in performance for all planners. In general, we observe that\n2\nin moderate team sizes when using the standard 100% metric, windowedPBSisabletomarginallyoutperformPRIMAL 2 for\nwe believe that the correction of this looping behaviour can nearly all scenarios up to 512 agents. While windowed-PBS\nsignificantly increase success rates and it will be the focus of canstillgenerallyhandle1024-agentscenarios,westarttosee\nfuture works. timeouts in some episodes. More generally, we observe that\nDuetoitsdecentralizedandincompletenature,wefindthat there-planningtimesofwindowed-PBSarewelloveranorder\npaths yielded by PRIMAL 2 tend to be considerably longer of magnitude higher than PRIMAL 2 for moderate and large\nthanODrM*andCBSH-RCTonaverage.Ingeneral,solution team sizes.",
+      "size": 932,
+      "sentences": 6
+    },
+    {
+      "id": 57,
+      "content": "ed-PBSarewelloveranorder\npaths yielded by PRIMAL 2 tend to be considerably longer of magnitude higher than PRIMAL 2 for moderate and large\nthanODrM*andCBSH-RCTonaverage.Ingeneral,solution team sizes. It is worth noting that to adapt windowed-PBS to\nquality tends to decrease as the number of agents increase our problem definition, we need to re-plan at every timestep\nandastheenvironmentsbecomemoreconstrainedwithlonger anagentreachesitsgoal,whichcanhappennearlyeverytime\ncorridors and higher obstacle densities. We observe that, in step for larger teams. In this context, we note that PRIMAL 2\nteam sizes of up to 32 agents, the differences in solution offers real-time re-planning capabilities (with generally sub-\nquality are minute, where PRIMAL paths tend to be 25%- second decentralized re-planning), which might make it more\n2\n50% longer than ODrM* on average. In team sizes between attractive for online deployments.",
+      "size": 925,
+      "sentences": 5
+    },
+    {
+      "id": 58,
+      "content": "are minute, where PRIMAL paths tend to be 25%- second decentralized re-planning), which might make it more\n2\n50% longer than ODrM* on average. In team sizes between attractive for online deployments. 64 to 256 agents, the paths yielded by PRIMAL further More generally, our results highlight the trade-off between\n2\ndecreaseinqualityduetotheincreaseinscaleandonaverage, maximizing throughput and minimizing planning time. While\nare 75%-125% longer than ODrM*. ODrM* is unable to windowed PBS is able to achieve high throughput for team\ngenerate solutions for 512 agents and above, and thus it is sizesupto512agentsthroughfrequentre-planningandlarger\nnot possible to get an estimate of the path suboptimality for planning times, PRIMAL 2 achieves slightly more moderate\nthe largest teams. Intuitively, we expect the solution quality throughput but plans drastically faster.",
+      "size": 872,
+      "sentences": 6
+    },
+    {
+      "id": 59,
+      "content": "estimate of the path suboptimality for planning times, PRIMAL 2 achieves slightly more moderate\nthe largest teams. Intuitively, we expect the solution quality throughput but plans drastically faster. We also note that,\nof PRIMAL 2 in comparison to the optimal solution to drop whilePRIMALandPRIMAL 2 haveequivalentperformancein\ndown even further in large teams. It is interesting to note worldswithlowdensitiesandshortcorridors,PRIMAL 2 easily\nthat in comparison with our previous work, PRIMAL, the outperforms PRIMAL in larger team sizes (≥ 128 agents)\npaths of PRIMAL tend to be considerably shorter which we and in constrained worlds with long corridors. We believe the\n2\nbelieve is a result of the extensive inter-agent coordination additional coordination learning techniques introduced in this\nachieved in PRIMAL . Concluding, even though we observe paper are the reason for this improvement.",
+      "size": 898,
+      "sentences": 6
+    },
+    {
+      "id": 60,
+      "content": "he extensive inter-agent coordination additional coordination learning techniques introduced in this\nachieved in PRIMAL . Concluding, even though we observe paper are the reason for this improvement. Interesting learned\n2\na significant increase in implicit agent coordination compared maneuvers can be observed in the videos of our PRIMAL 2\nto our previous work, the decentralized nature of PRIMAL results, which can be found at http://bit.ly/PRIMAL2videos. 2\nmakes it very hard to achieve perfect joint coordination with We further tested the above LMAPF baselines on the\nthe same quality of paths as other centralized planners.",
+      "size": 629,
+      "sentences": 4
+    },
+    {
+      "id": 61,
+      "content": "ttp://bit.ly/PRIMAL2videos. 2\nmakes it very hard to achieve perfect joint coordination with We further tested the above LMAPF baselines on the\nthe same quality of paths as other centralized planners. warehouse and maze maps available on movingai.com [32],\n=== 페이지 8 ===\n8 IEEEROBOTICSANDAUTOMATIONLETTERS.PREPRINTVERSION.RECEIVEDOCTOBER,2020\nTableI\nLMAPFTHROUGHPUTONMOVING.AIBENCHMARKS(TIMEOUT:60S,RESULTMARKEDAS”-”IFALLSCENARIOSTIMEOUT)\nPlanner Maze(4-64) Maze(128-512) Maze(1024-2048) Warehouse(4-64) Warehouse(128-512) Warehouse(1024-2048)\nODrM*(ε=3) 0.21 - - 0.17 - -\nPRIMAL 0.07 0.31 0.71 0.08 0.74 2.10\nWindowed-PBS 0.26 1.08 - 0.18 1.95 -\nPRIMAL2 0.17 0.55 1.05 0.17 1.49 3.36\nFigure 6. Performance of PRIMAL2, compared to two PRIMAL2 variants:\n1) no convention learning, and 2) no convention learning, and no corridor\ninformation in the observation.",
+      "size": 857,
+      "sentences": 4
+    },
+    {
+      "id": 62,
+      "content": "0.55 1.05 0.17 1.49 3.36\nFigure 6. Performance of PRIMAL2, compared to two PRIMAL2 variants:\n1) no convention learning, and 2) no convention learning, and no corridor\ninformation in the observation. Note how, in larger teams (≥128 agents),\nPRIMAL2outperformsthesevariantsbymorethan10%intermsofthrough-\nput,showcasingtheimportanceofconventionlearning. conventionlearningandareducedobservationwithnocorridor\ninformation channels in the agents’ observation (Fig. 6). We observe that, while these three planners perform near-\nidenticallyupto64agents,PRIMAL surpassestheminlarger\n2\nteamsizes(byaround10%).Webelievethattheseresultsshow\nthat for smaller teams, the gains from following conventions\nare neutralized by the higher freedom of movement enjoyed\nby not following any. However, as team sizes increase, these\nconventionsbecomeintegraltoplaneffectivelyandbringorder\nto agents’ movements. Figure 5.",
+      "size": 897,
+      "sentences": 8
+    },
+    {
+      "id": 63,
+      "content": "tralized by the higher freedom of movement enjoyed\nby not following any. However, as team sizes increase, these\nconventionsbecomeintegraltoplaneffectivelyandbringorder\nto agents’ movements. Figure 5. Average throughput and plan lengths of planners for LMAPF;\ninterruptedlinesindicatethatnosolutionswerefoundforlargerteamsizes. VII. CONCLUSION\nAlthoughwindowed-PBSisabletomatchoroutperformPRIMAL2,itplans\nThis work introduced PRIMAL , a new distributed rein-\nanorderofmagnitudeslower,withindividualreplanninginstancesreachinga 2\nminuteforlargerteams.Notehowthenewcoordinationtechniquesintroduced forcement learning framework for lifelong multi-agent path\ninthisworkallowPRIMAL2 tosignificantlysurpassPRIMAL. findinginhighlyconstrainedworlds.Inthisframework,agents\nplan individual paths online in a wholly decentralized way,\nwhich serve as benchmark maps for the MAPF community. based on local information and interaction toward exhibiting\nThese results are summarized in Table I.",
+      "size": 978,
+      "sentences": 8
+    },
+    {
+      "id": 64,
+      "content": "paths online in a wholly decentralized way,\nwhich serve as benchmark maps for the MAPF community. based on local information and interaction toward exhibiting\nThese results are summarized in Table I. For ease of analysis joint maneuvers. We focused on achieving implicit agent\nand conciseness, we present averaged results for small (4-64 coordination by helping agents learn ideal behaviour through\nagents), moderate (128-512 agents) and large teams (1024- conventions, which effectively break symmetries and bring\n2048 agents). In the maze maps, we find that windowed-PBS harmony to their movement. Through our results, we high-\nis able to outperform PRIMAL 2 in small and moderate team lightedtheimportanceoftheseconventionsinlargerteamsand\nsizes, but falls behind in large team sizes where it generally experimentally showed that PRIMAL agents are successful\n2\ntimes out. These results follow a similar pattern to the results at learning them.",
+      "size": 946,
+      "sentences": 7
+    },
+    {
+      "id": 65,
+      "content": "s, but falls behind in large team sizes where it generally experimentally showed that PRIMAL agents are successful\n2\ntimes out. These results follow a similar pattern to the results at learning them. We also showed that PRIMAL scales to\n2\nonourLMAPFenvironments,whereincentralizedplannersare arbitrarily large teams, up to 2048 agents, and can plan\nabletooutperformorperformonparwithPRIMAL 2 insmall effective paths online while producing throughput comparable\nand moderate team sizes, but fall behind PRIMAL 2 in large to centralized planners for both one-shot and LMAPF. Future\nteams. In the warehouse maps, we observe that PRIMAL 2 work will try to further improve implicit agent coordination\nperforms on par with windowed-PBS and ODrM* in small via a variety of techniques such as more powerful recurrent\nteams.",
+      "size": 815,
+      "sentences": 5
+    },
+    {
+      "id": 66,
+      "content": "erve that PRIMAL 2 work will try to further improve implicit agent coordination\nperforms on par with windowed-PBS and ODrM* in small via a variety of techniques such as more powerful recurrent\nteams. However, windowed-PBS is able to perform better in networkarchitectures,thesystematicinvestigationofRL-to-IL\nmoderateteamsizesforthesemaps.Similartothemazemaps, ratios, or the use of recent off-policy learning methods. windowed-PBS times out in large team sizes while PRIMAL\n2\ncontinues to increase throughput. We also note that both for ACKNOWLEDGMENTS\nmazeandwarehousemaps,PRIMAL 2 performsadequatelyin WewouldliketoextendourwarmestgratitudetoJiaoyangLi,\n2048agentscenarios,thelargestteamsizewehavetestedyet. for happily agreeing to share her code and providing instru-\nFinally, we also present averaged results over all worlds, mental support for the CBSH-RCT and PBS algorithms used\nwhich compare the performance of PRIMAL to two other as baselines.",
+      "size": 953,
+      "sentences": 5
+    },
+    {
+      "id": 67,
+      "content": "providing instru-\nFinally, we also present averaged results over all worlds, mental support for the CBSH-RCT and PBS algorithms used\nwhich compare the performance of PRIMAL to two other as baselines. Detailed comments from anonymous referees\n2\nPRIMAL variants: 1) no convention learning, and 2) no contributed to the presentation and quality of this paper. 2\n[표 데이터 감지됨]\n\n=== 페이지 9 ===\nDAMANIetal. :PRIMAL2:PATHFINDINGVIAREINFORCEMENTANDIMITATIONMULTI-AGENTLEARNING-LIFELONG 9\nREFERENCES [25] K.He,X.Zhang,S.Ren,andJ.Sun,“Deepresiduallearningforimage\nrecognition,”inProc.oftheIEEEConf.onComputerVisionandPattern\n[1] K. Nagorny, A. W. Colombo, and U. Schmidtmann, “A service- and Recognition,jun2016.",
+      "size": 699,
+      "sentences": 4
+    },
+    {
+      "id": 68,
+      "content": "Zhang,S.Ren,andJ.Sun,“Deepresiduallearningforimage\nrecognition,”inProc.oftheIEEEConf.onComputerVisionandPattern\n[1] K. Nagorny, A. W. Colombo, and U. Schmidtmann, “A service- and Recognition,jun2016. multi-agent-oriented manufacturing automation architecture: An IEC [26] M. Babaeizadeh, I. Frosio, S. Tyree, J. Clemons, and J. Kautz, “Re-\n62264 level 2 compliant implementation,” Computers in Industry, inforcement learning through asynchronous advantage actor-critic on a\nvol.63,no.8,pp.813–823,2012. GPU,”Proc.oftheInt.Conf.onLearningRepresentations,2017. [2] J.BergerandN.Lo,“Aninnovativemulti-agentsearch-and-rescuepath [27] J.Li,G.Gange,D.Harabor,P.J.Stuckey,H.Ma,andS.Koenig,“New\nplanning approach,” Computers and Operations Research, vol. 53, pp. techniquesforpairwisesymmetrybreakinginmulti-agentpathfinding,”\n24–31,2015. inProc.ofICAPS,vol.30,2020,pp.193–201.",
+      "size": 869,
+      "sentences": 7
+    },
+    {
+      "id": 69,
+      "content": "andS.Koenig,“New\nplanning approach,” Computers and Operations Research, vol. 53, pp. techniquesforpairwisesymmetrybreakinginmulti-agentpathfinding,”\n24–31,2015. inProc.ofICAPS,vol.30,2020,pp.193–201. [3] H.Ma,J.Li,T.K.SatishKumar,andS.Koenig,“Lifelongmulti-agent [28] Y. Zhu, Z. Wang, J. Merel, A. Rusu, T. Erez, S. Cabi, S. Tun-\npathfindingforonlinepickupanddeliverytasks,”arXiv,2017. yasuvunakool, J. Krama´r, R. Hadsell, N. de Freitas, and N. Heess,\n[4] M.Cˇa´p,J.Vokˇr´ınek,andA.Kleiner,“Completedecentralizedmethod “Reinforcement and imitation learning for diverse visuomotor skills,”\nfor on-line multi-robot trajectory planning in well-formed infrastruc- arXiv,2018. tures,”inProceedingsInt.Conf.onAutomatedPlanningandScheduling, [29] T. Hester, M. Vecerik, O. Pietquin, M. Lanctot, T. Schaul, B. Piot,\nICAPS,vol.2015-January,2015,pp.324–332. D. Horgan, J. Quan, A. Sendonaris, I. Osband, G. Dulac-Arnold,\n[5] M.Liu,H.Ma,J.Li,andS.Koenig,“Taskandpathplanningformulti- J. Agapiou, J.",
+      "size": 988,
+      "sentences": 8
+    },
+    {
+      "id": 70,
+      "content": "T. Schaul, B. Piot,\nICAPS,vol.2015-January,2015,pp.324–332. D. Horgan, J. Quan, A. Sendonaris, I. Osband, G. Dulac-Arnold,\n[5] M.Liu,H.Ma,J.Li,andS.Koenig,“Taskandpathplanningformulti- J. Agapiou, J. Z. Leibo, and A. Gruslys, “Deep q-learning from\nagentpickupanddelivery,”inProc.oftheInternationalJointConf.on demonstrations,”arXiv,2017. AutonomousAgentsandMultiagentSystems,AAMAS,vol.2,2019,pp. [30] Y. Bengio, J. Louradour, R. Collobert, and J. Weston, “Curriculum\n1152–1160. learning,”inProc.ofthe26thInt.Conf.OnMachineLearning,ICML\n[6] V.Nguyen,P.Obermeier,T.C.Son,T.Schaub,andW.Yeoh,“General- 2009,2009,pp.41–48. izedtargetassignmentandpathfindingusinganswersetprogramming,” [31] G. Sartoretti, S. Koenig, and H. Choset, “A Combined Learning- and\nin Proc. of the Int. Symposium on Combinatorial Search, SoCS 2019, Search-basedApproachtoCompleteMulti-AgentPathFinding,”inProc. 2019,pp.194–195. oftheIJCAIworkshoponMAPF,2019.",
+      "size": 928,
+      "sentences": 11
+    },
+    {
+      "id": 71,
+      "content": "Combined Learning- and\nin Proc. of the Int. Symposium on Combinatorial Search, SoCS 2019, Search-basedApproachtoCompleteMulti-AgentPathFinding,”inProc. 2019,pp.194–195. oftheIJCAIworkshoponMAPF,2019. [7] J. Sˇvancara, M. Vlk, R. Stern, D. Atzmon, and R. Barta´k, “Online [32] R.Stern,N.R.Sturtevant,A.Felner,S.Koenig,H.Ma,T.T.Walker,\nmulti-agent pathfinding,” in Proc. of the National Conf. on Artificial J.Li,D.Atzmon,L.Cohen,T.K.S.Kumar,E.Boyarski,andR.Bartak,\nIntelligence,AAAI,vol.33,2019,pp.7732–7739. “Multi-AgentPathfinding:Definitions,Variants,andBenchmarks,”Proc. [8] J.Li,A.Tinka,S.Kiesel,J.W.Durham,T.K.Kumar,andS.Koenig, ofSoCS,pp.151–158,2019. “Lifelongmulti-agentpathfindinginlarge-scalewarehouses,”preprint\narXiv:2005.07371,2020. [9] G.Sartoretti,J.Kerr,Y.Shi,G.Wagner,T.K.SatishKumar,S.Koenig,\nandH.Choset,“PRIMAL:PathfindingviaReinforcementandImitation\nMulti-AgentLearning,”IEEERoboticsandAutomationLetters,vol.4,\nno.3,pp.2378–2385,2019.",
+      "size": 954,
+      "sentences": 12
+    },
+    {
+      "id": 72,
+      "content": "oretti,J.Kerr,Y.Shi,G.Wagner,T.K.SatishKumar,S.Koenig,\nandH.Choset,“PRIMAL:PathfindingviaReinforcementandImitation\nMulti-AgentLearning,”IEEERoboticsandAutomationLetters,vol.4,\nno.3,pp.2378–2385,2019. [10] P. Moritz, R. Nishihara, S. Wang, A. Tumanov, R. Liaw, E. Liang,\nM. Elibol, Z. Yang, W. Paul, M. I. Jordan, and I. Stoica, “Ray: A\ndistributedframeworkforemergingaiapplications,”2017. [11] P. E. Hart, N. J. Nilsson, and B. Raphael, “A Formal Basis for the\nHeuristic Determination of Minimum Cost Paths,” IEEE Transactions\nonSystemsScienceandCybernetics,vol.4,no.2,pp.100–107,1968. [12] T.Standley,“Findingoptimalsolutionstocooperativepathfindingprob-\nlems,”inProc.ofAAAI,vol.1,2010,pp.173–178. [13] M. Saha and P. Isto, “Multi-robot motion planning by incremental\ncoordination,”inProc.oftheIEEEInt.Conf.onIntelligentRobotsand\nSystems,2006,pp.5960–5963. [14] D. Silver, “Cooperative pathfinding,” in Proc.",
+      "size": 909,
+      "sentences": 6
+    },
+    {
+      "id": 73,
+      "content": "a and P. Isto, “Multi-robot motion planning by incremental\ncoordination,”inProc.oftheIEEEInt.Conf.onIntelligentRobotsand\nSystems,2006,pp.5960–5963. [14] D. Silver, “Cooperative pathfinding,” in Proc. of the Artificial Intel-\nligence and Interactive Digital Entertainment Conf., Marina del Rey,\nCalifornia,USA,2005,pp.117–122. [15] M. Erdmann and T. Lozano-Pe´rez, “On multiple moving objects,”\nAlgorithmica,vol.2,no.1-4,pp.477–521,1987. [16] Y. Zhang, Y. Qian, Y. Yao, H. Hu, and Y. Xu, “Learning to cooper-\nate: Application of deep reinforcement learning for online AGV path\nfinding,”inProc.ofAAMAS,vol.2020-May,2020,pp.2077–2079. [17] Q.Li,F.Gama,A.Ribeiro,andA.Prorok,“Graphneuralnetworksfor\ndecentralizedmulti-robotpathplanning,”inarXiv,2019,pp.1901–1903. [18] G. Wagner and H. Choset, “Subdimensional expansion for multirobot\npath planning,” Artificial Intelligence, vol. 219, pp. 1–24, 2015.",
+      "size": 897,
+      "sentences": 9
+    },
+    {
+      "id": 74,
+      "content": "entralizedmulti-robotpathplanning,”inarXiv,2019,pp.1901–1903. [18] G. Wagner and H. Choset, “Subdimensional expansion for multirobot\npath planning,” Artificial Intelligence, vol. 219, pp. 1–24, 2015. [Online].Available:http://dx.doi.org/10.1016/j.artint.2014.11.001\n[19] G. Sharon, R. Stern, A. Felner, and N. R. Sturtevant, “Conflict-based\nsearchforoptimalmulti-agentpathfinding,”ArtificialIntelligence,vol. 219,pp.40–66,2015. [20] Q. Wan, C. Gu, S. Sun, M. Chen, H. Huang, and X. Jia, “Lifelong\nMulti-AgentPathFindinginADynamicEnvironment,”inProc.ofthe\nInt.Conf.onControl,Automation,RoboticsandVision. IEEE,2018,\npp.875–882. [21] S. Mohanty, F. Laurent, N. Bhattacharya, J. Watson, M. Schneider,\nE. Nygren, C. Eichenberger, C. Baumberger, C. Scheller, A. Egli,\nG.Vienken,I.Sturm,G.Sartoretti,andG.Spigler,“Flatland-RL:Multi-\nagentreinforcementlearningontrains,”arXiv,2020.",
+      "size": 874,
+      "sentences": 9
+    },
+    {
+      "id": 75,
+      "content": "Watson, M. Schneider,\nE. Nygren, C. Eichenberger, C. Baumberger, C. Scheller, A. Egli,\nG.Vienken,I.Sturm,G.Sartoretti,andG.Spigler,“Flatland-RL:Multi-\nagentreinforcementlearningontrains,”arXiv,2020. [22] D. Roost, R. Meier, S. Huschauer, E. Nygren, A. Egli, A. Weiler, and\nT. Stadelmann, “Improving sample efficiency and multi-agent commu-\nnicationinRL-basedtrainrescheduling,”arXiv,2020. [23] V. Mnih, A. P. Badia, L. Mirza, A. Graves, T. Harley, T. P. Lillicrap,\nD. Silver, and K. Kavukcuoglu, “Asynchronous methods for deep\nreinforcementlearning,”inProc.oftheInt.Conf.onMachineLearning,\nvol.4,2016,pp.2850–2869. [24] K.SimonyanandA.Zisserman,“Verydeepconvolutionalnetworksfor\nlarge-scaleimagerecognition,”arXivpreprint1409.1556,2014.",
+      "size": 736,
+      "sentences": 4
+    }
+  ]
+}

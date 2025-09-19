@@ -1,0 +1,926 @@
+{
+  "source": "ArXiv",
+  "filename": "015_Social_Behavior_as_a_Key_to_Learning-based_Multi-A.pdf",
+  "total_chars": 108772,
+  "total_chunks": 153,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "=== 페이지 1 ===\nSocial Behavior as a Key to Learning-based\nMulti-Agent Pathfinding Dilemmas\nChengyang Hea, Tanishq Duhana, Parth Tulsyana, Patrick Kima, Guillaume\nSartorettia,∗\naDepartment of Mechanical Engineering, College of Design and Engineering, National\nUniversity of Singapore, 21 Lower Kent Ridge Rd, 117575, Singapore\nAbstract\nTheMulti-agentPathFinding(MAPF)probleminvolvesfindingcollision-\nfree paths for a team of agents in a known, static environment, with impor-\ntant applications in warehouse automation, logistics, or last-mile delivery. To meet the needs of these large-scale applications, current learning-based\nmethods often deploy the same fully trained, decentralized network to all\nagents to improve scalability. However, such parameter sharing typically re-\nsults in homogeneous behaviors among agents, which may prevent agents\nfrom breaking ties around symmetric conflict (e.g., bottlenecks) and might\nlead to live-/deadlocks.",
+      "size": 947,
+      "sentences": 3
+    },
+    {
+      "id": 2,
+      "content": "rameter sharing typically re-\nsults in homogeneous behaviors among agents, which may prevent agents\nfrom breaking ties around symmetric conflict (e.g., bottlenecks) and might\nlead to live-/deadlocks. In this paper, we propose SYLPH, a novel learning-\nbasedMAPFframeworkaimedtomitigatetheadverseeffectsofhomogeneity\nby allowing agents to learn and dynamically select different social behaviors\n(akin to individual, dynamic roles), without affecting the scalability offered\nby parameter sharing. Specifically, SYLPH agents learn to select their Social\nValue Orientation (SVO) given the situation at hand, quantifying their own\nlevel of selfishness/altruism, as well as an SVO-conditioned MAPF policy\ndictating their movement actions. To these ends, each agent first deter-\nmines the most influential other agent in the system by predicting future\nconflicts/interactions with other agents.",
+      "size": 886,
+      "sentences": 4
+    },
+    {
+      "id": 3,
+      "content": "APF policy\ndictating their movement actions. To these ends, each agent first deter-\nmines the most influential other agent in the system by predicting future\nconflicts/interactions with other agents. Each agent selects its own SVO to-\nwards that agent, and trains its decentralized MAPF policy to enact this\nSVO until another agent becomes more influential. To further allow agents\nto consider each others’ social preferences, each agent gets access to the SVO\n∗Corresponding author at: Department of Mechanical Engineering, College of Design\nand Engineering, National University of Singapore, 21 Lower Kent Ridge Rd, Singapore\nEmail address: guillaume.sartoretti@nus.edu.sg (Guillaume Sartoretti)\nPreprint submitted to Artificial Intelligence August 7, 2024\n4202\nguA\n6\n]OR.sc[\n1v36030.8042:viXra\n=== 페이지 2 ===\nvalue of their neighbors.",
+      "size": 836,
+      "sentences": 4
+    },
+    {
+      "id": 4,
+      "content": "ress: guillaume.sartoretti@nus.edu.sg (Guillaume Sartoretti)\nPreprint submitted to Artificial Intelligence August 7, 2024\n4202\nguA\n6\n]OR.sc[\n1v36030.8042:viXra\n=== 페이지 2 ===\nvalue of their neighbors. As a result of this hierarchical decision-making and\nexchange of social preferences, SYLPH endows agents with the ability to rea-\nson about the MAPF task through more latent spaces and nuanced contexts,\nleading to varied responses that can help break ties around symmetric con-\nflicts. Our comparative experiments show that SYLPH achieves state-of-the-\nartperformance, surpassingotherlearning-basedMAPFplannersinrandom,\nroom-like, and maze-like maps, while our ablation studies demonstrate the\nadvantages of each component in SYLPH. We finally experimentally validate\nourtrainedpoliciesonhardwareinthreetypesofmaps, showinghowSYLPH\nallows agents to find high-quality paths under real-life conditions. Our code\nand videos are available at: marmotlab.github.io/mapf sylph.",
+      "size": 970,
+      "sentences": 5
+    },
+    {
+      "id": 5,
+      "content": "trainedpoliciesonhardwareinthreetypesofmaps, showinghowSYLPH\nallows agents to find high-quality paths under real-life conditions. Our code\nand videos are available at: marmotlab.github.io/mapf sylph. Keywords: Multi-agent Pathfinding; Parameter Sharing; Symmetry\nDilemmas; Social Value Orientation\n1. Introduction\nMulti-Agent Path Finding (MAPF) involves devising collision-free paths\nfor multiple agents within a known and static space, guiding them from their\ncurrent positions to their respective goals [1]. MAPF is commonly used in\nwarehouse automation [2, 3], air traffic control [4], autonomous driving [5],\nand video game AI [6]. While the objectives for coordinating the behaviors\nof all agents may differ among these scenarios, such as minimizing makespan,\nensuring safety margins, or optimizing resource usage, a common feature is\nthe need to deploy and coordinate always-increasing numbers of agents.",
+      "size": 911,
+      "sentences": 6
+    },
+    {
+      "id": 6,
+      "content": "r among these scenarios, such as minimizing makespan,\nensuring safety margins, or optimizing resource usage, a common feature is\nthe need to deploy and coordinate always-increasing numbers of agents. To meet the needs of such large-scale applications, the community has\nincreasingly turned to learning-based methods [7, 8, 9] that leverage deep\nreinforcement learning (DRL) and advanced neural network architectures. These decentralized, reactive MAPF planners offer improved scalability, ad-\ndressing the limitations of traditional algorithms that struggle with the curse\nof dimensionality as team sizes increase [10, 11], though they often result in\nsuboptimal solutions. To enhance scalability, learning-based MAPF algo-\nrithms usually adopt the Independent Policy Learning (IPL) paradigm [12],\nwhere agents consider/observe each other as dynamic features of the envi-\nronment, greatly reducing the complexity of learning and increasing the ro-\nbustness of policies.",
+      "size": 969,
+      "sentences": 4
+    },
+    {
+      "id": 7,
+      "content": "arning (IPL) paradigm [12],\nwhere agents consider/observe each other as dynamic features of the envi-\nronment, greatly reducing the complexity of learning and increasing the ro-\nbustness of policies. The learning-based MAPF methods benefit from good\nscalability also partly due to decentralized decision-making driven by param-\neter sharing [13, 3, 14], in which experiences collected by multiple agents are\n2\n=== 페이지 3 ===\nFigure1: Asimpleexampleillustratesthedifferencebetweenacompletelyselfishteamand\nateamwithdiversesocialroles. Thetwofiguresaboveshowthatwhenfacingasymmetric\nchallenge, a team of selfish agents falls into a social dilemma. In contrast, agents with\ndifferent SVOs can more easily achieve cooperation by breaking the homogeneity of their\nbehavior patterns. They benefit from a combination of individualism and pro-socialism\nwithin the team, as shown in the two figures below.",
+      "size": 895,
+      "sentences": 5
+    },
+    {
+      "id": 8,
+      "content": "sily achieve cooperation by breaking the homogeneity of their\nbehavior patterns. They benefit from a combination of individualism and pro-socialism\nwithin the team, as shown in the two figures below. combined to train a single neural network during the training process, and\nthe fully trained network is then deployed to all agents for execution. How-\never, independent learning with parameter sharing tends to homogeneize the\nbehavior of the agents, resulting in all agents exhibiting similar social prefer-\nences, often individualistic due to their need to maximize individual rewards\nand complete individual tasks. In highly structured scenarios, such as bot-\ntlenecks and narrow corridors, homogeneous behaviors may cause agents to\nfall into symmetric social dilemmas [15], which can lead to live- or dead-\nlocks, as illustrated in Fig. 1.",
+      "size": 843,
+      "sentences": 6
+    },
+    {
+      "id": 9,
+      "content": "rios, such as bot-\ntlenecks and narrow corridors, homogeneous behaviors may cause agents to\nfall into symmetric social dilemmas [15], which can lead to live- or dead-\nlocks, as illustrated in Fig. 1. These social dilemmas arise from symmetries\nin the environment / agents’ states and are exacerbated by conflicts between\nindividual interests, where none of the agents involved can obtain higher re-\nwards unless compromises are made by one of them. Another limitation of\nthis training approach is that the independent nature of learning results in\n3\n=== 페이지 4 ===\nFigure 2: The key components and overall architecture of SYLPH. By introducing social\npreferenceintotheMAPFframeworkasatemporaryextensionskill,theagentisequipped\nwith social behavior to better cope with social dilemmas such as symmetry problems and\nblocking problems. agents that cannot easily encourage/exhibit coordinated maneuvers, which\nlimits their performance in dense scenarios.",
+      "size": 949,
+      "sentences": 6
+    },
+    {
+      "id": 10,
+      "content": "better cope with social dilemmas such as symmetry problems and\nblocking problems. agents that cannot easily encourage/exhibit coordinated maneuvers, which\nlimits their performance in dense scenarios. A viable solution for agents to\naddress these two issues is by learning social behaviors, specifically through\nreasoning about and balancing short-term self-interests with long-term team\nbenefits. Learning social behavior equips agents with varying levels of proso-\nciality, breaking homogeneity and by more tightly coupling agents directly\nin reward space. This approach help with coordinated maneuvers, essential\nfor resolving social dilemmas in large-scale MAPF instances. To these ends, this paper develops a novel learning-based hierarchical\nMAPF framework, SYLPH (SociallY-aware multi-agent PatHfinding), which\nhelps agents mitigate the adverse effects of homogeneity on scalability by al-\nlowing them to learn dynamic roles while following the parameter-sharing\nparadigm.",
+      "size": 978,
+      "sentences": 6
+    },
+    {
+      "id": 11,
+      "content": "aware multi-agent PatHfinding), which\nhelps agents mitigate the adverse effects of homogeneity on scalability by al-\nlowing them to learn dynamic roles while following the parameter-sharing\nparadigm. Leveraging a tool from social psychology, we propose incorporat-\ning the notion of Social Value Orientation (SVO) as a latent social preference\nspace on top of the agents’ action space, to develop a hierarchical decision-\nmaking architecture (as shown in Fig. 2). The lower-level action space con-\n4\n=== 페이지 5 ===\nsists of control commands (four cardinal directions and staying idle), allow-\ning agents to interact with the environment by choosing different discrete\nmovements. In contrast, the latent social preference space functions as an\nupper-level latent space, serving as conditions for low-level SVO-based con-\nditional policies that indirectly influence these cardinal direction choices.",
+      "size": 896,
+      "sentences": 5
+    },
+    {
+      "id": 12,
+      "content": "tent social preference space functions as an\nupper-level latent space, serving as conditions for low-level SVO-based con-\nditional policies that indirectly influence these cardinal direction choices. In\nour framework, SVO acts as a social metric that characterizes an individual’s\nprosocial level and weighs their reward against the rewards of others [16]. To\nthis end, each agent needs to predict the potential interaction/conflict degree\nwith other agents based on the current configuration and determine the most\ninfluential one in the system (referred as partner) about its own pathfinding\ntask. The agent’s SVO will act on this partner to promote social behavior\nformation between them until another agent becomes more influential. Ad-\nditionally, to comprehensively consider the social preferences of other agents,\nSYLPH agents can access the SVOs of those with whom they have relation-\nships in a multi-hop manner for communication learning.",
+      "size": 948,
+      "sentences": 5
+    },
+    {
+      "id": 13,
+      "content": "ly, to comprehensively consider the social preferences of other agents,\nSYLPH agents can access the SVOs of those with whom they have relation-\nships in a multi-hop manner for communication learning. By knowing other\nteam members’ SVOs, agents can infer each other’s potential behavior and\nmake decisions that enhance team performance. Due to the larger latent\nspace provided our hierarchical decision framework, along with the contex-\ntual information from agents’ exchange of social preferences and historical\nSVOmemory,weshowthatSYLPHagentscanovercomethedecision-making\nchallenges posed by symmetric environments more easily. Moreover, the co-\nordinated reward mechanisms introduced by SVO incentivize agents to make\ndecisions that benefit the entire team rather than just maximizing their own\nrewards. This reduces the individualistic tendencies fostered by parameter\nsharing and independent training, fostering coordinated maneuvers.",
+      "size": 938,
+      "sentences": 5
+    },
+    {
+      "id": 14,
+      "content": "fit the entire team rather than just maximizing their own\nrewards. This reduces the individualistic tendencies fostered by parameter\nsharing and independent training, fostering coordinated maneuvers. Furthermore, the upper-level latent spaces in this paper have clear mean-\nings, explicitly representing the social preferences of agents and providing in-\nterpretableinsightsintotheirdecision-makingprocesses. Abenefitofexplicit\nSVO representation is that it improves the interpretability and predictabil-\nity of agent behaviors. By characterizing agents based on their SVO (i.e.,\nwhether they are selfish, neutral, or pro-social), we can explicitly model their\npreferences and priorities in decision-making processes. This differentiation\nallows us to better understand and anticipate the strategies and interactions\nof various agents, leading to more transparent and explainable outcomes. To validate the advantages mentioned above, we conduct a comprehensive\nevaluation of the proposed framework.",
+      "size": 998,
+      "sentences": 7
+    },
+    {
+      "id": 15,
+      "content": "and interactions\nof various agents, leading to more transparent and explainable outcomes. To validate the advantages mentioned above, we conduct a comprehensive\nevaluation of the proposed framework. We test MAPF configurations with\nvarious team sizes on three different types of maps: random maps, room-like\nmaps, and maze maps. Additionally, we also present an ablation study to\n5\n=== 페이지 6 ===\nverifytheeffectivenessofeachcomponentofourframework. Finally, through\nreal-robot experiments on three different types of maps, we demonstrate that\nthe paths provided by SYLPH are executable under real-life conditions. 2. Prior Work\n2.1. Traditional MAPF Methods\nThe research community’s exploration of MAPF originated with tradi-\ntional methods. Traditional MAPF techniques are categorized by optimality\ninto three types: optimal, bounded suboptimal, and unbounded subopti-\nmal [17]. Optimal methods, by definition, enable multiple agents to achieve\ntheir goals with minimal overall cost.",
+      "size": 984,
+      "sentences": 10
+    },
+    {
+      "id": 16,
+      "content": "by optimality\ninto three types: optimal, bounded suboptimal, and unbounded subopti-\nmal [17]. Optimal methods, by definition, enable multiple agents to achieve\ntheir goals with minimal overall cost. Theoretically, optimal methods are\ntypically complete; they should offer a solution as long as a solution ex-\nists for the MAPF instance. The two most influential optimal planners are\nM* [18] and CBS [19], and many methods in the community are extensions\nand improvements of these two methods [10, 20, 11]. When M* does not\ndetect conflicts between agents, the state space only expands by one cell at\neach timestep, following the optimal choices of all agents. For conflicting\nagents, M* evaluates combinations of their possible actions while attempt-\ning to balance these with the optimal actions of other agents. It does so by\nsearching through the joint space of agents around collisions, and at worst\ncan fall back onto exhaustive search for the whole team.",
+      "size": 960,
+      "sentences": 7
+    },
+    {
+      "id": 17,
+      "content": "ance these with the optimal actions of other agents. It does so by\nsearching through the joint space of agents around collisions, and at worst\ncan fall back onto exhaustive search for the whole team. CBS adopts a two-\nlayer approach, where the upper layer uses conflict-based binary tree search\nand the lower layer uses the optimal single-agent planner A* to provide each\nagent with an optimal path based on conflict constraints. BoundedsuboptimalMAPFplannersaredesignedtohandletheincreased\ncomputational load encountered by optimal solvers on expansive maps and\nwith large-scale teams. These planners strike a balance between solution\nquality and computational efficiency by introducing a suboptimality factor,\nwhich can be tightened to make the planner approximate the optimal solu-\ntion. Forinstance, inflatedM*[21,22]achievesarelaxationofM*byaltering\nthe heuristic function of the A* algorithm.",
+      "size": 898,
+      "sentences": 6
+    },
+    {
+      "id": 18,
+      "content": "lity factor,\nwhich can be tightened to make the planner approximate the optimal solu-\ntion. Forinstance, inflatedM*[21,22]achievesarelaxationofM*byaltering\nthe heuristic function of the A* algorithm. ECBS implements both levels of\nCBS as a focal search [23], reducing the number of collisions and accelerat-\ning the CBS search process. Building on ECBS, an advanced planner called\nEECBS [24] has been developed, which combines explicit estimation search\nat the high level with focal search at the low level. Thanks to its integration\nof multiple improvement techniques, EECBS maintains good performance\neven with large-scale teams. 6\n=== 페이지 7 ===\nTo further pursue solver effectiveness rather than optimality, the commu-\nnity gradually began to study unbounded suboptimal solvers. This type of\nmethod’s focus shifts from achieving the optimal solution to enhancing suc-\ncess rates and solution speeds without strict adherence to optimality, which\nis particularly useful in highly complex scenarios.",
+      "size": 999,
+      "sentences": 7
+    },
+    {
+      "id": 19,
+      "content": "d’s focus shifts from achieving the optimal solution to enhancing suc-\ncess rates and solution speeds without strict adherence to optimality, which\nis particularly useful in highly complex scenarios. The current state-of-the-\nart MAPF solvers also belong to this method1. MAPF-LNS [25] designs a\nnew framework by combining small-scale high-quality solvers and large-scale\nlow-quality solvers. First, any efficient MAPF algorithm is used to find the\ninitial solution for the instance. From there, a Large Neighborhood Search\n(LNS) [26] is used to re-plan the subgroup of agents to improve the quality\nof the solution. In MAPF-LNS2⋆ [27], an opposite idea is adopted. Many\ncollision-allowed paths are generated at first, and subgroups of conflicting\npaths are then continuously selected and updated within a limited time until\nthey are collision-free. PIBT is a traditional one-step update method based\non priority [28].",
+      "size": 918,
+      "sentences": 8
+    },
+    {
+      "id": 20,
+      "content": "and subgroups of conflicting\npaths are then continuously selected and updated within a limited time until\nthey are collision-free. PIBT is a traditional one-step update method based\non priority [28]. It generates a single step of the path for each agent at every\ntimestep until the problem is solved or a preset maximum number of steps is\nreached. LaCAM⋆ [29], building upon PIBT, is a more advanced two-layer\nMAPF planner. At the higher level, it searches a sequence of configurations,\nwhere a configuration is a tuple of locations for all agents. The generation\nof these configurations is a low-level task. PIBT, as a low-level planner, can\ngenerate configurations that satisfy constraints extremely quickly. The progression from optimal to unbounded suboptimal solvers in the\nMAPF community reflects a shift towards more flexible and scalable solu-\ntions that are capable of managing the increasing complexity of practical\napplications.",
+      "size": 939,
+      "sentences": 8
+    },
+    {
+      "id": 21,
+      "content": "to unbounded suboptimal solvers in the\nMAPF community reflects a shift towards more flexible and scalable solu-\ntions that are capable of managing the increasing complexity of practical\napplications. This trend underscores a growing emphasis on algorithms that\ncan deliver reasonable solutions within acceptable time frames, especially\nunder the constraints of large-scale environments and agent populations. 2.2. Learning-based MAPF Methods\nDeep learning has been a promising tool to solve one-shot MAPF prob-\nlems ever since PRIMAL was introduced [7]. Recent works have shown that\nagents can achieve better cooperation through communication, as it allows\naccess to richer information. Therefore, some algorithms tried using either\nGraph Neural Networks [30, 31, 32] or Transformers [33] to incite commu-\nnication learning. Alternatively, a communication approach predicts agents’\n1We mark the state-of-the-art algorithms with ⋆.",
+      "size": 930,
+      "sentences": 7
+    },
+    {
+      "id": 22,
+      "content": "r\nGraph Neural Networks [30, 31, 32] or Transformers [33] to incite commu-\nnication learning. Alternatively, a communication approach predicts agents’\n1We mark the state-of-the-art algorithms with ⋆. 7\n=== 페이지 8 ===\npriorities using traditional algorithms and integrates this priority into an ad-\nhoc routing protocol for prioritized communication learning [34]. These com-\nmunication learning methodologies leverage distinct information aggregation\nmechanisms to facilitate information exchange among team agents, enriching\nthe decision-making process and enhancing team cooperation. However, the\nexchanged messages lack explicit meaning since they are products of learned\nencoding. This renders the communication process both uninterpretable and\nunpredictable[35,36]. Suchopacitycanhinderthemodel’sabilitytomanage\nthe quality and effectively aggregate the communicated messages, producing\nan excess of redundant messages as a result.",
+      "size": 935,
+      "sentences": 7
+    },
+    {
+      "id": 23,
+      "content": "retable and\nunpredictable[35,36]. Suchopacitycanhinderthemodel’sabilitytomanage\nthe quality and effectively aggregate the communicated messages, producing\nan excess of redundant messages as a result. These messages will fail to\nsignificantly increase the performance, and only impose additional compu-\ntational loads. While some efforts have been made to filter communication\nrecipients [37, 32], the inherent black-box nature of communication learning\nprocess precludes a clear understanding of the possible phenomena. Another possible way to significantly enhance the performance of MAPF\nalgorithms is to enable agents to access global information, a statement that\nhas been supported by many existing algorithms. Considering that most\nMAPF application scenarios occur in known environments, using only the\ninformation accessed by the agents’ local field of view (FoV) is a waste of\nresources.",
+      "size": 895,
+      "sentences": 6
+    },
+    {
+      "id": 24,
+      "content": "xisting algorithms. Considering that most\nMAPF application scenarios occur in known environments, using only the\ninformation accessed by the agents’ local field of view (FoV) is a waste of\nresources. However, to maximize the advantage of the full environment in-\nformation, it is crucial to encode and represent global information properly. The academic community devised various ways to accomplish this. Some\napproaches use the A* algorithm to compute individual paths for agents and\nintegrate these into the agents’ observation [38] and reward structures [3]. The approach described in [38] mandates that agents strictly adhere to the\nA* path and imposes penalties for any deviation, even if it is minor. Con-\nversely, [3] significantly softens these constraints, permitting agents to stray\nfrom the A* path with the provision that they can rejoin at any future point\nto receive the cumulative rewards they previously earned.",
+      "size": 927,
+      "sentences": 7
+    },
+    {
+      "id": 25,
+      "content": "nificantly softens these constraints, permitting agents to stray\nfrom the A* path with the provision that they can rejoin at any future point\nto receive the cumulative rewards they previously earned. Alternative to\nend-goal expert path guidance, a more flexible and deployable heuristic map\nrepresentations emerged with the use of Breadth-First Search (BFS) [39]. Rather than strictly enforcing adherence to A* paths, these heuristic maps\noffer agents a range of actions on all unoccupied cells, guiding them towards\ntheir goal in a flexible manner. This provision of global information proves\nadvantageous in densely populated environments, as it affords the agent a\nbroader spectrum of choices. A global map encoding based on a graph trans-\nformer has been used in our recent work [40], preserving global information\nto the greatest extent and being more expressive.",
+      "size": 868,
+      "sentences": 5
+    },
+    {
+      "id": 26,
+      "content": "roader spectrum of choices. A global map encoding based on a graph trans-\nformer has been used in our recent work [40], preserving global information\nto the greatest extent and being more expressive. This method furnishes the\n8\n=== 페이지 9 ===\nagent with insights at the global graph level without compelling adherence\nto any intermediate nodes, thus affording the agent increased flexibility and\ncapabilities for long-horizon planning. Learning-based planners are sometimes prone to deadlocks or livelocks\ndue to unforeseen circumstances. Implementing post-processing techniques\nto assist agents in overcoming such cases can also boost algorithm perfor-\nmance. Upon detecting a conflict within the agent’s learned policy, [41]\nutilizes M* [22] for re-planning within the joint configuration space. How-\never, this approach is highly resource-intensive, as M* calculates complete\npaths for all agents, with frequent calls leading to considerable computa-\ntional burden.",
+      "size": 967,
+      "sentences": 7
+    },
+    {
+      "id": 27,
+      "content": "e joint configuration space. How-\never, this approach is highly resource-intensive, as M* calculates complete\npaths for all agents, with frequent calls leading to considerable computa-\ntional burden. Our previous research [33] introduced a tie-breaking strategy\ngrounded in state-value, offering a more efficient alternative by enabling lo-\ncal conflict resolution. This post-processing operations are carried out upon\nconflict detection to prevent collisions. Nonetheless, this technology can re-\nsult in a dramatic surge in computational demands in densely populated\nscenarios. While such interventions can enhance the overall performance of\nthe algorithm, they reveal a limitation at the model level: the trained model\nitself lacks long-term foresight to avoid conflict. To guarantee scalability, the\naforementioned current methods deploy a unified network across all agents. These approaches, however, engender homogeneity and self-interest among\nteam members.",
+      "size": 964,
+      "sentences": 8
+    },
+    {
+      "id": 28,
+      "content": "onflict. To guarantee scalability, the\naforementioned current methods deploy a unified network across all agents. These approaches, however, engender homogeneity and self-interest among\nteam members. This precipitates social dilemmas in specific scenarios such\nas symmetric cases. To address this challenge, this work introduces a new SVO-based social\nbehavior learning mechanism, titled SYLPH. By eliminating the need for\nconfiguring separate networks for different agents and introducing diversity\nwithintheteam, SYLPHeffectivelymitigatetheadverseeffectsofhomogene-\nitycausedbyparametersharingonscalability. Furthermore, ourtie-breaking\nmechanism is based on agents’ SVO, enabling our model to enhance the\nconflict-aware foresight of the generated policies without necessitating extra\ncomputational resources for post-processing. 2.3.",
+      "size": 836,
+      "sentences": 8
+    },
+    {
+      "id": 29,
+      "content": "g\nmechanism is based on agents’ SVO, enabling our model to enhance the\nconflict-aware foresight of the generated policies without necessitating extra\ncomputational resources for post-processing. 2.3. Social Preference Usage\nIn social psychology, Social Value Orientation (SVO) is a common met-\nric for encapsulating an individual’s social preferences and propensities [42],\nwhich serves as an indicator of a person’s inclination to cooperate with fellow\nteam members. Specifically, SVO quantifies the extent to which an individ-\nual prioritizes personal versus team benefits. It can be represented by the\n9\n=== 페이지 10 ===\nangle ϕ [43], as shown in Fig. 2. The individual is said to be more egois-\ntic if the ϕ value is closer to 0, and more altruistic if the ϕ value is closer\nto 90. In robotics, Schwarting et al. pioneered the application of this con-\ncept in the field of autonomous driving [16].",
+      "size": 899,
+      "sentences": 9
+    },
+    {
+      "id": 30,
+      "content": "if the ϕ value is closer to 0, and more altruistic if the ϕ value is closer\nto 90. In robotics, Schwarting et al. pioneered the application of this con-\ncept in the field of autonomous driving [16]. They employed this metric\nas an intermediary variable, enhancing the accuracy of predictive models\nfor human-driven vehicle trajectories. Subsequent research in autonomous\ndriving has expanded upon this concept. Examples include investigations\ninto social communication among multiple vehicles in the presence of adver-\nsaries[44],enablingagentstoautonomouslyadapttheirSVOpreferences[45]. Furthermore, the field of video games has also seen significant research on\nSVO [46,47]. These studies show that inscenarios involvingsocial dilemmas,\nthe diversity of SVOs within the population is beneficial. Previous SVO-based approaches typically set pre-allocated, immutable\nSVOs to agents.",
+      "size": 882,
+      "sentences": 9
+    },
+    {
+      "id": 31,
+      "content": "studies show that inscenarios involvingsocial dilemmas,\nthe diversity of SVOs within the population is beneficial. Previous SVO-based approaches typically set pre-allocated, immutable\nSVOs to agents. This arrangement is reasonable for tasks with a clear di-\nvision of labor (e.g., Cleanup and Harvest [48]) or shared objectives (e.g.,\nStarCraft II and Google Research Football [49]), where the necessity for di-\nverse roles to collaboratively contribute to the team’s objective is evident. In such scenarios, roles are often predetermined based on prior knowledge\nand maintained throughout the task. The absence of any role type can cause\nthe entire system to malfunction, making the problem unsolvable. In MAPF\ntasks, however, an agent may need to adopt various behavioral patterns de-\npending on the situation in order to achieve more effective solutions. In\nother words, the allocation of roles is not individual-oriented but situation-\noriented,andthusshouldremaindynamicthroughoutthetask.",
+      "size": 993,
+      "sentences": 7
+    },
+    {
+      "id": 32,
+      "content": "on the situation in order to achieve more effective solutions. In\nother words, the allocation of roles is not individual-oriented but situation-\noriented,andthusshouldremaindynamicthroughoutthetask. Furthermore,\nwhile there is a common overarching goal, each agent also pursues individ-\nual objectives in MAPF. In order to balance self-interest and social benefit,\nthere is a need for agents to learn a flexible SVO that can adapt to envi-\nronmental changes. Drawing inspiration from skill learning [50, 51, 52], we\npropose viewing an agent’s SVO as a temporally extended skill that depends\non the previous timestep’s SVO and the SVOs of other agents. The agent can\nthen dynamically select an SVO based on observations in varying contexts,\nthereby influencing its lower-level action space decision-making.",
+      "size": 805,
+      "sentences": 6
+    },
+    {
+      "id": 33,
+      "content": "timestep’s SVO and the SVOs of other agents. The agent can\nthen dynamically select an SVO based on observations in varying contexts,\nthereby influencing its lower-level action space decision-making. In this paper, SYLPH adopts a flexible approach where agents can adap-\ntively learn real-time SVO policies in response to their current environment,\nthereby moving away from the rigid and predefined allocation of social roles. 10\n=== 페이지 11 ===\n3. Problem Statement\n3.1. MAPF Problem Formulation\nThe Multi-Agent Path Finding (MAPF) problem exhibits numerous vari-\nants, including classic one-shot MAPF [27], MAPF with kinematic con-\nstraints [53], lifelong MAPF [54, 13], prioritized MAPF [55], multi-agent\npickup and delivery [28], and etc. This paper focuses on the classic one-\nshot MAPF problem.",
+      "size": 798,
+      "sentences": 7
+    },
+    {
+      "id": 34,
+      "content": "F [27], MAPF with kinematic con-\nstraints [53], lifelong MAPF [54, 13], prioritized MAPF [55], multi-agent\npickup and delivery [28], and etc. This paper focuses on the classic one-\nshot MAPF problem. Characteristically, the classic MAPF instance is set\nup on an undirected simple graph G = (V,E), encompassing a set of agents\nA = {a ,a ···a }, a pre-settled start positions S = {s ,s ,··· ,s } ∈ V,\n1 2 n 1 2 n\nand a designated set of destinations/goals D = {d ,d ···d } ∈ V, where\n1 2 n\nn denotes the number of agents. In this context, time t ∈ N is treated as\ndiscrete, allowing an agent at to either move to an adjacent vertex at+1 =\ni i\nv ∈ N (v ) or remain stationary at its current vertex at+1 = v within a sin-\nj G i i i\ngle timestep. The aim of the MAPF task is to generate collision-free paths\nfor all agents from their respective initial occupied vertices s to their goal\ni\nvertices d within the minimum possible number of timesteps.",
+      "size": 943,
+      "sentences": 5
+    },
+    {
+      "id": 35,
+      "content": "e aim of the MAPF task is to generate collision-free paths\nfor all agents from their respective initial occupied vertices s to their goal\ni\nvertices d within the minimum possible number of timesteps. We consider\ni\na set of paths {τ } for agents i = 1,2,··· ,n, where each path τ is a se-\ni i\nquence of vertices that agent a traverses over time t = 0,1,··· ,T, with T\ni\nbeing the maximum timestep considered. All the paths must satisfy both\nCondition 1: ∀i,j ∈ {1,2,··· ,n},i ̸= j,∀t ∈ {0,1,··· ,T},τ (t) ̸= τ (t)\ni j\n(no two agents occupy the same vertex at any time), Condition 2: ∀i,j ∈\n{1,2,··· ,n},i ̸= j,∀t ∈ {0,1,··· ,T−1},(τ (t) ̸= τ (t+1))∨(τ (t+1) ̸= τ (t))\ni j i j\n(no two agents swap vertices between consecutive timesteps), and Condi-\ntion 3: ∀i ∈ {1,2,··· ,n},((τ (0) = s )∧((τ (T) = d )) (all agents start from\ni i i i\nthe pre-settled position and reach their goal at the end of the task), to make\nsure the paths are collision-free and effective. 3.2.",
+      "size": 965,
+      "sentences": 4
+    },
+    {
+      "id": 36,
+      "content": "·· ,n},((τ (0) = s )∧((τ (T) = d )) (all agents start from\ni i i i\nthe pre-settled position and reach their goal at the end of the task), to make\nsure the paths are collision-free and effective. 3.2. Environment Type\nThis paper evaluates the proposed framework’s effectiveness across three\ndistinct map types. Firstly, we consider random maps, a common choice\namong learning-based planners for both training and testing due to the\nlarge variance in its structure and complexity. This variability challenges\nthe model’s generalization capabilities, as the unpredictability in obstacle\nplacement necessitates the learning of a diverse array of policies. Secondly,\nwe assess performance on room-like maps, which are more structured than\nrandom maps and feature elements such as doorways, narrow corridors, and\nrooms. These structured obstacles compel agents to develop long-horizon\n11\n=== 페이지 12 ===\nplanning capabilities to effectively find the path.",
+      "size": 948,
+      "sentences": 7
+    },
+    {
+      "id": 37,
+      "content": "feature elements such as doorways, narrow corridors, and\nrooms. These structured obstacles compel agents to develop long-horizon\n11\n=== 페이지 12 ===\nplanning capabilities to effectively find the path. Furthermore, room-like\nmaps often contain cut vertices that can amplify minor errors into significant\nteam-wide setbacks, highlighting the importance of planner stability. Lastly,\ngiven that this paper is dedicated to solving social dilemmas in MAPF prob-\nlems, we also conduct tests on maze maps. This map type is characterized by\nnumerous long corridors, dead-ends, and various edge cases. Such features\npose significant challenges for existing learning-based MAPF planners due to\nissues such as corridor symmetry and target symmetry [15]. To effectively\naddress this type of problem, agents require a high level of coordination. SYLPH addresses these challenges and achieves better performance by intro-\nducing SVO for the agent, effectively breaking the symmetry. 4.",
+      "size": 969,
+      "sentences": 9
+    },
+    {
+      "id": 38,
+      "content": "ype of problem, agents require a high level of coordination. SYLPH addresses these challenges and achieves better performance by intro-\nducing SVO for the agent, effectively breaking the symmetry. 4. Social Behavior Learning\nIn this section, we delve into the integration of the Social Value Orienta-\ntion (SVO) concept within the Multi-Agent Path Finding (MAPF) problem,\nintroducing a novel MAPF framework named SYLPH that incorporates so-\ncial preferences. By enabling agents to learn and adopt SVO-based social\npreferences, we introduce diversity into the multi-agent system. This equips\nagents with the capability to navigate and resolve social dilemmas, such as\nthe various symmetries frequently encountered in MAPF challenges. For ex-\nample, coordination of agents with opposite goals in narrow passages and\nlivelock caused by symmetric goal positions in open areas.",
+      "size": 872,
+      "sentences": 7
+    },
+    {
+      "id": 39,
+      "content": "rious symmetries frequently encountered in MAPF challenges. For ex-\nample, coordination of agents with opposite goals in narrow passages and\nlivelock caused by symmetric goal positions in open areas. The diversity\nensures that agents will exhibit distinct behaviors based on their individual\nSVOs even when placed in identical environments, leading to varied decision-\nmaking outcomes. We explore this integration from two primary perspectives (as shown in\nFig. 2): the generation of hierarchical policies and the influence of upper\nlevel SVO policies on the formulation of action-oriented policies. This ex-\nploration aims to highlight how the incorporation of SVO not only enriches\nthe policy depth available to agents but also enhances their problem-solving\nefficacy within the MAPF context, enabling a more nuanced and cooperative\npathfinding. 4.1. Partner Selection\nIn this work, introducing SVO into the MAPF process is aimed at miti-\ngating potential social dilemmas.",
+      "size": 974,
+      "sentences": 8
+    },
+    {
+      "id": 40,
+      "content": "n the MAPF context, enabling a more nuanced and cooperative\npathfinding. 4.1. Partner Selection\nIn this work, introducing SVO into the MAPF process is aimed at miti-\ngating potential social dilemmas. A crucial initial question is identifying the\n12\n=== 페이지 13 ===\norigins of these dilemmas from the perspective of an agent, specifically de-\ntermining with whom to collaborate to effectively solve them. Since SVO is\nused to balance an agent’s self-interest with collective interests, representing\nthe collective interests becomes our first task. An intuitive approach is to\naverage the rewards of other members in the team or other members within a\ncertain observation range as the collective interests. However, there are two\nsignificantdisadvantagestodoingso. First, thismixedcollectiveinterestrep-\nresentation of multiple agents is biased from the perspective of the current\nagent.",
+      "size": 884,
+      "sentences": 8
+    },
+    {
+      "id": 41,
+      "content": "lective interests. However, there are two\nsignificantdisadvantagestodoingso. First, thismixedcollectiveinterestrep-\nresentation of multiple agents is biased from the perspective of the current\nagent. Because it may mix information from agents that are irrelevant to\nthe social dilemma encountered by the current agent, which will confuse the\nagent. Second, it difficult for the neural network to establish relationships\nbetween the agent and other fellow agents under such a collective interest\nrepresentation. Compressing too much information into an average reward\ncauses the neural network to lose significant information, making it challeng-\ning to reason about the original relationships between agents. Therefore, in\nthis paper we let the agent choose a partner for SVO determination. The\nterm partner refers to this other specific agent involved in the dyadic team\nwith the primary (ego) agent.",
+      "size": 901,
+      "sentences": 8
+    },
+    {
+      "id": 42,
+      "content": "gents. Therefore, in\nthis paper we let the agent choose a partner for SVO determination. The\nterm partner refers to this other specific agent involved in the dyadic team\nwith the primary (ego) agent. Additionally, it is also worth mentioning that\nthe agent-partner pair is not bi-directional, which means an agent’s partner\nmay choose the third agent as its partner. This approach draws parallel\ninsights from some recent autonomous driving research [45, 56], which sug-\ngests that an autonomous vehicle’s behavior is predominantly influenced by\nthe vehicle in its immediate vicinity rather than others within the broader\nFoV. These studies have led us to realize that focusing on a single partner\ncan sometimes be more advantageous than considering multiple agents, be-\ncause it allows neural networks to more easily reason about the relationships\nbetween different team members. Inordertofindthemostimpactfulpartneramongallagents, weformalize\nthe method of selecting partners in Algorithm 1.",
+      "size": 993,
+      "sentences": 7
+    },
+    {
+      "id": 43,
+      "content": "networks to more easily reason about the relationships\nbetween different team members. Inordertofindthemostimpactfulpartneramongallagents, weformalize\nthe method of selecting partners in Algorithm 1. Specifically, the procedure\nfor selecting a temporary partner in the context of MAPF with an emphasis\non SVO can be detailed in four steps:\n• Calculating Single Agent Optimal Paths [Line 1-2]: Initially, for each\nagent within the system, an optimal path is computed using the A∗\nalgorithm based on the current environmental configuration (G,A,D). Each agent’s path is delineated as a sequence of vertex coordinates:\nT = {τ1 ,··· ,τn}\nA∗ a∗ a∗\n(1)\nτi = {vi,vi,··· ,vi } i = 1,2,··· ,n.\na∗ 0 1 T\n13\n=== 페이지 14 ===\nAlgorithm 1: Selection of Temporary Partner. Input: The grid obstacle map: G; the set of all agents’ current\npositions: A; the set of all agents’ goals: D.\nOutput: All agent’s partner: P ∈ Nn×1; The potential overlap of\n+\noptimal paths among all agents: O ∈ Rn×n.",
+      "size": 975,
+      "sentences": 5
+    },
+    {
+      "id": 44,
+      "content": "tacle map: G; the set of all agents’ current\npositions: A; the set of all agents’ goals: D.\nOutput: All agent’s partner: P ∈ Nn×1; The potential overlap of\n+\noptimal paths among all agents: O ∈ Rn×n. L\n1 Initialize P as ∅, and O L as 0n×n; ▷ single optimal paths\nCompute A* paths T ← {G,A,D} for all agents;\n2 A∗\nfor ∀vi ∈ T do\n3 t A∗\n4 Determine the direction of the agent: δ v i ← {v t i,v t i +1 }; ▷ flow of\nthe optimal paths\nend\n5\nfor ∀v ∈ T do\n6 A∗\nif ∃vi ,vj ≡ v and i ̸= j and δi ̸= δj then\n7 ti tj v v\n8 O L [i,j] = O L [i,j]+γ o ti l +γ o tj l ; ▷ overlap calculation\n9\nO\nL\n[j,i] = O\nL\n[j,i]+γ\no\nti\nl\n+γ\no\ntj\nl\n;\nend\n10\nend\n11\nforeach row ∈ O do\n12 L\nif row = 0 then\n13\n14 P[Index(row)] = Index(row); ▷ temporary partner\nelse\n15\n16\nP[Index(row)] = argmaxrow[i];\ni\nend\n17\nend\n18\n• Determining the Flow of These Individual Paths [Line 3-5]: Based on\nthe optimal path computed, the flow of the path can be determined\nfrom the sequence of vertex coordinates.",
+      "size": 964,
+      "sentences": 2
+    },
+    {
+      "id": 45,
+      "content": "ow[i];\ni\nend\n17\nend\n18\n• Determining the Flow of These Individual Paths [Line 3-5]: Based on\nthe optimal path computed, the flow of the path can be determined\nfrom the sequence of vertex coordinates. In other words, the agent’s\norientation δi at any cell can be obtained by comparing the vertex\nv\ncoordinates between the current vi and the next timestep vi . t t+1\n• Computing the Overlap of Optimal Path Flows Between Agents [Line\n6-11]: With the flow of individual paths established, the next step in-\nvolves assessing the overlap between these flows. A key idea is that\nif the flows of agents are in the same direction at a cell, i.e. δi = δj,\nv v\n14\n=== 페이지 15 ===\nthen we consider no potential conflicts at this cell between agents and\ntherefore consider this cell’s overlap as 0. However, if the agents are\nnot moving in the same direction at a cell (as shown in Fig. 3), in-\ndicating potential crossing points or interactions, the overlaps should\nbe assessed according to Line [8-9].",
+      "size": 990,
+      "sentences": 7
+    },
+    {
+      "id": 46,
+      "content": "er, if the agents are\nnot moving in the same direction at a cell (as shown in Fig. 3), in-\ndicating potential crossing points or interactions, the overlaps should\nbe assessed according to Line [8-9]. The impact of such overlaps on\nan agent’s decision-making weakens as the distance between the over-\nlapping cell’s position and the agent’s current location increases. The\ndecay of overlap impact based on distance introduces the concept of a\ndecay factor γ ∈ (0,1], which is a predefined hyper-parameter. This\nol\nfactor adjusts the significance of distant overlaps on an agent’s cur-\nrent choices, with a higher value indicating a more far-sighted agent\nthat considers distant overlaps more significantly, while a lower value\nindicating an agent more focused on immediate or nearby overlaps.",
+      "size": 791,
+      "sentences": 5
+    },
+    {
+      "id": 47,
+      "content": "ices, with a higher value indicating a more far-sighted agent\nthat considers distant overlaps more significantly, while a lower value\nindicating an agent more focused on immediate or nearby overlaps. Mathematically, the overlap between two agents’ paths is quantified as\nthe weighted sum of all overlapping cells within their path flows:\nO [i,j] = O [i,j] = (cid:88) γ Index τa i ∗ (v) +γ Index τa j ∗ (v)\nL L ol ol (2)\nv∈(τi ∧τj )\na∗ a∗\nThe weight of each overlapping cell is adjusted by the decay factor,\nrelative to its distance from the agent’s current position. This method\nprovides a nuanced approach to evaluating potential path conflicts,\nallowing agents to prioritize their immediate navigation decisions while\nstill accounting for future interactions. • Finding a Temporary Partner [Line 12-17]: Based on the overlap anal-\nysis, agents are then paired or assigned a temporary partner.",
+      "size": 894,
+      "sentences": 4
+    },
+    {
+      "id": 48,
+      "content": "vigation decisions while\nstill accounting for future interactions. • Finding a Temporary Partner [Line 12-17]: Based on the overlap anal-\nysis, agents are then paired or assigned a temporary partner. If an\nagent’s optimal path flow does not exhibit any overlap with the flows\nof other agents, the agent defaults to selecting itself as its partner. This scenario indicates that the agent can proceed without the need to\nadjust its path in response to potential conflicts with others, allowing\nfor path finding towards its goal without external coordination. Con-\nversely, if there is an overlap between an agent’s path flow and that\nof one or more other agents, the agent will choose as its temporary\npartner the agent with which it has the largest weighted overlap. After establishing the method above for selecting a temporary partner,\nthenextstepinvolvesdelineatingthecriteriaforselectingandswitchingpart-\nners.",
+      "size": 913,
+      "sentences": 6
+    },
+    {
+      "id": 49,
+      "content": "ent with which it has the largest weighted overlap. After establishing the method above for selecting a temporary partner,\nthenextstepinvolvesdelineatingthecriteriaforselectingandswitchingpart-\nners. We propose that updates to partner selection may not have to occur\n15\n=== 페이지 16 ===\nFigure 3: Overlap in optimal path flows between agents, caused by their varied starting\nandgoalpositionconfigurationswithinthesamemap. Inscenario(a),twoagentstraverse\na narrow corridor moving in the same direction, which results in minimal conflict. Con-\nversely, scenario (b) involves agents needing to navigate in opposite directions within the\nsamespace,significantlyheighteningthepotentialforconflictduetothedirectopposition\nin their intended paths. According to Algorithm 1, the calculated overlap in scenario\n(a) is markedly less than that in scenario (b). This distinction aligns well with intuitive\nexpectations and the specific objectives of managing social dilemmas within multi-agent\npath finding.",
+      "size": 993,
+      "sentences": 7
+    },
+    {
+      "id": 50,
+      "content": "nario\n(a) is markedly less than that in scenario (b). This distinction aligns well with intuitive\nexpectations and the specific objectives of managing social dilemmas within multi-agent\npath finding. The larger overlap in scenario (b) suggests a higher degree of conflict and\nnecessitates more critical intervention or strategy adjustment to avoid collision or dead-\nlock, highlighting a situation of greater social distress. per timestep to ensure system stability and consistency in agent interac-\ntions. The formal process for updating partners is outlined in Algorithm 2. Firstly, an agent selects a temporary partner at the start and treats this\nagent as its initial fixed partner. This fixed partnership remains unchanged\nuntil the overlap in the optimal path flow between the agent and its fixed\npartner is eliminated, indicating that any potential social dilemma or conflict\nwith this particular partner has been resolved.",
+      "size": 930,
+      "sentences": 7
+    },
+    {
+      "id": 51,
+      "content": "il the overlap in the optimal path flow between the agent and its fixed\npartner is eliminated, indicating that any potential social dilemma or conflict\nwith this particular partner has been resolved. By adopting this method, up-\ndates regarding the agents’ partner occur asynchronously. Such a mechanism\nnot only reflects a realistic and practical approach to managing interactions\nwithin a dynamic multi-agent environment but also significantly contributes\nto the overall stability of the system. This strategy allows for the focused\nresolution of conflicts with specific partners before considering a shift to new\npartner dynamics, ensuring that changes in partnerships are meaningful and\nbased on resolved interactions rather than fluctuating frequently without re-\n16\n=== 페이지 17 ===\nAlgorithm 2: Fixed Partner Update Criteria. Input: All agent’s temporary partner: P ∈ Nn×1; The potential\n+\noverlap of optimal paths among all agents: O ∈ Rn×n. L\nOutput: All agents’ fixed partners: P ∈ Nn×1.",
+      "size": 995,
+      "sentences": 6
+    },
+    {
+      "id": 52,
+      "content": "2: Fixed Partner Update Criteria. Input: All agent’s temporary partner: P ∈ Nn×1; The potential\n+\noverlap of optimal paths among all agents: O ∈ Rn×n. L\nOutput: All agents’ fixed partners: P ∈ Nn×1. fix +\nInitialize P according to the temporary partner P provided by\n1 fix\nAlgorithm 1 at the beginning of the episode;\nfor ∀agent i do\n2\nif O [i,P [i]] = 0 then\n3 L fix\n4 Update P fix [i] as P[i]; ▷ update fixed partner\nelse\n5\n6 Keep the partner of i unchanged. ▷ keep fixed partner\nend\n7\nend\n8\nsolving underlying conflicts. The algorithm introduced in this subsection quantifies the degree of con-\nflict between agents by measuring the extent of their optimal path over-\nlaps, thereby offering a formal method to express social dilemmas within a\nmulti-agent environment. By precisely delineating the magnitude of these\nsocial dilemmas, the approach facilitates the identification of the agent that\npresents the greatest potential for conflict.",
+      "size": 943,
+      "sentences": 7
+    },
+    {
+      "id": 53,
+      "content": "a\nmulti-agent environment. By precisely delineating the magnitude of these\nsocial dilemmas, the approach facilitates the identification of the agent that\npresents the greatest potential for conflict. This approach to clarifying social\ndilemmas enables the SVO mechanism to be applied more effectively. By fo-\ncusing on resolving the most significant potential conflicts, agents can better\nnavigate their environment, avoid collisions, and reach their goals in a more\nefficient manner. 4.2. SVO Generation\n4.2.1. Socially-aware reward\nInspired by skill learning [52, 57], our approach moves away from the way\nof assigning fixed, immutable SVO to agents. Instead, we conceptualize SVO\nas a temporally extended skill - a dynamic attribute that does not reside\nwith any single agent but rather emerges from the patterns of coordinated\nbehavior among agents. This reconceptualization recognizes that SVO is not\na one-size-fits-all attribute.",
+      "size": 936,
+      "sentences": 9
+    },
+    {
+      "id": 54,
+      "content": "hat does not reside\nwith any single agent but rather emerges from the patterns of coordinated\nbehavior among agents. This reconceptualization recognizes that SVO is not\na one-size-fits-all attribute. This dynamic, learnable SVO enables agents to\nadjust their social preferences based on the current context and interactions\nwith other agents. Agents with dynamic SVO can change their behavior to\n17\n=== 페이지 18 ===\nmeet the needs of the team, helping in avoiding live-/deadlocks and reduces\nthe chances of prolonged conflicts, especially in highly structured maps. In this light, the selection of an SVO is treated as an additional policy\nπ (z|z′), akin to skill selection in skill learning frameworks. The training of\nϕ\nthis SVO policy is conducted in tandem with the training of the agents’ ac-\ntion policies, creating a synergistic relationship where both policies are inter-\nconnected through the mechanism of SVO.",
+      "size": 917,
+      "sentences": 6
+    },
+    {
+      "id": 55,
+      "content": "ϕ\nthis SVO policy is conducted in tandem with the training of the agents’ ac-\ntion policies, creating a synergistic relationship where both policies are inter-\nconnected through the mechanism of SVO. This linkage depends on partner\nselection as outlined in Section 4.1, where the choice of partner directly influ-\nences the dynamics of the SVO policy. Specifically, in our context, any agent\nand its partner must reach their respective goals due to task requirements. Since learning-based planners rely on parameter sharing to improve scalabil-\nity, a self-interested reward structure is necessary to motivate the agent to\npursue its own goal. However, when an agent insists on following its optimal\npath, its corresponding partner may have to incur an additional external\npenalty to manage the arising conflict, embodying the zero-sum nature of\ntheir interaction. Therefore, we constraint that the agent’s SVO, denoted by\nZ, should be between egoistic (Z ≈ 0◦) and prosocial (Z → 45◦).",
+      "size": 986,
+      "sentences": 6
+    },
+    {
+      "id": 56,
+      "content": "age the arising conflict, embodying the zero-sum nature of\ntheir interaction. Therefore, we constraint that the agent’s SVO, denoted by\nZ, should be between egoistic (Z ≈ 0◦) and prosocial (Z → 45◦). When Z\nsatisfies this restriction and all external rewards are non-positive (consistent\nwith our previous research), Ra is monotonically non-increasing within the\ni\ndomainof[0◦,45◦]2. Itimpliesthatincasesdevoidofconflict, agentsarepre-\ndisposed towards egoistic behavior, thereby maximizing their own long-term\ncumulative rewards Ra. Conversely, in situations where conflicts exist, there\ni\nis a tendency for agents to adopt a more prosocial demeanor to maximize Rs. i\nSuch a shift facilitates the achievement of superior long-term rewards for the\ngroup formed by the agent and its partner, highlighting the utility of SVO\nin mediating self-sacrifice for collective gain.",
+      "size": 871,
+      "sentences": 6
+    },
+    {
+      "id": 57,
+      "content": "h a shift facilitates the achievement of superior long-term rewards for the\ngroup formed by the agent and its partner, highlighting the utility of SVO\nin mediating self-sacrifice for collective gain. Based on the above discussion,\nthe reward structures of the SVO policy and action policy are as follows:\nRs := (Rex +Rex) / ρ, i,p ∈ A\ni i p\n(3)\nRa := cosZ ·Rex +sinZ ·Rex, Z ∼ π (z|z′). i i p ϕ\nwhere, Rex denotes the external reward for agent i, adhering to the reward\ni\nconfiguration established in our prior research [7, 33, 40]. The structure of\nthe external reward is encapsulated in the outcomes of the agent’s interac-\ntions with the environment, guiding the agent towards its goals effectively. Rs and Ra represent the rewards associated with the SVO policy and the\ni i\n2Proof can be found in Appendix B\n18\n=== 페이지 19 ===\naction policy, respectively.",
+      "size": 858,
+      "sentences": 5
+    },
+    {
+      "id": 58,
+      "content": "ng the agent towards its goals effectively. Rs and Ra represent the rewards associated with the SVO policy and the\ni i\n2Proof can be found in Appendix B\n18\n=== 페이지 19 ===\naction policy, respectively. The hyper-parameter ρ plays a crucial role in\ncalibrating the influence of the SVO policy reward on the agent’s learning\nprocess, allowing for fine-tuning to achieve desired behaviors. Rs is concep-\ni\ntualized as the aggregate of the external rewards received by both the agent\nand its selected partner. This reward structure is rooted in the intention to\nencourageagentstoadoptSVOchoicesthatenhancethecollectivewell-being\nof the small group (consisting of the agent and its partner). Through this\ntightlycoupledmechanism, theframeworkincentivizestheagenttolearnand\nselect SVOs that are not only beneficial to itself, but also advantageous to\nits cooperative interactions, thereby facilitating coordinated maneuvers. Ra,\ni\non the other hand, is based on the definition of SVO.",
+      "size": 976,
+      "sentences": 7
+    },
+    {
+      "id": 59,
+      "content": "that are not only beneficial to itself, but also advantageous to\nits cooperative interactions, thereby facilitating coordinated maneuvers. Ra,\ni\non the other hand, is based on the definition of SVO. This ensures that the\nagent’s actions are coherent with its selected SVO (Z). The reward received\nthrough Ra motivates the agent to execute actions that are in harmony with\ni\nits SVO, fostering a congruent and integrated approach to decision-making\nand behavior. By simultaneously maximizing cumulative Rs and Ra, the\ni i\nmodel can derive both a upper-level SVO policy and a lower-level action\npolicy:\nT\n(cid:88)\nπ∗(z |z′) = argmaxE [ γtRs];\nϕ i i ϕ τi ∼π θ i\nt=0 (4)\nT\n(cid:88)\nπ∗(a |o ,z′) = argmaxE [ γtRa];\nθ i i i θ τi ∼π θ ,Zi ∼π ϕ i\nt=0\nwhere γ ∈ (0,1] is the discount factor and T is the time horizon. 4.2.2.",
+      "size": 815,
+      "sentences": 6
+    },
+    {
+      "id": 60,
+      "content": "|z′) = argmaxE [ γtRs];\nϕ i i ϕ τi ∼π θ i\nt=0 (4)\nT\n(cid:88)\nπ∗(a |o ,z′) = argmaxE [ γtRa];\nθ i i i θ τi ∼π θ ,Zi ∼π ϕ i\nt=0\nwhere γ ∈ (0,1] is the discount factor and T is the time horizon. 4.2.2. Policy optimization\nProximal Policy Optimization (PPO) stands out as a highly favored\nframework in the domain of reinforcement learning (RL), celebrated for\nits stability, straightforward hyper-parameter tuning, and impressive per-\nformance. In our work, we use a variation of PPO to support the training of\nSYLPH agents while distinguishing this approach from vanilla PPO by inte-\ngrating an additional layer: a higher-level, socially-aware policy. This novel\nlayer complements the action policy, equipping agents with social behavior\nin addition to moving towards their goals. We call this novel variation as\nSocial-aware Multi Policy PPO (SMP3O).",
+      "size": 848,
+      "sentences": 6
+    },
+    {
+      "id": 61,
+      "content": "This novel\nlayer complements the action policy, equipping agents with social behavior\nin addition to moving towards their goals. We call this novel variation as\nSocial-aware Multi Policy PPO (SMP3O). In the context of SMP3O, where the framework needs to optimize two\npolicies (the SVO policy π (z |z′) and the action policy π (a |o ,z′)) simul-\nϕ i i θ i i i\ntaneously, it becomes important to consider the losses associated with each\n19\n=== 페이지 20 ===\npolicy independently. We formalize the losses for these policies as L and\nπ\nϕ\nL :\nπ\nθ\nL = E [min(rt (ϕ)A ˆt ,clip(rt (ϕ),1−ϵ,1+ϵ)A ˆt )]\nπ ϕ t svo action svo action (5)\nL = E [min(rt (θ)A ˆt ,clip(rt (θ),1−ϵ,1+ϵ)A ˆt )]\nπ θ t action svo action svo\nwhere rt (ϕ) = π ϕ (z i t|z i t−1) and rt (θ) = π θ (at i |ot i ,z i t) are the probability\nsvo π ϕold (z i t|z i t−1) action π θold (at i |ot i ,z i t)\nratios of the action under the new policy π over the old policy π .",
+      "size": 921,
+      "sentences": 4
+    },
+    {
+      "id": 62,
+      "content": "i t|z i t−1) and rt (θ) = π θ (at i |ot i ,z i t) are the probability\nsvo π ϕold (z i t|z i t−1) action π θold (at i |ot i ,z i t)\nratios of the action under the new policy π over the old policy π . ϕ/θ ϕ /θ\nold old\nϵ is a hyper-parameter that defines the clipping range to avoid excessively\nlarge policy updates. A\nˆt\nand A\nˆt\nare the advantage functions, which\nsvo action\nestimate how much better a particular SVO/action is if it was taken over\nthe average. Unlike the policy loss in PPO, which is calculated by directly\nassociating the advantage of an action with the likelihood ratio of that action\nunder the current policy versus the old policy, SMP3O introduces a novel\napproach. The core insight behind integrating the SVO policy with the\naction policy in the SMP3O framework lies in leveraging the hierarchical\nnature of these policies. Specifically, we provide a cross-utilizing advantages\nmechanism, where each policy derives indirect benefits from the learning\nsignals of the others.",
+      "size": 994,
+      "sentences": 6
+    },
+    {
+      "id": 63,
+      "content": "raging the hierarchical\nnature of these policies. Specifically, we provide a cross-utilizing advantages\nmechanism, where each policy derives indirect benefits from the learning\nsignals of the others. As the upper level, the SVO policy plays a pivotal role\nin redistributing action rewards, thereby ensuring that actions are aligned\nwith the social preferences of the agent (as illustrated in Eq 3). Therefore, when calculating the action policy loss L , A\nˆt\nshould be\nπ θ svo\ncombined with the action policy π (a |o ,z′). This mechanism is particularly\nθ i i i\nbeneficial in scenarios characterized by social dilemmas. In such situations,\neven though the SVO policy may dictate a course of action that aligns with\nlong-term group benefits or conflict resolution, it might disadvantageous to\nthe agent in the short term.",
+      "size": 820,
+      "sentences": 6
+    },
+    {
+      "id": 64,
+      "content": "n such situations,\neven though the SVO policy may dictate a course of action that aligns with\nlong-term group benefits or conflict resolution, it might disadvantageous to\nthe agent in the short term. SMP3O encourages the action policy to tran-\nscend this myopia, adhering the directives of the SVO policy, which can be\nexpressed as:\n△θ ∝ ∇ E[A ˆ ·logπ (a |o ,z′)] (6)\nθ svo θ i i i\nThis approach fosters behaviors that potentially sacrifice immediate individ-\nual gains and instead contribute to the collective well-being of the agent pair,\nemphasizing group rewards over individual rewards. When calculating the\nˆ\nSVOpolicylossL , incorporatingtheactionadvantageA facilitatesthe\nπ action\nϕ\nformation of a feedback loop. Because of reward reallocation and action loss,\nagent action will be consistent with the SVO decision.",
+      "size": 823,
+      "sentences": 4
+    },
+    {
+      "id": 65,
+      "content": "lossL , incorporatingtheactionadvantageA facilitatesthe\nπ action\nϕ\nformation of a feedback loop. Because of reward reallocation and action loss,\nagent action will be consistent with the SVO decision. Under this premise,\nthe aforementioned feedback enables the SVO policy to assess the quality\n20\n=== 페이지 21 ===\nof executed actions, guiding the agent towards decisions that concurrently\noptimize both SVO alignment and action efficacy. Formally:\n△ϕ ∝ ∇ E[A ˆ ·logπ (z |z′)] (7)\nθ action ϕ i i\nThis bidirectional reinforcement between the SVO and action policies create\na synergistic learning environment. It not only aligns individual actions with\nbroader social goals but also ensures that the SVO policy is refined based on\ntheoutcomesoftheseactions, establishingacoherentandmutuallybeneficial\nrelationship between social behaviors and action executions. To enhance the stability of an agent’s SVO, we rely on supervised learn-\ning.",
+      "size": 933,
+      "sentences": 6
+    },
+    {
+      "id": 66,
+      "content": "esoftheseactions, establishingacoherentandmutuallybeneficial\nrelationship between social behaviors and action executions. To enhance the stability of an agent’s SVO, we rely on supervised learn-\ning. Drawing from our prior experiences with valid and blocking losses, the\nformulation for the SVO stability-enhancing loss, L , can be expressed as\nstab\nfollows:\nL = E[z log(π (z |z′))+(1−z )log(1−π (z |z′))] (8)\nstab i,exp ϕ i i i,exp ϕ i i\nHere, L is fundamentally the cross entropy between the SVO policy out-\nstab\nput by the neural network and the expected SVO probability distribution. For shaping our desired SVO distribution, we introduce an under-relaxation\nfactor, α, within the range [0,1], to modulate the adjustment of the SVO to-\nwardstheexpectedvalue.",
+      "size": 762,
+      "sentences": 4
+    },
+    {
+      "id": 67,
+      "content": "robability distribution. For shaping our desired SVO distribution, we introduce an under-relaxation\nfactor, α, within the range [0,1], to modulate the adjustment of the SVO to-\nwardstheexpectedvalue. TheexpectedSVO,z ,isdeterminedbyblending\nexp\nthe current SVO, z, with previous SVO, z′, using α:\nz = αz′ +(1−α)z (9)\ni,exp i i\nThe calculation of α is designed to reflect the degree of overlap between the\nagent and its partner:\nα = min(O [i,p],clip(O [i,p],0,κ))/κ (10)\nL L\nκ sets a boundary condition for the overlap magnitude; when the actual over-\nlap between agents falls below κ, the agent is permitted to modify the SVO\nwith greater latitude. The rationale behind this formulation is to encour-\nage SVO policy stability especially under conditions of significant overlap,\nthereby mitigating potential volatility in the agent’s social behavior.",
+      "size": 849,
+      "sentences": 4
+    },
+    {
+      "id": 68,
+      "content": "he rationale behind this formulation is to encour-\nage SVO policy stability especially under conditions of significant overlap,\nthereby mitigating potential volatility in the agent’s social behavior. As the\noverlap diminishes, indicating reduced immediate conflict or competition for\nresources, the model permits more flexible adjustments to the SVO, aiming\nto foster higher degrees of cooperation and coordination. 21\n=== 페이지 22 ===\n(a) (b) (c) (d)\n(e) (f) (g) (h)\nFigure 4: The SVO-based tie-breaking mechanism example. 4.3. Enhancing Policy with SVO\nOur previous work, PRIMAL [7], established a definitive set of valid ac-\ntions and aimed to train agents to recognize meaningful/executable actions\nthrough supervised learning. However, we observed that PRIMAL agents,\nmotivated by the pursuit of higher individual rewards, would still sometimes\nselect invalid actions. This tendency adversely impacted the overall system’s\nperformance.",
+      "size": 938,
+      "sentences": 7
+    },
+    {
+      "id": 69,
+      "content": "we observed that PRIMAL agents,\nmotivated by the pursuit of higher individual rewards, would still sometimes\nselect invalid actions. This tendency adversely impacted the overall system’s\nperformance. To mitigate such issues, [33] introduced a tie-breaking strategy\nbased on state value, essentially serving as a rule-based local post-processing. This strategy empowered agents to evaluate all possible scenarios in the next\ntimestep, enabling the selection of a more reasonable action. This rule-based\nmethod proved computationally intensive especially in densely populated en-\nvironments, escalating the computational burden significantly. In response\nto this challenge, this paper proposes an innovative approach that inte-\ngratesSVOintotheconflictresolutionprocess, redefiningrewarddistribution\namidst conflicts.",
+      "size": 815,
+      "sentences": 6
+    },
+    {
+      "id": 70,
+      "content": "al burden significantly. In response\nto this challenge, this paper proposes an innovative approach that inte-\ngratesSVOintotheconflictresolutionprocess, redefiningrewarddistribution\namidst conflicts. This strategy departs from post-processing by embedding a\ntie-breaking mechanism directly within the model, thereby enhancing agent’s\npolicy without incurring additional computational costs. This RL-based tie-\nbreaking mechanism, unlike its predecessor, does not merely rectify decisions\npost-facto but rather informs the decision-making process intrinsically, en-\nsuring that choices made are both feasible and aligned with the collective\n22\n=== 페이지 23 ===\nAlgorithm 3: SVO-based Tie-breaking Method. Input: All agent’s action set A ∈ Nn and SVO set Z ∈ Nn output\nby the neural network. Output: Adjusted conflict-free action set A′ ∈ Nn; Socially-aware\nadjusted rewards R ∈ Rn.",
+      "size": 878,
+      "sentences": 6
+    },
+    {
+      "id": 71,
+      "content": "d Tie-breaking Method. Input: All agent’s action set A ∈ Nn and SVO set Z ∈ Nn output\nby the neural network. Output: Adjusted conflict-free action set A′ ∈ Nn; Socially-aware\nadjusted rewards R ∈ Rn. Sort agents in descending order of SVOs Z to obtain the\n1\nconsideration chain C; ▷ initialize consideration chain\nwhile len(C) < 0 do\n2\n3 i ← C.pop() ▷ check action status\nif A[i] ∈ Invalid Action then\n4\n5 A′[i] = 0 (stay idle); R[i] = −2 (Collision Penalty); ▷ invalid\nif 0 ∈ Restricted Action then\n6\nfor ∀j causing Restricted Action do\n7\nC.append(j) If j ∈/ C\n8\nend\n9\nelse if A[i] ∈ Restricted Action then\n10\nfor ∀j causing Restricted Action do\n11\n12 A′[i] = 0 (stay idle); ▷ restricted\nR[i] = −2 If Z[i] > Z[j]; R[j] = −2 If Z[j] > Z[i];\n13\nend\n14\nRepeat Line 6 to 9\n15\nelse\n16\n17 A′[i] = A[i]; R[i] = External Reward; ▷ normal\nend\n18\nend\n19\nobjective. The tie-breaking mechanism in our paper outlines an approach to con-\nflict resolution among agents based on their social preferences.",
+      "size": 989,
+      "sentences": 5
+    },
+    {
+      "id": 72,
+      "content": "= A[i]; R[i] = External Reward; ▷ normal\nend\n18\nend\n19\nobjective. The tie-breaking mechanism in our paper outlines an approach to con-\nflict resolution among agents based on their social preferences. We first need\nto clarify the definitions of Invalid Actions and Restricted Actions. Invalid\nActions are actions that would cause an agent to collide with a static ob-\nject or boundary within the environment, rendering the action unfeasible. Restricted Actions are actions would result in dynamic collisions between\nagents,dependingontheirintendedmovementsduringthesametimestep. To\nprocess action validation and conflict resolution, agents are sorted based on\ntheir SVOs at the begin, from the most prosocial to the most self-interested\n23\n=== 페이지 24 ===\n[Line 1]. This ranking dictates the priority with which each agent’s actions\nare validated and adjusted in the face of potential conflicts. Then, agents\nare checked in descending order of prosociality for invalid actions [Line 2-9].",
+      "size": 986,
+      "sentences": 8
+    },
+    {
+      "id": 73,
+      "content": "he priority with which each agent’s actions\nare validated and adjusted in the face of potential conflicts. Then, agents\nare checked in descending order of prosociality for invalid actions [Line 2-9]. If an invalid action is detected, the agent’s action is changed to ’stay idle’\nto avoid static collision [Line 5]. If ’staying idle’ still results in a restricted\naction (potential collision with another agent), this action is flagged, and the\nsituation needs further resolution [Line 6-9]. The next operation of Algo-\nrithm 3 is resolving restricted actions. For agents causing dynamic collisions,\ntheir actions are set to ’stay idle’ [Line 12]. If waiting does not resolve the\ncollision, actions of conflicting agents are reassessed and adjusted at the end\nof the consideration chain. The chain continues until all agents have valid\nactions [Line 15].",
+      "size": 853,
+      "sentences": 8
+    },
+    {
+      "id": 74,
+      "content": "ing does not resolve the\ncollision, actions of conflicting agents are reassessed and adjusted at the end\nof the consideration chain. The chain continues until all agents have valid\nactions [Line 15]. Only agents with higher SVOs (more prosocial) receive\npenalties for collisions [Line 13], reflecting their role in facilitating smoother\ngroup dynamics by yielding. Self-interested agents are less likely to be pe-\nnalized, preserving their direct routes or actions unless absolutely necessary. This tie-breaking mechanism effectively uses SVO as a prioritization tool in\nconflict resolution, where more cooperative agents are more inclined to com-\npromise for the greater good. The algorithm potentially make these systems\nmore acceptable and understandable in human-centric environments. Fig. 4 illustrates an example scenario. The numbers in circles indicate the\ninitial order in which agents are checked based on their SVOs, arranged in\ndescendingorder.",
+      "size": 956,
+      "sentences": 9
+    },
+    {
+      "id": 75,
+      "content": "in human-centric environments. Fig. 4 illustrates an example scenario. The numbers in circles indicate the\ninitial order in which agents are checked based on their SVOs, arranged in\ndescendingorder. Thetoparrayrepresentsthecurrentchainofconsideration\nfor resolving the collision, initially set as [0,1,2,3,4]. In Fig. 4(a), agent 0’s\naction is assessed first. It appears valid and remains unchanged, assuming\nthat if agent 2 can execute its current plan, there will be no conflict. Next, in\nFig. 4(b), agent 1 is found to be performing an invalid action and is therefore\nset to stay idle. However, this results in a restricted action affecting agent\n3 (Fig. 4(d)), prompting its addition to the list for evaluation. Before this,\nFig. 4(c) shows that agent 2 is performing a valid action. When agent 3’s\naction is evaluated, it is changed to ’stay idle,’ necessitating a reevaluation of\nagent 2 after agent 4’s actions are considered (as shown in Fig. 4(e)).",
+      "size": 957,
+      "sentences": 16
+    },
+    {
+      "id": 76,
+      "content": "is performing a valid action. When agent 3’s\naction is evaluated, it is changed to ’stay idle,’ necessitating a reevaluation of\nagent 2 after agent 4’s actions are considered (as shown in Fig. 4(e)). Upon\nreconsideration, agent 2’s action is deemed restricted (Fig. 4(f)), and it is set\nto stay idle. This change prompts the addition of agents 0 and 4 back into\nthe consideration chain, as shown in Fig. 4(g). The deadlock is ultimately\nresolved when all agents are set to ’stay idle.’ In this scenario, agents 1,\n2, and 0 receive collision penalties due to conflicts with agents 3, 4, and 2\nrespectively. 24\n=== 페이지 25 ===\nFigure 5: Overview of the Network of SYLPH. 5. Attention-based Network\nThenetworkarchitecturedescribedencompassesthreedistinctinputcom-\nponents as shown in Fig. 5. The first channel is grid-level observation, es-\nsentially the detailed environment within the agent’s field of view (FoV),\ncentered around itself.",
+      "size": 935,
+      "sentences": 13
+    },
+    {
+      "id": 77,
+      "content": "sthreedistinctinputcom-\nponents as shown in Fig. 5. The first channel is grid-level observation, es-\nsentially the detailed environment within the agent’s field of view (FoV),\ncentered around itself. The second channel is a vector that directs the agent\ntowards its goal. The third channel comprises the SVOs of the agent and\nits partners, which are selected according to Section 4.1. For processing the\ngrid-level observations within the FoV and the vector pointing towards the\ngoal, we utilize the efficient encoder as outlined in our prior research [7]. Specifically, the grid-wise observation undergoes processing through two 2D\nconvolutional blocks [58], each containing two convolutional layers followed\nby a MaxPooling operation. The encoding of the goal vector is accomplished\nusing a fully connected layer. Meanwhile, the SVOs of the ego agent and its\npartners are encoded using a communication block that is based on a Graph\nTransformer [35].",
+      "size": 952,
+      "sentences": 9
+    },
+    {
+      "id": 78,
+      "content": "the goal vector is accomplished\nusing a fully connected layer. Meanwhile, the SVOs of the ego agent and its\npartners are encoded using a communication block that is based on a Graph\nTransformer [35]. Subsequently, the embeddings generated from these three\ninputs are concatenated and fed through a residual block before being de-\ncoded by a semantic transformer. The outputs are then transformed into the\nagent’s action and SVO policies, as well as blocking and value, through dif-\nferent fully connected layers and activation functions. This section will delve\ninto the detailed implementation of the communication block and semantic\ntransformer block. 5.1. Communication Block\nOurcommunicationblockdrawsinspirationfromtheHop2Tokenaggrega-\ntion approach detailed in [35]. This approach focuses on aggregating vertices\n25\n=== 페이지 26 ===\nFigure 6: Details of communication block.",
+      "size": 878,
+      "sentences": 8
+    },
+    {
+      "id": 79,
+      "content": "OurcommunicationblockdrawsinspirationfromtheHop2Tokenaggrega-\ntion approach detailed in [35]. This approach focuses on aggregating vertices\n25\n=== 페이지 26 ===\nFigure 6: Details of communication block. within a graph into ”hops” based on the graph’s structure, acknowledging\nthat these hops possess varying degrees of significance to the ego agent. This\nperspective aligns perfectly with our scenario, where agents are represented\nas vertices and their selected partners as edges in a graph. Notably, even\ndistant agents can become adjacent nodes if their influence on the ego agent\nis substantial. Therefore, combined with the partner selection Algorithm 1\nof Section 4.1, hop-based communication is more suitable for our framework\nthan general distance-based communication. In the communication block illustrated in Fig.",
+      "size": 820,
+      "sentences": 7
+    },
+    {
+      "id": 80,
+      "content": "the partner selection Algorithm 1\nof Section 4.1, hop-based communication is more suitable for our framework\nthan general distance-based communication. In the communication block illustrated in Fig. 6, the inputs include the\n⃗\nglobal agent’s social preference SVO z and the adjacency matrix A of the\ni\ndirected graph G , which is constructed according to the partner selection\na\n⃗\nmechanism. The first step involves converting A, the directed adjacency ma-\ntrix, into A, its undirected counterpart. Subsequent operations involve rais-\ning A to the 0th, 1st, and 2nd powers and symmetric normalization (SN),\n˙ ¨\nyielding the identity matrices I, A, and A as multipliers for multi-hops. Concurrently, the SVO probability distribution z is transformed into SVO\ni\nembeddings via fully connected layers, serving as vertex features v .",
+      "size": 829,
+      "sentences": 6
+    },
+    {
+      "id": 81,
+      "content": "ty matrices I, A, and A as multipliers for multi-hops. Concurrently, the SVO probability distribution z is transformed into SVO\ni\nembeddings via fully connected layers, serving as vertex features v . These\ni\nvertex features are then combined with multi-hop multipliers to encapsulate\nthe graph’s entire feature into a condensed number of multi-hop nodes k\n(k = 2 in practice), significantly streamlining computations (k ≪ n). Fol-\nlowingthisfeatureaggregation, themulti-hopnodesh areprocessedthrough\ni\nmulti-head self-attention and cross-attention layers. The output features of\n26\n=== 페이지 27 ===\n0-hop node h , emerging from these attention mechanisms, are utilized as\n0\nthe encoder embedding msg for the SVO channel, effectively capturing the\ni\ninteractions and dependencies within the graph from agent i’s perspective.",
+      "size": 821,
+      "sentences": 5
+    },
+    {
+      "id": 82,
+      "content": "rom these attention mechanisms, are utilized as\n0\nthe encoder embedding msg for the SVO channel, effectively capturing the\ni\ninteractions and dependencies within the graph from agent i’s perspective. Formally:\n\nA = A ⃗ ∨A ⃗ T\n\n\n\n I,A ˙ ,A ¨ = SN(A0,A1,A2)\nEmbedding (11)\n  S = Concat(FF(z 1 ),FF(z 2 ),··· ,FF(z n ))\n\n H = Concat(h ,h ,h ) = S ⊗I,S ⊗A ˙ ,S ⊗A ¨\n0 1 2\n Qh,Kh,Vh = Wh H,Wh H,Wh H\n s s s Q,s K,s V,s\n\n   Qh ·KhT\n Ah = Att(Qh,Kh,Vh) = Softmax( s√ s )·Vh\nSelf-attention s s s s d s (12)\nk\n  h ˆ = BN(H +Concat(A1,A2,··· ,AH)W )\n  s s s s O,s\n\n Ho = BN(h ˆ +FF(h ˆ ))\ns s s\n Qh,Kh,Vh = Wh h ,Wh Ho,Wh Ho\n c c c Q,c 0 K,c s V,c s\n\n   Qh ·KhT\n Ah = Att(Qh,Kh,Vh) = Softmax( c√ c )·Vh\nCross-attention c c c c d c (13)\nk\n  h ˆ = BN(h +Concat(Ah,Ah,··· ,AH)W )\n  c 0 c c c O,c\n\n ho = BN(h ˆ +FF(h ˆ ))\nc c c\nwhere FF(·) means the fully connected layer; Concat(·,·) indicates the con-\ncatenate operator; BN(·) denotes batch normalization. 5.2.",
+      "size": 989,
+      "sentences": 3
+    },
+    {
+      "id": 83,
+      "content": "h,··· ,AH)W )\n  c 0 c c c O,c\n\n ho = BN(h ˆ +FF(h ˆ ))\nc c c\nwhere FF(·) means the fully connected layer; Concat(·,·) indicates the con-\ncatenate operator; BN(·) denotes batch normalization. 5.2. Semantic Transformer Block\nIn contrast to earlier efforts [41] that applied a Visual Transformer as\nan encoder to enhance embeddings for observations with a larger FoV, our\napproachuniquelyintegratesaSemanticTransformerintoourexistingMulti-\nAgent Path Finding (MAPF) framework, supplanting the LSTM component. This transformer serves as a decoder, analyzing and restructuring low-level\nfeatures from diverse observational channels related to the agent, such as\nFoV observations, the directional vector to its goal, and the SVOs of agents. Inspired by the tokenizer approach used in image semantic segmentation as\ndiscussed in [59], we suggest that the agent’s environmental state can also\n27\n=== 페이지 28 ===\nFigure 7: Details of semantic transformer block. be captured in a similar way.",
+      "size": 985,
+      "sentences": 6
+    },
+    {
+      "id": 84,
+      "content": "e semantic segmentation as\ndiscussed in [59], we suggest that the agent’s environmental state can also\n27\n=== 페이지 28 ===\nFigure 7: Details of semantic transformer block. be captured in a similar way. By collecting and reorganizing low-level fea-\ntures, we aim to distill these into a predetermined number of semantic tokens\n(L = 16 in practice) via a spatial attention mechanism. These tokens, em-\nbodying high-level semantic concepts, articulate the agent’s environmental\nstate context and are subsequently processed by a standard transformer [60]\nfor contextual reasoning. Notably, echoing the temporal reliance inherent\nin a long-short-term memory (LSTM) cell, our model aspires to imbue the\nsemantic reasoning process with a memory / recurrent mechanism. As il-\nlustrated in Fig. 7, an additional memory token, representing the output\nfrom the previous timestep’s Semantic Transformer module, is incorporated.",
+      "size": 913,
+      "sentences": 7
+    },
+    {
+      "id": 85,
+      "content": "process with a memory / recurrent mechanism. As il-\nlustrated in Fig. 7, an additional memory token, representing the output\nfrom the previous timestep’s Semantic Transformer module, is incorporated. The cross-attention outcomes between this memory token and the current\ntimestep’s generated semantic tokens are harnessed as the present output of\nthe Semantic Transformer module. This refined output informs the genera-\ntion of the agent’s diverse policy actions, melding past insights with current\nobservations to navigate the agent in a clever way. It can be expressed math-\nematically as follows:\nS = Concat(fO ,((f ·W )⊗(f ·W ))). (14)\nT i,t−1 i,t A i,t B\nS represents a set of tokens that includes L semantic tokens alongside a\nT\nmemorytoken. ItisthenfedintoastandardTransformerarchitecture, where\nit undergoes an update process facilitated by the self-attention mechanism\n(as shown in Eq 12) inherent to Transformers.",
+      "size": 923,
+      "sentences": 8
+    },
+    {
+      "id": 86,
+      "content": "ngside a\nT\nmemorytoken. ItisthenfedintoastandardTransformerarchitecture, where\nit undergoes an update process facilitated by the self-attention mechanism\n(as shown in Eq 12) inherent to Transformers. The self-attention mechanism\nenables the model to dynamically weigh the importance of each token within\n28\n=== 페이지 29 ===\nS relative to the others, thereby refining their representations based on the\nT\ncontextual relationships within the set. Following the processing through\nthe Transformer, the memory token is specifically extracted from the up-\ndated set S . This memory token serves a dual purpose: it not only repre-\nT\nsents the output of the semantic transformer block for the current timestep,\nbut also becomes the input for the semantic transformer block in the sub-\nsequent timestep.",
+      "size": 793,
+      "sentences": 5
+    },
+    {
+      "id": 87,
+      "content": "purpose: it not only repre-\nT\nsents the output of the semantic transformer block for the current timestep,\nbut also becomes the input for the semantic transformer block in the sub-\nsequent timestep. This cyclical integration of the memory token allows for\nthe preservation and transference of context and learned information across\ntimesteps, effectively enabling the model to maintain a continuous thread of\nrelevant information throughout the sequence of actions or decisions. The\nincorporation of a memory token within the set of semantic tokens facilitates\na more nuanced and contextually aware processing of information, enhanc-\ning the model’s ability to make informed decisions based on both the current\nsemantic context and the historical context encapsulated within the memory\ntoken. 6. Experiments\nIn this section, we give some simulations and experimental validation for\nthe proposed framework and mechanism. 6.1.",
+      "size": 924,
+      "sentences": 6
+    },
+    {
+      "id": 88,
+      "content": "xt and the historical context encapsulated within the memory\ntoken. 6. Experiments\nIn this section, we give some simulations and experimental validation for\nthe proposed framework and mechanism. 6.1. Symmetric Pathfinding Case Study\nIn our study, we first consider experiments in a completely symmetric\nenvironment, a setting inherently susceptible to social dilemmas. Using the\nconfigurationemployedin[61](asdepictedinFig.8(a)),weplacedtwoagents\natopposingendsofanarrowcorridorwhicharewideenoughtoaccommodate\njust one robot at a time, with each agent’s starting position serving as the\nother’s goal. The first type of corridors have two recesses capable of fitting one robot\neach, making the pathfinding environment solvable. These recesses are sym-\nmetrically positioned, yet unlike [61], the corridor length and the recesses’\nlocations are subject to random variation in our experiments. Further diver-\nsifying our experimental setup, we introduced an I-shaped map, presented\nin Fig. 8(b).",
+      "size": 992,
+      "sentences": 10
+    },
+    {
+      "id": 89,
+      "content": "e corridor length and the recesses’\nlocations are subject to random variation in our experiments. Further diver-\nsifying our experimental setup, we introduced an I-shaped map, presented\nin Fig. 8(b). Similar to the first environment, the narrow corridor’s length\nwithinthismapremainsvariable. Throughoutourtrainingprocess, wemain-\ntained a probabilistic distribution for the occurrence of each map type: 80 %\n(p = 80 %) for the corridor with recesses (recess map) and 20 % (p = 20 %)\nr I\nfor the I-shaped map. 29\n=== 페이지 30 ===\nFigure 8: Two agents symmetric pathfinding case study. TodeducetheexpectednumberofgoalsreachedbyPRIMAL3 andSYLPH\nunder the given map probabilities, we noticed the training results of PRI-\nMAL reaches approximately 1.7 goals on average, while SYLPH achieves 2\ngoals, as shown in Fig. 8(c).",
+      "size": 816,
+      "sentences": 8
+    },
+    {
+      "id": 90,
+      "content": "achedbyPRIMAL3 andSYLPH\nunder the given map probabilities, we noticed the training results of PRI-\nMAL reaches approximately 1.7 goals on average, while SYLPH achieves 2\ngoals, as shown in Fig. 8(c). Given the probabilities of encountering each\nmap type, p = 80 % for the recess map and p = 20 % for the I-shaped\nr I\nmap, we can calculate the expected contributions from each map type to the\noverall performance metrics:\nE(g ) = p ×2+p ×1 = 1.7\nPRIMAL r I\n(15)\nE(g ) = p ×2+p ×2 = 2\nSYLPH r I\nPRIMAL’s difficulty with the I-shaped map, despite its competence in navi-\ngating the recess map, underscores a fundamental limitation in its approach:\nan inclination towards self-preservation that precludes effective resolution\n3All references to PRIMAL in this section are modified versions, not the original one.",
+      "size": 808,
+      "sentences": 3
+    },
+    {
+      "id": 91,
+      "content": "amental limitation in its approach:\nan inclination towards self-preservation that precludes effective resolution\n3All references to PRIMAL in this section are modified versions, not the original one. There are two primary differences: firstly, the model is trained using the Proximal Policy\nOptimization (PPO) framework rather than the Asynchronous Advantage Actor-Critic\n(A3C); secondly, the model’s FoV incorporates heuristic maps designed in DHC. 30\n=== 페이지 31 ===\nof social dilemmas. This inclination towards self-interest, a characteristic\nstronglyembeddedinPRIMAL-trainedmodels, hamperstheirabilitytohigh\nlevel collaboration. As a result, they are often trapped in live-/deadlock in-\nstead of superior collective outcomes. SYLPH, on the other hand, breaks this\nperfect symmetry and enhances coordinated maneuvers by introducing dif-\nferent social preferences/SVOs to agents.",
+      "size": 880,
+      "sentences": 6
+    },
+    {
+      "id": 92,
+      "content": "lock in-\nstead of superior collective outcomes. SYLPH, on the other hand, breaks this\nperfect symmetry and enhances coordinated maneuvers by introducing dif-\nferent social preferences/SVOs to agents. This enables some agents to make\nmore prosocial/selfless choices in such a completely symmetric environment,\npromoting the achievement of team goals over individual optimization. For\ninstance, in the I-shaped map scenario, the change curves of SVO over time\nfor different agents are shown in Fig. 8(d). The diverse SVO values among\nthe team effectively addresses the coordination challenges inherent in the I-\nshaped map, showcasing SYLPH’s superior adaptability and its potential to\nresolve complex social dilemmas within symmetric environments. 6.2. Comparative Experiments\n6.2.1.",
+      "size": 782,
+      "sentences": 8
+    },
+    {
+      "id": 93,
+      "content": "llenges inherent in the I-\nshaped map, showcasing SYLPH’s superior adaptability and its potential to\nresolve complex social dilemmas within symmetric environments. 6.2. Comparative Experiments\n6.2.1. Performance comparison\nIn our comparison experiments, we primarily assessed three metrics: (1)\nthe success rate across 200 instances under a similar configuration, (2) the\naverage episode length required to complete these instances, and (3) the av-\nerage ratio of agents arrive their goals (arrival rate) per instance among the\n200 instances. The first metric directly assesses the effectiveness of the plan-\nner in achieving complete solutions across a wide range of scenarios. A high\nsuccessrateindicatesrobustnessandreliability, showingthattheplannercan\nconsistently solve the MAPF problem under varying conditions. The second\none reflects the efficiency of the pathfinding algorithm and the quality of the\nsolutions it generates.",
+      "size": 933,
+      "sentences": 7
+    },
+    {
+      "id": 94,
+      "content": "owingthattheplannercan\nconsistently solve the MAPF problem under varying conditions. The second\none reflects the efficiency of the pathfinding algorithm and the quality of the\nsolutions it generates. The last metric is particularly revealing, as it accounts\nfor the performance of individual agents within partially successful episodes. It provides a more detailed picture of a planner’s performance, especially in\nscenarios where not all agents may reach their destinations due to complex\ninteractions or partial failures. For traditional algorithms, success rate and\narrival rate often coincide because these methods typically either succeed\nfully (all agents reach their goals) or fail entirely (one or more agents do\nnot finish). Thus, these metrics tend to reflect the same performance as-\npect. The learning-based planners might allow for more flexibility in agent\nbehavior, leading to situations where some agents succeed while others do\nnot in the same instance.",
+      "size": 970,
+      "sentences": 7
+    },
+    {
+      "id": 95,
+      "content": "he same performance as-\npect. The learning-based planners might allow for more flexibility in agent\nbehavior, leading to situations where some agents succeed while others do\nnot in the same instance. Therefore, assessing these methods requires a finer-\ngrained metric like the arrival rate to capture the nuances of partial successes\nand individual agent failures, which the success rate alone might overlook. 31\n=== 페이지 32 ===\nFigure 9: Comparative results of SYLPH and other baseline algorithms across vari-\nous maps and configurations, analyzed using three performance indicators: success rate,\nepisode length, and arrival rate. To benchmark the performance of SYLPH against other state-of-the-art\n(SOTA) methodologies in MAPF field, we conducted a series of tests across\na spectrum of extreme environment configurations.",
+      "size": 824,
+      "sentences": 5
+    },
+    {
+      "id": 96,
+      "content": "rate. To benchmark the performance of SYLPH against other state-of-the-art\n(SOTA) methodologies in MAPF field, we conducted a series of tests across\na spectrum of extreme environment configurations. This rigorous testing was\ndesigned to evaluate how well SYLPH and its comparative baselines navigate\nincreasingly complex scenarios, reflected in the type of the environments\nand the density of agent populations. Specifically, our test environment\nconfiguration is as follows:\n• RandomMaps: Utilizeda32×32gridworldwithanobstacledensityof\n0.2 (random-32-32-0.2) and tested with varying numbers of agents: 50,\n100, 150, 200, 250, and 300, to observe the scalability of the algorithms\nunder different agent densities.",
+      "size": 713,
+      "sentences": 4
+    },
+    {
+      "id": 97,
+      "content": "ithanobstacledensityof\n0.2 (random-32-32-0.2) and tested with varying numbers of agents: 50,\n100, 150, 200, 250, and 300, to observe the scalability of the algorithms\nunder different agent densities. 32\n=== 페이지 33 ===\n• Room-like Maps: Similar in dimension and agent count to the ran-\ndom maps, these environments featured an increased obstacle density\n(≈ 0.3) and the orderly distribution of obstacles (room-32-32-0.3),\nsimulating more structured environments with additional coordination\nchallenges. • Maze Maps: Given the heightened complexity and obstacle density\nof approximately 0.5 (maze-32-32-0.5), the amount of agents was ad-\njusted to smaller team size: 8, 16, 32, 64, 128, and 256, to test the\nalgorithms’ efficiency in highly constrained environments. Toprovideacomprehensivecomparison,weincludedbothSOTAlearning-\nbased MAPF planners and traditional MAPF algorithms as baselines:\n• SCRIMP [33]: This is a learning-based MAPF planner recognized\nas SOTA.",
+      "size": 965,
+      "sentences": 4
+    },
+    {
+      "id": 98,
+      "content": "oprovideacomprehensivecomparison,weincludedbothSOTAlearning-\nbased MAPF planners and traditional MAPF algorithms as baselines:\n• SCRIMP [33]: This is a learning-based MAPF planner recognized\nas SOTA. It achieves high performance across various environments\nby leveraging communication learning and a value-based tie-breaking\nmechanism. However, SCRIMP tends to be time-consuming in densely\npopulated environments. • DCC [32]: Another SOTA learning-based method, DCC, utilizes an\nattention mechanism to select communication partners during inter-\nactions, effectively reducing the communication load. While DCC is\nfaster than SCRIMP, it does exhibit a lower success rate. • EECBS [24]: It represents a SOTA bounded suboptimal planner. Typ-\nically, setting the suboptimality factor as 1.2 strikes the best balance\nbetween path optimality and computational efficiency. • LNS2 [27]: This is currently one of the top MAPF planners.",
+      "size": 926,
+      "sentences": 8
+    },
+    {
+      "id": 99,
+      "content": "anner. Typ-\nically, setting the suboptimality factor as 1.2 strikes the best balance\nbetween path optimality and computational efficiency. • LNS2 [27]: This is currently one of the top MAPF planners. It resolves\npathconflictsthroughpriority-basedplanningandcontinuousiteration,\nachieving near-optimal solutions with extremely high success rates. • LaCAM [29]: Building on the PIBT solution, it searches all possible\nconfigurations to enhance planner performance. Unlike other tradi-\ntional methods, LaCAM measures the arrival rate, providing an addi-\ntional performance metric than just the success rate. These baseline comparisons are intended to showcase SYLPH’s adaptabil-\nity and performance across different environmental complexities and agent\n33\n=== 페이지 34 ===\nTable 1: Time consumption of SYLPH and its baselines under different configurations.",
+      "size": 852,
+      "sentences": 7
+    },
+    {
+      "id": 100,
+      "content": "ase SYLPH’s adaptabil-\nity and performance across different environmental complexities and agent\n33\n=== 페이지 34 ===\nTable 1: Time consumption of SYLPH and its baselines under different configurations. Cases radnom room-like maze\nConfiguration 32-32-0.2-200 32-32-0.3-100 32-32-0.5-32\nTime Type General Success General Success General Success\nSYLPH 100.944s 79.621s 48.643s 35.533s 5.867s 4.229s\nSCRIMP 627.914s 402.702s 422.171s 127.057s 14.635s 9.967s\nDCC 218.786s – 56.918s 36.728s 5.427s 1.891s\nEECBS 2.753s▲ 60.001s▲ 1.211s▲ 52.515s▲ 1.544s▲ 4.247s▲\nLNS2 1.620s▲ 0.429s▲ 2.635s▲ 2.496s▲ 0.029s▲ 0.029s▲\nLACAM 30.023s 28.120s 30.012s 20.015s 30.010s 29.319s\ndensities. By testing SYLPH against both cutting-edge learning-based plan-\nners and established traditional algorithms, we aimed to highlight the frame-\nwork’s strengths, particularly in scenarios requiring advanced coordination\nand long-horizon coordination capabilities amidst varying degrees of environ-\nmental constraints. In Fig.",
+      "size": 994,
+      "sentences": 4
+    },
+    {
+      "id": 101,
+      "content": "hlight the frame-\nwork’s strengths, particularly in scenarios requiring advanced coordination\nand long-horizon coordination capabilities amidst varying degrees of environ-\nmental constraints. In Fig. 9, the comparative performance of SYLPH across various map\nconfigurations, including random, room-like, and maze maps, demonstrates\nits superior capability over other learning-based planners, including DCC\nand SCRIMP. The success of SYLPH across these metrics – reliability, scal-\nability, and performance in structured environments – highlights its effective\nresolution of symmetry conflicts, a common challenge in highly structured\nscenarios such as room-like and maze maps. This performance advantage is\nattributed to the diversity of social preferences within the agent population,\nenabling SYLPH to navigate complex interactions more effectively. Addi-\ntionally, SYLPH’s design avoids the time-consuming post-processing phases\nthat other learning-based methods rely on.",
+      "size": 974,
+      "sentences": 6
+    },
+    {
+      "id": 102,
+      "content": "opulation,\nenabling SYLPH to navigate complex interactions more effectively. Addi-\ntionally, SYLPH’s design avoids the time-consuming post-processing phases\nthat other learning-based methods rely on. Instead, it enhances model per-\nformance directly through its training and execution phases, which not only\nyields higher performance but also reduces runtime significantly compared\nto its counterparts, as shown in Table 14. When compared with the SOTA bounded suboptimal MAPF planner,\nEECBS, SYLPH exhibits distinctly better performance in both random and\nroom-like maps, and comparable results in maze maps. Against LaCAM,\n4The superscript ▲ indicates that the time is C++ time, otherwise it is Python time. 34\n[표 데이터 감지됨]\n\n=== 페이지 35 ===\nparticularlyinmoredenselypopulatedrandommaps, LaCAMshowsahigher\nsuccessrate, yetSYLPHmaintainscompetitiveindividualagentarrivalrates.",
+      "size": 874,
+      "sentences": 6
+    },
+    {
+      "id": 103,
+      "content": "time, otherwise it is Python time. 34\n[표 데이터 감지됨]\n\n=== 페이지 35 ===\nparticularlyinmoredenselypopulatedrandommaps, LaCAMshowsahigher\nsuccessrate, yetSYLPHmaintainscompetitiveindividualagentarrivalrates. In more structured environments, SYLPH generally surpasses LaCAM in\nsuccess rates, although LaCAM may achieve better arrival rates. Against\nLNS2, widelyregardedasthemostadvancedMAPFplannerforitsreliability\nandoptimality,SYLPHandallotherplannerscannotgetcomparableresults. These results confirm that SYLPH not only rivals but sometimes sur-\npasses the performance of traditional SOTA MAPF algorithms in highly\nstructured environments. This is a significant achievement for a learning-\nbased framework, demonstrating that SYLPH’s socially-aware approach ef-\nfectively enhances its applicability and effectiveness across diverse and chal-\nlenging MAPF scenarios.",
+      "size": 859,
+      "sentences": 6
+    },
+    {
+      "id": 104,
+      "content": "evement for a learning-\nbased framework, demonstrating that SYLPH’s socially-aware approach ef-\nfectively enhances its applicability and effectiveness across diverse and chal-\nlenging MAPF scenarios. This experimental evidence solidifies SYLPH’s\nposition as a new SOTA method in learning-based MAPF, capable of deliv-\nering high-performance outcomes where other learning-based methods may\nstruggle. 6.2.2. Paired t-test\nIn order to rigorously assess the effectiveness of the SVO policy imple-\nmented in SYLPH, we conducted a series of paired t-tests to statistically an-\nalyze the performance differences between SYLPH and configurations with\nrandomly assigned SVOs.",
+      "size": 666,
+      "sentences": 4
+    },
+    {
+      "id": 105,
+      "content": "of the SVO policy imple-\nmented in SYLPH, we conducted a series of paired t-tests to statistically an-\nalyze the performance differences between SYLPH and configurations with\nrandomly assigned SVOs. This study was structured to compare SYLPH\nagainst three random SVO assignment methods:\n• RandomSVOAssignmentatEachStep: Thismethod,whereanagent’s\nSVO is randomly reassigned at every step, resulted in confusion and in-\neffective decision-making, as the frequent changes prevented the agents\nfrom leveraging any consistent strategy, leading to non-convergence. • Static SVO Assignment for Each Episode: Assigning SVOs at the start\nof each episode and maintaining them throughout resulted in better\nstability and some level of task accomplishment. • SVO Update Frequency Matching Partner Switching: Aligning the fre-\nquency of SVO updates with the frequency of switching partners shown\nsimilar performance as static SVO assignment for each episode.",
+      "size": 945,
+      "sentences": 4
+    },
+    {
+      "id": 106,
+      "content": "SVO Update Frequency Matching Partner Switching: Aligning the fre-\nquency of SVO updates with the frequency of switching partners shown\nsimilar performance as static SVO assignment for each episode. The experiments were conducted across different map configurations (e.g. random-32-32-0.2-200, room-32-32-0.3-100, and maze-32-32-0.5-32) with 8\n35\n=== 페이지 36 ===\nTable 2: Paired t-test results. Paired random room-like maze\nt-test 32-32-0.2-200 32-32-0.3-100 32-32-0.5-64\nStatic SVO Per Episode p<0.001 p<0.001 p<0.001\nStatic SVO Per Partner p<0.001 p<0.001 p<0.001\nagents5, andtheperformancewasstatisticallyanalyzedover200instancesfor\neach configuration. Specifically, for the random SVO experiments, to prevent\nany unfairness due to randomness, we conducted the experiment 10 times\nand used the average result. The results from these tests, as detailed in Ta-\nble 2, revealed significant statistical differences between the performances of\nSYLPH and the random SVO methods.",
+      "size": 974,
+      "sentences": 6
+    },
+    {
+      "id": 107,
+      "content": "0 times\nand used the average result. The results from these tests, as detailed in Ta-\nble 2, revealed significant statistical differences between the performances of\nSYLPH and the random SVO methods. Specifically, the p-values p obtained\nfrom the paired t-tests were much lower than the conventional significance\nthreshold (0.05, 0.01, or 0.001), indicating a statistically significant difference\nin performance favoring SYLPH. The findings clearly demonstrate that while randomly assigned SVOs\nmight achieve task completion in less structured and sparser scenarios, they\nlack the scalability and robustness required for handling complex, highly\nstructured environments. Thus, the study conclusively validates the effec-\ntiveness of the learned SVO policy within the SYLPH framework, highlight-\ning its critical role in advancing the capabilities of learning-based MAPF\nsolutions. 6.3.",
+      "size": 885,
+      "sentences": 6
+    },
+    {
+      "id": 108,
+      "content": "conclusively validates the effec-\ntiveness of the learned SVO policy within the SYLPH framework, highlight-\ning its critical role in advancing the capabilities of learning-based MAPF\nsolutions. 6.3. MAPF Ablation Experiments\nAll ablation studies took place in environments whose size\nis a random number sampled from (10,40) with 8 agents. A uni-\nform maximum time limit was set for each episode, capped at\n256 steps. All models are trained to 20M steps. The core idea of our architecture lies in integrating SVO as a tempo-\nrally extended skill within the MAPF framework. This integration empowers\nagents with diverse social preferences, equipping them to navigate and re-\nsolve the symmetrical challenges typically presented by social dilemmas.",
+      "size": 745,
+      "sentences": 7
+    },
+    {
+      "id": 109,
+      "content": "ithin the MAPF framework. This integration empowers\nagents with diverse social preferences, equipping them to navigate and re-\nsolve the symmetrical challenges typically presented by social dilemmas. To\nfurther enhance our framework, we replaced the LSTM component with a\nSemanticTransformer(ST),therebyaugmentingtheagent’sspatialinference\n5The training curves can be found at Appendix C\n36\n=== 페이지 37 ===\nFigure 10: (a), (b), and (c) represent the ablation experimental results of SYLPH vari-\nants in random maps, room-like maps, and maze maps, respectively. Consistent with\nSection 6.1, PRIMAL here refers to a variant of PRIMAL that adds a heuristic maps. capabilities. Additionally, we developed a learning-based tie-breaking mech-\nanism, offering a more efficient planner in densely populated environments\ncompared to general post-processing approaches.",
+      "size": 858,
+      "sentences": 6
+    },
+    {
+      "id": 110,
+      "content": "capabilities. Additionally, we developed a learning-based tie-breaking mech-\nanism, offering a more efficient planner in densely populated environments\ncompared to general post-processing approaches. To evaluate the impact of these key elements, we tested four SYLPH\nvariants across different map types (random, room-like, and maze maps):\n1) The complete SYLPH model incorporating all mentioned components;\n2) SYLPH minus the learning-based tie-breaking mechanism (SYLPH w/o\ntb), retaining SVO as a temporally extended skill; 3) SYLPH stripped of\nall SVO-related components, including partner selection, SMP3O, and com-\nmunication block; 4) based on (3), the semantic transformer replaced by\nLSTM. The performance enhancements brought by each element were quan-\ntified through experiments, with results showcased in Fig. 10. We utilized\nEpisode Length - the timesteps required for all agents to achieve their goals\n- as the performance metric.",
+      "size": 943,
+      "sentences": 6
+    },
+    {
+      "id": 111,
+      "content": "lement were quan-\ntified through experiments, with results showcased in Fig. 10. We utilized\nEpisode Length - the timesteps required for all agents to achieve their goals\n- as the performance metric. Notably, across the different map types, in-\ncremental additions of SYLPH components yielded significant performance\nimprovements:\n• Random Map: Transforming from PRIMAL to PRIMAL w/ Semantic\nTransformer (ST) reduced episode length by 13.86 %. Incorporating\nSVO decreased episode costs by 29.67 % compared with PRIMAL. After the inclusion of the tie-breaking mechanism, SYLPH’s episode\nlength is 38.93 % lower than PRIMAL. • Room-like Map: Here, the episode length saw a reduction of 4.71 %\nwith PRIMAL w/ ST, 15.93 % with SYLPH w/o tb, and 33.02 %\n37\n=== 페이지 38 ===\nTable 3: More Performance of Ablation Study.",
+      "size": 811,
+      "sentences": 7
+    },
+    {
+      "id": 112,
+      "content": "an PRIMAL. • Room-like Map: Here, the episode length saw a reduction of 4.71 %\nwith PRIMAL w/ ST, 15.93 % with SYLPH w/o tb, and 33.02 %\n37\n=== 페이지 38 ===\nTable 3: More Performance of Ablation Study. Map Semantic Social Tie- External Blocked Goals\nType Transformer Behavior Breaking Reward↑ Agents↓ Reached ↑\n– – – -57.490 6.904 7.924\nRandom ✓ – – -51.462 2.751 7.962\nMap ✓ ✓ – -46.926 0.5562 7.986\n✓ ✓ ✓ -39.110 0.3345 7.999\n– – – -85.358 3.133 7.87\nRoom-like ✓ – – -81.154 2.100 7.905\nMap ✓ ✓ – -74.443 0.4126 7.932\n✓ ✓ ✓ -61.210 0.2183 7.993\n– – – -158.168 27.168 7.382\nMaze ✓ – – -126.976 14.451 7.557\nMap ✓ ✓ – -90.484 1.709 7.836\n✓ ✓ ✓ -69.69 0.5189 7.977\nwith the full SYLPH model, all compared to the baseline PRIMAL\nperformance. • Maze Map: This environment highlighted the most pronounced im-\nprovements: 16.35%(PRIMALw/ST),43.13%(SYLPHw/otb), and\n58.88 % (SYLPH), showcasing the framework’s efficacy in addressing\nsocialdilemmas,particularlyprevalentduetothemaze’slongcorridors.",
+      "size": 989,
+      "sentences": 4
+    },
+    {
+      "id": 113,
+      "content": "onounced im-\nprovements: 16.35%(PRIMALw/ST),43.13%(SYLPHw/otb), and\n58.88 % (SYLPH), showcasing the framework’s efficacy in addressing\nsocialdilemmas,particularlyprevalentduetothemaze’slongcorridors. These findings underscore the substantial benefits of each component, espe-\ncially in complex environments like maze maps where social dilemmas al-\nways appear. The progression from PRIMAL to the fully-fledged SYLPH\nmodel demonstrates the significant role of spatial inference enhancement,\nSVO diversification, and the learning-based tie-breaking mechanism in ele-\nvating model performance across varied and challenging MAPF scenarios. More other performance changes are shown in Table 3. Specifically, we\nintroduce three more metrics: external reward, blocking times, and goals\nreached. These metrics collectively offer a comprehensive view of each sys-\ntem’sefficiencyandcooperativecapabilitiesundertheconstraintsofthespec-\nified experimental conditions.",
+      "size": 956,
+      "sentences": 6
+    },
+    {
+      "id": 114,
+      "content": "king times, and goals\nreached. These metrics collectively offer a comprehensive view of each sys-\ntem’sefficiencyandcooperativecapabilitiesundertheconstraintsofthespec-\nified experimental conditions. • ExternalReward: Thismetricquantifiesthecumulativerewardthatan\nagent receives from the environment over the course of an episode, ex-\nclusive of any adjustments or redistributions. A higher external reward\n38\n=== 페이지 39 ===\nis indicative of superior agent performance from RL aspect, reflecting\nsuccessful task execution within the environment. • Blocking Times: This indicator measures the frequency with which an\nagent impedes the movement of other agents, including instances where\nan agent’s presence significantly extends the optimal path length for\nothers. A lower count of blocking times suggests better spatial aware-\nnessandconsideration,contributingtosmoothercollectivepathfinding.",
+      "size": 892,
+      "sentences": 6
+    },
+    {
+      "id": 115,
+      "content": "t’s presence significantly extends the optimal path length for\nothers. A lower count of blocking times suggests better spatial aware-\nnessandconsideration,contributingtosmoothercollectivepathfinding. • Goal Reached: Representing the count of agents (with a maximum\npossiblecountof8)thatsuccessfullyreachtheirdesignatedgoalswithin\nthe specified maximum steps (256 in this study), this metric directly\nreflects the effectiveness of the agents’ pathfinding capabilities. Table 3 illustrates SYLPH’s significant improvements across all three met-\nrics in comparison to other variants, across diverse map types. It is worth\nnoting that the reduction in blocking times highlights SYLPH’s advanced\nplanning and social behavior integration. Through the incorporation of so-\ncial preferences and neighbor selection algorithm, agents are endowed with\nlong-horizon coordination abilities, enabling them to proactively accommo-\ndatethemovementsofotheragentsandeffectivelypreventpotentialconflicts.",
+      "size": 985,
+      "sentences": 6
+    },
+    {
+      "id": 116,
+      "content": "neighbor selection algorithm, agents are endowed with\nlong-horizon coordination abilities, enabling them to proactively accommo-\ndatethemovementsofotheragentsandeffectivelypreventpotentialconflicts. ThisproactivecoordinationbehaviorisamajorfocalpointofSYLPH.Unlike\nreactive collision avoidance policy that adjust behaviors based on immediate\ndilemmas, SYLPH enables agents to formulate and execute a more sophis-\nticated, forward-looking policies. This approach mitigates social dilemmas\nandconflicts,showcasingtheframework’scapacityforadvanced,anticipatory\ncoordination. 6.4. Experimental Validation\nFig. 11 showcases our implementation of SYLPH with a team of 8 real\nrobotspathfindingthrougharandommap,aroom-likemap,andamazemap. For these real world pathfinding tasks, we used the standard SYLPH model\ntrained on gridworlds without any additional finetuning/training on-robot.",
+      "size": 878,
+      "sentences": 7
+    },
+    {
+      "id": 117,
+      "content": "findingthrougharandommap,aroom-likemap,andamazemap. For these real world pathfinding tasks, we used the standard SYLPH model\ntrained on gridworlds without any additional finetuning/training on-robot. To satisfy our algorithm’s assumption that all agents’ positions are always\nperfectly known, we used the Optitrack Motion Capture System for precise\nlocalization of real robots. We equipped the robots with Mecanum wheels to\nenable movement in the four cardinal directions. However, disturbances and\ncontrol inaccuracies can cause deviations from the planned path. To address\nthese issues, we employed an Action Dependency Graph (ADG), as proposed\n39\n=== 페이지 40 ===\n(a) random map (b) room-like map\n(c) maze map\nFigure 11: Experiments with real robots on random map, room-like map, and maze map. In these figures, the black areas represent obstacles, the directed arrows indicate the\npartner selected by the agent, and the numbers denote the agent’s current SVO (ranging\nfrom 0 to 45 degrees).",
+      "size": 992,
+      "sentences": 7
+    },
+    {
+      "id": 118,
+      "content": ". In these figures, the black areas represent obstacles, the directed arrows indicate the\npartner selected by the agent, and the numbers denote the agent’s current SVO (ranging\nfrom 0 to 45 degrees). by [62], which introduces a precedence order for agents occupying a cell to\nprevent execution errors from propagating and disrupting the overall plan. Ourexperimentsdemonstratedthatagentscouldreachtheirgoalsquickly\nandwithoutcollisions, withtheADGeffectivelyeliminatingexecutionerrors. This highlights the potential of our method for real-world applications. Ad-\nditional details about our experiment can be found in Appendix D, and the\nfull video is available in the supplementary materials. 7. Conclusion\nThis paper introduces SYLPH, a socially-aware learning-based MAPF\nframework designed to address potential social dilemmas by encouraging\nagents to learn social behaviors.",
+      "size": 877,
+      "sentences": 8
+    },
+    {
+      "id": 119,
+      "content": "ary materials. 7. Conclusion\nThis paper introduces SYLPH, a socially-aware learning-based MAPF\nframework designed to address potential social dilemmas by encouraging\nagents to learn social behaviors. To these ends, we introduce the social\nvalue orientation (SVO) as a learnable dynamic choice for agents, to help\nthem make decisions that benefit the group by coupling their individual in-\nterests with those of their partners. The resulting different social preferences\ncan break homogeneity in the team, helping couple agents directly in reward\nspace to favor coordinated maneuvers, thereby improving cooperation among\nagents. With explicit social preferences and advanced communication learn-\ning mechanism, agents are able to more effectively reason about each other’s\n40\n=== 페이지 41 ===\nbehavior, as evidenced by the significant reduction in instances where agents\nblocked each other in the experiments.",
+      "size": 906,
+      "sentences": 6
+    },
+    {
+      "id": 120,
+      "content": "m, agents are able to more effectively reason about each other’s\n40\n=== 페이지 41 ===\nbehavior, as evidenced by the significant reduction in instances where agents\nblocked each other in the experiments. Through extensive testing across\nvarious map types and agent densities, we showed that SYLPH consistently\noutperforms other learning-based frameworks like SCRIMP and DCC and,\nin some scenarios, matches the performance of traditional methods currently\nconsidered state-of-the-art. Our framework pushes the performance bound-\naries of current learning-based MAPF planners and demonstrates that equip-\nping agents with intelligent social behaviors can effectively resolve prevalent\nsocial dilemmas in MAPF problems. Lookingahead, weplantofurtherrefineourlearning-basedMAPFframe-\nwork. Underour currenttraining setting, SYLPH’s social preferencelearning\nenables agents to achieve 100% success rate in various random environments\nduring training.",
+      "size": 941,
+      "sentences": 5
+    },
+    {
+      "id": 121,
+      "content": "refineourlearning-basedMAPFframe-\nwork. Underour currenttraining setting, SYLPH’s social preferencelearning\nenables agents to achieve 100% success rate in various random environments\nduring training. However, some unsolvable edge cases still arise in highly\nstructured room-like and maze maps. In our future works, we will analyze\nthese cases individually, identify their commonalities, and develop mecha-\nnisms that train agents to effectively resolve them, thus enhancing overall\nperformance. Additionally, the interpretability of agent behavior is another\nkey area of interest for our future works. We aim to establish a behavior pre-\ndiction mechanism for agents by further promoting more stable SVO choices. We envision that this advantage may help the team create predictable and\ninterpretable plans, which could be crucial for planning in mixed environ-\nments with humans.",
+      "size": 879,
+      "sentences": 7
+    },
+    {
+      "id": 122,
+      "content": "omoting more stable SVO choices. We envision that this advantage may help the team create predictable and\ninterpretable plans, which could be crucial for planning in mixed environ-\nments with humans. That is, we envision that SVO may not only help\nhumans understand the intentions of autonomous robots, but may also bet-\nter incorporate humans in such shared environments by analyzing peoples’\nsocial preferences through the use of inverse reinforcement learning, towards\nimproved robotic deployments in populated areas. ACKNOWLEDGMENT\nThis research was supported by the Singapore Ministry of Education\n(MOE), as well as by an Amazon Research Award. 41\n=== 페이지 42 ===\nAppendix A. Implementation Details\nAppendix A.1. Hyperparameters\nTable A.4 below presents the hyperparameters used to train the SYLPH\nmodel.",
+      "size": 808,
+      "sentences": 7
+    },
+    {
+      "id": 123,
+      "content": "as well as by an Amazon Research Award. 41\n=== 페이지 42 ===\nAppendix A. Implementation Details\nAppendix A.1. Hyperparameters\nTable A.4 below presents the hyperparameters used to train the SYLPH\nmodel. Hyperparameter Value Hyperparameter Value\nNumber of agents 8 Value coefficient 0.08\nNumber of SVOs 5 Policy coefficient 10\nMaximum episode length 256 Valid coefficient 0.5\nFOV size 9 Blocking coefficient 0.5\nFOV heuristic 5 Number of epochs 10\nWorld size (10, 40) Number of processes 16\nObstacle density (0.0, 0.3) Maximum number of timesteps 2e7\nOverlap decay 0.95 Minibatch size 16\nSVO importance factor 2 Imitation learning rate 0\nLearning rate 1e-5 Net size 512\nDiscount factor 0.95 SVO channel size 512\nGae lamda 0.95 Number of observation channels 9\nClip parameter for probability ratio ϵ 0.2 Goal representation size 12\nGradient clip norm 10 Goal vector length 4\nEntropy coefficient 0.01 Number of semantic tokens, L 16\nTable A.4: Hyperparameters table. Appendix A.2.",
+      "size": 973,
+      "sentences": 6
+    },
+    {
+      "id": 124,
+      "content": "probability ratio ϵ 0.2 Goal representation size 12\nGradient clip norm 10 Goal vector length 4\nEntropy coefficient 0.01 Number of semantic tokens, L 16\nTable A.4: Hyperparameters table. Appendix A.2. RL Reward Structure\nTherewardstructureforeachagent’sstepisdefinedinA.5below. Similar\nto our previous works [33, 40], agents are penalized at each timestep unless\nthey are on goal to promote faster episode completion. The episode termi-\nnates if all agents are on goal at the end of a timestep, or when the number\nof steps exceeds a pre-defined limit (256 for our model as given in A.4). Action Reward\nMove (up/down/left/right) -0.3\nStay (off goal) -0.3\nStay (on goal) 0.0\nCollision -2\nBlock -1\nTable A.5: Reward Structure\n42\n[표 데이터 감지됨]\n\n=== 페이지 43 ===\nThe blocking penalty means that if an agent occupies a space that pre-\nvents other agents from reaching their goals or significantly lengthens their\noptimal paths, a penalty is incurred proportional to the number of blockings\ncaused.",
+      "size": 986,
+      "sentences": 6
+    },
+    {
+      "id": 125,
+      "content": "an agent occupies a space that pre-\nvents other agents from reaching their goals or significantly lengthens their\noptimal paths, a penalty is incurred proportional to the number of blockings\ncaused. The specific penalty received by an agent depends on the number\nof fellow agents it blocks c. The penalty can be represented as −1·c, which\nhave been used in Eq B.1. This definition ensures that penalties are not\nonly punitive but also proportionate to the level of inconvenience caused,\nencouraging agents to consider the broader implications of their decisions on\nsystem efficiency and collective goal attainment. Appendix B. Claim and Proof\nLet there be an arbitrary value a and b selected from a finite set, and an\narbitrary value c such that:\na ∈ {−c,−2,−0.3,0};\nb ∈ {−c,−2,−0.3,0}; (B.1)\nc ∈ R and c ≥ 1;\nwhere a and b mean the ego agent and its partner’s external rewards, Rex and\ni\nRex.",
+      "size": 893,
+      "sentences": 5
+    },
+    {
+      "id": 126,
+      "content": "om a finite set, and an\narbitrary value c such that:\na ∈ {−c,−2,−0.3,0};\nb ∈ {−c,−2,−0.3,0}; (B.1)\nc ∈ R and c ≥ 1;\nwhere a and b mean the ego agent and its partner’s external rewards, Rex and\ni\nRex. According to Table A.5, we can figure out that −0.3 is the moving and\np\nstaying idle (off goal) cost; 0 is the penalty for agent standing on its goal; −2\ndenotes the collision penalty; and −c is the blocking reward. Furthermore,\nwe define a function f(x) as:\nf(x) = a·cosx+b·sinx, x ∈ [0◦,45◦]; (B.2)\nRemark. The function f(x) models the equation of Ra defined in Eq 3.\ni\nTheorem. The function f(x) is monotonically non-increasing x for any\nvalid values of a and b. Proof. For the sake of contradiction, assume that the value of the function\nf(x) is monotonically increasing. In other words, assume that x is increasing\nfrom 0◦ to 45◦ for any value a and b.",
+      "size": 857,
+      "sentences": 8
+    },
+    {
+      "id": 127,
+      "content": "and b. Proof. For the sake of contradiction, assume that the value of the function\nf(x) is monotonically increasing. In other words, assume that x is increasing\nfrom 0◦ to 45◦ for any value a and b. Then, it must be true that:\nf′(x) = −a·sinx+b·cosx > 0 (B.3)\nConsidering the domain of x and the permissible values of a and b, it must\nbe true that:\n−a·sinx ≥ 0\n(B.4)\nb·cosx ≤ 0\n43\n=== 페이지 44 ===\nHence, for the assumption to hold:\n−a·sinx > b·cosx (B.5)\nRearranging the inequality,\nsinx\n−a· > b\ncosx\n(B.6)\nb\n−tanx >\na\nBut for given domain of x,\n−tanx ≤ 0 (B.7)\nIf the above is true, it must be true that:\nb\n0 ≥−tanx >\na\n(B.8)\nb\n∴ 0 >\na\nWhich is impossible from the possible values of a and b as they are both less\nthan or equal to 0. Therefore, the assumption is false and the function f(x)\nis not monotonically increasing. By contradiction, it must be true that the function f(x) is monotonically\nnon-increasing.",
+      "size": 913,
+      "sentences": 7
+    },
+    {
+      "id": 128,
+      "content": "than or equal to 0. Therefore, the assumption is false and the function f(x)\nis not monotonically increasing. By contradiction, it must be true that the function f(x) is monotonically\nnon-increasing. In other words, the function f(x) is consistent or decreasing\nwhen x is increasing from 0◦ to 45◦ for any valid value of a and b. Appendix C. Random SVO Training Results\nThe experiments in this section is to verify the effectiveness and efficiency\nof the trained SVO policy provided by SYLPH. To clarify the efficiency of\nSYLPH, we assigned random SVOs to all agents in the comparative experi-\nment, which also served to enhance population diversity. Specifically, three\ncomparative experiments were conducted to update the agents’ SVO at dif-\nferent frequencies: 1) the SVO is set at the beginning of the episode and\nremains unchanged throughout, 2) the SVO remains unchanged until the\nagent switches partners, and 3) the SVO is randomly reset at each step.",
+      "size": 958,
+      "sentences": 7
+    },
+    {
+      "id": 129,
+      "content": "ies: 1) the SVO is set at the beginning of the episode and\nremains unchanged throughout, 2) the SVO remains unchanged until the\nagent switches partners, and 3) the SVO is randomly reset at each step. The outcomes of these experimental setups are depicted in Fig. C.12. Notably, the policy of resetting the SVO at each step resulted in confusion\n44\n=== 페이지 45 ===\nFigureC.12: TrainingcurvesforSYLPHandtworandomSVOassignmentwhichupdates\nwith varying frequencies across room-like maps, random maps, and maze maps. among agents about their SVO policy, preventing the training from converg-\ning to an effective action policy. This indicates the disruptive impact of high-\nfrequency random SVO changes on agent behavior and decision-making. In\ncontrast, the other two methods of random SVO assignment allowed agents\nto learn effective action policies, although performance metrics slightly lower\nthan those achieved by the SVO policy specifically learned by SYLPH in\nrandom and room-like maps.",
+      "size": 987,
+      "sentences": 7
+    },
+    {
+      "id": 130,
+      "content": "gnment allowed agents\nto learn effective action policies, although performance metrics slightly lower\nthan those achieved by the SVO policy specifically learned by SYLPH in\nrandom and room-like maps. This slight difference in performance might be\nattributed to the limited number of agents (only 8) involved in the train-\ning, which constrains the extent and variety of potential social dilemmas and\nconflicts within these less complex environments. Consequently, the added\nvalue of adaptive social behaviors in these settings is somewhat restricted. However, a different trend was observed in the training outcomes on maze\nmaps, which are characterized by high obstacle density and highly structured\nobstacle distribution. Here, even with just eight agents, the structured en-\nvironment teems with numerous social dilemmas and conflicts. Under these\nconditions, the SVO policy implemented by SYLPH demonstrated clear ad-\nvantages, leading to significant performance improvements.",
+      "size": 980,
+      "sentences": 6
+    },
+    {
+      "id": 131,
+      "content": "onment teems with numerous social dilemmas and conflicts. Under these\nconditions, the SVO policy implemented by SYLPH demonstrated clear ad-\nvantages, leading to significant performance improvements. The experiments validate the superiority of the SVO policy trained under\nthe SYLPH framework over randomly assigned SVO polices. Appendix D. Engineering Deployment\nAppendix D.1. Setup\nFig.D.13illustratesthe randommap, room-likemap, and mazemapused\ninourexperiment. Whenmappedtotherealworld,eachcellhasasidelength\nof 0.3m, which is slightly larger than the size of the agent to ensure that the\n45\n=== 페이지 46 ===\n(a) random map (b) room-like map\n(c) maze map\nFigure D.13: Maps for real robot experiments. agent occupies only one cell on the map. We utilized 8 robots equipped with\nMecanum wheels, each robot measuring approximately 0.23m × 0.2m. We\nused the OptiTrack Motion Capture System to get the accurate positions of\nthese 8 robots.",
+      "size": 936,
+      "sentences": 9
+    },
+    {
+      "id": 132,
+      "content": "e map. We utilized 8 robots equipped with\nMecanum wheels, each robot measuring approximately 0.23m × 0.2m. We\nused the OptiTrack Motion Capture System to get the accurate positions of\nthese 8 robots. The configuration of the agents’ starting and goal positions\nwas randomly generated. In the experiment, the robots were aware of the\nvirtual positions of obstacles and were programmed to avoid these areas. However, the real environment did not contain physical obstacles which can\nprevent interference with the line of sight of the OptiTrack motion capture\nsystem. Appendix D.2. Action dependency graph\nSYLPH generates paths assuming each agent operates perfectly at every\nstep in a discrete map. However, due to the imperfect nature of robots and\nthe continuous environment, directly executing these planned paths in the\nreal world is impractical. For example, a planner might instruct agent A to\nmove to agent B’s current position while agent B moves to a new cell.",
+      "size": 967,
+      "sentences": 10
+    },
+    {
+      "id": 133,
+      "content": "onment, directly executing these planned paths in the\nreal world is impractical. For example, a planner might instruct agent A to\nmove to agent B’s current position while agent B moves to a new cell. Exe-\ncuting this plan directly could result in collisions due to localization errors,\ndelays in motor control, or differences in velocities. Topreventsuchissuesandensurethefeasibilityofourjointsetofactions,\n46\n=== 페이지 47 ===\nweadoptthemethodproposedby[62]byconstructinganAction Dependency\nGraph (ADG). The ADG establishes a precedence order for agents occupying\na cell, meaning that faster-moving agents will wait for others if the planned\npath requires them to occupy the cell afterward. This mechanism ensures\nthat execution errors do not propagate and disrupt the overall plan. In the\nabove example, the ADG ensures that agent A will wait for B to vacate its\ncurrent cell before moving in, thus preserving the integrity of the planned\npath.",
+      "size": 943,
+      "sentences": 7
+    },
+    {
+      "id": 134,
+      "content": "pagate and disrupt the overall plan. In the\nabove example, the ADG ensures that agent A will wait for B to vacate its\ncurrent cell before moving in, thus preserving the integrity of the planned\npath. Such a mechanism ensures that the planned path is executed securely\nbetween agents, though it may introduce slight delays. Appendix D.3. Execution\nTo implement the ADG, each robot’s action must be converted into a\ntask. We define a Task object with the following attributes:\nobject Task {\ntaskID; // Unique identifier for the task\nrobotID; // ID of the robot assigned to the task\naction; // Action to be performed\nstartPos; // Initial position of the robot\nendPos; // Position after action completion\ntime; // Scheduled time for the action\ndependencies; // All Tasks that need to be completed before this\nstatus; // Current status: staged, enqueued, or completed\n};\nDuring execution, we iterate through all agents, translating their actions into\nTask objectsandconstructingtheADGfromthesetasks.",
+      "size": 994,
+      "sentences": 6
+    },
+    {
+      "id": 135,
+      "content": "fore this\nstatus; // Current status: staged, enqueued, or completed\n};\nDuring execution, we iterate through all agents, translating their actions into\nTask objectsandconstructingtheADGfromthesetasks. Eachtaskcanhave\none of three statuses: STAGED, ENQUEUED, or DONE. Initially, tasks are\nset to STAGED. When all dependencies of the task are completed, the status\nchanges to ENQUEUED, meaning readiness for execution. The task status\nupdates to DONE once the agent reaches the specified endPos. At the ROS execution level, a central node is responsible for generating\nand maintaining the ADG, as well as distributing tasks to robots when they\nare ready to be enqueued. Each robot is equipped with a robot node, which\nhandles receiving tasks from the central node, extracting goals from these\ntasks, and using a PID controller to reach those goals. Once a robot reaches\nits goal, it communicates this achievement to the central node, marking the\ntask as DONE.",
+      "size": 956,
+      "sentences": 8
+    },
+    {
+      "id": 136,
+      "content": "ode, extracting goals from these\ntasks, and using a PID controller to reach those goals. Once a robot reaches\nits goal, it communicates this achievement to the central node, marking the\ntask as DONE. The central node then uses the ADG to enqueue additional\ntasks for the robots. 47\n=== 페이지 48 ===\nReferences\n[1] R. Stern, N. R. Sturtevant, A. Felner, S. Koenig, H. Ma, T. T. Walker,\nJ. Li, D. Atzmon, L. Cohen, T. S. Kumar, et al., Multi-agent pathfind-\ning: Definitions, variants, and benchmarks, in: Twelfth Annual Sympo-\nsium on Combinatorial Search, 2019. [2] J. Li, A. Tinka, S. Kiesel, J. W. Durham, T. S. Kumar, S. Koenig, Life-\nlong multi-agent path finding in large-scale warehouses, in: Proceedings\nof the AAAI Conference on Artificial Intelligence, volume 35, 2021, pp. 11272–11281. [3] B. Wang, Z. Liu, Q. Li, A. Prorok, Mobile robot path planning in\ndynamic environments through globally guided reinforcement learning,\nIEEE Robotics and Automation Letters 5 (2020) 6932–6939.",
+      "size": 988,
+      "sentences": 7
+    },
+    {
+      "id": 137,
+      "content": "281. [3] B. Wang, Z. Liu, Q. Li, A. Prorok, Mobile robot path planning in\ndynamic environments through globally guided reinforcement learning,\nIEEE Robotics and Automation Letters 5 (2020) 6932–6939. [4] S. Polydorou, A learning-based approach for distributed planning and\ncoordination of airport surface movement operations (2021). [5] J. Li, E. Lin, H. L. Vu, S. Koenig, et al., Intersection coordination\nwith priority-based search for autonomous vehicles, in: Proceedings of\nthe AAAI Conference on Artificial Intelligence, volume 37, 2023, pp. 11578–11585. [6] H. Ma, J. Yang, L. Cohen, T. Kumar, S. Koenig, Feasibility study:\nMoving non-homogeneous teams in congested video game environments,\nin: Proceedings of the AAAI Conference on Artificial Intelligence and\nInteractive Digital Entertainment, volume 13, 2017, pp. 270–272.",
+      "size": 831,
+      "sentences": 7
+    },
+    {
+      "id": 138,
+      "content": "ving non-homogeneous teams in congested video game environments,\nin: Proceedings of the AAAI Conference on Artificial Intelligence and\nInteractive Digital Entertainment, volume 13, 2017, pp. 270–272. [7] G. Sartoretti, J. Kerr, Y. Shi, G. Wagner, T. S. Kumar, S. Koenig,\nH. Choset, Primal: Pathfinding via reinforcement and imitation multi-\nagent learning, IEEE Robotics and Automation Letters 4 (2019) 2378–\n2385. [8] Q. Lin, H. Ma, Sacha: Soft actor-critic with heuristic-based attention\nfor partially observable multi-agent path finding, IEEE Robotics and\nAutomation Letters (2023). [9] Z.Yan,C.Wu, Neuralneighborhoodsearchformulti-agentpathfinding,\nin: The Twelfth International Conference on Learning Representations,\n2024. 48\n=== 페이지 49 ===\n[10] C. Ferner, G. Wagner, H. Choset, Odrm* optimal multirobot path\nplanning in low dimensional search spaces, in: 2013 IEEE international\nconference on robotics and automation, IEEE, 2013, pp. 3854–3859.",
+      "size": 951,
+      "sentences": 7
+    },
+    {
+      "id": 139,
+      "content": "C. Ferner, G. Wagner, H. Choset, Odrm* optimal multirobot path\nplanning in low dimensional search spaces, in: 2013 IEEE international\nconference on robotics and automation, IEEE, 2013, pp. 3854–3859. [11] H. Ma, D. Harabor, P. J. Stuckey, J. Li, S. Koenig, Searching with\nconsistent prioritization for multi-agent path finding, in: Proceedings\nof the AAAI conference on artificial intelligence, volume 33, 2019, pp. 7643–7650. [12] M. Tan, Multi-agent reinforcement learning: Independent vs. cooper-\native agents, in: Proceedings of the tenth international conference on\nmachine learning, 1993, pp. 330–337. [13] M. Damani, Z. Luo, E. Wenzel, G. Sartoretti, Primal 2: Pathfind-\ning via reinforcement and imitation multi-agent learning-lifelong, IEEE\nRobotics and Automation Letters 6 (2021) 2666–2673.",
+      "size": 801,
+      "sentences": 7
+    },
+    {
+      "id": 140,
+      "content": "–337. [13] M. Damani, Z. Luo, E. Wenzel, G. Sartoretti, Primal 2: Pathfind-\ning via reinforcement and imitation multi-agent learning-lifelong, IEEE\nRobotics and Automation Letters 6 (2021) 2666–2673. [14] H. Guan, Y. Gao, M. Zhao, Y. Yang, F. Deng, T. L. Lam, Ab-mapper:\nAttention and bicnet based multi-agent path planning for dynamic en-\nvironment, in: 2022 IEEE/RSJ International Conference on Intelligent\nRobots and Systems (IROS), IEEE, 2022, pp. 13799–13806. [15] J. Li, D. Harabor, P. J. Stuckey, H. Ma, G. Gange, S. Koenig, Pair-\nwise symmetry reasoning for multi-agent path finding search, Artificial\nIntelligence 301 (2021) 103574. [16] W. Schwarting, A. Pierson, J. Alonso-Mora, S. Karaman, D. Rus, Social\nbehaviorforautonomousvehicles, ProceedingsoftheNationalAcademy\nof Sciences 116 (2019) 24972–24978. [17] J. Gao, Y. Li, X. Li, K. Yan, K. Lin, X. Wu, A review of graph-\nbased multi-agent pathfinding solvers: From classical to beyond classi-\ncal, Knowledge-Based Systems (2023) 111121.",
+      "size": 1000,
+      "sentences": 7
+    },
+    {
+      "id": 141,
+      "content": ") 24972–24978. [17] J. Gao, Y. Li, X. Li, K. Yan, K. Lin, X. Wu, A review of graph-\nbased multi-agent pathfinding solvers: From classical to beyond classi-\ncal, Knowledge-Based Systems (2023) 111121. [18] G. Wagner, H. Choset, M*: A complete multirobot path planning al-\ngorithm with performance bounds, in: 2011 IEEE/RSJ international\nconference on intelligent robots and systems, IEEE, 2011, pp. 3260–\n3267. 49\n=== 페이지 50 ===\n[19] G. Sharon, R. Stern, A. Felner, N. R. Sturtevant, Conflict-based search\nfor optimal multi-agent pathfinding, Artificial intelligence 219 (2015)\n40–66. [20] S.-H. Chan, J. Li, G. Gange, D. Harabor, P. J. Stuckey, S. Koenig, Ecbs\nwith flex distribution for bounded-suboptimal multi-agent path find-\ning, in: Proceedings of the International Symposium on Combinatorial\nSearch, volume 12, 2021, pp. 159–161. [21] J. Pearl, Heuristics: intelligent search strategies for computer problem\nsolving, Addison-Wesley Longman Publishing Co., Inc., 1984.",
+      "size": 974,
+      "sentences": 8
+    },
+    {
+      "id": 142,
+      "content": "posium on Combinatorial\nSearch, volume 12, 2021, pp. 159–161. [21] J. Pearl, Heuristics: intelligent search strategies for computer problem\nsolving, Addison-Wesley Longman Publishing Co., Inc., 1984. [22] G. Wagner, H. Choset, Subdimensional expansion for multirobot path\nplanning, Artificial intelligence 219 (2015) 1–24. [23] M. Barer, G. Sharon, R. Stern, A. Felner, Suboptimal variants of the\nconflict-based search algorithm for the multi-agent pathfinding problem,\nin: ProceedingsoftheinternationalsymposiumoncombinatorialSearch,\nvolume 5, 2014, pp. 19–27. [24] J. Li, W. Ruml, S. Koenig, Eecbs: A bounded-suboptimal search for\nmulti-agent path finding, in: Proceedings of the AAAI conference on\nartificial intelligence, volume 35, 2021, pp. 12353–12362.",
+      "size": 759,
+      "sentences": 8
+    },
+    {
+      "id": 143,
+      "content": ". [24] J. Li, W. Ruml, S. Koenig, Eecbs: A bounded-suboptimal search for\nmulti-agent path finding, in: Proceedings of the AAAI conference on\nartificial intelligence, volume 35, 2021, pp. 12353–12362. [25] J. Li, Z. Chen, D. Harabor, P. J. Stuckey, S. Koenig, Anytime multi-\nagentpathfindingvialargeneighborhoodsearch, in: InternationalJoint\nConference on Artificial Intelligence 2021, Association for the Advance-\nment of Artificial Intelligence (AAAI), 2021, pp. 4127–4135. [26] P. Shaw, Using constraint programming and local search methods to\nsolvevehicleroutingproblems, in: Internationalconferenceonprinciples\nand practice of constraint programming, Springer, 1998, pp. 417–431. [27] J. Li, Z. Chen, D. Harabor, P. J. Stuckey, S. Koenig, Mapf-lns2: Fast\nrepairing for multi-agent path finding via large neighborhood search,\nin: Proceedings of the AAAI Conference on Artificial Intelligence, vol-\nume 36, 2022, pp. 10256–10265.",
+      "size": 931,
+      "sentences": 9
+    },
+    {
+      "id": 144,
+      "content": "S. Koenig, Mapf-lns2: Fast\nrepairing for multi-agent path finding via large neighborhood search,\nin: Proceedings of the AAAI Conference on Artificial Intelligence, vol-\nume 36, 2022, pp. 10256–10265. [28] K. Okumura, M. Machida, X. D´efago, Y. Tamura, Priority inheritance\nwith backtracking for iterative multi-agent path finding, Artificial In-\ntelligence 310 (2022) 103752. 50\n=== 페이지 51 ===\n[29] K. Okumura, Lacam: Search-based algorithm for quick multi-agent\npathfinding, in: Proceedings of the AAAI Conference on Artificial In-\ntelligence, volume 37, 2023, pp. 11655–11662. [30] Q. Li, F. Gama, A. Ribeiro, A. Prorok, Graph neural networks for de-\ncentralizedmulti-robotpathplanning, in: 2020IEEE/RSJInternational\nConference on Intelligent Robots and Systems (IROS), IEEE, 2020, pp. 11785–11792. [31] Q. Li, W. Lin, Z. Liu, A. Prorok, Message-aware graph attention net-\nworks for large-scale multi-robot path planning, IEEE Robotics and\nAutomation Letters 6 (2021) 5533–5540.",
+      "size": 980,
+      "sentences": 8
+    },
+    {
+      "id": 145,
+      "content": "0, pp. 11785–11792. [31] Q. Li, W. Lin, Z. Liu, A. Prorok, Message-aware graph attention net-\nworks for large-scale multi-robot path planning, IEEE Robotics and\nAutomation Letters 6 (2021) 5533–5540. [32] Z. Ma, Y. Luo, J. Pan, Learning selective communication for multi-\nagent path finding, IEEE Robotics and Automation Letters 7 (2021)\n1455–1462. [33] Y. Wang, B. Xiang, S. Huang, G. Sartoretti, Scrimp: Scalable com-\nmunication for reinforcement-and imitation-learning-based multi-agent\npathfinding, arXiv preprint arXiv:2303.00605 (2023). [34] W.Li,H.Chen,B.Jin,W.Tan,H.Zha,X.Wang, Multi-agentpathfind-\ningwithprioritizedcommunicationlearning, in: 2022InternationalCon-\nference on Robotics and Automation (ICRA), IEEE, 2022, pp. 10695–\n10701. [35] J. Chen, K. Gao, G. Li, K. He, Nagphormer: A tokenized graph\ntransformer for node classification in large graphs, arXiv preprint\narXiv:2206.04910 (2022).",
+      "size": 905,
+      "sentences": 8
+    },
+    {
+      "id": 146,
+      "content": "on (ICRA), IEEE, 2022, pp. 10695–\n10701. [35] J. Chen, K. Gao, G. Li, K. He, Nagphormer: A tokenized graph\ntransformer for node classification in large graphs, arXiv preprint\narXiv:2206.04910 (2022). [36] W.Kim, J.Park, Y.Sung, Communicationinmulti-agentreinforcement\nlearning: Intention sharing, in: International Conference on Learning\nRepresentations, 2020. [37] Z.Ding, T.Huang, Z.Lu, Learningindividuallyinferredcommunication\nfor multi-agent cooperation, Advances in neural information processing\nsystems 33 (2020) 22069–22079. [38] Z. Liu, B. Chen, H. Zhou, G. Koushik, M. Hebert, D. Zhao, Map-\nper: Multi-agent path planning with evolutionary reinforcement learn-\ning in mixed dynamic environments, in: 2020 IEEE/RSJ International\n51\n=== 페이지 52 ===\nConference on Intelligent Robots and Systems (IROS), IEEE, 2020, pp. 11748–11754.",
+      "size": 837,
+      "sentences": 7
+    },
+    {
+      "id": 147,
+      "content": "volutionary reinforcement learn-\ning in mixed dynamic environments, in: 2020 IEEE/RSJ International\n51\n=== 페이지 52 ===\nConference on Intelligent Robots and Systems (IROS), IEEE, 2020, pp. 11748–11754. [39] Z. Ma, Y. Luo, H. Ma, Distributed heuristic multi-agent path find-\ning with communication, in: 2021 IEEE International Conference on\nRobotics and Automation (ICRA), IEEE, 2021, pp. 8699–8705. [40] C. He, T. Yang, T. Duhan, Y. Wang, G. Sartoretti, Alpha: Attention-\nbased long-horizon pathfinding in highly-structured areas, arXiv\npreprint arXiv:2310.08350 (2023). [41] L. Virmani, Z. Ren, S. Rathinam, H. Choset, Subdimensional expan-\nsion using attention-based learning for multi-agent path finding, arXiv\npreprint arXiv:2109.14695 (2021). [42] C. G. McClintock, S. T. Allison, Social value orientation and helping\nbehavior 1, Journal of Applied Social Psychology 19 (1989) 353–362.",
+      "size": 888,
+      "sentences": 7
+    },
+    {
+      "id": 148,
+      "content": "nt path finding, arXiv\npreprint arXiv:2109.14695 (2021). [42] C. G. McClintock, S. T. Allison, Social value orientation and helping\nbehavior 1, Journal of Applied Social Psychology 19 (1989) 353–362. [43] R. O. Murphy, K. A. Ackermann, M. J. Handgraaf, Measuring social\nvalue orientation, Judgment and Decision making 6 (2011) 771–781. [44] D. Zhang, J. Xue, Y. Cui, Y. Wang, E. Liu, W. Jing, J. Chen, R. Xiong,\nY. Wang, Zero-shot transfer learning of driving policy via socially ad-\nversarial traffic flow, arXiv preprint arXiv:2304.12821 (2023). [45] Z. Dai, T. Zhou, K. Shao, D. H. Mguni, B. Wang, H. Jianye, Socially-\nattentivepolicyoptimizationinmulti-agentself-drivingsystem, in: Con-\nference on Robot Learning, PMLR, 2023, pp. 946–955. [46] K. R. McKee, I. Gemp, B. McWilliams, E. A. Du´en˜ez-Guzm´an,\nE. Hughes, J. Z. Leibo, Social diversity and social preferences in mixed-\nmotive reinforcement learning, arXiv preprint arXiv:2002.02325 (2020).",
+      "size": 953,
+      "sentences": 8
+    },
+    {
+      "id": 149,
+      "content": "McKee, I. Gemp, B. McWilliams, E. A. Du´en˜ez-Guzm´an,\nE. Hughes, J. Z. Leibo, Social diversity and social preferences in mixed-\nmotive reinforcement learning, arXiv preprint arXiv:2002.02325 (2020). [47] U. Madhushani, K. R. McKee, J. P. Agapiou, J. Z. Leibo, R. Everett,\nT.Anthony,E.Hughes,K.Tuyls,E.A.Du´en˜ez-Guzma´n, Heterogeneous\nsocial value orientation leads to meaningful diversity in sequential social\ndilemmas, arXiv preprint arXiv:2305.00768 (2023). [48] N. Jaques, A. Lazaridou, E. Hughes, C. Gulcehre, P. Ortega, D. Strouse,\nJ. Z. Leibo, N. De Freitas, Social influence as intrinsic motivation for\nmulti-agent deep reinforcement learning, in: International conference\non machine learning, PMLR, 2019, pp. 3040–3049. 52\n=== 페이지 53 ===\n[49] C. Li, T. Wang, C. Wu, Q. Zhao, J. Yang, C. Zhang, Celebrating diver-\nsity in shared multi-agent reinforcement learning, Advances in Neural\nInformation Processing Systems 34 (2021) 3991–4002.",
+      "size": 944,
+      "sentences": 8
+    },
+    {
+      "id": 150,
+      "content": "==\n[49] C. Li, T. Wang, C. Wu, Q. Zhao, J. Yang, C. Zhang, Celebrating diver-\nsity in shared multi-agent reinforcement learning, Advances in Neural\nInformation Processing Systems 34 (2021) 3991–4002. [50] B. Eysenbach, A. Gupta, J. Ibarz, S. Levine, Diversity is all you\nneed: Learning skills without a reward function, arXiv preprint\narXiv:1802.06070 (2018). [51] A. Sharma, S. Gu, S. Levine, V. Kumar, K. Hausman, Dynamics-aware\nunsuperviseddiscoveryofskills, arXivpreprintarXiv:1907.01657(2019). [52] S. He, J. Shao, X. Ji, Skill discovery of coordination in multi-agent\nreinforcement learning, arXiv preprint arXiv:2006.04021 (2020). [53] H. Ma, W. Ho¨nig, T. S. Kumar, N. Ayanian, S. Koenig, Lifelong path\nplanning with kinematic constraints for multi-agent pickup and deliv-\nery, in: Proceedings of the AAAI Conference on Artificial Intelligence,\nvolume 33, 2019, pp. 7651–7658.",
+      "size": 884,
+      "sentences": 6
+    },
+    {
+      "id": 151,
+      "content": "S. Koenig, Lifelong path\nplanning with kinematic constraints for multi-agent pickup and deliv-\nery, in: Proceedings of the AAAI Conference on Artificial Intelligence,\nvolume 33, 2019, pp. 7651–7658. [54] A. Skrynnik, A. Andreychuk, M. Nesterova, K. Yakovlev, A. Panov,\nLearn to follow: Decentralized lifelong multi-agent pathfinding via plan-\nning and learning, arXiv preprint arXiv:2310.01207 (2023). [55] R. Chandra, R. Maligi, A. Anantula, J. Biswas, Socialmapf: Optimal\nand efficient multi-agent path finding with strategic agents for social\nnavigation, IEEE Robotics and Automation Letters (2023). [56] Y. Yang, R. Luo, M. Li, M. Zhou, W. Zhang, J. Wang, Mean field multi-\nagent reinforcement learning, in: International conference on machine\nlearning, PMLR, 2018, pp. 5571–5580. [57] R. Lowe, Y. I. Wu, A. Tamar, J. Harb, O. Pieter Abbeel, I. Mor-\ndatch, Multi-agent actor-critic for mixed cooperative-competitive envi-\nronments, Advances in neural information processing systems 30 (2017).",
+      "size": 996,
+      "sentences": 7
+    },
+    {
+      "id": 152,
+      "content": ", Y. I. Wu, A. Tamar, J. Harb, O. Pieter Abbeel, I. Mor-\ndatch, Multi-agent actor-critic for mixed cooperative-competitive envi-\nronments, Advances in neural information processing systems 30 (2017). [58] K. Simonyan, A. Zisserman, Very deep convolutional networks for large-\nscale image recognition, arXiv preprint arXiv:1409.1556 (2014). [59] B. Wu, C. Xu, X. Dai, A. Wan, P. Zhang, Z. Yan, M. Tomizuka, J. Gon-\nzalez, K. Keutzer, P. Vajda, Visual transformers: Token-based im-\nage representation and processing for computer vision, arXiv preprint\narXiv:2006.03677 (2020). 53\n=== 페이지 54 ===\n[60] A.Vaswani, N.Shazeer, N.Parmar, J.Uszkoreit, L.Jones, A.N.Gomez,\nL(cid:32) . Kaiser, I. Polosukhin, Attention is all you need, Advances in neural\ninformation processing systems 30 (2017). [61] M.Bettini, A.Shankar, A.Prorok, Heterogeneousmulti-robotreinforce-\nment learning, arXiv preprint arXiv:2301.07137 (2023).",
+      "size": 912,
+      "sentences": 6
+    },
+    {
+      "id": 153,
+      "content": "l you need, Advances in neural\ninformation processing systems 30 (2017). [61] M.Bettini, A.Shankar, A.Prorok, Heterogeneousmulti-robotreinforce-\nment learning, arXiv preprint arXiv:2301.07137 (2023). [62] W. Ho¨nig, S. Kiesel, A. Tinka, J. W. Durham, N. Ayanian, Persistent\nand robust execution of mapf schedules in warehouses, IEEE Robotics\nand Automation Letters 4 (2019) 1125–1131. 54",
+      "size": 387,
+      "sentences": 4
+    }
+  ]
+}

@@ -1,0 +1,536 @@
+{
+  "source": "ArXiv",
+  "filename": "039_Coordinating_CAV_Swarms_at_Intersections_with_a_De.pdf",
+  "total_chars": 59949,
+  "total_chunks": 88,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "=== 페이지 1 ===\nARXIV 1\nCoordinating CAV Swarms at Intersections with a\nDeep Learning Model\nJiawei Zhang, Shen Li, Li Li, Fellow, IEEE\nAbstract—Connected and automated vehicles (CAVs) are unceasingrobotswarmflowsthatarriveatconflictingregions. viewed as a special kind of robots that have the potential Usually, we try to turn conventional signalized intersections\nto significantly improve the safety and efficiency of traffic. In\nto be signal-free so that the traffic efficiency can be boosted\ncontrast to many swarm robotics studies that are demonstrated\nby better organizing the passing order of CAV swarms. The\nin labs by employing a small number of robots, CAV studies\naims to achieve cooperative driving of unceasing robot swarm number of CAVs in swarm flows is infinitely large, and\nflows. However, how to get the optimal passing order of such the instantaneous arrivals at a certain conflict area is also\nrobot swarm flows even for a signal-free intersection is an NP- potentially large.",
+      "size": 993,
+      "sentences": 5
+    },
+    {
+      "id": 2,
+      "content": "However, how to get the optimal passing order of such the instantaneous arrivals at a certain conflict area is also\nrobot swarm flows even for a signal-free intersection is an NP- potentially large. hard problem (specifically, enumerating based algorithm takes\nInsuchconditions,thecoreproblemistodeterminethese-\ndays to find the optimal solution to a 20-CAV scenario). Here,\nquentialorderofCAVstooccupyacertainconflictingarea[1],\nweintroduceanovelcooperativedrivingalgorithm(AlphaOrder)\nthat combines offline deep learning and online tree searching to [8]. One typical example for such right-of-way arrangements\nfindanear-optimalpassingorderinreal-time.AlphaOrderbuilds istofindtheoptimalpassingorderthatcanminimizethetotal\na pointer network model from solved scenarios and generates delay of all CAVs for a signal-free intersection. It has been\nnear-optimal passing orders instantaneously for new scenarios.",
+      "size": 908,
+      "sentences": 5
+    },
+    {
+      "id": 3,
+      "content": "nimizethetotal\na pointer network model from solved scenarios and generates delay of all CAVs for a signal-free intersection. It has been\nnear-optimal passing orders instantaneously for new scenarios. shown in papers [3], [9], [10] that a better passing order can\nFurthermore, our approach provides a general approach to\nimprove the performance of the CAV swarms system, while a\nmanaging preemptive resource sharing between swarm robotics\n(e.g.,schedulingmultipleautomatedguidedvehicles(AGVs)and poor order may cause traffic congestion. unmanned aerial vehicles (UAVs) at conflicting areas). It is extremely challenging to find the (near-)optimal pass-\ning order because: (i) the number of passing orders grows\nIndex Terms—Connected and automated vehicles (CAVs), co-\noperative driving, signal-free intersection, robot swarms, deep exponentially with the number of vehicles, e.g., there are\nlearning.",
+      "size": 899,
+      "sentences": 5
+    },
+    {
+      "id": 4,
+      "content": "ers grows\nIndex Terms—Connected and automated vehicles (CAVs), co-\noperative driving, signal-free intersection, robot swarms, deep exponentially with the number of vehicles, e.g., there are\nlearning. approximately 8.159×1047 passing orders for the scenario\nwith 40 vehicles; (ii) algorithm is generally deployed at a\nroadside unit and the edge computing capability is limited;\nI. INTRODUCTION\n(iii) algorithm should satisfy the real-time requirement since\nCONNECTED and automated vehicle (CAV) swarms are vehicles are moving. expectedtobeamongthefirstlarge-scaleroboticsystems Researchers have proposed various algorithms for solving\ntoenterandwidelyaffectexistingsocialsystems,andtobethe passingordersinthelasttwodecades.Thesealgorithmscanbe\nkey participants in next-generation intelligent transportation roughly categorized into three kinds. The first category is the\nsystem [1]–[3].",
+      "size": 885,
+      "sentences": 5
+    },
+    {
+      "id": 5,
+      "content": "he passingordersinthelasttwodecades.Thesealgorithmscanbe\nkey participants in next-generation intelligent transportation roughly categorized into three kinds. The first category is the\nsystem [1]–[3]. With the aid of vehicle-to-vehicle communi- reservationalgorithms thatroughlyfollow thefirst-come-first-\ncation, CAVs can share their states (e.g., position, velocity, served(FCFS)principle[11]–[13].Ineachroundofplanning,\netc.) and intentions (e.g., behaviors, path, etc.) to achieve co- thearrivaltimeofCAVstotheconflictareawillbeestimated,\noperative driving, improving efficiency while ensuring safety. and then the passing order is arranged in ascending order of\nThe major tasks of CAV swarms are pretty different from their arrival times. Although the FCFS based algorithms have\nthose of other kinds of mobile swarm robots [4], [5].",
+      "size": 836,
+      "sentences": 7
+    },
+    {
+      "id": 6,
+      "content": "ranged in ascending order of\nThe major tasks of CAV swarms are pretty different from their arrival times. Although the FCFS based algorithms have\nthose of other kinds of mobile swarm robots [4], [5]. First, a low computational burden, its generated passing order is\ninstead of exploring the unknown environment, CAV swarms usually far from the optimal solution [3], [9], [14]. The sec-\nare often assumed to be fully aware of driving environments. ond category is mathematical programming algorithms which\nSecond, the communication between swarms is fast and re- transfer the whole problem into an optimization problem with\nliable [6]; the guidance message can be instantly delivered severalintegervariablesintroducedtodenotetherelativeorder\nfrom the roadside decision support unit to swarms. Third, we between vehicles [15]–[18]. However, due to the combination\ndo not require CAV swarms to obtain certain formations [7].",
+      "size": 921,
+      "sentences": 7
+    },
+    {
+      "id": 7,
+      "content": "tetherelativeorder\nfrom the roadside decision support unit to swarms. Third, we between vehicles [15]–[18]. However, due to the combination\ndo not require CAV swarms to obtain certain formations [7]. explosion, the resulting mixed-integer programming problem\nGenerally,weaimtoguideeveryswarmtorunalongtheroad is often intractable to solve when the size of CAV swarms is\nas quickly as possible and pass the conflicting area without large (more than 20 CAVs). collisions.Fourth,unlikemanyswarmroboticsstudiesfocused Thethirdcategoryistreesearchalgorithmsthatdescribethe\non a small number of robots, CAV swarm studies targeted passingorderasasequenceofsymbols(CAVs)andformulate\nthe problem as a tree search problem [19]–[21]. The detailed\n(Correspondingauthor:LiLi)\ntree formulations are diverse and usually dependent on the\nJ. Zhang is with the Department of Automation, Tsinghua University,\nBeijing100084,China. search algorithms.",
+      "size": 929,
+      "sentences": 7
+    },
+    {
+      "id": 8,
+      "content": "ailed\n(Correspondingauthor:LiLi)\ntree formulations are diverse and usually dependent on the\nJ. Zhang is with the Department of Automation, Tsinghua University,\nBeijing100084,China. search algorithms. For example, starting from an empty root\nS. Li is with the Department of Civil Engineering, Tsinghua University, node,thechildnodecanbeexpandedbyaddinganuncovered\nBeijing100084,China. vehicle’s symbol at the end of the partial order denoted by its\nL.LiiswiththeDepartmentofAutomation,BNRist,TsinghuaUniversity,\nBeijing100084,China(e-mail:li-li@tsinghua.edu.cn). parent node. This formulation makes the Monte Carlo tree\n2202\nvoN\n01\n]OR.sc[\n1v79250.1122:viXra\n=== 페이지 2 ===\nScenario Passing Order\nPointer Networkp Search Tree\n\n. . . REINFORCE\nFine-tune\nCritic Network b\n\nARXIV 2\nScenario Passing Order\nPointer Networkp Search Tree\n\n. . . REINFORCE\nFine-tune\nCritic Network b\n\nFig. 1. Training and online solving pipeline of AlphaOrder.",
+      "size": 937,
+      "sentences": 14
+    },
+    {
+      "id": 9,
+      "content": "RCE\nFine-tune\nCritic Network b\n\nARXIV 2\nScenario Passing Order\nPointer Networkp Search Tree\n\n. . . REINFORCE\nFine-tune\nCritic Network b\n\nFig. 1. Training and online solving pipeline of AlphaOrder. AlphaOrder takes vehicles within the intersection scenario as the input, and its output is the\npassing order of these vehicles passing through the intersection. It has two core modules, where the pointer network p θ is used to solve candidate passing\norder,andthesearchtreeisusedtocarryoutfurthersearching.Criticnetworkb δ worksasabaselinetoassisttheREINFORCEalgorithmtotrainthepointer\nnetworkp θ.Besides,thesolutionsimprovedbysearchtreecanalsobeusedtofine-tunethepointernetworkp θ further. search (MCTS) algorithm easy to apply [1]. Existing tree MCTSalgorithmtosearchwithinalimitedtimebudget(0.1s).",
+      "size": 800,
+      "sentences": 10
+    },
+    {
+      "id": 10,
+      "content": "des,thesolutionsimprovedbysearchtreecanalsobeusedtofine-tunethepointernetworkp θ further. search (MCTS) algorithm easy to apply [1]. Existing tree MCTSalgorithmtosearchwithinalimitedtimebudget(0.1s). search algorithms do not exhaustively search the whole tree TheresultsdemonstratethatAlphaOrdercanfindnear-optimal\nbut use some handcrafted heuristics to narrow the search to passing orders for scenarios with an arbitrary number of\na beam of promising branches. However, the performance vehicles. Specifically, for a problem instance containing 40\nof handcrafted heuristics highly depends on the number of vehicles, the passing order solved by AlphaOrder in 0.14s is\nvehicles and may degrade with the increase of vehicles. comparable to the best passing order that can be found by\nHerewepresentAlphaOrder,anewalgorithmthatcombines partly enumerating 50 days.",
+      "size": 858,
+      "sentences": 7
+    },
+    {
+      "id": 11,
+      "content": ".14s is\nvehicles and may degrade with the increase of vehicles. comparable to the best passing order that can be found by\nHerewepresentAlphaOrder,anewalgorithmthatcombines partly enumerating 50 days. deep learning and tree searching to achieve state-of-the-art Tobetterpresentourwork,therestofthispaperisorganized\nperformance in solving passing order for unceasing CAV as follows. Section II gives a concise problem description. swarm flows. The main idea of the algorithm is to employ Section III introduces the proposed AlphaOrder algorithm. In\nneuralnetworkstolearnthepatternsof(near-)optimalpassing Section IV, we show numerical experiments to demonstrate\norders for the solved scenarios and instantaneously generate its performance. Section V concludes this paper. Below, for\ngood enough candidate passing orders for new scenarios.",
+      "size": 836,
+      "sentences": 9
+    },
+    {
+      "id": 12,
+      "content": "riments to demonstrate\norders for the solved scenarios and instantaneously generate its performance. Section V concludes this paper. Below, for\ngood enough candidate passing orders for new scenarios. To reading convenience, the main symbols and their definitions\nachieve this, we formulate the problem as a combinatorial used in this paper are listed in APPENDIX Table III. optimization problem and use a pointer network [22] (an\nexcellent neural network architecture for solving sequence- II. COOPERATIVEDRIVINGASACOMBINATORIAL\nto-sequence (Seq2Seq) problems) to capture the underlying OPTIMIZATIONPROBLEM\nrelation between a scenario and its promising passing orders.",
+      "size": 668,
+      "sentences": 6
+    },
+    {
+      "id": 13,
+      "content": "or solving sequence- II. COOPERATIVEDRIVINGASACOMBINATORIAL\nto-sequence (Seq2Seq) problems) to capture the underlying OPTIMIZATIONPROBLEM\nrelation between a scenario and its promising passing orders. In order to solve with pointer network and MCTS, we for-\nBased on the candidate passing order, we can further employ\nmulate the underlying problem into a combinatorial optimiza-\na very-short-time tree search to possibly upgrade the solution\ntion problem whose solution, i.e., passing order, is denoted\nandmeanwhilekeeptheplanningtimeshortenoughforonline\nby a sequence. Its solution space and objective function are\napplications. formulated in detail as followings:\nWe summary the developed AlphaOrder algorithm in Fig. Solution Space. We use a sequence of the permutation\n1. We first train a pointer network p θ using the well-known of vehicles’ symbols to concisely denote passing orders.",
+      "size": 889,
+      "sentences": 8
+    },
+    {
+      "id": 14,
+      "content": "AlphaOrder algorithm in Fig. Solution Space. We use a sequence of the permutation\n1. We first train a pointer network p θ using the well-known of vehicles’ symbols to concisely denote passing orders. REINFORCE algorithm [23] and meanwhile employs a critic For example, the sequence “AB” means that Vehicle A is\nnetwork b δ as the baseline for variance reduction. We choose given priority over Vehicle B in the right-of-way arrangement. REINFORCEalgorithmtotrainthepointernetworkp θ mainly For a scenario s containing N vehicles {V 1 ,V 2 ,··· ,V N }, a\nbecause supervised learning (SL) is not applicable.",
+      "size": 604,
+      "sentences": 7
+    },
+    {
+      "id": 15,
+      "content": "the right-of-way arrangement. REINFORCEalgorithmtotrainthepointernetworkp θ mainly For a scenario s containing N vehicles {V 1 ,V 2 ,··· ,V N }, a\nbecause supervised learning (SL) is not applicable. The opti- complete passing order can be denoted by a sequence π\nmalsolutionforourproblemcanonlybesolvedbyexhaustive ={π ,π ,··· ,π }, where each π (k =1,2,··· ,N) is the\n1 2 N k\nenumeration, resulting in that obtaining high-quality labels symbol of any vehicle being placed at the k-th position of π.\nfor a large number of training scenarios requires intolerable AllpossiblepassingordersformasolutionspaceΠconsisting\ncomputationtime.Instead,policybasedreinforcementlearning of N! sequences. (RL) provides an unsupervised paradigm for training the Objective Function. We aim to minimize the total delay by\npointer network.",
+      "size": 820,
+      "sentences": 6
+    },
+    {
+      "id": 16,
+      "content": "tationtime.Instead,policybasedreinforcementlearning of N! sequences. (RL) provides an unsupervised paradigm for training the Objective Function. We aim to minimize the total delay by\npointer network. It has been shown that RL can automati- rearrangingthepassingorder.Therefore,theobjectivefunction\ncally discover underlying experiences on some challenging of the combinatorial optimization problem is formulated as\nproblems, e.g., the traveling salesman problem (TSP) [23]. N\nAfter training, we use the pointer network p to produce (cid:88)\nθ minJ(π |s)= J (V ,π |s)+C×f (π |s)\nDelay i Enforceable\ncandidatepassingorders.Subsequently,weformulateasearch\ni=1\ntree based on the candidate passing order and employ the (1)\n[표 데이터 감지됨]\n\n=== 페이지 3 ===\nARXIV 3\ntime Z1\n time Z 3\nZ\nZ\ntime\n2  time 4\nSpeed  \n  P osition  \n  Intention  \nSV2\nS V1\nb \nCandidate passing order\n...\nEmbedding Encoder Decoder\nk ro\n... . w\nfc\n. . te\nN\n. re\n. .",
+      "size": 944,
+      "sentences": 11
+    },
+    {
+      "id": 17,
+      "content": "ARXIV 3\ntime Z1\n time Z 3\nZ\nZ\ntime\n2  time 4\nSpeed  \n  P osition  \n  Intention  \nSV2\nS V1\nb \nCandidate passing order\n...\nEmbedding Encoder Decoder\nk ro\n... . w\nfc\n. . te\nN\n. re\n. . tn\nio\nP\n1 2\nInput\nPointer network gradient\nsequences\n3 4\nEmbedding Encoder\nk\nPredicted ro\nw fc fc fc fc te\nN\n. . . . . . . . . . . . c itirC\n g \np\nSpeed  \n  P osition  \n  Intention  \ntime time   Z Z\n1 2   time time Z Z     3 4\nV4 VN V2 V3\nemb SV2\nemb SV4\nJ\n\nFig. 2. Pointer and critic network architecture. (i) Pointer network p θ: A linear embedding layer first embeds state information SVi (i = 1,2,···,N)\nconsisting of speed, position, and intention (steering and route) for each vehicle.",
+      "size": 712,
+      "sentences": 22
+    },
+    {
+      "id": 18,
+      "content": "architecture. (i) Pointer network p θ: A linear embedding layer first embeds state information SVi (i = 1,2,···,N)\nconsisting of speed, position, and intention (steering and route) for each vehicle. Then, the sequence consisting of the vehicles’ embedding information\n{Semb∈RDemb}isfedintoamodifiedencoder-decodermodel,whichconsistsoftwoindependentLSTMcells.Ineachdecodingstep,thepointernetwork\nVi\np\nθ\ncalculatestheconditionalprobabilityp\nθ\n(π\nk\n|·)overunselectedvehicles(denotedby⊕),andselectsthevehiclewiththehighestprobability(indicatedby\ntheredarrow)tobeaddedtothepassingorderπ;(ii)Criticnetworkb δ:Theembeddinglayerandencoderofthecriticnetworkb δ havethesamearchitecture\nasthepointernetworkp θ.TheencodedinformationiscalculatedbymultilayerfullyconnectednetworkstooutputapredictionofobjectivevalueJ.<g> istheinputforthefirststepofthedecoderandisaD-dimensionallearnablevector;Ztime(i=1,···,4)isright-of-waystateofconflictarea[1];fc:fully\ni connectedlayer.",
+      "size": 958,
+      "sentences": 3
+    },
+    {
+      "id": 19,
+      "content": "etworkstooutputapredictionofobjectivevalueJ.<g> istheinputforthefirststepofthedecoderandisaD-dimensionallearnablevector;Ztime(i=1,···,4)isright-of-waystateofconflictarea[1];fc:fully\ni connectedlayer. Here,J (V ,π |s)isthedelayofVehicleiwiththepassing π ∈Πandcalculateitasaproductofconditionalprobabilities\nDelay i\norder π ∈ Π, and thus the first term is the delay-sum of all according to the chain rule\nvehicles. Besides, since it is unenforceable for passing orders\nN\nthat violate the order of vehicles in front and behind at the (cid:89)\np(π |S)= p (π |π ,··· ,π ,S) (2)\nθ k 1 k−1\nsame lane, the second bool function f (π |s) is used\nEnforceable k=1\nto guarantee the enforceability of π. An appropriate penalty\nHere, the production of a passing order π is decomposed\nfactor C is set to guide the training of the neural networks to\ninto an N-step vehicle selection procedure, where the k-th\navoid unenforceable solutions.",
+      "size": 922,
+      "sentences": 4
+    },
+    {
+      "id": 20,
+      "content": "production of a passing order π is decomposed\nfactor C is set to guide the training of the neural networks to\ninto an N-step vehicle selection procedure, where the k-th\navoid unenforceable solutions. (k = 1,2,··· ,N) step selects one vehicle from the input\nsequence S and places it at π . The conditional probability\nk\nIII. ALPHAORDERALGORITHM p (π |·)modelstheprobabilityofanyvehiclebeingselected\nθ k\natstepk accordingtothegivenS andvehiclesthathavebeen\nA. Pointer Network Module\nselected [24]. A well-trained pointer network p can assign\nθ\nBecause all vehicles {V ,V ,··· ,V } will be arranged in high probabilities to passing orders with small J and low\n1 2 N\npassing order π ∈ Π sequentially, we can naturally convert probabilities to passing orders with large J . the above combinatorial optimization problem into a Seq2Seq The general neural networks for solving Seq2Seq problems\nproblem.",
+      "size": 894,
+      "sentences": 6
+    },
+    {
+      "id": 21,
+      "content": ", we can naturally convert probabilities to passing orders with large J . the above combinatorial optimization problem into a Seq2Seq The general neural networks for solving Seq2Seq problems\nproblem. The input sequence is the state information of all encode the input sequence into a vector that contains the\nvehicles, denoted by S = {S ,S ,··· ,S }. The output input information by a recurrent neural network (RNN) and\nV1 V2 VN\nsequence is a permutation of the elements in S, i.e., the subsequently decode the vector into the output sequence\npassing order π in our problem, which aims to minimize the by another RNN. Usually, we named these two RNNs as\nobjective value J in equation (1). “encoder” and “decoder” [25]. Similarly, as depicted in Fig.",
+      "size": 749,
+      "sentences": 7
+    },
+    {
+      "id": 22,
+      "content": "order π in our problem, which aims to minimize the by another RNN. Usually, we named these two RNNs as\nobjective value J in equation (1). “encoder” and “decoder” [25]. Similarly, as depicted in Fig. Here,weemployapointernetworkp parameterizedbyθto 2, our pointer network p employs two independent Long\nθ θ\nsolvethisSeq2Seqproblemsincethepointernetworkhasbeen Short-TermMemory(LSTM)cells(aclassofRNNfrequently\nproved to be effective in combinatorial optimization problems used at learning long-term dependent features) to serve as\n[23]. The pointer network is a particular network architecture encoder and decoder, respectively. The decoder incorporates\ncapable of learning the conditional probability of the output the attention mechanism as a pointer to select vehicles from\nsequence,wheretheelementsareindexescorrespondingtothe input sequence as the output. The designed encoder and\npositions in the input sequence.",
+      "size": 917,
+      "sentences": 8
+    },
+    {
+      "id": 23,
+      "content": "attention mechanism as a pointer to select vehicles from\nsequence,wheretheelementsareindexescorrespondingtothe input sequence as the output. The designed encoder and\npositions in the input sequence. For a given input sequence decoder are elaborated as follows:\nS = {S ,S ,··· ,S }, the pointer network assigns an Encoder.Theencodernetworkisusedtoobtainarepresen-\nV1 V2 VN\noccurrenceprobabilityp(π |S)toeachpossiblepassingorder tation for each vehicle in the input sequence S. In order to\n[표 데이터 감지됨]\n\n=== 페이지 4 ===\nARXIV 4\nextractusefulfeaturesfromSmoreefficiently,wefirstlinearly actual objective value J(π |s), and thus the gradient of δ can\nembed each element in S into a high D -dimension vector be calculated by\nemb\nspace, obtaining Semb = {Semb,Semb,··· ,Semb} where\nS\nV\nem\ni\nb ∈ RDemb(i = 1,··· ,N). V T 1 hen, V t 2 he embed V d N ing vectors ∆δ ∝ ∂b δ\n∂\n(\nδ\nS(cid:48)) (J(π |s)−b\nδ\n(S(cid:48))) (6)\nSemb are fed into the first LSTM cell.",
+      "size": 946,
+      "sentences": 4
+    },
+    {
+      "id": 24,
+      "content": "emb,Semb,··· ,Semb} where\nS\nV\nem\ni\nb ∈ RDemb(i = 1,··· ,N). V T 1 hen, V t 2 he embed V d N ing vectors ∆δ ∝ ∂b δ\n∂\n(\nδ\nS(cid:48)) (J(π |s)−b\nδ\n(S(cid:48))) (6)\nSemb are fed into the first LSTM cell. At each encoding step\ni (i=1,··· ,N), the first LSTM cell reads one vector Semb The critic network b δ works as an auxiliary network to\nand outputs a D-dimensional latent memory state e ∈ R\nVi\nD. provide an approximated baseline of objective value J. As\nAfter N steps of encoding, we obtain a latent repre V s i entation depicted in red in Fig. 2, our critic network b δ has the same\nsequence e={e ,e ,··· ,e }. architecture as the encoder of the pointer network p θ . The\nDecoder.Thed V e 1 cod V e 2 rnetwo V rk N isusedtoproducetheoutput encoded latent state representation is passed through three\nsequence, i.e., the passing order π, iteratively by N steps fully connected layers with size d fc,1 , d fc,2 , d fc,3 to produce\nof decoding.",
+      "size": 942,
+      "sentences": 7
+    },
+    {
+      "id": 25,
+      "content": "coded latent state representation is passed through three\nsequence, i.e., the passing order π, iteratively by N steps fully connected layers with size d fc,1 , d fc,2 , d fc,3 to produce\nof decoding. At each decoding step k (k = 1,2,··· ,N), apredictionofobjectivevalueJ.Here,sincetheright-of-way\nthe latent memory state d ∈ RD containing information states of conflict area have a slight impact on the objective\nk\nfrom previous decoding steps is output by using the second value J, we also input them into the critic network b δ for\nLSTM cell. Subsequently, the decoder employs the attention improved performance (illustrated as Z i time(i = 1,··· ,4) in\nmechanism to calculate the conditional probability p (π | Fig. 2). θ k\n·) based on d and the encoded representation sequence\nk\ne = {e ,e ,··· ,e }. Here, the attention mechanism can Algorithm 1: Pointer and Critic Network Training.",
+      "size": 887,
+      "sentences": 6
+    },
+    {
+      "id": 26,
+      "content": "tional probability p (π | Fig. 2). θ k\n·) based on d and the encoded representation sequence\nk\ne = {e ,e ,··· ,e }. Here, the attention mechanism can Algorithm 1: Pointer and Critic Network Training. V1 V2 VN\ngive different weights to different vehicles of the input, thus Input: Training dataset Ψ, batch size B.\nextractingthelatentrelationshipbetweeneachvehicleandthe Output: θ, δ.\nalready output partial passing order {π 1 ,π 2 ,··· ,π k−1 } at the 1 Initialize pointer network weights θ and critic network\ncurrentdecodingstepk.Finally,thedecoderselectsthevehicle weights δ with random weights. with the maximum conditional probability as π k , and passes 2 while weights not converge do\nthevehicleastheinputtothenextdecodingstep.Specifically, 3 Sample s i ∼Ψ, i=1,2,··· ,B\nthe conditional probability p θ (π k |·) is calculated by 4 Calculate π i (i=1,2,··· ,B) with pointer network\n(cid:40) vT tanh(W e +W d ),if V ∈/ {π ,··· ,π } p θ .",
+      "size": 941,
+      "sentences": 6
+    },
+    {
+      "id": 27,
+      "content": "lly, 3 Sample s i ∼Ψ, i=1,2,··· ,B\nthe conditional probability p θ (π k |·) is calculated by 4 Calculate π i (i=1,2,··· ,B) with pointer network\n(cid:40) vT tanh(W e +W d ),if V ∈/ {π ,··· ,π } p θ . uk i = − 1 ∞ V , i 2 k Othe i rwise 1 k−1 5 C n a e lc tw ul o a r t k e b b δ . (S(cid:48) i )(i=1,2,··· ,B) with critic\nδ\np (π |π ,··· ,π ,S)=softmax\n(cid:0) uk(cid:1) (\n(\n3\n4\n)\n)\n6 Calculate the gradient of θ:\nθ k 1 k−1\nB\nwherev ∈RD×1,W 1 ,W 2 ∈RD×D arethelearnableattention ∆θ ← B\n1 (cid:88)∂logp\nθ ∂\n(\nθ\nπ\ni\n|S\ni\n)\n(J(π i |s i )−b δ (S i (cid:48)))\nparameters and are collectively denoted by θ. The softmax i=1\nfunction normalizes the vector uk to a probability distribution\n7 Calculate the gradient of δ:\novertheunselectedvehicles.Essentially,uk denotesthedegree\ni\nto I w n hi o c r h de V r eh to icle ou i tp is ut pl a ace p d ro a m t i π si k n .",
+      "size": 857,
+      "sentences": 4
+    },
+    {
+      "id": 28,
+      "content": "bability distribution\n7 Calculate the gradient of δ:\novertheunselectedvehicles.Essentially,uk denotesthedegree\ni\nto I w n hi o c r h de V r eh to icle ou i tp is ut pl a ace p d ro a m t i π si k n . g passing order, we need ∆δ ← B 1 (cid:88) B ∂b δ ∂ ( δ S i (cid:48)) (J(π i |s i )−b δ (S i (cid:48)))\nto find the optimal model parameters θ∗ for the pointer i=1\nnetwork p θ from problem instances. Here, we choose the 8 Update θ ←ADAM(θ,∆θ). REINFORCE algorithm to optimize θ, as it has proved to be 9 Update δ ←ADAM(δ,∆δ). an appropriate paradigm for training neural networks to solve 10 end\ncombinatorial optimization problems [23], [26]. Its core idea\nis to iteratively update θ by stochastic gradient descent in the\nAlgorithm 1 presents the training procedure of the pointer\ndirection that minimizes the objective value J.",
+      "size": 828,
+      "sentences": 6
+    },
+    {
+      "id": 29,
+      "content": "s [23], [26]. Its core idea\nis to iteratively update θ by stochastic gradient descent in the\nAlgorithm 1 presents the training procedure of the pointer\ndirection that minimizes the objective value J. Meanwhile, to\nnetwork p and the critic network b , which has a similar\nreduce the variance of the gradients during the training phase, θ δ\ntrainingframeworkastheasynchronousadvantageactor-critic\na critic network b parameterized by δ is used to provide an\nδ\n(A3C)algorithm[28].InAlgorithm1,theweightsθ andδ are\napproximated baseline of objective value J for any problem\nupdated asynchronously and iteratively. In each iteration, B\ninstance [27]. Specifically, given a scenario s and a passing\nproblem instances s (i = 1,2,··· ,B) are first sampled from\norder π, and the gradient of θ is formulated by REINFORCE i\nthetrainingdatasetΨ(line3)andfedintothepointernetwork\nalgorithm:\np (line 4) and critic network b (line 5), respectively.",
+      "size": 932,
+      "sentences": 5
+    },
+    {
+      "id": 30,
+      "content": "first sampled from\norder π, and the gradient of θ is formulated by REINFORCE i\nthetrainingdatasetΨ(line3)andfedintothepointernetwork\nalgorithm:\np (line 4) and critic network b (line 5), respectively. The\nθ δ\n∂logp (π |S)\n∆θ ∝ θ (J(π |s)−b (S(cid:48))) (5) corresponding passing order π i and predicted objective value\n∂θ δ b (S(cid:48)) are calculated through forward propagation. Then, the\nδ i\nwhere S(cid:48) is the input sequence for critic network b . Each gradient of θ is calculated by equation (5) (line 6), and the\nδ\nelement in S(cid:48) contains the vehicle state S and also con- gradient of δ is calculated by equation (6) (line 7). Finally,\nVi\ncatenates the intersection right-of-way state to improve the we adopt the ADAM optimizer [29] to update the weights\npredictionperformance.Wetrainthecriticnetworkb byusing via back propagation (line 8 and 9).",
+      "size": 862,
+      "sentences": 5
+    },
+    {
+      "id": 31,
+      "content": "s the intersection right-of-way state to improve the we adopt the ADAM optimizer [29] to update the weights\npredictionperformance.Wetrainthecriticnetworkb byusing via back propagation (line 8 and 9). This completes one iter-\nδ\nstochastic gradient descent to minimize the mean square error ation, and the algorithm can be terminated when the weights\n(MSE) between the predicted objective value b (S(cid:48)) and the converge, i.e., the mean objective value J on the training\nδ\n=== 페이지 5 ===\nARXIV 5\na\nA\n2\nB Candidate passing order: EBACGDF\nAfter grouping:\n3 C D Group 1 : E\nG Group 2 : BA\n1 Group 3 : CGD\nE Group 4 : F\n4\nF\nb\n(i) Selection (ii) Expansion (iii) Simulation (iv) Backup\n2 2 2 2\n2 3 2 1 2 3 2 1 2 3 2 1 2 3 2 1\n2 1 4 2 1 3 2 1 4 2 1 3 2 1 4 2 1 3 2 1 4\n2 1 3 4\nFig.3. GroupingandMonteCarlotreesearchinAlphaOrder.a,Grouping:Vehiclesthathaveadjacentpositionsincandidatepassingorderareboundtogether\ninto one group. The search tree grows with groups as the basic units (instead of vehicles).",
+      "size": 998,
+      "sentences": 4
+    },
+    {
+      "id": 32,
+      "content": "otreesearchinAlphaOrder.a,Grouping:Vehiclesthathaveadjacentpositionsincandidatepassingorderareboundtogether\ninto one group. The search tree grows with groups as the basic units (instead of vehicles). b, MCTS algorithm: (i) Selection: selecting the most promising\nnodes based on their scores; (ii) Expansion: expanding the not-yet-visited child node into the current search tree; (iii) Simulation: running several rollout\nsimulations until a leaf node is reached, i.e., a complete passing order is obtained; (iv) Backup: back-propagating to update the scores of all parent nodes\nbasedonthescoreoftheleafnode. dataset converges. Moreover, for each type of vehicle number The tree formulation in AlphaOrder builds on previous\nN, we construct a dataset Ψ containing 200,000 problem workoncooperativedrivingusingsomehandcraftedheuristics\n1 2 3 4\ninstancestotrainthecorrespondingpointernetworkp andthe [31]. Noticing that to consider vehicles in groups may reduce\nθ\ncritic network b .",
+      "size": 978,
+      "sentences": 6
+    },
+    {
+      "id": 33,
+      "content": "orkoncooperativedrivingusingsomehandcraftedheuristics\n1 2 3 4\ninstancestotrainthecorrespondingpointernetworkp andthe [31]. Noticing that to consider vehicles in groups may reduce\nθ\ncritic network b . All the networks can be well-trained within calculation time, we bind the conflict-free vehicles that have\nδ\n48h. Once trained, the candidate passing orders produced by adjacent positions in candidate passing order as one group\nthe pointer network p for new scenarios have substantially to formulate the search tree, which is then used as the basic\nθ\noutperformed the best existing algorithms (detailed results unit for the tree formulation. Supposing that all vehicles are\nshown in Fig. 9). divided into M groups, our search tree grows as follows: its\nroot node is empty; each node in the first level contains one\nB.",
+      "size": 817,
+      "sentences": 7
+    },
+    {
+      "id": 34,
+      "content": "r the tree formulation. Supposing that all vehicles are\nshown in Fig. 9). divided into M groups, our search tree grows as follows: its\nroot node is empty; each node in the first level contains one\nB. Tree Search Module group; the second level adds another group on the first-level\nnodes,andsoonuntilallgroupsareadded.Hence,eachnode\nAlphaOrderusesashort-timetreesearchtofurtherimprove\nat level M, i.e., the leaf node, will correspond to a complete\nthe optimality of the passing order solved for online applica-\npassing order containing all groups. As illustrated in Fig. 3a,\ntions. Here, unlike AlphaGo [30], we need not exploit the\nthe relative order of vehicles in one group is fixed during\nlearned experiences by using the neural networks directly to\nsearching. Compared to the original tree with vehicles as the\nguide the tree search. This is because the passing order is a\nbasicunits,ourtreeformulationapproachsignificantlyreduces\ncooperation between vehicles rather than a game.",
+      "size": 983,
+      "sentences": 10
+    },
+    {
+      "id": 35,
+      "content": "inal tree with vehicles as the\nguide the tree search. This is because the passing order is a\nbasicunits,ourtreeformulationapproachsignificantlyreduces\ncooperation between vehicles rather than a game. Moreover,\nthe depth and width of the search tree. the online applications do not have the time budget to allow\nus to use neural networks to guide extensive tree search. To We employ the MCTS algorithm to search the tree formu-\nthis end, we develop an indirect and more efficient way of latedfromcandidatepassingorder.MCTSalgorithmisabest-\nincorporatingthelearnedexperiencesintothetreeformulation first search algorithm based on sampling as a node evaluation\nand then employing the MCTS algorithm to traverse the tree. [32], [33]. Instead of relying on heuristic domain knowledge,\n=== 페이지 6 ===\nARXIV 6\nit uses Monte Carlo rollouts to narrow down the search to delay-sum of the leaf node, normalized by:\npromising branches.",
+      "size": 922,
+      "sentences": 7
+    },
+    {
+      "id": 36,
+      "content": "[33]. Instead of relying on heuristic domain knowledge,\n=== 페이지 6 ===\nARXIV 6\nit uses Monte Carlo rollouts to narrow down the search to delay-sum of the leaf node, normalized by:\npromising branches. Its effectiveness has been demonstrated J −J\nby the outstanding performance in searching huge solution q i =1− J i − i, J min (8)\ni,max i,min\nspace,suchasGo[30]andChess[34].Eachnodeinthesearch\nwhere J and J are the maximum and minimum\ntree is assigned a score to evaluate its potential. The score is i,max i,min\ndelay-sums of the sibling nodes of the node i. Then, the value\ndetermined by the mean objective value J over the subtree\nQ for the expanded node is:\nbelow that node and the visit count. The scores of nodes i\nare continuously updated during the tree traversal. MCTS Q =γq¯ +(1−γ)qˆ (9)\ni i i\nalgorithm selects the search direction based on the scores\nwhere γ is a weighting parameter to balance the potential of\nof the nodes. Fig.",
+      "size": 940,
+      "sentences": 8
+    },
+    {
+      "id": 37,
+      "content": "ed during the tree traversal. MCTS Q =γq¯ +(1−γ)qˆ (9)\ni i i\nalgorithm selects the search direction based on the scores\nwhere γ is a weighting parameter to balance the potential of\nof the nodes. Fig. 3b illustrates the searching procedure of\nthe node and its subtree. MCTS,whichiterativelytraversesthetree,witheachiteration\n4) Backup: Thevalueoftheexpandednodeissuccessively\ncomprising four steps [35]: selection, expansion, simulation,\nback-propagated through the search path to update the values\nand backup. As more simulations are executed, the tree is\nof all parent nodes. traversed broader and deeper, and the current optimal passing\nDepending on the corresponding applications, the above\norder will be gradually updated. The four steps are elaborated\nfourstepsarerepeatedafixednumberofloopsoruntilthetime\nas follows. budget runs out. In this paper, due to real-time requirements,\n1) Selection: Starting from the root node, MCTS selects\nwe set the search time budget to 0.1s.",
+      "size": 980,
+      "sentences": 10
+    },
+    {
+      "id": 38,
+      "content": "ednumberofloopsoruntilthetime\nas follows. budget runs out. In this paper, due to real-time requirements,\n1) Selection: Starting from the root node, MCTS selects\nwe set the search time budget to 0.1s. When the predefined\npromising child nodes to search forward according to a selec-\nsearchtimebudgetrunsout,AlphaOrderoutputstheleafnode\ntion strategy. The key of the selection strategy is to balance\nwith the shortest delay-sum as the best passing order. the exploitation of nodes with high scores and the exploration\nof unvisited nodes. Here, we use the classical UCB1 [36],\nIV. NUMERICALEXPERIMENTS\n[37] selection strategy. Although there are various modified\nIn this section, we will take a three-lane intersection as an\nselectionstrategies,weemployUCB1becauseofitssimplicity\nexample to demonstrate the performance of the AlphaOrder\nand effectiveness. Moreover, without any prior knowledge\nalgorithm (as illustrated in Fig. 4).",
+      "size": 928,
+      "sentences": 11
+    },
+    {
+      "id": 39,
+      "content": "onstrategies,weemployUCB1becauseofitssimplicity\nexample to demonstrate the performance of the AlphaOrder\nand effectiveness. Moreover, without any prior knowledge\nalgorithm (as illustrated in Fig. 4). Section IV-A describes\nregarding the search tree, UCB1 can promisingly address\nthe experiments settings. Section IV-B discusses the choice\nthe exploration-exploitation dilemma in MCTS [38]. UCB1\nof key parameters. Section IV-B evaluates the performance of\ncalculates a score based on the accumulated visit count and\nAlphaOrder algorithm from three aspects. In Section IV-D ,\nvalue of the child node and then selects the search direction,\nwe verify the generalization performance of AlphaOrder for\nas follows:\ndifferent traffic conditions. (cid:114)\nlnT\nargmaxQ +λ (7)\ni T A.",
+      "size": 774,
+      "sentences": 9
+    },
+    {
+      "id": 40,
+      "content": "value of the child node and then selects the search direction,\nwe verify the generalization performance of AlphaOrder for\nas follows:\ndifferent traffic conditions. (cid:114)\nlnT\nargmaxQ +λ (7)\ni T A. Experiments Settings\ni i\n1) Staterepresentation: Wetakethethree-laneintersection\nwhereQ isthevalueofthechildnodei.T istheaccumulated\ni i to illustrate the specific state representation of the input\nvisit count of child node i. T is the accumulated visit count\nsequencesS andS(cid:48) forpointernetworkp andcriticnetwork\nθ\nof the current node. λ is a mixing parameter. In the UCB1\nb .ThestateinformationS ofVehiclei(i=1,2,··· ,N)is\nformula (7), the first term is for exploitation, and the second\nδ Vi\ncharacterizedbyfourparts:thelongitudinalspeed,thedistance\ntermisforexploration.λtradesoffbetweenthetwo.Thechild\nto the conflict area, the steering type, and the route.",
+      "size": 867,
+      "sentences": 5
+    },
+    {
+      "id": 41,
+      "content": "ploitation, and the second\nδ Vi\ncharacterizedbyfourparts:thelongitudinalspeed,thedistance\ntermisforexploration.λtradesoffbetweenthetwo.Thechild\nto the conflict area, the steering type, and the route. First, the\nnode with the highest score is selected layer by layer, up to\nlongitudinal speed and the distance to the conflict area are\nan expandable node. An expandable node is the one that has\none-dimensional scalars and will be normalized before being\nunvisited child nodes. fed into the neural networks. Second, for vehicle steering, we\n2) Expansion: When an expandable node is reached with use 0, 1, and 2 to characterize left-turn, straight, and right-\nthe selection strategy, one or more of its child nodes will be turn, respectively. Finally, since there are 12 entry lanes, we\nexpanded to the tree. Here, we randomly select one of the encode them with a 12-dimensional one-hot vector, with the\nunvisited child nodes and expand it to the tree. vehicle’s lane set to 1 and the rest to 0.",
+      "size": 992,
+      "sentences": 8
+    },
+    {
+      "id": 42,
+      "content": "to the tree. Here, we randomly select one of the encode them with a 12-dimensional one-hot vector, with the\nunvisited child nodes and expand it to the tree. vehicle’s lane set to 1 and the rest to 0. The exit lane is\n3) Simulation: Staring from the expanded node, several also encoded with a 12-dimensional one-hot vector. The two\nrolloutsimulationsareperformedtoreachaleafnodetoobtain vectors are concatenated to represent the route information. a complete passing order, whose delay-sum will be used to Thus, the element in the input sequence S of pointer network\nevaluate the value of the expanded node. The classical MCTS p will be an 27-dimensional vector. Besides, the conflict\nθ\nrandomlyselectsonegroupperrolloutsimulationthathasnot area is divided into 36 conflict subzones, and thus the right-\nbeen added yet and goes deeper without divergence until a of-way state of the conflict area can be denoted by a 36-\nleaf node is reached.",
+      "size": 940,
+      "sentences": 8
+    },
+    {
+      "id": 43,
+      "content": "rea is divided into 36 conflict subzones, and thus the right-\nbeen added yet and goes deeper without divergence until a of-way state of the conflict area can be denoted by a 36-\nleaf node is reached. However, similarly, due to the physical dimensional vector {Ztime,Ztime,··· ,Ztime}. Here, Ztime\n1 2 36 i\nconstraint of the front and behind of vehicles in the same istheassignabletime (i.e.,right-of-way)ofthecorresponding\nlane, random selection potentially may make the reached leaf conflictsubzonei[31].Thus,theelementintheinputsequence\nnode unenforceable [1]. Here, we prefer to add groups close S(cid:48) will be a 63-dimensional vector. Moreover, it should be\nto the conflict area to make the leaf node executable.",
+      "size": 719,
+      "sentences": 5
+    },
+    {
+      "id": 44,
+      "content": "intheinputsequence\nnode unenforceable [1]. Here, we prefer to add groups close S(cid:48) will be a 63-dimensional vector. Moreover, it should be\nto the conflict area to make the leaf node executable. We noted that without loss of generality, we arrange the vehicles’\nuse J¯ to denote the delay-sum of the partial passing order position in the input sequences S and S(cid:48) according to an\ni\ncorresponding to the expanded node and Jˆ to denote the ascending order of their distances from the conflict area. i\n=== 페이지 7 ===\nARXIV 7\nFig. 5. Effects of training dataset size.We construct four different training\ndatasets containing 120000, 160000, 200000, and 240000 instances, respec-\ntively.Ourmodelsaretrainedonthesefourdatasetsandareevaluatedonthe\nsametestdataset(1000independentprobleminstances)everyoneepochafter\nthefirstepoch.ThenumberofvehiclesN =30. uniformlyoveradistributioncoveringallpossiblescenariosto\nbuild the training dataset Ψ.",
+      "size": 943,
+      "sentences": 8
+    },
+    {
+      "id": 45,
+      "content": "onthe\nsametestdataset(1000independentprobleminstances)everyoneepochafter\nthefirstepoch.ThenumberofvehiclesN =30. uniformlyoveradistributioncoveringallpossiblescenariosto\nbuild the training dataset Ψ. Our approach for achieving this\nis simple, i.e., we sample online problem instances directly\nfrom the simulated signal-free intersection. For the size of the\nFig.4. Atypicalsignal-freeintersectionwiththreelanesineachdirection. trainingdatasetΨ,theresultsshowninFig.5suggestthatthe\nfinal performance of the neural network is robust to different\n2) Neural network and training settings: For the example dataset sizes, with only minor differences in the training\nthree-laneintersection,thespecificsizeoftheneuralnetworks speed and stability. Even on a small training dataset (Ψ :\nis set in a general way. For the pointer network p θ , the 120,000),AlphaOrderachievesroughlythesameperformance\ndimension D emb of the linear embedding layer is 256.",
+      "size": 942,
+      "sentences": 8
+    },
+    {
+      "id": 46,
+      "content": "on a small training dataset (Ψ :\nis set in a general way. For the pointer network p θ , the 120,000),AlphaOrderachievesroughlythesameperformance\ndimension D emb of the linear embedding layer is 256. The after a little more exploration, demonstrating AlphaOrders\ndimension D of all latent memory states is 256. For the critic excellent learning ability. Among them, a dataset of size\nnetwork b δ , the size of the embedding layer and the encoder 200,000 is a promising and general choice for balancing the\nis the same as that of the pointer network p θ . The size of time consuming and model performance. Moreover, although\nthe three subsequent fully connected layers are d fc,1 =1024, thesamepointernetworkp θ andcriticnetworkb δ canprocess\nd fc,2 = 256, and d fc,3 = 1, where we use rectified linear scenarios with different numbers of vehicles, we differentiate\nactivationfunctions[39]inthefirsttwofullyconnectedlayers.",
+      "size": 921,
+      "sentences": 7
+    },
+    {
+      "id": 47,
+      "content": "workb δ canprocess\nd fc,2 = 256, and d fc,3 = 1, where we use rectified linear scenarios with different numbers of vehicles, we differentiate\nactivationfunctions[39]inthefirsttwofullyconnectedlayers. the dataset according to the number of vehicles and train\nA batch size B of 512 problem instances was used to them separately. We take this approach because the delay-\ntrain the neural networks. The initial learning rate for the sums and the underlying patterns of the promising passing\nADAMoptimizeris0.001.Wedesignedacustomlearningrate ordersforscenarioswithdifferentvehiclesvarygreatly,which\nscheduler, wherethe learningrate was keptfor thefirst 10000 is detrimental to the training of the neural networks. training iterations, and then the learning rate was multiplied\nby 0.98 at every 1000 iterations.",
+      "size": 806,
+      "sentences": 5
+    },
+    {
+      "id": 48,
+      "content": "herethe learningrate was keptfor thefirst 10000 is detrimental to the training of the neural networks. training iterations, and then the learning rate was multiplied\nby 0.98 at every 1000 iterations. In order to comply with the\npractical computing power of the roadside unit, the following\ntrainingandevaluationsareallconductedonasinglemachine\nconsistingofoneInteri7CUPandoneNVIDIAGeForceRTX\n3080 GPU. 3) Simulation of signal-free intersections: The signal-free\nintersections studied in this paper are mainly simulated on\nthecooperativedrivingsimulationplatformpresentedinpaper\n[3].With the unceasing arriving of new CAV swarms, Al-\nphaOrder solves the cooperative driving problems in a rolling\nplanning manner, which can cope with an infinite number\nFig.6. Effectsofhyper-parameterC onthetrainingofneuralnetworks. of CAVs.",
+      "size": 823,
+      "sentences": 6
+    },
+    {
+      "id": 49,
+      "content": "rms, Al-\nphaOrder solves the cooperative driving problems in a rolling\nplanning manner, which can cope with an infinite number\nFig.6. Effectsofhyper-parameterC onthetrainingofneuralnetworks. of CAVs. Furthermore, it is worth noting that deriving the\nobjective value J in equation (1) for a given passing order is 2) Penalty factor C: A critical hyper-parameter affecting\nconvenient, with time complexity of O(n) [31]. the training is the penalty factor C in equation (1). The value\nofC needstobeappropriate.Ifitistoosmall,itwillnotplay\nB. The Choice of Parameters\nthe role of penalty, and if it is too large, it will result in a\n1) Training dataset: To train a neural network with excel- slow learning speed. Here, to find a suitable value, we set C\nlent performance, we must sample enough problem instances to 500, 1000, 1500, and 2000, respectively. Fig.",
+      "size": 856,
+      "sentences": 9
+    },
+    {
+      "id": 50,
+      "content": "n a neural network with excel- slow learning speed. Here, to find a suitable value, we set C\nlent performance, we must sample enough problem instances to 500, 1000, 1500, and 2000, respectively. Fig. 6 shows the\n[표 데이터 감지됨]\n\n=== 페이지 8 ===\nARXIV 8\ntraining of neural networks with different C. It suggests that following, we will evaluate the AlphaOrder algorithm from\nthe pointer network p has a faster learning speed and shorter threeaspects.First,weevaluatethesuperiorityofAlphaOrder\nθ\nobjective value J when C is 1000. Thereby we set C to 1000 by comparison; second, we evaluate the learning speed of\nwhentrainingtheneuralnetwork.Moreover,itshouldbenoted AlphaOrder; and finally, we demonstrate the efficient deploy-\nthatthemeanobjectivevalueJ canbereducedtoareasonable ment of AlphaOrder to new arbitrary intersections by transfer\nstage after only one epoch, which is precisely caused by the learning. penalty term to avoid unenforceable passing orders. Fig. 7.",
+      "size": 965,
+      "sentences": 8
+    },
+    {
+      "id": 51,
+      "content": "onable ment of AlphaOrder to new arbitrary intersections by transfer\nstage after only one epoch, which is precisely caused by the learning. penalty term to avoid unenforceable passing orders. Fig. 7. Effects of tree search hyper-parameters on the performance of\nAlphaOrder. 3) Hyper-parameter selection for MCTS: MCTS has two\nFig. 8. The histogram of delays of different passing orders for a problem\nkey hyper-parameters to be addressed, i.e., λ in equation (7) instancewith40vehicles. and γ in equation (9). We carried out a grid search for them\nto choose a better λ and γ.",
+      "size": 574,
+      "sentences": 10
+    },
+    {
+      "id": 52,
+      "content": "ing orders for a problem\nkey hyper-parameters to be addressed, i.e., λ in equation (7) instancewith40vehicles. and γ in equation (9). We carried out a grid search for them\nto choose a better λ and γ. The values of λ and γ vary\nbetween 0 and 1 with step 0.05, and we evaluate different\nsettingson1000probleminstances,respectively.Wedefinethe\nfollowingimprovementratioµtodemonstratetheperformance\nof different settings:\nJ −J\nµ= CandidatePassingOrder AlphaOrder (10)\nJ\nCandidatePasssingOrder\nwhere J is the delay-sum of the candidate\nCandidatePassingOrder\npassing order, and J is the delay-sum of the passing\nAlphaOrder\norderfoundbytreesearch.Fig.7showstheaverageimprove-\nmentratioµwithdifferentλandγ.Theresultsuggeststhatthe\ntree search module can improve the optimality of the passing\norderunderarbitraryparametersettings.Theresultalsoshows\nFig.9.",
+      "size": 846,
+      "sentences": 4
+    },
+    {
+      "id": 53,
+      "content": "owstheaverageimprove-\nmentratioµwithdifferentλandγ.Theresultsuggeststhatthe\ntree search module can improve the optimality of the passing\norderunderarbitraryparametersettings.Theresultalsoshows\nFig.9. TheperformanceofAlphaOrderversusotheralgorithmsonscenarios\nthat as λ increases and γ decreases, the improvement ratio µ withdifferentnumbersofvehicles.Tofacilitatecomparison,wecounttheav-\nincreases, i.e., the delay-sum of the searched passing order eragedelayofvehicles,i.e.,(cid:80)N\ni=1\nJ\nDealy\n(Vi)/N where(cid:80)N\ni=1\nJ\nDealy\n(Vi)\ndecrease. Since λ=0.85 and γ =0.15 achieve the maximum isthedelay-sumandN isthenumberofvehicles. µ=0.1503, we use them in other experiments. 1) Superiority of AlphaOrder: To clearly show the per-\nformance of the AlphaOrder algorithm, we study a problem\nC. Evaluation of AlphaOrder\ninstance with 40 vehicles in detail.",
+      "size": 853,
+      "sentences": 5
+    },
+    {
+      "id": 54,
+      "content": "in other experiments. 1) Superiority of AlphaOrder: To clearly show the per-\nformance of the AlphaOrder algorithm, we study a problem\nC. Evaluation of AlphaOrder\ninstance with 40 vehicles in detail. Since enumerating all\nHere, we implement two other typical cooperative driving the passing orders is intolerably time-consuming, we spent\nalgorithms for comparative experiments. One is the First-In- about50dayspartlyenumeratingabout60millionenforceable\nFirst-Out based reservation algorithm (abbreviated as FIFO passingorders uniformlyinits solutionspace.In otherwords,\nbased algorithm), which determines an enforceable passing we uniformly sample over the solution space. Inspired by\norder according to the order of vehicles entering the intersec- our tree formulation approach, we designed a simple method\ntioncontrolareaandhastheadvantagesoflowcomputational to achieve this: grouping the vehicles randomly.",
+      "size": 908,
+      "sentences": 5
+    },
+    {
+      "id": 55,
+      "content": "der of vehicles entering the intersec- our tree formulation approach, we designed a simple method\ntioncontrolareaandhastheadvantagesoflowcomputational to achieve this: grouping the vehicles randomly. Specifically,\nburdenandgoodreal-timeperformance.Theotherisexcellent we randomly group vehicles within the same lane, and the\ntreesearchalgorithmthatcombinesMCTSwithsomeheuristic front-to-behindconstraintsofthevehiclesdeterminethepartial\nrules [1] (abbreviated as MCTS based algorithm). In the orderwithinthegroup.Inthisway,theenumerationwiththese\n[표 데이터 감지됨]\n\n=== 페이지 9 ===\nARXIV 9\ngroups as the basic units will enhance the reflection for the\nwhole solution space. Wevisualizedtheminahistogrammanner(asshowninFig. 8).",
+      "size": 718,
+      "sentences": 5
+    },
+    {
+      "id": 56,
+      "content": "way,theenumerationwiththese\n[표 데이터 감지됨]\n\n=== 페이지 9 ===\nARXIV 9\ngroups as the basic units will enhance the reflection for the\nwhole solution space. Wevisualizedtheminahistogrammanner(asshowninFig. 8). It is clear that the passing order solved by AlphaOrder\nin a short time (the pointer network p takes 0.04s and the\nθ\nsubsequent tree search takes 0.1s) is roughly equal to the\nglobal optimal passing order found by partly enumerating\nand is located in a solution space with a small probability. Meanwhile,AlphaOrderissignificantlyoutstandingthanFIFO\nandMCTSbasedalgorithms,andthecorrespondingdelay-sum\nis reduced by 65.37% and 55.55%, respectively. Furthermore, to evaluate the average performance of the\nAlphaOrderalgorithm,webuildatestdatasetcontaining1000\nindependent instances for each vehicle number N. Fig.",
+      "size": 811,
+      "sentences": 6
+    },
+    {
+      "id": 57,
+      "content": "by 65.37% and 55.55%, respectively. Furthermore, to evaluate the average performance of the\nAlphaOrderalgorithm,webuildatestdatasetcontaining1000\nindependent instances for each vehicle number N. Fig. 9\nshows the average delay of the passing orders solved by\ndifferentalgorithmsforN =20,25,30,35,40.Todemonstrate\nthe critical role of the two modules in AlphaOrder, we also\nplot the candidate passing order produced by the pointer net-\nwork p . The results suggest that for scenarios containing an\nθ\narbitrary number of vehicles, AlphaOrdercan find the passing\norderwithashorterdelay-sum,significantlyoutperformingthe\nFIFO and MCTS based algorithms. The results also suggest\nthat the pointer network p can directly produce promising\nθ\ncandidate passing orders for new scenarios, while the short-\nFig. 10. Evaluation of AlphaOrder throughout training. (Upper)The mean\ntime tree search can further improve the optimality of the objective function J.",
+      "size": 945,
+      "sentences": 8
+    },
+    {
+      "id": 58,
+      "content": "sing orders for new scenarios, while the short-\nFig. 10. Evaluation of AlphaOrder throughout training. (Upper)The mean\ntime tree search can further improve the optimality of the objective function J. Results are averaged over five random seeds, where\npassing order. Furthermore, we can see that the MCTS based the solid line is the average, and the shading is the one standard deviation\nfromtheaverage.Thehorizontalaxisisthetrainingepoch,andeachepoch\nalgorithm becomes increasingly inferior to our AlphaOrder as\ncorresponds to the neural network seeing once over all training instances. the number of vehicles increases, which is exactly caused by (Lower) Performance of the pointer network p θ corresponding to different\nthe exponential growth of the solution space. epochsonthetestdataset.Weevaluateeveryfiveepochsafterthefirstepoch. For comparison, we also plot the performance of MCTS and FIFO based\n2) Learning speed: To dissect the learning speed of the\nalgorithms.ThenumberofvehiclesN=30.",
+      "size": 995,
+      "sentences": 9
+    },
+    {
+      "id": 59,
+      "content": "luateeveryfiveepochsafterthefirstepoch. For comparison, we also plot the performance of MCTS and FIFO based\n2) Learning speed: To dissect the learning speed of the\nalgorithms.ThenumberofvehiclesN=30. AlphaOrderalgorithm,weevaluatetheperformanceofpointer\nnetworkp throughouttraining.Fig.10showtheperformance\nθ\nof pointer network p on the training and test dataset as\nθ\ntectures of the pointer network p and the critic network b\na function of the training epoch. Here, the training dataset θ δ\nneed not be changed for new intersections. As depicted in\ncontains 200,000 problem instances; similar to Fig. 9, the test\nFig. 2, the only part that needs to be changed is the vector\ndatasetcontains1000independentinstances.Theresultsshow\ndimension of input sequence S(cid:48) for critic network b , which\nthat pointe network p can avoid the unenforceable passing δ\nθ\nvaries with the specific conflict area.",
+      "size": 898,
+      "sentences": 7
+    },
+    {
+      "id": 60,
+      "content": "endentinstances.Theresultsshow\ndimension of input sequence S(cid:48) for critic network b , which\nthat pointe network p can avoid the unenforceable passing δ\nθ\nvaries with the specific conflict area. Thus, we can share the\nordersafteronlyoneepoch,i.e.,thefront-to-behindconstraints\nparameters θ and δ of a pre-trained model except for the\nof vehicles in the same lane can be learned after seeing the\nembedding layer of the critic b , and then fine-tune them by\ntraining instances once. After about 50 epochs of exploration, δ\na short-time transfer training. theperformancestartstoimproverapidly.Allthenetworkscan\nbewelltrainedwithin150epochs(takingabout48hoursona We demonstrate this with the intersections shown in Fig.",
+      "size": 720,
+      "sentences": 4
+    },
+    {
+      "id": 61,
+      "content": "n, δ\na short-time transfer training. theperformancestartstoimproverapidly.Allthenetworkscan\nbewelltrainedwithin150epochs(takingabout48hoursona We demonstrate this with the intersections shown in Fig. singlemachine).Fig.10alsoshowsthatafternomorethan75 11a, where the pre-trained model comes from a symmetric\nepochs, the candidate passing orders produced by pointer p intersection, and the transfer learning is done for the asym-\nθ\nstartstooutperformtheMCTSbasedalgorithm.Moreover,the metric intersection. Fig. 11b shows the mean objective value\nresults also show that the learning procedure of AlphaOrder J during training. The results show that the pre-trained model\nhas good stability. canbeefficientlytransferredtoanewintersection,andthepre-\n3) Efficientdeploymenttonewintersections: Theproposed trained model achieves a shorter J for a short-time training\nAlphaOrdercancopewitharbitraryintersections.However,in than the model trained from scratch.",
+      "size": 951,
+      "sentences": 7
+    },
+    {
+      "id": 62,
+      "content": "cientdeploymenttonewintersections: Theproposed trained model achieves a shorter J for a short-time training\nAlphaOrdercancopewitharbitraryintersections.However,in than the model trained from scratch. Even without fine-tuning\npractice, we do not want to take about 48 hours to train a (corresponding to 0 epoch), the pre-trained model can find\nmodel from scratch. Here, we will show that the experiences enforceable passing orders for the new intersections, suggest-\nlearned from one intersection can be quickly used to provide ing a latent commonality of experiences between different\npromising passing orders for arbitrary intersections by short- intersections. Furthermore, the pre-trained model can roughly\ntime transfer learning. achievethefinalperformanceafteronly3epochs(takingabout\nWe can efficiently cope with such alteration by fine-tuning 20min on a single machine). This is beneficial for practical\ntheexperiencesinthepre-trainedmodel,i.e.,transferlearning.",
+      "size": 968,
+      "sentences": 6
+    },
+    {
+      "id": 63,
+      "content": "3epochs(takingabout\nWe can efficiently cope with such alteration by fine-tuning 20min on a single machine). This is beneficial for practical\ntheexperiencesinthepre-trainedmodel,i.e.,transferlearning. large-scale deployments, i.e., given a pre-trained model, we\nSpecifically, thanks to the fact that the design of our neural canquicklydeploythemodelatdiverseintersectionsbyshort-\nnetworks is intersection topology-agnostic, the internal archi- time transfer learning. [표 데이터 감지됨]\n\n=== 페이지 10 ===\nARXIV 10\nTABLEI\nAVERAGEDELAYUNDERDIFFERENTTURNINGRATIOSANDARRIVINGRATES.",
+      "size": 567,
+      "sentences": 4
+    },
+    {
+      "id": 64,
+      "content": "nsbyshort-\nnetworks is intersection topology-agnostic, the internal archi- time transfer learning. [표 데이터 감지됨]\n\n=== 페이지 10 ===\nARXIV 10\nTABLEI\nAVERAGEDELAYUNDERDIFFERENTTURNINGRATIOSANDARRIVINGRATES. Arrivingrate(veh/(lane*h))\nTurningratio Algorithm 200 220 240 260 280 300\nAveragedelay(s)\nFIFObasedalgorithm 3.74 8.01 9.56 11.91 22.08 38.05\nLeft:0.5;Right:0.5 MCTSbasedalgorithm 2.33 6.03 7.06 9.51 19.68 33.92\nAlphaOrder 2.32 5.25 6.01 7.59 13.10 20.79\nFIFObasedalgorithm 7.87 15.17 25.50 31.05 29.88 37.33\nLeft:0.8;Right:0.5 MCTSbasedalgorithm 6.66 12.49 22.52 27.94 26.94 34.21\nAlphaOrder 5.40 9.99 16.67 19.99 20.61 26.20\nFIFObasedalgorithm 1.72 2.26 5.93 9.36 9.33 25.60\nLeft:0.5;Right:0.8 MCTSbasedalgorithm 1.04 1.45 4.32 7.63 7.33 23.00\nAlphaOrder 1.03 1.45 4.03 6.16 6.18 16.77\nducted simulation for 20min in each setting. After simulating,\na we count the average delay of vehicles passing through the\nintersection.",
+      "size": 925,
+      "sentences": 4
+    },
+    {
+      "id": 65,
+      "content": ".32 7.63 7.33 23.00\nAlphaOrder 1.03 1.45 4.03 6.16 6.18 16.77\nducted simulation for 20min in each setting. After simulating,\na we count the average delay of vehicles passing through the\nintersection. Symmetrical Asymmetric\nintersection intersection Table I shows the average delay of vehicles under differ-\nent turning ratios and arriving rates. The results show that\nAlphaOrder can achieve the shortest average delay under\nall turning ratios, demonstrating its excellent generalization\nperformance for turning ratios. Moreover, with the increases\nof vehicle arriving rate, i.e., essentially with the increases of\nvehicles, AlphaOrder becomes more prominent in shortening\n#Patter 1 #Patter 2\ntravel delay. Besides, the average delay varies with different\nturning ratio settings. The reason for this phenomenon is that\nb\ndifferent turning types occupy distinct intersection right-of-\nways, resulting in diverse vehicle conflictions.",
+      "size": 931,
+      "sentences": 7
+    },
+    {
+      "id": 66,
+      "content": "varies with different\nturning ratio settings. The reason for this phenomenon is that\nb\ndifferent turning types occupy distinct intersection right-of-\nways, resulting in diverse vehicle conflictions. For example,\nleft-turning and straight-going vehicles will prevent vehicles\nin other directions from passing, forming a complex conflict\nrelation. On the contrary, right-turning vehicles will occupy\nless right-of-way and lead to fewer conflicts. Therefore, with\ntheincreasesoftheleft-turningandstraight-goingvehicles,the\nconflicts among vehicles becomes more complex. In essence,\nthe results show that our AlphaOrder algorithm has outstand-\ning generalization performance for different conflict relations. Fig. 11. Efficient deployment to new intersections.",
+      "size": 756,
+      "sentences": 9
+    },
+    {
+      "id": 67,
+      "content": "complex. In essence,\nthe results show that our AlphaOrder algorithm has outstand-\ning generalization performance for different conflict relations. Fig. 11. Efficient deployment to new intersections. a, Intersections with #Patter 1 #Patter 2\nsymmetricalandasymmetrictopologies.Vehiclesthatareconflict-freeinthe\nsymmetric intersection encounter conflicts in the asymmetric intersection,\nindicating that the underlying patterns of promising passing orders differ\nfromdifferentintersections.b,Themeanobjectivefunctionoftrainingneural\nnetworksfromscratchversusfromthepre-trainedmodelfortheasymmetric\nintersection.ThenumberofvehiclesN=30. D. Generalization to Different Traffic Conditions\nTurning ratio and traffic demand have a critical impact on\ncooperative driving [3]. Here, we evaluate the generalization\ncapabilityof theAlphaOrder algorithmbyvarying thevehicle\narriving rate, turning ratio, and traffic demand. It should be Fig. 12. Two typical heterogeneous traffic demand patterns.",
+      "size": 983,
+      "sentences": 11
+    },
+    {
+      "id": 68,
+      "content": "the generalization\ncapabilityof theAlphaOrder algorithmbyvarying thevehicle\narriving rate, turning ratio, and traffic demand. It should be Fig. 12. Two typical heterogeneous traffic demand patterns. The traffic\ndemand of the entrances indicated by the red arrows will be 1.5, 2.0, and\nnotedthatprobleminstancesusedfortrainingAlphaOrderare\n2.5timesthatoftheentrancesindicatedbygreenarrows. sampled in traffic with homogeneous traffic demand, i.e., the\nscenario distribution used for training is different from the Then, we explore two typical heterogeneous traffic demand\nfollowing test settings. We deployed the cooperative driving patterns, as illustrated in Fig. 12. The heterogeneous traffic\nalgorithm on the simulated signal-free intersection and con- demandswith1.5,2.0,and2.5timesdifferencearesimulated,\n[표 데이터 감지됨]\n\n=== 페이지 11 ===\nARXIV 11\nTABLEII\nAVERAGEDELAYUNDERDIFFERENTHETEROGENEOUSTRAFFICDEMANDS.",
+      "size": 909,
+      "sentences": 9
+    },
+    {
+      "id": 69,
+      "content": "e simulated signal-free intersection and con- demandswith1.5,2.0,and2.5timesdifferencearesimulated,\n[표 데이터 감지됨]\n\n=== 페이지 11 ===\nARXIV 11\nTABLEII\nAVERAGEDELAYUNDERDIFFERENTHETEROGENEOUSTRAFFICDEMANDS. Averagedelay(s)\nTrafficdemand\nFIFObasedalgorithm MCTSbasedalgorithm AlphaOrder\n1.5 6.52 4.71 3.87\nPattern1 2.0 5.87 4.0 3.60\n2.5 12.73 10.85 8.16\n1.5 20.62 17.88 12.81\nPattern2 2.0 17.00 14.47 10.68\n2.5 22.27 19.84 14.23\nrespectively. We set the average arrival rate of all lanes as tive resource management. Such problems are widespread\n300veh/(lane*h) to keep the total arrival rate constant. Table but still not effectively solved, e.g., resource management\nII lists the vehicles’ average delay in different patterns.",
+      "size": 720,
+      "sentences": 5
+    },
+    {
+      "id": 70,
+      "content": "s are widespread\n300veh/(lane*h) to keep the total arrival rate constant. Table but still not effectively solved, e.g., resource management\nII lists the vehicles’ average delay in different patterns. The and scheduling for transportation systems [41], [42], spatio-\nresultsshowthatinheterogeneoustrafficdemand,AlphaOrder temporal resource management for swarm robotics systems\nstill outperforms FIFO and MCTS based algorithms and can [43], and even more general resource management problems\nobtainthepassingorderwithashorterdelay-sum.Meanwhile, concerning natural resources, labor, and capital. compared with #Pattern 1, the dominant traffic flows in\n#Pattern2areconflictive,resultinginagreateraveragedelay. APPENDIX\nHowever, the delay increment corresponding to AlphaOrder\nis smaller than that of FIFO and MCTS based algorithms. It suggests that AlphaOrder has excellent generalization for TABLEIII\nTHENOMENCLATURELIST.",
+      "size": 920,
+      "sentences": 6
+    },
+    {
+      "id": 71,
+      "content": "ver, the delay increment corresponding to AlphaOrder\nis smaller than that of FIFO and MCTS based algorithms. It suggests that AlphaOrder has excellent generalization for TABLEIII\nTHENOMENCLATURELIST. different traffic demands and can robustly deal with various\ntraffic conditions. Symbol Definition\np θ Pointer network, where θ denotes its\nV. CONCLUSION weights. Inthiswork,wehaveproposedAlphaOrder,anovelcooper-\nb\nδ\nCriticnetwork,whereδdenotesitsweights. s Aspecificscenario,i.e.,aprobleminstance. ativedrivingalgorithmbasedondeeplearningandtreesearch. N Numberofvehiclesinscenarios. Unlike all the existing methods, we innovatively introduce\nthe deep learning approach to solve the core problem of\n{V1,···,VN} Setofvehiclesymbolsinscenarios. π Apassingorderforscenarios. cooperative driving for CAV swarms, namely the passing\norder. AlphaOrder can learn the underlying experiences for\nπ\nk\nThek-thelementinπ.",
+      "size": 909,
+      "sentences": 12
+    },
+    {
+      "id": 72,
+      "content": "} Setofvehiclesymbolsinscenarios. π Apassingorderforscenarios. cooperative driving for CAV swarms, namely the passing\norder. AlphaOrder can learn the underlying experiences for\nπ\nk\nThek-thelementinπ. Pi Set of all possible passing orders for sce-\nproducing promising passing orders and use them to address\nnarios. new scenarios. We show that AlphaOrder can find a near- J\nDealy\n(Vi,π|s) DelayofVehicleiwiththepassingorderπ\noptimalpassingorderforscenarioswithanarbitrarynumberof inscenarios. CAVs, significantly superior to all exiting algorithms, thereby f Enforceable (π|s) Judgetheenforceabilityofπinscenarios. achieving the state-of-the-art performance. AlphaOrder also J(π|s) Objectivevalueoftheformulatedcombina-\ntorialoptimizationproblem. has excellent learning and transferring properties for efficient\nC Penaltyfactor. deployment to arbitrary new intersections.",
+      "size": 869,
+      "sentences": 12
+    },
+    {
+      "id": 73,
+      "content": "so J(π|s) Objectivevalueoftheformulatedcombina-\ntorialoptimizationproblem. has excellent learning and transferring properties for efficient\nC Penaltyfactor. deployment to arbitrary new intersections. In addition, the\nimplementationcomplexityofAlphaOrderislowenoughtobe\nS Inputsequenceofpointernetworkp θ.\napplied on practical roadside unit, since the training/updating\nS(cid:48) Inputsequenceofcriticnetworkb δ.\ncan be finished remotely on cloud. SVi StaterepresentationofVehiclei. AlphaOrder can address cooperative driving problems of\nD emb,D Vectordimensions. Ztime Right-of-waystateofconflictsubzonei. unceasing CAV swarm flows in any, and especially larger, i\nM Numberofgroups. conflictareas.Moreover,wecanalsosolvecooperativedriving\nB Batchsize\nproblems for CAV swarms in multi-conflict areas (e.g., traffic\nΨ Trainingdataset. networks with various non-signalized intersections). Noticing\nQi Valueofnodeiinasearchtree.",
+      "size": 924,
+      "sentences": 11
+    },
+    {
+      "id": 74,
+      "content": "rativedriving\nB Batchsize\nproblems for CAV swarms in multi-conflict areas (e.g., traffic\nΨ Trainingdataset. networks with various non-signalized intersections). Noticing\nQi Valueofnodeiinasearchtree. that the key difficulty is still the right-of-way arrangements at\nT,Ti Accumulatedvisitcountofanode. conflictingareas,wecanappropriatelydecomposetheproblem\nλ,γ Hyper-parametersinMCTSalgorithm. into small-scale sub-problems that address CAV cooperation\nwithin limited temporal-spatial areas and coordinate adjacent\nareas by specially designed information exchange. Thus, Al-\nphaOrder can be conveniently used to address the cooperative REFERENCES\ndriving problem in each small area [3], [40].",
+      "size": 691,
+      "sentences": 7
+    },
+    {
+      "id": 75,
+      "content": "d coordinate adjacent\nareas by specially designed information exchange. Thus, Al-\nphaOrder can be conveniently used to address the cooperative REFERENCES\ndriving problem in each small area [3], [40]. [1] H. Xu, Y. Zhang, L. Li, and W. Li, “Cooperative driving at unsignal-\nThegeneralityofthecorealgorithmofAlphaOrdersuggests\nized intersections using tree search,” IEEE Transactions on Intelligent\nthat it can be applied to other problems concerning preemp- TransportationSystems,vol.21,no.11,pp.4563–4571,2019. === 페이지 12 ===\nARXIV 12\n[2] C. Wu, A. R. Kreidieh, K. Parvate, E. Vinitsky, and A. M. Bayen, [25] B. Zhu, E. Bedeer, H. H. Nguyen, R. Barton, and J. Henry, “Uav\n“Flow: A modular learning framework for mixed autonomy traffic,” trajectoryplanninginwirelesssensornetworksforenergyconsumption\nIEEETransactionsonRobotics,2021.",
+      "size": 832,
+      "sentences": 4
+    },
+    {
+      "id": 76,
+      "content": "Nguyen, R. Barton, and J. Henry, “Uav\n“Flow: A modular learning framework for mixed autonomy traffic,” trajectoryplanninginwirelesssensornetworksforenergyconsumption\nIEEETransactionsonRobotics,2021. minimization by deep reinforcement learning,” IEEE Transactions on\n[3] J.Zhang,H.Pei,X.J.Ban,andL.Li,“Analysisofcooperativedriving VehicularTechnology,vol.70,no.9,pp.9540–9554,2021. strategiesatroadnetworklevelwithmacroscopicfundamentaldiagram,” [26] M. Nazari, A. Oroojlooy, L. Snyder, and M. Taka´c, “Reinforcement\nTransportation Research Part C: Emerging Technologies, vol. 135, p. learning for solving the vehicle routing problem,” Advances in neural\n103503,2022. informationprocessingsystems,vol.31,2018. [4] M.Dorigo,G.Theraulaz,andV.Trianni,“Reflectionsonthefutureof [27] V.KondaandJ.Tsitsiklis,“Actor-criticalgorithms,”Advancesinneural\nswarmrobotics,”ScienceRobotics,vol.5,no.49,p.eabe4385,2020. informationprocessingsystems,vol.12,1999.",
+      "size": 944,
+      "sentences": 6
+    },
+    {
+      "id": 77,
+      "content": "i,“Reflectionsonthefutureof [27] V.KondaandJ.Tsitsiklis,“Actor-criticalgorithms,”Advancesinneural\nswarmrobotics,”ScienceRobotics,vol.5,no.49,p.eabe4385,2020. informationprocessingsystems,vol.12,1999. [5] K.McGuire,C.DeWagter,K.Tuyls,H.Kappen,andG.C.deCroon, [28] V. Mnih, A. P. Badia, M. Mirza, A. Graves, T. Lillicrap, T. Harley,\n“Minimalnavigationsolutionforaswarmoftinyflyingrobotstoexplore D.Silver,andK.Kavukcuoglu,“Asynchronousmethodsfordeeprein-\nanunknownenvironment,”ScienceRobotics,vol.4,no.35,p.eaaw9710, forcement learning,” in International conference on machine learning. 2019. PMLR,2016,pp.1928–1937. [29] D.P.KingmaandJ.Ba,“Adam:Amethodforstochasticoptimization,”\n[6] M. S. Talamali, A. Saha, J. A. Marshall, and A. Reina, “When less is\narXivpreprintarXiv:1412.6980,2014.\nmore: robot swarms adapt better to changes with constrained commu-\n[30] D. Silver, A. Huang, C. J. Maddison, A. Guez, L. Sifre, G. Van\nnication,”ScienceRobotics,vol.6,no.56,p.eabf1416,2021.",
+      "size": 976,
+      "sentences": 7
+    },
+    {
+      "id": 78,
+      "content": "980,2014.\nmore: robot swarms adapt better to changes with constrained commu-\n[30] D. Silver, A. Huang, C. J. Maddison, A. Guez, L. Sifre, G. Van\nnication,”ScienceRobotics,vol.6,no.56,p.eabf1416,2021. Den Driessche, J. Schrittwieser, I. Antonoglou, V. Panneershelvam,\n[7] F. Berlinger, M. Gauci, and R. Nagpal, “Implicit coordination for 3d\nM.Lanctotetal.,“Masteringthegameofgowithdeepneuralnetworks\nunderwatercollectivebehaviorsinafish-inspiredrobotswarm,”Science\nandtreesearch,”nature,vol.529,no.7587,pp.484–489,2016. Robotics,vol.6,no.50,p.eabd8668,2021. [31] H. Xu, S. Feng, Y. Zhang, and L. Li, “A grouping-based cooperative\n[8] S. A. Reveliotis and E. Roszkowska, “Conflict resolution in free-\ndriving strategy for cavs merging problems,” IEEE Transactions on\nranging multivehicle systems: A resource allocation paradigm,” IEEE\nVehicularTechnology,vol.68,no.6,pp.6125–6136,2019. TransactionsonRobotics,vol.27,no.2,pp.283–296,2011.",
+      "size": 935,
+      "sentences": 5
+    },
+    {
+      "id": 79,
+      "content": "blems,” IEEE Transactions on\nranging multivehicle systems: A resource allocation paradigm,” IEEE\nVehicularTechnology,vol.68,no.6,pp.6125–6136,2019. TransactionsonRobotics,vol.27,no.2,pp.283–296,2011. [32] R. J. Williams, “Simple statistical gradient-following algorithms for\n[9] Y.Meng,L.Li,F.-Y.Wang,K.Li,andZ.Li,“Analysisofcooperative\nconnectionistreinforcementlearning,”Machinelearning,vol.8,no.3,\ndrivingstrategiesfornonsignalizedintersections,”IEEETransactionson\npp.229–256,1992. VehicularTechnology,vol.67,no.4,pp.2900–2911,2017. [33] R. Coulom, “Efficient selectivity and backup operators in monte-carlo\n[10] H. Yu, R. Jiang, Z. He, Z. Zheng, L. Li, R. Liu, and X. Chen, “Au- tree search,” in International conference on computers and games. tomatedvehicle-involvedtrafficflowstudies:Asurveyofassumptions, Springer,2006,pp.72–83.",
+      "size": 836,
+      "sentences": 7
+    },
+    {
+      "id": 80,
+      "content": "e, Z. Zheng, L. Li, R. Liu, and X. Chen, “Au- tree search,” in International conference on computers and games. tomatedvehicle-involvedtrafficflowstudies:Asurveyofassumptions, Springer,2006,pp.72–83. models,speculations,andperspectives,”TransportationresearchpartC: [34] J. Schrittwieser, I. Antonoglou, T. Hubert, K. Simonyan, L. Sifre,\nemergingtechnologies,vol.127,p.103101,2021. S. Schmitt, A. Guez, E. Lockhart, D. Hassabis, T. Graepel et al.,\n[11] L. Chai, B. Cai, W. ShangGuan, J. Wang, and H. Wang, “Connected “Masteringatari,go,chessandshogibyplanningwithalearnedmodel,”\nand autonomous vehicles coordinating approach at intersection based Nature,vol.588,no.7839,pp.604–609,2020. on space–time slot,” Transportmetrica A: Transport Science, vol. 14, [35] G.Chaslot,S.Bakkes,I.Szita,andP.Spronck,“Monte-carlotreesearch:\nno.10,pp.929–951,2018.",
+      "size": 847,
+      "sentences": 6
+    },
+    {
+      "id": 81,
+      "content": "ature,vol.588,no.7839,pp.604–609,2020. on space–time slot,” Transportmetrica A: Transport Science, vol. 14, [35] G.Chaslot,S.Bakkes,I.Szita,andP.Spronck,“Monte-carlotreesearch:\nno.10,pp.929–951,2018. Anewframeworkforgameai,”inProceedingsoftheAAAIConference\n[12] N.Mitrovic,I.Dakic,andA.Stevanovic,“Combinedalternate-direction on Artificial Intelligence and Interactive Digital Entertainment, vol. 4,\nlaneassignmentandreservation-basedintersectioncontrol,”IEEETrans- no.1,2008,pp.216–217. actionsonIntelligentTransportationSystems,vol.21,no.4,pp.1779– [36] L. Kocsis and C. Szepesva´ri, “Bandit based monte-carlo planning,” in\n1789,2019. European conference on machine learning. Springer, 2006, pp. 282–\n[13] A. I. M. Medina, F. Creemers, E. Lefeber, and N. van de Wouw, 293. “Optimalaccessmanagementforcooperativeintersectioncontrol,”IEEE [37] H.BaierandM.H.Winands,“Mcts-minimaxhybrids,”IEEETransac-\nTransactions on Intelligent Transportation Systems, vol. 21, no. 5, pp.",
+      "size": 972,
+      "sentences": 12
+    },
+    {
+      "id": 82,
+      "content": ". “Optimalaccessmanagementforcooperativeintersectioncontrol,”IEEE [37] H.BaierandM.H.Winands,“Mcts-minimaxhybrids,”IEEETransac-\nTransactions on Intelligent Transportation Systems, vol. 21, no. 5, pp. tionsonComputationalIntelligenceandAIinGames,vol.7,no.2,pp. 2114–2127,2019. 167–179,2014. [14] M. W. Levin, H. Fritz, and S. D. Boyles, “On optimizing reservation- [38] C.B.Browne,E.Powley,D.Whitehouse,S.M.Lucas,P.I.Cowling,\nbased intersection controls,” IEEE Transactions on Intelligent Trans- P. Rohlfshagen, S. Tavener, D. Perez, S. Samothrakis, and S. Colton,\nportationSystems,vol.18,no.3,pp.505–515,2016. “A survey of monte carlo tree search methods,” IEEE Transactions on\n[15] F. Zhu and S. V. Ukkusuri, “A linear programming formulation for Computational Intelligence and AI in games, vol. 4, no. 1, pp.",
+      "size": 810,
+      "sentences": 11
+    },
+    {
+      "id": 83,
+      "content": "A survey of monte carlo tree search methods,” IEEE Transactions on\n[15] F. Zhu and S. V. Ukkusuri, “A linear programming formulation for Computational Intelligence and AI in games, vol. 4, no. 1, pp. 1–43,\nautonomous intersection control within a dynamic traffic assignment 2012.\nand connected vehicle environment,” Transportation Research Part C: [39] X. Glorot, A. Bordes, and Y. Bengio, “Deep sparse rectifier neural\nEmergingTechnologies,vol.55,pp.363–378,2015. networks,”inProceedingsofthefourteenthinternationalconferenceon\n[16] S. A. Fayazi and A. Vahidi, “Mixed-integer linear programming for artificialintelligenceandstatistics. JMLRWorkshopandConference\noptimalschedulingofautonomousvehicleintersectioncrossing,”IEEE Proceedings,2011,pp.315–323. TransactionsonIntelligentVehicles,vol.3,no.3,pp.287–299,2018.",
+      "size": 816,
+      "sentences": 7
+    },
+    {
+      "id": 84,
+      "content": "genceandstatistics. JMLRWorkshopandConference\noptimalschedulingofautonomousvehicleintersectioncrossing,”IEEE Proceedings,2011,pp.315–323. TransactionsonIntelligentVehicles,vol.3,no.3,pp.287–299,2018. [40] H.Pei,Y.Zhang,Q.Tao,S.Feng,andL.Li,“Distributedcooperative\ndriving in multi-intersection road networks,” IEEE Transactions on\n[17] G.Lu,Y.M.Nie,X.Liu,andD.Li,“Trajectory-basedtrafficmanage-\nVehicularTechnology,vol.70,no.6,pp.5390–5403,2021. mentinsideanautonomousvehiclezone,”TransportationResearchPart\n[41] G. Tian, Y. Ren, and M. Zhou, “Dual-objective scheduling of rescue\nB:Methodological,vol.120,pp.76–98,2019. vehiclestodistinguishforestfiresviadifferentialevolutionandparticle\n[18] R. Hult, M. Zanon, S. Gros, H. Wymeersch, and P. Falcone,\nswarmoptimizationcombinedalgorithm,”IEEETransactionsonIntel-\n“Optimisation-based coordination of connected, automated vehicles at\nligentTransportationSystems,vol.17,no.11,pp.3009–3021,2016. intersections,” Vehicle System Dynamics, vol. 58, no.",
+      "size": 994,
+      "sentences": 8
+    },
+    {
+      "id": 85,
+      "content": "sactionsonIntel-\n“Optimisation-based coordination of connected, automated vehicles at\nligentTransportationSystems,vol.17,no.11,pp.3009–3021,2016. intersections,” Vehicle System Dynamics, vol. 58, no. 5, pp. 726–747,\n[42] W. U. Khan, T. N. Nguyen, F. Jameel, M. A. Jamshed, H. Pervaiz,\n2020. M. A. Javed, and R. Jntti, “Learning-based resource allocation for\n[19] L. Li, D. Wen, and D. Yao, “A survey of traffic control with vehicu-\nbackscatter-aidedvehicularnetworks,”IEEETransactionsonIntelligent\nlar communications,” IEEE Transactions on Intelligent Transportation\nTransportationSystems,pp.1–15,2021. Systems,vol.15,no.1,pp.425–432,2013. [43] G.-Z.Yang,J.Bellingham,P.E.Dupont,P.Fischer,L.Floridi,R.Full,\n[20] H. Xu, Y. Zhang, C. G. Cassandras, L. Li, and S. Feng, “A bi-level\nN. Jacobstein, V. Kumar, M. McNutt, R. Merrifield et al., “The grand\ncooperative driving strategy allowing lane changes,” Transportation\nchallenges of science robotics,” Science robotics, vol. 3, no.",
+      "size": 978,
+      "sentences": 9
+    },
+    {
+      "id": 86,
+      "content": "N. Jacobstein, V. Kumar, M. McNutt, R. Merrifield et al., “The grand\ncooperative driving strategy allowing lane changes,” Transportation\nchallenges of science robotics,” Science robotics, vol. 3, no. 14, p.\nresearchpartC:emergingtechnologies,vol.120,p.102773,2020. eaar7650,2018. [21] J.Zhang,Z.Li,L.Li,Y.Li,andH.Dong,“Abi-levelcooperativeoper-\nationapproachforagvbasedautomatedvaletparking,”Transportation\nResearchPartC:EmergingTechnologies,vol.128,p.103140,2021. [22] O. Vinyals, M. Fortunato, and N. Jaitly, “Pointer networks,” Advances\ninneuralinformationprocessingsystems,vol.28,2015. [23] I. Bello, H. Pham, Q. V. Le, M. Norouzi, and S. Bengio, “Neural\ncombinatorialoptimizationwithreinforcementlearning,”arXivpreprint\narXiv:1611.09940,2016. [24] I. Bello, S. Kulkarni, S. Jain, C. Boutilier, E. Chi, E. Eban, X. Luo,\nA.Mackey,andO.Meshi,“Seq2slate:Re-rankingandslateoptimization\nwithrnns,”arXivpreprintarXiv:1810.02019,2018. === 페이지 13 ===\nARXIV 13\nJiawei Zhang received the B.S.",
+      "size": 986,
+      "sentences": 9
+    },
+    {
+      "id": 87,
+      "content": "Boutilier, E. Chi, E. Eban, X. Luo,\nA.Mackey,andO.Meshi,“Seq2slate:Re-rankingandslateoptimization\nwithrnns,”arXivpreprintarXiv:1810.02019,2018. === 페이지 13 ===\nARXIV 13\nJiawei Zhang received the B.S. degree from Ts-\ninghua University, Beijing, China, in 2020. He is\ncurrentlypursuingthePh.D.degreewiththeDepart-\nment of Automation, Tsinghua University, Beijing,\nChina. His research interests include autonomous\ndriving,intelligenttransportationsystems,anddeep\nreinforcementlearning.HereceivedtheBestStudent\nPaperAwardatthe25thIEEEInternationalConfer-\nenceonIntelligentTransportationSystems. ShenLireceivedthePh.D.degreeattheUniversity\nof Wisconsin C Madison in 2018. He is a re-\nsearchassociateatTsinghuaUniversity.Hisresearch\nis about Intelligent Transportation Systems (ITS),\nArchitecture Design of CAVH System, Vehicle-\ninfrastructure Cooperative Planning and Decision\nMethod,TrafficDataMiningbasedonCellularData,\nandTrafficOperationsandManagement.",
+      "size": 950,
+      "sentences": 7
+    },
+    {
+      "id": 88,
+      "content": "sportation Systems (ITS),\nArchitecture Design of CAVH System, Vehicle-\ninfrastructure Cooperative Planning and Decision\nMethod,TrafficDataMiningbasedonCellularData,\nandTrafficOperationsandManagement. Li Li (Fellow, IEEE) is currently a Professor with\ntheDepartmentofAutomation,TsinghuaUniversity,\nBeijing,China,workinginthefieldsofartificialin-\ntelligence,intelligentcontrolandsensing,intelligent\ntransportation systems, and intelligent vehicles. He\nhas published over 110 SCI-indexed international\njournal articles and over 70 international confer-\nence papers as a first/corresponding author. He is\na member of the Editorial Advisory Board for the\nTransportationResearchPartC:EmergingTechnolo-\ngies, and a member of the Editorial Board for the\nTransportReviewsandActaAutomaticaSinica.HealsoservesasanAssociate\nEditorforIEEETransactionsonIntelligentTransportationSystemsandIEEE\nTransactionsonIntelligentVehicles.",
+      "size": 913,
+      "sentences": 4
+    }
+  ]
+}

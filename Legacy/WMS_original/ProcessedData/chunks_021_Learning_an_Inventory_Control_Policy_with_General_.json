@@ -1,0 +1,680 @@
+{
+  "source": "ArXiv",
+  "filename": "021_Learning_an_Inventory_Control_Policy_with_General_.pdf",
+  "total_chars": 83941,
+  "total_chunks": 112,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "=== 페이지 1 ===\nLearning an Inventory Control Policy with General Inventory Arrival\nDynamics\nSohrab Andaz∗ Carson Eisenach∗ Dhruv Madeka∗ Kari Torkkola∗ Randy Jia†‡\nDean Foster∗ Sham Kakade∗§\nJanuary 23, 2024\nAbstract\nIn this paper we address the problem of learning and backtesting inventory control\npolicies in the presence of general arrival dynamics – which we term as a quantity-\nover-time arrivals model (QOT). We also allow for order quantities to be modified as a\npost-processing step to meet vendor constraints such as order minimum and batch size\nconstraints – a common practice in real supply chains. To the best of our knowledge this\nis the first work to handle either arbitrary arrival dynamics or an arbitrary downstream\npost-processingoforderquantities. Buildinguponrecentwork[41]wesimilarlyformulate\nthe periodic review inventory control problem as an exogenous decision process, where\nmost of the state is outside the control of the agent. Madeka et al.",
+      "size": 968,
+      "sentences": 5
+    },
+    {
+      "id": 2,
+      "content": "ildinguponrecentwork[41]wesimilarlyformulate\nthe periodic review inventory control problem as an exogenous decision process, where\nmost of the state is outside the control of the agent. Madeka et al. [41] show how to\nconstruct a simulator that replays historic data to solve this class of problem. In our\ncase, we incorporate a deep generative model for the arrivals process as part of the\nhistory replay. By formulating the problem as an exogenous decision process, we can\napply results from Madeka et al. [41] to obtain a reduction to supervised learning. Via\nsimulationstudiesweshowthatthisapproachyieldsstatisticallysignificantimprovements\nin profitability over production baselines. Using data from a real-world A/B test, we\nshow that Gen-QOT generalizes well to off-policy data and that the resulting buying\npolicy outperforms traditional inventory management systems in real world settings.",
+      "size": 897,
+      "sentences": 8
+    },
+    {
+      "id": 3,
+      "content": "from a real-world A/B test, we\nshow that Gen-QOT generalizes well to off-policy data and that the resulting buying\npolicy outperforms traditional inventory management systems in real world settings. 1 Introduction\nThe periodic review inventory control problem is that of determining how much inventory to hold\nin order to maximize revenue. This problem has been studied extensively in the operations research\nliterature, and is often formulated as a Markov decision process [50]. Some complexities involved\ninclude stochastic demands with unknown seasonality, lost sales, stochastic vendor lead times,\nmultiple shipments per order, unreliable replenishment, and order quantity restrictions. Classical\napproaches are typically able to handle only a subset of these complexities due to the curse of\n∗Amazon, New York, NY. Correspondence to: sandaz@amazon.com. †Afresh\n‡Work done while at Amazon. §Harvard University, Cambridge, MA.",
+      "size": 929,
+      "sentences": 8
+    },
+    {
+      "id": 4,
+      "content": "to handle only a subset of these complexities due to the curse of\n∗Amazon, New York, NY. Correspondence to: sandaz@amazon.com. †Afresh\n‡Work done while at Amazon. §Harvard University, Cambridge, MA. 1\n4202\nnaJ\n22\n]GL.sc[\n2v86171.0132:viXra\n=== 페이지 2 ===\ndimensionality and the fact that closed form solutions are not available as the problem setting\nincreases in complexity. In fact, base stock policies (which are optimal for simplified settings and\noftenusedinpractice)havebeenshowntoperformworsethanconstantorderpoliciesinthepresence\nof lost sales and stochastic demand [78]. Madeka et al. [41] recently introduced the first Deep Reinforcement Learning periodic review\ninventory system which was able to handle many of the aforementioned challenges. By formulating\ninventory control as an exogenous decision process [57], Madeka et al. [41] demonstrate a reduction\nin complexity of the learning problem to that of supervised learning.",
+      "size": 937,
+      "sentences": 10
+    },
+    {
+      "id": 5,
+      "content": "ed challenges. By formulating\ninventory control as an exogenous decision process [57], Madeka et al. [41] demonstrate a reduction\nin complexity of the learning problem to that of supervised learning. They also show how censored\n(unobserved)historicdatacanbeusedforpolicylearningandbacktestingbyconstructingasimulator\nthat replays historic data rather than assuming a parametric form in order to simulate the future. One of the assumptions Madeka et al. [41] does maintain from the classical inventory control\nliterature, however is the structure of inventory arrivals given an order quantity provided to the\nvendor. The authors handle the case of stochastic lead times (with unknown distribution), but in\nreal-world settings there are several additional complexities that can arise. First, a single order\nplaced to a vendor may arrive in multiple shipments at different future periods1.",
+      "size": 886,
+      "sentences": 8
+    },
+    {
+      "id": 6,
+      "content": "ribution), but in\nreal-world settings there are several additional complexities that can arise. First, a single order\nplaced to a vendor may arrive in multiple shipments at different future periods1. Figure 1 shows\ndistributions of number of shipments and inter-arrival times from a set of purchase orders made by\na large e-retailer. 1 2 3 4 5 6 7 8 9\nCount\nycneuqerF\nReceives per Order\n1 2 3 4 5 6 7 8\nPeriods\n(a) Number of distinct shipments per order\nycneuqerF\nPeriods Between Receives\n(b) Inter-arrival times for the same order\nFigure 1: Orders often arrive in multiple shipments, and spread out over multiple time periods. Second, the supply may be unreliable and vendors may only partially fill orders that they receive\n– for example an order for 100 units of an item may result in only 75 units being supplied. This\nmay occur for multiple reasons, including that the vendor itself is out of stock.",
+      "size": 904,
+      "sentences": 6
+    },
+    {
+      "id": 7,
+      "content": "rs that they receive\n– for example an order for 100 units of an item may result in only 75 units being supplied. This\nmay occur for multiple reasons, including that the vendor itself is out of stock. In the literature the\nproportion of the original order quantity retailer ultimately receives is referred to as the yield or fill\nrate. Figure 2a shows the distribution of yields at a large e-retailer. Finally, the order quantity dictated by the policy may not meet the requirements of the vendor\nandmayneedtoberoundedbeforeapurchaseorderissent: forexampleminimumorderquantitiesor\nbatch size restrictions2 are quite common [77]. The impact of such restrictions is difficult to analyze,\n1To the best of our knowledge, no existing work considers this setting.",
+      "size": 756,
+      "sentences": 6
+    },
+    {
+      "id": 8,
+      "content": "nimumorderquantitiesor\nbatch size restrictions2 are quite common [77]. The impact of such restrictions is difficult to analyze,\n1To the best of our knowledge, no existing work considers this setting. 2For example, order quantities may need to be a multiple of case sizes or other unit of packaging\n2\n[표 데이터 감지됨]\n\n=== 페이지 3 ===\n0 1\nYield Rate\nycneuqerF\nSupplier Yield\n0 1\nYield Rate\n(a) Observed distribution of supplier fill rates\nycneuqerF\nEnd-to-end Yield\n100% Yield\n(b) Overall yields, including any post-processing\nFigure 2: Example of yields – multiplicative proportion of order quantity that is received – for\npurchase orders at a large e-retailer, both before and after any post-processor is applied to the order\nquantity. is not well understood, and heuristic rules are typically employed [52, 77, 75].",
+      "size": 810,
+      "sentences": 4
+    },
+    {
+      "id": 9,
+      "content": "for\npurchase orders at a large e-retailer, both before and after any post-processor is applied to the order\nquantity. is not well understood, and heuristic rules are typically employed [52, 77, 75]. In real-world settings,\nthis may be performed as a secondary post-processing step after the optimal order quantity has been\ndetermined – for example by rounding up to the minimum order quantity [34, 76]. Figure 2b shows\nthe distribution of “end-to-end” yields – including both supply uncertainty and any post-processing\nsteps to meet batch ordering or minimum order quantity constraints applied by ordering systems –\nfor replenishment decisions at a large e-retailer. Note how in many cases, the “end-to-end” yield\ncan be greater than the original order quantity due to the presence of a post-processing step.",
+      "size": 808,
+      "sentences": 5
+    },
+    {
+      "id": 10,
+      "content": "tems –\nfor replenishment decisions at a large e-retailer. Note how in many cases, the “end-to-end” yield\ncan be greater than the original order quantity due to the presence of a post-processing step. Our Contributions and Organization\nIn this paper we address the problem of learning and backtesting inventory control policies in the\npresence of general arrival dynamics (which we term as a quantity-over-time model or QOT). We\nalso allow for order quantities to be modified as a post-processing step to meet vendor constraints\nsuch as order minimum and batch size constraints. To the best of our knowledge this is the first\nwork to handle either arbitrary arrival dynamics or an arbitrary downstream post-processing of\norder quantities – a common practice in real supply chains. Figure 3 illustrates the difference in\ncumulative arrivals over time under the different types of arrival dynamics.",
+      "size": 895,
+      "sentences": 6
+    },
+    {
+      "id": 11,
+      "content": "ream post-processing of\norder quantities – a common practice in real supply chains. Figure 3 illustrates the difference in\ncumulative arrivals over time under the different types of arrival dynamics. The remainder of this paper is organized as follows: in Section 3 we formulate our problem as an\nexogenous interactive decision process and leverage results from Madeka et al. [41] to demonstrate a\nreduction to supervised learning. We also describe our approach to modeling the arrival dynamics\nfor use as part of a simulator that replays historic data [41]. Next, in Section 4.1 we evaluate the\nperformance of the learned dynamics model on “on-policy” data – that is, data generated by the\nsame policy that generated the data used to fit the model. Then, Section 4.2 we demonstrate via\nbacktests the impact a realistic arrivals model has on policy performance.",
+      "size": 861,
+      "sentences": 7
+    },
+    {
+      "id": 12,
+      "content": "at is, data generated by the\nsame policy that generated the data used to fit the model. Then, Section 4.2 we demonstrate via\nbacktests the impact a realistic arrivals model has on policy performance. Finally, in Section 4.3,\nresults from a large real-world A/B test in the supply chain of a large e-retailer show that (1) the RL\n3\n[표 데이터 감지됨]\n\n=== 페이지 4 ===\n1.0\n0.8\n0.6\n0.4\n0.2\n0.0\n0 1 2 3 4 5 6 7 8\nPeriods\nytitnauQ\nredrO\nfo\nelpitluM\nCumulative Received from Different\nModels of Inventory Arrivals\nActual\nGenQOT Sampled\nLead-Time Sampled\nLead-Time and Fill Rate Sampled\nFigure 3: Cumulative arrivals over time for a single purchase order under differing dynamics. policy learned using our methodology outperforms classic approaches to periodic review inventory\ncontrol, and (2) our learned dynamics model generalizes well to “off-policy” data which validates\nour assumption that we have an accurate forecast of transitions under the learned policy.",
+      "size": 949,
+      "sentences": 4
+    },
+    {
+      "id": 13,
+      "content": "w inventory\ncontrol, and (2) our learned dynamics model generalizes well to “off-policy” data which validates\nour assumption that we have an accurate forecast of transitions under the learned policy. 2 Related Work\n2.1 Forecasting and Generative Modeling\nAll work which considers stochastic vendor lead times implicitly requires a forecast of lead times\n(even if the lead time distribution is assumed to be stationary). We have not found much study\nof forecasting lead times specifically, but approaches from the probabilistic time series forecasting\ncommunity can be used to forecast lead times. There is an extensive body of work which has\nsuccessfully applied deep learning to time series forecasting, including in the supply chain for\nforecasting demand [48, 72, 22, 46, 70, 53, 69, 17, 40]. Deep Generative Modeling\nAnumberofdeepgenerativetechniqueshavebeendevelopedtoestimatethelikelihoodofobservations\nin training data and generate new samples from the underlying data distribution.",
+      "size": 989,
+      "sentences": 5
+    },
+    {
+      "id": 14,
+      "content": "40]. Deep Generative Modeling\nAnumberofdeepgenerativetechniqueshavebeendevelopedtoestimatethelikelihoodofobservations\nin training data and generate new samples from the underlying data distribution. These include\ngenerative adversarial networks [26], variational auto-encoders [35, 36], and autoregressive models. Autoregressive models have been used successfully in image generation [67], NLP [8, 14], and time-\nseries forecasting [40, 17, 32, 70, 53, 38]. Our work employs autoregressive modeling by decomposing\nthe full problem of estimating the joint distribution of arrivals into the simpler problem of merely\npredicting the next arrival in a sequence given the previously realized shipments. 4\n[표 데이터 감지됨]\n\n=== 페이지 5 ===\n2.2 Reinforcement Learning and Exogenous Sequential Decision Problems\nReinforcement learning has been applied to many sequential decision-making problems including\ngames and simulated physics models where many simulations are possible [56, 62, 44, 61, 54, 43].",
+      "size": 987,
+      "sentences": 6
+    },
+    {
+      "id": 15,
+      "content": "Problems\nReinforcement learning has been applied to many sequential decision-making problems including\ngames and simulated physics models where many simulations are possible [56, 62, 44, 61, 54, 43]. In general, one can require exponentially many samples (in the horizon of the problem) to learn a\ncontrol policy. Recently, Madeka et al. [41] and Sinclair et al. [57] considered a class of problems called\nexogenous interactive decision processes wherein the state consists of a stochastic exogenous process\n(independent of the control) and an endogenous component that is governed by a known transition\nfunction f of both the previous endogenous state and the exogenous process. In these cases, Madeka\net al. [41], Sinclair et al. [57] prove a reduction in sample complexity to that of supervised learning –\nan exponential improvement over the general RL setting.",
+      "size": 864,
+      "sentences": 8
+    },
+    {
+      "id": 16,
+      "content": "enous process. In these cases, Madeka\net al. [41], Sinclair et al. [57] prove a reduction in sample complexity to that of supervised learning –\nan exponential improvement over the general RL setting. 2.3 Periodic Review Inventory Systems\nInventorycontrolsystemshavebeenstudiedextensivelyintheliteratureunderavarietyofconditions\n(see Porteus [50] for a comprehensive overview). The simplest form is the newsvendor, which solves\na myopic problem [3]. Many extensions exist [47, 3], and the optimal policy in many variants takes\nthe form of a base stock policy which, informally, consists of an optimal inventory level and then\norders up to that level. However, outside the restrictive conditions under which optimal policies\ncan be derived, Zipkin [78] showed that even constant order policies can be better than base stock\npolicies. RL for Inventory Control\nMore recently, several authors have applied reinforcement learning to solve multi-period inventory\ncontrol problems [24, 12, 5, 41].",
+      "size": 989,
+      "sentences": 9
+    },
+    {
+      "id": 17,
+      "content": "s can be better than base stock\npolicies. RL for Inventory Control\nMore recently, several authors have applied reinforcement learning to solve multi-period inventory\ncontrol problems [24, 12, 5, 41]. We adopt the modeling approach of Madeka et al. [41], and similarly\ntreat the periodic review inventory control problem under general arrival dynamics as an exogenous\ndecision process. Also following Madeka et al. [41], we build a differentiable simulator [59, 30, 31, 10]\nusing historical supply chain data, and successfully train and backtest an RL agent to achieve\nimproved real world performance over traditional methods. Lead Times and Supply Reliability\nThere has been extensive work in the literature on how to handle stochastic lead times in periodic\nreview inventory systems [50, 58, 42, 47, 33]. In addition, unreliable supply has been studied in a\nvariety of settings.",
+      "size": 879,
+      "sentences": 8
+    },
+    {
+      "id": 18,
+      "content": "sive work in the literature on how to handle stochastic lead times in periodic\nreview inventory systems [50, 58, 42, 47, 33]. In addition, unreliable supply has been studied in a\nvariety of settings. One form this often takes is a stochastic yield [39, 37, 29, 23, 42, 7], for example\nvia some portion of the supply being defective. A common heuristic is to simply adjust the order\nquantity for the mean yield [7]. The second standard formulation is to have the fill rate level be\ndetermined by the number of units the vendor has available, where vendors fill up to the amount\nof units they have available [11]. The first setting is more common as it is more tractable to find\nanalytic solutions. We are unaware of any work that considers the impact of a varying number of\nshipments per order placed with the supplier.",
+      "size": 818,
+      "sentences": 7
+    },
+    {
+      "id": 19,
+      "content": "st setting is more common as it is more tractable to find\nanalytic solutions. We are unaware of any work that considers the impact of a varying number of\nshipments per order placed with the supplier. 5\n=== 페이지 6 ===\nIn this work, we take the following approach: we assume that the vendor fills orders up to their\ncapacity (which is exogenous to the retailer’s replenishment decisions), but we add an arrival shares\nprocess which encodes how the filled amount arrives over future time periods. Minimum Order Quantities, Maximum Order Quantities and Batch Ordering\nA minimum order quantity or maximum order quantity constraint means that the supplier will reject\nall orders under or over that amount, respectively. For minimum order quantity constraints, we only\nconsider the setting where the retailer can also choose to order 0 (i.e. not to order) as otherwise\nthe minimum quantity constraint is unimportant.",
+      "size": 908,
+      "sentences": 6
+    },
+    {
+      "id": 20,
+      "content": "ly. For minimum order quantity constraints, we only\nconsider the setting where the retailer can also choose to order 0 (i.e. not to order) as otherwise\nthe minimum quantity constraint is unimportant. Similarly, a batch ordering requirement means\nthat the supplier only accepts order quantities that are an integer multiple of some specified batch\nquantity. Maximum constraints have been studied extensively in the literature and typically affect\nthe policy a in benign way [9, 18]. On the other hand, minimum order quantities [19, 75, 74, 55] and\nbatch requirements [68, 77] – although widely adopted by suppliers in practice [76] – are relatively\nunstudied in the literature as they present significant difficulties in deriving the optimal order\nquantity. For minimum order quantities, even in highly simplified settings, optimal policies are only\npartially characterized and are too complicated to implement in practice [74].",
+      "size": 927,
+      "sentences": 7
+    },
+    {
+      "id": 21,
+      "content": "the optimal order\nquantity. For minimum order quantities, even in highly simplified settings, optimal policies are only\npartially characterized and are too complicated to implement in practice [74]. Instead, retailers use\nbase stock policies with a heuristic rounding before placing the order [75, 34]. 3 Mathematical Formulation and Methodology\nIn this section, we follow the Interactive Decision Process (IDP) formulation of Madeka et al. [41],\nborrowing most of the conventions and notation, except we define and treat the “lead time” process\ndifferently. At a high level, a central planner is trying to determine how many units of inventory to\norder at every time step t = 1,2,...,T, in order to satisfy demands D . The goal is to maximize\nt\nprofits by balancing having enough inventory on hand to satisfy demand (we assume a lost sales\ncustomer model), with the cost of holding too much inventory.",
+      "size": 902,
+      "sentences": 7
+    },
+    {
+      "id": 22,
+      "content": "isfy demands D . The goal is to maximize\nt\nprofits by balancing having enough inventory on hand to satisfy demand (we assume a lost sales\ncustomer model), with the cost of holding too much inventory. The dynamics we are most concerned with is how order quantities selected by the policy evolve\ninto future arrivals at the retailer’s warehouse. The standard formulation in the literature is the\nvendor lead time (VLT) arrivals model, whereupon placing an inventory order decision a at time t,\nt\na single quantity v is drawn from an exogenous lead time distribution, and the entire order arrives\nt\nv time steps later at time t+v . In the case of stochastic yields, there are two approaches in the\nt t\nliterature: either the yield is a random multiplicative factor multiplied times the order quantity, or\nthe vendor has a stochastic supply and fills up to the amount of their supply. Where we depart\nfrom Madeka et al.",
+      "size": 915,
+      "sentences": 6
+    },
+    {
+      "id": 23,
+      "content": "r the yield is a random multiplicative factor multiplied times the order quantity, or\nthe vendor has a stochastic supply and fills up to the amount of their supply. Where we depart\nfrom Madeka et al. [41] is that our formulation allows that\n1. inventory can arrive in multiple shipments for a single order,\n2. yields can be stochastic, and\n3. there can be a downstream system that applies a heuristic order quantity rounding to satisfy\nbatch, minimum and maximum quantity constraints. We propose a novel quantity over time (QOT) arrivals model, which generalizes all the settings\ndescribed above. In the QOT arrivals model, we assume that orders can arrive in multiple shipments\n6\n=== 페이지 7 ===\nover time, and the total arriving quantity may not necessarily sum up to the order quantity placed.",
+      "size": 794,
+      "sentences": 5
+    },
+    {
+      "id": 24,
+      "content": ". In the QOT arrivals model, we assume that orders can arrive in multiple shipments\n6\n=== 페이지 7 ===\nover time, and the total arriving quantity may not necessarily sum up to the order quantity placed. At every time t, the vendor has allocated a supply U that denotes the maximum number of units it\nt\ncan send (regardless the amount we order), which will arrive over from the current week up to L\n(cid:80)\nweeks in the future according to an exogenous arrival shares vector (ρ ,...,ρ ) where ρ = 1.\nt,0 t,L l t,l\nThat is, the arrivals at lead time j from order a is equal to min(U ,a )ρ . We denote the arrival\nt t t t,j\nquantity as o := min(U ,a )ρ . Here, we implicitly assume that orders necessarily arrive after L\nt,j t t t,j\ntime steps. We also allow for the existence of an order quantity post-processor f that is arbitrary (but\np\nknown) that modifies order quantities before they are sent to the supplier – e.g. to ensure they meet\nany vendor constraints.",
+      "size": 960,
+      "sentences": 7
+    },
+    {
+      "id": 25,
+      "content": "existence of an order quantity post-processor f that is arbitrary (but\np\nknown) that modifies order quantities before they are sent to the supplier – e.g. to ensure they meet\nany vendor constraints. 3.1 Mathematical notation\nDenote by R, R , Z, and Z the set of reals, non-negative reals, integers, and non-negative\n≥0 ≥0\nintegers, respectively. We let (·)+ refer to the classical positive part operator i.e. (·)+ = max(·,0). Let [ · ] refer to the set of positive integers up to the argument, i.e. [ · ] = {x ∈ Z|1 ≤ x ≤ · }. The inventory management problem seeks to find the optimal inventory level for each product i in\nthe set of retailer’s products, which we denote by A. We assume our exogenous random variables\nare defined on a canonical probability space (Ω,F,P), and policies are parameterized by θ in some\nparameter set Θ.",
+      "size": 833,
+      "sentences": 9
+    },
+    {
+      "id": 26,
+      "content": "retailer’s products, which we denote by A. We assume our exogenous random variables\nare defined on a canonical probability space (Ω,F,P), and policies are parameterized by θ in some\nparameter set Θ. We use\nEP\nto denote an expectation operator of a random variable with respect\nto some probability measure P. Let ||X,Y|| denote the total variation distance between two\nTV\nprobability measures X and Y. 3.2 IDP Construction\nOur IDP is governed by external (exogenous) processes, a control process, inventory evolution\ndynamics, and a reward function. To succinctly describe our process, we focus on just one product\ni ∈ A, though we note that decisions can be made jointly for every product.",
+      "size": 689,
+      "sentences": 5
+    },
+    {
+      "id": 27,
+      "content": "cess, inventory evolution\ndynamics, and a reward function. To succinctly describe our process, we focus on just one product\ni ∈ A, though we note that decisions can be made jointly for every product. External Processes At every time step t, for product i, we assume that there is a random\ndemand process Di ∈ [0,∞) that corresponds to customer demand during time t for product i.\nt\nWe also assume that the random variables pi ∈ [0,∞) and ci ∈ [0,∞) are the random variables\nt t\ncorresponding to selling price and purchase cost. We also assume any constraints the vendor\nimposes on the retailer’s orders Mi ∈ Rdv – such as minimum order quantities and batch sizes\nt\n– are exogenous to the ordering decisions. The supply Ui ∈ [0,∞) corresponds to the maximum\nt\namount of inventory the vendor is able to send.",
+      "size": 806,
+      "sentences": 5
+    },
+    {
+      "id": 28,
+      "content": "Rdv – such as minimum order quantities and batch sizes\nt\n– are exogenous to the ordering decisions. The supply Ui ∈ [0,∞) corresponds to the maximum\nt\namount of inventory the vendor is able to send. Finally, the arrival shares process ρi := {ρi }L\nt t,j j=0\ndescribes the arrivals over the next L time steps from an order placed at the current time t – note\nthat (cid:80)L ρi = 1 and ρi > 0 for all i, t, and j. Our exogenous state vector for product i at time\nj=0 t,j t,j\nt is all of this information:\nsi = (Di,pi,ci,Ui,Mi,ρi). t t t t t t t\nTo allow for the most general formulation possible, we consider policies that can leverage the history\nof all products. In our implementation, however, we learn a policy that only uses the history of that\nproduct and for our learnability results in Section 3.3 we will assume independence of the processes\n7\n=== 페이지 8 ===\nbetween products.",
+      "size": 882,
+      "sentences": 6
+    },
+    {
+      "id": 29,
+      "content": "n, however, we learn a policy that only uses the history of that\nproduct and for our learnability results in Section 3.3 we will assume independence of the processes\n7\n=== 페이지 8 ===\nbetween products. Therefore, we will define the history\nH := {(si,...,si )} |A|\nt 1 t−1 i=1\nas the joint history vector of the external processes for all the products up to time t.\nControl Processes Our control process will involve picking actions for each product jointly from\na set of all possible actions A := R|A| . For product i, the action taken is denoted by ai ∈ R , the\n≥0 t ≥0\norder quantity for product i. For a class of policies parameterized by θ, we can define the actions as\nai = πi (H ). t θ,t t\nWe characterize the set of these policies as Π = {πi |θ ∈ Θ,i ∈ A,t ∈ [0,T]}. θ,t\nOrder Quantity Constraints We allow for the existence of an order quantity post-processer\nf\np\n: R\n≥0\n×Rdv → R\n≥0\nthat may modify the order quantity – for example to satisfy the constraints\ngiven by Mi.",
+      "size": 977,
+      "sentences": 6
+    },
+    {
+      "id": 30,
+      "content": "der Quantity Constraints We allow for the existence of an order quantity post-processer\nf\np\n: R\n≥0\n×Rdv → R\n≥0\nthat may modify the order quantity – for example to satisfy the constraints\ngiven by Mi. The final order quantity requested from the vendor is denoted as ai := f (ai,Mi). t (cid:101)t p t t\nNote that we do not impose a requirement that any constraints encoded in Mi be satisfied, merely\nt\nthat we permit the endogenous portion of the state’s evolution to depend on such a function as\nthey appear so often in real supply chains. Inventory Evolution Dynamics We assume that the implicit endogenous inventory state follows\nstandard inventory dynamics and conventions. Inventory arrives at the beginning of the time period,\nso the inventory state transition function is equal to the order arrivals at the beginning of the week\nminus the demand fulfilled over the course of the week.",
+      "size": 889,
+      "sentences": 5
+    },
+    {
+      "id": 31,
+      "content": "ves at the beginning of the time period,\nso the inventory state transition function is equal to the order arrivals at the beginning of the week\nminus the demand fulfilled over the course of the week. Both demand and arrivals may be censored\ndue to having lower inventory on-hand or vendor having low supply, respectively. The amount\narriving, according to our model of arrivals is:\nL\n(cid:88)\nIi = Ii + min(Ui ,ai )ρi , (3.1)\nt− t−1 t−j (cid:101)t−j t−j,j\nj=0\nwhere Ii is the inventory at the end of time t, and Ii is the inventory at the beginning of time t,\nt t−\nafter arrivals but before demand is fulfilled. Then, at the end of time t, the inventory position is:\nIi = min(Ii −Di,0). t t− t\nReward Function The reward at time t for product i is defined as the selling price times the\ntotal fulfilled demand, less the total cost associated with any newly ordered inventory (that will be\ncharged by the vendor upon delivery):\nRi = pimin(Di,Ii )−cimin(Ui,ai).",
+      "size": 959,
+      "sentences": 5
+    },
+    {
+      "id": 32,
+      "content": "he selling price times the\ntotal fulfilled demand, less the total cost associated with any newly ordered inventory (that will be\ncharged by the vendor upon delivery):\nRi = pimin(Di,Ii )−cimin(Ui,ai). (3.2)\nt t t t− t t (cid:101)t\nNote that the cost charged is the realized order quantity, which is the standard practice in the\nliterature. We will write R (H ,θ) to emphasize that the reward is a function only of the exogenous H\nt t t\nand the policy parameters θ. Recall that selling price and buying cost are determined exogenously. We assume all rewards Ri ∈ [Rmin,Rmax], and assume a multiplicative discount factor of γ ∈ [0,1]\nt\n8\n=== 페이지 9 ===\nrepresenting the opportunity cost of reward to the business. Again, we make the dependence on\nthe policy explicit by writing Ri(θ).",
+      "size": 780,
+      "sentences": 6
+    },
+    {
+      "id": 33,
+      "content": "ume a multiplicative discount factor of γ ∈ [0,1]\nt\n8\n=== 페이지 9 ===\nrepresenting the opportunity cost of reward to the business. Again, we make the dependence on\nthe policy explicit by writing Ri(θ). The objective is to select the best policy (i.e., best θ ∈ Θ) to\nt\nmaximize the total discounted reward across all products, expressed as the following optimization\nproblem:\n(cid:34) (cid:35)\n(cid:88) (cid:88)\nmax E P γtR t i(θ) (3.3)\nθ\ni∈At∈[0,T]\nsubject to:\nIi = ki\n0\nai = πi (H )\nt θ,t t\nai = fi(ai,H )\n(cid:101)t p t t\nL\n(cid:88)\nIi = Ii + min(Ui ,ai )ρi , (3.4)\nt− t−1 t−j (cid:101)t−j t−j,j\nj=0\nIi = min(Ii −Di,0). t t− t\nHere, P denotes the joint distribution over the exogenous processes. The inventory Ii is initialized\n0\nat k , a known quantity a priori.",
+      "size": 764,
+      "sentences": 5
+    },
+    {
+      "id": 34,
+      "content": ")\nt− t−1 t−j (cid:101)t−j t−j,j\nj=0\nIi = min(Ii −Di,0). t t− t\nHere, P denotes the joint distribution over the exogenous processes. The inventory Ii is initialized\n0\nat k , a known quantity a priori. i\n3.3 Learnability\nLearning Objective\nFor the policy to be efficiently learnable, we need to restrict the policy for product i at time t to\nbe a function only of the history of item i, Hi := {(si,...,si )}, and the learnable parameter θ is\nt 1 t−1\nshared by all item’s policies. The reward is therefore now a function R (Hi,θ) of only the history of\nt t\nitem i and the parameter θ. The learning objective then becomes\n(cid:34) (cid:35)\n(cid:88) (cid:88)\nJ (θ) := E γtRi(θ) ,\nT t\ni∈At∈[0,T]\nwhich we estimate via simulation with the objective\n(cid:88) (cid:88)\nJ(cid:98)T (θ) := γtR\nt\ni(θ). i∈At∈[0,T]\nThis is clearly an unbiased estimate of J as the historical data H is exogenous to the choice of\nT T\npolicy.",
+      "size": 909,
+      "sentences": 7
+    },
+    {
+      "id": 35,
+      "content": "a simulation with the objective\n(cid:88) (cid:88)\nJ(cid:98)T (θ) := γtR\nt\ni(θ). i∈At∈[0,T]\nThis is clearly an unbiased estimate of J as the historical data H is exogenous to the choice of\nT T\npolicy. Learnability\nOur problem formulation fits under the framework described in [41], with additional exogenous\nvariables U , ρ , and M as part of the external state process. Hence, assuming full observability\nt t t\nof these processes, we can accurately simulate the value of any policy. This follows immediately\n9\n=== 페이지 10 ===\nfrom Theorem 23 of Madeka et al. [41] as we assume that the supply, arrival shares, and vendor\nconstraint processes are exogenous. In reality, one does not fully observe the supply of the vendors (Ui) or the arrival shares (ρi). t t\nThe supply of the vendor Ui is only observed historically at times when the vendor did not fully\nt\nfill the order – in which case, Ui = (cid:80)L oj.",
+      "size": 907,
+      "sentences": 8
+    },
+    {
+      "id": 36,
+      "content": "the vendors (Ui) or the arrival shares (ρi). t t\nThe supply of the vendor Ui is only observed historically at times when the vendor did not fully\nt\nfill the order – in which case, Ui = (cid:80)L oj. The arrival shares ρi are fully observed historically\nt j=0 t t\nwhenever an order is placed and the vendor sends at least one unit. To proceed we require a way to obtain these missing values. First, for the supply Ui, the\nt\nretailer could collect this data by asking vendors to share how many units they are able to supply4. Another approach is to treat this as a missing data problem, and then use additional exogenous\nobserved context xi ∈ RD that is available at time t for product i, to forecast these unobserved\nt\ncomponents. The observed context history is denoted as Xi := (xi,...,xi ). The latter is similar\nT 1 T\nto the uncensoring of demand in Madeka et al. [41]. Assumption3.1(AccurateForecastofSupplyandArrivalShares).",
+      "size": 929,
+      "sentences": 10
+    },
+    {
+      "id": 37,
+      "content": "The observed context history is denoted as Xi := (xi,...,xi ). The latter is similar\nT 1 T\nto the uncensoring of demand in Madeka et al. [41]. Assumption3.1(AccurateForecastofSupplyandArrivalShares). LetHi := (Ui,ρi,...,Ui,ρi )\nT,F 1 1 T T\ndenote the history of the unobserved exogenous supply and arrival shares processes through time\nT. Likewise, denote the observed components of the exogenous history Hi as Hi . Now, we can\nT T,O\nconsider the distributions Pi := P(Hi |Hi ,Xi) and P (cid:98) i := P (cid:98)(Hi |Hi ,Xi). If\nF T,F T,O T F T,F T,O T\n1 (cid:88)\n|A| ||P (cid:98) i F ,Pi F || TV ≤ ϵ F ,\ni∈A\nwe call P (cid:98) i an accurate forecast of Pi . F F\nUnder Assumption 3.1, it follows from Theorem 32 of Madeka et al. [41] that the inventory\ncontrol problem with general arrivals is efficiently learnable in the case where we do not observe the\nsupply and arrival shares processes.",
+      "size": 891,
+      "sentences": 9
+    },
+    {
+      "id": 38,
+      "content": "ws from Theorem 32 of Madeka et al. [41] that the inventory\ncontrol problem with general arrivals is efficiently learnable in the case where we do not observe the\nsupply and arrival shares processes. In practice, we may choose to forecast arrivals instead of the\nsupply and arrival shares processes – see Remark 3.2 below. Remark 3.2 (ForecastingArrivals). Notethatthedynamics(3.4)andrewardfunction(3.2)depend\nonly on the arrivals oi := min(Ui,f (ai,Mi))ρi , so we forecast arrivals conditional on the action\nt,j t p t t t,j\nai rather than the supply and arrival share processes for the purposes of constructing our simulator\nt\nfrom historic data. 3.4 Modeling arrivals with Gen-QOT\nHaving established that our problem of interest is efficiently learnable, we proceed with describing\nthe QOT model and then evaluating the model. Per remark 3.2, we forecast the arrival sequence\ndirectly rather than the supply and arrival processes. Formally, we forecast the distribution\np(oi ,...,oi |Hi ,Xi).",
+      "size": 994,
+      "sentences": 8
+    },
+    {
+      "id": 39,
+      "content": "el and then evaluating the model. Per remark 3.2, we forecast the arrival sequence\ndirectly rather than the supply and arrival processes. Formally, we forecast the distribution\np(oi ,...,oi |Hi ,Xi). t,0 t,L t,O t\nThe model is trained to minimize log-likelihood of the forecasted distribution. See Appendix D for\na complete description of the model and training objective. It is worth emphasizing that modeling\n3The addition of the post-processor f does not impact the result. p\n4This problem is little studied in the literature, but in some scenarios it is known that the supplier is always at\nleast as well off if they share capacity information [6]\n10\n=== 페이지 11 ===\narrivals directly allows us to treat f as part of the forecast of the arrivals process, which will be\np\nadvantageous in Section 3.5 when we describe how to make the simulator differentiable. Figure 4 shows a set of sample paths generated from our Gen-QOT model alongside a set of\nreal order-quantity normalized inventory arrivals.",
+      "size": 1000,
+      "sentences": 8
+    },
+    {
+      "id": 40,
+      "content": "when we describe how to make the simulator differentiable. Figure 4 shows a set of sample paths generated from our Gen-QOT model alongside a set of\nreal order-quantity normalized inventory arrivals. A natural question then arises: how should one\n3.5\n3.0\n2.5\n2.0\n1.5\n1.0\n0.5\n0.0\n0 2 4 6 8\nPeriod\nytitnauQ\nredrO\nfo\nelpitluM\nActual Cumulative Quantity\n3.0\n2.5\n2.0\n1.5\n1.0\n0.5\n0.0\n0 2 4 6 8\nPeriod\nytitnauQ\nredrO\nfo\nelpitluM\nSampled Cumulative Quantity\n3.5\n3.0\n2.5\n2.0\n1.5\n1.0\n0.5\n0.0\n0 2 4 6 8\nPeriod\nytitnauQ\nredrO\nfo\nelpitluM\nActual Cumulative Quantity\n3.0\n2.5\n2.0\n1.5\n1.0\n0.5\n0.0\n0 2 4 6 8\nPeriod\nytitnauQ\nredrO\nfo\nelpitluM\nSampled Cumulative Quantity\nFigure 4: A set of 256 real and simulated sample paths of order-quantity normalized inventory\narrivals. measure the quality of the generated sample paths? The simplest thing would be to compare\nagainst other methods for forecasting vendor lead times (this will be referred to as Criterion 1).",
+      "size": 944,
+      "sentences": 5
+    },
+    {
+      "id": 41,
+      "content": "arrivals. measure the quality of the generated sample paths? The simplest thing would be to compare\nagainst other methods for forecasting vendor lead times (this will be referred to as Criterion 1). In addition, we might want to check that the generated paths satisfy several desirable properties\nthat we anticipate may be relevant to the inventory control problem:\n1. Criterion 2 – Does Gen-QOT predict the right amount of cumulative inventory l weeks after\nan order is placed? 2. Criterion 3 – Does Gen-QOT predict receiving zero inventory for the correct orders? 3. Criterion 4 – Does Gen-QOT predict correctly whether there is an arrival in the first week\nafter an order is placed? 4. Criterion 5 – Does Gen-QOT predict correctly the time by which the order fully arrives? Accordingly, we propose five methods for evaluating the quality of the dynamics model:\n1.",
+      "size": 866,
+      "sentences": 12
+    },
+    {
+      "id": 42,
+      "content": "n order is placed? 4. Criterion 5 – Does Gen-QOT predict correctly the time by which the order fully arrives? Accordingly, we propose five methods for evaluating the quality of the dynamics model:\n1. Criterion 1 – Obtain the empirical distribution predicted by Gen-QOT and evaluate against\nwith standard accuracy metrics such as CRPS and quantile loss. 2. Criterion 2 – Regress the actual cumulative inventory received on the mean predicted\ncumulative inventory received for each week. 11\n[표 데이터 감지됨]\n\n=== 페이지 12 ===\n3. Criterion 3 and 4 – Generate sequences and use as a classifier, then construct a classifier\ncalibration plots for generated sequences. 4. Criterion 5 – Generate sequences and use them to generate probabilistic forecasts of the\narrival time of the full order, then compute the calibration. In Section 4.1 we fit the Gen-QOT model to historic data and perform evaluations against the five\ncriterion listed above.",
+      "size": 930,
+      "sentences": 12
+    },
+    {
+      "id": 43,
+      "content": "orecasts of the\narrival time of the full order, then compute the calibration. In Section 4.1 we fit the Gen-QOT model to historic data and perform evaluations against the five\ncriterion listed above. 3.5 Simulator Construction\nOur simulator is constructed similarly to Madeka et al. [41] aside from the change to the inventory\ntransition dynamics. To handle the general arrival dynamics, the first approach is to estimate the\npartially observed Hi and directly implement (3.4) since f is known. Alternatively, following\nt,F p\nRemark 3.2, we could forecast arrivals and simply sample that distribution at each step. The\nissue with both these approaches are that the simulator is no longer path-wise differentiable and if\npossible, we would prefer to leverage the fact that most of our dynamics are differentiable and thus\nthe exact gradient can be computed analytically.",
+      "size": 869,
+      "sentences": 7
+    },
+    {
+      "id": 44,
+      "content": "ator is no longer path-wise differentiable and if\npossible, we would prefer to leverage the fact that most of our dynamics are differentiable and thus\nthe exact gradient can be computed analytically. The approach we take in our empirical work is the following: first, given the action a and the\nt\nexogenous Hi , Xi, sample the estimated forward model\nt,O t\noi ,...,oi ∼ p(·|Hi ,Xi,a ). (3.5)\n(cid:98)t,0 (cid:98)t,L (cid:98) t,O t t\noi\nThe sampled arrivals can then be converted into a sampled sequence of partial fills α¯i = (cid:98)t,l by\nt,l ai\nt\nrescaling by the action ai. The inventory update in (3.4) becomes\nt\nL\n(cid:88)\nIi = Ii + α¯i ai , (3.6)\nt− t−1 t−j,j t−j\nj=0\nThis is similar in spirit to the approach in Clavera et al. [10], except they use the re-parametrization\ntrick and then differentiate through the forward model, passing a noise process as input. 4 Empirical Results\nIn this section we present some empirical results.",
+      "size": 940,
+      "sentences": 6
+    },
+    {
+      "id": 45,
+      "content": "except they use the re-parametrization\ntrick and then differentiate through the forward model, passing a noise process as input. 4 Empirical Results\nIn this section we present some empirical results. First, in Section 4.1 we evaluate the performance\nof the fitted Gen-QOT under the four criterion discussed in Section 3.4. Then in Section 4.2 we\ndemonstrate through backtests against historical data in a simulator based on the Gen-QOT model\nthe difference in performance between baseline policies, an RL trained in a simulator with Gen-QOT\ndynamics and an RL under dynamics dictated by a classical vendor lead-time model. Finally, in\nSection 4.3 we show recent results from a real-world A/B test of the RL policy in the US store of a\nlarge e-retailer. 12\n=== 페이지 13 ===\n4.1 Evaluating the Gen-QOT Model\nFirst, we evaluate our proposed Gen-QOT model as we require an accurate forecast in order for the\npolicy backtest to be valid.",
+      "size": 930,
+      "sentences": 6
+    },
+    {
+      "id": 46,
+      "content": "f a\nlarge e-retailer. 12\n=== 페이지 13 ===\n4.1 Evaluating the Gen-QOT Model\nFirst, we evaluate our proposed Gen-QOT model as we require an accurate forecast in order for the\npolicy backtest to be valid. The Gen-QOT model architecture and training objective can be found\nin Appendix D.\nTraining and Evaluation Data\nWetrainGen-QOTonpurchaseordersfrom250KproductsfromtheUSstoreofalargee-retailerfrom\n2017-05-13 to 2019-02-01 and holdout 100K actions from 2019-02-01 to 2020-02-01 to evaluate model\nperformance. This time period allows us to judge both in-time and out-of-time time generalization. The features used in our model can be found in Appendix C.\nResults\nVLT Forecasting Because many inventory control systems rely on simplified optimization models\nthat assume only random lead-time, we evaluate the Gen-QOT model against one that directly\npredicts quantiles of the vendor lead-time distribution.",
+      "size": 899,
+      "sentences": 5
+    },
+    {
+      "id": 47,
+      "content": "trol systems rely on simplified optimization models\nthat assume only random lead-time, we evaluate the Gen-QOT model against one that directly\npredicts quantiles of the vendor lead-time distribution. The architecture used is similar to Gen-QOT,\nbut we replace the recurrent neural-net decoder with a simple multi-layer perceptron.5\nTo produce a forecast of the vendor lead time from Gen-QOT, samples are generated from\nGen-QOTtoobtainanempiricaldistributionfromwhichquantilescanbedetermined. Table1shows\nthe backtest results on data from 2019-02-01 to 2020-02-01, showing that Gen-QOT is competitive\nwith traditional vendor lead time forecasting approaches. See Appendix A for definitions of the\nCRPS and Quantile Loss metrics used. Table 1: Backtest of generative model versus direct quantile forecast (lower values are better); 95%\nconfidence intervals are on the performance gap between the two models.",
+      "size": 905,
+      "sentences": 5
+    },
+    {
+      "id": 48,
+      "content": "uantile Loss metrics used. Table 1: Backtest of generative model versus direct quantile forecast (lower values are better); 95%\nconfidence intervals are on the performance gap between the two models. Model\nMetric Direct Prediction Gen-QOT 95% CI\nCRPS 100.00 101.61 [-0.23, 3.46]\nP10 QL 100.00 99.92 [-1.91, 1.75]\nP30 QL 100.00 101.24 [-0.57, 3.04]\nP50 QL 100.00 102.41 [0.38, 4.44]\nP70 QL 100.00 103.21 [0.89, 5.54]\nP90 QL 100.00 102.22 [0.50, 4.96]\nSee Appendix B.2 for an ablation study across different candidate architectures for Gen-QOT\ncomparing their performance under the CRPS and Quantile Loss metrics. 5More precisely, the architecture is MQCNN which achieve SOTA performance on probabilistic forecasting tasks\nthat use very similar data – see “MQ CNN wave” in Figure 3 of Wen et al. [70].",
+      "size": 799,
+      "sentences": 5
+    },
+    {
+      "id": 49,
+      "content": "ss metrics. 5More precisely, the architecture is MQCNN which achieve SOTA performance on probabilistic forecasting tasks\nthat use very similar data – see “MQ CNN wave” in Figure 3 of Wen et al. [70]. 13\n=== 페이지 14 ===\nCalibration and Classifier Metrics Next we check the calibration of the cumulative receives\nforecast and arrival time forecasts that can be inferred from Gen-QOT – see Appendix A.2 for how\nwe define calibration in general, and Appendix A.3 for arrival time calibration. Table 2 shows the\ncalibration of Gen-QOT’s forecasted distributions of cumulative arrivals. Most coefficients are close\nto one, showing that Gen-QOT predicts the cumulative quantity of inventory received for a specific\norder over time reasonably well, although it is not perfectly calibrated (coefficient of 1). Table 2: Calibration of cumulative inventory received predicted k weeks after submitting an order\nand actuals.",
+      "size": 910,
+      "sentences": 7
+    },
+    {
+      "id": 50,
+      "content": "r over time reasonably well, although it is not perfectly calibrated (coefficient of 1). Table 2: Calibration of cumulative inventory received predicted k weeks after submitting an order\nand actuals. In Time Holdout Out of Time Holdout\nWeeks After Order Estimate 95% CI Estimate 95% CI\n1 1.0577 [1.056, 1.060] 1.0559 [1.055, 1.057]\n2 1.1393 [1.138, 1.141] 1.1529 [1.151, 1.154]\n3 1.108 [1.107, 1.109] 1.1311 [1.130, 1.132]\n4 1.0866 [1.086, 1.087] 1.1147 [1.114, 1.115]\n5 1.0789 [1.078, 1.079] 1.1094 [1.109, 1.110]\n6 1.0745 [1.074, 1.075] 1.1021 [1.102, 1.103]\n7 1.0694 [1.069, 1.070] 1.0995 [1.099, 1.100]\n8 1.063 [1.063, 1.063] 1.0953 [1.095, 1.096]\n9 1.0538 [1.053, 1.054] 1.0895 [1.089, 1.090]\nFigure 5 shows this on samples of actual vs. predicted mean for normalized cumulative inventory\nreceived at the end of the fourth week on the held out orders from the training period and the test\nperiod. The results on the out-of-time hold out set are very similar to those in the training period.",
+      "size": 995,
+      "sentences": 4
+    },
+    {
+      "id": 51,
+      "content": "ceived at the end of the fourth week on the held out orders from the training period and the test\nperiod. The results on the out-of-time hold out set are very similar to those in the training period. For arrival time calibrations, intuitively, we are measuring: if the forecaster predicts with 25%\nchance by a specific date, does it arrive by that date 25% of the time? Table 3 shows that on both\nthe in-time and out-of-time holdouts, the arrival time forecasts generated by Gen-QOT are well\ncalibrated. See Appendix B.1 for full arrival time calibration metrics, further broken out by lead\ntime. 14\n=== 페이지 15 ===\n(a) (b)\nFigure 5: Residual calibration plot for cumulative inventory received – residuals are plotted against\npredicted values in the main figure, while the original plot is shown in an inner figure. Table 3: Calibration of arrival time for samples from two holdout sets, by forecasted probability\nIn Time Holdout Out of Time Holdout\nProbability Avg. Pred. Average 95% CI Avg. Pred.",
+      "size": 997,
+      "sentences": 10
+    },
+    {
+      "id": 52,
+      "content": "an inner figure. Table 3: Calibration of arrival time for samples from two holdout sets, by forecasted probability\nIn Time Holdout Out of Time Holdout\nProbability Avg. Pred. Average 95% CI Avg. Pred. Average 95% CI\n0.0-0.1 0.04 0.05 [0.05, 0.05] 0.04 0.05 [0.05, 0.05]\n0.1-0.2 0.14 0.15 [0.15, 0.15] 0.14 0.14 [0.14, 0.14]\n0.2-0.3 0.25 0.24 [0.24, 0.24] 0.25 0.24 [0.24, 0.24]\n0.3-0.4 0.35 0.34 [0.34, 0.34] 0.35 0.33 [0.33, 0.33]\n0.4-0.5 0.45 0.43 [0.43, 0.43] 0.45 0.43 [0.43, 0.43]\n0.5-0.6 0.55 0.54 [0.53, 0.54] 0.55 0.53 [0.53, 0.53]\n0.6-0.7 0.65 0.64 [0.64, 0.64] 0.65 0.63 [0.63, 0.63]\n0.7-0.8 0.75 0.74 [0.74, 0.74] 0.75 0.74 [0.74, 0.74]\n0.8-0.9 0.85 0.84 [0.84, 0.84] 0.85 0.84 [0.84, 0.85]\n0.9-1.0 0.99 0.99 [0.99, 0.99] 0.99 0.99 [0.99, 0.99]\nTheclassifiercalibrationplotsareproducedbydiscretizingandbinningthepredictedprobabilities\nof the event we are interested in, and then estimating the mean of the actual classifications for each\nbin.",
+      "size": 952,
+      "sentences": 6
+    },
+    {
+      "id": 53,
+      "content": "]\nTheclassifiercalibrationplotsareproducedbydiscretizingandbinningthepredictedprobabilities\nof the event we are interested in, and then estimating the mean of the actual classifications for each\nbin. Ideally, the average actual will be equal to the mean of the predicted probabilities in each bin,\nand this point will fall along the 45◦ line. Figure 6 shows the calibration of Gen-QOT at predicting\nwhether a purchasing action will yield zero inventory for both the in-time holdout (Figure 6a) and\nout-of-time holdout (Figure 6b). In both cases, points generally follow the ideal calibration line,\nwith some slight and expected degradation in the out-of-time holdout.",
+      "size": 667,
+      "sentences": 4
+    },
+    {
+      "id": 54,
+      "content": "-time holdout (Figure 6a) and\nout-of-time holdout (Figure 6b). In both cases, points generally follow the ideal calibration line,\nwith some slight and expected degradation in the out-of-time holdout. 15\n=== 페이지 16 ===\n0.14\n0.12\n0.10\n0.08\n0.06\n0.04\n0.02\n0.00\n0.02\n0.0 0.25 0.5 0.75 1.0\nPredicted Probabilities\nslaudiseR\nClassifier Calibration Plot\nIn-Time Holdout Residuals\n0.10\n1.0\nEmpty Recieve\nFirst Recieve 0.8 0.08\n0.6\n0.4 0.06\n0.2\n0.0 0.04\n0.00 0.25 0.50 0.75 1.00\n0.02\n0.00\n0.02\n0.04\n0.0 0.25 0.5 0.75 1.0\nPredicted Probabilities\n(a)\nslaudiseR\nClassifier Calibration Plot\nOut-of-Time Holdout Residuals\n1.0\nEmpty Recieve\nFirst Recieve 0.8\n0.6\n0.4\n0.2\n0.0\n0.00 0.25 0.50 0.75 1.00\n(b)\nFigure 6: Residual calibration plots for Gen-QOT – residuals are plotted against predicted values in\nthe main figure, while the original plot is shown in an inner figure.",
+      "size": 859,
+      "sentences": 3
+    },
+    {
+      "id": 55,
+      "content": "0.00 0.25 0.50 0.75 1.00\n(b)\nFigure 6: Residual calibration plots for Gen-QOT – residuals are plotted against predicted values in\nthe main figure, while the original plot is shown in an inner figure. Model Behavior\nFigure Figure 7 shows the response of the mean end-to-end yield predicted by the QOT model to\nvarying order quantities for several randomly selected products. As we can see, for some products\nthe model predicts nearly a full yield regardless of order quantity, while for others, the yield tapers\noff as the order quantity increases. Order Quantity\nevieceR\nlatoT\nProduct 0\nProduct 1\nProduct 2\n100% Fill\nMean Demand\nFigure 7: QOT predicted receive versus orders\n4.2 Backtest of Inventory Control Policies\nHaving demonstrated in Section 4.1 that we have a dynamics model that achieves good accuracy on\nour dataset, the next thing we want to do is use our generative model to backtest various policies\nand measure their performance.",
+      "size": 943,
+      "sentences": 4
+    },
+    {
+      "id": 56,
+      "content": "tion 4.1 that we have a dynamics model that achieves good accuracy on\nour dataset, the next thing we want to do is use our generative model to backtest various policies\nand measure their performance. 16\n[표 데이터 감지됨]\n\n=== 페이지 17 ===\nData\nWe use a similar dataset to that used to fit the Gen-QOT model. The training period is data from\n2017-05-13 to 2019-02-01 and the backtest period is 2019-02-01 to 2020-02-01. The features used for\nthe policy and the simulator can be found in Appendix C.\nPolicies and Training\nBecause Madeka et al. [41] performed an exhaustive evaluation of various policies, we consider only\na base stock baseline and two RL policies – one trained on a gym that uses the inventory arrival\ndynamics from Madeka et al. [41] and one trained on gym with Gen-QOT arrival dynamics. These\nwill be referred to as Newsvendor, VLT-DirectBP, and QOT-DirectBP, respectively. The\npolicy networks consist of a Wavenet encoder [66] and MLP decoder. Following Madeka et al.",
+      "size": 977,
+      "sentences": 9
+    },
+    {
+      "id": 57,
+      "content": "arrival dynamics. These\nwill be referred to as Newsvendor, VLT-DirectBP, and QOT-DirectBP, respectively. The\npolicy networks consist of a Wavenet encoder [66] and MLP decoder. Following Madeka et al. [41] we implement a differentiable simulator in PyTorch. All algorithms\nare trained using a single p3dn.24xlarge EC2 instance. We use the DirectBackprop algorithm to\ntrain the VLT-DirectBP and QOT-DirectBP agents. Results\nTable 4 summarizes the changes in the sum of discounted reward of both policies relative to\na baseline policy. QOT-DirectBP outperforms VLT-DirectBP when evaluated under the QOT\ntransition dynamics. While it is unsurprising that the policy trained on the simulator (with Gen-\nQOT) used in evaluation performs best, this does underscore the impact of a “Sim2Real” gap – in\nthis case “reality” is the QOT simulator – as the overall performance gain is 8%. Both policies still\noutperform the Newsvendor baseline, which is unsurprising given the results in Madeka et al. [41].",
+      "size": 994,
+      "sentences": 12
+    },
+    {
+      "id": 58,
+      "content": "his case “reality” is the QOT simulator – as the overall performance gain is 8%. Both policies still\noutperform the Newsvendor baseline, which is unsurprising given the results in Madeka et al. [41]. Table 4: Comparison of RL policies in a backtest using Gen-QOT. 95% confidence intervals are on\nthe difference from baseline. Policy Discounted Reward 95% CI\nNewsvendor Baseline 100.00% –\nVLT-DirectBP 109.64% [8.83% , 10.45%]\nQOT-DirectBP 117.81% [16.92% , 18.69%]\nIn addition to cumulative discounted reward, we can also consider the distribution of period-wise\nstatistics. Figure 8. What is interesting is that QOT-DirectBP selects larger order quantities, which\nlikely reflects the fact that Gen-QOT captures stochastic yields. We also note that QOT-DirectBP\nhas higher mean and median reward than other policies. Indeed, Figure 9 shows that for lower\nyield products, the mean order placed by QOT-DirectBP is higher than that of VLT-DirectBP.",
+      "size": 945,
+      "sentences": 10
+    },
+    {
+      "id": 59,
+      "content": "at QOT-DirectBP\nhas higher mean and median reward than other policies. Indeed, Figure 9 shows that for lower\nyield products, the mean order placed by QOT-DirectBP is higher than that of VLT-DirectBP. Put\ndifferently – the QOT-DirectBP policy can adjust to variable yield rates at the product level. 17\n=== 페이지 18 ===\nPeriodwise Order Quantity Periodwise Reward\nStatistics by Policy Statistics by Policy\nNewsvendor VLT-DirectBP QOT-DirectBP Newsvendor VLT-DirectBP QOT-DirectBP\n(a) (b)\nFigure 8: Distribution of per-period statistics for order quantity and rewards in the backtest period\n(2019-02 to 2020-02). 4.3 Real World A/B Test\nFinally, we ran A/B tests comparing RL inventory control policies to the existing production policy\n(a base stock policy) at a large e-retailer lasting several months and covering thousands of products. Table 5 summarizes the treatment effect of all tests on several quantities of interest: reward,\ninventory level, order quantity and sales.",
+      "size": 974,
+      "sentences": 6
+    },
+    {
+      "id": 60,
+      "content": "r lasting several months and covering thousands of products. Table 5 summarizes the treatment effect of all tests on several quantities of interest: reward,\ninventory level, order quantity and sales. Trial 1 evaluated the performance of the VLT-DirectBP\npolicy while Trials 2 and 3 evaluated the QOT-DirectBP policy. Table 5: Treatment effect estimate (percent change) on reward, inventory level, and order quantity\nin real world A/B tests – all results shown are significant at the 95% confidence level. Quantity Trial 1 Trial 2 Trial 3\nReward ∼ 3.5% 2.7%\nInventory Level -15.2% 11.1% 3.3%\nOrder Quantity 31.1% -7.2% ∼\nSales ∼ 3.4% 1.8%\nTrial 1: VLT-DirectBP\nIn the first trial, we used the VLT-DirectBP policy described above as the treatment6. Figure 10\nshows the treatment effect estimate on inventory level observed in the actual A/B test alongside the\ntreatment effect estimate from rollouts using the same data in the QOT and VLT based simulators.",
+      "size": 954,
+      "sentences": 6
+    },
+    {
+      "id": 61,
+      "content": "0\nshows the treatment effect estimate on inventory level observed in the actual A/B test alongside the\ntreatment effect estimate from rollouts using the same data in the QOT and VLT based simulators. 6This is the same trial described in Madeka et al. [41]\n18\n[표 데이터 감지됨]\n\n=== 페이지 19 ===\nFigure 9: Comparison of difference in mean order quantity between the QOT-DirectBP and VLT-\nDirectBP agents versus yield; the orange line shows the OLS regression line fit to the data. We see that the point estimate of the treatment effect in the real supply chain is contained in the\nconfidence interval. This suggests that – at least as it pertains to inventory level – the QOT based\nsimulator captures what happens in the actual supply chain. 10.0%\n5.0%\n0.0%\n5.0%\n10.0%\n15.0%\n20.0%\ntceffE\ntnemtaerT\nChange in Inventory Level (Percent)\nReal World\nQOT Simulator\nVLT Simulator\nFigure 10: Treatment effect on inventory level of VLT-DirectBP: estimated on rollouts in real world,\nQOT simulator and VLT simulator.",
+      "size": 997,
+      "sentences": 6
+    },
+    {
+      "id": 62,
+      "content": "Inventory Level (Percent)\nReal World\nQOT Simulator\nVLT Simulator\nFigure 10: Treatment effect on inventory level of VLT-DirectBP: estimated on rollouts in real world,\nQOT simulator and VLT simulator. Trial 2 and Trial 3: QOT-DirectBP\nNext, we ran two randomized control trials of the QOT-DirectBP agent in the US store of a large\ne-retailer lasting several months and covering thousands of products. The control arm used the\nexisting production system (a base stock policy). The results of both these tests can be found\nin Table 5. In Trial 2, the inventory and reward increase by a statistically significant amount\n– demonstrating that RL policies can outperform sophisticated base stock policies in real world\nsettings. In Trial 3, we deployed a QOT-DirectBP policy that we expected (based on backtests) to\nhold a similar amount of inventory to the existing production system.",
+      "size": 877,
+      "sentences": 6
+    },
+    {
+      "id": 63,
+      "content": "ase stock policies in real world\nsettings. In Trial 3, we deployed a QOT-DirectBP policy that we expected (based on backtests) to\nhold a similar amount of inventory to the existing production system. 19\n[표 데이터 감지됨]\n\n=== 페이지 20 ===\nGen-QOT Performance “off-policy”\nWe use data from the Treatment and Control arms of the third A/B test described above to validate\nour assumption on the forecast accuracy of the QOT model. We already know from Section 4.1 that\nthe QOT model generalizes well out of sample and forward in time. But the question remains: does\nit generalize well out-of-sample and off-policy? This is critical because in order for our inventory\ncontrol backtest to be accurate, we required Assumption 3.1. To validate our assumption that QOT does generalize off-policy, we check the forecast errors\non the treatment arm versus the control arm.",
+      "size": 854,
+      "sentences": 7
+    },
+    {
+      "id": 64,
+      "content": "control backtest to be accurate, we required Assumption 3.1. To validate our assumption that QOT does generalize off-policy, we check the forecast errors\non the treatment arm versus the control arm. In Table 6 and Table 7 we see that the difference\nin forecast performance on-policy versus off-policy in the actual supply chain is not statistically\nsignificant. Change (Control - Treatment) Change (Control - Treatment)\nFcst.",
+      "size": 425,
+      "sentences": 4
+    },
+    {
+      "id": 65,
+      "content": "ee that the difference\nin forecast performance on-policy versus off-policy in the actual supply chain is not statistically\nsignificant. Change (Control - Treatment) Change (Control - Treatment)\nFcst. Probability Mean 95% CI k Mean 95% CI\n0.0-0.1 4.61% [-0.88%, 10.11% ] 1 1.45% [-8.41%, 11.33%]\n0.1-0.2 3.17% [-0.98%, 7.34% ] 2 -0.88% [-7.87%, 6.09%]\n0.2-0.3 2.62% [-1.86%, 7.12%] 3 -0.87% [-6.25%, 4.51%]\n0.3-0.4 2.43% [-1.18%, 6.05%] 4 -1.96% [-6.81%, 2.88%]\n0.4-0.5 3.25% [0.89%, 5.61%] 5 -2.19% [-6.87%, 2.48%]\n0.5-0.6 1.43% [-0.25%, 3.13%] 6 -1.09% [-5.23%, 3.04%]\n0.6-0.7 0.17% [-1.57%, 1.92%] 7 -0.08% [-3.94%, 3.78%]\n0.7-0.8 -0.10% [-1.59%, 1.37%] 8 0.54% [-2.84%, 3.94%]\n0.8-0.9 0.01% [-0.99%, 1.02%] 9 0.85% [-1.76%, 3.47%]\n0.9-1.0 -0.01% [-0.21%, 0.18%]\n(b) Calibration of cumulative inventory re-\n(a) Calibration of arrival times, by forecast probability ceives predicted k weeks after ordering\nTable 6: Comparison of calibration metrics on-policy (control arm) versus off-policy (treatment\narm) on data from real world A/B test.",
+      "size": 1041,
+      "sentences": 3
+    },
+    {
+      "id": 66,
+      "content": "by forecast probability ceives predicted k weeks after ordering\nTable 6: Comparison of calibration metrics on-policy (control arm) versus off-policy (treatment\narm) on data from real world A/B test. 20\n=== 페이지 21 ===\nChange (Control - Treatment)\nQuantile Mean 95% CI\nP10 -0.17% [-3.06%, 5.49%]\nP30 0.45% [-4.25%, 5.29%]\nP50 0.47% [-4.53%, 5.86%]\nP70 0.30% [-4.80%, 6.88%]\nP90 -0.56% [-6.21%, 7.00%]\nP98 -6.26% [-7.68%, 9.61%]\nTable 7: Comparison of quantile loss of VLT forecasts produced by Gen-QOT metrics on-policy\n(control arm) versus off-policy (treatment arm) on data from real world A/B test. Section 4.3 shows the difference in calibration of arrival times on the treatment and control\narms of the A/B test in the actual supply chain. We see that there is not a statistically significant\ndifference in calibration between the arms, we conclude that the degradation is not attributable to\nthe fact that the treatment arm is “off-policy”.",
+      "size": 944,
+      "sentences": 4
+    },
+    {
+      "id": 67,
+      "content": "see that there is not a statistically significant\ndifference in calibration between the arms, we conclude that the degradation is not attributable to\nthe fact that the treatment arm is “off-policy”. For full arrival time calibration results on the A/B\ntest data, see Appendix B.1. Figure 11 shows Criterion 2-4 on the off-policy data. We see that the classifier calibration is\nstill reasonable, although the cumulative receives calibration appears to have degraded from the\nout-of-time backtest. We emphasize that this degradation is not due to the off-policy issue as Table 6\nshowed that the calibration errors were statistically indistinguishable across the two arms of the\nA/B test. For comparison we also include the same evaluation on the control arm in Figure 11. 5 Conclusion\nWe extended existing work on periodic review inventory control systems to the case where inventory\nreplenishments can arrive in multiple shipments over time.",
+      "size": 940,
+      "sentences": 7
+    },
+    {
+      "id": 68,
+      "content": "he control arm in Figure 11. 5 Conclusion\nWe extended existing work on periodic review inventory control systems to the case where inventory\nreplenishments can arrive in multiple shipments over time. We also allow for learning an inventory\ncontrolpolicyinthecasewheretheretailerusesapost-processortoadjustorderquantitiessuggested\nby the control policy before submitting them to the supplier – a common practice used to ensure\norder quantities meet minimum order and batch sizing requirements. This is the first work to handle\neither of the two aforementioned complexities. We then performed extensive empirical evaluation to\nshow the viability of the approach. We also validated that our learned dynamic model generalizes\nwell off-policy by backtesting it on data from a real-world A/B test of our RL agent. Finally, we\nshowed via A/B tests of the QOT-DirectBackprop agent that data-driven RL inventory control\npolicies can outperform sophisticated base stock systems in real world settings.",
+      "size": 991,
+      "sentences": 7
+    },
+    {
+      "id": 69,
+      "content": "f our RL agent. Finally, we\nshowed via A/B tests of the QOT-DirectBackprop agent that data-driven RL inventory control\npolicies can outperform sophisticated base stock systems in real world settings. Interesting, and important, directions of future work include further exploration of the minimal\nassumptions needed in order for the inventory control problem to be efficiently learnable. It is\nalso of interest to better understand the precise conditions needed on the forward dynamics model\n(Gen-QOT) in order for the theoretical results to hold. This may in turn give insight into what\nevaluations practitioners should perform on the models they incorporate into a simulator.",
+      "size": 677,
+      "sentences": 5
+    },
+    {
+      "id": 70,
+      "content": "ynamics model\n(Gen-QOT) in order for the theoretical results to hold. This may in turn give insight into what\nevaluations practitioners should perform on the models they incorporate into a simulator. 21\n=== 페이지 22 ===\n0.100\n0.075\n0.050\n0.025\n0.000\n0.025\n0.050\n0.075\n0.0 0.25 0.5 0.75 1.0\nPredicted Probabilities\n(a) Cumulative receives calibration on treatment arm\nslaudiseR\nClassifier Calibration Plot Residuals\nReal World A/B Test\n1.0\nEmpty Recieve\nFirst Recieve 0.8\n0.6\n0.4\n0.2\n0.0\n0.00 0.25 0.50 0.75 1.00\n(b) Classifier calibration for first receive and empty\nreceive on treatment arm\n0.10\n0.08\n0.06\n0.04\n0.02\n0.00\n0.02\n0.04\n0.06\n0.0 0.25 0.5 0.75 1.0\nPredicted Probabilities\n(c) Cumulative receives calibration on control arm\nslaudiseR\nClassifier Calibration Plot Residuals\nReal World A/B Test\n1.0\nEmpty Recieve\nFirst Recieve 0.8\n0.6\n0.4\n0.2\n0.0\n0.00 0.25 0.50 0.75 1.00\n(d) Classifier calibration for first receive and empty\nreceive on control arm\nFigure 11: Residual calibration plot for cumulative receives and classifier calibration plots on A/B\ntest data.",
+      "size": 1066,
+      "sentences": 3
+    },
+    {
+      "id": 71,
+      "content": "0.75 1.00\n(d) Classifier calibration for first receive and empty\nreceive on control arm\nFigure 11: Residual calibration plot for cumulative receives and classifier calibration plots on A/B\ntest data. 22\n[표 데이터 감지됨]\n\n=== 페이지 23 ===\nReferences\n[1] Abbas, Z., Zhao, R., Modayil, J., White, A. and Machado, M. C. (2023). Loss of\nplasticity in continual deep reinforcement learning. arXiv:2303.07507. [2] Alvo, M., Russo, D. and Kanoria, Y. (2023). Neural inventory control in networks via\nhindsight differentiable policy optimization. arXiv:2306.11246. [3] Arrow, K. J., Karlin, S., Scarf, H. E. et al. (1958). Studies in the mathematical theory\nof inventory and production. Stanford University Press. [4] Augenblick, N. and Rabin, M. (2019). Belief movement, uncertainty reduction, and rational\nupdating. Tech. rep., Haas School of Business, University of California, Berkeley.",
+      "size": 874,
+      "sentences": 16
+    },
+    {
+      "id": 72,
+      "content": "ford University Press. [4] Augenblick, N. and Rabin, M. (2019). Belief movement, uncertainty reduction, and rational\nupdating. Tech. rep., Haas School of Business, University of California, Berkeley. [5] Balaji, B., Bell-Masterson, J., Bilgin, E., Damianou, A., Garcia, P. M., Jain, A.,\nLuo, R., Maggiar, A., Narayanaswamy, B. and Ye, C. (2019). Orl: Reinforcement\nlearning benchmarks for online stochastic optimization problems. arXiv:1911.10641. [6] Bao, Y. (2006). Supply chain competition. Tech. rep., UNSW Sydney. [PDF]\n[7] Bollapragada, S. and Morton, T. E. (1999). Myopic heuristics for the random yield\nproblem. Operations Research 47 713–722.",
+      "size": 651,
+      "sentences": 16
+    },
+    {
+      "id": 73,
+      "content": "Bao, Y. (2006). Supply chain competition. Tech. rep., UNSW Sydney. [PDF]\n[7] Bollapragada, S. and Morton, T. E. (1999). Myopic heuristics for the random yield\nproblem. Operations Research 47 713–722. [8] Brown, T., Mann, B., Ryder, N., Subbiah, M., Kaplan, J. D., Dhariwal, P., Nee-\nlakantan, A., Shyam, P., Sastry, G., Askell, A., Agarwal, S., Herbert-Voss, A.,\nKrueger, G., Henighan, T., Child, R., Ramesh, A., Ziegler, D., Wu, J., Winter,\nC., Hesse, C., Chen, M., Sigler, E., Litwin, M., Gray, S., Chess, B., Clark, J.,\nBerner, C., McCandlish, S., Radford, A., Sutskever, I. and Amodei, D. (2020). Language models are few-shot learners. In Advances in Neural Information Processing Systems\n(H. Larochelle, M. Ranzato, R. Hadsell, M. Balcan and H. Lin, eds. ), vol. 33. Curran Associates,\nInc.\n[9] Chan, E. and Muckstadt, J. (1999). The effects of load smoothing on inventory levels in\na capacitated production and inventory system. Tech.",
+      "size": 940,
+      "sentences": 17
+    },
+    {
+      "id": 74,
+      "content": "n and H. Lin, eds. ), vol. 33. Curran Associates,\nInc.\n[9] Chan, E. and Muckstadt, J. (1999). The effects of load smoothing on inventory levels in\na capacitated production and inventory system. Tech. rep., Cornell University Operations\nResearch and Industrial Engineering. [PDF]\n[10] Clavera, I., Fu, V. and Abbeel, P. (2020). Model-augmented actor-critic: Backpropagating\nthrough paths. In ICLR. [11] Dada, M., Petruzzi, N. C. and Schwarz, L. B. (2007). A newsvendor’s procurement\nproblem when suppliers are unreliable. Manufacturing & Service Operations Management 9\n9–32. [12] Das, T. K., Gosavi, A., Mahadevan, S. and Marchalleck, N. (1999). Solving semi-\nmarkov decision problems using average reward reinforcement learning. Management Science\n45 560–574. 23\n=== 페이지 24 ===\n[13] Dawid, A.(1982). Thewellcalibratedbayesian. Journal of the American Statistical Association\n77 605–613. [14] Devlin, J., Chang, M.-W., Lee, K. and Toutanova, K. (2019).",
+      "size": 952,
+      "sentences": 22
+    },
+    {
+      "id": 75,
+      "content": "60–574. 23\n=== 페이지 24 ===\n[13] Dawid, A.(1982). Thewellcalibratedbayesian. Journal of the American Statistical Association\n77 605–613. [14] Devlin, J., Chang, M.-W., Lee, K. and Toutanova, K. (2019). BERT: Pre-training of\nDeep Bidirectional Transformers for Language Understanding. In NAACL-HLT. [15] Efroni, Y., Foster, D. J., Misra, D., Krishnamurthy, A. and Langford, J. (2022). Sample-efficient reinforcement learning in the presence of exogenous information. arXiv:2206.04282. [16] Efroni, Y., Kakade, S., Krishnamurthy, A. and Zhang, C. (2022). Sparsity in partially\ncontrollable linear systems. In International Conference on Machine Learning. PMLR. [17] Eisenach, C., Patel, Y. and Madeka, D. (2020). MQTransformer: Multi-Horizon Forecasts\nwith Context Dependent and Feedback-Aware Attention. arXiv:2009.14799. [18] Federgruen, A. and Zipkin, P. (1986). An inventory model with limited production capacity\nand uncertain demands i. the average-cost criterion.",
+      "size": 966,
+      "sentences": 20
+    },
+    {
+      "id": 76,
+      "content": "ent and Feedback-Aware Attention. arXiv:2009.14799. [18] Federgruen, A. and Zipkin, P. (1986). An inventory model with limited production capacity\nand uncertain demands i. the average-cost criterion. Mathematics of Operations Research 11\n193–207. [19] Fisher, M.andRaman, A.(1996). Reducingthecostofdemanduncertaintythroughaccurate\nresponse to early sales. Operations research 44 87–99. [20] Foster, D. and Stine, R. (2021). Threshold Martingales and the Evolution of Forecasts. arXiv:2105.06834. [21] Foster, D. P. and Vohra, R. V. (1997). Calibrated learning and correlated equilibrium. Games and Economic Behavior 21 40–55. [22] Gasparin, A., Lukovic, S.andAlippi, C.(2019). DeepLearningforTimeSeriesForecasting:\nThe Electric Load Case. arXiv:1907.09207. [23] Gerchak, Y., Vickson, R. G. and Parlar, M. (1988). Periodic review production models\nwith variable yield and uncertain demand. Iie Transactions 20 144–150. [24] Giannoccaro, I. and Pontrandolfo, P. (2002).",
+      "size": 968,
+      "sentences": 21
+    },
+    {
+      "id": 77,
+      "content": "k, Y., Vickson, R. G. and Parlar, M. (1988). Periodic review production models\nwith variable yield and uncertain demand. Iie Transactions 20 144–150. [24] Giannoccaro, I. and Pontrandolfo, P. (2002). Inventory management in supply chains: a\nreinforcement learning approach. International Journal of Production Economics 78 153–161. [25] Gijsbrechts, J., Boute, R. N., Van Mieghem, J. A. and Zhang, D. J. (2022). Can\ndeep reinforcement learning improve inventory management? performance on lost sales, dual-\nsourcing, and multi-echelon problems. Manufacturing & Service Operations Management 24\n1349–1368. [26] Goodfellow, I., Pouget-Abadie, J., Mirza, M., Xu, B., Warde-Farley, D., Ozair,\nS., Courville, A. and Bengio, Y. (2014). Generative adversarial nets. In Advances in\nNeural Information Processing Systems (Z. Ghahramani, M. Welling, C. Cortes, N. Lawrence\nand K. Weinberger, eds. ), vol. 27. Curran Associates, Inc.\n24\n=== 페이지 25 ===\n[27] Graves, A. (2012).",
+      "size": 964,
+      "sentences": 20
+    },
+    {
+      "id": 78,
+      "content": "ances in\nNeural Information Processing Systems (Z. Ghahramani, M. Welling, C. Cortes, N. Lawrence\nand K. Weinberger, eds. ), vol. 27. Curran Associates, Inc.\n24\n=== 페이지 25 ===\n[27] Graves, A. (2012). Sequence transduction with recurrent neural networks. arXiv:1211.3711. [28] Graves, A. (2013). Generating sequences with recurrent neural networks. arXiv:1308.0850. [29] Henig, M. and Gerchak, Y. (1990). The structure of periodic review policies in the presence\nof random yield. Operations Research 38 634–643. [30] Hu, Y., Liu, J., Spielberg, A., Tenenbaum, J. B., Freeman, W. T., Wu, J., Rus, D.\nand Matusik, W. (2019). Chainqueen: A real-time differentiable physical simulator for soft\nrobotics. In 2019 International conference on robotics and automation (ICRA). IEEE. [31] Ingraham, J., Riesselman, A., Sander, C. and Marks, D. (2018). Learning protein struc-\nture with a differentiable simulator. In International Conference on Learning Representations.",
+      "size": 959,
+      "sentences": 23
+    },
+    {
+      "id": 79,
+      "content": "ICRA). IEEE. [31] Ingraham, J., Riesselman, A., Sander, C. and Marks, D. (2018). Learning protein struc-\nture with a differentiable simulator. In International Conference on Learning Representations. [32] Januschowski, T., Wang, Y., Torkkola, K., Erkkila¨, T., Hasson, H. and Gasthaus,\nJ. (2022). Forecasting with trees. International Journal of Forecasting 38 1473–1481. Special\nIssue: M5 competition. [33] Kaplan, R. S. (1970). A dynamic inventory model with stochastic lead times. Management\nScience 16 491–507. [34] Kiesmu¨ller, G. P., Kok, D. and Dabia, S. (2011). Single item inventory control under\nperiodic review and a minimum order quantity. International Journal of Production Economics\n133 280–285. [35] Kingma, D. P.andWelling, M.(2013). Auto-encodingvariationalbayes. arXiv:1312.6114. [36] Kingma, D. P. and Welling, M. (2019). An introduction to variational autoencoders. arXiv:1906.02691. [37] Li, Z., Xu, S. H. and Hayya, J. (2004).",
+      "size": 949,
+      "sentences": 24
+    },
+    {
+      "id": 80,
+      "content": "Auto-encodingvariationalbayes. arXiv:1312.6114. [36] Kingma, D. P. and Welling, M. (2019). An introduction to variational autoencoders. arXiv:1906.02691. [37] Li, Z., Xu, S. H. and Hayya, J. (2004). A periodic-review inventory system with supply\ninterruptions. Probability in the Engineering and Informational Sciences 18 33–53. [38] Lim, B., Arik, S. O., Loeff, N. and Pfister, T. (2019). Temporal Fusion Transformers for\nInterpretable Multi-horizon Time Series Forecasting. arXiv:1912.09363. [39] Maddah, B. and Jaber, M. Y. (2008). Economic order quantity for items with imperfect\nquality: Revisited. International Journal of Production Economics 112 808–815. Special\nSection on RFID: Technology, Applications, and Impact on Business Operations. [40] Madeka, D., Swiniarski, L., Foster, D., Razoumov, L., Torkkola, K. and Wen, R.\n(2018). Sample path generation for probabilistic demand forecasting. In KDD 2018 Workshop\non Mining and Learning from Time Series.",
+      "size": 963,
+      "sentences": 20
+    },
+    {
+      "id": 81,
+      "content": ", Swiniarski, L., Foster, D., Razoumov, L., Torkkola, K. and Wen, R.\n(2018). Sample path generation for probabilistic demand forecasting. In KDD 2018 Workshop\non Mining and Learning from Time Series. [41] Madeka, D., Torkkola, K., Eisenach, C., Luo, A., Foster, D. and Kakade, S. (2022). Deep inventory management. arXiv:2210.03137. [42] Maggiar, A.,Song, I.andMuharremoglu, A.(2022). Multi-echeloninventorymanagement\nfor a non-stationary capacitated distribution network. Tech. rep., SSRN. [PDF]\n25\n=== 페이지 26 ===\n[43] Mnih, V., Badia, A. P., Mirza, M., Graves, A., Lillicrap, T. P., Harley, T., Silver,\nD. and Kavukcuoglu, K. (2016). Asynchronous methods for deep reinforcement learning. arXiv:1602.01783. [44] Mnih, V., Kavukcuoglu, K., Silver, D., Graves, A., Antonoglou, I., Wierstra, D.\nandRiedmiller, M.(2013). Playingatariwithdeepreinforcementlearning. arXiv:1312.5602. [45] Mousa, M., van de Berg, D., Kotecha, N., del Rio-Chanona, E. A. and Mowbray,\nM. (2023).",
+      "size": 970,
+      "sentences": 17
+    },
+    {
+      "id": 82,
+      "content": "lou, I., Wierstra, D.\nandRiedmiller, M.(2013). Playingatariwithdeepreinforcementlearning. arXiv:1312.5602. [45] Mousa, M., van de Berg, D., Kotecha, N., del Rio-Chanona, E. A. and Mowbray,\nM. (2023). An analysis of multi-agent reinforcement learning for decentralized inventory control\nsystems. arXiv:2307.11432. [46] Mukhoty, B. P., Maurya, V. and Shukla, S. K. (2019). Sequence to sequence deep\nlearning models for solar irradiation forecasting. In IEEE Milan PowerTech. [47] Nahmias, S. (1979). Simple approximations for a variety of dynamic leadtime lost-sales\ninventory models. Operations Research 27 904–924. [48] Nascimento, R. C., Souto, Y. M., Ogasawara, E., Porto, F. and Bezerra, E.\n(2019). STConvS2S: Spatiotemporal Convolutional Sequence to Sequence Network for weather\nforecasting. arXiv:1912.00134. [49] Parmas, P., Seno, T. and Aoki, Y. (2023). Model-based reinforcement learning with scalable\ncomposite policy gradient estimators. In ICML. [50] Porteus, E. L. (2002).",
+      "size": 984,
+      "sentences": 20
+    },
+    {
+      "id": 83,
+      "content": "recasting. arXiv:1912.00134. [49] Parmas, P., Seno, T. and Aoki, Y. (2023). Model-based reinforcement learning with scalable\ncomposite policy gradient estimators. In ICML. [50] Porteus, E. L. (2002). Foundations of stochastic inventory theory. Stanford University Press. [51] Qi, M., Shi, Y., Qi, Y., Ma, C., Yuan, R., Wu, D. and Shen, Z.-J. (2023). A practical\nend-to-end inventory management model with deep learning. Management Science 69 759–773. [52] Robb, D. J. and Silver, E. A. (1998). Inventory management with periodic ordering and\nminimum order quantities. Journal of the Operational Research Society 49 1085–1094. [53] Salinas, D., Flunkert, V., Gasthaus, J. and Januschowski, T. (2020). Deepar: Proba-\nbilistic forecasting with autoregressive recurrent networks. International Journal of Forecasting\n36 1181–1191. [54] Schulman, J., Wolski, F., Dhariwal, P., Radford, A. and Klimov, O. (2017). Proximal\npolicy optimization algorithms. arXiv:1707.06347.",
+      "size": 965,
+      "sentences": 24
+    },
+    {
+      "id": 84,
+      "content": "networks. International Journal of Forecasting\n36 1181–1191. [54] Schulman, J., Wolski, F., Dhariwal, P., Radford, A. and Klimov, O. (2017). Proximal\npolicy optimization algorithms. arXiv:1707.06347. [55] Shen, H., Tian, T. and Zhu, H. (2019). A two-echelon inventory system with a minimum\norder quantity requirement. Sustainability 11. [56] Silver, D., Huang, A., Maddison, C. J., Guez, A., Sifre, L., Van Den Driessche, G.,\nSchrittwieser, J., Antonoglou, I., Panneershelvam, V., Lanctot, M. et al. (2016). Mastering the game of go with deep neural networks and tree search. Nature 529 484–489. [57] Sinclair, S. R., Vieira Frujeri, F., Cheng, C.-A., Marshall, L., Barbalho, H. D. O.,\nLi, J., Neville, J., Menache, I. and Swaminathan, A. (2023). Hindsight learning for\n26\n=== 페이지 27 ===\nMDPs with exogenous inputs. In Proceedings of the 40th International Conference on Machine\nLearning, vol. 202 of Proceedings of Machine Learning Research. PMLR. [58] Song, J.-S. and Zipkin, P. H. (1996).",
+      "size": 991,
+      "sentences": 20
+    },
+    {
+      "id": 85,
+      "content": "with exogenous inputs. In Proceedings of the 40th International Conference on Machine\nLearning, vol. 202 of Proceedings of Machine Learning Research. PMLR. [58] Song, J.-S. and Zipkin, P. H. (1996). Inventory control with information about supply\nconditions. Management Science 42 1409–1419. [59] Suh, H. J., Simchowitz, M., Zhang, K. and Tedrake, R. (2022). Do differentiable\nsimulators give better policy gradients? In International Conference on Machine Learning. PMLR. [60] Sundermeyer, M., Schluter, R. and Ney, H. (2010). LSTM Neural Networks for Language\nModeling. In INTERSPEECH. [61] Sutton, R. S. and Barto, A. G. (2020). Reinforcement Learning: An iIntroduction. MIT\npress. [62] Szepesva´ri, C.(2010). Algorithms for Reinforcement Learning. SynthesisLecturesonArtificial\nIntelligence and Machine Learning, Morgan & Claypool Publishers. [63] Taleb, N. N. (2018). Election predictions as martingales: an arbitrage approach. Quantitative\nFinance 18 1–5.",
+      "size": 961,
+      "sentences": 23
+    },
+    {
+      "id": 86,
+      "content": "ecturesonArtificial\nIntelligence and Machine Learning, Morgan & Claypool Publishers. [63] Taleb, N. N. (2018). Election predictions as martingales: an arbitrage approach. Quantitative\nFinance 18 1–5. [64] Taleb, N. N. and Madeka, D. (2019). All roads lead to quantitative finance. Quantitative\nFinance 19 1775–1776. [65] THOMAS, J. D. (2023). Towards cooperative marl in industrial domains . [66] van den Oord, A., Dieleman, S., Zen, H., Simonyan, K., Vinyals, O., Graves, A.,\nKalchbrenner, N., Senior, A. and Kavukcuoglu, K. (2016). Wavenet: A generative\nmodel for raw audio. arXiv:1609.03499. [67] Van Oord, A., Kalchbrenner, N. and Kavukcuoglu, K. (2016). Pixel recurrent neural\nnetworks. In International conference on machine learning. PMLR. [68] Veinott, A. F. (1965). The optimal inventory policy for batch ordering. Operations Research\n13 424–432. [69] Wen, R.andTorkkola, K.(2019). DeepGenerativeQuantile-CopulaModelsforProbabilistic\nForecasting. In ICML Time Series Workshop.",
+      "size": 985,
+      "sentences": 22
+    },
+    {
+      "id": 87,
+      "content": "inventory policy for batch ordering. Operations Research\n13 424–432. [69] Wen, R.andTorkkola, K.(2019). DeepGenerativeQuantile-CopulaModelsforProbabilistic\nForecasting. In ICML Time Series Workshop. [70] Wen, R., Torkkola, K., Narayanaswamy, B. and Madeka, D. (2017). A multi-horizon\nquantile recurrent forecaster. In NIPS Time Series Workshop. [71] Williams, R. J. and Zipser, D. (1989). A learning algorithm for continually running fully\nrecurrent neural networks. Neural Computation 1 270–280. [72] Yu, R., Zheng, S., Anandkumar, A. and Yue, Y. (2017). Long-term Forecasting using\nHigher Order Tensor RNNs. arXiv:1711.00073. 27\n=== 페이지 28 ===\n[73] Zhao, H., Tang, W.andYao, D. D.(2023). Policyoptimizationforcontinuousreinforcement\nlearning. arXiv:2305.18901. [74] Zhao, Y. and Katehakis, M. N. (2006). On the structure of optimal ordering policies for\nstochastic inventory systems with minimum order quantity. Probability in the Engineering and\nInformational Sciences 20 257–270.",
+      "size": 983,
+      "sentences": 21
+    },
+    {
+      "id": 88,
+      "content": "ehakis, M. N. (2006). On the structure of optimal ordering policies for\nstochastic inventory systems with minimum order quantity. Probability in the Engineering and\nInformational Sciences 20 257–270. [75] Zhou, B., Zhao, Y. and Katehakis, M. N. (2007). Effective control policies for stochastic\ninventory systems with a minimum order quantity and linear costs. International Journal of\nProduction Economics 106 523–531. [76] Zhu, H. (2022). A simple heuristic policy for stochastic inventory systems with both minimum\nand maximum order quantity requirements. Annals of Operations Research 309 347–363. [77] Zhu, H., Liu, X. and Chen, Y. F. (2015). Effective inventory control policies with a minimum\norder quantity and batch ordering. International Journal of Production Economics 168 21–30. [78] Zipkin, P. (2008). Old and new methods for lost-sales inventory systems. Operations research\n56 1256–1263.",
+      "size": 903,
+      "sentences": 15
+    },
+    {
+      "id": 89,
+      "content": "r quantity and batch ordering. International Journal of Production Economics 168 21–30. [78] Zipkin, P. (2008). Old and new methods for lost-sales inventory systems. Operations research\n56 1256–1263. 28\n=== 페이지 29 ===\nA Gen-QOT Metrics\nIn this section we define the metrics used to evaluate Gen-QOT. A.1 Vendor Lead Time Forecasting Metrics\nFor the purposes of defining the vendor lead time metric, assume we have a set of historic purchase\norders. Each sample i ∈ S consist of a sequence of arrivals {(κi,li),...,(κi,li)} where j denotes\n1 1 J J\nthe sequence index with some maximum sequence length J, κi denotes the arrival quantity, and li\nj j\ndenotes the lead-time of the arrival relative to some forecast creation time, which can be the order\ndate or any day after. The quantile loss of a forecast at quantile q is defined as QL (x,y) = (1−q)(x−y)++q(y−x)+.",
+      "size": 862,
+      "sentences": 9
+    },
+    {
+      "id": 90,
+      "content": "-time of the arrival relative to some forecast creation time, which can be the order\ndate or any day after. The quantile loss of a forecast at quantile q is defined as QL (x,y) = (1−q)(x−y)++q(y−x)+. q\nFor a fixed quantile q, the quantile loss metric evaluated in this paper is defined as\n(cid:80) (cid:80)J κiQL (li,(cid:98)li,q)\ni∈S j=1 j q j\nQL := (A.1)\nq (cid:80) (cid:80)J κi\ni∈S j=1 j\nNext, to compute the CRPS, we assume access to a quantile estimate of the lead-time distri-\nbution for each sample, (cid:98)li,q over a set of quantiles Q := {0.01,...,0.99}. The CRPS is computed\napproximately by averaging over the quantile losses for each quantile in q ∈ Q.",
+      "size": 666,
+      "sentences": 4
+    },
+    {
+      "id": 91,
+      "content": "ad-time distri-\nbution for each sample, (cid:98)li,q over a set of quantiles Q := {0.01,...,0.99}. The CRPS is computed\napproximately by averaging over the quantile losses for each quantile in q ∈ Q. (cid:80) (cid:80)J κi 1 (cid:80) QL (li,(cid:98)li,q)\ni∈S j=1 j|Q| q∈Q q j\nCRPS := (A.2)\n(cid:80) (cid:80)J κi\ni∈S j=1 j\nA.2 Calibration Metrics\nA forecast of the probabilities of a sequence of events E ,E ,... where E ∈ {0,1} – is said to be\n1 2 t\ncalibrated if whenever a forecast p of E = 1 is made, the empirical probabilities are ≈ p. Because\nt\ntheprobabilityis realvalued, the interval[0,1]is splitintobinsin ordertogetempiricalprobabilities\nwhenever the forecast was p.\nIn the case of estimating the mean of a random variable (such as percent of order received after\nl weeks), we define calibration as the regression coefficient of a simple linear regression of the actual\nvalue given the predicted value. If a forecast is well calibrated, this coefficient should be 1.",
+      "size": 976,
+      "sentences": 4
+    },
+    {
+      "id": 92,
+      "content": "eeks), we define calibration as the regression coefficient of a simple linear regression of the actual\nvalue given the predicted value. If a forecast is well calibrated, this coefficient should be 1. See Foster and Vohra [21], Dawid [13] for a more in-depth discussion of calibrated forecasts. A.3 Arrival Time Calibration\nHere we assess if the forecast probability of receiving all the inventory from an order by a specific\ndate is well calibrated according to the Gen-QOT model. We treat this problem as a classification task by assigning a class label of one to all periods\nbefore, and including, the period of the terminal arrival and zero to all periods after. This indicates\nwhether a final receive for an order occurs by a specific date. Using the samples drawn from\nGen-QOT, we estimate the probability of a final receive by a date, and evaluate the calibration of\nthe predicted distributions using both the predicted probabilities and actual class labels.",
+      "size": 964,
+      "sentences": 7
+    },
+    {
+      "id": 93,
+      "content": "awn from\nGen-QOT, we estimate the probability of a final receive by a date, and evaluate the calibration of\nthe predicted distributions using both the predicted probabilities and actual class labels. Bucketing\nreceive predictions into deciles, we measure the mean class label and receive probability for each\n29\n=== 페이지 30 ===\nbucket. If our model is well calibrated, we expect the mean predicted probability to fall within the\nconfidence interval for the expected actual label. 30\n=== 페이지 31 ===\nB Additional Numerical Results for Gen-QOT\nB.1 Arrival Time Calibration – Full Results\nInTable8,Table9,Table10,andTable11wepresentthesamearrivaltimecalibrationasSection4.1,\nbut now split out by lead time. For lead time, probability bin pairs with less than 10 samples we\nomit the results.",
+      "size": 785,
+      "sentences": 5
+    },
+    {
+      "id": 94,
+      "content": "Table8,Table9,Table10,andTable11wepresentthesamearrivaltimecalibrationasSection4.1,\nbut now split out by lead time. For lead time, probability bin pairs with less than 10 samples we\nomit the results. Table 8: Calibration of probabilistic arrival time forecasts for lead times l = 1 to l = 8 on an\nin-of-time holdout set\nProbability l = 1 l = 2 l = 3 l = 4\n0.0-0.1 0.080 ± 0.003 0.066 ± 0.001 0.068 ± 0.001 0.057 ± 0.000\n0.1-0.2 0.126 ± 0.003 0.164 ± 0.002 0.160 ± 0.001 0.151 ± 0.001\n0.2-0.3 0.301 ± 0.006 0.252 ± 0.002 0.242 ± 0.001 0.247 ± 0.001\n0.3-0.4 0.414 ± 0.007 0.374 ± 0.002 0.358 ± 0.002 0.339 ± 0.002\n0.4-0.5 0.540 ± 0.006 0.471 ± 0.002 0.443 ± 0.002 0.419 ± 0.002\n0.5-0.6 0.606 ± 0.006 0.564 ± 0.001 0.535 ± 0.002 0.525 ± 0.002\n0.6-0.7 0.710 ± 0.004 0.663 ± 0.001 0.631 ± 0.002 0.597 ± 0.003\n0.7-0.8 0.790 ± 0.003 0.745 ± 0.001 0.740 ± 0.002 0.691 ± 0.004\n0.8-0.9 0.882 ± 0.001 0.840 ± 0.001 0.813 ± 0.002 0.830 ± 0.004\n0.9-1.0 0.984 ± 0.000 0.936 ± 0.001 0.923 ± 0.002 0.911 ± 0.003\nl = 5 l = 6 l = 7 l = 8\n0.0-0.1 0.050 ± 0.000 0.045 ± 0.000 0.041 ± 0.000 0.037 ± 0.000\n0.1-0.2 0.147 ± 0.001 0.142 ± 0.001 0.130 ± 0.001 0.140 ± 0.001\n0.2-0.3 0.237 ± 0.001 0.212 ± 0.001 0.222 ± 0.002 0.228 ± 0.002\n0.3-0.4 0.315 ± 0.002 0.304 ± 0.002 0.302 ± 0.003 0.291 ± 0.003\n0.4-0.5 0.392 ± 0.003 0.386 ± 0.003 0.348 ± 0.004 0.346 ± 0.005\n0.5-0.6 0.474 ± 0.003 0.438 ± 0.004 0.503 ± 0.005 0.521 ± 0.007\n0.6-0.7 0.566 ± 0.004 0.633 ± 0.006 0.514 ± 0.007 0.655 ± 0.018\n0.7-0.8 0.744 ± 0.005 0.644 ± 0.006 0.689 ± 0.015 –\n0.8-0.9 0.787 ± 0.005 0.802 ± 0.007 0.750 ± 0.045 –\n0.9-1.0 0.880 ± 0.005 – – –\n31\n=== 페이지 32 ===\nTable 9: Calibration of probabilistic arrival time forecasts for lead times l = 1 to l = 8 on an\nout-of-time holdout set\nProbability l = 1 l = 2 l = 3 l = 4\n0.0-0.1 0.072 ± 0.002 0.059 ± 0.001 0.065 ± 0.000 0.056 ± 0.000\n0.1-0.2 0.163 ± 0.003 0.159 ± 0.001 0.154 ± 0.001 0.152 ± 0.001\n0.2-0.3 0.285 ± 0.004 0.262 ± 0.001 0.250 ± 0.001 0.245 ± 0.001\n0.3-0.4 0.409 ± 0.004 0.357 ± 0.001 0.346 ± 0.001 0.335 ± 0.001\n0.4-0.5 0.485 ± 0.004 0.468 ± 0.001 0.438 ± 0.001 0.423 ± 0.001\n0.5-0.6 0.612 ± 0.004 0.564 ± 0.001 0.540 ± 0.001 0.498 ± 0.002\n0.6-0.7 0.693 ± 0.003 0.645 ± 0.001 0.644 ± 0.001 0.596 ± 0.002\n0.7-0.8 0.793 ± 0.002 0.756 ± 0.001 0.723 ± 0.001 0.680 ± 0.003\n0.8-0.9 0.887 ± 0.001 0.843 ± 0.001 0.815 ± 0.002 0.809 ± 0.003\n0.9-1.0 0.983 ± 0.000 0.932 ± 0.001 0.922 ± 0.001 0.907 ± 0.002\nl = 5 l = 6 l = 7 l = 8\n0.0-0.1 0.050 ± 0.000 0.046 ± 0.000 0.040 ± 0.000 0.038 ± 0.000\n0.1-0.2 0.144 ± 0.001 0.136 ± 0.001 0.126 ± 0.001 0.134 ± 0.001\n0.2-0.3 0.230 ± 0.001 0.218 ± 0.001 0.213 ± 0.001 0.203 ± 0.001\n0.3-0.4 0.321 ± 0.001 0.302 ± 0.001 0.281 ± 0.002 0.254 ± 0.002\n0.4-0.5 0.398 ± 0.002 0.364 ± 0.002 0.344 ± 0.003 0.351 ± 0.003\n0.5-0.6 0.461 ± 0.002 0.461 ± 0.003 0.428 ± 0.003 0.516 ± 0.005\n0.6-0.7 0.559 ± 0.003 0.550 ± 0.003 0.548 ± 0.005 0.662 ± 0.013\n0.7-0.8 0.710 ± 0.003 0.666 ± 0.004 0.612 ± 0.010 0.739 ± 0.023\n0.8-0.9 0.781 ± 0.003 0.724 ± 0.005 0.893 ± 0.004 1.000 ± 0.000\n0.9-1.0 0.863 ± 0.004 0.963 ± 0.001 1.000 ± 0.000 1.000 ± 0.000\n32\n=== 페이지 33 ===\nTable 10: Calibration of probabilistic arrival time forecasts for lead times l = 1 to l = 8 on control\narm of real-world A/B test\nProbability l = 1 l = 2 l = 3 l = 4\n0.0-0.1 0.175 ± 0.011 0.164 ± 0.006 0.166 ± 0.003 0.155 ± 0.001\n0.1-0.2 0.216 ± 0.008 0.303 ± 0.006 0.302 ± 0.002 0.302 ± 0.002\n0.2-0.3 0.483 ± 0.013 0.367 ± 0.005 0.417 ± 0.002 0.402 ± 0.002\n0.3-0.4 0.548 ± 0.012 0.471 ± 0.004 0.510 ± 0.002 0.492 ± 0.002\n0.4-0.5 0.712 ± 0.011 0.601 ± 0.003 0.581 ± 0.002 0.586 ± 0.002\n0.5-0.6 0.642 ± 0.010 0.672 ± 0.002 0.669 ± 0.002 0.657 ± 0.002\n0.6-0.7 0.733 ± 0.009 0.755 ± 0.002 0.720 ± 0.002 0.711 ± 0.002\n0.7-0.8 0.841 ± 0.005 0.815 ± 0.001 0.801 ± 0.002 0.811 ± 0.002\n0.8-0.9 0.897 ± 0.002 0.885 ± 0.001 0.870 ± 0.002 0.890 ± 0.002\n0.9-1.0 0.988 ± 0.000 0.959 ± 0.000 0.950 ± 0.001 0.953 ± 0.001\nl = 5 l = 6 l = 7 l = 8\n0.0-0.1 0.138 ± 0.001 0.126 ± 0.001 0.110 ± 0.001 0.088 ± 0.000\n0.1-0.2 0.281 ± 0.001 0.279 ± 0.001 0.264 ± 0.001 0.228 ± 0.001\n0.2-0.3 0.394 ± 0.002 0.382 ± 0.002 0.377 ± 0.002 0.338 ± 0.002\n0.3-0.4 0.498 ± 0.002 0.487 ± 0.003 0.467 ± 0.003 0.397 ± 0.002\n0.4-0.5 0.566 ± 0.003 0.572 ± 0.003 0.580 ± 0.003 0.500 ± 0.003\n0.5-0.6 0.649 ± 0.003 0.646 ± 0.003 0.637 ± 0.003 0.582 ± 0.004\n0.6-0.7 0.716 ± 0.003 0.755 ± 0.003 0.720 ± 0.003 0.589 ± 0.009\n0.7-0.8 0.823 ± 0.002 0.802 ± 0.002 0.763 ± 0.004 –\n0.8-0.9 0.887 ± 0.002 0.894 ± 0.002 – –\n0.9-1.0 0.935 ± 0.001 0.842 ± 0.006 – –\n33\n=== 페이지 34 ===\nTable 11: Calibration of probabilistic arrival time forecasts for lead times l = 1 to l = 8 on treatment\narm of real-world A/B test\nProbability l = 1 l = 2 l = 3 l = 4\n0.0-0.1 0.137 ± 0.005 0.123 ± 0.004 0.147 ± 0.002 0.141 ± 0.001\n0.1-0.2 0.388 ± 0.010 0.295 ± 0.006 0.291 ± 0.002 0.277 ± 0.001\n0.2-0.3 0.453 ± 0.013 0.344 ± 0.004 0.410 ± 0.002 0.382 ± 0.002\n0.3-0.4 0.483 ± 0.013 0.481 ± 0.003 0.485 ± 0.002 0.484 ± 0.002\n0.4-0.5 0.687 ± 0.010 0.597 ± 0.002 0.575 ± 0.002 0.562 ± 0.002\n0.5-0.6 0.741 ± 0.007 0.668 ± 0.002 0.648 ± 0.002 0.659 ± 0.002\n0.6-0.7 0.740 ± 0.007 0.752 ± 0.002 0.729 ± 0.002 0.725 ± 0.002\n0.7-0.8 0.826 ± 0.004 0.813 ± 0.001 0.812 ± 0.002 0.801 ± 0.002\n0.8-0.9 0.908 ± 0.002 0.887 ± 0.001 0.884 ± 0.001 0.887 ± 0.002\n0.9-1.0 0.988 ± 0.000 0.958 ± 0.000 0.951 ± 0.001 0.950 ± 0.001\nl = 5 l = 6 l = 7 l = 8\n0.0-0.1 0.126 ± 0.001 0.113 ± 0.001 0.097 ± 0.001 0.078 ± 0.000\n0.1-0.2 0.260 ± 0.001 0.263 ± 0.001 0.254 ± 0.001 0.229 ± 0.001\n0.2-0.3 0.371 ± 0.002 0.377 ± 0.002 0.370 ± 0.002 0.329 ± 0.002\n0.3-0.4 0.481 ± 0.002 0.476 ± 0.003 0.442 ± 0.003 0.392 ± 0.002\n0.4-0.5 0.564 ± 0.003 0.537 ± 0.003 0.515 ± 0.003 0.474 ± 0.003\n0.5-0.6 0.624 ± 0.003 0.617 ± 0.003 0.618 ± 0.003 0.576 ± 0.004\n0.6-0.7 0.726 ± 0.003 0.704 ± 0.003 0.684 ± 0.003 0.707 ± 0.008\n0.7-0.8 0.796 ± 0.003 0.813 ± 0.002 0.749 ± 0.003 –\n0.8-0.9 0.869 ± 0.002 0.863 ± 0.002 0.833 ± 0.017 –\n0.9-1.0 0.930 ± 0.001 0.852 ± 0.005 – –\nB.2 Neural Architecture Ablation\nGiven the broad set of neural architectures available for fitting sequence-to-sequence problems, we\ntest a set of different encoder and decoder neural networks classes.",
+      "size": 6150,
+      "sentences": 3
+    },
+    {
+      "id": 95,
+      "content": "2 Neural Architecture Ablation\nGiven the broad set of neural architectures available for fitting sequence-to-sequence problems, we\ntest a set of different encoder and decoder neural networks classes. Specifically we tested multi-layer\nperceptron vs causal-convolution encoder, and recurrent neural network vs transformer decoder. In\nthe end, we trained four models on data from sequences of arrivals from 10MM orders from 2017\nand 2018 and tested on arrivals from 50K orders from 2019. To assess prediction quality, we rely on\nnegative-log-likelihood of next token prediction, as well as unit weighted quantile-loss of cumulative\nquantity arrivals at 1, 4, and 9 weeks since order was placed. 34\n=== 페이지 35 ===\nTable 12: Results of ablation analysis for multiple metrics.",
+      "size": 771,
+      "sentences": 5
+    },
+    {
+      "id": 96,
+      "content": "ion, as well as unit weighted quantile-loss of cumulative\nquantity arrivals at 1, 4, and 9 weeks since order was placed. 34\n=== 페이지 35 ===\nTable 12: Results of ablation analysis for multiple metrics. Model Metric\nQL of Cumulative Quantity of Arrivals: Week1\nP10 P30 P50 P70 P90\nMLP-RNN 100.00 100.00 100.00 100.00 100.00\nCNN-RNN 70.15 98.60 89.15 96.67 100.42\nCNN-Transformer 68.54 95.79 91.76 98.81 110.10\nQL of Cumulative Quantity of Arrivals: Week4\nP10 P30 P50 P70 P90\nMLP-RNN 100.00 100.00 100.00 100.00 100.00\nCNN-RNN 89.43 95.90 97.48 100.00 104.94\nCNN-Transformer 29.27 39.85 52.04 66.75 80.86\nQL of Cumulative Quantity of Arrivals: Week9\nP10 P30 P50 P70 P90\nMLP-RNN 100.00 100.00 100.00 100.00 100.00\nCNN-RNN 100.79 100.58 100.82 101.70 102.01\nCNN-Transformer 90.24 92.24 96.29 99.72 104.03\nNegative Log-Likelihood of Next Token Prediction\nMLP-RNN 100.00\nCNN-RNN 93.76\nCNN-Transformer 94.07\n35\n=== 페이지 36 ===\nC Featurization\nBuying Agent\nBelow are the features provided to the RL policy – they are the same as Madeka et al.",
+      "size": 1031,
+      "sentences": 3
+    },
+    {
+      "id": 97,
+      "content": "oken Prediction\nMLP-RNN 100.00\nCNN-RNN 93.76\nCNN-Transformer 94.07\n35\n=== 페이지 36 ===\nC Featurization\nBuying Agent\nBelow are the features provided to the RL policy – they are the same as Madeka et al. [41]. Specifically, the state at time t for product i contains:\n1. The current inventory level Ii\n(t−1)\n2. Previous actions ai that have been taken for all u < t\nu\n3. Demand time series features\n(a) Historical availability corrected demand\n(b) Distance to public holidays\n(c) Historical website glance views data\n4. Static product features\n(a) Product group\n(b) Text-based features from the product description\n(c) Brand\n5. Economics of the product - (price, cost etc.) Gen-QOT Model\nThe exogenous context and other information provided to Gen-QOT at time t for product i contains:\n1. Current action ai\nt\n2. Previous actions ai that have been taken for all u < t\nu\n3.",
+      "size": 867,
+      "sentences": 11
+    },
+    {
+      "id": 98,
+      "content": ") Gen-QOT Model\nThe exogenous context and other information provided to Gen-QOT at time t for product i contains:\n1. Current action ai\nt\n2. Previous actions ai that have been taken for all u < t\nu\n3. Time series features\n(a) Distance to public holidays\n(b) Previous arrivals for all times u < t\n(c) Vendor constraints (minimum order quantities, batch sizes, etc.) 4. Static product features\n(a) Product group\n(b) Brand\n(c) Vendor\n36\n=== 페이지 37 ===\nD The Gen-QOT Model\nIn this section, we describe our novel arrivals prediction model. First, denote historical covariates\nxi for each product i at each time t that will be used to estimate the distribution of state transition\nt\nprobabilities. The vector xi can be thought of as the observational historical data that contains at\nt\nminimum, information such as the time-series of historical orders and arrivals.",
+      "size": 858,
+      "sentences": 8
+    },
+    {
+      "id": 99,
+      "content": "ate transition\nt\nprobabilities. The vector xi can be thought of as the observational historical data that contains at\nt\nminimum, information such as the time-series of historical orders and arrivals. Other information\nthat can be incorporated includes vendor and product attributes, existing geographic inventory\nallocation, and the distance to various holidays that may affect the ability for vendors and logistics\nproviders to reliably fulfill and ship inventory. See Appendix C for the list of features we used. Also\ndenote the actual arrivals of inventory as {oi }L , where oi ∈ R . Recall L is the maximum\nt,j j=0 t,j ≥0\npossible lead time for an arrival.",
+      "size": 660,
+      "sentences": 6
+    },
+    {
+      "id": 100,
+      "content": "ory. See Appendix C for the list of features we used. Also\ndenote the actual arrivals of inventory as {oi }L , where oi ∈ R . Recall L is the maximum\nt,j j=0 t,j ≥0\npossible lead time for an arrival. The Gen-QOT model solves the problem of predicting the joint distribution of inventory arrivals\nfor an action ai at time t. To model the distribution of arrival sequences {oi }L , we consider the\nt t,j j=1\ndistribution over partial fill rates7 instead:\n\noi\n t,j ai ̸= 0\nα t i ,j := ai t t\n0 ai = 0.\nt\nOur goal then is to produce a generative model from which we can sample sequences of partial fill\nrates {αi }L . Note that these partial fill rates do not need to sum to 1 as this is modeling the\nt,j j=1\n“end-to-end” yield (see Figure 2b).",
+      "size": 743,
+      "sentences": 6
+    },
+    {
+      "id": 101,
+      "content": "model from which we can sample sequences of partial fill\nrates {αi }L . Note that these partial fill rates do not need to sum to 1 as this is modeling the\nt,j j=1\n“end-to-end” yield (see Figure 2b). Next, observe that an equivalent formulation is to model a sequence of tuples of partial fill rates\nand time since the last non-zero arrival: {(k t i ,s ,α (cid:101)t i ,s )} s∈Z ≥0 , where α (cid:101)t i ,s denotes the proportion of ai t\nin the sth arrival and ki denotes the number of periods since the previous non-zero arrival. By\nt,s\nconvention the first arrival is measured as an offset from t−1. D.1 Probabilistic Model\nAt a high-level, the methodology we employ to predict a sequence of arrivals is to construct a grid\nover quantity and time that can be used to bin individual arrivals into distinct arrival classes. Our\nmodel then produce a categorical distribution over these classes conditioned on previous arrivals in\nthe sequence, akin to generative sequence modeling in NLP.",
+      "size": 987,
+      "sentences": 6
+    },
+    {
+      "id": 102,
+      "content": "vals into distinct arrival classes. Our\nmodel then produce a categorical distribution over these classes conditioned on previous arrivals in\nthe sequence, akin to generative sequence modeling in NLP. Once the sequence of classes has been\nsampled, we can map it back to the original quantity of interest using the function V, defined in\nAppendix D.1.2. D.1.1 Model the distribution by binning\nWe rely on binning to avoid making parametric assumptions about the distributions of arrivals. To\nmodel the proportion of requested inventory in each arrival and number weeks since last arrival,\nwe can bin these pairs into classes. We define a sequence of N grid points τ(1),...,τ(N) over time\n7These are the same as the α¯i in Section 3.5.\nt,j\n37\n=== 페이지 38 ===\nperiods since last arrival and M grid points p(1),...,p(M) for the proportions, such that\nτ(n) ≤ τ(m) ∀n < m,\np(n) ≤ p(m) ∀n < m,\nτ(1) = p(1) = 0,\nτ(N) = τ\nmax\np(M) = p\nmax\nwhere τ and p are both large constants.",
+      "size": 967,
+      "sentences": 6
+    },
+    {
+      "id": 103,
+      "content": "last arrival and M grid points p(1),...,p(M) for the proportions, such that\nτ(n) ≤ τ(m) ∀n < m,\np(n) ≤ p(m) ∀n < m,\nτ(1) = p(1) = 0,\nτ(N) = τ\nmax\np(M) = p\nmax\nwhere τ and p are both large constants. For each n,m ∈ [N −1]×[M −1], define the set\nmax max\nZ := {(k,α) : τ(n) ≤ k < τ(n+1) and p(m) ≤ α < p(m+1)}. n,m\nBy construction, Z := {Z : (n,m) ∈ [N −1]×[M −1]} is a partition of {u ∈ Z|0 ≤ u <\nn,m\nτ }×{v ∈ R|0 ≤ v < p }, the space of all possible pairs (ki,αi ). max max s (cid:101)t,s\nNext we denote the index pair (n,m) that corresponds to a specific arrival class Z by the\nn,m\nrandom vector ζ. For example ζ = (1,2) is a reference to the arrival class Z . Additionally, we\n1,2\nadd a special index pair denoting the end of an arrivals sequence, which we can signify with (cid:1)ζ(cid:1). This\n(cid:1)ζ(cid:1) can be thought of as a special arrival that designates that the sequence of arrivals from an action\nhas terminated.",
+      "size": 928,
+      "sentences": 7
+    },
+    {
+      "id": 104,
+      "content": "arrivals sequence, which we can signify with (cid:1)ζ(cid:1). This\n(cid:1)ζ(cid:1) can be thought of as a special arrival that designates that the sequence of arrivals from an action\nhas terminated. In practice, we can use (0,0) to represent the value of (cid:1)ζ(cid:1). Given this construction,\nwe have ζ taking values in Z(cid:101):= {[N −1]×[M −1])∪{(0,0)}}\nOur objective is now to estimate the joint probability of a sequence of index pairs ζi ,ζi ...\nt,0 t,1\ncorresponding to a sequence of arrival classes given some ai. Gen-QOT specifically estimates\nt\n(cid:89)\nP(ζi ,ζi ,...|xi,ai ) = P(ζi |ζi ,ζi ,...,ζi ,xi,ai) (D.1)\nt,0 t,1 t t,0 t,j t,j−1 t,j−2 t,0 t t\nj\nand decomposes this joint probability into the product of conditional probabilities. D.1.2 Generating samples of inventory arrivals: mapping from classes to actual\narrivals\nSampling this joint probability distribution gives a sequence of arrival classes (ζi ,ζi ,...).",
+      "size": 936,
+      "sentences": 6
+    },
+    {
+      "id": 105,
+      "content": "probabilities. D.1.2 Generating samples of inventory arrivals: mapping from classes to actual\narrivals\nSampling this joint probability distribution gives a sequence of arrival classes (ζi ,ζi ,...). To\nt,0 t,1\nobtain a sample path of inventory arrivals for an action ai\nt\n, we use the function V : Z(cid:101)→ R\n>0\n×Z\n>0\nto map each element ζi = (n,m) of the sampled sequences of arrival classes back to a tuple of\nt,s\npartial fill rates and time-since-last-arrival. This function is implemented by mapping each of the\ntuples (n,m) to a representative element (k¯ , α¯ ) in the corresponding Z . Here, k¯ and\nn,m n,m i,j n,m\nα¯ denote the mean of the respective quantities observed in the data in each arrival class bin, for\nn,m\nevery n,m. However, we note that other quantities can be used, e.g. the center of the bin of each\narrival class\n(τ(n)+τ(n+1)\n,\np(i)+p(i+1)\n).",
+      "size": 870,
+      "sentences": 7
+    },
+    {
+      "id": 106,
+      "content": "s observed in the data in each arrival class bin, for\nn,m\nevery n,m. However, we note that other quantities can be used, e.g. the center of the bin of each\narrival class\n(τ(n)+τ(n+1)\n,\np(i)+p(i+1)\n). 2 2\nThe sampled sequence of arrival class indexes, (ζi ,ζi ,...), can be transformed back into the\nt,0 t,1\noriginal quantity of interest oi by substituting each ζi with the tuple (k¯ ,α¯ ) to recover\nt,j t,s n,m n,m\na sequence of estimated periods since last arrival and proportion of inventory, (ki ,αi ). By\nt,s (cid:101)t,s\ncumulatively summing the periods, and multiplying each αi by ai, we immediately recover every\n(cid:101)t,s t\noi . t,j\n38\n=== 페이지 39 ===\nD.1.3 Example of arrival sequence transformation\nInventory arrivals to arrival class sequence: As an example, let ai = 10, and the true arrival\nt\nsequence be ⟨0,3,5,0,4⟩. Additionally, we can construct a series of grid-points τ(l) = l−1 and\np(m) = 0.2·(m−1) for all l ∈ [L] and m ∈ [M] where L = 4 and M = 6.",
+      "size": 971,
+      "sentences": 7
+    },
+    {
+      "id": 107,
+      "content": "let ai = 10, and the true arrival\nt\nsequence be ⟨0,3,5,0,4⟩. Additionally, we can construct a series of grid-points τ(l) = l−1 and\np(m) = 0.2·(m−1) for all l ∈ [L] and m ∈ [M] where L = 4 and M = 6. Then we can map from the original sequence of arrivals over time {oi } to tuples of partial fill\nt,j\nrates and time since last arrival {(ki,αi )} by normalizing by action and computing the time since\ns (cid:101)t,s\nlast arrival. ⟨0,3,5,0,4⟩ −→ ⟨(2,0.3),(1,0.5),(2,0.4)⟩\nUsing the grid-points and (0,0) as a reference for (cid:1)ζ(cid:1), we can transform the sequence of {(k\ns\ni,α\n(cid:101)t\ni\n,s\n)}\ninto a sequence of ζ’s by binning the tuples of time since last arrival and inventory percentile. For\nexample the tuple (2,0.3) is placed in the bin with coordinates (2,2) because it is 2 time periods\nsince the start of the sample and 0.3 falls in the second bin that sits between 0.2 and 0.4.",
+      "size": 892,
+      "sentences": 5
+    },
+    {
+      "id": 108,
+      "content": "le. For\nexample the tuple (2,0.3) is placed in the bin with coordinates (2,2) because it is 2 time periods\nsince the start of the sample and 0.3 falls in the second bin that sits between 0.2 and 0.4. The rest\nof the sequence is transformed as follows:\n⟨(2,0.3),(1,0.5),(2,0.4)⟩ −→ ⟨(2,2),(1,3),(2,3),(0,0)⟩\nArrival class sequence to inventory arrivals: We can reverse this example by imagining\nGen-QOT generated the sequence ⟨(2,2),(1,3),(2,3),(0,0)⟩. We can replace each Z with the\nn,m\nrepresentative element corresponding to the middle of the bin (k¯ ,α¯ ) = (l,0.2 · m − 0.1). n,m n,m\nSubstituting into the sequence we get\n⟨(2,2),(1,3),(2,3),(0,0)⟩ −→ ⟨(2,0.3),(1,0.5),(2,0.5)⟩\nThen we can cumulatively sum the time since last arrival and multiply by the action to recover\nsampled sequence of arrivals over time, {oi }\nt,j\n⟨(2,0.3),(1,0.5),(2,0.5)⟩ −→ ⟨0,3,5,0,5⟩\nIn this example we see two crucial features of the probabilistic model utilized by Gen-QOT.",
+      "size": 958,
+      "sentences": 5
+    },
+    {
+      "id": 109,
+      "content": "ction to recover\nsampled sequence of arrivals over time, {oi }\nt,j\n⟨(2,0.3),(1,0.5),(2,0.5)⟩ −→ ⟨0,3,5,0,5⟩\nIn this example we see two crucial features of the probabilistic model utilized by Gen-QOT. Firstly, the sum of arrival quantities over actual and sampled arrival quantities do not need to be\nequal to the action ai. Secondly, the structure of the grid and choice of representative unit can\nt\ninduce error in the estimated sample if not carefully chosen. D.2 Neural Architecture and Loss\nFollowing canonical work in generative modeling for language [60, 28], our work uses recurrent\nneural-networks to generate sequences of arrival classes. Additionally, following van den Oord et al. [66],Wenetal. [70]werelyonstackedanddilatedtemporalconvolutionstolearnausefulembedding\nof historical time series data. Merging the architectures together, Gen-QOT is implemented using a\nencoder-decoderstylearchitecturewithadilatedtemporalconvolutionencoderandrecurrentdecoder.",
+      "size": 968,
+      "sentences": 8
+    },
+    {
+      "id": 110,
+      "content": "embedding\nof historical time series data. Merging the architectures together, Gen-QOT is implemented using a\nencoder-decoderstylearchitecturewithadilatedtemporalconvolutionencoderandrecurrentdecoder. Full model hyperparameters along with arrival class definitions can be found in Appendix D.3. Additionally, a richer comparison of various model architectures can be found in Appendix B.2. The network is optimized to maximize the likelihood of generated samples by being trained to\nminimize cross-entropy loss. Allowing y to be a matrix of indicators across all arrival classes Z\nn,m\n39\n=== 페이지 40 ===\n...\nEncoder Decoder\nFigure 12: Visualization of Gen-QOT model architecture. The model structure uses a classic encoder\ndecoder architecture with a dilated causal convolution encoder and standard recurrent decoder.",
+      "size": 815,
+      "sentences": 7
+    },
+    {
+      "id": 111,
+      "content": "coder\nFigure 12: Visualization of Gen-QOT model architecture. The model structure uses a classic encoder\ndecoder architecture with a dilated causal convolution encoder and standard recurrent decoder. The diagram above demonstrates how samples are generated the Gen-QOT model during inference,\nwhere < SOO > is a vector of zeros\nand y to be the matrix of probabilities for each arrival class, then the loss for a single prediction\n(cid:98)\ncan be written as\nN−1M−1\n(cid:88) (cid:88)\nJ(y,y) = − y log(y )\n(cid:98) n,m (cid:98)n,m\nn=1 m=1\nwhere the sum runs over all arrival classes. Finally, the network is trained using the teacher-forcing\nalgorithm [71], where during training the model learns to predict the next token in a sequence given\nthe actual trailing sub-sequence. During inference, strategies like beam-search [27] can be used to\nfind the highest likelihood sequence of arrival classes.",
+      "size": 896,
+      "sentences": 5
+    },
+    {
+      "id": 112,
+      "content": "predict the next token in a sequence given\nthe actual trailing sub-sequence. During inference, strategies like beam-search [27] can be used to\nfind the highest likelihood sequence of arrival classes. For our work, we implemented a simplified\ninference algorithm that samples the predicted distribution of arrival classes to generate a trailing\nsub-sequence that is used to predict subsequent token. D.3 Gen-QOT Training Hyperparameters\nTable 13: Training hyperparameters for Gen-QOT\nHyper-parameter Value\nEpochs 500\nLearning Rate 1×10−4\nOptimizer Adam\nNumber of Convolution Layers 5\nNumber of Convolution Channels 32\nNumber of Recurrent Layers 2\nConvolution Dilations [1,2,4,8,16]\nRecurrent Decoder Size 512\nMulti-layer Perception Size 512\nActivation ReLU\n40",
+      "size": 758,
+      "sentences": 4
+    }
+  ]
+}

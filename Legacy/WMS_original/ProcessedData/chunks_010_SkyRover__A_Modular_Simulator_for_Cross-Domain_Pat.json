@@ -1,0 +1,182 @@
+{
+  "source": "ArXiv",
+  "filename": "010_SkyRover__A_Modular_Simulator_for_Cross-Domain_Pat.pdf",
+  "total_chars": 21463,
+  "total_chunks": 29,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "=== 페이지 1 ===\nSkyRover: A Modular Simulator for Cross-Domain Pathfinding\nWenhui Ma∗1, Wenhao Li†2, Bo Jin‡2, Changhong Lu§3,4, and Xiangfeng Wang¶1,4\n1School of Computer Science and Technology, East China Normal University\n2School of Computer Science and Technology, Tongji University\n3School of Mathematical Sciences, East China Normal University\n4Key Laboratory of Mathematics and Engineering Applications, MoE\nAbstract\nUnmanned Aerial Vehicles (UAVs) and Automated Guided Vehicles (AGVs) increasingly\ncollaborate in logistics, surveillance, inspection tasks and etc. However, existing simulators often\nfocus on a single domain, limiting cross-domain study. This paper presents the SkyRover, a\nmodular simulator for UAV-AGV multi-agent pathfinding (MAPF). SkyRover supports realistic\nagent dynamics, configurable 3D environments, and convenient APIs for external solvers and\nlearningmethods. Byunifyinggroundandaerialoperations,itfacilitatescross-domainalgorithm\ndesign, testing, and benchmarking.",
+      "size": 999,
+      "sentences": 5
+    },
+    {
+      "id": 2,
+      "content": ", configurable 3D environments, and convenient APIs for external solvers and\nlearningmethods. Byunifyinggroundandaerialoperations,itfacilitatescross-domainalgorithm\ndesign, testing, and benchmarking. Experiments highlight SkyRover’s capacity for efficient\npathfinding and high-fidelity simulations in UAV-AGV coordination. Project is available at\nhttps://sites.google.com/view/mapf3d/home. 1 Introduction\nThe rapid growth of automation and artificial intelligence has significantly broadened unmanned\nsystems’applicationdomains, especiallyinlogisticsandtransportation. CompanieslikeAmazon, JD,\nand Cainiao routinely deploy automated guided vehicles (AGVs) in large-scale warehouses[Qin+22,\nWur+08,Zha+20],whileautonomoustaxiservicesfromWaymoandBaiduApolloGohavebeguntrial\noperations globally[Sun+20, Wan+24]. Meanwhile, the low-altitude economy has gained momentum\nwith drone-based package delivery, low-altitude tourism, and urban air mobility.",
+      "size": 945,
+      "sentences": 7
+    },
+    {
+      "id": 3,
+      "content": "iduApolloGohavebeguntrial\noperations globally[Sun+20, Wan+24]. Meanwhile, the low-altitude economy has gained momentum\nwith drone-based package delivery, low-altitude tourism, and urban air mobility. Commercial drone\ndelivery services by Amazon Prime Air and Meituan already enhance last-mile logistics[Dor+16,\nEng+23, Sun+24]. Alongside these developments, collaborative UAV–AGV systems are increasingly vital in freight\ntransportation[Gao+20], search and rescue[Zha+24], precision agriculture[Tok+16], and infrastruc-\nture inspection[Wu+20], among other domains[Mun+24]. AGVs follow terrestrial routes, while\nUAVs operate in three-dimensional or restricted airspaces. Their synergy can boost operational\n∗wenhuima@stu.ecnu.edu.cn\n†whli@tongji.edu.cn\n‡bjin@tongji.edu.cn\n§chlu@math.ecnu.edu.cn\n¶xfwang@cs.ecnu.edu.cn\n1\n5202\nbeF\n31\n]OR.sc[\n1v96980.2052:viXra\n=== 페이지 2 ===\ncapacity: UAVs excel in rapid transport of lightweight cargo, whereas AGVs handle heavier loads\nor site-specific tasks.",
+      "size": 992,
+      "sentences": 6
+    },
+    {
+      "id": 4,
+      "content": "n\n¶xfwang@cs.ecnu.edu.cn\n1\n5202\nbeF\n31\n]OR.sc[\n1v96980.2052:viXra\n=== 페이지 2 ===\ncapacity: UAVs excel in rapid transport of lightweight cargo, whereas AGVs handle heavier loads\nor site-specific tasks. However, integrating these systems demands careful scheduling and planning. Multi-AgentPathFinding(MAPF)[Ste+19]isessentialforcollision-free,resource-efficientrouting\nof large autonomous fleets. Although significant progress has been made for purely ground- or\naerial-based MAPF[Alk+24, Ma22, Sal+20, Sur22], new complexities arise when UAVs and AGVs\nshare or intersect operational zones. Their heterogeneity (in motion patterns, energy consumption,\nand environmental constraints) further complicates joint planning; for instance, UAVs are more\nweather-sensitive, whereas AGVs often contend with dynamically changing indoor settings. Robust simulation tools are key to designing, training, and testing MAPF algorithms for\nUAV–AGV scenarios, especially for data-intensive learning-based approaches.",
+      "size": 997,
+      "sentences": 6
+    },
+    {
+      "id": 5,
+      "content": "namically changing indoor settings. Robust simulation tools are key to designing, training, and testing MAPF algorithms for\nUAV–AGV scenarios, especially for data-intensive learning-based approaches. Existing simulators\nhandle single-domain movements effectively[Mal22, Ng+19, Oku+21, Skry+24, Wan+24], but few\noffer native support for UAV–AGV collaboration. To fill this gap, we introduce SkyRover, a modular simulator for cross-domain pathfinding with\nUAVandAGVcoordination. Toourknowledge, itisthefirstenvironmentprovidingaunifiedtoolkit\nfor UAV–AGV MAPF research. SkyRover allows users to build complex scenarios (e.g., warehouses\nand park environments) with adjustable fidelity and integrates high-fidelity physics models alongside\nuser-friendly APIs for algorithmic testing and rapid prototyping. Through customizable and\nextensible interfaces, SkyRover supports a wide spectrum of use cases—from basic scheduling\nexperiments to sophisticated learning-based methods.",
+      "size": 972,
+      "sentences": 7
+    },
+    {
+      "id": 6,
+      "content": "esting and rapid prototyping. Through customizable and\nextensible interfaces, SkyRover supports a wide spectrum of use cases—from basic scheduling\nexperiments to sophisticated learning-based methods. 2 Related Work\nExtensive progress has been made in solving MAPF for single-domain vehicles[Ma22, Sal+20, Sur22]. Previous simulators such as [Mal22, Ng+19, Oku+21, Skry+24, Wan+24] have tackled various forms\nofagent-basedsimulation, yetfewfocusonintegratedUAV-AGVscenarios. Moreover, manyexisting\nplatforms concentrate on either 2D grids or simplified 3D representations, limiting the study of aerial\nand ground interactions. By contrast, SkyRover explicitly targets these cross-domain concerns,\noffering realistic physics, 3D occupancy grids, and unified APIs. To our knowledge, it is the first\nenvironment to natively support collaborative UAV-AGV MAPF under a single, modular framework.",
+      "size": 889,
+      "sentences": 7
+    },
+    {
+      "id": 7,
+      "content": "erns,\noffering realistic physics, 3D occupancy grids, and unified APIs. To our knowledge, it is the first\nenvironment to natively support collaborative UAV-AGV MAPF under a single, modular framework. 3 SkyRover Simulator\nFollowing the motivations outlined in Section 1, we present SkyRover, a modular simulator designed\nto address cross-domain pathfinding for UAV-AGV coordination. It aims to unify the modeling of\nground and aerial vehicles in 3D grids while maintaining ease of use, modularity, and compatibility\nwith third-party robotic frameworks. Figure 1 depicts its overall architecture, which comprises five\nmain modules: 1) the Sim World Zoo; 2) the 3D Grid Generator; 3) the Unified Algorithm Wrapper;\n4) the Plan Executor; 5) the System Interface. This section details each module and explain how\nthey collectively enable rapid experimentation and deployment of cross-domain MAPF solutions.",
+      "size": 901,
+      "sentences": 6
+    },
+    {
+      "id": 8,
+      "content": "Wrapper;\n4) the Plan Executor; 5) the System Interface. This section details each module and explain how\nthey collectively enable rapid experimentation and deployment of cross-domain MAPF solutions. 3.1 Sim World Zoo\nThe Sim World Zoo houses multiple Gazebo simulation worlds[Koe04], along with 3D models\nfor UAVs and AGVs. Unlike simulators that rely solely on matrix-based grids, SkyRover offers\nmore realistic environments by integrating detailed 3D worlds. Currently, SkyRover includes a\n2\n=== 페이지 3 ===\nSkyRover\nGazebo\n3D Grid\nSim World Zoo\nEnvironment\nGenerator\nInterface\n3D A* (ROS/Topic) RViz\n3D CBS\n…\nSearch Based Unified\nPX4, Navigation2\nAlgorithm\n…\nWrapper Plan\n3D DCC\nExecutor\n…\nLearning Based\nFigure 1: Main Architecture. SkyRover comprises multiple modules to support cross-domain MAPF. warehouse and a park scenario, each featuring UAV and AGV models. These environments and\nvirtualrobots,sourcedfromhttps://app.gazebosim.org/fuel/models,canbefurthercustomized\nvia the Gazebo UI.",
+      "size": 994,
+      "sentences": 8
+    },
+    {
+      "id": 9,
+      "content": "MAPF. warehouse and a park scenario, each featuring UAV and AGV models. These environments and\nvirtualrobots,sourcedfromhttps://app.gazebosim.org/fuel/models,canbefurthercustomized\nvia the Gazebo UI. This design decision ensures that SkyRover users can scale from simple grid\nrepresentations to complex settings that approximate real-world operational constraints. 3.2 3D Grid Generator\nAlthough SkyRover supports high-fidelity worlds, it also maintains a 3D grid representation for\nMAPF algorithms. The 3D Grid Generator automatically derives discrete map information\nfrom Gazebo environments. To achieve this, it employs a Gazebo plugin that creates a ROS2\nservice[Mac22] for capturing a 2D .pgm map and a 3D .pcd (point cloud) file. These files reflect\nthe layout of objects and obstacles in the environment. Subsequently, the point cloud data is parsed\nto mark grid cells as free or occupied, generating a 3D occupancy grid suitable for both search- and\nlearning-based algorithms.",
+      "size": 984,
+      "sentences": 9
+    },
+    {
+      "id": 10,
+      "content": "tacles in the environment. Subsequently, the point cloud data is parsed\nto mark grid cells as free or occupied, generating a 3D occupancy grid suitable for both search- and\nlearning-based algorithms. 3.3 Unified Algorithm Wrapper\nMAPF algorithms generally fall into either search-based or learning-based categories[Har68, Sha+15,\nMa21]. They also vary in their internal map structures, with some operating on matrices and others\non more general graphs. To standardize these approaches, SkyRover provides a Unified Algorithm\nWrapper that abstracts the environment as a 3D grid with consistent interface calls, such as init:\ninitializes the environment, obstacle data, agent start states, and goal locations; step: advances the\nsimulation by one timestep, updating agent positions; and reset: resets the simulation for new tasks\nor training episodes.",
+      "size": 848,
+      "sentences": 5
+    },
+    {
+      "id": 11,
+      "content": "t, obstacle data, agent start states, and goal locations; step: advances the\nsimulation by one timestep, updating agent positions; and reset: resets the simulation for new tasks\nor training episodes. We provide 3D versions of popular MAPF algorithms, including 3D A*[Har68],\n3\n=== 페이지 4 ===\n3D CBS[Sha+15], and a 3D extension of DCC[Ma21], ensuring that researchers and practitioners\ncan rapidly evaluate both classical search and modern learning paradigms in a unified simulator. 3.4 Plan Executor\nHigh-level path planners often produce routes in discrete grids or graphs, but real robots need\ncontinuous control inputs. The Plan Executor bridges this gap by translating each agent’s planned\ntrajectory into commands interpretable by low-level controllers. The executor tracks each agent’s\npath, communicates with external control frameworks (e.g., PX4[Mei15] or Navigation2[Nav25]),\nand updates agent positions in the simulator.",
+      "size": 930,
+      "sentences": 5
+    },
+    {
+      "id": 12,
+      "content": "by low-level controllers. The executor tracks each agent’s\npath, communicates with external control frameworks (e.g., PX4[Mei15] or Navigation2[Nav25]),\nand updates agent positions in the simulator. This arrangement allows SkyRover to support both\nabstract, high-level pathfinding and more realistic, hardware-oriented simulations. 3.5 System Interface\nThe SkyRover also offers multiple external interfaces to integrate with established robotics tools. UserscanmanipulateGazebomodelsviaGazebotopics, visualize3DoccupancieswithRViz[Kam15],\nand command PX4-based drones through ROS2 topics and MicroXRCE[Pro24]. This flexibility\nsupports varied applications, ranging from hardware-in-the-loop testing to large-scale simulation. Ultimately, SkyRover allows researchers and practitioners to incorporate realistic dynamics, robust\nvisualization, and real-time interactivity into customized UAV-AGV cooperative scenarios.",
+      "size": 915,
+      "sentences": 7
+    },
+    {
+      "id": 13,
+      "content": "mulation. Ultimately, SkyRover allows researchers and practitioners to incorporate realistic dynamics, robust\nvisualization, and real-time interactivity into customized UAV-AGV cooperative scenarios. 4 Experiment\nIn this section, we demonstrate how SkyRover supports diverse experimental setups. We showcase\nthe simulator using two distinct Gazebo worlds: a warehouse (Figure 2a) and a park (Figure 2b). These worlds serve as representative testbeds, featuring varied layouts that allow us to highlight\nthe simulator’s 3D mapping, pathfinding, and visualization capabilities. We define two typical\nAGV-UAV interaction tasks:\n• Inventory Scanning Task: The AGV transports cargo to point A, where a UAV hovers\nabove the AGV to scan and inventory the cargo. After the scanning process is completed, the\nAGV continues transporting the cargo to point B;\n• Aerial Cargo Transfer Task: The AGV transports cargo to point A, where a UAV arrives\nand hovers above the AGV to pick up the cargo.",
+      "size": 982,
+      "sentences": 7
+    },
+    {
+      "id": 14,
+      "content": "s completed, the\nAGV continues transporting the cargo to point B;\n• Aerial Cargo Transfer Task: The AGV transports cargo to point A, where a UAV arrives\nand hovers above the AGV to pick up the cargo. The UAV then lifts the cargo and transports\nit to an elevated point B. These tasks demonstrate the seamless coordination between AGVs and UAVs in different\nscenarios, showcasing the effectiveness of SkyRover in simulating complex robotic interactions. 4.1 Environment Setup\nWe begin by loading the chosen Gazebo world and generating a 3D occupancy grid using the\ngazebo-map-creator plugin[Ars22]. This plugin extracts a point cloud of the environment, which is\nconverted into a 0–1 grid where each cell spans 1meter. Cells containing point cloud particles are\ntreated as obstacles and labeled “1,” while free cells remain “0.” The resulting 3D grid is published\nto RViz for real-time visualization (Figure 2c).",
+      "size": 910,
+      "sentences": 6
+    },
+    {
+      "id": 15,
+      "content": "eter. Cells containing point cloud particles are\ntreated as obstacles and labeled “1,” while free cells remain “0.” The resulting 3D grid is published\nto RViz for real-time visualization (Figure 2c). 4\n=== 페이지 5 ===\n(a) (b)\n(c) (d)\nFigure 2: (a) The warehouse Gazebo world, featuring multiple Holybro X500 drones and delivery AGVs; (b)\nThe park scenario, offering more open space for UAV operations; (c) The 3D occupancy grid in RViz. Each\ndark cell has point cloud data and is thus considered an obstacle; (d) Example of integrating SkyRover with\nhardware-oriented controllers. PX4 executes drone flight commands and Navigation2 governs the TurtleBot. 4.2 3D MAPF Examples\nAfter generating the occupancy grid, we deploy 6 Holybro X500 drones and 16 AGVs. We assign\neach agent a unique start and goal location in the warehouse world. Via the init interface of\nalgorithm wrapper, we load the 3D-A* and 3D-CBS solvers.",
+      "size": 916,
+      "sentences": 8
+    },
+    {
+      "id": 16,
+      "content": "loy 6 Holybro X500 drones and 16 AGVs. We assign\neach agent a unique start and goal location in the warehouse world. Via the init interface of\nalgorithm wrapper, we load the 3D-A* and 3D-CBS solvers. During initialization, these solvers\ncompute complete, conflict-free paths for all agents. At each timestep, the step function moves\nevery agent to its next waypoint, ensuring collision-free navigation. We also implement a 3D version of the learning-based method, DCC[Ma21]. Here, we adapt the\noriginal 2D convolution layers to 3D, and employ curriculum learning to train for 70,000 episodes\nin a random 40×40×40 grid. This trained model reaches 100% success under test conditions\nwith sixteen agents. Unlike search-based algorithms, which plan entire routes beforehand, the\nlearning-based approach invokes the step function to infer actions online after loading the model file. This approach suits dynamic environments where complete pre-planning is less feasible.",
+      "size": 965,
+      "sentences": 10
+    },
+    {
+      "id": 17,
+      "content": "and, the\nlearning-based approach invokes the step function to infer actions online after loading the model file. This approach suits dynamic environments where complete pre-planning is less feasible. 5\n=== 페이지 6 ===\n4.3 Motion Control Integration\nFor many studies, abstract position updates are sufficient for benchmarking algorithmic performance. In these cases, we simply invoke Gazebo’s model-position service to teleport each agent, bypassing\ndetailed dynamics. However, SkyRover also supports low-level motion control through PX4[Mei15]\nand Navigation2[Nav25]. Figure 2d shows an example involving a drone controlled by PX4 and a\nTurtleBot commanded by Navigation2. These finer-grained simulations accurately capture kinematic\nand dynamic constraints, which are essential for hardware-in-the-loop testing. Although more\ncomputationally intensive, these setups are valuable for research on real-time control, multi-robot\ncoordination, and safety validation.",
+      "size": 961,
+      "sentences": 8
+    },
+    {
+      "id": 18,
+      "content": "are essential for hardware-in-the-loop testing. Although more\ncomputationally intensive, these setups are valuable for research on real-time control, multi-robot\ncoordination, and safety validation. Users can choose the approach—abstract or low-level—based\non the complexity of their experiments and available computing resources. 4.4 Preliminary Results and Comparison\nWe conduct all experiments on Ubuntu 24.04 with ROS 2 Jazzy, Gazebo Harmonic, and the main\nbranch of PX4, using a PC with an Intel i7 CPU and 32GB RAM. Table 1 presents preliminary\nperformance metrics comparing 3D variants of A*, CBS and DCC on the warehouse world when\n22 total agents (6 drones, 16 AGVs) must reach randomly assigned goals. Computation time\nmeasures the total time to compute or infer a path before the first move, while Success rate\nindicates the percentage of agents reaching their target without collision in a single run. Table 1: Preliminary Results in the Warehouse (22 Agents). Algorithm Comp.",
+      "size": 988,
+      "sentences": 8
+    },
+    {
+      "id": 19,
+      "content": "e first move, while Success rate\nindicates the percentage of agents reaching their target without collision in a single run. Table 1: Preliminary Results in the Warehouse (22 Agents). Algorithm Comp. Time (s) Success Rate (%)\n3D-A* 54.7 100\n3D-CBS 92.4 100\n3D-DCC (Well-trained) 0.6 100\nThese initial comparisons highlight SkyRover’s ability to benchmark MAPF algorithms in a\nunified and consistent framework. Future work could involve more in-depth evaluations, including\nscaling to larger agent teams and investigating runtime on different hardware setups. 5 Conclusion and Future Directions\nIn this paper, we introduce SkyRover, a modular simulator paving the way for integrated UAV-AGV\nMAPF in 3D environments. It combines realistic Gazebo worlds, a robust 3D grid generator,\nunified wrappers for classical and learning-based algorithms, and seamless integration with external\nrobotics software.",
+      "size": 899,
+      "sentences": 7
+    },
+    {
+      "id": 20,
+      "content": "environments. It combines realistic Gazebo worlds, a robust 3D grid generator,\nunified wrappers for classical and learning-based algorithms, and seamless integration with external\nrobotics software. Experiments in the warehouse and park worlds confirmed its flexibility for discrete\npathfinding and low-level control simulations. Limitations Current limitations include partial modeling of real-world effects (e.g., weather,\nsensor noise) and the computational load of large-scale simulations. Learning-based methods also\nrequire extensive training data, and the hyperparameter optimization might be time-intensive. Future Directions Goingforward, weplantointegratemorerealisticphysics(windperturbations,\ncomplex friction models), advanced sensor types (LiDAR, radar), and dynamic obstacle handling. 6\n=== 페이지 7 ===\nCollaborations with urban air traffic simulators would further expand scenario possibilities, such\nas multi-lane sky corridors for UAV delivery.",
+      "size": 960,
+      "sentences": 7
+    },
+    {
+      "id": 21,
+      "content": "radar), and dynamic obstacle handling. 6\n=== 페이지 7 ===\nCollaborations with urban air traffic simulators would further expand scenario possibilities, such\nas multi-lane sky corridors for UAV delivery. Additionally, a systematic approach to large-scale\ndistributed training could support RL methods that tackle hundreds of agents in real time. References\n[Wur+08] Peter R. Wurman, Raffaello D’Andrea, and Mick Mountz. Coordinating hundreds of\ncooperative, autonomous vehicles in warehouses. AI Magazine, 29(1):9, 2008. [Qin+22] Hengle Qin, Jun Xiao, Dongdong Ge, Linwei Xin, Jianjun Gao, Simai He, Haodong Hu,\nand John Gunnar Carlsson. JD.com: Operations research algorithms drive intelligent\nwarehouse robots to work. INFORMS Journal on Applied Analytics, 52(1):42–55, 2022. [Zha+20] Yi Zhang, Yu Qian, Yichen Yao, Haoyuan Hu, and Yinghui Xu. Learning to cooperate:\nApplication of deep reinforcement learning for online AGV path finding. In AAMAS, 2020.",
+      "size": 952,
+      "sentences": 12
+    },
+    {
+      "id": 22,
+      "content": ", 52(1):42–55, 2022. [Zha+20] Yi Zhang, Yu Qian, Yichen Yao, Haoyuan Hu, and Yinghui Xu. Learning to cooperate:\nApplication of deep reinforcement learning for online AGV path finding. In AAMAS, 2020. [Sun+20] Pei Sun, Henrik Kretzschmar, Xerxes Dotiwalla, Aurelien Chouard, Vijaysai Patnaik,\nPaul Tsui, James Guo, Yin Zhou, Yuning Chai, Benjamin Caine, and others. Scalability in\nperception for autonomous driving: Waymo open dataset. In CVPR, 2020. [Wan+24] Shiqi Wang, Zhouye Zhao, Yuhang Xie, Mingchuan Ma, Zirui Chen, Zeyu Wang, Bohao\nSu, Wenrui Xu, and Tianyi Li. Recent surge in public interest in transportation: Sentiment\nanalysis of Baidu Apollo Go using Weibo data. arXiv:2408.10088, 2024. [Dor+16] Kevin Dorling, Jordan Heinrichs, Geoffrey G. Messier, and Sebastian Magierowski. Vehicle\nrouting problems for drone delivery. IEEE Transactions on Systems, Man, and Cybernetics:\nSystems, 47(1):70–85, 2016. [Eng+23] Valeska Engesser, Evy Rombaut, Lieselot Vanhaverbeke, and Philippe Lebeau.",
+      "size": 998,
+      "sentences": 14
+    },
+    {
+      "id": 23,
+      "content": "outing problems for drone delivery. IEEE Transactions on Systems, Man, and Cybernetics:\nSystems, 47(1):70–85, 2016. [Eng+23] Valeska Engesser, Evy Rombaut, Lieselot Vanhaverbeke, and Philippe Lebeau. Au-\ntonomous delivery solutions for last-mile logistics operations: A literature review and\nresearch agenda. Sustainability, 15(3):2774, 2023. [Sun+24] Xuting Sun, Minghao Fang, Shu Guo, and Yue Hu. UAV-rider coordinated dispatching\nfor the on-demand delivery service provider. Transportation Research Part E: Logistics\nand Transportation Review, 186:103571, 2024. [Mun+24] Isuru Munasinghe, Asanka Perera, and Ravinesh C. Deo. A comprehensive review of\nUAV-UGV collaboration: Advancements and challenges. Journal of Sensor and Actuator\nNetworks, 13(6):81, 2024. [Wu+20] Yu Wu, Shaobo Wu, and Xinting Hu. Cooperative path planning of UAVs & UGVs for\na persistent surveillance task in urban environments. IEEE Internet of Things Journal,\n8(6):4906–4919, 2020.",
+      "size": 958,
+      "sentences": 14
+    },
+    {
+      "id": 24,
+      "content": "24. [Wu+20] Yu Wu, Shaobo Wu, and Xinting Hu. Cooperative path planning of UAVs & UGVs for\na persistent surveillance task in urban environments. IEEE Internet of Things Journal,\n8(6):4906–4919, 2020. [Gao+20] Wei Gao, Junren Luo, Wanpeng Zhang, Weilin Yuan, and Zhiyong Liao. Commanding\ncooperative UGV-UAV with nested vehicle routing for emergency resource delivery. IEEE\nAccess, 8:215691–215704, 2020. 7\n=== 페이지 8 ===\n[Zha+24] Ying Zhang, Haibao Yan, Danni Zhu, Jiankun Wang, Cui-Hua Zhang, Weili Ding, Xi\nLuo, Changchun Hua, and Max Q-H Meng. Air-Ground Collaborative Robots for Fire and\nRescue Missions: Towards Mapping and Navigation Perspective. arXiv:2412.20699, 2024. [Tok+16] Pratap Tokekar, Joshua Vander Hook, David Mulla, and Volkan Isler. Sensor planning\nfor a symbiotic UAV and UGV system for precision agriculture. IEEE Transactions on\nRobotics, 32(6):1498–1511, 2016.",
+      "size": 883,
+      "sentences": 13
+    },
+    {
+      "id": 25,
+      "content": "Pratap Tokekar, Joshua Vander Hook, David Mulla, and Volkan Isler. Sensor planning\nfor a symbiotic UAV and UGV system for precision agriculture. IEEE Transactions on\nRobotics, 32(6):1498–1511, 2016. [Ste+19] Roni Stern, Nathan Sturtevant, Ariel Felner, Sven Koenig, Hang Ma, Thayne Walker,\nJiaoyang Li, Dor Atzmon, Liron Cohen, TK Kumar, and others. Multi-agent pathfinding:\nDefinitions, variants, and benchmarks. In SoCS, 2019. [Sur22] Pavel Surynek. Problem Compilation for Multi-Agent Path Finding: a Survey. In IJCAI,\n2022. [Sal+20] Oren Salzman and Roni Stern. Research challenges and opportunities in multi-agent path\nfinding and multi-agent pickup and delivery problems. In AAMAS, 2020. [Ma22] Hang Ma. Graph-based multi-robot path finding and planning. Current Robotics Reports,\n3(3):77–84, 2022. [Alk+24] Jean-Marc Alkazzi and Keisuke Okumura. A Comprehensive Review on Leveraging\nMachine Learning for Multi-Agent Path Finding. IEEE Access, 12:57390–57409, 2024.",
+      "size": 971,
+      "sentences": 18
+    },
+    {
+      "id": 26,
+      "content": "otics Reports,\n3(3):77–84, 2022. [Alk+24] Jean-Marc Alkazzi and Keisuke Okumura. A Comprehensive Review on Leveraging\nMachine Learning for Multi-Agent Path Finding. IEEE Access, 12:57390–57409, 2024. [Oku+21] Keisuke Okumura, Yasumasa Tamura, and Xavier D´efago. Iterative refinement for\nreal-time multi-robot path planning. In IROS, 2021. [Ng+19] VanNguyen,PhilippObermeier,TranSon,TorstenSchaub,andWilliamYeoh. Generalized\ntarget assignment and path finding using answer set programming. In SoCS, 2019. [Skry+24] Alexey Skrynnik, Anton Andreychuk, Anatolii Borzilov, Alexander Chernyavskiy, Kon-\nstantin Yakovlev, and Aleksandr Panov. POGEMA: A benchmark platform for cooperative\nmulti-agent navigation. arXiv:2407.14931, 2024. [Wan+24] Qian Wang, Rishi Veerapaneni, Yu Wu, Jiaoyang Li, and Maxim Likhachev. MAPF in\n3D Warehouses: Dataset and Analysis. In ICAPS, 2024. [Mal22] Malintha Fernando. Mavswarm: A Lightweight Multi-Aerial Vehicle Simulator.",
+      "size": 953,
+      "sentences": 18
+    },
+    {
+      "id": 27,
+      "content": "i Veerapaneni, Yu Wu, Jiaoyang Li, and Maxim Likhachev. MAPF in\n3D Warehouses: Dataset and Analysis. In ICAPS, 2024. [Mal22] Malintha Fernando. Mavswarm: A Lightweight Multi-Aerial Vehicle Simulator. GitHub,\n2022. https://github.com/malintha/multi_uav_simulator. [Ars22] Arshad Mehmood. ROS2 Gazebo World 2D/3D Map Generator. GitHub, 2022. https:\n//github.com/arshadlab/gazebo_map_creator. [Nav25] Navigation2 Contributors. Navigation2 Documentation. GitHub, 2025. https://github. com/ros-navigation/docs.nav2.org. https://docs.nav2.org. [Pro24] eProsima. eProsima Micro XRCE-DDS: A DDS-XRCE Protocol Implementation for\nResource Constrained Environments. GitHub repository, 2024. https://github.com/\neProsima/Micro-XRCE-DDS, version 3.0.0. 8\n=== 페이지 9 ===\n[Har68] Peter E. Hart, Nils J. Nilsson, and Bertram Raphael. A formal basis for the heuristic\ndetermination of minimum cost paths. IEEE Transactions on Systems Science and\nCybernetics, 4(2):100–107, 1968.",
+      "size": 960,
+      "sentences": 20
+    },
+    {
+      "id": 28,
+      "content": "8] Peter E. Hart, Nils J. Nilsson, and Bertram Raphael. A formal basis for the heuristic\ndetermination of minimum cost paths. IEEE Transactions on Systems Science and\nCybernetics, 4(2):100–107, 1968. [Sha+15] Guni Sharon, Roni Stern, Ariel Felner, Nathan R. Sturtevant. Conflict-based search for\noptimal multi-agent pathfinding. Artificial Intelligence, 219:40–66, 2015. [Ma21] Ziyuan Ma, Yudong Luo, and Jia Pan. Learning selective communication for multi-agent\npath finding. IEEE Robotics and Automation Letters, 7(2):1455–1462, 2021. [Koe04] Nathan Koenig and Andrew Howard. Design and use paradigms for gazebo, an open-source\nmulti-robot simulator. In IROS, 2004. [Kam15] Hyeong Ryeol Kam, Sung-Ho Lee, Taejung Park, and Chang-Hun Kim. Rviz: a toolkit\nfor real domain data visualization. Telecommunication Systems, 60:337–345, 2015. [Mei15] Lorenz Meier, Dominik Honegger, and Marc Pollefeys. PX4: A node-based multithreaded\nopen source robotics framework for deeply embedded platforms.",
+      "size": 990,
+      "sentences": 17
+    },
+    {
+      "id": 29,
+      "content": "Telecommunication Systems, 60:337–345, 2015. [Mei15] Lorenz Meier, Dominik Honegger, and Marc Pollefeys. PX4: A node-based multithreaded\nopen source robotics framework for deeply embedded platforms. In ICRA, 2015. [Mac22] Steven Macenski, Tully Foote, Brian Gerkey, Chris Lalancette, and William Woodall. Robot operating system 2: Design, architecture, and uses in the wild. Science robotics,\n7(66):eabm6074, 2022. 9",
+      "size": 416,
+      "sentences": 8
+    }
+  ]
+}

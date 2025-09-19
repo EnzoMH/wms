@@ -1,0 +1,398 @@
+{
+  "source": "ArXiv",
+  "filename": "041_Vehicle_management_in_a_modular_production_context.pdf",
+  "total_chars": 45396,
+  "total_chunks": 65,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "=== 페이지 1 ===\nSpringer Nature 2021 LATEX template\nVehicle management in a modular\nproduction context using Deep Q-Learning\nLucain Pouget1†, Timo Hasenbichler2†, Jakob Auer1, Klaus\nLichtenegger2 and Andreas Windisch2,3,4,5,6\n1*Skalar Systems GmbH, Dr.-Robert-Graf-Straße 9, Graz, 8010,\nAustria. 2FH JOANNEUM – University of Applied Sciences, Data Science\nand Artificial Intelligence, Eckertstraße 30i, Graz, 8020, Austria. 3Know-Center GmbH, Inffeldgasse 13, Graz, 8010, Austria. 4Institute of Interactive Systems and Data Science, Graz\nUniversity of Technology, Inffeldgasse 13, Graz, 8010, Austria. 5Physics Department, Washington University in St. Louis, One\nBrookings Drive, MO, St. Louis, 63130, USA. 6RL Community, AI Austria, Wollzeile 24/12, Vienna, 1010,\nAustria.",
+      "size": 771,
+      "sentences": 6
+    },
+    {
+      "id": 2,
+      "content": "se 13, Graz, 8010, Austria. 5Physics Department, Washington University in St. Louis, One\nBrookings Drive, MO, St. Louis, 63130, USA. 6RL Community, AI Austria, Wollzeile 24/12, Vienna, 1010,\nAustria. Contributing authors: lucain.pouget@skalarsystems.com;\ntimo.hasenbichler@protonmail.com;\njakob.auer@skalarsystems.com;\nklaus.lichtenegger@fh-joanneum.at; awindisch@know-center.at;\n†These authors contributed equally to this work. Abstract\nWe investigate the feasibility of deploying Deep-Q based deep rein-\nforcement learning agents to job-shop scheduling problems in the\ncontext of modular production facilities, using discrete event simu-\nlations for the environment. These environments are comprised of a\nsource and sink for the parts to be processed, as well as (several)\nworkstations. The agents are trained to schedule automated guided\nvehicles to transport the parts back and forth between those sta-\ntions in an optimal fashion.",
+      "size": 935,
+      "sentences": 7
+    },
+    {
+      "id": 3,
+      "content": "to be processed, as well as (several)\nworkstations. The agents are trained to schedule automated guided\nvehicles to transport the parts back and forth between those sta-\ntions in an optimal fashion. Starting from a very simplistic setup, we\nincrease the complexity of the environment and compare the agents’\n1\n2202\nyaM\n6\n]GL.sc[\n1v49230.5022:viXra\n=== 페이지 2 ===\nSpringer Nature 2021 LATEX template\n2 VehiclemanagementinamodularproductioncontextusingDeepQ-Learning\nperformances with well established heuristic approaches, such as first-\nin-first-out based agents, cost tables and a nearest-neighbor approach. We furthermore seek particular configurations of the environments\nin which the heuristic approaches struggle, to investigate to what\ndegree the Deep-Q agents are affected by these challenges. We\nfind that Deep-Q based agents show comparable performance as\nthe heuristic baselines.",
+      "size": 888,
+      "sentences": 5
+    },
+    {
+      "id": 4,
+      "content": "uristic approaches struggle, to investigate to what\ndegree the Deep-Q agents are affected by these challenges. We\nfind that Deep-Q based agents show comparable performance as\nthe heuristic baselines. Furthermore, our findings suggest that the\nDRL agents exhibit an increased robustness to noise, as compared\nto the conventional approaches. Overall, we find that DRL agents\nconstitute a valuable approach for this type of scheduling problems. 1 Introduction\n1.1 Modular Production\nModular production systems based on Automated Guided Vehicles (AGVs)\nallowadrasticallyincreasedflexibilityoftheproductionplantorsetup.Instead\nof a long line of machines connected by conveyor belts, production islands\n(consisting of one or several machines) are spread over the production plant\nand connected via AGVs.",
+      "size": 797,
+      "sentences": 5
+    },
+    {
+      "id": 5,
+      "content": "ionplantorsetup.Instead\nof a long line of machines connected by conveyor belts, production islands\n(consisting of one or several machines) are spread over the production plant\nand connected via AGVs. The inputs and outputs of these production islands\nusuallyalsocontainbuffers.Theincreasedflexibilityallowsadvancementslike\nmultiple product variants in the same plant, alternative stations (two stations\nofthesametypeasperformanceimprovementorforfailuresafety)orthereuse\nof expensive stations at different stages of the production. 1.2 The Job Shop Scheduling Problem\nIn modular production environments, the optimized scheduling of the AGVs\n(the decision which AGV is assigned to which transport task) is crucial for\nthe system’s overall performance. This task leads to the Job Shop Scheduling\nProblem (JSSP), which is – like the related Travelling Salesman Problem – a\ncomputationally“hard”(NP-complete)problemofenormouspracticalimpor-\ntance, [1].",
+      "size": 947,
+      "sentences": 4
+    },
+    {
+      "id": 6,
+      "content": ". This task leads to the Job Shop Scheduling\nProblem (JSSP), which is – like the related Travelling Salesman Problem – a\ncomputationally“hard”(NP-complete)problemofenormouspracticalimpor-\ntance, [1]. Due to the typically factorial growth of possible arrangement with\nthesizeoftheproblem,exactsolutionscanonlybefoundforverysmallprob-\nlems. Since the AGV to Job scheduling has to be done in real-time, heuristic\nstrategies are used. This is usually done with algorithms like nearest neigh-\nbor [2] or cost tables [3]. All of these methods have various advantages and\ndrawbacks, but they are all reaching a limit with increasing complexity and\nsystem size. Varying driving times (because of human machine interaction or\nother vehicles in the systems) or processing times highly affect the systems\nperformance and stability. Wrong or suboptimal scheduling decisions can lead\nto deadlocks in the system.",
+      "size": 898,
+      "sentences": 8
+    },
+    {
+      "id": 7,
+      "content": "ne interaction or\nother vehicles in the systems) or processing times highly affect the systems\nperformance and stability. Wrong or suboptimal scheduling decisions can lead\nto deadlocks in the system. We show that Deep-Q based deep reinforcement\nlearningagentsarecapabletoovercometheaforementionedproblemsandalso\nallow the calculation of optimal solutions in real-time. === 페이지 3 ===\nSpringer Nature 2021 LATEX template\nVehiclemanagementinamodularproductioncontextusingDeepQ-Learning 3\n1.3 Deep Q-Learning\nReinforcementlearningaimstotrainanagenttointeractwiththeenvironment\nin a way that maximizes the expected cumulative reward. The policy of the\nagentπ(θ)isdefinedasafunctionthatmapsfromagivenstatestoasuitable\naction a. Q-learning is a value-based approach, which means that the agent\nwilltrytoapproximatetheexpectedcumulativereward(the“value”)foreach\npossible pair of (state/action).",
+      "size": 886,
+      "sentences": 5
+    },
+    {
+      "id": 8,
+      "content": "magivenstatestoasuitable\naction a. Q-learning is a value-based approach, which means that the agent\nwilltrytoapproximatetheexpectedcumulativereward(the“value”)foreach\npossible pair of (state/action). This value is formalized as\n(cid:104) (cid:105)\nQ∗(s,a)=E r+γmaxQ∗(s(cid:48),a(cid:48))|s,a (1)\ns(cid:48)\na(cid:48)\nThe expected cumulative reward Q(s, a) in state s for an action a is defined\nas the sum of the immediate reward r(s, a) and the highest Q-value for the\nnext states among all possible actions. A discount factor γ ∈ [0, 1] is applied\nto the future reward in order to control how to rate future rewards compared\nto the immediate ones. Duetotheusuallylargenumberofstate-actionpairs,fillingthewholetable\nofQvaluesispossibleonlyforverysmallproblems.Anapproachtoovercome\nthis obstacle is Deep Q-learning. This is a type of Q-learning where the value\nfunction is approximated by a deep neural network, that is, by a network\nwith several layers.",
+      "size": 952,
+      "sentences": 5
+    },
+    {
+      "id": 9,
+      "content": "blems.Anapproachtoovercome\nthis obstacle is Deep Q-learning. This is a type of Q-learning where the value\nfunction is approximated by a deep neural network, that is, by a network\nwith several layers. This is justified by the universal function approximation\nproperty of sufficiently deep neural networks, [4]. Each time the Agent makes a decision, an experience (initial state, action,\nreward, next state) is saved into a buffer (the Replay Memory). The weights\nof the network are trained using backpropagation on mini-batches, sampled\nfrom the Replay Memory, [5].",
+      "size": 564,
+      "sentences": 5
+    },
+    {
+      "id": 10,
+      "content": "itial state, action,\nreward, next state) is saved into a buffer (the Replay Memory). The weights\nof the network are trained using backpropagation on mini-batches, sampled\nfrom the Replay Memory, [5]. 1.4 Structure of the article\nThis paper is structured as follows: In section 2, the environment used for\ntraining the DRL agents is discussed in detail, including the particular con-\nfigurations of the environments, as well as technical aspects, such as using\nOpenAI’s gym interface, benchmark settings and heuristic approaches that\nhavebeenusedforcomparison.ThedesignoftheDRLagentisthendiscussed\ninsection3,where,basedonSec.1.3,amoredetailedexplanationofthereward\nsignal used for training is given. The main findings of this paper are summa-\nrized in section 4, where all chosen production setups are presented, together\nwith the respective performance of the DRL agents and heuristic approaches.",
+      "size": 897,
+      "sentences": 4
+    },
+    {
+      "id": 11,
+      "content": ". The main findings of this paper are summa-\nrized in section 4, where all chosen production setups are presented, together\nwith the respective performance of the DRL agents and heuristic approaches. Finally, in section 5, we conclude with a short overall summary and point out\npossible paths for future investigations. === 페이지 4 ===\nSpringer Nature 2021 LATEX template\n4 VehiclemanagementinamodularproductioncontextusingDeepQ-Learning\n2 Construction of the environment\n2.1 Production plant modeling\nA production plant is modelled by a set of n modular workstations. Each\nM\nworkstation consists of an Input Buffer (IB), a Production Unit (PU) and\nan Output Buffer (OF). Both buffers have a capacity of n and are running\nbuf\nas FIFO queues (First In-First Out). In addition, we defined a Start of Line\nstation (Source) and an End of Line station (Sink). The Source can be seen\nas a station with only an OB and the Sink as a station with only an IB.",
+      "size": 947,
+      "sentences": 8
+    },
+    {
+      "id": 12,
+      "content": "-First Out). In addition, we defined a Start of Line\nstation (Source) and an End of Line station (Sink). The Source can be seen\nas a station with only an OB and the Sink as a station with only an IB. PartsaredefinedbytheirparttypePT.ForeachparttypePT ,asequence\nj\nof n operations is defined. This sequence represents the workstations that\nO\nthe parts of type PT must visit in the right order. The sequence always\nj\nstarts at the Source and ends at the Sink. The same workstation can be used\nmultiple times in a sequence. Different part types do not necessarily use the\nsameworkstations.Partsarecarriedbyn AGVsV withspeedv .Avehicle\nV V\ncan only carry 1 part at a time. The transfer of a part between a vehicle and\na station, or between 2 units of a station, has a duration T . transfer\nA weighted multi-directional graph G, called “waypoint graph”, is defined\nto represent the distances between the stations. The nodes are the waypoints\nin the production plant through which the vehicles can pass.",
+      "size": 997,
+      "sentences": 11
+    },
+    {
+      "id": 13,
+      "content": "ulti-directional graph G, called “waypoint graph”, is defined\nto represent the distances between the stations. The nodes are the waypoints\nin the production plant through which the vehicles can pass. Each node N is\nj\ndescribedbyCartesiancoordinatesx ,y .Theedgesarethepathsconnecting\nj j\nthese locations. Each edge is either unidirectional or bidirectional and has a\nweightcorrespondingtotheeuclideandistancebetweenitsnodes.Eachbuffer\nofeachworkstationislinkedtoanodeofthewaypointgraph.Anodecanonly\nbe assigned to a maximum of one buffer. In our model, the release order of parts at the source is modelled by a\nuniform distribution over the part types. A source clock C defines when\nsource\na new part is released to the system. Our goal is to maximize the production\nthroughputbyassigningjobstotheAGVs.Ajobconsistsofdrivingtoastation\nS ,pickingapartP ,drivingtoanotherstationS ,droppingthepartP .Jobs\na j b j\nmust be assigned in such a way as to ensure that there are no deadlocks.",
+      "size": 981,
+      "sentences": 7
+    },
+    {
+      "id": 14,
+      "content": "igningjobstotheAGVs.Ajobconsistsofdrivingtoastation\nS ,pickingapartP ,drivingtoanotherstationS ,droppingthepartP .Jobs\na j b j\nmust be assigned in such a way as to ensure that there are no deadlocks. This\nproblem is defined as the Vehicle Management problem (VM), which is solved\nwith deep learning (more precisely with proximal policy optimization) in [6]. 2.2 Implementation details\n2.2.1 Discrete-event simulation\nThemodularproductionplantissimulatedinPythonusingtheSimpylibrary\n[7], a framework to build Discrete-Event Simulations (DES) [8]. In a DES,\nevents are triggered by the environment, each of them at a predefined instant\nin time. Between two consecutive events, the environment is static. We chose\nthis approach because of its efficiency as compared to continuous simula-\ntions. Having a simulation running in Python has also been beneficial for the\ncommunication between the Agent and the Environment.",
+      "size": 915,
+      "sentences": 7
+    },
+    {
+      "id": 15,
+      "content": "approach because of its efficiency as compared to continuous simula-\ntions. Having a simulation running in Python has also been beneficial for the\ncommunication between the Agent and the Environment. === 페이지 5 ===\nSpringer Nature 2021 LATEX template\nVehiclemanagementinamodularproductioncontextusingDeepQ-Learning 5\nWe performed a benchmark of our simulation tool in various cases to esti-\nmate the speed-up factor of our approach over simulations not relying on\ndiscrete event simulation. We defined the complexity of a configuration as the\nnumber of AGVs N times the number of Machines N . Each pro-\nagvs machines\nduction plant configuration has been simulated for 12 hours using the FIFO\nagent. Since our simulation is not computing each intermediate steps when an\nAGVmoves,butinstantlyjumpstothenextrelevantevent(e.g.AGVreaches\ndestination), the speed-up factor shows a strong dependence on the parame-\nters of the environment, such as distances, AGV speed and processing times.",
+      "size": 982,
+      "sentences": 6
+    },
+    {
+      "id": 16,
+      "content": "tantlyjumpstothenextrelevantevent(e.g.AGVreaches\ndestination), the speed-up factor shows a strong dependence on the parame-\nters of the environment, such as distances, AGV speed and processing times. Fortypicalenvironmentsusedintraining,ittakesbetween360msand2.6sto\nsimulate 1h of production, depending on the complexity of the environment. The calculation for the benchmark has been conducted on a laptop computer\nusing a single thread (Dell XPS 15, Intel core i7 2.60Hz). Lacking an obvious\ndefinitionofcomplexityoftheenvironmentrendersquantitativespeed-upfac-\ntors somewhat arbitrary. We thus refrain from providing quantitative data at\nthis point, but emphasize, that our DES based approach shows a very clear\nadvantage in simulation time over discretized time simulations, which is a\nverydesirablepropertysimulationenvironmentsusedforDeepReinforcement\nLearning should possess.",
+      "size": 881,
+      "sentences": 5
+    },
+    {
+      "id": 17,
+      "content": "sed approach shows a very clear\nadvantage in simulation time over discretized time simulations, which is a\nverydesirablepropertysimulationenvironmentsusedforDeepReinforcement\nLearning should possess. 2.2.2 OpenAI Gym interface\nWe use OpenAI’s library Gym [9] to implement the interface between the\nSimpy simulation and the decision making process. In particular, the library\nprovides utilities to handle observations, actions and rewards. The main\nconcepts handled by the library are:\n• Observation: object that describes the state of the Simpy simulation at a\ngiven instant. In our case, the Observation is a human-readable dictionary\nof values. Gym library takes care of serializing this data into a vector that\ncan be sent to the neural network. • Action: object that describes the action taken by an Agent. • Reward:floatvaluedescribingtheamountofrewardforagivenaction.The\ngoal of the training is always to maximize the expected, cumulative reward.",
+      "size": 952,
+      "sentences": 8
+    },
+    {
+      "id": 18,
+      "content": "tion: object that describes the action taken by an Agent. • Reward:floatvaluedescribingtheamountofrewardforagivenaction.The\ngoal of the training is always to maximize the expected, cumulative reward. • Environment: the minimal acceptable environment is an object imple-\nmenting a “step” method. This “step” method takes as input an action and\noutputs a tuple of four elements:\n– Observation: the state of the environment once the action has been\nperformed. – Reward: amount of reward achieved by the previous action\n– Done: a boolean value set to true if the environment must be reset. – Info: any information useful for debugging. Not used in our case. Eachtimethe”step”methodoftheenvironmentiscalled,anewExperience\n– a tuple (initial state, action taken, next state, reward, done) – is stored in\nthe memory for the learning process of the agent.",
+      "size": 847,
+      "sentences": 8
+    },
+    {
+      "id": 19,
+      "content": "case. Eachtimethe”step”methodoftheenvironmentiscalled,anewExperience\n– a tuple (initial state, action taken, next state, reward, done) – is stored in\nthe memory for the learning process of the agent. === 페이지 6 ===\nSpringer Nature 2021 LATEX template\n6 VehiclemanagementinamodularproductioncontextusingDeepQ-Learning\nWe had two major benefits of using this framework:\n• Gym contains utilities in order to serialize and deserialize the Observation\nand Action concepts from a human-readable object to a vector suitable for\na neural network. • Gym implements several well known problems [10]. These tasks proved\nuseful for testing and debugging the implementation of our agent against\nenvironments already solved by Deep-Q agents.",
+      "size": 726,
+      "sentences": 5
+    },
+    {
+      "id": 20,
+      "content": "l network. • Gym implements several well known problems [10]. These tasks proved\nuseful for testing and debugging the implementation of our agent against\nenvironments already solved by Deep-Q agents. 2.2.3 Communication protocol\nThe“Agent”isthealgorithmthatmakesthedecisions.Wedefinedacommon\ninterfaceforboth,deterministicandparameterizedagents,whichallowedusto\nseamlesslyplugthemintothesimulationforcomparison.Deterministicagents\narealgorithmsthatareentirelyhard-coded,whileparameterizedagentsrequire\na training phase before evaluation. The Agent Interface uses two methods:\n• Act: takes as input an Observation state describing the environment and\nreturns the action to perform. • Step: takes as input an Experience and returns nothing. This method is\nused for training the parameterized agents in order to improve their policy. The Controller is an element of the Simpy environment that makes the\nconnection between the AGVs and the Agent.",
+      "size": 942,
+      "sentences": 8
+    },
+    {
+      "id": 21,
+      "content": "method is\nused for training the parameterized agents in order to improve their policy. The Controller is an element of the Simpy environment that makes the\nconnection between the AGVs and the Agent. In a production environment,\nthis would be the Fleet Management System. The communication process is the following:\n1. The environment is initialized with all its elements. 2. The simulation starts. 3. When an AGV is available (it has finished its current task), it triggers a\ncustom Simpy Event. 4. The Controller stops the simulation and computes an Observation state\nfrom the environment. 5. The Observation state is sent to the Agent. 6. The Agent takes an action that is communicated to the Controller. 7. The Controller deserializes the action and assigns the corresponding job to\nthe waiting AGV. A job is a station from which an AGV must pick up a\npart.",
+      "size": 860,
+      "sentences": 18
+    },
+    {
+      "id": 22,
+      "content": "ction that is communicated to the Controller. 7. The Controller deserializes the action and assigns the corresponding job to\nthe waiting AGV. A job is a station from which an AGV must pick up a\npart. (a) If multiple AGVs are waiting at the same time, the Controller sends the\njob to the waiting AGV that will perform the action the fastest (i.e. the\nclosest AGV for that job). (b) The Agent is then called immediately after to define another job for the\nother waiting AGVs until all AGVs have a job. 8. Once all the AGVs have a job, the simulation starts over at 2. TheAgentalsohasthepossibilitytochoosenottoassignanytask.Inthat\ncase, the waiting AGV will stay inactive until a new event is triggered. === 페이지 7 ===\nSpringer Nature 2021 LATEX template\nVehiclemanagementinamodularproductioncontextusingDeepQ-Learning 7\n2.3 Benchmark settings\n2.3.1 Production plant settings\nSeveralproductionplantshavebeenconfiguredinordertocomparetheAgents\non different types of problems.",
+      "size": 971,
+      "sentences": 11
+    },
+    {
+      "id": 23,
+      "content": "modularproductioncontextusingDeepQ-Learning 7\n2.3 Benchmark settings\n2.3.1 Production plant settings\nSeveralproductionplantshavebeenconfiguredinordertocomparetheAgents\non different types of problems. Mayer-Classen-Endisch\nThisconfigurationisdefinedin[6].Ithas2machines,1AGVand1parttype. We re-implemented the simulation, taking the same parameters to verify that\nour approach reproduces the results of [6]. 1-machine-big\nThis environment has 1 machine, 2 AGVs and 1 part type. The particularity\nlies in the distances between the nodes of the waypoint graph (see figure 1). Thepairs“source/machinesinput”and“machinesoutput/sink”areveryclose,\nwhilethepairs“source/sink”and“machinesinput/machinesoutput”arevery\nfar apart. Since there are 2 AGVs, the optimal solution is to have one vehicle\ndoingcirclesbetweenthesourceandthemachine’sinput,whileanothervehicle\ndoesthesamebetweenthemachine’soutputandthesink.Weintroducedthis\nenvironment, expecting that the FIFO Agent would struggle with this setup. Fig.",
+      "size": 999,
+      "sentences": 8
+    },
+    {
+      "id": 24,
+      "content": "etweenthesourceandthemachine’sinput,whileanothervehicle\ndoesthesamebetweenthemachine’soutputandthesink.Weintroducedthis\nenvironment, expecting that the FIFO Agent would struggle with this setup. Fig. 1 1-machine-bigconfiguration:optimizingthedrivingtimeisessentialhere. 3-machines-loop\nWe set up a configuration with 3 machines and a unique part type (figure\n2). The particularity here is, that the sequence of operations to perform on a\npart has a loop, passing twice through the same machine. Each part P has to\nj\nfollowthesequenceSource→M1→M2→M1→M3→Sink.Thisisawell\nknown type of problem in modular production that often leads to deadlocks\nwhen using static algorithms. === 페이지 8 ===\nSpringer Nature 2021 LATEX template\n8 VehiclemanagementinamodularproductioncontextusingDeepQ-Learning\nFig. 2 3machinesconfiguration:thesequenceofoperationsinthissetupincludesaloop. 6-machines-grid\nThis is a family of problems starting with the same production plant config-\nuration.",
+      "size": 969,
+      "sentences": 9
+    },
+    {
+      "id": 25,
+      "content": "singDeepQ-Learning\nFig. 2 3machinesconfiguration:thesequenceofoperationsinthissetupincludesaloop. 6-machines-grid\nThis is a family of problems starting with the same production plant config-\nuration. The goal is to incrementally increase the difficulty of the scenarios\nand monitor how it impacts the performance of the agent at each step. For all\nsub-problems, the production plant layout, shown in figure 3, is shared. It has\n6 machines distributed as a grid (2 rows of 3 machines), but depending on the\nscenario, not all of them are in use. Complexity is increased in 2 ways:\n• By increasing the number of machines to visit. Each sub-problem has 2\npart types that follow similar paths in the production plant. 3 scenarios are\nconsidered,usingeither2machines(M1→M2andM2→M1),4machines\n(M1 → M3 → M2 → M4 and M2 → M4 → M1 → M3) or 6 machines\n(M1 → M3 → M5 → M2 → M4 → M6 and M2 → M4 → M6 → M1 →\nM3→M5). • By increasing the number of AGVs (from 1 to 4).",
+      "size": 952,
+      "sentences": 10
+    },
+    {
+      "id": 26,
+      "content": "achines(M1→M2andM2→M1),4machines\n(M1 → M3 → M2 → M4 and M2 → M4 → M1 → M3) or 6 machines\n(M1 → M3 → M5 → M2 → M4 → M6 and M2 → M4 → M6 → M1 →\nM3→M5). • By increasing the number of AGVs (from 1 to 4). With only 1 vehicle, the\nlimiting factor is usually the speed of the vehicle, whereas with a larger\nnumber of vehicles it is possible to reach a 100% workload on the machines. 2.3.2 Deterministic Agents\nDeterministic agents follow a hard-coded algorithm and are used as a baseline\nfor result comparison. In this section, we call AGV the AGV that has\nlongest\nbeen waiting the longest for a new assignment and P the part that has\nlongest\nbeen waiting the longest in the output buffer of a station (named S ). longest\nAn AGV is considered as active, if it has a task assigned to it and inactive\notherwise. === 페이지 9 ===\nSpringer Nature 2021 LATEX template\nVehiclemanagementinamodularproductioncontextusingDeepQ-Learning 9\nFig.",
+      "size": 923,
+      "sentences": 7
+    },
+    {
+      "id": 27,
+      "content": "considered as active, if it has a task assigned to it and inactive\notherwise. === 페이지 9 ===\nSpringer Nature 2021 LATEX template\nVehiclemanagementinamodularproductioncontextusingDeepQ-Learning 9\nFig. 3 6-machines grid configuration: depending on the scenario, not all machines are in\nuse. FIFO\nThe First-In First-Out (FIFO) algorithm consists of assigning S to\nlongest\nAGV . longest\nNearest Neighbor\nThe Nearest Neighbor (NN) algorithm consists of selecting S and com-\nlongest\nputeforalltheAGVsthetimeitwilltaketoreachthestationexitcontaining\nthis part:\n• If an AGV is inactive, it estimates the time it will take to drive to S . longest\n• If an AGV is active, it estimates the time it will take to finish the current\ntask and then reach S . longest\nThe Agent assigns the job to the closest AGV in terms of duration. If this\nAGV is already active, the Agent doesn’t assign any task. Cost Table\nThe Cost Table algorithm is an extension of the Nearest Neighbor approach.",
+      "size": 967,
+      "sentences": 9
+    },
+    {
+      "id": 28,
+      "content": "he job to the closest AGV in terms of duration. If this\nAGV is already active, the Agent doesn’t assign any task. Cost Table\nThe Cost Table algorithm is an extension of the Nearest Neighbor approach. InsteadofdoinganestimationonlyforthestationS ,itbuildsanarrayof\nlongest\nsize [Number of inactive AGVs, Number of waiting stations], contain-\ning the time estimation for every AGV/Station pair (i.e., “costs”). The Agent\nsolves the linear sum assignment problem on this Cost Table using the lin-\near sum assignment algorithm [11] implemented in SciPy [12]. The solution\nof the problem is a list of AGV/Station pairs that minimizes the duration to\nstart all the tasks. Since the Agent can only make one assignment at a time,\nit arbitrarily selects the task with the AGV that has been waiting the longest\namongtheAGVsofthesolution.TheAgentisimmediatelycalledagaintore-\ncomputetheCostTableandre-solvetheoptimizationproblemuntilallAGVs\nare active, or no parts are waiting in a station output.",
+      "size": 986,
+      "sentences": 7
+    },
+    {
+      "id": 29,
+      "content": "g the longest\namongtheAGVsofthesolution.TheAgentisimmediatelycalledagaintore-\ncomputetheCostTableandre-solvetheoptimizationproblemuntilallAGVs\nare active, or no parts are waiting in a station output. === 페이지 10 ===\nSpringer Nature 2021 LATEX template\n10 VehiclemanagementinamodularproductioncontextusingDeepQ-Learning\n2.3.3 Methodology\nOur goal is to be able to compare a trained Agent against static algorithms in\norder to prove the ability of DRL to tackle the Vehicle Management problem\nin a modular production environment. Wefoundoutthatstaticalgorithmsarehighlyvulnerabletotheinputclock\nC . If C is too low, the AGVs will almost immediately overload the\nsource source\nfirst machine with parts and run into a deadlock. On the contrary, if C\nsource\nis too high, the optimization problem doesn’t make sense anymore because it\nis too easy to get an output clock C equal to C .",
+      "size": 877,
+      "sentences": 5
+    },
+    {
+      "id": 30,
+      "content": "machine with parts and run into a deadlock. On the contrary, if C\nsource\nis too high, the optimization problem doesn’t make sense anymore because it\nis too easy to get an output clock C equal to C . sink source\nIn order to still be able to have baseline results to compare with, we first\nfind the optimal C∗ for each agent and each environment configuration. source\nC∗ is defined as the lowest input clock for which the simulation doesn’t\nsource\nrun into a deadlock situation. We use a dichotomic search algorithm to find\nthis value, rounded to 1 second. By construction, C is necessarily equal or\nsink\ngreaterthanC∗ .OnceC∗ isfound,werunthesimulationfor12hours\nsource source\nof production, gathering the metrics throuhout the run. For the DRL Agent, C is set to 0 during both, train and test phases. source\nIt is assumed that it should learn how to avoid deadlocks by not overloading\nthe first machine.",
+      "size": 903,
+      "sentences": 8
+    },
+    {
+      "id": 31,
+      "content": "metrics throuhout the run. For the DRL Agent, C is set to 0 during both, train and test phases. source\nIt is assumed that it should learn how to avoid deadlocks by not overloading\nthe first machine. 3 Design of the DRL Agent\nIn this section, we specify the deep-Q learning approach, briefly discussed in\nSec.1.3,toourspecificsituationanddiscusssomedetailsofitsimplementation. 3.1 Observation, action, and reward design\n3.1.1 Observation state\nThe observation state is the vector describing the Environment that is sent to\nthe Agent. It contains all the information needed to choose the next action. We defined a state S for each AGV and a state S for each station unit. v unit\nThe environment state S is the concatenation of all the S and S states.",
+      "size": 748,
+      "sentences": 8
+    },
+    {
+      "id": 32,
+      "content": "the information needed to choose the next action. We defined a state S for each AGV and a state S for each station unit. v unit\nThe environment state S is the concatenation of all the S and S states. v unit\nFor each vehicle V , the state Sv consist of:\ni i\n• Action state: current action performed by the vehicle as a 1-\nhot encoded vector: DRIVING, TRANSFERRING IN, TRANSFERRING OUT,\nWAITING FOR ORDER, WAITING TO DROPDOWN, WAITING TO PICKUP\n• Carried part:arepresentationofthepartthatiscarried,ifany(seebelow). • Current order target: 1-hot encoded vector representing the destination\nofV ,ifdriving.IfV isnotcurrentlydriving,itisazerovectorofappropriate\ni i\ndimension. • Last visited node:1-hotencodedvectorrepresentingthelastnodewhich\nV has visited.",
+      "size": 753,
+      "sentences": 6
+    },
+    {
+      "id": 33,
+      "content": "tor representing the destination\nofV ,ifdriving.IfV isnotcurrentlydriving,itisazerovectorofappropriate\ni i\ndimension. • Last visited node:1-hotencodedvectorrepresentingthelastnodewhich\nV has visited. i\nFor each unit U , the state Sunit consists of:\ni i\n=== 페이지 11 ===\nSpringer Nature 2021 LATEX template\nVehiclemanagementinamodularproductioncontextusingDeepQ-Learning 11\n• Action state: current action performed by the unit as a 1-hot\nencoded vector: PROCESSING, TRANSFERRING IN, TRANSFERRING OUT,\nWAITING TO DROPDOWN, WAITING TO PICKUP\n• Carried parts:arepresentationofeachpartthatisintheunit(seebelow). For each part is the production plant, either in a station unit or an AGV,\na state representation is defined as consisting of:\n• Part type: 1-hot encoded vector representing the part type. The informa-\ntion is useful to determine what are the next operations to be performed on\nthe parts.",
+      "size": 893,
+      "sentences": 5
+    },
+    {
+      "id": 34,
+      "content": "entation is defined as consisting of:\n• Part type: 1-hot encoded vector representing the part type. The informa-\ntion is useful to determine what are the next operations to be performed on\nthe parts. • Part completion:floatvaluebetween0and1.WhenapartisattheSource,\nthe completion value is 0 while at the Sink it is set to 1. In between, the\ncompletion value is increased linearly each time an action is performed on\nthe part (driving or processing). • Part next station: 1-hot encoded vector representing the next station the\npart needs to visit (or Sink if processing is done). In principle, if only\npart type and part completion is provided, the Agent should be able to\nlearn the next steps for a part by itself. However, we discovered by expe-\nrience that providing redundant information helped to increase the overall\nperformance.",
+      "size": 834,
+      "sentences": 7
+    },
+    {
+      "id": 35,
+      "content": "rovided, the Agent should be able to\nlearn the next steps for a part by itself. However, we discovered by expe-\nrience that providing redundant information helped to increase the overall\nperformance. 3.1.2 Action\nThe set of all possible actions is equivalent to the set of stations where it is\npossibletopick-upapart(i.e.,theSourceandalltheworkstations).TheSink\nis not included in the set of actions, since it’s only possible to drop off a part\nthere. In contrast to [6], the set of all dropdown actions A drop is not defined\ninourcase,sincethedropdownstationisalwaysimplicitandonlydependson\nthe carried part. This is a limitation in the case of a production plant where\nthe same operation can be performed by 2 different workstations, but it is\nbeyond the scope of this paper. Inadditiontothissetofactions,wealsoallowtheAgenttotakea“dono-\nthing”action,forwhichnotaskisassigned.Theinactivevehiclesstayinactive\nuntil another event triggers a request to the Agent.",
+      "size": 962,
+      "sentences": 6
+    },
+    {
+      "id": 36,
+      "content": "of this paper. Inadditiontothissetofactions,wealsoallowtheAgenttotakea“dono-\nthing”action,forwhichnotaskisassigned.Theinactivevehiclesstayinactive\nuntil another event triggers a request to the Agent. 3.1.3 Reward\nTherewardfunctionhasbeenoneofthemostdifficultcomponentstoconfigure\ninthissetup.WerealizedthattheperformanceoftheAgentanditscapability\nto learn are highly dependent on the reward signal. In the end, we built a\nscore function for each environment state S . From a state S and for an\nt t\naction A that resulted in the state S , we defined the reward R(S ,A ) as\nt t+1 t t\nScore(S )−Score(S ). t+1 t\nWe built the score of a state as the sum of 4 components:\n• Per-partrewardS :apositiverewardforeachcompletedpartthatreaches\npp\nthe Sink. === 페이지 12 ===\nSpringer Nature 2021 LATEX template\n12 VehiclemanagementinamodularproductioncontextusingDeepQ-Learning\n• Per-part completion reward S : a positive reward each time a part is\npp%\nbeing processed.",
+      "size": 955,
+      "sentences": 7
+    },
+    {
+      "id": 37,
+      "content": "===\nSpringer Nature 2021 LATEX template\n12 VehiclemanagementinamodularproductioncontextusingDeepQ-Learning\n• Per-part completion reward S : a positive reward each time a part is\npp%\nbeing processed. We define the completion of a part (between 0 and 1) as\nthe percentage of processing steps that have been completed over all steps. When the part is at the Source, the completion is 0, while it is 1 at the\nSink. This reward helps the Agent learn about the intermediate steps by\nproviding shorter-term feedback. • Per-assigned decision reward S : a positive reward for each decision\ndecisions\ntaken by the Agent that is actually assigned to an AGV. In particular,\nthe “do-nothing” action is not rewarded. We noticed a slight increase in\nperformance when forcing the Agent into being less lazy. • Per-second reward S : a positive reward for each second that has been\ntime\nsimulated without encountering a deadlock.",
+      "size": 911,
+      "sentences": 8
+    },
+    {
+      "id": 38,
+      "content": "d a slight increase in\nperformance when forcing the Agent into being less lazy. • Per-second reward S : a positive reward for each second that has been\ntime\nsimulated without encountering a deadlock. WedenotebyN (t)thenumberofassigneddecisionssincethebegin-\ndecisions\nningofthesimulation,byN (t)thetotalnumberofcompletedparts,andby\npp\nN (t) the sum of each part completion. In practice N (t)≥N (t) at all\npp% pp% pp\ntime. Adifficultywehadhasbeentobalancethe4componentsofthescorefunc-\ntion. Depending on the environment configuration, the expected number of\nassigneddecisionsandpartsprocessedwerehighlyvariable,whereasthenum-\nberofsimulatedsecondswasalwaysthesame(12-hourswhennodeadlocks).To\nbalancethosedifferences,wedefined3configurablevalues:E (expectedpro-\npp\ncessed parts), E (expected assigned decisions) and E (expected\ndecisions seconds\nduration).",
+      "size": 854,
+      "sentences": 6
+    },
+    {
+      "id": 39,
+      "content": "thesame(12-hourswhennodeadlocks).To\nbalancethosedifferences,wedefined3configurablevalues:E (expectedpro-\npp\ncessed parts), E (expected assigned decisions) and E (expected\ndecisions seconds\nduration). The final score function is defined as a weighted average of the 4\ncomponents:\n K (cid:104) Npp(t)+Npp%(t) + Ndecisions(t) (cid:105) , if deadlocked,\nS(t)=\n Epp Edecisions\n(2)\n(cid:104) (cid:105)\nK Npp(t)+Npp%(t) + Ndecisions(t) + t , otherwise. Epp Edecisions Eseconds\nIn practice, we found that K = 4000 worked best for us. E , E\npp decisions\nand E are estimated based on the Cost Table Agent performances. seconds\n3.2 DQN implementation\nIn this research, we tested the vanilla DQN agent described in [13] and\nimplemented some additional promising extensions to improve the agent’s\nperformance. This section briefly describes the implemented extensions. The\nexact hyperparameters used for the performance can be found in 1.",
+      "size": 928,
+      "sentences": 7
+    },
+    {
+      "id": 40,
+      "content": "me additional promising extensions to improve the agent’s\nperformance. This section briefly describes the implemented extensions. The\nexact hyperparameters used for the performance can be found in 1. In [13],\nthe authors showed that the vanilla DQN-agent performed better in 43 of 49\ngames as the best previously known reinforcement learning baselines, setting\na new standard in the industry. However, further investigations of the DQN\nshowedthatitispronetobeoverlyoptimisticwhenestimatingQ-valueswhen\nusing Q-learning. Hence, it overestimates the Q-values.",
+      "size": 557,
+      "sentences": 6
+    },
+    {
+      "id": 41,
+      "content": "ng\na new standard in the industry. However, further investigations of the DQN\nshowedthatitispronetobeoverlyoptimisticwhenestimatingQ-valueswhen\nusing Q-learning. Hence, it overestimates the Q-values. This over-optimism\ncould hinder the convergence to the agent’s optimum, or the agent might not\n=== 페이지 13 ===\nSpringer Nature 2021 LATEX template\nVehiclemanagementinamodularproductioncontextusingDeepQ-Learning 13\nParameter Value\nReplaymemorysize 1e5\nBatchsize 64\nGamma 0.99\nLearningrate 0.001\nTargetupdaterate 24\nUpdaterate 4\nEpsilon 1.0\nEpsilondecay 0.9995\nEpsilonmin 0.01\nNNnblayers 2\nFC1units 64\nFC2units 32\nTable 1 DDQNtraininghyperparameters. even converge at all. In [14], the authors showed that the over-optimism could\nbe counteracted by applying Double Q-learning rather than Q-learning. The\nresultingagentiscalledDDQNandrequiresalmostnochangestotheexisting\nimplementation.",
+      "size": 882,
+      "sentences": 7
+    },
+    {
+      "id": 42,
+      "content": "authors showed that the over-optimism could\nbe counteracted by applying Double Q-learning rather than Q-learning. The\nresultingagentiscalledDDQNandrequiresalmostnochangestotheexisting\nimplementation. Moreover, in DQN, the baseline approach to handle the exploration-\nexploitation dilemma is the straightforward epsilon-greedy strategy. This\nstrategy relies on random permutations of the sequence of actions to explore\nthe environment. However, in some environments, where the reward is very\nsparse, it can be challenging to explore the environment sufficiently using this\nstrategy. Hence, we also tried to drive exploration using noisy networks as\ndescribedin[15]byinducingnoisewhenestimatingtheQ-values.Moreover,in\nthisresearch,wealsotestedagentsusingaduelingnetworkarchitecture,split-\nting the data stream in the neural network into two separate data streams as\ndescribed in [16].",
+      "size": 882,
+      "sentences": 6
+    },
+    {
+      "id": 43,
+      "content": "stimatingtheQ-values.Moreover,in\nthisresearch,wealsotestedagentsusingaduelingnetworkarchitecture,split-\nting the data stream in the neural network into two separate data streams as\ndescribed in [16]. One data stream estimates the value of the state, while the\nother data stream estimates the advantage for picking an action in that state. Finally, the most significant extension that showed the most robust perfor-\nmance during all tests is the prioritized experience replay (PER) as described\nin [17]. The PER samples the experiences prioritized based on the temporal\ndifference error rather than sampling uniformly. 4 Experimental results\n4.1 Per-scenario results\nThe benchmark has been run on each scenario for 12 hours with 4 different\nagents:3static(FIFO,NearestNeighbor,CostTable)and1trained(DDQN). Beforerunningthesimulation,wedeterminedtheoptimalsourceclockC ∗\nsource\nforeachstaticagent. Themainmetric thatwe monitoristheoverallthrough-\nput, defined in parts per hour (pph).",
+      "size": 982,
+      "sentences": 7
+    },
+    {
+      "id": 44,
+      "content": "le)and1trained(DDQN). Beforerunningthesimulation,wedeterminedtheoptimalsourceclockC ∗\nsource\nforeachstaticagent. Themainmetric thatwe monitoristheoverallthrough-\nput, defined in parts per hour (pph). We also measured the total amount of\nparts produced in 12 hours.",
+      "size": 264,
+      "sentences": 4
+    },
+    {
+      "id": 45,
+      "content": "ptimalsourceclockC ∗\nsource\nforeachstaticagent. Themainmetric thatwe monitoristheoverallthrough-\nput, defined in parts per hour (pph). We also measured the total amount of\nparts produced in 12 hours. [표 데이터 감지됨]\n\n=== 페이지 14 ===\nSpringer Nature 2021 LATEX template\n14 VehiclemanagementinamodularproductioncontextusingDeepQ-Learning\nEnvironment Agent 1AGV 2AGVs 3AGVs 4AGVs\nMayer-Classen-Endisch FIFO 50\nNearest Neighbor 50\nCost Table 50\nDDQN 0\n1-machine-big FIFO 83\nNearest Neighbor 48\nCost Table 11\nDDQN 0\n3-machines-loop FIFO 153 81 56\nNearest Neighbor 153 80 57\nCost Table 120 82 55\nDDQN 0 0 0\n2-machines-grid FIFO 31 25 25 25\nNearest Neighbor 31 25 24 22\nCost Table 20 25 24 22\nDDQN 0 0 0 0\n4-machines-grid FIFO 41 25 25 25\nNearest Neighbor 41 25 25 25\nCost Table 37 25 25 24\nDDQN 0 0 0 0\n6-machines-grid FIFO 53 29 25 25\nNearest Neighbor 53 29 25 25\nCost Table 48 28 25 25\nDDQN 0 0 0 0\nTable 2 Optimalsourceclock\nOptimal source clocks can be found in table 2, throughput results in table\n3, and total parts produced results in table 4.",
+      "size": 1039,
+      "sentences": 4
+    },
+    {
+      "id": 46,
+      "content": "r 53 29 25 25\nCost Table 48 28 25 25\nDDQN 0 0 0 0\nTable 2 Optimalsourceclock\nOptimal source clocks can be found in table 2, throughput results in table\n3, and total parts produced results in table 4. 4.1.1 Mayer-Classen-Endisch\nThefirstenvironmentwetrainedonhasbeentheonedescribedby[6].Results\nare shown in figure 4. The trained agent reached a throughput of 71.8 part-\ns/hour over 12 hours (863 parts). The maximum throughput in this case is\n72 parts/hours (864 parts). This environment has been a good first example,\nsince we have been able to reproduce 2 results described by [6]:\n• The agent starts with a ramp-up process before reaching the optimal\nthroughput. This explains the difference of 1 produced part observed over\nthe 12 hours.",
+      "size": 741,
+      "sentences": 6
+    },
+    {
+      "id": 47,
+      "content": "to reproduce 2 results described by [6]:\n• The agent starts with a ramp-up process before reaching the optimal\nthroughput. This explains the difference of 1 produced part observed over\nthe 12 hours. • The final policy learned by the agent is the same, namely, the AGV loops\nthrough the production plant in a certain order: Source → M1 →\ninput\nM1 →M2 →M2 →Sink→Source→...\noutput input output\nFinally,itisalsoworthmentioningthatthebaselineagents(FIFO,Nearest\nNeighborandCostTable)havealsobeenabletoachievethesameperformance\n(862 parts produced). The main benefit of the DDQN agent is its robustness\nto the source clock.",
+      "size": 617,
+      "sentences": 4
+    },
+    {
+      "id": 48,
+      "content": "ningthatthebaselineagents(FIFO,Nearest\nNeighborandCostTable)havealsobeenabletoachievethesameperformance\n(862 parts produced). The main benefit of the DDQN agent is its robustness\nto the source clock. [표 데이터 감지됨]\n\n=== 페이지 15 ===\nSpringer Nature 2021 LATEX template\nVehiclemanagementinamodularproductioncontextusingDeepQ-Learning 15\nEnvironment Agent 1AGV 2AGVs 3AGVs 4AGVs\nMayer-Classen-Endisch FIFO 71.8\nNearest Neighbor 71.8\nCost Table 71.8\nDDQN 71.8\n1-machine-big FIFO 23.6\nNearest Neighbor 74.9\nCost Table 143.3\nDDQN 143.4\n3-machines-loop FIFO 23.4 44.2 63.8\nNearest Neighbor 23.4 44.8 62.8\nCost Table 26.9 43.7 65.0\nDDQN 26.3 45.4 60.2\n2-machines-grid FIFO 115.8 143.7 143.8 143.7\nNearest Neighbor 115.8 143.8 143.8 143.7\nCost Table 123.1 143.8 143.8 143.7\nDDQN 115.2 139.2 143.8 143.8\n4-machines-grid FIFO 87.4 143.4 143.4 143.5\nNearest Neighbor 87.4 143.4 143.5 143.5\nCost Table 95.7 143.4 143.5 143.3\nDDQN 88.8 128.9 138.9 134.1\n6-machines-grid FIFO 67.5 123.5 143.1 143.2\nNearest Neighbor 67.5 123.5 143.2 143.2\nCost Table 74.1 127.8 143.2 143.2\nDDQN 68.6 79.0 117.4 124.0\nTable 3 Throughputsinpartsperhour(pph)\n4.1.2 1-machine-big\nWith this configuration, we expected the FIFO agent to be tricked, while a\nCostTableapproachwassupposedtotackletheproblemraisedbythelongdis-\ntancesintheproductionplant.Weconfirmedthisintuition,sincetheyreached\n23 parts/hour and 143.4 parts/hour respectively, the optimal throughput in\nthe equilibrium state being 144 parts/hour.",
+      "size": 1468,
+      "sentences": 3
+    },
+    {
+      "id": 49,
+      "content": "thelongdis-\ntancesintheproductionplant.Weconfirmedthisintuition,sincetheyreached\n23 parts/hour and 143.4 parts/hour respectively, the optimal throughput in\nthe equilibrium state being 144 parts/hour. The same performance has been\nachieved by the trained agent. Results can be compared in figure 4. For both Cost Table and DDQN approaches, the final policy in the equi-\nlibrium state is to have an AGV looping between the Source and the Machine\nentryandtheotherAGVloopingbetweentheMachineexitandtheSink,thus\navoiding the long drive between Machine entry and exit. ItisalsoworthmentioningthattheNearestNeighborapproachgetsinter-\nmediate results (74.9 parts/hour) which confirm that all static approaches are\nnot equivalent even in small scenarios. 4.1.3 3-machines-loop\nThedifficultyinthisscenarioistomanagetheAGV(s)inordernottooverload\nthe first machine.",
+      "size": 853,
+      "sentences": 6
+    },
+    {
+      "id": 50,
+      "content": "/hour) which confirm that all static approaches are\nnot equivalent even in small scenarios. 4.1.3 3-machines-loop\nThedifficultyinthisscenarioistomanagetheAGV(s)inordernottooverload\nthe first machine. Results show that in the end, the different agents get on\naveragesimilarresults(seefigure5).Inthedetails,CostTableisslightlybetter\nthanDDQNwith1AGV(26.9vs26.3pph),slightlyworsewith2AGVs(43.7\n[표 데이터 감지됨]\n\n=== 페이지 16 ===\nSpringer Nature 2021 LATEX template\n16 VehiclemanagementinamodularproductioncontextusingDeepQ-Learning\nEnvironment Agent 1AGV 2AGVs 3AGVs 4AGVs\nMayer-Classen-Endisch FIFO 862\nNearest Neighbor 862\nCost Table 862\nDDQN 863\n1-machine-big FIFO 284\nNearest Neighbor 899\nCost Table 1720\nDDQN 1721\n3-machines-loop FIFO 281 531 768\nNearest Neighbor 281 538 755\nCost Table 326 525 782\nDDQN 317 547 725\n2-machines-grid FIFO 1392 1726 1726 1726\nNearest Neighbor 1392 1726 1726 1727\nCost Table 1479 1726 1726 1727\nDDQN 1383 1672 1727 1727\n4-machines-grid FIFO 1051 1724 1724 1724\nNearest Neighbor 1051 1724 1724 1724\nCost Table 1151 1724 1724 1725\nDDQN 1068 1551 1670 1611\n6-machines-grid FIFO 812 1485 1722 1723\nNearest Neighbor 812 1485 1722 1723\nCost Table 892 1537 1722 1723\nDDQN 828 951 1413 1491\nTable 4 Totalpartsproducedover12h\nvs 45.4 pph) and significantly better with 3 AGVs (65.0 vs 60.2 pph).",
+      "size": 1311,
+      "sentences": 3
+    },
+    {
+      "id": 51,
+      "content": "2 1723\nNearest Neighbor 812 1485 1722 1723\nCost Table 892 1537 1722 1723\nDDQN 828 951 1413 1491\nTable 4 Totalpartsproducedover12h\nvs 45.4 pph) and significantly better with 3 AGVs (65.0 vs 60.2 pph). This\nshowsthedifficultiestheDDQNagenthastomanagemultipleAGVswithour\nframework. We will discuss this aspect further in 4.2.3. 4.1.4 6-machines-grid\n2-machines scenario\nThe 2-machines scenario seems quite easy to tackle for the static agents (see\nfigure 6). The Cost Table approach performs better with 1 AGV but starting\nfrom2AGVs,theprocessingtimeismorelimitingthantransportation,which\nmeans that even a sub-optimal policy is able to obtain the best theoretical\nthroughput (144 pph). The DDQN agent is able to reach FIFO/Nearest Neighbor performances\nwith 1 AGV (115 pph) but is not optimal since Cost Table performs signif-\nicantly better (123 pph). With 2 AGVs it is not optimal either, performing\nat 139 pph even though all static agents are already reaching 144 pph.",
+      "size": 970,
+      "sentences": 7
+    },
+    {
+      "id": 52,
+      "content": "but is not optimal since Cost Table performs signif-\nicantly better (123 pph). With 2 AGVs it is not optimal either, performing\nat 139 pph even though all static agents are already reaching 144 pph. Above\nthat(3and4AGVs),comparisonsdon’tmakesense,sinceallagentsreachthe\nlimit. [표 데이터 감지됨]\n\n=== 페이지 17 ===\nSpringer Nature 2021 LATEX template\nVehiclemanagementinamodularproductioncontextusingDeepQ-Learning 17\nFig. 4 ResultsonMayer-Classen-Endischand1-machine-bigenvironments. 4-machines scenario\nThe 4-machines scenario is similar to the previous one (see figure 7). Cost\nTable performs better than other approaches with 1 AGV (96 pph vs 89) and\nthen all static agents reach the limit (144 pph). However, this scenario starts to show the limitation of the DDQN agent. It is able to learn how to manage the AGVs to transport parts and still avoid\ndeadlocks, but in a sub-optimal way.",
+      "size": 881,
+      "sentences": 9
+    },
+    {
+      "id": 53,
+      "content": "t (144 pph). However, this scenario starts to show the limitation of the DDQN agent. It is able to learn how to manage the AGVs to transport parts and still avoid\ndeadlocks, but in a sub-optimal way. The best results are achieved with 3\nAGVs (139 pph), a better performance than when a 4th AGV was available\n(134 pph). 6-machines scenario\nIn the 6 machines scenario, it is even more difficult for the DDQN to reach\noptimal performances -or at least similar to static agents- (see figure 8). It is\nworth mentioning that even if the DDQN performs worse than Cost Table in\nall cases (69 vs 74 pph with 1 AGV, 79 vs 128 pph with 2, 117 vs 143 with 3\nand 124 vs 143 with 4), it is still able to run the 12 hours without deadlocks. 4.2 Improvement perspectives\n4.2.1 Improve the observation state\nOur final observation state does not provide all the information needed by\nthe agent to take the optimal decision.",
+      "size": 905,
+      "sentences": 7
+    },
+    {
+      "id": 54,
+      "content": "without deadlocks. 4.2 Improvement perspectives\n4.2.1 Improve the observation state\nOur final observation state does not provide all the information needed by\nthe agent to take the optimal decision. In particular, with our approach, the\n=== 페이지 18 ===\nSpringer Nature 2021 LATEX template\n18 VehiclemanagementinamodularproductioncontextusingDeepQ-Learning\nFig. 5 Resultsonthe3-machines-loopenvironment. DDQN agent can’t take advantage of the exact position of the AGVs and the\ntransportationtimes.Oureffortstoincludethisinformationintheobservation\nstate have not yet been successful. However, this information is available and\nused by the Cost Table agent, which can explain its better performances. 4.2.2 Improve reward signal and deadlock punishment\nAnother learning of our study is the sensitivity of the DDQN agent to the\nreward signal, especially to the deadlock punishment signal.",
+      "size": 885,
+      "sentences": 7
+    },
+    {
+      "id": 55,
+      "content": "erformances. 4.2.2 Improve reward signal and deadlock punishment\nAnother learning of our study is the sensitivity of the DDQN agent to the\nreward signal, especially to the deadlock punishment signal. In the end, our\nagent learned how to avoid running into a deadlock but at the cost of been\ntoo protective in some cases (i.e., it is more risky and not enough rewarded to\nstart processing a new part as compared to wait for the production plant to\nbe less full). This balance has been tough to configure and is still not entirely\nsatisfying. 4.2.3 Improve management of several AGVs\nThestudyhasshownthelimitationofourapproachwhenitcomestomanaging\nseveralAGVsatthesametime.Webelievethatthereisroomforimprovement\ninthecommunicationprotocolbetweentheAgentandtheAGVs.Ourintuition\nis that the current set of actions the Agent can take is too limited. We had\ndifficulties into making the Agent choose both the Station and the AGV that\nmust perform the action.",
+      "size": 952,
+      "sentences": 6
+    },
+    {
+      "id": 56,
+      "content": "dtheAGVs.Ourintuition\nis that the current set of actions the Agent can take is too limited. We had\ndifficulties into making the Agent choose both the Station and the AGV that\nmust perform the action. === 페이지 19 ===\nSpringer Nature 2021 LATEX template\nVehiclemanagementinamodularproductioncontextusingDeepQ-Learning 19\nFig. 6 Resultsonthegrid-2-machinesenvironment. 5 Conclusions and Outlook\nInthispaper,weinvestigatedthedeploymentofDeep-QbasedDRLagentsto\njob-shop scheduling problems in modular production facilities using discrete\nevent simulations for the environment. Here are the key findings of our study:\n• WehavedevelopedasimulationthatrunsfastenoughtotrainDRLagents. We have established a framework to configure environments of different\ncomplexity, on which we can additionally run a baseline of three static\nagents. • For each environment, we trained a DDQN agent that is able to run the\nproduction plant deadlock-free.",
+      "size": 929,
+      "sentences": 8
+    },
+    {
+      "id": 57,
+      "content": "ts of different\ncomplexity, on which we can additionally run a baseline of three static\nagents. • For each environment, we trained a DDQN agent that is able to run the\nproduction plant deadlock-free. The trained agent has learned some com-\nplex strategies (beating FIFO in 1-machine-big and handling a loop in\n3-machines-loop environment). • We proved that it is possible to apply DRL to the vehicle management\nproblem.Fromthis,thereisroomforimprovement,especiallyformanaging\ncomplex scenarios with more AGVs and stations. • Beyondthescopeofthispaper,thereexistvariousavenuesforfurtherexplo-\nration.Forinstance,wehypothesizethataDRLapproachincreasesstability\nin the system. This is suggested by the fact the DDQN agent is robust\nagainst the source clock, while static agents need additional precautions. We also performed simulations in which we introduced noise (in the source\n=== 페이지 20 ===\nSpringer Nature 2021 LATEX template\n20 VehiclemanagementinamodularproductioncontextusingDeepQ-Learning\nFig.",
+      "size": 1000,
+      "sentences": 7
+    },
+    {
+      "id": 58,
+      "content": "s. We also performed simulations in which we introduced noise (in the source\n=== 페이지 20 ===\nSpringer Nature 2021 LATEX template\n20 VehiclemanagementinamodularproductioncontextusingDeepQ-Learning\nFig. 7 Resultsonthegrid-4-machinesenvironment. clock, the transports, the parts transfers and the processing). The trained\nagents tend to be more robust in those cases, avoiding deadlocks. With these findings, we have laid out a foundation for future studies that\ncan build upon these findings. Both, the agents, and the environment, can be\nimproved to facilitate environments of a richer variety, and particular focus\ncan be dedicated to further investigating the robustness of the DRL agents\nin comparison to the heuristic approaches.",
+      "size": 731,
+      "sentences": 6
+    },
+    {
+      "id": 59,
+      "content": "be\nimproved to facilitate environments of a richer variety, and particular focus\ncan be dedicated to further investigating the robustness of the DRL agents\nin comparison to the heuristic approaches. Also, the issue of dead-lock avoid-\nancecouldbeinvestigatedmorethoroughly.Asfortheenvironmentandapart\nfrom increasing the complexity by means of adding stations, a more diverse\nwork-flow, or more AGVs, one could furthermore envision an environment in\nwhich the AGVs themselves are controlled by DRL agents, considering addi-\ntional factors such as battery status, nearest charging station, position of the\notherAGVs,etc.However,alltheseavenuesareleftunaddressedinthisstudy,\nas the purpose of this paper is to establish a first, preliminary exploration\nof the feasibility of Deep-Q based DRL approaches in modular production\nenvironments. === 페이지 21 ===\nSpringer Nature 2021 LATEX template\nVehiclemanagementinamodularproductioncontextusingDeepQ-Learning 21\nFig.",
+      "size": 959,
+      "sentences": 3
+    },
+    {
+      "id": 60,
+      "content": "asibility of Deep-Q based DRL approaches in modular production\nenvironments. === 페이지 21 ===\nSpringer Nature 2021 LATEX template\nVehiclemanagementinamodularproductioncontextusingDeepQ-Learning 21\nFig. 8 Resultsonthegrid-6-machinesenvironment. 6 Acknowledgements and references\nPartialfundingthroughtheAustrianResearchPromotionAgencyFFG,Klein-\nprojektNr.883243,iskindlyacknowledged.Partsofthefindingsofthisarticle\nare also given in [18]. References\n[1] Garey, M.R., Johnson, D.S., Sethi, R.: The complexity of flowshop and\njobshop scheduling. Mathematics of Operations Research 1(2), 117–129\n(1976)\n[2] Johnson, D.S. : Local optimization and the traveling salesman problem. In: Paterson, M.S. (ed.) Automata, Languages and Programming, pp. 446–461. Springer, Berlin, Heidelberg (1990)\n[3] Kuhn, H.W. : The hungarian method for the assignment problem. Naval\nResearchLogisticsQuarterly 2(1-2),83–97(1955)https://arxiv.org/abs/\nhttps://onlinelibrary.wiley.com/doi/pdf/10.1002/nav.3800020109.",
+      "size": 986,
+      "sentences": 14
+    },
+    {
+      "id": 61,
+      "content": "Kuhn, H.W. : The hungarian method for the assignment problem. Naval\nResearchLogisticsQuarterly 2(1-2),83–97(1955)https://arxiv.org/abs/\nhttps://onlinelibrary.wiley.com/doi/pdf/10.1002/nav.3800020109. https:\n//doi.org/10.1002/nav.3800020109\n[4] Hornik,K.,Stinchcombe,M.,White,H. :Multilayerfeedforwardnetworks\nare universal approximators 2 (1989)\n=== 페이지 22 ===\nSpringer Nature 2021 LATEX template\n22 VehiclemanagementinamodularproductioncontextusingDeepQ-Learning\n[5] Sutton,R.S.,Barto,A.G. :ReinforcementLearning:AnIntroduction,2nd\nedn. (Adaptive Computation and Machine Learning series). MIT Press,\n? ?? (2018)\n[6] Mayer, S., Classen, T., Endisch, C.: Modular production control using\ndeep reinforcement learning: proximal policy optimization. Journal of\nIntelligent Manufacturing 32(8), 2335–2351 (2021). https://doi.org/10. 1007/s10845-021-01778-z\n[7] Matloff, N.: Introduction to discrete-event simulation and the simpy lan-\nguage. Davis, CA. Dept of Computer Science.",
+      "size": 973,
+      "sentences": 16
+    },
+    {
+      "id": 62,
+      "content": "acturing 32(8), 2335–2351 (2021). https://doi.org/10. 1007/s10845-021-01778-z\n[7] Matloff, N.: Introduction to discrete-event simulation and the simpy lan-\nguage. Davis, CA. Dept of Computer Science. University of California at\nDavis. Retrieved on August 2(2009), 1–33 (2008)\n[8] Fishman, G.S. : Principles of discrete event simulation. [book review]\n(1978)\n[9] Brockman, G., Cheung, V., Pettersson, L., Schneider, J., Schulman, J.,\nTang, J., Zaremba, W.: Openai gym. arXiv preprint arXiv:1606.01540\n(2016)\n[10] OpenAI: Gym Environments.",
+      "size": 537,
+      "sentences": 10
+    },
+    {
+      "id": 63,
+      "content": "book review]\n(1978)\n[9] Brockman, G., Cheung, V., Pettersson, L., Schneider, J., Schulman, J.,\nTang, J., Zaremba, W.: Openai gym. arXiv preprint arXiv:1606.01540\n(2016)\n[10] OpenAI: Gym Environments. https://gym.openai.com/envs/ Accessed\n2022-04-28\n[11] SciPy:Scipy.optimize.linear sum assignment.https://docs.scipy.org/doc/\nscipy/reference/generated/scipy.optimize.linear sum assignment.html\nAccessed 2022-04-28\n[12] Virtanen, P., Gommers, R., Oliphant, T.E., Haberland, M., Reddy, T.,\nCournapeau,D.,Burovski,E.,Peterson,P.,Weckesser,W.,Bright,J.,van\nder Walt, S.J., Brett, M., Wilson, J., Millman, K.J., Mayorov, N., Nel-\nson, A.R.J., Jones, E., Kern, R., Larson, E., Carey, C.J., Polat, I˙., Feng,\nY., Moore, E.W., VanderPlas, J., Laxalde, D., Perktold, J., Cimrman,\nR., Henriksen, I., Quintero, E.A., Harris, C.R., Archibald, A.M., Ribeiro,\nA.H., Pedregosa, F., van Mulbregt, P., SciPy 1.0 Contributors: SciPy\n1.0:FundamentalAlgorithmsforScientificComputinginPython.Nature\nMethods17,261–272(2020).https://doi.org/10.1038/s41592-019-0686-2\n[13] Mnih, V., Kavukcuoglu, K., Silver, D., Rusu, A.A., Veness, J., Belle-\nmare, M.G., Graves, A., Riedmiller, M.A., Fidjeland, A., Ostrovski, G.,\nPetersen, S., Beattie, C., Sadik, A., Antonoglou, I., King, H., Kumaran,\nD., Wierstra, D., Legg, S., Hassabis, D.: Human-level control through\ndeep reinforcement learning.",
+      "size": 1361,
+      "sentences": 3
+    },
+    {
+      "id": 64,
+      "content": "djeland, A., Ostrovski, G.,\nPetersen, S., Beattie, C., Sadik, A., Antonoglou, I., King, H., Kumaran,\nD., Wierstra, D., Legg, S., Hassabis, D.: Human-level control through\ndeep reinforcement learning. Nature 518(7540), 529–533 (2015)\n[14] van Hasselt, H., Guez, A., Silver, D.: Deep reinforcement learning with\ndoubleq-learning.CoRRabs/1509.06461(2015)https://arxiv.org/abs/\n1509.06461\n=== 페이지 23 ===\nSpringer Nature 2021 LATEX template\nVehiclemanagementinamodularproductioncontextusingDeepQ-Learning 23\n[15] Fortunato, M., Azar, M.G., Piot, B., Menick, J., Osband, I., Graves, A.,\nMnih, V., Munos, R., Hassabis, D., Pietquin, O., Blundell, C., Legg, S.:\nNoisy networks for exploration. CoRR abs/1706.10295 (2017) https:\n//arxiv.org/abs/1706.10295\n[16] Wang, Z., de Freitas, N., Lanctot, M.: Dueling network architectures\nfor deep reinforcement learning. CoRR abs/1511.06581 (2015) https:\n//arxiv.org/abs/1511.06581\n[17] Schaul, T., Quan, J., Antonoglou, I., Silver, D.: Prioritized Experience\nReplay.",
+      "size": 1000,
+      "sentences": 4
+    },
+    {
+      "id": 65,
+      "content": "twork architectures\nfor deep reinforcement learning. CoRR abs/1511.06581 (2015) https:\n//arxiv.org/abs/1511.06581\n[17] Schaul, T., Quan, J., Antonoglou, I., Silver, D.: Prioritized Experience\nReplay. cite arxiv:1511.05952Comment: Published at ICLR 2016 (2015). http://arxiv.org/abs/1511.05952\n[18] Hasenbichler, T.: Exploration of deep reinforcement learning based\napproaches to job-shop scheduling problems using discrete event simula-\ntions. Master’s thesis, FH JOANNEUM – University of Applied Sciences\n(2021)",
+      "size": 512,
+      "sentences": 5
+    }
+  ]
+}

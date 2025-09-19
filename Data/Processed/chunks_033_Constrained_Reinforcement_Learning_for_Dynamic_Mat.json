@@ -1,0 +1,386 @@
+{
+  "source": "ArXiv",
+  "filename": "033_Constrained_Reinforcement_Learning_for_Dynamic_Mat.pdf",
+  "total_chars": 47663,
+  "total_chunks": 63,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "=== 페이지 1 ===\nConstrained Reinforcement Learning for\nDynamic Material Handling\nChengpeng Hu1,2, Ziming Wang1,2, Jialin Liu2,1, Junyi Wen3, Bifei Mao3 and Xin Yao2,1\n1Research Institute of Trustworthy Autonomous Systems (RITAS),\nSouthern University of Science and Technology, Shenzhen, China. 2Guangdong Key Laboratory of Brain-inspired Intelligent Computation, Department of Computer Science and Engineering,\nSouthern University of Science and Technology, Shenzhen, China. 3Trustworthiness Theory Research Center, Huawei Technologies Co., Ltd Shenzhen, China. hucp2021@mail.sustech.edu.cn, wangzm2021@mail.sustech.edu.cn, liujl@sustech.edu.cn,\nwenjunyi@huawei.com, maobifei@huawei.com, xiny@sustech.edu.cn\nAbstract—As one of the core parts of flexible manufacturing\nsystems, material handling involves storage and transportation\nof materials between workstations with automated vehicles.",
+      "size": 887,
+      "sentences": 4
+    },
+    {
+      "id": 2,
+      "content": "ny@sustech.edu.cn\nAbstract—As one of the core parts of flexible manufacturing\nsystems, material handling involves storage and transportation\nof materials between workstations with automated vehicles. The improvement in material handling can impulse the overall\nefficiencyofthemanufacturingsystem.However,theoccurrence\nof dynamic events during the optimisation of task arrangements\nposes a challenge that requires adaptability and effectiveness. In this paper, we aim at the scheduling of automated guided\nvehiclesfordynamicmaterialhandling.Motivatedbysomereal-\nworld scenarios, unknown new tasks and unexpected vehicle\nbreakdowns are regarded as dynamic events in our problem. We formulate the problem as a constrained Markov decision\nprocesswhichtakesintoaccounttardinessandavailablevehicles\nas cumulative and instantaneous constraints, respectively. An Fig.1. Simulationofmaterialhandling.",
+      "size": 891,
+      "sentences": 6
+    },
+    {
+      "id": 3,
+      "content": "e problem as a constrained Markov decision\nprocesswhichtakesintoaccounttardinessandavailablevehicles\nas cumulative and instantaneous constraints, respectively. An Fig.1. Simulationofmaterialhandling. adaptiveconstrainedreinforcementlearningalgorithmthatcom-\nbines Lagrangian relaxation and invalid action masking, named\nRCPOM, is proposed to address the problem with two hybrid\nDispatching rules [2], [3] are classic and common methods\nconstraints. Moreover, a gym-like dynamic material handling\nfor DMH. Although easy to implement, they suffer from\nsimulator, named DMH-GYM, is developed and equipped with\ndiverse problem instances, which can be used as benchmarks some complex situations, which usually lead to suboptimal\nfor dynamic material handling. Experimental results on the performanceandarehardtobeimprovedfurther.Considering\nproblem instances demonstrate the outstanding performance of such issues, search-based methods come to prominence.",
+      "size": 950,
+      "sentences": 7
+    },
+    {
+      "id": 4,
+      "content": "ng. Experimental results on the performanceandarehardtobeimprovedfurther.Considering\nproblem instances demonstrate the outstanding performance of such issues, search-based methods come to prominence. For\nourproposedapproachcomparedwitheightstate-of-the-artcon-\nexample, a hybrid genetic algorithm and ant colony optimisa-\nstrainedandnon-constrainedreinforcementlearningalgorithms,\ntion is proposed for intelligent manufacturing workshop [4]. and widely used dispatching rules for material handling. Index Terms—Dynamic material handling, constrained rein- However, the search process is often time-consuming. The\nforcement learning, automated guided vehicle, manufacturing aforementioned methods are less suitable in real-world sce-\nsystem, benchmark narios when fast response and adaptability are needed. Recently, some work has leveraged reinforcement learning\nI.",
+      "size": 865,
+      "sentences": 7
+    },
+    {
+      "id": 5,
+      "content": "turing aforementioned methods are less suitable in real-world sce-\nsystem, benchmark narios when fast response and adaptability are needed. Recently, some work has leveraged reinforcement learning\nI. INTRODUCTION (RL)toDMH[5],[6].TheproblemisformulatedasaMarkov\ndecisionprocess(MDP)andtherewardfunctionisconstructed\nMaterial handling can be widely found in manufacturing,\nmanually according to makespan and travel distance [5], [6]. warehouses and other logistic scenarios. It aims to transport\nTrained parameterised policies schedule the vehicles in real\nsome goods from their storage locations to some delivery\ntime when new tasks arrive. However, more complicated\nsites. With the help of automated guided vehicles (AGV),\nscenariosinvolvingvehiclebreakdownsorsomevitalproblem\ntasks and jobs can be accomplished fast and automatically. constraints, such as task delay, are not considered while\nAn example of material handling is shown in Fig. 1. In real-\noptimising the policy [5], [6].",
+      "size": 987,
+      "sentences": 10
+    },
+    {
+      "id": 6,
+      "content": "jobs can be accomplished fast and automatically. constraints, such as task delay, are not considered while\nAn example of material handling is shown in Fig. 1. In real-\noptimising the policy [5], [6]. It is impossible to overlook\nworld flexible manufacturing, AGV scheduling plans usually\nthese scenarios when dealing with real-world problems. For\nneed to be changed due to some dynamics such as newly\nexample, manufacturing accidents may happen if an emerged\narrived tasks, due time change, as well as vehicle and site\ntask is assigned to a broken vehicle, which leads to a task\nbreakdowns [1]. These dynamics pose a serious challenge to\ndelay or this task will never be completed. vehicle scheduling, called dynamic material handling (DMH). Motivated by real-world scenarios in the flexible manu-\nCorrespondingauthor:JialinLiu(liujl@sustech.edu.cn).",
+      "size": 850,
+      "sentences": 9
+    },
+    {
+      "id": 7,
+      "content": "task will never be completed. vehicle scheduling, called dynamic material handling (DMH). Motivated by real-world scenarios in the flexible manu-\nCorrespondingauthor:JialinLiu(liujl@sustech.edu.cn). facturing system, we consider a DMH problem with multi-\n3202\nyaM\n32\n]GL.sc[\n1v42831.5032:viXra\n=== 페이지 2 ===\nple AGVs and two dynamic events, namely newly arrived optimisationproblemduetotheirsimplicity.Althoughreason-\ntasks and vehicle breakdowns during the handling process. able solutions may be found by these rules, they hardly get\nTo tackle the dynamics and constraints, we formulate the furtherimprovement.Dispatchingrulesareusuallyconstructed\nproblem as a constrained Markov decision process (CMDP), with some specific considerations, thus few certain single\nconsidering the tardiness of tasks as a cumulative constraint. rules work well in general cases [13].",
+      "size": 867,
+      "sentences": 6
+    },
+    {
+      "id": 8,
+      "content": "rained Markov decision process (CMDP), with some specific considerations, thus few certain single\nconsidering the tardiness of tasks as a cumulative constraint. rules work well in general cases [13]. Mix rule policy that\nIn addition, the status of vehicles including “idle”, “working” combinesmultipledispatchingrulesimprovestheperformance\nand “broken” caused by vehicle breakdowns is considered of a single one [14]. New AGVs and jobs are considered\nas an instantaneous constraint which determines if a vehicle dynamic events and solved with the multi-agent negotiation\ncan be assigned with a task or not. A constrained reinforce- method [15]. An adaptive mixed integer programming model\nment learning (CRL) approach is proposed to perform real- triggered by some events is applied to solve the single AGV\ntime scheduling considering two widely used performance scheduling problem with time windows [16]. Nevertheless,\nindicators, makespan and tardiness in manufacturing.",
+      "size": 972,
+      "sentences": 7
+    },
+    {
+      "id": 9,
+      "content": "s applied to solve the single AGV\ntime scheduling considering two widely used performance scheduling problem with time windows [16]. Nevertheless,\nindicators, makespan and tardiness in manufacturing. The these methods are usually limited for poor adaptability and\nproposed approach, named RCPOM, incorporates Lagrangian require domain knowledge. relaxation and invalid action masking to handle both cumu- Search-based methods can also be applied to DMH. Since\nlative constraint and instantaneous constraint. Moreover, due priory conditions such as the number of tasks are not deter-\nto the lack of free simulators and instance datasets for DMH, mined apriori, these methods seek to decompose the dynamic\nwe develop an OpenAI’s gym-like [7] simulator and provide process as some static sub-problems. Genetic algorithm [17]\ndiverse problem instances as a benchmark1. is applied for DMH.",
+      "size": 884,
+      "sentences": 8
+    },
+    {
+      "id": 10,
+      "content": "ompose the dynamic\nwe develop an OpenAI’s gym-like [7] simulator and provide process as some static sub-problems. Genetic algorithm [17]\ndiverse problem instances as a benchmark1. is applied for DMH. When new tasks arrive or the status of\nThe main contributions of our work are summarised as machines changes, the algorithm reschedules the plan. Ana-\nfollows. lytic hierarchy process based optimisation [18] combines task\n• We formulate a dynamic material handling problem sets and then uses mixed attributes for dispatching. NSGA-II\nconsidering multiple vehicles, newly arrived tasks and is used by Wang et al. [19] to achieve proactive dispatching\nvehicle breakdowns as a CMDP with the consideration consideringdistanceandenergyconsumptionatthesametime. of both cumulative and instantaneous constraints.",
+      "size": 805,
+      "sentences": 9
+    },
+    {
+      "id": 11,
+      "content": "t al. [19] to achieve proactive dispatching\nvehicle breakdowns as a CMDP with the consideration consideringdistanceandenergyconsumptionatthesametime. of both cumulative and instantaneous constraints. However,thesesearch-basedmethodsusuallysufferfromlong\n• Extending OpenAI’s gym, we develop an open-source consumption time [17], and thus are not able to cater to the\nsimulator, named DMH-GYM, and provide a dataset requirements of fast response and adaptability in real-world\ncomprised of diverse instances for researching the dy- scenarios. namic material handling problem. Reinforcement learning, which performs well in real-time\n• Considering the occurrence of newly arrived tasks and decision-making problems [20], has been applied to optimise\nvehicle breakdowns as dynamic events, a CRL algorithm real-world DMH problems. A Q−λ algorithm is proposed by\ncombining a Lagrangian relaxation method and invalid Chen et al.",
+      "size": 922,
+      "sentences": 7
+    },
+    {
+      "id": 12,
+      "content": "been applied to optimise\nvehicle breakdowns as dynamic events, a CRL algorithm real-world DMH problems. A Q−λ algorithm is proposed by\ncombining a Lagrangian relaxation method and invalid Chen et al. [21] to address a multiple-load carrier scheduling\naction masking technique, named RCPOM, is proposed problem in a general assembly line. Xue et al. [5] consider\nto address this problem. a non-stationary case that AGVs’ actions may affect each\n• Extensive experiments show the adaptability and effec- other. Kardos et al. [22] use Q-learning to schedule tasks\ntivenessoftheproposedmethodforsolvingthisproblem, dynamically with real-time information. Hu et al. [6] improve\ncomparedwitheightstate-of-the-artalgorithms,including the mix rule policy [14] with a deep reinforcement learning\nCRL agents, RL agents and several dispatching rules. algorithm to minimise the makespan and delay ratio. Multiple\nAGVsarescheduledbythealgorithminrealtime. [23]applies\nII.",
+      "size": 957,
+      "sentences": 13
+    },
+    {
+      "id": 13,
+      "content": "deep reinforcement learning\nCRL agents, RL agents and several dispatching rules. algorithm to minimise the makespan and delay ratio. Multiple\nAGVsarescheduledbythealgorithminrealtime. [23]applies\nII. BACKGROUND reinforcement learning with a weight sum reward function to\nAGVs are widely used for material handling systems [8], material handling. Although the algorithms of the above work\nmeeting the need for the high requirement of automation. performpromisingly,constraintsinreal-worldapplicationsare\nScheduling and routing are usually regarded as two splitting not considered in their problems. parts of material handling. The former refers to the task Constrainedreinforcementlearning(CRL)followstheprin-\ndispatching considered in the paper. The latter aims to find ciples of the constrained Markov decision process (CMDP)\nfeasible routing paths for AGVs to transfer loads.",
+      "size": 877,
+      "sentences": 10
+    },
+    {
+      "id": 14,
+      "content": "ntlearning(CRL)followstheprin-\ndispatching considered in the paper. The latter aims to find ciples of the constrained Markov decision process (CMDP)\nfeasible routing paths for AGVs to transfer loads. Pathfinding thatmaximisesthelong-termexpectedrewardwhilerespecting\nis not the main focus of this paper, since fixed paths are constraints [24]. It has been applied to solving problems such\ncommonly found in many real-world cases [9], [10], [11]. as robot controlling [25], [26] and resource allocation [27],\nScheduling of DMH [12] refers to the problem with some [28], however, to the best of our knowledge, it has never been\nreal-time dynamic events, such as newly arrived tasks, due considered in solving DMH problems. time change and vehicle breakdowns [1], which are com-\nmonly found in modern flexible manufacturing systems and III. DYNAMICMATERIALHANDLINGWITHMULTIPLE\nwarehouses.",
+      "size": 885,
+      "sentences": 7
+    },
+    {
+      "id": 15,
+      "content": "onsidered in solving DMH problems. time change and vehicle breakdowns [1], which are com-\nmonly found in modern flexible manufacturing systems and III. DYNAMICMATERIALHANDLINGWITHMULTIPLE\nwarehouses. Traditional dispatching rules [3], e.g., first come VEHICLES\nfirst serve (FCFS), earliest due date first (EDD), and nearest\nvehicle first (NVF), are widely used to solve the dynamic ThissectiondescribesourDMH,consideringnewlyarrived\ntasks and vehicle breakdowns. DMH-GYM, the simulator\n1Codesavailableathttps://github.com/HcPlu/DMH-GYM developed in this work is also presented. === 페이지 3 ===\nA. Problem description T: Paths set that connect sites. K: Parking set, K⊂L. In our DMH problem with multiple vehicles, transporting\nU: Staging list of tasks.",
+      "size": 750,
+      "sentences": 9
+    },
+    {
+      "id": 16,
+      "content": "is work is also presented. === 페이지 3 ===\nA. Problem description T: Paths set that connect sites. K: Parking set, K⊂L. In our DMH problem with multiple vehicles, transporting\nU: Staging list of tasks. taskscanberaisedovertimedynamically.Thesenewlyarrived\nu: Task u ∈ U is denoted as a tuple ⟨s,e,τ,o⟩ that refers to\ntasks, called unassigned tasks, need to be assigned to AGVs\npickup point s, delivery point e, arrival time τ and expiry\nwith a policy π. The problem is formed as a graph G(L,T)\ntime o.\nwhereLandT denotethesetsofsitesandpaths,respectively. u.s: Pickup point of a given task u, u.s∈L. Three kinds of sites, namely pickup points, delivery points\nu.e: Delivery point of a given task u, u.e∈L. and parking positions are located in graph G(L,T). The set\nu.τ: Arrival time of a given task u.\nof parking positions is denoted as K. The total number of\nu.o: Expiry time of a given task u.\ntasks that need to be completed is unknown in advance.",
+      "size": 948,
+      "sentences": 11
+    },
+    {
+      "id": 17,
+      "content": "L,T). The set\nu.τ: Arrival time of a given task u.\nof parking positions is denoted as K. The total number of\nu.o: Expiry time of a given task u.\ntasks that need to be completed is unknown in advance. All\nu : Start task that manipulates AGV to leave its parking lot. unassignedtaskswillbestoredinastaginglistU temporarily. 0\nv: AGV v is denoted as tuple ⟨vl,rp,pl,ψ⟩ that refers to its\nA task u = ⟨s,e,τ,o⟩ ∈ U is determined by its pickup point\nvelocity vl, repair time rp, parking location pl and status ψ.\nu.s, delivery point u.e, arrival time u.τ and expiry time u.o,\nv.vl: Velocity of a given AGV v.\nwhere u.s,u.e∈L. v.rp: Repairing time of a given AGV v.\nAfleetofAGVsV worksinthesystemtoservetasks.Atask\nv.pl: Parking position of a given AGV v, v.pl∈K. can only be picked by one and only one AGV at once.",
+      "size": 808,
+      "sentences": 7
+    },
+    {
+      "id": 18,
+      "content": "u.s,u.e∈L. v.rp: Repairing time of a given AGV v.\nAfleetofAGVsV worksinthesystemtoservetasks.Atask\nv.pl: Parking position of a given AGV v, v.pl∈K. can only be picked by one and only one AGV at once. Each\nv.ψ: Status of a given AGV v. Three statuses are defined\nAGV v = ⟨vl,rp,pl,ψ⟩ ∈ V is denoted by its velocity v.vl,\nas Idle, Working and Broken and represented by set\nrepairingtimev.rp,parkingpositionv.pl andstatusv.ψ.The\nΨ={I,W,B}. location v.pl denotes the initial parking location of AGV v,\nv.u: Current assigned task of a given AGV v.\nwhere v.pl∈K. AGVs keep serving the current assigned task\nHL(v): List of completed tasks of a given AGV v.\nv.uduringtheprocess.Ifthereisnotasktobeperformed,the\nFT(u,v): Finish time of a task u by an AGV v.\nAGVstaysatitscurrentplaceuntilanewtaskisassigned.All\nπ: Decision policy for task assignments. finished tasks by an AGV v will be recorded in the historical\ntask list HL(v).",
+      "size": 921,
+      "sentences": 7
+    },
+    {
+      "id": 19,
+      "content": "e of a task u by an AGV v.\nAGVstaysatitscurrentplaceuntilanewtaskisassigned.All\nπ: Decision policy for task assignments. finished tasks by an AGV v will be recorded in the historical\ntask list HL(v). A starting task u will first be added to the\n0\nhistorical list, where u denotes that an AGV v leaves its B. DMH-GYM\n0\nparking site to the pickup point of the first assigned task u . 1 To our best knowledge, no existing work has studied this\nThree statuses of AGV are denoted as set Ψ = {I,W,B}\nproblem and there is no existing open-source simulator of\nrepresenting Idle, Working and Broken, respectively. An AGV\nrelated problems. To study the problem, we develop a simula-\ncan break down sometimes. In this broken status, the broken\ntor that is compatible with OpenAI’s gym [7], named DMH-\nAGV v will stop in place and release its current task to the\nGYM. Diverse instances are also provided that show various\ntask pool.",
+      "size": 920,
+      "sentences": 8
+    },
+    {
+      "id": 20,
+      "content": "the broken\ntor that is compatible with OpenAI’s gym [7], named DMH-\nAGV v will stop in place and release its current task to the\nGYM. Diverse instances are also provided that show various\ntask pool. After repairing in time v.rp, AGV can be available\nperformances on different dispatching rules to fully evaluate\nto accept tasks. the given algorithms. The layout of the shop floor is shown\nWhile the system is running, a newly arrived task u can\nin Fig. 2. Stations from st1 to st8 are the workstations on\nbe assigned to an available AGV if and only if v.ψ =I. The\nthe floor which can be pickup points and delivery points. The\ndecisionpolicyπ assignsthetask.Makespanandtardinessare\nwarehousecanonlybeadeliverypoint.AllAGVsdepartfrom\nselectedastheoptimisingobjectivesoftheproblem,especially\nthe carport, i.e. initial parking position, to accomplish tasks\nthe tardiness is regarded as a constraint. Makespan is the\nthat are generated randomly.",
+      "size": 940,
+      "sentences": 11
+    },
+    {
+      "id": 21,
+      "content": "stheoptimisingobjectivesoftheproblem,especially\nthe carport, i.e. initial parking position, to accomplish tasks\nthe tardiness is regarded as a constraint. Makespan is the\nthat are generated randomly. The start site of a task can only\nmaximal time cost of AGVs for finishing all the assigned\nbe a workstation, while its end site can be a workstation or\ntasks using Eq. (1). Tardiness denotes the task delay in the\nwarehouse. All AGVs move on preset paths with the same\ncompletion of tasks, as formalised in Eq. (2). velocity. And they are guided by an A∗ algorithm for path\nF (π)= maxFT(uv ,v), (1) finding while performing tasks. The distance between stations\nm v∈Vπ |HL(v)| is calculated according to their coordinates and path. For\nVπ |HL(v)| example, the distance between st8 (0,45) and st1 (20,70) in\n1 (cid:88) (cid:88)\nF t (π)= m max(FT(uv i ,v)−uv i .o−uv i .τ,0),(2) Fig. 2 is 45 as a vehicle should pass the coordinate of the\nv i corner point (0,70).",
+      "size": 959,
+      "sentences": 13
+    },
+    {
+      "id": 22,
+      "content": "stance between st8 (0,45) and st1 (20,70) in\n1 (cid:88) (cid:88)\nF t (π)= m max(FT(uv i ,v)−uv i .o−uv i .τ,0),(2) Fig. 2 is 45 as a vehicle should pass the coordinate of the\nv i corner point (0,70). Collisions and traffic congestion are not\nconsidered in this paper for simplification. whereHL(v)referstothehistoricallistoftaskscompletedby\nv and v.pl ∈ P. The time cost of waiting to handle material IV. CONSTRAINEDREINFORCEMENTLEARNING\nis ignored at pickup points and delivery points for AGVs as\nTomeettheneedsofreal-worldapplications,weextendthe\nthey are often constant. DMH problem as a CMDP by considering the tardiness and\nNotations for our problem are summarised as follows. the constraint of vehicle availability. |·|: Size of a given set or list. V: A fleet of AGVs. A. Modeling DMH as a CMDP\nn: Number of AGVs, i.e., n=|V|. The CMDP is defined as a tuple (S,A,R,C,P,γ), where\nm: Number of tasks that needs to be accomplished.",
+      "size": 935,
+      "sentences": 12
+    },
+    {
+      "id": 23,
+      "content": "given set or list. V: A fleet of AGVs. A. Modeling DMH as a CMDP\nn: Number of AGVs, i.e., n=|V|. The CMDP is defined as a tuple (S,A,R,C,P,γ), where\nm: Number of tasks that needs to be accomplished. S is state space, A is action space, R represents the re-\nL: Set of pickup points, delivery points, and parking lots. ward function, P is the transition probability function and\n=== 페이지 4 ===\nFig.3. Rewardconstrainedpolicyoptimisationwithmasking. Fig.2. LayoutofDMH-GYM. and nearest vehicle first (NVF), form the dispatching rule\nspaceD.Thosedispatchingrulesareformulated[3]asfollows:\n• FCFS: argminu.τ;\nγ is the discount factor. A cumulative constraint C = u∈U\n• EDD: argmin(u.o−u.τ);\ng(c(s 0 ,a 0 ,s 1 ),...,c(s t ,a t ,s t+1 )) that consists of per-step u∈U\ncost c(s,a,s′) can be restricted by a corresponding constraint • NVF: argmind(v.c,u.s);\nu∈U\nthreshold ϵ. g can be any of the functions for constraints • STD: argmind(v.c,u.s)+d(u.s,u.e),\nsuch as average and sum.",
+      "size": 971,
+      "sentences": 12
+    },
+    {
+      "id": 24,
+      "content": "′) can be restricted by a corresponding constraint • NVF: argmind(v.c,u.s);\nu∈U\nthreshold ϵ. g can be any of the functions for constraints • STD: argmind(v.c,u.s)+d(u.s,u.e),\nsuch as average and sum. Jπ denotes the expectation of the u∈U\nC where v.s is the current position of an AGV v and d(p,p′)\ncumulative constraint. A policy optimised by parameters θ is\ndetermines the distance between p and p′. Action a =\ndefined as π which determines the probability to take an t\nθ ⟨d ,v ⟩ ∈ A at time t determines a single task assignment\naction a at state s with π(a |s ) at time t. The goal of t t t\nt t t t a that task u is assigned to AGV v by dispatching rule d . the problem is to maximise the long-term expected reward t t t t\nWith the action space A , the policy can decide the rule and\nwith optimised policy π while satisfying the constraints, as t\nθ AGV at the same time, which breaks the tie of the multiple\nformulated below. vehicles case.",
+      "size": 943,
+      "sentences": 6
+    },
+    {
+      "id": 25,
+      "content": "ace A , the policy can decide the rule and\nwith optimised policy π while satisfying the constraints, as t\nθ AGV at the same time, which breaks the tie of the multiple\nformulated below. vehicles case. ∞ 3) Constraints: A cumulative constraint and an instanta-\n(cid:88)\nmax E [ γtR(s ,a ,s )] (3)\nθ\nπθ t t t+1 neous constraint are both considered in the CMDP. We treat\nt=0 the tardiness as a cumulative constraint J , formulated in Eq. s.t. Jπθ =E [C]≤ϵ. (4) C\nC τ∼πθ (5). The task assignment constraint of vehicle availability is\nregardedasaninstantaneousconstraintthatonlyvehicleswith\n1) State: At each decision time t, we consider the current\nstatus Idle are considered as available, denoted as Eq. (6). state of the whole system consisting of tasks and AGVs,\ndenoted as S =ρ(U ,V ), where U is the set of unassigned\nt t t t\ntasksandV representsinformationofallAGVsattimet.We Jπθ =E (F (π ))≤ϵ, (5)\nt C πθ t θ\nencode the information of the system at decision time t with v.ψ =I.",
+      "size": 979,
+      "sentences": 10
+    },
+    {
+      "id": 26,
+      "content": "V ), where U is the set of unassigned\nt t t t\ntasksandV representsinformationofallAGVsattimet.We Jπθ =E (F (π ))≤ϵ, (5)\nt C πθ t θ\nencode the information of the system at decision time t with v.ψ =I. (6)\nafeatureextractfunctionρ(U ,V )asstructurerepresentation. t t\nSpecifically,astateismappedintoavectorbyρconsistingof 4) Rewardfunction: Thenegativemakespanreturnedatthe\nthenumberofunassignedtasks,tasks’remainingtime,waiting last timestep is set as a reward. τ is denoted as a trajectory\ntime and distance between pickup and delivery point as well (s 0 ,a 0 ,s 1 ,a 1 ,...,s t ,a t ,s t+1 ,...)sampledfromcurrentpol-\nas statuses of vehicles and the minimal time from the current icy π. The per-step reward function is defined as follows. position to pickup point then delivery point. (cid:26)\n−F (π), if terminates,\nR(s ,a ,s )= m (7)\n2) Action: The goal of dynamic material handling is to t t t+1 0, otherwise.",
+      "size": 913,
+      "sentences": 7
+    },
+    {
+      "id": 27,
+      "content": "on is defined as follows. position to pickup point then delivery point. (cid:26)\n−F (π), if terminates,\nR(s ,a ,s )= m (7)\n2) Action: The goal of dynamic material handling is to t t t+1 0, otherwise. execute all tasks, thus the discrete time step refers to one\nB. Constraint handling\nsingle,independenttaskassignment.Differentfromtheregular\nMDP like in games, the number of steps in our problem is We combine invalid action masking and the reward con-\nusually fixed. In other words, the length of an episode is strained policy optimisation (RCPO) [26], a Lagrangian re-\ndecided by the number of tasks to be assigned. In our CMDP, laxationapproach,tohandletheinstantaneousandcumulative\nmaking an action is to choose a suitable dispatching rule and constraints at the same time. a corresponding vehicle.",
+      "size": 801,
+      "sentences": 7
+    },
+    {
+      "id": 28,
+      "content": "o be assigned. In our CMDP, laxationapproach,tohandletheinstantaneousandcumulative\nmaking an action is to choose a suitable dispatching rule and constraints at the same time. a corresponding vehicle. A hybrid action space A =D×V 1) Feasible action selection via masking: We can indeed\nt t\nis considered for the CMDP, where D and V are defined determine the available actions according to the current state. t\nas dispatching rule space and AGV space, respectively. Four For example, in our problem, the dimension of the current\ndispatching rules, including first come first served (FCFS), action space can be 4, 8, ..., which depends on the available\nshortest travel distance (STD), earliest due date first (EDD) vehiclesatanytimestep.However,sincethedimensionofthe\n=== 페이지 5 ===\ninput and output of neural networks used are usually fixed, it Algorithm 2 RCPO with masking (RCPOM). is hard to address the variable action space directly.",
+      "size": 935,
+      "sentences": 7
+    },
+    {
+      "id": 29,
+      "content": "wever,sincethedimensionofthe\n=== 페이지 5 ===\ninput and output of neural networks used are usually fixed, it Algorithm 2 RCPO with masking (RCPOM). is hard to address the variable action space directly. Input: Epoch N, Lagrange multiplier λ, learning rate of\nTohandletheinstantaneousconstraint,weadapttheinvalid Lagrange multiplier η, temperature parameter α\naction masking technique that has been widely applied in Output: Policy π θ\ngames [29], [30]. The action space is then compressed into 1: Initialise an experience replay buffer B R\nA t = D×AV t with the masking, where AV t is the set of 2: Initialise policy π θ and two critics Qˆ ψ1 and Qˆ ψ2\navailable AGVs. Logits corresponding to all invalid actions 3: for n=1 to N do\nwill be replaced with a large negative number, and then 4: for t=0,1,... do\nthe final action will be resampled according to the new 5: a′ t ← Masking(π θ ,s t ) ▷ Alg. 1\nprobability distribution.",
+      "size": 924,
+      "sentences": 6
+    },
+    {
+      "id": 30,
+      "content": "do\nwill be replaced with a large negative number, and then 4: for t=0,1,... do\nthe final action will be resampled according to the new 5: a′ t ← Masking(π θ ,s t ) ▷ Alg. 1\nprobability distribution. Masking helps the policy to choose 6: Get s t+1 ,r t ,c t by executing a′ t\nvalid actions and avoid some dangerous situations like getting 7: Store ⟨s t ,a′ t ,s t+1 ,r t ,c t ⟩ into B R\nstuck somewhere. Pseudo code is shown in Alg. 1. 8: Randomly sample a minibatch B R of transitions\nIt is notable that, to the best of our knowledge, no ex- T =⟨s,a,s′,r,c⟩ from B R\nisting work has applied the masking technique to handle 9: Compute y ← r − λc + γ(\nj\nm\n=1\nin\n,2\nQˆ ψj (s′,a˜′) −\nthe instantaneous constraint in DMH. The closest work is αlogπ (a˜′|s′)), where a˜′ ∼π (·|s′)\nθ θ\npresentedby[6],whichappliestheDQN[31]withadesigned 10: Update critic with\nreward function.",
+      "size": 868,
+      "sentences": 7
+    },
+    {
+      "id": 31,
+      "content": "(s′,a˜′) −\nthe instantaneous constraint in DMH. The closest work is αlogπ (a˜′|s′)), where a˜′ ∼π (·|s′)\nθ θ\npresentedby[6],whichappliestheDQN[31]withadesigned 10: Update critic with\nreward function. According to [6], the DQN agent selects the ∇ 1 (cid:80) (y−Qˆ (s,a))2 for j =1,2\naction with maximal Q value and repeats this step until a\nψj|BR|\nT∈BR\nψj\nfeasibleactionisselected,i.e.,assigningatasktoanavailable 11: Update actor with\nv\np\ne\nro\nh\nb\nic\nle\nle\nm\n. ,\nH\nth\no\ne\nw\na\nev\ng\ne\ne\nr\nn\n,\nt\nw\nw\nh\nil\ne\nl\nn\nke\na\ne\np\np\npl\nb\ny\ne\nin\nin\ng\ng\nt\nt\nh\nr\ne\nap\nm\npe\ne\nd\nth\ni\no\nn\nd\nth\no\ni\nf\ns\n[\ns\n6\nte\n]\np\nto\nif\no\nth\nu\ne\nr\n∇\nθ|B\n1\nR| T∈\n(cid:80)\nBR\n(\nj\nm\n=1\nin\n,2\nQˆ\nψj\n(s,a˜\nθ\n) − αlogπ\nθ\n(a˜\nθ\n|s)),\na˜ is sampled from π (·|s) via reparametrisation trick\nθ θ\nselected action is infeasible. Even though keeping resampling\n12: Apply soft update on target networks\ntheaction,thesamefeasibleactionwillalwaysbeselectedby\n13: end for\nthis deterministic policy at a certain state. 14: λ←max(λ+η(Jπ−ϵ),0) ▷ Eq.",
+      "size": 993,
+      "sentences": 6
+    },
+    {
+      "id": 32,
+      "content": "eeping resampling\n12: Apply soft update on target networks\ntheaction,thesamefeasibleactionwillalwaysbeselectedby\n13: end for\nthis deterministic policy at a certain state. 14: λ←max(λ+η(Jπ−ϵ),0) ▷ Eq. (10)\nC\n2) Reward constrained policy optimisation with masking: 15: end for\nPseudo code of our proposed method is shown in Alg. 2. We combine RCPO [26] and invalid action masking, named\nRCPOM, to handle the hybrid constraints at the same time, Specifically, we implement RCPOM with soft actor critic\nseeing Fig. 3. RCPO is a Lagrangian relaxation type method (SAC) because of its remarkable performance [20]. SAC is\nbased on Actor-Critic framework [32] which converts a con- a maximum entropy reinforcement learning that maximises\nstrained problem into an unconstrained one by introducing a cumulative reward as well as the expected entropy of the\nmultiplier λ, seeing Eq. (8), policy.",
+      "size": 884,
+      "sentences": 9
+    },
+    {
+      "id": 33,
+      "content": "ntropy reinforcement learning that maximises\nstrained problem into an unconstrained one by introducing a cumulative reward as well as the expected entropy of the\nmultiplier λ, seeing Eq. (8), policy. The objective function is adapted as follows:\nm λ inm θ ax[Rπ−λ(J C π−ϵ)], (8) J(π )=E [ (cid:88) ∞ γt(R(s ,a ,s )+αH(π(·|s )))], (11)\nθ πθ t t t+1 t\nwhereλ>0.TherewardfunctionisreshapedwithLagrangian t=0\nmultiplier λ as follows: where the temperature α decides how stochastic the policy is,\nwhich encourages exploration. Rˆ(s,a,s′,λ)=R(s,a,s′)−λc(s,a,s′). (9)\n3) Invariant reward shaping: The raw reward function is\nreshapedwithlineartransformationformorepositivefeedback\nInaslowertimescalethantheupdateoftheactorandcritic,\nand better estimation of the value function, seeing Eq. (12)\nthe multiplier is updated with the collected constraint values\naccording to Eq. (10). R˜(s,a,s′,λ)=βR(s,a,s′)+b, (12)\nλ=max{λ+η(Jπ−ϵ),0}, (10) where β >0 and b is a positive constant number.",
+      "size": 976,
+      "sentences": 8
+    },
+    {
+      "id": 34,
+      "content": "Eq. (12)\nthe multiplier is updated with the collected constraint values\naccording to Eq. (10). R˜(s,a,s′,λ)=βR(s,a,s′)+b, (12)\nλ=max{λ+η(Jπ−ϵ),0}, (10) where β >0 and b is a positive constant number. It is easy to\nC\nguarantee policy invariance under this reshape [33], declared\nwhere η is the learning rate of the multiplier. in Remark 1. Remark 1: Given a CMDP (S,A,R,C,P,γ), the optimal\nAlgorithm 1 Invalid action masking. policy keeps invariant with linear transformation in Eq. 12,\nwhere β >0 and b∈R:\nInput: policy π , state s\nθ\nOutput: action a b\n∀s∈S,V∗(s)=argmaxVπ(s)=argmaxβVπ(s)+ . 1: Logits l←π θ (·|s) π π 1−γ\n2: Compute l′ by replacing π θ (a′|s) with −∞ where a′ is\nan invalid action V. EXPERIMENTS\n3: π′(·|s)← softmax(l′)\nθ To verify our proposed method, numerous experiments are\n4: Sample a∼π′(·|s)\nθ conducted and discussed in this section. === 페이지 6 ===\nTABLEI\nTIMECONSUMEDFORMAKINGADECISIONAVERAGEDOVER2000TRIALS.",
+      "size": 932,
+      "sentences": 11
+    },
+    {
+      "id": 35,
+      "content": "l′)\nθ To verify our proposed method, numerous experiments are\n4: Sample a∼π′(·|s)\nθ conducted and discussed in this section. === 페이지 6 ===\nTABLEI\nTIMECONSUMEDFORMAKINGADECISIONAVERAGEDOVER2000TRIALS. RCPOM RCPOM-NS IPO L-SAC L-PPO SAC PPO FCFS EDD NVF STD Random Huetal. [6]\nTime(ms) 2.143 2.112 2.038 2.74 2.514 2.79 2.626 0.0169 0.0199 0.0239 0.0354 0.0259 Timeout\nThe proposed method denoted as “RCPOM” is compared It is obvious that the random agent performs the worst. In\nwith five groups of methods: (i) an advanced constrained terms of dispatching rules, EDD shows its ability to optimise\nreinforcement learning agent Interior-point Policy Optimisa- the time-based metric, namely tardiness. In all instances, the\ntion (IPO) [34], (ii) state-of-the-art reinforcement learning tardiness of EDD is almost under the tardiness constraint\nagents including proximal policy optimization (PPO) [35] threshold.",
+      "size": 907,
+      "sentences": 6
+    },
+    {
+      "id": 36,
+      "content": "tances, the\ntion (IPO) [34], (ii) state-of-the-art reinforcement learning tardiness of EDD is almost under the tardiness constraint\nagents including proximal policy optimization (PPO) [35] threshold. For Instance01-Instance03, EDD gets the lowest\nand soft actor critic (SAC) [20], (iii) SAC and PPO with tardiness 33.9, 29.6 and 26.5 compared with other policies,\nfixed Lagrangian multiplier named as “L-SAC” and “L-PPO”, respectively. FCFS is also a time-related rule that always\nand (iv) commonly used dispatching rules including FCFS, assigns the tasks that arrive first. It only performs better than\nSTD, EDD and NVF as presented in Section IV-A2. (v) To the other three rules in Instance07 for its low makespan and\nvalidatetheinvariantrewardshaping,anablationstudyisalso tardiness. Two other distance-related rules, NVF and STD\nperformed. The RCPOM agent without the invariant reward that optimise the travel distance can achieve good results\nshaping denoted as “RCPOM-NS”, is compared.",
+      "size": 991,
+      "sentences": 7
+    },
+    {
+      "id": 37,
+      "content": "ther distance-related rules, NVF and STD\nperformed. The RCPOM agent without the invariant reward that optimise the travel distance can achieve good results\nshaping denoted as “RCPOM-NS”, is compared. A random on makespan. For example, STD has the smallest makespan\nagent is also compared. 1883.5 in Instance08 among all the policies. However, both\nThe simulator DMH-GYM and 16 problem instances are rules fail in terms of tardiness, which is shown in Tab. II for\nused in our experiments, where instance01-08 are training their relatively high constraint value. instances and instance09-16 are unseen during training. Trials Learning agents usually show better performance on\non the training instances and unseen instances verify the makespanthandispatchingrules.InInstance01,theSACagent\neffectiveness and adaptability of our proposed method. gets the best makespan of 1798.4. The proposed RCPOM\nperformsthebestamongallthepoliciesintermsofmakespan\nA.",
+      "size": 949,
+      "sentences": 11
+    },
+    {
+      "id": 38,
+      "content": "tchingrules.InInstance01,theSACagent\neffectiveness and adaptability of our proposed method. gets the best makespan of 1798.4. The proposed RCPOM\nperformsthebestamongallthepoliciesintermsofmakespan\nA. Settings\nonmostofthetraininginstancesexceptInstance01,Instance03\nWe apply the invalid action masking technique to all the\nandInstance08.AlthoughSTDachieves1883.5onInstance08,\nlearning agents to ensure safety when assigning tasks since\nRCPOMstillgetsaveryclosedmakespanvalueof1898.0.On\ntheinstantaneousconstraintsshouldbesatisfiedpertimestep. tardiness,constrainedlearningagentsshowalowervaluethan\nAll learning agents except “RCPOM-NS” are equipped with\nthe others in most instances. On Instance01, Instance04 and\nthe reward shaping as a fair comparison with the proposed\nInstance08,SACagentgetsthelowesttardiness.However,itis\nmethod.",
+      "size": 833,
+      "sentences": 6
+    },
+    {
+      "id": 39,
+      "content": "are equipped with\nthe others in most instances. On Instance01, Instance04 and\nthe reward shaping as a fair comparison with the proposed\nInstance08,SACagentgetsthelowesttardiness.However,itis\nmethod. To ensure instantaneous constraint satisfaction and\nnotable that we care more about constraint satisfaction rather\nexplore more possible plans, we adapt the dispatching rules. than minimising tardiness. Even though in Instance04, SAC\nDispatching rules consider current feasible task assignments\ngetsthelowesttardinessvaluewith28.9,weconsiderRCPOM\nand shuffle these possible task assignments when the case of\nas the best agent since it gets the lowest makespan value of\nmultiple available vehicles is met. 1956.9, whose tardiness is under the constraint threshold, i.e.,\nAlllearningagentsareadaptedbasedontheimplementation 40.5<50.Asimilarcaseisalsoobservedinunseeninstances,\nofTianshouframework[36]2.Thenetworkstructureisformed\ndemonstrated in Tab. III.",
+      "size": 952,
+      "sentences": 7
+    },
+    {
+      "id": 40,
+      "content": "hreshold, i.e.,\nAlllearningagentsareadaptedbasedontheimplementation 40.5<50.Asimilarcaseisalsoobservedinunseeninstances,\nofTianshouframework[36]2.Thenetworkstructureisformed\ndemonstrated in Tab. III. Learning agents still perform better\nby two hidden fully connected layers 128×128. α is 0.1. γ\non unseen instances compared with dispatching rules, except\nis 0.97. The initial multiplier λ and its learning rate are set as\nSTD which gets the best result on Instance16 with constraint\n0.001 and 0.0001, respectively. The constraint threshold ϵ is\nsatisfaction. RCPOM, the proposed method, achieves the best\nsetas50.Rewardshapingparametersβ andbaresetas1and\naverage makespan and is statistically better than almost other\n2000 in terms of dispatching rules, respectively. All learning\npolicies on Instance10-14. agents are trained for 5e5 steps on an Intel Xeon Gold 6240\nCPU and four TITAN RTX GPUs. The best policies during C. Discussion\ntraining are selected.",
+      "size": 958,
+      "sentences": 10
+    },
+    {
+      "id": 41,
+      "content": "ctively. All learning\npolicies on Instance10-14. agents are trained for 5e5 steps on an Intel Xeon Gold 6240\nCPU and four TITAN RTX GPUs. The best policies during C. Discussion\ntraining are selected. All dispatching policies and learning\n1) Mediocre dispatching rules: Dispatching rules perform\nagents are tested 30 times on the instances independently. promisingly on 16 instances, as shown in Tab. II and Tab. III. Parametervaluesareeithersetfollowingpreviousstudies[26],\nEDD usually has the lowest tardiness and STD even gets the\n[36] or arbitrarily chosen. lowest makespan on Instance08 and Instance16. FCFS and\nB. Experimental result EDD are time-related type dispatching rules. FCFS always\nchooses tasks according to their arrival time, i.e., assigns\nTab. II and Tab. III present the results on the training and\nthe task that arrives first. EDD will select the task that has\nunseen instances, respectively. The average time consumption\nthe earliest due date.",
+      "size": 964,
+      "sentences": 17
+    },
+    {
+      "id": 42,
+      "content": "and Tab. III present the results on the training and\nthe task that arrives first. EDD will select the task that has\nunseen instances, respectively. The average time consumption\nthe earliest due date. In contrast to time-related rules, NVF\nper task assignment is demonstrated in Tab. I.\nand STD are distance-related rules. They both optimise the\n2https://github.com/thu-ml/tianshou objective that strongly relates to distance such as makespan. === 페이지 7 ===\nTABLEII\nAVERAGEMAKESPANANDTARDINESSOVER30INDEPENDENTTRAILSONTRAININGSET(INSTANCE01-08).THEBOLDNUMBERINDICATESTHEBEST\nMAKESPANANDTARDINESS.“+/≈/-”INDICATESTHEAGENTPERFORMSSTATISTICALLYBETTER/SIMILAR/WORSETHANRCPOMAGENT.“M/C(P)”\nINDICATESTHEAVERAGENORMALISEDMAKESPAN,TARDINESSANDPERCENTAGEOFCONSTRAINTSATISFACTION.THENUMBEROFPOLICIESTHAT\nRCPOMISBETTERTHANOTHERSINTERMSOFMAKESPANANDTARDINESSONEACHINSTANCEISGIVENINTHEBOTTOMROW.",
+      "size": 881,
+      "sentences": 8
+    },
+    {
+      "id": 43,
+      "content": "”\nINDICATESTHEAVERAGENORMALISEDMAKESPAN,TARDINESSANDPERCENTAGEOFCONSTRAINTSATISFACTION.THENUMBEROFPOLICIESTHAT\nRCPOMISBETTERTHANOTHERSINTERMSOFMAKESPANANDTARDINESSONEACHINSTANCEISGIVENINTHEBOTTOMROW. Instance01 Instance02 Instance03 Instance04 Instance05 Instance06 Instance07 Instance08\nAlgorithm M/C(P)\nF m/F\nt\nF m/F\nt\nF m/F\nt\nF m/F\nt\nF m/F\nt\nF m/F\nt\nF m/F\nt\nF m/F\nt\nRCPOM 1840.0/56.7 1908.4/48.2 1914.8/45.0 1956.9/40.5 1852.5/21.3 1911.1/41.0 1927.0/8.4 1898.0/21.0 0.97/0.89(75%)\nRCPOM-NS 1891.9-/58.8≈ 1979.5-/51.6≈ 1931.1≈/46.9≈ 2003.9-/53.0- 2028.8-/58.1- 2028.9-/88.8- 1951.4-/15.2- 1951.0-/41.8- 0.68/0.70(56%)\nIPO 1860.5-/48.6+ 1933.5≈/50.4≈1924.9≈/47.6≈ 1979.1-/49.6≈ 1951.1-/47.0- 1951.5-/71.4- 1977.0-/14.8- 1943.0-/34.9- 0.80/0.77(61%)\nL-SAC 1884.8-/60.3≈ 1987.4-/57.2- 1933.7≈/44.0≈1973.5≈/42.2≈ 1955.4-/44.7- 1992.9-/68.5- 1983.9-/19.8- 1923.6-/32.8- 0.74/0.76(58%)\nL-PPO 1872.1-/59.5≈ 1963.5-/52.3≈ 1910.3≈/49.7≈ 1984.0-/49.7- 1954.0-/55.5- 1968.6-/75.6- 1979.7-/18.9- 1899.2≈/32.6-0.80/0.73(53%)\nSAC 1798.4+/49.1+ 1950.0-/68.9- 1965.0-/53.4- 2002.0-/28.9+ 1900.0-/26.6- 2011.9-/71.3- 1927.0≈/12.6-1914.1-/15.7+ 0.82/0.83(62%)\nPPO 1858.0≈/52.3+1941.8≈/49.9≈1918.2≈/44.3≈ 1995.3-/55.6- 1937.1-/47.6- 1961.0-/82.0- 1988.6-/14.6- 1920.7≈/35.6-0.79/0.75(61%)\nFCFS 2081.1-/90.2- 2084.5-/82.3- 2014.7-/64.2- 2136.7-/105.0- 2194.6-/122.5- 2123.5-/85.2- 1927.9≈/11.2-1933.6-/27.4≈0.31/0.48(37%)\nEDD 1903.2≈/33.9+ 1968.6-/29.6+ 1977.8-/26.5+ 1988.1-/32.8+ 1950.7-/33.7- 2016.8-/46.8- 1940.5-/12.1- 2020.8-/45.3≈0.66/0.91(86%)\nNVF 1876.5≈/69.6≈ 1958.4-/56.4≈ 1946.7-/49.6≈ 2040.6-/66.7- 1933.9-/56.3- 1953.4-/78.5- 1996.5-/21.8- 1944.6-/35.5- 0.71/0.67(51%)\nSTD 1868.8≈/66.6≈ 1961.7-/49.2≈ 1921.3≈/51.7- 1970.7-/35.6+ 1917.1-/41.4- 1955.4-/62.7- 1983.7-/30.4- 1883.5+/35.1- 0.83/0.75(53%)\nRandom 2098.7-/124.5- 2113.8-/103.1- 2091.2-/143.7- 2135.1-/123.1- 2149.3-/119.0-2159.1-/129.3- 2083.0-/70.2- 2067.8-/89.5- 0.02/0.00(12%)\n6/2 9/4 5/4 10/6 11/11 11/11 9/11 8/8\nTABLEIII\nAVERAGEMAKESPANANDTARDINESSOVER30INDEPENDENTTRAILSONTESTSET(INSTANCE09-16).THEBOLDNUMBERINDICATESTHEBEST\nMAKESPANANDTARDINESS.“+/≈/-”INDICATESTHEAGENTPERFORMSSTATISTICALLYBETTER/SIMILAR/WORSETHANRCPOMAGENT.“M/C(P)”\nINDICATESTHEAVERAGENORMALISEDMAKESPAN,TARDINESSANDPERCENTAGEOFCONSTRAINTSATISFACTION.THENUMBEROFPOLICIESTHAT\nRCPOMISBETTERTHANOTHERSINTERMSOFMAKESPANANDTARDINESSONEACHINSTANCEISGIVENINTHEBOTTOMROW.",
+      "size": 2395,
+      "sentences": 2
+    },
+    {
+      "id": 44,
+      "content": "”\nINDICATESTHEAVERAGENORMALISEDMAKESPAN,TARDINESSANDPERCENTAGEOFCONSTRAINTSATISFACTION.THENUMBEROFPOLICIESTHAT\nRCPOMISBETTERTHANOTHERSINTERMSOFMAKESPANANDTARDINESSONEACHINSTANCEISGIVENINTHEBOTTOMROW. Instance09 Instance10 Instance11 Instance12 Instance13 Instance14 Instance15 Instance16\nAlgorithm M/C(P)\nF m/F\nt\nF m/F\nt\nF m/F\nt\nF m/F\nt\nF m/F\nt\nF m/F\nt\nF m/F\nt\nF m/F\nt\nRCPOM 1840.0/57.1 1917.6/49.4 1900.3/45.8 1954.3/38.8 1862.7/18.4 1914.1/41.8 1960.8/19.6 1896.4/21.3 0.95/0.90(74%)\nRCPOM-NS1904.6-/60.2≈ 1985.4-/52.0≈ 1931.6-/47.3≈ 1995.6-/51.0- 2009.1-/55.0- 2034.9-/92.6- 1956.6≈/16.2+1941.0≈/40.3-0.68/0.72(55%)\nIPO 1860.5-/48.6+ 1933.5≈/50.4≈ 1924.9-/47.6≈ 1979.1-/49.6- 1951.1-/47.0- 1951.5-/71.4- 1977.0-/14.8+ 1943.0-/34.9- 0.80/0.80(61%)\nL-SAC 1892.3-/62.0≈ 1983.6-/56.9≈ 1933.1-/43.4+ 1974.5-/43.0≈ 1954.4-/41.0- 1999.4-/70.9- 1981.5-/18.6+ 1930.3-/34.8- 0.73/0.78(58%)\nL-PPO 1877.5-/60.8≈ 1961.3-/52.6≈ 1905.8≈/49.5≈ 1980.9-/49.8- 1960.2-/50.1- 1965.5-/78.5- 1975.1-/18.2+ 1901.5≈/33.1-0.81/0.76(57%)\nSAC 1801.3+/49.3+ 1950.0-/69.1- 1956.0-/56.8- 2000.0-/28.6+ 1904.0-/27.3- 2015.1-/71.1- 1930.0+/12.6+ 1987.0-/38.2- 0.76/0.81(62%)\nPPO 1863.1-/53.5+ 1941.8≈/50.1≈1913.2≈/44.1≈ 1986.3-/55.0- 1927.4-/41.4- 1965.5-/85.9- 1990.1-/15.0+ 1908.2≈/35.4-0.81/0.77(62%)\nFCFS 2089.3-/92.5- 2045.4-/75.7- 1996.9-/67.6- 2107.1-/95.2- 2191.9-/121.7- 2130.1-/89.9- 1934.1≈/11.1+ 1946.8-/35.8- 0.32/0.48(35%)\nEDD 1996.9-/107.7- 1976.3-/33.4+ 1978.7-/22.0+ 1997.6-/36.9≈ 1962.1-/37.0- 1993.5-/44.6- 1934.8≈/11.0+ 2052.3-/69.4- 0.59/0.79(73%)\nNVF 1847.5≈/57.2- 1958.8-/54.3≈ 1926.6≈/51.8≈ 2021.7-/65.9- 1939.2-/41.2- 1975.5-/89.8- 2003.5-/19.3+ 1933.8-/40.9- 0.73/0.71(58%)\nSTD 1894.1-/72.5- 1958.2≈/49.7≈ 1923.1≈/52.4- 1985.2-/38.1≈ 1905.1-/31.4- 1974.3-/71.9- 1990.3≈/33.0- 1885.2+/38.6- 0.80/0.76(55%)\nRandom 2132.7-/135.3- 2100.9-/99.5- 2076.2-/144.4- 2097.5-/106.3-2144.1-/102.6-2142.9-/123.6- 2101.3-/81.1- 2055.1-/94.1- 0.03/0.02(11%)\n9/5 8/3 7/4 11/7 11/11 11/11 6/2 7/11\nThe difference is that NVF selects the task with the nearest For example, EDD and FCFS consider time-related objectives\npickup point while STD selects the task with the shortest such as makespan which can be easily determined in Eq.",
+      "size": 2209,
+      "sentences": 2
+    },
+    {
+      "id": 45,
+      "content": "s the task with the nearest For example, EDD and FCFS consider time-related objectives\npickup point while STD selects the task with the shortest such as makespan which can be easily determined in Eq. 2.\ndistance from the current position to the pickup point and Both rules optimise the objective partially. When the instance\nthen the delivery point. hasalargeconcessionspacefordelayedtasks,EDDandFCFS\nmay hardly work. In the problem considered in this paper,\nDispatching rules use simple manual mechanisms to sched-\ntwoobjectives(i.e.,distanceandtime)areinvolved.Although\nule tasks and achieve a promising performance, which are\ntardiness is considered a constraint, it is hard to identify the\nusually better than the Random agent. However, such mech-\ncorrelation between makespan and tardiness. It is shown on\nanisms may not be able to handle more complex scenarios.",
+      "size": 867,
+      "sentences": 7
+    },
+    {
+      "id": 46,
+      "content": "t is hard to identify the\nusually better than the Random agent. However, such mech-\ncorrelation between makespan and tardiness. It is shown on\nanisms may not be able to handle more complex scenarios. Instance08 that NVF and STD are better in both makespan\nAnd it is hard to improve the dispatching rule due to its poor\nand tardiness. But it can also be seen that in Instance01\nadaptability.FromFig.4,itisclearthatlearningagentsusually\nand Instance03, EDD has lower tardiness, whose makespan\nperform better than the dispatching rules with lower averaged\nis worse than NVF and STD. This observation implies that\nmakespan on the instances. Dispatching rules keep using the\nthe ability of simple dispatching rules is limited. Our hybrid\nsame mechanism in the long sequential decision process. It\naction space is motivated by the phenomenon and expected to\nmakes sense that they show a limited performance since one\nprovide more optimisation possibilities and adaptability.",
+      "size": 968,
+      "sentences": 9
+    },
+    {
+      "id": 47,
+      "content": "l decision process. It\naction space is motivated by the phenomenon and expected to\nmakes sense that they show a limited performance since one\nprovide more optimisation possibilities and adaptability. rule usually works in certain specific situations. Instantaneous\nmodificationshavetobemadewhenunexpectedeventsoccur. [표 데이터 감지됨]\n\n=== 페이지 8 ===\nmultiplier that is updated during training. It is demonstrated\nin Tab. II, Tab. III and Fig. 4, RCPOM outperforms other\nlearning agents on average. RCPOM has a slight gap with\nEDD on tardiness but outperforms it much on makespan. Although IPO is also a CRL algorithm, its assumption that\nthe policy should satisfy constraints upon initialisation [37]\nlimits its performance when solving the DMH problem. 3) Promising performance on unseen instances: To further\nvalidatetheperformanceoftheproposedmethod,wealsotest\nit on some unseen instances from Instance09 to Instance16. Theseunseeninstancesaregeneratedbymutatingthetraining\ninstances.",
+      "size": 981,
+      "sentences": 13
+    },
+    {
+      "id": 48,
+      "content": "instances: To further\nvalidatetheperformanceoftheproposedmethod,wealsotest\nit on some unseen instances from Instance09 to Instance16. Theseunseeninstancesaregeneratedbymutatingthetraining\ninstances. Our method still outperforms others on the unseen\ninstances according to Tab. III. Such a stable performance\ngives more possibility to apply our method to real-world\nproblems, meeting dynamic and complex situations. 4) Invariant reward shaping improves: The raw reward\nfunction of the process is the negative makespan, which is\nrewarded at the end, denoted in Eq. (7). It is challenging for\nan RL agent to learn such a sparse reward function with only\nnegativevalues.Theconsequencebroughtbythelackofposi-\ntive feedback is that agents may be stagnant and conservative. In almost all instances, RCPOM agent with reward shaping\nperforms better than the one without reward shaping, shown\nin Tab. II and Tab. III.",
+      "size": 907,
+      "sentences": 11
+    },
+    {
+      "id": 49,
+      "content": "feedback is that agents may be stagnant and conservative. In almost all instances, RCPOM agent with reward shaping\nperforms better than the one without reward shaping, shown\nin Tab. II and Tab. III. Although the relative reward value is\nmodified by the reward shaping, it is proved that the optimal\npolicy keeps invariant. Invariant reward shaping helps agents\nexplore more and make the most of the positive feedback. VI. CONCLUSION\nFig.4. Performanceaveragedover16instances. This paper studies the dynamic material handling problem. Newly arrived tasks and vehicle breakdowns are considered\n2) Constrainthandlinghelps: Avehicleshouldbeavailable dynamicevents.Duetothelackoffreesimulatorsandproblem\nwhenassigningatask,whichiscriticalforsafemanufacturing. instances, we develop a gym-like simulator, namely DMH-\nPrevious work [6] resamples an action in case of constraint GYM and provide a dataset of diverse instances. Considering\nviolations, which does not work out in our scenario. Tab.",
+      "size": 988,
+      "sentences": 14
+    },
+    {
+      "id": 50,
+      "content": "imulator, namely DMH-\nPrevious work [6] resamples an action in case of constraint GYM and provide a dataset of diverse instances. Considering\nviolations, which does not work out in our scenario. Tab. I theconstraintsoftardinessandvehicleavailability,weformu-\nshows the time cost for determining task assignments. The late the problem as a constrained Markov decision process. A\nagents using the invalid action masking technique take much constrained reinforcement learning algorithm that combines\nshorterdecision-makingtimeincontrasttothetimeoutby[6]. Lagrangian relaxation and invalid action masking, named\nThe application of the invalid action masking technique guar- RCPOMisproposedtomeetthehybridcumulativeandinstan-\nanteesinstantaneoussafety.Samplingonceisenoughtoobtain taneous constraints. We validate the outstanding performance\na valid action. Another benefit of masking is the compression of our approach on both training and unseen instances. The\nof action space.",
+      "size": 974,
+      "sentences": 10
+    },
+    {
+      "id": 51,
+      "content": "taneous constraints. We validate the outstanding performance\na valid action. Another benefit of masking is the compression of our approach on both training and unseen instances. The\nof action space. The agent can focus more on the choice of experimental results show RCPOM statistically outperforms\nvalid actions and further improve the exploration efficiency. state-of-the-art reinforcement learning agents, constrained re-\ninforcement learning agents, and several commonly used dis-\nEven though SAC and PPO agents show remarkable per-\npatching rules. It is also validated that the invariant reward\nformance in terms of makespan, they fail in tardiness. SAC\nshaping helps. The effectiveness of RCPOM provides a new\nagent gets a high tardiness value on Instances indexed with\nperspective for dealing with real-world scheduling problems\n2, 3, 6, 10, 11 and 14.",
+      "size": 859,
+      "sentences": 9
+    },
+    {
+      "id": 52,
+      "content": "haping helps. The effectiveness of RCPOM provides a new\nagent gets a high tardiness value on Instances indexed with\nperspective for dealing with real-world scheduling problems\n2, 3, 6, 10, 11 and 14. It is attributed to the single-attribute\nwithconstraints.Insteadofconstructingacomplicatedreward\nreward function since it only relies on the makespan and does\nfunction manually, it is possible to restrict the policy directly\nnot consider tardiness. A straightforward method to handle\nby constrained reinforcement learning methods. thecumulativeconstraintisaugmentingtheobjectivefunction. As future work, we are interested in extending the problem\nL-SAC and L-PPO reshape the reward function with a fixed\nby introducing more dynamic events and constraints that\nLagrangian multiplier, seeing Eq. (9). However, it is hard to\nwidely exist in real-world scenarios. decide the multiplier. From Tab.",
+      "size": 892,
+      "sentences": 10
+    },
+    {
+      "id": 53,
+      "content": "th a fixed\nby introducing more dynamic events and constraints that\nLagrangian multiplier, seeing Eq. (9). However, it is hard to\nwidely exist in real-world scenarios. decide the multiplier. From Tab. II, L-SAC and L-PPO do\nnot outperform SAC and PPO much, even L-PPO has the REFERENCES\nlowest makespan on Instance03. RCPOM provides a more\n[1] V. Kaplanog˘lu, C. S¸ahin, A. Baykasog˘lu, R. Erol, A. Ekinci, and\nflexible way to restrict the behaviour of policy with a suitable M. Demirtas¸, “A multi-agent based approach to dynamic scheduling\n=== 페이지 9 ===\nof machines and automated guided vehicles (AGV) in manufacturing [20] T.Haarnoja,A.Zhou,P.Abbeel,andS.Levine,“Softactor-critic:Off-\nsystems by considering AGV breakdowns,” International Journal of policymaximumentropydeepreinforcementlearningwithastochastic\nEngineeringResearch&Innovation,vol.7,no.2,pp.32–38,2015. actor,”inInternationalConferenceonMachineLearning.",
+      "size": 920,
+      "sentences": 8
+    },
+    {
+      "id": 54,
+      "content": "wns,” International Journal of policymaximumentropydeepreinforcementlearningwithastochastic\nEngineeringResearch&Innovation,vol.7,no.2,pp.32–38,2015. actor,”inInternationalConferenceonMachineLearning. PMLR,2018,\n[2] T. Raghu and C. Rajendran, “An efficient dynamic dispatching rule pp.1861–1870. for scheduling in a job shop,” International Journal of Production [21] C.Chen,B.Xia,B.-h.Zhou,andL.Xi,“Areinforcementlearningbased\nEconomics,vol.32,no.3,pp.301–313,1993. approach for a multiple-load carrier scheduling problem,” Journal of\n[3] I.Sabuncuoglu,“Astudyofschedulingrulesofflexiblemanufacturing IntelligentManufacturing,vol.26,no.6,pp.1233–1245,2015. systems: A simulation approach,” International Journal of Production [22] C.Kardos,C.Laflamme,V.Gallina,andW.Sihn,“Dynamicscheduling\nResearch,vol.36,no.2,pp.527–546,1998. inajob-shopproductionsystemwithreinforcementlearning,”Procedia\n[4] W. Xu, S. Guo, X. Li, C. Guo, R. Wu, and Z. Peng, “A dynamic CIRP,vol.97,pp.104–109,2021.",
+      "size": 984,
+      "sentences": 7
+    },
+    {
+      "id": 55,
+      "content": "ling\nResearch,vol.36,no.2,pp.527–546,1998. inajob-shopproductionsystemwithreinforcementlearning,”Procedia\n[4] W. Xu, S. Guo, X. Li, C. Guo, R. Wu, and Z. Peng, “A dynamic CIRP,vol.97,pp.104–109,2021. scheduling method for logistics tasks oriented to intelligent manufac- [23] S. Govindaiah and M. D. Petty, “Applying reinforcement learning to\nturing workshop,” Mathematical Problems in Engineering, vol. 2019, planmanufacturingmaterialhandling,”DiscoverArtificialIntelligence,\npp.1–18,2019. vol.1,no.1,pp.1–33,2021. [5] T. Xue, P. Zeng, and H. Yu, “A reinforcement learning method for [24] E. Altman, Constrained Markov decision processes: Stochastic model-\nmulti-AGV scheduling in manufacturing,” in 2018 IEEE International ing. Routledge,1999. ConferenceonIndustrialTechnology. IEEE,2018,pp.1557–1561. [25] J.Achiam,D.Held,A.Tamar,andP.Abbeel,“Constrainedpolicyopti-\n[6] H.Hu,X.Jia,Q.He,S.Fu,andK.Liu,“Deepreinforcementlearning mization,”inInternationalConferenceonMachineLearning.",
+      "size": 983,
+      "sentences": 10
+    },
+    {
+      "id": 56,
+      "content": ",2018,pp.1557–1561. [25] J.Achiam,D.Held,A.Tamar,andP.Abbeel,“Constrainedpolicyopti-\n[6] H.Hu,X.Jia,Q.He,S.Fu,andK.Liu,“Deepreinforcementlearning mization,”inInternationalConferenceonMachineLearning. PMLR,\nbasedagvsreal-timeschedulingwithmixedruleforflexibleshopfloorin 2017,pp.22–31. industry4.0,”Computers&IndustrialEngineering,vol.149,p.106749, [26] C.Tessler,D.J.Mankowitz,andS.Mannor,“Rewardconstrainedpolicy\n2020. optimization,”inInternationalConferenceonLearningRepresentations,\n[7] G. Brockman, V. Cheung, L. Pettersson, J. Schneider, J. Schulman, 2019. [Online].Available:https://openreview.net/forum?id=SkfrvsA9FX\nJ.Tang,andW.Zaremba,“OpenAIGym,”2016. [27] A.Bhatia,P.Varakantham,andA.Kumar,“Resourceconstraineddeep\n[8] L.Qiu,W.-J.Hsu,S.-Y.Huang,andH.Wang,“Schedulingandrouting reinforcementlearning,”inProceedingsoftheInternationalConference\nalgorithms for AGVs: A survey,” International Journal of Production onAutomatedPlanningandScheduling,vol.29,2019,pp.610–620.",
+      "size": 977,
+      "sentences": 6
+    },
+    {
+      "id": 57,
+      "content": "ndrouting reinforcementlearning,”inProceedingsoftheInternationalConference\nalgorithms for AGVs: A survey,” International Journal of Production onAutomatedPlanningandScheduling,vol.29,2019,pp.610–620. Research,vol.40,no.3,pp.745–760,2002. [28] Y. Liu, J. Ding, and X. Liu, “A constrained reinforcement learning\n[9] L.Qiu,J.Wang,W.Chen,andH.Wang,“HeterogeneousAGVrouting based approach for network slicing,” in 2020 IEEE 28th International\nproblemconsideringenergyconsumption,”in2015IEEEInternational ConferenceonNetworkProtocols(ICNP). IEEE,2020,pp.1–6. Conference on Robotics and Biomimetics (ROBIO). IEEE, 2015, pp. [29] D.Ye,Z.Liu,M.Sun,B.Shi,P.Zhao,H.Wu,H.Yu,S.Yang,X.Wu,\n1894–1899.",
+      "size": 685,
+      "sentences": 7
+    },
+    {
+      "id": 58,
+      "content": "nternational ConferenceonNetworkProtocols(ICNP). IEEE,2020,pp.1–6. Conference on Robotics and Biomimetics (ROBIO). IEEE, 2015, pp. [29] D.Ye,Z.Liu,M.Sun,B.Shi,P.Zhao,H.Wu,H.Yu,S.Yang,X.Wu,\n1894–1899. Q.Guo,Q.Chen,Y.Yin,H.Zhang,T.Shi,L.Wang,Q.Fu,W.Yang,\n[10] N. Singh, Q.-V. Dang, A. Akcay, I. Adan, and T. Martagan, “A andL.Huang,“MasteringcomplexcontrolinMOBAgameswithdeep\nmatheuristic for AGV scheduling with battery constraints,” European reinforcement learning,” in Proceedings of the AAAI Conference on\nJournalofOperationalResearch,vol.298,no.3,pp.855–873,2022. ArtificialIntelligence,vol.34,no.04,2020,pp.6672–6679. [11] Q.-V. Dang, N. Singh, I. Adan, T. Martagan, and D. van de Sande, [30] S. Huang and S. Ontan˜o´n, “A closer look at invalid action masking\n“Scheduling heterogeneous multi-load AGVs with battery constraints,” in policy gradient algorithms,” in Proceedings of the Thirty-Fifth In-\nComputers&OperationsResearch,vol.136,p.105517,2021.",
+      "size": 956,
+      "sentences": 8
+    },
+    {
+      "id": 59,
+      "content": "masking\n“Scheduling heterogeneous multi-load AGVs with battery constraints,” in policy gradient algorithms,” in Proceedings of the Thirty-Fifth In-\nComputers&OperationsResearch,vol.136,p.105517,2021. ternationalFloridaArtificialIntelligenceResearchSocietyConference,\n[12] D. Ouelhadj and S. Petrovic, “A survey of dynamic scheduling in vol.35,2022,pp.1–6. manufacturingsystems,”JournalofScheduling,vol.12,no.4,pp.417– [31] V. Mnih, K. Kavukcuoglu, D. Silver, A. A. Rusu, J. Veness, M. G.\n431,2009. Bellemare, A. Graves, M. Riedmiller, A. K. Fidjeland, G. Ostrovski,\n[13] J. H. Blackstone, D. T. Phillips, and G. L. Hogg, “A state-of-the-art S.Petersen,C.Beattie,A.Sadik,I.Antonoglou,H.King,D.Kumaran,\nsurveyofdispatchingrulesformanufacturingjobshopoperations,”The D. Wierstra, S. Legg, and D. Hassabis, “Human-level control through\nInternationalJournalofProductionResearch,vol.20,no.1,pp.27–45, deepreinforcementlearning,”Nature,vol.518,no.7540,pp.529–533,\n1982. 2015.",
+      "size": 968,
+      "sentences": 6
+    },
+    {
+      "id": 60,
+      "content": "erstra, S. Legg, and D. Hassabis, “Human-level control through\nInternationalJournalofProductionResearch,vol.20,no.1,pp.27–45, deepreinforcementlearning,”Nature,vol.518,no.7540,pp.529–533,\n1982. 2015. [14] C.Chen,L.-f.Xi,B.-h.Zhou,andS.-s.Zhou,“Amultiple-criteriareal- [32] V. Mnih, A. P. Badia, M. Mirza, A. Graves, T. Lillicrap, T. Harley,\ntime scheduling approach for multiple-load carriers subject to LIFO D.Silver,andK.Kavukcuoglu,“Asynchronousmethodsfordeeprein-\nloading constraints,” International Journal of Production Research, forcementlearning,”inInternationalConferenceonMachineLearning. vol.49,no.16,pp.4787–4806,2011. PMLR,2016,pp.1928–1937. [15] C. Sahin, M. Demirtas, R. Erol, A. Baykasog˘lu, and V. Kaplanog˘lu, [33] R.S.SuttonandA.G.Barto,Reinforcementlearning:Anintroduction. “A multi-agent based approach to dynamic scheduling with flexible MITpress,2018. processing capabilities,” Journal of Intelligent Manufacturing, vol.",
+      "size": 943,
+      "sentences": 8
+    },
+    {
+      "id": 61,
+      "content": "ndA.G.Barto,Reinforcementlearning:Anintroduction. “A multi-agent based approach to dynamic scheduling with flexible MITpress,2018. processing capabilities,” Journal of Intelligent Manufacturing, vol. 28, [34] Y. Liu, J. Ding, and X. Liu, “IPO: Interior-point policy optimization\nno.8,pp.1827–1845,2017. underconstraints,”inProceedingsoftheAAAIConferenceonArtificial\n[16] S. Liu, P. H. Tan, E. Kurniawan, P. Zhang, and S. Sun, “Dynamic Intelligence,vol.34,no.04,2020,pp.4940–4947. schedulingforpickupanddeliverywithtimewindows,”in2018IEEE [35] J.Schulman,F.Wolski,P.Dhariwal,A.Radford,andO.Klimov,“Prox-\n4thWorldForumonInternetofThings. IEEE,2018,pp.767–770. imalpolicyoptimizationalgorithms,”arXivpreprintarXiv:1707.06347,\n[17] G. Chryssolouris and V. Subramaniam, “Dynamic scheduling of man- 2017.\nufacturing job shops using genetic algorithms,” Journal of Intelligent [36] J. Weng, H. Chen, D. Yan, K. You, A. Duburcq, M. Zhang,\nManufacturing,vol.12,no.3,pp.281–293,2001.",
+      "size": 973,
+      "sentences": 8
+    },
+    {
+      "id": 62,
+      "content": "scheduling of man- 2017.\nufacturing job shops using genetic algorithms,” Journal of Intelligent [36] J. Weng, H. Chen, D. Yan, K. You, A. Duburcq, M. Zhang,\nManufacturing,vol.12,no.3,pp.281–293,2001. Y. Su, H. Su, and J. Zhu, “Tianshou: A highly modularized\n[18] Y. Zhang, G. Zhang, W. Du, J. Wang, E. Ali, and S. Sun, “An deep reinforcement learning library,” Journal of Machine Learning\noptimization method for shopfloor material handling based on real- Research, vol. 23, no. 267, pp. 1–6, 2022. [Online]. Available:\ntime and multi-source manufacturing data,” International Journal of http://jmlr.org/papers/v23/21-1127.html\nProductionEconomics,vol.165,pp.282–292,2015. [37] Y. Liu, A. Halev, and X. Liu, “Policy learning with constraints in\n[19] W. Wang, Y. Zhang, and R. Y. Zhong, “A proactive material handling model-freereinforcementlearning:Asurvey,”intheInternationalJoint\nmethodforCPSenabledshop-floor,”RoboticsandComputer-integrated ConferenceonArtificialIntelligence,2021,pp.4508–4515.",
+      "size": 997,
+      "sentences": 8
+    },
+    {
+      "id": 63,
+      "content": "material handling model-freereinforcementlearning:Asurvey,”intheInternationalJoint\nmethodforCPSenabledshop-floor,”RoboticsandComputer-integrated ConferenceonArtificialIntelligence,2021,pp.4508–4515. Manufacturing,vol.61,p.101849,2020.",
+      "size": 234,
+      "sentences": 2
+    }
+  ]
+}

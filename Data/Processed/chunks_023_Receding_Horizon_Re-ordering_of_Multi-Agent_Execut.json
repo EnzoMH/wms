@@ -1,0 +1,758 @@
+{
+  "source": "ArXiv",
+  "filename": "023_Receding_Horizon_Re-ordering_of_Multi-Agent_Execut.pdf",
+  "total_chars": 85551,
+  "total_chunks": 125,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "=== 페이지 1 ===\n1\nReceding Horizon Re-ordering of Multi-Agent Execution Schedules\nAlexander Berndt1, Niels van Duijkeren2, Luigi Palmieri2, Alexander Kleiner2, and Tamás Keviczky3\nAbstract—The trajectory planning for a fleet of Automated\n1. MAPF Planner 4. AGV Execution Manager\nGuided Vehicles (AGVs) on a roadmap is commonly referred to\nastheMulti-AgentPathFinding(MAPF)problem,thesolutionto 3. Optimizer\nwhich dictates each AGV’s spatial and temporal location until it\nreachesitsgoalwithoutcollision.WhenexecutingMAPFplansin\ndynamicworkspaces,AGVscanbefrequentlydelayed,e.g.,dueto\nencounterswithhumansorthird-partyvehicles.Iftheremainder\n5. Progress Tracker\noftheAGVskeepsfollowingtheirindividualplans,synchronyof\n2. SADG Compiler\nthefleetislostandsomeAGVsmaypassthroughroadmapinter-\nsections in a different order than originally planned.",
+      "size": 839,
+      "sentences": 6
+    },
+    {
+      "id": 2,
+      "content": ". Progress Tracker\noftheAGVskeepsfollowingtheirindividualplans,synchronyof\n2. SADG Compiler\nthefleetislostandsomeAGVsmaypassthroughroadmapinter-\nsections in a different order than originally planned. Although\nthis could reduce the cumulative route completion time of the\nOnline\nAGVs,generally,achangeintheoriginalorderingcancausecon-\nflictssuchasdeadlocks.Inpractice,synchronyisthereforeoften\nMAPF Planner\nenforced by using a MAPF execution policy employing, e.g., an AGV Execution Manager\nActionDependencyGraph(ADG)tomaintainordering.Tosafely\nre-order without introducing deadlocks, we present the concept\nof the Switchable Action Dependency Graph (SADG). Using the\nSADG, we formulate a comparatively low-dimensional Mixed-\nIntegerLinearProgram(MILP)thatrepeatedlyre-ordersAGVs\nin a recursively feasible manner, thus maintaining deadlock-free\nFig. 1: Top: Our proposed optimization-based feedback control\nguarantees, while dynamically minimizing the cumulative route\nscheme.",
+      "size": 975,
+      "sentences": 6
+    },
+    {
+      "id": 3,
+      "content": "Vs\nin a recursively feasible manner, thus maintaining deadlock-free\nFig. 1: Top: Our proposed optimization-based feedback control\nguarantees, while dynamically minimizing the cumulative route\nscheme. Bottom: Typical MAPF plan execution schemes. Our ap-\ncompletion time of all AGVs. Various simulations validate the\nproach significantly reduces the cumulative route completion of\nefficiency of our approach when compared to the original ADG\nAGVs subjected to large delays by optimizing the ordering of\nmethod as well as robust MAPF solution approaches. AGVs based on their progress in a receding horizon fashion, while\nIndexTerms—RobustPlanExecution,SchedulingandCoordi- maintaining collision- and deadlock-free plan execution guarantees. nation, Mixed Integer Programming, Multi-Agent Path Finding. executing the plans can still result in deadlocks when the\nI. INTRODUCTION AGVs experience delays.",
+      "size": 897,
+      "sentences": 9
+    },
+    {
+      "id": 4,
+      "content": "eadlock-free plan execution guarantees. nation, Mixed Integer Programming, Multi-Agent Path Finding. executing the plans can still result in deadlocks when the\nI. INTRODUCTION AGVs experience delays. This introduces the need for plan\nMULTIPLE Autonomous Mobile Robots (AMRs) have execution policies, used to maintain the ordering between\nbeen shown to significantly increase the efficiency AGVsandthusavoidingdeadlocks.Theauthorsin[4]propose\nof performing intralogistics tasks such as moving inventory compilinganActionDependencyGraph(ADG)fromaMAPF\nin distribution centers [1]. Coordinating AMRs navigating a solution to enforce the ordering during plan execution. How-\nshared environment can be formulated as the Multi-Agent ever,thiswork,andmostotherworkssuchas[5]–[7]consider\nPath Finding (MAPF) problem [2]. The MAPF problem is AGVs which are only marginally delayed.",
+      "size": 871,
+      "sentences": 8
+    },
+    {
+      "id": 5,
+      "content": "ared environment can be formulated as the Multi-Agent ever,thiswork,andmostotherworkssuchas[5]–[7]consider\nPath Finding (MAPF) problem [2]. The MAPF problem is AGVs which are only marginally delayed. This means that\nto find trajectories for each AMR along a roadmap such that delays are seen as a lack of synchronization between AGVs,\neach AMR reaches its goal without colliding with the others, rather than significantly affecting the overall route completion\nwhile minimizing a cost metric such as the makespan or times. With the advent of Industry 4.0 (such as the VDA5050\ncumulative route completion time (also referred to as sum- protocol [8] and the Robot Middleware Framework [9]), we\nof-costs). Throughout this manuscript, we refer to AMRs as turn our attention to AGV fleets navigating dynamic and\nAutomated Guided Vehicles (AGVs) to be consistent with the complex environments occupied by humans and third-party\nMAPF literature. vehicles.",
+      "size": 948,
+      "sentences": 6
+    },
+    {
+      "id": 6,
+      "content": "s turn our attention to AGV fleets navigating dynamic and\nAutomated Guided Vehicles (AGVs) to be consistent with the complex environments occupied by humans and third-party\nMAPF literature. vehicles. These dynamic environments are far less predictable\nMinimizing temporal cost metrics when solving the MAPF thanthosetypicallyconsideredintheMAPFliterature,imply-\nproblem has received a lot of attention in the literature [3]. ing that AGVs can experience large delays when waiting for,\nHowever, even if an optimal MAPF solution is found, blindly e.g., a human to move out of its path. These large, unpredictable delays can result in inefficient\nTheresearchthatleadtothispaperwasfundedbyRobertBoschGmbH. plan execution because the implicit ordering of the original\nThis work was supported by the European Union’s Horizon 2020 research\nMAPF solution requires AGVs to wait for largely delayed\nandinnovationprogramundergrantagreementNo.101017274(DARKO).",
+      "size": 948,
+      "sentences": 6
+    },
+    {
+      "id": 7,
+      "content": "the original\nThis work was supported by the European Union’s Horizon 2020 research\nMAPF solution requires AGVs to wait for largely delayed\nandinnovationprogramundergrantagreementNo.101017274(DARKO). 1Alexander Berndt is with Overstory B.V., 1018 VN Amsterdam, The AGVs. Not adhering to this implicit ordering, however, can\nNetherlandsberndtae@gmail.com\nresult in deadlocks. Approaches like [10], [11] propose re-\n2Niels van Duijkeren, Luigi Palmieri and Alexander Kleiner are\nordering schemes which maintain the deadlock-freeness prop-\nwith Robert Bosch GmbH, Corporate Research, Renningen, 71272,\nGermany { Niels.vanDuijkeren, Luigi.Palmieri, erties of the original plan. The decision to switch the order\nAlexander.Kleiner } @de.bosch.com\nbetween two robots or not, however, is based only on perfor-\n3Tamás Keviczky is with the Delft Center for Systems and\nmance measures of the two involved AGVs.",
+      "size": 898,
+      "sentences": 5
+    },
+    {
+      "id": 8,
+      "content": "order\nAlexander.Kleiner } @de.bosch.com\nbetween two robots or not, however, is based only on perfor-\n3Tamás Keviczky is with the Delft Center for Systems and\nmance measures of the two involved AGVs. This means that\nControl (DCSC), TU Delft, 2628 CN Delft, The Netherlands\nT.Keviczky@tudelft.nl although these switches are performed throughout the fleet,\n3202\nceD\n7\n]OR.sc[\n1v09140.2132:viXra\n[표 데이터 감지됨]\n\n=== 페이지 2 ===\n2\ntheydonotnecessarilyleadtoanoverallperformanceincrease scheduling [30]. Similarly, the development of bounded sub-\nin terms of a sum-of-costs or a makespan metric. optimal solvers such as Enhanced Conflict-Based Search\nContributions: To address the shortcomings of robust (ECBS) [31] have further improved planning performance for\nMAPF approaches and local path repair methods, we present: higher dimensional state spaces. In turn, Continuous Conflict-\n1.)",
+      "size": 877,
+      "sentences": 5
+    },
+    {
+      "id": 9,
+      "content": "ings of robust (ECBS) [31] have further improved planning performance for\nMAPF approaches and local path repair methods, we present: higher dimensional state spaces. In turn, Continuous Conflict-\n1.) The Switchable Action Dependency Graph (SADG), a Based Search (CCBS) extends CBS by enabling planning on\nnoveldatastructurewhichformalizesthedefinitionofswitch- roadmap graphs with weighted edges and considering contin-\nabledependenciesbetweenAGVsinmulti-agentplans;2. )An uoustimeintervalstodescribecollisionavoidanceconstraints,\nonline optimization-based Shrinking Horizon Control (SHC) albeit with increased solution times [32]. scheme which re-orders AGVs based on the AGVs’ current The abstraction of the MAPF to a graph search problem\nprogress along their paths while maintaining collision- and requiressimplifyingassumptionstomanagecomplexity.These\ndeadlock-freeness guarantees; 3.)",
+      "size": 889,
+      "sentences": 5
+    },
+    {
+      "id": 10,
+      "content": "abstraction of the MAPF to a graph search problem\nprogress along their paths while maintaining collision- and requiressimplifyingassumptionstomanagecomplexity.These\ndeadlock-freeness guarantees; 3.) Extension of the SHC to a assumptions include the use of very crude vehicle motion\nRecedingHorizonControl(RHC)scheme,whichsignificantly models and neglecting most of the effects of unpredictable\nreduces computation times and thereby enables real-time ap- delays in stochastic and dynamic environments. In order to\nplicationsforallofthepresentedmapsandteamsizeswithout maintain validity of the MAPF plan during execution, it is\nsacrificing collision- and deadlock-freeness guarantees. We required to synchronize the progress of all AGVs by closely\ncompare our approach to the baseline ADG method presented monitoring the fleet.",
+      "size": 825,
+      "sentences": 4
+    },
+    {
+      "id": 11,
+      "content": "sacrificing collision- and deadlock-freeness guarantees. We required to synchronize the progress of all AGVs by closely\ncompare our approach to the baseline ADG method presented monitoring the fleet. This synchronization can be achieved\nin [4] as well as the state-of-the-art robust MAPF solver K- using a so-called execution policy to manage the AGVs\nCBSH-RM [5], yielding up to a 25% overall decrease in according to their individual plans. average route completion times as robots are confronted with An ActionDependency Graph(ADG) encodes theordering\nlargedelays.Ourmethodisavailableonlineasanopen-source between AGVs as well as their kinematic constraints in a\nsoftware package called sadg-controller1. This manuscript post-processing step after solving the MAPF [6].",
+      "size": 772,
+      "sentences": 5
+    },
+    {
+      "id": 12,
+      "content": "hodisavailableonlineasanopen-source between AGVs as well as their kinematic constraints in a\nsoftware package called sadg-controller1. This manuscript post-processing step after solving the MAPF [6]. Combined\nextends ideas and concepts detailed in a preliminary work- with a plan execution policy, this allows AGVs to execute\nshop paper presented at the 30th International Conference on MAPF plans successfully despite kinematic constraints and\nAutomatedPlanningandScheduling(ICAPS),Nancy,France, unforeseen delays. Closely related to the ADG-based ex-\nOctober 2020 [12]. ecution policy to account for disturbances is RMTRACK\nOutline: Section II presents existing solutions and their [10]. For every pair of robots, RMTRACK identifies collision\ncapabilities and shortcomings in the context of our pro- regions (i.e., relative delays that lead to collisions) in their\nposedsolution.Preliminariesregardingtheroutingofmultiple coordination space.",
+      "size": 943,
+      "sentences": 6
+    },
+    {
+      "id": 13,
+      "content": "capabilities and shortcomings in the context of our pro- regions (i.e., relative delays that lead to collisions) in their\nposedsolution.Preliminariesregardingtheroutingofmultiple coordination space. It is imposed that the trajectory in the\nAGVs, as well as the problem formulation, is presented in coordination space remains homotopic to the undisturbed\nSection III. We present the concept of the Switchable Action trajectory. This leads to an equivalent coordination approach\nDependency Graph in Section IV and formulate the mixed- as [6] and guarantees deadlock-freeness. Follow-up work [33]\ninteger OCP in Section V. The method is extended to a proposes to relax the homotopy equivalence condition and\nreceding horizon feedback control scheme in Section VI. We allowflippingtheorderinwhichrobotspassthroughacertain\nevaluate our approach in Section VII and conclude the paper region considering two different optimization strategies. The\nin Section VIII.",
+      "size": 956,
+      "sentences": 7
+    },
+    {
+      "id": 14,
+      "content": "VI. We allowflippingtheorderinwhichrobotspassthroughacertain\nevaluate our approach in Section VII and conclude the paper region considering two different optimization strategies. The\nin Section VIII. latter approach was later extended to guarantee deadlock-free\nplan execution [11] by asserting that the so-called “segment\nII. RELATEDWORK\ngraph” that results from flipping the order has no cycles. Recently, solving the MAPF problem has garnered wide- Note that the “segment graph” is closely related to the ADG\nspreadattention[2],[13].Thisismostlyduetotheabundance [6]. Moreover, the concept that flipping the order of two\nof application domains, such as intralogistics, airport taxi robots results in a different “segment graph” in turn relates\nscheduling [14] and computer games [15]. Solutions to the to the SADG presented in [12] and this paper.",
+      "size": 850,
+      "sentences": 8
+    },
+    {
+      "id": 15,
+      "content": "h as intralogistics, airport taxi robots results in a different “segment graph” in turn relates\nscheduling [14] and computer games [15]. Solutions to the to the SADG presented in [12] and this paper. Contrary to\nMAPF problem include Conflict-Based Search (CBS) [16], these works, the authors of [11] do not consider changing the\nPrioritized Planning [17], declarative optimization approaches orderofrobotsateverypossibleconflictsimultaneously.They\nusing answer set programming [18], heuristic-guided coordi- thereby avoid the need to solve a costly MILP, but sacrifice\nnation [19] and graph-flow optimization approaches [20]. optimality of the overall plan execution.",
+      "size": 667,
+      "sentences": 4
+    },
+    {
+      "id": 16,
+      "content": "gramming [18], heuristic-guided coordi- thereby avoid the need to solve a costly MILP, but sacrifice\nnation [19] and graph-flow optimization approaches [20]. optimality of the overall plan execution. Since the MAPF\nAlgorithms such as CBS have been improved by exploiting considers a fleet of AGVs each with a unique start and goal\npropertiessuchasgeometricsymmetry[21],orusingpurpose- position, an additional framework is required to allow for the\nbuiltheuristics[22].In[23],theauthorsreformulatetheMAPF persistentplanningofAGVs.Suchaframeworkisproposedin\nas a Mixed-Integer Linear Program (MILP) and solve it using [4], where the aforementioned ADG can be used to anticipate\na branch-cut-and-price approach.",
+      "size": 708,
+      "sentences": 3
+    },
+    {
+      "id": 17,
+      "content": "stentplanningofAGVs.Suchaframeworkisproposedin\nas a Mixed-Integer Linear Program (MILP) and solve it using [4], where the aforementioned ADG can be used to anticipate\na branch-cut-and-price approach. MILP formulations have where AGVs will be in a future time-step (called a commit),\nalso been used in numerous binary-decision based receding allowing the MAPF to be solved from there, while the AGVs\nhorizoncontrolproblems,referredtoashybridcontrolsystems execute the plans up until this commit. [24]. Practical applications using these formulations include Several MAPF methods have been introduced to partic-\ncoordinating agents in urban road networks [25], coordinating ularly handle delays. kR-MAPF solvers such as K-CBSH-\nautonomous cars at intersections [26], [27], UAV trajectory RM address this by permitting delays up to a duration of k\nplanning [28], multi-agent persistent coverage [29] and train time-steps [5], [34].",
+      "size": 928,
+      "sentences": 5
+    },
+    {
+      "id": 18,
+      "content": "onomous cars at intersections [26], [27], UAV trajectory RM address this by permitting delays up to a duration of k\nplanning [28], multi-agent persistent coverage [29] and train time-steps [5], [34]. Stochastic AGV delay distributions are\nconsidered in [7], where the MAPF is solved by minimizing\n1https://github.com/alexberndt/sadg-controller the expected overall delay. These robust MAPF formulations\n=== 페이지 3 ===\n3\nand solutions inevitably result in more conservative plans traverseanedgee∈E inoppositedirectionsinthesametime-\ncompared to their nominal counterparts. A robust approach step.Finally,vˆ(p1)=s andvˆ(pNi)=g ∀i,j ∈{1,...,N}. i i i i\nto handle communication delays and packet losses for AGVs\nwith second-order dynamics is considered in [35]. However,\nall these solutions do not specifically address the effects of\nB. The Spatially Exclusive Action Dependency Graph\nsignificantly large delays.",
+      "size": 907,
+      "sentences": 7
+    },
+    {
+      "id": 19,
+      "content": "ith second-order dynamics is considered in [35]. However,\nall these solutions do not specifically address the effects of\nB. The Spatially Exclusive Action Dependency Graph\nsignificantly large delays. These approaches typically view\ndelays as a bounded lack of synchronization between AGVs, Although a valid MAPF solution guarantees that all AGVs\nrather than as significantly impacting the route completion reach their respective goals in finite time without collision,\ntime. the underlying assumption is that all AGVs execute the plan\nThe contribution of this paper is a method that extends the without time-delays. To relax this assumption, we introduce\nconcept of an ADG by modeling the allowed re-orderings theSpatiallyExclusiveActionDependencyGraph(SE-ADG),\nof AGVs at intersections, obtaining an Switchable Action a graph-based data-structure used to define the ordering of\nDependency Graph (SADG).",
+      "size": 903,
+      "sentences": 6
+    },
+    {
+      "id": 20,
+      "content": "rings theSpatiallyExclusiveActionDependencyGraph(SE-ADG),\nof AGVs at intersections, obtaining an Switchable Action a graph-based data-structure used to define the ordering of\nDependency Graph (SADG). The routes for each AGV are AGVs as they navigate G. The idea is that a valid MAPF\nconsidered given and remain unaltered. Typically they would solution can be used to generate an SE-ADG which can be\nbe computed using an existing MAPF solver. The result is a used to execute the MAPF plans while maintaining collision-\ncomparatively low-dimensional decision-making problem, to avoidance and route-completion guarantees. continuously and reactively modify the MAPF plan online to NotethattheSE-ADGwepresenthereisdirectlyborrowed\nimprove the cumulative route completion time.",
+      "size": 772,
+      "sentences": 5
+    },
+    {
+      "id": 21,
+      "content": "to avoidance and route-completion guarantees. continuously and reactively modify the MAPF plan online to NotethattheSE-ADGwepresenthereisdirectlyborrowed\nimprove the cumulative route completion time. We formulate fromtheoriginalActionDependencyGraph(ADG)presented\nthe problem as a MILP that can be solved using off-the- in [4], but with the additional property that each vertex must\nshelf—commercial as well as open-source—solvers. By our involve a movement from two locations which are spatially\nre-ordering approach we allow AGVs to continue with their exclusive of one another. taskswithoutneedingtounnecessarilywaitfordelayedAGVs,\nDefinition 2 (Spatially Exclusive Action Dependency Graph). while guaranteeing deadlock- and collision-free execution. AnSE-ADGisadirectedgraphG =(V ,E ). SE-ADG SE-ADG SE-ADG\nV is a set of vertices v = ({p ,...,p },status)\nSE-ADG 1 q\nIII.",
+      "size": 874,
+      "sentences": 8
+    },
+    {
+      "id": 22,
+      "content": "Dependency Graph). while guaranteeing deadlock- and collision-free execution. AnSE-ADGisadirectedgraphG =(V ,E ). SE-ADG SE-ADG SE-ADG\nV is a set of vertices v = ({p ,...,p },status)\nSE-ADG 1 q\nIII. COORDINATINGMULTIPLEAGVS which define the movement of AGV from vˆ(p ), via\ni 1\nIn this section, we introduce the concepts of a valid MAPF intermediate locations, to vˆ(p q ). The variable status ∈\nplan as well as a formal introduction of the Spatially Exclu- {staged,in-progress,completed}indicatesthecurrentstatusof\nsive Action Dependency Graph (SE-ADG), a concept derived each movement. E SE-ADG is a set of directed edges e=(v,v ′ )\nfrom the ADG originally proposed in [4]. The SE-ADG and with v,v ′ ∈V SE-ADG . properties introduced will form the foundation of the methods\nThe SE-ADG represents the implicit ordering of the ver-\nintroduced in subsequent sections. tex visitation by each AGV using a valid MAPF plan P\nand can be constructed using Algorithm 1. Aside from the\nA.",
+      "size": 979,
+      "sentences": 11
+    },
+    {
+      "id": 23,
+      "content": "SE-ADG represents the implicit ordering of the ver-\nintroduced in subsequent sections. tex visitation by each AGV using a valid MAPF plan P\nand can be constructed using Algorithm 1. Aside from the\nA. Valid MAPF Plans usage of different data structures, Algorithm 1 is practically\nidentical to the ADG algorithm in [4], except for lines 7-13. Consider a workspace represented by a graph G = (V,E)\nloc(p ):P →R2 returnslocationofplantuplep,S ⊂R2\nwhich is occupied by a fleet of N AGVs, e.g., as in Fig. 2a. i i AGV\nrepresentstheareaoccupiedbyanAGV,⊕istheMinkowski-\nEachAGVhasauniquestartandgoalpositions ∈V,s ̸=s\ni i j sum. Finally, s(v):V →V returns the roadmap vertex\nif i ̸= j ∀ i,j ∈ {1,...,N} and g ∈ V,g ̸= g if SE-ADG\ni i j associated with the first plan tuple in v; g(v) : V → V\ni̸=j ∀i,j ∈{1,...,N}, respectively. The task is for AGV SE-ADG\ni the last plan tuple in v. tˆ (v) : V → N returns tˆ(p )\ntonavigatefroms tog withoutcollisions,∀i ∈{1,...,N}.",
+      "size": 958,
+      "sentences": 9
+    },
+    {
+      "id": 24,
+      "content": "tuple in v; g(v) : V → V\ni̸=j ∀i,j ∈{1,...,N}, respectively. The task is for AGV SE-ADG\ni the last plan tuple in v. tˆ (v) : V → N returns tˆ(p )\ntonavigatefroms tog withoutcollisions,∀i ∈{1,...,N}. g SE-ADG 0 q\ni i where p is the last plan tuple in v. Once again, we use the\nA solution to this task is called a MAPF solution which q\nhat to indicate that we are dealing with planned times. The\nwe represent as a set P = {P ,...,P }, where P =\n1 N i subscript g in tˆ (·) is short for goal. Going forward, we use\n{p1,...,pNi} is a sequence of N plan tuples representing g\ni i i thefollowingnotationtorefertoAGVsandSE-ADGvertices:\nthe actions AGV must take to navigate from s to g . A plan\ni i i i and j are both AGV indices such that i,j ∈ {1,...,N}. tuplepk =(vˆ(pk),tˆ(pk))wheretheoperatorsvˆ(p ):P →V,\ni i i i i Furthermore, k and l are the SE-ADG vertex index of AGV i\nand tˆ(p ) : P → N return the roadmap vertex and planned\ni i 0 and j respectively, i.e., k ∈{1,...,N } and l∈{1,...,N }.",
+      "size": 992,
+      "sentences": 7
+    },
+    {
+      "id": 25,
+      "content": "(p ):P →V,\ni i i i i Furthermore, k and l are the SE-ADG vertex index of AGV i\nand tˆ(p ) : P → N return the roadmap vertex and planned\ni i 0 and j respectively, i.e., k ∈{1,...,N } and l∈{1,...,N }. time when AGV must be at vertex vˆ(p ), respectively. Note i j\ni i Algorithm 1 takes a valid MAPF solution as input, and\nthat we consider the planned time in a discrete fashion, as\nuses a two-stage approach to convert this into an SE-ADG. In\nused in almost all MAPF formulations and algorithms [2]. the first stage (cf. lines 1-13), each AGV’s plan is considered\nDefinition 1 lists the conditions for a valid MAPF solution. individually. Spatial exclusivity of each vertex is guaranteed\nEssentially, for a MAPF solution to be valid, all AGVs must\nin line 7. The interaction between AGVs is considered in\nreach their goals in finite time, and there can be no collisions\nthe second stage (cf. lines 14-20). Here, dependencies are\nbetween the AGVs along their planned routes.",
+      "size": 972,
+      "sentences": 11
+    },
+    {
+      "id": 26,
+      "content": "between AGVs is considered in\nreach their goals in finite time, and there can be no collisions\nthe second stage (cf. lines 14-20). Here, dependencies are\nbetween the AGVs along their planned routes. generated between AGVs if their planned routes cover the\nDefinition1(ValidMAPFsolution). AvalidMAPFsolutionis same location at any point in time. asetP ={P\n1\n,...,P\nN\n}suchthattheverticesvˆ(pk\ni\n)̸=vˆ(pl\nj\n) Initially,thestatusofv\ni\nk isstaged∀i,k.Thedirectededges\nif tˆ(pk) = tˆ(pl), k ∈ {1,...,N }, l ∈ {1,...,N } ∀ i,j ∈ e∈E , from here on referred to as dependencies, define\ni j i j SE-ADG\n{1,...,N}.Additionally,AGV andAGV ifi̸=jmustnever event-based constraints between two vertices. Specifically,\ni j\n=== 페이지 4 ===\n4\ninter-AGV dependency\nintra-AGV dependency\nSE-ADG vertex\n(a)RoadmapG=(V,E)withP (b)SE-ADGG\nSE-ADG\n=(V SE-ADG,E\nSE-ADG\n)\nFig. 2: Running example: Roadmap G = (V,E) occupied by N = 4 AGVs overlayed with the MAPF plan P indicated by the colored\nroutes.",
+      "size": 971,
+      "sentences": 8
+    },
+    {
+      "id": 27,
+      "content": "vertex\n(a)RoadmapG=(V,E)withP (b)SE-ADGG\nSE-ADG\n=(V SE-ADG,E\nSE-ADG\n)\nFig. 2: Running example: Roadmap G = (V,E) occupied by N = 4 AGVs overlayed with the MAPF plan P indicated by the colored\nroutes. AGV ordering is indicated by the z-height relative to other routes, i.e., AGV before AGV before AGV . This ordering is more\n3 1 2\nexplicitly indicated by the SE-ADG, G =(V ,E ), constructed from P using Algorithm 1. SE-ADG SE-ADG SE-ADG\n(vk,vl) implies that vl cannot be in-progress or completed edge to express this inter-AGV dependency. Not only does\ni j j\nuntil vk = completed. A dependency (vk,vl) ∈ E is this mean that the SE-ADG has fewer vertices and edges, it\ni i j SE-ADG\nclassified as intra-AGV if i = j and inter-AGV if i ̸= j. will also be an important component for the definition of a\nIf an SE-ADG execution policy is used to execute a valid switched dependency presented in the next section.",
+      "size": 906,
+      "sentences": 7
+    },
+    {
+      "id": 28,
+      "content": "i = j and inter-AGV if i ̸= j. will also be an important component for the definition of a\nIf an SE-ADG execution policy is used to execute a valid switched dependency presented in the next section. MAPF solution, an important property to ensure finite-time\ntask completion times for all AGVs is that the SE-ADG must C. SE-ADG as a Plan Execution Policy\nbe acyclic. In this context, finite-time task completion for all\nIn the following we detail how an SE-ADG can be used\nAGVs is the same as deadlock-free plan execution. as an execution policy to coordinate the AGVs and to accom-\nThe key difference between Algorithm 1 and the ADG modate for possible delays. From Definition 2, we recall that\nalgorithm in [4] is the fact that subsequent vertices are the operator status(v) : V → status returns the status\nSE-ADG\nspatially exclusive cf. lines 7-13. The plans referenced in [4] of a vertex v. An AGV is said to be executing an SE-ADG\ncontain actions such as in-place rotations.",
+      "size": 978,
+      "sentences": 7
+    },
+    {
+      "id": 29,
+      "content": "→ status returns the status\nSE-ADG\nspatially exclusive cf. lines 7-13. The plans referenced in [4] of a vertex v. An AGV is said to be executing an SE-ADG\ncontain actions such as in-place rotations. Despite an AGV vertex v if it is performing the actions defined by the plan\nnotchanginglocationbyperformingsuchanaction,theADG tuple sequence {p ,...,p } of v.\n1 q\nwill have two inter-AGV edges. Using spatial exclusivity, as\nDefinition 3 (SE-ADG plan execution policy). Consider a\nintheSE-ADG,anin-placerotationismergedwithaspatially\nvalidMAPFplanP andthecorrespondingSE-ADG,G ,\ntransitional action in one vertex, resulting in one inter-AGV SE-ADG\nconstructed using Algorithm 1. The SE-ADG-execution policy\nis defined as follows:\nAlgorithm 1 Compiling a Spatially Exclusive Action Depen- 1) Initially, status(v)=staged ∀v ∈V ;\nSE-ADG\ndencyGraph(SE-ADG).",
+      "size": 852,
+      "sentences": 7
+    },
+    {
+      "id": 30,
+      "content": "ucted using Algorithm 1. The SE-ADG-execution policy\nis defined as follows:\nAlgorithm 1 Compiling a Spatially Exclusive Action Depen- 1) Initially, status(v)=staged ∀v ∈V ;\nSE-ADG\ndencyGraph(SE-ADG). Notable functionaldifferencestothe 2) Each AGV ’s first vertex is v1 ∀i ∈ {1,...,N};\ni i\nADG Algorithm in [4] in lines 7-13 3) AGV can only start executing vk if status(v) =\ni i\ncompleted∀e=(v,vk)∈E . Input: P ={P 1 ,...,P N } // valid MAPF solution i SE-ADG\nResult: G The SE-ADG vertex statuses are updated by this policy:\nSE-ADG\n// Add sequence of events for each AGV 1) status(vk) changes from staged to in-progress if AGV\ni i\n1 2 : : for p P ← i = p1 i {p1 i ,...,pN i i} in P do 2) i s s ta b tu u s s ( y v e k x ) ec c u h t a in n g ge v s i k; from in-progress to completed if\n3: v←({p},staged) i\nAGV has finished executing vk.",
+      "size": 836,
+      "sentences": 4
+    },
+    {
+      "id": 31,
+      "content": "for p P ← i = p1 i {p1 i ,...,pN i i} in P do 2) i s s ta b tu u s s ( y v e k x ) ec c u h t a in n g ge v s i k; from in-progress to completed if\n3: v←({p},staged) i\nAGV has finished executing vk. 4: v prev ←None i i\n5: for k=2 to N i do\n6: Append pk i to sequence of plan tuples of v D. Properties of the SE-ADG\n// Check for spatial exclusivity\n7: if loc(p)⊕S AGV ∩loc(pk i )⊕S AGV =∅ then With the SE-ADG execution policy from Definition 3, we\n8: Add v to V SE-ADG now show that if the SE-ADG is acyclic, we can guarantee\n9: if v prev not None then thatAGVscanexecutetheirplansinfinitetimeinacollision-\n10: Add edge e=(v prev ,v) to E SE-ADG free manner. In this context, we anticipate that guaranteeing\n11: v prev ←v finite-time plan completion is equivalent to ensuring the plan\n12: p←pk\ni execution is persistently deadlock-free. First, we make the\n13: v←({p},staged)\nfollowing assumption. // Add inter-AGV ordering constraints\n14: for i=1 to N do Assumption 1.",
+      "size": 968,
+      "sentences": 5
+    },
+    {
+      "id": 32,
+      "content": "suring the plan\n12: p←pk\ni execution is persistently deadlock-free. First, we make the\n13: v←({p},staged)\nfollowing assumption. // Add inter-AGV ordering constraints\n14: for i=1 to N do Assumption 1. A single AGV can navigate the workspace\n15: for j =1 to N, i̸=j do\n(represented by roadmap G) occupied by static and dynamic\n16: for k=1 to N i do\n17: for l=1 to N j do obstaclesinacollision-freemannerusingon-boardnavigation\n18: if s(v i k)=g(v j l) and tˆ g (v i k)≤tˆ g (v j l) then methods. 19: Add edge e=(v i k,v j l) to E SE-ADG In the context of multiple AGVs and MAPF, Assumption 1\n20: return G SE-ADG =(V SE-ADG ,E SE-ADG ) is relatively nonconstraining. It requires AGVs to be able\n=== 페이지 5 ===\n5\nto follow the roadmap G and navigate around or wait for\nstatic and dynamic third-party obstacles which might partially v i k − 1 v i k v i k+1\nor temporarily block its path, respectively. This single AGV\nnavigation problem has already been addressed in numerous\nworks [36]–[39].",
+      "size": 986,
+      "sentences": 7
+    },
+    {
+      "id": 33,
+      "content": "d-party obstacles which might partially v i k − 1 v i k v i k+1\nor temporarily block its path, respectively. This single AGV\nnavigation problem has already been addressed in numerous\nworks [36]–[39]. v j l − 1 v j l v j l+1\nIfAssumption1issatisfied,guaranteeingcollision-freetask\nexecution in the multi-AGV case requires us to ensure that forward reverse\nAGVs do not collide with each other. Results in resource\nallocation of concurrent system analysis such as [40], show Fig.3:Visualillustrationofaswitcheddependency:Originaldepen-\ndency (black) and its reversed counterpart (red). that if a dependency graph is acyclic, plan execution is\nguaranteed to be deadlock-free. In this context, if the SE-\nADG is constructed from a valid MAPF plan, we know that\nlutions yield an acyclic SE-ADG.",
+      "size": 788,
+      "sentences": 6
+    },
+    {
+      "id": 34,
+      "content": "f a dependency graph is acyclic, plan execution is\nguaranteed to be deadlock-free. In this context, if the SE-\nADG is constructed from a valid MAPF plan, we know that\nlutions yield an acyclic SE-ADG. A cyclic SE-ADG comes\nfollowingtheexecutionpolicyinDefinition3willensureeach\nfromaplanwhichessentiallyrequiresperfectsynchronization\nAGV will complete its task in a collision- and deadlock-free\namongAGVs.However,withlittlelimitationtopracticalcases\nmanner. (see Remark 1), we assume that MAPF solutions will yield\nCorollary 1 (SE-ADG guarantees collision-free plan execu- acyclic SE-ADGs. tion). Consider a valid MAPF plan abstracted to an SE-ADG\nAssumption 2. MAPF problems are such that they initially\nusing Algorithm 1. AGVs are guaranteed to execute the SE-\nyield an acyclic SE-ADG. ADG plans in a collision-free manner if all AGVs adhere to\nthe execution policy in Definition 3. Remark1.",
+      "size": 892,
+      "sentences": 10
+    },
+    {
+      "id": 35,
+      "content": "initially\nusing Algorithm 1. AGVs are guaranteed to execute the SE-\nyield an acyclic SE-ADG. ADG plans in a collision-free manner if all AGVs adhere to\nthe execution policy in Definition 3. Remark1. AcyclicityoftheSE-ADGcanbeensuredwhenthe\nroadmap vertices outnumber the AGV fleet size i.e.|V| > N\nProof 1: Consider the nominal execution of a MAPF plan:\n(as is typically the case in warehouse robotics) or a MAPF\nfrom Definition 1, vˆ(pk) ̸= vˆ(pl) if tˆ(pk) = tˆ(pl), implying\ni j i j solversuchaskR-MAPFisusedwithk =1[5].Alternatively,\nthat no two AGVs will occupy the same location at the same\nsimple modification (e.g., an extra edge constraint in CBS) to\ntime. Additionally, by Definition 1, each i’th AGV reaches\nexisting MAPF solvers is sufficient to ensure acyclicity [4]. its goal vˆ (pNi) ∀ i ∈ {1,...,N}. Next, consider Algo-\ng i\nrithm 1 lines 18-19 which ensure that ∀i,j ∈ 1,...,N and\nk ∈ 1,...,N , l ∈ 1,...,N where s(vk) = g(vl) and\nIV.",
+      "size": 951,
+      "sentences": 8
+    },
+    {
+      "id": 36,
+      "content": "nt to ensure acyclicity [4]. its goal vˆ (pNi) ∀ i ∈ {1,...,N}. Next, consider Algo-\ng i\nrithm 1 lines 18-19 which ensure that ∀i,j ∈ 1,...,N and\nk ∈ 1,...,N , l ∈ 1,...,N where s(vk) = g(vl) and\nIV. REORDERINGAGVPLANS:INTRODUCINGTHE\ntˆ (vk) ≤ tˆ (v\ni\nl), a dependenc\nj\ny e = (vk,\ni\nvl) is ad\nj\nded to\nSWITCHABLEACTIONDEPENDENCYGRAPH\ng i g j i j\nE . By the execution policy Definition 3, item 3, each In Section III we introduced the SE-ADG and showed\nSE-ADG\nAGV will only move from a vertex s(v) to g(v) if all edges that an acyclic SE-ADG is a sufficient condition to guaran-\npointing to v have status completed. Because the AGVs can tee deadlock- and collision-free plan execution for multiple\nonly collide by visiting the same location at the same time, AGVs executing a valid MAPF plan.",
+      "size": 791,
+      "sentences": 6
+    },
+    {
+      "id": 37,
+      "content": "have status completed. Because the AGVs can tee deadlock- and collision-free plan execution for multiple\nonly collide by visiting the same location at the same time, AGVs executing a valid MAPF plan. In this section, we\nand each instance of an AGV occupying the same location as address the core challenge we are tackling throughout this\nanother yields an edge in the SE-ADG, no AGV will occupy manuscript: how can we adjust plans online to account for\nthe same location at the same time, implying zero collitions delays while maintaining deadlock- and collision-free plan\nduring plan execution. execution guarantees? To this end, we introduce a new data-\nstructure, the Switchable Action Dependency Graph (SADG),\nCorollary 2 (An acyclic SE-ADG is sufficient to guarantee\nwhichfacilitatesthesystematicre-orderingofAGVsbasedon\ndeadlock-andcollision-freeplanexecution). ConsideranSE-\ntime-delays.",
+      "size": 894,
+      "sentences": 6
+    },
+    {
+      "id": 38,
+      "content": "ency Graph (SADG),\nCorollary 2 (An acyclic SE-ADG is sufficient to guarantee\nwhichfacilitatesthesystematicre-orderingofAGVsbasedon\ndeadlock-andcollision-freeplanexecution). ConsideranSE-\ntime-delays. We go on to show that the SADG provides the\nADG, G , constructed from a valid MAPF plan P using\nSE-ADG ability to maintain deadlock- and collision-free guarantees of\nAlgorithm 1. If G is acyclic and Assumption 1 holds,\nSE-ADG the original SE-ADG on which it is based. each AGV will reach g in finite time without collisions for\ni Ni\nall i∈{1,...,N}. A. Switched Dependencies\nProof 2: Individually, the completion time of each vertex v ∈\nBefore introducing the SADG, we need to introduce the\nV is finite by Assumption 1. If G is acyclic, it has\nSE-ADG SE-ADG fundamental building block on which it is based: the switched\na topological ordering, implying that at each point, at least\ndependency. Consider an inter-AGV (i.e.",
+      "size": 921,
+      "sentences": 9
+    },
+    {
+      "id": 39,
+      "content": "G is acyclic, it has\nSE-ADG SE-ADG fundamental building block on which it is based: the switched\na topological ordering, implying that at each point, at least\ndependency. Consider an inter-AGV (i.e. i ̸= j) dependency\none SE-ADG vertex can be executed, until all vertices are\ne = (vl,vk) ∈ E . From here on, we refer to\ncompleted.Thisprovesdeadlock-freeexecution.Collision-free original j i SE-ADG\nan inter-AGV dependency simply as a dependency. As per\nmovement is proven in Corollary 1\nDefinition 3, e implies status(vl) = completed before\noriginal j\nNotethatwearenotabletoextendCorollary2tobeanec- status(vk) = in-progress when executing the SE-ADG-based\ni\nessaryconditionfordeadlock-freeplanexecution,sincemeth- plans.IntermsoftheroadmapG,thisisequivalenttorequiring\nods guaranteeing deadlock-free plan execution exist which do AGV to leave s(vl) (reach g(vl)) before AGV can advance\nj j j i\nnot use an SE-ADG approach. Nevertheless, this sufficient to g(vk).",
+      "size": 962,
+      "sentences": 6
+    },
+    {
+      "id": 40,
+      "content": "uiring\nods guaranteeing deadlock-free plan execution exist which do AGV to leave s(vl) (reach g(vl)) before AGV can advance\nj j j i\nnot use an SE-ADG approach. Nevertheless, this sufficient to g(vk). Note the implicit ordering that AGV must go\ni j\ncondition is still very useful, as will be shown in subsequent to s(vl) = g(vk) before AGV . The idea of a switched\nj i i\nsections. dependency is to reverse this implicit ordering while ensuring\nFinally, we address the fact that not all valid MAPF so- AGVs don’t occupy the same vertex in G at the same time. === 페이지 6 ===\n6\nDefinition 4 (Switched inter-AGV dependency). Given a de- Algorithm 2 Compiling a Switchable Action Dependency\npendency e = (vk,vl) ∈ E , a switched dependency Graph\nfwd i j SE-ADG\nis an edge e rev = (v,v ′ ) which ensures AGV i reaches Input: P ={P 1 ,...,P N } // valid MAPF solution\ns(v j l)=g(v i k) before AGV j without collision.",
+      "size": 908,
+      "sentences": 7
+    },
+    {
+      "id": 41,
+      "content": ", a switched dependency Graph\nfwd i j SE-ADG\nis an edge e rev = (v,v ′ ) which ensures AGV i reaches Input: P ={P 1 ,...,P N } // valid MAPF solution\ns(v j l)=g(v i k) before AGV j without collision. Result: G SADG (b)\nGiven a dependency e , a switched dependency which // Add sequence of events for each AGV\nfulfills Definition 4 can b fw e d determined using Lemma 1. A 1: for P i ={p1 i ,...,pN i i} in P do\n2: p←p1\ndependency and its reversed counterpart are illustrated in i\n3: v←({p},staged)\nFig. 3. 4: v prev ← None\nLemma 1 (Switched inter-AGV dependency). Let v i k,v j l, 5 6 : : for A k pp = en 2 d t p o k i N to i d se o quence of plan tuples of v\nv j l+1,v i k − 1 ∈ V SE-ADG , where G SE-ADG = (V SE-ADG ,E SE-ADG ) // Check for spatial exclusivity\nf c r o o u m nte D rp efi a n rt iti o o f n d 2 = . ( T v h k e , n vl d ) ′ w = hic ( h v j l a + d 1 h , e v r i k e − s 1 t ) o i D s e t fi h n e iti s o w n it 4 c .",
+      "size": 935,
+      "sentences": 7
+    },
+    {
+      "id": 42,
+      "content": "ck for spatial exclusivity\nf c r o o u m nte D rp efi a n rt iti o o f n d 2 = . ( T v h k e , n vl d ) ′ w = hic ( h v j l a + d 1 h , e v r i k e − s 1 t ) o i D s e t fi h n e iti s o w n it 4 c . hed 8 7 : : if l A oc d ( d p) v ⊕ to S V A S G A V D ∩ G ( l b o ) c(pk i )⊕S AGV =∅ then\ni j 9: if v prev not None then\nProof 3: Thedependencyd=(vk,vl)encodestheconstraint 10: Add (v prev ,v) to E SADG (b)\nt s (v j l) ≥ t g (v i k). The switched c i oun j terpart of d is denoted 1 1 2 1 : : p v p ← rev ← pk v\ni\nas d ′ = (v j l+1,v i k − 1). d ′ encodes the constraint t s (v i k − 1) ≥ 13: v←({p},staged)\nt g (v j l+1). By definition, t s (v i k) ≥ t g (v i k − 1) and t s (v j l+1) ≥ // Add switchable dependency pairs\nt g (v j l). Since t g (v) ≥ t s (v), this implies that d ′ encodes the 14: for i=1 to N do\nconstraint t (vk)≥t (vl), satisfying Definition 4.",
+      "size": 866,
+      "sentences": 7
+    },
+    {
+      "id": 43,
+      "content": ") and t s (v j l+1) ≥ // Add switchable dependency pairs\nt g (v j l). Since t g (v) ≥ t s (v), this implies that d ′ encodes the 14: for i=1 to N do\nconstraint t (vk)≥t (vl), satisfying Definition 4. 15: for j =1 to N, j ̸=i do\ns i g j\n16: for k=1 to N i do\nNote that, as discussed in Section III, the SE-ADG is spa- 17: for l=1 to N j do\ntially exclusive, allowing us to use only a single dependency 18: if s(v i k)=g(v j l) and tˆ g (v i k)≤tˆ g (v j l) then\nas the switched counterpart of one dependency. 19: e fwd ←(v i k,v j l)\n20: if (cid:0) v i k−1, v j l+1(cid:1) ∈V SADG (b) then\nB.",
+      "size": 591,
+      "sentences": 4
+    },
+    {
+      "id": 44,
+      "content": "pendency 18: if s(v i k)=g(v j l) and tˆ g (v i k)≤tˆ g (v j l) then\nas the switched counterpart of one dependency. 19: e fwd ←(v i k,v j l)\n20: if (cid:0) v i k−1, v j l+1(cid:1) ∈V SADG (b) then\nB. The Switchable Action Dependency Graph 21: e rev ←(v j l+1,v (cid:0)i k−1) (cid:1)\n22: Add depSwitch b m :{e fwd ,e rev } to E SADG (b)\nLemma 1 provides us with a method to maintain collision 23: else\navoidancewhilere-orderingAGVs.Wearenowintheposition 24: Add e fwd to E SADG (b)\n(cid:0) (cid:1)\nto extend the SE-ADG to enable the re-ordering of AGVs 25: return G SADG (b)= V SADG (b),E SADG (b)\nusing switchable dependencies. To this end, we introduce the\nSwitchable Action Dependency Graph (SADG), a mapping\nfrom a binary vector, b, to an SE-ADG, G . pendencies (solid, black arrows), are identical to those in\nSE-ADG\nFig.2b.ThisisbecauseAlgorithm2followsthesameprocess\nDefinition 5 (Switchable Action Dependency Graph). An\nto generate the forward dependencies as Algorithm 1.",
+      "size": 979,
+      "sentences": 6
+    },
+    {
+      "id": 45,
+      "content": "rrows), are identical to those in\nSE-ADG\nFig.2b.ThisisbecauseAlgorithm2followsthesameprocess\nDefinition 5 (Switchable Action Dependency Graph). An\nto generate the forward dependencies as Algorithm 1. Note\nSADG is a mapping G\nSADG\n(b) : {0,1}mT → G\nSE-ADG\nwhich\nalso how the forward dependency e = (v3,v1) has no\noutputstheresultantSE-ADGbasedonthedependencyselec- fwd 1 3\nreverse counterpart. This is because its reverse counterpart,\ntion represented by b = {b ,...,b }, where b = 0 and\n1 mT m as specified by Lemma 1, would be e = (v4,v0), which\nb = 1 imply selecting the forward and reverse dependency rev 1 3\nm does not exist (as checked in Algorithm 2, line 20). of pair m, respectively, m∈{1,...,m }. T\nIn Definition 5, G refers to the set of all possible\nSE-ADG Forward dependency\nG ’s. Depending on the value of b, G (b) will result Reverse dependency\nSE-ADG SADG\nin a different G . Similarly to the SE-ADG, an SADG\nSE-ADG\ncan be constructed from a valid MAPF solution P using\nAlgorithm 2.",
+      "size": 996,
+      "sentences": 8
+    },
+    {
+      "id": 46,
+      "content": "nding on the value of b, G (b) will result Reverse dependency\nSE-ADG SADG\nin a different G . Similarly to the SE-ADG, an SADG\nSE-ADG\ncan be constructed from a valid MAPF solution P using\nAlgorithm 2. Like Algorithm 1, Algorithm 2 also consists of\ntwo-stages. In fact, the only difference between Algorithm 2\nand Algorithm 1 is in lines 19-25. Instead of just creating\nthe dependency e , a check is done to validate if its reverse\nfwd\ncounterpart,e ,canbeconstructed(cf.line20).Ifso,abinary\nrev\nFig.4:TheSADGG (b)constructedfromthesamevalidMAPF\nswitching function depSwitch:{0,1}→E is appended SADG\nSE-ADG solution used to construct the SE-ADG in Fig. 2b. to the set of dependencies E (b) (cf. line 22), where, as\nSADG\n(cid:0) (cid:1)\nperDefinition5,depSwitch b =0:{e ,e } =e ,and\nm fwd rev fwd\n(cid:0) (cid:1)\ndepSwitch b = 1 : {e ,e } = e .",
+      "size": 841,
+      "sentences": 8
+    },
+    {
+      "id": 47,
+      "content": "in Fig. 2b. to the set of dependencies E (b) (cf. line 22), where, as\nSADG\n(cid:0) (cid:1)\nperDefinition5,depSwitch b =0:{e ,e } =e ,and\nm fwd rev fwd\n(cid:0) (cid:1)\ndepSwitch b = 1 : {e ,e } = e . Conversely, if the\nm fwd rev rev\nC. SADG Properties and Execution Policy\nreverse counterpart of e cannot be constructed, dependency\nfwd\nswitching is not possible for e and there is no need for WiththeaimofintroducinganSADG-basedcontrolscheme\nfwd\na binary variable b . In this case, the dependency e is inSectionV,weneedtoensuretheSE-ADGexecutionpolicy\nm fwd\nappended to E (b) (cf. line 24). in Definition 3 can be applied to SADGs. To this end, recall\nSADG\nFig. 4 shows an illustration of the SADG for the running that G (b) yields an SE-ADG for a particular b. When all\nSADG\nexample illustrated in Fig. 2.",
+      "size": 805,
+      "sentences": 12
+    },
+    {
+      "id": 48,
+      "content": "can be applied to SADGs. To this end, recall\nSADG\nFig. 4 shows an illustration of the SADG for the running that G (b) yields an SE-ADG for a particular b. When all\nSADG\nexample illustrated in Fig. 2. Note that all the forward de- AGVs are at their starting positions and b = 0, G (b) =\nSADG\n=== 페이지 7 ===\n7\nG , the same SE-ADG as obtained with Algorithm 1,\nSE-ADG Dependency Status\nwhich was shown to ensure collision-free and deadlock-free Active\nInactive\nplans in Corollary 2. Althoughwehaveprovencollision-anddeadlock-avoidance\nif AGVs follow the execution policy in Definition 3, this only\nholds if the underlying SE-ADG remains constant. We will\nnowshowthatifbischosensuchthatthealledgesinE (b)\nSADG\nin G =G (b) do not violate the assumptions in the\nSE-ADG SADG\nexecution policy of Definition 3, Corollary 1 can be extended\nFig. 5: Illustration of G (b) for b = 0. The resultant G\nto SADGs. SADG SE-ADG\nis depicted with solid black arrows.",
+      "size": 944,
+      "sentences": 11
+    },
+    {
+      "id": 49,
+      "content": "ns in the\nSE-ADG SADG\nexecution policy of Definition 3, Corollary 1 can be extended\nFig. 5: Illustration of G (b) for b = 0. The resultant G\nto SADGs. SADG SE-ADG\nis depicted with solid black arrows. The dependencies not part of\nCorollary 3 (Persistent collision-free plan execution for G SADG (0) are indicated by dotted lines. SADGs). Forvaryingb,theresultantSE-ADGfromG (b)\nSADG\nwill guarantee collision-free plan execution as long as\nnot guarantee plan completion (i.e. deadlock-free movement). 1) b is chosen such that ∀ e = (vk,vl) ∈ E (b) the\ni j SADG This is because changing b at T could result in a cyclic SE-\nhead of e, vl, has status(vl) = staged at the time b is 1\nj j ADG, causing a deadlock. Therefore, the objective is to find\nchanged. 2) AGVsfollowtheplanexecutionpolicyDefinition3based\nb ∗ at T 1 to ensure G S∗E-ADG = G SADG (b ∗) is acyclic, while\nminimizingtheroute-completiontimeoftheAGVfleet,based\non the changing E (b) at all times.",
+      "size": 956,
+      "sentences": 11
+    },
+    {
+      "id": 50,
+      "content": "VsfollowtheplanexecutionpolicyDefinition3based\nb ∗ at T 1 to ensure G S∗E-ADG = G SADG (b ∗) is acyclic, while\nminimizingtheroute-completiontimeoftheAGVfleet,based\non the changing E (b) at all times. SADG on the individual AGV delays at time T . 1\nIn this section, we show that finding b is equivalent to\nProof 4: Proof by induction. Initially, at time t = T , b = 0 ∗\n0\nsolving an Optimal Control Problem (OCP). We go on to\nand G is acyclic which guarantees collision-free plan\nSE-ADG\nsolvethisOCPusingaMixed-IntegerLinearProgram(MILP)\nexecution by Corollary 1. Consider at time t = T > T ,\n1 0\nformulation, which we integrate into a shrinking horizon\nb. Let b ⊂ b refer to the subset of b that is different\nswitched\nfeedback control scheme. between t ≤ T and t > T .",
+      "size": 768,
+      "sentences": 8
+    },
+    {
+      "id": 51,
+      "content": "er at time t = T > T ,\n1 0\nformulation, which we integrate into a shrinking horizon\nb. Let b ⊂ b refer to the subset of b that is different\nswitched\nfeedback control scheme. between t ≤ T and t > T . Since ∀ b ∈ b ,\n1 1 switched\nstatus(vl)=staged, status(vl′ )∀l ≥l, by the construction of\nj j ′\nintra-AGVdependenciesinAlgorithm1,cf.lines1-13.Hence, A. Optimal Control Problem\nattimet>T ,theconstraintsimposedbyallthenewlyactive\n1 At any time during the execution of their respective plans,\nedges introduced by b have not been violated. Since all\nswitched given an initial SE-ADG, G (b ), the OCP can be formu-\nconstraints are adhered, collision-avoidance is guaranteed. SADG 0\nlated as follows\nThe same logic applies for a subsequent switching at time\nN\nt=T >T , thus proving persistent collision-avoidance. (cid:88)\n2 1 f (b)= min t (vNi) (1a)\nOCP g i\nNote that although Corollary 3 provides us constraints on b,tg,ts i=1\nthe changing of b at any time to ensure persistent collision- s.t.",
+      "size": 990,
+      "sentences": 7
+    },
+    {
+      "id": 52,
+      "content": "lision-avoidance. (cid:88)\n2 1 f (b)= min t (vNi) (1a)\nOCP g i\nNote that although Corollary 3 provides us constraints on b,tg,ts i=1\nthe changing of b at any time to ensure persistent collision- s.t. avoidanceguarantees,noguaranteesaremaderegardingdead- t (vk)>t (vk)+∆T(vk)∀vk ∈Π (cid:0) V (b) (cid:1) , (1b)\nlocks. Hence, it is possible that, following Corollary 3, b g i s i i i SADG\nt (vk+1)>t (vk)∀vk+1 ∈Γ (cid:0) V (b) (cid:1) , (1c)\nis chosen which causes the AGVs to enter into a deadlock. s i g i i SADG\nViewed from the perspective of the SE-ADG: it is possible status(v ′ )=staged ∀(v,v ′ ) ∈Ψ(b,b 0 ), (1d)\nthat a value of b causes a cycle in the resultant SE-ADG.",
+      "size": 675,
+      "sentences": 5
+    },
+    {
+      "id": 53,
+      "content": "nter into a deadlock. s i g i i SADG\nViewed from the perspective of the SE-ADG: it is possible status(v ′ )=staged ∀(v,v ′ ) ∈Ψ(b,b 0 ), (1d)\nthat a value of b causes a cycle in the resultant SE-ADG. t (vk)<t (vl) ∀(vk,vl)∈E (b)if i̸=j, (1e)\ng i s j i j SADG\nFinding a value of b which also guarantees deadlock-free\n(cid:0) (cid:1)\nplans,i.e.persistentacyclicityofG SADG (b),willbeconsidered where Ψ b,b 0 returns only the edges in E SADG (b) which do\nin Section V. not exist in E SADG (b 0 ),\nFor our running example, in the case that b=0, the active (cid:0) (cid:1)\nΨ b,b ={e|e∈E (b)∧e∈/ E (b )}. SE-ADG is shown in Fig. 5. Note that Fig. 5 is practically 0 SADG SADG 0\nidentical to Fig. 2b because b=0 corresponds to the original Furthermore, Π(·) and Γ(·) are filters such that\nSE-ADG constructed using Algorithm 1. (cid:0) (cid:1) (cid:8) (cid:9)\nΠ V = v ∈V |status(v)∈{staged,in-progress} ,\n(cid:0) (cid:1) (cid:8) (cid:9)\nV. SHRINKINGHORIZONCONTROLSCHEME Γ V = v ∈V |status(v)=staged .",
+      "size": 992,
+      "sentences": 9
+    },
+    {
+      "id": 54,
+      "content": "tructed using Algorithm 1. (cid:0) (cid:1) (cid:8) (cid:9)\nΠ V = v ∈V |status(v)∈{staged,in-progress} ,\n(cid:0) (cid:1) (cid:8) (cid:9)\nV. SHRINKINGHORIZONCONTROLSCHEME Γ V = v ∈V |status(v)=staged . Consider AGVs executing their respective plans, as de- Finally, ∆T(vk) is the estimated time AGV will take to\nscribed by an SE-ADG G S 0 E-ADG = G SADG (0), adhering to complete vk, d i efined as i\ni\nexecutionpolicyinDefinition3.Inthecasethatanysubsetof\n\nthe AGVs is delayed, the cumulative route completion times  T est (v i k) if status(v i k)=staged,\nof the AGVs could be reduced if the SE-ADG is modified ∆T(vk)= µT (vk) if status(vk)=in-progress,\ni est i i\nat a time T 1 > T 0 , where T 0 refers to the time the AGVs 0 if status(vk)=completed,\nstartedexecutingtheplans.InSectionIV,weshowedthatif,at i\ntimeT ,bischoseninaccordancewithCorollary3,persistent where T (vk) is the total estimated time it will take AGV\n1 est i i\ncollision-avoidanceoftheAGVsisguaranteedwhenfollowing to complete vk, and µ ∈ [0,1] is the fraction of vk that\ni i\ntheexecutionpolicyinDefinition3.However,Corollary3does still needs to be completed.",
+      "size": 1131,
+      "sentences": 3
+    },
+    {
+      "id": 55,
+      "content": "collision-avoidanceoftheAGVsisguaranteedwhenfollowing to complete vk, and µ ∈ [0,1] is the fraction of vk that\ni i\ntheexecutionpolicyinDefinition3.However,Corollary3does still needs to be completed. Since t (vNi) refers to the time\ng i\n=== 페이지 8 ===\n8\nRoadmap AGV Tasks\n4. AGV Execution Manager\n⋮ ⋮\n3. Optimizer\nSolve I.C. 1. MAPF Planner MILP in (2)\nusing CBS,\nExecution Policy (Def. 3)\nECBS [4][5]\n5. Progress Tracker vertex\nstatuses\nParametrize MILP in (2)\n2. SADG Compiler based on updated vertex\nstatuses\nAlgorithm 2\nOnline\nFig.6:Shrinkinghorizonfeedbackcontroldiagram:Theplanningphaseconsistsof1.MAPFPlannerandSADGCompilerwhichyields\nanSADGgivenaroadmapandAGVtasks.Initially,in3.Optimizer,theSADGisinitializedwithb=0yieldinganinitialSE-ADGwhich\ncan be used by AGVs to execute their plans. As AGVs progress, and are inevitably delayed, their status is tracked in 5. Progress Tracker,\nand an optimization iteration is performed to re-order the AGVs in 3. Optimizer.",
+      "size": 969,
+      "sentences": 12
+    },
+    {
+      "id": 56,
+      "content": "to execute their plans. As AGVs progress, and are inevitably delayed, their status is tracked in 5. Progress Tracker,\nand an optimization iteration is performed to re-order the AGVs in 3. Optimizer. The solution to the MILP is used to update the active\nSE-ADG used for plan execution in a feedback loop. The feedback loop runs at a sampling frequency of h.\nwhere AGV i will reach its goal position, the cost function b 0 is a solution to (1). Consequently, the minimizer b ∗ exists\nin (1a) is the cumulative route completion time of all N and is a solution of (1). From Corollary 4, this means that\nAGVs. Note that (1b) and (1c) enforce the route sequence of G\nSADG\n(b ∗) is acyclic. each individual AGV, whereas (1d) and (1e) enforce ordering\nconstraints between AGVs. Moreover, (1d) ensures the heads B. Formulation as Mixed-Integer Linear Program\nof all switched dependencies point to staged vertices.",
+      "size": 904,
+      "sentences": 11
+    },
+    {
+      "id": 57,
+      "content": "whereas (1d) and (1e) enforce ordering\nconstraints between AGVs. Moreover, (1d) ensures the heads B. Formulation as Mixed-Integer Linear Program\nof all switched dependencies point to staged vertices. Working towards the definition of a feedback control\nCorollary 4 (Cyclic SE-ADG yields constraint violation). A scheme, we now formulate the OCP in (1) as an MILP as\ncycle in the SE-ADG violates constraints of OCP (1) and follows\ntherefore any feasible solution of OCP (1) is acyclic. N\n(cid:88)\nmin t (vNi) (4a)\nProof 5: Withoutlossofgenerality,considerthecyclicdepen-\nb,tg,ts\ng i\ndency chain formed by a dependency from vk to vl, and from i=1\ni j s.t. vl back to vk.",
+      "size": 668,
+      "sentences": 6
+    },
+    {
+      "id": 58,
+      "content": "(1) is acyclic. N\n(cid:88)\nmin t (vNi) (4a)\nProof 5: Withoutlossofgenerality,considerthecyclicdepen-\nb,tg,ts\ng i\ndency chain formed by a dependency from vk to vl, and from i=1\ni j s.t. vl back to vk. The dependencies forming this cycle translate\nto j the follow i ing constraints, as specified in (1e), t g (v i k)>t s (v i k)+∆T(v i k)∀v i k ∈Π (cid:0) V SADG (b) (cid:1) , (4b)\nt (vk+1)>t (vk)∀vk+1 ∈Γ (cid:0) V (b) (cid:1) , (4c)\nvk →vl : t (vk)<t (vl), (2a) s i g i i SADG\ni j g i s j\nstatus(v )=staged ∀(v,v ) ∈Ψ(b,b ), (4d)\nvl →vk : t (vl)<t (vk), (2b) ′ ′ 0\nj i g j s i t (vk)<t (vl) ∀(vk,vl)∈E (b)if i̸=j, (4e)\ng i s j i j SADG\nFurthermore, by (1b), we require that\nt (vl)>t (vk)−bM, ∀ b∈b, (4f)\ns j g i\nt g (v i k)>t s (v i k)+∆T(v i k), (3a) t s (v i k − 1)>t g (v j l+1)−(1−b)M, ∀ b∈b, (4g)\nt (vl)>t (vl)+∆T(vl), (3b)\ng j s j j whereM ≫0isalargeconstantandiandj arebothindices\nSince ∆T(v ∗ ) ≥ 0, observe that (2) and (3) lead to the referring to a specific AGV such that i,j ∈ {1,...,N}.",
+      "size": 999,
+      "sentences": 4
+    },
+    {
+      "id": 59,
+      "content": ")\nt (vl)>t (vl)+∆T(vl), (3b)\ng j s j j whereM ≫0isalargeconstantandiandj arebothindices\nSince ∆T(v ∗ ) ≥ 0, observe that (2) and (3) lead to the referring to a specific AGV such that i,j ∈ {1,...,N}. contradiction∗that both t (vk) < t (vj) and t (vk) > t (vj) Furthermore, k and l are the SE-ADG vertex index of AGV i\ng i s l g i s l\nmust hold. Such a contradiction appears for every (possibly and j respectively, i.e., k ∈{1,...,N } and l∈{1,...,N }. i j\nlonger) cycle within the SE-ADG. This result directly implies The constraints (4f) and (4g) encode the switching decision\nthat any feasible solution to OCP (1) is acyclic. for each of the switchable dependencies pairs using the big-\nM binary decision formulation [26]. Consider a b ∈ b, if\nNext, we show that if the initial SE-ADG is acyclic, the\nb=1, (4f) is relaxed because of the −bM factor. Conversely,\nOCP is feasible and in turn yields an acyclic SE-ADG. if b=0, (4g) is relaxed, because of the −(1−b)M factor.",
+      "size": 972,
+      "sentences": 9
+    },
+    {
+      "id": 60,
+      "content": "nitial SE-ADG is acyclic, the\nb=1, (4f) is relaxed because of the −bM factor. Conversely,\nOCP is feasible and in turn yields an acyclic SE-ADG. if b=0, (4g) is relaxed, because of the −(1−b)M factor. Corollary 5 (A solution to (1) exists if G (b ) is acyclic). SADG 0\nIf G SADG (b 0 ) is acyclic, the minimizer to (1), b ∗ , exists, C. Shrinking Horizon Feedback Control Scheme\nf\nOCP\n(b ∗) is finite., implying G\nSADG\n(b ∗) is acyclic. HavingdefinedtheMILPin(4),wepresentanoptimization-\nProof 6: A direct result from Corollary 2 is that if G (b ) basedshrinkinghorizonfeedbackcontrolschemetominimize\nSADG 0\nis acyclic, the route completion time of all AGVs is finite.",
+      "size": 667,
+      "sentences": 6
+    },
+    {
+      "id": 61,
+      "content": "entanoptimization-\nProof 6: A direct result from Corollary 2 is that if G (b ) basedshrinkinghorizonfeedbackcontrolschemetominimize\nSADG 0\nis acyclic, the route completion time of all AGVs is finite. the cumulative route completion times of the AGVs based on\nBecause the cost function of (1) equals the cumulative route delaysastheyoccur.Theschemeconsistsofaninitialplanning\ncompletiontimeofallAGVs,f (b )isnecessarilyfiniteand phasefollowedbyanonlinephase.Duringtheplanningphase,\nOCP 0\n[표 데이터 감지됨]\n\n=== 페이지 9 ===\n9\nthe roadmap and AGV start- and goal-positions are used to Dependency Status\nActive\ndefine a MAPF problem. The MAPF problem is solved using Inactive\nan algorithm such as CBS, ECBS, and the solution P is used Vertex Status\nstaged\nto construct an SADG using Algorithm 2. Once constructed, c in o - m pr p o le g t r e e d ss\nthe execution policy in Definition 3 is used to navigate the\nthe SADG’s trivial solution, G = G (0).",
+      "size": 938,
+      "sentences": 4
+    },
+    {
+      "id": 62,
+      "content": "aged\nto construct an SADG using Algorithm 2. Once constructed, c in o - m pr p o le g t r e e d ss\nthe execution policy in Definition 3 is used to navigate the\nthe SADG’s trivial solution, G = G (0). As AGVs\nSE-ADG SADG\ntraverse the roadmap, potentially incurring delays, the MILP\nformulation in (4) is parameterized based on the current AGV\nrouteprogress,andsolved.Thissolutionisthenusedtoupdate (a)AGVprogressillustratedbyvertexstatuses.AGV4 isdelayed. the SE-ADG used by the execution policy, until the next\noptimization iteration, where the MILP is re-parameterized, MILP Switching Options\nSwitchable (by color)\nandtheSE-ADGisupdated.Thisiterativelooprepeatsuntilall Unswitchable (greyscale)\nAGVs reach their respective goals. This scheme is illustrated\nin Fig. 6. Havingdefinedthefeedbackcontrolscheme,wenowprove\nthat the feedback scheme is recursively feasible.",
+      "size": 867,
+      "sentences": 7
+    },
+    {
+      "id": 63,
+      "content": "ll Unswitchable (greyscale)\nAGVs reach their respective goals. This scheme is illustrated\nin Fig. 6. Havingdefinedthefeedbackcontrolscheme,wenowprove\nthat the feedback scheme is recursively feasible. This implies\nthat if the initial planning phase is completed, the MILP will\nremain feasible until all AGVs have reached their respective\ngoal positions. We use the notation b ∗Tm to refer to the (b)BasedonAGVprogress,orderingcanbeadjustedbyconsideringthe\nminimizer of (4), parameterized by the AGV positions and validswitchingpairswithintheMILPformulation. solved at some time t=T , m∈N. m\nDependency Status\nProposition 1 (Recursive Feasibility of SHC scheme). If the Active\nInactive\ninitial SE-ADG, G = G (0), obtained from the\nSE-ADG SADG\nplanning phase, is acyclic, the shrinking horizon feedback\ncontrol scheme will guarantee that G\nSADG\n(b ∗) is acyclic at\neach subsequent optimization step.",
+      "size": 896,
+      "sentences": 9
+    },
+    {
+      "id": 64,
+      "content": "G, G = G (0), obtained from the\nSE-ADG SADG\nplanning phase, is acyclic, the shrinking horizon feedback\ncontrol scheme will guarantee that G\nSADG\n(b ∗) is acyclic at\neach subsequent optimization step. Proof 7: Proofbyinduction.InitiallytheSE-ADG,G =\nSE-ADG\nG SADG (b ∗T0 )isacyclic.IftheMILPin(4)issolvedatt=T 1 >\nT\n0\n,Corollary5guaranteesthattheSE-ADGatT\n1\n,G\nSE-ADG\nT1, (c)TheswitchingenablesAGV3 tocontinuewithoutwaitingforAGV4,\nobtainedfromG\nSADG\n(b\n∗T1\n),isacyclic.Subsequentoptimization\nandAGV2 withoutwaitingforAGV1. stepswillalwaysresultinacyclicSE-ADGs,provingrecursive Fig. 7: Illustrative example of switching performed by the shrinking\nhorizon feedback control scheme. feasibility of the feedback control scheme. Toillustratethisfeedbackcontrolscheme,anexampleofthe\nSimilarly, the second pattern is shown in Fig. 8b, corre-\nonlineoptimizationstepisshowninFig.7.Theexamplestarts\nsponding to two AGVs travelling in the opposite direction.",
+      "size": 947,
+      "sentences": 7
+    },
+    {
+      "id": 65,
+      "content": "controlscheme,anexampleofthe\nSimilarly, the second pattern is shown in Fig. 8b, corre-\nonlineoptimizationstepisshowninFig.7.Theexamplestarts\nsponding to two AGVs travelling in the opposite direction. at time t, where T ≤ t ≤ T , and AGV has been delayed. 1 2 4\nThis pattern can be found by sequentially visiting each inter-\nHowever, because of the dependencies in G SADG (b ∗T1 ), AGV 3\nAGVdependency(vk,vl)intheSADGandsearchingforany\nmust wait for AGV 4 before it can proceed, as illustrated in i j\nsequence of dependencies of the pattern\nFig. 7a. At t = T , the optimization step is performed and a\n2\nnewSE-ADGisobtained,G SADG (b ∗T2 ),asillustratedinFig.7b. (v i k+n,v j l − n), n∈1,2,.... Note that G SADG (b ∗T2 ) has switched the dependencies between\nA dependency group DG then consists of the sequence\nAGV andAGV ,andremainsacyclic.Fort>T ,theAGVs\n3 4 2\ncontinue executing their plans, but using the newly obtained DG=((v i k,v j l),(v i k+1,v j l − 1),(v i k+2,v j l − 2),...).",
+      "size": 986,
+      "sentences": 8
+    },
+    {
+      "id": 66,
+      "content": "nsists of the sequence\nAGV andAGV ,andremainsacyclic.Fort>T ,theAGVs\n3 4 2\ncontinue executing their plans, but using the newly obtained DG=((v i k,v j l),(v i k+1,v j l − 1),(v i k+2,v j l − 2),...). SE-ADG, G\nSADG\n(b\n∗T2\n). Inbothcases,asinglebinaryvariableissufficienttoexpress\nthe switching for all the dependency pairs in the group, since\nD. Grouping Switchable Dependency Pairs\nthe only way for the switching to yield an acyclic SE-ADG is\nTwo patterns of switchable dependencies often occur with\nif either all the forward dependencies and none of the reverse\nmulti-agent planning problems. The first pattern is shown in\ndependencies are active (or vice-versa). Depending on the\nFig. 8a and occurs when a MAPF plan requires two AGVs to\nroadmaptopography,thesizeofbcanbesignificantlyreduced,\ntravel across multiple roadmap vertices in the same direction. greatly reducing the complexity of the MILP problem at each\nThis pattern can be found by sequentially visiting each inter-\niteration.",
+      "size": 991,
+      "sentences": 7
+    },
+    {
+      "id": 67,
+      "content": "d,\ntravel across multiple roadmap vertices in the same direction. greatly reducing the complexity of the MILP problem at each\nThis pattern can be found by sequentially visiting each inter-\niteration. IdentifyingdependencygroupsisanO(n)operation,\nAGVdependency(vk,vl)intheSADGandsearchingforany\ni j and can be done during SADG construction, i.e., before plan\nsequence of dependencies of the pattern\nexecution. (vk+n,vl+n), n∈1,2,....\ni j\nE. Summary\nA dependency group DG then consists of the sequence\nThe result of this section is that we have an SADG from\nDG=((vk,vl),(vk+1,vl+1),(vk+2,vl+2),...). i j i j i j whichanOCPisderivedwhichcanbesolvedatanytime-step\n[표 데이터 감지됨]\n\n=== 페이지 10 ===\n10\nDependency\nSADG forward\nSADG reverse\nSE-ADG active\nSE-ADG inactive\nVertex Status\nStaged\n(a)AGVstravellinginthesamedirectionandthecorrespondingSE-ADG. In-progress\nCompleted\nFig.",
+      "size": 867,
+      "sentences": 6
+    },
+    {
+      "id": 68,
+      "content": "지됨]\n\n=== 페이지 10 ===\n10\nDependency\nSADG forward\nSADG reverse\nSE-ADG active\nSE-ADG inactive\nVertex Status\nStaged\n(a)AGVstravellinginthesamedirectionandthecorrespondingSE-ADG. In-progress\nCompleted\nFig. 9: Graphical illustration of how the original SADG can be split\ninto a finite horizon SADG subset and an SE-ADG, while ensuring\nifthefinitehorizonSADGsubsetyieldsanacyclicSE-ADGsubset,\nthe resultant SE-ADG will be acyclic. (b)AGVstravellingintheoppositedirectionandthecorrespondingSE-ADG. Fig. 8: Dependency grouping patterns for AGVs planned to cross To this end, we introduce Lemma 2, a result which enables\nroadmap vertices in the (a) same and (b) opposite directions. the splitting of an SADG into a finite horizon SADG subset\nandanSE-ADGsubset,theresultingSE-ADGwillbeacyclic\nif the switching within the finite horizon SADG subset yields\nto re-order the AGVs based on their progress of the plans. an acyclic SE-ADG.",
+      "size": 920,
+      "sentences": 8
+    },
+    {
+      "id": 69,
+      "content": "DG subset\nandanSE-ADGsubset,theresultingSE-ADGwillbeacyclic\nif the switching within the finite horizon SADG subset yields\nto re-order the AGVs based on their progress of the plans. an acyclic SE-ADG. Lemma 2 builds on the more general\nA feasible solution is guaranteed to yield a deadlock-free,\nfact that a graph G is acyclic if 1) it is constructed from two\ncollision free plan for the AGVs. acyclic graphs, G = (V ,E ) and G = (V ,E ), and 2) all\n1 1 1 2 2 2\nedges connecting G and G point from V to V . This result\n1 2 1 2\nVI. RECEDINGHORIZONCONTROLSCHEME\nis proven in Appendix A, Lemma 3. The result in Lemma 2\nWe now address the fact that the OCP in (1) could is illustrated by the example in Fig. 9. The grey partition line\nyield an optimization problem too large for feasible real- splits the SADG into a SADG subset and an SE-ADG. Note\ntime implementation as it considers the entire, finite-length how all the dependencies connecting the SADG subset and\nplans.",
+      "size": 968,
+      "sentences": 10
+    },
+    {
+      "id": 70,
+      "content": "for feasible real- splits the SADG into a SADG subset and an SE-ADG. Note\ntime implementation as it considers the entire, finite-length how all the dependencies connecting the SADG subset and\nplans. Specifically, we show how the OCP in (1) can be the SE-ADG go from the SADG subset to the SE-ADG. approximated by a receding horizon variant of the MILP in\nThe application of Algorithm 3 to our running example is\n(4).ThemotivationforthisispredicatedonthefactthatMILP\nillustrated in Fig. 11. Here, the finite horizon SADG subset is\nproblemsareexponentiallycomplexinthenumberofdiscrete\nhighlighted in orange. variables. Furthermore, a receding horizon formulation allows\nfor ad-hoc re-planning of AGVs without needing to wait for\nAlgorithm 3 Extracting a Finite Horizon SADG Subset\nall AGVs to reach their goals.",
+      "size": 809,
+      "sentences": 8
+    },
+    {
+      "id": 71,
+      "content": "ables. Furthermore, a receding horizon formulation allows\nfor ad-hoc re-planning of AGVs without needing to wait for\nAlgorithm 3 Extracting a Finite Horizon SADG Subset\nall AGVs to reach their goals. To this end, we first introduce\nInput: G (b), H\na method to split an SADG into a smaller SADG and an SADG\nResult: Grhc (b )\nacyclicSE-ADG.Wethenshowhowre-formulatingtheMILP SADG rhc\nto consider the smaller SADG approximates a solution to the // Add switching dependency pairs within horizon H\noriginal OCP and maintains recursive feasibility guarantees. 1: Add vertices to V FH within H\nNote that we extend the approach originally presented in 2: Add all edges to/from V FH to E FH\n3: Add b∈b to b rhc if b is related to edges in E FH\n[12]byintroducingamethodtosplittheSADG.Thisenables 4: Add all edges pointing to v∈V FH to E inwards\nthe persistent re-solving of the MAPF mid-route as shown for\n// Expand V until no dependencies point into V\nthe original ADG method in [4].",
+      "size": 974,
+      "sentences": 4
+    },
+    {
+      "id": 72,
+      "content": "hisenables 4: Add all edges pointing to v∈V FH to E inwards\nthe persistent re-solving of the MAPF mid-route as shown for\n// Expand V until no dependencies point into V\nthe original ADG method in [4]. FH FH\n5: while E inwards ̸=∅ do\n6: e←pop(E inwards )\nA. Introducing The Finite Horizon SADG Subset 7: Add all v’s pointing to e\n8: Add all edges pointing from v out of V FH to E inwards\non R th e e ce f d a i c n t g th H a o t r a iz s o u n ffi C c o ie n n tr t o ly l( a R c H cu C ra ) t a e p s p o r l o u a t c io h n es to ar a e n pr O e C di P ca c te a d n 9: return G S r A h D c G (b rhc )= (cid:0) V FH ,E FH (b rhc ) (cid:1)\nbeobtainedbyonlyconsideringthesystemtrajectorieswithin\nafinitehorizon.Fordiscretesystems,suchastheonedescribed Extracting a finite horizon SADG subset from the SADG\nby a SADG, defining the finite horizon which guarantees the can be done with Algorithm 3.",
+      "size": 895,
+      "sentences": 3
+    },
+    {
+      "id": 73,
+      "content": "afinitehorizon.Fordiscretesystems,suchastheonedescribed Extracting a finite horizon SADG subset from the SADG\nby a SADG, defining the finite horizon which guarantees the can be done with Algorithm 3. To illustrate the intuition\nRHC presents a unique challenge: re-ordering AGVs within a behind Algorithm 3, consider Fig. 10. In line 1, Algorithm 3\nfinite horizon could still yield a cyclic SE-ADG, despite the navigates the graph G (b) by first pushing all the vertices\nSADG\nportion of the SE-ADG within the horizon being acyclic. estimatedtobecompletedwithinauser-specifiedtimehorizon\nTo this end, we present Algorithm 3 to split an SADG H to a stack V , shown in Fig. 10a. Next, each forward-\nFH\ninto 1.) a finite horizon SADG and 2.)",
+      "size": 736,
+      "sentences": 8
+    },
+    {
+      "id": 74,
+      "content": "tedtobecompletedwithinauser-specifiedtimehorizon\nTo this end, we present Algorithm 3 to split an SADG H to a stack V , shown in Fig. 10a. Next, each forward-\nFH\ninto 1.) a finite horizon SADG and 2.) an acyclic SE-ADG reverse dependency pair pointing to a vertex in V is identi-\nFH\nsuch that if the finite horizon SADG (a subset of the orig- fied,anditsassociatedbinaryvariableisappendedtob .This\nrhc\ninal SADG) yields an acyclic, finite horizon SE-ADG for isillustratedbythemagentaregioninFig.10b.Theremaining\na particular b ⊂ b, the entire SE-ADG will be acyclic. forwarddependenciespointingtoverticesinV areappended\nrhc FH\nThis finite horizon SADG can then be used, instead of the to E , until no dependencies point from a vertex in V to\nFH FH\noriginal SADG, to parameterize MILP formulation, greatly a vertex outside V . This is shown in Fig.",
+      "size": 846,
+      "sentences": 7
+    },
+    {
+      "id": 75,
+      "content": "ADG can then be used, instead of the to E , until no dependencies point from a vertex in V to\nFH FH\noriginal SADG, to parameterize MILP formulation, greatly a vertex outside V . This is shown in Fig. 10c The resulting\nFH\nreducing the computational load and maintaining collision- switchable dependencies which are considered within b are\nrhc\nand deadlock-free plan execution guarantees. shown in Fig. 10d. [표 데이터 감지됨]\n\n=== 페이지 11 ===\n11\nN\n(cid:88)\n(a) min t g (v i ni) (5a)\nb,tg,ts\ni=1\ns.t. t (vk)>t (vk)+∆T(vk)∀vk ∈Π (cid:0) V (b) (cid:1) , (5b)\ng i s i i i FH\n(b) t s (v i k+1)>t g (v i k)∀v i k+1 ∈Γ (cid:0) V FH (b) (cid:1) , (5c)\nstatus(v )=staged ∀(v,v ) ∈Ψ(b,b ,V (b)), (5d)\n′ ′ 0 FH\nt (vk)<t (vl) ∀(vk,vk)∈E (b)if i̸=j, (5e)\ng i s j i j FH\nt (vl)>t (vk)−bM, ∀ b∈b (5f)\ns j g i\n(c) t s (v i k − 1)>t g (v j l+1)−(1−b)M, ∀ b∈b (5g)\nwhereM ≫0isalargeconstant andn isthehorizonlength\ni\nas determined for AGV i as determined by Algorithm 3.",
+      "size": 943,
+      "sentences": 7
+    },
+    {
+      "id": 76,
+      "content": "FH\nt (vl)>t (vk)−bM, ∀ b∈b (5f)\ns j g i\n(c) t s (v i k − 1)>t g (v j l+1)−(1−b)M, ∀ b∈b (5g)\nwhereM ≫0isalargeconstant andn isthehorizonlength\ni\nas determined for AGV i as determined by Algorithm 3. (d) C. Receding Horizon Feedback Control Scheme\nHaving re-formulated the MILP in (5) such that a subset of\nthe SADG is considered at each optimization step, we present\nFig. 10: Illustrative example of how Algorithm 3 extracts the finite the receding horizon feedback control scheme as shown in\nhorizon SADG subset from the original SADG for a user-specified\nFig. 12. The main difference between the RHC scheme and\nhorizon H. The magenta region refers to the stack V in Algo-\nFH\nthe SHC scheme presented in Section V is the inclusion of\nrithm 3. (a) refers to line 1, with the vertices within H added to\nV . (b)referstoline2,whereallforwardorreversedependencies Algorithm 3 in the step 5. Track AGV Progress.",
+      "size": 906,
+      "sentences": 8
+    },
+    {
+      "id": 77,
+      "content": "ction V is the inclusion of\nrithm 3. (a) refers to line 1, with the vertices within H added to\nV . (b)referstoline2,whereallforwardorreversedependencies Algorithm 3 in the step 5. Track AGV Progress. Finally, we\nFH\npointing to within H are added to V FH , and (c) to line 3-4, where prove recursive feasibility of the RHC scheme. any forward dependencies pointing to V in (b) are included. (d)\nFH\nshowstheswitchabledependencies,inred,asidentifiedinlines5-8. Proposition 2 (Recursive Feasibility of RHC scheme). If the\ninitial SE-ADG, G =G (0), obtained from the plan-\nSE-ADG SADG\nning phase, is acyclic, the Receding Horizon Control scheme\nhorizon\nwill guarantee that G\nSADG\n(b ∗) is acyclic at each subsequent\nLegend optimization step. Switchable (by color)\nUnswitchable (greyscale)\nFinie Horizon Proof 9: Proofbyinduction.InitiallytheSE-ADG,G SE-ADG =\nSADG Subset\nSE-ADG Subset G SADG (b ∗T0 ) is acyclic. Algorithm 3 is used to extract the finite\nhorizon SADG subset at t = T > T .",
+      "size": 984,
+      "sentences": 11
+    },
+    {
+      "id": 78,
+      "content": "inie Horizon Proof 9: Proofbyinduction.InitiallytheSE-ADG,G SE-ADG =\nSADG Subset\nSE-ADG Subset G SADG (b ∗T0 ) is acyclic. Algorithm 3 is used to extract the finite\nhorizon SADG subset at t = T > T . If the MILP in (5) is\n1 0\nsolved at t = T > T , Corollary 5 guarantees that the SE-\n1 0\nADG at T 1 , G SE-ADG T1, obtained from G SADG (b ∗T1 ), is acyclic. SubsequentoptimizationstepswillalwaysresultinacyclicSE-\nFig. 11: Highlighted finite horizon SADG subset connected to the\nADGs, proving recursive feasibility of the feedback control\nacyclic SE-ADG subset with unidirectional dependencies. The hori-\nzon H is indicated by the horizontal black arrow. scheme. VII. EVALUATION\nWeperformextensiveevaluationsofourproposedfeedback\nLemma 2 (Finite Horizon SADG Subset solution guaran-\ncontrol scheme. Our simulations consist of multiple AGVs\ntees acyclicity of resultant SE-ADG).",
+      "size": 876,
+      "sentences": 10
+    },
+    {
+      "id": 79,
+      "content": "Weperformextensiveevaluationsofourproposedfeedback\nLemma 2 (Finite Horizon SADG Subset solution guaran-\ncontrol scheme. Our simulations consist of multiple AGVs\ntees acyclicity of resultant SE-ADG). Consider a SADG,\noccupying various roadmaps with randomized start and goal\nG (b), split into a finite horizon SADG subset and an SE-\nSADG\nlocations. Each simulation starts with a planning step where\nADGsubsetusingAlgorithm3.Ifb ∗rhc issuchthatG S r A h D c G (b ∗rhc ) the MAPF is solved given the start and goal locations. is acyclic, the resultant SE-ADG is acyclic. To gain insight into our proposed control schemes, we\nProof 8: By lines 5-8, Algorithm 3 ensures all dependencies perform evaluations in three different settings.",
+      "size": 730,
+      "sentences": 6
+    },
+    {
+      "id": 80,
+      "content": "ic, the resultant SE-ADG is acyclic. To gain insight into our proposed control schemes, we\nProof 8: By lines 5-8, Algorithm 3 ensures all dependencies perform evaluations in three different settings. In the first,\nconnecting the finite horizon SADG subset, Grhc (), and the we aim to gain statistical insight into the performance gains\nSADG\nSE-ADGsubset,Grhc ,aredirectedfromGrhc ()toGrhc of our approach compared to the original ADG baseline by\nSE-ADG SADG SE-ADG\nonly.UsingtheresultinLemma3,ifaparticularb ischosen considering various roadmap topologies and AGV fleet sizes. rhc\nsuchthatGrhc (b )isacyclic,theresultantSE-ADGwillbe In the second setting, we compare our method to the state-of-\nSADG rhc\nacyclic, since Grhc is acyclic as well. the-art robust MAPF planner K-CBSH-RM [34].",
+      "size": 787,
+      "sentences": 5
+    },
+    {
+      "id": 81,
+      "content": "tGrhc (b )isacyclic,theresultantSE-ADGwillbe In the second setting, we compare our method to the state-of-\nSADG rhc\nacyclic, since Grhc is acyclic as well. the-art robust MAPF planner K-CBSH-RM [34]. In the third\nSE-ADG\nsetting, we showcase our method in a high-fidelity ROS and\nGazebosimulationenvironment.Inallthreesettings,theRHC\nSADG is used in combination with dependency grouping as\nB. Re-formulation of MILP\ndescribed in Section V-D. All simulations were conducted on\nWenowre-formulatetheMILPtoconsiderthefinitehorizon a Lenovo Thinkstation with an Intel® Xeon E5-1620 3.5GHz\nSADG subset instead of the entire SADG as was done in (4). processor and 64 GB RAM. [표 데이터 감지됨]\n\n=== 페이지 12 ===\n12\nRoadmap AGV Tasks\n4. AGV Execution Manager\n⋮ ⋮\n3. Optimizer\nSolve I.C. MILP in(3)\n1. MAPF Planner\nusing CBS,\nExecution Policy (Def. 3)\nECBS [4][5]\n5. Progress Tracker vertex\nstatuses\nCalculate Finite Horizon SADG Subset\n2. SADG Compiler\nusing Alg.",
+      "size": 945,
+      "sentences": 12
+    },
+    {
+      "id": 82,
+      "content": ". Optimizer\nSolve I.C. MILP in(3)\n1. MAPF Planner\nusing CBS,\nExecution Policy (Def. 3)\nECBS [4][5]\n5. Progress Tracker vertex\nstatuses\nCalculate Finite Horizon SADG Subset\n2. SADG Compiler\nusing Alg. 3; Parametrize MILP in (3)\nAlgorithm 2\nOnline\nFig.12:Recedinghorizonfeedbackcontroldiagram:DifferencesfromFig.6arehighlightedinred.AsAGVsprogress,andareinevitably\ndelayed, their status is tracked, and an optimization iteration is performed to re-order the AGVs based on a Finite Horizon SADG Subset\ncalculated by Algorithm 3. The solution of the MILP is used to update the SE-ADG used for plan execution in a feedback loop. A. Setting 1: Statistical Analysis\n30 We compare our proposed receding horizon feedback con-\ntrol scheme, referred to from here on as the RHC SADG 25\napproach, to the original ADG approach in [4]. We consider\n20\nthe roadmaps in Fig. 14, inspired by intralogistic warehouse\nlayouts [1], [8], [9].",
+      "size": 919,
+      "sentences": 13
+    },
+    {
+      "id": 83,
+      "content": "l scheme, referred to from here on as the RHC SADG 25\napproach, to the original ADG approach in [4]. We consider\n20\nthe roadmaps in Fig. 14, inspired by intralogistic warehouse\nlayouts [1], [8], [9]. For each simulation run, AGVs are 15\ngiven randomized start and goal locations on the map. The 10\nexecution policy in Definition 3 is used for both the ADG\n5\nand RHC SADG approaches. The AGVs are simulated as\nsimple differential-drive robots with constant rotational and 0\ntranslationalvelocitiesof3 rad·s−1 and1 m·s−1 respectively. 0 10 20 30 40 50\nThe coordination of AGVs is performed using ROS, where a Delay∆tdelay[s]\ncentral coordination ROS node solves the MAPF, constructs\nthe RHC SADG (or ADG), and communicates the vertex\nstatuses to each AGV. The feedback loop sampling time h\nis set to 2 s.\nAGVsareartificiallydelayedasfollows:atthestartofeach\ninterval of length ∆t , 20% of the AGV fleet is randomly\ndelay\nselected and stopped for the next ∆t seconds.",
+      "size": 964,
+      "sentences": 8
+    },
+    {
+      "id": 84,
+      "content": "k loop sampling time h\nis set to 2 s.\nAGVsareartificiallydelayedasfollows:atthestartofeach\ninterval of length ∆t , 20% of the AGV fleet is randomly\ndelay\nselected and stopped for the next ∆t seconds. For the\ndelay\nnext interval, a different subset of the AGVs is randomly\nselected and delayed, and so on. Improvement is quantified\nby comparing the cumulative route completion time of all the\nAGVsforthesameMAPFplanwhenusingthebaselineADG\napproach to our receding horizon feedback control scheme,\ndefined as\n(cid:80) (cid:80)\nt − t\nimprovement= ADG\n(cid:80)\nRHCSADG ·100%, (6)\nt\nADG\n(cid:80)\nwhere t refers to the cumulative plan completion time for\nall AGVs u∗sing approach ∗. Improvement and Delays: We consider delays of ∆t ∈\ndelay\n{1,3,5,10,15,20,25,30,40,50} seconds for AGV fleet sizes\nof{30,40,50,60,70}navigatingthefourroadmapsinFig.14. We run 100 simulations for each fleet size and delay time\npermutation.",
+      "size": 914,
+      "sentences": 5
+    },
+    {
+      "id": 85,
+      "content": "lays of ∆t ∈\ndelay\n{1,3,5,10,15,20,25,30,40,50} seconds for AGV fleet sizes\nof{30,40,50,60,70}navigatingthefourroadmapsinFig.14. We run 100 simulations for each fleet size and delay time\npermutation. For each simulation, the MAPF is solved using\nECBS with sub-optimality bound w chosen such that the\ninitial planning time is below ten minutes. Fig. 13 shows\nthe improvement for various AGV fleet sizes and delays. The horizon H is set to 5 seconds. We observe that the\n]%[tnemevorpmI\nAGVs\n30\n40\n50\n60\n70\nFig. 13: Improvement for various simulated AGV delays navigating\nroadmapsinFig.14.Each∆t seconds,arandomlyselectedsubset\ndelay\nof20%oftheAGVsarestoppedfor∆t seconds.HorizonH =5. delay Bounds correspond to ±1σ. improvement is almost linear with respect to the delays of\nthe AGVs, for all the considered fleet sizes.",
+      "size": 818,
+      "sentences": 10
+    },
+    {
+      "id": 86,
+      "content": "ubset\ndelay\nof20%oftheAGVsarestoppedfor∆t seconds.HorizonH =5. delay Bounds correspond to ±1σ. improvement is almost linear with respect to the delays of\nthe AGVs, for all the considered fleet sizes. The improvement\nstandard deviation, σ, indicated by the lightly colored bands,\nis relatively small, indicating that improvement is consistent\nfor a given fleet size and delay configuration. Improvement and Horizon: For the RHC SADG approach,\nweconsidervarioushorizonsH ∈{1,...,15}s.Weconsider\ndelays ∆t =5s and ∆t =25s, with the improvement delay delay\nshown in Fig. 15. We run 100 simulations for each fleet\nsize, horizon and delay time permutation.",
+      "size": 650,
+      "sentences": 7
+    },
+    {
+      "id": 87,
+      "content": "rvarioushorizonsH ∈{1,...,15}s.Weconsider\ndelays ∆t =5s and ∆t =25s, with the improvement delay delay\nshown in Fig. 15. We run 100 simulations for each fleet\nsize, horizon and delay time permutation. Notice how for\nboth shorter and longer delays, the improvement already\nsignificantlyincreaseswithlowhorizonsH,indicatingthatthe\nRHCMILPin(5)performsaconsistentlygoodapproximation\nof the OCP in (1) for small H.\nVaryingPercentageofDelayedAGVFleet: Weevaluatedif-\nferentproportionsoftheAGVsdelayedateach∆t =20s,\ndelay\nwith the improvement for an horizon H = 5s, shown in\nFig.16.When0%oftheAGVsaredelayed,theimprovement\nis 0% since none of the AGVs are re-ordered with the RHC\nSADG approach. Similarly, when 100% of the AGVs are\ndelayed, the cumulative route completion times for both the\nADG and SADG methods is ∞, yielding an improvement\n[표 데이터 감지됨]\n\n=== 페이지 13 ===\n13\n(a)Warehouse (b)FullMaze (c)HalfMaze (d)Islands\nFig.",
+      "size": 919,
+      "sentences": 5
+    },
+    {
+      "id": 88,
+      "content": "are\ndelayed, the cumulative route completion times for both the\nADG and SADG methods is ∞, yielding an improvement\n[표 데이터 감지됨]\n\n=== 페이지 13 ===\n13\n(a)Warehouse (b)FullMaze (c)HalfMaze (d)Islands\nFig. 14: Roadmaps used for the statistical analysis in Section VII-A, inspired by [1], [8], [9]. AGVs are indicated by colored circles, and\ntheir corresponding goal location by the same colored ring. Roadmap vertices are represented by black squares. 6\n4\n2\n0\n0 2 4 6 8 10 12 14\nHorizonH[s]\n]%[tnemevorpmI\n∆t =5s\ndelay\nAGVs\n30\n40\n50\n60\n70\n20\n15\n10\n5\n0\n0 2 4 6 8 10 12 14\nHorizonH[s]\n]%[tnemevorpmI\n∆t =25s\ndelay\nAGVs\n30\n40\n50\n60\n70\nFig. 15: Improvement for delays ∆t of 5 and 25 seconds given\ndelay\nvarious horizons H. Bounds correspond to ±1σ. 15\n10\n5\n0\n0 20 40 60 80 100\nPercentageofAGVfleetdelayedateach∆tdelay=20. [%]\n]%[tnemevorpmI\n12\n10\n8\n6\n4\n2\n0\n30 35 40 45 50 55 60 65 70\nAGVFleetSize\nAGVs\n30\n40\n50\n60\n70\nFig. 16: Improvement for various percentages of AGVs delayed at\neach interval of ∆t .",
+      "size": 991,
+      "sentences": 9
+    },
+    {
+      "id": 89,
+      "content": "dateach∆tdelay=20. [%]\n]%[tnemevorpmI\n12\n10\n8\n6\n4\n2\n0\n30 35 40 45 50 55 60 65 70\nAGVFleetSize\nAGVs\n30\n40\n50\n60\n70\nFig. 16: Improvement for various percentages of AGVs delayed at\neach interval of ∆t . ∆t =20s and horizon H =5s. Bounds\ndelay delay\ncorrespond to ±1σ. ]%[tnemevorpmI\nRoadmap\nWarehouse\nFullMaze\nHalfMaze\nIslands\nFig.17:ImprovementfortheroadmapsshowninFig.14forvarious\nAGVfleetsizes.20%oftheAGVsaredelayedby∆t =20sand\ndelay\nthe H =5s. Bounds correspond to ±1σ. of 0%. Improvement is highest when 40% randomly selected\nAGVs are delayed each ∆t . delay\nDifferent Roadmaps: We evaluate the improvement sepa-\nrately for each roadmap in Fig. 14. Results are shown in\nFig. 17 for horizon H = 5s and ∆t = 10s. We note that delay\nthe least improvement is seen for the sparser Islands map,\nand the best improvement is seen for the denser Full Maze\nand Warehouse maps.",
+      "size": 869,
+      "sentences": 14
+    },
+    {
+      "id": 90,
+      "content": "in\nFig. 17 for horizon H = 5s and ∆t = 10s. We note that delay\nthe least improvement is seen for the sparser Islands map,\nand the best improvement is seen for the denser Full Maze\nand Warehouse maps. We conclude that our method is best\nsuited to maps which present the opportunity for switching,\nas this increases the binary decision space of the OCP. RHC MILP Computation Times: For our simulations, the\nMILP was solved using the Coin-Or Branch-and-Cut (CBC)\nsolver [41]. The computation times for different AGV fleet\nsizes and horizon lengths are shown in Fig. 18. We note that\ntheMILPcanbesolvedbelow1secondforfleetsizesofupto\n70AGVsforhorizonsbelowH =5s.Recallthatevensmaller\nhorizons can yield significant improvement as in Fig. 15. Summary: We observe significant reductions in average\nroute completion times for AGVs.",
+      "size": 824,
+      "sentences": 10
+    },
+    {
+      "id": 91,
+      "content": "upto\n70AGVsforhorizonsbelowH =5s.Recallthatevensmaller\nhorizons can yield significant improvement as in Fig. 15. Summary: We observe significant reductions in average\nroute completion times for AGVs. Specifically, the larger the\ndelays observed by the AGVs, the larger the improvement\nis observed when using the RHC SADG approach compared\nto the ADG baseline using the same initial MAPF solution. Significant improvements are observed for small RHC SADG\nhorizons, across multiple roadmap topologies. B. Setting 2: Comparison with Robust MAPF Solver\nIn this section we compare our proposed receding horizon\nfeedback control scheme to the state-of-the-art robust MAPF\n[표 데이터 감지됨]\n\n=== 페이지 14 ===\n14\n101\n100\n10−1\n10−2\n0 2 4 6 8 10 12 14\nHorizon H\n]s[\nemit\nnoitatupmoc\negarevA\nAGVs 6\n30\n40 5\n50\n4 60\n70 3\n2\n1\n0\n20 25\nAGVFleetSize\nFig. 18: Computation times of 3. Optimizer in Fig. 12 for varying\nhorizon lengths and AGV fleet sizes. Bounds correspond to ±3σ.",
+      "size": 954,
+      "sentences": 11
+    },
+    {
+      "id": 92,
+      "content": "itatupmoc\negarevA\nAGVs 6\n30\n40 5\n50\n4 60\n70 3\n2\n1\n0\n20 25\nAGVFleetSize\nFig. 18: Computation times of 3. Optimizer in Fig. 12 for varying\nhorizon lengths and AGV fleet sizes. Bounds correspond to ±3σ. solverK-CBSH-RM[34].WeconsidertheroadmapinFig.19a\nwith AGV fleets of size 20 and 25 with the horizon of the\nRHC SADG approach set to H = 10s. The smaller roadmap\nand fleet sizes were chosen because K-CBSH-RM and CBS\nfailed to yield valid MAPF solutions for larger maps or fleet\nsizes.Recallthatweusedtheboundedsub-optimalequivalent\nof CBS, ECBS, in Setting 1, allowing us to find feasible\nsolutionstotheMAPFforlargersolutionspaces.AsinSetting\n1,improvementismeasuredusingtheoriginalADGapproach\nwith CBS as the initial MAPF planner. Simulating Interactions with Dynamic Obstacles: To sim-\nulate random interactions with dynamic obstacles, each AGV\nis prescribed a different, randomly sampled velocity when\ncompleting an SE-ADG event. These velocities are sampled\nfrom the distribution shown in Fig.",
+      "size": 997,
+      "sentences": 9
+    },
+    {
+      "id": 93,
+      "content": "om interactions with dynamic obstacles, each AGV\nis prescribed a different, randomly sampled velocity when\ncompleting an SE-ADG event. These velocities are sampled\nfrom the distribution shown in Fig. 21. This distribution was\ncreated to simulate the fact that, most often, AGVs move at a\nvelocity close to a nominal velocity v , but occasionally\nnominal\ntravelatsignificantlyslowervelocitieswhennavigatingaround\ndynamic obstacles, modeled here by the velocity distribution\ncentered around 0.3v , with v = 1 m·s−1. Fig. 20\nnominal nominal\nshows the comparison of the RHC SADG approach with\nK-CBSH-RM for k ∈ {1,2} seconds for 100 simulations. We observe that the RHC SADG approach yields a higher\nimprovement during plan execution for both AGV fleet sizes. As expected, we observed that improvement increased for\nincreasing values of k in K-CBSH-RM.",
+      "size": 848,
+      "sentences": 8
+    },
+    {
+      "id": 94,
+      "content": "rve that the RHC SADG approach yields a higher\nimprovement during plan execution for both AGV fleet sizes. As expected, we observed that improvement increased for\nincreasing values of k in K-CBSH-RM. However, for k > 2,\nK-CBSH-RMonlyfoundvalidMAPFsolutionsfor1%ofthe\nsimulationswithinthe240scut-offtime,makingacomparison\nwith our approach for k > 2 impossible. The success rate of\n(a) Roadmap for the comparison (b) Roadmap used for the Gazebo\nwithK-CBSH-RMinSectionVII-B evaluationinSectionVII-C\nFig.19:RoadmapswithAGVsindicatedbycoloredcircles,andtheir\ncorrespondingly colored rings denoting their goal locations. ]%[tnemevorpmI\nImprovement 102\n101\n100\n10−1\n20 25\nAGVFleetSize\n]s[emiTnoitatupmoC\nInitialMAPFSolverTime\nSADGwCBS\nK-CBSH-RMk=1\nK-CBSH-RMk=2\nFig.20:AverageimprovementandinitialMAPFsolvercomputation\ntimes for 100 simulations with AGVs velocity profiles from Fig. 21\ncomparing the RHC SADG method with the K-CBSH-RM planner\nfor k∈{1,2}s for H =10s.",
+      "size": 960,
+      "sentences": 6
+    },
+    {
+      "id": 95,
+      "content": ":AverageimprovementandinitialMAPFsolvercomputation\ntimes for 100 simulations with AGVs velocity profiles from Fig. 21\ncomparing the RHC SADG method with the K-CBSH-RM planner\nfor k∈{1,2}s for H =10s. 0.10\n0.05\n0.00\n0.0 0.2 0.4 0.6 0.8 1.0 1.2\nFractionofNominalVelocityvnominal\nytilibaborP\nFig.21:NormalizedvelocitydistributionforSetting2.EachAGVis\ngivenarandomlysampledvelocitytocompleteitsnextSADGevent\nfrom this distribution. K-CBSH-RM for different values of k is shown in Fig. 22. These results highlight the fact that our approach can be used\nwith a non-robust planner such as CBS or ECBS to ensure a\nvalid solution to the MAPF is found, while adding robustness\ntodelaysinanonlinefashionthroughthere-orderingofAGV\nplans. Simulating Workspaces with Bounded Delays: The family\nofrobustMAPFsolversassumedelaysofallAGVsareupper-\nbounded by k seconds [5], [34]. We compare our proposed\napproach to K-CBSH-RM with a velocity distribution in\nFig. 24 resulting in smaller delays. Fig.",
+      "size": 981,
+      "sentences": 10
+    },
+    {
+      "id": 96,
+      "content": "robustMAPFsolversassumedelaysofallAGVsareupper-\nbounded by k seconds [5], [34]. We compare our proposed\napproach to K-CBSH-RM with a velocity distribution in\nFig. 24 resulting in smaller delays. Fig. 23 shows that K-\nCBSH-RM performs better than our approach in this case,\nwhich only yields marginal improvements compared to the\nADG baseline. Remark 2. Our approach is agnostic to the original MAPF\nplanner. Hence, it would be possible to use K-CBSH-RM to\nsolvetheinitialMAPF,andtheRHCSADGtore-orderAGVs\nbased on delays observed during plan execution.",
+      "size": 551,
+      "sentences": 8
+    },
+    {
+      "id": 97,
+      "content": "Our approach is agnostic to the original MAPF\nplanner. Hence, it would be possible to use K-CBSH-RM to\nsolvetheinitialMAPF,andtheRHCSADGtore-orderAGVs\nbased on delays observed during plan execution. 100\n80\n60\n40\n20\n0\n20 25\nAGVFleetSize\n]%[etaRsseccuS\nSADGwCBS\nADGwCBS\nK-CBSH-RMk=1\nK-CBSH-RMk=2\nK-CHSH-RMk=3\nFig.22:InitialMAPFplannersuccessfor100simulationsusingCBS\nand K-CBSH-RM with k∈{1,2,3}s.\n[표 데이터 감지됨]\n\n=== 페이지 15 ===\n15\n6\n5\n4\n3\n2\n1\n0\n20 25\nAGVFleetSize\n]%[tnemevorpmI\nImprovement\n102\n101\n100\n10−1\n20 25\nAGVFleetSize\n]s[emiTnoitatupmoC\nInitialMAPFSolverTime\nSADGwCBS\nK-CBSH-RMk=1\nK-CBSH-RMk=2\nFig.23:AverageimprovementandinitialMAPFsolvercomputation\ntimes for 100 simulations with AGVs velocity profiles from Fig. 24\ncomparing the RHC SADG method with the K-CBSH-RM planner\nfor k∈{1,2}s for H =10s.",
+      "size": 804,
+      "sentences": 4
+    },
+    {
+      "id": 98,
+      "content": ":AverageimprovementandinitialMAPFsolvercomputation\ntimes for 100 simulations with AGVs velocity profiles from Fig. 24\ncomparing the RHC SADG method with the K-CBSH-RM planner\nfor k∈{1,2}s for H =10s. 0.10\n0.05\n0.00\n0.0 0.2 0.4 0.6 0.8 1.0 1.2\nFractionofNominalVelocityvnominal\nytilibaborP\nTABLE I: AVERAGE IMPROVEMENT FOR 20 SIMULATIONS USING\nRHC SADG WITHH =10SINGAZEBO\nInitialMAPF\nImprovement[%]\nSolverTime[s]\nHigh-Fidelity 3.45±0.31 8.4±2.2\nGazeboSimulation\nSetting2:Simulating\nInteractionswith 3.65±0.25 6.7±0.8\nDynamicObstacles\nAGVssubjectedtolargedelays,oftenexperiencedinuncertain\nenvironmentswithdynamicobstacles.Ouroptimization-based\nre-ordering scheme is derived to obtain approximate solutions\nto a newly formulated Optimal Control Problem (OCP).",
+      "size": 757,
+      "sentences": 3
+    },
+    {
+      "id": 99,
+      "content": "s,oftenexperiencedinuncertain\nenvironmentswithdynamicobstacles.Ouroptimization-based\nre-ordering scheme is derived to obtain approximate solutions\nto a newly formulated Optimal Control Problem (OCP). This\nOCP is described using a Switchable Action Dependency\nGraph (SADG), a novel data-structure introduced in this\nmanuscript.TheSADGextendstheActionDependencyGraph\n(ADG)introducedin[4]byenablingthere-orderingofAGVs\nwhile provably maintaining collision-avoidance guarantees of\nthe original MAPF plan. Moreover, our approach guarantees\ndeadlock-freeplanexecutionwhilesimultaneouslyminimizing\nFig.24:NormalizedvelocitydistributionforSetting2.EachAGVis\nthe cumulative route completion time of the AGVs. givenarandomlysampledvelocitytocompleteitsnextSADGevent\nWeevaluateourapproachinthreesettings.InSetting1,we\nfrom this distribution.",
+      "size": 830,
+      "sentences": 4
+    },
+    {
+      "id": 100,
+      "content": "Setting2.EachAGVis\nthe cumulative route completion time of the AGVs. givenarandomlysampledvelocitytocompleteitsnextSADGevent\nWeevaluateourapproachinthreesettings.InSetting1,we\nfrom this distribution. illustrate the efficiency of our approach, reducing the cumula-\ntive route completion time for AGVs by up to 25% compared\nSummary: We observe that although K-CBSH-RM yields to the baseline ADG approach. Here, we also illustrate the\ntheoretically lower cumulative route completion times when real-time implementability of our feedback scheme, showing\ndelays are bounded by k seconds, our proposed RHC SADG that the RHC MILP problemcan consistently be solved under\napproach yields better improvement when delays are larger.",
+      "size": 721,
+      "sentences": 4
+    },
+    {
+      "id": 101,
+      "content": "ur feedback scheme, showing\ndelays are bounded by k seconds, our proposed RHC SADG that the RHC MILP problemcan consistently be solved under\napproach yields better improvement when delays are larger. onesecond,evenforAGVfleetsizesofupto70AGVs,allthe\nAdditionally, the robust MAPF planners require significantly whilesignificantlyreducingroutecompletiontimes.InSetting\nmore time to solve the robust MAPF problem, as opposed 2, we compare our approach to the state-of-the-art in robust\nto the standard MAPF solver, CBS or ECBS, used by our MAPF planner K-CBSH-RM, showing a significant reduction\napproach. in cumulative route completion times for AGVs subjected to\nlarger delays, and comparable cumulative route completion\ntimes for smaller delays.",
+      "size": 746,
+      "sentences": 3
+    },
+    {
+      "id": 102,
+      "content": "ner K-CBSH-RM, showing a significant reduction\napproach. in cumulative route completion times for AGVs subjected to\nlarger delays, and comparable cumulative route completion\ntimes for smaller delays. In Setting 3, we showcased our ap-\nC. Setting 3: High-Fidelity Gazebo Simulations\nproach in a high-fidelity Gazebo simulation environment with\nWe evaluate our proposed approach in a high-fidelity 20 AGVs navigating around dynamic obstacles, reducing the\nGazebo simulation environment. We consider 20 AGVs with cumulative route completion time by 8%, thereby validating\nrandomly selected goal and start locations navigating the the results obtained in Settings 1 and 2.\nroadmap in Fig. 19b. AGVs use the open-source ROS In all simulation settings, the AGVs exhibited collision-\nmove_base motion planner to execute the SE-ADG events. and deadlock-free plan execution, a result we prove for both\nDelays occur naturally as AGVs navigate the workspace and the SHC and RHC feedback schemes.",
+      "size": 984,
+      "sentences": 7
+    },
+    {
+      "id": 103,
+      "content": "e motion planner to execute the SE-ADG events. and deadlock-free plan execution, a result we prove for both\nDelays occur naturally as AGVs navigate the workspace and the SHC and RHC feedback schemes. Our approach is also\nnegotiate interactions with other dynamic obstacles. Improve- agnostic with respect to the planner used to solve the initial\nmentisquantifiedasin(6)andtheresultsareshowninTableI. MAPF problem. This means that most MAPF planners, e.g.,\nWe observe positive improvements for all 20 simulations CBS, ECBS, K-CBSH-RM, can be used, as long as the initial\nwith slightly higher improvement in the Gazebo simulation MAPFsolutionyieldsanacyclicSE-ADG,aconstraintwhich\ncompared to the equivalent start-goal positions when simulat- iseasytoadheretoaslongasthenumberofroadmapvertices\ning dynamic obstacles in Setting 2.",
+      "size": 827,
+      "sentences": 6
+    },
+    {
+      "id": 104,
+      "content": "MAPFsolutionyieldsanacyclicSE-ADG,aconstraintwhich\ncompared to the equivalent start-goal positions when simulat- iseasytoadheretoaslongasthenumberofroadmapvertices\ning dynamic obstacles in Setting 2. The Gazebo simulations islargerthanthenumberofAGVs.Althoughweonlyconsider\nyielded a higher improvement because AGVs were found to AGVs executing intralogistics tasks, our approach can be\nexperience larger delays than modelled in Fig. 21. extended to other use-cases covered in the MAPF literature. For future work, we recommend a detailed comparison of our\nVIII. CONCLUSION approachtoreal-timere-planningoftheMAPFusingbounded,\nsub-optimal MAPF solvers as in [2]. Inthismanuscript,weproposeanoptimization-basedreced-\ninghorizonfeedbackcontrolschemetore-orderAGVssubject\nto delays when executing MAPF plans.",
+      "size": 805,
+      "sentences": 6
+    },
+    {
+      "id": 105,
+      "content": "theMAPFusingbounded,\nsub-optimal MAPF solvers as in [2]. Inthismanuscript,weproposeanoptimization-basedreced-\ninghorizonfeedbackcontrolschemetore-orderAGVssubject\nto delays when executing MAPF plans. When compared to\nACKNOWLEDGMENTS\nthe state-of-the-art MAPF planners, our approach yields a The authors would like to thank Musa Morena Mar-\nsignificant reduction in cumulative route completion times for cusso Manhães for her help with setting up the ROS and\n[표 데이터 감지됨]\n\n=== 페이지 16 ===\n16\nGazeboframeworksaswellasZheChenforthehelpsettingup [8] AssociationoftheAutomotiveIndustry,“Interfaceforthecommunica-\nthe code to compare our approach with K-CHSH-RM solver. tionbetweenautomatedguidedvehicles(AGV)andamastercontrol,”\ntech.rep.,AssociationoftheAutomotiveIndustry(VDA),2020. [9] OpenRobotics,ProgrammingMultipleRobotswithROS2,2020.",
+      "size": 833,
+      "sentences": 5
+    },
+    {
+      "id": 106,
+      "content": "oach with K-CHSH-RM solver. tionbetweenautomatedguidedvehicles(AGV)andamastercontrol,”\ntech.rep.,AssociationoftheAutomotiveIndustry(VDA),2020. [9] OpenRobotics,ProgrammingMultipleRobotswithROS2,2020. APPENDIX [10] M.Cˇáp,J.Gregoire,andE.Frazzoli,“Provablysafeanddeadlock-free\nexecution of multi-robot plans under delaying disturbances,” in 2016\nLemma 3 (Two acyclic graphs connected by unidirectional\nIEEE/RSJ International Conference on Intelligent Robots and Systems\nedgesyieldanacyclicgraph). ConsideradirectedgraphG = (IROS),pp.5113–5118,2016. (V,E)subdividedintotwosubgraphsG =(V ,E )andG = [11] A.Coskun,J.O’Kane,andM.Valtorta,“Deadlock-freeonlineplanre-\n1 1 1 2\npairinmulti-robotcoordinationwithdisturbances,”inTheInternational\n(V ,E ) such that V ∩V =∅ and E ∩E =∅, V ∪V =V\n2 2 1 2 1 2 1 2 FLAIRSConferenceProceedings,vol.34,2021.",
+      "size": 838,
+      "sentences": 6
+    },
+    {
+      "id": 107,
+      "content": "ock-freeonlineplanre-\n1 1 1 2\npairinmulti-robotcoordinationwithdisturbances,”inTheInternational\n(V ,E ) such that V ∩V =∅ and E ∩E =∅, V ∪V =V\n2 2 1 2 1 2 1 2 FLAIRSConferenceProceedings,vol.34,2021. and the edges connecting vertices in G and G are contained\n1 2 [12] A.Berndt,N.vanDuijkeren,L.Palmieri,andT.Keviczky,“AFeedback\nwithin the set E , such that E ∪E ∪E = E. If both G Scheme to Reorder a Multi-Agent Execution Schedule by Persistently\n12 1 2 12 1\nand G are acyclic and e=(v ,v ) is such that v ∈V and Optimizing a Switchable Action Dependency Graph,” Proceedings of\n2 1 2 1 1 theDistributedandMulti-AgentPlanning(DMAP)WorkshopatICAPS,\nv 2 ∈V 2 for all e∈E 12 , then the graph G is also acyclic. 2020. [13] A. Felner, R. Stern, S. E. Shimony, E. Boyarski, M. Goldenberg,\nProof 10: Consider two acyclic graphs, G = (V ,E ) and\n1 1 1 G. Sharon, N. R. Sturtevant, G. Wagner, and P. Surynek, “Search-\nG = (V ,E ).",
+      "size": 920,
+      "sentences": 4
+    },
+    {
+      "id": 108,
+      "content": "Felner, R. Stern, S. E. Shimony, E. Boyarski, M. Goldenberg,\nProof 10: Consider two acyclic graphs, G = (V ,E ) and\n1 1 1 G. Sharon, N. R. Sturtevant, G. Wagner, and P. Surynek, “Search-\nG = (V ,E ). For G , consider an inbound edge e = (v,v ) basedoptimalsolversforthemulti-agentpathfindingproblem:Summary\n2 2 2 1 ′\nwhichimpliesthatv ∈/ V andv ∈V .Anynumberofinbound and challenges,” in Proceedings of the Tenth International Symposium\n1 ′ 1 on Combinatorial Search, SOCS 2017, 16-17 June 2017, Pittsburgh,\nedges e will not cause G to be cyclic. Similarly, consider an\n1 Pennsylvania, USA (A. Fukunaga and A. Kishimoto, eds. ), pp. 29–37,\noutbound edge e = (v,v ) which implies that v ∈ V and AAAIPress,2017. ′ 1\nv ∈/ V . Any number of outbound edges e will not cause G [14] R.Morris,C.S.Pasareanu,K.S.Luckow,W.Malik,H.Ma,T.K.S. ′ 1 1 Kumar,andS.Koenig,“Planning,schedulingandmonitoringforairport\nto be cyclic. The same arguments apply to G .",
+      "size": 943,
+      "sentences": 9
+    },
+    {
+      "id": 109,
+      "content": "d edges e will not cause G [14] R.Morris,C.S.Pasareanu,K.S.Luckow,W.Malik,H.Ma,T.K.S. ′ 1 1 Kumar,andS.Koenig,“Planning,schedulingandmonitoringforairport\nto be cyclic. The same arguments apply to G . Since neither\n2 surfaceoperations.,”inAAAIWorkshop:PlanningforHybridSystems,\nG 1 nor G 2 have an internal cycle, the only possibility for a 2016.\ncycle within G is a cycle through both subgraphs G and G . [15] S. Ontanón, G. Synnaeve, A. Uriarte, F. Richoux, D. Churchill, and\n1 2\nM. Preuss, “A survey of real-time strategy game ai research and com-\nSince all edges connecting G and G can be defined by edge\n1 2 petitioninstarcraft,”IEEETransactionsonComputationalIntelligence\ne = (v,v ′ ) such that v ∈ V 1 and v ′ ∈ V 2 , such a cycle andAIingames,vol.5,pp.293–311,Dec2013. cannot exist. This guarantees that the entire graph is acyclic, [16] G. Sharon, R. Stern, A. Felner, and N. R. Sturtevant, “Conflict-\nbasedsearchforoptimalmulti-agentpathfinding,”ArtificialIntelligence,\ncompleting the proof.",
+      "size": 1000,
+      "sentences": 7
+    },
+    {
+      "id": 110,
+      "content": "tees that the entire graph is acyclic, [16] G. Sharon, R. Stern, A. Felner, and N. R. Sturtevant, “Conflict-\nbasedsearchforoptimalmulti-agentpathfinding,”ArtificialIntelligence,\ncompleting the proof. vol.219,pp.40–66,2015. [17] M. Cáp, P. Novák, A. Kleiner, and M. Selecký, “Prioritized planning\nalgorithmsfortrajectorycoordinationofmultiplemobilerobots,”IEEE\nTransactionsonAutomationScienceandEngineering,vol.12,2015. Legend [18] A. Bogatarkan, V. Patoglu, and E. Erdem, “A declarative method for\ndynamicmulti-agentpathfinding,”inGCAI2019.Proceedingsofthe5th\nGlobalConferenceonArtificialIntelligence(D.CalvaneseandL.Iocchi,\neds.),vol.65ofEPiCSeriesinComputing,pp.54–67,EasyChair,2019. [19] F. Pecora, H. Andreasson, M. Mansouri, and V. Petkov, “A loosely-\ncoupled approach for multi-robot coordination, motion planning and\ncontrol,”inTwenty-eighthinternationalconferenceonautomatedplan-\nningandscheduling,2018.",
+      "size": 911,
+      "sentences": 5
+    },
+    {
+      "id": 111,
+      "content": "son, M. Mansouri, and V. Petkov, “A loosely-\ncoupled approach for multi-robot coordination, motion planning and\ncontrol,”inTwenty-eighthinternationalconferenceonautomatedplan-\nningandscheduling,2018. [20] J. Yu and S. M. LaValle, “Planning optimal paths for multiple robots\non graphs,” in 2013 IEEE International Conference on Robotics and\nFig. 25: Graphical illustration of Lemma 3: two acyclic graphs G\n1 Automation,pp.3612–3617,May2013. and G , connected by uni-directional edges, indicated by the dotted\n2 [21] J. Li, D. Harabor, P. Stuckey, H. Ma, and S. Koenig, “Symmetry-\nlines, yield a larger, acyclic graph. breaking constraints for grid-based multi-agent path finding,” in Pro-\nceedingsoftheAAAIConferenceonArtificialIntelligence(AAAI),p.(in\nprint),2019.",
+      "size": 764,
+      "sentences": 5
+    },
+    {
+      "id": 112,
+      "content": "g, “Symmetry-\nlines, yield a larger, acyclic graph. breaking constraints for grid-based multi-agent path finding,” in Pro-\nceedingsoftheAAAIConferenceonArtificialIntelligence(AAAI),p.(in\nprint),2019. [22] A.Felner,J.Li,E.Boyarski,H.Ma,L.Cohen,S.Kumar,andS.Koenig,\nREFERENCES\n“Addingheuristicstoconflict-basedsearchformulti-agentpathfinding,”\n[1] P. Wurman, R. D’Andrea, and M. Mountz, “Coordinating hundreds of inProceedingsoftheInternationalConferenceonAutomatedPlanning\ncooperative,autonomousvehiclesinwarehouses.,”AIMagazine,vol.29, andScheduling(ICAPS),pp.83–87,2018. pp.9–20,032008. [23] E.Lam,P.L.Bodic,D.Harabor,andP.Stuckey,“Branch-and-cut-and-\n[2] R. Stern, N. Sturtevant, A. Felner, S. Koenig, H. Ma, T. T. Walker, price for multi-agent pathfinding,” in Proceedings of the International\nJ.Li,D.Atzmon,L.Cohen,T.K.S.Kumar,E.Boyarski,andR.Barták, JointConferenceonArtificialIntelligence(IJCAI),p.(inprint),2019.",
+      "size": 919,
+      "sentences": 5
+    },
+    {
+      "id": 113,
+      "content": "ker, price for multi-agent pathfinding,” in Proceedings of the International\nJ.Li,D.Atzmon,L.Cohen,T.K.S.Kumar,E.Boyarski,andR.Barták, JointConferenceonArtificialIntelligence(IJCAI),p.(inprint),2019. “Multi-agentpathfinding:Definitions,variants,andbenchmarks,”CoRR, [24] A.Bemporad,W.Heemels,andB.D.Schutter,“Onhybridsystemsand\nvol.abs/1906.08291,2019. closed-loop MPC systems,” IEEE Transactions on Automatic Control,\n[3] J.YuandS.M.LaValle,“Multi-agentpathplanningandnetworkflow,” vol.47,pp.863–869,May2002. CoRR,vol.abs/1204.5717,2012. [25] S. Lin and B. De Schutter and Y. Xi and H. Hellendoorn, “Fast\n[4] W.Hönig,S.Kiesel,A.Tinka,J.Durham,andN.Ayanian,“Persistent model predictive control for urban road networks via MILP,” IEEE\nandrobustexecutionofMAPFschedulesinwarehouses,”IEEERobotics Transactions on Intelligent Transportation Systems, vol. 12, pp. 846–\nandAutomationLetters,vol.4,no.2,pp.1125–1131,2019. 856,Sept.2011.",
+      "size": 929,
+      "sentences": 9
+    },
+    {
+      "id": 114,
+      "content": "EEE\nandrobustexecutionofMAPFschedulesinwarehouses,”IEEERobotics Transactions on Intelligent Transportation Systems, vol. 12, pp. 846–\nandAutomationLetters,vol.4,no.2,pp.1125–1131,2019. 856,Sept.2011. [5] D.Atzmon,R.Stern,A.Felner,G.Wagner,R.Barták,andN.-F.Zhou, [26] R.Hult,G.R.Campos,P.Falcone,andH.Wymeersch,“Anapproximate\n“RobustMulti-AgentPathFindingandExecuting,”JournalofArtificial solution to the optimal coordination problem for autonomous vehicles\nIntelligenceResearch,vol.67,pp.549–579,2020. atintersections,”in2015AmericanControlConference(ACC),2015.",
+      "size": 561,
+      "sentences": 6
+    },
+    {
+      "id": 115,
+      "content": "ting,”JournalofArtificial solution to the optimal coordination problem for autonomous vehicles\nIntelligenceResearch,vol.67,pp.549–579,2020. atintersections,”in2015AmericanControlConference(ACC),2015. [6] W. Hönig, S. Kumar, L. Cohen, H. Ma, H. Xu, N. Ayanian, and [27] S. Ravikumar, R. Quirynen, A. Bhagat, E. Zeino, and S. Di Cairano,\nS. Koenig, “Summary: Multi-agent path finding with kinematic con- “Mixed-integerprogrammingforcentralizedcoordinationofconnected\nstraints,” in Proceedings of the International Joint Conference on and automated vehicles in dynamic environment,” in 2021 IEEE Con-\nArtificialIntelligence(IJCAI),pp.4869–4873,2017. ferenceonControlTechnologyandApplications(CCTA),pp.814–819,\n[7] H.Ma,S.Kumar,andS.Koenig,“Multi-agentpathfindingwithdelay 2021.\nprobabilities,” in Proceedings of the AAAI Conference on Artificial [28] A. Richards, T. Schouwenaars, J. P. How, and E. Feron, “Spacecraft\nIntelligence(AAAI),pp.3605–3612,2017.",
+      "size": 952,
+      "sentences": 4
+    },
+    {
+      "id": 116,
+      "content": "indingwithdelay 2021.\nprobabilities,” in Proceedings of the AAAI Conference on Artificial [28] A. Richards, T. Schouwenaars, J. P. How, and E. Feron, “Spacecraft\nIntelligence(AAAI),pp.3605–3612,2017. Trajectory Planning with Avoidance Constraints Using Mixed-Integer\n=== 페이지 17 ===\n17\nLinear Programming,” AIAA Guidance, Navigation, and Control Con- Niels van Duijkeren is a Research Scientist at\nference,vol.25,no.4,2001. Robert Bosch GmbH - Corporate Research. He re-\n[29] M.CharitidouandT.Keviczky,“AnMILPapproachforpersistentcov- ceivedhisM.Sc.degreeinSystemsandControlfrom\neragetaskswithmultiplerobotsandperformanceguarantees,”European Delft University of Technology, The Netherlands\nJournalofControl,vol.64,2022.",
+      "size": 718,
+      "sentences": 4
+    },
+    {
+      "id": 117,
+      "content": "persistentcov- ceivedhisM.Sc.degreeinSystemsandControlfrom\neragetaskswithmultiplerobotsandperformanceguarantees,”European Delft University of Technology, The Netherlands\nJournalofControl,vol.64,2022. and his Ph.D. degree from the Motion Estimation\n[30] T. van den Boom and B. D. Schutter, “Dynamic railway network Control and Optimization group, Mechanical Engi-\nmanagementusingswitchingmax-plus-linearmodels,”IFACSymposium neering,KULeuven,Belgium.DuringhisPh.D.,he\nonControlinTransportationSystems,vol.11,pp.343–348,Aug2006. focusedonmethodsfortime-optimalgeometricmo-\n[31] M.Barer,G.Sharon,R.Stern,andA.Felner,“Suboptimalvariantsofthe tioncontrolofrobotmanipulatorsanduser-friendly\nconflict-basedsearchalgorithmforthemulti-agentpathfindingproblem,” efficientnumericalsolvers.Hiscurrentresearchfo-\nin Proceedings of the European Conference on Artificial Intelligence cuses on motion planning and control of mobile\n(ECAI),pp.961–962,2014.",
+      "size": 939,
+      "sentences": 3
+    },
+    {
+      "id": 118,
+      "content": "ngproblem,” efficientnumericalsolvers.Hiscurrentresearchfo-\nin Proceedings of the European Conference on Artificial Intelligence cuses on motion planning and control of mobile\n(ECAI),pp.961–962,2014. robots,softwareandmethodsforoptimization-basedcontrolandestimation,\n[32] A. Andreychuk, K. Yakovlev, D. Atzmon, and R. Stern, “Multi-agent robust motion planning in dynamic environments, system identification and\npathfinding with continuous time,” in Proceedings of the Twenty- modellearningforadaptiverobotcontrol.Hehasco-authoredpapersine.g. EighthInternationalJointConferenceonArtificialIntelligence,IJCAI- TAC, CDC, IROS, and RSS on topics spanning model predictive control,\n19,pp.39–45,InternationalJointConferencesonArtificialIntelligence optimizationmethods,andmachinelearning. Organization,72019. [33] A. Coskun and J. M. O’Kane, “Online plan repair in multi-robot\ncoordination with disturbances,” in 2019 International Conference on\nRoboticsandAutomation(ICRA),pp.3333–3339,2019.",
+      "size": 988,
+      "sentences": 5
+    },
+    {
+      "id": 119,
+      "content": "nization,72019. [33] A. Coskun and J. M. O’Kane, “Online plan repair in multi-robot\ncoordination with disturbances,” in 2019 International Conference on\nRoboticsandAutomation(ICRA),pp.3333–3339,2019. Luigi Palmieri isaSeniorExpertatRobertBosch\n[34] Z.Chen,D.Harabor,J.Li,andP.J.Stuckey,“Symmetrybreakingfor GmbH-CorporateResearch.Hisresearchcurrently\nk-robust multi-agent path finding,” in Proceedings of the 35th AAAI focuses on kinodynamic motion planning in dy-\nConferenceonArtificialIntelligence(AAAI),2021. namic and crowded environments, control of non\n[35] A.Mannucci,L.Pallottino,andF.Pecora,“ProvablySafeMulti-Robot lineardynamicsystems,hybridsystemsoflearning-\nCoordination With Unreliable Communication,” IEEE Robotics and planning-control, MPC and numerical optimization\nAutomationLetters,vol.4,no.4,pp.3232–3239,2019. techniques,planningconsideringhumanmotionpre-\n[36] T.Schoels,L.Palmieri,K.O.Arras,andM.Diehl,“AnNMPCapproach dictionsandsocialconstraints.HeearnedhisPh.D.",
+      "size": 985,
+      "sentences": 4
+    },
+    {
+      "id": 120,
+      "content": "omationLetters,vol.4,no.4,pp.3232–3239,2019. techniques,planningconsideringhumanmotionpre-\n[36] T.Schoels,L.Palmieri,K.O.Arras,andM.Diehl,“AnNMPCapproach dictionsandsocialconstraints.HeearnedhisPh.D. using convex inner approximations for online motion planning with degreeinrobotmotionplanningfromtheUniversity\nguaranteedcollisionavoidance,”in2020IEEEInternationalConference of Freiburg, Germany. During his Ph.D., he was\nonRoboticsandAutomation(ICRA),pp.3574–3580,IEEE,2020. responsibleforthemotionplanningtaskoftheEU\n[37] C. Rösmann, F. Hoffmann, and T. Bertram, “Kinodynamic trajectory FP7 project Spencer. Since then, he has the same responsibility in the EU\noptimizationandcontrolforcar-likerobots,”in2017IEEE/RSJInterna- H2020 project ILIAD. He has co-authored multiple papers at RA-L, ICRA,\ntionalConferenceonIntelligentRobotsandSystems(IROS),pp.5681– IROS, FSR on the combinations of motion planning with control, search,\n5686,IEEE,2017. machinelearning,andhumanmotionprediction.",
+      "size": 987,
+      "sentences": 8
+    },
+    {
+      "id": 121,
+      "content": "-L, ICRA,\ntionalConferenceonIntelligentRobotsandSystems(IROS),pp.5681– IROS, FSR on the combinations of motion planning with control, search,\n5686,IEEE,2017. machinelearning,andhumanmotionprediction. [38] G. Williams, A. Aldrich, and E. A. Theodorou, “Model predictive\npathintegralcontrol:Fromtheorytoparallelcomputation,”Journalof\nGuidance,Control,andDynamics,vol.40,no.2,pp.344–357,2017. Alexander Kleiner is chief expert for navigation\n[39] R. Triebel, K. Arras, R. Alami, L. Beyer, S. Breuers, R. Chatila,\nand coordination of autonomous systems at Bosch\nM. Chetouani, D. Cremers, V. Evers, M. Fiore, et al., “Spencer: A\nCooperate Research. From 2017 until 2018 he\nsocially aware service robot for passenger guidance and help in busy\nworkedasPresidentforAIandMachineLearningat\nairports,”inFieldandservicerobotics,pp.607–622,Springer,2016. thestartupFaceMapLLCinMalibu,CAandfrom\n[40] E.Schrock,DynamicLockDependencyAnalysisofConcurrentSystems.",
+      "size": 945,
+      "sentences": 6
+    },
+    {
+      "id": 122,
+      "content": "residentforAIandMachineLearningat\nairports,”inFieldandservicerobotics,pp.607–622,Springer,2016. thestartupFaceMapLLCinMalibu,CAandfrom\n[40] E.Schrock,DynamicLockDependencyAnalysisofConcurrentSystems. 2014until2018asSeniorPrincipalRoboticsScien-\nPhDthesis,BrownUniversity,2003. tist with technical lead at iRobot in Pasadena, CA. [41] J.Forrest,T.Ralphs,S.Vigerske,LouHafer,B.Kristjansson,jpfasano,\nFrom2011to2014heservedasassociateprofessor\nEdwinStraver,M.Lubin,H.G.Santos,rlougee,andM.Saltzman,“coin-\nat the Linköping University in Sweden where he\nor/cbc:Version2.9.9,”July2018. headedtheresearchgrouponcollaborativerobotics. HeholdsaM.Sc.degreeincomputersciencefrom\ntheStaffordUniversityinUK,aPh.D.degreeincomputersciencefromthe\nUniversity of Freiburg in Germany, and a docent degree (habilitation) from\ntheLinköpingUniversityinSweden.Heworkedasapostdoctoralfellowat\nCarnegieMellonUniversityintheUSandatLaSapienzaUniversityinItaly.",
+      "size": 933,
+      "sentences": 7
+    },
+    {
+      "id": 123,
+      "content": "versity of Freiburg in Germany, and a docent degree (habilitation) from\ntheLinköpingUniversityinSweden.Heworkedasapostdoctoralfellowat\nCarnegieMellonUniversityintheUSandatLaSapienzaUniversityinItaly. His research interests include collaborative robotics, multi-robot navigation\nplanning,andmachinelearning. Tamás Keviczky (Senior Member, IEEE) received\nthe M.Sc. degree in electrical engineering from\nBudapestUniversityofTechnologyandEconomics,\nBudapest, Hungary, in 2001, and the Ph.D. degree\nfrom the Control Science and Dynamical Systems\nCenter,UniversityofMinnesota,Minneapolis,MN,\nUSA, in 2005. He was a Post-Doctoral Scholar\nof control and dynamical systems with California\nInstituteofTechnology,Pasadena,CA,USA.Heis\nAlexander Berndt is a ML/Software Engineer at currentlyaProfessorwithDelftCenterforSystems\nOverstory B.V. working on geospatial data intel- andControl,DelftUniversityofTechnology,Delft,\nligence applied to vegetation management. He re- The Netherlands.",
+      "size": 974,
+      "sentences": 6
+    },
+    {
+      "id": 124,
+      "content": "tlyaProfessorwithDelftCenterforSystems\nOverstory B.V. working on geospatial data intel- andControl,DelftUniversityofTechnology,Delft,\nligence applied to vegetation management. He re- The Netherlands. His research interests include distributed optimization and\nceived the M.Sc. degree in Systems and Control optimalcontrol,modelpredictivecontrol,embeddedoptimization-basedcon-\nfromtheDelftCenterforSystemsandControl,Delft trol and estimation of large-scale systems with applications in aerospace,\nUniversity of Technology, Delft, The Netherlands.",
+      "size": 545,
+      "sentences": 4
+    },
+    {
+      "id": 125,
+      "content": "mbeddedoptimization-basedcon-\nfromtheDelftCenterforSystemsandControl,Delft trol and estimation of large-scale systems with applications in aerospace,\nUniversity of Technology, Delft, The Netherlands. automotive,mobilerobotics,industrialprocesses,andinfrastructuresystems,\nHehasauthoredarticlespublishedinECC,ICAPS suchaswater,heat,andpowernetworks.Hewasaco-recipientoftheAACC\nandISTVSspanningthedomainsofdata-drivencon- O.HugoSchuckBestPaperAwardforPracticein2005.Hehasservedasan\ntrol, set-based estimation, and multi-agent robotics AssociateEditorforAutomaticafrom2011to2017andforIEEETransactions\nandcoordination.Hisresearchinterestsincludedata- onAutomaticControlsince2021. drivencontrolandestimationschemeswithguaran-\ntees,thecontrolofmulti-agentsystems,andlearning-basedcontrol.",
+      "size": 782,
+      "sentences": 3
+    }
+  ]
+}

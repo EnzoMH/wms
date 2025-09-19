@@ -1,0 +1,566 @@
+{
+  "source": "ArXiv",
+  "filename": "021_Learning-enabled_Flexible_Job-shop_Scheduling_for_.pdf",
+  "total_chars": 64139,
+  "total_chunks": 93,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "=== 페이지 1 ===\n4202\nbeF\n41\n]YS.ssee[\n1v97980.2042:viXra\nJOURNALOFLATEXCLASSFILES,VOL.14,NO.8,AUGUST2015 i\nLearning-enabled Flexible Job-shop Scheduling for\nScalable Smart Manufacturing\nSihoon Moon1, Sanghoon Lee1, and Kyung-Joon Park1,†, Senior Member, IEEE\nAbstract—In smart manufacturing systems (SMSs), flexible environment (i.e., scale changes), such as the insertion of\njob-shop scheduling with transportation constraints (FJSPT) new jobs or the addition/breakdown of machines and vehi-\nis essential to optimize solutions for maximizing productivity,\ncles [1]. Conventional DRL-based schedulers are trained on\nconsidering production flexibility based on automated guided\nspecific-scale instances, characterized by a fixed number of\nvehicles (AGVs). Recent developments in deep reinforcement\nlearning (DRL)-based methods for FJSPT have encountered operations, machines, and vehicles. While these schedulers\na scale generalization challenge.",
+      "size": 943,
+      "sentences": 4
+    },
+    {
+      "id": 2,
+      "content": "(AGVs). Recent developments in deep reinforcement\nlearning (DRL)-based methods for FJSPT have encountered operations, machines, and vehicles. While these schedulers\na scale generalization challenge. These methods underperform perform effectively on the trained instances and similar-sized\nwhen applied to environment at scales different from their unseen instances, their efficacy diminishes substantially for\ntraining set, resulting in low-quality solutions. To address this,\nunseen large-scale instances [10], [11]. This means that as\nwe introduce a novel graph-based DRL method, named the\nthe manufacturing environment changes, the scheduler may\nHeterogeneous Graph Scheduler (HGS). Our method lever-\nages locally extracted relational knowledge among operations, produce low-quality solutions, resulting in a loss of produc-\nmachines, and vehicle nodes for scheduling, with a graph- tivity.",
+      "size": 893,
+      "sentences": 7
+    },
+    {
+      "id": 3,
+      "content": "od lever-\nages locally extracted relational knowledge among operations, produce low-quality solutions, resulting in a loss of produc-\nmachines, and vehicle nodes for scheduling, with a graph- tivity. Furthermore, it is impractical and costly to constantly\nstructured decision-making framework that reduces encoding retrain the scheduler in response to scale changes. Therefore,\ncomplexity and enhances scale generalization. Our performance\nit is necessary to design a scale-agnostic DRL-based FJSPT\nevaluation, conducted with benchmark datasets, reveals that\nscheduler that can provide a near-optimal solution even for\nthe proposed method outperforms traditional dispatching rules,\nmeta-heuristics, and existing DRL-based approaches in terms of unseen large-scale instances. makespan performance, even on large-scale instances that have There is also a technical challenge of DRL-based FJSPT\nnot been experienced during training.",
+      "size": 929,
+      "sentences": 5
+    },
+    {
+      "id": 4,
+      "content": "es in terms of unseen large-scale instances. makespan performance, even on large-scale instances that have There is also a technical challenge of DRL-based FJSPT\nnot been experienced during training. scheduler;end-to-enddecisionmaking.NumerousDRL-based\nIndexTerms—Flexiblejob-shopschedulingwithtransportation methods for manufacturing process scheduling adopt a rule-\nconstraints, Reinforcement learning, Scale generalization, Smart based decision-making framework [12]–[14], which selects\nmanufacturing systems one of the predefined dispatching rules at the decision-time\nstep. However, this approach has the disadvantage of heavily\nI. INTRODUCTION relying on expert experience due to the design of the rules,\nAs the field of smart manufacturing continues to evolve, and it lacks sufficient exploration of the action space [15],\na burgeoning array of novel information technologies, in- [16].",
+      "size": 893,
+      "sentences": 5
+    },
+    {
+      "id": 5,
+      "content": "gn of the rules,\nAs the field of smart manufacturing continues to evolve, and it lacks sufficient exploration of the action space [15],\na burgeoning array of novel information technologies, in- [16]. Especially in FJSPT, itis difficultto anticipatesufficient\ncluding the Internet of things (IoT), cloud computing, big action space exploration, as it requires not only the selection\ndata, and artificial intelligence, are increasingly being inte- ofoperationsand machines,butalso the selectionofvehicles. grated into manufacturing processes to enhance production Therefore,itisnecessaryfortheschedulertobeabletoselect\nefficiency and flexibility [1]–[4]. Recently, numerous enter- the mostvaluable set of operations,machines, and vehiclesat\nprises in real-world manufacturinghave employed transporta- each decision time step to minimize makespan.",
+      "size": 844,
+      "sentences": 4
+    },
+    {
+      "id": 6,
+      "content": "1]–[4]. Recently, numerous enter- the mostvaluable set of operations,machines, and vehiclesat\nprises in real-world manufacturinghave employed transporta- each decision time step to minimize makespan. tion resources such as automated guided vehicles (AGVs) To address these challenges, we propose a graph-based\nto improve flexibility and diversity in flexible manufacturing DRL module for solving FJSPT, called HeterogeneousGraph\nsystems (FMS) [5]. This can be mathematically formulated Scheduler (HGS), which consists of three main components;\nas a flexible job-shop scheduling problem with transporta- a heterogeneous graph structure, a structure-aware heteroge-\ntion constraints (FJSPT) [6]. However, due to the increased neous graph encoder, and a three-stage decoder.",
+      "size": 771,
+      "sentences": 5
+    },
+    {
+      "id": 7,
+      "content": "uling problem with transporta- a heterogeneous graph structure, a structure-aware heteroge-\ntion constraints (FJSPT) [6]. However, due to the increased neous graph encoder, and a three-stage decoder. To address\ncomplexity of production scheduling, this problem poses the scale generalizationchallenge,we developa novelhetero-\nsignificant challenges such as the allocation of operations geneous graph structure capable of representing FJSPT and\nto compatible machines and the assignment of AGVs for a structure-awareheterogeneousgraphencoder.The designof\nconveyingintermediateproducts.Deepreinforcementlearning thisgraphstructureincorporatesoperation,machine,andvehi-\n(DRL)-based FJSPT schedulers have emerged as a promising cle nodes, all interconnected through edges, which symbolize\napproach,offeringthe potentialto discovernear-optimalsolu- processing and transportation times. The encoder consists\ntions with reduced computation time [7]–[9].",
+      "size": 946,
+      "sentences": 4
+    },
+    {
+      "id": 8,
+      "content": "nected through edges, which symbolize\napproach,offeringthe potentialto discovernear-optimalsolu- processing and transportation times. The encoder consists\ntions with reduced computation time [7]–[9]. of three sub-encoders (operation, machine and vehicle sub-\nThe main challenge of this study is the issue of scale encoders)andaglobalencoder.Theintuitiveideabehindscale\ngeneralization. In real-world scenarios, smart manufactur- generalization is that relationships between adjacent nodes\ning systems frequently encounter alterations in the process at a small-scale instance will be effective in solving large-\nscale problems. To learn this relationality well, we perform\n1S. Moon, S. Lee, and K.-J. Park are with the Department of Electrical local encoding per node type, preferentially incorporating\nEngineering and Computer Science, DGIST, Daegu 42988, South Korea (e-\ninformationfrom highly relevantneighbors. Then, we encode\nmail:{msh0576,leesh2913, kjp}@dgist.ac.kr).",
+      "size": 972,
+      "sentences": 8
+    },
+    {
+      "id": 9,
+      "content": "referentially incorporating\nEngineering and Computer Science, DGIST, Daegu 42988, South Korea (e-\ninformationfrom highly relevantneighbors. Then, we encode\nmail:{msh0576,leesh2913, kjp}@dgist.ac.kr). †K.-J.Parkisthecorresponding author. the entire graph using global encoding. For example, in the\n=== 페이지 2 ===\nJOURNALOFLATEXCLASSFILES,VOL.14,NO.8,AUGUST2015 ii\nproposedgraphstructure,machinenodesare directly adjacent II. RELATEDWORK\nexclusively to operation nodes, while vehicle nodes maintain\ntheiradjacencysolelytooperationnodes.Fromtheperspective A.",
+      "size": 554,
+      "sentences": 6
+    },
+    {
+      "id": 10,
+      "content": "015 ii\nproposedgraphstructure,machinenodesare directly adjacent II. RELATEDWORK\nexclusively to operation nodes, while vehicle nodes maintain\ntheiradjacencysolelytooperationnodes.Fromtheperspective A. Conventional scheduling methods for FJSPT\nof machine nodes, it is preferable to consider the processing\ntime of operations rather than the transportation time of ConventionalmethodstosolveFJSPT canbeclassifiedinto\nvehicles.Thesub-encoderofamachinenodecanencodeonly exactmethods, heuristicsand meta-heuristics.Exact methods,\nthe processing time, not including transportation time, thus such as mixed-integerlinear programming[17] and constraint\nreducingthecomplexityoftheencoding.Becausethismethod programming[18],arecapableoffindingtheoptimalsolution,\npartitions and encodes information locally, it can effectively but at the expense of an exponentially high computational\nintegrate knowledge even when the environment changes in cost.Meta-heuristicmethodsareadvancedsearchstrategiesto\nlarge-scale instances.",
+      "size": 1008,
+      "sentences": 3
+    },
+    {
+      "id": 11,
+      "content": "ively but at the expense of an exponentially high computational\nintegrate knowledge even when the environment changes in cost.Meta-heuristicmethodsareadvancedsearchstrategiesto\nlarge-scale instances. Therefore, this structure-aware encoder find high-quality solutions in a reasonable time. For instance,\nsignificantly improves the scale generalization capabilities, the study in [19], develops a genetic algorithm (GA) specif-\nparticularly in unseen large-scale instances. ically for multi-objective optimization that addresses both\nmakespan and energy consumption minimization simultane-\nIn an attempt to tackle the end-to-end decision-making ously. The work presented in [20] introduces an ant colony\nchallenge, we propose the development of a three-stage de- optimization (ACO) algorithm that accounts for sequence-\ncoder model. The decoder adopts an end-to-end decision- dependent setup time constraints within the FJSPT. In the\nmaking framework that directly outputs scheduling solutions.",
+      "size": 993,
+      "sentences": 7
+    },
+    {
+      "id": 12,
+      "content": "t accounts for sequence-\ncoder model. The decoder adopts an end-to-end decision- dependent setup time constraints within the FJSPT. In the\nmaking framework that directly outputs scheduling solutions. paper [6], a particle swarm optimization (PSO) algorithm,\nAt each decision-time step, the decoder utilizes the graph augmented with genetic operations, is developed to solve\nembedding knowledge derived from the encoder. This guides dynamic FJSPT (DFJSPT), considering dynamic events such\nthe decision on the assignment of operations to machines, as as the arrival of new jobs, machine breakdowns, and vehicle\nwellastheallocationofvehiclesfortransportation(operation- breakdowns/recharging. While these methods can find near-\nmachine-vehicle pair). In the initial stage, the decoder selects optimalsolutions,theyarecomputationallyinefficientbecause\nan operation node that is most relevant to the context node, they require extensive exploration in a large search space.",
+      "size": 968,
+      "sentences": 7
+    },
+    {
+      "id": 13,
+      "content": "the decoder selects optimalsolutions,theyarecomputationallyinefficientbecause\nan operation node that is most relevant to the context node, they require extensive exploration in a large search space. whichincorporatesboththegraphembeddingknowledgefrom This restricts their practical applicability in rapidly changing\nthe encoder and the knowledge from previous actions. In the environments, where unforeseen disturbances can occur even\nsecondstage,giventhealreadyselectedoperationembedding, before a revised rescheduling plan is developed. the decoder proceeds to select the machine node that is most\nrelevant for the context node. In the final stage, it does\nthe same for the vehicle node. This means that the decoder\nB. DRL-based scheduling methods for FJSPT\nsequentially selects the nodes from each class that are most\nlikely to minimize the makespan based on the context nodes.",
+      "size": 880,
+      "sentences": 6
+    },
+    {
+      "id": 14,
+      "content": "le node. This means that the decoder\nB. DRL-based scheduling methods for FJSPT\nsequentially selects the nodes from each class that are most\nlikely to minimize the makespan based on the context nodes. In the recent years, an increasing number of researchers\nhave been applying DRL techniques to complex scheduling\nOur contributions can be summarized as follows:\nproblems such as FJSP and have achieved remarkable re-\nsults. The authors in [12] utilize DRL to jointly optimize\nWe develop a novel heterogeneous graph structure tai- makespan and energy consumption in FJSPT, while also\n•\nlored for FJSPT and a structure-aware heterogeneous addressing dynamic environment issues such as new job\ngraph encoder to represent the proposed heterogeneous insertion. However, this method defines the action space of\ngraph. This encoder enables each node to structurally the DRL model as a combination of dispatch rules.",
+      "size": 907,
+      "sentences": 6
+    },
+    {
+      "id": 15,
+      "content": "epresent the proposed heterogeneous insertion. However, this method defines the action space of\ngraph. This encoder enables each node to structurally the DRL model as a combination of dispatch rules. Using\naggregate messages from neighboring nodes of diverse the composite dispatching rules as actions, instead of directly\nclasses, such as operations, machines, and vehicles. finding scheduling solutions, relies heavily on the quality\nWe construct a three-stage decoder specifically cus- of the rules and human experiences. Conversely, study [10]\n•\ntomized for FJSPT. Through the three-stage decoding, introducesan end-to-endDRL frameworkfor FJSPT, wherein\nthe decoder sequentially selects operation, machine and a DRL agent, at every decision step, determines the vehicle\nvehiclenodesbasedonthegraphembeddingderivedfrom that should transport a specific job to a particular machine. the encoder at every decision-time step.",
+      "size": 924,
+      "sentences": 8
+    },
+    {
+      "id": 16,
+      "content": ", at every decision step, determines the vehicle\nvehiclenodesbasedonthegraphembeddingderivedfrom that should transport a specific job to a particular machine. the encoder at every decision-time step. The composite Their model, however, is demonstrated only for small-scale\naction produceshigh-qualityFJSPT scheduling solutions instances,withnoconsiderationforlarge-scalegeneralization. to minimize the makespan. Severalstudiesinvestigatingscalegeneralization[7],[15]have\nBy integrating the encoder, decoder, and RL frame- been conducted in FJSP. To accommodate this characteristic,\n•\nwork, we develop the HGS module. The proposed theyimplementaGNN-basedDRLframework.ExistingDRL\nmethod outperforms traditional dispatching rules, meta- models,suchasmulti-layerperceptron(MLP)orconvolutional\nheuristic methods, and existing DRL-based algorithms, neural network (CNN), use vectors or matrices to represent\nespeciallyforthe scale generalizationcapabilities. More- states.",
+      "size": 966,
+      "sentences": 8
+    },
+    {
+      "id": 17,
+      "content": "n(MLP)orconvolutional\nheuristic methods, and existing DRL-based algorithms, neural network (CNN), use vectors or matrices to represent\nespeciallyforthe scale generalizationcapabilities. More- states. The main drawback of these representationsis that the\nover, we validate the superiority of the proposed method vectorsizeisfixed,makingtheminflexibleandunabletosolve\nby conducting simulations on a variety of benchmark problemsofvaryingsizes.GNN,ontheotherhand,canhandle\ndatasets[17].Tothebestofourknowledge,theproposed graphs of varying sizes, overcoming the limitations of vector\nmethod is the first approach for the size-agnostic DRL- representations[21].Nevertheless,thesestudiesfocusonlyon\nbased FJSPT scheduler. FJSP without considering transportation resources.",
+      "size": 767,
+      "sentences": 4
+    },
+    {
+      "id": 18,
+      "content": "ns of vector\nmethod is the first approach for the size-agnostic DRL- representations[21].Nevertheless,thesestudiesfocusonlyon\nbased FJSPT scheduler. FJSP without considering transportation resources. === 페이지 3 ===\nJOURNALOFLATEXCLASSFILES,VOL.14,NO.8,AUGUST2015 iii\nConstants\nm totalnumberofmachines\nn totalnumberofjobs\nni totalnumberofoperations ofjobi\nv totalnumberofvehicles\nd h dimensionofnodeembedding\nde dimensionofedgeembedding (a) disjunctive graphexample. (b) disjunctive graphsolutions. dk dimensionofqueryandkey\ndv dimensionofvalue Fig.1. Disjunctive graphforFJSP. Indexes\ni jobindex,i=1,...,n\nand two dummy nodes (with zero processing time) that\nj operation indexofJi,j=1,...,ni\nk machineindex,k=1,...,m indicate the start and end of production. C is the set of\nu vehicle index,u=1,...,v conjunctive arcs.",
+      "size": 817,
+      "sentences": 8
+    },
+    {
+      "id": 19,
+      "content": "nodes (with zero processing time) that\nj operation indexofJi,j=1,...,ni\nk machineindex,k=1,...,m indicate the start and end of production. C is the set of\nu vehicle index,u=1,...,v conjunctive arcs. There are n directed arc flows connecting\nSets\nthe Start and End nodes, with each of the flows illustrating\nJ jobnodeset,J ={J1,...,Jn}\nOi operation nodesetforjobJi,Oi={Oi1,...,Oini } the processing sequence for job J i . D = ∪ k D k constitutes a\nM machinenodeset,M={M1,...,Mm} set of (undirected) disjunctive arcs, where D\nk\nforms a clique\nMij available machinenodesetforoperation Oij,Mij ⊆M\nthat links operations capable of being executed on machine\nV vehicle nodeset,V={V1,...,Vv}\nNm(Oij) neighboring machinenodesforOij M k . Given that operations in FJSP can be performed on\nNv(Oij) neighboring vehicle nodesforOij multiplemachines,anoperationnodecanbelinkedtomultiple\nN(M k) neighboring operation nodesforM k disjunctivearcs.",
+      "size": 930,
+      "sentences": 5
+    },
+    {
+      "id": 20,
+      "content": "ven that operations in FJSP can be performed on\nNv(Oij) neighboring vehicle nodesforOij multiplemachines,anoperationnodecanbelinkedtomultiple\nN(M k) neighboring operation nodesforM k disjunctivearcs. SolvingFJSP involvesselectinga disjunctive\nN(Vu) neighboring operation nodesforVu\nVariables arc for each node and establishing its direction, as illustrated\nT i p jk processingtimeofoperation Oij onmachineM k inFig.1(b).Thedirectedarcsimplya processingsequenceof\nT u t transportation timeofvehicle Vu operations on a machine. T k t k′ timethatavehicle transports products fromM k toM k′\nT\ni\ns\nj\nstarttimeofOij\nCi completion timeofjobJi\nC. Attention model\nTABLEI\nNOTATION. The Attention Model (AM) [23] is a weighted message-\npassing technique between nodes in a graph, and it learns\nIII. PRELIMINARY\nattentionscoresbetweennodesbasedonhowmuchtheyrelate\nA. Problem description and notations\nto each other.",
+      "size": 903,
+      "sentences": 6
+    },
+    {
+      "id": 21,
+      "content": "a weighted message-\npassing technique between nodes in a graph, and it learns\nIII. PRELIMINARY\nattentionscoresbetweennodesbasedonhowmuchtheyrelate\nA. Problem description and notations\nto each other. In the graph, there is only one class of node\nFJSPTcanbedefinedasfollows.Thereexistsasetofnjobs x ∈ X. Let h\nx\n∈ Rdh represent the embedding vector of\nJ = {J ,...,J }, a set of m machines M = {M ,...,M } node x, with d being the embedding dimension. The model\n1 n 1 m h\nand a set of v vehicles V = {V ,...,V }. Each job J necessitates three vectors - query q, key k, and value v - to\n1 v i\nconsists of n consecutive operations O = {O ,...,O } form the aggregatednode embedding.These are expressed as\ni i i1 ini\nwith precedence constraints. An operation of job J denoted follows,\ni\nby O can be processed on a subset of eligible machines\nij q =Wqh ,k =Wkh ,v =Wvh , x,y ∈X (2)\nM ij ⊂M.",
+      "size": 882,
+      "sentences": 8
+    },
+    {
+      "id": 22,
+      "content": "re expressed as\ni i i1 ini\nwith precedence constraints. An operation of job J denoted follows,\ni\nby O can be processed on a subset of eligible machines\nij q =Wqh ,k =Wkh ,v =Wvh , x,y ∈X (2)\nM ij ⊂M. This implies that operation O ij requires different x x y y y y\nprocessing times T i p jk for each machine M k ∈M ij . To allo- where Wq,Wk ∈Rdk× dh and Wv ∈Rdv× dh are the trainable\ncate operation O on machine M , vehicle V transports the\nij k u parameter matrices. d is the query/key dimensionality, and\nk\nintermediate products of O to the machine. Transportation\nij d is the value dimensionality. In cases where y = x, this\nv\ntime of V is the sum of off-load and on-load transportation\nu mechanism is referred to as self-attention. Utilizing the query\ntime. The off-load time Tt indicates that V approaches\niju u q x fromnodexandthekeyk y fromnodey,thecompatibility\nthe product location of O to load it in an off-load status.",
+      "size": 928,
+      "sentences": 9
+    },
+    {
+      "id": 23,
+      "content": "tion. Utilizing the query\ntime. The off-load time Tt indicates that V approaches\niju u q x fromnodexandthekeyk y fromnodey,thecompatibility\nthe product location of O to load it in an off-load status. ij σ is determined through the scaled dot-product:\nThe on-load time Tt indicates that the vehicle transports xy\nkk′\nthe product from machine M k to machine M k′ in an on- qT x ky if y is a neighbor of x\nload status, where we assume that the on-load transportation σ xy = √dk (3)\n(−∞ otherwise\ntime between two machines is the same for all vehicles. In FJSPT, the optimization goal is to assign operations to where −∞ prevents message passing between non-adjacent\ncompatible machines and select vehicles to transport them, nodes. From the compatibility, we compute attention weights\nwhile determining the sequence of operation-machine-vehicle σ¯ ∈[0,1] using a softmax:\nxy\npairs to minimize the makespan,\neσxy\nC\nmax\n=maxC\nini\n,∀i∈{1,...,n}, (1) σ¯ xy =\ny′ X\neσ xy′ .",
+      "size": 965,
+      "sentences": 6
+    },
+    {
+      "id": 24,
+      "content": "tention weights\nwhile determining the sequence of operation-machine-vehicle σ¯ ∈[0,1] using a softmax:\nxy\npairs to minimize the makespan,\neσxy\nC\nmax\n=maxC\nini\n,∀i∈{1,...,n}, (1) σ¯ xy =\ny′ X\neσ xy′ . (4)\n∈\nwhereC ini isacompletiontimeoffinaloperationO ini ofjob This measures the importaPnce between x and y; a greater\nJ i . attention weights σ¯ xy implies a higher dependence of node\nx on node y. Subsequently, the attention-based single-head\nB. Disjunctive graph for FJSP node embedding h ′x,z for node x is calculated as a weighted\nsum of messages v :\nFig. 1 presents a disjunctive graph for FJSP [22], which is y\ndenoted as G =(O,C,D). O = {O |∀i,j}∪{Start,End}\nij h′x,z = σ¯\nxy\nv\ny\n,\n(5)\ncomprises the set of operation nodes, including all operations\ny X\nX∈\n=== 페이지 4 ===\nJOURNALOFLATEXCLASSFILES,VOL.14,NO.8,AUGUST2015 iv\ntransportation time, and status (on-load or off-load).",
+      "size": 882,
+      "sentences": 6
+    },
+    {
+      "id": 25,
+      "content": "v\ny\n,\n(5)\ncomprises the set of operation nodes, including all operations\ny X\nX∈\n=== 페이지 4 ===\nJOURNALOFLATEXCLASSFILES,VOL.14,NO.8,AUGUST2015 iv\ntransportation time, and status (on-load or off-load). Second,\nthedisjunctivearcsetDbecomesmuchlargerasthegraphsize\n(thenumberofnodes)increases.Thehigh-densitygraphleads\nto limited graph neural network performance[16]. Lastly, the\ntraditionalgraphstrugglestorepresenttheprocessingtimefor\ncompatible machines of an operation. Thus, to resolve these\nissues, weproposeanovelheterogeneousgraphHforFJSPT. By modifying the disjunctive graph, we propose a novel\nheterogeneous graph to represent FJSPT, as shown in FIg. 2. The graphis defined asH=(O∪M∪V,C,E ∪Eoff∪Eon). m v v\nWe model the manufacturing environment as the graph. For\nexample, we represent the processing time that an operation\ncan be processed on availabe machines, the time it takes for\nFig.2. Heterogeneous graphscheduler architecture.",
+      "size": 940,
+      "sentences": 10
+    },
+    {
+      "id": 26,
+      "content": "nvironment as the graph. For\nexample, we represent the processing time that an operation\ncan be processed on availabe machines, the time it takes for\nFig.2. Heterogeneous graphscheduler architecture. a designated vehicle to load the product at the location of an\nfinished operation and the time it takes to transport it to the\nwhere z ∈{1,...,Z} is a head index. nextmachine.Incontrasttothetraditionalgraph,themachine\nThe multi-head attention (MHA) enables a node to obtain\nnode set M, vehicle node set V, compatible machine arc set\nneighboring messages from various attention types, executed\nZ times in parallel (Z = 8), with d\nk\n= d\nv\n= d\nZ\nh. The E\nno\nm\nde\nan\nM\nd c\n∈\nom\nM\npati\na\nb\nn\nl\nd\ne\nv\nv\ne\ne\nh\nh\ni\ni\nc\nc\nl\nl\ne\ne\nn\na\no\nrc\nde\nse\nV\nt E\n∈\nv\nV\nare\nrep\nad\nre\nd\ns\ne\ne\nd\nn\n. t\nM\nm\na\na\nc\nc\nh\nh\ni\ni\nn\nn\ne\ne\nultimate multi-head attention value for node x is determined k u\nandvehicle features,respectively.The disjunctivearc set D is\nby summing the heads from all attention types.",
+      "size": 978,
+      "sentences": 6
+    },
+    {
+      "id": 27,
+      "content": "m\na\na\nc\nc\nh\nh\ni\ni\nn\nn\ne\ne\nultimate multi-head attention value for node x is determined k u\nandvehicle features,respectively.The disjunctivearc set D is\nby summing the heads from all attention types. This can be\nreplaced with E ∪Eoff∪Eon. An element of the compatible\nexpressed as a function of node embeddings for all nodes: m v v\nmachine arc set Em ∈E denotesthe processing time when\nijk m\nh x =MHA x ({h y |y ∈X}) operationO isprocessedoncompatiblemachineM ∈M . ij k ij\n= W x,z h ′x,z , (6) Vehicle arc E i v ju ∈ E v off represents the off-load transportation\ntime for V to arrive at the location of the product involved\nz Z u\nX∈ in O , and arc Ev ∈ Eon represents on-load transportation\nwhere W\nx,z\n∈Rdh× dv is a trainable parameter matrix. time\ni\nd\nj\nuring which\nk\na\nk′\nvehic\nv\nle in an on-load status moves from\nIV. HETEROGENEOUSGRAPH SCHEDULER(HGS)\nM\nk\nto M k′.",
+      "size": 868,
+      "sentences": 6
+    },
+    {
+      "id": 28,
+      "content": "n-load transportation\nwhere W\nx,z\n∈Rdh× dv is a trainable parameter matrix. time\ni\nd\nj\nuring which\nk\na\nk′\nvehic\nv\nle in an on-load status moves from\nIV. HETEROGENEOUSGRAPH SCHEDULER(HGS)\nM\nk\nto M k′. In FJSPT, the heterogeneous graph has dynamic structure,\nTo resolve FJSPT, we propose HGS module consisting of H (O∪M∪V,C,E ∪Eoff∪Eon), where E and Eoff are\nt mt vt v mt vt\nthree main components: a heterogeneous graph, a structure-\ndynamically change during resolving FJSPT. At time step t,\naware heterogeneous encoder and a three-stage decoder. The\noncean action(O ,M ,V ) is selected, H transits to H . ij k u t t+1\nworkflow of the HGS module, as depicted in Fig. 2, un-\nAttimestept,theDRLmodelselectsanaction(O ,M ,V ),\nij k u\nfolds in the following sequence: 1) receiving raw feature\nindicatingthat operationO is designated to be processed on\nij\nstates from the manufacturing environment, 2) constructing\nmachine M and transported using vehicle V .",
+      "size": 952,
+      "sentences": 8
+    },
+    {
+      "id": 29,
+      "content": "sequence: 1) receiving raw feature\nindicatingthat operationO is designated to be processed on\nij\nstates from the manufacturing environment, 2) constructing\nmachine M and transported using vehicle V . Consequently,\nk u\nthe heterogeneousgraph based on these features, 3) encoding\nuponactionselection,thestateH transitionstoH ,wherein\nt t+1\nthe graph using the encoder, 4) determining a composite only the selected edges Em ∈ E between O and M ,\nijk mt ij k\naction involving an operation-machine-vehicle pair utilizing\nand Ev ∈Eoff between O and V are retained, while other\nthe decoder, and 5) repeating this process until all operations iju vt ij u\nedgescompatiblewiththemachineandvehicleareeliminated. have been scheduled. Initially, we develop a heterogeneous\nAdditionally,due to the selection of machine M and vehicle\nk\ngraph specifically tailored for FJSPT.",
+      "size": 859,
+      "sentences": 4
+    },
+    {
+      "id": 30,
+      "content": "lewiththemachineandvehicleareeliminated. have been scheduled. Initially, we develop a heterogeneous\nAdditionally,due to the selection of machine M and vehicle\nk\ngraph specifically tailored for FJSPT. This graph effectively\nV u ,edgesE i′j′k andE i′j′u correspondingtoanotheroperation\nencapsulates the features of operations, machines, vehicles,\nO i′j′ are removed at time t+1 owing to the preemption of\nand their interrelationships, while maintaining a low graph\nM k and V u . This is under the premise that O i′j′ has them\ndensity.Next,werepresentthisheterogeneousgraphusingour\nlisted within its compatible machine and vehicle sets, M ∈\nk\nproposed encoder, which incorporates three sub-encodersand\nM i′j′. For a comprehensive understanding of preemption, it\na globalencoder.Eachsub-encoderenablesa specific node to\nis imperative to first define the neighboring node set.",
+      "size": 871,
+      "sentences": 6
+    },
+    {
+      "id": 31,
+      "content": "ates three sub-encodersand\nM i′j′. For a comprehensive understanding of preemption, it\na globalencoder.Eachsub-encoderenablesa specific node to\nis imperative to first define the neighboring node set. locally aggregate messages from adjacent nodes belonging to\nWe defineneighboringnodesata timestep.LetN (O )=\nt ij\ndifferent classes. Subsequently, the global encoder integrates\n{N (O ) ∪ N (O )} be the neighboring nodes for O\nmt ij vt ij ij\nthe encoded messages from all nodes. Based on the graph\nat time t, where N (O ) is the neighboring machines\nmt ij\nrepresentation, the decoder generates a composite action of\nand N (O ) is the neighboring vehicles. N (O ) denotes\nvt ij mt ij\nthe operation-machine-vehicle (O-M-V) pairs at the decision\navailable machines of O at t. Some machines among M\nij ij\ntimestep. Finally,usinganend-to-endRL algorithm,we train\nmay be unavailable due to preemption from other opera-\nthe HGS module to minimize the makespan. tions, N (O ) ⊆ M .",
+      "size": 972,
+      "sentences": 8
+    },
+    {
+      "id": 32,
+      "content": "ome machines among M\nij ij\ntimestep. Finally,usinganend-to-endRL algorithm,we train\nmay be unavailable due to preemption from other opera-\nthe HGS module to minimize the makespan. tions, N (O ) ⊆ M . N (O ) denotes current available\nmt ij ij vt ij\nvehicles, except for the transporting ones, N (O ) ⊆ V.\nvt ij\nA. Heterogeneous graph for FJSPT\nLikewise, let N (M ) be neighboring operation nodes for\nt k\nThe traditional disjunctive graph in Fig. 1 is difficult to machine M , and N (V ) be neighboringoperationnodesfor\nk t u\nrepresentFJSPT. This is because, first, it does notincludeve- vehicle V .",
+      "size": 597,
+      "sentences": 6
+    },
+    {
+      "id": 33,
+      "content": "t k\nThe traditional disjunctive graph in Fig. 1 is difficult to machine M , and N (V ) be neighboringoperationnodesfor\nk t u\nrepresentFJSPT. This is because, first, it does notincludeve- vehicle V . u\nhicleproperties,suchasthenumberofvehicles,theirlocation, Neighboring nodes of an operation node depends on\n=== 페이지 5 ===\nJOURNALOFLATEXCLASSFILES,VOL.14,NO.8,AUGUST2015 v\nwhether the neighboring nodes are working at time step Availabletime:thetimewhenV completestheallocated\nu\n•\nt. For instance, consider the scenario where N (O ) = transportation operations and can transport new opera-\nmt ij\n{M 1 ,M 2 ,M 3 }, and the agent assigns O i′j′ to M 1 at time t, tions. without considering vehicle allocation for simplification. Due Current location: L (V ). We define candidate locations\nt u\n•\nto the preemption of M\n1\nby another operation O i′j′, the set of the vehicle as a machine set, L\nt\n(V\nu\n)∈M. of neighboringnodeschangesto N m(t+1) (O ij )={M 2 ,M 3 }.",
+      "size": 959,
+      "sentences": 8
+    },
+    {
+      "id": 34,
+      "content": "efine candidate locations\nt u\n•\nto the preemption of M\n1\nby another operation O i′j′, the set of the vehicle as a machine set, L\nt\n(V\nu\n)∈M. of neighboringnodeschangesto N m(t+1) (O ij )={M 2 ,M 3 }. Raw feature vector νm ∈ R of compatible machine arc\nijk\nThe same is true for the neighbors of machine and vehicle Em ∈E containsasingleelement:processingtimeTp for\nijk m ijk\nnodes. A selection of initial neighboring nodes is sampled O -M pair. Feature vector νv ∈ R of off-load vehicle arc\nij k iju\nrandomly, which is described in Sec. V-A1. Ev ∈ Eoff represents off-load transportation time Tt , and\niju v iju\nvector νv ∈R of on-load vehicle arc Ev ∈Eon represents\nkk′ kk′ v\nB. Markov decision process on-load transportation time T k t k′ . We refer to the raw feature\nvectors of nodes and edges from paper [7]. We establish a Markov decision process (MDP) model for\n2) Action: ToaddressFJSPT,wedefineacompositeaction,\nFJSPT.",
+      "size": 926,
+      "sentences": 9
+    },
+    {
+      "id": 35,
+      "content": "ime T k t k′ . We refer to the raw feature\nvectors of nodes and edges from paper [7]. We establish a Markov decision process (MDP) model for\n2) Action: ToaddressFJSPT,wedefineacompositeaction,\nFJSPT. At every time step t, the agent perceives the system\na = (O ,M ,V ), which constitutes operation selection,\nt ij k u\nstate s and selects an action a . The action a enables an\nt t t machine assignment and vehicle utilization. This implies that\nunassigned operation to be processed on a free machine by\nthe operation O is assigned to the machine M , with V\nij k u\nconveyingitwithanavailablevehicle.Subsequenttoexecuting\ntransporting it. Specifically, action a ∈A is to select a fea-\nt t\nthe action, the environment transitions to the next state s\nt+1 sible operation-machine-vehicle pair. Feasible operation O\nij\nand acquires reward r . This procedure continues until\nt+1 impliesitsimmediatepredecessorO hasbeencompleted. all operations are scheduled.",
+      "size": 949,
+      "sentences": 10
+    },
+    {
+      "id": 36,
+      "content": "ible operation-machine-vehicle pair. Feasible operation O\nij\nand acquires reward r . This procedure continues until\nt+1 impliesitsimmediatepredecessorO hasbeencompleted. all operations are scheduled. The MDP model is explicitly A feasible machine is an idle on i e (j −a 1 m ) ong the compatible\ndetailed as follows. machines,M ∈M .Afeasiblevehicleisanidleoneamong\nk ij\n1) State: At decision step t, state s is a heterogeneous\nt all vehicles at time t, V ∈V . graph H (O∪M∪V,C,E ∪Eoff∪Eon). In this graph, we u t\nt mt vt v 3) Statetransition: Upontakingtheaction,theenvironment\ndefinetherawfeaturesofnodesandedges.Rawfeaturevector\ndeterministically transitions to the next state s . We first\nµ ∈R7 of operation node O comprises 7 elements; t+1\nij ij define the feasible next decision step t + 1.",
+      "size": 795,
+      "sentences": 9
+    },
+    {
+      "id": 37,
+      "content": "esofnodesandedges.Rawfeaturevector\ndeterministically transitions to the next state s . We first\nµ ∈R7 of operation node O comprises 7 elements; t+1\nij ij define the feasible next decision step t + 1. This step is\nStatus:abinaryvalueindicates1ifO ij isscheduleduntil determinedbyoperationevents,thatis,theearliestreleasetime\n•\ntime t, otherwise 0. ofthe new operationamongthe remainingfeasible operations\nNumber of neighboring machines: |N mt (O ij )| aftertimet.Atstept+1,thegraphstructureandnodefeatures\n•\n• • e P N r r u w o m c is e b e s e , s r i a n o v g f er t n a i e m g i e g e h : p b r T o o i p r c j i k e n s g s i i f v n e O g h i t i j i c m l i e s e s: s T¯ | c N p he v f d t o ( u r O le c i d j o ) m o | n pa M tib k le , o m th a - - o n ar t o h e d e e a r lt O c e o r i e j m d r p e b a t y t a i i b t n h l i e e ng p a a c o i t r n i s o ly n ar o a e n t e r = e O m ( - O o M v i e j - , d V M , p a k n a , i d r V u s in p ), e t c i h n i e fi w c g a r f a y e p s a h t s u , u r w c e h s hi o a le s f\nij\nc\nN\nh\nu\nin\nm\ne\nb\ns\ne\nM\nr\nk\nof\n∈\nu\nM\nns\ni\nc\nj\nh\n,\ne\nw\ndu\nh\nl\ne\ne\nr\nd\ne T\no\n¯ i\np\np j\ne\n=\nration\nM\ns\nk∈inMi\nj\nj\nob\nT i p j\nJ\nk\ni\n/\n:\n|M\nn i\nij\n−\n|.",
+      "size": 1194,
+      "sentences": 3
+    },
+    {
+      "id": 38,
+      "content": "a y e p s a h t s u , u r w c e h s hi o a le s f\nij\nc\nN\nh\nu\nin\nm\ne\nb\ns\ne\nM\nr\nk\nof\n∈\nu\nM\nns\ni\nc\nj\nh\n,\ne\nw\ndu\nh\nl\ne\ne\nr\nd\ne T\no\n¯ i\np\np j\ne\n=\nration\nM\ns\nk∈inMi\nj\nj\nob\nT i p j\nJ\nk\ni\n/\n:\n|M\nn i\nij\n−\n|. no\n4\nd\n)\nes\nR\nc\ne\nh\nw\na\na\nn\nr\ng\nd\ne\n:\nas\nT\nd\nh\ne\ne\nsc\no\nr\nb\nib\nje\ne\nc\nd\nti\ni\nv\nn\ne\nS\ni\ne\ns\ncti\nt\no\no\nn\nl\nI\ne\nV\nar\n-\nn\nB1\nh\n. ow to schedule\n• P\n|F t (J i )|, where F t (J i ) is a set of finished operations in operations in such a way that the makespan is minimized. J i until time t. We construct the reward function as the difference between\n• Job completion time: C i . It has the actual value if J i is the makespan correspondingto s t and s t+1 , r(s t ,a t ,s t+1 )=\ncompleted until t, otherwise, it indicates an estimation C (s )−C (s ).Inthiscontext,wedefineC (O,s )\nmax t max t+1 LB t\no w f h t e h r e e c O o i m j′ p i l s et t i h o e n l t a im st e fi , n Cˆ is i h = ed C o i p j′ er + at P ion Oi u j n∈t J il i\\t F .",
+      "size": 933,
+      "sentences": 5
+    },
+    {
+      "id": 39,
+      "content": ")−C (s ).Inthiscontext,wedefineC (O,s )\nmax t max t+1 LB t\no w f h t e h r e e c O o i m j′ p i l s et t i h o e n l t a im st e fi , n Cˆ is i h = ed C o i p j′ er + at P ion Oi u j n∈t J il i\\t F . t(Ji) T¯ i p j , a o s pe t r h a e tio l n ow O er at bo s u ta n t d e s o t f . t W he e e c s o t m im p a u t t e e d th c i o s m lo p w le e ti r on bo t u im nd e r o e- f\n• Start time: if O ij is scheduled until t, it indicates the cursively, C LB (O ij ,s t ) = C LB (O i(j 1) ,s t ) + T¯ i p j , where\nactualstart time of operationO ij . Otherwise, it indicates O ij is an unscheduled operation in −job J i . If O i(j 1) is\ntheestimatedstarttimeofO ij ,T i s j =C ij′+ j z− = 1 j′+1 T¯ i p z , scheduled in s t , C LB (O i(j 1) ,s t ) is updated to the−actual\nRa w w h f e e r a e tu j r ′ e < ve j c − tor 1, µ an ∈ d T R i s 4 j = of C m ij a ′ c , h w in h e er M e j ′ P c = on j si − sts 1. of 4 m co a m xi p m le u ti m on lo ti w m e e rb C o i( u j n−d 1) o .",
+      "size": 979,
+      "sentences": 5
+    },
+    {
+      "id": 40,
+      "content": "f e e r a e tu j r ′ e < ve j c − tor 1, µ an ∈ d T R i s 4 j = of C m ij a ′ c , h w in h e er M e j ′ P c = on j si − sts 1. of 4 m co a m xi p m le u ti m on lo ti w m e e rb C o i( u j n−d 1) o . f W un e− s d c e h fi ed n u e l t e h d e o m pe a r k a e t s io p n an sf i o n r s a t ll a j s o t b h s e ,\nk k\nelements; C max (s t ) = max i,j {C LB (O ij ,s t )}. The makespan in the\nterminalstates correspondstotheactualprocessmakespan,\nStatus: a binary value indicates 1 if M is processing at O\n• k C (s ) = | C | , since all operations are scheduled. time t, otherwise 0. max O max\nWhen t|he| discount factor γ = 1, the cumulative reward\nNumber of neighboring operations: |N (M )|. • Available time: the time when M k c t omp k letes all the is G = |t O = | 0 r(s t ,a t ,s t+1 ) = C max (s 0 ) − C max , where\n• C (s ) is a constant for a specific instance. Therefore,\nallocated operations and can process new operations. max 0\nP\nmaximizing G is equivalent to minimizing the makespan.",
+      "size": 997,
+      "sentences": 7
+    },
+    {
+      "id": 41,
+      "content": "x (s 0 ) − C max , where\n• C (s ) is a constant for a specific instance. Therefore,\nallocated operations and can process new operations. max 0\nP\nmaximizing G is equivalent to minimizing the makespan. Utilization: a ratio of M usage time to the current time\nk\n•\nt.\nRaw feature vector µ ∈ R4 of vehicle V consists of 4 C. Structure-aware heterogeneous encoder\nv u\nelements; A key concept of the proposed encoder is to construct\nStatus: a binary value indicates 1 if V is transporting at three sub-encoders (for operation, machine and vehicle) that\nu\n•\ntime t, otherwise 0. separately aggregate the neighboring messages while consid-\nNumber of neighboring operations: |N (V )|. ering node class. The graph’s structural similarity affects the\nt u\n•\n=== 페이지 6 ===\nJOURNALOFLATEXCLASSFILES,VOL.14,NO.8,AUGUST2015 vi\nscale generalization [24].",
+      "size": 836,
+      "sentences": 6
+    },
+    {
+      "id": 42,
+      "content": "of neighboring operations: |N (V )|. ering node class. The graph’s structural similarity affects the\nt u\n•\n=== 페이지 6 ===\nJOURNALOFLATEXCLASSFILES,VOL.14,NO.8,AUGUST2015 vi\nscale generalization [24]. Sub-graph-based encoding methods\ncontribute to improved scale generalization, as the sub-graph\nhas higher structural similarity than that of the entire graph\nin large-scalegraphs.Consequently,we designthe sub-graphs\ncorresponding to node classs, and then the sub-encoder ex-\ntracts the embedding features of the sub-graph. Intuitively,\nfromtheperspectiveofmachinenodes,thepriorityisselecting\noperation nodes with low processing time, while disregarding\nvehicle transportation time. Conversely, from the perspective\nof vehicle nodes, the priority is selecting operation nodes\nwith low transportation time, while disregarding machine\nprocessing time.",
+      "size": 847,
+      "sentences": 6
+    },
+    {
+      "id": 43,
+      "content": "ing\nvehicle transportation time. Conversely, from the perspective\nof vehicle nodes, the priority is selecting operation nodes\nwith low transportation time, while disregarding machine\nprocessing time. From the perspective of operation nodes, it\nshould be assigned to the nodes with low transportation and\nprocessingtimeatthesametime.Followingthelocalencoding Fig. 3. Heterogeneous encoder architecture. This figure shows the sub-\nencodingprocessofthegivenexamplegraph.Forsimplicity,weonlyillustrate\nof graph nodes, the global encoder integrates the messages\nHMHAij blockbetweenoperationnodeOij anditsneighboringnodesinthe\nfrom all nodes. heterogeneous multi-head attention layer. 1) Sub-encoders: We develop the sub-encoders F ,F\nO M\nandF foroperation,machineandvehiclenode,respectively. AM [23]. The HMHA block learns attention scores between\nV\nIn contrast to traditional AM, which represents single-class nodes of how much they relate to each other.",
+      "size": 950,
+      "sentences": 10
+    },
+    {
+      "id": 44,
+      "content": "machineandvehiclenode,respectively. AM [23]. The HMHA block learns attention scores between\nV\nIn contrast to traditional AM, which represents single-class nodes of how much they relate to each other. In FJSPT, an\nnodes, the sub-encoder captures node embedding under dif- operation node and the corresponding compatible machine\nferent node classes and outputs both node and edge embed- node with a low processing time may have a high attention\ndings. Let h (l), h (l) and h (l) be the operation machine and score because this O-M pair contributesto the low makespan. ij k u\nvehicle node embedding vector, respectively, through layer To this end, we incorporate the message-passing techniques\nl ∈ {1,...,L−1}. There are multiple L−1 attention layers.",
+      "size": 748,
+      "sentences": 7
+    },
+    {
+      "id": 45,
+      "content": "he low makespan. ij k u\nvehicle node embedding vector, respectively, through layer To this end, we incorporate the message-passing techniques\nl ∈ {1,...,L−1}. There are multiple L−1 attention layers. between different node classes into the traditional AM, while\nThe process of locally extracting relationship knowledge is taking into account edge attributes such as processing and\nthat sub-encoder F(l) generates updated node embedding transportation time. X\nvector h x (l) of node x ∈ X and its edge embedding vector Fornodeembeddingh ( x l),HMHA x blockfornodexembeds\nh( x l y ) by aggregating knowledge of the self node embedding messages of neighboring nodes {h y (l − 1)|y ∈ N(x) ⊂ Y} and\nh x (l − 1) ∈Rdh at the previouslayer l−1, its neighboringnode their edge messages h x (l y− 1). With query q x for node x and\nembedding h y (l − 1) ∈ Rdh with different node-class y ∈ Y, key k y /value v y for neighboring node y from equation (2),\nand their relationship (edge) h x (l y− 1) ∈Rde.",
+      "size": 991,
+      "sentences": 6
+    },
+    {
+      "id": 46,
+      "content": "ith query q x for node x and\nembedding h y (l − 1) ∈ Rdh with different node-class y ∈ Y, key k y /value v y for neighboring node y from equation (2),\nand their relationship (edge) h x (l y− 1) ∈Rde. Through this pro- we computesthecompatibilityσ xy by followingequation(3). cess, updated embedding vector h(l) from F(l) includes local To include edge messages, we define an augmented compat-\nx X\nibility σ˜ , which uses two-step linear transformation on the\nknowledgeofitsneighboringnodesandtheirrelationship,and xy\nconcatenation of compatibility σ and edge ν :\nreflects more information from more relevant neighbors.",
+      "size": 618,
+      "sentences": 3
+    },
+    {
+      "id": 47,
+      "content": "s two-step linear transformation on the\nknowledgeofitsneighboringnodesandtheirrelationship,and xy\nconcatenation of compatibility σ and edge ν :\nreflects more information from more relevant neighbors. This xy xy\nis formulated as follows:\nh(l),{h(l),h(l)\n|M ∈N (O ),V ∈N (O )}\nσ˜ xy =W x e y 2 ·ReLU W x e y 1 σ xy kh x (l y− 1) , (8)\nij ijk iju k mt ij u vt ij (cid:16) h i(cid:17)\n=F O (l)(h i ( j l − 1),{h k (l − 1),h i ( j l −k 1)|M k ∈N mt (O ij )} where W x e y 1 ∈ Rdz× (1+de) and W x e y 2 ∈ R1 × dz are trainable\n∪{h u (l − 1),h i ( j l −u 1)|V u ∈N vt (O ij )}) p an ar d am R e e t L er U m i a s tr a ix n , a [· ct k iva · t ] io d n en f o u t n e c s ti a on c .",
+      "size": 676,
+      "sentences": 2
+    },
+    {
+      "id": 48,
+      "content": "1+de) and W x e y 2 ∈ R1 × dz are trainable\n∪{h u (l − 1),h i ( j l −u 1)|V u ∈N vt (O ij )}) p an ar d am R e e t L er U m i a s tr a ix n , a [· ct k iva · t ] io d n en f o u t n e c s ti a on c . o W nc i a t t h en t a h t e ion au f g u m nc e t n io te n d ,\nh k (l),{h k (l i ) j ,h k (l k ) ′ |O ij ∈N t (M k ),M k′ ∈M t } (7) compatibility, we calculate attention weights σ¯ xy using equa-\n=F M (l)(h k (l − 1),{h i ( j l − 1),h i ( j l −k 1)|O ij ∈N t (M k )} a ti n o d n fi (4 n ) a , l s ly ing u l p e d - a h t e e a d d n n o o d d e e e e m m b b e e d d d d i i n n g g h h ( ′x ( l , l ) z ) u u s s i i n n g g e e q q u u a a t t i i o o n n( ( 5 6 ) ) , .",
+      "size": 678,
+      "sentences": 2
+    },
+    {
+      "id": 49,
+      "content": "d n fi (4 n ) a , l s ly ing u l p e d - a h t e e a d d n n o o d d e e e e m m b b e e d d d d i i n n g g h h ( ′x ( l , l ) z ) u u s s i i n n g g e e q q u u a a t t i i o o n n( ( 5 6 ) ) , . ∪{h k (l ′− 1),h k (l k−′ 1)|M k′ ∈M t }) Additionally, we compute the updated x edge embedding h(l)\nxy\nh(l),{h(l)|O\n∈N (V )} through a linear transformation, leveraging the compatibility\nu uij ij t u\n=F V (l)(h u (l − 1),{h i ( j l − 1),h i ( j l −u 1)|O ij ∈N t (V u )}) σ˜ xy :\nh(\nx\nl\ny\n) =W\nx\ne\ny\n3σ˜\nxy\n, (9)\nwhere h(l 1) is a node embedding at layer l −1. h(l) and\n− ijk\nh(\nk\nl\ni\n)\nj\nare embedding vectors for edge O\nij\n-M\nk\n. h(\nij\nl)\nu\nand h(\nu\nl\ni\n)\nj\nwhere W\nx\ne\ny\n3 ∈Rde× 1 is the trainable parameter matrix. are the vectors for edge O ij -V u . h( k l k ) ′ is the vector between Funtionally, the HMHA( x l) block at layer l takes neigh-\nm he a t c e h ro in g e e s ne M ou k s a m nd ul M ti- k h ′ e .",
+      "size": 915,
+      "sentences": 6
+    },
+    {
+      "id": 50,
+      "content": "x. are the vectors for edge O ij -V u . h( k l k ) ′ is the vector between Funtionally, the HMHA( x l) block at layer l takes neigh-\nm he a t c e h ro in g e e s ne M ou k s a m nd ul M ti- k h ′ e . a T d h a e tt s e u n b ti - o e n nc ( o H d M er H F A X (l ) ) , i a s d c d o & mp n o o s r e m d a o l f - b {h or y ( i l n − g 1) , n h o x ( d l y− e 1) e | m y b ∈ ed N din ( g x s )}, an a d nd ed o g u e tpu e t m s b t e h d e d u in p g d s ate a d s m in u p l u ti t - ,\nization (AN), and feed-forward layer (FF). HMHA performs head node embedding h( x l) and their edge embeddings h x (l y ):\nthe knowledge aggregation process. We design HMHA block that embeds messages of differ- h( x l),{h( x l y )|y ∈N(x)}\n(10)\nent classes of nodes and their relationship (edge) based on =HMHA( x l)({h y (l − 1),h x (l y− 1)|y ∈N(x)}).",
+      "size": 841,
+      "sentences": 5
+    },
+    {
+      "id": 51,
+      "content": "ss. We design HMHA block that embeds messages of differ- h( x l),{h( x l y )|y ∈N(x)}\n(10)\nent classes of nodes and their relationship (edge) based on =HMHA( x l)({h y (l − 1),h x (l y− 1)|y ∈N(x)}). === 페이지 7 ===\nJOURNALOFLATEXCLASSFILES,VOL.14,NO.8,AUGUST2015 vii\nToapplyitin termsofoperationnode,thenodeembedding\nh(l) aggregates neighboring node and edge messages from\nij\nboth machine and vehicle nodes:\nh(l),{h(l)|M\n∈N (O\n)}∪{h(l)|V\n∈N (O )}\nij ijk k mt ij iju u vt ij\n=HMHA i ( j l)({h k (l − 1),h i ( j l −k 1)|M k ∈N mt (O ij )} (11)\n∪{h u (l − 1),h i ( j l −u 1)|V u ∈N vt (O ij )}),\nwhere edge embedding h captures processing time knowl-\nijk\nedge between O and M , and h captures off-load trans-\nij k iju\nportation time between O and V . ij u\nFrom the perspective of the machine node, the HMHA(l)\nk\nblock incorporates both messages of h edge (processing\nijk\ntime) and h kk′ edge (on-load transportation time). This can\nbe expressed as follows: Fig.4. Three-stagedecoder architecture.",
+      "size": 992,
+      "sentences": 6
+    },
+    {
+      "id": 52,
+      "content": "the HMHA(l)\nk\nblock incorporates both messages of h edge (processing\nijk\ntime) and h kk′ edge (on-load transportation time). This can\nbe expressed as follows: Fig.4. Three-stagedecoder architecture. h k (l) ,{h k (l i ) j |O ij ∈N t (M k )}∪{h ( k l k ) ′ |M k′ ∈M t } D. Three-stage decoder\n=HMHA( k l)({h i ( j l − 1),h k (l i − j 1)|O ij ∈N t (M k )} (12) Through sub-encoders with L layers, we obtain node and\nedge embeddings; {h(L),h(L),h(L),h(L),h(L),h(L)|O ∈\n∪{h k (l ′− 1),h k (l k−′ 1)|M k′ ∈M t }) O,M k ∈ M,M k′ ∈ M ij ,V u k ∈ V u }. Wi i t j h k the ij s u e em kk b ′ edd ij ings,\nwhere we denote O -M edge embedding as h to avoid theproposeddecoderdeterminesanactiona =(O ,M ,V )\nij k kij t ij k u\nconfusion with h in HMHA(l) block, although they have of the operation-machine-vehicle pair at the decision step. ijk ij\nthe same values.",
+      "size": 850,
+      "sentences": 6
+    },
+    {
+      "id": 53,
+      "content": "poseddecoderdeterminesanactiona =(O ,M ,V )\nij k kij t ij k u\nconfusion with h in HMHA(l) block, although they have of the operation-machine-vehicle pair at the decision step. ijk ij\nthe same values. When the edge embedding is used for The decoder comprises three multi-head attention (MHA)\nHMHA(l+1) and HMHA(l+1) blocks at the next layer, we sub-layers that generate the probability vectors for selecting\nij k\nemploy the sum of h(l) and h(l) as the input. operation, machine and vehicle nodes. Each node element of\nijk kij action a is sampled from the vectors.",
+      "size": 562,
+      "sentences": 5
+    },
+    {
+      "id": 54,
+      "content": "erate the probability vectors for selecting\nij k\nemploy the sum of h(l) and h(l) as the input. operation, machine and vehicle nodes. Each node element of\nijk kij action a is sampled from the vectors. Vehicle nodes have the relationship with operation nodes, t\ntheHMHA(l) blockconsiderstheoff-loadtransportationtime: 1) Operation node selection: Initially, we construct a con-\nu text nodeh(L) toincludethecurrentgraphembeddingh¯(L) at\nc,t t\nh u (l),{h u (l i ) j |O ij ∈N t (V u )} step t and last glimpse node embedding h g,t 1 at step t−1:\n(13) −\n=HMHA( u l)({h i ( j l − 1),h u (l i−j 1)|O ij ∈N t (V u )}) h(L) = h¯(L) kh , (17)\nc,t t g,t 1\n−\nwhere h(l) is equivalent to h(l) used in the HMHA(l) block. h i\nuij iju ij where h is related to the last selected nodes, which\nFeed-forward(FF) blockin Fig. 3 is implementedwithtwo g,t − 1\nis defined in equation (25).",
+      "size": 864,
+      "sentences": 6
+    },
+    {
+      "id": 55,
+      "content": "alent to h(l) used in the HMHA(l) block. h i\nuij iju ij where h is related to the last selected nodes, which\nFeed-forward(FF) blockin Fig. 3 is implementedwithtwo g,t − 1\nis defined in equation (25). We formulate the graph em-\nhidden layers: bedding as the mean of all node embeddings, h¯(L) =\nF F F F ( ( h h x ( x ( l l y ) ) ) ) = = W W x x f f f f y 2 2 · · R R e e L L U U ( ( W W x x f f f f y 1 1 h h ( x ( x l l y ) ) ) ) , (14) F |O o | r + s |M i 1 m | p + l | e V| n ( o P ta n i t = io 1 n P , w n j e = i 1 o h m ( i i j L t ) th + e s P ub m k s = c 1 ri h p ( k t L t ) , + suc P h v u a = s 1 h h c (L u (L ) ) = ). h(L). Here, we need to determine which operation node is\nwhere W\nx\nff1 ∈ Rdff× dh, W\nx\nff2 ∈ Rdh× dff, W\nx\nff\ny\n1 ∈ Rdff× de\nm\nc\no\n,t\nst related to the context node. To this end, we use the\nand W x ff y 2 ∈ Rde× dff are trainable matrix.",
+      "size": 869,
+      "sentences": 7
+    },
+    {
+      "id": 56,
+      "content": "operation node is\nwhere W\nx\nff1 ∈ Rdff× dh, W\nx\nff2 ∈ Rdh× dff, W\nx\nff\ny\n1 ∈ Rdff× de\nm\nc\no\n,t\nst related to the context node. To this end, we use the\nand W x ff y 2 ∈ Rde× dff are trainable matrix. In addition, add & basic multi-head attention computation of equation (6) based\nnormalization(AN)blockisimplementedbyusinganinstance\nonthecontextnodetocomputethenodeselectionprobability. normalization for stable and fast training [25]. The context node h(L+1), which aggregates messages from\nc\n2) Global encoder: After L−1 sub-encoding, the global\noperation embeddings, is expressed as follows:\nencoder F\n(L)\nincorporates messages of all nodes and edges.",
+      "size": 653,
+      "sentences": 5
+    },
+    {
+      "id": 57,
+      "content": "L+1), which aggregates messages from\nc\n2) Global encoder: After L−1 sub-encoding, the global\noperation embeddings, is expressed as follows:\nencoder F\n(L)\nincorporates messages of all nodes and edges. G\nLet x be a graph node x ∈ X = O ∪ M ∪ V. The final h(L+1) =MHA(L+1)({h(L)|O ∈O}), (18)\nc c ij ij\nnode and edge embeddings from the heterogeneous encoder\nwherethecontextnodeaggregatestheknowledgeofoperation\nare obtained as follows:\nnodeembeddingsh(L) byutilizingqueryq forh(L), andkey\nh(L),{h(L)|y ∈N (x)} ij c c\nx = x F y G (L) (h x (L t − 1),{h y (L − 1),h x (L y− 1)|y ∈N t (x)}), (15) k ij T /v o a c lu o e m v p i u j te fo t r he h( i p j L r ) o , b a a s bi d li e t r y iv f e o d r f o r p o e m rat e i q o u n a s ti e o l n ec ( t 2 io ) n .",
+      "size": 756,
+      "sentences": 2
+    },
+    {
+      "id": 58,
+      "content": ",h x (L y− 1)|y ∈N t (x)}), (15) k ij T /v o a c lu o e m v p i u j te fo t r he h( i p j L r ) o , b a a s bi d li e t r y iv f e o d r f o r p o e m rat e i q o u n a s ti e o l n ec ( t 2 io ) n . , we add\nasingle-headattention(SHA)layer(Z =1)[23].Inthislayer,\nwhere N (x) is a neighboring node set of x at time step t.\nLikewise t sub-encoders,F(L) comprisesequivalentHMHA(L), we computethecompatibilityσ c (L ij +1) betweencontexth c (L+1)\nAN and FF blocks. Th G e HMHA( x L) allows a node x x to and operation embedding h( ij L), likewise equation (3):\nincorporate messages of its neighboring nodes y ∈ N (x),\nt [h(L+1)]Th(L)\nas follows: C·tanh c ij if O is eligible\nσ(L+1) = √dk ij\nh( x L),{h( x L y )|y ∈N t (x)} (16) cij   −∞ (cid:18) (cid:19) otherwise\n=HMHA( x L)({h y (L − 1),h x (L y− 1)|y ∈N t (x)}).",
+      "size": 815,
+      "sentences": 3
+    },
+    {
+      "id": 59,
+      "content": "[h(L+1)]Th(L)\nas follows: C·tanh c ij if O is eligible\nσ(L+1) = √dk ij\nh( x L),{h( x L y )|y ∈N t (x)} (16) cij   −∞ (cid:18) (cid:19) otherwise\n=HMHA( x L)({h y (L − 1),h x (L y− 1)|y ∈N t (x)}). (19)\n\n=== 페이지 8 ===\nJOURNALOFLATEXCLASSFILES,VOL.14,NO.8,AUGUST2015 viii\nwhere C is set to 10 to clip the result for better explo- Algorithm 1 Reinforcement Learning Algorithm\nration[23].Concurrently,toensurefeasibility,wedynamically 1: Input: number of epoches E, number of episodes per\nmask non-eligible operations at each step with −∞. Com- epoch E ′ , batch size B, policy network π θ\npleted operations and those out of sequence require masking. 2: for epoch=1,...,E do\nTypically, these compatibilities are viewed as unnormalized 3: if epoch mod 20=0 then\nlog-probabilities (logits) [23].",
+      "size": 792,
+      "sentences": 4
+    },
+    {
+      "id": 60,
+      "content": "ed operations and those out of sequence require masking. 2: for epoch=1,...,E do\nTypically, these compatibilities are viewed as unnormalized 3: if epoch mod 20=0 then\nlog-probabilities (logits) [23]. Ultimately, by employing soft- 4: Generate a new batch of B FJSPT instances\nmax, the probability distribution for operation selection is 5: end if\ncalculated as follows: 6: epi=0\nPr(O ij |s t )= n i′=1\neσ\nc\n(\nj n\nL\ni ′ i j =\n+\n′\n1\n1\n)\ne σ c (L i′ + j′ 1) . (20)\n7\n8 9\n:\n: :\nwh\nf\ni\no\nl\nr\ne\nIn b\ne\ni\np\nt = i\ni\nal\n<\n1 s , t\nE\n. a . t . ′\ne ,B\nd\ns\no\nb 0 d b o ased on instance b\n10: t=0\nWe can select an operatiPon nodPe O ij sampled from the 11: while sb t is not terminal do\ndistribution. 12: ab t ∼π θ (·|sb t ) // encoding and decoding\n2) Machine node selection: Considering the selected oper- 13: Receive rb and transit to next state\nt\nationnodeO ij ,wecomputethemachineselectionprobability 14: t=t+1\ndistribution.",
+      "size": 915,
+      "sentences": 8
+    },
+    {
+      "id": 61,
+      "content": "coding and decoding\n2) Machine node selection: Considering the selected oper- 13: Receive rb and transit to next state\nt\nationnodeO ij ,wecomputethemachineselectionprobability 14: t=t+1\ndistribution. To involve knowledge of the selected operation 15: end while\nO ij to the machineselection, we utilizeedge embeddingh ( ij L k ) 16: G(τb)= t r t b\nby adding it to the MHA input: 17: Receive baseline return Gb using Greedy Roll-\nP base\nout policy\nh c (L+2) =MHA( c L+2)({h ( k L) +h ( ij L k ) (21) 18: end for\n|M k ∈M ij ,selected O ij }), 19: ∇ θ J(θ)← B 1 B b=1 (G(τb)−Gb base )∇ θ logπ θ (τb)\n20: Update θ using ∇ θ J(θ)\nwhere the used query q and key k /value v correspond P\nc k k 21: epi=epi+B\nto context embedding h(L+1) and machine embedding h(L),\nc k 22: end while\nrespectively. The log-probability for machine nodes is calcu-\n23: end for\nlated by determining the compatibility σ(L+2) between the\nck\ncontext embedding h(L+2) and the machine embedding h(L)\nc k\nusing equation (19).",
+      "size": 988,
+      "sentences": 3
+    },
+    {
+      "id": 62,
+      "content": "e log-probability for machine nodes is calcu-\n23: end for\nlated by determining the compatibility σ(L+2) between the\nck\ncontext embedding h(L+2) and the machine embedding h(L)\nc k\nusing equation (19). The probability distribution of machine As a result, the proposed HGS module generates node and\nselection is expressed as follows: edge embeddings by encoding state s t , and then generates\nthe composite action a by decodingthe embeddings.We can\nt\neσ c (L k +2) define the probability of the composite action:\nPr(M |s ,O )= . (22)\nk t ij m k′=1 eσ c (L k′ +2) Pr(a t |s t )=Pr(O ij |s t )Pr(M k |s t ,O ij )Pr(V u |s t ,O ij ). (26)\nWe sample machine node M\nk\nfroPm the distribution. 3) Vehicle node selection: Similar to the previous compu-\ntation, we first compute the context embedding h(L+3) for E. RL algorithm\nc\nvehicle nodes at the MHA(L+3) layer. In the heterogeneous Algorithm 1 describes the training process of the HGS\nc\ngraphstructure,vehiclenodesareadjacenttooperationnodes, module.",
+      "size": 995,
+      "sentences": 6
+    },
+    {
+      "id": 63,
+      "content": "for E. RL algorithm\nc\nvehicle nodes at the MHA(L+3) layer. In the heterogeneous Algorithm 1 describes the training process of the HGS\nc\ngraphstructure,vehiclenodesareadjacenttooperationnodes, module. We employ a policy-gradient method to update the\nand thus we define the layer by adding edge embedding h(L) policy π θ (a t |s t ) [26]. In this study, the policy correspondsto\niju\nfor the selected O into its input:\nencoder-decodermodels,andwedenotethepolicyparameterθ\nij\nsimplyasallofthetrainableparametermatricesutilizedinthe\nh c (L+3) =MHA( c L+3)({h( u L)+h( ij L u ) (23) encoder-decoder models. Within an episode, given policy π θ ,\nwe record the sequence of state, action, and reward samples,\n|V ∈V,selected O }),\nu ij\nτ = (s ,a ,r ,...,s ,a ,r ). We can compute the total\n0 0 0 T T T\nwhere the used query q c and key k u /value v u correspond return G(τ) = T t=0 r t of the trajectory.",
+      "size": 893,
+      "sentences": 6
+    },
+    {
+      "id": 64,
+      "content": "ples,\n|V ∈V,selected O }),\nu ij\nτ = (s ,a ,r ,...,s ,a ,r ). We can compute the total\n0 0 0 T T T\nwhere the used query q c and key k u /value v u correspond return G(τ) = T t=0 r t of the trajectory. Our objective is\nto context embedding h(L+2) and vehicle embedding h(L), to maximize the objective J(θ) = E [G(τ)], which corre-\nc u\nP\nπθ\nrespectively. Finally, we define the probability distribution of sponds to minimizing the makespan. We use REINFORCE\nvehicle selection as follows: algorithm [27] to train the policy π , as it has been proven\nθ\neffective for attention-based end-to-end learning [8], [23]. Pr(V u |s t ,O ij )= v u e ′= σ 1 c (L u e + σ 3 c ( ) L u′ +3) , (24) as W it e ha u s se b R ee E n IN pr F o O ve R n C e E ff a e l c g t o iv r e ith fo m r [ a 2 tt 7 e ] n t t o ion tr - a b in as t e h d e e p n o d l - i t c o y -e π n θ d ,\nlearning [8], [23].",
+      "size": 879,
+      "sentences": 6
+    },
+    {
+      "id": 65,
+      "content": "as W it e ha u s se b R ee E n IN pr F o O ve R n C e E ff a e l c g t o iv r e ith fo m r [ a 2 tt 7 e ] n t t o ion tr - a b in as t e h d e e p n o d l - i t c o y -e π n θ d ,\nlearning [8], [23]. The parameter θ is optimized as follows:\nwhere we computecompatibilityPσ(L+3) by using h(L+3) and\ncu c B\nh( u L) using equation (19). After selecting O-M-V nodes, we ∇ J(θ)← 1 (G(τb)−Gb )∇ logπ (τb), (27)\nupdate the glimpse node embedding at step t by summing up θ B base θ θ\nb=1\nthe selected node embeddings: X\nwhere π (τb) = T π (ab|sb) is the probability of the\nθ t=0 θ t t\nh =h(L)+h(L)+h(L). (25) sequence actions during batch b trajectory (episode), and τb\ng,t ij k u Q\n=== 페이지 9 ===\nJOURNALOFLATEXCLASSFILES,VOL.14,NO.8,AUGUST2015 ix\nis batch b trajectory samples.",
+      "size": 770,
+      "sentences": 4
+    },
+    {
+      "id": 66,
+      "content": "θ t t\nh =h(L)+h(L)+h(L). (25) sequence actions during batch b trajectory (episode), and τb\ng,t ij k u Q\n=== 페이지 9 ===\nJOURNALOFLATEXCLASSFILES,VOL.14,NO.8,AUGUST2015 ix\nis batch b trajectory samples. To reduce the variance for 3) Baselines: Wecomparetheperformanceoftheproposed\nthe gradient, we use the deterministic greedy rollout baseline method with several baseline algorithms:\nGb for the batch b, which selects nodes with maximum\nbase Shortest processing time first (SPT): dispatching rule. probability on the distribution Pr(O |s ), Pr(M |s ,O ) •\nij t k t ij Longest processing time first (LPT): dispatching rule. andPr(V |s ,O ).Thedetailedtrainingprocessisdescribed •\nu t ij First in first out (FIFO): dispatching rule. in Algorithm 1.",
+      "size": 744,
+      "sentences": 6
+    },
+    {
+      "id": 67,
+      "content": "s ,O ) •\nij t k t ij Longest processing time first (LPT): dispatching rule. andPr(V |s ,O ).Thedetailedtrainingprocessisdescribed •\nu t ij First in first out (FIFO): dispatching rule. in Algorithm 1. Every 20 epochs, we generate new batch •\nMatNet [8]: A DRL-based algorithm for solving FJSPT\nB instances with different graph topology for given instance •\nhas not been developed entirely, and this aims only to\nparameters(n×m×v).Eachbatchincludesadifferentnumber\nsolveFJSP. In lightof this, we augmentthese algorithms\nofoperationsperjob,numberofcompatiblemachinesforeach\nwith a simple vehicle selection mechanism, namely the\noperation, and processing/transportation times, which will be\nnearest vehicle selection (NVS) method, to make them\ndescribed in Sec. V-A1. applicable to FJSPT. Heterogeneousgraphneuralnetwork(HGNN)[7]:DRL-\n•\nbasedalgorithm.WeaugmenttheNVSmethodtoHGNN.",
+      "size": 876,
+      "sentences": 8
+    },
+    {
+      "id": 68,
+      "content": "h will be\nnearest vehicle selection (NVS) method, to make them\ndescribed in Sec. V-A1. applicable to FJSPT. Heterogeneousgraphneuralnetwork(HGNN)[7]:DRL-\n•\nbasedalgorithm.WeaugmenttheNVSmethodtoHGNN. V. PERFORMANCE EVALUATION Improved genetic algorithm (IGA) [28]: meta-heuristic\n•\nalgorithm.This methodsolves FJSPT based on a genetic\nInthissection,weevaluatetheeffectivenessofourproposed\nalgorithm. method (HGS) from two perspectives: makespan and scale\ngeneralization. B. Makespan optimization\nA. Experimental settings Toverifytheeffectivenessoftheproposedmethodinfinding\nnear-optimal solutions, we evaluate the performance in terms\n1) Evaluationinstances: Similartomostrelatedstudies[6],\nof makespan C . The training process of the proposed\nmax\n[7], [22], we generate synthetic FJSPT instances for training\nmethod is stable and convergesfor all instances.",
+      "size": 858,
+      "sentences": 9
+    },
+    {
+      "id": 69,
+      "content": "Similartomostrelatedstudies[6],\nof makespan C . The training process of the proposed\nmax\n[7], [22], we generate synthetic FJSPT instances for training\nmethod is stable and convergesfor all instances. To illustrate\nandtesting.Togeneraterandominstancesundergiveninstance\nthis,inFig.5,weplottheaveragemakespanfor10validation\nparameters (n,m and v), we sample an instance from the\nruns every 100 episode iterations on a 10×6×6 instance. It\nuniformdistribution,wherethenumberofoperationsforeach\nis evident that the DRL agent is proficient in acquiring a\njob is sampled in proportion to the number of machines,\nhigh-qualityschedulingpolicyfromscratch,leveragingitsown\nn ∼ U(0.8|M|,1.2|M|), and the number of compatible\ni problem-solving experiences.",
+      "size": 743,
+      "sentences": 4
+    },
+    {
+      "id": 70,
+      "content": "ng a\njob is sampled in proportion to the number of machines,\nhigh-qualityschedulingpolicyfromscratch,leveragingitsown\nn ∼ U(0.8|M|,1.2|M|), and the number of compatible\ni problem-solving experiences. machines for each operation is sampled from the distribution,\nNext,afterundergoingsufficienttrainingconsistingof1,000\n|M |∼U(1,|M|).ProcessingtimeTp forO -M pairand\nij ijk ij k epochs, we evaluate its performance on synthetic instances\ntransportation time T k t k′ between M k and M k′ are sampled using the trained model, making comparisons with baseline\nfrom U(0.8T¯p,1.2T¯p) and U(0.8T¯t ,1.2T¯t ), respectively. ij ij kk′ kk′ algorithms. Table II shows the results of all methods against\nHere, the averageprocessingtime T¯p and average transporta-\nij fourinstances, where Gap denotesthe relative gappercentage\ntiontimeT¯ k t k′ aresampledfromU(1,30)andU(1,20),respec- between the method’s makespan C max and makespan C m B a S x\ntively.",
+      "size": 940,
+      "sentences": 4
+    },
+    {
+      "id": 71,
+      "content": "ransporta-\nij fourinstances, where Gap denotesthe relative gappercentage\ntiontimeT¯ k t k′ aresampledfromU(1,30)andU(1,20),respec- between the method’s makespan C max and makespan C m B a S x\ntively. To assess the makespan optimization performance, we\nof the best solution (notnecessarily optimal) for the instance:\nevaluateourmodelonfoursmall-scaleinstancesofn×m×v\n(5×3×3,10×3×6,10×6×3,10×6×6),where the numberof C\nmax\nGap= −1 ×100%. (28)\noperations in each instance is in the range [10,70]. When CBS\nwe test the performance of the methods, we generate 100 (cid:18) max (cid:19)\ndifferent instances for each size and calculate the average of Theboldcharacterinthetabledenotesthebestresultforeach\ntheobtainedresults.Furthermore,weconducttestsourmethod instance. on various benchmark datasets, which will be described in For instances 5×3×3 and 10×6×6, HGS provides the\ndetail in Section V-E. best solutions.",
+      "size": 907,
+      "sentences": 5
+    },
+    {
+      "id": 72,
+      "content": "results.Furthermore,weconducttestsourmethod instance. on various benchmark datasets, which will be described in For instances 5×3×3 and 10×6×6, HGS provides the\ndetail in Section V-E. best solutions. Especially, it can obtain up to 24% gap and\n2) Configuration: TheHGSmodelisconstructedbystack- 29%gap when comparedwith other DRL-based methodsand\ning L = 2 encoding layers. The embedding dimension of dispatch rules, respectively. For 10×3×6 instance, the meta-\nnodes and edges, d and d , is set to 128 and 1, respectively. heuristicmethod(IGA)yieldsthebestsolution.However,itis\nh e\nAdditionally, we use d = 16 for calculating augmented notable that this method necessitates extensive computational\nz\ncompatibilityandd =512inthe”Feed-forward”blocks.The resources. Our proposed method, in contrast, obtains a near-\nff\n(H)MHA blocks employed in both the encoder and decoder best solution (with a 1% gap) while demanding a more rea-\nutilize Z = 8 attention heads.",
+      "size": 960,
+      "sentences": 7
+    },
+    {
+      "id": 73,
+      "content": "s. Our proposed method, in contrast, obtains a near-\nff\n(H)MHA blocks employed in both the encoder and decoder best solution (with a 1% gap) while demanding a more rea-\nutilize Z = 8 attention heads. Each attention head processes sonable computational cost. In the case of 10×6×3 instance,\nquery, key, and value as 8-dimensional vectors, denoted as which is characterized by an insufficient number of vehicles,\nd = d = d = 8. To optimize the model, we employ otherDRL-basedmethodssuchasMatNetandHGNNachieve\nq k v\nthe Adam optimizer with a learning rate of 2 × 10 4 and the best solution while requiringrelatively lower computation\n−\nuse a batch size B = 50. In the training process, an epoch times However, these methods experience degraded perfor-\ncorresponds to the training of the model on E = 1,000 mance in other instances. Consequently,the proposedmethod\n′\nepisodes. We train E = 1,000 epochs for given instance consistently outperforms dispatch rules, meta-heuristic and\nparameters n×m×v.",
+      "size": 995,
+      "sentences": 7
+    },
+    {
+      "id": 74,
+      "content": "1,000 mance in other instances. Consequently,the proposedmethod\n′\nepisodes. We train E = 1,000 epochs for given instance consistently outperforms dispatch rules, meta-heuristic and\nparameters n×m×v. existing DRL-based methods in small-scale instances.",
+      "size": 251,
+      "sentences": 4
+    },
+    {
+      "id": 75,
+      "content": "posedmethod\n′\nepisodes. We train E = 1,000 epochs for given instance consistently outperforms dispatch rules, meta-heuristic and\nparameters n×m×v. existing DRL-based methods in small-scale instances. === 페이지 10 ===\nJOURNALOFLATEXCLASSFILES,VOL.14,NO.8,AUGUST2015 x\nMethods\nGraph SPT LPT FIFO IGA HGNN MatNet HGS(Ours)\nSize\nCmax\nGap\nCmax\nGap\nCmax\nGap\nCmax\nGap\nCmax\nGap\nCmax\nGap\nCmax\nGap\n(Time) (Time) (Time) (Time) (Time) (Time) (Time)\n102.75 107.95 105.3 109.95 105.95 96.55 85.65\n5×3×3 12% 26% 23% 28% 24% 13% 0%\n(0.12s) (0.12s) (0.13s) (272.51s) (0.13s) (0.34s) (0.2s)\n182.75 183.75 189.7 175.0 183.55 170.55 152.05\n10×3×6 20% 21% 25% 15% 21% 12% 0%\n(0.22s) (0.22s) (0.61s) (569.8s) (0.25s) (0.32s) (0.4s)\n422.15 446.75 420.2 332.9 307.45 371.65 318.7\n10×6×3 37% 45% 37% 8% 0% 21% 4%\n(1.03s) (1.01s) (1.07s) (1005.5s) (0.89s) (1.62s) (1.33s)\n283.7 301.7 275.3 260.9 274.9 234.65 233.5\n10×6×6 22% 29% 18% 12% 18% 1% 0%\n(0.59s) (0.58s) (0.6s) (1005.91s) (0.62s) (1.02s) (0.95s)\nTABLEII\nMAKESPANCEPERFORMANCESONSMALL-SCALEINSTANCES.",
+      "size": 1031,
+      "sentences": 4
+    },
+    {
+      "id": 76,
+      "content": "2s) (1.33s)\n283.7 301.7 275.3 260.9 274.9 234.65 233.5\n10×6×6 22% 29% 18% 12% 18% 1% 0%\n(0.59s) (0.58s) (0.6s) (1005.91s) (0.62s) (1.02s) (0.95s)\nTABLEII\nMAKESPANCEPERFORMANCESONSMALL-SCALEINSTANCES. 300\n290\n280\n270\n260\n250\n240\n230\n0 2000 4000 6000 8000 10000\nEpisode Iteration\nnapsekaM\n50\n40\n30\n20 10\n0\n−10\n−20\nHGS HGS HGS\n(with self-atten)(non-graph)\nFig.5. Trainingcurveon10×6×6instances. C. Scale generalization\nChanges in the manufacturing environment on real shop\nfloor, such as new jobs, machines and AGVs insertion, or\nmachines/AGVs breakdown, are regarded as instance scale\nchanges [7], [29]. To validate how well the proposed model\ngenerates schedules in the changing environment (scale gen-\neralization capability), we train the model on the small-scale\ninstance 10×6×6 and subsequently test it on unseen-before\nlarge-scale instances (20×10×10, 30×15×15, 40×20×20,\n50×25×25) where the number of operations in instances is\nin the range [160,1000].",
+      "size": 957,
+      "sentences": 5
+    },
+    {
+      "id": 77,
+      "content": "-scale\ninstance 10×6×6 and subsequently test it on unseen-before\nlarge-scale instances (20×10×10, 30×15×15, 40×20×20,\n50×25×25) where the number of operations in instances is\nin the range [160,1000]. Table III shows that the proposed method significantly\noutperforms dispatch rules, meta-heuristic and existing DRL-\nbased approaches, obtaining the best solutions (with a 0%\ngap) across all instances. It’s noteworthy that the gap perfor-\nmance of the HGS model amplifies as the size of the graph\nincreases. Specifically, it achieves an increased gap ranging\n[24%, 28%] (from 24% in instance 20×10×10 to 28% in\ninstance 50×25×25) for SPT, [30%, 36%] for LPT, [26%,\n31%] for FIFO, [41%, 54%] for IGA and [21%, 25%] for\nHGNN. Consequently, the proposed method proves capable\nof finding the best solutions in a variety of unseen-before\ninstances.",
+      "size": 842,
+      "sentences": 5
+    },
+    {
+      "id": 78,
+      "content": "36%] for LPT, [26%,\n31%] for FIFO, [41%, 54%] for IGA and [21%, 25%] for\nHGNN. Consequently, the proposed method proves capable\nof finding the best solutions in a variety of unseen-before\ninstances. This capability makes it highly valuable in the\ndynamic manufacturing environment subject to changes such\nas the addition or breakdown of machines/vehicles or the\ninsertion of new jobs, as these changesdirectly correlate with\nchanges in the graph scale. D. Analysis of the proposed method\nIn this section, we analyze the proposed method how to\nachieve the above superiority. To this end, we compare HGS\nwith several transformed HGS modules:\n)%(\npaG\nevitaleR\n50\n40\n30\n20\n10\n0\nHGS HGS HGS\n(with self-atten)(non-graph)\n(a) 10×6×6\n)%(\npaG\nevitaleR\n(b) 50×25×25\nFig. 6. Relative gap distribution between transformed HGS methods on\nvarious instances. HGS (non-graph): This variant is created to validate the\n•\neffectiveness of the proposed encoder-decoder models.",
+      "size": 956,
+      "sentences": 8
+    },
+    {
+      "id": 79,
+      "content": "ig. 6. Relative gap distribution between transformed HGS methods on\nvarious instances. HGS (non-graph): This variant is created to validate the\n•\neffectiveness of the proposed encoder-decoder models. It employs a non-graph-based DRL method, using a\nbasic attention-based decoder [23] to form a composite\nactionwhilemaintainingthesize-agnosticproperty.Here,\nπ(a |s )=π(O |s )π(M |s )π(V |s ), and the state s\nt t ij t k t u t t\nrepresents the initial node embeddings without encoding\nthem. HGS (self-attention): This variant uses a self-attention\n•\nencoder[23]inplaceoftheproposedencoder,butretains\ntheproposeddecoder.Theself-attentionencoderassumes\nthat a node is initially related to all other nodes. These models are trained on a graph of size 10×6×6 and\ntested on graphs 50×25×25. We conduct 100 tests for each\ninstance and examine the distribution of the makespan gap\nof the transformed methods relative to HGS. The results are\ndepicted in Fig. 6.",
+      "size": 951,
+      "sentences": 10
+    },
+    {
+      "id": 80,
+      "content": "and\ntested on graphs 50×25×25. We conduct 100 tests for each\ninstance and examine the distribution of the makespan gap\nof the transformed methods relative to HGS. The results are\ndepicted in Fig. 6. The HGS (non-graph) variant exhibits an average gap of\n29% compared to HGS on the 10×6×6 trained instance. However,thisgapincreasesto41%onunseeninstancesofsize\n50×25×25. The significant performance difference, even on\ntrained instances, suggests that the graph-based DRL method\nismoreproficientatdeterminingactionsinFJSPT.Conversely,\nHGS(self-attention)performssimilarlytoHGSonthetrained\ninstance, with an approximate gap of 1%, and even produces\nbetter solutions in some tests. However, this gap increases\nto 5% on unseen large-scale instances of size 50×25×25. In\nall tests, HGS outperforms HGS (self-attention). The one-to-\nall connection in HGS (self-attention) proves challenging to\ngeneralize as the graph size increases, due to the complex\nnode relationships.",
+      "size": 965,
+      "sentences": 10
+    },
+    {
+      "id": 81,
+      "content": "ll tests, HGS outperforms HGS (self-attention). The one-to-\nall connection in HGS (self-attention) proves challenging to\ngeneralize as the graph size increases, due to the complex\nnode relationships. These observations suggest that the sub-\ngraph-based one-to-few connection in HGS offers superior\ngeneralization to unseen large-scale instances, attributable to\nfewer node connections and the inductive bias between node\n[표 데이터 감지됨]\n\n=== 페이지 11 ===\nJOURNALOFLATEXCLASSFILES,VOL.14,NO.8,AUGUST2015 xi\nMethods\nGraph SPT LPT FIFO IGA HGNN MatNet HGS(Ours)\nSize\nCmax\nGap\nCmax\nGap\nCmax\nGap\nCmax\nGap\nCmax\nGap\nCmax\nGap\nCmax\nGap\n(Time) (Time) (Time) (Time) (Time) (Time) (Time)\n632.6 669.85 642.15 692.75 635.85 555.05 511.7\n20×10×10 24% 31% 25% 35% 24% 8% 0%\n(1.83s) (1.83s) (1.97s) (1020.75s) (2.06s) (2.62s) (3.4s)\n937.6 977.4 926.35 1108.45 904.65 800.05 742.0\n30×15×15 26% 32% 25% 49% 22% 8% 0%\n(3.97s) (3.97s) (4.25s) (1052.05s) (6.35s) (5.77s) (8.04s)\n1206.05 1287.15 1219.05 1497.3 1181.9 1028.62 968.15\n40×20×20 25% 33% 26% 55% 22% 6% 0%\n(13.29s) (13.27s) (13.79s) (1101.04s) (45.16s) (20.17s) (32.27s)\n1572.35 1660.05 1580.5 2009.1 1510.4 1337.5 1251.4\n50×25×25 26% 33% 26% 61% 21% 7% 0%\n(11.69s) (11.6s) (12.38s) (1186.63s) (65.3s) (16.74s) (33.06s)\nTABLEIII\nSCALEGENERALIZATIONPERFORMANCESONLARGE-SCALEINSTANCES.",
+      "size": 1316,
+      "sentences": 3
+    },
+    {
+      "id": 82,
+      "content": "05 1580.5 2009.1 1510.4 1337.5 1251.4\n50×25×25 26% 33% 26% 61% 21% 7% 0%\n(11.69s) (11.6s) (12.38s) (1186.63s) (65.3s) (16.74s) (33.06s)\nTABLEIII\nSCALEGENERALIZATIONPERFORMANCESONLARGE-SCALEINSTANCES. Methods\nGraph SPT LPT FIFO IGA HGNN MatNet HGS(Ours)\nSize\nCmax\nGap\nCmax\nGap\nCmax\nGap\nCmax\nGap\nCmax\nGap\nCmax\nGap\nCmax\nGap\n(Time) (Time) (Time) (Time) (Time) (Time) (Time)\n175 198 146 141 131 159 153\nMKT01 34% 51% 11% 8% 0% 21% 17%\n(0.2s) (0.2s) (0.24s) (1008.31s) (0.34s) (0.58s) (0.64s)\n140 141 143 105 123 110 104\nMKT02 35% 36% 38% 1% 18% 6% 0%\n(0.2s) (0.2s) (0.24s) (1009.24s) (0.34s) (0.39s) (0.64s)\n415 453 331 335 306 314 267\nMKT03 55% 70% 24% 25% 15% 18% 0%\n(0.51s) (0.52s) (0.61s) (1037.84s) (0.96s) (1.02s) (1.67s)\n155 191 173 144 160 147 139\nMKT04 12% 37% 24% 4% 15% 6% 0%\n(0.3s) (0.31s) (0.36s) (1011.07s) (0.52s) (0.61s) (1.0s)\n473 442 461 423 388 412 374\nMKT05 26% 18% 23% 13% 4% 10% 0%\n(0.37s) (0.37s) (0.44s) (1028.13s) (0.62s) (0.73s) (1.18s)\n223 238 219.5 248 213.5 206.5 217\nMKT06 8% 15% 6% 20% 3% 0% 5%\n(0.51s) (0.52s) (0.61s) (1013.68s) (0.94s) (1.02s) (1.69s)\n430 444 399 367 406 427 348\nMKT07 24% 28% 15% 5% 17% 23% 0%\n(0.35s) (0.34s) (0.41s) (1027.07s) (0.59s) (0.69s) (1.12s)\n850.5 858.5 836.5 752 819 828 812\nMKT08 13% 14% 11% 0% 9% 10% 8%\n(0.79s) (0.79s) (0.93s) (1053.28s) (1.42s) (1.57s) (2.56s)\n685.5 704.5 689 610 682.5 528 529\nMKT09 30% 33% 30% 16% 29% 0% 0%\n(0.84s) (0.84s) (1.0s) (1024.91s) (1.52s) (1.66s) (2.72s)\n595 598 587.5 509 531.5 417 409\nMKT10 45% 46% 44% 24% 30% 2% 0%\n(0.84s) (0.83s) (1.0s) (1036.62s) (1.52s) (1.64s) (2.72s)\nAverage - 28% - 35% - 23% - 12% - 14% - 10% - 3%\nTABLEIV\nMAKESPANANDRUNTIMERESULTSONBENCHMARKDATASET.",
+      "size": 1670,
+      "sentences": 2
+    },
+    {
+      "id": 83,
+      "content": "417 409\nMKT10 45% 46% 44% 24% 30% 2% 0%\n(0.84s) (0.83s) (1.0s) (1036.62s) (1.52s) (1.64s) (2.72s)\nAverage - 28% - 35% - 23% - 12% - 14% - 10% - 3%\nTABLEIV\nMAKESPANANDRUNTIMERESULTSONBENCHMARKDATASET. classes. in a variety of manufacturing environments. In this paper,\nwe have proposed a novel graph-based DRL method, called\nE. Benchmark test\nHGS, to address the challenge of scale-generalizable FJSPT. In this section, we demonstrate the proposed method on Comparedtotheexistingdispatchingrules,meta-heuristicand\ntwo FJSPT benchmarkdatasets referencedin paper[17]. This DRL-basedmethods,we have demonstratedthat the proposed\ndataset, originally proposed by Brandimarte [22], consists of method provides superior solutions in terms of makespan\nten instances, which involve 10, 15, and 20 jobs, 55-240 minimization with a reasonable computation efficiency.",
+      "size": 854,
+      "sentences": 6
+    },
+    {
+      "id": 84,
+      "content": "y Brandimarte [22], consists of method provides superior solutions in terms of makespan\nten instances, which involve 10, 15, and 20 jobs, 55-240 minimization with a reasonable computation efficiency. In\noperations,and4-15machines.Itincorporatesmachinelayout particular, we have observed that the proposed heterogeneous\nwith transportation time between machines, where the time graph encoder contributes to scale generalization even on\nis randomly generated between 2 and 10. The number of unseen large-scale instances. vehicles v for each instance is sampled from distribution\nU(0.8m,1.2m). DRL-based methods(HGS, HGNN, MatNet)\nuse the model trained on graph size 10×6×6. REFERENCES\nAsdepictedinTableIV,theproposedmethodfindsthebest\nsolutions for most instances, with the exception of only three [1] Z.QinandY.Lu,“Self-organizingmanufacturingnetwork:Aparadigm\ntowardssmartmanufacturinginmasspersonalization,” JournalofMan-\ninstances (MKT01, 06 and 08).",
+      "size": 952,
+      "sentences": 6
+    },
+    {
+      "id": 85,
+      "content": "nstances, with the exception of only three [1] Z.QinandY.Lu,“Self-organizingmanufacturingnetwork:Aparadigm\ntowardssmartmanufacturinginmasspersonalization,” JournalofMan-\ninstances (MKT01, 06 and 08). When comparing with DRL-\nufacturing Systems,vol.60,pp.35–47,2021. based methods (HGNN and MatNet), the proposed method\n[2] S. Kim, Y. Won, K.-J. Park, and Y. Eun, “A data-driven indirect\nsignificantly enhances performance, with the average gap estimation ofmachineparameters forsmartproductionsystems,”IEEE\ndifferencereachingupto9%.ComparedwiththeIGAmethod TransactionsonIndustrialInformatics,vol.18,no.10,pp.6537–6546,\n2022. (average gap of 12%), HGS yields better results and is much\n[3] H.-S.Park,S.Moon,J.Kwak,andK.-J.Park,“CAPL:Criticality-aware\nless computationally expensive. adaptivepathlearningforindustrialwirelesssensor-actuatornetworks,”\nIEEE Transactions on Industrial Informatics, vol. 19, pp. 9123–9133,\nVI. CONCLUSION 2022. [4] S. Moon, H. Park, H. S. Chwa, and K.-J.",
+      "size": 983,
+      "sentences": 11
+    },
+    {
+      "id": 86,
+      "content": "daptivepathlearningforindustrialwirelesssensor-actuatornetworks,”\nIEEE Transactions on Industrial Informatics, vol. 19, pp. 9123–9133,\nVI. CONCLUSION 2022. [4] S. Moon, H. Park, H. S. Chwa, and K.-J. Park, “AdaptiveHART: An\nIn AGV-based SMSs, scale generalization is a challenge\nadaptivereal-timeMACprotocolforindustrialInternet-of-things,”IEEE\nthat DRL methods should address to maximize productivity SystemsJournal, vol.16,no.3,pp.4849–4860,2022. === 페이지 12 ===\nJOURNALOFLATEXCLASSFILES,VOL.14,NO.8,AUGUST2015 xii\n[5] Y. Zhang, H. Zhu, D. Tang, T. Zhou, and Y. Gui, “Dynamic job shop [26] R.S.Sutton,A.G.Bartoetal.,“Introductiontoreinforcementlearning,”\nscheduling based ondeep reinforcement learning for multi-agent man- 1998.\nufacturingsystems,”RoboticsandComputer-Integrated Manufacturing, [27] R. J. Williams, “Simple statistical gradient-following algorithms for\nvol.78,p.102412,2022. connectionist reinforcement learning,” Machine learning, vol. 8,no.",
+      "size": 959,
+      "sentences": 9
+    },
+    {
+      "id": 87,
+      "content": "Computer-Integrated Manufacturing, [27] R. J. Williams, “Simple statistical gradient-following algorithms for\nvol.78,p.102412,2022. connectionist reinforcement learning,” Machine learning, vol. 8,no. 3,\n[6] W. Ren, Y. Yan, Y. Hu, and Y. Guan, “Joint optimisation fordynamic pp.229–256, 1992.\nflexible job-shop scheduling problem with transportation time and [28] L. Meng, W. Cheng, B. Zhang, W. Zou, W. Fang, and P. Duan, “An\nresource constraints,” International Journal of Production Research, improvedgeneticalgorithmforsolvingthemulti-AGVflexiblejobshop\nvol.60,no.18,pp.5675–5696,2022. scheduling problem,”Sensors,vol.23,no.8,p.3815,2023. [7] W. Song, X. Chen, Q. Li, and Z. Cao, “Flexible job-shop scheduling [29] B.-A. Han and J.-J. Yang, “Research on adaptive job shop scheduling\nvia graph neural network and deep reinforcement learning,” IEEE problems based on dueling double DQN,” IEEE Access, vol. 8, pp. Transactions on Industrial Informatics, vol. 19, no. 2, pp.",
+      "size": 973,
+      "sentences": 12
+    },
+    {
+      "id": 88,
+      "content": "scheduling\nvia graph neural network and deep reinforcement learning,” IEEE problems based on dueling double DQN,” IEEE Access, vol. 8, pp. Transactions on Industrial Informatics, vol. 19, no. 2, pp. 1600–1610, 186474–186495,2020. 2022. [8] Y.-D.Kwon,J.Choo,I.Yoon,M.Park,D.Park,andY.Gwon,“Matrix\nencodingnetworks forneuralcombinatorial optimization,” Advances in\nNeuralInformation ProcessingSystems,vol.34,pp.5138–5149, 2021. [9] S. Lee, J. Kim, G. Wi, Y. Won, Y. Eun, and K.-J. Park, “Deep\nreinforcementlearning-drivenschedulinginmultijobseriallines:Acase\nstudy in automotive parts assembly,” IEEE Transactions on Industrial\nInformatics, 2023,doi:10.1109/TII.2023.3292538. [10] S.Mayer,T.Classen,andC.Endisch,“Modularproductioncontrolusing\ndeepreinforcement learning: proximal policy optimization,” Journal of\nIntelligent Manufacturing, vol.32,no.8,pp.2335–2351, 2021.",
+      "size": 869,
+      "sentences": 12
+    },
+    {
+      "id": 89,
+      "content": "38. [10] S.Mayer,T.Classen,andC.Endisch,“Modularproductioncontrolusing\ndeepreinforcement learning: proximal policy optimization,” Journal of\nIntelligent Manufacturing, vol.32,no.8,pp.2335–2351, 2021. [11] S. Manchanda, S. Michel, D. Drakulic, and J.-M. Andreoli, “On\nthe generalization of neural combinatorial optimization heuristics,” in\nMachine Learning and Knowledge Discovery in Databases: European\nConference, ECML PKDD 2022, Grenoble, France, September 19–23,\n2022,Proceedings, PartV,2023,pp.426–442. [12] Y. Li, W. Gu, M. Yuan, and Y. Tang, “Real-time data-driven dynamic\nschedulingforflexiblejobshopwithinsufficienttransportationresources\nusinghybriddeepqnetwork,”RoboticsandComputer-IntegratedMan-\nufacturing, vol.74,p.102283,2022.",
+      "size": 740,
+      "sentences": 4
+    },
+    {
+      "id": 90,
+      "content": "Tang, “Real-time data-driven dynamic\nschedulingforflexiblejobshopwithinsufficienttransportationresources\nusinghybriddeepqnetwork,”RoboticsandComputer-IntegratedMan-\nufacturing, vol.74,p.102283,2022. [13] J.Yan,Z.Liu,T.Zhang,andY.Zhang,“Autonomousdecision-making\nmethodoftransportation processforflexiblejobshopschedulingprob-\nlembasedonreinforcementlearning,”in2021InternationalConference\non Machine Learning and Intelligent Systems Engineering (MLISE),\n2021,pp.234–238. [14] Y. Zhao, Y. Wang, Y. Tan, J. Zhang, and H. Yu, “Dynamic jobshop\nscheduling algorithm based on deep q network,” IEEE Access, vol. 9,\npp.122995–123011,2021. [15] K. Lei, P. Guo, W. Zhao, Y. Wang, L. Qian, X. Meng, and L. Tang,\n“Amulti-actiondeepreinforcementlearningframeworkforflexiblejob-\nshopscheduling problem,” ExpertSystems with Applications, vol.205,\np.117796,2022.",
+      "size": 846,
+      "sentences": 5
+    },
+    {
+      "id": 91,
+      "content": "Guo, W. Zhao, Y. Wang, L. Qian, X. Meng, and L. Tang,\n“Amulti-actiondeepreinforcementlearningframeworkforflexiblejob-\nshopscheduling problem,” ExpertSystems with Applications, vol.205,\np.117796,2022. [16] C.Zhang,W.Song,Z.Cao,J.Zhang,P.S.Tan,andX.Chi,“Learning\nto dispatch for job shop scheduling via deep reinforcement learning,”\nAdvancesinNeuralInformationProcessingSystems,vol.33,pp.1621–\n1632,2020. [17] S.M.HomayouniandD.B.Fontes,“Productionandtransportschedul-\ning in flexible job shop manufacturing systems,” Journal of Global\nOptimization, vol.79,no.2,pp.463–502, 2021. [18] L.Meng,C.Zhang,Y.Ren,B.Zhang,andC.Lv,“Mixed-integerlinear\nprogrammingandconstraintprogrammingformulationsforsolvingdis-\ntributedflexiblejobshopschedulingproblem,”Computers&Industrial\nEngineering, vol.142,p.106347,2020.",
+      "size": 801,
+      "sentences": 4
+    },
+    {
+      "id": 92,
+      "content": "n,B.Zhang,andC.Lv,“Mixed-integerlinear\nprogrammingandconstraintprogrammingformulationsforsolvingdis-\ntributedflexiblejobshopschedulingproblem,”Computers&Industrial\nEngineering, vol.142,p.106347,2020. [19] M. Dai, D. Tang, A. Giret, and M. A. Salido, “Multi-objective opti-\nmizationforenergy-efficient flexiblejobshopschedulingproblemwith\ntransportationconstraints,”RoboticsandComputer-IntegratedManufac-\nturing,vol.59,pp.143–157, 2019. [20] S.Zhang,X.Li,B.Zhang,andS.Wang,“Multi-objective optimisation\ninflexibleassemblyjobshopscheduling usingadistributedantcolony\nsystem,” European Journal of Operational Research, vol. 283, no. 2,\npp.441–460, 2020. [21] Q.Cappart,D.Che´telat,E.Khalil,A.Lodi,C.Morris,andP.Velicˇkovic´,\n“Combinatorialoptimizationandreasoningwithgraphneuralnetworks,”\narXivpreprintarXiv:2102.09544, 2021. [22] P.Brandimarte, “Routingandschedulinginaflexiblejobshopbytabu\nsearch,” Annals of Operations research, vol. 41, no. 3, pp. 157–183,\n1993.",
+      "size": 963,
+      "sentences": 10
+    },
+    {
+      "id": 93,
+      "content": "graphneuralnetworks,”\narXivpreprintarXiv:2102.09544, 2021. [22] P.Brandimarte, “Routingandschedulinginaflexiblejobshopbytabu\nsearch,” Annals of Operations research, vol. 41, no. 3, pp. 157–183,\n1993. [23] W.Kool,H.VanHoof,andM.Welling,“Attention,learntosolverouting\nproblems!”arXivpreprintarXiv:1803.08475, 2018. [24] K. Huang and M. Zitnik, “Graph meta learning via local subgraphs,”\nAdvances inneuralinformation processing systems,vol.33,pp.5862–\n5874,2020. [25] D.Ulyanov,A.Vedaldi,andV.Lempitsky,“Instancenormalization:The\nmissingingredientforfaststylization,”arXivpreprintarXiv:1607.08022,\n2016.",
+      "size": 600,
+      "sentences": 8
+    }
+  ]
+}

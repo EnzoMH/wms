@@ -1,0 +1,380 @@
+{
+  "source": "ArXiv",
+  "filename": "047_Fast_Autonomous_Flight_in_Warehouses_for_Inventory.pdf",
+  "total_chars": 43165,
+  "total_chunks": 62,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "=== 페이지 1 ===\nIEEEROBOTICSANDAUTOMATIONLETTERS.PREPRINTVERSION.ACCEPTEDJUNE,2018 1\nFast Autonomous Flight in Warehouses for\nInventory Applications\nMarius Beul, David Droeschel, Matthias Nieuwenhuisen, Jan Quenzel, Sebastian Houben, and Sven Behnke\nAbstract—The past years have shown a remarkable growth\nin use-cases for micro aerial vehicles (MAVs). Conceivable in-\ndoor applications require highly robust environment perception,\nfast reaction to changing situations, and stable navigation, but\nreliable sources of absolute positioning like GNSS or compass\nmeasurements are unavailable during indoor flights. We present a high-performance autonomous inventory MAV\nfor operation inside warehouses. The MAV navigates along\nwarehouse aisles and detects the placed stock in the shelves\nalongside its path with a multimodal sensor setup containing an\nRFID reader and two high-resolution cameras.",
+      "size": 890,
+      "sentences": 4
+    },
+    {
+      "id": 2,
+      "content": "uses. The MAV navigates along\nwarehouse aisles and detects the placed stock in the shelves\nalongside its path with a multimodal sensor setup containing an\nRFID reader and two high-resolution cameras. We describe in\ndetailtheSLAMpipelinebasedona3Dlidar,thesetupforstock\nrecognition, the mission planning and trajectory generation, as\nwell as a low-level routine for avoidance of dynamical or previ-\nously unobserved obstacles. Experiments were performed in an\noperativewarehouseofalogisticsprovider,inwhichanexternal Fig. 1. Our inventory system performs a fully autonomous inspection\nwarehouse management system provided the MAV with high- of a warehouse. The main challenges are the fast navigation in narrow\npassagesclosetostructuresandthelocalizationinalargeself-similarindoor\nlevel inspection missions that are executed fully autonomously. environmentwithdistantwalls. and map the stored items.",
+      "size": 898,
+      "sentences": 9
+    },
+    {
+      "id": 3,
+      "content": "in narrow\npassagesclosetostructuresandthelocalizationinalargeself-similarindoor\nlevel inspection missions that are executed fully autonomously. environmentwithdistantwalls. and map the stored items. In this way, it is possible to keep\nIndex Terms—Aerial Systems: Applications; Aerial Systems:\nPerception and Autonomy; Motion and Path Planning; an always-up-to-date inventory record of the contents within\nthe warehouse. Current commercial systems [2], [3] for this\ntask merely deploy a scanner on the platform and perform a I. INTRODUCTION\npiloted flight in order to read tags on the goods. IN the last years, many novel applications for flying robots\nAutonomous maneuvering inside such a building is highly\nemerged,enabledbytwomainfactors:i)manufacturersde-\nchallengingasmostofthespaceisoccupiedwithhighshelves\nveloped affordable and capable micro aerial vehicles (MAVs)\nfilled with stocked goods as shown in Fig. 1.",
+      "size": 917,
+      "sentences": 8
+    },
+    {
+      "id": 4,
+      "content": "abledbytwomainfactors:i)manufacturersde-\nchallengingasmostofthespaceisoccupiedwithhighshelves\nveloped affordable and capable micro aerial vehicles (MAVs)\nfilled with stocked goods as shown in Fig. 1. This leaves only\nfor hobby, recreation and professional usage that do not\nsmall aisles for navigation which might also be obstructed by\nrequire extensive flight training; ii) recent advances in robotic\nother objects like forklifts. Additionally, the shelf rows lack\nresearch led to efficient methods for environment perception\ndistinctivegeometricfeaturesandarehighlyself-similarwhich\nand safe navigation, enabling various applications that can\nmakes precise self-localization difficult. On the other hand,\nonly be performed autonomously. This includes operations at\nthesenarrowstructuresareembeddedinlargehallswithstable,\nhigh velocities and close to structures. Both conditions are\nbut far-away localization aids like walls. This requires real-\nprohibitive for safe operation by a human pilot.",
+      "size": 995,
+      "sentences": 8
+    },
+    {
+      "id": 5,
+      "content": "dedinlargehallswithstable,\nhigh velocities and close to structures. Both conditions are\nbut far-away localization aids like walls. This requires real-\nprohibitive for safe operation by a human pilot. One driver\ntimelocalizationwithlong-distancesensorsinlargemapswith\nfor developing such systems is also the DARPA-formulated\nmany structures. goalofflyingfastandautonomouslyinclutteredenvironments\nWe present our self-localization and mapping approach\nwithout GPS and external sensing or control in their Fast\nbasedona3Dlidar,whichisabletohandlethesechallenging\nLightweight Autonomy Program (FLA) [1]. situations robustly. The lidar is also the basis of a low-level\nWhile in most current applications, MAVs maintain a safe\nobstacle avoidance mechanism.",
+      "size": 750,
+      "sentences": 7
+    },
+    {
+      "id": 6,
+      "content": "llenging\nLightweight Autonomy Program (FLA) [1]. situations robustly. The lidar is also the basis of a low-level\nWhile in most current applications, MAVs maintain a safe\nobstacle avoidance mechanism. In addition, the robot carries\ndistance from the object to inspect or follow; many future\na sensor setup to identify the stocked material by means of\napplications require the MAV to operate close to obstacles\nfiducialmarkersandRFIDtags.Theflightmissionisprovided\nor even in restricted indoor spaces. As an example, in this\nby a warehouse management system (WMS) as a sequence\npaper, we consider the use case of automatic inventory in a\nof storage panels that have to be inspected. The mission is\nwarehouse. It requires the MAV to quickly detect, identify,\nplanned in a semantic, yet metric, map of the warehouse that\ncontains the approximate placing of all the shelf rows and the\nManuscriptreceived:February23,2018;Revised:May17,2018;Accepted:\nJune6,2018.",
+      "size": 955,
+      "sentences": 7
+    },
+    {
+      "id": 7,
+      "content": "planned in a semantic, yet metric, map of the warehouse that\ncontains the approximate placing of all the shelf rows and the\nManuscriptreceived:February23,2018;Revised:May17,2018;Accepted:\nJune6,2018. numberandrelativepositionofthestoragepanelswithin.The\nThis paper was recommended for publication by Editor Jonathan Roberts laser-based map is aligned with this representation in order to\nuponevaluationoftheAssociateEditorandReviewers’comments. define the inspection poses that the robot consecutively visits\nThisworkwassupportedbytheGermanBundesministeriumfürWirtschaft\nundEnergieintheAutonomicsforIndustry4.0projectInventAIRy,andgrants during its flight. BE2556/7-2andBE2556/8-2oftheGermanResearchFoundation(DFG). Experiments are performed in a warehouse of a logistics\nTheauthorsarewiththeAutonomousIntelligentSystemsGroup,University\nprovider containing narrow aisles between shelves and larger\nofBonn,Germanymbeul@ais.uni-bonn.de\nDigitalObjectIdentifier(DOI):seetopofthispage. open areas.",
+      "size": 992,
+      "sentences": 6
+    },
+    {
+      "id": 8,
+      "content": "utonomousIntelligentSystemsGroup,University\nprovider containing narrow aisles between shelves and larger\nofBonn,Germanymbeul@ais.uni-bonn.de\nDigitalObjectIdentifier(DOI):seetopofthispage. open areas. We mapped several shelf rows and performed\n8102\npeS\n81\n]OR.sc[\n1v82660.9081:viXra\n=== 페이지 2 ===\n2 IEEEROBOTICSANDAUTOMATIONLETTERS.PREPRINTVERSION.ACCEPTEDJUNE,2018\nComputer\nRFIDReader\nCamera\nLidar\nLandingFeet\nFig. 2. Design of our MAV equipped with a Velodyne Puck LITE, fast\nonboard computer, two synchronized global shutter color cameras, and an\nRFIDreader.Thelandingfeetareretractabletoallowfortrue360°perception. autonomous inventory missions including the transition be-\ntweenrowsandtheavoidanceofstaticobstacles.Furthermore,\nwe demonstrated the reactive avoidance of dynamic obstacles\napproaching the MAV. We discuss guidelines for the develop-\nment of future systems for autonomous indoor operation and\ndraw prospectsfor the futureof autonomousinventory robots.",
+      "size": 969,
+      "sentences": 7
+    },
+    {
+      "id": 9,
+      "content": "of dynamic obstacles\napproaching the MAV. We discuss guidelines for the develop-\nment of future systems for autonomous indoor operation and\ndraw prospectsfor the futureof autonomousinventory robots. To demonstrate the robustness of our localization and control\nat high velocities, not reachable in our indoor environments\ndue to the required acceleration distance, we further evaluate\nour system outdoors with flights reaching velocities over\n28km/h without GNSS feedback. In our integrated system, we employ and extend methods\nbased on our own previous work: The SLAM system is\ndetailed in [4] and [5]. Our obstacle avoidance extends [6]\nand the mechanics of our model predictive controller (MPC)\nare described in [7]. Our main contributions are\n• robust self-localization solely based on an onboard lidar\nat high velocities up to 7.8m/s (Sec. IV),\n• fast fully autonomous navigation and control, including\navoidance of static and dynamic obstacles in indoor and\noutdoor environments (Sec.",
+      "size": 990,
+      "sentences": 7
+    },
+    {
+      "id": 10,
+      "content": "n onboard lidar\nat high velocities up to 7.8m/s (Sec. IV),\n• fast fully autonomous navigation and control, including\navoidance of static and dynamic obstacles in indoor and\noutdoor environments (Sec. V),\n• an integrated autonomous robot system for aerial stock-\ntaking with multimodal tag detection, evaluated in an\noperative warehouse (Sec. VI). II. RELATEDWORK\nToday, fast MAV flight without external sensing is mostly\nvision-based. Recently, Falanga et al. [8] presented an MAV\nflying with 3m/s through narrow gaps. This requires precise\nrelative localization and navigation. We focus on fast navi-\ngation in allocentric maps with reliable obstacle avoidance,\nwhich currently is not achievable by using cameras alone. Shen et al.",
+      "size": 732,
+      "sentences": 11
+    },
+    {
+      "id": 11,
+      "content": "precise\nrelative localization and navigation. We focus on fast navi-\ngation in allocentric maps with reliable obstacle avoidance,\nwhich currently is not achievable by using cameras alone. Shen et al. [9] present an MAV that is capable of au-\ntonomous vision-based flight with up to 4m/s on a straight\nline, 2m/s on a figure eight, and 1.5m/s in an indoor\nenvironment.Althoughthesystemisrelativelyfast,theauthors\nreport significant drift, induced by solely relying on cameras\nfor state estimation. Another vision-based, lightweight MAV system has been\npresentedbyBurrietal. [10].Theirworkfocusesonindustrial\nboiler inspection with agile flight in industrial environments. noitpecreP\nnoitcA\nRFIDReader D R e F t I e D ct T i a o g n Maps\nSemantic Grid Surfel Localization Lidar\nCameras D A e p t r e il c T t a io g n\nWMS P M la is n s n io in n g Pla P n a n th ing A O vo b i s d t a a n cl c e e MPC M600\nFig.3.",
+      "size": 912,
+      "sentences": 7
+    },
+    {
+      "id": 12,
+      "content": "D ct T i a o g n Maps\nSemantic Grid Surfel Localization Lidar\nCameras D A e p t r e il c T t a io g n\nWMS P M la is n s n io in n g Pla P n a n th ing A O vo b i s d t a a n cl c e e MPC M600\nFig.3. Systemoverview.Inputsaredepictedingreenandsoftwarecompo-\nnentsinblue.Anexternalwarehousemanagementsystem(WMS)providesan\nunorderedlistofwaypointsoftobeinspectedgoodstothemissionplanning. ControlcommandsaresenttotheSDKoftheDJIMatrice600(red). Florence et al. [11] use a combination of vision and a\n2D laser scanner to avoid obstacles at high velocities. Their\nsystem flies in cluttered unknown environments with large\nstateuncertainties.Forourapplication,werelyonprecise,but\nstillfast,allocentriclocalizationandassumethatanallocentric\nmap contains the major, complex obstacles. Our targeted scenario is particularly adverse for the use of\nvisual perception.",
+      "size": 854,
+      "sentences": 7
+    },
+    {
+      "id": 13,
+      "content": "elyonprecise,but\nstillfast,allocentriclocalizationandassumethatanallocentric\nmap contains the major, complex obstacles. Our targeted scenario is particularly adverse for the use of\nvisual perception. On one hand, panels and shelf rows carry\nhighly similar and repetitive visual cues, which preclude any\nformofplacerecognition.Ontheotherhand,localgeometryis\nalso highly self-similar and symmetric. Hence, we solely rely\non high-frequency 3D laser scans for obstacle perception and\nstate estimation. Its large field-of-view and long measurement\nrangeallowforresolvinglocalsimilaritiesbyusinglarge-scale\nstructures for localization. Ma et al. [12] addressed automatic inventory with a\nlightweight Parrot drone. Their RFly system relays the RFID\nsignal to a reader and is able to triangulate the location of\nthe tag with a reported accuracy of below 20cm. However, in\nordertoself-localizetherobot,theyrelyonanexternalmotion\ncapturing setup, which limits the practical feasibility.",
+      "size": 976,
+      "sentences": 9
+    },
+    {
+      "id": 14,
+      "content": "riangulate the location of\nthe tag with a reported accuracy of below 20cm. However, in\nordertoself-localizetherobot,theyrelyonanexternalmotion\ncapturing setup, which limits the practical feasibility. Similar to our system, Ortiz et al. [13] perform inspec-\ntion in narrow spaces. They developed a quadrotor MAV\nfor autonomous vessel inspection. A combination of laser\nlocalization and visual odometry yields a 2D localization ap-\nproach decoupled from the height measurements. Our system\nperforms SLAM with 6D pose estimation based on a high-\nperformance 3D lidar. An early version of our inventory MAV [14] relied on a\ncombination of two rotating 2D lidars for a low frequency\nlocalization and mapping with visual odometry performed\nwith three pairs of wide-angle stereo cameras. Although the\nsystem proved itself robust, the setup proposed in this paper\nonly relies on a single 3D lidar as primary sensor and,\nhence, significantly reduces the overall system complexity.",
+      "size": 971,
+      "sentences": 9
+    },
+    {
+      "id": 15,
+      "content": "cameras. Although the\nsystem proved itself robust, the setup proposed in this paper\nonly relies on a single 3D lidar as primary sensor and,\nhence, significantly reduces the overall system complexity. Furthermore, the increased frequency of 360° scans obviates\ntherequirementforadditionalvisualodometry.Toaccountfor\nthenarrowerverticalfieldofviewintheproposedsystem,our\npath planning optionally limits the ascension and descension\nangle. III. SYSTEMSETUP\nOurMAV,showninFig.2,isbasedontheDJIMatrice600\nplatform with a diameter of approximately 170cm. It is\nequippedwithalightweight,yetpowerful,IntelNUC6i7KYK\nonboard PC with an Intel Core i7-6770HQ quadcore CPU\nrunning at 2.6/3.5GHz and 32GB of RAM. As primary\n[표 데이터 감지됨]\n\n=== 페이지 3 ===\nBEULetal. :FASTAUTONOMOUSFLIGHTINWAREHOUSES 3\nFig. 4. 3D map from the initial manual flight. The top-down view (right) shows the dimensions of the acquired map of the 100×60m warehouse.",
+      "size": 922,
+      "sentences": 11
+    },
+    {
+      "id": 16,
+      "content": "=== 페이지 3 ===\nBEULetal. :FASTAUTONOMOUSFLIGHTINWAREHOUSES 3\nFig. 4. 3D map from the initial manual flight. The top-down view (right) shows the dimensions of the acquired map of the 100×60m warehouse. The\ncameraperspectiveishighlightedingreen.Thewarehousecontainstight,self-repetitive,andclutteredstructureslikeshelvesandstock,andlarger,far-away\nstructureslikewalls.Forrobustlocalization,theMAVhastoemployamapofthestructureofthelargebuilding. environmentperceptionsensor,aVelodynePuckLITElidaris inalocalframeandprovidesadenseaggregationofmeasure-\ndeployed.Itfeaturesalowweightof590gandyields300,000 ments in the robot’s vicinity. range measurements per second in 16 horizontal scan lines at We construct an allocentric pose graph by aligning local\na vertical angle of 30°. Its maximum range is 100m.",
+      "size": 799,
+      "sentences": 9
+    },
+    {
+      "id": 17,
+      "content": "ents in the robot’s vicinity. range measurements per second in 16 horizontal scan lines at We construct an allocentric pose graph by aligning local\na vertical angle of 30°. Its maximum range is 100m. multiresolution maps from different view poses which allows\nInordertoperceivevisualtagsinnearbyshelfpanelsduring therobottolocalizeitselfinanallocentricframe.Hence,local\nflight, the MAV is equipped with two synchronized global multiresolutionmapsfromdifferentviewposesmodelnodesin\nshutterPointGreyBlackfly-SU3-51S5C-Ccolorcameraswith agraph G =(V,E) thatareconnected byedges.Edgesmodel\n5.0MP.TheComputarM0814MP2lensfeaturesanapexangle spatialconstraintsbetweennodesandresultfromaligningtwo\nof 56.3×43.7°. Each camera captures 3 frames per second. local multiresolution maps by surfel-based registration.",
+      "size": 803,
+      "sentences": 6
+    },
+    {
+      "id": 18,
+      "content": "0814MP2lensfeaturesanapexangle spatialconstraintsbetweennodesandresultfromaligningtwo\nof 56.3×43.7°. Each camera captures 3 frames per second. local multiresolution maps by surfel-based registration. The\nFor detection of RFID tags, the MAV is also equipped with registration result xj i between a new node v i and the previous\na ThingMagic M6e RFID reader with a SkyeTek SP-AN-04- node v j constitutes an edge e ij ∈E. UF-BB6LP antenna. Additionally, the current local map is registered towards a\nThelowweightofthecomponents(11.2kgtake-offweight) reference node in order to connect the current pose to the\nand a battery capacity of 600Wh, yields a flight time of global pose graph and enable a straightforward optimization. approximately 20min which allows to capture 1km of shelf. The reference node is the local map that is closest to the\nSince the batteries are hot-swappable, continuous operation current MAV pose.",
+      "size": 918,
+      "sentences": 8
+    },
+    {
+      "id": 19,
+      "content": "ion. approximately 20min which allows to capture 1km of shelf. The reference node is the local map that is closest to the\nSince the batteries are hot-swappable, continuous operation current MAV pose. If the robot moved sufficiently far, we\ncan be performed with only minimal interruptions. extend the pose graph by the current local map. Furthermore, we include edges between the newly added\nThe system uses the robot operating system (ROS) as\nlocal map and close-by local maps to obtain loop closure if\nmiddlewareonboththeMAVandanadditionalgroundcontrol\nthe robot revisits previously mapped areas. Hence, we check\nstation. We show an overview of the system in Fig. 3.\nfor one new edge between the current reference v and other\nref\nnodes v . We determine a probability\ncmp\nIV. ENVIRONMENTPERCEPTION\np (v )=N\n(cid:0)\nd(x ,x\n);0,σ2(cid:1)\nchk cmp ref cmp d\nA.",
+      "size": 857,
+      "sentences": 11
+    },
+    {
+      "id": 20,
+      "content": "in Fig. 3.\nfor one new edge between the current reference v and other\nref\nnodes v . We determine a probability\ncmp\nIV. ENVIRONMENTPERCEPTION\np (v )=N\n(cid:0)\nd(x ,x\n);0,σ2(cid:1)\nchk cmp ref cmp d\nA. 3D Mapping\nthat depends on the linear distance d(x ,x ) between the\nref cmp\nTo localize the MAV within the environment, we build an view poses x and x . According to p (v), we draw a\nref cmp chk\nallocentric map of the warehouse from measurements of the node v from the graph and determine a spatial constraint\nlidar. Fig. 4 shows parts of the warehouse and the initial between the nodes using our surfel registration method. map.WeincorporatemeasurementsoftheIMUtoaccountfor From the spatial constraints, we infer the probability of the\nmotion of the sensor during acquisition. Using an extended trajectory estimate given all relative pose observations\nversion of our lidar-based SLAM method described in [4],\n(cid:89)\np(V |E)∝ p(xj |x ,x ).",
+      "size": 941,
+      "sentences": 10
+    },
+    {
+      "id": 21,
+      "content": "n of the sensor during acquisition. Using an extended trajectory estimate given all relative pose observations\nversion of our lidar-based SLAM method described in [4],\n(cid:89)\np(V |E)∝ p(xj |x ,x ). we first aggregate 3D scans in a local multiresolution grid i i j\nmap. Local multiresolution maps correspond to the sensor eij∈E\nmeasurement characteristics by having a high resolution close Each spatial constraint is a normally distributed estimate\nto the sensor and a coarser resolution farther away. For each with mean and covariance determined by our probabilistic\ngrid cell, a local surface element (surfel) is estimated which registrationmethod.Thisposegraphoptimizationisefficiently\nsummarizestheaggregatedmeasurementsinthecell’svolume solvedusingg2o[15],yieldingmaximumlikelihoodestimates\nand captures the statistics of the points. We recover the of the view poses x .",
+      "size": 876,
+      "sentences": 6
+    },
+    {
+      "id": 22,
+      "content": "sefficiently\nsummarizestheaggregatedmeasurementsinthecell’svolume solvedusingg2o[15],yieldingmaximumlikelihoodestimates\nand captures the statistics of the points. We recover the of the view poses x . i\ntransformation between a newly acquired scan and the local We extend our mapping approach presented in [4] to allow\nmap by matching surfels [5]. Compared to point-based regis- for efficient processing of Velodyne scans. In contrast to\ntration, considerably less elements are taken into account for the approach presented in our previous work, we do not\nregistration, allowing for efficient registration of the extensive aggregate multiple 3D scans using odometry information but\namount of measurements from the sensor. register single 3D scans from the lidar sensor to the local\nRegistered 3D scans are added to the local map, replacing multiresolutionmap—onlyusingorientationinformationfrom\nolder measurements.",
+      "size": 913,
+      "sentences": 6
+    },
+    {
+      "id": 23,
+      "content": "ensor. register single 3D scans from the lidar sensor to the local\nRegistered 3D scans are added to the local map, replacing multiresolutionmap—onlyusingorientationinformationfrom\nolder measurements. Local mapping allows to track the robot the IMU and barometric height as prior for registration. === 페이지 4 ===\n4 IEEEROBOTICSANDAUTOMATIONLETTERS.PREPRINTVERSION.ACCEPTEDJUNE,2018\nFig. 5. Left: Registration of a semantic map (coordinates of storage units,\ngeometricshelfmodeldepictedinred)witha3Dlasermap.Colorencodes\nheight.Right:Generatedinventorymission(depictedbythecoordinateaxes)\nintheobstaclegridmap. Fig. 6. Planning under visibility constraints. Left: Without visibility con-\nstraints the shortest path (yellow) from a start (green) to a target position\nB. Lidar-based Localization\n(red) below solely descents in place.",
+      "size": 828,
+      "sentences": 10
+    },
+    {
+      "id": 24,
+      "content": "r visibility constraints. Left: Without visibility con-\nstraints the shortest path (yellow) from a start (green) to a target position\nB. Lidar-based Localization\n(red) below solely descents in place. Right: With visibility constraints, the\nMAV has to move within the field of view of the lidar and consequently\nPrior to autonomous operation, we acquire an initial map\nfollowsalongerdescentpathwithanangleof15°. fromamanualflight.WeextendourSLAMsystemtoserialize\nthe graph-based structure of the allocentric map to gain\nnext layer (allocentric path planning) is run in the order of\npersistent storage of the so-far acquired pose graph. seconds, while the lowest layer (model predictive trajectory\nFor autonomous operation during mission, the mapping\nplanning) is executed every 20ms. system is initialized with the pose graph from the initial\nflight. By aligning the current local map to the pose graph,\nwe gain a localization pose with respect to the initial map A.",
+      "size": 965,
+      "sentences": 7
+    },
+    {
+      "id": 25,
+      "content": "uted every 20ms. system is initialized with the pose graph from the initial\nflight. By aligning the current local map to the pose graph,\nwe gain a localization pose with respect to the initial map A. Mission Planning\nand the warehouse model. Although the pose graph (and the\nFor the connection to a WMS, we developed a tool that\nassociated map) can be extended if the MAV traverses parts\naugments the laser-based maps described in Sec. IV with\noftheenvironmentthatwherenotcoveredbytheinitialflight,\nsemantic information. Fig. 5 shows the registration of the\nwechoosethecoveragevolumeoftheinitialflighttobelarger\nsemantic warehouse model with the laser-based map. After\nthantheMAV’sworkspaceintheexperimentssincethisisthe\na coarse manual alignment, we use the Iterative Closest Point\nenvisagedoperatingmodeduringstandardinventorymissions. Algorithm(ICP) toautomaticallyregister bothmaps.",
+      "size": 886,
+      "sentences": 10
+    },
+    {
+      "id": 26,
+      "content": "aceintheexperimentssincethisisthe\na coarse manual alignment, we use the Iterative Closest Point\nenvisagedoperatingmodeduringstandardinventorymissions. Algorithm(ICP) toautomaticallyregister bothmaps. Thisen-\nWhileexecutingthemission,welocalizetowardstheclosest\nablesustosemanticallydescribeaninventorymissionandau-\nlocal map in the graph by registering the current local map\ntomaticallyderiveshelfnumbersandindicesofstorageplaces. withit.Ourapproachallowstoprocessthelidarscansinreal-\nTheWMScanspecifymissionscoveringwholeshelves—with\ntime. a coverage pattern shown in Fig. 5—or single storage units\nto inspect. Here, all common strategies for manual inventory\nC. Tag Detection like e.g., sampling inventory with sequential probability ratio\ntest (SPRT) can be utilized. An ordered list of view poses\nWe perceive the position of stock in the warehouse by\nis then sent to the MAV onboard computer for execution.",
+      "size": 910,
+      "sentences": 8
+    },
+    {
+      "id": 27,
+      "content": "h sequential probability ratio\ntest (SPRT) can be utilized. An ordered list of view poses\nWe perceive the position of stock in the warehouse by\nis then sent to the MAV onboard computer for execution. means of visual fiducial markers (AprilTags) and RFID tags\nBeforeexecution,thislistissimplifiedtomergecollinearpath\nattached to storage boxes. Perceived RFID tags, the current\nsegments, e.g., a number of storage units on the same height,\nMAV position, signal strength, and direction of the detecting\nto achieve a smooth sweeping motion along the shelves. antenna are transmitted to the WMS for further processing,\ne.g., assigning stock to storage units. Regarding the fiducial\nmarkers, we use the implementation by Olson et al. [16] and B. Path Planning\ntransformthecamera-basedrelativetagposeintoanallocentric\nThe result of the mission planning is an ordered list of 4D-\nframeviatheknowncameraextrinsicsandtheestimatedpose\nposes (x,y,z,θ) in a discrete allocentric grid. We connect these\nof the MAV.",
+      "size": 1000,
+      "sentences": 9
+    },
+    {
+      "id": 28,
+      "content": "locentric\nThe result of the mission planning is an ordered list of 4D-\nframeviatheknowncameraextrinsicsandtheestimatedpose\nposes (x,y,z,θ) in a discrete allocentric grid. We connect these\nof the MAV. Likewise, these allocentric positions and the\nposes with an instance of A* planning and use the Ramer-\ncorresponding tag IDs are sent to the WMS for incorporation\nDouglas-Peucker algorithm to cull superfluous nodes. This is\ninto the warehouse model. We use the tag family 36h11 as\nnecessary to allow for the generation of longer and more\nwe experienced it to be very reliable. continuous trajectories by our controller, described below.",
+      "size": 636,
+      "sentences": 6
+    },
+    {
+      "id": 29,
+      "content": "house model. We use the tag family 36h11 as\nnecessary to allow for the generation of longer and more\nwe experienced it to be very reliable. continuous trajectories by our controller, described below. During mission execution, the path is frequently replanned to\nV. NAVIGATIONANDCONTROL\ncompensate for path deviations of the MAV, either by inaccu-\nAutonomous navigation is a key capability for automated rate command execution, external disturbances or avoidance\nstocktaking.Operatorassistancefunctions—oroptionallyfully ofobstacles.Replanningtakesplacewheneveratargetposeis\nautonomous operation—opens up the applicability of the sys- reached and the next pose from the mission plan is processed\ntem to a large group of end users who are not trained MAV or at least every 10s to correct deviations from the path.",
+      "size": 811,
+      "sentences": 4
+    },
+    {
+      "id": 30,
+      "content": "icability of the sys- reached and the next pose from the mission plan is processed\ntem to a large group of end users who are not trained MAV or at least every 10s to correct deviations from the path. pilots.Autonomygeneratesadirectinterfacebetweenlogistics Grid-based planning resembles the orthogonal structure of\npersonnel and the stocktaking system without the indirection warehouses if the aisles are parallel to the planning grid axes. ofaprofessionalpilot.Weimplementahierarchicalnavigation The planning grid and the model are, therefore, aligned after\nand control system that makes use of time scale separation the exploration flight. Our approach, in contrast to sampling-\nbetween the layers. On the top layer of our navigation stack, based planners, has the advantage to follow the shelf-fronts\nglobal mission planning is executed once per mission. The well, without much postprocessing and trajectory smoothing. === 페이지 5 ===\nBEULetal. :FASTAUTONOMOUSFLIGHTINWAREHOUSES 5\nFig.7.",
+      "size": 988,
+      "sentences": 8
+    },
+    {
+      "id": 31,
+      "content": "e shelf-fronts\nglobal mission planning is executed once per mission. The well, without much postprocessing and trajectory smoothing. === 페이지 5 ===\nBEULetal. :FASTAUTONOMOUSFLIGHTINWAREHOUSES 5\nFig.7. Reactiveobstacleavoidancewithartificialpotentialfields.Aperson\n(circledblueinthelasermap)approachestheMAV.TheMAVisrepelledby Critical Activeavoidance Passiveavoidance Distance\ntheartificialforces(redlines)anddodgestheobstacle.Greenlinesdepictthe distance sphereradius sphereradius toobstacle\ninfluenceofobstaclesinthepassiveavoidancedistance. In more generalized settings, the approach could benefit from\nany-angleplanning,e.g.,Theta*[17],whichwecanomithere. The onboard lidar does not cover a spherical field of\nview. To nevertheless allow for safe navigation in cluttered\nenvironments or in the presence of dynamic obstacles, we ex-\ntended our planner with visibility-constrained planning.",
+      "size": 891,
+      "sentences": 8
+    },
+    {
+      "id": 32,
+      "content": "a spherical field of\nview. To nevertheless allow for safe navigation in cluttered\nenvironments or in the presence of dynamic obstacles, we ex-\ntended our planner with visibility-constrained planning. With\nthis extension, the planned MAV movements are restricted to\ndirections in the field of view of the lidar, i.e., 15° below and\nabove the current horizontal plane. To this end, we employ a\ngrid with anisotropic voxels to reduce the ascent and descent\nangles from 45° in a grid with isotropic voxels to the opening\nangle of the sensor. The resulting voxels have a height of\ntan(15◦) ≈ 1 of the horizontal voxel size. Furthermore,\n4\nwe remove edges connecting cells directly on top of each\nother,disallowingascentsanddescentsinplace.Thedirection\nof flight—discretized to the eight possible transitions in the\nplane—isintroducedasanewplanningdimensiontopenalize\nchanges in the flight direction. Angles of up to 45° are not\npenalized.",
+      "size": 933,
+      "sentences": 7
+    },
+    {
+      "id": 33,
+      "content": "Thedirection\nof flight—discretized to the eight possible transitions in the\nplane—isintroducedasanewplanningdimensiontopenalize\nchanges in the flight direction. Angles of up to 45° are not\npenalized. Without this penalty, a zigzag motion to ascent\nor descent would be equal to larger straight glide paths in\npath costs, but would significantly slow down the MAV due\nto numerous stops to change direction. Fig. 6 illustrates the\nresulting plans with and without visibility constraints. C. Reactive Obstacle Avoidance\nWe use reactive obstacle avoidance as a low-level safety\nlayer complementing the deliberative path planning. For\nour application, reactive obstacle avoidance has two impor-\ntant properties—compared to fast local planning [18], or\noptimization-based approaches [19]. First, it has the ability\nto elude approaching dynamic obstacles, depicted in Fig. 7. This might include leaving a hover position or even moving\ninto the opposite direction of the commanded flight path.",
+      "size": 984,
+      "sentences": 10
+    },
+    {
+      "id": 34,
+      "content": "st, it has the ability\nto elude approaching dynamic obstacles, depicted in Fig. 7. This might include leaving a hover position or even moving\ninto the opposite direction of the commanded flight path. Second, a hazard minimizing solution will always be found\neven if the distance constraints are violated. Furthermore,\nreactive obstacle avoidance is computationally cheap and,\nconsequently, can be executed with the lidar frequency of\n10Hz. Our obstacle avoidance is based on [6] but directly\nmodifies the allocentric target waypoints from the global path\nplanner instead of velocity commands to adapt to the new\nlow-level trajectory controller. Wemodifiedthebasicalgorithmtofacilitatesmootherflight\nin narrow spaces by adding two spheres of influence around\ntheMAV,depictedinFig.8.Obstaclesinthepassiveavoidance\nhtgnertS\n1\nspush\nsreduce\nFig. 8. Reactive obstacle avoidance.",
+      "size": 873,
+      "sentences": 9
+    },
+    {
+      "id": 35,
+      "content": "facilitatesmootherflight\nin narrow spaces by adding two spheres of influence around\ntheMAV,depictedinFig.8.Obstaclesinthepassiveavoidance\nhtgnertS\n1\nspush\nsreduce\nFig. 8. Reactive obstacle avoidance. Top-Left: The MAV velocity setpoint\nvector vin is split into the projection towards an obstacle v obst and the\nremainder v free. If the MAV is not close to obstacles, the output velocity\nvout isequaltothesetpoint.Top-Middle:Whenanobstacleisinthepassive\navoidancesphere(dottedorange),vinisreducedbyv slow =−s reduce v obst. Top-Right: Obstacles in the active avoidance sphere (dotted red) induce an\nadditional repulsive force resulting in the pushing velocity v push directing\ntheMAVintofree-space.Forsimplicity,wedepictvelocityvectors,thepose\nmodificationvectorscoandfofollowstraightforward.Bottom:Scalingfactors\ninrelationtotheobstacledistance. sphere with radius d , cause a reduction of the MAV motion\np\ninto the direction of the obstacles.",
+      "size": 943,
+      "sentences": 7
+    },
+    {
+      "id": 36,
+      "content": "odificationvectorscoandfofollowstraightforward.Bottom:Scalingfactors\ninrelationtotheobstacledistance. sphere with radius d , cause a reduction of the MAV motion\np\ninto the direction of the obstacles. In the active avoidance\nsphere with radius d , obstacles exert artificial repulsive\na\nforces, increasing with proximity, that push the MAV away. By dividing the obstacle avoidance into these two phases, we\nachieve a stable equilibrium distance between obstacles and\nMAVregardlessoftheMAVcontrolinputswithoutinfluencing\nthe motion into orthogonal directions in the passive sphere—\ne.g., the MAV can follow an exploration pattern along a shelf\neven if the commanded pattern is too close to the shelf due\nto protruding goods. In the warehouse, we set d and d to\na p\nMAV radius plus 1m and 2m, respectively. For simplicity of notation, all further calculations are de-\npicted in an egocentric MAV frame to omit the localization\ntransform matrices.",
+      "size": 943,
+      "sentences": 6
+    },
+    {
+      "id": 37,
+      "content": "set d and d to\na p\nMAV radius plus 1m and 2m, respectively. For simplicity of notation, all further calculations are de-\npicted in an egocentric MAV frame to omit the localization\ntransform matrices. If both spheres are obstacle-free, we\nexecute the commands from the planning layer unaltered. Egocentric targets farther away than 1m are first normalized;\nshorter vectors are processed without prior normalization to\navoid a speed up of the MAV while approaching an obstacle. The new egocentric target position t is calculated as\nnew\nt =t −c s +f s . new orig o push o reduce\nHere, c is the projection of the current target t onto the o orig\ndirection of the obstacle, thus, the part of the command that\nsteers the MAV closer to the obstacle. The artificial force\ndirection f is a normalized vector pointing away from the o\nobstacle. The magnitudes of the slow down strength s push\nand the push back strength s —depicted in Fig.",
+      "size": 928,
+      "sentences": 8
+    },
+    {
+      "id": 38,
+      "content": "the obstacle. The artificial force\ndirection f is a normalized vector pointing away from the o\nobstacle. The magnitudes of the slow down strength s push\nand the push back strength s —depicted in Fig. 8—are reduce\ncalculated as\nd +d −d d −d\ns = p a ,s = a\npush d −d reduce d\np a a\nwith distance d to the obstacle. Both results are clipped to the\ninterval [0,1] afterwards. D. Model Predictive Control\nSince higher layers assume a straight connection between\nwaypoints (due to Ramer-Douglas-Peucker culling), flying on\n[표 데이터 감지됨]\n\n=== 페이지 6 ===\n6 IEEEROBOTICSANDAUTOMATIONLETTERS.PREPRINTVERSION.ACCEPTEDJUNE,2018\nFig. 9. The MAV continuously flies in a figure eight around pillars in a\nparking garage. All perception and computation is done onboard. Velocities Fig. 10. AprilTag detection. With two cameras directed to each side of\nexceeding1.7m/sinthevicinityofobstaclesrequirerobustmethodsforstate the aisle we detect AprilTags attached to the stock.",
+      "size": 952,
+      "sentences": 13
+    },
+    {
+      "id": 39,
+      "content": "ocities Fig. 10. AprilTag detection. With two cameras directed to each side of\nexceeding1.7m/sinthevicinityofobstaclesrequirerobustmethodsforstate the aisle we detect AprilTags attached to the stock. The clusters of colored\nestimationandcontrol.ThesizeoftheringrepresentstheactualMAVsize. markers show the estimated positions of the detected tags in a subsection\nThearrowdepictstheflightdirection. ofanaisleduringtwoconsecutiveflights.SeeFig.11forthecorresponding\ntrajectories.Detectionsfromthefirstflightaremarkedwithcircles;detections\nfromthesecondflightaremarkedwithtriangles.Differentcolorscorrespond\na straight trajectory is mandatory and overshoot is not per- todifferenttagIDs.Inthebottomrightcorner,adetectionofID14isshown. Onecanseethemotion-blurinducedbytherelativemotionbetweenAprilTag\nmissibledespitelargeturbulencescausedbynearbyobstacles. andMAV.WereportstatisticsinTab.I.",
+      "size": 886,
+      "sentences": 9
+    },
+    {
+      "id": 40,
+      "content": "hebottomrightcorner,adetectionofID14isshown. Onecanseethemotion-blurinducedbytherelativemotionbetweenAprilTag\nmissibledespitelargeturbulencescausedbynearbyobstacles. andMAV.WereportstatisticsinTab.I. Also inventory of large warehouses with multiple kilometers\nofshelfrequiresfastflighttoreducetheimpactontheregular\nmodel does not need (often abstract) parameters. In contrast\nlogisticprocesses.Wetacklethisproblembyemployingtime-\nto complex models, approaches like Mueller et al. [21] use a\noptimaltrajectorygenerationandonlinereplanningwith50Hz\nsimple motion model and are comparably fast. The generated\nfor low-level control. We use an extended version of the\ntrajectories however are not time-optimal. Simple PID-control\nmethod described in [7]. Planning is based on a simple\nis also not suitable, since overshoot is not permissible in\ndynamic model of the MAV with three-dimensional jerk j as\nthe close corridors.",
+      "size": 917,
+      "sentences": 10
+    },
+    {
+      "id": 41,
+      "content": "ntrol\nmethod described in [7]. Planning is based on a simple\nis also not suitable, since overshoot is not permissible in\ndynamic model of the MAV with three-dimensional jerk j as\nthe close corridors. Thus, the controller would have to be\nonlyinput.Themethodplanssmooth,time-optimaltrajectories\nparameterized very conservative which would result in slow\nfrom the current 9-dimensional allocentric MAV state\n  MAV movement. p p p\nx y z Please note that we use the same parameters for the con-\nx=v x v y v z troller as in [22] in which we employed the method on a\na a a\nx y z DJI Matrice 100 that weighs only a quarter of the MAV used\ntothecorresponding9-dimensionaltargetstatebyanalytically herewithacorrespondingboundingboxvolumeratioof1:12.\nsolving a system of 21 differential equations Thisshowstheindependenceofourapproachregardingmodel\n(cid:90) tn parameters. p =p + v dt,\nn n−1 n\ntn−1\n(cid:90) tn VI.",
+      "size": 908,
+      "sentences": 5
+    },
+    {
+      "id": 42,
+      "content": "ondingboundingboxvolumeratioof1:12.\nsolving a system of 21 differential equations Thisshowstheindependenceofourapproachregardingmodel\n(cid:90) tn parameters. p =p + v dt,\nn n−1 n\ntn−1\n(cid:90) tn VI. EVALUATION\nv =v + a dt, n={1;...;7}\nn n−1 n\ntn−1 We evaluate our system in indoor and outdoor scenarios,\n(cid:90) tn including an inventory mission in an active warehouse. A\na =a + j dt\nn n−1 n video showing autonomous mission execution and reactive\ntn−1 obstacle avoidance can be found on our website1. Here, we\nper axis (x,y,z). Generated trajectories consist of up to n=7 alsopublishrecordeddatasets,tools,andpartsofourpipeline. phases of constant jerk input, resulting in a bang-singular-\nFirst, we test the robustness of the localization and control\nbang trajectory. Individual axes are coupled by synchronizing\npipeline with an experiment that involves fast flight between\nthe total time of the entire trajectory.",
+      "size": 919,
+      "sentences": 8
+    },
+    {
+      "id": 43,
+      "content": "ss of the localization and control\nbang trajectory. Individual axes are coupled by synchronizing\npipeline with an experiment that involves fast flight between\nthe total time of the entire trajectory. The trajectories respect\nalternating waypoints in an obstacle free courtyard over a\nper-axis constraints on minimum and maximum velocity, ac-\ndistanceof25m.Thelocalizationinanallocentricmapofthe\nceleration and jerk. courtyard and state estimation of the MAV was solely based\nWith the ability to predict the target state, trajectories end on the onboard 3D lidar and the IMU; no GNSS feedback\nin an optimal interception point when the waypoint is non- wasused.Betweentheaccelerationanddecelerationphasesof\nstationary like shown in Fig. 9. Since our method is very fast, the flight, the MAV reached a maximum velocity of 7.8m/s,\nwe use it in closed loop and send smooth pitch θ, roll φ and measured by the onboard DJI GPS – considered as ground\nclimb rates v z to the DJI flight control. truth.",
+      "size": 992,
+      "sentences": 7
+    },
+    {
+      "id": 44,
+      "content": "hed a maximum velocity of 7.8m/s,\nwe use it in closed loop and send smooth pitch θ, roll φ and measured by the onboard DJI GPS – considered as ground\nclimb rates v z to the DJI flight control. truth. The laser localization was running at 20Hz to account\nWe assume the yaw to be decoupled from the translatory for the large velocities. It was able to robustly track the\naxesandusesimpleproportionalcontrolfortheyaw.Theyaw MAV pose during the whole flight. Despite strong wind, the\nrate setpoint Ψ˙ setp =K p ·(Ψ setp −Ψ) with proportional gain maximumdeviationfromthestraightlineconnectionbetween\nK p is sent to the MAV. both waypoints was only 49cm during all 11 alternations. In comparison to approaches that utilize a complex motion\nmodellikeKameletal. [20],ourapproachisveryfastandthe 1http://www.ais.uni-bonn.de/videos/IROS_2018_InventAIRy\n=== 페이지 7 ===\nBEULetal. :FASTAUTONOMOUSFLIGHTINWAREHOUSES 7\na) b)\nFig.11.",
+      "size": 917,
+      "sentences": 9
+    },
+    {
+      "id": 45,
+      "content": "a complex motion\nmodellikeKameletal. [20],ourapproachisveryfastandthe 1http://www.ais.uni-bonn.de/videos/IROS_2018_InventAIRy\n=== 페이지 7 ===\nBEULetal. :FASTAUTONOMOUSFLIGHTINWAREHOUSES 7\na) b)\nFig.11. Visualizationoftwoconsecutiveflightsinawarehouse.a)Sideview,b)Topview.Despiteflyingincloseproximitytoobstacles,theMAVreaches\nvelocitiesupto2.1m/s.Waypointsarepreciselyreachedwithoutovershoot.Itcanbeseenthattheflightbehaviorisrepeatableandthataislechangesare\npossible.Viewposesaremarkedwitharedcrossedring.ViapointsthatareinsertedbytheA*planneraremarkedwitharedring.Exceptforthemanual\nstart,thewholeflightwasfullyautonomous. The maximum overshoot recorded during the experiment was namicbehaviorofthesystem.Evenundertheassumptionthat\n1.2m.",
+      "size": 738,
+      "sentences": 5
+    },
+    {
+      "id": 46,
+      "content": "nneraremarkedwitharedring.Exceptforthemanual\nstart,thewholeflightwasfullyautonomous. The maximum overshoot recorded during the experiment was namicbehaviorofthesystem.Evenundertheassumptionthat\n1.2m. the MAV is able to perfectly track the trajectories generated\nInasecondexperiment,theMAVflewafigureeightaround by the MPC and without any perception- or communication\ntwo pillars in a garage to additionally test the influence of delay, an acceleration/deceleration distance of 12.1m is nec-\nturbulences close to structures and the ground. Due to the essary with a maximum velocity of 7.8m/s (with parameters\nhigh accelerations of approximately 0.85m/s2 in the curved a max =3.5m/s2,j max =4.0m/s3). segmentsofthetrajectory,themaximumvelocityintheseruns Furthermore, due to the artificial lighting in the warehouse,\nwas reduced to yield a feasible, collision-free trajectory.",
+      "size": 874,
+      "sentences": 5
+    },
+    {
+      "id": 47,
+      "content": ".5m/s2,j max =4.0m/s3). segmentsofthetrajectory,themaximumvelocityintheseruns Furthermore, due to the artificial lighting in the warehouse,\nwas reduced to yield a feasible, collision-free trajectory. Still, the camera exposure time had to be set to at least 4ms for\nthe MAV reached velocities up to 1.75m/s in this indoor acceptable image quality. The used AprilTags have an edge\nenvironment.ThelaserlocalizationtrackedtheMAVposewith length of 16cm that results in a patch size of 2×2cm. 10Hz and was able to keep the MAV localized in the map of Thus, the Nyquist frequency limits the relative velocity to\nthe garage at all times. Fig. 9 shows the resulting trajectory 10m/s under ideal conditions. This velocity, however, would\nin the map of the garage. It can be seen that our method require special signal reconstruction techniques to preprocess\nyields robust repeatability in four consecutive flights despite the image for the AprilTag detector. Also roll, pitch, and yaw\nturbulences.",
+      "size": 988,
+      "sentences": 10
+    },
+    {
+      "id": 48,
+      "content": "uire special signal reconstruction techniques to preprocess\nyields robust repeatability in four consecutive flights despite the image for the AprilTag detector. Also roll, pitch, and yaw\nturbulences. Nevertheless, it can be seen that the MAV spirals motionsuperimposethelinearMAVvelocityandgeneraterel-\nout of the curved segments as it cannot accurately track the ativemotionbetweentagandMAV.High-frequencyvibrations\nmoving waypoint. generatedbythepropellersprovokeadditionalblur.Therefore,\nInathirdexperiment,ourintegratedsystem,includinglaser- we conservatively constrained the linear velocity in favor of\nbasedlocalization,plannednavigation,obstacleavoidance,and robust detections in the warehouse experiment.",
+      "size": 712,
+      "sentences": 4
+    },
+    {
+      "id": 49,
+      "content": "integratedsystem,includinglaser- we conservatively constrained the linear velocity in favor of\nbasedlocalization,plannednavigation,obstacleavoidance,and robust detections in the warehouse experiment. acquisition of information about stock positions, was demon- Incontrasttothevisualdetectionpipeline,theRFIDreader\nstrated in a warehouse with a building area of 100×60m did not limit the inventory speed since it is able to read up to\nwith1.3kmshelf(approximately12000m2 storagefront).As 750tagspersecond.Wethrottledthespeedto20reads/second\ndescribed in Sec. IV-A, we built an initial laser-based SLAM which was enough for our experiments and allowed for a\nmapoftheenvironmentwithamanualflight,showninFig.4. higher detection range. Thismapisalignedwiththesemanticmapcontainingstorage Every view pose is reached with a mean deviation of\nunits from the WMS. For the demonstration of autonomous only 9.65cm respectively 5.78cm in both flights.",
+      "size": 939,
+      "sentences": 6
+    },
+    {
+      "id": 50,
+      "content": "alignedwiththesemanticmapcontainingstorage Every view pose is reached with a mean deviation of\nunits from the WMS. For the demonstration of autonomous only 9.65cm respectively 5.78cm in both flights. As no\ninventory, a mission containing the complete inventory of dynamic obstacles above the MAV were to be expected in\none shelf row and the inspection of a single storage unit in this demonstration, we neglected the planning with visibility\nanother row was specified in the WMS. The MAV executed constraints in favor of faster mission execution. thismissionautonomouslymultipletimeswhileavoidingstatic During both flights, AprilTags on the sides of the aisle and\nobstacles, e.g., the shelves and stock protuding from the RFID tags of the specified shelf row were captured and sent\nshelves. In Fig. 11 we visualize the trajectory of two con- to the WMS. Fig. 10 and Tab.",
+      "size": 870,
+      "sentences": 9
+    },
+    {
+      "id": 51,
+      "content": "es, e.g., the shelves and stock protuding from the RFID tags of the specified shelf row were captured and sent\nshelves. In Fig. 11 we visualize the trajectory of two con- to the WMS. Fig. 10 and Tab. I show the result of the two\nsecutiveflightsinthewarehouse.TheMAVreachesvelocities flights.ItcanbeseenthatexceptforTag6,and11,alltagsare\nup to 2.1m/s. Although faster flight is possible (as shown reliably detected (Tags 8 and 12 were not used). Our method\nin the previous experiments), we used the ability of our was unable to detect Tag 11 due to a shadow that partially\nMPC to limit the maximum velocity a) to account for the coveredthetagonadisadvantageouslypositionedstock.Tag6\nacceleration/deceleration distance needed by the MAV and b) wasnotattachedproperlyandwasflippedbyturbulentairfrom\nto reduce motion blur in the cameras (see Fig. 10): theMAV.Notasinglefalsepositivedetectionhappenedduring\nTheclosedloopdynamicsofMAVandMPCdictatethedy- the experiment.",
+      "size": 963,
+      "sentences": 9
+    },
+    {
+      "id": 52,
+      "content": "andwasflippedbyturbulentairfrom\nto reduce motion blur in the cameras (see Fig. 10): theMAV.Notasinglefalsepositivedetectionhappenedduring\nTheclosedloopdynamicsofMAVandMPCdictatethedy- the experiment. It can be seen that only minimal scattering\n[표 데이터 감지됨]\n\n=== 페이지 8 ===\n8 IEEEROBOTICSANDAUTOMATIONLETTERS.PREPRINTVERSION.ACCEPTEDJUNE,2018\nTABLEI toasystemthatissuitabletobedeployed,e.g.,inwarehouses\nSTATISTICSOFAPRILTAGDETECTIONSFORTWOFLIGHTS. for extensive stocktaking applications. We demonstrated the\nsystem robustness in multiple experiments where the only\nTag ID 0 1 2 3 4 5 7 9 10 13 14\nmanual interactions were the starting and landing phases. n 3 7 6 3 1 64 2 10 6 4 6\n1\nn 2 7 7 6 3 1 41 3 5 3 4 5 REFERENCES\nσ 10.4 3.2 4.7 2.7 - 4.7 - 3.3 4.2 3.3 3.9\n1 [1] DARPA,“FastLightweightAutonomy(FLA),”2015,solicitationnum-\nσ 2 3.9 4.3 5.0 3.4 - 3.8 3.3 3.5 2.1 2.8 4.8 berDARPA-BAA-15-16. |µ 1−2 |28.6 2.9 8.9 5.5 3.3 2.1 1.2 3.2 1.0 2.1 10.7 [2] J.Pons.(2017)DroneScan.",
+      "size": 974,
+      "sentences": 8
+    },
+    {
+      "id": 53,
+      "content": "FastLightweightAutonomy(FLA),”2015,solicitationnum-\nσ 2 3.9 4.3 5.0 3.4 - 3.8 3.3 3.5 2.1 2.8 4.8 berDARPA-BAA-15-16. |µ 1−2 |28.6 2.9 8.9 5.5 3.3 2.1 1.2 3.2 1.0 2.1 10.7 [2] J.Pons.(2017)DroneScan. [Online].Available:www.dronescan.co\n[3] HardisGroup.(2017)EyeSee. [Online].Available:eyesee-drone.com\nni isthenumberofdetectionsperflight,σi thedeviationofthe\n[4] D. Droeschel, M. Schwarz, and S. Behnke, “Continuous mapping and\ndetectionsincm.|µ1−2|isthedistanceofthemeansµi incm. localizationforautonomousnavigationinroughterrainusinga3Dlaser\nscanner,”Robot.Auton.Syst.,vol.88,pp.104–115,2017. [5] D. Droeschel, J. Stückler, and S. Behnke, “Local multiresolution rep-\noccurs and thus the relative detection error is small. resentationfor6Dmotionestimationandmappingwithacontinuously\nAfter the executed inventory mission, the MAV hovered at rotating3Dlaserscanner,”inProc.ofIEEEInt.Conf.onRoboticsand\nAutomation(ICRA),2014.\na height of 2m above the ground.",
+      "size": 956,
+      "sentences": 7
+    },
+    {
+      "id": 54,
+      "content": "ndmappingwithacontinuously\nAfter the executed inventory mission, the MAV hovered at rotating3Dlaserscanner,”inProc.ofIEEEInt.Conf.onRoboticsand\nAutomation(ICRA),2014.\na height of 2m above the ground. A person approached the\n[6] M. Nieuwenhuisen, M. Schadler, and S. Behnke, “Predictive potential\nMAV, which avoided the dynamic obstacle by means of our field-basedcollisionavoidanceformulticopters,”inInternationalArch. reactive obstacle avoidance, shown in Fig. 7. Furthermore, a Photogramm. Remote Sens. Spatial Inf. Sci. (ISPRS), vol. XL-1/W2,\n2013,pp.293–298. person stepped into the way of the MAV while it approached\n[7] M. Beul and S. Behnke, “Fast full state trajectory generation for\na waypoint. The MAV stopped at a safe distance in all cases. multirotors,” in Proc. of Int. Conf. on Unmanned Aircraft Systems\nAs shown in the experiments, the limiting factor for faster (ICUAS),2017.",
+      "size": 892,
+      "sentences": 16
+    },
+    {
+      "id": 55,
+      "content": "waypoint. The MAV stopped at a safe distance in all cases. multirotors,” in Proc. of Int. Conf. on Unmanned Aircraft Systems\nAs shown in the experiments, the limiting factor for faster (ICUAS),2017. [8] D.Falanga,E.Mueggler,M.Faessler,andD.Scaramuzza,“Aggressive\ninventory is motion blur in the cameras caused by the large\nquadrotorflightthroughnarrowgapswithonboardsensingandcomput-\nexposure time due to bad lighting conditions. In future work, ing using active vision,” in Proc. of IEEE Int. Conf. on Robotics and\nwe want to oppose this bottleneck either by illuminating the Automation(ICRA),2017. [9] S. Shen, Y. Mulgaonkar, N. Michael, and V. Kumar, “Vision-based\nscene ourselves (by using a flash on the MAV) or by using\nstate estimation and trajectory control towards high-speed flight with\nspecial equipment like e.g., event based cameras. aquadrotor,”inProc.ofRobotics:ScienceandSystems(RSS),2013.",
+      "size": 905,
+      "sentences": 13
+    },
+    {
+      "id": 56,
+      "content": "he MAV) or by using\nstate estimation and trajectory control towards high-speed flight with\nspecial equipment like e.g., event based cameras. aquadrotor,”inProc.ofRobotics:ScienceandSystems(RSS),2013. In the current setup, the MAV continuously records images [10] M.Burri,J.Nikolic,C.Hürzeler,G.Caprari,andR.Siegwart,“Aerial\nservice robots for visual inspection of thermal power plant boiler\nwith3Hz.TheAprilTagshoweveronlycoverlessthan3%of\nsystems,” in Proc. of Int. Conf. on Applied Robotics for the Power\nthe area (0.0256m2 tag size vs. 0.96m2 storage unit front). Industry(CARPI),2012. A more targeted strategy would reduce the generated data. [11] P. Florence, J. Carter, , and R. Tedrake, “Integrated perception and\ncontrolathighspeed:Evaluatingcollisionavoidancemaneuverswithout\nFurthermore, we also plan to extend our vision pipeline to\nmaps,” in Proc. of Int.",
+      "size": 867,
+      "sentences": 10
+    },
+    {
+      "id": 57,
+      "content": "Carter, , and R. Tedrake, “Integrated perception and\ncontrolathighspeed:Evaluatingcollisionavoidancemaneuverswithout\nFurthermore, we also plan to extend our vision pipeline to\nmaps,” in Proc. of Int. Workshop on the Algorithmic Foundations of\nnotonlydetectAprilTags,butalsoothervisualindicatorslike, Robotics(WAFR),2016.\ne.g.,barcodes,QRcodes,andhumanreadabletext,commonly [12] Y.Ma,N.Selby,andF.Adib,“Dronerelaysforbattery-freenetworks,”\nin Proc. of Annual Conf. of the ACM Special Interest Group on Data\nfound on stock. This would further enhance the versatility of\nCommunication(SIGCOMM),2017.\nthe system. We also plan to integrate multiple MAVs into the [13] A.Ortiz,F.Bonnin-Pascual,andE.Garcia-Fidalgo,“Vesselinspection:\nmission planner for simultaneous inventory to speed up the Amicro-aerialvehicle-basedapproach,”J.Intell.Robot.Syst.,vol.76,\nno.1,pp.151–167,2014. process even more.",
+      "size": 891,
+      "sentences": 8
+    },
+    {
+      "id": 58,
+      "content": ".Garcia-Fidalgo,“Vesselinspection:\nmission planner for simultaneous inventory to speed up the Amicro-aerialvehicle-basedapproach,”J.Intell.Robot.Syst.,vol.76,\nno.1,pp.151–167,2014. process even more. [14] M. Beul, N. Krombach, M. Nieuwenhuisen, D. Droeschel, and\nOnemightalsothinkofeliminatingthefirstmanualflightin S. Behnke, “Autonomous navigation in a warehouse with a cognitive\nfavorofanautomatedSLAMprocess,butthatamanualflight microaerialvehicle,”inRobotOperatingSystem(ROS):TheComplete\nReference(Volume2),A.Koubaa,Ed. Springer,2017,pp.487–524. ismorerobustinthiscrucialmapbuildingphase.Furthermore,\n[15] R.Kuemmerle,G.Grisetti,H.Strasdat,K.Konolige,andW.Burgard,\nin comparison to the service life of such a system, the map “g2o: A general framework for graph optimization,” in Proc. of IEEE\nbuilding phase only causes a small fixed effort, since the map Int.Conf.onRoboticsandAutomation(ICRA),2011. [16] E. Olson, “AprilTag: A robust and flexible visual fiducial system,” in\nis reusable.",
+      "size": 994,
+      "sentences": 7
+    },
+    {
+      "id": 59,
+      "content": "EE\nbuilding phase only causes a small fixed effort, since the map Int.Conf.onRoboticsandAutomation(ICRA),2011. [16] E. Olson, “AprilTag: A robust and flexible visual fiducial system,” in\nis reusable. After the manual flight, the operators can check\nProc.ofIEEEInt.Conf.onRoboticsandAutomation(ICRA),2011.\nthe map for possible artifacts and misregistrations. [17] A. Nash, S. Koenig, and C. Tovey, “Lazy Theta*: Any-angle path\nplanning and path length analysis in 3D,” in Proc. of Nat. Conf. on\nArtificialIntelligence(AAAI),2010. VII. CONCLUSION\n[18] S. Vanneste, B. Bellekens, and M. Weyn, “3DVFH+: Real-time three-\nIn this paper, we presented an MAV that is capable of dimensionalobstacleavoidanceusinganOctomap,”inInt.Workshopon\nModel-DrivenRobotSoftwareEngineering,2014.",
+      "size": 773,
+      "sentences": 9
+    },
+    {
+      "id": 60,
+      "content": "s, and M. Weyn, “3DVFH+: Real-time three-\nIn this paper, we presented an MAV that is capable of dimensionalobstacleavoidanceusinganOctomap,”inInt.Workshopon\nModel-DrivenRobotSoftwareEngineering,2014. fast autonomous indoor and outdoor flight without the aid of\n[19] J.Israelsen,M.Beall,D.Bareiss,D.Stuart,E.Keeney,andJ.vanden\nexternal infrastructure, solely relying on an omnidirectional Berg, “Automatic collision avoidance for manually tele-operated un-\nlaser scanner for localization. We approached this challenge manned aerial vehicles,” in Proc. of IEEE Int. Conf. on Robotics and\nAutomation(ICRA),2014.\nby employing fast 6D lidar based localization in 3D maps\n[20] M. Kamel, T. Stastny, K. Alexis, and R. Siegwart, “Model predictive\nin combination with time-optimal model predictive control.",
+      "size": 797,
+      "sentences": 6
+    },
+    {
+      "id": 61,
+      "content": "CRA),2014.\nby employing fast 6D lidar based localization in 3D maps\n[20] M. Kamel, T. Stastny, K. Alexis, and R. Siegwart, “Model predictive\nin combination with time-optimal model predictive control. controlfortrajectorytrackingofunmannedaerialvehiclesusingrobot\nDue to the fast runtime of our methods, the MAV motion operating system,” in Robot Operating System (ROS): The complete\nreference(Volume2),A.Koubaa,Ed. Springer,2017. can be tracked and controlled even under high velocities\n[21] M. W. Mueller, M. Hehn, and R. D’Andrea, “A computationally effi-\nand accelerations. Our ROS-based mapping and navigation cientalgorithmforstate-to-statequadrocoptertrajectorygenerationand\npipeline allows for fully autonomous flight even in GNSS- feasability verification,” in Proc. of IEEE/RSJ Int. Conf. on Intelligent\nRobotsandSystems(IROS),2013.\ndenied environments.",
+      "size": 862,
+      "sentences": 8
+    },
+    {
+      "id": 62,
+      "content": "torygenerationand\npipeline allows for fully autonomous flight even in GNSS- feasability verification,” in Proc. of IEEE/RSJ Int. Conf. on Intelligent\nRobotsandSystems(IROS),2013.\ndenied environments. [22] M. Beul, S. Houben, M. Nieuwenhuisen, and S. Behnke, “Fast au-\nAmple onboard processing power in combination with a tonomouslandingonamovingtargetatMBZIRC,”inProc.ofEuropean\nhigh bandwidth ground connection and long battery life leads Conf.onMobileRobots(ECMR),2017.",
+      "size": 471,
+      "sentences": 5
+    }
+  ]
+}

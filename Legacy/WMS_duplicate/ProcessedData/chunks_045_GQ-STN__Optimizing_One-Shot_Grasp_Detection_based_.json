@@ -1,0 +1,386 @@
+{
+  "source": "ArXiv",
+  "filename": "045_GQ-STN__Optimizing_One-Shot_Grasp_Detection_based_.pdf",
+  "total_chars": 44242,
+  "total_chunks": 63,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "=== 페이지 1 ===\nGQ-STN: Optimizing One-Shot Grasp Detection\nbased on Robustness Classifier\nAlexandre Garie´py, Jean-Christophe Ruel, Brahim Chaib-draa and Philippe Gigue`re\nAbstract—Graspingisafundamentalrobotictaskneededfor\nthe deployment of household robots or furthering warehouse\nautomation.However,fewapproachesareabletoperformgrasp\ndetection in real time (frame rate). To this effect, we present\nGraspQualitySpatialTransformerNetwork(GQ-STN),aone-\nshot grasp detection network. Being based on the Spatial\nTransformer Network (STN), it produces not only a grasp\nconfiguration,butalsodirectlyoutputsadepthimagecentered\nat this configuration. By connecting our architecture to an\nexternally-trainedgrasprobustnessevaluationnetwork,wecan\ntrainefficientlytosatisfyarobustnessmetricviathebackprop-\nagationofthegradientemanatingfromtheevaluationnetwork. Fig.1.",
+      "size": 857,
+      "sentences": 5
+    },
+    {
+      "id": 2,
+      "content": "our architecture to an\nexternally-trainedgrasprobustnessevaluationnetwork,wecan\ntrainefficientlytosatisfyarobustnessmetricviathebackprop-\nagationofthegradientemanatingfromtheevaluationnetwork. Fig.1. Overviewofourmethod.Classicalone-shotmethodsforgrasping\nsuperviseaprediction(inred)usinggeometricsupervisionfromrandomly\nThis removes the difficulty of training detection networks on\nselected ground truth (in green). We instead suggest to use robustness\nsparsely annotated databases, a common issue in grasping. We\nsupervision (in cyan) to learn fine-grained adjustments, without requiring\nfurther propose to use this robustness classifier to compare\nagroundtruthannotationatthisspecificgrasplocation. approaches, being more reliable than the traditional rectangle\nmetric. Our GQ-STN is able to detect robust grasps on the data are scant, and generally tailored to specific robotic\ndepth images of the Dex-Net 2.0 dataset with 92.4 % accuracy\nhardware [10], [11].",
+      "size": 963,
+      "sentences": 7
+    },
+    {
+      "id": 3,
+      "content": "metric. Our GQ-STN is able to detect robust grasps on the data are scant, and generally tailored to specific robotic\ndepth images of the Dex-Net 2.0 dataset with 92.4 % accuracy\nhardware [10], [11]. Given this issue, others have explored\nin a single pass of the network. We finally demonstrate in a\nthe use of simulated data [12], [13]. physicalbenchmarkthatourmethodcanproposerobustgrasps\nmoreoftenthanprevioussampling-basedmethods,whilebeing Similarly to computer vision, data-driven approaches in\nmore than 60 times faster. grasping can be categorized into classification and detection\nmethods. In classification, a network is trained to predict\nI. INTRODUCTION\nif the sensory input (a cropped and rotated part of the\nGrasping, corresponding to the task of grabbing an object image) corresponds to a successful grasp location.",
+      "size": 829,
+      "sentences": 8
+    },
+    {
+      "id": 4,
+      "content": "trained to predict\nI. INTRODUCTION\nif the sensory input (a cropped and rotated part of the\nGrasping, corresponding to the task of grabbing an object image) corresponds to a successful grasp location. For the\ninitially resting on a surface with a robotic gripper, is one detection case, the network outputs directly the best grasp\nof the most fundamental problems in robotics. Its impor- configuration for the whole input image. One issue with\ntance is due to the pervasiveness of operations required to classification-based approaches is that they require a search\nseize objects in an environment, in order to accomplish a ontheinputimage,inordertofindthebestgraspinglocation. meaningful task. For instance, manufacturing systems often Thissearchcanbeexhaustive,andthussuffersfromthecurse\nperform pick-and-place, but rely on techniques such as of dimensionality [14]. To speed-up the search, one might\ntemplate matching to locate pre-defined grasping points [1].",
+      "size": 962,
+      "sentences": 8
+    },
+    {
+      "id": 5,
+      "content": "ndthussuffersfromthecurse\nperform pick-and-place, but rely on techniques such as of dimensionality [14]. To speed-up the search, one might\ntemplate matching to locate pre-defined grasping points [1]. use informed proposals [6], [12], in order to focus on the\nIn a more open context such as household assistance, where mostpromisingpartsoftheinputimage.Thistendstomake\nobjects vary in shape and appearance, we are still far from the approach relatively slow, depending on the number of\na completely satisfying solution. Indeed, in an automated proposals to evaluate. warehouse, it is often one of the few tasks still performed While heavily inspired by computer vision techniques,\nby humans [2]. training a network for detection in a grasping context is\nTo perform autonomous grasping, the first step is to take significantly trickier.",
+      "size": 834,
+      "sentences": 6
+    },
+    {
+      "id": 6,
+      "content": "vily inspired by computer vision techniques,\nby humans [2]. training a network for detection in a grasping context is\nTo perform autonomous grasping, the first step is to take significantly trickier. As opposed to classic vision problems,\na sensory input, such as an image, and produce a grasp for which detection targets are well-defined instances of\nconfiguration. The arrival of active 3D cameras, such as objects in a scene, grasping configurations are continuous. the Microsoft Kinect, enriched the sensing capabilities of This means that there exist a potentially infinite number of\nrobotic systems. One could then use analytical methods [3] successfulgraspingconfigurations.Thus,onecannotexhaus-\nto identify grasp locations, but these often assume that we tively generate all possible valid grasps in an input image. already have a model. They also tend to perform poorly Another issue is that grasping databases are not providing\nin the face of sensing noise.",
+      "size": 967,
+      "sentences": 8
+    },
+    {
+      "id": 7,
+      "content": "y generate all possible valid grasps in an input image. already have a model. They also tend to perform poorly Another issue is that grasping databases are not providing\nin the face of sensing noise. Instead, recent methods have the absolute best grasping configuration for a given image\nexploreddata-drivenapproaches.Althoughsparsecodinghas of an object, but rather a (limited) number of valid grasping\nbeen used [4], the vast majority of new data-driven grasping configurations. approachesemploymachinelearning,morespecificallydeep In this paper, we propose a one-shot grasping detection\nlearning [5]–[9]. A major drawback to this is that deep architecture for parallel grippers, based on deep learning. learning approaches require a significant amount of training Importantly, our detection approach on depth images can\ndata.",
+      "size": 828,
+      "sentences": 7
+    },
+    {
+      "id": 8,
+      "content": "his is that deep architecture for parallel grippers, based on deep learning. learning approaches require a significant amount of training Importantly, our detection approach on depth images can\ndata. Currently, grasping training databases based on real be trained from sparse grasping annotations meant to train\n9102\nguA\n1\n]OR.sc[\n2v98420.3091:viXra\n=== 페이지 2 ===\na classifier. As such, it does not require the best grasping a patch of the image around this location. To find the grasp\nlocation to be part of the training dataset. To achieve this, angle,theauthorproposedtohave18outputs,separatingthe\nwe leverage a pre-existing grasp robustness classifier, called angle prediction into 18 discrete angles by 10◦ increments. Grasp Quality CNN (GQ-CNN) [12]. This is made possible The EnsembleNet Asif et al. [16] worked in a different\nby the fact that our network architecture directly outputs an manner.",
+      "size": 903,
+      "sentences": 9
+    },
+    {
+      "id": 9,
+      "content": "by 10◦ increments. Grasp Quality CNN (GQ-CNN) [12]. This is made possible The EnsembleNet Asif et al. [16] worked in a different\nby the fact that our network architecture directly outputs an manner. It trained four distinct networks to propose differ-\nimage corresponding to a grasp proposal, allowing it to be ent grasp representations (regression grasp, joint regression-\nfed directly to an image-based grasp robustness classifier. classificationgrasp,segmentationgrasp,andheuristicgrasp). OurarchitecturemakesextensiveuseoftheSTN[15],which Each of these proposals was then ranked by the SelectNet, a\ncan learn to perform geometric transformations in an end- grasp robustness predictor trained on grasp rectangles. to-end manner. Because our network is based on STNs, the To alleviate the issue of small training datasets labelled\ngradientgeneratedbytheGQ-CNNrobustnessclassifierwill manually, Mahler et al. [12] relied entirely on a simulator\npropagate throughout our architecture.",
+      "size": 984,
+      "sentences": 10
+    },
+    {
+      "id": 10,
+      "content": "e the issue of small training datasets labelled\ngradientgeneratedbytheGQ-CNNrobustnessclassifierwill manually, Mahler et al. [12] relied entirely on a simulator\npropagate throughout our architecture. Our network is thus setup to generate a large database of grasp examples called\nable to climb the robustness gradient, as opposed to simply Dex-Net 2.0 (see section III-B). Each grasp example was\nregressingtowardsgraspconfigurations,whicharelimitedin rated using a rule-based grasp robustness metric named\nthe training database. In some sense, our network is able to Robust Ferrari Canny. By thresholding this metric, they\nlearn from the implicit knowledge of the quality of a grasp, trained a deep neural network, dubbed Grasp-Quality CNN\nknowledge that was captured by GQ-CNN.",
+      "size": 778,
+      "sentences": 6
+    },
+    {
+      "id": 11,
+      "content": "ri Canny. By thresholding this metric, they\nlearn from the implicit knowledge of the quality of a grasp, trained a deep neural network, dubbed Grasp-Quality CNN\nknowledge that was captured by GQ-CNN. (GQ-CNN),topredictgraspsuccessorfailure.TheGQ-CNN\nIn short, our contributions are the following: takes as input a 32×32 depth image centered on the grasp\n1) Describing one of the first techniques to train a one- point, taken from a top view to reduce the dimensionality\nshot detection network on the detection version of of the grasp prediction. For grasp detection in an image,\nthe Dex-Net 2.0 dataset. Our network is based on they used an antipodal sampling strategy. This way, 1000\nan attention mechanism, the STN, to perform one- antipodal points on the object surface were proposed and\nshot grasping detection, resultingin our Grasp Quality ranked with GQ-CNN.",
+      "size": 865,
+      "sentences": 6
+    },
+    {
+      "id": 12,
+      "content": "gy. This way, 1000\nan attention mechanism, the STN, to perform one- antipodal points on the object surface were proposed and\nshot grasping detection, resultingin our Grasp Quality ranked with GQ-CNN. Even though their system is mostly\nSpatial Transformer Network (GQ-STN) architecture; trained using synthetic data, it performed well in a real-\n2) Using the Grasp Quality CNN (GQ-CNN) as a su- world setting. For example, it achieves a 93% success rate\npervisor to train this one-shot detection network, thus on objects seen during the training time and 80% success\nenablingtolearnfromalimitednumberofgraspanno- rate on novel objects on a physical benchmark. tations and to achieve a high robustness classification Park et al. [6] decomposed the search for grasps in\nscore; differentsteps,usingSTNs.ThefirstSTNactedasaproposal\n3) Showing that our method generalizes well to real- mechanism,byselecting4cropsascandidategrasplocations\nworld conditions in a physical benchmark, where our the image.",
+      "size": 995,
+      "sentences": 6
+    },
+    {
+      "id": 13,
+      "content": "Ns.ThefirstSTNactedasaproposal\n3) Showing that our method generalizes well to real- mechanism,byselecting4cropsascandidategrasplocations\nworld conditions in a physical benchmark, where our the image. Then, each of these 4 crops were fed into a\nGQ-STN proposes a high rate of robust grasp. single network, comprising a cascade of two STNs: one\nestimatedthegraspangleandthelastSTNchosetheimage’s\nII. RELATEDWORK scaling factor and crop. The latter crop can be seen as a fine\nOver the years, many network architectures have been adjustment of the grasping location. The four final images\nproposed to solve the grasping problem. Here, we present were then independently fed to a classifier, to find the best\nthemgroupedbythemes,eitherbasedontheiroverallmethod one.Eachcomponent,beingtheSTNsandtheclassifier,were\nof operation or on the type of generated output. trained on CGD separately using ground truth data and then\nfine-tuned together. This is a major distinction from other\nA.",
+      "size": 978,
+      "sentences": 9
+    },
+    {
+      "id": 14,
+      "content": "theSTNsandtheclassifier,were\nof operation or on the type of generated output. trained on CGD separately using ground truth data and then\nfine-tuned together. This is a major distinction from other\nA. Proposal + Classification Approaches\nProposal + Classification approaches, as the others cannot\nDrawing inspiration from previous data-driven methods jointly train the proposal and classification sub-systems. [3], some approaches work in a two-stage manner, first by\nB. Single-shot Approaches\nproposinggraspcandidatesthenbychoosingthebestonevia\na classification score. Note that this section does not include 1) Regression Approaches: To eliminate the need to per-\narchitecture employing Region Proposal Network (RPN), as form the exhaustive search of grasp configurations, Redmon\nthese are applied on a fixed-grid pattern, and can be trained et al. [17] proposed the first one-shot detection approach. end-to-end. They are discussed later.",
+      "size": 940,
+      "sentences": 9
+    },
+    {
+      "id": 15,
+      "content": "search of grasp configurations, Redmon\nthese are applied on a fixed-grid pattern, and can be trained et al. [17] proposed the first one-shot detection approach. end-to-end. They are discussed later. To this effect, the authors proposed different CNN archi-\nEarlyworkinapplyingdeeplearningonthegraspingprob- tectures, in which they always used AlexNet[18] pretrained\nlem employed such a classification approach. For instance, on ImageNet as the feature extractor. To exploit depth, they\nLenzetal. [14]employedacascadedapproachoftwofully- fed the depth channel from the RGB-D images into the\nconnected neural networks. The first one was designed to be blue color channel, and fine-tuned. The first architecture,\nsmallandfasttoevaluateandperformtheexhaustivesearch.",
+      "size": 762,
+      "sentences": 10
+    },
+    {
+      "id": 16,
+      "content": "the RGB-D images into the\nconnected neural networks. The first one was designed to be blue color channel, and fine-tuned. The first architecture,\nsmallandfasttoevaluateandperformtheexhaustivesearch. named Direct Regression, directly regressed from the input\nThe second and larger network then evaluated the best 100 image the best grasp rectangle represented by the tuple\nproposalsofthepreviousnetwork.Thisarchitectureachieved {x,y,width,height,θ}. The second architecture, Regres-\n93.7% accuracy on the Cornell Grasping Dataset (CGD). sion + Classification added object class prediction to test its\nPinto et al. [10] reduced the search space of grasp pro- regularizationeffect.Kumraetal. [19]furtherdevelopedthis\nposals by only sampling grasp locations x,y and cropping one-shotdetectionapproachbyemployingthemorepowerful\n=== 페이지 3 ===\na score at each grid location.",
+      "size": 867,
+      "sentences": 8
+    },
+    {
+      "id": 17,
+      "content": "ioneffect.Kumraetal. [19]furtherdevelopedthis\nposals by only sampling grasp locations x,y and cropping one-shotdetectionapproachbyemployingthemorepowerful\n=== 페이지 3 ===\na score at each grid location. Their method can explicitly\naccountforgripperposeuncertainty.Ifagraspconfiguration\nhas a high score, but the neighboring configurations on the\ngrid have a low score, it is probable that a gripper that\nhas a Gaussian error on its position will fail to grasp at\nthis location. The authors explicitly handled this problem by\nsmoothing the 3D grid (two spatial axis, one rotation axis)\nFig. 2. (Left) Training example from the Dex-Net 2.0 detection dataset. by a Gaussian kernel corresponding to the gripper error. Notice how there are very few annotations, thus not covering all of the Satish et al. [25] introduced a fully-convolutional succes-\npossible grasp positions on the entire object. (Middle) Training example\nsor to GQ-CNN.",
+      "size": 930,
+      "sentences": 10
+    },
+    {
+      "id": 18,
+      "content": "very few annotations, thus not covering all of the Satish et al. [25] introduced a fully-convolutional succes-\npossible grasp positions on the entire object. (Middle) Training example\nsor to GQ-CNN. It extends GQ-CNN to a k-class classifica-\nfrom the Cornell Grasping Dataset (CGD). These manually-labeled grasp\nannotations tend cover a more important fraction of the object, but for a tion where each output is the probability of a good grasp at\nmuchmorelimitednumberofexamples.Figurefrom[17]. the angle 180◦/k, similar to [10]. They train their network\n(Right) Grasp path proposed by Chen et al. [21] to augment the grasp\nfor this classification task. They then transform the fully-\nrectanglerepresentationontheCGD.Agraspprediction(green)isprojected\ntoagrasppaththatliesbetweentwoground-truthannotation.Thisallows connected layer into a convolutional layer, enabling classifi-\nforbetterevaluationofdetectionapproaches.Figurefrom[21]. cation at each location of the feature map.",
+      "size": 979,
+      "sentences": 10
+    },
+    {
+      "id": 19,
+      "content": "woground-truthannotation.Thisallows connected layer into a convolutional layer, enabling classifi-\nforbetterevaluationofdetectionapproaches.Figurefrom[21]. cation at each location of the feature map. This effectively\nResNet-50 architecture [20]. They also explored a different evaluates each discrete location x,y for graspability. strategy to integrate the depth modality, while seeking to\nIII. PROBLEMDESCRIPTION\npreservethebenefitsofImageNetpre-training.Asasolution,\nthey introduced the multi-modal grasp architecture which A. One-shot Grasp Detection\nseparated RGB processing and depth processing in two Given the depth image of an object on a flat surface, we\ndifferentResNet-50networks,bothpre-trainedonImageNet. want to find a grasp configuration that maximizes the prob-\nTheirarchitecturethenperformedlatefusion,beforethefully ability of lifting the object with a parallel-plate gripper. We\nconnected layers performed direct grasp regression.",
+      "size": 950,
+      "sentences": 9
+    },
+    {
+      "id": 20,
+      "content": "on that maximizes the prob-\nTheirarchitecturethenperformedlatefusion,beforethefully ability of lifting the object with a parallel-plate gripper. We\nconnected layers performed direct grasp regression. aimedatperformingthisdetectioninaone-shotmanner,i.e. 2) Multibox Approaches: Redmon et al. [17] also pro- with a single pass of the depth image through our network. posed a third architecture, MultiGrasp, separating the image As prediction output, we used the 5D grasp representation\nintoaregulargrid(dubbedMulti-box).Ateachgridcell,the {x,y,z,θ,w}, where x,y,z captures the 3D coordinates of\nnetwork predicted the best grasping rectangle, as well as the the grasp, θ the angle of the gripper and w its opening. probability of this grasp being positive. The grasp rectangle This representation considers grasps taken from above the\nwith the highest probability was then chosen. Trottier et object, perpendicular to the table’s surface, as in [12], [17]. al.",
+      "size": 957,
+      "sentences": 10
+    },
+    {
+      "id": 21,
+      "content": "grasp rectangle This representation considers grasps taken from above the\nwith the highest probability was then chosen. Trottier et object, perpendicular to the table’s surface, as in [12], [17]. al. [9] improved results by employing a custom ResNet Asournetworkistrainedusingboththedatasetandthegrasp\narchitecture for feature extraction. Another advantage was robustnessclassifierGQ-CNNofDex-Net2.0[12],wedetail\nthe reduced need for pre-training on ImageNet. Chen et al. them below. [21]remarkedthatgraspannotationsingraspingdatasetsare\nB. Dex-Net 2.0 Dataset\nnot exhaustive. Consequently, they developed a method to\ntransformaseriesofdiscretegrasprectanglestoacontinuous Dex-Net2.0isalarge-scalesimulateddatasetforparallel-\ngrasp path. Instead of matching a prediction to the closest gripper grasping. It contains 6.7 million grasps on pre-\nground truth to compute the loss function, they mapped the rendered depth images of 3D models.",
+      "size": 937,
+      "sentences": 11
+    },
+    {
+      "id": 22,
+      "content": "Instead of matching a prediction to the closest gripper grasping. It contains 6.7 million grasps on pre-\nground truth to compute the loss function, they mapped the rendered depth images of 3D models. These 3D models\npredictiontotheclosestgrasppath.Thismeansthatapredic- come from two different sources. 1,371 models come from\ntion that falls directly between two annotated ground truths 3DNet [26], a synthetic model dataset built for classification\ncanstillhavealowlossvalue,thus(partially)circumventing and pose estimation. The other 129 additional models are\nthe limitations of the Intersection-over-Union (IoU) metric laserscansfromKIT[27].Allofthe3Dmodelswereresized\nwhen used with sparse annotation, as long as the training to fit within a 5 cm parallel gripper. dataset is sufficiently densely labeled (see Figure 2). The The grasp labels in the Dex-net 2.0 dataset were ac-\nauthorsre-usedtheMultiGrasparchitecturefromRedmonet quiredviarandomsamplingofantipodalgraspcandidates.A\nal.",
+      "size": 989,
+      "sentences": 7
+    },
+    {
+      "id": 23,
+      "content": "ly densely labeled (see Figure 2). The The grasp labels in the Dex-net 2.0 dataset were ac-\nauthorsre-usedtheMultiGrasparchitecturefromRedmonet quiredviarandomsamplingofantipodalgraspcandidates.A\nal. for their experimentation. heuristic-based approach developed in previous work (Dex-\n3) Anchor-boxApproaches: Zhouetal. [5]introducedthe Net 1.0[28]) was used to compute a robustness metric. This\nnotion of oriented anchor-box, inspired by YOLO9000 [22]. metric was thresholded to determine the grasp robustness\nThis approach is similar to MultiGrasp (as the family of label, i.e. robust vs. non-robust. YOLO object detectors is a direct descendant of Multi- Learning one-shot grasp detection on the Dex-Net 2.0\nGrasp [17]) with the key difference of predicting offsets dataset is in itself a challenging task, because of the few\nto predefined anchor boxes for each grid cell, instead of positive annotations per image. Annotations are very sparse\ndirectly predicting the best grasp at each cell.",
+      "size": 995,
+      "sentences": 10
+    },
+    {
+      "id": 24,
+      "content": "lenging task, because of the few\nto predefined anchor boxes for each grid cell, instead of positive annotations per image. Annotations are very sparse\ndirectly predicting the best grasp at each cell. Chu et al. compared to Cornell Grasping Dataset (CGD), a standard\n[7]extendsMultiGrasptomultipleobjectgraspdetectionby dataset used in one-shot grasp detection. For instance, it\nusing region-of-interest pooling layers [23]. can be seen from Figure 2 that the ground truth annotation\n4) DiscreteApproaches: Johnsetal. [24]proposedtouse of Dex-Net 2.0 is clearly sparser than CGD. This prevents\na discretization of the space with a granularity of 1 cm and the grasp annotation augmentations method such as grasp\n30◦. In a single pass of the network, the model predicts path [21] from being employed on the former. === 페이지 4 ===\nFig.3.",
+      "size": 832,
+      "sentences": 10
+    },
+    {
+      "id": 25,
+      "content": "nularity of 1 cm and the grasp annotation augmentations method such as grasp\n30◦. In a single pass of the network, the model predicts path [21] from being employed on the former. === 페이지 4 ===\nFig.3. Ourcompleteone-shotSTN-basedarchitecture.ThethreeSTNslearnrespectivelytranslationtothegrasp’scenter,rotationtothegrasp’sangle\nandscalingtothegrasp’sopening.TheintermediaryoutputsoftheSTNsarefullyobservableandareusedtodeterminethegrasplocation.ThelastSTN\nfeedsintoGQ-CNN,whichpredictsagrasprobustnesslabel.AdetailedviewofaSTNblockisdepictedinFig.4. TherearetwoavailableversionsoftheDex-net2.0dataset. mapping.Itcanthusstretch,rotate,orskewtheinputfeature\nThe first version is a classification dataset. It was used by map, resulting in a new feature map as output. A pure\nMahleretal.",
+      "size": 781,
+      "sentences": 8
+    },
+    {
+      "id": 26,
+      "content": "ex-net2.0dataset. mapping.Itcanthusstretch,rotate,orskewtheinputfeature\nThe first version is a classification dataset. It was used by map, resulting in a new feature map as output. A pure\nMahleretal. [12]totrainGQ-CNN.Itcontains32×32depth rotation transformation is illustrated in Figure 4.\nimages of grasp candidates with associated grasp robustness A Spatial Transformer Network (STN) can be constrained\nmetrics, which are thresholded to obtain robustness labels. to only represent specific geometric transformations, instead\nThe authors also released a detection version of the dataset. offreelylearningthesixelementsofΛ.Inourapproach,we\nThisversioncontainsthecentereddepthimagesoftheobject, will employ three different transformations matrices:\nat full resolution (400×400). (cid:20) (cid:21) (cid:20) (cid:21)\n1 0 x s 0 0\nPleasenotethatinthiswork,weusedtheoriginalDex-Net Λ trans = 0 1 y , Λ scale = 0 s 0 ,\n2.0 annotations.",
+      "size": 929,
+      "sentences": 8
+    },
+    {
+      "id": 27,
+      "content": "rmations matrices:\nat full resolution (400×400). (cid:20) (cid:21) (cid:20) (cid:21)\n1 0 x s 0 0\nPleasenotethatinthiswork,weusedtheoriginalDex-Net Λ trans = 0 1 y , Λ scale = 0 s 0 ,\n2.0 annotations. Recently published work [25] developed a (cid:20) (cid:21)\ncosθ −sinθ 0\nsampling method for generating additional annotations for Λ = . rot sinθ cosθ 0\nthe Dex-Net 2.0 images. Our approach could potentially\nbenefitfrommoredetectionannotationsonimagescontained Λ trans represents a relative translation by a factor of x,y ∈\nintheDex-Net2.0dataset.Still,foragivenobject,thereisan [−0.5,0.5], Λ rot a rotation by an angle θ and Λ scale an\ninfinity of possible grasp configurations which cannot all be isotropic scaling by a factor of s.\nannotated. Instead of improving learning at the annotation\nB. Full architecture\nlevel, our approach, described in the following section,\nInstead of predicting all transformations in a single net-\nexplicitly handles this inherent constraint.",
+      "size": 974,
+      "sentences": 7
+    },
+    {
+      "id": 28,
+      "content": "at the annotation\nB. Full architecture\nlevel, our approach, described in the following section,\nInstead of predicting all transformations in a single net-\nexplicitly handles this inherent constraint. work, we used a cascade of three STN blocks, STN\ntrans\nIV. GQ-STNNETWORKARCHITECTURE STN andSTN ,whicharerespectivelyconstrainedby\nrot scale\nΛ , Λ and Λ .",
+      "size": 354,
+      "sentences": 4
+    },
+    {
+      "id": 29,
+      "content": "explicitly handles this inherent constraint. work, we used a cascade of three STN blocks, STN\ntrans\nIV. GQ-STNNETWORKARCHITECTURE STN andSTN ,whicharerespectivelyconstrainedby\nrot scale\nΛ , Λ and Λ . In other words, STN learns\nIn this paper, we propose Grasp Quality Spatial Trans- trans rot scale trans\nthe translation x,y to the grasp center, STN learns the\nformer Network (GQ-STN), a neural network architecture rot\nrotation θ of the gripper and STN learns a scaling s\nforone-shotgraspdetectionbasedontheSpatialTransformer scale\nrepresentingtheopeningofthegripper.Amotivationbehind\nNetwork(STN).Thisarchitectureenablesustotraindirectly\nthis architecture is to isolate the regression of the angle θ,\nonarobustnesslabeloutputtedbyGQ-CNN,unlikeprevious\nwhichisachallengingtaskforaone-shotnetworkaccording\none-shotgraspdetectionmethodsthatenforcerobustnessim-\nto Park et al. [29]. All Spatial Transformer Networks (STN)\nplicitlythroughgeometricregressiononannotatedlocations.",
+      "size": 974,
+      "sentences": 6
+    },
+    {
+      "id": 30,
+      "content": "kforaone-shotnetworkaccording\none-shotgraspdetectionmethodsthatenforcerobustnessim-\nto Park et al. [29]. All Spatial Transformer Networks (STN)\nplicitlythroughgeometricregressiononannotatedlocations. wereapplieddirectlytothe1-channeldepthmap;contraryto\nA. Spatial Transformer Network Kumra et al. [19], we found no benefit in using a 3-channel\nThe main component in our single-shot detection archi- version pre-trained on ImageNet for the STNs. All STNs\ntecture is the Spatial Transformer Network (STN) [15]. In also output a depth image, meaning that the communication\nsome sense, it acts as an attention mechanism, by narrow- between blocks of the network is not conducted via high-\ning/reorientingobjectsinamorecanonicalrepresentationfor level feature maps, but via fully-observable depth images.",
+      "size": 799,
+      "sentences": 7
+    },
+    {
+      "id": 31,
+      "content": "ntion mechanism, by narrow- between blocks of the network is not conducted via high-\ning/reorientingobjectsinamorecanonicalrepresentationfor level feature maps, but via fully-observable depth images. thetaskathand.Itisadrop-inblockthatcanbeinsertedbe- We used ResNet-34 as localization networks in all three\ntween two feature maps of a Convolutional Neural Network SpatialTransformerNetwork(STN)s,asin[6].Thisyielded\n(CNN) to learn a spatial transformation of the input feature slightly better results than the smaller ResNet-18 while\nmap. The Spatial Transformer Network (STN) consists of maintaining a reasonable training time. Drawing from [17]\nthree parts: a localization network, a grid generator and a and [22], the output layers of the ResNet-34 computed the\nsampler. The localization network learns a transformation elements of Λ (cid:63) as follows:\nmatrix Λ2×3 based on the input feature map.",
+      "size": 902,
+      "sentences": 5
+    },
+    {
+      "id": 32,
+      "content": "nd a and [22], the output layers of the ResNet-34 computed the\nsampler. The localization network learns a transformation elements of Λ (cid:63) as follows:\nmatrix Λ2×3 based on the input feature map. The grid α=σ(w )\ngenerator and the sampler transform the input feature map x=σ(w x )−0.5 α s=γews\nβ =σ(w )\nbythegeometrictransformationspecifiedbyΛ.Itdoessoin y =σ(w )−0.5 β z =w\ny z\nθ =atan2(α,β)/2\na fully differentiable manner, in a process similar to texture\n=== 페이지 5 ===\nirrespective of grasp positions. Importantly, this allows our\none-shot detection network to learn from sparsely labeled\nground-truth, by eventually strictly focusing on a grasp\nrobustness metric provided by GQ-CNN. The bootstrapping\ninduced by ξ > 0 was necessary for the network training\nto converge, enabling a proper focus on the object. It can\nbe seen in Figure 4 that transformations on the depth image\nintroduce artifacts on the edges. If one would start training\nFig.4.",
+      "size": 952,
+      "sentences": 7
+    },
+    {
+      "id": 33,
+      "content": "rk training\nto converge, enabling a proper focus on the object. It can\nbe seen in Figure 4 that transformations on the depth image\nintroduce artifacts on the edges. If one would start training\nFig.4. ASpatialTransformerNetwork(STN)blockperformingarotation withξ =0,thenetworkwouldenteradegeneratestatewhere\nof θ on an input depth image, aligning the image to the grasp’s axis. A\nedge artifacts are mistaken for object edges. ResNet-34 localization network predicts the transformation matrix Λrot. ThisisthesecondofthethreeSTNsshowninFig.3. During early stages of bootstrapping when ξ >0, training\ntend to be quite unstable. There is an accumulation of\nThe tuples {w ,w },{w ,w } and {w ,w } are the raw\nx y α β s z\nerror where, for instance, STN cannot provide a good\noutputsofthelocalizationnetworksofrespectivelySTN scale\ntrans\npredictionbecauseoferrorsmadebySTN andSTN ,\nSTN and STN . To break the two-fold rotational trans rot\nrot scale resulting in a high L .",
+      "size": 964,
+      "sentences": 10
+    },
+    {
+      "id": 34,
+      "content": "od\noutputsofthelocalizationnetworksofrespectivelySTN scale\ntrans\npredictionbecauseoferrorsmadebySTN andSTN ,\nSTN and STN . To break the two-fold rotational trans rot\nrot scale resulting in a high L . We solved this issue by using a\nsymmetry of the angle prediction, we predict α,β which loc\nteacher forcing approach [30] where the STNs are trained\nare respectively the sine and cosine of twice the angle θ, as\nin a disjoint manner. Instead of using the Λ and Λ\nin [17]. γ is the mean scaling factor in the training set. In trans rot\npredicted by the first and second localization networks re-\nconjunction with the scaling s, the last STN’s localization\nspectively,wedirectlytransformtheimagesusingtheground\nnetwork also predicts the normalized gripper’s height z.\ntruth information Λgt , Λgt .",
+      "size": 793,
+      "sentences": 6
+    },
+    {
+      "id": 35,
+      "content": "onjunction with the scaling s, the last STN’s localization\nspectively,wedirectlytransformtheimagesusingtheground\nnetwork also predicts the normalized gripper’s height z.\ntruth information Λgt , Λgt . Teacher forcing allows the\nTheinputofthecompletenetwork,illustratedinFigure3, trans rot\nthree STN to be trained simultaneously, instead of training\nisa224×224depthimage.ThetranslationandrotationSTNs\nthem in sequence as proposed in [6], resulting in a shorter\nboth generate a depth image of the same size as the input,\ntraining time. Teacher forcing is disabled after ξ = 0,\nwhile the STN generates a depth image at a resolution\nscale allowing a joint training of all parameters on L . of 32×32. STN is followed by GQ-CNN. The latter rob\nscale\npredicts a grasp robustness label given the 32×32 image V. EXPERIMENTSANDEVALUATION\noutputted by STN . We use pre-trained weights made\nscale We compared our architecture against three baselines:\navailable by Mahler et al. for GQ-CNN.",
+      "size": 976,
+      "sentences": 8
+    },
+    {
+      "id": 36,
+      "content": "given the 32×32 image V. EXPERIMENTSANDEVALUATION\noutputted by STN . We use pre-trained weights made\nscale We compared our architecture against three baselines:\navailable by Mahler et al. for GQ-CNN. These weights are\nthesingle-shotDirectGraspandMultiGrasparchitectures[17]\nfrozen throughout training. At evaluation time, GQ-CNN is\nand the approach based on Proposal+Classification from\nnotrequiredforgraspdetection.However,becauseevaluating\nDex-Net 2.0[12] that we will refer to as Prop+GQ-CNN. a single grasp on GQ-CNN is low-cost, we keep GQ-CNN\nFor DirectGrasp and MultiGrasp, we replaced the AlexNet\nto avoid a GPU memory transfer cost later if we need a\nfeature extractor by a ResNet feature extractor, as seen in\nrobustness label associated with a detection. Kumra et al. [19].",
+      "size": 784,
+      "sentences": 8
+    },
+    {
+      "id": 37,
+      "content": "eplaced the AlexNet\nto avoid a GPU memory transfer cost later if we need a\nfeature extractor by a ResNet feature extractor, as seen in\nrobustness label associated with a detection. Kumra et al. [19]. We trained our GQ-STN model and both\nNote that every block in the architecture is fully differ-\nDirectGrasp and MultiGrasp on 80% of the Dex-Net 2.0\nentiable, thus allowing us to leverage information from the\ndataset and held 20% in a test set. For the Prop+GQ-CNN\nerroronthegrasprobustnesslabel,byback-propagatingfrom\napproach, we used the pre-trained model made available by\nthe latter all the way back to the first STN. the authors. C. Training We further tested GQ-STN, DirectGrasp and MultiGrasp\nontheJacquarddataset[31].NotethatbecauseJacquarddoes\nAteachstepoftraining,werandomlyselectagroundtruth\nnot contain any gripper height information, we could not\npositive grasp example from the Dex-net 2.0, thus obtaining\ntarget values for location Λgt , Λgt and Λgt .",
+      "size": 967,
+      "sentences": 7
+    },
+    {
+      "id": 38,
+      "content": "aining,werandomlyselectagroundtruth\nnot contain any gripper height information, we could not\npositive grasp example from the Dex-net 2.0, thus obtaining\ntarget values for location Λgt , Λgt and Λgt . We train train the architectures on this dataset, as the gripper height\ntrans rot scale is a required input of GQ-CNN. Therefore, Jacquard is only\nthe network using two types of supervision:\nused here for testing networks that were trained on the Dex-\n• Localization loss L loc : the L 2 loss on the predictions Net 2.0 dataset. of the localization networks of the STNs using Λgt;\n∗ WeimplementedallthearchitecturesusingtheTensorflow\n• Robustness loss L rob : the cross-entropy loss on the library. We trained all models 40 epochs with the Adam\noutput of GQ-CNN, where the expected value is a\nOptimizer. For GQ-STN, we had the following scheduling\npositive grasp label.",
+      "size": 869,
+      "sentences": 6
+    },
+    {
+      "id": 39,
+      "content": "entropy loss on the library. We trained all models 40 epochs with the Adam\noutput of GQ-CNN, where the expected value is a\nOptimizer. For GQ-STN, we had the following scheduling\npositive grasp label. for ξ and the learning rate lr: 6 epochs at ξ = 1.0,lr =\nThe total loss L tot is given by: 1×10−3, 3 epochs at ξ = 0.5,lr = 2×10−4, 3 epochs at\nξ =0.2,lr =4×10−5, 9 epochs at ξ =0.0,lr =4×10−5,\nL =ξL +(1−ξ)L . tot loc rob andafine-tuningstageof19epochsatξ =0.0,lr =8×10−6\nThe training regimen begins with ξ =1 and we gradually usingearlystopping.Teacher-forcingwasturnedonforonly\nslide the loss mixing parameter toward ξ = 0. This way, the first 12 epochs. we bootstrap the learning of our architecture with groud- For DirectGrasp and MultiGrasp, we employed the same\ntruthgrasppositions.TheseprovidestrongcuestotheSTNs, lr schedule, though they converged faster that GQ-STN and\nvia the loss L .",
+      "size": 895,
+      "sentences": 7
+    },
+    {
+      "id": 40,
+      "content": "ecture with groud- For DirectGrasp and MultiGrasp, we employed the same\ntruthgrasppositions.TheseprovidestrongcuestotheSTNs, lr schedule, though they converged faster that GQ-STN and\nvia the loss L . As we reach ξ = 0, the network training the last fine-tuning step with lr =8×10−6 did not improve\nloc\nthen focuses on directly improving the grasp quality metric, results. We kept the models that had the highest rectangle\n=== 페이지 6 ===\nNote that the Dex-Net 2.0 dataset does not contain the\nrectangle height h required by the rectangle grasp represen-\ntation.Wesimplyassumedthath=w/5,whichcorresponds\nto the size of the gripper’s finger tips. Our architecture does\nnot predict w directly, but an analogous scaling factor s. We\nconsidered that w = s/3, which corresponds to how grasps\nare represented in the Dex-Net 2.0 dataset. All architectures\npredict a gripper height z in addition to the 2D grasp\nFig.5. (Left)Physicalsetupusedforevaluation.ItcontainsaUR5arm, configuration.",
+      "size": 978,
+      "sentences": 6
+    },
+    {
+      "id": 41,
+      "content": "asps\nare represented in the Dex-Net 2.0 dataset. All architectures\npredict a gripper height z in addition to the 2D grasp\nFig.5. (Left)Physicalsetupusedforevaluation.ItcontainsaUR5arm, configuration. For the rectangle metric evaluation purposes,\na Robotiq 85 gripper and a Microsoft Kinect sensor. (Right) Set of 12 this parameter z is ignored. householdandofficeobjectsusedintests. We evaluate DirectGrasp, MultiGrasp and GQ-STN on\nmetric score in validation (see Section V-B). We had for all the rectangle metric. Table I shows that DirectGrasp and\nmodels a L regularization factor of 1×10−7. MultiGrasp perform slightly better than GQ-STN on the\n2\nWe compared the quality of predictions of the single-shot rectangle metric. This is understandable since they were\nbaselines and our GQ-STN network using the robustness specifically trained for rectangle regression. However, both\nclassification metric (Sec. V-A). We also evaluated these networkshaveapoorRobustnessClassificationMetricscore.",
+      "size": 992,
+      "sentences": 14
+    },
+    {
+      "id": 42,
+      "content": "twork using the robustness specifically trained for rectangle regression. However, both\nclassification metric (Sec. V-A). We also evaluated these networkshaveapoorRobustnessClassificationMetricscore. three models according to the rectangle metric (Sec. V- The rectangle metric is known to have a number of\nB). Finally, we conducted real world grasping experiments issues [21], [33]. First and foremost, the score bears no\n(Sec. V-D) where we evaluated MultiGrasp, our GQ-STN, physicalmeaningintermsofgrasprobustness,asitispurely\nand Prop+GQ-CNN.All experimentsand trainingwere con- computedintheimagespace.Forexample,agrasprectangle\nducted on a Desktop computer with a 4 GHz Intel i7-6700k can be considered as valid (high Jaccard index), even if a\nand an NVIDIA Titan X GPU. fingercollideswiththeobject.Second,foragraspprediction\nto be evaluated, there needs to be a ground truth annotation\nA. Robustness Classification via GQ-CNN\nnear the exact position of the prediction.",
+      "size": 974,
+      "sentences": 10
+    },
+    {
+      "id": 43,
+      "content": "fingercollideswiththeobject.Second,foragraspprediction\nto be evaluated, there needs to be a ground truth annotation\nA. Robustness Classification via GQ-CNN\nnear the exact position of the prediction. In other words, the\nAsif et al. [16] used SelectNet, a CNN trained for grasp validity of a grasp prediction depends on whether or not it\nevaluation.However,SelectNetwastrainedbasedonametric wasannotatedinthedataset.Thisisparticularlyproblematic\nsimilar to Jaccard, which is problematic (see Sec. V-B) when evaluating grasp detection frameworks, as for a given\nand would thus provide for poor evaluation. In our situa- object, there is an infinity of possible grasp configurations\ntion, we preferred instead to use the pre-trained classifier whichcannotallbeannotated.Inaclassificationframework,\nGQ-CNN [12] for robustness evaluation of predicted grasp one does not suffer from this issue, since only labeled\nconfigurations.",
+      "size": 922,
+      "sentences": 5
+    },
+    {
+      "id": 44,
+      "content": "ained classifier whichcannotallbeannotated.Inaclassificationframework,\nGQ-CNN [12] for robustness evaluation of predicted grasp one does not suffer from this issue, since only labeled\nconfigurations. Indeed, this classifier was trained with a examples are used during evaluation. heuristic-based robustness evaluation metric named Robust To observe the lack of correlation between the rectangle\nFerrari-Canny. Moreover, the GQ-CNN was found experi- metric and grasp robustness, we conducted an experiment\nmentally to be an excellent predictor of grasp success, with usingtheDex-Net2.0dataset.Wefirstexaminedthequantity\n94%onknownobjectsandaprecisionof100%onunknown of predicted grasp rectangles that are considered positive\nobjects [12].",
+      "size": 737,
+      "sentences": 4
+    },
+    {
+      "id": 45,
+      "content": "ctor of grasp success, with usingtheDex-Net2.0dataset.Wefirstexaminedthequantity\n94%onknownobjectsandaprecisionof100%onunknown of predicted grasp rectangles that are considered positive\nobjects [12]. As a reminder, the GQ-CNN takes as an input by the rectangle metric but are not robust according to the\na 32×32 depth image centered around the grasp location robustness classification metric of GQ-CNN, described in\nand classifies whether or not it is a robust grasp location. Sec. V-A. These account for 46.3% and 30.8% of grasps\nWe evaluated our architecture and the one-shot baseline detected by respectively MultiGrasp and GQ-STN.",
+      "size": 634,
+      "sentences": 5
+    },
+    {
+      "id": 46,
+      "content": "her or not it is a robust grasp location. Sec. V-A. These account for 46.3% and 30.8% of grasps\nWe evaluated our architecture and the one-shot baseline detected by respectively MultiGrasp and GQ-STN. Con-\narchitectures(DirectGraspandMultiGrasp)usingthisrobust- versely,weexaminedthegraspsthatareconsiderednegative\nnessevaluationmethodology.Forthebaselines,weextracted according to the rectangle metric but are robust according to\na 32×32 depth image around the grasp rectangle and fed therobustnessclassificationmetric.Theseaccountfor50.7%\nit to GQ-CNN for classification. The output image crop and 51.9% of grasps detected by respectively MultiGrasp\ngenerated automatically by our GQ-STN architecture was and GQ-STN. These represent grasp rectangles that would\nused directly for evaluation. For all architectures, a grasp be positive if they were annotated in the dataset. Examples\nconfiguration was considered positive if it was classified\nas robust by GQ-CNN.",
+      "size": 962,
+      "sentences": 9
+    },
+    {
+      "id": 47,
+      "content": "sed directly for evaluation. For all architectures, a grasp be positive if they were annotated in the dataset. Examples\nconfiguration was considered positive if it was classified\nas robust by GQ-CNN. Robustness classification results are\nfound in Table I. B. Rectangle Metric\nThe rectangle metric is a standard evaluation metric for\ngraspingsystemsintroducedin[32].Givenagraspprediction\nP and its closest ground truth G, P is considered correct if (cid:124) (cid:123)(cid:122) (cid:125) (cid:124) (cid:123)(cid:122) (cid:125)\nnegative positive\nboth:\nFig.6. Examplesofgrasppredictions(inred)andgroundtruthannotations\n1) the angle difference between P and G is below 30◦; (ingreen)depictingthelimitationsofthegrasprectangleasanevaluation\nmetric. (Left)Examplesofnegativesgraspsoftherectanglemetricclassified\n2) theJaccardindexJ(P,G)=|P∩G|/|P∪G|isgreater\nrobust by GQ-CNN. (Right) Examples of positive grasps of the rectangle\nthat 0.25. metricclassifiednon-robustbyGQ-CNN.",
+      "size": 969,
+      "sentences": 8
+    },
+    {
+      "id": 48,
+      "content": "raspsoftherectanglemetricclassified\n2) theJaccardindexJ(P,G)=|P∩G|/|P∪G|isgreater\nrobust by GQ-CNN. (Right) Examples of positive grasps of the rectangle\nthat 0.25. metricclassifiednon-robustbyGQ-CNN. === 페이지 7 ===\nare shown in Figure 6. These auxiliary results show that,\nespecially in the context of sparse grasp annotations such as\nwith the Dex-Net 2.0 dataset, the rectangle metric does not\nproperly represent the performance of a grasping system. This further motivates our choice of evaluating with a\nrobustness classification metric. C. Metric Results\nTableIshowsthatoverall,ontheDex-Net2.0dataset,our\napproach is able to return a significantly higher percentage\nof high-quality grasps (92.4%) than the one-shot detection\napproach based on MultiGrasp (30.6%) and DirectGrasp\n(25.9%).Thislargeperformancegapcanbeexplainedbythe\nfact that our approach enables us to optimize directly on the\nrobustness classification metric, which is impossible for the\ntwo baselines.",
+      "size": 970,
+      "sentences": 6
+    },
+    {
+      "id": 49,
+      "content": "rectGrasp\n(25.9%).Thislargeperformancegapcanbeexplainedbythe\nfact that our approach enables us to optimize directly on the\nrobustness classification metric, which is impossible for the\ntwo baselines. For all approaches, the rectangle metric tends\nto under-estimate the performance, which is explainable by\nsparse grasp annotations of the Dex-Net 2.0 dataset, as Fig. 7. Examples of robust and non-robust grasp detection made by\nGQ-STNandProp+GQ-CNNinourphysicalbenchmark. discussed in Section V-B. We also tested the three models on the Jacquard dataset, used in [12]. During testing, we placed the target object at\nwhich, contrary to Dex-Net 2.0, contains dense grasp rect- a random position near the center of the table, by shaking it\nangle annotations. As we can see in Table I, our GQ- underaboxtoensurerandomorientation,asinMahleretal. STN returns significantly more robust grasp (60.4%) than [12]. We then estimated the grasp configuration with one of\nthe best baseline MultiGrasp (34.2%).",
+      "size": 995,
+      "sentences": 10
+    },
+    {
+      "id": 50,
+      "content": "boxtoensurerandomorientation,asinMahleretal. STN returns significantly more robust grasp (60.4%) than [12]. We then estimated the grasp configuration with one of\nthe best baseline MultiGrasp (34.2%). This shows a good thethreemethods,andusedacustompathplannertoexecute\ngeneralization of our method, which is also observed in the the grasp motion. The gripper default opening was 8.5 cm. physical benchmark (Section V-D). It closed on the object until a maximum force feedback is\nreached. Upon closure, the object was lifted from the table\nD. Physical benchmark\nand the success evaluated manually. Each of the 12 objects\nWe evaluated all three methods in real-world conditions was tested 5 times, for each compared method. In total, we\nusing the physical setup seen in Figure 5. It comprised a performed 180 grasp attempts. Universal Robots UR5 arm, a Robotiq 85 gripper and a We computed three metrics in this physical benchmark:\nMicrosoft Kinect sensor.",
+      "size": 954,
+      "sentences": 12
+    },
+    {
+      "id": 51,
+      "content": "etup seen in Figure 5. It comprised a performed 180 grasp attempts. Universal Robots UR5 arm, a Robotiq 85 gripper and a We computed three metrics in this physical benchmark:\nMicrosoft Kinect sensor. The Kinect sensor was mounted 1) Success rate: Percentage of the lift attempts that\n70 cm perpendicular to the table’s surface. Grasp prediction resulted in a success. We execute the detected grasp\nwas based on a single rectified depth image, where we even if it is not classified robust by the robustness\nreplaced invalid depth pixels using inpainting [24]. classification metric. We selected 12 household and office objects for testing, 2) Robust prediction rate: Percentage of the time the\nshowninFigure5.Wechoseobjectsthathaveagoodvariety detected grasp (or the top grasp candidate for the\nof shape, material and texture and are similar to the one sampling-basedProp+GQ-CNN)isrobustaccordingto\nthe robustness classification metric.",
+      "size": 935,
+      "sentences": 8
+    },
+    {
+      "id": 52,
+      "content": "ariety detected grasp (or the top grasp candidate for the\nof shape, material and texture and are similar to the one sampling-basedProp+GQ-CNN)isrobustaccordingto\nthe robustness classification metric. 3) Grasp detection time: Time in seconds between cap-\nTABLEI\nturing an image and returning a grasp location. Here,\nCOMPARISONOFONE-SHOTMETHODSONEVALUATIONMETRICS. we ignore time taken for inpainting. TestDataset Model Precision(%) As we can see in Tab. II, all three methods performed\nRectangle Robust\nsimilarly, within the uncertainty of low samples. However,\nDirectGrasp 48.1 25.9\nourmethodreturnedarobustgrasp61.7%ofthetime,which\nDex-Net2.0 MultiGrasp 48.4 30.6\nGQ-STN(ours) 46.7 92.4 is significantly more than MultiGrasp and above Prop+GQ-\nJacquard DirectGrasp 67.4 32.7 CNN.",
+      "size": 780,
+      "sentences": 7
+    },
+    {
+      "id": 53,
+      "content": "9\nourmethodreturnedarobustgrasp61.7%ofthetime,which\nDex-Net2.0 MultiGrasp 48.4 30.6\nGQ-STN(ours) 46.7 92.4 is significantly more than MultiGrasp and above Prop+GQ-\nJacquard DirectGrasp 67.4 32.7 CNN. MultiGrasp 71.8 34.2\n(trainedonDex-Net2.0) Qualitatively, the approach Prop+GQ-CNN seemed to\nGQ-STN(ours) 70.8 60.4\nperform slightly better during real experiments, especially\nTABLEII withlargerobjectssuchastheredchipsclip.Insomesense,\nCOMPARISONOFMETHODSONOURPHYSICALBENCHMARK. this is not surprising as it evaluated the grasp quality over\n1000 positions. Figure 7 shows examples of grasp detection\nModel Successrate Robustpred. Grasp\non our physical benchmark. Even though the methods were\n(%) rate(%) detect.time\n(sec) trained only on simulated data, its large amount helped\nMultiGrasp 95 21.7 0.014 generalization to real-world conditions, as noted as well by\nGQ-STN(ours) 96.7 61.7 0.024 Mahler et al. [12].",
+      "size": 912,
+      "sentences": 7
+    },
+    {
+      "id": 54,
+      "content": "me\n(sec) trained only on simulated data, its large amount helped\nMultiGrasp 95 21.7 0.014 generalization to real-world conditions, as noted as well by\nGQ-STN(ours) 96.7 61.7 0.024 Mahler et al. [12]. Note that no domain-randomization was\nProp+GQ-CNN 98.3 48.3 1.5 used here, contrary to Bousmalis et al. [13]. [표 데이터 감지됨]\n\n=== 페이지 8 ===\nIn terms of timing, our GQ-STN approach is in the same [6] D.ParkandS.Y.Chun,“Classificationbasedgraspdetectionusing\norderofmagnitudeastheMultiGraspapproach,eventhough spatialtransformernetwork,”CoRR,2018. [7] F.J.Chu,R.Xu,andP.A.Vela,“Real-worldmultiobject,multigrasp\nwe run an image through three ResNet networks (one per\ndetection,”RA-L,vol.3,no.4,pp.3355–3362,Oct.2018. Localization Network inside the STN).",
+      "size": 748,
+      "sentences": 7
+    },
+    {
+      "id": 55,
+      "content": "J.Chu,R.Xu,andP.A.Vela,“Real-worldmultiobject,multigrasp\nwe run an image through three ResNet networks (one per\ndetection,”RA-L,vol.3,no.4,pp.3355–3362,Oct.2018. Localization Network inside the STN). The detection time [8] D.Chen,V.Dietrich,Z.Liu,andG.vonWichert,“Aprobabilistic\nfor Prop+GQ-CNN is two order of magnitudes larger than framework for uncertainty-aware high-accuracy precision grasping\nofunknownobjects,”J.ofIntelligent&RoboticSystems,Oct.2017. our approach, i.e. around 60 times slower. This limits its\n[9] L.Trottier,P.Gigue`re,andB.Chaib-Draa,“Convolutionalresidual\nability to perform real-time grasp detection. networkforgrasplocalization,”inCRV,2017,pp.168–175. Even though GQ-STN returns a single grasp and does so [10] L. Pinto and A. Gupta, “Supersizing self-supervision: Learning to\ngraspfrom50Ktriesand700robothours,”inICRA,2016. much faster, GQ-STN finds a robust grasp more often that\n[11] S.Levine,P.Pastor,A.Krizhevsky,andD.Quillen,“Learninghand-\nProp+GQ-CNN’s sampling.",
+      "size": 997,
+      "sentences": 9
+    },
+    {
+      "id": 56,
+      "content": "ing to\ngraspfrom50Ktriesand700robothours,”inICRA,2016. much faster, GQ-STN finds a robust grasp more often that\n[11] S.Levine,P.Pastor,A.Krizhevsky,andD.Quillen,“Learninghand-\nProp+GQ-CNN’s sampling. Considering the high precision eyecoordinationforroboticgraspingwithdeeplearningandlarge-\nof the robustness classification metric, this enables GQ-STN scaledatacollection,”I.J.RoboticsRes.,vol.37,pp.421–436,2018. [12] J. Mahler, J. Liang, S. Niyaz, M. Laskey, R. Doan, X. Liu, J. A.\nto be used in a framework where we first evaluate the fast\nOjea,andK.Goldberg,“Dex-Net2.0:DeepLearningtoPlanRobust\nGQ-STN then fallback to a slow sampling method if we GraspswithSyntheticPointCloudsandAnalyticGraspMetrics,”in\nhavenotfoundarobustgrasp,improvingtheoverallaverage RSS,2017. [13] K.Bousmalis,A.Irpan,P.Wohlhart,Y.Bai,M.Kelcey,M.Kalakr-\nplanning time. ishnan, L. Downs, J. Ibarz, P. Pastor, K. Konolige, S. Levine, and\nV.Vanhoucke,“Usingsimulationanddomainadaptationtoimprove\nVI.",
+      "size": 974,
+      "sentences": 7
+    },
+    {
+      "id": 57,
+      "content": "K.Bousmalis,A.Irpan,P.Wohlhart,Y.Bai,M.Kelcey,M.Kalakr-\nplanning time. ishnan, L. Downs, J. Ibarz, P. Pastor, K. Konolige, S. Levine, and\nV.Vanhoucke,“Usingsimulationanddomainadaptationtoimprove\nVI. CONCLUSION\nefficiencyofdeeproboticgrasping,”inICRA,2018,pp.4243–4250. In this paper, we present a novel architecture for one- [14] I.Lenz,H.Lee,andA.Saxena,“Deeplearningfordetectingrobotic\ngrasps,”I.J.RoboticsRes.,vol.34,no.4-5,pp.705–724,2015. shot detection of grasp localization, based on the Spatial\n[15] M. Jaderberg, K. Simonyan, A. Zisserman, and K. Kavukcuoglu,\nTransformer Network (STN) architecture. With it, we have “SpatialTransformerNetworks,”inNIPS,2015. demonstratedhowonecanusesupervisionfromarobustness [16] U. Asif, J. Tang, and S. Harrer, “Ensemblenet: Improving grasp\ndetection using an ensemble of convolutional neural networks,” in\nclassifier to train one-shot grasp detection. On the Dex-Net\nBMVC,2018.",
+      "size": 924,
+      "sentences": 8
+    },
+    {
+      "id": 58,
+      "content": ". Asif, J. Tang, and S. Harrer, “Ensemblenet: Improving grasp\ndetection using an ensemble of convolutional neural networks,” in\nclassifier to train one-shot grasp detection. On the Dex-Net\nBMVC,2018. 2.0dataset,ourmethodreturnsrobustgraspsmoreoftenthan [17] J. Redmon and A. Angelova, “Real-time grasp detection using\na baseline model that is only trained using the geometric convolutionalneuralnetworks,”inICRA,2015,pp.1316–1322. [18] A. Krizhevsky, I. Sutskever, and G. E. Hinton, “ImageNet classifi-\nsupervision. We showed in a physical benchmark that our\ncationwithdeepconvolutionalneuralnetworks,”NIPS,2012. method can find robust grasps in real-world conditions more [19] S. Kumra and C. Kanan, “Robotic grasp detection using deep\noftenthatsamplingmethods,whilestillperformingreal-time convolutionalneuralnetworks,”inIROS,2017,pp.769–776. [20] K. He, X. Zhang, S. Ren, and J.",
+      "size": 881,
+      "sentences": 8
+    },
+    {
+      "id": 59,
+      "content": "umra and C. Kanan, “Robotic grasp detection using deep\noftenthatsamplingmethods,whilestillperformingreal-time convolutionalneuralnetworks,”inIROS,2017,pp.769–776. [20] K. He, X. Zhang, S. Ren, and J. Sun, “Deep residual learning for\n(over40Hz),whichisgreaterthanframerategraspdetection\nimagerecognition,”inCVPR,vol.7,2015,pp.171–180. on a Kinect. [21] L.Chen,P.Huang,andZ.Meng,“Convolutionalmulti-graspdetec-\nThis speed opens up the possibility of carrying out visual tionusinggrasppathforRGBDimages,”RoboticsandAutonomous\nSystems,vol.113,Mar.2019. servoing for grasping, for moving objects for instance. If a\n[22] J.RedmonandA.Farhadi,“YOLO9000:Better,faster,stronger,”in\ncamera in-hand is used, it makes it possible to explore a CVPR,2017,pp.6517–6525. object in real-time, similarly to a next-best-view approach, [23] S. Ren, K. He, R. Girshick, and J. Sun, “Faster R-CNN: Towards\nreal-time object detection with region proposal networks,” NIPS,\nakintoLevineetal.",
+      "size": 966,
+      "sentences": 9
+    },
+    {
+      "id": 60,
+      "content": "al-time, similarly to a next-best-view approach, [23] S. Ren, K. He, R. Girshick, and J. Sun, “Faster R-CNN: Towards\nreal-time object detection with region proposal networks,” NIPS,\nakintoLevineetal. [11].Thereareotherinterestingresearch\npp.1–10,2015. avenues at the network architecture level for future work. [24] E.Johns,S.Leutenegger,andA.J.Davison,“Deeplearningagrasp\nFor instance, since all inputs of the Spatial Transformer functionforgraspingundergripperposeuncertainty,”inIROS,2016. [25] V.Satish,J.Mahler,andK.Goldberg,“On-policydatasetsynthesis\nNetwork(STN)aresimilardepthimages,onecouldimagine\nfor learning robot grasping policies using fully convolutional deep\naparametersharingmechanismtospeedupthetrainingtime networks,”RA-L,vol.4,no.2,pp.1357–1364,2019. and reduce the model size. [26] W. Wohlkinger, A. Aldoma, R. B. Rusu, and M. Vincze, “3DNet:\nLarge-scale object class recognition from cad models,” in ICRA,\n2012,pp.5384–5391.",
+      "size": 945,
+      "sentences": 8
+    },
+    {
+      "id": 61,
+      "content": "no.2,pp.1357–1364,2019. and reduce the model size. [26] W. Wohlkinger, A. Aldoma, R. B. Rusu, and M. Vincze, “3DNet:\nLarge-scale object class recognition from cad models,” in ICRA,\n2012,pp.5384–5391. ACKNOWLEDGEMENTS\n[27] A. Kasper, Z. Xue, and R. Dillmann, “The KIT object models\nThis works was financed by the Fonds de Recherche du database: An object model database for object recognition, local-\nization and manipulation in service robotics,” I. J. Robotics Res.,\nQue´bec – Nature et technologies and the Natural Sciences\nvol.31,no.8,pp.927–934,2012. and Engineering Research Council of Canada. [28] J.Mahler,F.T.Pokorny,B.Hou,M.Roderick,M.Laskey,M.Aubry,\nK.Kohlhoff,T.Kroger,J.Kuffner,andK.Goldberg,“Dex-Net1.0:A\nREFERENCES cloud-basednetworkof3Dobjectsforrobustgraspplanningusinga\n[1] J.-P. Mercier, C. Mitash, P. Gigue`re, and A. Boularias, “Learning Multi-ArmedBanditmodelwithcorrelatedrewards,”inICRA,2016.",
+      "size": 915,
+      "sentences": 7
+    },
+    {
+      "id": 62,
+      "content": "A\nREFERENCES cloud-basednetworkof3Dobjectsforrobustgraspplanningusinga\n[1] J.-P. Mercier, C. Mitash, P. Gigue`re, and A. Boularias, “Learning Multi-ArmedBanditmodelwithcorrelatedrewards,”inICRA,2016. object localization and 6d pose estimation from simulation and [29] D. Park, Y. Seo, and S. Y. Chun, “Rotation ensemble module for\nweaklylabeledrealimages,”inICRA,2019. detectingrotation-invariantfeatures,”CoRR,2018. [2] N. Correll, K. E. Bekris, D. Berenson, O. Brock, A. Causo, K. [30] I. Goodfellow, Y. Bengio, and A. Courville, Deep learning. MIT\nHauser,K.Okada,A.Rodriguez,J.M.Romano,andP.R.Wurman, Press,2016. “Analysisandobservationsfromthefirstamazonpickingchallenge,” [31] A. Depierre, E. Dellandre´a, and L. Chen, “Jacquard: A large scale\nT-ASE,vol.15,no.1,pp.172–188,2018. datasetforroboticgraspdetection,”inIROS,2018,pp.3511–3516.",
+      "size": 842,
+      "sentences": 7
+    },
+    {
+      "id": 63,
+      "content": "mthefirstamazonpickingchallenge,” [31] A. Depierre, E. Dellandre´a, and L. Chen, “Jacquard: A large scale\nT-ASE,vol.15,no.1,pp.172–188,2018. datasetforroboticgraspdetection,”inIROS,2018,pp.3511–3516. [3] J.Bohg,A.Morales,T.Asfour,andD.Kragic,“Data-drivengrasp [32] Y.Jiang,S.Moseson,andA.Saxena,“EfficientgraspingfromRGBD\nsynthesis—asurvey,”T-RO,vol.30,no.2,pp.289–309,2014. images: Learning using a new rectangle representation,” in ICRA,\n[4] L.Trottier,P.Gigue`re,andB.Chaib-draa,“Sparsedictionarylearn- 2011,pp.3304–3311. ingforidentifyinggrasplocations,”inWACV,2017,pp.871–879. [33] G. Ghazaei, I. Laina, C. Rupprecht, F. Tombari, N. Navab, and K.\n[5] X.Zhou,X.Lan,H.Zhang,Z.Tian,Y.Zhang,andN.Zheng,“Fully Nazarpour,“Dealingwithambiguityinroboticgraspingviamultiple\nconvolutionalgraspdetectionnetworkwithorientedanchorbox,”in predictions,”inACCV,2018. IROS,2018,pp.7223–7230.",
+      "size": 879,
+      "sentences": 7
+    }
+  ]
+}
