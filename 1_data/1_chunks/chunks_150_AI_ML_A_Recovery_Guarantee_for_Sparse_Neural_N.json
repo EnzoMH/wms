@@ -1,0 +1,1335 @@
+{
+  "source": "ArXiv",
+  "filename": "150_AI_ML_A_Recovery_Guarantee_for_Sparse_Neural_N.pdf",
+  "domain": "AI",
+  "total_chars": 70363,
+  "total_chunks": 221,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\nA Recovery Guarantee for Sparse Neural Networks\nSaraFridovich-Keil∗ MertPilanci\nStanfordUniversity&GeorgiaInstituteofTechnology StanfordUniversity\nsfk@gatech.edu pilanci@stanford.edu\nAbstract\nWeprovethefirstguaranteesofsparserecoveryforReLUneuralnetworks,where\nthesparsenetworkweightsconstitutethesignaltoberecovered.",
+      "size": 328,
+      "sentences": 1
+    },
+    {
+      "id": 2,
+      "content": "fsparserecoveryforReLUneuralnetworks,where\nthesparsenetworkweightsconstitutethesignaltoberecovered. Specifically,we\nstudy structural properties of the sparse network weights for two-layer, scalar-\noutput networks under which a simple iterative hard thresholding algorithm re-\ncoverstheseweightsexactly,usingmemorythatgrowslinearlyinthenumberof\nnonzeroweights. Wevalidatethistheoreticalresultwithsimpleexperimentsonre-\ncoveryofsparseplantedMLPs,MNISTclassification,andimplicitneuralrepresen-\ntations.",
+      "size": 499,
+      "sentences": 3
+    },
+    {
+      "id": 3,
+      "content": "eexperimentsonre-\ncoveryofsparseplantedMLPs,MNISTclassification,andimplicitneuralrepresen-\ntations. Experimentally,wefindperformancethatiscompetitivewith,andoftenex-\nceeds,ahigh-performingbutmemory-inefficientbaselinebasedoniterativemagni-\ntudepruning. Codeisavailableathttps://github.com/voilalab/MLP-IHT.",
+      "size": 306,
+      "sentences": 3
+    },
+    {
+      "id": 4,
+      "content": "ntbaselinebasedoniterativemagni-\ntudepruning. Codeisavailableathttps://github.com/voilalab/MLP-IHT. 1 Introduction\nConsiderthetaskoftrainingasparsemultilayerperceptron(MLP).Weviewthistaskthroughthe\nlensofsparsesignalrecovery,inwhichthesignaltoberecoveredisthevectorizedMLPweights,\nmostofwhicharezero—soexactrecoveryrequiresfindingtheindicesandvaluesofthefewnonzero\nMLPweights. Aretheseweightsuniquelyidentifiablefromtrainingdata? Cantheyberecovered\nefficientlyinbothmemoryanditerationcomplexity?",
+      "size": 495,
+      "sentences": 5
+    },
+    {
+      "id": 5,
+      "content": "uelyidentifiablefromtrainingdata? Cantheyberecovered\nefficientlyinbothmemoryanditerationcomplexity? Forscalar-output,two-layerMLPsweanswer\nbothquestionsintheaffirmative,provingwhatistoourknowledgethefirstrecoveryguaranteefor\nsparseMLPweights. Largeneuralnetworksarewidelyusedasuniversalfunctionapproximators(Horniketal.,1989),\nbutasmodelsizegrowsnetworksrequireeverlargermemoryandcomputetimetotrain(Kaplan\netal.,2020).",
+      "size": 418,
+      "sentences": 4
+    },
+    {
+      "id": 6,
+      "content": ",1989),\nbutasmodelsizegrowsnetworksrequireeverlargermemoryandcomputetimetotrain(Kaplan\netal.,2020). Althoughlargenetworkstendtobetrainabletothehighestquality,trainednetwork\nweightsareoftenhighlycompressible,e.g. bypruning,allowingfordramaticsavingsinmemory\nandcomputationatinferencetime(Chengetal.,2024). Whilesparseandhigh-performingnetworks\nare known to exist, efficiently optimizing them is an open challenge.",
+      "size": 412,
+      "sentences": 4
+    },
+    {
+      "id": 7,
+      "content": "rseandhigh-performingnetworks\nare known to exist, efficiently optimizing them is an open challenge. Existing approaches often\ncompromiseeithermemoryefficiency—requiringmemorytofirsttrainadensenetwork(Frankleand\nCarbin,2019;SaikumarandVarghese,2024;GharatappehandSekeh,2025)—orquality,failingto\nmatchtheperformanceofdensecounterparts(Frankleetal.,2021;SaikumarandVarghese,2024).",
+      "size": 377,
+      "sentences": 2
+    },
+    {
+      "id": 8,
+      "content": "ality,failingto\nmatchtheperformanceofdensecounterparts(Frankleetal.,2021;SaikumarandVarghese,2024). Whilesomestrategiescanempiricallybalanceefficiencyandquality(Pargeretal.,2022;Jinetal.,\n2016;Damadietal.,2024),allexistingapproachestosparsenetworktrainingareheuristicinnature\nandlackformalguaranteesofweightrecovery.",
+      "size": 316,
+      "sentences": 2
+    },
+    {
+      "id": 9,
+      "content": "stingapproachestosparsenetworktrainingareheuristicinnature\nandlackformalguaranteesofweightrecovery. Atthesametime,thecompressedsensingliteratureisrichwiththeoretically-justifiedalgorithmsto\nleveragesparsityinlarge-scaleoptimizationtasks(seee.g.,WrightandMa(2022)foranaccessible\noverview). However,theseresultsaretypicallydesignedforlinearmodelsandconvexoptimization,\nanddonotdirectlyapplytorecoveryofsparseMLPweights(Tropp,2004;KhannaandKyrillidis,\n2018;Aghazadehetal.,2018).",
+      "size": 475,
+      "sentences": 3
+    },
+    {
+      "id": 10,
+      "content": "irectlyapplytorecoveryofsparseMLPweights(Tropp,2004;KhannaandKyrillidis,\n2018;Aghazadehetal.,2018). Our work bridges this gap by leveraging the recent development of a convex reformulation of\nMLPs(PilanciandErgen,2020a;ErgenandPilanci,2024),whichallowsustoapplystrongresults\n∗ThisworkwasinitiatedasapostdocatStanford,andcompletedasanassistantprofessoratGeorgiaTech.",
+      "size": 365,
+      "sentences": 2
+    },
+    {
+      "id": 11,
+      "content": "gresults\n∗ThisworkwasinitiatedasapostdocatStanford,andcompletedasanassistantprofessoratGeorgiaTech. 5202\npeS\n42\n]GL.sc[\n1v32302.9052:viXra\n===  2 ===\nfromsparsesignalestimation(Jainetal.,2014)tothetaskoftrainingasparseMLP.Initsconvex\nreformulation,sparseMLPoptimizationcanbeviewedasahighlystructuredlinearsensingproblem\nin which the network weights are the signal to be recovered.",
+      "size": 380,
+      "sentences": 2
+    },
+    {
+      "id": 12,
+      "content": "sahighlystructuredlinearsensingproblem\nin which the network weights are the signal to be recovered. We show that, when the training\ndata consists of network evaluations at random Gaussian sample points, this highly structured\nsensingmatrixsatisfies(withhighprobability)theclassicrestrictedstrongconvexityandrestricted\nsmoothnessconditionsthatsufficetoenableefficientsparserecoveryviaasimpleprojectedgradient\ndescentmethodknownasIterativeHardThresholding(IHT).Concretely,wemakethefollowing\ncontributions:\n• WeprovethefirstsparserecoveryresultapplicabletoReLUMLPs,focusingonthecaseof\nashallowscalar-outputnetworkandrandomGaussiandata.",
+      "size": 632,
+      "sentences": 2
+    },
+    {
+      "id": 13,
+      "content": "ryresultapplicabletoReLUMLPs,focusingonthecaseof\nashallowscalar-outputnetworkandrandomGaussiandata. Ourresultincludesbothunique\nidentifiabilityofsparsenetworkweightsaswellasahigh-probabilityguaranteeofefficient\nrecoveryoftheseweightsviaIHT,buildingonaresultfromJainetal.(2014).",
+      "size": 277,
+      "sentences": 3
+    },
+    {
+      "id": 14,
+      "content": "-probabilityguaranteeofefficient\nrecoveryoftheseweightsviaIHT,buildingonaresultfromJainetal.(2014). • Wedemonstrateinasuiteofillustrativesmall-scaleexperimentsthatIHTindeedtendsto\noutperformastrongbutmemory-inefficientbaselineofiterativemagnitudepruning(IMP)\n(FrankleandCarbin,2019),recoveringhigher-performingsparsenetworkswhileusingless\nmemoryduringoptimization. Ourexperimentsincludeboth2-layerand3-layerMLPswith\nbothscalarandvectorvaluedoutputs,extendingbeyondtheregimeofourtheoreticalresults.",
+      "size": 497,
+      "sentences": 3
+    },
+    {
+      "id": 15,
+      "content": "nd3-layerMLPswith\nbothscalarandvectorvaluedoutputs,extendingbeyondtheregimeofourtheoreticalresults. 2 Relatedwork\n2.1 SparseNeuralNetworks\nPriorworkhasshownthat,indiversecontexts,alargeneuralnetworkmaybewellapproximatedby\nasparsesubnetwork,forexamplewithonly10%oftheoriginalparametersleftnonzero(Frankle\nandCarbin,2019;Nowaketal.,2023).",
+      "size": 336,
+      "sentences": 2
+    },
+    {
+      "id": 16,
+      "content": "rk,forexamplewithonly10%oftheoriginalparametersleftnonzero(Frankle\nandCarbin,2019;Nowaketal.,2023). Sparsenetworksarefarcheaperandfastertoevaluateand\nstore,makingthemattractiveforapplicationsonedgeandresource-constrainedplatformsaswellas\nfordemocratizingaccesstolargefoundationmodels. Moreover,inmanycasesasparsesubnetwork\ncan even outperform the prediction accuracy (Frankle and Carbin, 2019) and out-of-distribution\nrobustness(Diffenderferetal.,2021;Wuetal.,2024)oftheoriginaldensenetwork.",
+      "size": 491,
+      "sentences": 3
+    },
+    {
+      "id": 17,
+      "content": ") and out-of-distribution\nrobustness(Diffenderferetal.,2021;Wuetal.,2024)oftheoriginaldensenetwork. However,sparsenetworksarenotoriouslydifficulttooptimize. Existingapproachestofindingsparse\nnetworksfallintothreecategories: iterativepruning(FrankleandCarbin,2019;Liuetal.,2024),\npruningatinitialization(Wangetal.,2022;Frankleetal.,2021),anddynamicsparsetraining(Jinetal.,\n2016;Jietal.,2024;Nowaketal.,2023;Damadietal.,2024;Kusupatietal.,2020).",
+      "size": 443,
+      "sentences": 3
+    },
+    {
+      "id": 18,
+      "content": "micsparsetraining(Jinetal.,\n2016;Jietal.,2024;Nowaketal.,2023;Damadietal.,2024;Kusupatietal.,2020). Respectively,\ntheseapproachestendtobehigh-performingbutrequirehighmemoryduringoptimization,memory\nand computation efficient to optimize but with reduced final model performance, and efficient\nbut heuristic to optimize to reasonable final performance. None of the existing sparse network\noptimizationparadigmscomewiththeoreticalunderstandingorrecoveryguarantees.",
+      "size": 461,
+      "sentences": 3
+    },
+    {
+      "id": 19,
+      "content": "existing sparse network\noptimizationparadigmscomewiththeoreticalunderstandingorrecoveryguarantees. PriortheoreticalresultsforsparseneuralnetworksarepresentinBoursierandFlammarion(2023)\nand Ergen and Pilanci (2021) (see Lemma 10 therein), which derive conditions under which the\nsparsesttwo-layerMLPmayberecoveredbyminimizingtheEuclideannormoftheweights(i.e.,\napplying weight decay).",
+      "size": 382,
+      "sentences": 2
+    },
+    {
+      "id": 20,
+      "content": "esttwo-layerMLPmayberecoveredbyminimizingtheEuclideannormoftheweights(i.e.,\napplying weight decay). However, Boursier and Flammarion (2023) focuses on univariate data\nandErgenandPilanci(2021)considerssparsityofthesecond(output)layerweights,whereasour\nanalysisconsidersarbitrarydatadimensionwithafocusonsparsityofthefirst(hidden)layerweights. TherecoveryresultinErgenandPilanci(2021)alsorequiresfewerdatapointsthandimensions,\nwhileourresultdoesnot.",
+      "size": 447,
+      "sentences": 3
+    },
+    {
+      "id": 21,
+      "content": "overyresultinErgenandPilanci(2021)alsorequiresfewerdatapointsthandimensions,\nwhileourresultdoesnot. Further,theconditionsinErgenandPilanci(2021)arebasedontheKKT\noptimalityconditionsofasemi-infiniteconvexformulation(HettichandKortanek,1993)andarenot\nstraightforwardtoverify,norisatractablerecoveryalgorithmpresentedinErgenandPilanci(2021).",
+      "size": 338,
+      "sentences": 2
+    },
+    {
+      "id": 22,
+      "content": "andarenot\nstraightforwardtoverify,norisatractablerecoveryalgorithmpresentedinErgenandPilanci(2021). Incontrast,ourguaranteeofsparseweightrecoveryreliesonverifiableandsatisfiableconditions\nthatweshowholdwithhighprobabilityunderrandomtrainingdata,andweprovethataniterative\nalgorithm(iterativehardthresholding)achievessuccessfulrecoveryofsparseneuronweights.",
+      "size": 355,
+      "sentences": 2
+    },
+    {
+      "id": 23,
+      "content": "hataniterative\nalgorithm(iterativehardthresholding)achievessuccessfulrecoveryofsparseneuronweights. 2.2 ConvexNeuralNetworks\nRecentworkhasrevealedanequivalencebetweentrainingshallow(PilanciandErgen,2020a)or\ndeep(ErgenandPilanci,2024)neuralnetworksandsolvingconvexoptimizationproblemsdefined\nbynetworkarchitectures. Thecoreideainvolvesenumeratingorsamplingneuronactivationpathsto\nformafixeddictionary,whosecoefficientsareoptimizedviaconvexprogramming.",
+      "size": 450,
+      "sentences": 3
+    },
+    {
+      "id": 24,
+      "content": "lingneuronactivationpathsto\nformafixeddictionary,whosecoefficientsareoptimizedviaconvexprogramming. 2\n===  3 ===\nSpecifically, a two-layer ReLU network approximates labels y using the nonconvex form y ≈\n(cid:80)p\n(Xu ) v ,whereU = [u ,...,u ]andv arethenetworkweightsandX isthedatamatrix.",
+      "size": 288,
+      "sentences": 2
+    },
+    {
+      "id": 25,
+      "content": "nvex form y ≈\n(cid:80)p\n(Xu ) v ,whereU = [u ,...,u ]andv arethenetworkweightsandX isthedatamatrix. j=1 j + j 1 p\nInstead,theconvexformulationusesactivationpatternsD =Diag(I[Xu≥0])enumeratedoverall\ni\nutoexpressthesamenetworkas\nP\n(cid:88)\ny ≈ D X(w˜ −w ), (1)\ni i i\ni=1\nsubjectto(2D −I )Xw˜ ≥0and(2D −I )Xw ≥0foralli.",
+      "size": 316,
+      "sentences": 2
+    },
+    {
+      "id": 26,
+      "content": "networkas\nP\n(cid:88)\ny ≈ D X(w˜ −w ), (1)\ni i i\ni=1\nsubjectto(2D −I )Xw˜ ≥0and(2D −I )Xw ≥0foralli. Optimalvaluesofthenonconvex\ni n i i n i\nweightsU andvcanberecoveredfromoptimalvaluesoftheconvexoptimizationparametersw˜and\nw. Notethatweusethetermactivationpatterntorefertoabinarypatternwhoselengthmatches\nthenumberoftrainingexamples,andwhosevaluesdenotewhichtrainingexamplesareattendedto\nbyaparticularneuron(eachneuronhasitsownactivationpattern).",
+      "size": 446,
+      "sentences": 2
+    },
+    {
+      "id": 27,
+      "content": "denotewhichtrainingexamplesareattendedto\nbyaparticularneuron(eachneuronhasitsownactivationpattern). Thetotalnumberofactivation\npatternsP derivedfromallpossibleuisboundedexponentiallyinthedatarankr,typicallyrequiring\nsubsampling for computational tractability. However, assuming sparsity in weights dramatically\nreducesthenumberofpossiblepatterns,enablingexactconvexoptimizationforlarge-scaledatasets.",
+      "size": 400,
+      "sentences": 3
+    },
+    {
+      "id": 28,
+      "content": "matically\nreducesthenumberofpossiblepatterns,enablingexactconvexoptimizationforlarge-scaledatasets. Section3describeshowweadaptandspecializethisconvexMLPreformulationforsparsenetworks\ninourtheoryandexperiments. 2.3 IterativeHardThresholding(IHT)\nIterative Hard Thresholding (IHT) is a special case of projected gradient descent, in which the\nprojectionisontothenonconvexsetofsparsevectors.",
+      "size": 389,
+      "sentences": 3
+    },
+    {
+      "id": 29,
+      "content": "al case of projected gradient descent, in which the\nprojectionisontothenonconvexsetofsparsevectors. Forlarge-scalesparserecoveryproblems,\nIHT and additive algorithms such as basis pursuit and matching pursuit (Tropp, 2004) are often\ntheonlyfeasiblealgorithms,duetotheirmemoryefficiencycomparedtoconvexrelaxationssuch\nasLASSO.IHTisalsowell-studiedtheoreticallyandcomeswithconvergenceguaranteesbothin\nitsclassicimplementation(BlumensathandDavies,2009,2010;Jainetal.,2014)andaccelerated\nvariants(Blumensath,2012;KhannaandKyrillidis,2018).",
+      "size": 535,
+      "sentences": 2
+    },
+    {
+      "id": 30,
+      "content": "dDavies,2009,2010;Jainetal.,2014)andaccelerated\nvariants(Blumensath,2012;KhannaandKyrillidis,2018). Someresultsalsoexistforavariantof\nIHTaugmentedwithacountsketchdatastructure(Aghazadehetal.,2018),whichcanexpandthe\nregimes of sparsity under which IHT enjoys successful recovery.",
+      "size": 278,
+      "sentences": 2
+    },
+    {
+      "id": 31,
+      "content": "azadehetal.,2018),whichcanexpandthe\nregimes of sparsity under which IHT enjoys successful recovery. Of these theoretical results for\nsparserecoverybyIHT,mostrequirethemeasurementmatrixtosatisfyeithertherestrictedisometry\nproperty (RIP) with a small enough RIP constant, or restricted strong convexity and restricted\nsmoothnesspropertieswithasmallenoughconditionnumber;theseconditionsaretoostrictforthe\nsparseMLPweightrecoverytaskweconsider. However,Jainetal.",
+      "size": 458,
+      "sentences": 3
+    },
+    {
+      "id": 32,
+      "content": "onnumber;theseconditionsaretoostrictforthe\nsparseMLPweightrecoverytaskweconsider. However,Jainetal. (2014)provedamoregeneralsparserecoveryresultforIHT,showingrecovery\nunderrestrictedstrongconvexityandrestrictedsmoothnesswithanarbitraryfiniteconditionnumber. Jainetal. (2014)’sresultholdsforclassicIHTwiththerelaxationthatthehardthresholdingstepof\nIHTmustprojectontoalargersparsitylevelthanthatofthetruesignal,wheretheinflationfactor\ngrowswithconditionnumber.",
+      "size": 458,
+      "sentences": 5
+    },
+    {
+      "id": 33,
+      "content": "ctontoalargersparsitylevelthanthatofthetruesignal,wheretheinflationfactor\ngrowswithconditionnumber. Ourtheoreticalresultsbuildonthisresulttoshowthatthetaskof\nrecoveringsparseMLPweightscanbereformulatedsoastosatisfytherestrictedstrongconvexity\nandrestrictedsmoothnesspropertiesinexpectationoverGaussiandata,allowingustoshowthatIHT\nisguaranteedtorecovertheweightsofaplantedsparseMLP. 3 Preliminaries\nConsideraReLUneuralnetworkwithvector-valuedinput,scalaroutput,andasinglehiddenlayer.",
+      "size": 482,
+      "sentences": 3
+    },
+    {
+      "id": 34,
+      "content": "Preliminaries\nConsideraReLUneuralnetworkwithvector-valuedinput,scalaroutput,andasinglehiddenlayer. WeuseX ∈Rn×dtodenotethe(Gaussian)datamatrixwithndatapointsanddata(input)dimension\nd. Wedenotethegroundtruthlabelsorvaluesasy ∈Rn,andtheneuralnetworkoutputasyˆ∈Rn. Thehiddenweightsofthe1-hidden-layerMLParedenotedU ∈Rd×pwherepisthewidthofthe\nhiddenlayer. Thecolumnsofthisweightmatrixareu ∈ Rd,i = 1,...,p,andthesecondlayer\ni\nweightsarev ,...,v .",
+      "size": 442,
+      "sentences": 4
+    },
+    {
+      "id": 35,
+      "content": "enlayer. Thecolumnsofthisweightmatrixareu ∈ Rd,i = 1,...,p,andthesecondlayer\ni\nweightsarev ,...,v . 1 p\nWenowdescribeconvexifyingthemodelbyfusingthefirstandsecondlayerweightsofthenon-\nconvexReLUmodel\n(cid:80)p\n(Xu ) v . Wecanexpressthismodelasfollows:\nj=1 j + j\n \nu v\n1 1\nyˆ=[diag(I{Xu ≥0})X ... diag(I{Xu ≥0})X] . .  (2)\n1 p  .",
+      "size": 333,
+      "sentences": 6
+    },
+    {
+      "id": 36,
+      "content": "ismodelasfollows:\nj=1 j + j\n \nu v\n1 1\nyˆ=[diag(I{Xu ≥0})X ... diag(I{Xu ≥0})X] . .  (2)\n1 p  . \n(cid:124) (cid:123)(cid:122) (cid:125)\nu v\nA∈Rn×dp p p\n3\n===  4 ===\nwhereweuseI{x≥0}todenotetheelementwiseindicatorfunction,takingvalue1atindiceswhere\nx ≥0andvalue0otherwise. i\nTraining(e.g. withMSEloss)the2-layerMLPinEquation(2)presentsanonconvexoptimization\nproblem,becausetheparametersu appearinboththeweightvectorandtheAmatrix.",
+      "size": 433,
+      "sentences": 6
+    },
+    {
+      "id": 37,
+      "content": "sentsanonconvexoptimization\nproblem,becausetheparametersu appearinboththeweightvectorandtheAmatrix. Weconvexify\nj\nbysimplyreplacingthepweightvectorsu intheAmatrixwithpseparate,fixedgeneratorvectors\ni\nh ∈Rd,andfusingtheweightsviaw =u v ∀i. Thisparameterizationwaspreviouslystudiedin\ni i i i\nMishkinetal. (2022),whereitwasshowntoyieldthegatedReLU(GReLU)networkclass,whichis\nequivalentinexpressivitytostandardReLUnetworks.",
+      "size": 419,
+      "sentences": 4
+    },
+    {
+      "id": 38,
+      "content": "showntoyieldthegatedReLU(GReLU)networkclass,whichis\nequivalentinexpressivitytostandardReLUnetworks. Here,weextendthisapproachandshowthat\nsparseReLUnetworkscanalsoberecoveredusingasimilarstrategy. Weobtain\n \nw\n1\nyˆ=[diag(I{Xh ≥0})X ... diag(I{Xh ≥0})X] . . ; (3)\n1 p  .",
+      "size": 273,
+      "sentences": 5
+    },
+    {
+      "id": 39,
+      "content": "singasimilarstrategy. Weobtain\n \nw\n1\nyˆ=[diag(I{Xh ≥0})X ... diag(I{Xh ≥0})X] . . ; (3)\n1 p  . \n(cid:124) (cid:123)(cid:122) (cid:125)\nw\nA p\ninthisformulationexactrecoveryamountstofindingthesparsevectorw⋆ ∈Rpwhosevaluesare\ntheweightsofagroundtruth,plantedMLP.Ifweallowtheeffectivehiddendimensionptobevery\nlarge(upto2d\n(cid:0)e(n−1)(cid:1)d\n(PilanciandErgen,2020b)),wecanchooseasetofvectorsh suchthat\nd i\n{(I{Xh ≥0})}p isexactlythesetofallpossibledistinctactivationpatternsachievablefordataset\ni i=1\nX. Recallthatinournotation,thetermactivationpatternreferstoabinarypatternwhoselength\nmatchesthenumberoftrainingexamplesn,andwhosevaluesdenotewhichtrainingexamplesare\nattendedtobyaparticularneuron(eachneuronhasitsownactivationpattern).",
+      "size": 739,
+      "sentences": 5
+    },
+    {
+      "id": 40,
+      "content": "denotewhichtrainingexamplesare\nattendedtobyaparticularneuron(eachneuronhasitsownactivationpattern). Moreover,forsparse\nneuralnetworkswithatmosts′nonzeroweightsperhiddenneuron,wehavep≤2s′(cid:0)d(cid:1) (n)s′ bya\ns′ s′\ncountingargument;thismaybefarfewertotalactivationpatternsthanneededtomodeldenseweights. Consider a neuron whose weight vector has at most s′ nonzero entries.",
+      "size": 375,
+      "sentences": 3
+    },
+    {
+      "id": 41,
+      "content": "hanneededtomodeldenseweights. Consider a neuron whose weight vector has at most s′ nonzero entries. First, the support of this\nweightvectormustbeselected,whichcorrespondstochoosings′inputdimensionsoutofd,resulting\nin (cid:0)d(cid:1) possible choices. For each choice of these s′ dimensions, the neuron computes a linear\ns′\nthresholdfunctioninans′dimensionalsubspaceofRn.",
+      "size": 370,
+      "sentences": 4
+    },
+    {
+      "id": 42,
+      "content": "hese s′ dimensions, the neuron computes a linear\ns′\nthresholdfunctioninans′dimensionalsubspaceofRn. Aclassicalresultinthetheoryofhyperplane\narrangements(Stanleyetal.,2007)showsthatsuchalinearthresholdfunctioncangenerateatmost\n2\n(cid:80)s′−1(cid:0)n−1(cid:1)\n≤2\n(cid:0)n(cid:1)s′\ndistinctactivationpatternsoverndatapoints.",
+      "size": 321,
+      "sentences": 2
+    },
+    {
+      "id": 43,
+      "content": "ost\n2\n(cid:80)s′−1(cid:0)n−1(cid:1)\n≤2\n(cid:0)n(cid:1)s′\ndistinctactivationpatternsoverndatapoints. Multiplyingthenumberof\ni=0 i s′\nwaystoselectthesupportandthenumberofpatternspersupport,andincorporatingafactorofs′for\nindexingneurons,wearriveatthestatedbound:\np≤2s′(cid:0)d(cid:1)(cid:0)n(cid:1)s′\n. Withthislargebutfixedsetof\ns′ s′\ngeneratorvectorsh ,wecansolveasimilarlylargebutconvexprogramtorecoverhiddenweightsw\ni i\ncorrespondingtothegloballyoptimal2-layernonconvexMLP.",
+      "size": 474,
+      "sentences": 3
+    },
+    {
+      "id": 44,
+      "content": "gebutconvexprogramtorecoverhiddenweightsw\ni i\ncorrespondingtothegloballyoptimal2-layernonconvexMLP. Alternatively,wecanoperatewithanarbitraryhiddendimensionmandselectthegeneratorvectors\nh at random such that the activation patterns {(I{Xh ≥ 0})}m are a random subset (drawn\ni i i=1\nwithoutreplacement)ofallppossibleactivationpatterns. Inourtheoreticalresults(Section4)we\nassumepatternsareenumerated;inourexperiments(Section5,Section6)wesamplem≤ppatterns\nusingrandomgeneratorvectors.",
+      "size": 482,
+      "sentences": 3
+    },
+    {
+      "id": 45,
+      "content": "nsareenumerated;inourexperiments(Section5,Section6)wesamplem≤ppatterns\nusingrandomgeneratorvectors. 4 Theoreticalresults\nConsider the sparse recovery problem defined by Equation (3) of the form y = Aw⋆ for some\nunknownvectorw⋆,withsensingmatrix\nA:=[diag(I{Xh ≥0})X ... diag(I{Xh ≥0})X]∈Rn×dp. 1 p\nOurmainresultleveragesconnectionsbetweensparserecoverymethodsandconvexformulationsof\nReLUnetworks. Forsimplicity,wewillassumethatthedatamatrixX ∈Rn×d hasentriesdrawn\ni.i.d.",
+      "size": 469,
+      "sentences": 4
+    },
+    {
+      "id": 46,
+      "content": "mulationsof\nReLUnetworks. Forsimplicity,wewillassumethatthedatamatrixX ∈Rn×d hasentriesdrawn\ni.i.d. N(0,1);asimilareffectmaybeachievedinpracticebydatawhitening. Wealsoassumethat\nthecolumnsofAareunit-normalizedbeforeoptimization. Torecovertheplantedweightsw⋆,weconsiderthefollowingsimplevariantoftheclassicIterative\nHardThresholding(IHT)algorithm,\nwk+1 =H (wk−ηAT(Awk−y)).",
+      "size": 371,
+      "sentences": 5
+    },
+    {
+      "id": 47,
+      "content": "ollowingsimplevariantoftheclassicIterative\nHardThresholding(IHT)algorithm,\nwk+1 =H (wk−ηAT(Awk−y)). (4)\ns˜\nHereη >0isastepsizeparameterandthehardthresholdingoperationH isaprojectionontothe\ns˜\nsetofs˜-sparsevectors,wheres˜>sfollowingJainetal.(2014). InLemma1weshowthatAsatisfies\n4\n===  5 ===\nrestrictedstrongconvexityandrestrictedsmoothnesswithhighprobabilityovertherandomdataX,\nmakingthesparseMLPweightsuniquelyidentifiable. InTheorem1weshowthatIHTefficiently\nrecoversthesesparseMLPweights.",
+      "size": 490,
+      "sentences": 4
+    },
+    {
+      "id": 48,
+      "content": "seMLPweightsuniquelyidentifiable. InTheorem1weshowthatIHTefficiently\nrecoversthesesparseMLPweights. Suppose that y = (cid:80)p (Xu⋆) v⋆ = Aw⋆ is the planted neural network model. Recall that\ni=1 i + i\ntherelationbetweenthestandardandfusedformoftheweightsisw⋆ = [u⋆v⋆,...,u⋆v⋆ ]where\n1 1 p p\nsign(Xh ) = sign(Xu⋆)∀iasdefinedin(2)and(3). Assumption1givesconditionsonaplanted\ni i\nnetworkunderwhichwecanensureexactrecoveryofitsweights. Assumption1(Propertiesoftheplantedsparsenetwork).",
+      "size": 481,
+      "sentences": 6
+    },
+    {
+      "id": 49,
+      "content": "rkunderwhichwecanensureexactrecoveryofitsweights. Assumption1(Propertiesoftheplantedsparsenetwork). Assumethateither\n(a) u⋆ ∈{−1,0,1}d,∥u⋆∥ =k,v⋆ ∈R∀i∈[p]andkp≤s,or\ni i 0 i\n(b) u⋆ ∈Rd,∥u⋆∥ =s ∈[s ,k],v⋆ ∈{−1,1}∀i∈[p]and (cid:80)p s ≤sholds. i i 0 i min i i=1 i\nBothpartsofAssumption1havetodowithwhatvaluestheplantedMLPweightscantake, and\nbothpartsrestrictthenumberofnonzerohiddenweights.",
+      "size": 387,
+      "sentences": 4
+    },
+    {
+      "id": 50,
+      "content": "odowithwhatvaluestheplantedMLPweightscantake, and\nbothpartsrestrictthenumberofnonzerohiddenweights. Assumption1(a)requiresthatthenonzero\nhidden weights take binary values, but allows the output layer weights to take any real values. Assumption 1(b) captures the more relaxed and common scenario in which the nonzero hidden\nweightscantakeanyrealvalues,buttheoutputlayerweightsarerestrictedto±1,sincetheflexibility\ntomodelanyrealvalueisalreadycapturedbythehiddenlayerweights.",
+      "size": 473,
+      "sentences": 3
+    },
+    {
+      "id": 51,
+      "content": "sarerestrictedto±1,sincetheflexibility\ntomodelanyrealvalueisalreadycapturedbythehiddenlayerweights. InAppendixCweshowthatAssumption2followsfromeitherofAssumption1(a)and1(b)with\nhighprobability,andwegiveweightconstructionsthatsatisfyeachoptioninAssumption1. We\nnotethatonlyAssumption2isusedinourproofofconvergenceandsparserecovery;Assumption1\nissufficientforAssumption2butmaynotbenecessary. Likewise,weshowthatAssumption2is\nsufficientforsparserecoverybutwedonotprovethatitisnecessary.",
+      "size": 483,
+      "sentences": 4
+    },
+    {
+      "id": 52,
+      "content": "sary. Likewise,weshowthatAssumption2is\nsufficientforsparserecoverybutwedonotprovethatitisnecessary. Assumption 2 (Properties of activation patterns). Let D = diag(I{Xh ≥0}) ∈ Rn×n, with\ni i\n{D }p as the set of all such distinct activation patterns possible with data X ∈ Rn×d, whose\ni i=1\nentriesaredrawni.i.d. ∼N(0,1). Weassumethefollowingpropertiesaboutthissetofenumerated\nactivationpatterns:\n1. TrD ≥εnforalli∈[p],forsomeε∈(0,1). i\n2.",
+      "size": 437,
+      "sentences": 8
+    },
+    {
+      "id": 53,
+      "content": "ngpropertiesaboutthissetofenumerated\nactivationpatterns:\n1. TrD ≥εnforalli∈[p],forsomeε∈(0,1). i\n2. Foralli̸=i′,thediagonalsofD andD differinatleastγnpositions,forsomeγ ∈(0,1). i i′\nIntheappendixweprovethatbothoftheseholdwithhighprobabilityunderAssumption1.Specifically,\n(cid:0) (cid:1)\nAssumption2.1holdswithprobabilityatleast1−pe−n 1 1 − 28 ε−H(ε) ,aslongasn ≥ 4k. HereH\ndenotesbinaryentropy.",
+      "size": 394,
+      "sentences": 6
+    },
+    {
+      "id": 54,
+      "content": "on2.1holdswithprobabilityatleast1−pe−n 1 1 − 28 ε−H(ε) ,aslongasn ≥ 4k. HereH\ndenotesbinaryentropy. Assumption2.2followsfromAssumption1(a)withprobabilityatleast1−\n2e−cδ2n,aslongasn≥Cδ−6w(K)2andk ≤ 0.69 .HerecandCarepositiveabsoluteconstants,\nπ(γ+δ)\nδ >0,andw(K)isthenormalizedGaussianmeanwidthofasubsetK ⊆Rd,whereK represents\nthesetof(normalized)neuronweightsthatsatisfyAssumption1(a).",
+      "size": 385,
+      "sentences": 3
+    },
+    {
+      "id": 55,
+      "content": "anwidthofasubsetK ⊆Rd,whereK represents\nthesetof(normalized)neuronweightsthatsatisfyAssumption1(a). Assumption2.2likewisefollows\nfromAssumption1(b)withprobabilityatleast1−2e−cδ2n−ϵ˜aslongasn≥Cδ−6w(K)2,where\nnowK representsthesetof(normalized)neuronweightsthatsatisfyAssumption1(b). Notethatϵ˜\nandsomeadditionalrestrictionsons andkaredescribedintheappendixproof. min\nRemark1(Samplecomplexity).",
+      "size": 392,
+      "sentences": 4
+    },
+    {
+      "id": 56,
+      "content": "andsomeadditionalrestrictionsons andkaredescribedintheappendixproof. min\nRemark1(Samplecomplexity). NotethatAssumption2requiresthenumberoftrainingexamples\nn≥max(4k,Cδ−6w(K)),wherekisthesparsitylevelofeachneuron,K isthesetof(normalized)\nneuronweightsthatsatisfyAssumption1(a)or1(b),w(K)isitsnormalizedGaussianmeanwidth,\nandC isapositiveabsoluteconstant.",
+      "size": 352,
+      "sentences": 3
+    },
+    {
+      "id": 57,
+      "content": "satisfyAssumption1(a)or1(b),w(K)isitsnormalizedGaussianmeanwidth,\nandC isapositiveabsoluteconstant. Thisisamodestrequirementthatgrowswiththenumberof\nactive(nonzero)neuronweightsratherthanthetotalnumberofneuronweights,enablingcompressive\nsensingofsparseneuronweights. Below we show that Assumption 2 is sufficient to ensure recovery of sparse MLP weights, for\na 2-layer scalar-output ReLU MLP.",
+      "size": 392,
+      "sentences": 3
+    },
+    {
+      "id": 58,
+      "content": "ion 2 is sufficient to ensure recovery of sparse MLP weights, for\na 2-layer scalar-output ReLU MLP. Intuitively, the first part of Assumption 2 requires that every\nneuronattendstoatleastanϵfractionofthetrainingdata,ratherthanfittingoroverfittingtoatiny\nnumberofexamples. SinceourdatacovariatesareassumedGaussian,thisfirstpartofAssumption2\nenablesaconcentrationargument.",
+      "size": 369,
+      "sentences": 3
+    },
+    {
+      "id": 59,
+      "content": "SinceourdatacovariatesareassumedGaussian,thisfirstpartofAssumption2\nenablesaconcentrationargument. ThesecondpartofAssumption2requiresthatanytwodifferent\nneuronsmustattendtosubsetsofthetrainingdatasetthatdifferbyatleastaγ fraction. Withoutthis\nrequirement,neuronsmightbeverysimilartoeachotherandthusmoredifficulttodistinguishand\nrecovercorrectlyduringoptimization. ThissecondportionofAssumption2bearssimilarityinspirit\nwiththeincoherencepropertycommonincompressivesensing.",
+      "size": 471,
+      "sentences": 4
+    },
+    {
+      "id": 60,
+      "content": "ndportionofAssumption2bearssimilarityinspirit\nwiththeincoherencepropertycommonincompressivesensing. 5\n===  6 ===\nLemma1(Restrictedstrongconvexityandrestrictedsmoothness). LetA∈Rn×dpbeasdefinedin\nEquation(3),withthemodificationthatallcolumnsarenormalizedtohaveunitℓ norm. Assume\n2\nthat entries of the data matrix X ∈ Rn×d are drawn i.i.d. N(0,1) and Assumption 2 holds. ConsideranindexsetS ⊆ [dp]with|S| = s ≤ n,andtheinduceds×smatrixATA .",
+      "size": 438,
+      "sentences": 6
+    },
+    {
+      "id": 61,
+      "content": "(0,1) and Assumption 2 holds. ConsideranindexsetS ⊆ [dp]with|S| = s ≤ n,andtheinduceds×smatrixATA . Forany\n√ S S\nδ ∈(0, ε ),withprobabilityatleast1−2s(s−1)exp (cid:0)−cδ2ε n(cid:1) −2s(s−1)exp (cid:0)−cδ2n3/4ε(cid:1) −\n1−γ 1+δ n1/4+δ\n8s(s−1)exp\n(cid:0)−cδ2εn(cid:1)\n,\n1+δ\nαI ⪯ATA ⪯βI\ns S S s\n1+δ(cid:112) s 1+δ (cid:112) s\nwith α≥1− 1−γ− ; β ≤1+ (s−1) 1−γ+ . 1−δ n1/4(1−δ) 1−δ n1/4(1−δ)\nHereεandγ arethesameasinAssumption2,andcisapositiveuniversalconstant.",
+      "size": 456,
+      "sentences": 4
+    },
+    {
+      "id": 62,
+      "content": ". 1−δ n1/4(1−δ) 1−δ n1/4(1−δ)\nHereεandγ arethesameasinAssumption2,andcisapositiveuniversalconstant. Lemma1ensuresthattheconditionnumberofA,restrictedtoanysetofs≤ncolumns,isfiniteand\n(cid:112)\nboundedaboveby β/α. Theconditionnumbershrinksasγ grows,becausethisenforcesgreater\nseparation(incoherence)betweencolumnsofA. Theconditioningworsenswithincreasings,as\nthisincreasesthenumberofcolumnsinA andthusthepotentialforacoherentpairofcolumns.",
+      "size": 437,
+      "sentences": 5
+    },
+    {
+      "id": 63,
+      "content": "withincreasings,as\nthisincreasesthenumberofcolumnsinA andthusthepotentialforacoherentpairofcolumns. S\nTheorem1ensuresthatIHTrecoversplantedsparseweightsregardlessofthisconditionnumber(as\nlongasitisfinite),thoughtherateofconvergenceslowswithincreasingconditionnumber. Theorem1(IHTrecoverssparseMLPweights). SupposethatAssumption2holds,thedatamatrix\nX ∈ Rn×d hasentriesdrawni.i.d.",
+      "size": 378,
+      "sentences": 4
+    },
+    {
+      "id": 64,
+      "content": "recoverssparseMLPweights). SupposethatAssumption2holds,thedatamatrix\nX ∈ Rn×d hasentriesdrawni.i.d. N(0,1), theactivationpatternsD = diag(I{Xh ≥0})in\ni i\nthesensingmatrixAareenumeratedtoincludealluniquepatternsthatcanresultfrom∥h∥ ≤s,\n0\nthecolumnsofAarepre-normalizedinℓ norm, andtheplantedneuralnetworkweightssatisfy\n2\n∥w⋆∥ ≤ s. ConsiderthefollowingvariantofIterativeHardThresholding(IHT)tominimizethe\n0\nMSEobjectivef(wk)= 1(cid:13) (cid:13)Awk−y (cid:13) (cid:13) 2 :\n2 2\nwk+1 =H (cid:0) wk−ηAT(Awk−y) (cid:1) , (5)\ns˜\nwheres˜≥32 (cid:0)β(cid:1)2 s,η = 2 ,andα,β aretherestrictedstrongconvexityandrestrictedsmoothness\nα 3β\nconstantsfromLemma1correspondingtosparsitylevel2s˜+s.",
+      "size": 678,
+      "sentences": 3
+    },
+    {
+      "id": 65,
+      "content": "edstrongconvexityandrestrictedsmoothness\nα 3β\nconstantsfromLemma1correspondingtosparsitylevel2s˜+s. Withthesamehighprobabilityasin\nLemma1,afterK =O (cid:0)β log (cid:0)f(w0)(cid:1)(cid:1) steps,IHTfindssparseweightswK suchthat\nα ϵ\nf(wK)−f(w⋆)≤ϵ and ∥wK −w⋆∥2 ≤2α−1ϵ. 2\nRemark2. Theorem1is,toourknowledge,thefirstsparserecoveryresultthatappliestosparse\nneuralnetworkweights.",
+      "size": 373,
+      "sentences": 4
+    },
+    {
+      "id": 66,
+      "content": "k2. Theorem1is,toourknowledge,thefirstsparserecoveryresultthatappliestosparse\nneuralnetworkweights. ItextendsLemma1toshowthatsparseMLPweightsarenotonlyuniquely\nidentifiablewithhighprobabilityfromanetwork’sbehavioronrandomdata,butthatthesesparse\nweightsmayberecoveredefficientlybyIHTwithhighprobability.",
+      "size": 302,
+      "sentences": 3
+    },
+    {
+      "id": 67,
+      "content": "’sbehavioronrandomdata,butthatthesesparse\nweightsmayberecoveredefficientlybyIHTwithhighprobability. Iftheunderlyingfunctionmapping\ndatapointstovaluesisindeedaplantedsparseMLP,recoveryoftheweightsofthissparseMLPalso\nguaranteesgeneralization,inthesensethatthelabelsoffreshdatafollowingthesamefunctionwill\nbeperfectlypredictedbythesparseMLPrecoveredbyIHT. Proofsofalltheoreticalresultsmaybefoundintheappendix.",
+      "size": 406,
+      "sentences": 3
+    },
+    {
+      "id": 68,
+      "content": "rfectlypredictedbythesparseMLPrecoveredbyIHT. Proofsofalltheoreticalresultsmaybefoundintheappendix. 5 Experimentalmethods\nInthissectionwedescribeourexperimentalimplementationofIHTaswellasanetwork-pruning\nbaselinealgorithm. OurexperimentsarebuiltonamixtureofPyTorchandCuPy,andourcodeis\navailableathttps://github.com/voilalab/MLP-IHT. IHTupdates. OurexperimentsusetheclassicIHTupdaterulewk+1 = H (wk −η ∇f(wk)),\ns k\nwheref(wk)istheobjectivefunctiontobeminimized.",
+      "size": 460,
+      "sentences": 6
+    },
+    {
+      "id": 69,
+      "content": "etheclassicIHTupdaterulewk+1 = H (wk −η ∇f(wk)),\ns k\nwheref(wk)istheobjectivefunctiontobeminimized. Wedonotinflatetheprojectionsparsitylevel\ntothes˜requiredinourtheoreticalanalysis;doingsowouldlikelyfurtherimproveperformanceatthe\ncostofinflatingmemoryusage. Formostofourexperimentsweusethemeansquarederror(MSE)\nobjectivewithgradient∇f =AT(Awk−y). ThisyieldstheupdateruleinEquation(4),where\nMSE\ninourexperimentsweusehardthresholdingtoenforces-sparsitybutnotr-structureintheneurons.",
+      "size": 480,
+      "sentences": 4
+    },
+    {
+      "id": 70,
+      "content": "4),where\nMSE\ninourexperimentsweusehardthresholdingtoenforces-sparsitybutnotr-structureintheneurons. However,forourexperimentsonmulticlassclassification,weusethecross-entropyobjectivewhose\ngradientis∇f (wk)=AT(softmax(Awk−y)). CE\n6\n===  7 ===\nMemory-efficientIHTimplementation. AkeystrengthofIHTisitsmemoryefficiency,since\nonlythenonzeroweightsandtheirindicesneedtobestoredduringoptimization.",
+      "size": 391,
+      "sentences": 4
+    },
+    {
+      "id": 71,
+      "content": "HTisitsmemoryefficiency,since\nonlythenonzeroweightsandtheirindicesneedtobestoredduringoptimization. However,achieving\nthismemoryefficiencyrequirescarefulimplementationbecauseeachgradient∇f(wk)isadense\nvectorratherthanasparseone,andbecausethesensingmatrixAishuge. Ourimplementationis\nthereforeblockwise. InsteadofstoringtheentirematrixA∈Rn×dpwegenerateeachn×dblockon\ntheflyasitisneeded.",
+      "size": 385,
+      "sentences": 4
+    },
+    {
+      "id": 72,
+      "content": "reforeblockwise. InsteadofstoringtheentirematrixA∈Rn×dpwegenerateeachn×dblockon\ntheflyasitisneeded. Insteadofcomputingtheentiregradient∇f(wk)∈Rdpatonce,wecompute\neachd-dimensionalblockandapplyittothesparseiteratewk+1 beforecomputingthenextblock. Mathematically this is equivalent to computing the entire gradient and performing a single hard\nthresholding,butitcanbefarmorememoryefficient.",
+      "size": 388,
+      "sentences": 4
+    },
+    {
+      "id": 73,
+      "content": "ing the entire gradient and performing a single hard\nthresholding,butitcanbefarmorememoryefficient. Thechoiceofblocksizeisadesignparameter\nthatallowsourIHTimplementationstrategytotradeoffmemoryandcomputationtime,allowing\nlargesparsemodelstobetrainedunderdiversehardwareconstraints. Sequential convex IHT.",
+      "size": 304,
+      "sentences": 3
+    },
+    {
+      "id": 74,
+      "content": "ontime,allowing\nlargesparsemodelstobetrainedunderdiversehardwareconstraints. Sequential convex IHT. In our theoretical analysis, we assume that the p activation patterns\n(I{Xh ≥0})areenumeratedtoincludeallpossibleuniqueactivationpatternsbasedonfixed,sparse\ni\ngeneratorvectorsh .Thisconstructionproducesalarge-scalebutconvexandverysparseoptimization\ni\nproblem.",
+      "size": 359,
+      "sentences": 3
+    },
+    {
+      "id": 75,
+      "content": "eneratorvectorsh .Thisconstructionproducesalarge-scalebutconvexandverysparseoptimization\ni\nproblem. Inourexperiments,forcomputationalefficiencyweinsteadsolveasequentiallyconvex\noptimization that switches between the convex formulation in Equation (3) and the nonconvex\nformulationinEquation(2).",
+      "size": 294,
+      "sentences": 2
+    },
+    {
+      "id": 76,
+      "content": "switches between the convex formulation in Equation (3) and the nonconvex\nformulationinEquation(2). Wechooseafixedhiddendimensionm(ratherthanalargerenumerated\ndimensionp)forthenetworkweights,andfrequentlyupdatetheconstructionofthesensingmatrix\nA∈Rn×dmtomaintainconsistencywiththeweightsw ∈Rdmastheyevolveduringoptimization,\nstarting from a random initialization. In between these updates to A the formulation is fixed\nandconvex,hencetheterminologyofsequentialconvexoptimization.",
+      "size": 478,
+      "sentences": 3
+    },
+    {
+      "id": 77,
+      "content": "updates to A the formulation is fixed\nandconvex,hencetheterminologyofsequentialconvexoptimization. Wecanequivalentlyview\noptimizationinthissequentialconvexformulationasatime-varyingdynamicalsysteminwhichthe\nsensingmatrixAisreallyA ,asitdependsonthecurrentweightestimatewk.",
+      "size": 272,
+      "sentences": 2
+    },
+    {
+      "id": 78,
+      "content": "-varyingdynamicalsysteminwhichthe\nsensingmatrixAisreallyA ,asitdependsonthecurrentweightestimatewk. Wefindthebest\nk\nperformancearisesfromatwo-stageoptimizationprocedureinwhichweholdthegeneratorvectors\ninside A fixed at their random initialization until completion of the first epoch (pass through the\ntrainingdataset),andthenallowthegeneratorvectorstoupdateaftereachsubsequentIHTiteration.",
+      "size": 389,
+      "sentences": 2
+    },
+    {
+      "id": 79,
+      "content": "hrough the\ntrainingdataset),andthenallowthegeneratorvectorstoupdateaftereachsubsequentIHTiteration. Intuitively,thisprocedurestabilizesthefirstphaseofoptimizationbymaintainingconvexity,andthen\nallowsforrefinementofthesensingmatrixonceIHThashadtheopportunitytoenteraregionof\nattractionaroundtheglobaloptimum. Vector-outputMLPs.",
+      "size": 326,
+      "sentences": 3
+    },
+    {
+      "id": 80,
+      "content": "rixonceIHThashadtheopportunitytoenteraregionof\nattractionaroundtheglobaloptimum. Vector-outputMLPs. TheformulationinEquation(2)andEquation(3)assumesascalar-output\nMLPinwhichtheoutputlayercanbefusedtothehiddenlayerweights.InanMLPwithvector-valued\noutput,weinsteadhaveyˆ= (XW) W˜,whereasbeforeX ∈ Rn×d andW ∈ Rd×m forhidden\n+\ndimensionm,butnowyˆ∈Rn×candW˜ ∈Rm×cforoutputdimensionc.",
+      "size": 379,
+      "sentences": 3
+    },
+    {
+      "id": 81,
+      "content": "ereasbeforeX ∈ Rn×d andW ∈ Rd×m forhidden\n+\ndimensionm,butnowyˆ∈Rn×candW˜ ∈Rm×cforoutputdimensionc. Wecannolongerfusethe\noutputlayerweights,soweoptimizethefollowingformulation:\n w w˜T \n1 1\nyˆ=[diag(I{Xw ≥0})X ... diag(I{Xw ≥0})X] . .  (6)\n1 m  . \nw w˜T\nm m\nwherew ∈ Rd isacolumnofW (asinthescalar-outputcase)andw˜ ∈ Rc isarowofW˜. We\ni i\nusethechainruletocomputeseparategradientsforW andW˜,computedblockwiseandapplied\non-the-flytoupdateaglobalsparseweightrepresentationformemoryefficiency.",
+      "size": 495,
+      "sentences": 6
+    },
+    {
+      "id": 82,
+      "content": "computedblockwiseandapplied\non-the-flytoupdateaglobalsparseweightrepresentationformemoryefficiency. Layerwise optimization for deeper MLPs. Although it is possible to refine the formulation\nEquation(2)fordeepMLPs(ErgenandPilanci,2024),forsimplicityofimplementationweoptimize\ndeepMLPsfollowingalayerwiseapproach(Bengioetal.,2006;Karimietal.,2024). Forexample,\ntooptimizea3-layerMLP(2hiddenlayersplusanoutputlayer),weproceedasfollows.",
+      "size": 432,
+      "sentences": 4
+    },
+    {
+      "id": 83,
+      "content": "ietal.,2024). Forexample,\ntooptimizea3-layerMLP(2hiddenlayersplusanoutputlayer),weproceedasfollows. First,we\noptimizea2-layer,vector-outputMLPtofindsparseweightsW ∈Rd×mandWˆ ∈Rm×c.",
+      "size": 180,
+      "sentences": 3
+    },
+    {
+      "id": 84,
+      "content": "eproceedasfollows. First,we\noptimizea2-layer,vector-outputMLPtofindsparseweightsW ∈Rd×mandWˆ ∈Rm×c. Wethen\ndiscardWˆ andfreezeW,treatingitasaninputembeddingwhiletrainingasecond2-layerMLP,this\ntimewithinputdimensiond = m. WenotethatourresultsforIHTondeeperMLPsareslightly\npessimistic,asouroptimizationprocedureallocatessomenonzeroparameterstointermediateoutput\nlayersW˜ thatarenotusedinthefinalmodel,meaningthatthefinalmodelperformanceisattained\nwithstrictlyfeweractiveweightsthanthebudgeteds.",
+      "size": 492,
+      "sentences": 3
+    },
+    {
+      "id": 85,
+      "content": "model,meaningthatthefinalmodelperformanceisattained\nwithstrictlyfeweractiveweightsthanthebudgeteds. Nonetheless,IHTremainscompetitivedespite\nthisrestriction(seeSection6). 7\n===  8 ===\nCountsketching. Forshallowscalar-outputMLPs, weusethestandardhardthresholdingrule\nbasedonweightmagnitudes,retainingtheshighest-magnitudeentriesinW ateachiteration. For\ndeeperandvector-outputMLPs,wefollowAghazadehetal. (2018)anduseanintermediatecount\nsketchdatastructuretoperformhardthresholding.",
+      "size": 479,
+      "sentences": 6
+    },
+    {
+      "id": 86,
+      "content": "efollowAghazadehetal. (2018)anduseanintermediatecount\nsketchdatastructuretoperformhardthresholding. Intuitively,weviewthecountsketchapproachas\nanoisybutmorememoryefficientalternativetothedeterministicsparsityinflationinourtheoretical\nanalysis. At every gradient step, we update the count sketch to maintain a noisy estimate of the\nfulliterate,avectorizedconcatenationofW andW˜.",
+      "size": 377,
+      "sentences": 4
+    },
+    {
+      "id": 87,
+      "content": "the count sketch to maintain a noisy estimate of the\nfulliterate,avectorizedconcatenationofW andW˜. Weuseavectorofdimension4slog(n/s)to\nrepresentthecountsketch,balancingmemoryefficiencywiththelevelofapproximationerrorin\nthesketch. AteachiterationofIHT,wefindthesentriesinthecountsketchwithlargestestimated\nmagnitude, and store exact values for these entries.",
+      "size": 358,
+      "sentences": 3
+    },
+    {
+      "id": 88,
+      "content": "hesentriesinthecountsketchwithlargestestimated\nmagnitude, and store exact values for these entries. We observe an empirical tradeoff in the use\nofacountsketch: forshallowscalar-outputnetworkswherewehaveasingleweightmatrixW to\noptimize,theapproximationerrorintroducedbythecountsketchoutweighsanybenefititbringsby\n“softening”thehardthresholdingoperation.",
+      "size": 352,
+      "sentences": 2
+    },
+    {
+      "id": 89,
+      "content": "rorintroducedbythecountsketchoutweighsanybenefititbringsby\n“softening”thehardthresholdingoperation. However,forvector-outputnetworksordeepernetworks\nwhereIHTmustimplicitlydecidehowtoallocateafixedparameterbudgetamongW andW˜,the\ncountsketchallowsIHTtomakelessmyopicthresholdingdecisionsthataggregateinformationfrom\nmultiplegradientsteps,thebenefitsofwhichappeartooutweighthecostofapproximationerrorin\nthecountsketch. Stepsizeselection.",
+      "size": 434,
+      "sentences": 3
+    },
+    {
+      "id": 90,
+      "content": ",thebenefitsofwhichappeartooutweighthecostofapproximationerrorin\nthecountsketch. Stepsizeselection. ForourexperimentswithIHT,weusetwodifferentstepsizeselectionmethods. Forshallowscalar-outputnetworks,wefusetheoutputlayerweightsfollowingEquation(2).",
+      "size": 248,
+      "sentences": 4
+    },
+    {
+      "id": 91,
+      "content": "eselectionmethods. Forshallowscalar-outputnetworks,wefusetheoutputlayerweightsfollowingEquation(2). Wecan\nthencomputeanadaptivestepsizetominimizethemeansquarederror(MSE)objectivefunction\n(cid:13) (cid:13)2\n(cid:13)AT (y−Awk)(cid:13)\n(cid:13) supp(wk) (cid:13)\nη = 2 , (7)\nk (cid:13) (cid:13)2\n(cid:13)A\nsupp(wk)\nAT(y−Awk)(cid:13)\n2\nfollowing Blumensath and Davies (2010).",
+      "size": 371,
+      "sentences": 3
+    },
+    {
+      "id": 92,
+      "content": "k (cid:13) (cid:13)2\n(cid:13)A\nsupp(wk)\nAT(y−Awk)(cid:13)\n2\nfollowing Blumensath and Davies (2010). However, as Equation (7) does not directly apply to\nvector-outputnetworks,fortheseweuseafixedstepsizeη =ηforbothW andW˜,andmanually\nk\ntuneη. Thismanualtuningsurelyleavesroomforimprovementwithanadaptivestrategy,whichwe\ndefertofuturework. Accelerated IHT.",
+      "size": 353,
+      "sentences": 4
+    },
+    {
+      "id": 93,
+      "content": "ingsurelyleavesroomforimprovementwithanadaptivestrategy,whichwe\ndefertofuturework. Accelerated IHT. For shallow scalar-output networks, we use an accelerated IHT following\nBlumensath(2012),whichdefinesanacceleratedIHTasanyalgorithmthataugmentstheclassic\nIHTupdatewitharefinementsteptoproduceaniteratethatisbothsparseandhasobjectivevalue\nnolargerthanthatoftheiterateproducedbyclassicIHT.Specifically,aftereachIHTupdatewe\ntakeafewgradientstepsrestrictedtothecurrentsetofnonzeroweights,tolowertheobjectivevalue\nwithoutchangingthesparsesupport(Blumensath,2012).",
+      "size": 557,
+      "sentences": 3
+    },
+    {
+      "id": 94,
+      "content": "rrentsetofnonzeroweights,tolowertheobjectivevalue\nwithoutchangingthesparsesupport(Blumensath,2012). Wedonotfindanempiricalbenefitto\nthisaccelerationprocedureforvector-outputMLPs, soweperformaccelerationonlyforIHTon\nscalar-outputnetworks. IMPbaseline.",
+      "size": 250,
+      "sentences": 3
+    },
+    {
+      "id": 95,
+      "content": "cedureforvector-outputMLPs, soweperformaccelerationonlyforIHTon\nscalar-outputnetworks. IMPbaseline. WecompareourIHTapproachforoptimizingsparseMLPswithiterativemagnitude\npruning(IMP)(FrankleandCarbin,2019),ahigh-performingbaselinemethodforpruningneural\nnetworks that has been shown to find sparse networks that often match or exceed the quality of\ntheir dense counterparts.",
+      "size": 372,
+      "sentences": 3
+    },
+    {
+      "id": 96,
+      "content": "n shown to find sparse networks that often match or exceed the quality of\ntheir dense counterparts. IMP begins by training a dense network, and then iteratively prunes\n(setstozero)aconstantfractionoftheactive(nonzero)weightsbasedonmagnitude,rewindsthe\nremainingactiveweightstotheirinitializationvalues,andretrains. IMPthusallowspruningadense\nnetworktoanydesiredsparsitylevel,butrequiressufficientmemorytotrainthedensenetworkand\nsufficientcomputationtimetoiterativelyretrainitduringpruning.",
+      "size": 489,
+      "sentences": 3
+    },
+    {
+      "id": 97,
+      "content": "icientmemorytotrainthedensenetworkand\nsufficientcomputationtimetoiterativelyretrainitduringpruning. AlthoughthisIMPprocessis\ncomputationally costly, it provides a strong baseline of performance that can be achieved with a\nsparsenetworkusingexistingmethods. FrankleandCarbin(2019)suggestpruning20%oftheactive\nweightsateachiterationtobalancecomputationandperformance;wepruneonly10%oftheactive\nweightsateachiterationtomaximizeIMPperformanceandprovideasstrongabaselineaspossible. Minibatches.",
+      "size": 488,
+      "sentences": 4
+    },
+    {
+      "id": 98,
+      "content": "e\nweightsateachiterationtomaximizeIMPperformanceandprovideasstrongabaselineaspossible. Minibatches. ForbothIHTandIMP,eachiterationoperatesonaminibatchofthefulldataset. For\nIHT,weperformaminibatchupdatebysubsamplingthenrowsofbothAandy. Forfittingaplanted\nsparseMLPaswellasfor10-wayMNISTclassificationweuseaminibatchsizeof5000,andfor\nbinaryMNISTclassificationweuseaminibatchsizeof1000. Thesesettingsallcorrespondto10%\nofeachtrainingdatasetperminibatch.",
+      "size": 450,
+      "sentences": 6
+    },
+    {
+      "id": 99,
+      "content": "cationweuseaminibatchsizeof1000. Thesesettingsallcorrespondto10%\nofeachtrainingdatasetperminibatch. ForfittinganimplicitneuralrepresentationtoMNISTand\nCIFAR-10images,weusefull-batchupdatesaseachimageissmall. 8\n===  9 ===\n6 Experimentalresults\nWepresentexperimentalresultsonthreeillustrativetasks: fittingaplantedsparseMLP,classifying\nhandwrittenMNISTdigits(Deng,2012),andfittinganimplicitneuralrepresentationtoMNISTand\nCIFAR-10images(Krizhevskyetal.,2009).",
+      "size": 456,
+      "sentences": 4
+    },
+    {
+      "id": 100,
+      "content": "Deng,2012),andfittinganimplicitneuralrepresentationtoMNISTand\nCIFAR-10images(Krizhevskyetal.,2009). Ineachtask,wecomparetheperformanceofIHT(ours)\nandIMP(FrankleandCarbin,2019),implementedasdescribedinSection5. Forallfigures,weshow\nheatmapscomparingmodelperformanceasafunctionofthehiddendimensionm(verticalaxis)and\nsparsitylevels(horizontalaxis). Resultsonscalar-outputplantedsparseMLPsandvector-outputplantedsparseMLPsarepresented\ninFigure1andFigure2,respectively.",
+      "size": 464,
+      "sentences": 4
+    },
+    {
+      "id": 101,
+      "content": "putplantedsparseMLPsandvector-outputplantedsparseMLPsarepresented\ninFigure1andFigure2,respectively. WithinFigure1andFigure2,thelefttwosubfigurescompare\nIHTandIMPon2-layer(1-hidden-layer)sparseMLPswhiletherighttwosubfigurescompareIHT\nandIMPon3-layer(2-hidden-layer)sparseMLPs.",
+      "size": 275,
+      "sentences": 2
+    },
+    {
+      "id": 102,
+      "content": "den-layer)sparseMLPswhiletherighttwosubfigurescompareIHT\nandIMPon3-layer(2-hidden-layer)sparseMLPs. FortheplantedMLPfittingtasks,weoptimizea\nsparseMLPwithhiddendimensionm(heatmapverticalaxis)andabudgetofsnonzeroweights\n(heatmaphorizontalaxis)tomatchtheinput-outputbehaviorofanunknownplantedmodelofthe\nsamearchitectureandsparsity. Specifically,wedrawrandomsparseweightsandusethesetogenerate\nadataset(X ∈R50000×100,y ∈R50000,c),forc∈{1,10}.",
+      "size": 438,
+      "sentences": 3
+    },
+    {
+      "id": 103,
+      "content": "lly,wedrawrandomsparseweightsandusethesetogenerate\nadataset(X ∈R50000×100,y ∈R50000,c),forc∈{1,10}. ForplantedMLPfittingtasks,wereport\npeaksignaltonoiseratio(PSNR)atfittingthisinput-outputbehavioroftheplantedmodel. PSNRis\ndefinedasPSNR = 10log (I2 /MSE),whereI isthelargestmagnitudevalueintheground\n10 max max\ntruthsignalandMSEisthemeansquarederror;higherPSNRisbetter. Ifacertainsettingofmands\nyieldsaplantedmodelwhoseoutputsyareallzero,weskipevaluationandreportaPSNRofzero.",
+      "size": 474,
+      "sentences": 4
+    },
+    {
+      "id": 104,
+      "content": "tainsettingofmands\nyieldsaplantedmodelwhoseoutputsyareallzero,weskipevaluationandreportaPSNRofzero. IHT IMP\nIHT IMP\nFigure1.AveragePSNRforfittingaplantedone-hidden-layer(left)andtwo-hidden-layer(right)sparse\nscalar-outputMLPofhiddendimensionm(verticalaxis)andatmostsnonzeroparameters(horizontal\naxis).ColorbarshowsaveragePSNRover3randomtrials.IHTexhibitsmorerobustperformancethan\nastrongbutmemory-inefficientiterativemagnitudepruning(IMP)baseline(FrankleandCarbin,2019). IHT IMP\nIHT IMP\nFigure2.",
+      "size": 495,
+      "sentences": 3
+    },
+    {
+      "id": 105,
+      "content": "-inefficientiterativemagnitudepruning(IMP)baseline(FrankleandCarbin,2019). IHT IMP\nIHT IMP\nFigure2. AveragePSNRforfittingaplantedone-hidden-layer(left)andtwo-hidden-layer(right)\nsparsevector-output(10-dimensionaloutput)MLPofhiddendimensionm(verticalaxis)andatmost\nsnonzeroparameters(horizontalaxis). ColorbarshowsaveragePSNRover3randomtrials. IHTis\ncompetitivewithastrongbutmemory-inefficientiterativemagnitudepruning(IMP)baseline(Frankle\nandCarbin,2019).",
+      "size": 455,
+      "sentences": 5
+    },
+    {
+      "id": 106,
+      "content": "tivewithastrongbutmemory-inefficientiterativemagnitudepruning(IMP)baseline(Frankle\nandCarbin,2019). Figure3presentsresultsonMNISTdigitclassification. InFigure3,allMLPshaveonehiddenlayer;\nthelefttwosubfigurescompareIHTandIMPonbinaryclassificationandtherighttwosubfigures\ncompareIHTandIMPon10-wayclassification. Weconsiderbothbinaryclassification(digit0vs. 1)posedasaregressionproblemwithMSEloss,aswellas10-wayclassificationofalldigitsusing\ncross-entropylossandone-hotlabelsy ∈R10.",
+      "size": 479,
+      "sentences": 5
+    },
+    {
+      "id": 107,
+      "content": "emwithMSEloss,aswellas10-wayclassificationofalldigitsusing\ncross-entropylossandone-hotlabelsy ∈R10. ForMNISTclassification,wereportclassification\naccuracy,thefractionoftestdigitscorrectlyclassified. 9\n===  10 ===\nIHT IMP IHT IMP\nFigure3.",
+      "size": 237,
+      "sentences": 3
+    },
+    {
+      "id": 108,
+      "content": "ication\naccuracy,thefractionoftestdigitscorrectlyclassified. 9\n===  10 ===\nIHT IMP IHT IMP\nFigure3. Averagebinary(left)and10-class(right)classificationaccuracyforhandwrittenMNIST\ndigitswitha2-layer(one-hidden-layer)MLPofhiddendimensionm(verticalaxis)andatmosts\nnonzeroparameters(horizontalaxis).Colorbarshowsaverageclassificationaccuracyover3random\ntrials.IHTexhibitsmorerobustperformancethanastrongbutmemory-inefficientiterativemagnitude\npruning(IMP)baseline(FrankleandCarbin,2019).",
+      "size": 483,
+      "sentences": 3
+    },
+    {
+      "id": 109,
+      "content": "ancethanastrongbutmemory-inefficientiterativemagnitude\npruning(IMP)baseline(FrankleandCarbin,2019). Althoughruntimeisnotakeycomponentofouranalysisorexperiments,onetrendworthnoting\nisthattheruntimeforIHTisincreasingins,whereastheoppositeistrueforIMP.Thisisbecause\nIMPrequiresiterativeretrainingwithgradualpruning,somorestepsofretrainingarerequiredto\nreachasparsernetwork(withsmallers). Inotherwords,IHTisfastestexactlywhereIMPisslowest.",
+      "size": 435,
+      "sentences": 3
+    },
+    {
+      "id": 110,
+      "content": "rerequiredto\nreachasparsernetwork(withsmallers). Inotherwords,IHTisfastestexactlywhereIMPisslowest. RuntimevariesforbothIHTandIMPasafunctionofproblemparameters, soweprovideafew\nillustrativeexamples,allevaluatedonanNVIDIAA6000GPU.",
+      "size": 229,
+      "sentences": 3
+    },
+    {
+      "id": 111,
+      "content": "safunctionofproblemparameters, soweprovideafew\nillustrativeexamples,allevaluatedonanNVIDIAA6000GPU. ForbinaryMNISTclassificationusingthesmallestscalar-outputmodelwithm=1(hiddenlayer\nhasasingleneuron)andsparsitys=1(meaningthatneuroncanattendtoasinglepixelonly),and\n15full-batchgradientsteps,IHTreaches98.85%testaccuracyin1.2seconds,whileIMPreaches\n50%testaccuracy(randomchance)in27.78seconds. Withm=10ands=100,IHTreaches99.2%\naccuracyin1.66seconds;IMPreaches50.15%in20.56seconds.",
+      "size": 478,
+      "sentences": 3
+    },
+    {
+      "id": 112,
+      "content": "7.78seconds. Withm=10ands=100,IHTreaches99.2%\naccuracyin1.66seconds;IMPreaches50.15%in20.56seconds. Withm=100ands=1000,IHT\nretains99.2%accuracyin8.4seconds,andIMPachieves77.66%accuracyin20.91seconds. For\nsmall,scalar-outputMLPsIHTisdominantinmemory,runtime,andaccuracy. However, for vector-output MLPs, deeper MLPs, and settings with large s, IHT (in its current\nimplementation)canrunmoreslowlythanIMP,especiallywhenusingminibatchgradientupdates.",
+      "size": 446,
+      "sentences": 5
+    },
+    {
+      "id": 113,
+      "content": "(in its current\nimplementation)canrunmoreslowlythanIMP,especiallywhenusingminibatchgradientupdates. Forfull(10-class)MNISTclassification,with50epochs,batchsize5000,m=10,ands=1000,\nIHTgets88.73%testaccuracyin219.2seconds,whereasIMPgets77.66%accuracyin68.98seconds. ForfittingaplantedMLPwith10-dimensionaloutput,with15epochs,full-batchgradients,m=10,\nands=10,IHTreaches48.67dBPSNRin3.02secondswhileIMPreaches24.81dbPSNRin28.46\nseconds.",
+      "size": 433,
+      "sentences": 3
+    },
+    {
+      "id": 114,
+      "content": "radients,m=10,\nands=10,IHTreaches48.67dBPSNRin3.02secondswhileIMPreaches24.81dbPSNRin28.46\nseconds. IHT IMP IHT IMP\nFigure4.Average1-hidden-layer(left)and2-hidden-layer(right)PSNRforoverfittinganMNISTdigit\nimagewithanMLP-basedimplicitneuralrepresentation(Tanciketal.,2020)ofhiddendimensionm\n(verticalaxis)andatmostsnonzeroparameters(horizontalaxis).ColorbarshowsaveragePSNRover\n3randomtrials.IHTexhibitsmorerobustperformancethanastrongbutmemory-inefficientiterative\nmagnitudepruning(IMP)baseline(FrankleandCarbin,2019).WehighlightthatIHTexhibitsstable\nrecoveryindependentofm,inlinewithourtheoreticalresults(seeRemark1).Incontrast,IMPshows\nimprovedrecoverywithincreasingm,likelybecauseIMPhereissolvinganonconvexoptimization\nproblemwhoselandscapeismademorebenignbyincreasingm.",
+      "size": 774,
+      "sentences": 2
+    },
+    {
+      "id": 115,
+      "content": "lybecauseIMPhereissolvinganonconvexoptimization\nproblemwhoselandscapeismademorebenignbyincreasingm. Figure4andFigure5presentresultsonfittingMNISTandCIFAR-10images,respectively,withan\nMLP-basedimplicitneuralrepresentation. Specifically,weuseafixedFourierfeatureembedding\nwithGaussian-distributedfrequenciesfollowedbyaReLUMLP,followingTanciketal.(2020). We\nusethesameFourierfeaturesforembeddingpixelcoordinatesforbothIMPandIHT,andvarythe\noptimization strategy for fitting the sparse MLP weights.",
+      "size": 493,
+      "sentences": 4
+    },
+    {
+      "id": 116,
+      "content": "xelcoordinatesforbothIMPandIHT,andvarythe\noptimization strategy for fitting the sparse MLP weights. Within Figure 4 and Figure 5, the left\n10\n===  11 ===\nIHT IMP IHT IMP\nFigure5.Average1-hidden-layer(left)and2-hidden-layer(right)PSNRforoverfittingaCIFAR-10\ndigitimagewithanMLP-basedimplicitneuralrepresentation(Tanciketal.,2020)ofhiddendimension\nm(verticalaxis)andatmostsnonzeroparameters(horizontalaxis).ColorbarshowsaveragePSNR\nover3randomtrials.",
+      "size": 448,
+      "sentences": 2
+    },
+    {
+      "id": 117,
+      "content": "erticalaxis)andatmostsnonzeroparameters(horizontalaxis).ColorbarshowsaveragePSNR\nover3randomtrials. IHTexhibitsmorerobustperformancethanastrongbutmemory-inefficient\niterativemagnitudepruning(IMP)baseline(FrankleandCarbin,2019). twosubfigurescompareIHTandIMPon2-layer(1-hidden-layer)sparseMLPswhiletherighttwo\nsubfigurescompareIHTandIMPon3-layer(2-hidden-layer)sparseMLPs.",
+      "size": 371,
+      "sentences": 3
+    },
+    {
+      "id": 118,
+      "content": "den-layer)sparseMLPswhiletherighttwo\nsubfigurescompareIHTandIMPon3-layer(2-hidden-layer)sparseMLPs. Acrosstheseexperimentalsettings,wefindthatIHTalmostalwaysfindshigher-performingsparse\nnetworkweightscomparedtoIMP,astrongbaselineforpruningnonconvexMLPs(Frankleetal.,\n2021). Moreover,IHTusesafixedparameterbudgetthatscaleswiththesparsitylevelsthroughout\noptimization,whereasIMPrequiresinitialtrainingofadensenetworkwhoseparametercountgrows\nwithdatadimensiondandhiddendimensionm.",
+      "size": 477,
+      "sentences": 3
+    },
+    {
+      "id": 119,
+      "content": "quiresinitialtrainingofadensenetworkwhoseparametercountgrows\nwithdatadimensiondandhiddendimensionm. 7 Discussion\nThisworkpresents,toourknowledge,thefirstsparserecoveryresultapplicabletotheweightsofa\nReLUMLP.Fornonnegativescalar-outputMLPs,weshowthatsparseweightsareuniquelyidentifi-\nableandefficientlyrecoverablefrommeasurementsonrandomGaussiandata,withhighprobability.",
+      "size": 369,
+      "sentences": 2
+    },
+    {
+      "id": 120,
+      "content": "elyidentifi-\nableandefficientlyrecoverablefrommeasurementsonrandomGaussiandata,withhighprobability. Wecomplementthistheoreticalresultwithanempiricaldemonstrationthatasimpleiterativehard\nthresholdingalgorithmcanfindsparserandhigher-performingnetworkweightscomparedtoastrong\nnetworkpruningbaseline,whileusingfarlessmemoryduringtraining. Limitationsandfuturework. Ourresultsaresubjecttoseverallimitationsthatweexpectfuture\nwork may address.",
+      "size": 437,
+      "sentences": 4
+    },
+    {
+      "id": 121,
+      "content": "itationsandfuturework. Ourresultsaresubjecttoseverallimitationsthatweexpectfuture\nwork may address. Our theoretical results are restricted to shallow, scalar-output MLPs, and are\nshowntoholdwithhighprobabilityoverGaussiandataratherthanmoregeneraldatadistributions. AsthesearethefirstrecoveryresultsforsparseMLPs,weareoptimisticthatfutureworkmayextend\nourresultstodeeper,vector-outputnetworkswithmorediversearchitecturesanddatadistributions.",
+      "size": 440,
+      "sentences": 4
+    },
+    {
+      "id": 122,
+      "content": "mayextend\nourresultstodeeper,vector-outputnetworkswithmorediversearchitecturesanddatadistributions. Ourexperimentsalsosuggestthatsequentialconvexoptimizationfromrandominitializationcan\nfindhigh-performingsparseMLPs;extendingourconvex-formulationrecoveryresulttosequential\nconvexprogrammingisofinterest. OurIHTrecoveryresultalsoinheritsaninflatedsparsitylevel\ns˜>sfromJainetal.(2014);tighteningthisresultisacompellingdirectionforfurtherstudy.",
+      "size": 441,
+      "sentences": 4
+    },
+    {
+      "id": 123,
+      "content": "tedsparsitylevel\ns˜>sfromJainetal.(2014);tighteningthisresultisacompellingdirectionforfurtherstudy. Finally,\nweencouragefutureworktorefineandscaleupourimplementationofmemory-efficientIHTtraining\nofsparseMLPstoenablebothmemory-efficientandfasttrainingofhigh-performingsparseMLPs.",
+      "size": 278,
+      "sentences": 2
+    },
+    {
+      "id": 124,
+      "content": "ientIHTtraining\nofsparseMLPstoenablebothmemory-efficientandfasttrainingofhigh-performingsparseMLPs. AcknowledgmentsandDisclosureofFunding\nThisworkwassupportedinpartbytheNSFMathematicalSciencesPostdoctoralResearchFellowship\nunderawardnumber2303178,inpartbytheNationalScienceFoundation(NSF)underGrantDMS-\n2134248,inpartbytheNSFCAREERAwardunderGrantCCF-2236829,inpartbytheU.S.Army\nResearchOfficeEarlyCareerAwardunderGrantW911NF-21-1-0242,andinpartbytheOfficeof\nNavalResearchunderGrantN00014-24-1-2164.",
+      "size": 498,
+      "sentences": 2
+    },
+    {
+      "id": 125,
+      "content": "reerAwardunderGrantW911NF-21-1-0242,andinpartbytheOfficeof\nNavalResearchunderGrantN00014-24-1-2164. WearegratefultoGordonWetzsteinforhelpful\ndiscussionsonapplicationsofsparseoptimization. 11\n===  12 ===\nReferences\nA.Aghazadeh,R.Spring,D.LeJeune,G.Dasarathy,A.Shrivastava,etal. Mission: Ultralarge-scale\nfeatureselectionusingcount-sketches. InInternationalconferenceonmachinelearning,pages\n80–88.PMLR,2018. D. Amelunxen, M. Lotz, M. B. McCoy, and J. A. Tropp.",
+      "size": 458,
+      "sentences": 7
+    },
+    {
+      "id": 126,
+      "content": "erenceonmachinelearning,pages\n80–88.PMLR,2018. D. Amelunxen, M. Lotz, M. B. McCoy, and J. A. Tropp. Living on the edge: Phase transitions\ninconvexprogramswithrandomdata. InformationandInference: AJournaloftheIMA,3(3):\n224–294,2014. Y.Bengio,P.Lamblin,D.Popovici,andH.Larochelle. Greedylayer-wisetrainingofdeepnetworks. Advancesinneuralinformationprocessingsystems,19,2006. T.Blumensath. Acceleratediterativehardthresholding. SignalProcessing,92(3):752–756,2012. T.BlumensathandM.E.Davies.",
+      "size": 488,
+      "sentences": 12
+    },
+    {
+      "id": 127,
+      "content": "celeratediterativehardthresholding. SignalProcessing,92(3):752–756,2012. T.BlumensathandM.E.Davies. Iterativehardthresholdingforcompressedsensing. Appliedand\ncomputationalharmonicanalysis,27(3):265–274,2009. T.BlumensathandM.E.Davies. Normalizediterativehardthresholding: Guaranteedstabilityand\nperformance. IEEEJournalofselectedtopicsinsignalprocessing,4(2):298–309,2010. S.Boucheron,G.Lugosi,andP.Massart. ConcentrationInequalities: ANonasymptoticTheoryof\nIndependence.",
+      "size": 471,
+      "sentences": 10
+    },
+    {
+      "id": 128,
+      "content": "S.Boucheron,G.Lugosi,andP.Massart. ConcentrationInequalities: ANonasymptoticTheoryof\nIndependence. OxfordUniversityPress,022013. ISBN9780199535255. doi: 10.1093/acprof:oso/\n9780199535255.001.0001. URLhttps://doi.org/10.1093/acprof:oso/9780199535255. 001.0001. E. Boursier and N. Flammarion. Penalising the biases in norm regularisation enforces sparsity. AdvancesinNeuralInformationProcessingSystems,36:57795–57824,2023.",
+      "size": 420,
+      "sentences": 10
+    },
+    {
+      "id": 129,
+      "content": "regularisation enforces sparsity. AdvancesinNeuralInformationProcessingSystems,36:57795–57824,2023. H.Cheng,M.Zhang,andJ.Q.Shi.Asurveyondeepneuralnetworkpruning:Taxonomy,comparison,\nanalysis,andrecommendations. IEEETransactionsonPatternAnalysisandMachineIntelligence,\n2024. S.Damadi,S.Zolfaghari,M.Rezaie,andJ.Shen. LearningasparseneuralnetworkusingIHT. In\n2024InternationalJointConferenceonNeuralNetworks(IJCNN),pages1–8.IEEE,2024. L.Deng.",
+      "size": 440,
+      "sentences": 8
+    },
+    {
+      "id": 130,
+      "content": "orkusingIHT. In\n2024InternationalJointConferenceonNeuralNetworks(IJCNN),pages1–8.IEEE,2024. L.Deng. Themnistdatabaseofhandwrittendigitimagesformachinelearningresearch[bestofthe\nweb]. IEEEsignalprocessingmagazine,29(6):141–142,2012. J.Diffenderfer,B.Bartoldson,S.Chaganti,J.Zhang,andB.Kailkhura. Awinninghand: Compress-\ningdeepnetworkscanimproveout-of-distributionrobustness. Advancesinneuralinformation\nprocessingsystems,34:664–676,2021. T. Ergen and M. Pilanci.",
+      "size": 462,
+      "sentences": 9
+    },
+    {
+      "id": 131,
+      "content": "robustness. Advancesinneuralinformation\nprocessingsystems,34:664–676,2021. T. Ergen and M. Pilanci. Convex geometry and duality of over-parameterized neural networks. Journalofmachinelearningresearch,22(212):1–63,2021. T.ErgenandM.Pilanci. Pathregularization: Aconvexityandsparsityinducingregularizationfor\nparallelrelunetworks. AdvancesinNeuralInformationProcessingSystems,36,2024. T.Ergen,E.Candès,andM.Pilanci. Randomprojectionsforlearningnon-convexmodels.",
+      "size": 459,
+      "sentences": 10
+    },
+    {
+      "id": 132,
+      "content": "essingSystems,36,2024. T.Ergen,E.Candès,andM.Pilanci. Randomprojectionsforlearningnon-convexmodels. In33rd\nConferenceonNeuralInformationProcessingSystems,WorkshoponBeyondFirstOrderMethods\ninMachineLearning,2019. J.FrankleandM.Carbin. Thelotterytickethypothesis: Findingsparse,trainableneuralnetworks. In 7th International Conference on Learning Representations, ICLR 2019, New Orleans, LA,\nUSA, May 6-9, 2019. OpenReview.net, 2019. URL https://openreview.net/forum?id=\nrJl-b3RcF7.",
+      "size": 480,
+      "sentences": 9
+    },
+    {
+      "id": 133,
+      "content": "ans, LA,\nUSA, May 6-9, 2019. OpenReview.net, 2019. URL https://openreview.net/forum?id=\nrJl-b3RcF7. J.Frankle,G.K.Dziugaite,D.Roy,andM.Carbin. Pruningneuralnetworksatinitialization: Why\narewemissingthemark? InInternationalConferenceonLearningRepresentations,2021. URL\nhttps://openreview.net/forum?id=Ig-VyQc-MLK. S.GharatappehandS.Y.Sekeh. Informationconsistentpruning: Howtoefficientlysearchforsparse\nnetworks? InInternationalWorkshoponAIforTransportation,pages270–284.Springer,2025.",
+      "size": 484,
+      "sentences": 10
+    },
+    {
+      "id": 134,
+      "content": "ysearchforsparse\nnetworks? InInternationalWorkshoponAIforTransportation,pages270–284.Springer,2025. 12\n===  13 ===\nR.HettichandK.O.Kortanek. Semi-infiniteprogramming: theory,methods,andapplications. SIAM\nreview,35(3):380–429,1993. K.Hornik,M.Stinchcombe,andH.White. Multilayerfeedforwardnetworksareuniversalapproxi-\nmators. Neuralnetworks,2(5):359–366,1989. P. Jain, A. Tewari, and P. Kar. On iterative hard thresholding methods for high-dimensional m-\nestimation.",
+      "size": 464,
+      "sentences": 10
+    },
+    {
+      "id": 135,
+      "content": ", A. Tewari, and P. Kar. On iterative hard thresholding methods for high-dimensional m-\nestimation. Advancesinneuralinformationprocessingsystems,27,2014. J.Ji,G.Li,L.Yin,M.Qin,G.Yuan,L.Guo,S.Liu,andX.Ma. Advancingdynamicsparsetraining\nby exploring optimization opportunities.",
+      "size": 275,
+      "sentences": 5
+    },
+    {
+      "id": 136,
+      "content": "G.Yuan,L.Guo,S.Liu,andX.Ma. Advancingdynamicsparsetraining\nby exploring optimization opportunities. In R. Salakhutdinov, Z. Kolter, K. Heller, A. Weller,\nN.Oliver,J.Scarlett,andF.Berkenkamp,editors,Proceedingsofthe41stInternationalConference\nonMachineLearning,volume235ofProceedingsofMachineLearningResearch,pages21606–\n21619.PMLR,21–27Jul2024. URLhttps://proceedings.mlr.press/v235/ji24a.html. X. Jin, X. Yuan, J. Feng, and S. Yan.",
+      "size": 432,
+      "sentences": 5
+    },
+    {
+      "id": 137,
+      "content": "–27Jul2024. URLhttps://proceedings.mlr.press/v235/ji24a.html. X. Jin, X. Yuan, J. Feng, and S. Yan. Training skinny deep neural networks with iterative hard\nthresholdingmethods. arXivpreprintarXiv:1607.05423,2016. J.Kaplan,S.McCandlish,T.Henighan,T.B.Brown,B.Chess,R.Child,S.Gray,A.Radford,J.Wu,\nandD.Amodei. Scalinglawsforneurallanguagemodels. arXivpreprintarXiv:2001.08361,2020. A.Karimi,A.Kalhor,andM.SadeghiTabrizi.",
+      "size": 419,
+      "sentences": 9
+    },
+    {
+      "id": 138,
+      "content": "forneurallanguagemodels. arXivpreprintarXiv:2001.08361,2020. A.Karimi,A.Kalhor,andM.SadeghiTabrizi. Forwardlayer-wiselearningofconvolutionalneural\nnetworksthroughseparationindexmaximizing. ScientificReports,14(1):8576,2024. R. Khanna and A. Kyrillidis. Iht dies hard: Provable accelerated iterative hard thresholding. In\nInternationalConferenceonArtificialIntelligenceandStatistics,pages188–198.PMLR,2018. S.KimandM.Pilanci.",
+      "size": 424,
+      "sentences": 9
+    },
+    {
+      "id": 139,
+      "content": "rnationalConferenceonArtificialIntelligenceandStatistics,pages188–198.PMLR,2018. S.KimandM.Pilanci. Convexrelaxationsofreluneuralnetworksapproximateglobaloptimain\npolynomialtime. InInternationalConferenceonMachineLearning,pages24458–24485.PMLR,\n2024. A.Krizhevsky,G.Hinton,etal. Learningmultiplelayersoffeaturesfromtinyimages. 2009. A. Kusupati, V. Ramanujan, R. Somani, M. Wortsman, P. Jain, S. Kakade, and A. Farhadi.",
+      "size": 419,
+      "sentences": 8
+    },
+    {
+      "id": 140,
+      "content": "mages. 2009. A. Kusupati, V. Ramanujan, R. Somani, M. Wortsman, P. Jain, S. Kakade, and A. Farhadi. Soft\nthresholdweightreparameterizationforlearnablesparsity.InInternationalConferenceonMachine\nLearning,pages5544–5555.PMLR,2020. B.Liu,Z.Zhang,P.He,Z.Wang,Y.Xiao,R.Ye,Y.Zhou,W.-S.Ku,andB.Hui. Asurveyoflottery\ntickethypothesis. arXivpreprintarXiv:2403.04861,2024. A. Mishkin, A. Sahiner, and M. Pilanci.",
+      "size": 402,
+      "sentences": 8
+    },
+    {
+      "id": 141,
+      "content": "ttery\ntickethypothesis. arXivpreprintarXiv:2403.04861,2024. A. Mishkin, A. Sahiner, and M. Pilanci. Fast convex optimization for two-layer relu networks:\nEquivalent model classes and cone decompositions. In International Conference on Machine\nLearning,pages15770–15816.PMLR,2022. A.Nowak,B.Grooten,D.C.Mocanu,andJ.Tabor. Fantasticweightsandhowtofindthem: Where\ntopruneindynamicsparsetraining. AdvancesinNeuralInformationProcessingSystems, 36:\n55160–55192,2023.",
+      "size": 460,
+      "sentences": 8
+    },
+    {
+      "id": 142,
+      "content": "topruneindynamicsparsetraining. AdvancesinNeuralInformationProcessingSystems, 36:\n55160–55192,2023. M.Parger,A.Ertl,P.Eibensteiner,J.H.Mueller,M.Winter,andM.Steinberger. Gradient-based\nweightdensitybalancingforrobustdynamicsparsetraining. arXivpreprintarXiv:2210.14012,\n2022. M.PilanciandT.Ergen. Neuralnetworksareconvexregularizers: Exactpolynomial-timeconvex\noptimizationformulationsfortwo-layernetworks.",
+      "size": 406,
+      "sentences": 7
+    },
+    {
+      "id": 143,
+      "content": "orksareconvexregularizers: Exactpolynomial-timeconvex\noptimizationformulationsfortwo-layernetworks. InH.D.IIIandA.Singh,editors,Proceedings\nofthe37thInternationalConferenceonMachineLearning,volume119ofProceedingsofMachine\nLearningResearch,pages7695–7705.PMLR,13–18Jul2020a. URLhttps://proceedings. mlr.press/v119/pilanci20a.html. M.PilanciandT.Ergen. Neuralnetworksareconvexregularizers: Exactpolynomial-timeconvex\noptimization formulations for two-layer networks.",
+      "size": 464,
+      "sentences": 6
+    },
+    {
+      "id": 144,
+      "content": "areconvexregularizers: Exactpolynomial-timeconvex\noptimization formulations for two-layer networks. In International Conference on Machine\nLearning,pages7695–7705.PMLR,2020b. Y.PlanandR.Vershynin. Dimensionreductionbyrandomhyperplanetessellations. Discrete&\nComputationalGeometry,51(2):438–461,2014. 13\n===  14 ===\nD.SaikumarandB.Varghese. Drive: Dualgradient-basedrapiditerativepruning. arXivpreprint\narXiv:2404.03687,2024. R. P. Stanley et al. An introduction to hyperplane arrangements.",
+      "size": 489,
+      "sentences": 10
+    },
+    {
+      "id": 145,
+      "content": "Xivpreprint\narXiv:2404.03687,2024. R. P. Stanley et al. An introduction to hyperplane arrangements. Geometric combinatorics, 13:\n389–496,2007. M.Tancik,P.P.Srinivasan,B.Mildenhall,S.Fridovich-Keil,N.Raghavan,U.Singhal,R.Ramamoor-\nthi,J.T.Barron,andR.Ng. Fourierfeaturesletnetworkslearnhighfrequencyfunctionsinlow\ndimensionaldomains. NeurIPS,2020. J.A.Tropp. Greedisgood: Algorithmicresultsforsparseapproximation. IEEETransactionson\nInformationtheory,50(10):2231–2242,2004.",
+      "size": 472,
+      "sentences": 10
+    },
+    {
+      "id": 146,
+      "content": "gorithmicresultsforsparseapproximation. IEEETransactionson\nInformationtheory,50(10):2231–2242,2004. H. Wang, C. Qin, Y. Bai, Y. Zhang, and Y. Fu. Recent advances on neural network pruning at\ninitialization. InL.D.Raedt,editor,ProceedingsoftheThirty-FirstInternationalJointConference\nonArtificialIntelligence,IJCAI2022,Vienna,Austria,23-29July2022,pages5638–5645.ijcai.org,\n2022. doi: 10.24963/IJCAI.2022/786. URLhttps://doi.org/10.24963/ijcai.2022/786. J. Wright and Y. Ma.",
+      "size": 473,
+      "sentences": 7
+    },
+    {
+      "id": 147,
+      "content": "022. doi: 10.24963/IJCAI.2022/786. URLhttps://doi.org/10.24963/ijcai.2022/786. J. Wright and Y. Ma. High-dimensional data analysis with low-dimensional models: Principles,\ncomputation,andapplications. CambridgeUniversityPress,2022. B. Wu, Q. Xiao, S. Wang, N. Strisciuglio, M. Pechenizkiy, M. van Keulen, D. C. Mocanu, and\nE. Mocanu. Dynamic sparse training versus dense training: The unexpected winner in image\ncorruptionrobustness. arXivpreprintarXiv:2410.03030,2024.",
+      "size": 469,
+      "sentences": 8
+    },
+    {
+      "id": 148,
+      "content": "training: The unexpected winner in image\ncorruptionrobustness. arXivpreprintarXiv:2410.03030,2024. 14\n===  15 ===\nAppendices\nA ProofofLemma1\nProof. OurgoalistoupperandlowerboundtheeigenvaluesofATA ∈Rs×s,wherethefullmatrix\nS S\nA∈Rn×dpisacolumn-normalizedversionof\n[diag(I{Xh ≥0})X ... diag(I{Xh ≥0})X]∈Rn×dp,\n1 p\nX ∈Rn×dhasi.i.d. N(0,1)entries,andtheindexsetS ⊆[dp]has|S|=s≤n.",
+      "size": 375,
+      "sentences": 5
+    },
+    {
+      "id": 149,
+      "content": "})X ... diag(I{Xh ≥0})X]∈Rn×dp,\n1 p\nX ∈Rn×dhasi.i.d. N(0,1)entries,andtheindexsetS ⊆[dp]has|S|=s≤n. As singular values of A are unaffected by column permutation, without loss of generality, we\nS\nassumethatcolumnsofA areorderedsothatcolumnsinvolvingeachx areadjacenttoeachother. S j\nThisorderinginducesablockstructureinATA ;werefertothei,j blocksubmatrixas(ATA ) .",
+      "size": 363,
+      "sentences": 4
+    },
+    {
+      "id": 150,
+      "content": "ttoeachother. S j\nThisorderinginducesablockstructureinATA ;werefertothei,j blocksubmatrixas(ATA ) . S S S S i,j\nUsingthisblockstructure,weboundeachtypeofentryinATA withhighprobabilityandthenuse\nS S\ntheseentry-wiseboundstoupperandlowerboundtheeigenvaluesofATA withhighprobability. S S\nFirst,considerablocksubmatrix(ATA ) onthediagonalofATA .",
+      "size": 340,
+      "sentences": 4
+    },
+    {
+      "id": 151,
+      "content": "eeigenvaluesofATA withhighprobability. S S\nFirst,considerablocksubmatrix(ATA ) onthediagonalofATA . SincethecolumnsofAare\nS S i,i S S\nnormalized,thediagonalentriesof(ATA ) aredeterministically1foralli.Theoff-diagonalentries\nS S i,i\nof(ATA ) taketheform xT i DjD j′xi .ThenumeratorhasE[xTD D x ]=TrD D ,while\nS S i,i ∥Djxi∥\n2\n∥D j′xi ∥\n(cid:112)2 (cid:112)\ni j j′ i j j′\nthe denominator terms have expectation TrD and TrD , respectively.",
+      "size": 436,
+      "sentences": 3
+    },
+    {
+      "id": 152,
+      "content": "id:112)2 (cid:112)\ni j j′ i j j′\nthe denominator terms have expectation TrD and TrD , respectively. Applying Hanson-\nj j′\nWright(Theorem2)toeachquadraticforminthisexpression,wehave\nxTD D x TrD D +t\ni j j′ i ≤ j j′ 1 (8)\n(cid:112) (cid:112)\n∥D j x i ∥ 2 ∥D j′ x i ∥ 2 TrD j −t 2 TrD j′ −t 3\nwith probability at least 1 − 2exp\n(cid:0) −ct2\n1\n(cid:1)\n− 2exp\n(cid:0) −ct2\n2\n(cid:1)\n− 2exp\n(cid:0) −ct2\n3\n(cid:1)\n, for a\nTrDjD j′+t1 TrDj+t2 TrD j′+t3\nuniversalconstantc.",
+      "size": 465,
+      "sentences": 2
+    },
+    {
+      "id": 153,
+      "content": "2\n2\n(cid:1)\n− 2exp\n(cid:0) −ct2\n3\n(cid:1)\n, for a\nTrDjD j′+t1 TrDj+t2 TrD j′+t3\nuniversalconstantc. √\nConsider two regimes based on whether TrD D is less than or greater than ε n. In the first\n√ √j j′\nregime,TrD D ≤ ε n. Wechooset = ε n,t = δTrD ,andt = δTrD forδ ∈ (0,1),\nj j′ 1 2 j 3 j′\nwhichyields\n√\nxTD D x TrD D +ε n\ni j j′ i ≤ j j′\n(cid:112) (cid:112)\n∥D j x i ∥ 2 ∥D j′ x i ∥ 2 (1−δ)TrD j (1−δ)TrD j′\nwithprobabilityatleast1−2exp (cid:0) −cε2n √ (cid:1) −2exp (cid:0)−cδ2TrDj (cid:1) −2exp (cid:0)−cδ2TrD j′(cid:1) .",
+      "size": 523,
+      "sentences": 2
+    },
+    {
+      "id": 154,
+      "content": "tleast1−2exp (cid:0) −cε2n √ (cid:1) −2exp (cid:0)−cδ2TrDj (cid:1) −2exp (cid:0)−cδ2TrD j′(cid:1) . TrDjD j′+ε n 1+δ 1+δ\n√\nSinceweareintheregimewhereTrD D ≤ε nand,byAssumption2,D andD eachhave\nj j′ j j′\ntraceatleastεn,wehave\nxTD D x 2\ni j j′ i ≤ √\n∥D x ∥ ∥D x ∥ (1−δ) n\nj i 2 j′ i 2\n√\nwithprobabilityatleast1−2exp\n(cid:0)−cε n(cid:1)\n−4exp\n(cid:0)−cδ2εn(cid:1)\n.",
+      "size": 362,
+      "sentences": 2
+    },
+    {
+      "id": 155,
+      "content": "1−δ) n\nj i 2 j′ i 2\n√\nwithprobabilityatleast1−2exp\n(cid:0)−cε n(cid:1)\n−4exp\n(cid:0)−cδ2εn(cid:1)\n. 2 1+δ\n√\nInthesecondregime,TrD D >ε n. InEquation(8)wechooset =δTrD D ,t =δTrD ,\nj j′ 1 j j′ 2 j\nandt =δTrD ,forδ ∈(0,1),toyield\n3 j′\nxTD D x (1+δ)TrD D\ni j j′ i ≤ j j′\n(cid:112) (cid:112)\n∥D j x i ∥ 2 ∥D j′ x i ∥ 2 (1−δ) TrD j TrD j′\nwithprobabilityatleast1−2exp\n(cid:0)−cδ2TrDjD j′(cid:1)\n−2exp\n(cid:0)−cδ2TrDj (cid:1)\n−2exp\n(cid:0)−cδ2TrD j′(cid:1)\n.Without\n1+δ 1+δ 1+δ\nlossofgenerality,assumethatTrD ≤ TrD .",
+      "size": 510,
+      "sentences": 2
+    },
+    {
+      "id": 156,
+      "content": "(cid:1)\n−2exp\n(cid:0)−cδ2TrD j′(cid:1)\n.Without\n1+δ 1+δ 1+δ\nlossofgenerality,assumethatTrD ≤ TrD . Weareinterestedinupperboundingthequantity\nj j′\nxT\ni\nDjD j′xi\n,whichismaximizedwhenallentriesthattakevalue1inD alsotakevalue1in\n∥Djxi∥\n2\n∥D j′xi ∥\n2\nj\nD . ThischoicemaximizesTrD D foranyfixedvaluesofTrD andTrD . LetTrD =ξn. j′ j j′ j j′ j\nByAssumption2,D andD musttakedifferentvalues(oneis0andtheotheris1)inatleastγn\nj j′\ndiagonalpositions.",
+      "size": 438,
+      "sentences": 5
+    },
+    {
+      "id": 157,
+      "content": "Assumption2,D andD musttakedifferentvalues(oneis0andtheotheris1)inatleastγn\nj j′\ndiagonalpositions. Combiningthiswithourobservationofthemaximizingarrangementofones\nandzerosinD andD′,forthisarrangementwehavethatTrD ≥TrD +γn=(ξ+γ)nand\nj j j′ j\n15\n===  16 ===\n√\nTrD D =TrD =ξn.",
+      "size": 274,
+      "sentences": 2
+    },
+    {
+      "id": 158,
+      "content": "andD′,forthisarrangementwehavethatTrD ≥TrD +γn=(ξ+γ)nand\nj j j′ j\n15\n===  16 ===\n√\nTrD D =TrD =ξn. SinceweareintheregimewhereTrD D >ε nand,byAssumption\nj j′ j j j′\n2,D andD eachhavetraceatleastεn,wehave\nj j′\n√\nxTD D x (1+δ) ξ\ni j j′ i ≤ √\n∥D x ∥ ∥D x ∥ (1−δ) ξ+γ\nj i 2 j′ i 2\n√\nwithprobabilityatleast1−2exp\n(cid:0)−cδ2ε n(cid:1)\n−4exp\n(cid:0)−cδ2εn(cid:1)\n. Thisupperboundisincreasingin\n1+δ 1+δ\nξ,whichcantakevalueatmost1−γ sinceTrD ≥(ξ+γ)nandbyconstructionD ≤n.",
+      "size": 462,
+      "sentences": 3
+    },
+    {
+      "id": 159,
+      "content": "pperboundisincreasingin\n1+δ 1+δ\nξ,whichcantakevalueatmost1−γ sinceTrD ≥(ξ+γ)nandbyconstructionD ≤n. We\nj′ j′\nthereforesetξ =1−γ toyieldthebound:\n√\nxTD D x (1+δ) 1−γ\ni j j′ i ≤ ,\n∥D x ∥ ∥D x ∥ 1−δ\nj i 2 j′ i 2\n√\nwhichholdswithprobabilityatleast1−2exp\n(cid:0)−cδ2ε n(cid:1)\n−4exp\n(cid:0)−cδ2εn(cid:1)\n.Sincethissecond-regime\n1+δ 1+δ\nboundisindependentofnwhilethefirst-regimebounddecaysasn−1/2,forlargenthesecond-regime\n√\nbounddominates.",
+      "size": 434,
+      "sentences": 2
+    },
+    {
+      "id": 160,
+      "content": "disindependentofnwhilethefirst-regimebounddecaysasn−1/2,forlargenthesecond-regime\n√\nbounddominates. Forallδ ∈ (0,1)wealsohavethat1−2exp\n(cid:0)−cδ2ε n(cid:1)\n−4exp\n(cid:0)−cδ2εn(cid:1)\n≤\n√ 1+δ 1+δ\n1−2exp\n(cid:0)−cε n(cid:1)\n−4exp\n(cid:0)−cδ2εn(cid:1)\n.",
+      "size": 252,
+      "sentences": 2
+    },
+    {
+      "id": 161,
+      "content": "d:1)\n−4exp\n(cid:0)−cδ2εn(cid:1)\n≤\n√ 1+δ 1+δ\n1−2exp\n(cid:0)−cε n(cid:1)\n−4exp\n(cid:0)−cδ2εn(cid:1)\n. Therefore,weconcludethat\n2 1+δ\n√\nxTD D x (1+δ) 1−γ\n0≤ i j j′ i ≤ ,\n∥D x ∥ ∥D x ∥ 1−δ\nj i 2 j′ i 2\n√\nholds with probability at least 1 − 2exp\n(cid:0)−cδ2ε n(cid:1)\n− 4exp\n(cid:0)−cδ2εn(cid:1)\nfor all off-diagonal en-\n1+δ 1+δ\ntries of a diagonal block submatrix (ATA ) .",
+      "size": 368,
+      "sentences": 2
+    },
+    {
+      "id": 162,
+      "content": "(cid:0)−cδ2εn(cid:1)\nfor all off-diagonal en-\n1+δ 1+δ\ntries of a diagonal block submatrix (ATA ) . Here we include a deterministic lower bound\nS S i,i\nxT\ni\nDjD j′xi\n≥0,whichholdsbecauseD D isadiagonalmatrixwithallentriesnonnegative. ∥Djxi∥\n2\n∥D j′xi ∥\n2\nj j′\nNext,weconsiderablocksubmatrix(ATA ) thatisoffthediagonalofATA . Theentriesof\nS S i,i′ S S\n(ATA ) taketheform xT i DjD j′x i′ ,whereD andD maybethesameordifferent.",
+      "size": 422,
+      "sentences": 4
+    },
+    {
+      "id": 163,
+      "content": "Theentriesof\nS S i,i′ S S\n(ATA ) taketheform xT i DjD j′x i′ ,whereD andD maybethesameordifferent. The\nnum S er S ato i, r i′ has E[xTD D ∥D x jx ] i∥ = 2 ∥ 0 D , j′ w x i h ′ i ∥ l 2 e the denom j inator t j e ′ rms have expectation (cid:112) TrD and\ni j j′ i′ j\n(cid:112)\nTrD ,respectively.",
+      "size": 292,
+      "sentences": 2
+    },
+    {
+      "id": 164,
+      "content": "om j inator t j e ′ rms have expectation (cid:112) TrD and\ni j j′ i′ j\n(cid:112)\nTrD ,respectively. WeboundthisexpressionwithhighprobabilitybyapplyingHanson-Wright\nj′\ntoeachterminthedenominator,andasymmetricHanson-Wrighttothenumerator:\n|xTD D x | t\ni j j′ i′ ≤ 1 (9)\n(cid:112) (cid:112)\n∥D j x i ∥ 2 ∥D j′ x i′ ∥ 2 TrD j −t 2 TrD j′ −t 3\nwith probability at least 1 − 2exp\n(cid:0) −ct2\n1\n(cid:1)\n− 2exp\n(cid:0) −ct2\n2\n(cid:1)\n− 2exp\n(cid:0) −ct2\n3\n(cid:1)\n, for a\nTrDjD j′+t1 TrDj+t2 TrD j′+t3\nuniversalconstantc.",
+      "size": 513,
+      "sentences": 2
+    },
+    {
+      "id": 165,
+      "content": "2\n2\n(cid:1)\n− 2exp\n(cid:0) −ct2\n3\n(cid:1)\n, for a\nTrDjD j′+t1 TrDj+t2 TrD j′+t3\nuniversalconstantc. Wechooset =δTrD andt =δTrD ,forδ ∈(0,1),toyield\n2 j 3 j′\n|xTD D x | t\ni j j′ i′ ≤ 1\n(cid:112) (cid:112)\n∥D j x i ∥ 2 ∥D j′ x i′ ∥ 2 (1−δ) TrD j TrD j′\nwith probability at least 1−2exp\n(cid:0) −ct2\n1\n(cid:1)\n−2exp\n(cid:0)−cδ2TrDj (cid:1)\n−2exp\n(cid:0)−cδ2TrD j′(cid:1)\n.",
+      "size": 369,
+      "sentences": 2
+    },
+    {
+      "id": 166,
+      "content": "least 1−2exp\n(cid:0) −ct2\n1\n(cid:1)\n−2exp\n(cid:0)−cδ2TrDj (cid:1)\n−2exp\n(cid:0)−cδ2TrD j′(cid:1)\n. By\nTrDjD j′+t1 1+δ 1+δ\nAssumption2,TrD ≥εnandTrD ≥εn,sowehave\nj j′\n|xTD D x | t\ni j j′ i′ ≤ 1\n∥D x ∥ ∥D x ∥ (1−δ)εn\nj i 2 j′ i′ 2\nwithprobabilityatleast1−2exp\n(cid:0) −ct2\n1\n(cid:1)\n−4exp\n(cid:0)−cδ2εn(cid:1)\n. Now,weconsidertworegimes\nTrDjD j′+t1 1+δ\ndependingonwhetherTrD D islessthanorgreaterthanεn.",
+      "size": 401,
+      "sentences": 3
+    },
+    {
+      "id": 167,
+      "content": "id:1)\n. Now,weconsidertworegimes\nTrDjD j′+t1 1+δ\ndependingonwhetherTrD D islessthanorgreaterthanεn. j j′\nIntheregimewhereTrD D ≤εn,wechooset =εn3/4,yielding:\nj j′ 1\n|xTD D x | 1\ni j j′ i′ ≤\n∥D x ∥ ∥D x ∥ (1−δ)n1/4\nj i 2 j′ i′ 2\nwithprobabilityatleast1−2exp\n(cid:0)−cεn3/4(cid:1)\n−4exp\n(cid:0)−cδ2εn(cid:1)\n. 1+n1/4 1+δ\n16\n===  17 ===\nIntheregimewhereTrD D > εn,wechooset = δn−1/4TrD D .",
+      "size": 386,
+      "sentences": 4
+    },
+    {
+      "id": 168,
+      "content": "id:0)−cδ2εn(cid:1)\n. 1+n1/4 1+δ\n16\n===  17 ===\nIntheregimewhereTrD D > εn,wechooset = δn−1/4TrD D . Combiningthiswiththe\nj j′ 1 j j′\nimplicationofAssumption2thatTrD D ≤(1−γ)n,wehave\nj j′\n|xTD D x | δn−1/4TrD D δ(1−γ)\ni j j′ i′ ≤ j j′ ≤\n∥D x ∥ ∥D x ∥ (1−δ)εn (1−δ)εn1/4\nj i 2 j′ i′ 2\nwith probability at least 1 − 2exp\n(cid:0)−cδ2n3/4ε(cid:1)\n− 4exp\n(cid:0)−cδ2εn(cid:1)\n.",
+      "size": 371,
+      "sentences": 3
+    },
+    {
+      "id": 169,
+      "content": "2 j′ i′ 2\nwith probability at least 1 − 2exp\n(cid:0)−cδ2n3/4ε(cid:1)\n− 4exp\n(cid:0)−cδ2εn(cid:1)\n. For all δ ∈ (0,1), 1 −\nn1/4+δ 1+δ\n2exp (cid:0)−cδ2n3/4ε(cid:1) −4exp (cid:0)−cδ2εn(cid:1) ≤1−2exp (cid:0)−cεn3/4(cid:1) −4exp (cid:0)−cδ2εn(cid:1) ,andforδ ≤ ε we\nn1/4+δ 1+δ 1+n1/4 1+δ 1−γ\nhave 1 ≥ δ(1−γ) .",
+      "size": 305,
+      "sentences": 2
+    },
+    {
+      "id": 170,
+      "content": "εn3/4(cid:1) −4exp (cid:0)−cδ2εn(cid:1) ,andforδ ≤ ε we\nn1/4+δ 1+δ 1+n1/4 1+δ 1−γ\nhave 1 ≥ δ(1−γ) . Combiningthese,wehavethat\n(1−δ)n1/4 (1−δ)εn1/4\n|xTD D x | 1\ni j j′ i′ ≤\n∥D x ∥ ∥D x ∥ (1−δ)n1/4\nj i 2 j′ i′ 2\nholdswithprobabilityatleast1−2exp (cid:0)−cδ2n3/4ε(cid:1) −4exp (cid:0)−cδ2εn(cid:1) ,forallδ ∈(0, ε )andall\nn1/4+δ 1+δ 1−γ\nentriesofablocksubmatrix(ATA ) thatisoffthediagonalofATA .",
+      "size": 392,
+      "sentences": 2
+    },
+    {
+      "id": 171,
+      "content": ") ,forallδ ∈(0, ε )andall\nn1/4+δ 1+δ 1−γ\nentriesofablocksubmatrix(ATA ) thatisoffthediagonalofATA . S S i,i′ S S\nNow that we have high probability (and in some cases deterministic) upper and lower bounds\non each entry of ATA , we combine them into high probability bounds on the eigenvalues of\nS S\nATA . We candecompose ATA = B +C, where B isblock diagonaland C isdense except\nS S S S\nfor having zeros in block-diagonal entries. First, consider a single block submatrix B on the\ni,i\ndiagonalofB.",
+      "size": 495,
+      "sentences": 4
+    },
+    {
+      "id": 172,
+      "content": "zeros in block-diagonal entries. First, consider a single block submatrix B on the\ni,i\ndiagonalofB. Thisblocksubmatrixhasdiagonalvaluesdeterministically1,andoff-diagonalentries\n√\nboundeddeterministicallyfrombelowby0andboundedaboveby (1+δ) 1−γ withprobabilityat\n1−δ\n√\nleast1−2exp\n(cid:0)−cδ2ε n(cid:1)\n−4exp\n(cid:0)−cδ2εn(cid:1)\n.",
+      "size": 329,
+      "sentences": 3
+    },
+    {
+      "id": 173,
+      "content": "by (1+δ) 1−γ withprobabilityat\n1−δ\n√\nleast1−2exp\n(cid:0)−cδ2ε n(cid:1)\n−4exp\n(cid:0)−cδ2εn(cid:1)\n. Weusethevariationaldefinitionoftheminimumand\n1+δ 1+δ\nmaximumeigenvalues,andrefertoB asB˜ sothatsubscriptsmaydenoteindiceswithintheblock\ni,i\nsubmatrix:\nλ (B˜)= min uTB˜u\nmin\n∥u∥ =1\n2\n= min (cid:88) B˜ u2+ (cid:88) B u u\ni,i i i,j i j\n∥u∥ =1\n2 i i̸=j\n(a) (cid:88)\n= 1+ min B u u\ni,j i j\n∥u∥ =1\n2 i̸=j\n√\n(b) (1+δ) 1−γ\n≥ 1− ,\n1−δ\nwherein(a)weusethedeterministicfactsthatdiagonalentriesofB˜ takevalue1andthat∥u∥ =1,\n2\nandin(b)weusethehigh-probabilityupperboundonthemagnitudeofB˜ andtheobservationthat\ni,j\ntheminimumisachievedbyavectoru⊥1(thismakesthecrosstermsmostnegative).",
+      "size": 669,
+      "sentences": 2
+    },
+    {
+      "id": 174,
+      "content": "fB˜ andtheobservationthat\ni,j\ntheminimumisachievedbyavectoru⊥1(thismakesthecrosstermsmostnegative). Byasimilar\nlineofreasoning,wecanbound\nλ (B˜)=1+ max (cid:88) B u u\nmax i,j i j\n∥u∥ =1\n2 i̸=j\n√\n(a) (1+δ) 1−γ\n≤ 1+ (s−1),\n1−δ\nwherein(a)weusethehigh-probabilityupperboundonthemagnitudeofB˜ ,theobservationthat\ni,j\nthemaximumisachievedbyavectoru∥1,andtherequirementthatthemaximumdimensionofB˜\n√\niss×s.",
+      "size": 398,
+      "sentences": 2
+    },
+    {
+      "id": 175,
+      "content": "tionthat\ni,j\nthemaximumisachievedbyavectoru∥1,andtherequirementthatthemaximumdimensionofB˜\n√\niss×s. Bothoftheseboundsholdwithprobabilityatleast1−2s(s−1)exp\n(cid:0)−cδ2ε n(cid:1)\n−4s(s−\n1+δ\n1)exp (cid:0)−cδ2εn(cid:1) ,byaunionboundoveralloff-diagonalentriesinB˜. Thespectrumofthefullblock\n1+δ\nmatrixBisboundedbytheminimumandmaximumeigenvaluesofitslargestblock,whichcanhave\nsizeatmosts×s. Thustheboundsaboveonλ (B˜)andλ (B˜)alsoapplytoB.",
+      "size": 435,
+      "sentences": 4
+    },
+    {
+      "id": 176,
+      "content": "aluesofitslargestblock,whichcanhave\nsizeatmosts×s. Thustheboundsaboveonλ (B˜)andλ (B˜)alsoapplytoB. min max\nSinceATA =B+C,itremainstoboundthespectrumofC andcombinetheresults. Thestructure\nS S\nofC isdense,withblockdiagonalsubmatricesofvaluezeroandeachotherentryboundedbetween\n− 1 and 1 withprobabilityatleast1−2exp (cid:0)−cδ2n3/4ε(cid:1) −4exp (cid:0)−cδ2εn(cid:1) ,forall\n(1−δ)n1/4 (1−δ)n1/4 n1/4+δ 1+δ\n17\n===  18 ===\nδ ∈ (0, ε ).",
+      "size": 431,
+      "sentences": 4
+    },
+    {
+      "id": 177,
+      "content": "id:1) −4exp (cid:0)−cδ2εn(cid:1) ,forall\n(1−δ)n1/4 (1−δ)n1/4 n1/4+δ 1+δ\n17\n===  18 ===\nδ ∈ (0, ε ). Forthismatrix, weuseacoarseboundthat|||C||| ≤ s , whichholdswith\n1−γ op (1−δ)n1/4\nprobabilityatleast1−2s(s−1)exp (cid:0)−cδ2n3/4ε(cid:1) −4s(s−1)exp (cid:0)−cδ2εn(cid:1) forallδ ∈ (0, ε ),\nn1/4+δ 1+δ 1−γ\nfollowingaunionbound.",
+      "size": 325,
+      "sentences": 2
+    },
+    {
+      "id": 178,
+      "content": "/4ε(cid:1) −4s(s−1)exp (cid:0)−cδ2εn(cid:1) forallδ ∈ (0, ε ),\nn1/4+δ 1+δ 1−γ\nfollowingaunionbound. CombiningthesespectralboundsonBandC viaWeyl’sinequality,wehavethat\n√\n(1+δ) 1−γ s\nλ (ATA )≥1− −\nmin S S 1−δ (1−δ)n1/4\nand √\n(s−1)(1+δ) 1−γ s\nλ (ATA )≤1+ +\nmax S S 1−δ (1−δ)n1/4\n√\nfor any δ ∈ (0, ε ) with probability at least 1 − 2s(s − 1)exp (cid:0)−cδ2ε n(cid:1) − 2s(s −\n1−γ 1+δ\n1)exp\n(cid:0)−cδ2n3/4ε(cid:1)\n−8s(s−1)exp\n(cid:0)−cδ2εn(cid:1)\n.",
+      "size": 444,
+      "sentences": 2
+    },
+    {
+      "id": 179,
+      "content": ":0)−cδ2ε n(cid:1) − 2s(s −\n1−γ 1+δ\n1)exp\n(cid:0)−cδ2n3/4ε(cid:1)\n−8s(s−1)exp\n(cid:0)−cδ2εn(cid:1)\n. n1/4+δ 1+δ\nTheorem2(Hanson-Wright(Boucheronetal.,2013)). Letxbearandomvectorwithi.i.d.zero-mean\n1-sub-Gaussianentries. LetH beasquarematrix. Thenforauniversalconstantc\nP(cid:2)(cid:12) (cid:12)xTHx−E[xTHx] (cid:12) (cid:12)≥t (cid:3) ≤2exp\n(cid:18)\n−\nct2 (cid:19)\n. |||H|||2+|||H||| t\nF op\nIfH isadiagonalmatrixwithalldiagonalentriesequaltoeitherzeroorone,|||H|||2 =TrH and\nF\n|||H||| =1.",
+      "size": 487,
+      "sentences": 6
+    },
+    {
+      "id": 180,
+      "content": "p\nIfH isadiagonalmatrixwithalldiagonalentriesequaltoeitherzeroorone,|||H|||2 =TrH and\nF\n|||H||| =1. WealsouseanasymmetricversionofHanson-Wright,derivedasfollows. Let\nop\n(cid:20)\n0\nH˜(cid:21) (cid:20)\nu\n(cid:21)\nH = ; x= ;\n0 0 v\nyielding\n(cid:32) (cid:33)\n(cid:104)(cid:12) (cid:12) (cid:105) ct2\nP (cid:12)uTH˜v−E[uTH˜v](cid:12)≥t ≤2exp − . (cid:12) (cid:12) |||H˜|||2+|||H˜||| t\nF op\nB ProofofTheorem1\nProof. TheproofofTheorem1combinesLemma1withTheorem3(Theorem1inJainetal.",
+      "size": 474,
+      "sentences": 5
+    },
+    {
+      "id": 181,
+      "content": "|| t\nF op\nB ProofofTheorem1\nProof. TheproofofTheorem1combinesLemma1withTheorem3(Theorem1inJainetal. (2014)),\nwhichshowsthatIHTwithaninflatedsparsitylevelcanrecoverasparsesignalinalinearinverse\nproblemaslongasthesensingmatrixsatisfiestherestrictedstrongconvexityandrestrictedstrong\nsmoothness properties with any positive finite parameters; i.e. with an arbitrary finite restricted\nconditionnumber.",
+      "size": 397,
+      "sentences": 4
+    },
+    {
+      "id": 182,
+      "content": "ties with any positive finite parameters; i.e. with an arbitrary finite restricted\nconditionnumber. Theorem3showsdirectlythat,undertheconditionsinthetheoremstatement,theobjectivevalue\nconverges as f(wK)−f(w⋆) ≤ ϵ.",
+      "size": 213,
+      "sentences": 3
+    },
+    {
+      "id": 183,
+      "content": "irectlythat,undertheconditionsinthetheoremstatement,theobjectivevalue\nconverges as f(wK)−f(w⋆) ≤ ϵ. This implies convergence of iterates due to restricted strong\nconvexityandthefactthat∇f(w⋆)=0:\nf(wK)−f(w⋆)≥⟨wK −w⋆,∇f(w⋆)⟩+ α(cid:13) (cid:13)wK −w⋆(cid:13) (cid:13) 2 = α(cid:13) (cid:13)wK −w⋆(cid:13) (cid:13) 2 ,\n2 2 2 2\nwhichprovestheadditionalresultthat (cid:13) (cid:13)wK −w⋆ (cid:13) (cid:13) 2 ≤ 2ϵ. 2 α\nWenotethattheproofinJainetal.",
+      "size": 442,
+      "sentences": 3
+    },
+    {
+      "id": 184,
+      "content": "ionalresultthat (cid:13) (cid:13)wK −w⋆ (cid:13) (cid:13) 2 ≤ 2ϵ. 2 α\nWenotethattheproofinJainetal. (2014)alsoimpliesthat,ifIHTprojectsontothesmallersparsity\nlevelsratherthantheinflatedsparsitylevels˜,eachstepofIHTisstillguaranteedtonotincreasethe\nMSElossf(w);therequirementthats˜>sallowsforstrictobjectivedecreaseineachstep. Theorem3(Jainetal.(2014)).",
+      "size": 352,
+      "sentences": 5
+    },
+    {
+      "id": 185,
+      "content": "ssf(w);therequirementthats˜>sallowsforstrictobjectivedecreaseineachstep. Theorem3(Jainetal.(2014)). Assumethattheobjectivef hasrestrictedstrongconvexityparameter\nαandrestrictedstrongsmoothnessparameterLatsparsitylevel2s˜+s,withs˜>32\n(cid:0)L(cid:1)2\ns. Assume\nα\nthatθ⋆ =argmin f(θ),i.e. thatthetruesignaliss-sparse. ThenIHTwithprojection(hard\n∥θ∥ ≤s\n0\nthresholding)tosparsitylevels˜andstepsizeη = 2 , runforK = O (cid:0)Llog (cid:0)f(θ0)(cid:1)(cid:1) iterations,\n3L α ϵ\nachieves\nf(θK)−f(θ⋆)≤ϵ.",
+      "size": 494,
+      "sentences": 5
+    },
+    {
+      "id": 186,
+      "content": "= 2 , runforK = O (cid:0)Llog (cid:0)f(θ0)(cid:1)(cid:1) iterations,\n3L α ϵ\nachieves\nf(θK)−f(θ⋆)≤ϵ. 18\n===  19 ===\nC ProofthatAssumption2FollowsfromAssumption1withHighProbability\nLet D = diag(I{Xh ≥0}) ∈ Rn×n, with {D }p as the set of all such distinct activation\ni i i i=1\npatternspossibleunderAssumption1withdataX ∈Rn×d,whoseentriesaredrawni.i.d. ∼N(0,1). Assumption2hasthefollowingtwocomponents:\n1. TrD ≥εnforalli∈[p],forsomeε∈(0,1). i\n2.",
+      "size": 441,
+      "sentences": 6
+    },
+    {
+      "id": 187,
+      "content": "i.i.d. ∼N(0,1). Assumption2hasthefollowingtwocomponents:\n1. TrD ≥εnforalli∈[p],forsomeε∈(0,1). i\n2. Foralli̸=i′,thediagonalsofD andD differinatleastγnpositions,forsomeγ ∈(0,1). i i′\nC.1 Component1: lowerboundontraceofactivationpatternsD\ni\nComponent1followsfromLemma2,whichdoesnotrequireAssumption1. Lemma 2 (based on Ergen et al. (2019)). Let S = {i : xTh > 0}, where x are i.i.d standard\ni i\n(cid:0) (cid:1)\nGaussian vectors distributed as N(0,I ).",
+      "size": 449,
+      "sentences": 10
+    },
+    {
+      "id": 188,
+      "content": ": xTh > 0}, where x are i.i.d standard\ni i\n(cid:0) (cid:1)\nGaussian vectors distributed as N(0,I ). Then with probability at least 1−e−n φ(1−ε)−H(ε) ,\nd √\ninf |S|≥nε. Hereε∈(0,1),φisafixednumericalconstantsatisfying 1 − 8φ>0,nsatisfies\nh √ 2\nn\n(cid:0)1\n− 8φ\n(cid:1)\n≥d,andHisthebinaryentropyfunction. 2\nProof. ConsiderthesymmetriceventE :=sup |{i : xTh≤0}|≥n(1−ε). Then\nh̸=0 i\nP[E]≤ (cid:88) P(cid:2) ∃h̸=0s.t.",
+      "size": 410,
+      "sentences": 6
+    },
+    {
+      "id": 189,
+      "content": "onsiderthesymmetriceventE :=sup |{i : xTh≤0}|≥n(1−ε). Then\nh̸=0 i\nP[E]≤ (cid:88) P(cid:2) ∃h̸=0s.t. xTh≤0, ∀i∈V (cid:3)\ni\nV⊆[n]\n|V|≥n(1−ε)\n(cid:18) (cid:19)\nn\n≤ e−φn(1−ε)\nn(1−ε)\n(cid:0) (cid:1)\n≤e−n φ(1−ε)−H(ε)\ninwhichthesecondinequalityfollowsfromtheKinematicFormula(byflippingthesignofh). Theorem4(KinematicFormula(Amelunxenetal.,2014)). LetX beann×di.i.d. Gaussianmatrix\n√\nandG=XΣ1/2withanyΣ≻0. Ifnsatisfiesn(1 − 8φ)≥d,wehave\n2\n(cid:104) (cid:105)\nP[∃h̸=0s.t. Gh≥0]=P ∃h˜ ̸=0s.t. Xh˜ ≥0 ≤e−φn.",
+      "size": 496,
+      "sentences": 9
+    },
+    {
+      "id": 190,
+      "content": "Ifnsatisfiesn(1 − 8φ)≥d,wehave\n2\n(cid:104) (cid:105)\nP[∃h̸=0s.t. Gh≥0]=P ∃h˜ ̸=0s.t. Xh˜ ≥0 ≤e−φn. Remark3. IfwefurtherassumeAssumption1, specificallythat∥h∥ ≤ s ≤ k, wecantighten\n0 i\nLemma2asfollows. If∥h∥ ≤ k ≤ d,andwesetφ = 1 ,thenTrD ≥ εnwithprobabilityat\n0 128 i\n(cid:0) (cid:1)\nleast1−e−n 1 1 − 28 ε−H(ε) aslongasn ≥ 4k. Followingaunionboundoverpactivationpatterns,\n(cid:0) (cid:1)\nTrD i ≥εnforalli∈[p]withprobabilityatleast1−pe−n 1 1 − 28 ε−H(ε) ,aslongasn≥4k.",
+      "size": 467,
+      "sentences": 7
+    },
+    {
+      "id": 191,
+      "content": "ns,\n(cid:0) (cid:1)\nTrD i ≥εnforalli∈[p]withprobabilityatleast1−pe−n 1 1 − 28 ε−H(ε) ,aslongasn≥4k. C.2 Component2: Hammingseparationofactivationpatterns\nDefinition1(δ-isometricembedding(PlanandVershynin,2014)). Amapf :X →Y isaδ-isometry\nbetweenmetricspaceX withdistancemetricd andmetricspaceY withdistancemetricd if,for\nX Y\nallx,x′ ∈X,|d (f(x),f(x′))−d (x,x′)|≤δ. Y X\nTheorem5(Hammingembedding,Theorem1.5inPlanandVershynin(2014)). Considerasubset\nK ⊆ Sd−1 and let δ > 0.",
+      "size": 471,
+      "sentences": 5
+    },
+    {
+      "id": 192,
+      "content": "orem5(Hammingembedding,Theorem1.5inPlanandVershynin(2014)). Considerasubset\nK ⊆ Sd−1 and let δ > 0. Let X be an n×d random matrix with independent N(0,1) entries. Letn ≥ Cδ−6w(K)2,wherew(K) := Esup |⟨g,x⟩|istheGaussianmeanwidthofK,with\nx∈K\ng ∼ N(0,I ).",
+      "size": 252,
+      "sentences": 4
+    },
+    {
+      "id": 193,
+      "content": "entries. Letn ≥ Cδ−6w(K)2,wherew(K) := Esup |⟨g,x⟩|istheGaussianmeanwidthofK,with\nx∈K\ng ∼ N(0,I ). Thenwithprobabilityatleast1−2exp(−cδ2n),thesignmapf(x) = sign(Xx),\nd\nf :K →{−1,1}n isaδ-isometricembeddingbetweenK ⊆Sd−1 withnormalizedgeodesicdis-\ntancemetricd (x,x′)= 1 cos−1(xTx′)and{−1,1}nwithnormalizedHammingdistancemetric\nG π\nd (f(x),f(x′))= 1 (cid:80)n f(x) ̸=f(x′) . HereC andcdenotepositiveabsoluteconstants. H n i=1 i i\nCorollary1.",
+      "size": 440,
+      "sentences": 5
+    },
+    {
+      "id": 194,
+      "content": "x′))= 1 (cid:80)n f(x) ̸=f(x′) . HereC andcdenotepositiveabsoluteconstants. H n i=1 i i\nCorollary1. Theorem5mayberestatedsoastoapplytounnormalizedgeneratorvectorsfrom\nK ⊆ Rd and indicator-based rather than sign-based activation pattern embedding. Consider a\nsubsetK ⊆Rdandletδ >0. LetX beann×drandommatrixwithindependentN(0,1)entries. Let n ≥ Cδ−6w(K)2, where w(K) := Esup |⟨g, x ⟩| is the normalized Gaussian mean\nx∈K ∥x∥\n2\n19\n===  20 ===\nwidthofK,withg ∼N(0,I ).",
+      "size": 464,
+      "sentences": 7
+    },
+    {
+      "id": 195,
+      "content": ":= Esup |⟨g, x ⟩| is the normalized Gaussian mean\nx∈K ∥x∥\n2\n19\n===  20 ===\nwidthofK,withg ∼N(0,I ). Thenwithprobabilityatleast1−2exp(−cδ2n),theindicatormap\nd\nf(x)=I{Xx≥0},f :K →{0,1}nisaδ-isometricembeddingbetweenK ⊆Rdwithnormalized\ngeodesicdistancemetricd (x,x′)= 1 cos−1(cid:0) xTx′ (cid:1) and{0,1}nwithnormalizedHamming\nG π ∥x∥ ∥x′∥\ndistancemetricd (f(x),f(x′))= 1 (cid:80)n f(x) ̸= 2 f(x 2 ′) . HereC andcdenotepositiveabsolute\nH n i=1 i i\nconstants.",
+      "size": 455,
+      "sentences": 3
+    },
+    {
+      "id": 196,
+      "content": "x),f(x′))= 1 (cid:80)n f(x) ̸= 2 f(x 2 ′) . HereC andcdenotepositiveabsolute\nH n i=1 i i\nconstants. Corollary1ensuresthatasetofgeneratorvectors{h }p thataresufficientlyseparatedinnormalized\ni i=1\ngeodesic distance will yield activation patterns D = diag(I{Xh ≥0}) whose diagonals are\ni i\nseparatedinnormalizedHammingdistance,withhighprobabilityfori.i.d. GaussiandataX ∈Rn×d.",
+      "size": 374,
+      "sentences": 4
+    },
+    {
+      "id": 197,
+      "content": "nals are\ni i\nseparatedinnormalizedHammingdistance,withhighprobabilityfori.i.d. GaussiandataX ∈Rn×d. Specifically, for the diagonals of D and D to differ in at least γn positions for all i ̸= i′ with\ni i′\nprobabilityatleast1−2exp(−cδ2n),werequireasetofgeneratorvectors{h }p that(1)include\ni i=1\ntheplantedfirstlayerweightsu⋆, and(2)areseparatedbyatleastγ +δ innormalizedgeodesic\ni\ndistance.",
+      "size": 389,
+      "sentences": 3
+    },
+    {
+      "id": 198,
+      "content": "i=1\ntheplantedfirstlayerweightsu⋆, and(2)areseparatedbyatleastγ +δ innormalizedgeodesic\ni\ndistance. InAppendixC.3weshowthatbothofthesepropertiesholdwithhighprobabilityforboth\nofthesparseweightconditionsinAssumption1(recallthatu⋆arethefirstlayerweightsandv⋆are\ni i\nthesecondlayerweights,whicharefusedduringIHT):\n(a) u⋆ ∈{−1,0,1}d,∥u⋆∥ =k,v⋆ ∈R∀i∈[p]andkp≤s,or\ni i 0 i\n(b) u⋆ ∈Rd,∥u⋆∥ =s ∈[s ,k],v⋆ ∈{−1,1}∀i∈[p]and (cid:80)p s ≤sholds.",
+      "size": 434,
+      "sentences": 2
+    },
+    {
+      "id": 199,
+      "content": "k,v⋆ ∈R∀i∈[p]andkp≤s,or\ni i 0 i\n(b) u⋆ ∈Rd,∥u⋆∥ =s ∈[s ,k],v⋆ ∈{−1,1}∀i∈[p]and (cid:80)p s ≤sholds. i i 0 i min i i=1 i\nC.3 Samplingsparsearrangements\nC.3.1 Real-valuedplantedneurons\nWenowshowthatarandomsamplingofhyperplanearrangementscanbeguaranteedtocontainthe\nplantedactivationpatterns,whilesimultaneouslyensuringapackingoftheEuclideansphereinRd. Theorem6. LetX ∈Rn×dhavei.i.d.N(0,1)entries. Fixmunknownvectorsw ,...,w ∈Rd\n1 m\neachwith∥w ∥ =s ∈[s ,k],andanerrortolerance0<ϵ˜<1.",
+      "size": 480,
+      "sentences": 5
+    },
+    {
+      "id": 200,
+      "content": "(0,1)entries. Fixmunknownvectorsw ,...,w ∈Rd\n1 m\neachwith∥w ∥ =s ∈[s ,k],andanerrortolerance0<ϵ˜<1. Notethatthechoiceofϵ˜affects\ni 0 i min\nthepermissiblesparsityrange[s ,k]. Set\nmin\n(cid:18)\nlog(2n)\n(cid:19)k (cid:18)\n2m\n(cid:19)\nT = log ,\nc ϵ˜\nwherec>0isanabsoluteconstant. ConsiderthesetofallsupportsSwith|S|∈[s ,k],anddraw\nmin\nT supportsfromthissetuniformlyatrandom. ForeachrandomlydrawnsupportS,draw|S|values\ni.i.d.",
+      "size": 419,
+      "sentences": 6
+    },
+    {
+      "id": 201,
+      "content": "ddraw\nmin\nT supportsfromthissetuniformlyatrandom. ForeachrandomlydrawnsupportS,draw|S|values\ni.i.d. fromN(0,1)andembedtheseinRdbysettingentriesinS totheirrandomGaussianvalues\nandzero–paddingoutsideS. Recordthetwocollections\nΓ= (cid:8)I(cid:2) Xh ≥0 (cid:3) :1≤j ≤T (cid:9) , G= (cid:8) (cid:101)hj :1≤j ≤T (cid:9) ,\nj\n∥(cid:101)hj∥2\nwhere(cid:101)h\nj\ndenotesthezero–paddedgeneratorandh\nj\nisitsnormalizedversion.",
+      "size": 411,
+      "sentences": 4
+    },
+    {
+      "id": 202,
+      "content": ") ,\nj\n∥(cid:101)hj∥2\nwhere(cid:101)h\nj\ndenotesthezero–paddedgeneratorandh\nj\nisitsnormalizedversion. Thereexistsδ > 0\nsuchthat,withprobabilityatleast1−ϵ˜overthedrawsofX andallT generators,thefollowing\nholdsimultaneously:\n1. Coverage:\nI(cid:2)\nXw ≥0\n(cid:3)\n∈Γforeveryi∈{1,...,m}. i\n2. Minimumgeodesicseparation: Foralldistinctg,g′inG,∥g−g′∥ ≥δ˜. ThisEuclidean\n2\nseparation of unit vectors implies geodesic separation: d (g,g′) = 1 cos−1(gTg′) ≥\nG π\n0.69δ˜2. π\nProof.",
+      "size": 465,
+      "sentences": 7
+    },
+    {
+      "id": 203,
+      "content": "ation of unit vectors implies geodesic separation: d (g,g′) = 1 cos−1(gTg′) ≥\nG π\n0.69δ˜2. π\nProof. Thestrategyusedtoprovecoverageistoshowthatthecones{u:sign(Xu)=sign(Xh)}\narenottoonarrow,forGaussiani.i.d.trainingdataX ∈Rn×dandafixedvectorh∈Rd.Specifically,\na bound on the cone sharpness developed in Kim and Pilanci (2024) implies that the probability\nthatauniformlysampledvectoronthespherefallsintothisconeisatleastO\n(cid:0) (logn)−d(cid:1)\n.",
+      "size": 444,
+      "sentences": 3
+    },
+    {
+      "id": 204,
+      "content": "ability\nthatauniformlysampledvectoronthespherefallsintothisconeisatleastO\n(cid:0) (logn)−d(cid:1)\n. Wethen\napplythisresultton×s submatricesofX totranslateittosparsegenerators,andcontroltheerror\ni\nprobabilityviatheunionbound. Wefirstreintroducethenotionofconesharpness:\nCone sharpness.",
+      "size": 284,
+      "sentences": 3
+    },
+    {
+      "id": 205,
+      "content": "theerror\ni\nprobabilityviatheunionbound. Wefirstreintroducethenotionofconesharpness:\nCone sharpness. For any support S and non-zero u ∈ Rsi, set D(u) := diag (cid:0)I[X\nS\nu ≥ 0] (cid:1) and\n20\n===  21 ===\ndefinetheconeK\nS\n(u):={v ∈Rsi :(2D(u)−I)X\nS\nv ≥0}.Bythecone–sharpnessboundofKim\nandPilanci(2024)thereareuniversalconstantsc,c >0suchthat\n1\nP (cid:104) C (cid:0) K (u), u (cid:1) ≤C (cid:105) ≥ 1−δ˜ , C :=2+200c (cid:112) clog(2n), δ˜ :=n−10+e−c1si,\nX S ∥u∥2 ∗ si ∗ si\nwherethesharpnessC(K,z)ofaconeKwithrespecttoafixedunitvectorzisdefinedasC(K,z):=\nmin ∥u∥ +∥v∥ followingKimandPilanci(2024).",
+      "size": 595,
+      "sentences": 3
+    },
+    {
+      "id": 206,
+      "content": "faconeKwithrespecttoafixedunitvectorzisdefinedasC(K,z):=\nmin ∥u∥ +∥v∥ followingKimandPilanci(2024). LetE bethehighprobabilityevent\nu,v∈K,u−v=z 2 2\nthattheconesharpnessforeachofthemplantedneuronsisatmostC ;E occurswithprobabilityat\n∗\nleast1−m(n−10+e−c1smin). Nowwerelateconesharpnesstotheprobabilityofsamplingaspecific\npattern. Sphericalcapinclusion. FixS andu ̸= 0andwritez := u/∥u∥ . OnE thereexista,b ∈ K (u)\n2 S\nwitha−b=zand∥a∥ +∥b∥ ≤C . Settingq :=(a+b)/2yields⟨q,z⟩≥1/(2C ).",
+      "size": 479,
+      "sentences": 7
+    },
+    {
+      "id": 207,
+      "content": "u∥ . OnE thereexista,b ∈ K (u)\n2 S\nwitha−b=zand∥a∥ +∥b∥ ≤C . Settingq :=(a+b)/2yields⟨q,z⟩≥1/(2C ). Therefore\n2 2 ∗ ∗\nthesphericalcap\nC := (cid:8) y ∈S|S|−1 :⟨y,z⟩≥1/(2C ) (cid:9)\nz ∗\niscontainedinK (u). S\nCap measure. For h ∼ N(0,I\nsi\n) the direction h/∥h∥\n2\nis uniform on Ssi−1. Standard sur-\nface–measureestimatesgive\np :=P(cid:2)I[X h≥0]=I[X u≥0] (cid:3) ≥Surf (C )≥\ncsi\n. si S S si−1 z (cid:0)\nlog(2n)\n(cid:1)si\nCoverageprobability.",
+      "size": 437,
+      "sentences": 8
+    },
+    {
+      "id": 208,
+      "content": "≥0]=I[X u≥0] (cid:3) ≥Surf (C )≥\ncsi\n. si S S si−1 z (cid:0)\nlog(2n)\n(cid:1)si\nCoverageprobability. Asaconsequenceoftheaboveinequality,thearrangementpatternofeach\n(cid:16) (cid:17)k\nplanted neuron is sampled with probability at least (cid:0)\nlog(\nc\n2\ns\nn\ni\n)\n(cid:1)si ≥\nlog(\nc\n2n)\n.",
+      "size": 283,
+      "sentences": 3
+    },
+    {
+      "id": 209,
+      "content": "anted neuron is sampled with probability at least (cid:0)\nlog(\nc\n2\ns\nn\ni\n)\n(cid:1)si ≥\nlog(\nc\n2n)\n. After T samples,\nthe probability that we have not yet sampled all m planted neuron activation patterns is at most\nm (cid:18) 1− (cid:16) c (cid:17)k (cid:19)T ;afterT = (cid:16) log(2n) (cid:17)k log (cid:0)2m(cid:1) randomdrawsweareguaranteedtosample\nlog(2n) c ϵ˜\nallmplantedpatternswithprobabilityatleast1− ϵ˜. 2\nPackingofgenerators.",
+      "size": 435,
+      "sentences": 3
+    },
+    {
+      "id": 210,
+      "content": "ranteedtosample\nlog(2n) c ϵ˜\nallmplantedpatternswithprobabilityatleast1− ϵ˜. 2\nPackingofgenerators. Consideranytwogeneratorvectorsh,h′ withsupportsS,S′,respectively. Wehave\n(cid:80) h˜ h˜′\nhTh′ = i∈S∩S′ i i ,\n(cid:113) (cid:113)\n(cid:80) h˜2 (cid:80) h˜′2\ni∈S i i∈S′ i\nwhereh˜ andh˜′ arei.i.d. distributedasN(0,1).",
+      "size": 314,
+      "sentences": 5
+    },
+    {
+      "id": 211,
+      "content": "13) (cid:113)\n(cid:80) h˜2 (cid:80) h˜′2\ni∈S i i∈S′ i\nwhereh˜ andh˜′ arei.i.d. distributedasN(0,1). UsingaunionboundoverasymmetricHanson-\ni i\nWright(Theorem2)inthenumeratorandsymmetricHanson-Wright(twice)inthedenominator,we\nhave\n(cid:34) t (cid:35) (cid:18) −ct2 (cid:19) (cid:18) −ct2 (cid:19) (cid:18) −ct2 (cid:19)\nP |hTh′|≥ 1 ≤2exp 1 +2exp 2 +2exp 3 .",
+      "size": 355,
+      "sentences": 3
+    },
+    {
+      "id": 212,
+      "content": ") −ct2 (cid:19) (cid:18) −ct2 (cid:19) (cid:18) −ct2 (cid:19)\nP |hTh′|≥ 1 ≤2exp 1 +2exp 2 +2exp 3 . (cid:112) |S|+t 2 (cid:112) |S′|+t 3 |S∩S′|+t 1 |S|+t 2 |S′|+t 3\nWechooset =γ|S|,t =γ|S′|,yielding\n2 3\n(cid:34) t (cid:35) (cid:18) −ct2 (cid:19) (cid:18) −cγ2|S| (cid:19) (cid:18) −cγ2|S′| (cid:19)\nP |hTh′|≥ 1 ≤2exp 1 +2exp +2exp .",
+      "size": 332,
+      "sentences": 2
+    },
+    {
+      "id": 213,
+      "content": "ct2 (cid:19) (cid:18) −cγ2|S| (cid:19) (cid:18) −cγ2|S′| (cid:19)\nP |hTh′|≥ 1 ≤2exp 1 +2exp +2exp . (1+γ) (cid:112) |S||S′| |S∩S′|+t 1 1+γ 1+γ\nNext,wechooset =\n(cid:0)\n1−\nδ˜2(cid:1)\n(γ+1)\n(cid:112)\n|S||S′|toyield\n1 2\n(cid:34) δ˜2 (cid:35) (cid:32) −c (cid:0) 1− δ˜2(cid:1)2 (γ+1)2|S||S′| (cid:33)\nP |hTh′|≥1− ≤2exp 2\n2 |S∩S′|+ (cid:0) 1− δ˜2(cid:1) (γ+1) (cid:112) |S||S′|\n2\n(cid:18) −cγ2|S| (cid:19) (cid:18) −cγ2|S′| (cid:19)\n+2exp +2exp .",
+      "size": 441,
+      "sentences": 2
+    },
+    {
+      "id": 214,
+      "content": "cid:1) (γ+1) (cid:112) |S||S′|\n2\n(cid:18) −cγ2|S| (cid:19) (cid:18) −cγ2|S′| (cid:19)\n+2exp +2exp . 1+γ 1+γ\nAssumingthatallplantedneurons,andthusallgeneratorvectorsweneedtoconsider,havesparsity\nlevels ∈[s ,k],wehave\ni min\n(cid:34) δ˜2 (cid:35) (cid:32) −c (cid:0) 1− δ˜2(cid:1)2 (γ+1)2s2 (cid:33) (cid:18) −cγ2s (cid:19)\nP |hTh′|≥1− ≤2exp 2 min +4exp min .",
+      "size": 356,
+      "sentences": 2
+    },
+    {
+      "id": 215,
+      "content": "cid:0) 1− δ˜2(cid:1)2 (γ+1)2s2 (cid:33) (cid:18) −cγ2s (cid:19)\nP |hTh′|≥1− ≤2exp 2 min +4exp min . 2 k+ (cid:0) 1− δ˜2(cid:1) (γ+1)k 1+γ\n2\n21\n===  22 ===\nFor sufficiently large s , a union bound over all\n(cid:0)T(cid:1)\npairs of generators allows us to bound\nmin 2\n(cid:104) (cid:105)\nP |hTh′|≥1− δ˜2 ≤ ϵ˜ −m(n−10+e−c1smin)uniformlyoverallpairsh,h′,asrequiredforan\n2 2\noverallfailureprobabilityatmostϵ˜. Finally,theEuclideanpackingfollowsas\n∥h−h′∥ 2 =∥h∥2+∥h′∥ 2 +2hTh′ =2+2hTh′ ≥2−(2−δ˜2)=δ˜2.",
+      "size": 495,
+      "sentences": 3
+    },
+    {
+      "id": 216,
+      "content": "tmostϵ˜. Finally,theEuclideanpackingfollowsas\n∥h−h′∥ 2 =∥h∥2+∥h′∥ 2 +2hTh′ =2+2hTh′ ≥2−(2−δ˜2)=δ˜2. 2 2 2\nEuclideanδ˜-packingimpliesthestatedseparationinnormalizedgeodesicdistanceasfollows:\n1 (cid:18) gTg′ (cid:19)\nd (g,g′)= cos−1\nG π ∥g∥ ∥g′∥\n2 2\n(a) 1.38\n≥ (1−gTg′)\nπ\n(b) 0.69\n≥ δ˜2,\nπ\nwhere in (a) we use the fact that cos−1(1 − x) ≥ 1.38x for x ∈ [0,1] and in (b) we use that\n∥g∥ =∥g′∥ =1and∥g−g′∥2 =∥g∥2+∥g′∥2−2gTg′ =2−2gTg ≥δ˜2. 2 2 2 2 2\nC.3.2 Discrete-valuedplantedneurons\nTheorem7.",
+      "size": 490,
+      "sentences": 4
+    },
+    {
+      "id": 217,
+      "content": "1and∥g−g′∥2 =∥g∥2+∥g′∥2−2gTg′ =2−2gTg ≥δ˜2. 2 2 2 2 2\nC.3.2 Discrete-valuedplantedneurons\nTheorem7. Fixintegersdandk ≤d. ForasubsetS ⊆[d]withentriesS and|S|=k,definethe\nj\ngeneratorset\n(cid:110) (cid:111)\nG := g(σ)∈{−1,0,1}d : σ ∈{−1,1}k, g(σ) =σ , g(σ) =0ifℓ∈/ S ,\nS Sj j ℓ\ni.e.allpossiblesignassignmentsonthecoordinatesinS andzeroselsewhere(|G |=2k). Givena\nS\nmatrixX ∈Rn×dformtheassociatedarrangementlist\nΓ := (cid:110) I(cid:2) Xg ≥0 (cid:3) : g ∈G (cid:111) ⊆{0,1}n.\nS S\n(i) Coverage.",
+      "size": 488,
+      "sentences": 5
+    },
+    {
+      "id": 218,
+      "content": "edarrangementlist\nΓ := (cid:110) I(cid:2) Xg ≥0 (cid:3) : g ∈G (cid:111) ⊆{0,1}n.\nS S\n(i) Coverage. Letw ,...,w ∈ {−1,0,1}d bek-sparsevectors(eachwithexactlyk non-\n1 m\nzeros). Thenforeveryi∈{1,...,m}\nI[Xw ≥0] ∈ Γ . i supp(wi)\n(ii) Minimumgeodesicseparation. Foranytwodistinctk-sparsevectorsu,v ∈{−1,0,1}d,\n1 (cid:18) uTv (cid:19) 0.69\nd (u,v)= cos−1 ≥ . G π ∥u∥ ∥v∥ πk\n2 2\nProof. (i)Coverage. Fixi ∈ {1,...,m}andsetS = supp(w ).",
+      "size": 428,
+      "sentences": 8
+    },
+    {
+      "id": 219,
+      "content": "0.69\nd (u,v)= cos−1 ≥ . G π ∥u∥ ∥v∥ πk\n2 2\nProof. (i)Coverage. Fixi ∈ {1,...,m}andsetS = supp(w ). Becausew hasentries±1onS\ni i\nand zeros elsewhere, there exists σ ∈ {−1,1}|S| such that w = g(σ) ∈ G . Hence the pattern\ni S\n1[Xw ≥0]belongstoΓ . i S\n(ii)Separation. Letu̸=vbek-sparsevectorsin{−1,0,1}d. Thereisanindexj withu ̸=v ,so\nj j\n|u −v |≥1. Therefore∥u−v∥2 = (cid:80)d (u −v )2 ≥(u −v )2 ≥1,implying∥u−v∥ ≥1.",
+      "size": 413,
+      "sentences": 9
+    },
+    {
+      "id": 220,
+      "content": "xj withu ̸=v ,so\nj j\n|u −v |≥1. Therefore∥u−v∥2 = (cid:80)d (u −v )2 ≥(u −v )2 ≥1,implying∥u−v∥ ≥1. j j 2 ℓ=1 ℓ ℓ j j 2\nFromEuclideanseparationwecaninfernormalizedgeodesicseparationasfollows:\n1 (cid:18) uTv (cid:19)\nd (u,v)= cos−1\nG π ∥u∥ ∥v∥\n2 2\n(a) 1.38 (cid:18) uTv (cid:19)\n≥ 1−\nπ ∥u∥ ∥v∥\n2 2\n(cid:32) (cid:33)\n(b) 1.38 ∥u∥2+∥v∥2−1\n≥ 1− 2 2\nπ 2∥u∥ ∥v∥\n2 2\n(c) 0.69\n≥ ,\nπk\n22\n===  23 ===\nwherein(a)weusethefactthatcos−1(1−x)≥1.38xforx∈[0,1],in(b)weusethat∥u−v∥2 =\n2\n∥u∥2+∥v∥2−2uTv ≥1,andin(c)weusethat∥u∥2 =∥v∥2 =ksincebothuandvhaveexactly\n2 2 2 2\nknonzeroentrieseachwithmagnitudeone.",
+      "size": 587,
+      "sentences": 3
+    },
+    {
+      "id": 221,
+      "content": "ndin(c)weusethat∥u∥2 =∥v∥2 =ksincebothuandvhaveexactly\n2 2 2 2\nknonzeroentrieseachwithmagnitudeone. 23",
+      "size": 102,
+      "sentences": 2
+    }
+  ]
+}

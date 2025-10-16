@@ -1,0 +1,669 @@
+{
+  "source": "ArXiv",
+  "filename": "245_AI_ML_Feature_Augmentation_of_GNNs_for_ILPs__L.pdf",
+  "domain": "AI",
+  "total_chars": 37963,
+  "total_chunks": 110,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\nFEATURE AUGMENTATION OF GNNS FOR ILPS: LO-\nCAL UNIQUENESS SUFFICES\nQingyuHan1,2,QianLi2,LinxinYang3,QianChen1,2,QingjiangShi4,andRuoyuSun2,3\n1SchoolofScienceandEngineering,TheChineseUniversityofHongKong,Shenzhen,China\n2ShenzhenInternationalCenterforIndustrialandAppliedMathematics,ShenzhenResearch\nInstituteofBigData,China\n3SchoolofDataScience,TheChineseUniversityofHongKong,Shenzhen,China\n4SchoolofSoftwareEngineering,TongjiUniversity,Shanghai,China\nABSTRACT\nIntegerLinearPrograms(ILPs)arecentraltoreal-worldoptimizationsbutnotori-\nouslydifficulttosolve.",
+      "size": 566,
+      "sentences": 1
+    },
+    {
+      "id": 2,
+      "content": "ACT\nIntegerLinearPrograms(ILPs)arecentraltoreal-worldoptimizationsbutnotori-\nouslydifficulttosolve. LearningtoOptimize(L2O)hasemergedasapromising\nparadigm, with Graph Neural Networks (GNNs) serving as the standard back-\nbone. However, standard anonymous GNNs are limited in expressiveness for\nILPs, and the common enhancement of augmenting nodes with globally unique\nidentifiers (UIDs) typically introduces spurious correlations that severely harm\ngeneralization.",
+      "size": 463,
+      "sentences": 3
+    },
+    {
+      "id": 3,
+      "content": "ue\nidentifiers (UIDs) typically introduces spurious correlations that severely harm\ngeneralization. To address this tradeoff, we propose a parsimonious Local-UID\nschemebasedond-hopuniquenesscoloring,whichensuresidentifiersareunique\nonly within each node’s d-hop neighborhood. Building on this scheme, we in-\ntroduce ColorGNN, which incorporates color information via color-conditioned\nembeddings, and ColorUID, a lightweight feature-level variant.",
+      "size": 447,
+      "sentences": 3
+    },
+    {
+      "id": 4,
+      "content": "or information via color-conditioned\nembeddings, and ColorUID, a lightweight feature-level variant. We prove that\nfor d-layer networks, Local-UIDs achieve the expressive power of Global-UIDs\nwhile offering stronger generalization. Extensive experiments show that our ap-\nproach (i) yields substantial gains on three ILP benchmarks, (ii) exhibits strong\nOODgeneralizationonlinearprogrammingdatasets,and(iii)furtherimprovesa\ngeneralgraph-leveltaskwhenpairedwithastate-of-the-artmethod.",
+      "size": 483,
+      "sentences": 3
+    },
+    {
+      "id": 5,
+      "content": "mmingdatasets,and(iii)furtherimprovesa\ngeneralgraph-leveltaskwhenpairedwithastate-of-the-artmethod. 1 INTRODUCTION\nIntegerlinearprograms(ILPs)areimportantoptimizationproblemswithlinearobjectivesandlinear\nconstraints, where variables are constrained to be integers.",
+      "size": 264,
+      "sentences": 2
+    },
+    {
+      "id": 6,
+      "content": "nproblemswithlinearobjectivesandlinear\nconstraints, where variables are constrained to be integers. ILPs arise widely in engineering and\noperations research—including vehicle routing (Ray et al., 2014; Scho¨bel, 2001), scheduling (Ku\n&Beck,2016;Mengetal.,2020),andfacilitylocation(Holmbergetal.,1999;Melkote&Daskin,\n2001)—yet remain computationally challenging. Traditional methods, most notably Branch and\nBound(Boyd&Mattingley,2007),exhibitexponentialworst-casecomplexity.",
+      "size": 474,
+      "sentences": 3
+    },
+    {
+      "id": 7,
+      "content": "ethods, most notably Branch and\nBound(Boyd&Mattingley,2007),exhibitexponentialworst-casecomplexity. LearningtoOptimize(L2O)hasrecentlygainedattentionasadata-drivenparadigmforaddressing\nchallenging optimization tasks. L2O methods learn optimization strategies from existing problem\ninstancestoimprovesolutionefficiencyandquality(Kruberetal.,2017;Khaliletal.,2022;Paulus\netal.,2022;Lietal.,2024).",
+      "size": 394,
+      "sentences": 3
+    },
+    {
+      "id": 8,
+      "content": "rovesolutionefficiencyandquality(Kruberetal.,2017;Khaliletal.,2022;Paulus\netal.,2022;Lietal.,2024). ForILPs,GraphNeuralNetworks(GNNs)haveemergedasanatural\nchoiceofarchitecture(Gasseetal.,2019;Nairetal.,2020;Hanetal.,2023;Huangetal.,2024;Liu\netal.,2025), sinceanILPcanbenaturallyrepresentedasabipartitegraph: variablenodesonone\nside,constraintnodesontheother,withedgesindicatingvariableparticipationinconstraints. However, standardGNNshavelimitedexpressivepowertosolveILPs(Chenetal.,2023a;2025).",
+      "size": 494,
+      "sentences": 3
+    },
+    {
+      "id": 9,
+      "content": "ioninconstraints. However, standardGNNshavelimitedexpressivepowertosolveILPs(Chenetal.,2023a;2025). A common way to overcome this limitation is to enrich the graph with additional distinguishing\nfeatures,typicallyintheformofuniqueidentifiers(UIDs)fornodes. Severalfeatureaugmentation\nstrategieshavebeenexploredforILPs,includingrandomfeatures(Chenetal.,2023a)andpositional\nembeddings (Han et al., 2023; Chen et al., 2024).",
+      "size": 421,
+      "sentences": 4
+    },
+    {
+      "id": 10,
+      "content": "udingrandomfeatures(Chenetal.,2023a)andpositional\nembeddings (Han et al., 2023; Chen et al., 2024). These strategies can be viewed as instances of\naGlobal-UIDscheme,whereeachnodeisassignedacompletelydistinctidentifier. Inaddition,to\n1\n5202\npeS\n52\n]GL.sc[\n1v00012.9052:viXra\n===  2 ===\naddressvariablesymmetries,Chenetal. (2025)proposedanorbit-basedaugmentationmethodthat\nassignsdistinctUIDstovariableswithinthesamesymmetryorbit.",
+      "size": 428,
+      "sentences": 4
+    },
+    {
+      "id": 11,
+      "content": "oposedanorbit-basedaugmentationmethodthat\nassignsdistinctUIDstovariableswithinthesamesymmetryorbit. Whilefeatureaugmentationcanenhanceexpressiveness,itoftencomesatthecostofgeneralization,\nthereby requiring more training samples.",
+      "size": 228,
+      "sentences": 2
+    },
+    {
+      "id": 12,
+      "content": "hanceexpressiveness,itoftencomesatthecostofgeneralization,\nthereby requiring more training samples. Specifically, injecting extrinsic features or identifiers in-\ntroducesirrelevantsignalsthatincreasetheriskofoverfitting:themodelmayrelyonIDsasshortcut\ncues,memorizingtraining-specificpatternsratherthanlearningstructuralregularities,therebyspu-\nriouslyassociatingIDswiththetargetlabels. Toalleviatethisissue,augmentationshouldremainas\nparsimoniousaspossible.",
+      "size": 457,
+      "sentences": 3
+    },
+    {
+      "id": 13,
+      "content": "tingIDswiththetargetlabels. Toalleviatethisissue,augmentationshouldremainas\nparsimoniousaspossible. Thismotivatesthefollowingdesignprinciple:\nFeatureaugmentationshouldbeparsimoniouswhileretainingsufficientexpressivepower. 1.1 OURCONTRIBUTION\nInthispaper,weintroduceasimpleyeteffectivefeatureaugmentationscheme,termedLocal-UIDs,\ndesigned to be parsimonious without compromising expressive power.",
+      "size": 394,
+      "sentences": 4
+    },
+    {
+      "id": 14,
+      "content": "entationscheme,termedLocal-UIDs,\ndesigned to be parsimonious without compromising expressive power. Our approach is motivated\nbytwokeyobservations:\n• Observation1:EmpiricalGNNsforILPsaretypicallyshallow(nomorethanfourlayers)(Gasse\netal.,2019;Hanetal.,2023;Chenetal.,2024;Huangetal.,2024;Chenetal.,2025;Liuetal.,\n2025),partlyduetoover-smoothingandover-squashingissues. • Observation2: In a d-layer GNN, the receptive field of each node is restricted to its d-hop\nneighborhood.",
+      "size": 475,
+      "sentences": 3
+    },
+    {
+      "id": 15,
+      "content": "ation2: In a d-layer GNN, the receptive field of each node is restricted to its d-hop\nneighborhood. Building on these insights, we introduce the notion of d-hop unique coloring, where all vertices\nwithin any node’s d-hop neighborhood receive distinct colors. The key intuition is that ensuring\nlocal uniqueness within receptive fields provides the same expressive power as Global-UIDs, but\nwithfeweridentifiersandbettergeneralization. Ourcontributionscanbesummarizedasfollows:\n• Local-UID scheme.",
+      "size": 496,
+      "sentences": 4
+    },
+    {
+      "id": 16,
+      "content": "eridentifiersandbettergeneralization. Ourcontributionscanbesummarizedasfollows:\n• Local-UID scheme. We formalize d-hop unique coloring and propose a greedy algorithm for\nconstructing such colorings efficiently. This provides a parsimonious alternative to Global-\nUIDs. • Architecture Design. We propose ColorGNN, which injects color information via color-\nconditioned embedding mappings rather than as raw input features.",
+      "size": 421,
+      "sentences": 6
+    },
+    {
+      "id": 17,
+      "content": "ects color information via color-\nconditioned embedding mappings rather than as raw input features. ColorGNN is value-\ninvariant: it automatically embeds colors without requiring predefined numeric encodings and\ncan be seamlessly combined with other feature-augmentation techniques. In addition, follow-\ningconventionalUIDdesign,wepresentalightweightvariant,ColorUID,whichconcatenates\ncolorswithnodefeatures. • Theoretical justification.",
+      "size": 437,
+      "sentences": 4
+    },
+    {
+      "id": 18,
+      "content": "alightweightvariant,ColorUID,whichconcatenates\ncolorswithnodefeatures. • Theoretical justification. We establish both expressivity and generalization results, showing\nthatLocal-UIDsretaintheexpressivepowerofGlobal-UIDs,whilesignificantlyimprovinggen-\neralizationandrequiringfarfewertrainingsamples. • Empirical validation.",
+      "size": 322,
+      "sentences": 4
+    },
+    {
+      "id": 19,
+      "content": "esignificantlyimprovinggen-\neralizationandrequiringfarfewertrainingsamples. • Empirical validation. We conduct extensive experiments demonstrating that Local-UIDs\nachieve (i) state-of-the-art performance on three ILP benchmarks, (ii) strong transferability to\nLinearProgramming(LP)taskswithrobustout-of-distributiongeneralization,and(iii)compet-\nitiveresultsonthereal-worldgeneralgraphZINCdataset. 2 PRELIMINARIES\nBasic Notations Let R and Z denote the sets of real and integer numbers respectively.",
+      "size": 499,
+      "sentences": 4
+    },
+    {
+      "id": 20,
+      "content": "PRELIMINARIES\nBasic Notations Let R and Z denote the sets of real and integer numbers respectively. We use\nboldlowercaseletters(i.e.,x)todenotevectors,bolduppercaseletters(i.e.,A)todenotematrices. LetG=(V,E)beagraph,Givenanodev ∈V,wedefineitsd-hopneighboras\nN (v):={u̸=v ∈V |dist(u,v)≤d},\nd\nwhere dist(u,v) is the shortest-path distance. And we let B (v) denote the induced subgraph on\nd\nN (v)∪{v}.",
+      "size": 398,
+      "sentences": 4
+    },
+    {
+      "id": 21,
+      "content": "st(u,v) is the shortest-path distance. And we let B (v) denote the induced subgraph on\nd\nN (v)∪{v}. Foravertexv ∈ V,wedenoteitsdegreeasdeg(v) = |N (v)|,andmoregenerally\nd 1\nitsd-hopdegreeasdeg (v) = |N (v)|. Let∆ := max deg (v). Thed-thpowerofG,denoted\nd d d v d\nGd =(V,Ed),isdefinedas(u,v)∈Edifandonlyifdist (u,v)≤d. G\n2\n===  3 ===\nIntegerLinearProgramming Anintegerlinearprogram(ILP)takesthefollowingform:\nmincTx, s.t.",
+      "size": 420,
+      "sentences": 6
+    },
+    {
+      "id": 22,
+      "content": "===  3 ===\nIntegerLinearProgramming Anintegerlinearprogram(ILP)takesthefollowingform:\nmincTx, s.t. Ax≤b, x∈Zn\nx\nwhere x ∈ Zn are integer variables, A ∈ Rm×n is the constraint matrix, b ∈ Rm and c ∈ Rn\nare coefficients.",
+      "size": 218,
+      "sentences": 2
+    },
+    {
+      "id": 23,
+      "content": "∈ Zn are integer variables, A ∈ Rm×n is the constraint matrix, b ∈ Rm and c ∈ Rn\nare coefficients. An ILP instance (A,b,c) can be naturally encoded as a labeled bipartite graph\nG=(V ∪U,E,L,W):\n• Aleftnodev representsavariablex ,arightnodeu representsaconstraintA x ≤ b ,and\ni i j j,: j\ntheyareconnectedifthevariableparticipatesintheconstraint;\n• Thelabelofaleftnodev isL(v )=c ,andthelabelofarightnodeu isL(u )=b ;\ni i i j j j\n• Theweightofanedgee=(v ,u )isW(e)=A .",
+      "size": 465,
+      "sentences": 2
+    },
+    {
+      "id": 24,
+      "content": "isL(v )=c ,andthelabelofarightnodeu isL(u )=b ;\ni i i j j j\n• Theweightofanedgee=(v ,u )isW(e)=A . i j ij\nGraphNeuralNetwork Ad-depthGraphNeuralNetwork(GNN)canbeviewedasaparameter-\nizedfunctionasfollows: ittakesalabeledgraphG=(V,E,L,W)asinput,\n1. h(0) :=emb(L ),whereemb(·)isalearnablelinearmapping. v v\n2.",
+      "size": 306,
+      "sentences": 3
+    },
+    {
+      "id": 25,
+      "content": "akesalabeledgraphG=(V,E,L,W)asinput,\n1. h(0) :=emb(L ),whereemb(·)isalearnablelinearmapping. v v\n2. Fork =1tod,compute\n(cid:16) (cid:17)\nh(k) :=Merge(k) h(k−1),AGGR({h(k−1),W(u,v)}|u∈N (v) ,\nv v u 1\nwhere Merge(k) is a multi-layer perception (MLP), and AGGR is a fixed function which is\npermutation-invariantwithrespecttoitsarguments. 3. Finally,eachnodevoutputsh(d).",
+      "size": 367,
+      "sentences": 5
+    },
+    {
+      "id": 26,
+      "content": "function which is\npermutation-invariantwithrespecttoitsarguments. 3. Finally,eachnodevoutputsh(d). v\n3 METHODOLOGY\nIn this section, we present our Local-UID scheme, which is based on d-hop unique coloring, and\nintroduceanovelcolor-awarearchitectureColorGNNanditslightweightvariantColorUID. 3.1 LOCAL-UIDSCHEME\nOur Local-UID scheme is based on the notion of d-hop unique coloring of a graph G = (V,E),\ndefinedasamappingC: V → Nsatisfyingthat: foranyv ∈ V,C(u) ̸= C(w)foranyu ̸= w ∈\nN (v).",
+      "size": 487,
+      "sentences": 5
+    },
+    {
+      "id": 27,
+      "content": "h G = (V,E),\ndefinedasamappingC: V → Nsatisfyingthat: foranyv ∈ V,C(u) ̸= C(w)foranyu ̸= w ∈\nN (v). It turns out that this notion can be exactly characterized by the standard d-hop coloring. d\nRecall that a d-hop coloring is a map C : V → N such that C(u) ̸= C(v) for any two distinct\nu,v ∈V withdist(u,v)≤d. Ad-hopcoloringcanequivalentlydefinedasapropercoloringofthe\npowergraphGd. Proposition1. ForanygraphG,acoloringisd-hopuniqueifandonlyifitisa(2d)-hopcoloring\n(equivalently,apropercoloringofG2d).",
+      "size": 500,
+      "sentences": 6
+    },
+    {
+      "id": 28,
+      "content": "ygraphG,acoloringisd-hopuniqueifandonlyifitisa(2d)-hopcoloring\n(equivalently,apropercoloringofG2d). Proof. (⇒)Supposethecoloringisd-hopunique.Takeanytwoverticesu,wwithdist(u,w)≤2d. Ashortestu-wpathhasamidpointofvwithbothdist(u,v),dist(w,v) ≤ d,sou,w ∈ N (v)and\nd\nmusthavedistinctcolors. (⇐) Suppose the coloring is a (2d)-hop coloring. Then for any v and any distinct u,w ∈ N (v),\nd\nwehavedist(u,w)≤dist(u,v)+dist(v,w)≤d+d=2dbythetriangleinequality. Souandw\nmusthavedifferentcolors.",
+      "size": 482,
+      "sentences": 7
+    },
+    {
+      "id": 29,
+      "content": "wehavedist(u,w)≤dist(u,v)+dist(v,w)≤d+d=2dbythetriangleinequality. Souandw\nmusthavedifferentcolors. ThuseachN (v)isuniquelycolored. d\nBasedonProposition1,weconstructad-hopuniquecoloringbyperformingagreedyalgorithmto\nfind a proper coloring of G2d, depicted in Algorithm 1. Here, ⊥ denotes the uncolored state, and\nBFSdenotesBreadth-FirstSearch. WesorttheverticesofG2d innon-increasingdegreeorderand\napply greedy coloring accordingly, which empirically reduces the number of colors required.",
+      "size": 489,
+      "sentences": 6
+    },
+    {
+      "id": 30,
+      "content": "rderand\napply greedy coloring accordingly, which empirically reduces the number of colors required. We\nhavethefollowinglemma. Lemma1. ForanygraphG,Algorithm1constructsad-hopuniquecoloringusingatmost∆ +1\n2d\ncolorsinO˜(|G2d|)=O˜(|V|·∆ )time.",
+      "size": 239,
+      "sentences": 4
+    },
+    {
+      "id": 31,
+      "content": "graphG,Algorithm1constructsad-hopuniquecoloringusingatmost∆ +1\n2d\ncolorsinO˜(|G2d|)=O˜(|V|·∆ )time. 2d\n3\n===  4 ===\nAlgorithm1Greedyd-hopuniquecoloring\nInput: AgraphG=(V,E),andaintegerd≥1\nOutput: ColorassignmentC :V →N\n1: forv ∈V do\n2: N 2d (v)←BFS(G,2d)\n3: endfor\n4: constructG2dwith{N 2d (v)}\n5: V˜ ←verticesofV sortedinnonincreasingorderofdeg (v)\n2d\n6: C(v)←⊥forallv ∈V\n7: Forbidden←∅\n8: forv ∈V˜ do\n9: Forbidden←{C(u)|u∈N 2d (v)∧C(u)̸=⊥}\n10: c←0\n11: whilec∈Forbiddendo\n12: c←c+1\n13: endwhile\n14: C(v)←c\n15: endfor\n16: return{C(v)|v ∈V}\nLemma1impliesthatourLocal-UIDschemecansubstantiallyreducethenumberofidentifiers: in\nconstracttoGlobal-UIDsassigning|V|distinctidentifiers,itrequiresonlyatmost∆ +1distinct\n2d\ncolors.",
+      "size": 721,
+      "sentences": 2
+    },
+    {
+      "id": 32,
+      "content": "n\nconstracttoGlobal-UIDsassigning|V|distinctidentifiers,itrequiresonlyatmost∆ +1distinct\n2d\ncolors. Thesavingsareparticularlysignificantwhendissmallandthegraphissparse. InSection\n5.3(seeTable5),weexplicitlycomparethenumberofidentifiersrequiredonILPbenchmarks. 3.2 COLOR-AWAREARCHITECTURALDESIGNOFGNNS\nGivenad-hopuniquecoloringproducedbyAlgorithm1, weintroduceanovelGNNarchitecture,\ntermedColorGNN,thatintegratesthecoloringintothenetworkdesign.",
+      "size": 443,
+      "sentences": 4
+    },
+    {
+      "id": 33,
+      "content": "m1, weintroduceanovelGNNarchitecture,\ntermedColorGNN,thatintegratesthecoloringintothenetworkdesign. ColorGNNArchitecture Thekeyideaistoincorporatecolorsviacolor-conditionedembedding\nmappings, thereby avoiding the need for predefined numeric encodings. Moreover, ColorGNN\nremains fully compatible with other feature-augmentation techniques.",
+      "size": 339,
+      "sentences": 3
+    },
+    {
+      "id": 34,
+      "content": "encodings. Moreover, ColorGNN\nremains fully compatible with other feature-augmentation techniques. Formally, given a labeled\ngraphG=(V,E,L,W)andacoloringC :V →N,ColorGNNproceedsasfollows:\n1. h(0) := emb (L ), where emb (·) is a learnable linear transformation specific to color\nv C(v) v C(v)\nC(v). 2. Fork =1tod,compute\n(cid:16) (cid:17)\nh(k) :=Merge(k) h(k−1),AGGR({h(k−1),W(u,v)}|u∈N (v) ,\nv v u 1\n3. Finally,eachnodevoutputsh(d).",
+      "size": 432,
+      "sentences": 6
+    },
+    {
+      "id": 35,
+      "content": ":17)\nh(k) :=Merge(k) h(k−1),AGGR({h(k−1),W(u,v)}|u∈N (v) ,\nv v u 1\n3. Finally,eachnodevoutputsh(d). v\nDesignchoice: WeconditiontheembeddingfunctionsratherthantheaggregationAGGRormerge\nfunctionsfortworeasons. First,AGGRistypicallyrequiredtoremainpermutation-invariant; con-\nditioning it on colors risks violating this property or entangling UIDs with neighborhood multi-\nsets, which hinders transferability across architectures.",
+      "size": 427,
+      "sentences": 4
+    },
+    {
+      "id": 36,
+      "content": "entangling UIDs with neighborhood multi-\nsets, which hinders transferability across architectures. Second, conditioning Merge offers no ad-\nditional expressive power beyond embedding-level conditioning. In practice, the insight of color-\nconditioningimprovesperformance;bothemb-basedColorGNNandMerge-basedvariantachieve\nbetterperformance(seeTable4).",
+      "size": 349,
+      "sentences": 3
+    },
+    {
+      "id": 37,
+      "content": "improvesperformance;bothemb-basedColorGNNandMerge-basedvariantachieve\nbetterperformance(seeTable4). ColorUIDArchitecture WhileColorGNNsharesembeddingsamongnodesofthesamecolor,\ntheparametercountstillscaleswiththenumberofcolors|C|; forgraphswithlarge|C|, thismay\ncause parameter blow-up. To address this, we propose a lightweight variant, termed ColorUID.",
+      "size": 353,
+      "sentences": 3
+    },
+    {
+      "id": 38,
+      "content": "hismay\ncause parameter blow-up. To address this, we propose a lightweight variant, termed ColorUID. Architecturally, ColorUID encodes color identifiers C(v) directly as input features, using a nu-\nmericrepresentationconsistentwithpriorUIDschemes (Chenetal.,2022;Hanetal.,2023;Chen\n4\n===  5 ===\netal.,2025). EmpiricalexperimentsshowthatColorUIDconsistentlyimprovesaccuracyacrosssix\nbenchmarkdatasets,demonstratingtheeffectivenessoftheLocal-UIDframework.",
+      "size": 452,
+      "sentences": 4
+    },
+    {
+      "id": 39,
+      "content": "lyimprovesaccuracyacrosssix\nbenchmarkdatasets,demonstratingtheeffectivenessoftheLocal-UIDframework. 4 THEORETICAL JUSTIFICATION\n4.1 EXPRESSIVENESSANALYSIS\nIn this subsection, we show that a d-hop unique coloring provides the same expressive power as\nglobaluniqueidentifiers(Theorem1). Our proof leverages the equivalence between d-layer GNNs and d-round distributed algo-\nrithms(Loukas,2020;Satoetal.,2019).",
+      "size": 407,
+      "sentences": 3
+    },
+    {
+      "id": 40,
+      "content": "equivalence between d-layer GNNs and d-round distributed algo-\nrithms(Loukas,2020;Satoetal.,2019). Specifically,inthestandarddistributedcomputingmodel,\nthenetworkisrepresentedbyagraphG = (V,E),where(i)eachnodecorrespondstoaprocessor\nand (ii) each edge (u,v) ∈ E corresponds to a bidirectional communication channel. The com-\nputationproceedsinsynchronousrounds: ineachround,allprocessorsexecuteamessage-passing\nproceduretoexchangeinformationwiththeirneighbors,followedbyanidenticallocalcomputation.",
+      "size": 498,
+      "sentences": 3
+    },
+    {
+      "id": 41,
+      "content": "age-passing\nproceduretoexchangeinformationwiththeirneighbors,followedbyanidenticallocalcomputation. Unless otherwise stated, we consider anonymous distributed algorithms, where nodes do not have\nidentifiers. Proposition 2. A d-layer ColorGNN, a d-layer ColorUID, and a d-round distributed algorithm\nequippedwiththesamecoloringareequivalentinexpressivepower. Proof. Fixacoloringχ.",
+      "size": 379,
+      "sentences": 6
+    },
+    {
+      "id": 42,
+      "content": "tributed algorithm\nequippedwiththesamecoloringareequivalentinexpressivepower. Proof. Fixacoloringχ. Ontheonehand,bothColorGNNandColorUIDwithCcanbesimulated\nbyad-rounddistributedalgorithmwiththesamecoloring: onelayercorrespondstooneround,and\nthecoloringC isprovidedasauxiliaryinput. On the other hand, given any d-round distributed algorithm with coloring C, we can construct d-\nlayer ColorGNN and ColorUID that faithfully simulate it.",
+      "size": 434,
+      "sentences": 5
+    },
+    {
+      "id": 43,
+      "content": "rithm with coloring C, we can construct d-\nlayer ColorGNN and ColorUID that faithfully simulate it. For ColorUID, by the universal ap-\nproximationpropertyofMLP,themergefunctionMerge(k) canbeparameterizedtoimplementthe\nlocalcomputationinroundk. ForColorGNN,weusetheembeddingmappingemb (v) = (c,v)\nc\ntopreservethecoloring,andsimilarlychoosethemergefunctionMerge(k) toimplementthelocal\ncomputations,withC explicitlyincorporatedasinputfeatures. Now,thepropositionfollows.",
+      "size": 467,
+      "sentences": 4
+    },
+    {
+      "id": 44,
+      "content": "lementthelocal\ncomputations,withC explicitlyincorporatedasinputfeatures. Now,thepropositionfollows. Theorem1(Localuniquenesssuffices). Ifafunctionf(G)canbecomputedbyad-layerGNNwith\nglobaluniqueidentifiers,thenitcanalsobecomputedbyad-layerColorGNNorColorUIDwith\nad-hopuniquecoloring. Proof.",
+      "size": 289,
+      "sentences": 5
+    },
+    {
+      "id": 45,
+      "content": "queidentifiers,thenitcanalsobecomputedbyad-layerColorGNNorColorUIDwith\nad-hopuniquecoloring. Proof. ByProposition2,itsufficestoshowthatad-rounddistributedalgorithmwithad-hopunique\ncoloringisaspowerfulasad-rounddistributedalgorithmwithglobaluniqueidentifiers.Inad-round\ndistributedalgorithmwithglobaluniqueidentifiers,eachnodevbasesitsoutputsolelyonitsd-hop\nneighborhood B (v).",
+      "size": 376,
+      "sentences": 3
+    },
+    {
+      "id": 46,
+      "content": "tedalgorithmwithglobaluniqueidentifiers,eachnodevbasesitsoutputsolelyonitsd-hop\nneighborhood B (v). A d-hop unique coloring ensures that all nodes in B (v) receive distinct\nd d\ncolors; thus the induced subgraph B (v) can the reconstructed by the node v (see, e.g., (Naor &\nd\nStockmeyer,1993;Kuhn&Wattenhofer,2006)). Now,thetheoremisimmediate. Remark1.",
+      "size": 351,
+      "sentences": 4
+    },
+    {
+      "id": 47,
+      "content": "(see, e.g., (Naor &\nd\nStockmeyer,1993;Kuhn&Wattenhofer,2006)). Now,thetheoremisimmediate. Remark1. Even1-hopuniquelycoloredColorGNNandColorUIDcansolveseveralinteresting\nILP problems, including Maximal independent set (Alon et al., 1986; Luby, 1985) and Maximal\nMatching(Emeketal.,2014). 4.2 GENERALIZATIONANALYSIS\nWeanalyzethegeneralizationerrorofColorGNNforsolvinggraph-levelbinaryclassificationtasks,\nincludingtheILPfeasibilityproblem,andprovideasamplecomplexityestimation(Lemma2).",
+      "size": 483,
+      "sentences": 5
+    },
+    {
+      "id": 48,
+      "content": "assificationtasks,\nincludingtheILPfeasibilityproblem,andprovideasamplecomplexityestimation(Lemma2). The\n(cid:112)\ngeneralizationgapscalesasO( |C|),andthesamplecomplexityscalesasO(|C|),whichjustifies\nthedesignprinciplethatfeatureaugmentationshouldbeasparsimoniousaspossible. Weconsiderthestandardsupervisedlearningsetting. LetD anunknowndistributionoverlabeled\ngraphs(G,y)withy ∈ {0,1},andletZ = {(G ,y )}N i. ∼ i.d. D bethetrainingset.",
+      "size": 435,
+      "sentences": 6
+    },
+    {
+      "id": 49,
+      "content": "distributionoverlabeled\ngraphs(G,y)withy ∈ {0,1},andletZ = {(G ,y )}N i. ∼ i.d. D bethetrainingset. Weconsider\ni i i=1\nthehypothesisclass\nHC :={h:G→{0,1}|hisaColorGNNusingcoloringC},\n5\n===  6 ===\nwithfixedarchitecture(depth, widths, andaggregator), focusingonlyontheeffectofthecoloring\nC. Forh∈HC,definepopulationandempiricalrisks\nN\nL(h):= Pr [h(G)̸=y] and Lˆ(h):= 1 (cid:88) [h(G )̸=y ]. (G,y)∼D N i i\ni=1\nandthegeneralizationgapgen(h,D,N):=L(h)−Lˆ(h).",
+      "size": 453,
+      "sentences": 5
+    },
+    {
+      "id": 50,
+      "content": "nd Lˆ(h):= 1 (cid:88) [h(G )̸=y ]. (G,y)∼D N i i\ni=1\nandthegeneralizationgapgen(h,D,N):=L(h)−Lˆ(h). As is the practice case, we assume that all real-valued parameters are stored with finite precision\np. A ColorGNN with coloring C has two types of parameters: (i) the color-specific embedding\nmatricesemb ,oneforeachdistinctcolor,contributing|C|·|θ |parametersintotaland(ii)the\nc emb\nremaining parameters of the network {Merge(k)}d contributing d·|θ | parameters in total.",
+      "size": 471,
+      "sentences": 3
+    },
+    {
+      "id": 51,
+      "content": ")the\nc emb\nremaining parameters of the network {Merge(k)}d contributing d·|θ | parameters in total. k=1 Merge\nHencetheoverallparametercountofHC is|C|·|θ |+d·|θ |,andthelogsizelog|HC|of\nemb Merge\nHC isp·(|C|·|θ |+d·|θ |). emb Merge\nAstandardfinite-classgeneralizationinequalitysaysthat:givenanyfiniteH,withprobability1−δ,\n(cid:114)\nlog2|H|+log(1/δ)\nL(h)−Lˆ(h)≤ , foranyh∈H,\n2N\nSpecializingtotheclassHC,wehavethefollowinglemma:\nLemma2.",
+      "size": 433,
+      "sentences": 3
+    },
+    {
+      "id": 52,
+      "content": "2|H|+log(1/δ)\nL(h)−Lˆ(h)≤ , foranyh∈H,\n2N\nSpecializingtotheclassHC,wehavethefollowinglemma:\nLemma2. Inthestandardsupervisedlearningsetting,withprobability1−δ,wehave\n(cid:114)\np·(|C|·|θ |+d·|θ |)+log(2/δ)\n|gen(h,D,N)|≤ emb Merge foranyh∈HC,\n2N\nThus,toguaranteeageneralizationgapofatmostε,thenumberoftrainingsamplesrequiresisat\nmost\np·(|C|·|θ |+d·|θ |)+log(2/δ)\nemb Merge .",
+      "size": 371,
+      "sentences": 2
+    },
+    {
+      "id": 53,
+      "content": "ongapofatmostε,thenumberoftrainingsamplesrequiresisat\nmost\np·(|C|·|θ |+d·|θ |)+log(2/δ)\nemb Merge . 2ϵ2\n5 EXPERIMENTS\nWeorganizetheexperimentsintothreeparts:(1)setup,specifyingtheevaluationprotocolandbase-\nlinemethods;(2)mainexperiments,validatingtheproposedschemeandreportingfurtherextended\nexperiments; and (3) ablation studies, providing empirical analysis of the method and further ex-\ntensions. Thesourcecodeisavailableathttps://github.com/machinaddiffis/dhop_\nColoring4GNN.",
+      "size": 479,
+      "sentences": 3
+    },
+    {
+      "id": 54,
+      "content": "rther ex-\ntensions. Thesourcecodeisavailableathttps://github.com/machinaddiffis/dhop_\nColoring4GNN. 5.1 SETUP\nBenchmarkproblems WeevaluatethreestandardILPbenchmarksandtwoLPbenchmarks: (1)\nBin Packing Problem (BPP; (Schwerin & Wa¨scher, 1997)), 500 instances, 420 variables and 40\nconstraints per instance; (2) Balanced Item Placement (BIP; (Gasse et al., 2022)), 300 instances,\n1,083 variables and 195 constraints; (3) Steel Mill Slab Design Problem (SMSP; (Schaus et al.,\n2011)),380instances,22,000–24,000variablesand∼10,000constraints.",
+      "size": 537,
+      "sentences": 3
+    },
+    {
+      "id": 55,
+      "content": "ign Problem (SMSP; (Schaus et al.,\n2011)),380instances,22,000–24,000variablesand∼10,000constraints. ForLPs,weconsider(4)\nPageRank(Applegateetal.,2021),100instances,10,000variablesand10,001constraints,and(5)\nLPrelaxationofWorkloadAppropriation(WA;(Gasseetal.,2022))datasets,100instances,5,200\nvariablesand6,334constraints. LearningTasks ForILPs,thegoalistolearnaf:G→Rntopredicttheoptimalintegersolution\nvector. ForLPs,weaimtolearnaf:G→Rntoproducetheoptimalrealsolutionvector.",
+      "size": 474,
+      "sentences": 4
+    },
+    {
+      "id": 56,
+      "content": "ttheoptimalintegersolution\nvector. ForLPs,weaimtolearnaf:G→Rntoproducetheoptimalrealsolutionvector. Model architectures (1) ILPs: Following Chen et al. (2025), we use four “half-layer” graph-\nconvolutionblockstoextracthiddenrepresentations,followedbyatwo-layerMLPheadforpredic-\ntion;(2)LPs: FollowingLietal.(2024),weusePDHG-NetasourGNNmodel. 6\n===  7 ===\nBaselines (1) No-Aug: A baseline with no feature augmentation.",
+      "size": 417,
+      "sentences": 5
+    },
+    {
+      "id": 57,
+      "content": "ePDHG-NetasourGNNmodel. 6\n===  7 ===\nBaselines (1) No-Aug: A baseline with no feature augmentation. (2) Position (Global-UID):\nA feature-augmentation scheme that assigns distinct numbers to variable nodes (Han et al., 2023;\nChenetal.,2024). (3)Uniform(Global-UID):Afeature-augmentationschemethataddsi.i.d.noise\nsampled from a uniform distribution to every node (Chen et al., 2023b). (4) Orbit: A feature-\naugmentationschemethatassignsUIDsbasedonsymmetryorbits(Chenetal.,2025).",
+      "size": 476,
+      "sentences": 5
+    },
+    {
+      "id": 58,
+      "content": "23b). (4) Orbit: A feature-\naugmentationschemethatassignsUIDsbasedonsymmetryorbits(Chenetal.,2025). (5)Orbit+:\nAnextensionofOrbitthatadditionallyleveragesinter-orbitrelations(Chenetal.,2025). Metrics For ILPs, following (Chen et al., 2025), we adopt Top-m% error as the metric. Specif-\nically, given the ground-truth y and a prediction yˆ, define the closest symmetric equivalent of y\nas y˜ = π∗(y) with π∗ = argmin ∥yˆ− π(y)∥ .",
+      "size": 428,
+      "sentences": 5
+    },
+    {
+      "id": 59,
+      "content": "iction yˆ, define the closest symmetric equivalent of y\nas y˜ = π∗(y) with π∗ = argmin ∥yˆ− π(y)∥ . Let M be the index set of the top m% vari-\nπ 1\nables with the smallest values of |Round(yˆ ) − y˜ |. The Top-m% error is defined as E(m) =\nj j\n(cid:80)\n|Round(yˆ)−y˜|. ForLPs,following(Lietal.,2024),weevaluatethemeansquarederror\ni∈M i i\n(MSE)betweenpredictedandoptimalsolutions,averagedovertheentiredataset.",
+      "size": 407,
+      "sentences": 4
+    },
+    {
+      "id": 60,
+      "content": "ethemeansquarederror\ni∈M i i\n(MSE)betweenpredictedandoptimalsolutions,averagedovertheentiredataset. Training protocol We use the unmodified training configurations from (Chen et al., 2025; Li\netal.,2024)fortherespectivearchitectures, includinglearningrate, batchsize, epochs, optimizer,\nweight decay, and scheduler (see the original papers for specifications); Given time-complexity\nconsiderations,weusegreedy1-hopuniquecoloringintheexperiments.Weconductallexperiments\nunderthesameconfigurationonaserverequippedwithtwoIntelXeonGold5117CPUs(2.0GHz),\n256GBRAM,andtwoNVIDIAV100GPUs.",
+      "size": 579,
+      "sentences": 2
+    },
+    {
+      "id": 61,
+      "content": "econfigurationonaserverequippedwithtwoIntelXeonGold5117CPUs(2.0GHz),\n256GBRAM,andtwoNVIDIAV100GPUs. 5.2 MAINEXPERIMENTS\nThis part comprises two components. First, we conduct experiments on the effectiveness of the\nparsimoniousLocal-UIDscheme,validatingourmethodsonBPPdatasetthatpermitsrapiditeration. Second,wepresentadvancedextensionexperiments,whereweextendthelightweightColorUIDto\nmorecomplexandlarger-scaledatasets,andeventransferittotheLPdomaintoverifythemethod’s\nstrongtransferability.",
+      "size": 491,
+      "sentences": 4
+    },
+    {
+      "id": 62,
+      "content": "lexandlarger-scaledatasets,andeventransferittotheLPdomaintoverifythemethod’s\nstrongtransferability. Validation of the Local-UID scheme Table 1 empirically validates the effectiveness of the\nColorGNNarchitectureinthreerespects: (1)Effectivenessofcolor-awareembedding. ColorGNN\nconsistently outperforms Global-UID baselines (Non-Aug, Uniform, Position), surpasses the Or-\nbit design, and is comparable to Orbit+. (2) Compatibility with prior UID schemes.",
+      "size": 452,
+      "sentences": 4
+    },
+    {
+      "id": 63,
+      "content": "urpasses the Or-\nbit design, and is comparable to Orbit+. (2) Compatibility with prior UID schemes. Augmenting\nColorGNNwithOrbitorOrbit+yieldssubstantialadditionalgains;bothvariantsexhibitstrongim-\nprovements. (3)Lightweightvariant.ThespecialcaseColorUIDachievesperformancecomparable\ntoColorGNN,makingitapracticallightweightsubstituteforlarge-scalegraphs. Table 1: Comparative results on the BPP dataset for our methods and baselines, evaluated across\nTop-m%thresholds(lowerisbetter).",
+      "size": 484,
+      "sentences": 5
+    },
+    {
+      "id": 64,
+      "content": "on the BPP dataset for our methods and baselines, evaluated across\nTop-m%thresholds(lowerisbetter). Method Top-30% Top-50% Top-70% Top-90% Top-100%\nNon-Aug 5.81 9.74 14.43 18.28 27.94\nUniform 0.01 0.21 3.45 10.81 19.32\nPosition 0.00 0.44 3.45 10.58 18.92\nOrbit 0.00 0.04 2.33 7.98 17.43\nOrbit+ 0.00 0.00 1.18 6.96 19.17\nColorGNN 0.00 0.01 0.98 7.80 18.29\nColorGNN,Orbit 0.00 0.03 1.23 6.44 17.42\nColorGNN,Orbit+ 0.00 0.00 0.92 5.87 16.55\nColorUID 0.00 0.01 1.02 7.71 18.27\nExtendedexperiments Toassessscalabilityandtransferability,weevaluateonlarger,morecom-\nplexdatasetsandextendtheevaluationtootherdomains.",
+      "size": 608,
+      "sentences": 2
+    },
+    {
+      "id": 65,
+      "content": "ityandtransferability,weevaluateonlarger,morecom-\nplexdatasetsandextendtheevaluationtootherdomains. • ILPs: Our method scales well to larger and more complex datasets. Table 2 Shows that the\nColorUIDconsistentlyoutperformsthebaselinesacrosstheboardonBIP.OnSMSP,ityields\nsubstantial gains on the Top-70%, Top-90%, and Top-100% metrics. However, on Top-30%\n7\n===  8 ===\nand Top-50% for SMSP, Orbit and Orbit+ perform better.",
+      "size": 422,
+      "sentences": 4
+    },
+    {
+      "id": 66,
+      "content": "0% metrics. However, on Top-30%\n7\n===  8 ===\nand Top-50% for SMSP, Orbit and Orbit+ perform better. This likely stems from the fact that\nOrbitincorporatesinstance-specificinformationbycomputingsolutionorbitsandleveragesan\nevaluation metric that normalizes predictions under these symmetries, whereas our approach\nderives enhanced representational power solely from the underlying graph structure, without\nrelyingonsuchinstance-levelpreprocessing.",
+      "size": 446,
+      "sentences": 3
+    },
+    {
+      "id": 67,
+      "content": "power solely from the underlying graph structure, without\nrelyingonsuchinstance-levelpreprocessing. • LPs: Our method exhibits remarkably strong Out-of-distribution (OOD) generalization on the\ntwo LP benchmarks, PageRank and WA (Table 3). We train on smaller scale instances, and\ntestonlargerinstances(PageRank: 30,000variables,30,001constraints; WA:7,440variables,\n9,035 constraints).",
+      "size": 385,
+      "sentences": 3
+    },
+    {
+      "id": 68,
+      "content": "largerinstances(PageRank: 30,000variables,30,001constraints; WA:7,440variables,\n9,035 constraints). For in-distribution (In-D) evaluation, vanilla GNNs already achieve high\naccuracy without feature augmentation, consistent with the theoretical analysis (Chen et al.,\n2022;Lietal.,2024),andaddingUIDs(eitherUniformorColorUID)offerslitterbenefit.",
+      "size": 344,
+      "sentences": 2
+    },
+    {
+      "id": 69,
+      "content": "nalysis (Chen et al.,\n2022;Lietal.,2024),andaddingUIDs(eitherUniformorColorUID)offerslitterbenefit. For\ntheOODevaluation,Uniformleadstoasignificantdegradationinperformance,consistentwith\nourintuitionthatexcessiveUIDsharmgeneralization.However,ColorUIDattainsunexpectedly\nstrongimprovement,highlightsitsrobustnessacrossscales. Table2: ComparativeresultsontwoILPdatasetsforthelightweightvariant(ColorUID)andbase-\nlines,evaluatedacrossTop-m%thresholds(lowerisbetter).",
+      "size": 464,
+      "sentences": 3
+    },
+    {
+      "id": 70,
+      "content": "etsforthelightweightvariant(ColorUID)andbase-\nlines,evaluatedacrossTop-m%thresholds(lowerisbetter). BIP SMSP\nMethods\n30% 50% 70% 90% 100% 30% 50% 70% 90% 100%\nNo-Aug 30.34 51.29 72.94 93.77 104.13 32.79 56.31 81.32 109.03 215.38\nUniform 4.54 14.22 44.71 80.57 104.13 17.75 32.21 48.25 72.40 152.54\nPosition 4.12 12.23 44.41 81.49 103.17 0.13 3.13 26.02 64.09 146.33\nOrbit 3.09 6.20 35.69 73.92 101.64 0.00 0.63 16.09 49.37 145.71\nOrbit+ 2.87 5.17 38.75 78.47 100.76 0.01 0.49 13.06 50.67 139.45\nColorUID 2.74 4.91 32.64 72.23 98.72 0.15 1.55 6.60 16.49 115.57\nTable3: ComparativeresultsontwoLPdatasetsforthelightweightvariant(ColorUID)andbase-\nlines,usingMSE(lowerisbetter).",
+      "size": 674,
+      "sentences": 2
+    },
+    {
+      "id": 71,
+      "content": "tiveresultsontwoLPdatasetsforthelightweightvariant(ColorUID)andbase-\nlines,usingMSE(lowerisbetter). PageRank WA\nMethods\nIn-DTestMSE OODTestMSE In-DTestMSE OODTestMSE\nNo-Aug 4.51e-07 1.18e-05 3.14e-05 6.34e+02\nUniform 4.66e-07 1.11e-03 2.38e-05 7.07e+02\nColorUID 4.56e-07 6.53e-06 2.30e-05 1.32e-01\n5.3 ABLATIONSTUDIES\nThis section has three aims: (1) provide evidence that the observed gains are consistent with our\nfeature-augmentation principle; (2) probe architectural sensitivity by varying the color-embedding\nfunction, suggesting that benefits arise from color integration rather than a specific functional\nchoice; (3) illustrate feasibility on a general-graph benchmark via integration with a state-of-the-\nartpositional-encodingmodel.",
+      "size": 742,
+      "sentences": 2
+    },
+    {
+      "id": 72,
+      "content": "lity on a general-graph benchmark via integration with a state-of-the-\nartpositional-encodingmodel. SourcesofPerformanceGains (1)Thegainsofourmethodsarenotduetoincreaseddimension-\nality: OnBPP,wecompareColorGNNagainstNon-AugandNon-Aug+(whichscalesthebaseline\nembedding dimension by a factor of |C|). We find that merely increasing model capacity without\ncolorinformationdoesnotimproveperformanceandcanevendegradeit(e.g.,Non-Augvs. Non-\nAug+,seetheupperhalfofTable4).",
+      "size": 466,
+      "sentences": 4
+    },
+    {
+      "id": 73,
+      "content": "iondoesnotimproveperformanceandcanevendegradeit(e.g.,Non-Augvs. Non-\nAug+,seetheupperhalfofTable4). (2)ColorGNNtypicallyusesasmallerbutsufficientnumber\nof colors: Table 5 shows that, our methods uses very few UIDs on BPP and SMSP. On BIP, our\nmethodusesmorecolorsthantheOrbit/Orbit+schemesyetachievesbetterperformance. InBIP,a\n1-hop unique coloring requires at least 106 colors, as there exists a constraint involving 106 vari-\nables.",
+      "size": 434,
+      "sentences": 5
+    },
+    {
+      "id": 74,
+      "content": "ique coloring requires at least 106 colors, as there exists a constraint involving 106 vari-\nables. Consequently, OrbitandOrbit+, whichuseonly51colors, lacksufficientexpressivepower\ntofullydistinguishall1-hopneighbors.",
+      "size": 218,
+      "sentences": 2
+    },
+    {
+      "id": 75,
+      "content": "andOrbit+, whichuseonly51colors, lacksufficientexpressivepower\ntofullydistinguishall1-hopneighbors. ColoringSchemeswithAlternativeFunctionalForms EmbeddingstructuralUIDinformation\ninto the GNN architecture improves performance (see Table 4) : We observe that (1) the coloring\n8\n===  9 ===\nTable 4: Comparative results on the BPP dataset for color-embedding variants, the Non-\nAug baseline, and their combinations, evaluated across Top-m% thresholds (lower is better).",
+      "size": 467,
+      "sentences": 2
+    },
+    {
+      "id": 76,
+      "content": "he Non-\nAug baseline, and their combinations, evaluated across Top-m% thresholds (lower is better). ColorGNN(Merge)isthevariantthatappliescoloringtoMerge(1)insteadofemb.",
+      "size": 169,
+      "sentences": 2
+    },
+    {
+      "id": 77,
+      "content": "thresholds (lower is better). ColorGNN(Merge)isthevariantthatappliescoloringtoMerge(1)insteadofemb. Method Top-30% Top-50% Top-70% Top-90% Top-100%\nNon-Aug 5.81 9.74 14.43 18.28 27.94\nNon-Aug+ 6.05 10.03 14.92 18.88 28.87\nColorGNN 0.00 0.01 0.98 7.80 18.29\nColorGNN(Merge) 0.00 0.02 1.04 7.69 18.28\nOrbit 0.00 0.04 2.33 7.98 17.43\nColorGNN,Orbit 0.00 0.03 1.23 6.44 17.42\nColorGNN(Merge),Orbit 0.00 0.03 1.22 6.82 17.43\nOrbit+ 0.00 0.00 1.18 6.96 19.17\nColorGNN,Orbit+ 0.00 0.00 0.92 5.87 16.55\nColorGNN(Merge),Orbit+ 0.00 0.01 0.97 6.15 16.96\nTable5: Numberofuniqueidentifiers(UIDs)usedbyeachmethodacrossthreeILPdatasets.",
+      "size": 622,
+      "sentences": 3
+    },
+    {
+      "id": 78,
+      "content": "0.01 0.97 6.15 16.96\nTable5: Numberofuniqueidentifiers(UIDs)usedbyeachmethodacrossthreeILPdatasets. Method BPP BIP SMSP\nUniform 420 1082.41 23137.25\nPosition 420 1083 23417.97\nOrbit 140 51 1000\nOrbit+ 140 51 6070\nColorGNN 32 114 171.68\nfunctionislargelyimmaterial—ColorGNN(Merge)andColorGNN(emb)achievecomparableper-\nformance; and(2)bothvariantscomposeseamlesslywithotherUIDschemesandyieldadditional\ngains,demonstratingcompatibility.",
+      "size": 433,
+      "sentences": 2
+    },
+    {
+      "id": 79,
+      "content": "othvariantscomposeseamlesslywithotherUIDschemesandyieldadditional\ngains,demonstratingcompatibility. General-Graph Applications We evaluate on the ZINC dataset ((Irwin et al., 2012; Dwivedi\netal.,2023)),agraph-leveltaskthatpredictsthepenalizedwater–octanolpartitioncoefficient(penal-\nizedlogP).BaselinesincludeconventionalGNNbackbones(GCN,Kipf(2016)andGIN,Xuetal. (2018)), a GIN augmented with random IDs, and the state-of-the-art positional-encoding model\nPEARL (Kanatsoulis et al., 2025).",
+      "size": 489,
+      "sentences": 3
+    },
+    {
+      "id": 80,
+      "content": "th random IDs, and the state-of-the-art positional-encoding model\nPEARL (Kanatsoulis et al., 2025). Following PEARL, we adopt the PEARL positional-encoding\nframework for graph-level modeling and refer to its random-feature variant as R-PEARL. Perfor-\nmance is measured by mean absolute error (MAE), reported as the mean and standard deviation\nforthemodelachievingthehighestvalidationaccuracy.",
+      "size": 392,
+      "sentences": 3
+    },
+    {
+      "id": 81,
+      "content": "MAE), reported as the mean and standard deviation\nforthemodelachievingthehighestvalidationaccuracy. Replacingtherandompositionalencoding\nin R-PEARL with our ColorUID yields a variant we call Color-PEARL, which provides further\nimprovementsonZINC(Table6)andindicatesthatthed-hopcoloringschemeoffersstrongerper-\nformancewhileremaininghighlycompatibleandplug-and-play. Table6: PerformanceofdifferentmethodsonZINC(lowerisbetter).",
+      "size": 425,
+      "sentences": 3
+    },
+    {
+      "id": 82,
+      "content": "aininghighlycompatibleandplug-and-play. Table6: PerformanceofdifferentmethodsonZINC(lowerisbetter). GCN GIN GIN+randid R-PEARL Color-PEARL\nTestMAE 0.469±0.002 0.209±0.018 0.279±0.023 0.0696±0.004 0.0679±0.0024\n6 CONCLUSION\nThis paper introduced a parsimonious feature-augmentation scheme for GNNs on ILPs based on\nd-hopuniquecoloring,alongwithanovelcolor-awarearchitectureColorGNNanditslightweight\nvariantColorUID.Theoretically,weprovedthatcomparedwithconventionalGlobal-UIDschemes,\nourLocal-UIDapproachachievesthesameexpressivepowerwhileofferingsuperiorgeneralization.",
+      "size": 569,
+      "sentences": 3
+    },
+    {
+      "id": 83,
+      "content": "-UIDschemes,\nourLocal-UIDapproachachievesthesameexpressivepowerwhileofferingsuperiorgeneralization. Extensive experiments validate its effectiveness across diverse benchmarks. Notably, our method\ndemonstrates unexpectedly strong out-of-distribution performance, and the scheme can integrate\nseamlesslywithotherUIDstrategies. 9\n===  10 ===\nReproducibility Statement. We provide an anonymized repository with complete code and\nscripts to reproduce all results.",
+      "size": 458,
+      "sentences": 5
+    },
+    {
+      "id": 84,
+      "content": "ement. We provide an anonymized repository with complete code and\nscripts to reproduce all results. One-click entry points are included for data preprocessing, train-\ning, evaluation, and figure generation. The computing environment, per-table configurations, and\nhyperparametersaredocumentedinSection5.1. LLMusage. LLMsisusedtoaidandpolishwriting. REFERENCES\nNoga Alon, La´szlo´ Babai, and Alon Itai. A fast and simple randomized parallel algorithm for the\nmaximalindependentsetproblem.",
+      "size": 487,
+      "sentences": 8
+    },
+    {
+      "id": 85,
+      "content": "nd Alon Itai. A fast and simple randomized parallel algorithm for the\nmaximalindependentsetproblem. Journalofalgorithms,7(4):567–583,1986. DavidApplegate,MateoD´ıaz,OliverHinder,HaihaoLu,MilesLubin,BrendanO’Donoghue,and\nWarrenSchudy. Practicallarge-scalelinearprogrammingusingprimal-dualhybridgradient. Ad-\nvancesinNeuralInformationProcessingSystems,34:20243–20257,2021. MayaBechler-Speicher,MosheEliasof,Carola-BibianeScho¨nlieb,RanGilad-Bachrach,andAmir\nGloberson.",
+      "size": 466,
+      "sentences": 7
+    },
+    {
+      "id": 86,
+      "content": "21. MayaBechler-Speicher,MosheEliasof,Carola-BibianeScho¨nlieb,RanGilad-Bachrach,andAmir\nGloberson. Ontheutilizationofuniquenodeidentifiersingraphneuralnetworks. arXivpreprint\narXiv:2411.02271,2024. Stephen Boyd and Jacob Mattingley. Branch and bound methods. Notes for EE364b, Stanford\nUniversity,2006:07,2007. QianChen, TianjianZhang, LinxinYang, QingyuHan, AkangWang, RuoyuSun, XiaodongLuo,\nand Tsung-Hui Chang. Symilo: A symmetry-aware learning framework for integer linear opti-\nmization.",
+      "size": 493,
+      "sentences": 9
+    },
+    {
+      "id": 87,
+      "content": "and Tsung-Hui Chang. Symilo: A symmetry-aware learning framework for integer linear opti-\nmization. AdvancesinNeuralInformationProcessingSystems,37:24411–24434,2024. Qian Chen, Lei Li, Qian Li, Jianghua Wu, Akang Wang, Ruoyu Sun, Xiaodong Luo, Tsung-Hui\nChang,andQingjiangShi. Whengnnsmeetsymmetryinilps: anorbit-basedfeatureaugmenta-\ntionapproach. arXivpreprintarXiv:2501.14211,2025. ZiangChen,JialinLiu,XinshangWang,JianfengLu,andWotaoYin. Onrepresentinglinearpro-\ngramsbygraphneuralnetworks.",
+      "size": 494,
+      "sentences": 8
+    },
+    {
+      "id": 88,
+      "content": "JialinLiu,XinshangWang,JianfengLu,andWotaoYin. Onrepresentinglinearpro-\ngramsbygraphneuralnetworks. arXivpreprintarXiv:2209.12288,2022. Ziang Chen, Jialin Liu, Xinshang Wang, and Wotao Yin. On representing mixed-integer linear\nprogramsbygraphneuralnetworks. InTheEleventhInternationalConferenceonLearningRep-\nresentations,ICLR2023,Kigali,Rwanda,May1-5,2023.OpenReview.net,2023a. Ziang Chen, Jialin Liu, Xinshang Wang, and Wotao Yin. On representing mixed-integer linear\nprogramsbygraphneuralnetworks.",
+      "size": 500,
+      "sentences": 8
+    },
+    {
+      "id": 89,
+      "content": ", Xinshang Wang, and Wotao Yin. On representing mixed-integer linear\nprogramsbygraphneuralnetworks. InTheEleventhInternationalConferenceonLearningRep-\nresentations,2023b. URLhttps://openreview.net/forum?id=4gc3MGZra1d. Vijay Prakash Dwivedi and Xavier Bresson. A generalization of transformer networks to graphs. arxiv. arXivpreprintarXiv:2012.09699,2020. Vijay Prakash Dwivedi, Anh Tuan Luu, Thomas Laurent, Yoshua Bengio, and Xavier Bresson.",
+      "size": 443,
+      "sentences": 9
+    },
+    {
+      "id": 90,
+      "content": "09699,2020. Vijay Prakash Dwivedi, Anh Tuan Luu, Thomas Laurent, Yoshua Bengio, and Xavier Bresson. Graph neural networks with learnable structural and positional representations. arXiv preprint\narXiv:2110.07875,2021. Vijay Prakash Dwivedi, Chaitanya K Joshi, Anh Tuan Luu, Thomas Laurent, Yoshua Bengio, and\nXavierBresson. Benchmarkinggraphneuralnetworks. JournalofMachineLearningResearch,\n24(43):1–48,2023.",
+      "size": 408,
+      "sentences": 7
+    },
+    {
+      "id": 91,
+      "content": "XavierBresson. Benchmarkinggraphneuralnetworks. JournalofMachineLearningResearch,\n24(43):1–48,2023. Moshe Eliasof, Fabrizio Frasca, Beatrice Bevilacqua, Eran Treister, Gal Chechik, and Haggai\nMaron. Graphpositionalencodingviarandomfeaturepropagation. InInternationalconference\nonmachinelearning,pp.9202–9223.PMLR,2023. YuvalEmek,ChristophPfister,JochenSeidel,andRogerWattenhofer. Anonymousnetworks: ran-\ndomization=2-hopcoloring.",
+      "size": 429,
+      "sentences": 8
+    },
+    {
+      "id": 92,
+      "content": "hristophPfister,JochenSeidel,andRogerWattenhofer. Anonymousnetworks: ran-\ndomization=2-hopcoloring. InProceedingsofthe2014ACMsymposiumonPrinciplesofdis-\ntributedcomputing,pp.96–105,2014. 10\n===  11 ===\nMaximeGasse, DidierChe´telat, NicolaFerroni, LaurentCharlin, andAndreaLodi. Exactcombi-\nnatorialoptimizationwithgraphconvolutionalneuralnetworks. Advancesinneuralinformation\nprocessingsystems,32,2019.",
+      "size": 402,
+      "sentences": 6
+    },
+    {
+      "id": 93,
+      "content": "izationwithgraphconvolutionalneuralnetworks. Advancesinneuralinformation\nprocessingsystems,32,2019. MaximeGasse,SimonBowly,QuentinCappart,JonasCharfreitag,LaurentCharlin,DidierChe´telat,\nAntonia Chmiela, Justin Dumouchelle, Ambros Gleixner, Aleksandr M Kazachkov, et al. The\nmachine learning for combinatorial optimization competition (ml4co): Results and insights. In\nNeurIPS2021competitionsanddemonstrationstrack,pp.220–231.PMLR,2022.",
+      "size": 436,
+      "sentences": 5
+    },
+    {
+      "id": 94,
+      "content": "l4co): Results and insights. In\nNeurIPS2021competitionsanddemonstrationstrack,pp.220–231.PMLR,2022. QingyuHan,LinxinYang,QianChen,XiangZhou,DongZhang,AkangWang,RuoyuSun,andXi-\naodongLuo. Agnn-guidedpredict-and-searchframeworkformixed-integerlinearprogramming. arXivpreprintarXiv:2302.05636,2023. Kaj Holmberg, Mikael Ro¨nnqvist, and Di Yuan. An exact algorithm for the capacitated facility\nlocationproblemswithsinglesourcing. EuropeanJournalofOperationalResearch,113(3):544–\n559,1999.",
+      "size": 484,
+      "sentences": 8
+    },
+    {
+      "id": 95,
+      "content": "lity\nlocationproblemswithsinglesourcing. EuropeanJournalofOperationalResearch,113(3):544–\n559,1999. TaoanHuang,AaronMFerber,ArmanZharmagambetov,YuandongTian,andBistraDilkina. Con-\ntrastivepredict-and-searchformixedintegerlinearprograms. InForty-firstInternationalConfer-\nenceonMachineLearning,2024. YinanHuang,WilliamLu,JoshuaRobinson,YuYang,MuhanZhang,StefanieJegelka,andPanLi. Onthestabilityofexpressivepositionalencodingsforgraphs. arXivpreprintarXiv:2310.02579,\n2023.",
+      "size": 471,
+      "sentences": 8
+    },
+    {
+      "id": 96,
+      "content": "PanLi. Onthestabilityofexpressivepositionalencodingsforgraphs. arXivpreprintarXiv:2310.02579,\n2023. JohnJIrwin, TeagueSterling, MichaelMMysinger, ErinSBolstad, andRyanGColeman. Zinc:\nafreetooltodiscoverchemistryforbiology. Journalofchemicalinformationandmodeling,52\n(7):1757–1768,2012. Charilaos I Kanatsoulis, Evelyn Choi, Stephanie Jegelka, Jure Leskovec, and Alejandro\nRibeiro. Learning efficient positional encodings with graph neural networks. arXiv preprint\narXiv:2502.01122,2025.",
+      "size": 486,
+      "sentences": 9
+    },
+    {
+      "id": 97,
+      "content": "ng efficient positional encodings with graph neural networks. arXiv preprint\narXiv:2502.01122,2025. EliasBKhalil,ChristopherMorris,andAndreaLodi. Mip-gnn: Adata-drivenframeworkforguid-\ning combinatorial solvers. In Proceedings of the AAAI Conference on Artificial Intelligence,\nvolume36,pp.10219–10227,2022. TN Kipf. Semi-supervised classification with graph convolutional networks. arXiv preprint\narXiv:1609.02907,2016.",
+      "size": 420,
+      "sentences": 8
+    },
+    {
+      "id": 98,
+      "content": "-supervised classification with graph convolutional networks. arXiv preprint\narXiv:1609.02907,2016. MarkusKruber,MarcoELu¨bbecke,andAxelParmentier.Learningwhentouseadecomposition.In\nInternationalconferenceonAIandORtechniquesinconstraintprogrammingforcombinatorial\noptimizationproblems,pp.202–210.Springer,2017. Wen-YangKuandJChristopherBeck.Mixedintegerprogrammingmodelsforjobshopscheduling:\nAcomputationalanalysis. Computers&OperationsResearch,73:165–173,2016. FabianKuhnandRogertWattenhofer.",
+      "size": 493,
+      "sentences": 6
+    },
+    {
+      "id": 99,
+      "content": "omputationalanalysis. Computers&OperationsResearch,73:165–173,2016. FabianKuhnandRogertWattenhofer. Onthecomplexityofdistributedgraphcoloring. InProceed-\ningsofthetwenty-fifthannualACMsymposiumonPrinciplesofdistributedcomputing,pp.7–15,\n2006. BinghengLi,LinxinYang,YupengChen,SenmiaoWang,HaitaoMao,QianChen,YaoMa,Akang\nWang,TianDing,JiliangTang,andRuoyuSun. Pdhg-unrolledlearning-to-optimizemethodfor\nlarge-scale linear programming.",
+      "size": 432,
+      "sentences": 7
+    },
+    {
+      "id": 100,
+      "content": "JiliangTang,andRuoyuSun. Pdhg-unrolledlearning-to-optimizemethodfor\nlarge-scale linear programming. In Forty-first International Conference on Machine Learning,\nICML2024,Vienna,Austria,July21-27,2024.OpenReview.net,2024. DerekLim,JoshuaRobinson,LingxiaoZhao,TessSmidt,SuvritSra,HaggaiMaron,andStefanie\nJegelka. Sign and basis invariant networks for spectral graph representation learning. arXiv\npreprintarXiv:2202.13013,2022.",
+      "size": 425,
+      "sentences": 6
+    },
+    {
+      "id": 101,
+      "content": "invariant networks for spectral graph representation learning. arXiv\npreprintarXiv:2202.13013,2022. HaoyangLiu,JieWang,ZijieGeng,XijunLi,YuxuanZong,FangzhouZhu,JianyeHao,andFeng\nWu. Apollo-milp: An alternating prediction-correction neural solving framework for mixed-\nintegerlinearprogramming. arXivpreprintarXiv:2503.01129,2025. 11\n===  12 ===\nAndreasLoukas. Whatgraphneuralnetworkscannotlearn: Depthvswidth. In8thInternational\nConferenceonLearningRepresentations,ICLR2020,2020.",
+      "size": 479,
+      "sentences": 8
+    },
+    {
+      "id": 102,
+      "content": "rkscannotlearn: Depthvswidth. In8thInternational\nConferenceonLearningRepresentations,ICLR2020,2020. MichaelLuby.Asimpleparallelalgorithmforthemaximalindependentsetproblem.InProceedings\noftheseventeenthannualACMsymposiumonTheoryofcomputing,pp.1–10,1985. SanjayMelkoteandMarkSDaskin. Capacitatedfacilitylocation/networkdesignproblems. Euro-\npeanjournalofoperationalresearch,129(3):481–495,2001. Leilei Meng, Chaoyong Zhang, Yaping Ren, Biao Zhang, and Chang Lv.",
+      "size": 459,
+      "sentences": 7
+    },
+    {
+      "id": 103,
+      "content": "nalresearch,129(3):481–495,2001. Leilei Meng, Chaoyong Zhang, Yaping Ren, Biao Zhang, and Chang Lv. Mixed-integer linear\nprogrammingandconstraintprogrammingformulationsforsolvingdistributedflexiblejobshop\nschedulingproblem. Computers&industrialengineering,142:106347,2020. VinodNair,SergeyBartunov,FelixGimeno,IngridVonGlehn,PawelLichocki,IvanLobov,Bren-\ndan O’Donoghue, Nicolas Sonnerat, Christian Tjandraatmadja, Pengming Wang, et al. Solving\nmixedintegerprogramsusingneuralnetworks.",
+      "size": 485,
+      "sentences": 6
+    },
+    {
+      "id": 104,
+      "content": "t, Christian Tjandraatmadja, Pengming Wang, et al. Solving\nmixedintegerprogramsusingneuralnetworks. arXivpreprintarXiv:2012.13349,2020. MoniNaorandLarryStockmeyer.Whatcanbecomputedlocally? InProceedingsofthetwenty-fifth\nannualACMsymposiumonTheoryofcomputing,pp.184–193,1993. MaxBPaulus,GiuliaZarpellon,AndreasKrause,LaurentCharlin,andChrisMaddison.Learningto\ncutbylookingahead: Cuttingplaneselectionviaimitationlearning. InInternationalconference\nonmachinelearning,pp.17584–17600.PMLR,2022.",
+      "size": 490,
+      "sentences": 7
+    },
+    {
+      "id": 105,
+      "content": "electionviaimitationlearning. InInternationalconference\nonmachinelearning,pp.17584–17600.PMLR,2022. Sujoy Ray, Andrei Soeanu, Jean Berger, and Mourad Debbabi. The multi-depot split-delivery ve-\nhicle routing problem: Model and solution algorithm. Knowledge-Based Systems, 71:238–265,\n2014. RyomaSato,MakotoYamada,andHisashiKashima.Approximationratiosofgraphneuralnetworks\nforcombinatorialproblems. AdvancesinNeuralInformationProcessingSystems,32,2019.",
+      "size": 451,
+      "sentences": 7
+    },
+    {
+      "id": 106,
+      "content": "graphneuralnetworks\nforcombinatorialproblems. AdvancesinNeuralInformationProcessingSystems,32,2019. PierreSchaus, PascalVan Hentenryck, Jean-Noe¨lMonette, CarletonCoffrin, LaurentMichel, and\nYves Deville. Solving steel mill slab problems with constraint-based techniques: Cp, lns, and\ncbls. Constraints,16(2):125–147,2011. AnitaScho¨bel. Amodelforthedelaymanagementproblembasedonmixed-integer-programming. Electronicnotesintheoreticalcomputerscience,50(1):1–10,2001.",
+      "size": 466,
+      "sentences": 8
+    },
+    {
+      "id": 107,
+      "content": "oblembasedonmixed-integer-programming. Electronicnotesintheoreticalcomputerscience,50(1):1–10,2001. Petra Schwerin and Gerhard Wa¨scher. The bin-packing problem: A problem generator and some\nnumerical experiments with ffd packing and mtp. International transactions in operational re-\nsearch,4(5-6):377–389,1997. Keyulu Xu, Weihua Hu, Jure Leskovec, and Stefanie Jegelka. How powerful are graph neural\nnetworks? arXivpreprintarXiv:1810.00826,2018.",
+      "size": 447,
+      "sentences": 8
+    },
+    {
+      "id": 108,
+      "content": ", and Stefanie Jegelka. How powerful are graph neural\nnetworks? arXivpreprintarXiv:1810.00826,2018. A RELATED WORKS\nPositionalencodingsforGNNs ThefollowingPEmethodsarecomplementarytoourcolor-based\nUID scheme, and we therefore regard them as orthogonal components rather than head-to-head\nbaselines. Graph Transformers with Laplacian-eigenvector absolute positional encodings (LapPE)\nwereintroducedbyDwivedi&Bresson(2020). Limetal.",
+      "size": 430,
+      "sentences": 6
+    },
+    {
+      "id": 109,
+      "content": "n-eigenvector absolute positional encodings (LapPE)\nwereintroducedbyDwivedi&Bresson(2020). Limetal. (2022)designarchitecturesinvariantto\neigenvector sign and eigenspace basis, making spectral PEs robust to symmetry choices. Huang\net al. (2023) further improve stability and expressivity by processing eigenvectors via eigenvalue-\nweighted,softlypartitionedeigenspaces. Beyondexpliciteigenvectors,Eliasofetal. (2023)obtain\nscalablePEsbyfilteringrandomsignalswiththegraphLaplacian. Kanatsoulisetal.",
+      "size": 496,
+      "sentences": 8
+    },
+    {
+      "id": 110,
+      "content": "liasofetal. (2023)obtain\nscalablePEsbyfilteringrandomsignalswiththegraphLaplacian. Kanatsoulisetal. (2025)propose\npermutation-invariantfeatureswithlowercomputationalcostandimprovedstability. Dwivedietal. (2021)decouplerandom-walk–basedPEsfromotherstructuralsignalstobuildmoreflexiblearchi-\ntectures. Finally,Bechler-Speicheretal. (2024)alignlatentspacesinducedbydifferentPEsthrough\ntailoredlossestopromotepermutationequivariance. 12",
+      "size": 432,
+      "sentences": 9
+    }
+  ]
+}

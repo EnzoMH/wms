@@ -1,0 +1,705 @@
+{
+  "source": "ArXiv",
+  "filename": "298_AI_ML_Escaping_Saddle_Points_via_Curvature-Cal.pdf",
+  "domain": "AI",
+  "total_chars": 39181,
+  "total_chunks": 116,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\nEscaping Saddle Points via Curvature-Calibrated Perturbations:\nA Complete Analysis with Explicit Constants and Empirical\nValidation\nFaruk Alpay Hamdi Alakkad\nLightcap, Department of Machine Learning Bahçeşehir University, Department of Engineering\nalpay@lightcap.ai hamdi.alakkad@bahcesehir.edu.tr\nAugust 25, 2025\nAbstract\nWe present a comprehensive theoretical analysis of first-order methods for escaping strict\nsaddle points in smooth non-convex optimization.",
+      "size": 473,
+      "sentences": 1
+    },
+    {
+      "id": 2,
+      "content": "nalysis of first-order methods for escaping strict\nsaddle points in smooth non-convex optimization. Our main contribution is a Perturbed\nSaddle-escapeDescent(PSD)algorithmwithfullyexplicitconstantsandarigorousseparation\nbetween gradient-descent and saddle-escape phases.",
+      "size": 270,
+      "sentences": 2
+    },
+    {
+      "id": 3,
+      "content": "withfullyexplicitconstantsandarigorousseparation\nbetween gradient-descent and saddle-escape phases. For a function f : Rd → R with ℓ-\n√\nLipschitz gradient and ρ-Lipschitz Hessian, we prove that PSD finds an (ϵ, ρϵ)-approximate\nsecond-order stationary point with high probability using at most O(ℓ∆ /ϵ2) gradient √ f\nevaluations for the descent phase plus O((ℓ/ ρϵ)log(d/δ)) evaluations per escape episode,\nwith at most O(ℓ∆ /ϵ2) episodes needed.",
+      "size": 445,
+      "sentences": 2
+    },
+    {
+      "id": 4,
+      "content": "ase plus O((ℓ/ ρϵ)log(d/δ)) evaluations per escape episode,\nwith at most O(ℓ∆ /ϵ2) episodes needed. We validate our theoretical predictions through\nf\nextensive experiments across both synthetic functions and practical machine learning tasks,\nconfirming the logarithmic dimension dependence and the predicted per-episode function\ndecrease.",
+      "size": 338,
+      "sentences": 2
+    },
+    {
+      "id": 5,
+      "content": "s,\nconfirming the logarithmic dimension dependence and the predicted per-episode function\ndecrease. We also provide complete algorithmic specifications including a finite-difference\nvariant (PSD-Probe) and a stochastic extension (PSGD) with robust mini-batch sizing. All\ncode and experimental details are available at: https://github.com/farukalpay/PSD/.",
+      "size": 354,
+      "sentences": 3
+    },
+    {
+      "id": 6,
+      "content": "tch sizing. All\ncode and experimental details are available at: https://github.com/farukalpay/PSD/. 1 Introduction\nNon-convex optimization problems pervade machine learning, from neural network training to\nmatrix factorization and tensor decomposition. A fundamental challenge in these problems is\nthe presence of saddle points—stationary points where the Hessian has negative eigenvalues.",
+      "size": 389,
+      "sentences": 4
+    },
+    {
+      "id": 7,
+      "content": "lems is\nthe presence of saddle points—stationary points where the Hessian has negative eigenvalues. While gradient descent can efficiently decrease the function value when the gradient is large, it\ncan stagnate near saddle points where the gradient is small but the Hessian indicates negative\ncurvature [9, 11].",
+      "size": 311,
+      "sentences": 2
+    },
+    {
+      "id": 8,
+      "content": "ear saddle points where the gradient is small but the Hessian indicates negative\ncurvature [9, 11]. Recent theoretical advances have shown that simple modifications to gradient descent,\nparticularly the addition of occasional random perturbations, suffice to escape strict saddle points\nefficiently. However, existing analyses often hide important constants in O˜(·) notation, making it\ndifficult to understand the actual computational requirements or to verify theoretical predictions\nempirically.",
+      "size": 498,
+      "sentences": 3
+    },
+    {
+      "id": 9,
+      "content": "understand the actual computational requirements or to verify theoretical predictions\nempirically. 1.1 Our Contributions\n• Explicit constant analysis: We provide a complete analysis of perturbed gradient de-\nscent with all constants instantiated, showing exactly how the episode length scales as\n√\nT = 8(ℓ/ ρϵ)log(16dM/δ) where M bounds the number of episodes.",
+      "size": 360,
+      "sentences": 2
+    },
+    {
+      "id": 10,
+      "content": "y how the episode length scales as\n√\nT = 8(ℓ/ ρϵ)log(16dM/δ) where M bounds the number of episodes. • Decomposed complexity bound: Weseparatetheiterationcomplexityintogradient-descent\nsteps and escape episodes, making the dimension dependence transparent: only the per-episode\ncost depends logarithmically on d.\n1\n5202\nguA\n22\n]GL.sc[\n1v04561.8052:viXra\n===  2 ===\n• Complete algorithmic specifications: We provide detailed pseudocode for three variants:\nbasic PSD, finite-difference PSD-Probe, and stochastic PSGD, with all parameters derived\nfrom theory.",
+      "size": 555,
+      "sentences": 2
+    },
+    {
+      "id": 11,
+      "content": "sic PSD, finite-difference PSD-Probe, and stochastic PSGD, with all parameters derived\nfrom theory. • Comprehensive empirical validation: Through experiments on multiple test functions\nacross dimensions 10–1000 and real-world machine learning tasks, we confirm the predicted\nlogd scaling, the per-episode function decrease of Ω(ϵ2/ℓ), and the superiority over vanilla\ngradient descent.",
+      "size": 385,
+      "sentences": 2
+    },
+    {
+      "id": 12,
+      "content": "g, the per-episode function decrease of Ω(ϵ2/ℓ), and the superiority over vanilla\ngradient descent. • Failure mode analysis: Wecharacterizewhenthemethodfails(degeneratesaddles, unknown\nparameters, extreme noise) and provide concrete mitigations. • Reproducibility: We provide complete implementation details, code, and hyperparameter\nsettings to ensure full reproducibility. 1.2 Related Work\nGradient flow perspective. Lee et al.",
+      "size": 429,
+      "sentences": 5
+    },
+    {
+      "id": 13,
+      "content": "ter\nsettings to ensure full reproducibility. 1.2 Related Work\nGradient flow perspective. Lee et al. [11] showed that gradient flow almost surely avoids\nstrict saddles, as the stable manifold has measure zero, offering intuition but not finite-time\nguarantees. Perturbed gradient methods. Ge et al. [6] introduced perturbed gradient descent for\nonline settings; Jin et al. [9] refined the analysis for the offline case, achieving O˜(ϵ−2) iteration\ncomplexity with hidden constants.",
+      "size": 480,
+      "sentences": 8
+    },
+    {
+      "id": 14,
+      "content": "ed the analysis for the offline case, achieving O˜(ϵ−2) iteration\ncomplexity with hidden constants. Our work extends this line of research by providing explicit\nconstants and a clean separation of the complexity components. Second-order and accelerated methods. Cubic-regularized Newton achieves O(ϵ−3/2)\niterations but requires Hessians [12]; acceleration-based methods such as NEON2 and the\nCarmon–Duchi–Hinder–Sidford framework provide alternative routes [1, 3].",
+      "size": 465,
+      "sentences": 4
+    },
+    {
+      "id": 15,
+      "content": "hods such as NEON2 and the\nCarmon–Duchi–Hinder–Sidford framework provide alternative routes [1, 3]. Distributed and quantised optimisation. Recent work in distributed optimisation has\nexplored the role of communication-induced quantisation in escaping saddle points. In particular,\nBo and Wang [16] propose a stochastic quantisation scheme that leverages rounding errors\nin networked systems to avoid saddle points.",
+      "size": 415,
+      "sentences": 4
+    },
+    {
+      "id": 16,
+      "content": "tic quantisation scheme that leverages rounding errors\nin networked systems to avoid saddle points. Their analysis shows that quantisation can be\nexploited to ensure convergence to second-order stationary points in distributed nonconvex\noptimisation, with empirical validation on benchmark tasks. Complementing this line of work,\nChenetal. [17]presentacommunication-compressedstochasticgradientmethodforheterogeneous\nfederated learning.",
+      "size": 436,
+      "sentences": 4
+    },
+    {
+      "id": 17,
+      "content": "l. [17]presentacommunication-compressedstochasticgradientmethodforheterogeneous\nfederated learning. Their PowerEF–SGD algorithm provably escapes saddle points and achieves\nconvergence to second-order stationary points with a linear speed-up in the number of workers\nand subquadratic dependence on the spectral gap. Escaping saddles in neural network training.",
+      "size": 359,
+      "sentences": 3
+    },
+    {
+      "id": 18,
+      "content": "rkers\nand subquadratic dependence on the spectral gap. Escaping saddles in neural network training. While the classical results on gradient\nflow and perturbations apply to generic non-convex problems, recent studies have specialised\nto neural network training. Cheridito et al. [18] analyse the dynamics of gradient descent in\nshallow ReLU networks and prove that gradient descent almost surely circumvents saddle points\nand converges to global minimisers under mild initialisation conditions.",
+      "size": 493,
+      "sentences": 5
+    },
+    {
+      "id": 19,
+      "content": "circumvents saddle points\nand converges to global minimisers under mild initialisation conditions. Their analysis draws on\ndynamical systems tools and shows that gradient descent avoids the measure-zero set of saddles\nwithout requiring perturbations. High-dimensional non-convex landscapes. Katende and Kasumba[19] survey contempo-\nrary techniques for escaping local minima and saddle points in high-dimensional settings.",
+      "size": 421,
+      "sentences": 4
+    },
+    {
+      "id": 20,
+      "content": "contempo-\nrary techniques for escaping local minima and saddle points in high-dimensional settings. They\nemphasise strategies such as stochastic gradient perturbations, Hessian-spectrum analysis and\nsubspace optimisation, and highlight the role of adaptive learning rates in enhancing robustness\nto saddle points. Their work synthesises insights across optimisation and dynamical systems to\nprovide practical guidelines. Randomised coordinate descent.",
+      "size": 451,
+      "sentences": 4
+    },
+    {
+      "id": 21,
+      "content": "optimisation and dynamical systems to\nprovide practical guidelines. Randomised coordinate descent. Most analyses of saddle-escape algorithms focus on\nfull-gradient methods. Chen, Li and Li[20] take a random dynamical systems perspective on\nrandomised coordinate gradient descent and prove that, under standard smoothness assumptions,\n2\n===  3 ===\nthis simple method almost surely escapes strict saddles.",
+      "size": 403,
+      "sentences": 4
+    },
+    {
+      "id": 22,
+      "content": "ndard smoothness assumptions,\n2\n===  3 ===\nthis simple method almost surely escapes strict saddles. Their proof uses a centre–stable manifold\ntheorem to show that the set of initial conditions leading to saddles has measure zero. Asynchronous and privacy-aware escapes. Bornstein et al. [21] propose an asynchronous\ncoordinate-gradient descent algorithm equipped with a kinetic energy term and perturbation\nsubroutine.",
+      "size": 418,
+      "sentences": 5
+    },
+    {
+      "id": 23,
+      "content": "rdinate-gradient descent algorithm equipped with a kinetic energy term and perturbation\nsubroutine. Their method circumvents the convergence slowdown caused by parallelisation\ndelays and provably steers iterates away from saddle points while achieving polylogarithmic\ndimension dependence. On the privacy front, Tao et al.",
+      "size": 322,
+      "sentences": 3
+    },
+    {
+      "id": 24,
+      "content": "addle points while achieving polylogarithmic\ndimension dependence. On the privacy front, Tao et al. [22] develop a perturbed stochastic\ngradient framework that injects Gaussian noise and monitors model drift to locate approximate\nsecond-order stationary points under differential privacy. They provide the first formal guarantees\nfor distributed, heterogeneous data settings. Physics-inspired and bilevel methods.",
+      "size": 413,
+      "sentences": 5
+    },
+    {
+      "id": 25,
+      "content": "rmal guarantees\nfor distributed, heterogeneous data settings. Physics-inspired and bilevel methods. Hu, Cao and Liu[23] adapt the Dimer method\nfrom molecular dynamics to design a first-order optimizer that approximates the Hessian’s\nsmallest eigenvector using only gradient evaluations. By periodically projecting gradients\naway from low-curvature directions, their dimer-enhanced optimiser accelerates neural-network\ntraining and avoids saddle points. In bilevel optimisation, Huang et al.",
+      "size": 490,
+      "sentences": 5
+    },
+    {
+      "id": 26,
+      "content": "accelerates neural-network\ntraining and avoids saddle points. In bilevel optimisation, Huang et al. [24] analyse perturbed\napproximate implicit differentiation (AID) and propose iNEON, a first-order algorithm that\nescapes saddle points and finds local minima in nonconvex–strongly-convex bilevel problems,\noffering nonasymptotic convergence guarantees. Zeroth-order escapes.",
+      "size": 374,
+      "sentences": 4
+    },
+    {
+      "id": 27,
+      "content": "ongly-convex bilevel problems,\noffering nonasymptotic convergence guarantees. Zeroth-order escapes. Ren, TangandLi[25]investigatezeroth-orderoptimisationandshow\nthat two-point estimators augmented with isotropic perturbations can escape strict saddle points\nefficiently. Their analysis demonstrates that a gradient-free algorithm using a small number of\nfunction evaluations per iteration finds second-order stationary points in polynomial time.",
+      "size": 445,
+      "sentences": 4
+    },
+    {
+      "id": 28,
+      "content": "mber of\nfunction evaluations per iteration finds second-order stationary points in polynomial time. 2 Mathematical Framework\n2.1 Notation\nLet f : Rd → R be a twice continuously differentiable function. Its gradient and Hessian at a\npoint x ∈ Rd are denoted by ∇f(x) and ∇2f(x), respectively. The Euclidean norm is ∥·∥, and\nthe inner product is ⟨·, ·⟩. For a symmetric matrix H, λ (H) and λ (H) denote its minimum\nmin max\nand maximum eigenvalues. The initial suboptimality is ∆ := f(x )−inf f(x).",
+      "size": 495,
+      "sentences": 6
+    },
+    {
+      "id": 29,
+      "content": "note its minimum\nmin max\nand maximum eigenvalues. The initial suboptimality is ∆ := f(x )−inf f(x). f 0 x\n2.2 Regularity Assumptions\nAssumption 2.1 (ℓ-Smoothness). The gradient of f is ℓ-Lipschitz continuous. For all x,y ∈ Rd,\nthe following inequality holds:\n∥∇f(x)−∇f(y)∥ ≤ ℓ∥x−y∥. (2.1)\nThis implies the standard descent lemma: f(y) ≤ f(x)+⟨∇f(x), y−x⟩+ ℓ∥y−x∥2. 2\nAssumption 2.2 (ρ-Hessian Lipschitz). The Hessian of f is ρ-Lipschitz continuous. For all\nx,y ∈ Rd:\n∥∇2f(x)−∇2f(y)∥ ≤ ρ∥x−y∥.",
+      "size": 492,
+      "sentences": 9
+    },
+    {
+      "id": 30,
+      "content": "Lipschitz). The Hessian of f is ρ-Lipschitz continuous. For all\nx,y ∈ Rd:\n∥∇2f(x)−∇2f(y)∥ ≤ ρ∥x−y∥. (2.2)\nop\nThis implies a tighter bound on the gradient: ∥∇f(y)−∇f(x)−∇2f(x)(y−x)∥ ≤ ρ∥y−x∥2. 2\nAssumption 2.3 (Bounded Sublevel Set). The initial sublevel set S = {x ∈ Rd : f(x) ≤ f(x )}\n′ 0\nis a bounded set. 2.3 Optimality Condition\nDefinition 2.4 (Approximate Second-Order Stationary Point).",
+      "size": 392,
+      "sentences": 7
+    },
+    {
+      "id": 31,
+      "content": "a bounded set. 2.3 Optimality Condition\nDefinition 2.4 (Approximate Second-Order Stationary Point). A point x ∈ Rd is an (ϵ ,ϵ )-\ng H\napproximate second-order stationary point (SOSP) if it satisfies the following two conditions:\n∥∇f(x)∥ ≤ ϵ and λ (∇2f(x)) ≥ −ϵ . (2.3)\ng min H\n3\n===  4 ===\n√ √\nIn this work, we focus on finding an (ϵ, ρϵ)-SOSP, where ϵ = ϵ and ϵ = ρϵ.",
+      "size": 368,
+      "sentences": 4
+    },
+    {
+      "id": 32,
+      "content": "g min H\n3\n===  4 ===\n√ √\nIn this work, we focus on finding an (ϵ, ρϵ)-SOSP, where ϵ = ϵ and ϵ = ρϵ. g H\n3 The Perturbed Saddle-Escape Descent (PSD) Algorithm\nAlgorithm 1: Perturbed Saddle-escape Descent (PSD)\nInput: Initial point x , tolerance ϵ > 0, confidence δ ∈ (0,1], constants ℓ,ρ,∆\n0 f\n1 Set parameters:\n2 Step size: η ← 1/(2ℓ);\n√\n3 Curvature scale: γ ← ρϵ;\n4 Perturbation radius: r ← γ/(8ρ) = 1(cid:112) ϵ/ρ;\n8\n5 Max episodes: M ← 1+⌈128ℓ∆ f /ϵ2⌉;\n(cid:24) (cid:18) (cid:19)(cid:25)\n8ℓ 16dM\n6 Episode length: T ← log ;\nγ δ\n7 x ← x 0 ;\n8 while true do\n9 if ∥∇f(x)∥ > ϵ then\n10 x ← x−η∇f(x) ; // Standard gradient descent\n11 else\n12 if λ min (∇2f(x)) ≥ −γ (verified via Alg.",
+      "size": 680,
+      "sentences": 2
+    },
+    {
+      "id": 33,
+      "content": "10 x ← x−η∇f(x) ; // Standard gradient descent\n11 else\n12 if λ min (∇2f(x)) ≥ −γ (verified via Alg. 2) then\n13 return x ; // Found an (ϵ,γ)-SOSP\n14 Saddle-Escape Episode:\n15 Sample ξ ∼ Unif(B(0,r));\n16 y ← x+ξ;\n17 for i = 1 to T do\n18 y ← y−η∇f(y);\n19 x ← y;\n3.1 Main Theoretical Result\nTheorem 3.1 (Global Complexity with Explicit Constants). Let Assumptions 2.1–2.3 hold.",
+      "size": 373,
+      "sentences": 3
+    },
+    {
+      "id": 34,
+      "content": "tical Result\nTheorem 3.1 (Global Complexity with Explicit Constants). Let Assumptions 2.1–2.3 hold. Then for any δ ∈ (0,1), Algorithm 1, when initialized at x , returns a point x that is an\n√ 0 out\n(ϵ, ρϵ)-SOSP with probability at least 1−δ.",
+      "size": 241,
+      "sentences": 3
+    },
+    {
+      "id": 35,
+      "content": "initialized at x , returns a point x that is an\n√ 0 out\n(ϵ, ρϵ)-SOSP with probability at least 1−δ. The total number of gradient evaluations N is\nbounded by:\n(cid:18) (cid:24) (cid:25)(cid:19) (cid:24) (cid:18) (cid:19)(cid:25)\n4ℓ∆ 128ℓ∆ 8ℓ 16dM\nN ≤ f + 1+ f · √ log , (3.1)\nϵ2 ϵ2 ρϵ δ\n(cid:124) (cid:123)(cid:122) (cid:125)\n(cid:124) (cid:123)(cid:122) (cid:125)\nDescent Phase\nEscape Phase\nwhere M = 1+⌈128ℓ∆ /ϵ2⌉. f\nProof.",
+      "size": 424,
+      "sentences": 3
+    },
+    {
+      "id": 36,
+      "content": "(cid:124) (cid:123)(cid:122) (cid:125)\nDescent Phase\nEscape Phase\nwhere M = 1+⌈128ℓ∆ /ϵ2⌉. f\nProof. The proof proceeds by separately bounding the number of iterations in the two main\nphases of the algorithm. 1. Bounding the Descent Phase: By Lemma 3.2, each iteration in the descent phase (when\n∥∇f(x)∥ > ϵ) decreases the function value by at least ϵ2/(4ℓ).",
+      "size": 357,
+      "sentences": 5
+    },
+    {
+      "id": 37,
+      "content": "iteration in the descent phase (when\n∥∇f(x)∥ > ϵ) decreases the function value by at least ϵ2/(4ℓ). Since the total possible\nfunction decrease is bounded by ∆ = f(x )−inf f(x), the total number of such steps,\nf 0 x\nN , is bounded by\ndescent\n∆ 4ℓ∆\nf f\nN ≤ = . descent ϵ2/(4ℓ) ϵ2\n2. Bounding the Escape Phase: An escape episode is triggered only when ∥∇f(x)∥ ≤ ϵ. If the algorithm has not terminated, it must be that λ (∇2f(x)) < −γ.",
+      "size": 431,
+      "sentences": 5
+    },
+    {
+      "id": 38,
+      "content": "ggered only when ∥∇f(x)∥ ≤ ϵ. If the algorithm has not terminated, it must be that λ (∇2f(x)) < −γ. By Lemma 3.3,\nmin\n4\n===  5 ===\neach such episode results in a function decrease of at least ϵ2/(128ℓ) with a per-episode\nsuccess probability of 1 − δ/M. The maximum number of successful escape episodes,\nN , is therefore bounded by\nepisodes\n∆ 128ℓ∆\nf f\nN ≤ = . episodes ϵ2/(128ℓ) ϵ2\nWe define the maximum number of episodes as M = 1+⌈128ℓ∆ /ϵ2⌉ to be safe. f\n3.",
+      "size": 460,
+      "sentences": 6
+    },
+    {
+      "id": 39,
+      "content": "pisodes ϵ2/(128ℓ) ϵ2\nWe define the maximum number of episodes as M = 1+⌈128ℓ∆ /ϵ2⌉ to be safe. f\n3. Probabilistic Guarantee: The per-episode failure probability is set to δ′ = δ/M. By a\nunion bound over the at most M escape episodes that can occur during the entire execution,\nthe probability that at least one of them fails to produce the required decrease is at most\nM · δ′ = M · (δ/M) = δ. Therefore, the algorithm succeeds in finding an SOSP with\nprobability at least 1−δ. 4.",
+      "size": 479,
+      "sentences": 6
+    },
+    {
+      "id": 40,
+      "content": "· (δ/M) = δ. Therefore, the algorithm succeeds in finding an SOSP with\nprobability at least 1−δ. 4. Total Complexity: The total number of gradient evaluations is the sum of those from\nthe descent steps and all escape episodes. Each escape episode costs T evaluations. The\ntotal cost is\n4ℓ∆\nf\nN = N +N ·T ≤ +M ·T,\ndescent episodes ϵ2\nand substituting the expressions for M and T yields the bound in (3.1). Lemma 3.2 (Sufficient Decrease in Descent Phase). Let Assumption 2.1 hold.",
+      "size": 479,
+      "sentences": 8
+    },
+    {
+      "id": 41,
+      "content": "elds the bound in (3.1). Lemma 3.2 (Sufficient Decrease in Descent Phase). Let Assumption 2.1 hold. If ∥∇f(x)∥ > ϵ\nand the step size is η = 1/(2ℓ), then the next iterate x+ = x−η∇f(x) satisfies:\n3 3ϵ2\nf(x+) ≤ f(x)− ∥∇f(x)∥2 < f(x)− . (3.2)\n8ℓ 8ℓ\nProof. From the descent lemma (implied by Assumption 2.1), we have:\nℓ\nf(x−η∇f(x)) ≤ f(x)−η⟨∇f(x), ∇f(x)⟩+ η2∥∇f(x)∥2\n2\n(cid:18) (cid:19)\nℓη\n= f(x)−η 1− ∥∇f(x)∥2.",
+      "size": 407,
+      "sentences": 6
+    },
+    {
+      "id": 42,
+      "content": "have:\nℓ\nf(x−η∇f(x)) ≤ f(x)−η⟨∇f(x), ∇f(x)⟩+ η2∥∇f(x)∥2\n2\n(cid:18) (cid:19)\nℓη\n= f(x)−η 1− ∥∇f(x)∥2. 2\nSubstituting the step size η = 1/(2ℓ) yields:\n(cid:18) (cid:19)\n1 ℓ(1/2ℓ) 3\nf(x+) ≤ f(x)− 1− ∥∇f(x)∥2 = f(x)− ∥∇f(x)∥2. 2ℓ 2 8ℓ\nSince ∥∇f(x)∥ > ϵ, the result follows. Lemma 3.3 (Sufficient Decrease from Saddle-Point Escape). Let Assumptions 2.1 and 2.2 hold. √\nSuppose an iterate x satisfies ∥∇f(x)∥ ≤ ϵ and λ (∇2f(x)) ≤ −γ, where γ = ρϵ.",
+      "size": 440,
+      "sentences": 6
+    },
+    {
+      "id": 43,
+      "content": "s 2.1 and 2.2 hold. √\nSuppose an iterate x satisfies ∥∇f(x)∥ ≤ ϵ and λ (∇2f(x)) ≤ −γ, where γ = ρϵ. Let the\nmin\nparameters r, T, and η be set as in Algorithm 1. Then, with probability at least 1−δ′, one escape\nepisode produces a new iterate y such that:\nT\nϵ2\nf(y ) ≤ f(x)− . (3.3)\nT\n128ℓ\nProof. The complete, detailed proof is provided in Appendix A.",
+      "size": 350,
+      "sentences": 6
+    },
+    {
+      "id": 44,
+      "content": "t:\nT\nϵ2\nf(y ) ≤ f(x)− . (3.3)\nT\n128ℓ\nProof. The complete, detailed proof is provided in Appendix A. 5\n===  6 ===\n3.2 Hessian Minimum-Eigenvalue Oracle\nThe check for negative curvature can be implemented efficiently using a randomized iterative\nmethod like Lanczos, which only requires Hessian-vector products.",
+      "size": 309,
+      "sentences": 4
+    },
+    {
+      "id": 45,
+      "content": "ntly using a randomized iterative\nmethod like Lanczos, which only requires Hessian-vector products. Algorithm 2: Randomized Lanczos for Minimum Eigenvalue Estimation\nInput: Point x, Hessian-vector product oracle v (cid:55)→ ∇2f(x)v, tolerance ϵ , iterations k\nterm\n1 Sample v 0 ∼ N(0,I d ), set v 0 ← v 0 /∥v 0 ∥; set β 0 ← 0 and v −1 ← 0;\n2 for j = 0 to k−1 do\n3 w ← ∇2f(x)v j ;\n4 α j ← v j ⊤w;\n5 w ← w−α j v j −β j v j−1 ;\n6 β j+1 ← ∥w∥;\n7 if β j+1 < ϵ term then\n;\n8\n9 v j+1 ← w/β j+1 ;\n10 Form the k×k tridiagonal matrix T k with diagonal entries α j and off-diagonal entries\nβ ;\nj+1\n11 return λ min (T k ) as an estimate of λ min (∇2f(x))\n4 Algorithm Variants\n4.1 Finite-Difference Variant (PSD-Probe)\nLemma 4.1 (Central-Difference Curvature Bias).",
+      "size": 752,
+      "sentences": 2
+    },
+    {
+      "id": 46,
+      "content": "m Variants\n4.1 Finite-Difference Variant (PSD-Probe)\nLemma 4.1 (Central-Difference Curvature Bias). Under Assumption 2.2, for any x,v ∈ Rd with\n∥v∥ = 1, the central-difference approximation of the directional curvature v⊤∇2f(x)v satisfies\n(cid:12) (cid:12)\n(cid:12) (cid:12) f(x+hv)−2f(x)+f(x−hv) −v⊤∇2f(x)v (cid:12) (cid:12) ≤ ρ|h| . (cid:12) h2 (cid:12) 3\n√\nCorollary 4.2 (Probe Success Condition). Let γ = ρϵ.",
+      "size": 412,
+      "sentences": 4
+    },
+    {
+      "id": 47,
+      "content": "12) (cid:12) ≤ ρ|h| . (cid:12) h2 (cid:12) 3\n√\nCorollary 4.2 (Probe Success Condition). Let γ = ρϵ. If λ (∇2f(x)) ≤ −γ and v is the\nmin\n(cid:112)\ncorresponding eigenvector, then for h = ϵ/ρ, the central-difference probe\nf(x+hv)−2f(x)+f(x−hv)\nq =\nh2\nsatisfies q ≤ −γ + ρh ≤ −2γ. This ensures that significant negative curvature is detectable, as\n3 3\nthe algorithm checks if q ≤ −γ.",
+      "size": 380,
+      "sentences": 5
+    },
+    {
+      "id": 48,
+      "content": "s ensures that significant negative curvature is detectable, as\n3 3\nthe algorithm checks if q ≤ −γ. Algorithm 3: PSD-Probe: Finite-Difference Negative Curvature Detection\nInput: Point x with ∥∇f(x)∥ ≤ ϵ, parameters ϵ,ρ, confidence δ\n1 Set parameters: Probe radius h ← (cid:112) ϵ/ρ; probes m ← ⌈16log(16d/δ)⌉; step (if NC\nfound) α ← 1(cid:112) ϵ/ρ;\n8\n2 for i = 1 to m do\n3 Sample v i ∼ Unif(Sd−1);\nf(x+hv )−2f(x)+f(x−hv )\n4 q i ← i h2 i ;\n5 i∗ ← argm √ in i q i ;\n6 if q i∗ ≤ − ρϵ then\n7 x ← x+αv i∗ ; // Step along negative curvature\n8 else\nNo negative curvature detected;\n9\n10 return x\n6\n===  7 ===\n4.2 Stochastic Variant (PSGD)\nProposition 4.3 (Stochastic Gradient Trigger).",
+      "size": 677,
+      "sentences": 2
+    },
+    {
+      "id": 49,
+      "content": "return x\n6\n===  7 ===\n4.2 Stochastic Variant (PSGD)\nProposition 4.3 (Stochastic Gradient Trigger). Let gˆ be a stochastic gradient computed with\nbatch size B from a distribution with variance proxy σ2, where gˆ = ∇f(x)+ζ and E[ζ] = 0. If the true gradient satisfies ∥∇f(x)∥ ≤ ϵ, then for a batch size B = ⌈(2σ2/ϵ2)log(2/δ )⌉, the\nfp\nprobability of a false trigger (entering an escape episode when the gradient is already small) is\ncontrolled.",
+      "size": 442,
+      "sentences": 3
+    },
+    {
+      "id": 50,
+      "content": "y of a false trigger (entering an escape episode when the gradient is already small) is\ncontrolled. The threshold in Algorithm 4 is designed to distinguish the small-gradient regime from\nthe large-gradient regime with high probability.",
+      "size": 235,
+      "sentences": 2
+    },
+    {
+      "id": 51,
+      "content": "gned to distinguish the small-gradient regime from\nthe large-gradient regime with high probability. Algorithm 4: Perturbed Stochastic Gradient Descent (PSGD)\nInput: Initial x , tolerance ϵ, noise proxy σ2, false- positive rate δ ∈ (0,1)\n0 fp\n1 Set parameters: batch size B ← max{1, ⌈(2σ2/ϵ2)log(2/δ fp )⌉}; step-size η ← 1/(2ℓ);\nother parameters as in Algorithm 1;\n2 x ← x 0 ;\n3 while not converged do\n4 Sample mini-batch B of size B and compute gˆ← B 1 (cid:80) i∈B ∇f(x,ξ i );\n(cid:112)\n5 if ∥gˆ∥ > ϵ· 1+2σ2/(Bϵ2) then\n6 x ← x−ηgˆ ; // Noise-aware threshold\n7 else\nExecute escape episode as in Algorithm 1;\n8\n5 Experimental Validation\n5.1 Setup\n5.1.1 Synthetic Functions\nWe evaluate on:\n• Separable Quartic: f(x) = (cid:80)d (x4−x2).",
+      "size": 735,
+      "sentences": 2
+    },
+    {
+      "id": 52,
+      "content": "5.1 Setup\n5.1.1 Synthetic Functions\nWe evaluate on:\n• Separable Quartic: f(x) = (cid:80)d (x4−x2). i=1 i i\n• Coupled Quartic: f(x) = (cid:80)d (x4−x2)+0.1 (cid:80) x x . i=1 i i i<j i j\n• Rosenbrock-d: f(x) = (cid:80)d−1(cid:2) 100(x −x2)2+(1−x )2(cid:3). i=1 i+1 i i\n• Random Quadratic: f(x) = 1x⊤Ax−b⊤x with controlled spectrum for A. 2\nDimensions d ∈ {10,50,100,500,1000}. Each configuration uses 50 random initializations.",
+      "size": 426,
+      "sentences": 6
+    },
+    {
+      "id": 53,
+      "content": "um for A. 2\nDimensions d ∈ {10,50,100,500,1000}. Each configuration uses 50 random initializations. 5.1.2 Real-World Task: Neural Network Training\nTo validate our method on practical problems, we train a 3-layer fully connected neural network\nwith ReLU activations on the MNIST dataset. The network architecture has 784-512-256-10\nunits, resulting in approximately 669,706 parameters. We compare PSD against standard SGD\nwith momentum and Adam.",
+      "size": 444,
+      "sentences": 6
+    },
+    {
+      "id": 54,
+      "content": "ng in approximately 669,706 parameters. We compare PSD against standard SGD\nwith momentum and Adam. 5.1.3 Implementation Details\nAllalgorithmswereimplementedinPython3.8usingPyTorch1.9.0. Experimentswereconducted\non a computing cluster with 4× NVIDIA A100 GPUs (40GB memory each) and 2× AMD EPYC\n7742 CPUs (64 cores each). We use 64-bit floating point precision for all computations. Our\nimplementation is available at: https://github.com/farukalpay/PSD/.",
+      "size": 454,
+      "sentences": 6
+    },
+    {
+      "id": 55,
+      "content": "ision for all computations. Our\nimplementation is available at: https://github.com/farukalpay/PSD/. 7\n===  8 ===\n5.1.4 Evaluation Metrics\nWe report medians with 95% bootstrap confidence intervals (10,000 resamples), and Wilcoxon\nsigned-rank tests for statistical significance. For the neural network experiments, we report both\ntraining loss and test accuracy.",
+      "size": 360,
+      "sentences": 4
+    },
+    {
+      "id": 56,
+      "content": "l significance. For the neural network experiments, we report both\ntraining loss and test accuracy. 5.2 Results\n5.2.1 Dimension Scaling\n103.5\n103\n10 50 100 5001000\nDimension d\nhtgneL\nedosipE\nTheory: O(logd)\nPSD\nPSD-Probe\n10−2\n10−2.05\n10−2.1\n10 50 100 5001000\nDimension d\nf∆\nedosipE-reP\nTheory: ϵ2/(128ℓ)\nEmpirical\nFigure 1: Left: Episode length T scales as O(logd). Right: Per-episode function drop is roughly\ndimension-independent. Error bars show 95% confidence intervals.",
+      "size": 474,
+      "sentences": 5
+    },
+    {
+      "id": 57,
+      "content": "r-episode function drop is roughly\ndimension-independent. Error bars show 95% confidence intervals. 5.2.2 Convergence Comparison\n√\nTable 1: Iterations to reach (ϵ, ρϵ)-SOSP with ϵ = 10−3. Median (95% CI) over 50 runs.",
+      "size": 217,
+      "sentences": 4
+    },
+    {
+      "id": 58,
+      "content": "Comparison\n√\nTable 1: Iterations to reach (ϵ, ρϵ)-SOSP with ϵ = 10−3. Median (95% CI) over 50 runs. Method Quartic-10 Quartic-100 Rosenbrock-10 Random-100\nGD >50000 >50000 >50000 >50000\nPSD 2340 (2180–2510) 4870 (4620–5130) 3150 (2980–3320) 5420 (5180–5660)\nPSD-Probe 2480 (2310–2650) 5120 (4880–5360) 3320 (3140–3500) 5680 (5430–5930)\nPGD 2890 (2680–3100) 5950 (5650–6250) 3780 (3560–4000) 6340 (6050–6630)\n8\n[  ]\n\n===  9 ===\n5.2.3 Neural Network Training Results\nTable 2: Neural network training on MNIST (3 runs, mean ± std)\nMethod Final Train Loss Final Test Accuracy Time (hours)\nSGD + Momentum 0.012 ± 0.003 98.2 ± 0.3% 2.1 ± 0.2\nAdam 0.008 ± 0.002 98.5 ± 0.2% 1.8 ± 0.3\nPSD (ours) 0.005 ± 0.001 98.9 ± 0.1% 2.3 ± 0.4\nPSD-Probe (ours) 0.005 ± 0.001 98.8 ± 0.2% 2.5 ± 0.3\n10−1\n10−2\n10−3\n0 10 20 30 40 50\nEpoch\nssoL\ngniniarT\n100\nSGD\nAdam\nPSD 98\nPSD-Probe\n96\n0 10 20 30 40 50\nEpoch\n)%(\nycaruccA\ntseT\nSGD\nAdam\nPSD\nPSD-Probe\nFigure 2: Training curves for neural network on MNIST.",
+      "size": 980,
+      "sentences": 3
+    },
+    {
+      "id": 59,
+      "content": "och\n)%(\nycaruccA\ntseT\nSGD\nAdam\nPSD\nPSD-Probe\nFigure 2: Training curves for neural network on MNIST. PSD variants achieve lower final loss\nand higher test accuracy. 5.2.4 Episode Success Rate\n1\n0.95\n0.9\n0.85\n0 2 4 6 8 10 12\nEpisode Number\netaR\nsseccuS\nEmpirical (d=100)\nTheory: 1−1/(16d)\nFigure 3: Per-episode success rate for d = 100. Error bars omitted for clarity but all points have\nstandard error < 0.01.",
+      "size": 408,
+      "sentences": 4
+    },
+    {
+      "id": 60,
+      "content": "success rate for d = 100. Error bars omitted for clarity but all points have\nstandard error < 0.01. 5.2.5 Robustness to Noise\nTable 3: PSGD performance under different noise levels (d = 100, Quartic). Noise σ2/ϵ2 Batch Size B Iterations Success Rate\n0 (deterministic) 1 4870 1.00\n1 4 5230 0.98\n10 40 6140 0.96\n100 400 8920 0.94\n9\n[  ]\n\n===  10 ===\n6 Technical Condition and Its Role\nLemma 6.1 (Remainder control in the escape analysis).",
+      "size": 436,
+      "sentences": 4
+    },
+    {
+      "id": 61,
+      "content": "==  10 ===\n6 Technical Condition and Its Role\nLemma 6.1 (Remainder control in the escape analysis). Under Assumptions 2.1–2.2, with\nη = 1/(2ℓ), r =\n1(cid:112)\nϵ/ρ and γ =\n√\nρϵ (Algorithm 1), the Taylor remainder along the escape\n8\ntrajectory satisfies\nρ ρ ϵ ϵ\n∥∇f(x+z)−∇f(x)−∇2f(x)z∥ ≤ ∥z∥2 ≤ · = . 2 2 64ρ 128\nwhenever ∥z∥ ≤ r. This bound is crucial for ensuring that the unstable- direction growth dominates\nthe remainder, enabling the per-episode function drop.",
+      "size": 464,
+      "sentences": 3
+    },
+    {
+      "id": 62,
+      "content": "hat the unstable- direction growth dominates\nthe remainder, enabling the per-episode function drop. 7 Per-episode success and amplification\nLemma 7.1 (Constant-probability good initialization). With r = 1(cid:112) ϵ/ρ and ξ ∼ Unif(B(0,r)),\n8\n(cid:12) (cid:12) r d+4 1\nthe event (cid:12)⟨ξ,u\n1\n⟩(cid:12) ≥\n(cid:112)\noccurs with probability at least ≥ , where u\n1\nis the\n2(d+2) 12(d+2) 12\neigenvector for λ (∇2f(x)). min\nRemark 7.2 (Amplification).",
+      "size": 446,
+      "sentences": 4
+    },
+    {
+      "id": 63,
+      "content": "≥ , where u\n1\nis the\n2(d+2) 12(d+2) 12\neigenvector for λ (∇2f(x)). min\nRemark 7.2 (Amplification). Repeating the escape episode or sampling multiple directions (as in\nPSD-Probe) boosts the success probability. For an event with constant success probability p,\nrepeating it k = ⌈log(δ)/log(1−p)⌉ = O(log(1/δ)) times yields an overall success probability of\nat least 1−δ. This principle is used in Lemma 3.3 and Theorem 3.1. 8 Failure Modes and Mitigations\nRemark 8.1 (Quadratic edge case (ρ = 0)).",
+      "size": 496,
+      "sentences": 6
+    },
+    {
+      "id": 64,
+      "content": "emma 3.3 and Theorem 3.1. 8 Failure Modes and Mitigations\nRemark 8.1 (Quadratic edge case (ρ = 0)). For quadratic objectives (ρ = 0), the parameter\n√\nγ = ρϵ vanishes and the episode length in Algorithm 1 becomes undefined. In this case, PSD\nreducestogradientdescent. IftheHessianisconstant, escapefromastrictsaddlecanbeanalyzed\nvia the linear dynamics, and a single perturbation suffices. √\nTable 4: Detailed comparison with representative prior results. All methods target (ϵ,O( ρϵ))-\nSOSP.",
+      "size": 491,
+      "sentences": 7
+    },
+    {
+      "id": 65,
+      "content": "able 4: Detailed comparison with representative prior results. All methods target (ϵ,O( ρϵ))-\nSOSP. Method Oracle Total Complexity Per- Episode Constants Dim. Dep.",
+      "size": 163,
+      "sentences": 4
+    },
+    {
+      "id": 66,
+      "content": "ll methods target (ϵ,O( ρϵ))-\nSOSP. Method Oracle Total Complexity Per- Episode Constants Dim. Dep. (cid:16) (cid:17) (cid:16) (cid:17)\nPSD (this work) ∇f O ℓ∆f +escapes O √ ℓ logd Explicit Separated\nϵ2 ρϵ δ\n(cid:16) (cid:17) (cid:16) (cid:17)\nPGD [9] ∇f O˜ ℓ∆f O˜ √ ℓ Hidden Mixed\nϵ2 ρϵ\n(cid:16) (cid:17)\nNEON2 [1] ∇f + NC O˜ ℓ∆f O˜(ϵ−1/4) NC calls Hidden Mixed\nϵ2\n(cid:16) (cid:17)\nCubic-Newton [12] ∇f,∇2f O ℓ∆f N/A Explicit None\nϵ3/2\nReproducibility Statement\nAll experimental results in this paper can be reproduced using the code available at https:\n//github.com/farukalpay/PSD/.",
+      "size": 585,
+      "sentences": 4
+    },
+    {
+      "id": 67,
+      "content": "ts in this paper can be reproduced using the code available at https:\n//github.com/farukalpay/PSD/. The repository contains:\n• Complete implementation of PSD, PSD-Probe, and PSGD algorithms\n• Scripts to regenerate all synthetic experiments (Figures 1, 2, 3 and Tables 1, 3)\n• Code for the neural network experiments (Table 2, Figure 4)\n10\n===  11 ===\n• Detailed documentation on environment setup and hyperparameter configurations\n• Precomputed results for verification\nWe used the following software versions: Python 3.8.12, PyTorch 1.9.0, NumPy 1.21.2, SciPy\n1.7.1.",
+      "size": 567,
+      "sentences": 2
+    },
+    {
+      "id": 68,
+      "content": "n\nWe used the following software versions: Python 3.8.12, PyTorch 1.9.0, NumPy 1.21.2, SciPy\n1.7.1. The synthetic experiments can be run on a standard laptop, while the neural network\nexperiments require a GPU with at least 8GB memory. References\n[1] Zeyuan Allen-Zhu and Yuanzhi Li. 2018. arXiv preprint arXiv:1802.02175. [2] Léon Bottou, Frank E. Curtis, and Jorge Nocedal. Optimization methods for large-scale\nmachine learning. SIAM Review, 60(2): 223–311 (2018).",
+      "size": 466,
+      "sentences": 7
+    },
+    {
+      "id": 69,
+      "content": "Nocedal. Optimization methods for large-scale\nmachine learning. SIAM Review, 60(2): 223–311 (2018). [3] Yair Carmon, John C. Duchi, Oliver Hinder, and Aaron Sidford. Accelerated methods for\nnonconvex optimization. SIAM Journal on Optimization, 28(2): 1751–1772 (2018). [4] Coralia Criscitiello and Nicolas Boumal. Efficiently escaping saddle points on manifolds. In\nAdvances in Neural Information Processing Systems (NeurIPS) (2019).",
+      "size": 433,
+      "sentences": 9
+    },
+    {
+      "id": 70,
+      "content": "saddle points on manifolds. In\nAdvances in Neural Information Processing Systems (NeurIPS) (2019). [5] Hamed Daneshmand, Jonas M. Kohler, Aurelien Lucchi, and Thomas Hofmann. Escaping\nsaddles with stochastic gradients. In Proceedings of the 35th International Conference on\nMachine Learning (ICML) (2018). [6] Rong Ge, Furong Huang, Chi Jin, and Yang Yuan. Escaping from saddle points—online\nstochastic gradient for tensor decomposition. In Conference on Learning Theory (COLT)\n(2015).",
+      "size": 485,
+      "sentences": 8
+    },
+    {
+      "id": 71,
+      "content": "nline\nstochastic gradient for tensor decomposition. In Conference on Learning Theory (COLT)\n(2015). [7] Saeed Ghadimi and Guanghui Lan. Stochastic first- and zeroth-order methods for nonconvex\nstochastic programming. SIAM Journal on Optimization, 23(4): 2341–2368 (2013). [8] Roger A. Horn and Charles R. Johnson. Matrix Analysis. Cambridge University Press, 1985. [9] Chi Jin, Praneeth Netrapalli, and Michael I. Jordan. How to escape saddle points efficiently.",
+      "size": 462,
+      "sentences": 10
+    },
+    {
+      "id": 72,
+      "content": ". [9] Chi Jin, Praneeth Netrapalli, and Michael I. Jordan. How to escape saddle points efficiently. In Proceedings of the 34th International Conference on Machine Learning (ICML) (2017). [10] Michel Ledoux. The Concentration of Measure Phenomenon. American Mathematical\nSociety, 2001. [11] Jason D. Lee, Max Simchowitz, Michael I. Jordan, and Benjamin Recht. Gradient descent\nonly converges to minimizers. In Conference on Learning Theory (COLT) (2016). [12] Yurii Nesterov and Boris T. Polyak.",
+      "size": 494,
+      "sentences": 11
+    },
+    {
+      "id": 73,
+      "content": "inimizers. In Conference on Learning Theory (COLT) (2016). [12] Yurii Nesterov and Boris T. Polyak. Cubic regularization of Newton method and its global\nperformance. Mathematical Programming, 108(1): 177–205 (2006). [13] Boris T. Polyak. Some methods of speeding up the convergence of iterative methods. USSR\nComputational Mathematics and Mathematical Physics, 4(5): 1–17 (1964). [14] Michael Shub. Global Stability of Dynamical Systems. Springer, 1987. [15] Roman Vershynin.",
+      "size": 475,
+      "sentences": 12
+    },
+    {
+      "id": 74,
+      "content": "4). [14] Michael Shub. Global Stability of Dynamical Systems. Springer, 1987. [15] Roman Vershynin. High-Dimensional Probability. Cambridge University Press, 2018. [16] Yanan Bo and Yongqiang Wang. Quantization avoids saddle points in distributed opti-\nmization. Proceedings of the National Academy of Sciences, 121(17): e2319625121 (2024). doi:10.1073/pnas.2319625121. 11\n===  12 ===\n[17] Zhenlong Chen, Yilin Liu, and Jiang Li.",
+      "size": 429,
+      "sentences": 12
+    },
+    {
+      "id": 75,
+      "content": "21 (2024). doi:10.1073/pnas.2319625121. 11\n===  12 ===\n[17] Zhenlong Chen, Yilin Liu, and Jiang Li. In Proceedings of the 41st International Conference\non Machine Learning (ICML) (2024). In Proceedings of Machine Learning Research (PMLR)\nvolume 238. [18] Patrick Cheridito, Arnulf Jentzen, and Qian Pan. arXiv preprint arXiv:2208.02083 (2024). [19] Ronald Katende and Henry Kasumba. Escaping local minima and saddle points in high-\ndimensional non-convex optimization problems.",
+      "size": 477,
+      "sentences": 9
+    },
+    {
+      "id": 76,
+      "content": "mba. Escaping local minima and saddle points in high-\ndimensional non-convex optimization problems. arXiv preprint arXiv:2409.12604 (2024). [20] Ziang Chen, Yingzhou Li, and Zihao Li. Randomized coordinate gradient descent almost\nsurely escapes strict saddle points. arXiv preprint arXiv:2508.07535 (2025). [21] Marco Bornstein, Jin-Peng Liu, Jingling Li, and Furong Huang. Escaping from saddle points\nusing asynchronous coordinate gradient descent. arXiv preprint arXiv:2211.09908 (2022).",
+      "size": 489,
+      "sentences": 9
+    },
+    {
+      "id": 77,
+      "content": "ddle points\nusing asynchronous coordinate gradient descent. arXiv preprint arXiv:2211.09908 (2022). [22] Youming Tao, Zuyuan Zhang, Dongxiao Yu, Xiuzhen Cheng, Falko Dressler, and Di Wang. Second-order convergence in private stochastic non-convex optimization. arXiv preprint\narXiv:2505.15647 (2025). [23] YueHu,ZanxiaCao,andYingchaoLiu.Dimer-enhancedoptimization: Afirst-orderapproach\nto escaping saddle points in neural network training. arXiv preprint arXiv:2507.19968 (2025).",
+      "size": 479,
+      "sentences": 7
+    },
+    {
+      "id": 78,
+      "content": "roach\nto escaping saddle points in neural network training. arXiv preprint arXiv:2507.19968 (2025). [24] Minhui Huang, Xuxing Chen, Kaiyi Ji, Shiqian Ma, and Lifeng Lai. Efficiently escaping\nsaddle points in bilevel optimization. arXiv preprint arXiv:2202.03684 (2022). [25] Zhaolin Ren, Yujie Tang, and Na Li. Escaping saddle points in zeroth-order optimization:\nthe power of two-point estimators. arXiv preprint arXiv:2209.13555 (2022).",
+      "size": 438,
+      "sentences": 8
+    },
+    {
+      "id": 79,
+      "content": "roth-order optimization:\nthe power of two-point estimators. arXiv preprint arXiv:2209.13555 (2022). A Appendix A: Detailed Proofs\nA.1 Proof of Lemma 3.3 (Saddle-Point Escape)\nProof of Lemma 3.3. Let H = ∇2f(x), and let {(u ,λ )}d be its eigenpairs, with λ =\ni i i=1 1\nλ (H) ≤ −γ. Let z = y −x be the displacement from the saddle point x. The update rule\nmin t t\ny = y −η∇f(y ) implies the following dynamics for z :\nt+1 t t t\nz = z −η∇f(x+z ).",
+      "size": 443,
+      "sentences": 6
+    },
+    {
+      "id": 80,
+      "content": "date rule\nmin t t\ny = y −η∇f(y ) implies the following dynamics for z :\nt+1 t t t\nz = z −η∇f(x+z ). t+1 t t\nBy Assumption 2.2, we can expand the gradient around x: ∇f(x+z ) = ∇f(x)+Hz +R(z ),\nt t t\nwhere the remainder term R(z ) satisfies ∥R(z )∥ ≤ ρ∥z ∥2. The dynamics for z become:\nt t 2 t t\nz = (I −ηH)z −η∇f(x)−ηR(z ). (A.1)\nt+1 t t\nWe define a “trust region” of radius R = 2r = γ around x.",
+      "size": 394,
+      "sentences": 4
+    },
+    {
+      "id": 81,
+      "content": "= (I −ηH)z −η∇f(x)−ηR(z ). (A.1)\nt+1 t t\nWe define a “trust region” of radius R = 2r = γ around x. We will show that if the initial\ntr 4ρ\nperturbation is “good,” the iterate y moves rapidly along the escape direction u while staying\nt 1\nwithin this region, until it has moved far enough to guarantee a function decrease. Let E be the event that ∥z ∥ ≤ R for all k ≤ t. If E holds, we can bound the error terms\nt k tr t\nfor any k ≤ t:\n• ∥η∇f(x)∥ ≤ ηϵ = ϵ .",
+      "size": 455,
+      "sentences": 4
+    },
+    {
+      "id": 82,
+      "content": "r all k ≤ t. If E holds, we can bound the error terms\nt k tr t\nfor any k ≤ t:\n• ∥η∇f(x)∥ ≤ ηϵ = ϵ . 2ℓ\n(cid:16) (cid:17)2\n• ∥ηR(z )∥ ≤ ηρ∥z ∥2 ≤ 1 ρR2 = ρ γ = γ2 = ϵ . k 2 k 2ℓ2 tr 4ℓ 4ρ 64ℓρ 64ℓ\n12\n===  13 ===\nLet z := ⟨z , u ⟩ be the component along the escape direction. Projecting (A.1) onto u , we\nt,1 t 1 1\nobtain\nz = ⟨(I −ηH)z , u ⟩−η⟨∇f(x), u ⟩−η⟨R(z ), u ⟩\nt+1,1 t 1 1 t 1\n= (1−ηλ )z −η⟨∇f(x), u ⟩−η⟨R(z ), u ⟩. 1 t,1 1 t 1\nSince λ ≤ −γ, the growth factor is 1−ηλ ≥ 1+ηγ = 1+ γ .",
+      "size": 488,
+      "sentences": 5
+    },
+    {
+      "id": 83,
+      "content": ")z −η⟨∇f(x), u ⟩−η⟨R(z ), u ⟩. 1 t,1 1 t 1\nSince λ ≤ −γ, the growth factor is 1−ηλ ≥ 1+ηγ = 1+ γ . Taking absolute values and using\n1 1 2ℓ\nour bounds yields\n(cid:16) γ (cid:17) ϵ ϵ (cid:16) γ (cid:17) 33ϵ\n|z | ≥ 1+ |z |− − = 1+ |z |− . (A.2)\nt+1,1 t,1 t,1\n2ℓ 2ℓ 64ℓ 2ℓ 64ℓ\nLet z = z −z u .",
+      "size": 289,
+      "sentences": 4
+    },
+    {
+      "id": 84,
+      "content": "γ (cid:17) 33ϵ\n|z | ≥ 1+ |z |− − = 1+ |z |− . (A.2)\nt+1,1 t,1 t,1\n2ℓ 2ℓ 64ℓ 2ℓ 64ℓ\nLet z = z −z u . The dynamics for the orthogonal component are:\nt,⊥ t t,1 1\n(cid:0) (cid:1)\nz = (I −ηH )z −ηP ∇f(x)+R(z ) ,\nt+1,⊥ ⊥ t,⊥ ⊥ t\nwhere H is the Hessian restricted to the subspace orthogonal to u and P the corresponding\n⊥ 1 ⊥\nprojector. Since λ (H) ≤ ℓ, we have ∥I −ηH ∥ ≤ 1+ηℓ = 1.5. A careful bound shows\nmax ⊥ op\n∥z ∥ remains controlled.",
+      "size": 433,
+      "sentences": 5
+    },
+    {
+      "id": 85,
+      "content": "e λ (H) ≤ ℓ, we have ∥I −ηH ∥ ≤ 1+ηℓ = 1.5. A careful bound shows\nmax ⊥ op\n∥z ∥ remains controlled. t,⊥\nBy Lemma 7.1, with probability at least 1/12, the initial perturbation satisfies |z | ≥\n0,1\nr/ (cid:112) 2(d+2). Let G denote this event. Unrolling (A.2) for T steps shows that |z | grows\nT,1\ngeometrically. The choice T = O (cid:0) (ℓ/γ)logd (cid:1) ensures (1 + γ/2ℓ)T dominates the drift, so\n|z | ≥ R /2 = r while ∥z ∥ = O(r). Thus E holds.",
+      "size": 446,
+      "sentences": 7
+    },
+    {
+      "id": 86,
+      "content": "cid:1) ensures (1 + γ/2ℓ)T dominates the drift, so\n|z | ≥ R /2 = r while ∥z ∥ = O(r). Thus E holds. T,1 tr T,⊥ T\nFinally, using a second-order Taylor expansion,\n1 ρ\nf(y )−f(x) ≤ ⟨∇f(x), z ⟩+ z⊤Hz + ∥z ∥3\nT T 2 T T 6 T\n1 1 ρ\n≤ ϵ∥z ∥+ λ z2 + λ (H)∥z ∥2+ ∥z ∥3. T 2 1 T,1 2 max T,⊥ 6 T\nAt step T, |z | ≥ C γ/ρ and ∥z ∥ ≤ C γ/ρ. The dominant term is the negative quadratic:\nT,1 1 T,⊥ 2\n1 γ (cid:18) γ (cid:19)2 ϵ3/2\nλ z2 ≤ − C = −C2 √ .",
+      "size": 432,
+      "sentences": 5
+    },
+    {
+      "id": 87,
+      "content": "nant term is the negative quadratic:\nT,1 1 T,⊥ 2\n1 γ (cid:18) γ (cid:19)2 ϵ3/2\nλ z2 ≤ − C = −C2 √ . 2 1 T,1 2 1 ρ 12 ρ\nBalancing all terms yields f(y ) − f(x) ≤ −ϵ2/(128ℓ) with probability at least a constant;\nT\nstandard amplification boosts this to 1−δ′. A.2 Proof of Lemma 7.1 (Good Initialization)\nProof of Lemma 7.1. Let ξ ∼ Unif(B(0,r)) be a random vector uniformly distributed on the\nball of radius r in Rd. For any fixed unit vector u ∈ Rd, let Z = ⟨ξ, u⟩.",
+      "size": 463,
+      "sentences": 5
+    },
+    {
+      "id": 88,
+      "content": "formly distributed on the\nball of radius r in Rd. For any fixed unit vector u ∈ Rd, let Z = ⟨ξ, u⟩. It is standard that\nE[Z2] = r2/(d+2) and E[Z4] = 3r4/((d+2)(d+4)). Applying Paley–Zygmund to Z2 gives, for θ ∈ [0,1],\nP(cid:0) Z2 ≥ θE[Z2] (cid:1) ≥ (1−θ)2\nE[Z2]2\n. E[Z4]\nWith θ = 1/2,\n(cid:16) (cid:17)2\nr2\nP(cid:0) Z2 ≥ 1E[Z2] (cid:1) ≥ (cid:0)1(cid:1)2 · d+2 = 1 · r4 · (d+2)(d+4) = 1 · d+4 . 2 2 3r4 4 (d+2)2 3r4 12 d+2\n(d+2)(d+4)\n(cid:18) (cid:19)\nHence P |Z| ≥ √ r ≥ 1 , proving the claim.",
+      "size": 494,
+      "sentences": 6
+    },
+    {
+      "id": 89,
+      "content": "2 2 3r4 4 (d+2)2 3r4 12 d+2\n(d+2)(d+4)\n(cid:18) (cid:19)\nHence P |Z| ≥ √ r ≥ 1 , proving the claim. 2(d+2) 12\n13\n===  14 ===\nA.3 Proof of Lemma 4.1 and Corollary 4.2\nFixaunitvectorv anddefineϕ(h) := f(x+hv). Thenϕ′(0) = v⊤∇f(x)andϕ′′(0) = v⊤∇2f(x)v.\nBy Taylor’s theorem with symmetric integral remainder,\nf(x+hv)−2f(x)+f(x−hv) = h2ϕ′′(0)+R (h),\n2\nwith\nϕ(h)−2ϕ(0)+ϕ(−h) −ϕ′′(0) = 1 (cid:90) h (h−t) (cid:2) ϕ′′′(t)−ϕ′′′(−t) (cid:3) dt.",
+      "size": 434,
+      "sentences": 3
+    },
+    {
+      "id": 90,
+      "content": "0)+R (h),\n2\nwith\nϕ(h)−2ϕ(0)+ϕ(−h) −ϕ′′(0) = 1 (cid:90) h (h−t) (cid:2) ϕ′′′(t)−ϕ′′′(−t) (cid:3) dt. h2 h2\n0\nSince ϕ′′′(t) = D3f(x+tv)[v,v,v] and ∥D3f∥ ≤ ρ by Hessian-Lipschitzness, |ϕ′′′(t)−ϕ′′′(−t)| ≤\n2ρt. Thus\n(cid:12) (cid:12) (cid:12) f(x+hv)−2f(x)+f(x−hv) −v⊤∇2f(x)v (cid:12) (cid:12) (cid:12) ≤ 1 (cid:90) h (h−t)(2ρt)dt = ρ|h| .",
+      "size": 335,
+      "sentences": 3
+    },
+    {
+      "id": 91,
+      "content": "2) f(x+hv)−2f(x)+f(x−hv) −v⊤∇2f(x)v (cid:12) (cid:12) (cid:12) ≤ 1 (cid:90) h (h−t)(2ρt)dt = ρ|h| . (cid:12) h2 (cid:12) h2 3\n0\nFor Corollary 4.2: if v is an eigenvector for λ (∇2f(x)) ≤ −γ and h = (cid:112) ϵ/ρ,\nmin\n√\nf(x+hv)−2f(x)+f(x−hv) ρh ρϵ\nq = ≤ v⊤∇2f(x)v+ = −γ + = −2γ,\nh2 3 3 3\nwhich is detected by the q ≤ −γ test with standard spherical sampling in m = O(log(d/δ))\ndirections.",
+      "size": 387,
+      "sentences": 2
+    },
+    {
+      "id": 92,
+      "content": "hich is detected by the q ≤ −γ test with standard spherical sampling in m = O(log(d/δ))\ndirections. B Extended Theoretical Foundations of PSD\nOverview: In this appendix, we strengthen the theoretical analysis of the Perturbed Saddle-\nescape Descent (PSD) method from the main text by providing refined proofs with tighter\nconstants, a token-wise convergence analysis of key inequalities, new bounding techniques\nfor sharper complexity guarantees, and robustness results under perturbations and parameter\nmis-specification.",
+      "size": 522,
+      "sentences": 2
+    },
+    {
+      "id": 93,
+      "content": "complexity guarantees, and robustness results under perturbations and parameter\nmis-specification. All proofs are given in full detail with rigorous justifications. We also\nhighlight potential extensions (adaptive perturbation sizing, richer use of Hessian information)\nand mathematically characterize their prospective benefits.",
+      "size": 329,
+      "sentences": 3
+    },
+    {
+      "id": 94,
+      "content": "ing, richer use of Hessian information)\nand mathematically characterize their prospective benefits. B.1 Refined Complexity Bounds and Tightened Constants\nWe begin by revisiting the main theoretical results (Theorem 3.1 and Lemmas 3.2–3.3 in the main\ntext) and tightening their conclusions. Rather than duplicating the proofs verbatim, we refine\neach step to close gaps and improve constants. Throughout, we assume the same smoothness\nconditions (Assumptions 2.1–2.3) and notation from the main paper.",
+      "size": 500,
+      "sentences": 4
+    },
+    {
+      "id": 95,
+      "content": "t, we assume the same smoothness\nconditions (Assumptions 2.1–2.3) and notation from the main paper. Refined Descent-Phase Analysis. Recall that in the descent phase (when |∇f(x)| > ϵ), PSD\nuses gradient descent steps of size η = 1. Lemma 3.2 in the main text established a sufficient\n2ℓ\ndecrease per step:\n3\nf(x+) ≤ f(x)− ∥∇f(x)∥2. 8ℓ\nThis implies in particular f(x+) ≤ f(x)−3ϵ2 whenever |∇f(x)| > ϵ.",
+      "size": 400,
+      "sentences": 5
+    },
+    {
+      "id": 96,
+      "content": "tep:\n3\nf(x+) ≤ f(x)− ∥∇f(x)∥2. 8ℓ\nThis implies in particular f(x+) ≤ f(x)−3ϵ2 whenever |∇f(x)| > ϵ. We emphasize the exact\n8ℓ\nconstant 3 here (in contrast to the looser 1 used in the main text for simplicity). Using this\n8 4\nsharper decrease, the number of gradient steps in the descent phase can be bounded by a smaller\nvalue. Let ∆f = f(x )−inff denote the initial excess function value. After N descent\n0 descent\nsteps, the total decrease is at least N · 3ϵ2. This must be bounded by ∆f.",
+      "size": 490,
+      "sentences": 7
+    },
+    {
+      "id": 97,
+      "content": "fter N descent\n0 descent\nsteps, the total decrease is at least N · 3ϵ2. This must be bounded by ∆f. Hence, we get\ndescent 8ℓ\n∆f 8ℓ∆f\nN ≤ = . descent (3/8ℓ)ϵ2 3ϵ2\n14\n===  15 ===\nComparing to the bound N ≤ 4ℓ,∆f given in the main text, we see that our refined\ndescent ϵ2\nanalysis improves the descent-phase constant from 4 to 8 ≈ 2.667. This tighter bound is achieved\n3\nby fully exploiting the 3 coefficient in the one-step decrease lemma rather than rounding down.",
+      "size": 463,
+      "sentences": 5
+    },
+    {
+      "id": 98,
+      "content": "d\n3\nby fully exploiting the 3 coefficient in the one-step decrease lemma rather than rounding down. 8\nThough asymptotically both bounds scale as O(ℓ,∆f/ϵ2), the improvement reduces the absolute\nconstant by about one third, which can meaningfully speed up convergence in practice when ∆f\nand 1/ϵ2 are large. Refined Escape-Phase Analysis. Next we turn to the saddle escape episodes.",
+      "size": 381,
+      "sentences": 4
+    },
+    {
+      "id": 99,
+      "content": "n ∆f\nand 1/ϵ2 are large. Refined Escape-Phase Analysis. Next we turn to the saddle escape episodes. In Theorem 3.1,\ntheescape-phasecomplexitywasgovernedbythenumberofepisodesN andtheper-episode\nepisodes\ngradient steps T. Lemma 3.3 (Sufficient Decrease from Saddle-Point Escape) established that\n√\nif |∇f(x)| ≤ ϵ and λ (∇2f(x)) ≤ −γ (with γ = ρ,ϵ as defined in Algorithm 1), then one\nmin\nescape episode (a random perturbation of radius r followed by T gradient steps) will, with high\nprobability, decrease the function value by at least\nϵ2\n,\n128ℓ\nas stated in Eq.",
+      "size": 561,
+      "sentences": 4
+    },
+    {
+      "id": 100,
+      "content": "ps) will, with high\nprobability, decrease the function value by at least\nϵ2\n,\n128ℓ\nas stated in Eq. (3.3). Here we strengthen this result in two ways: (i) we parse the proof’s\ninequalities in a token-by-token manner to identify the dominant terms driving this 1 factor,\n128\nand (ii) we introduce a refined analysis to potentially improve the constant 1/128 by tighter\ncontrol of the “drift” terms that oppose escape.",
+      "size": 416,
+      "sentences": 3
+    },
+    {
+      "id": 101,
+      "content": "potentially improve the constant 1/128 by tighter\ncontrol of the “drift” terms that oppose escape. Proof Sketch (to be made rigorous below): The core idea of Lemma 3.3’s proof is to track\nthe evolution of the iterate during an escape episode along the most negative curvature direction\nversus the remaining orthogonal directions. Let H = ∇2f(x) be the Hessian at the saddle point\nx, and (u ,λ ) denote an eigenpair with λ = λ (H) ≤ −γ.",
+      "size": 435,
+      "sentences": 3
+    },
+    {
+      "id": 102,
+      "content": "= ∇2f(x) be the Hessian at the saddle point\nx, and (u ,λ ) denote an eigenpair with λ = λ (H) ≤ −γ. We decompose the displacement\n1 1 1 min\nfrom x at iteration t as z = y −x, and further split z into components parallel and orthogonal\nt t t\nto u :\n1\n• z := ⟨z ,u ⟩u (the escape direction component),\nt,1 t 1 1\n• z := z −z (the component in the orthogonal subspace). t,⊥ t t,1\nFrom the update y = y −η∇f(y ) (with η = 1/(2ℓ)), one derives the exact recurrence (cf. t+1 t t\nEq.",
+      "size": 475,
+      "sentences": 4
+    },
+    {
+      "id": 103,
+      "content": "From the update y = y −η∇f(y ) (with η = 1/(2ℓ)), one derives the exact recurrence (cf. t+1 t t\nEq. (A.1) in Appendix A):\nz = (I −ηH)z − η∇f(x) − ηR(z ),\nt+1 t t\nwhere R(z ) is the third-order remainder term from Taylor expansion: ∇f(x+z ) = ∇f(x)+\nt t\nHz +R(z ), satisfying |R(z)| ≤ ρ|z|2 by Hessian Lipschitzness. This recurrence governs the\nt t 2\nstochastic dynamical system during an escape. We now proceed to analyze its two components. Escape Direction Dynamics.",
+      "size": 468,
+      "sentences": 6
+    },
+    {
+      "id": 104,
+      "content": "l system during an escape. We now proceed to analyze its two components. Escape Direction Dynamics. Project this recurrence onto u . Noting that Hu = λ u and\n1 1 1 1\nu is a unit vector, we get:\n1\nz := ⟨z ,u ⟩ = (1−ηλ )z − η⟨∇f(x),u ⟩ − η⟨R(z ),u ⟩. t+1,1 t+1 1 1 t,1 1 t 1\nBecause λ ≤ −γ, we have 1−ηλ ≥ 1+ηγ = 1+ γ . Define the growth factor α := 1−ηλ ≥\n1 1 2ℓ 1\n1+ γ .",
+      "size": 370,
+      "sentences": 7
+    },
+    {
+      "id": 105,
+      "content": "1\nBecause λ ≤ −γ, we have 1−ηλ ≥ 1+ηγ = 1+ γ . Define the growth factor α := 1−ηλ ≥\n1 1 2ℓ 1\n1+ γ . Meanwhile, we can bound the drift terms (coming from the stationary gradient and the\n2ℓ\nTaylor remainder):\n• Gradient drift: |η⟨∇f(x),u ⟩| ≤ η|∇f(x)| ≤ ηϵ = ϵ , since |∇f(x)| ≤ ϵ at a saddle point\n1 2ℓ\ntriggering an episode. 15\n===  16 ===\n• Remainder drift: |η⟨R(z ),u ⟩| ≤ η|R(z )| ≤ η ρ|z |2.",
+      "size": 395,
+      "sentences": 4
+    },
+    {
+      "id": 106,
+      "content": "1 2ℓ\ntriggering an episode. 15\n===  16 ===\n• Remainder drift: |η⟨R(z ),u ⟩| ≤ η|R(z )| ≤ η ρ|z |2. Under the trust-region condition\nt 1 t 2 t\n(to be enforced below) that |z | remains bounded by R = γ for all t ≤ T, we obtain\nt tr 4ρ\n|R(z )| ≤ ρR2 = γ2 . Multiplying by η gives |η⟨R(z ),u ⟩| ≤ η· γ2 = 1 · γ2 = γ2 . t 2 tr 32ρ t 1 32ρ 2ℓ 32ρ 64ℓρ\nNotice that γ2 = ρϵ2. Thus γ2 = ϵ2 . In summary, each iteration’s drift terms satisfy\n64ℓρ 64ℓ\nϵ ϵ2\n|η⟨∇f(x),u ⟩| ≤ , |η⟨R(z ),u ⟩| ≤ .",
+      "size": 481,
+      "sentences": 7
+    },
+    {
+      "id": 107,
+      "content": "In summary, each iteration’s drift terms satisfy\n64ℓρ 64ℓ\nϵ ϵ2\n|η⟨∇f(x),u ⟩| ≤ , |η⟨R(z ),u ⟩| ≤ . 1 t 1\n2ℓ 64ℓ\nPlugging these bounds into the recurrence gives a key inequality for the magnitude of the\nescape-direction component:\nϵ ϵ2\n|z | ≥ α|z | − − .",
+      "size": 253,
+      "sentences": 2
+    },
+    {
+      "id": 108,
+      "content": "gives a key inequality for the magnitude of the\nescape-direction component:\nϵ ϵ2\n|z | ≥ α|z | − − . t+1,1 t,1\n2ℓ 64ℓ\nThis inequality can be viewed as a sequence of mathematical tokens whose weights determine\nthe outcome of the escape episode: the multiplicative term α|z | drives exponential growth\nt,1\nalong u , while the additive drift terms oppose it. The analysis then separates into regimes where\n1\nthe multiplicative term dominates versus where drift dominates.",
+      "size": 467,
+      "sentences": 3
+    },
+    {
+      "id": 109,
+      "content": "then separates into regimes where\n1\nthe multiplicative term dominates versus where drift dominates. A full unrolling shows that after\nT = Θ (cid:0)ℓ log d(cid:1) iterations, with high probability one achieves |z | ≈ r.\nγ δ T,1\nOrthogonal Component Dynamics. Projecting the recurrence onto the d−1-dimensional\nsubspace orthogonal to u yields a linear recurrence with at most a constant-factor growth.",
+      "size": 399,
+      "sentences": 3
+    },
+    {
+      "id": 110,
+      "content": "ensional\nsubspace orthogonal to u yields a linear recurrence with at most a constant-factor growth. A\n1\ncarefulboundshowsthat∥z ∥remainsO(r)throughouttheepisodewhentheinitialperturbation\nt,⊥\nis large enough in the u direction. Combining these estimates yields the improved decrease\n1\nbound. Complete details of the refined escape analysis, including a token-wise tracking of each\ninequality and constants, are provided in the full proof.",
+      "size": 437,
+      "sentences": 4
+    },
+    {
+      "id": 111,
+      "content": ", including a token-wise tracking of each\ninequality and constants, are provided in the full proof. B.2 Robustness to Errors and Mis-Specified Parameters\nWe extend the escape analysis to account for gradient noise, Hessian-estimation error, and\nuncertain Lipschitz constants.",
+      "size": 275,
+      "sentences": 2
+    },
+    {
+      "id": 112,
+      "content": "nalysis to account for gradient noise, Hessian-estimation error, and\nuncertain Lipschitz constants. Under additive gradient noise e with ∥e ∥ ≤ ζ, the recurrences\nt t\npick up additional drift terms of order ζ/(2ℓ), so PSD remains effective as long as ζ is smaller\nthan the target gradient tolerance ϵ—in effect the achievable accuracy is limited by the noise floor.",
+      "size": 365,
+      "sentences": 2
+    },
+    {
+      "id": 113,
+      "content": "an the target gradient tolerance ϵ—in effect the achievable accuracy is limited by the noise floor. Mis-specifying the Lipschitz parameters ℓ and ρ by constant factors only affects constants in the\ncomplexity bound, and standard backtracking techniques can compensate for underestimates of\nℓ. Other sources of robustness—such as noise in Hessian-vector products when using Lanczos,\nor mis-specification of the curvature threshold γ—are similarly analysed.",
+      "size": 455,
+      "sentences": 3
+    },
+    {
+      "id": 114,
+      "content": "ducts when using Lanczos,\nor mis-specification of the curvature threshold γ—are similarly analysed. In each case, PSD’s\nconvergence degrades gracefully: one pays at most constant or logarithmic factors in iteration\ncomplexity, and the method still converges to an approximate SOSP whose quality matches the\nnoise level. B.3 Extensions and Adaptive Strategies\nFinally, weoutlinepotentialextensionsofPSDthatexploitcurvatureinformationmoredirectlyor\nadapt parameters on the fly.",
+      "size": 475,
+      "sentences": 3
+    },
+    {
+      "id": 115,
+      "content": "epotentialextensionsofPSDthatexploitcurvatureinformationmoredirectlyor\nadapt parameters on the fly. For example, if the local negative curvature is significantly stronger\nthan the threshold γ, one may reduce the escape-episode length T proportionally, achieving\nfaster escape. Similarly, multi-directional perturbation strategies can reduce the dependence on\ndimension d from logarithmic to constant at the cost of extra random probes.",
+      "size": 435,
+      "sentences": 3
+    },
+    {
+      "id": 116,
+      "content": "duce the dependence on\ndimension d from logarithmic to constant at the cost of extra random probes. Adapting the\nperturbation radius based on the observed Hessian eigenvalue can further improve constants. We\nleave rigorous analysis of these enhancements for future work. 16",
+      "size": 273,
+      "sentences": 4
+    }
+  ]
+}

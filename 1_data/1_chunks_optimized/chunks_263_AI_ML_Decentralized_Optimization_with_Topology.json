@@ -1,0 +1,1509 @@
+{
+  "source": "ArXiv",
+  "filename": "263_AI_ML_Decentralized_Optimization_with_Topology.pdf",
+  "domain": "AI",
+  "total_chars": 82044,
+  "total_chunks": 250,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\nTopology-Independent Decentralized Optimization\nDecentralized Optimization with\nTopology-Independent Communication∗\nYing Lin† ylin95@hku.hk\nDepartment of Data and Systems Engineering\nThe University of Hong Kong\nHong Kong\nYao Kuang† yaokuang@cs.ubc.ca\nDepartment of Computer Science\nThe University of British Columbia\nVancouver, BC, Canada\nAhmet Alacaoglu alacaoglu@math.ubc.ca\nDepartment of Mathematics\nThe University of British Columbia\nVancouver, BC, Canada\nMichael P. Friedlander michael.friedlander@ubc.ca\nDepartments of Computer Science and Mathematics\nThe University of British Columbia\nVancouver, BC, Canada\nAbstract\nDistributed optimization requires nodes to coordinate, yet full synchronization scales poorly.",
+      "size": 729,
+      "sentences": 1
+    },
+    {
+      "id": 2,
+      "content": "ract\nDistributed optimization requires nodes to coordinate, yet full synchronization scales poorly. When n nodes collaborate through m pairwise regularizers, standard methods demand\nO(m) communications per iteration. This paper proposes randomized local coordination:\neach node independently samples one regularizer uniformly and coordinates only with\nnodes sharing that term. This exploits partial separability, where each regularizer G\nj\ndepends on a subset S ⊆{1,...,n} of nodes.",
+      "size": 482,
+      "sentences": 4
+    },
+    {
+      "id": 3,
+      "content": "xploits partial separability, where each regularizer G\nj\ndepends on a subset S ⊆{1,...,n} of nodes. For graph-guided regularizers where |S |=2,\nj j\nexpected communication drops to exactly 2 messages per iteration. This method achieves\nO˜(ε−2) iterations for convex objectives and under strong convexity, O(ε−1) to an ε-solution\n(cid:80)\nand O(log(1/ε)) to a neighborhood.",
+      "size": 371,
+      "sentences": 3
+    },
+    {
+      "id": 4,
+      "content": "ves and under strong convexity, O(ε−1) to an ε-solution\n(cid:80)\nand O(log(1/ε)) to a neighborhood. Replacing the proximal map of the sum G\nj j\nwith the proximal map of a single randomly selected regularizer G preserves convergence\nj\nwhile eliminating global coordination. Experiments validate both convergence rates and\ncommunication efficiency across synthetic and real-world datasets.",
+      "size": 387,
+      "sentences": 3
+    },
+    {
+      "id": 5,
+      "content": "idate both convergence rates and\ncommunication efficiency across synthetic and real-world datasets. Keywords: decentralized optimization, communication efficiency, partial separability,\nproximal methods, multi-task learning\n1 Introduction\nWe study distributed optimization with partially separable regularizers, where each term\ndepends on overlapping subsets of variables.",
+      "size": 372,
+      "sentences": 2
+    },
+    {
+      "id": 6,
+      "content": "with partially separable regularizers, where each term\ndepends on overlapping subsets of variables. This structure appears, for example, when hos-\npitals collaborate on diagnostic models without centralizing patient data (Chen et al., 2021),\nor when sensor networks learn environmental patterns through local interactions (Predd\n∗ Date: 16 September 2025\n† Equal contribution.",
+      "size": 376,
+      "sentences": 2
+    },
+    {
+      "id": 7,
+      "content": "onmental patterns through local interactions (Predd\n∗ Date: 16 September 2025\n† Equal contribution. 1\n5202\npeS\n71\n]GL.sc[\n1v88441.9052:viXra\n===  2 ===\nLin, Kuang, Alacaoglu, Friedlander\net al., 2006; Kar et al., 2012; Lee et al., 2015). In these cases, the communication costs of\ncoordinating between nodes dominates local computation.",
+      "size": 336,
+      "sentences": 3
+    },
+    {
+      "id": 8,
+      "content": "In these cases, the communication costs of\ncoordinating between nodes dominates local computation. Standard proximal methods require all nodes to synchronize at each iteration, which\nincurs a communication cost proportional to the number of pairwise interactions. In\nlarge-scale distributed systems, such global coordination becomes prohibitive. We show\nthat randomized local coordination achieves the convergence rates of centralized proximal\nmethods.",
+      "size": 452,
+      "sentences": 4
+    },
+    {
+      "id": 9,
+      "content": "that randomized local coordination achieves the convergence rates of centralized proximal\nmethods. Our approach exploits the structure of partially separable regularizers with overlapping\nvariable dependencies. Each node independently samples one of m regularizers uniformly at\nrandom and coordinates only with nodes sharing that regularizer.",
+      "size": 342,
+      "sentences": 3
+    },
+    {
+      "id": 10,
+      "content": "one of m regularizers uniformly at\nrandom and coordinates only with nodes sharing that regularizer. This reduces expected\ncommunication from O(m) to (cid:80)m (a2−a )/m messages per iteration, where a counts the\nj=1 j j j\nnodes invoved in component j. Communication thus depends only on local collaboration\nsizes, not global network topology, while preserving optimal convergence rates.",
+      "size": 386,
+      "sentences": 2
+    },
+    {
+      "id": 11,
+      "content": "local collaboration\nsizes, not global network topology, while preserving optimal convergence rates. We formalize our analysis through a structured optimization framework\nmin {H(x) := F(x)+G(x)}, (1.1)\nx∈Rnd\nwhere the objective exhibits two distinct forms of separability:\nF(x) :=\n(cid:80)n\nf (x ) and G(x) :=\n(cid:80)m\nG (x). (1.2)\ni=1 i i j=1 j\nThe variable x = (x ,...,x ) ∈ Rnd partitions into blocks x ∈ Rd, where each f : Rd → R\n1 n i i\nand G : Rnd → R is proper, closed, and convex.",
+      "size": 488,
+      "sentences": 3
+    },
+    {
+      "id": 12,
+      "content": "ns into blocks x ∈ Rd, where each f : Rd → R\n1 n i i\nand G : Rnd → R is proper, closed, and convex. Each block x corresponds to node i in the\nj i\nnetwork, where f represents the local data and objective for node i, and G represents the\ni j\njth coordination constraint. To see why this structure matters, again consider the hospital collaboration scenario.",
+      "size": 355,
+      "sentences": 3
+    },
+    {
+      "id": 13,
+      "content": "constraint. To see why this structure matters, again consider the hospital collaboration scenario. Each hospital i maintains its own diagnostic model parameters x , learning from local patient\ni\ndata through its individual loss function f (x ). The separable structure of F in (1.2) allows\ni i\neach hospital to update its model independently, preserving privacy. Hospitals, however, in similar regions or similar patient populations should develop\nsimilar diagnostic criteria.",
+      "size": 476,
+      "sentences": 5
+    },
+    {
+      "id": 14,
+      "content": "ever, in similar regions or similar patient populations should develop\nsimilar diagnostic criteria. We might capture these relationships through a graph-guided\nregularizer that connects hospitals based on geographical proximity, shared protocols, or\ndemographic similarity. If hospitals i and j should coordinate, we include a regularization\nterm g (x ,x ) that encourages their models to remain similar.",
+      "size": 404,
+      "sentences": 3
+    },
+    {
+      "id": 15,
+      "content": "rdinate, we include a regularization\nterm g (x ,x ) that encourages their models to remain similar. ij i j\nFigure 1 illustrates this structure for a network of thirteen hospitals with various\ncollaboration relationships. Orange edges show pairwise collaborations; shaded regions\nindicate larger consortia. This model allows for multiple levels of collaboration. Each\nregularizercomponentG couplesonlythehospitalsparticipatinginthatspecificrelationship.",
+      "size": 452,
+      "sentences": 5
+    },
+    {
+      "id": 16,
+      "content": "oration. Each\nregularizercomponentG couplesonlythehospitalsparticipatinginthatspecificrelationship. j\nHospital networks exhibit partial separability. Definition 1.1 (Partial Separability) A function G : Rnd → R admitting the decompo-\nsition G(x) =\n(cid:80)m\nG (x) is partially separable when each summand G exhibits dependence\nj=1 j j\non only a subset of the coordinate blocks of x.",
+      "size": 382,
+      "sentences": 4
+    },
+    {
+      "id": 17,
+      "content": "ble when each summand G exhibits dependence\nj=1 j j\non only a subset of the coordinate blocks of x. More precisely, there exists a collection of\nsupport sets {S ⊆ {1,...,n} | j = 1,...,m} such that G (x) = G (x ) for all j, where\nj j j Sj\nx = (x | i ∈ S ) denotes the restriction of x to the blocks indexed by S .",
+      "size": 313,
+      "sentences": 2
+    },
+    {
+      "id": 18,
+      "content": "or all j, where\nj j j Sj\nx = (x | i ∈ S ) denotes the restriction of x to the blocks indexed by S . Sj i j j\n2\n===  3 ===\nTopology-Independent Decentralized Optimization\nG\n5\n5\n6 G\n6\n12\nG\n8\n10\n11\n4\n7 9\nG 8\n2\nG 4 G 3\n1 3\nG\n7\nG 2 13\n1\nFigure 1: Hypergraph representation of partial separability with n = 13 nodes and m = 8\nregularizer components. Nodes represent coordinate blocks x .",
+      "size": 381,
+      "sentences": 3
+    },
+    {
+      "id": 19,
+      "content": "arability with n = 13 nodes and m = 8\nregularizer components. Nodes represent coordinate blocks x . Generalized edges show\ni\nregularizer dependencies (orange for pairwise, shaded regions for 3-way and 4-way) and their\nregularizationfunctions, e.g., G (x) = G (x ,x ,x ). Inourrandomizedlocalcoordination\n6 6 9 10 12\nprotocol, each node independently samples one regularizer uniformly from {1,...,m}.",
+      "size": 399,
+      "sentences": 4
+    },
+    {
+      "id": 20,
+      "content": "ion\n6 6 9 10 12\nprotocol, each node independently samples one regularizer uniformly from {1,...,m}. For\nexample, node 9 participates in two regularizers: with probability 1/8 it coordinates with\nnodes {10,12}, and with probability 1/8 it coordinates with nodes {1,7,8}. This protocol\nreducesexpectedcommunicationto (cid:80)m (a2−a )/mmessagesperiteration, wherea = |S |\nj=1 j j j j\nis the size of component j.",
+      "size": 409,
+      "sentences": 3
+    },
+    {
+      "id": 21,
+      "content": "onto (cid:80)m (a2−a )/mmessagesperiteration, wherea = |S |\nj=1 j j j j\nis the size of component j. 1.1 Decentralized Multi-Task Learning\nOur framework applies directly to decentralized multi-task learning, where different vari-\nable blocks in x = (x ,...,x ) each correspond to a distinct learning task. These tasks\n1 n\nare distributed across nodes in a network.",
+      "size": 363,
+      "sentences": 3
+    },
+    {
+      "id": 22,
+      "content": "correspond to a distinct learning task. These tasks\n1 n\nare distributed across nodes in a network. The objective is to collaboratively learn the\nsolution of (1.1) without centralizing data, and thus preserve privacy and computational\nefficiency (Lian et al., 2017; Verbraeken et al., 2020). The regularizer G encodes task relationships that improve generalization performance\nwhen individual tasks have limited data.",
+      "size": 416,
+      "sentences": 4
+    },
+    {
+      "id": 23,
+      "content": "task relationships that improve generalization performance\nwhen individual tasks have limited data. The most prevalent formulations are graph-guided\nregularizers that encode inter-task relationships through network topology (Kim and Xing,\n2009). Given a communication graph G = (V,E) with vertices V := {1,...,n} representing\nnodes and edges E capturing dependencies, the regularizer takes the form\n(cid:80)\nG(x) = g (x ,x ).",
+      "size": 425,
+      "sentences": 3
+    },
+    {
+      "id": 24,
+      "content": "nodes and edges E capturing dependencies, the regularizer takes the form\n(cid:80)\nG(x) = g (x ,x ). (1.3)\n(i,j)∈E ij i j\nThe structured optimization problem (1.1) with such regularizers reduces to\n(cid:80) (cid:80)\nmin f (x )+ g (x ,x ), (1.4)\ni∈V i i (i,j)∈E ij i j\nx1,...,xn∈Rd\nwhich makes explicit how the graph structure G determines both communication topology\nand regularization dependencies.",
+      "size": 398,
+      "sentences": 2
+    },
+    {
+      "id": 25,
+      "content": "t how the graph structure G determines both communication topology\nand regularization dependencies. 3\n===  4 ===\nLin, Kuang, Alacaoglu, Friedlander\nFor graph-guided regularizers such as the hospital network, each edge e = (i,j) ∈ E\ndefines a regularizer G (x) = g (x ,x ) with support set S = {i,j}.",
+      "size": 299,
+      "sentences": 2
+    },
+    {
+      "id": 26,
+      "content": "etwork, each edge e = (i,j) ∈ E\ndefines a regularizer G (x) = g (x ,x ) with support set S = {i,j}. Each regularizer\ne ij i j e\ncouples precisely two hospitals, regardless of the total network size n.\n1.2 Coordination Bottleneck\nConsidertheapplicationofstandardproximalsubgradientmethodstosolve(1.1)(Rockafellar,\n1976;Parikh andBoyd,2014; Combettesand Wajs,2005).",
+      "size": 363,
+      "sentences": 2
+    },
+    {
+      "id": 27,
+      "content": "ximalsubgradientmethodstosolve(1.1)(Rockafellar,\n1976;Parikh andBoyd,2014; Combettesand Wajs,2005). At eachiteration t, thesemethods\nupdate x(t+1) by alternating between a gradient step with a positive step size α(t),\nz (t) = x (t) −α(t)g (t) , g (t) ∈ ∂f (x (t) ), (1.5a)\ni i i i i i\nand a proximal step with positive step sizes β(t):\n(cid:26) (cid:27)\n1\nx(t+1) = prox (z(t)) := argmin (cid:80)m G (x)+ ∥z(t)−x∥2 .",
+      "size": 415,
+      "sentences": 2
+    },
+    {
+      "id": 28,
+      "content": "ve step sizes β(t):\n(cid:26) (cid:27)\n1\nx(t+1) = prox (z(t)) := argmin (cid:80)m G (x)+ ∥z(t)−x∥2 . (1.5b)\nβ(t)G j=1 j 2β(t)\nx\nBlock separability of F implies that each node may operate independently and in parallel\non local data. However, the subsequent proximal step requires global coordination. Here lies the fundamental obstacle: the proximal operator of a sum is not the sum of\nproximal operators.",
+      "size": 403,
+      "sentences": 4
+    },
+    {
+      "id": 29,
+      "content": "lies the fundamental obstacle: the proximal operator of a sum is not the sum of\nproximal operators. While each individual collaboration relationship modeled by G may\nj\nadmit a simple proximal operator, evaluating the proximal map for the sum G =\n(cid:80)m\nG\nj=1 j\ntriggers all nodes in\n(cid:83)m\nS to coordinate simultaneously. When data transmission costs\nj=1 j\noutweigh local computation, such coordination becomes prohibitively expensive (Cao et al.,\n2023).",
+      "size": 460,
+      "sentences": 3
+    },
+    {
+      "id": 30,
+      "content": "j\noutweigh local computation, such coordination becomes prohibitively expensive (Cao et al.,\n2023). 1.3 Randomized Local Coordination\nTobreaktheglobalcouplingimposedbythesumstructure,weintroduceasimplerandomized\nprotocol. At each iteration, every node i independently samples a regularizer G uniformly\nj\nat random from {1,...,m}, that is, j ∼ Unif({1,...,m}).",
+      "size": 359,
+      "sentences": 3
+    },
+    {
+      "id": 31,
+      "content": "ndently samples a regularizer G uniformly\nj\nat random from {1,...,m}, that is, j ∼ Unif({1,...,m}). Node i communicates with the\nother nodes in S and participates in evaluating the proximal map of G only if it particpates\nj j\nin that collaboration, that is, if i ∈ S . From another prespective, node i communicates\nj\nwith probability d /m, where d counts components involving that node. Otherwise, node i\ni i\nproceeds without any communication. Consider the hospital network in Figure 1.",
+      "size": 487,
+      "sentences": 5
+    },
+    {
+      "id": 32,
+      "content": "therwise, node i\ni i\nproceeds without any communication. Consider the hospital network in Figure 1. If Hospital 9 samples j = 6, it evaluates\n9\nonly G and coordinates exclusively with Hospitals 10 and 12. If Hospital 4 samples a\n6\ncollaboration that does not involve it (4 ∈/ S ), it proceeds without any communication. j4\nThis randomized approach shifts the communication pattern from global synchronization to\nlocalized, selective interactions.",
+      "size": 446,
+      "sentences": 5
+    },
+    {
+      "id": 33,
+      "content": "shifts the communication pattern from global synchronization to\nlocalized, selective interactions. Each node coordinates with a¯ − 1 partners when its sampled regularizer is active,\nwhere a¯ = E|S | denotes the average collaboration size. For graph-guided regularizers (cf. j\nSection 1.1), this yields precisely 2 expected messages per iteration.",
+      "size": 346,
+      "sentences": 4
+    },
+    {
+      "id": 34,
+      "content": "h-guided regularizers (cf. j\nSection 1.1), this yields precisely 2 expected messages per iteration. Table 1 quantifies\nthe improvement: our method requires O(1) communications while maintaining centralized\nconvergence rates, whereas existing methods either scale with network parameters or sacrifice\nconvergence guarantees.",
+      "size": 323,
+      "sentences": 3
+    },
+    {
+      "id": 35,
+      "content": "whereas existing methods either scale with network parameters or sacrifice\nconvergence guarantees. 4\n===  5 ===\nTopology-Independent Decentralized Optimization\n1.4 Contributions and Roadmap\nThisrandomizedlocalcoordinationstrategyleadsustodevelopBlockProx, adecentralized\noptimization method that exploits partial separability to achieve communication efficiency\nfor problem (1.1). Our contributions:\nDecentralized updates (Section 2).",
+      "size": 434,
+      "sentences": 3
+    },
+    {
+      "id": 36,
+      "content": "e communication efficiency\nfor problem (1.1). Our contributions:\nDecentralized updates (Section 2). The BlockProx algorithm operates without global\nsynchronization, permitting fully decentralized optimization. Graph-Guided specialization (Section 3). RandomEdge specializes BlockProx to graph-\nguided regularizers defined in (1.3), achieving 2 expected messages per iteration. Communication efficiency (Section 4).",
+      "size": 414,
+      "sentences": 6
+    },
+    {
+      "id": 37,
+      "content": "efined in (1.3), achieving 2 expected messages per iteration. Communication efficiency (Section 4). Expected total communication equals (cid:80)m (a2 −\nj=1 j\na )/m messages per iteration, depending only on local coupling sizes a = |S |. Each node\nj j j\ni communicates with probability d /m, where d counts components involving that node\ni i\n(Theorem 4.1). Iteration complexity (Section 5).",
+      "size": 389,
+      "sentences": 5
+    },
+    {
+      "id": 38,
+      "content": "where d counts components involving that node\ni i\n(Theorem 4.1). Iteration complexity (Section 5). Under bounded subgradients: O˜(ε−2) iterations are needed\nto obtain an ϵ-solution (Theorem 5.6); the same iteration complexity also holds for smooth\nconvex F (Theorem 5.9). For smooth, strongly convex F: O(ε−1) to an ε-solution (Theo-\nrem 5.12), or O(log(1/ε)) to a neighborhood (Theorem 5.13). Reproducible empirical validation (Section 6).",
+      "size": 440,
+      "sentences": 5
+    },
+    {
+      "id": 39,
+      "content": "2), or O(log(1/ε)) to a neighborhood (Theorem 5.13). Reproducible empirical validation (Section 6). Experiments on synthetic and real-world\ndatasets confirm theoretical predictions. The data files and scripts used to generate the\nnumerical results can be obtained at the URL\nhttps://github.com/MPF-Optimization-Laboratory/BlockProx.",
+      "size": 332,
+      "sentences": 4
+    },
+    {
+      "id": 40,
+      "content": "erical results can be obtained at the URL\nhttps://github.com/MPF-Optimization-Laboratory/BlockProx. 1.5 Related Work\nDecentralized optimization divides into consensus optimization that seek a common solution\nacross nodes, and multi-task learning for specific regularizing structures. Neither handles\ngeneral partially separable problems. The multi-task formulation (1.4) encompasses consensus optimization as a special case.",
+      "size": 424,
+      "sentences": 4
+    },
+    {
+      "id": 41,
+      "content": "le problems. The multi-task formulation (1.4) encompasses consensus optimization as a special case. When the objective is to find a common solution x across all nodes, the problem reduces to\n0\nmin F(x) := 1 (cid:80)n f (x ). (1.6)\nx0∈Rd n i=1 i 0\nIn principle, one would convert a consensus problem to a regularized problem via exact\npenalty functions (Han and Mangasarian, 1979), but this requires appropriate regularity\nconditions and a penalty parameter that is difficult to estimate.",
+      "size": 487,
+      "sentences": 4
+    },
+    {
+      "id": 42,
+      "content": "s requires appropriate regularity\nconditions and a penalty parameter that is difficult to estimate. The typical and most commonly employed method for solving consensus optimization\nproblem(1.6)isDecentralized gradient descent (DGD) (Yuanetal.,2016). Itsconvergencefor\nnonconvexproblemsreliesonuniformlyboundeddataheterogeneity,requiring\n(cid:80)n\n∥∇f (x)−\ni=1 i\n∇F(x)∥2 to be uniformly bounded over x (Koloskova et al., 2020; Zhao et al., 2018). Example 3 in Chang et al.",
+      "size": 471,
+      "sentences": 4
+    },
+    {
+      "id": 43,
+      "content": "be uniformly bounded over x (Koloskova et al., 2020; Zhao et al., 2018). Example 3 in Chang et al. (2020) shows DGD diverges for any constant step-size when\n5\n===  6 ===\nLin, Kuang, Alacaoglu, Friedlander\nTable1: Per-iterationcommunicationcostandconvergenceguaranteesfordecentralized\nalgorithms.",
+      "size": 295,
+      "sentences": 3
+    },
+    {
+      "id": 44,
+      "content": "edlander\nTable1: Per-iterationcommunicationcostandconvergenceguaranteesfordecentralized\nalgorithms. Communication Topology Convergence\nAlgorithm(a)\nper iteration(b) dependence guarantee(c)\nRandomEdge (ours) 2 (expected) No C, SC, CR\nADMM (Hallac et al., 2015) 4m Yes C, SC, CR\nDGD (Yuan et al., 2016) 2m Yes C, SC, TD, CR\nScaffnew (Mishchenko et al., 2022)(e)2pm (expected) Yes C, SC, TD, CR\nWalkman (Mao et al., 2020) 1(f) No SCLS, TD, CR\nESDACD (Hendrikx et al., 2019) 2 No SC, TD\n(a)We exclude several centralized and federated methods, including incremental proximal meth-\nods (Bertsekas, 2011), proximal average (ProxAvg) (Yu, 2013), RandProx (Condat and Richta´rik,\n2023), and SMPM (Condat et al., 2025a), even though they can solve (1.1).",
+      "size": 745,
+      "sentences": 2
+    },
+    {
+      "id": 45,
+      "content": "x (Condat and Richta´rik,\n2023), and SMPM (Condat et al., 2025a), even though they can solve (1.1). Incremental proximal\nmethodsmaintainaglobalindexofthesampledregularizerandupdateallinvolvedblockssimulta-\nneously, so they are not decentralized. ProxAvg can be adapted to decentralized settings, but no\ndecentralized analysis is available. RandProx and SMPM are federated algorithms for consensus\noptimization.",
+      "size": 410,
+      "sentences": 4
+    },
+    {
+      "id": 46,
+      "content": "lized analysis is available. RandProx and SMPM are federated algorithms for consensus\noptimization. (b)The communication cost counts the number of Rd messages; m denotes the number of edges in\nthe network. ADMM transfers (x ,x ) and auxiliary variables for each edge (i,j), yielding 4m\ni j\nmessages per iteration. DGD uses 2m messages as each node exchanges its local variable with all\nneighbors.",
+      "size": 396,
+      "sentences": 5
+    },
+    {
+      "id": 47,
+      "content": "s per iteration. DGD uses 2m messages as each node exchanges its local variable with all\nneighbors. Scaffnew evaluates the proximal operator with probability p; when the central server\ncommunicateswithallnodes,theexpectedcostis2pm. Edge-activationmethodsoperateonsingle\nedges: Walkman performs a one-way transfer (1 message); ESDACD performs a bidirectional\nexchange (2 messages).",
+      "size": 380,
+      "sentences": 4
+    },
+    {
+      "id": 48,
+      "content": "man performs a one-way transfer (1 message); ESDACD performs a bidirectional\nexchange (2 messages). (c)WeusetheabbreviationsC(convex),SC(stronglyconvex),SCLS(stronglyconvexleastsquares),\nTD (topology-dependent rate), and CR (centralized rate). TD indicates that the convergence rate\ndepends on the network topology rather than solely on n or m; eliminating dependence on n and\nm is generally infeasible.",
+      "size": 403,
+      "sentences": 3
+    },
+    {
+      "id": 49,
+      "content": "k topology rather than solely on n or m; eliminating dependence on n and\nm is generally infeasible. For instance, star and path topologies have the same number of edges\nbutyielddifferentratesforDGD,Scaffnew,Walkman,andESDACD.Ourratedependsonlyon\nm, so it is identical for these two topologies. (d)DGD, Scaffnew, Walkman, and ESDACD are designed for consensus optimization, which\nenforces a common solution across nodes.",
+      "size": 419,
+      "sentences": 3
+    },
+    {
+      "id": 50,
+      "content": "and ESDACD are designed for consensus optimization, which\nenforces a common solution across nodes. This contrasts with multitask learning, where nodes\nmay have different variables. While consensus methods can be applied to multitask problems, this\nreduction has drawbacks; see Section 1.5 and Section 6. (e)Convergence guarantees for Scaffnew in convex settings appear in Guo et al. (2023).",
+      "size": 390,
+      "sentences": 5
+    },
+    {
+      "id": 51,
+      "content": "d Section 6. (e)Convergence guarantees for Scaffnew in convex settings appear in Guo et al. (2023). (f)When Walkman is applied to multitask learning by reformulating the problem as consensus with\naregularizerG,eachiterationmusttransferavectoroflengthndcontainingcopiesofallvariables;\nthe per-iteration communication therefore becomes n, not 1.\nheterogeneity grows unbounded with ∥x∥.",
+      "size": 383,
+      "sentences": 4
+    },
+    {
+      "id": 52,
+      "content": "the per-iteration communication therefore becomes n, not 1.\nheterogeneity grows unbounded with ∥x∥. Real-world applications often violate uniform\nboundedness, particularly with multi-source data (Lee et al., 2015; Tong et al., 2022). Several methods relax the bounded heterogeneity assumption: EXTRA (Shi et al., 2015)\nmodifies the DGD update scheme, while gradient-tracking techniques (Lorenzo and Scutari,\n2016; Alghunaim and Yuan, 2024; Song et al., 2024) maintain local gradient estimates.",
+      "size": 493,
+      "sentences": 3
+    },
+    {
+      "id": 53,
+      "content": "and Scutari,\n2016; Alghunaim and Yuan, 2024; Song et al., 2024) maintain local gradient estimates. Alternatively, primal-dual methods converge without bounded heterogeneity (Smith et al.,\n2018; Lan et al., 2020; Cao and Liu, 2018; Elgabli et al., 2020, 2021). Among these, Smith\net al. (2018) and Lan et al. (2020) achieve communication efficiency.",
+      "size": 348,
+      "sentences": 5
+    },
+    {
+      "id": 54,
+      "content": "20, 2021). Among these, Smith\net al. (2018) and Lan et al. (2020) achieve communication efficiency. 6\n[  ]\n\n===  7 ===\nTopology-Independent Decentralized Optimization\nCommunication efficient strategies include Newton methods with dynamic average\nconsensus (Liu et al., 2023; Li et al., 2020), event-triggered protocols (Cao and Basar, 2021),\ngradient compression (Ozkara et al., 2021; Elgabli et al., 2021; Liao et al., 2022), selective\ncommunication skipping (Mishchenko et al., 2022; Condat et al., 2025b), probabilistic device\nselection (Chen et al., 2021; Ghosh et al., 2022), and gossip-type methods (Boyd et al., 2006;\nHendrikx et al., 2019; Mao et al., 2020).",
+      "size": 666,
+      "sentences": 5
+    },
+    {
+      "id": 55,
+      "content": "t al., 2022), and gossip-type methods (Boyd et al., 2006;\nHendrikx et al., 2019; Mao et al., 2020). The gossip-type methods ESDACD (Hendrikx et al.,\n2019) and Walkman (Mao et al., 2020) achieves topology-independent constant per-iteration\ncommunication cost by randomly selecting an edge in each iteration to communication,\nwhich is similar to our methods.",
+      "size": 356,
+      "sentences": 2
+    },
+    {
+      "id": 56,
+      "content": "by randomly selecting an edge in each iteration to communication,\nwhich is similar to our methods. However, ESDACD requires the local loss function to be\nL-smooth and strongly convex, making it restrictive; in each iteration of Walkman, only\none node is updated using a computationally expensive proximal operator, leading to slow\nupdate and high computation cost. Consensus solutions perform poorly on individual nodes (Zhao et al., 2018).",
+      "size": 440,
+      "sentences": 3
+    },
+    {
+      "id": 57,
+      "content": "high computation cost. Consensus solutions perform poorly on individual nodes (Zhao et al., 2018). This\nlimitation and demand for personalized learning (Tan et al., 2023) drive decentralized multi-\ntask approaches. Multi-task algorithms target specific instances of problem (1.2). Network\nLasso (Hallac et al., 2015) solves graph-guided regularizers g (x ,x ) = w ∥x −x ∥ via\nij i j ij i j 2\nADMM with closed-form updates. Zhang et al.",
+      "size": 435,
+      "sentences": 6
+    },
+    {
+      "id": 58,
+      "content": "regularizers g (x ,x ) = w ∥x −x ∥ via\nij i j ij i j 2\nADMM with closed-form updates. Zhang et al. (2022) generalize this to arbitrary penalties\nP(x −x ), but their spanning-tree restriction changes the objective. Other approaches\ni j\nrequire smoothness of F or G (Koppel et al., 2017; Cao and Basar, 2020; Yan and Cao, 2024),\ntwice differentiability of both (Cao and Liu, 2021), or stochastic smooth objectives (Singh\net al., 2024).",
+      "size": 433,
+      "sentences": 4
+    },
+    {
+      "id": 59,
+      "content": "ifferentiability of both (Cao and Liu, 2021), or stochastic smooth objectives (Singh\net al., 2024). These methods do not handle arbitrary partially separable regularizers or\nadapt communication to sparsity patterns.",
+      "size": 215,
+      "sentences": 2
+    },
+    {
+      "id": 60,
+      "content": "not handle arbitrary partially separable regularizers or\nadapt communication to sparsity patterns. Consensus optimization embeds within our framework through penalty regularizers, but\nthe reverse is not efficient (Jiang et al., 2018): forcing multi-task problems into consensus\nform requires each node to maintain copies of all variables, thereby undermining the benefits\nof partial separability and significantly increasing memory complexity.",
+      "size": 443,
+      "sentences": 2
+    },
+    {
+      "id": 61,
+      "content": "by undermining the benefits\nof partial separability and significantly increasing memory complexity. Some consensus\nmethods incorporate graph-guided regularizers (Guo et al., 2024; Zhou et al., 2025), but\nthese regularizers embed within local loss functions rather than being shared across nodes.",
+      "size": 295,
+      "sentences": 2
+    },
+    {
+      "id": 62,
+      "content": "5), but\nthese regularizers embed within local loss functions rather than being shared across nodes. Recently, motivated by ProxSkip (Mishchenko et al., 2022) and incremental proximal\nmethods (Bertsekas, 2011), several communication-efficient methods are proposed for con-\nsensus optimization problems with a regularizer, such as RandProx (Condat and Richta´rik,\n2023), LoCoDL (Condat et al., 2025b), SMPM (Condat et al., 2025a).",
+      "size": 428,
+      "sentences": 2
+    },
+    {
+      "id": 63,
+      "content": "RandProx (Condat and Richta´rik,\n2023), LoCoDL (Condat et al., 2025b), SMPM (Condat et al., 2025a). However, these\nalgorithms are all restrictive: they can only apply to federated settings; LoCoDL further\nrequires both the local loss function and the regularizer to be L-smooth and strongly convex.",
+      "size": 298,
+      "sentences": 2
+    },
+    {
+      "id": 64,
+      "content": "rther\nrequires both the local loss function and the regularizer to be L-smooth and strongly convex. These algorithms are based on an idea similar to our randomized local coordination but\nactually different: they address the computational difficulties and high communication costs\nencountered in the computation of the proximal operator of the regularizer by using a\nrandom approximation, and further improve communication efficiency by selectively skipping\nproximal steps.",
+      "size": 472,
+      "sentences": 2
+    },
+    {
+      "id": 65,
+      "content": "approximation, and further improve communication efficiency by selectively skipping\nproximal steps. The key difference is that in these methods, all nodes share a common\nindicator determining if skipping the proximal steps, while in our method, each node has its\nown random variable to determine if the local randomized proximal step can be skipped.",
+      "size": 349,
+      "sentences": 2
+    },
+    {
+      "id": 66,
+      "content": "node has its\nown random variable to determine if the local randomized proximal step can be skipped. Moreover, in our method, each node randomly selects a regularizer component and compute\nits proximal operator, but only update its local part using the proximal operator. Our approach exploits partial separability directly: nodes coordinate only when regu-\nlarizer structure demands it.",
+      "size": 386,
+      "sentences": 3
+    },
+    {
+      "id": 67,
+      "content": "loits partial separability directly: nodes coordinate only when regu-\nlarizer structure demands it. We achieve communication efficiency for arbitrary partially\n7\n===  8 ===\nLin, Kuang, Alacaoglu, Friedlander\nseparable problems without smoothness assumptions or topology restrictions, though we do\nanalyze the convergence rate with and without smoothness.",
+      "size": 354,
+      "sentences": 2
+    },
+    {
+      "id": 68,
+      "content": "ns or topology restrictions, though we do\nanalyze the convergence rate with and without smoothness. 2 The BlockProx Method\nWe present the BlockProx method for any partially separable regularizer (Sections 2.1\nand 2.2), then specialize it to graph-guided regularizers where it achieves constant com-\nmunication cost (Sections 3 and 4). Throughout this paper, we consider undirected edges\n(i,j) ∈ E without self-loops.",
+      "size": 416,
+      "sentences": 3
+    },
+    {
+      "id": 69,
+      "content": "ections 3 and 4). Throughout this paper, we consider undirected edges\n(i,j) ∈ E without self-loops. 2.1 Algorithm Design and Independent Sampling\n(t)\nThe algorithm exploits partial separability: each node i samples index j ∈ {1,...,m}\ni\nuniformly at random at each iteration t and coordinates only with nodes in support set S . j(t)\ni\nFor graph-guided regularizers, this reduces to sampling a single edge, though nodes may\nreceive additional communication requests from neighbors.",
+      "size": 480,
+      "sentences": 4
+    },
+    {
+      "id": 70,
+      "content": "sampling a single edge, though nodes may\nreceive additional communication requests from neighbors. BlockProxalternatesbetweenthegradientstepfrom(1.5a)andarandomizedproximal\n(t)\nstep that approximates (1.5b). Each node i independently samples j ∈ {1,...,m}\ni\nuniformly and updates\n(cid:40)(cid:2) prox (z(t)) (cid:3) if i ∈ S ,\nx (t+1) = β(t)G( i t) i j i (t) (2.1)\ni (t)\nz otherwise,\ni\nwhere S denotes the support set of regularizer G .",
+      "size": 436,
+      "sentences": 3
+    },
+    {
+      "id": 71,
+      "content": "β(t)G( i t) i j i (t) (2.1)\ni (t)\nz otherwise,\ni\nwhere S denotes the support set of regularizer G . For notational convenience, we write\nj j\n(t)\nG := G for the regularizer sampled by node i at iteration t. The support set S\ni j(t) j(t)\ni i\ndetermines node i’s communication partners: node i participates in proximal computation\nonly when i ∈ S , which requires communication exclusively within that support set. j(t)\ni\nAlgorithm 1 details the complete implementation.",
+      "size": 467,
+      "sentences": 3
+    },
+    {
+      "id": 72,
+      "content": "cation exclusively within that support set. j(t)\ni\nAlgorithm 1 details the complete implementation. 2.2 Communication Protocol\n(t)\nThe proximal operator prox requires only variables {z } to compute node i’s\nβ(t)G(t) k k∈S (t)\ni j i\nupdate. When node i samples regularizer j with i ∈ S , it retrieves z values only with nodes\nj\n(t) (t+1) (t)\nin S . Particularly, node i retrieves z for all k ∈ S . If i ∈/ S , then x = z without\nj k j j i i\ncommunication.",
+      "size": 454,
+      "sentences": 6
+    },
+    {
+      "id": 73,
+      "content": "larly, node i retrieves z for all k ∈ S . If i ∈/ S , then x = z without\nj k j j i i\ncommunication. Each node stores its local variables (x ,z ) and has access to all regularizers\ni i\n{G | i ∈ S }. j j\n3 Specialization: The RandomEdge Algorithm\nWe specialize BlockProx to graph-guided regularizers (1.3), where each edge (i,j) ∈ E\ndefines a symmetric regularizer G (x) = g (x ,x ) = g (x ,x ) with support set S = {i,j}.",
+      "size": 420,
+      "sentences": 4
+    },
+    {
+      "id": 74,
+      "content": "(i,j) ∈ E\ndefines a symmetric regularizer G (x) = g (x ,x ) = g (x ,x ) with support set S = {i,j}. e ij i j ij j i e\nThe resulting method, RandomEdge, is fully described in Algorithm 2. The subgradient step matches BlockProx. In the proximal step, node i coordinates\nwith probability p = deg(i)/|E|. When coordinating, it samples a neighbor uniformly and\ni\njointly evaluates the corresponding edge regularizer.",
+      "size": 411,
+      "sentences": 5
+    },
+    {
+      "id": 75,
+      "content": "nating, it samples a neighbor uniformly and\ni\njointly evaluates the corresponding edge regularizer. Note that in the graph setting, the set\n8\n===  9 ===\nTopology-Independent Decentralized Optimization\nAlgorithm 1: BlockProx: decentralized proximal gradient with randomized\ncoordination\nData: stepsizes {α(t),β(t)} such that β(t) = mα(t), initial point {x (0) } ,\nt≥0 i i=1,...,n\ntotal iterations T\nfor t = 0,1,...,T −1 do\nfor i = 1,2,...,n do in parallel\n▷ Gradient Step from (1.5a)\ncompute g (t) ∈ ∂f (x (t) ) and set z (t) = x (t) −α(t)g (t)\ni i i i i i\nz(t) = (z (t) ,...,z (t) ) ▷ Each node i stores its own z(t) only\n1 n i\nfor i = 1,2,...,n do in parallel\n▷ Proximal Step\n(t)\nsample j ∼ Unif({1,...,m}) ▷ Randomized local coordination\ni\nif i ∈ S then\nj(t)\ni\nx (t+1) := (cid:2) prox (z(t)) (cid:3) ▷ Node i retrieves z(t) ∀k ∈S\ni β(t)G(t) i k j(t)\ni i\nelse\n(t+1) (t)\nx = z ▷ No communication required\ni i\n3\nS S\n(1,3) (3,4)\nS\n(2,3)\n1 2 4\nS S\n(1,2) (2,4)\nFigure 2: Node 2’s incident edges in the graph specialization.",
+      "size": 1019,
+      "sentences": 2
+    },
+    {
+      "id": 76,
+      "content": "(3,4)\nS\n(2,3)\n1 2 4\nS S\n(1,2) (2,4)\nFigure 2: Node 2’s incident edges in the graph specialization. Blue edges show e ∈ E where\n2 ∈ e, illustrating that node 2 coordinates with probability p = deg(2)/|E| = 3/5. 2\n{j | i ∈ S } consists precisely of edges incident to node i, making the support set notation\nj\na natural generalization of graph neighborhoods (see Figure 2). For instance, consider a\n4-node graph with edges E = {(1,2),(1,3),(2,3),(2,4),(3,4)} as shown in Figure 2.",
+      "size": 477,
+      "sentences": 4
+    },
+    {
+      "id": 77,
+      "content": "tance, consider a\n4-node graph with edges E = {(1,2),(1,3),(2,3),(2,4),(3,4)} as shown in Figure 2. Node 2\nparticipates in edges (1,2), (2,3), and (2,4), yielding {e ∈ E | 2 ∈ e} = {(1,2),(2,3),(2,4)}\nand p = deg(2)/|E| = 3/5. 2\nThe following proposition establishes that RandomEdge specializes BlockProx for\ngraph-guided regularizers (1.3), and thus inherits its theoretical guarantees.",
+      "size": 387,
+      "sentences": 3
+    },
+    {
+      "id": 78,
+      "content": "alizes BlockProx for\ngraph-guided regularizers (1.3), and thus inherits its theoretical guarantees. Proposition 3.1 (RandomEdge and BlockProx Equivalence) Algorithms1and2are\nequivalent when the regularizer G is graph-guided as in (1.3); that is, they generate identical\nsequences of iterates. Proof In the graph-guided setting, each edge e = {i,j} ∈ E corresponds to a regularizer\nG (x) = g (x ,x ) with support S = {i,j}.",
+      "size": 422,
+      "sentences": 3
+    },
+    {
+      "id": 79,
+      "content": "ing, each edge e = {i,j} ∈ E corresponds to a regularizer\nG (x) = g (x ,x ) with support S = {i,j}. Because the subgradient steps match, we\ne ij i j e\nanalyze only the proximal step. For any node i and neighbor j, we compute the probability that i updates using edge\n{i,j}. For BlockProx, node i samples one edge uniformly from all |E| edges.",
+      "size": 342,
+      "sentences": 4
+    },
+    {
+      "id": 80,
+      "content": "at i updates using edge\n{i,j}. For BlockProx, node i samples one edge uniformly from all |E| edges. Thus, the\n9\n===  10 ===\nLin, Kuang, Alacaoglu, Friedlander\nAlgorithm 2: RandomEdge: application of BlockProx to graph-guided regu-\nlarizers\nData: stepsizes {α(t),β(t)} , initial point {x (0) }n , graph G = (V,E), total\nt≥0 i i=1\niterations T\nfor t = 0,1,...,T −1 do\nfor i = 1,2,...,n do in parallel\n▷ Subgradient Step\ncompute g (t) ∈ ∂f (x (t) ) and set z (t) = x (t) −α(t)g (t)\ni i i i i i\nz(t) = (z (t) ,...,z (t) )\n1 n\nfor i = 1,2,...,n do in parallel\n▷ Proximal Step with Randomized Local Coordination\np = deg(i)/|E| ▷ Node degree determines coordination probability\ni\n(t) (t)\nsample θ ∈ {0,1} with Pr(θ = 1) = p ▷ Randomly coordination\ni i i\n(t)\nif θ = 1 then\ni\n▷ Coordinate with nodes in selected support set\n(t)\nsample j ∼ Unif({j | i ∈ S }) ▷ Sample edge incident to node i\ni j\n(t)\nretrieve z from the neighbor k ∈ S \\{i}\nk j(t)\ni\n(t)\nw = prox (z ) ▷ Evaluate edge regularizer jointly\nS j i (t) β(t)G j i (t) S j i (t)\n(t+1)\nx = w\ni i\nelse\n(t+1) (t)\nx = z ▷ Independent update when coordination not needed\ni i\nprobability of selecting edge {i,j} is 1/|E|.",
+      "size": 1163,
+      "sentences": 3
+    },
+    {
+      "id": 81,
+      "content": "▷ Independent update when coordination not needed\ni i\nprobability of selecting edge {i,j} is 1/|E|. For RandomEdge, node i coordinates with\nprobability p = deg(i)/|E| and chooses neighbor j uniformly from its deg(i) neighbors. i\nThus, the probability of selecting edge {i,j} is\n1 deg(i) 1 1\np · = · = . i\ndeg(i) |E| deg(i) |E|\nBoth algorithms therefore assign probability 1/|E| to each edge activation.",
+      "size": 402,
+      "sentences": 4
+    },
+    {
+      "id": 82,
+      "content": "i\ndeg(i) |E| deg(i) |E|\nBoth algorithms therefore assign probability 1/|E| to each edge activation. 4 Communication Analysis\nWe establish that communication cost depends solely on the regularizer’s structure, not on\nnetwork topology. The BlockProx framework’s communication cost depends on the partial\nseparability structure of regularizer G because each component G induces communication\nj\namong nodes in its support set S .",
+      "size": 425,
+      "sentences": 3
+    },
+    {
+      "id": 83,
+      "content": "f regularizer G because each component G induces communication\nj\namong nodes in its support set S . When node i samples component j, it coordinates\nj\nwith |S |−1 other nodes if i ∈ S , and with no nodes otherwise. This randomized local\nj j\ncoordination mechanism yields the following characterization.",
+      "size": 301,
+      "sentences": 3
+    },
+    {
+      "id": 84,
+      "content": "otherwise. This randomized local\nj j\ncoordination mechanism yields the following characterization. 10\n===  11 ===\nTopology-Independent Decentralized Optimization\nTheorem 4.1 (Expected Communication Cost) Let G be partially separable as in Def-\ninition 1.1 with support sets S ⊆ {1,...,n} for j = 1,...,m. If a = |S | for each j, then\nj j j\nthe expected number of communications across all nodes in each iteration of BlockProx is\n(cid:80)m (a2−a )/m.",
+      "size": 449,
+      "sentences": 3
+    },
+    {
+      "id": 85,
+      "content": "ed number of communications across all nodes in each iteration of BlockProx is\n(cid:80)m (a2−a )/m. j=1 j j\nMoreover, node i communicates with probability d /m, where d =\n(cid:80)m\n1{i ∈ S } counts\ni i j=1 j\nthe number of components that include node i. Proof Let δ = 1{i ∈ S } indicate whether node i participates in component j. Then\nij j\na = |S | =\n(cid:80)n\nδ .",
+      "size": 365,
+      "sentences": 4
+    },
+    {
+      "id": 86,
+      "content": "= 1{i ∈ S } indicate whether node i participates in component j. Then\nij j\na = |S | =\n(cid:80)n\nδ . j j i=1 ij\nWhen node i samples component j, it communicates with exactly δ (a − 1) other\nij j\nnodes: if i ∈ S , it coordinates with the a −1 other nodes in S ; otherwise, it performs\nj j j\nno communication. Because each component is sampled with probability 1/m, node i’s\nexpected communication count equals\n(1/m)\n(cid:80)m\nδ (a −1).",
+      "size": 433,
+      "sentences": 4
+    },
+    {
+      "id": 87,
+      "content": "ampled with probability 1/m, node i’s\nexpected communication count equals\n(1/m)\n(cid:80)m\nδ (a −1). j=1 ij j\nSumming over all nodes yields the total expected communications:\nn m m n m\n(cid:88)(cid:88) 1 1 (cid:88) (cid:88) 1 (cid:88)\nδ (a −1) = (a −1) δ = (a2−a ),\nm ij j m j ij m j j\ni=1 j=1 j=1 i=1 j=1\nwhere the last equality follows from the definition of a .",
+      "size": 363,
+      "sentences": 2
+    },
+    {
+      "id": 88,
+      "content": "m ij j m j ij m j j\ni=1 j=1 j=1 i=1 j=1\nwhere the last equality follows from the definition of a . j\nTo compute the probability that node i communicates in a given iteration, note that\nnode i communicates in a given iteration if and only if it samples a component j such that\n(t)\ni ∈ S . This occurs when the sampled index j satisfies δ = 1.",
+      "size": 341,
+      "sentences": 3
+    },
+    {
+      "id": 89,
+      "content": "t samples a component j such that\n(t)\ni ∈ S . This occurs when the sampled index j satisfies δ = 1. Since each component is\nj i ij(t)\ni\nsampled uniformly at random, the probability that node i communicates equals\nm m\n(cid:88) (t) 1 (cid:88) d i\nPr[node i communicates] = Pr[j = j]·δ = δ = ,\ni ij m ij m\nj=1 j=1\nwhere d =\n(cid:80)m\nδ counts the number of components that include node i.\ni j=1 ij\nThe formula a2−a counts the pairwise communications required when a nodes coor-\nj j j\ndinate.",
+      "size": 488,
+      "sentences": 3
+    },
+    {
+      "id": 90,
+      "content": "=1 ij\nThe formula a2−a counts the pairwise communications required when a nodes coor-\nj j j\ndinate. When component G is activated (sampled by at least one node), all a nodes in\nj j\nsupport set S must coordinate to compute the proximal map of G . This coordination forms\nj j\na complete communication graph among these nodes, requiring every node to communicate\nwith every other node in S .",
+      "size": 388,
+      "sentences": 3
+    },
+    {
+      "id": 91,
+      "content": "unication graph among these nodes, requiring every node to communicate\nwith every other node in S . j\n4.1 Graph-Guided Regularizers\nFor graph-guided regularizers, each edge e = {i,j} ∈ E corresponds to a regularizer G with\ne\nsupport S = {i,j}, giving a = |S | = 2 for all j. Consider RandomEdge in this setting:\ne j j\neach node independently samples one edge from the graph, and communication occurs only\nwhen two neighboring nodes sample their shared edge.",
+      "size": 457,
+      "sentences": 3
+    },
+    {
+      "id": 92,
+      "content": "from the graph, and communication occurs only\nwhen two neighboring nodes sample their shared edge. 11\n===  12 ===\nLin, Kuang, Alacaoglu, Friedlander\nSubstituting a = 2 into the formula from Theorem 4.1 yields\nj\n(cid:80)m (a2−a )/m = (cid:80)m (4−2)/m = (cid:80)m 2/m = 2.\nj=1 j j j=1 j=1\nThus RandomEdge requires exactly 2 expected communications per iteration across all\nnodes, regardless of the graph’s structure or size.",
+      "size": 423,
+      "sentences": 2
+    },
+    {
+      "id": 93,
+      "content": "xpected communications per iteration across all\nnodes, regardless of the graph’s structure or size. To understand the per-node behavior, let\np = deg(i)/m denote the probability that node i requires coordination, which occurs when\ni\nit samples any edge incident to itself.",
+      "size": 271,
+      "sentences": 2
+    },
+    {
+      "id": 94,
+      "content": "lity that node i requires coordination, which occurs when\ni\nit samples any edge incident to itself. The expected number of communications for node i\nper iteration equals p , and summing over all nodes yields\ni\n(cid:80)n\np =\n(cid:80)n\ndeg(i)/m = 2m/m = 2,\ni=1 i i=1\nwhere we use the handshaking lemma:\n(cid:80)n\ndeg(i) = 2m for undirected graphs. We record\ni=1\nthis result in the following corollary.",
+      "size": 399,
+      "sentences": 3
+    },
+    {
+      "id": 95,
+      "content": "(cid:80)n\ndeg(i) = 2m for undirected graphs. We record\ni=1\nthis result in the following corollary. Corollary 4.2 (Graph-Guided Communication) For graph-guided regularizers where\neachcomponentG couplesexactlytwonodes(i.e., a = |S | = 2forallj), the RandomEdge\nj j j\nalgorithmachievesexactly2expectedcommunicationsperiterationacrossallnodes. Moreover,\neach node communicates with probability deg(i)/m, where deg(i) is the degree of node i in\nthe graph.",
+      "size": 450,
+      "sentences": 4
+    },
+    {
+      "id": 96,
+      "content": "ach node communicates with probability deg(i)/m, where deg(i) is the degree of node i in\nthe graph. Remark 4.3 (Per-Node Communication Variability) Individualnodesexperiencevari-\nable communication loads: node i may communicate k times if it samples an edge and k−1\nneighbors sample edges involving i. High-degree nodes have proportionally higher expected\ncommunication.",
+      "size": 370,
+      "sentences": 2
+    },
+    {
+      "id": 97,
+      "content": "bors sample edges involving i. High-degree nodes have proportionally higher expected\ncommunication. 5 Convergence Theory\nWe now establish convergence guarantees for BlockProx that match centralized stochastic\ngradient methods despite the algorithm’s decentralized nature and minimal communication\noverhead. 5.1 Assumptions and Preliminaries\nWe analyze the convergence of BlockProx under three settings. For convenience, we\nrestate the BlockProx iterative process.",
+      "size": 463,
+      "sentences": 4
+    },
+    {
+      "id": 98,
+      "content": "nce of BlockProx under three settings. For convenience, we\nrestate the BlockProx iterative process. Beginning with x(0) and t = 0, the algorithm\ngenerates iterates via\nz(t) = x(t)−α(t)g(t) ∈ Rnd, g(t) = (g (t) ,...,g(t)), g (t) ∈ ∂f (x (t) ) (5.1a)\n1 n i i i\nx (t+1) = (cid:2) prox (z(t)) (cid:3) ∈ Rd, j (t) ∼ Unif({1,...,m}) (5.1b)\ni β(t)G (t) i i\nj\ni\n(t+1) (t)\nfor all i ∈ {1,...,n}, where the update implicitly sets x = z when i ∈/ S , as\ni i j(t)\ni\nestablished in (2.1).",
+      "size": 475,
+      "sentences": 3
+    },
+    {
+      "id": 99,
+      "content": "{1,...,n}, where the update implicitly sets x = z when i ∈/ S , as\ni i j(t)\ni\nestablished in (2.1). Assumption 5.1 The following conditions hold:\n(a) The solution set X∗ to (1.1) is nonempty. 12\n===  13 ===\nTopology-Independent Decentralized Optimization\n(b) The following holds: ∥s∥ ≤ c for every s ∈ ∂G (x), x ∈ Rnd, and j ∈ {1,...,m}.",
+      "size": 337,
+      "sentences": 3
+    },
+    {
+      "id": 100,
+      "content": "zed Optimization\n(b) The following holds: ∥s∥ ≤ c for every s ∈ ∂G (x), x ∈ Rnd, and j ∈ {1,...,m}. j\n(c) Exactly one of the following holds for the loss function F:\n(i) F has bounded subgradients: ∥s∥ ≤ c for every s ∈ ∂F(x) and x ∈ Rnd;\n(ii) F is L-smooth (differentiable with L-Lipschitz gradient);\n(iii) F is L-smooth and µ-strongly convex.",
+      "size": 344,
+      "sentences": 2
+    },
+    {
+      "id": 101,
+      "content": "is L-smooth (differentiable with L-Lipschitz gradient);\n(iii) F is L-smooth and µ-strongly convex. Observe that the uniform boundedness condition in Assumption 5.1(b) is equivalent to\nrequiring each G to be c-Lipschitz continuous (Rockafellar, 1970, Theorem 24.7).",
+      "size": 264,
+      "sentences": 2
+    },
+    {
+      "id": 102,
+      "content": ") is equivalent to\nrequiring each G to be c-Lipschitz continuous (Rockafellar, 1970, Theorem 24.7). Assump-\nj\ntion 5.1(b) and Assumption 5.1(c)(i) together lead to the bounded subgradient assumption,\nstandard in centralized and decentralized optimization literature; see, for example, Bertsekas\n(2011) for centralized settings, and Nedic and Ozdaglar (2009); Sundhar Ram et al. (2010);\nJakovetic et al. (2014); Yu et al. (2021); Yuan et al. (2021, 2022); Liu et al. (2024) for\ndecentralized settings.",
+      "size": 500,
+      "sentences": 7
+    },
+    {
+      "id": 103,
+      "content": ". (2014); Yu et al. (2021); Yuan et al. (2021, 2022); Liu et al. (2024) for\ndecentralized settings. It is also common to assume strong convexity and L-smoothness\nof the objective function in decentralized optimization (Shi et al., 2015; Yuan et al., 2016;\nSmith et al., 2018; Li et al., 2020; Lan et al., 2020; Mishchenko et al., 2022; Alghunaim and\nYuan, 2024). 5.2 Core Technical Lemmas\nThis section establishes cross-cutting mathematical machinery used throughout our con-\nvergence analysis.",
+      "size": 494,
+      "sentences": 7
+    },
+    {
+      "id": 104,
+      "content": "ection establishes cross-cutting mathematical machinery used throughout our con-\nvergence analysis. The central challenge is understanding how the expected behavior\nof our randomized regularizer selection (local coordination) relates to the deterministic\nproximal-gradient method. (t)\nLet F := σ({j | 1 ≤ i ≤ n and 0 ≤ t < k}) denote the σ-algebra generated by all\nk i\nrandomselectionsuptoiterationk, andusetheshorthandEk := E[· | F ]fortheconditional\nk\nexpectation given F .",
+      "size": 475,
+      "sentences": 3
+    },
+    {
+      "id": 105,
+      "content": "electionsuptoiterationk, andusetheshorthandEk := E[· | F ]fortheconditional\nk\nexpectation given F . k\nTo support our convergence analysis, we recall a basic nonexpansiveness-type property\nof proximal operators for convex functions. Lemma 5.1 (Nonexpansive Property of Proximal Operator) Let G : Rnd → R be\nj\nconvex. If xˆ = prox (z) with β > 0 and z ∈ Rnd, then for any y ∈ Rnd,\nβGj\n∥xˆ−y∥2 ≤ ∥z−y∥2−2β(G (xˆ)−G (y)).",
+      "size": 417,
+      "sentences": 4
+    },
+    {
+      "id": 106,
+      "content": "xˆ = prox (z) with β > 0 and z ∈ Rnd, then for any y ∈ Rnd,\nβGj\n∥xˆ−y∥2 ≤ ∥z−y∥2−2β(G (xˆ)−G (y)). j j\nProof By Beck (2017, Theorem 6.39(i),(iii)), we have\n2⟨z−xˆ,y−xˆ⟩ ≤ 2β(G (y)−G (xˆ)). j j\nUsing 2⟨a,b⟩ = ∥a∥2+∥b∥2−∥a−b∥2 with a = z−xˆ, b = y−xˆ, then removing ∥z−xˆ∥2\nfrom the left-hand side, and rearranging gives the result.",
+      "size": 330,
+      "sentences": 3
+    },
+    {
+      "id": 107,
+      "content": "= z−xˆ, b = y−xˆ, then removing ∥z−xˆ∥2\nfrom the left-hand side, and rearranging gives the result. 13\n===  14 ===\nLin, Kuang, Alacaoglu, Friedlander\n5.2.1 Expected Error Decomposition\nThe following proposition shows that BlockProx’s random regularizer selection yields an\nexpected squared error equal to the average over all possible selections. This result allows\nus to reduce the analysis of the new method to that of the incremental gradient methods\n(Bertsekas, 2011).",
+      "size": 471,
+      "sentences": 3
+    },
+    {
+      "id": 108,
+      "content": "educe the analysis of the new method to that of the incremental gradient methods\n(Bertsekas, 2011). Proposition 5.2 (Expected Error Decomposition) For sequences {x(k),z(k)} gener-\nated by BlockProx via (5.1), we have, for any k ≥ 0 and any y ∈ Rnd,\n1\nEk∥x(k+1)−y∥2 = (cid:80)m ∥prox (z(k))−y∥2. m j=1 β(k)Gj\nProof We use the independence of node sampling to deduce that the expected squared\ndistance decomposes into an average over all regularizer selections.",
+      "size": 459,
+      "sentences": 3
+    },
+    {
+      "id": 109,
+      "content": "duce that the expected squared\ndistance decomposes into an average over all regularizer selections. Let y := (y ,y ,...,y ),\n1 2 n\nwhere each y ∈ Rd for i = 1,2,...,n. Because the squared norm is block separable,\ni\nEk∥x(k+1)−y∥2 = Ek(cid:80)n ∥x (k+1) −y ∥2\ni=1 i i\n= (cid:80)n E ∥x (k+1) −y ∥2\ni=1 j\n1\n(k),...,jn (k) i i\n= (cid:80)n E ∥ (cid:2) prox (z(k)) (cid:3) −y ∥2,\ni=1 j(k) β(k)G(k) i i\ni i\n(k) (k+1)\nwhere the last equality follows from the independence of each j and the fact that x\ni i\n(k) (k)\ndepends only on j .",
+      "size": 524,
+      "sentences": 2
+    },
+    {
+      "id": 110,
+      "content": "quality follows from the independence of each j and the fact that x\ni i\n(k) (k)\ndepends only on j . Since j is uniform over {1,2,...,m},\ni i\nE ∥ (cid:2) prox (z(k)) (cid:3) −y ∥2 = 1 (cid:80)m ∥ (cid:2) prox (z(k)) (cid:3) −y ∥2.",
+      "size": 229,
+      "sentences": 2
+    },
+    {
+      "id": 111,
+      "content": "..,m},\ni i\nE ∥ (cid:2) prox (z(k)) (cid:3) −y ∥2 = 1 (cid:80)m ∥ (cid:2) prox (z(k)) (cid:3) −y ∥2. j(k) β(k)G(k) i i m j=1 β(k)Gj i i\ni i\nCombining these equalities yields\nEk∥x(k+1)−y∥2 = (cid:80)n 1 (cid:80)m ∥ (cid:2) prox (z(k)) (cid:3) −y ∥2\ni=1 m j=1 β(k)Gj i i\n= 1 (cid:80)m (cid:80)n ∥ (cid:2) prox (z(k)) (cid:3) −y ∥2\nm j=1 i=1 β(k)Gj i i\n1\n= (cid:80)m ∥prox (z(k))−y∥2,\nm j=1 β(k)Gj\nwhere the final step uses block separability over the index i of the squared norm.",
+      "size": 476,
+      "sentences": 2
+    },
+    {
+      "id": 112,
+      "content": "∥2,\nm j=1 β(k)Gj\nwhere the final step uses block separability over the index i of the squared norm. 5.2.2 Analysis for Proximal Steps\nDefine the following vectors related to the proximal step:\nxˆ(k,j) := prox (z(k)), (5.2a)\nβ(k)Gj\n1\ngˆ(k,j) := (z(k)−xˆ(k,j)) ∈ ∂G (xˆ(k,j)). (5.2b)\nj\nβ(k)\n14\n===  15 ===\nTopology-Independent Decentralized Optimization\nThe quantity xˆ(k,j) is the update when all nodes select regularizer j.",
+      "size": 423,
+      "sentences": 3
+    },
+    {
+      "id": 113,
+      "content": "Decentralized Optimization\nThe quantity xˆ(k,j) is the update when all nodes select regularizer j. Substituting this\nnotation into Proposition 5.2 yields the working form\n1\nEk∥x(k+1)−y∥2 = (cid:80)m ∥xˆ(k,j)−y∥2. m j=1\nMoreover, Assumption 5.1(b) gives the bound ∥gˆ(k,j)∥ ≤ c.\nThe following lemma states BlockProx achieves expected descent in the proximal step\ndespite using only partial regularizer information at each iteration.",
+      "size": 431,
+      "sentences": 3
+    },
+    {
+      "id": 114,
+      "content": "descent in the proximal step\ndespite using only partial regularizer information at each iteration. Lemma 5.3 (Expected Descent in Proximal Step) UnderAssumption5.1, the Block-\nProx algorithm generates sequences {x(k),z(k)} that satisfies, for any k ≥ 0 and any y ∈ Rnd,\nEk∥x(k+1)−y∥2 ≤ ∥z(k)−y∥2−2α(k)(cid:2) G(x(k))−G(y) (cid:3)\n+2mc(α(k))2∥g(k)∥+2m2c2(α(k))2. Proof Use the definitions of xˆ(k,j) and gˆ(k,j) in (5.2).",
+      "size": 420,
+      "sentences": 3
+    },
+    {
+      "id": 115,
+      "content": "(cid:3)\n+2mc(α(k))2∥g(k)∥+2m2c2(α(k))2. Proof Use the definitions of xˆ(k,j) and gˆ(k,j) in (5.2). We deduce\n(i)\n∥xˆ(k,j)−y∥2 ≤ ∥z(k)−y∥2−2β(k)(cid:2) G (xˆ(k,j))−G (y) (cid:3)\nj j\n(ii)\n≤ ∥z(k)−y∥2−2β(k)(cid:2) G (x(k))−G (y) (cid:3)\nj j\n+2β(k)c∥x(k)−xˆ(k,j)∥,\nwhere (i) follows from Lemma 5.1, (ii) uses the c-Lipschitz continuity of G . By triangle\nj\ninequality and the definitions from (5.2), we have\n∥x(k)−xˆ(k,j)∥ ≤ ∥z(k)−x(k)∥+∥xˆ(k,j)−z(k)∥\n≤ α(k)∥g(k)∥+β(k)∥gˆ(k,j)∥.",
+      "size": 475,
+      "sentences": 4
+    },
+    {
+      "id": 116,
+      "content": "nitions from (5.2), we have\n∥x(k)−xˆ(k,j)∥ ≤ ∥z(k)−x(k)∥+∥xˆ(k,j)−z(k)∥\n≤ α(k)∥g(k)∥+β(k)∥gˆ(k,j)∥. Then, using β(k) = mα(k) and ∥gˆ(k,j)∥ ≤ c from Assumption 5.1(b),\n∥xˆ(k,j)−y∥2 ≤ ∥z(k)−y∥2−2mα(k)(cid:2) G (x(k))−G (y) (cid:3)\nj j\n+2m(α(k))2∥g(k)∥+2m2c2(α(k))2. Plugging in the result of Proposition 5.2 on the left-hand side concludes the proof.",
+      "size": 348,
+      "sentences": 3
+    },
+    {
+      "id": 117,
+      "content": "+2m2c2(α(k))2. Plugging in the result of Proposition 5.2 on the left-hand side concludes the proof. 5.2.3 Last Iterate Bound\nHere we give a bound that relates the final iterate to the average performance through a\ncorrection term with three key behaviors. When the sequence θ has low variance (i.e.,\nh\nθ ≈ θ ), the correction term vanishes, yielding the standard averaging bound.",
+      "size": 379,
+      "sentences": 4
+    },
+    {
+      "id": 118,
+      "content": "low variance (i.e.,\nh\nθ ≈ θ ), the correction term vanishes, yielding the standard averaging bound. The\nh k−t\nweights ω = (t2 +t)−1 form a telescoping series summing to less than 1, preventing the\nt\ncorrection term from dominating. This lemma transforms per-iteration descent into explicit\nconvergence rates, with the correction term vanishing at the optimal rate through our choice\nof step size α . We give in Section A a proof adapted to our context.",
+      "size": 452,
+      "sentences": 4
+    },
+    {
+      "id": 119,
+      "content": "timal rate through our choice\nof step size α . We give in Section A a proof adapted to our context. k\n15\n===  16 ===\nLin, Kuang, Alacaoglu, Friedlander\nLemma 5.4 (Last Iteration Bound (Orabona, 2020)) For any sequence of positive\nscalar pairs {α ,θ } , where α in particular is non-increasing,\nk k k=1,2,... k\nk k k\n1 (cid:88) (cid:88) (cid:88)\nα θ ≤ α θ + ω α (θ −θ ).",
+      "size": 369,
+      "sentences": 3
+    },
+    {
+      "id": 120,
+      "content": "ular is non-increasing,\nk k k=1,2,... k\nk k k\n1 (cid:88) (cid:88) (cid:88)\nα θ ≤ α θ + ω α (θ −θ ). k k t t t h h k−t\nk+1\nt=0 t=1 h=k+1−t\n5.3 Convergence under Bounded Subgradients\nUnder bounded subgradients, BlockProx achieves last-iterate convergence with the best-\n√\nknown O˜(1/ k) rate for general convex objectives (Shamir and Zhang, 2013).",
+      "size": 345,
+      "sentences": 2
+    },
+    {
+      "id": 121,
+      "content": "rgence with the best-\n√\nknown O˜(1/ k) rate for general convex objectives (Shamir and Zhang, 2013). ThenextlemmastatesthatwhenbothF andGhaveboundedsubgradients,BlockProx\nachieves expected descent despite using only partial regularizer information at each iteration. Lemma 5.5 (Expected Descent under Bounded Subgradients) Let Assumption 5.1\nhold with Case (c)(i) (bounded subgradients of F).",
+      "size": 391,
+      "sentences": 3
+    },
+    {
+      "id": 122,
+      "content": "t under Bounded Subgradients) Let Assumption 5.1\nhold with Case (c)(i) (bounded subgradients of F). Then BlockProx generates a sequence\n{x(k)} that satisfies, for any k and any y ∈ Rnd,\nEk∥x(k+1)−y∥2 ≤ ∥x(k)−y∥2−2α(k)[H(x(k))−H(y)]+(2m2+2m+1)(α(k)c)2. Proof Lemma 5.3 and Assumption 5.1(c)(i) give\nEk∥x(k+1)−y∥2 ≤ ∥z(k)−y∥2−2α(k)[G(x(k))−G(y)]+(2m2+2m)(α(k)c)2.",
+      "size": 361,
+      "sentences": 3
+    },
+    {
+      "id": 123,
+      "content": "a 5.3 and Assumption 5.1(c)(i) give\nEk∥x(k+1)−y∥2 ≤ ∥z(k)−y∥2−2α(k)[G(x(k))−G(y)]+(2m2+2m)(α(k)c)2. Apply the subgradient descent property (see, e.g., (Beck, 2017, Lemma 8.11)) for z(k) =\nx(k)−α(k)g(k) to deduce\n∥z(k)−y∥2 ≤ ∥x(k)−y∥2−2α(k)(cid:2) F(x(k))−F(y) (cid:3) +(α(k)c)2. Substituting this bound into the first inequality yields\nEk∥x(k+1)−y∥2 ≤ ∥x(k)−y∥2−2α(k)[H(x(k))−H(y)]\n+(2m2+2m+1)(α(k)c)2. The proof is completed.",
+      "size": 426,
+      "sentences": 4
+    },
+    {
+      "id": 124,
+      "content": "y yields\nEk∥x(k+1)−y∥2 ≤ ∥x(k)−y∥2−2α(k)[H(x(k))−H(y)]\n+(2m2+2m+1)(α(k)c)2. The proof is completed. We now prove that BlockProx converges at a rate that matches, up to a logarithmic\nterm, the fundamental limit for stochastic gradient methods on general convex functions\n(Nemirovski and Yudin, 1983). Theorem 5.6 (Convergence under Bounded Subgradients) LetAssumption5.1hold\n√\nwith Case (c)(i) (bounded subgradients of F). Let α(k) = α/ k+1 for some positive constant\nα.",
+      "size": 469,
+      "sentences": 5
+    },
+    {
+      "id": 125,
+      "content": "old\n√\nwith Case (c)(i) (bounded subgradients of F). Let α(k) = α/ k+1 for some positive constant\nα. Then BlockProx generates a sequence {x(k)} that satisfies, for any k,\n(cid:18) (cid:19)\nE(cid:2) H(x(k))−H∗(cid:3) ≤ √ 1 1 dist(x(0),X∗)2+O(αc2m2logk) , (5.3)\n2 k+1 α\nwhere dist(x(0),X∗) = min ∥x(0) − x∗∥, and the term O(αc2m2logk) can be made\nx∗∈X∗\nexplicit as 3(2m2+m+1)αc2(1+1log(k+1)).",
+      "size": 389,
+      "sentences": 3
+    },
+    {
+      "id": 126,
+      "content": "in ∥x(0) − x∗∥, and the term O(αc2m2logk) can be made\nx∗∈X∗\nexplicit as 3(2m2+m+1)αc2(1+1log(k+1)). 16\n===  17 ===\nTopology-Independent Decentralized Optimization\nProof It is sufficient to prove, for any x∗ ∈ X∗,\n(cid:18) (cid:19)\nE(cid:2) H(x(k))−H∗(cid:3) ≤ √ 1 1 ∥x(0)−x∗∥2+O(αc2m2logk) . (5.4)\n2 k+1 α\nStep 1: Apply the Last Iteration Bound. Apply Lemma 5.4 with the identifications\nα ≡ α(k) and θ ≡ E(cid:2) H(x(k))−H∗(cid:3) .",
+      "size": 432,
+      "sentences": 4
+    },
+    {
+      "id": 127,
+      "content": "ation Bound. Apply Lemma 5.4 with the identifications\nα ≡ α(k) and θ ≡ E(cid:2) H(x(k))−H∗(cid:3) . Because α(k) is non-increasing,\nk k\nk\nα(k)E(cid:2) H(x(k))−H∗(cid:3)\n≤\n1 (cid:88) α(t)E(cid:2) H(x(t))−H∗(cid:3)\nk+1\nt=0\nk k\n+ (cid:88) 1 (cid:88) α(h)E(cid:2) H(x(h))−H(x(k−t)) (cid:3) .",
+      "size": 287,
+      "sentences": 3
+    },
+    {
+      "id": 128,
+      "content": "cid:2) H(x(t))−H∗(cid:3)\nk+1\nt=0\nk k\n+ (cid:88) 1 (cid:88) α(h)E(cid:2) H(x(h))−H(x(k−t)) (cid:3) . (5.5)\nt2+t\nt=1 h=k+1−t\nUse Lemma 5.5 and apply the law of iterated expectations to deduce that for any h and\ny ∈ Rnd,\n2α(h)E(cid:2) H(x(h))−H(y) (cid:3) ≤ E∥x(h)−y∥2−E∥x(h+1)−y∥2+ (cid:0) α(h)(cid:1)2 C , (5.6)\n1\nwhere C = (2m2+m+1)c2. 1\nStep 2: Telescope the objective gap.",
+      "size": 374,
+      "sentences": 3
+    },
+    {
+      "id": 129,
+      "content": "y∥2+ (cid:0) α(h)(cid:1)2 C , (5.6)\n1\nwhere C = (2m2+m+1)c2. 1\nStep 2: Telescope the objective gap. For any x∗ ∈ X∗, setting y = x∗ in (5.6) and\nsumming over h = 0,1,...,k yields\nk k\n(cid:88) α(h)E(cid:2) H(x(h))−H∗(cid:3) ≤ 1∥x(0)−x∗∥2+ 1 (cid:88)(cid:0) α(h)(cid:1)2 C .",
+      "size": 272,
+      "sentences": 3
+    },
+    {
+      "id": 130,
+      "content": "ields\nk k\n(cid:88) α(h)E(cid:2) H(x(h))−H∗(cid:3) ≤ 1∥x(0)−x∗∥2+ 1 (cid:88)(cid:0) α(h)(cid:1)2 C . (5.7)\n2 2 1\nh=0 h=0\nTo bound the sum of squared stepsizes, we use the standard integral approximation of the\nharmonic series:\nk k+1\n(cid:88) (cid:88) 1\n(α(h))2 = α2 ≤ α2(1+log(k+1)),\nh\nh=0 h=1\nand by (5.7),\nk\n1 (cid:88) α(t)E(cid:2) H(x(t))−H∗(cid:3) ≤ 1 (cid:16) ∥x(0)−x∗∥2+ (cid:0) 1+log(k+1) (cid:1) α2C (cid:17) .",
+      "size": 417,
+      "sentences": 2
+    },
+    {
+      "id": 131,
+      "content": ") α(t)E(cid:2) H(x(t))−H∗(cid:3) ≤ 1 (cid:16) ∥x(0)−x∗∥2+ (cid:0) 1+log(k+1) (cid:1) α2C (cid:17) . (5.8)\nk+1 2(k+1) 1\nt=0\nThe bound combines initial error with accumulated variance from random sampling. Step 3: Bound accumulated variance. Setting y = x(k−t) in (5.6) and summing over\nh = k−t,k−t+1,...,k,\nk\n(cid:88) α(h)E(cid:2) H(x(h))−H(x(k−t)) (cid:3)\nh=k−t\nk\n≤− 1E∥x(k+1)−x(k−t)∥2+ 1 (cid:88)(cid:0) α(h)(cid:1)2 C .",
+      "size": 421,
+      "sentences": 4
+    },
+    {
+      "id": 132,
+      "content": "(cid:2) H(x(h))−H(x(k−t)) (cid:3)\nh=k−t\nk\n≤− 1E∥x(k+1)−x(k−t)∥2+ 1 (cid:88)(cid:0) α(h)(cid:1)2 C . 2 2 1\nh=k−t\n17\n===  18 ===\nLin, Kuang, Alacaoglu, Friedlander\nSince H(x(h))−H(x(k−t)) = 0 for h = k−t, the above inequality simplifies to\nk k\n(cid:88) α(h)E (cid:104) H(x(h))−H(x(k−t)) (cid:105) ≤ 1 (cid:88)(cid:0) α(h)(cid:1)2 C .",
+      "size": 331,
+      "sentences": 2
+    },
+    {
+      "id": 133,
+      "content": "es to\nk k\n(cid:88) α(h)E (cid:104) H(x(h))−H(x(k−t)) (cid:105) ≤ 1 (cid:88)(cid:0) α(h)(cid:1)2 C . (5.9)\n2 1\nh=k+1−t h=k−t\nWe bound the sum of squared stepsizes using the logarithmic inequality log(1+ξ) ≤ ξ for\nξ ≥ 0, similar to Orabona (2020):\n(cid:88) k (cid:88) k+1 1 (cid:18) 1 (cid:90) k+1 1 (cid:19)\n(α(h))2 = α2 ≤ α2 + dξ\nh k+1−t ξ\nk+1−t\nh=k−t h=k+1−t\n(cid:18) (cid:18) (cid:19)(cid:19)\n1 t\n= α2 +log 1+\nk+1−t k+1−t\n(cid:18) (cid:19) (cid:18) (cid:19)\n1 t t+1\n≤ α2 + = α2 .",
+      "size": 481,
+      "sentences": 2
+    },
+    {
+      "id": 134,
+      "content": ":19)(cid:19)\n1 t\n= α2 +log 1+\nk+1−t k+1−t\n(cid:18) (cid:19) (cid:18) (cid:19)\n1 t t+1\n≤ α2 + = α2 . k+1−t k+1−t k+1−t\nSimilarly, for the double sum, similar to Orabona (2020) we have:\nk k (cid:18) (cid:19) (cid:32) k k (cid:33)\n(cid:88) 1 (cid:88) 1 1 1 1 (cid:88) 1 (cid:88) 1\n= + = +\nt(k+1−t) k+1 t k+1−t k+1 t k+1−t\nt=1 t=1 t=1 t=1\n(cid:32) k k (cid:33) k\n1 (cid:88) 1 (cid:88) 1 2 (cid:88) 1\n= + =\nk+1 t t k+1 t\nt=1 t=1 t=1\n2 (cid:18) (cid:90) k 1 (cid:19) 2\n≤ 1+ dξ = (1+log(k)).",
+      "size": 484,
+      "sentences": 2
+    },
+    {
+      "id": 135,
+      "content": "(cid:88) 1\n= + =\nk+1 t t k+1 t\nt=1 t=1 t=1\n2 (cid:18) (cid:90) k 1 (cid:19) 2\n≤ 1+ dξ = (1+log(k)). k+1 ξ k+1\n1\nThen, by (5.9),\nk k k (cid:18) (cid:19)\n(cid:88) 1 (cid:88) (cid:104) (cid:105) (cid:88) 1 t+1\nα(h)E H(x(h))−H(x(k−t)) ≤ 1 α2 C\nt2+t 2 t2+t k+1−t 1\nt=1 h=k+1−t t=1\nα2C 1 (cid:88) k 1\n=\n2 t2+t\nt=1\nα2C\n1\n≤ (1+log(k)). (5.10)\nk+1\nThe logarithmic factor results from summing decreasing step sizes. Step 4: Combine all bounds.",
+      "size": 433,
+      "sentences": 4
+    },
+    {
+      "id": 136,
+      "content": "k+1\nThe logarithmic factor results from summing decreasing step sizes. Step 4: Combine all bounds. Combine (5.5), (5.8) and (5.10) to obtain\nα(k)E(cid:2) H(x(k))−H∗(cid:3) ≤ 1 (cid:16) ∥x(0)−x∗∥2+(3+3log(k+1))α2C (cid:17) . 1\n2(k+1)\n√\nDivide both sides by α(k) and substitute α(k) = α/ k+1 to yield (5.4). Minimize over all\nx∗ ∈ X∗ to obtain (5.3), as required.",
+      "size": 361,
+      "sentences": 5
+    },
+    {
+      "id": 137,
+      "content": "nd substitute α(k) = α/ k+1 to yield (5.4). Minimize over all\nx∗ ∈ X∗ to obtain (5.3), as required. 18\n===  19 ===\nTopology-Independent Decentralized Optimization\n5.4 Convergence under L-Smoothness\nWe now analyze BlockProx when F is L-smooth but does not necessarily have bounded\ngradients, whichisAssumption5.1withCase(c)(ii). Inthissetting, weestablishconvergence\nfor the averaged iterate rather than the last iterate.",
+      "size": 420,
+      "sentences": 4
+    },
+    {
+      "id": 138,
+      "content": ")(ii). Inthissetting, weestablishconvergence\nfor the averaged iterate rather than the last iterate. 5.4.1 Supporting Analysis\nThe simple and important insight for the L-smooth case is that we can bound the squared\ngradient norm in terms of the objective gap. Lemma 5.7 (Gradient Bound via Smoothness) UnderAssumption5.1withCase(c)(ii)\n(smoothness of F), for any x ∈ Rnd and any minimizer x∗ ∈ X∗,\n∥∇F(x)∥ ≤ 2∥∇F(x∗)∥+4L(H(x)−H∗).",
+      "size": 429,
+      "sentences": 4
+    },
+    {
+      "id": 139,
+      "content": "(ii)\n(smoothness of F), for any x ∈ Rnd and any minimizer x∗ ∈ X∗,\n∥∇F(x)∥ ≤ 2∥∇F(x∗)∥+4L(H(x)−H∗). Proof Observe that\n∥∇F(x)∥2 ≤ 2∥∇F(x∗)∥2+2∥∇F(x)−∇F(x∗)∥2\n≤ 2∥∇F(x∗)∥2+4L(F(x)−F(x∗)−⟨∇F(x∗),x−x∗⟩)\n≤ 2∥∇F(x∗)∥2+4L(H(x)−H(x∗)),\nwhere the second inequality uses L-smoothness of F and the third uses −∇F(x∗) ∈ ∂G(x∗)\nfrom optimality of x∗. Applying Lemma 5.7, we can get the following lemma for L-smooth F similar to\nLemma 5.5.",
+      "size": 426,
+      "sentences": 3
+    },
+    {
+      "id": 140,
+      "content": "lity of x∗. Applying Lemma 5.7, we can get the following lemma for L-smooth F similar to\nLemma 5.5. Lemma 5.8 (Expected Descent under Smoothness of F) Let Assumption 5.1 hold\nwith Case (c)(ii) (smoothness of F). Let α(k) ≤ 1/(8L) for all k. Then BlockProx\ngenerates a sequence {x(k)} that satisfies, for any k and any x∗ ∈ X∗,\nEk∥x(k+1)−x∗∥2 ≤ ∥x(k)−x∗∥2−α(k)[H(x(k))−H(x∗)]+7m2c2(α(k))2.",
+      "size": 388,
+      "sentences": 4
+    },
+    {
+      "id": 141,
+      "content": "satisfies, for any k and any x∗ ∈ X∗,\nEk∥x(k+1)−x∗∥2 ≤ ∥x(k)−x∗∥2−α(k)[H(x(k))−H(x∗)]+7m2c2(α(k))2. Proof SinceF isassumedtobesmoothinthiscase,wehaveg(k) = ∇F(x(k))andLemma5.3\ngives\nEk∥x(k+1)−x∗∥2 ≤ ∥z(k)−x∗∥2−2α(k)(cid:2) G(x(k))−G(x∗) (cid:3)\n+2mc(α(k))2∥∇F(x(k))∥+2m2c2(α(k))2\n≤ ∥z(k)−x∗∥2−2α(k)(cid:2) G(x(k))−G(x∗) (cid:3) (5.11)\n+(α(k))2∥∇F(x(k))∥2+3m2c2(α(k))2,\nwhere the last equality uses AM-GM inequality on the cross term\n2mc∥∇F(x(k))∥ ≤ ∥∇F(x(k))∥2+m2c2.",
+      "size": 466,
+      "sentences": 2
+    },
+    {
+      "id": 142,
+      "content": ",\nwhere the last equality uses AM-GM inequality on the cross term\n2mc∥∇F(x(k))∥ ≤ ∥∇F(x(k))∥2+m2c2. 19\n===  20 ===\nLin, Kuang, Alacaoglu, Friedlander\nFor the gradient step z(k) = x(k)−α(k)∇F(x(k)), by convexity of F, we have\n∥z(k)−x∗∥2 ≤ ∥x(k)−x∗∥2−2α(k)(cid:2) F(x(k))−F(x∗) (cid:3) +(α(k))2∥∇F(x(k))∥2. Combining this bound with (5.11), we obtain\nEk∥x(k+1)−x∗∥2 ≤ ∥x(k)−x∗∥2−2α(k)(cid:2) H(x(k))−H(x∗) (cid:3) (5.12)\n+2(α(k))2∥∇F(x(k))∥2+3m2c2(α(k))2.",
+      "size": 453,
+      "sentences": 3
+    },
+    {
+      "id": 143,
+      "content": "k+1)−x∗∥2 ≤ ∥x(k)−x∗∥2−2α(k)(cid:2) H(x(k))−H(x∗) (cid:3) (5.12)\n+2(α(k))2∥∇F(x(k))∥2+3m2c2(α(k))2. Lemma 5.7 gives\n∥∇F(x(k))∥2 ≤ 2∥∇F(x∗)∥2+4L(H(x(k))−H(x∗))\n≤ 2(mc)2+4L(H(x(k))−H(x∗)), (5.13)\nwhere the last inequality uses −∇F(x∗) ∈ ∂G(x∗) = (cid:80)m ∂G (x∗) and Assumption 5.1(b). j=1 j\nCombining (5.12) and (5.13), we have\nEk∥x(k+1)−x∗∥2 ≤ ∥x(k)−x∗∥2−(2−8L(α(k)))α(k)(cid:2) H(x(k))−H(x∗) (cid:3)\n+7m2c2(α(k))2. Finally, since α(k) ≤ 1/(8L), we have 2−8L(α(k)) ≥ 1, which completes the proof.",
+      "size": 497,
+      "sentences": 4
+    },
+    {
+      "id": 144,
+      "content": ":3)\n+7m2c2(α(k))2. Finally, since α(k) ≤ 1/(8L), we have 2−8L(α(k)) ≥ 1, which completes the proof. 5.4.2 Main Result\nTheorem 5.9 (Convergence under Smoothness of F) Let Assumption 5.1 hold with\n√\nCase (c)(ii) (smoothness of F). Let α(k) = α/ k+1 with 0 < α ≤ 1 .",
+      "size": 263,
+      "sentences": 4
+    },
+    {
+      "id": 145,
+      "content": ") Let Assumption 5.1 hold with\n√\nCase (c)(ii) (smoothness of F). Let α(k) = α/ k+1 with 0 < α ≤ 1 . Then BlockProx\n8L\ngenerates a sequence {x(k)} that satisfies, for any k,\n(cid:18) (cid:19)\n1 1\nE[H(x¯(k))−H∗] ≤ √ dist(x(0),X∗)2+O(αc2m2logk) ,\nk+1 α\nwhere x¯k = 1/(k + 1) (cid:80)k x(t), dist(x(0),X∗) = min ∥x(0) − x∗∥, and the term\nt=0 x∗∈X∗\nO(αc2m2logk) can be made explicit as 7m2c2α(1+log(k+1)). Proof From Lemma 5.8, we have:\nEt∥x(t+1)−x∗∥2 ≤ ∥x(t)−x∗∥2−α(t)[H(x(t))−H(x∗)]+7m2c2(α(t))2.",
+      "size": 493,
+      "sentences": 4
+    },
+    {
+      "id": 146,
+      "content": "k+1)). Proof From Lemma 5.8, we have:\nEt∥x(t+1)−x∗∥2 ≤ ∥x(t)−x∗∥2−α(t)[H(x(t))−H(x∗)]+7m2c2(α(t))2. Taking full expectation and summing from t = 0 to k:\nk k\n(cid:88) (cid:88)\nα(t)E[H(x(t))−H(x∗)] ≤ ∥x(0)−x∗∥2+7m2c2 (α(t))2\nt=0 t=0\n≤ ∥x(0)−x∗∥2+7m2c2α2(1+log(k+1)).",
+      "size": 264,
+      "sentences": 3
+    },
+    {
+      "id": 147,
+      "content": "(cid:88)\nα(t)E[H(x(t))−H(x∗)] ≤ ∥x(0)−x∗∥2+7m2c2 (α(t))2\nt=0 t=0\n≤ ∥x(0)−x∗∥2+7m2c2α2(1+log(k+1)). (5.14)\n20\n===  21 ===\nTopology-Independent Decentralized Optimization\n√\nSince α(t) = α/ t+1 is decreasing and H(x(t))−H(x∗) ≥ 0, by Jensen’s inequality, we\nhave:\nk k\n(cid:88) (cid:88)\nα(t)E[H(x(t))−H(x∗)] ≥ α(k)E[H(x(t))−H(x∗)]\nt=0 t=0\n√\n≥ α k+1E[H(x¯(t))−H(x∗)]\n√\nCombining this with (5.14), dividing by α k+1, and taking infimum over all x∗ ∈ X∗, we\nobtain the desired result.",
+      "size": 477,
+      "sentences": 2
+    },
+    {
+      "id": 148,
+      "content": "with (5.14), dividing by α k+1, and taking infimum over all x∗ ∈ X∗, we\nobtain the desired result. Remark 5.10 Unlike the bounded subgradient case (Theorem 5.6), this result provides\nconvergence only for the averaged iterate. This reflects a fundamental difference in the\nanalysis: when subgradients are unbounded, our proof technique cannot establish a last-iterate\nconvergence without additional assumptions.",
+      "size": 410,
+      "sentences": 3
+    },
+    {
+      "id": 149,
+      "content": "ed, our proof technique cannot establish a last-iterate\nconvergence without additional assumptions. On the other hand, many applications such\nas the ones in our experiments do not satisfy the bounded subgradient assumption, yet they\nsatisfy L-smoothness. The averaging serves as an analytical tool to handle this case. 5.5 Convergence under Strong Convexity\nWe next analyze BlockProx under strong convexity, where both F and the composite\nobjective H inherit strong convexity.",
+      "size": 476,
+      "sentences": 4
+    },
+    {
+      "id": 150,
+      "content": "ckProx under strong convexity, where both F and the composite\nobjective H inherit strong convexity. 5.5.1 Supporting Lemma\nLemma 5.11 (Expected Descent under Smoothness and Strong Convexity of F)\nLet Assumption 5.1 hold with Case (c)(iii) (smoothness and strong convexity of F).",
+      "size": 278,
+      "sentences": 2
+    },
+    {
+      "id": 151,
+      "content": "Convexity of F)\nLet Assumption 5.1 hold with Case (c)(iii) (smoothness and strong convexity of F). Then\nBlockProx generates a sequence {x(k)} that satisfies, for any k and any y ∈ Rnd,\n(cid:16) (cid:17)\nEk∥x(k+1)−y∥2 ≤ 1−α(k)µ+3(α(k))2L2 ∥x(k)−y∥2\n−2α(k)(H(x(k))−H(y))\n+ (cid:0) 3m2c2+2m∥∇F(y)∥c+2∥∇F(y)∥2(cid:1) (α(k))2.",
+      "size": 321,
+      "sentences": 2
+    },
+    {
+      "id": 152,
+      "content": "(k)µ+3(α(k))2L2 ∥x(k)−y∥2\n−2α(k)(H(x(k))−H(y))\n+ (cid:0) 3m2c2+2m∥∇F(y)∥c+2∥∇F(y)∥2(cid:1) (α(k))2. Proof Use the L-smoothness of F to obtain the bound on the gradient:\n∥∇F(x(k))∥ ≤ ∥∇F(x(k))−∇F(y)∥+∥∇F(y)∥ ≤ L∥x(k)−y∥+∥∇F(y)∥, (5.15)\nand the squared gradient bound\n∥∇F(x(k))∥2 = ∥∇F(x(k))−∇F(y)+∇F(y)∥2\n≤ 2∥∇F(x(k))−∇F(y)∥2+2∥∇F(y)∥2 (5.16)\n≤ 2L2∥x(k)−y∥2+2∥∇F(y)∥2.",
+      "size": 367,
+      "sentences": 2
+    },
+    {
+      "id": 153,
+      "content": "F(x(k))∥2 = ∥∇F(x(k))−∇F(y)+∇F(y)∥2\n≤ 2∥∇F(x(k))−∇F(y)∥2+2∥∇F(y)∥2 (5.16)\n≤ 2L2∥x(k)−y∥2+2∥∇F(y)∥2. 21\n===  22 ===\nLin, Kuang, Alacaoglu, Friedlander\nSince F is differentiable, g(k) = ∇F(x(k)) and Lemma 5.3 gives\nEk∥x(k+1)−y∥2 ≤ ∥z(k)−y∥2−2α(k)(cid:2) G(x(k))−G(y) (cid:3)\n+2mc(α(k))2∥∇F(x(k))∥+2m2c2(α(k))2\n≤ ∥z(k)−y∥2−2α(k)(cid:2) G(x(k))−G(y) (cid:3) +2m2c2(α(k))2 (5.17)\n+2mc(α(k))2(L∥x(k)−y∥+∥∇F(y)∥).",
+      "size": 406,
+      "sentences": 2
+    },
+    {
+      "id": 154,
+      "content": "≤ ∥z(k)−y∥2−2α(k)(cid:2) G(x(k))−G(y) (cid:3) +2m2c2(α(k))2 (5.17)\n+2mc(α(k))2(L∥x(k)−y∥+∥∇F(y)∥). For the gradient step, expand z(k) = x(k)−α(k)∇F(x(k)) and use µ-strong convexity:\n∥z(k)−y∥2 = ∥x(k)−y∥2−2α(k)⟨∇F(x(k)),x(k)−y⟩+(α(k))2∥∇F(x(k))∥2\n(cid:16) µ (cid:17)\n≤ ∥x(k)−y∥2−2α(k) F(x(k))−F(y)+ ∥x(k)−y∥2\n2\n(cid:16) (cid:17)\n+(α(k))2 2L2∥x(k)−y∥2+2∥∇F(y)∥2 (5.18)\n(cid:16) (cid:17)\n= 1−α(k)µ+2(α(k))2L2 ∥x(k)−y∥2−2α(k)(F(x(k))−F(y))\n+2(α(k))2∥∇F(y)∥2.",
+      "size": 454,
+      "sentences": 2
+    },
+    {
+      "id": 155,
+      "content": "y)∥2 (5.18)\n(cid:16) (cid:17)\n= 1−α(k)µ+2(α(k))2L2 ∥x(k)−y∥2−2α(k)(F(x(k))−F(y))\n+2(α(k))2∥∇F(y)∥2. Combining these bounds with β(k) = mα(k) and applying the AM-GM inequality to the\ncross term 2m(α(k))2Lc∥x(k)−y∥ yields the result. 5.5.2 Main Result\nThen, using Lemma 5.11, we can establish the following convergence result, similar to\nstandard SGD (see, e.g., (Wright and Recht, 2022, Chapter 5.4.3)).",
+      "size": 402,
+      "sentences": 3
+    },
+    {
+      "id": 156,
+      "content": "g convergence result, similar to\nstandard SGD (see, e.g., (Wright and Recht, 2022, Chapter 5.4.3)). Theorem 5.12 (Convergence under Smoothness and Strong Convexity of F) Let\nAssumption 5.1 hold with Case (c)(iii) (smoothness and strong convexity of F). Because H\nis strongly convex, it has a unique minimizer x∗. Let\n2µ\nα(k) = .",
+      "size": 328,
+      "sentences": 4
+    },
+    {
+      "id": 157,
+      "content": "strong convexity of F). Because H\nis strongly convex, it has a unique minimizer x∗. Let\n2µ\nα(k) = . (5.19)\nµ2k+12L2\nThen BlockProx generates a sequence {x(k)} that satisfies, for all k,\nA\nE∥x(k)−x∗∥2 ≤ , (5.20)\nµ2k+12L2\nfor constant A that does not depend on k. Specifically,\nA := max\n(cid:26)\n12L2\n(cid:16)\n∥x(0)−x∗∥2\n(cid:17)\n, (cid:0) µ2+12L2(cid:1)\n(cid:16)\nE∥x(1)−x∗∥2\n(cid:17)\n,4\n(cid:18)\n1+\n12L2(cid:19)\nC\n(cid:27)\n,\nµ2 2\nwhere C = 7m2c2. 2\nProof We prove (5.20) by induction.",
+      "size": 483,
+      "sentences": 5
+    },
+    {
+      "id": 158,
+      "content": "4\n(cid:18)\n1+\n12L2(cid:19)\nC\n(cid:27)\n,\nµ2 2\nwhere C = 7m2c2. 2\nProof We prove (5.20) by induction. 22\n===  23 ===\nTopology-Independent Decentralized Optimization\nStep 1: Base cases and setup. The base case k = 0 and k = 1 is given directly by\n(cid:16) (cid:17) (cid:16) (cid:17)\nA ≥ 12L2 ∥x(0)−x∗∥2 , A ≥ (cid:0) µ2+12L2(cid:1) E∥x(1)−x∗∥2\nAssume that (5.20) holds for k ≥ 1, i.e.,\nA\nE∥x(k)−x∗∥2 ≤ . (5.21)\nµ2k+12L2\nFor convenience, we denote B(k) := Ek∥x(k) −x∗∥2 and Q := µ2k +12L2 in this proof.",
+      "size": 499,
+      "sentences": 5
+    },
+    {
+      "id": 159,
+      "content": "(5.21)\nµ2k+12L2\nFor convenience, we denote B(k) := Ek∥x(k) −x∗∥2 and Q := µ2k +12L2 in this proof. k\nThen, the induction hypothesis (5.21) and the stepsize (5.19) becomes\nA 2µ\nB(k) ≤ , α(k) = . (5.22)\nQ Q\nk k\nStep 2: Inductive step via the main inequality. Since x∗ is the unique minimizer of H,\nby optimality conditions, we have\nm\n(cid:88)\n0 ∈ ∂H(x∗) = ∇F(x∗)+ ∂G (x∗),\nj\nj=1\nwhich implies there exists g∗ ∈ ∂G (x∗) for j = 1,...,m such that ∇F(x∗) = − (cid:80)m g∗.",
+      "size": 467,
+      "sentences": 4
+    },
+    {
+      "id": 160,
+      "content": "),\nj\nj=1\nwhich implies there exists g∗ ∈ ∂G (x∗) for j = 1,...,m such that ∇F(x∗) = − (cid:80)m g∗. j j j=1 j\nThen by Assumption 5.1(b) and triangle inequality, we have\nm\n(cid:88)\n∥∇F(x∗)∥ ≤ ∥g∗∥ ≤ mc. (5.23)\nj\nj=1\nNow we can set y = x∗ in Lemma 5.11 and by (5.23), we have\n(cid:16) (cid:17)\nEk∥x(k+1)−x∗∥2 ≤ 1−α(k)µ+3(α(k))2L2 ∥x(k)−x∗∥2\n−2α(k)(H(x(k))−H(x∗))+7m2c2(α(k))2.",
+      "size": 374,
+      "sentences": 3
+    },
+    {
+      "id": 161,
+      "content": "cid:16) (cid:17)\nEk∥x(k+1)−x∗∥2 ≤ 1−α(k)µ+3(α(k))2L2 ∥x(k)−x∗∥2\n−2α(k)(H(x(k))−H(x∗))+7m2c2(α(k))2. Take full expectation to obtain a bound on B(k+1) := E∥x(k+1)−x∗∥2:\n(cid:18) (cid:19)\nB(k+1) ≤ 1−α(k)µ+3\n(cid:16)\nα(k)\n(cid:17)2\nL2 B(k)−2α(k)\n(cid:16)\nE\n(cid:104)\nH(x(k))−H(x∗)\n(cid:105)(cid:17)\n+ (cid:0) α(k)(cid:1)2 C\n2\n(cid:18) (cid:19)\n≤ 1−α(k)µ+3\n(cid:16)\nα(k)\n(cid:17)2\nL2 B(k)+ (cid:0) α(k)(cid:1)2 C .",
+      "size": 410,
+      "sentences": 2
+    },
+    {
+      "id": 162,
+      "content": "cid:1)2 C\n2\n(cid:18) (cid:19)\n≤ 1−α(k)µ+3\n(cid:16)\nα(k)\n(cid:17)2\nL2 B(k)+ (cid:0) α(k)(cid:1)2 C . 2\nThen, by (5.22),\n(cid:32) (cid:33)\n(cid:18)\n2µ\n(cid:19) (cid:18)\n2µ\n(cid:19)2\nA\n(cid:18)\n2µ\n(cid:19)2\nB(k+1) ≤ 1− µ+3 L2 + C\n2\nQ Q Q Q\nk k k k\nQ2 −2Q µ2+12µ2L2 4µ2\n= k k A+ C . Q3 Q2 2\nk k\n23\n===  24 ===\nLin, Kuang, Alacaoglu, Friedlander\nStep 3: Establishing the contraction.",
+      "size": 378,
+      "sentences": 3
+    },
+    {
+      "id": 163,
+      "content": "Q3 Q2 2\nk k\n23\n===  24 ===\nLin, Kuang, Alacaoglu, Friedlander\nStep 3: Establishing the contraction. Multiplying the both sides of the above equation\nby (Q +µ2)Q3, we have\nk k\n(cid:0) Q +µ2(cid:1) Q3B(k+1) ≤ (cid:0) Q +µ2(cid:1)(cid:0) Q2 −2µ2Q +12µ2L2(cid:1) A+4µ2Q (cid:0) Q +µ2(cid:1) C\nk k k k k k k 2\n= Q3A− (cid:0) µ2Q2 +2µ4Q −12µ2L2Q −12µ4L2(cid:1) A\nk k k k\n+4µ2Q (cid:0) Q +µ2(cid:1) C . (5.24)\nk k 2\nStep 4: Verifying the key inequality.",
+      "size": 446,
+      "sentences": 3
+    },
+    {
+      "id": 164,
+      "content": "(cid:1) A\nk k k k\n+4µ2Q (cid:0) Q +µ2(cid:1) C . (5.24)\nk k 2\nStep 4: Verifying the key inequality. By the definition of A,\n(cid:0) µ2Q2 +2µ4Q −12µ2L2Q −12µ4L2(cid:1) A > (cid:0) µ2Q2 +µ4Q −12µ2L2Q −12µ4L2(cid:1) A\nk k k k k k\n=\nµ2(cid:0)\nQ\n+µ2(cid:1)(cid:0)\nQ\n−12L2(cid:1)\nA,\nk k\nand\n(cid:0) Q −12L2(cid:1) A = µ2kA ≥ µ2k·4\n(cid:18)\n1+\n12L2(cid:19)\nC\nk µ2 2\n= 4 (cid:0) µ2k+12L2k (cid:1) C\n2\n≥ 4\n(cid:0) µ2k+12L2(cid:1)\nC = 4Q C ,\n2 k 2\nwhere the second inequality holds because k ≥ 1.",
+      "size": 486,
+      "sentences": 3
+    },
+    {
+      "id": 165,
+      "content": ") C\n2\n≥ 4\n(cid:0) µ2k+12L2(cid:1)\nC = 4Q C ,\n2 k 2\nwhere the second inequality holds because k ≥ 1. Thus,\n(cid:0) µ2Q2 +2µ4Q −12µ2L2Q −12µ4L2(cid:1) A ≥ 4µ2Q (cid:0) Q +µ2(cid:1) C . (5.25)\nk k k k k 2\nStep 5: Completing the induction. Combining (5.24) and (5.25), we have\n(cid:0) Q +µ2(cid:1) Q3B(k+1) ≤ Q3A,\nk k k\nwhich is equivalent to\nA A\nB(k+1) ≤ = ,\nQ +µ2 µ2(k+1)+12L2\nk\nwhich completes the proof.",
+      "size": 403,
+      "sentences": 4
+    },
+    {
+      "id": 166,
+      "content": "Q3A,\nk k k\nwhich is equivalent to\nA A\nB(k+1) ≤ = ,\nQ +µ2 µ2(k+1)+12L2\nk\nwhich completes the proof. 5.6 Linear Convergence to a Neighborhood\nThis next result establishes linear convergence to a neighborhood of the solution under the\nassumption of smoothness and strong convexity of F. The radius of the neighborhood is\n(cid:112)\nproportional to c mα/µ, where c bounds the regularizer subgradients ∂G , m is the number\nj\nof regularizer components j = 1,...,m, α is the stepsize, and µ is the strong convexity\nparameter.",
+      "size": 517,
+      "sentences": 2
+    },
+    {
+      "id": 167,
+      "content": "of regularizer components j = 1,...,m, α is the stepsize, and µ is the strong convexity\nparameter. The neighborhood results from the algorithm’s randomized local coordination\nmechanism: each node samples only one regularizer component per iteration, which creates\nan approximation error that scales with the stepsize and the number of components. Theorem 5.13 (Linear Convergence to a Neighborhood) Let Assumption 5.1 hold\nwith Case (c)(iii) (smoothness and strong convexity of F).",
+      "size": 481,
+      "sentences": 3
+    },
+    {
+      "id": 168,
+      "content": "a Neighborhood) Let Assumption 5.1 hold\nwith Case (c)(iii) (smoothness and strong convexity of F). Because H is strongly convex,\n24\n===  25 ===\nTopology-Independent Decentralized Optimization\nit has a unique minimizer x∗. Let α(k) ≡ α be a constant with 0 < α < (2µ)/(3L2). Then\nBlockProx generates a sequence {x(k)} that satisfies, for any k,\nδ\nE∥x(k)−x∗∥2 ≤ (1−Γ)k∥x(0)−x∗∥2+ (5.26)\nΓ\nwhere\nΓ := 2αµ−3α2L2 ∈ (0,1), δ := 7m2c2α2 = O (cid:0) (mαc)2(cid:1) .",
+      "size": 457,
+      "sentences": 4
+    },
+    {
+      "id": 169,
+      "content": "≤ (1−Γ)k∥x(0)−x∗∥2+ (5.26)\nΓ\nwhere\nΓ := 2αµ−3α2L2 ∈ (0,1), δ := 7m2c2α2 = O (cid:0) (mαc)2(cid:1) . (5.27)\nMoreover, the objective gap obeys the bound\n(cid:114)\n(cid:16) (cid:17) Lδ δ\nE[H(x(k))−H(x∗)] ≤ L∥x(0)−x∗∥2+2mc∥x(0)−x∗∥ (1−Γ)k/2+ +2mc .",
+      "size": 244,
+      "sentences": 2
+    },
+    {
+      "id": 170,
+      "content": "bound\n(cid:114)\n(cid:16) (cid:17) Lδ δ\nE[H(x(k))−H(x∗)] ≤ L∥x(0)−x∗∥2+2mc∥x(0)−x∗∥ (1−Γ)k/2+ +2mc . (5.28)\n2 2Γ Γ\nRemark 5.14 Thedistancerecursion(5.26)yieldsalinear(geometric)rate, whichissimilar\nto standard convergence rate of stochastic gradient descent method with constant stepsize for\nstrongly convex and L-smooth objective functions (Garrigos and Gower, 2023, Theorem 5.8).",
+      "size": 380,
+      "sentences": 2
+    },
+    {
+      "id": 171,
+      "content": "psize for\nstrongly convex and L-smooth objective functions (Garrigos and Gower, 2023, Theorem 5.8). The objective gap inherits the same rate up to a square-root factor that is immaterial for\n(cid:112)\ngeometric convergence. The residual term 2mc δ/Γ reflects the first-order approximation\nerror from the non-smooth regularizer near optimality. Proof Following the analysis in Theorem 5.12, we have ∥∇F(x∗)∥ ≤ mc as (5.23).",
+      "size": 422,
+      "sentences": 4
+    },
+    {
+      "id": 172,
+      "content": "zer near optimality. Proof Following the analysis in Theorem 5.12, we have ∥∇F(x∗)∥ ≤ mc as (5.23). With\ny = x∗ in Lemma 5.11 and taking expectation we obtain\nE∥x(k+1)−x∗∥2 ≤ (cid:0) 1−αµ+3α2L2(cid:1)E∥x(k)−x∗∥2\n−2αE[H(x(k))−H(x∗)]+7m2c2α2\n≤\n(cid:0) 1−2αµ+3α2L2(cid:1)E∥x(k)−x∗∥2+7m2c2α2,\nwhere the second inequality uses the strong convexity of H and the optimality of x∗. The\nabove inequality can be written as\nE∥x(k+1)−x∗∥2 ≤ (1−Γ)E∥x(k)−x∗∥2+δ, (5.29)\nwhere Γ and δ are defined in (5.27).",
+      "size": 492,
+      "sentences": 4
+    },
+    {
+      "id": 173,
+      "content": "y can be written as\nE∥x(k+1)−x∗∥2 ≤ (1−Γ)E∥x(k)−x∗∥2+δ, (5.29)\nwhere Γ and δ are defined in (5.27). Here, since 0 < α < (2µ)/(3L2), we have\nµ2 (cid:16) µ (cid:17)2\nΓ = 2αµ−3α2L2 = −3L2 α− ∈ (0,µ2/(3L2)] ⊆ (0,1). 3L2 3L2\nUnrolling the recursion (5.29) gives (5.26). Then, use the L-smoothness of F and the c-Lipschitz continuity of G :\nj\nF(x(k))−F(x∗) ≤ ⟨∇F(x∗),x(k)−x∗⟩+ L∥x(k)−x∗∥2\n2\nG(x(k))−G(x∗) ≤ mc∥x(k)−x∗∥.",
+      "size": 413,
+      "sentences": 4
+    },
+    {
+      "id": 174,
+      "content": "tz continuity of G :\nj\nF(x(k))−F(x∗) ≤ ⟨∇F(x∗),x(k)−x∗⟩+ L∥x(k)−x∗∥2\n2\nG(x(k))−G(x∗) ≤ mc∥x(k)−x∗∥. Because H = F +G,\nH(x(k))−H(x∗) = [F(x(k))−F(x∗)]+[G(x(k))−G(x∗)]\n≤ ⟨∇F(x∗),x(k)−x∗⟩+ L∥x(k)−x∗∥2+mc∥x(k)−x∗∥\n2\n≤ ∥∇F(x∗)∥·∥x(k)−x∗∥+ L∥x(k)−x∗∥2+c∥x(k)−x∗∥\n2\n≤ 2mc∥x(k)−x∗∥+ L∥x(k)−x∗∥2,\n2\n25\n===  26 ===\nLin, Kuang, Alacaoglu, Friedlander\nwhere the second inequality uses Cauchy-Schwarz inequality and the last inequality uses\n∥∇F(x∗)∥ ≤ mc as in (5.23).",
+      "size": 455,
+      "sentences": 2
+    },
+    {
+      "id": 175,
+      "content": "inequality uses Cauchy-Schwarz inequality and the last inequality uses\n∥∇F(x∗)∥ ≤ mc as in (5.23). Taking expectations gives that for any k,\nE[H(x(k))−H(x∗)] ≤ LE∥x(k)−x∗∥2+2mcE∥x(k)−x∗∥\n2\n(cid:113)\n≤ LE∥x(k)−x∗∥2+2mc E∥x(k)−x∗∥2, (5.30)\n2\nwhere the second inequality uses Jensen’s inequality for the concave square-root function. In-\n√ √ √\nsertthebound(5.26)into(5.30),andusetheinequality a+b ≤ a+ btoobtain(5.28).",
+      "size": 415,
+      "sentences": 3
+    },
+    {
+      "id": 176,
+      "content": "root function. In-\n√ √ √\nsertthebound(5.26)into(5.30),andusetheinequality a+b ≤ a+ btoobtain(5.28). The preceding theorem characterizes convergence for arbitrary partially separable reg-\nularizers. We now specialize to graph-guided regularizers, whose structure yields sharper\nbounds. Each regularizer component G corresponds to a graph edge, giving m = |E|.",
+      "size": 358,
+      "sentences": 5
+    },
+    {
+      "id": 177,
+      "content": "re yields sharper\nbounds. Each regularizer component G corresponds to a graph edge, giving m = |E|. The\nj\nRandomEdge algorithm inherits linear convergence while using only two messages per\niteration in expectation of the graph size n or topology. The following corollary shows how\ngraph topology determines the convergence neighborhood.",
+      "size": 336,
+      "sentences": 4
+    },
+    {
+      "id": 178,
+      "content": "topology. The following corollary shows how\ngraph topology determines the convergence neighborhood. Corollary 5.15 (Linear Convergence for RandomEdge) Consider the graph-guided\nregularization problem (1.4) on a communication graph G = (V,E) with n nodes and m = |E|\nedges. Under the conditions of Theorem 5.13, the RandomEdge algorithm achieves\nE∥x(k)−x∗∥2 ≤ (1−Γ)k∥x(0)−x∗∥2+O(αc2|E|2).",
+      "size": 387,
+      "sentences": 4
+    },
+    {
+      "id": 179,
+      "content": "tions of Theorem 5.13, the RandomEdge algorithm achieves\nE∥x(k)−x∗∥2 ≤ (1−Γ)k∥x(0)−x∗∥2+O(αc2|E|2). For large graphs with |E| ≫ 1 and small step sizes satisfying αL2 ≪ µ, the convergence rate\nsimplifies to Γ ≈ 2αµ. Proof By Proposition 3.1, RandomEdge is equivalent to BlockProx for graph-guided\nregularizers where m = |E|. Substitute this expression into the general result (5.27) gives\nδ = O (cid:0) (mαc)2(cid:1) = O (cid:0) (|E|αc)2(cid:1) .",
+      "size": 445,
+      "sentences": 4
+    },
+    {
+      "id": 180,
+      "content": "sion into the general result (5.27) gives\nδ = O (cid:0) (mαc)2(cid:1) = O (cid:0) (|E|αc)2(cid:1) . When |E| ≫ 1 and αL2 ≪ µ, the convergence rate simplifies\nto Γ ≈ 2αµ and the asymptotic expected squared distance is O\n(cid:0) αc2|E|2(cid:1)\n. Remark 5.16 The corollary exposes a trade-off: RandomEdge uses constant expected\ncommunication per iteration, but the asymptotic expected squared distance scales with |E|2.",
+      "size": 416,
+      "sentences": 3
+    },
+    {
+      "id": 181,
+      "content": "xpected\ncommunication per iteration, but the asymptotic expected squared distance scales with |E|2. Sparse graphs (|E| = O(n)) yield squared distances of order O(αc2n2), while dense graphs\n(|E| = O(n2)) give O(αc2n4). More edges mean larger convergence neighborhoods through\nwhich to randomly coordinate locally. 6 Numerical Experiments\nIn this section, we evaluate our algorithms through numerical experiments on synthetic and\nreal-world datasets with graph-guided regularizers.",
+      "size": 479,
+      "sentences": 4
+    },
+    {
+      "id": 182,
+      "content": "through numerical experiments on synthetic and\nreal-world datasets with graph-guided regularizers. We compare RandomEdge against four\nestablished methods:\n• ADMM for network LASSO (Hallac et al., 2015);\n• ProxAvg (proximal averaging) (Yu, 2013);\n26\n===  27 ===\nTopology-Independent Decentralized Optimization\n• DSGD (distributed subgradient descent) (Nedic and Ozdaglar, 2009);\n• Walkman (Mao et al., 2020).",
+      "size": 407,
+      "sentences": 2
+    },
+    {
+      "id": 183,
+      "content": "• DSGD (distributed subgradient descent) (Nedic and Ozdaglar, 2009);\n• Walkman (Mao et al., 2020). Each baseline algorithm has specific applicability constraints: ADMM for network LASSO\nonly handles regularizers of the form g (x ,x ) = w ∥x −x ∥ , where w ≥ 0 is the weight\nij i j ij i j 2 ij\nof edge (i,j); ProxAvg supports general graph-guided regularizers as in (1.3); while DSGD\nand Walkman are limited to consensus optimization problems.",
+      "size": 442,
+      "sentences": 2
+    },
+    {
+      "id": 184,
+      "content": "ed regularizers as in (1.3); while DSGD\nand Walkman are limited to consensus optimization problems. To apply consensus optimization algorithms to multitask learning problems, every node\nin the graph needs to maintain copies of all variables across all nodes, and the regularizer\nis embedded in the local loss function.",
+      "size": 318,
+      "sentences": 2
+    },
+    {
+      "id": 185,
+      "content": "pies of all variables across all nodes, and the regularizer\nis embedded in the local loss function. This approach has two drawbacks: high O(nd)\nmemory complexity for each node, and the nonsmoothness of the local loss function when the\nregularizer is nonsmooth, which prevents many standard consensus optimization methods\nfrom being applied, such as Scaffnew (Mishchenko et al., 2022), DGD (Yuan et al., 2016)\nand ESDACD (Hendrikx et al., 2019).",
+      "size": 444,
+      "sentences": 2
+    },
+    {
+      "id": 186,
+      "content": "as Scaffnew (Mishchenko et al., 2022), DGD (Yuan et al., 2016)\nand ESDACD (Hendrikx et al., 2019). The graph-guided multitask learning problem in (1.4) with a communication network\n(V,E) can be equivalently written as the consensus optimization problem\nmin (cid:80) {f (x)+ (cid:80) 1g (x ,x )}, (6.1)\nx∈Rnd i∈V i (i,j)∈E 2 ij i j\nwhere x = (x ,...,x ) ∈ Rnd represents the concatenated variable containing copies of all\n1 n\nvariables across all nodes, and f (x) = f (x ).",
+      "size": 472,
+      "sentences": 2
+    },
+    {
+      "id": 187,
+      "content": "concatenated variable containing copies of all\n1 n\nvariables across all nodes, and f (x) = f (x ). Observe the factor 1 before g that occurs\ni i i 2 ij\nbecause each edge is counted twice in the two endpoints. We can then apply DSGD to\nsolve (6.1). DSGD requires a doubly stochastic mixing matrix to perform the mixing step. We use the Metropolis-Hastings weight matrix (Xiao et al., 2006) as the mixing matrix,\nwhich is common in the decentralized optimization literature (Shi et al., 2015).",
+      "size": 491,
+      "sentences": 5
+    },
+    {
+      "id": 188,
+      "content": "the mixing matrix,\nwhich is common in the decentralized optimization literature (Shi et al., 2015). We apply\nWalkman to solve the following regularized problem, which is equivalent to (1.4):\nmin 1 (cid:80) f (x)+ 1 G(x),\nx∈Rnd |V| i∈V i |V|\nwhere f (x) = f (x ). Note that the problem is scaled by 1/|V| because in the objective\ni i i\nfunction defined by Mao et al. (2020), the local loss function is normalized by |V|.",
+      "size": 419,
+      "sentences": 4
+    },
+    {
+      "id": 189,
+      "content": "bjective\ni i i\nfunction defined by Mao et al. (2020), the local loss function is normalized by |V|. To ensure\nthe optimal solution set is the same, we also scale the regularizer so that only the optimal\nvalue is scaled. Walkman requires a transition probability matrix P to choose the next\nagent in each iteration. We follow Mao et al. (2020, Example 2) and choose P = A/d ,\nmax\nwhere A is the adjacency matrix of the graph, d is the maximum degree in the graph.",
+      "size": 462,
+      "sentences": 6
+    },
+    {
+      "id": 190,
+      "content": "e P = A/d ,\nmax\nwhere A is the adjacency matrix of the graph, d is the maximum degree in the graph. max\nWe focus on optimization and communication complexity, comparing objective function\nvalues achieved by different algorithms after a fixed number of communications. Let\nH∗ denote the optimal objective value obtained by centralized convex solvers. For each\nalgorithm, we measure the optimality gap H(x(t))−H∗ after t communications.",
+      "size": 434,
+      "sentences": 4
+    },
+    {
+      "id": 191,
+      "content": "onvex solvers. For each\nalgorithm, we measure the optimality gap H(x(t))−H∗ after t communications. We define\none communication as a single Rd variable transmission along edge (i,j) ∈ E. With m = |E|\ndenoting the number of edges in the communication network, Table 1 summarizes the\ncommunication cost per iteration for each algorithm. All algorithms are implemented in Julia 1.11, with experiments conducted on a laptop\nwith an Apple M4 Pro processor (14 cores) and 48GB RAM.",
+      "size": 475,
+      "sentences": 4
+    },
+    {
+      "id": 192,
+      "content": ".11, with experiments conducted on a laptop\nwith an Apple M4 Pro processor (14 cores) and 48GB RAM. 27\n===  28 ===\nLin, Kuang, Alacaoglu, Friedlander\n6.1 Synthetic Data: Least Squares Benchmarks\nFor the synthesized dataset, we consider the network LASSO settings as in Hallac et al. (2015). The communication network contains an unknown number of node groups, where\nnodes within each group share the same ground truth parameters.",
+      "size": 429,
+      "sentences": 4
+    },
+    {
+      "id": 193,
+      "content": "nknown number of node groups, where\nnodes within each group share the same ground truth parameters. The objective is to learn\ndifferent models simultaneously without prior knowledge of group structure. Given the number of groups and the number of nodes in each group, we generate a\ncommunication network (V,E) with |V| = n and |E| = m, where the nodes in the same group\nare connected with probability 0.5 while the nodes in different groups are connected with\nprobability 0.01.",
+      "size": 477,
+      "sentences": 3
+    },
+    {
+      "id": 194,
+      "content": "ected with probability 0.5 while the nodes in different groups are connected with\nprobability 0.01. For node i, the data A ∈ R15×21 is generated from a standard normal\ni\ndistribution with a bias term, and the output is computed by b = A x∗+ϵ ∈ R15, where\ni i i i\nx∗ ∈ R21 is the ground truth of i-th node and ϵ ∈ R15 is small white noise. Then, the\ni i\noptimization problem is\nmin { (cid:80)n 1∥A x −b ∥2+λ (cid:80) ∥x −x ∥ }.",
+      "size": 426,
+      "sentences": 3
+    },
+    {
+      "id": 195,
+      "content": "hite noise. Then, the\ni i\noptimization problem is\nmin { (cid:80)n 1∥A x −b ∥2+λ (cid:80) ∥x −x ∥ }. (6.2)\nx1,...,xn∈R21 i=1 2 i i i 2 (i,j)∈E i j 2\nMoreover, to show that our algorithm can handle different regularizers, we also consider the\nfollowing optimization problem with a different regularizer\nmin { (cid:80)n 1∥A x −b ∥2+λ (cid:80) ∥x −x ∥ }.",
+      "size": 350,
+      "sentences": 3
+    },
+    {
+      "id": 196,
+      "content": "optimization problem with a different regularizer\nmin { (cid:80)n 1∥A x −b ∥2+λ (cid:80) ∥x −x ∥ }. (6.3)\nx1,...,xn∈R21 i=1 2 i i i 2 (i,j)∈E i j 1\nNote that these two problems are not strongly convex and the regularizers are nonseparable\nand nonsmooth. Therefore, the methods LoCoDL (Condat et al., 2025b) and CoCoA (Smith\net al., 2018) are not applicable here.",
+      "size": 362,
+      "sentences": 3
+    },
+    {
+      "id": 197,
+      "content": ", the methods LoCoDL (Condat et al., 2025b) and CoCoA (Smith\net al., 2018) are not applicable here. We consider three communication network settings:\n(i) 5 groups with 10,17,18,18,12 nodes, respectively;\n(ii) 1 group with 20 nodes;\n(iii) 1 group with 40 nodes, where the communication network is fully connected (i.e., every\npair of nodes is connected by an edge). For each setting, we fix 10,000 communications and perform 100 experiments to solve (6.2)\nand (6.3) with λ = 1.",
+      "size": 476,
+      "sentences": 3
+    },
+    {
+      "id": 198,
+      "content": "ting, we fix 10,000 communications and perform 100 experiments to solve (6.2)\nand (6.3) with λ = 1. We slightly tune the stepsizes to ensure all algorithms perform well. Specifically, our\nalgorithm uses α(t) = √0.01 and β(t) = α(t)m; ADMM uses ρ = 10−4+ (cid:112) λ/2 as suggested\nt+1\nin Hallac et al. (2015); ProxAvg and DSGD use stepsize 10−2; Walkman uses β = 10,000.",
+      "size": 370,
+      "sentences": 4
+    },
+    {
+      "id": 199,
+      "content": "suggested\nt+1\nin Hallac et al. (2015); ProxAvg and DSGD use stepsize 10−2; Walkman uses β = 10,000. The results based on the 100 experiments are shown in Figures 3 and 4, where the plotted\ncurve represents the mean convergence error over the 100 random problem instances, with\nerror bars denoting ±1 standard deviation at each iteration. As shown, our algorithm\n(blue solid line) converges to the optimal solution much faster than other algorithms at the\nsame communication cost.",
+      "size": 479,
+      "sentences": 4
+    },
+    {
+      "id": 200,
+      "content": "converges to the optimal solution much faster than other algorithms at the\nsame communication cost. Because the per-iteration communication cost is high, ADMM,\nProxAvg, and DSGD perform only a few iterations and remain far from the optimal\nsolution. Although Walkman requires only n communications per iteration by sending an\nRnd variable via an edge, it updates only one node per iteration, which causes the objective\nfunction value to decrease slowly.",
+      "size": 453,
+      "sentences": 3
+    },
+    {
+      "id": 201,
+      "content": "updates only one node per iteration, which causes the objective\nfunction value to decrease slowly. Moreover, the mean communications per iteration for\n28\n===  29 ===\nTopology-Independent Decentralized Optimization\n(a) 5 groups (10, 17, 18, 18, 12 (b) 1 group (20 nodes) (c) 1 group (40 nodes, complete\nnodes) graph)\nFigure 3: Convergence comparison for the ℓ -regularized least-squares problem (6.2) across\n2\nthree network topologies. Error bars show ±1 standard deviation over 100 experiments.",
+      "size": 494,
+      "sentences": 3
+    },
+    {
+      "id": 202,
+      "content": "6.2) across\n2\nthree network topologies. Error bars show ±1 standard deviation over 100 experiments. (a) 5 groups (10, 17, 18, 18, 12 (b) 1 group (20 nodes) (c) 1 group (40 nodes, complete\nnodes) graph)\nFigure 4: Convergence comparison for the ℓ -regularized least-squares problem (6.3) across\n1\nthree network topologies. Error bars show ±1 standard deviation over 100 experiments.",
+      "size": 380,
+      "sentences": 4
+    },
+    {
+      "id": 203,
+      "content": "6.3) across\n1\nthree network topologies. Error bars show ±1 standard deviation over 100 experiments. BlockProx across the 100 experiments for the three settings and two regularizers (1-norm\nand 2-norm) are 1.999532, 1.994982; 1.995706, 2.003392; 1.997192, 2.00109, respectively,\nwhich matches our communication complexity in Corollary 4.2. 6.2 Real Data: Housing Dataset Application\nWe demonstrate the practical effectiveness of our methods using the Sacramento housing\ndataset from Hallac et al.",
+      "size": 495,
+      "sentences": 4
+    },
+    {
+      "id": 204,
+      "content": "the practical effectiveness of our methods using the Sacramento housing\ndataset from Hallac et al. (2015, Section 5.2). (Due to space limitations, we omit here the\ndetails of this dataset.) As with the synthesized experiments, we slightly tune the stepsizes,\nso that RandomEdge uses α(t) = √0.003 and β(t) = α(t)|E|; ADMM uses ρ = 10−4+ (cid:112) λ/2;\nt+1\nProxAvg and DSGD use stepsize 10−2; Walkman uses β = 10000.",
+      "size": 415,
+      "sentences": 4
+    },
+    {
+      "id": 205,
+      "content": "ADMM uses ρ = 10−4+ (cid:112) λ/2;\nt+1\nProxAvg and DSGD use stepsize 10−2; Walkman uses β = 10000. We fix 50000\ncommunications and perform experiments, the results are shown in Figure 5. 7 Conclusion and Future Work\nWeaddresscommunicationefficiencyindecentralizedmulti-tasklearningwithblock-separable\nandpartiallyseparableobjectives.",
+      "size": 333,
+      "sentences": 3
+    },
+    {
+      "id": 206,
+      "content": "tionefficiencyindecentralizedmulti-tasklearningwithblock-separable\nandpartiallyseparableobjectives. BlockProxanditsspecializationRandomEdgereplace\nprox (z) with prox (z) for a single randomly selected component G , which reduces\nβG βGj j\ncommunication from global to local coupling structure. 29\n===  30 ===\nLin, Kuang, Alacaoglu, Friedlander\nFigure 5: Results for housing dataset.",
+      "size": 381,
+      "sentences": 3
+    },
+    {
+      "id": 207,
+      "content": "structure. 29\n===  30 ===\nLin, Kuang, Alacaoglu, Friedlander\nFigure 5: Results for housing dataset. Our analysis establishes iteration complexity of O˜(ε−2) under bounded subgradients\nor convexity and smoothnes, and O(ε−1) under strong convexity and smoothness, which\ndemonstrates that communication efficiency preserves convergence guarantees. Classical approaches require O(m) communications per iteration, while RandomEdge\nrequires only 2, with the reduction scaling with network size.",
+      "size": 488,
+      "sentences": 4
+    },
+    {
+      "id": 208,
+      "content": "ions per iteration, while RandomEdge\nrequires only 2, with the reduction scaling with network size. Experiments on synthetic and real-world datasets confirm these theoretical predictions. The algorithm applies to problem structures where ADMM is inapplicable and consensus-\nbased algorithms alter the optimization objective. The practical implications extend to federated learning and edge computing, where\ncommunication constraints are stringent.",
+      "size": 447,
+      "sentences": 4
+    },
+    {
+      "id": 209,
+      "content": "ons extend to federated learning and edge computing, where\ncommunication constraints are stringent. Structured multi-task learning with minimal\ncommunication overhead addresses real infrastructure limitations, enabling organizations to\ncollaborate on related tasks while preserving data locality and avoiding network congestion. Severallimitationssuggestfuturedirections. Therequirementthatindividualcomponents\nG havetractableproximaloperatorsmaynotholdingeneral.",
+      "size": 463,
+      "sentences": 4
+    },
+    {
+      "id": 210,
+      "content": "ctions. Therequirementthatindividualcomponents\nG havetractableproximaloperatorsmaynotholdingeneral. Thedependenceofconvergence\nj\nratesonthenumberofcomponentsmsuggestspotentialforimprovementinhighlystructured\nproblems. Asynchronous variants could relax the synchronous communication assumption\nto accommodate realistic communication patterns. The last-iterate convergence for general\nconvex cases could be interesting.",
+      "size": 417,
+      "sentences": 5
+    },
+    {
+      "id": 211,
+      "content": "communication patterns. The last-iterate convergence for general\nconvex cases could be interesting. Our work establishes a principle for communication-efficient distributed optimization:\nexploit partial separability through randomized local coordination. Rather than requiring\nall coupled variables to coordinate simultaneously, we identify minimal interaction sets\nand sample from them.",
+      "size": 387,
+      "sentences": 4
+    },
+    {
+      "id": 212,
+      "content": "variables to coordinate simultaneously, we identify minimal interaction sets\nand sample from them. This principle extends beyond the specific algorithms presented\nhere and may apply to other optimization contexts where distributed coordination faces\ncommunication constraints. 30\n===  31 ===\nTopology-Independent Decentralized Optimization\nAppendix A. Proof of Lemma 5.4\nFor k = 0 the inequality reduces trivially to α θ ≤ α θ .",
+      "size": 428,
+      "sentences": 4
+    },
+    {
+      "id": 213,
+      "content": "timization\nAppendix A. Proof of Lemma 5.4\nFor k = 0 the inequality reduces trivially to α θ ≤ α θ . For k ≥ 1,\n0 0 0 0\nk k (cid:18) (cid:19) k−1\n(cid:88) (cid:88) 1 1 (cid:88) 1\nα θ = 1 α θ + − α θ − α θ\nk k k+1 t t k+1−h k+1 h h k+1−h h h\nt=0 h=0 h=0\nk k (cid:18) (cid:19) k−1\n(cid:88) (cid:88) 1 1 (cid:88) 1\n= 1 α θ + − α θ − α θ .",
+      "size": 334,
+      "sentences": 3
+    },
+    {
+      "id": 214,
+      "content": "h h\nt=0 h=0 h=0\nk k (cid:18) (cid:19) k−1\n(cid:88) (cid:88) 1 1 (cid:88) 1\n= 1 α θ + − α θ − α θ . k+1 t t k+1−h k+1 h h k+1−h h h\nt=0 h=1 h=0\nThe key step is recognizing that each difference 1/(k+1−h)−1/(k+1) telescopes:\n(cid:18) (cid:19) (cid:18) (cid:19)\n1 1 1 1 1 1\n− = − +···+ −\nk+1−h k+1 k+1−h k+2−h k k+1\n(cid:18) (cid:19)\n1 1\n=\n(cid:80)k\n− .",
+      "size": 349,
+      "sentences": 2
+    },
+    {
+      "id": 215,
+      "content": "cid:19)\n1 1 1 1 1 1\n− = − +···+ −\nk+1−h k+1 k+1−h k+2−h k k+1\n(cid:18) (cid:19)\n1 1\n=\n(cid:80)k\n− . t=k+1−h t t+1\nSubstituting this telescoping identity and continuing the derivation:\nk k k (cid:18) (cid:19) k−1\n(cid:88) (cid:88) (cid:88) 1 1 (cid:88) 1\nα θ = 1 α θ + − α θ − α θ\nk k k+1 t t t t+1 h h k+1−h h h\nt=0 h=1t=k+1−h h=0\nk k k (cid:18) (cid:19) k\n(cid:88) (cid:88) (cid:88) 1 1 (cid:88) 1\n= 1 α θ + − α θ − α θ\nk+1 t t t t+1 h h t+1 k−t k−t\nt=0 t=1h=k+1−t t=1\nk k k k k\n(cid:88) (cid:88) (cid:88) (cid:88) 1 (cid:88)\n= 1 α θ + ω α θ − α θ\nk+1 t t t h h t(t+1) k−t k−t\nt=0 t=1 h=k+1−t t=1 h=k+1−t\nk k k\n(cid:88) (cid:88) (cid:88)\n= 1 α θ + ω (α θ −α θ )\nk+1 t t t h h k−t k−t\nt=0 t=1 h=k+1−t\nk k k\n(cid:88) (cid:88) (cid:88)\n≤ 1 α θ + ω α (θ −θ ),\nk+1 t t t h h k−t\nt=0 t=1 h=k+1−t\nwhere the second equality holds by swapping the order of summation and changing the\nindices; the last inequality follows from α being non-increasing and h ≥ k −t over the\nk\nsummation.",
+      "size": 974,
+      "sentences": 2
+    },
+    {
+      "id": 216,
+      "content": "indices; the last inequality follows from α being non-increasing and h ≥ k −t over the\nk\nsummation. References\nS. A. Alghunaim and K. Yuan. An enhanced gradient-tracking bound for distributed online\nstochastic convex optimization. Signal Processing, 217:109345, Apr. 2024. A. Beck. First-Order Methods in Optimization. Society for Industrial and Applied Mathe-\nmatics, Philadelphia, PA, Oct. 2017. D. P. Bertsekas. Incremental proximal methods for large scale convex optimization.",
+      "size": 480,
+      "sentences": 10
+    },
+    {
+      "id": 217,
+      "content": ", PA, Oct. 2017. D. P. Bertsekas. Incremental proximal methods for large scale convex optimization. Mathe-\nmatical Programming, 129(2):163–195, 2011. 31\n===  32 ===\nLin, Kuang, Alacaoglu, Friedlander\nS. Boyd, A. Ghosh, B. Prabhakar, and D. Shah. Randomized gossip algorithms. IEEE\nTransactions on Information Theory, 52(6):2508–2530, June 2006. X. Cao and T. Basar. Decentralized multi-agent stochastic optimization with pairwise\nconstraints and quantized communications.",
+      "size": 471,
+      "sentences": 9
+    },
+    {
+      "id": 218,
+      "content": "ralized multi-agent stochastic optimization with pairwise\nconstraints and quantized communications. IEEE Transactions on Signal Processing, 68:\n3296–3311, 2020. X. Cao and T. Basar. Decentralized online convex optimization with event-triggered\ncommunications. IEEE Transactions on Signal Processing, 69:284–299, 2021. X. Cao and K. Liu. Distributed linearized admm for network cost minimization. IEEE\nTransactions on Signal and Information Processing over Networks, 4(3):626–638, 2018.",
+      "size": 485,
+      "sentences": 8
+    },
+    {
+      "id": 219,
+      "content": "mization. IEEE\nTransactions on Signal and Information Processing over Networks, 4(3):626–638, 2018. X. Cao and K. J. R. Liu. Distributed newton’s method for network cost minimization. IEEE\nTransactions on Automatic Control, 66(3):1278–1285, 2021. X. Cao, T. Ba¸sar, S. Diggavi, Y. C. Eldar, K. B. Letaief, H. V. Poor, and J. Zhang. Communication-efficient distributed learning: An overview. IEEE Journal on Selected\nAreas in Communications, 41(4):851–873, 2023.",
+      "size": 461,
+      "sentences": 8
+    },
+    {
+      "id": 220,
+      "content": "buted learning: An overview. IEEE Journal on Selected\nAreas in Communications, 41(4):851–873, 2023. T.-H. Chang, M. Hong, H.-T. Wai, X. Zhang, and S. Lu. Distributed learning in the\nnonconvex world: From batch data to streaming and beyond. IEEE Signal Processing\nMagazine, 37(3):26–38, May 2020. M. Chen, N. Shlezinger, H. V. Poor, Y. C. Eldar, and S. Cui. Communication-efficient\nfederated learning. Proceedings of the National Academy of Sciences, 118(17):e2024789118,\n2021.",
+      "size": 476,
+      "sentences": 8
+    },
+    {
+      "id": 221,
+      "content": "ent\nfederated learning. Proceedings of the National Academy of Sciences, 118(17):e2024789118,\n2021. P. L. Combettes and V. R. Wajs. Signal recovery by proximal forward-backward splitting. Multiscale modeling & simulation, 4(4):1168–1200, 2005. L.CondatandP.Richta´rik.RandProx: Primal-dualoptimizationalgorithmswithrandomized\nproximal updates. In The Eleventh International Conference on Learning Representations,\nICLR 2023, Kigali, Rwanda, May 1-5, 2023, 2023.",
+      "size": 461,
+      "sentences": 7
+    },
+    {
+      "id": 222,
+      "content": "ternational Conference on Learning Representations,\nICLR 2023, Kigali, Rwanda, May 1-5, 2023, 2023. L. Condat, E. Gasanov, and P. Richt´arik. The stochastic multi-proximal method for\nnonsmooth optimization. arXiv preprint arXiv:2505.12409, 2025a. L. Condat, A. Maranjyan, and P. Richta´rik. LoCoDL: Communication-efficient distributed\nlearning with local training and compression. In The Thirteenth International Conference\non Learning Representations, ICLR 2025, Singapore, April 24-28, 2025, 2025b.",
+      "size": 500,
+      "sentences": 7
+    },
+    {
+      "id": 223,
+      "content": "ternational Conference\non Learning Representations, ICLR 2025, Singapore, April 24-28, 2025, 2025b. A. Elgabli, J. Park, A. S. Bedi, M. Bennis, and V. Aggarwal. GADMM: fast and communi-\ncation efficient framework for distributed machine learning. Journal of Machine Learning\nResearch, 21:76:1–76:39, 2020. A. Elgabli, J. Park, A. S. Bedi, C. B. Issaid, M. Bennis, and V. Aggarwal. Q-GADMM:\nQuantized group ADMM for communication efficient decentralized machine learning.",
+      "size": 470,
+      "sentences": 8
+    },
+    {
+      "id": 224,
+      "content": "Aggarwal. Q-GADMM:\nQuantized group ADMM for communication efficient decentralized machine learning. IEEE Transactions on Communications, 69(1):164–181, 2021. 32\n===  33 ===\nTopology-Independent Decentralized Optimization\nG. Garrigos and R. M. Gower. Handbook of convergence theorems for (stochastic) gradient\nmethods. arXiv preprint arXiv:2301.11235, 2023. A. Ghosh, J. Chung, D. Yin, and K. Ramchandran. An efficient framework for clustered\nfederated learning.",
+      "size": 461,
+      "sentences": 8
+    },
+    {
+      "id": 225,
+      "content": "osh, J. Chung, D. Yin, and K. Ramchandran. An efficient framework for clustered\nfederated learning. IEEE Transactions on Information Theory, 68(12):8076–8091, 2022. L. Guo, S. A. Alghunaim, K. Yuan, L. Condat, and J. Cao. Achieving Linear Speedup with\nProxSkip in Distributed Stochastic Optimization, 2023. L. Guo, X. Shi, S. Yang, and J. Cao. Disa: A dual inexact splitting algorithm for dis-\ntributed convex composite optimization.",
+      "size": 433,
+      "sentences": 7
+    },
+    {
+      "id": 226,
+      "content": "d J. Cao. Disa: A dual inexact splitting algorithm for dis-\ntributed convex composite optimization. IEEE Transactions on Automatic Control, 69(5):\n2995–3010, May 2024. D. Hallac, J. Leskovec, and S. Boyd. Network lasso: Clustering and optimization in large\ngraphs. In Proceedings of the 21th ACM SIGKDD International Conference on Knowledge\nDiscovery and Data Mining, KDD ’15. ACM, 2015. S. P. Han and O. L. Mangasarian. Exact penalty functions in nonlinear programming.",
+      "size": 470,
+      "sentences": 9
+    },
+    {
+      "id": 227,
+      "content": "’15. ACM, 2015. S. P. Han and O. L. Mangasarian. Exact penalty functions in nonlinear programming. Mathematical Programming, 17(1):251–269, Dec. 1979. H. Hendrikx, F. R. Bach, and L. Massouli´e. Accelerated decentralized optimization with\nlocal updates for smooth and strongly convex objectives. In The 22nd International\nConference on Artificial Intelligence and Statistics, AISTATS 2019, 16-18 April 2019,\nNaha, Okinawa, Japan, pages 897–906, 2019. D. Jakovetic, J. Xavier, and J. M. F. Moura.",
+      "size": 495,
+      "sentences": 9
+    },
+    {
+      "id": 228,
+      "content": "April 2019,\nNaha, Okinawa, Japan, pages 897–906, 2019. D. Jakovetic, J. Xavier, and J. M. F. Moura. Fast distributed gradient methods. IEEE\nTransactions on Automatic Control, 59(5):1131–1146, May 2014. Z. Jiang, K. Mukherjee, and S. Sarkar. On consensus-disagreement tradeoff in distributed\noptimization. In 2018 Annual American Control Conference (ACC), page 571–576. IEEE,\nJune 2018. S. Kar, J. M. F. Moura, and K. Ramanan.",
+      "size": 425,
+      "sentences": 9
+    },
+    {
+      "id": 229,
+      "content": "an Control Conference (ACC), page 571–576. IEEE,\nJune 2018. S. Kar, J. M. F. Moura, and K. Ramanan. Distributed parameter estimation in sensor\nnetworks: Nonlinearobservationmodelsandimperfectcommunication. IEEE Transactions\non Information Theory, 58(6):3575–3605, June 2012. S. Kim and E. P. Xing. Statistical estimation of correlated genome associations to a\nquantitative trait network. PLoS Genetics, 5(8):e1000587, Aug. 2009. A. Koloskova, N. Loizou, S. Boreiri, M. Jaggi, and S. U. Stich.",
+      "size": 492,
+      "sentences": 9
+    },
+    {
+      "id": 230,
+      "content": "Genetics, 5(8):e1000587, Aug. 2009. A. Koloskova, N. Loizou, S. Boreiri, M. Jaggi, and S. U. Stich. A unified theory of\ndecentralized SGD with changing topology and local updates. In Proceedings of the 37th\nInternational Conference on Machine Learning, ICML 2020, 13-18 July 2020, Virtual\nEvent, pages 5381–5393, 2020. A. Koppel, B. M. Sadler, and A. Ribeiro. Proximity without consensus in online multiagent\noptimization. IEEE Transactions on Signal Processing, 65(12):3062–3077, June 2017.",
+      "size": 491,
+      "sentences": 7
+    },
+    {
+      "id": 231,
+      "content": "nline multiagent\noptimization. IEEE Transactions on Signal Processing, 65(12):3062–3077, June 2017. G. Lan, S. Lee, and Y. Zhou. Communication-efficient algorithms for decentralized and\nstochastic optimization. Mathematical Programming, 180(1–2):237–284, 2020. 33\n===  34 ===\nLin, Kuang, Alacaoglu, Friedlander\nD. Lee, Z. Zhu, and P. Toscas. Spatio-temporal functional data analysis for wireless sensor\nnetworks data. Environmetrics, 26(5):354–362, May 2015. B. Li, S. Cen, Y. Chen, and Y. Chi.",
+      "size": 494,
+      "sentences": 9
+    },
+    {
+      "id": 232,
+      "content": "sensor\nnetworks data. Environmetrics, 26(5):354–362, May 2015. B. Li, S. Cen, Y. Chen, and Y. Chi. Communication-efficient distributed optimization in\nnetworks with gradient tracking and variance reduction. Journal of Machine Learning\nRessearch, 21:180:1–180:51, 2020. X. Lian, C. Zhang, H. Zhang, C. Hsieh, W. Zhang, and J. Liu. Can decentralized algorithms\noutperform centralized algorithms? A case study for decentralized parallel stochastic\ngradient descent.",
+      "size": 462,
+      "sentences": 8
+    },
+    {
+      "id": 233,
+      "content": "erform centralized algorithms? A case study for decentralized parallel stochastic\ngradient descent. In Advances in Neural Information Processing Systems 30: Annual\nConference on Neural Information Processing Systems 2017, December 4-9, 2017, Long\nBeach, CA, USA, pages 5330–5340, 2017. Y.Liao,Z.Li,K.Huang,andS.Pu. Acompressedgradienttrackingmethodfordecentralized\noptimization with linear convergence. IEEE Transactions on Automatic Control, 67(10):\n5622–5629, 2022. H. Liu, J. Zhang, A. M.-C.",
+      "size": 494,
+      "sentences": 7
+    },
+    {
+      "id": 234,
+      "content": "rgence. IEEE Transactions on Automatic Control, 67(10):\n5622–5629, 2022. H. Liu, J. Zhang, A. M.-C. So, and Q. Ling. A communication-efficient decentralized\nNewton’s method with provably faster convergence. IEEE Transactions on Signal and\nInformation Processing over Networks, 9:427–441, 2023. J. Liu, L. Li, and D. W. Ho. Distributed constrained optimization with periodic dynamic\nquantization. Automatica, 159:111364, Jan. 2024. P.D.LorenzoandG.Scutari. NEXT:In-networknonconvexoptimization.",
+      "size": 493,
+      "sentences": 11
+    },
+    {
+      "id": 235,
+      "content": ". Automatica, 159:111364, Jan. 2024. P.D.LorenzoandG.Scutari. NEXT:In-networknonconvexoptimization. IEEETransactions\non Signal and Information Processing over Networks, 2(2):120–136, June 2016. X. Mao, K. Yuan, Y. Hu, Y. Gu, A. H. Sayed, and W. Yin. Walkman: A communication-\nefficient random-walk algorithm for decentralized optimization. IEEE Transactions on\nSignal Processing, 68:2513–2528, 2020. K. Mishchenko, G. Malinovsky, S. U. Stich, and P. Richta´rik. ProxSkip: Yes!",
+      "size": 476,
+      "sentences": 10
+    },
+    {
+      "id": 236,
+      "content": "g, 68:2513–2528, 2020. K. Mishchenko, G. Malinovsky, S. U. Stich, and P. Richta´rik. ProxSkip: Yes! local gradient\nsteps provably lead to communication acceleration! finally! In International Conference\non Machine Learning, ICML 2022, 17-23 July 2022, Baltimore, Maryland, USA, pages\n15750–15769, 2022. A. Nedic and A. Ozdaglar. Distributed subgradient methods for multi-agent optimization. IEEE Transactions on Automatic Control, 54(1):48–61, Jan. 2009. A. Nemirovski and D. B. Yudin.",
+      "size": 485,
+      "sentences": 10
+    },
+    {
+      "id": 237,
+      "content": "ion. IEEE Transactions on Automatic Control, 54(1):48–61, Jan. 2009. A. Nemirovski and D. B. Yudin. Problem complexity and method efficiency in optimization. 1983. F. Orabona. Last iterate of SGD converges (even in un-\nbounded domains). https://parameterfree.com/2020/08/07/\nlast-iterate-of-sgd-converges-even-in-unbounded-domains/, Aug. 2020. Ac-\ncessed 14 July 2025. K. Ozkara, N. Singh, D. Data, and S. N. Diggavi.",
+      "size": 417,
+      "sentences": 10
+    },
+    {
+      "id": 238,
+      "content": "nded-domains/, Aug. 2020. Ac-\ncessed 14 July 2025. K. Ozkara, N. Singh, D. Data, and S. N. Diggavi. Quped: Quantized personalization via\ndistillation with applications to federated learning. In Advances in Neural Information\n34\n===  35 ===\nTopology-Independent Decentralized Optimization\nProcessing Systems 34: Annual Conference on Neural Information Processing Systems\n2021, NeurIPS 2021, December 6-14, 2021, virtual, pages 3622–3634, 2021. N. Parikh and S. P. Boyd. Proximal algorithms.",
+      "size": 489,
+      "sentences": 7
+    },
+    {
+      "id": 239,
+      "content": "December 6-14, 2021, virtual, pages 3622–3634, 2021. N. Parikh and S. P. Boyd. Proximal algorithms. Foundations and trends® in Optimization,\n1(3):127–239, 2014. J. Predd, S. Kulkarni, and H. Poor. Distributed learning in wireless sensor networks. IEEE\nSignal Processing Magazine, 23(4):56–69, 2006. R. T. Rockafellar. Convex Analysis. Princeton University Press, 1970. R. T. Rockafellar. Monotone operators and the proximal point algorithm.",
+      "size": 440,
+      "sentences": 12
+    },
+    {
+      "id": 240,
+      "content": "ton University Press, 1970. R. T. Rockafellar. Monotone operators and the proximal point algorithm. SIAM Journal on\nControl and Optimization, 14(5):22, Aug. 1976. O. Shamir and T. Zhang. Stochastic gradient descent for non-smooth optimization: Conver-\ngence results and optimal averaging schemes. In Proceedings of the 30th International\nConference on Machine Learning, ICML 2013, Atlanta, GA, USA, 16-21 June 2013, pages\n71–79, 2013.",
+      "size": 434,
+      "sentences": 7
+    },
+    {
+      "id": 241,
+      "content": "al\nConference on Machine Learning, ICML 2013, Atlanta, GA, USA, 16-21 June 2013, pages\n71–79, 2013. W.Shi,Q.Ling,G.Wu,andW.Yin.EXTRA:Anexactfirst-orderalgorithmfordecentralized\nconsensus optimization. SIAM Journal on Optimization, 25(2):944–966, Jan. 2015. N. Singh, X. Cao, S. Diggavi, and T. Ba¸sar. Decentralized multi-task stochastic optimization\nwith compressed communications. Automatica, 159:111363, 2024. V. Smith, S. Forte, C. Ma, M. Tak´aˇc, M. I. Jordan, and M. Jaggi.",
+      "size": 479,
+      "sentences": 7
+    },
+    {
+      "id": 242,
+      "content": "s. Automatica, 159:111363, 2024. V. Smith, S. Forte, C. Ma, M. Tak´aˇc, M. I. Jordan, and M. Jaggi. CoCoA: A general\nframework for communication-efficient distributed optimization. Journal of Machine\nLearning Research, 18(230):1–49, 2018. Z. Song, L. Shi, S. Pu, and M. Yan. Optimal gradient tracking for decentralized optimization. Mathematical Programming, 207:1–53, 2024. S. Sundhar Ram, A. Nedi´c, and V. V. Veeravalli.",
+      "size": 423,
+      "sentences": 9
+    },
+    {
+      "id": 243,
+      "content": "ization. Mathematical Programming, 207:1–53, 2024. S. Sundhar Ram, A. Nedi´c, and V. V. Veeravalli. Distributed stochastic subgradient\nprojection algorithms for convex optimization. Journal of Optimization Theory and\nApplications, 147(3):516–545, July 2010. A. Z. Tan, H. Yu, L. Cui, and Q. Yang. Towards personalized federated learning. IEEE\nTransactions on Neural Networks and Learning Systems, 34(12):9587–9603, 2023.",
+      "size": 420,
+      "sentences": 9
+    },
+    {
+      "id": 244,
+      "content": "erated learning. IEEE\nTransactions on Neural Networks and Learning Systems, 34(12):9587–9603, 2023. J. Tong, C. Luo, M. N. Islam, N. E. Sheils, J. Buresh, M. Edmondson, P. A. Merkel,\nE. Lautenbach, R. Duan, and Y. Chen. Distributed learning for heterogeneous clinical\ndata with application to integrating covid-19 data across 230 sites. npj Digital Medicine,\n5(1), June 2022. J. Verbraeken, M. Wolting, J. Katzy, J. Kloppenburg, T. Verbelen, and J. S. Rellermeyer.",
+      "size": 464,
+      "sentences": 6
+    },
+    {
+      "id": 245,
+      "content": "June 2022. J. Verbraeken, M. Wolting, J. Katzy, J. Kloppenburg, T. Verbelen, and J. S. Rellermeyer. A\nsurvey on distributed machine learning. ACM Computing Surveys, 53(2):1–33, 2020. S. J. Wright and B. Recht. Optimization for Data Analysis. Cambridge University Press,\n2022. 35\n===  36 ===\nLin, Kuang, Alacaoglu, Friedlander\nL. Xiao, S. Boyd, and S. Lall. Distributed average consensus with time-varying metropolis\nweights. Automatica, 1:1–4, 2006. W. Yan and X. Cao.",
+      "size": 468,
+      "sentences": 11
+    },
+    {
+      "id": 246,
+      "content": "average consensus with time-varying metropolis\nweights. Automatica, 1:1–4, 2006. W. Yan and X. Cao. Decentralized multitask online convex optimization under random link\nfailures. IEEE Transactions on Signal Processing, 72:622–635, 2024. W.Yu, H.Liu, W.X.Zheng, andY.Zhu. Distributeddiscrete-timeconvexoptimizationwith\nnonidentical local constraints over time-varying unbalanced directed graphs. Automatica,\n134:109899, Dec. 2021. Y.Yu. Betterapproximationandfasteralgorithmusingtheproximalaverage.",
+      "size": 497,
+      "sentences": 10
+    },
+    {
+      "id": 247,
+      "content": "omatica,\n134:109899, Dec. 2021. Y.Yu. Betterapproximationandfasteralgorithmusingtheproximalaverage. InAdvances in\nNeural Information Processing Systems 26: 27th Annual Conference on Neural Information\nProcessing Systems 2013. Proceedings of a meeting held December 5-8, 2013, Lake Tahoe,\nNevada, United States, pages 458–466, 2013. D. Yuan, Y. Hong, D. W. C. Ho, and S. Xu. Distributed mirror descent for online composite\noptimization.",
+      "size": 435,
+      "sentences": 7
+    },
+    {
+      "id": 248,
+      "content": "uan, Y. Hong, D. W. C. Ho, and S. Xu. Distributed mirror descent for online composite\noptimization. IEEE Transactions on Automatic Control, 66(2):714–729, Feb. 2021. D.Yuan,A.Proutiere,andG.Shi. Distributedonlineoptimizationwithlong-termconstraints. IEEE Transactions on Automatic Control, 67(3):1089–1104, Mar. 2022. K. Yuan, Q. Ling, and W. Yin. On the convergence of decentralized gradient descent. SIAM\nJournal on Optimization, 26(3):1835–1854, 2016. X.Zhang, J.Liu, andZ.Zhu.",
+      "size": 480,
+      "sentences": 11
+    },
+    {
+      "id": 249,
+      "content": "ed gradient descent. SIAM\nJournal on Optimization, 26(3):1835–1854, 2016. X.Zhang, J.Liu, andZ.Zhu. Learningcoefficientheterogeneityovernetworks: Adistributed\nspanning-tree-basedfused-lassoregression. Journal of the American Statistical Association,\npage 1–13, 2022. Y. Zhao, M. Li, L. Lai, N. Suda, D. Civin, and V. Chandra. Federated learning with non-iid\ndata. arXiv preprint arXiv:1806.00582, 2018. Y. Zhou, L. Guo, X. Shi, and J. Cao.",
+      "size": 439,
+      "sentences": 9
+    },
+    {
+      "id": 250,
+      "content": "ning with non-iid\ndata. arXiv preprint arXiv:1806.00582, 2018. Y. Zhou, L. Guo, X. Shi, and J. Cao. A distributed proximal alternating direction multiplier\nmethod for multiblock nonsmooth composite optimization. IEEE Transactions on Control\nof Network Systems, 12(1):202–215, Mar. 2025. 36",
+      "size": 289,
+      "sentences": 7
+    }
+  ]
+}

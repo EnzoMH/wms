@@ -1,0 +1,1653 @@
+{
+  "source": "ArXiv",
+  "filename": "275_AI_ML_Theoretical_Analysis_on_how_Learning_Rat.pdf",
+  "domain": "AI",
+  "total_chars": 91555,
+  "total_chunks": 274,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\nTheoretical Analysis on how Learning Rate Warmup\nAccelerates Convergence\nYuxing Liu1∗, Yuze Ge1∗, Rui Pan1, Kang An2, Tong Zhang1\n1University of Illinois Urbana-Champaign 2Rice University\n{yuxing6,ruip4,tozhang}@illinois.edu, yzge42@gmail.com, kang.an@rice.edu\nSeptember 10, 2025\nAbstract\nLearning rate warmup is a popular and practical technique in training large-scale deep neural\nnetworks.",
+      "size": 403,
+      "sentences": 1
+    },
+    {
+      "id": 2,
+      "content": "ning rate warmup is a popular and practical technique in training large-scale deep neural\nnetworks. Despite the huge success in practice, the theoretical advantages of this strategy of\ngradually increasing the learning rate at the beginning of the training process have not been\nfully understood. To resolve this gap between theory and practice, we first propose a novel\nfamily of generalized smoothness assumptions, and validate its applicability both theoretically\nand empirically.",
+      "size": 483,
+      "sentences": 3
+    },
+    {
+      "id": 3,
+      "content": "eralized smoothness assumptions, and validate its applicability both theoretically\nand empirically. Under the novel smoothness assumption, we study the convergence properties\nof gradient descent (GD) in both deterministic and stochastic settings.",
+      "size": 246,
+      "sentences": 2
+    },
+    {
+      "id": 4,
+      "content": "the convergence properties\nof gradient descent (GD) in both deterministic and stochastic settings. It is shown that learning\nrate warmup consistently accelerates GD, and GD with warmup can converge at most Θ(T) times\nfaster than with a non-increasing learning rate schedule in some specific cases, providing insights\ninto the benefits of this strategy from an optimization theory perspective.",
+      "size": 392,
+      "sentences": 2
+    },
+    {
+      "id": 5,
+      "content": "ses, providing insights\ninto the benefits of this strategy from an optimization theory perspective. 1 Introduction\nMathematically, training a machine learning model can be formulated as a minimization problem:\nN\n1 (cid:88)\nmin f (w),\nw∈Rd N i\ni=1\nwhere first-order optimizers using the gradient information are normally applied to find a solution to\nthe problem.",
+      "size": 362,
+      "sentences": 2
+    },
+    {
+      "id": 6,
+      "content": "r optimizers using the gradient information are normally applied to find a solution to\nthe problem. Carefully tuning the learning rates (or step sizes) is crucial in this optimization procedure,\nespecially when the problem scale is large.",
+      "size": 238,
+      "sentences": 2
+    },
+    {
+      "id": 7,
+      "content": "step sizes) is crucial in this optimization procedure,\nespecially when the problem scale is large. A time-varying learning rate schedule is very commonly\nused both in theory (e.g., for Nesterov accelerated gradient method) [Malitsky and Mishchenko, 2020,\nTeboulleandVaisbourd,2023,BoydandVandenberghe,2004]andinpractice(e.g., cosineschedule)[He\net al., 2016, Vaswani et al., 2017, Loshchilov and Hutter, 2017, Touvron et al., 2023].",
+      "size": 432,
+      "sentences": 2
+    },
+    {
+      "id": 8,
+      "content": "chedule)[He\net al., 2016, Vaswani et al., 2017, Loshchilov and Hutter, 2017, Touvron et al., 2023]. Learning rate warmup is a strategy commonly incorporated in those schedules during the initial\nphase of training deep neural networks. In this stage, the learning rate, denoted as η, is set to a value\nlower than its target or base level. This initially small learning rate is then gradually increased over a\nnumber of training iterations until it reaches the intended peak value.",
+      "size": 479,
+      "sentences": 4
+    },
+    {
+      "id": 9,
+      "content": "gradually increased over a\nnumber of training iterations until it reaches the intended peak value. A prevalent example of this is\nthe linear warmup strategy [Goyal et al., 2017], which sets a 0 initial value and increases it linearly\nto the target learning rate in the initial phase. The warmup strategy has been widely observed to be\npowerful across many practical tasks [He et al., 2016, Goyal et al., 2017, Vaswani et al., 2017].",
+      "size": 432,
+      "sentences": 3
+    },
+    {
+      "id": 10,
+      "content": "e\npowerful across many practical tasks [He et al., 2016, Goyal et al., 2017, Vaswani et al., 2017]. Despite the impressive practical success of learning rate warmup, a rigorous theoretical explanation\nfor why warmup works still remains unclear.",
+      "size": 244,
+      "sentences": 2
+    },
+    {
+      "id": 11,
+      "content": "earning rate warmup, a rigorous theoretical explanation\nfor why warmup works still remains unclear. Various studies have explored or empirically validated\nexplanations for the benefits of learning rate warmup, including limiting the magnitude of weight\nupdates and reducing variance [Gotmare et al., 2018, Liu et al., 2020, Gilmer et al., 2022, Kalra and\nBarkeshli, 2024, Kosson et al., 2024]. Among them, Gilmer et al.",
+      "size": 419,
+      "sentences": 3
+    },
+    {
+      "id": 12,
+      "content": "20, Gilmer et al., 2022, Kalra and\nBarkeshli, 2024, Kosson et al., 2024]. Among them, Gilmer et al. [2022], Kalra and Barkeshli [2024]\nelaborateontheintuitionthatthemainadvantageoflearningratewarmupisthatsmallinitiallearning\n∗EqualContribution.",
+      "size": 244,
+      "sentences": 3
+    },
+    {
+      "id": 13,
+      "content": "ntheintuitionthatthemainadvantageoflearningratewarmupisthatsmallinitiallearning\n∗EqualContribution. 1\n5202\npeS\n9\n]GL.sc[\n1v27970.9052:viXra\n===  2 ===\nrates allow the model to safely go into smoother regions of the loss landscape, characterized by smaller\nlocal smoothness (or sharpness), i.e., the largest singular value of the Hessian, in the initial phase of\ntraining.",
+      "size": 371,
+      "sentences": 2
+    },
+    {
+      "id": 14,
+      "content": "(or sharpness), i.e., the largest singular value of the Hessian, in the initial phase of\ntraining. This is beneficial since the applicable learning rate scale at a specific point w generally needs\nto be bounded by 2/L(w), where L(w) is the local smoothness [Cohen et al., 2021], which implies\nthat first going into a smoother region enables larger learning rates in the following training process,\nresulting in faster convergence.",
+      "size": 430,
+      "sentences": 2
+    },
+    {
+      "id": 15,
+      "content": "n enables larger learning rates in the following training process,\nresulting in faster convergence. Theconnectionbetweenlearningratewarmupandlocalsmoothnessinspiresustostudythebenefits\nof the warmup strategy from an optimization perspective. To mathematically model the varying local\nsmoothness during training, we propose a novel family of smoothness assumptions that connect local\nsmoothness with the suboptimality gap of the loss function, i.e., f(w)−f∗.",
+      "size": 457,
+      "sentences": 3
+    },
+    {
+      "id": 16,
+      "content": "tions that connect local\nsmoothness with the suboptimality gap of the loss function, i.e., f(w)−f∗. Note that this is a closely\nrelevant but different family of assumptions with existing generalized smoothness assumptions that\nlink the local smoothness with gradient norm [Zhang et al., 2020b, Li et al., 2023a].",
+      "size": 312,
+      "sentences": 2
+    },
+    {
+      "id": 17,
+      "content": "umptions that\nlink the local smoothness with gradient norm [Zhang et al., 2020b, Li et al., 2023a]. We show that\nthis new family of generalized smoothness assumption is typically weaker than existing generalized\nsmoothness assumptions, and provide examples to show it applicability for analyzing the convergence\nof neural networks both empirically and theoretically.",
+      "size": 366,
+      "sentences": 2
+    },
+    {
+      "id": 18,
+      "content": "applicability for analyzing the convergence\nof neural networks both empirically and theoretically. Based on this novel family of assumptions, we\nstudy the convergence of the standard gradient descent (GD) and stochastic gradient descent (SGD)\nalgorithms. The novel assumption’s rigorous characterization of the evolution of local smoothness\nduring the optimization process enables the proof.",
+      "size": 391,
+      "sentences": 3
+    },
+    {
+      "id": 19,
+      "content": "cterization of the evolution of local smoothness\nduring the optimization process enables the proof. By comparing algorithms with and without a\nwarmup phase, we find that using warmup shows a consistent gain in accelerating convergence, which\n√\ncan even achieve Θ(T) times faster convergence speed for GD and Θ( T) times for SGD. Our main contributions are summarized as follows:\n1. Weproposeanovelfamilyofgeneralizedsmoothnessassumptions,connectingthelocalsmoothness\nwith the suboptimality gap.",
+      "size": 494,
+      "sentences": 4
+    },
+    {
+      "id": 20,
+      "content": "elfamilyofgeneralizedsmoothnessassumptions,connectingthelocalsmoothness\nwith the suboptimality gap. We prove that this novel family of assumptions is strictly weaker\nthan the existing generalized (ρ,K ,K )-smoothness with respect to the gradient norm [Zhang\n0 ρ\net al., 2020b, Li et al., 2023a] for ρ<2.",
+      "size": 303,
+      "sentences": 2
+    },
+    {
+      "id": 21,
+      "content": ")-smoothness with respect to the gradient norm [Zhang\n0 ρ\net al., 2020b, Li et al., 2023a] for ρ<2. Experimental validation on typical deep learning models,\nalong with several neural network examples, demonstrates the applicability of our generalized\nsmoothness assumptions to practical optimization tasks, especially training deep neural networks. 2.",
+      "size": 351,
+      "sentences": 3
+    },
+    {
+      "id": 22,
+      "content": "moothness assumptions to practical optimization tasks, especially training deep neural networks. 2. Based on our generalized smoothness assumptions, we theoretically prove that using a warm-up\nlearning rate schedule can accelerate the convergence of gradient descent (GD) and stochastic\ngradientdescent(SGD)methods,therebybridgingthegapbetweentheoryandpracticeintraining\nneural networks.",
+      "size": 387,
+      "sentences": 3
+    },
+    {
+      "id": 23,
+      "content": "radientdescent(SGD)methods,therebybridgingthegapbetweentheoryandpracticeintraining\nneural networks. Specifically, it is shown that under a specific way of warming up learning rates,\nGD can achieve Θ(T) times faster convergence rates compared to directly using non-increasing\nlearning rates. For SGD, we apply the ABC inequality [Khaled and Richtárik, 2023] as the\nnoise assumption, which is general and implies further benefits of doing warmup in accelerating\nconvergence in a noisy setting.",
+      "size": 491,
+      "sentences": 3
+    },
+    {
+      "id": 24,
+      "content": "eneral and implies further benefits of doing warmup in accelerating\nconvergence in a noisy setting. 2 Related Work\nLearning rate warmup. Learning rate warmup is a widely employed heuristic for training deep\nneural networks. The use of learning rate warmup dates back at least to He et al. [2016], which used\na small constant learning rate during the first stage of training. Later, the linear warmup strategy\nwas introduced by Goyal et al.",
+      "size": 439,
+      "sentences": 6
+    },
+    {
+      "id": 25,
+      "content": "uring the first stage of training. Later, the linear warmup strategy\nwas introduced by Goyal et al. [2017], and soon became popular for training a large range of models,\nincluding ResNets [He et al., 2016] and transformers [Vaswani et al., 2017]. Empirical evidence showed\nthat learning rate warmup can enhance training stability to allow large learning rates and improve\nmodel performance [Gotmare et al., 2019, Gilmer et al., 2022, Kalra and Barkeshli, 2024]. Intuitions for the benefits of warmup.",
+      "size": 500,
+      "sentences": 5
+    },
+    {
+      "id": 26,
+      "content": "al., 2019, Gilmer et al., 2022, Kalra and Barkeshli, 2024]. Intuitions for the benefits of warmup. In Goyal et al. [2017], the authors proposed that to use a\nlarger batch size, the learning rate should be scaled up proportionally. Smith et al. [2018], Jastrzębski\net al. [2018] theoretically studied how the ratio between batch size and learning rate affects the training\ndynamics of SGD.",
+      "size": 388,
+      "sentences": 7
+    },
+    {
+      "id": 27,
+      "content": "ly studied how the ratio between batch size and learning rate affects the training\ndynamics of SGD. However, in many cases, the learning rate cannot directly increase proportionally to\nthe batch size in order to maintain training stability. Thus, warmup was introduced by Goyal et al. [2017] as a trick for gradually increasing learning rates. After that, studies on the warmup mechanism\nappeared. Gotmareetal.",
+      "size": 410,
+      "sentences": 6
+    },
+    {
+      "id": 28,
+      "content": "ually increasing learning rates. After that, studies on the warmup mechanism\nappeared. Gotmareetal. [2018]foundthatwarmuppreventstraininginstabilitybylimitingtheupdates\nto deep-layer weights through empirical analysis. Liu et al. [2020] specifically studied Adam [Kingma\nand Ba, 2014] and attributed training instability to the large variance caused by the adaptive step\n2\n===  3 ===\nsize of Adam and viewed warmup as a method of variance reduction.",
+      "size": 449,
+      "sentences": 6
+    },
+    {
+      "id": 29,
+      "content": "by the adaptive step\n2\n===  3 ===\nsize of Adam and viewed warmup as a method of variance reduction. Other work suggested that\nlearning rate warmup enables the model to enter smoother regions of the loss landscape, leading to\na gradual decrease in local smoothness (sharpness) [Gilmer et al., 2022, Kalra and Barkeshli, 2024].",
+      "size": 325,
+      "sentences": 2
+    },
+    {
+      "id": 30,
+      "content": "gradual decrease in local smoothness (sharpness) [Gilmer et al., 2022, Kalra and Barkeshli, 2024]. Based on the relation between learning rates and the local smoothness [Nesterov et al., 2018, Cohen\net al., 2021], this enables larger learning rates in the following training process, thereby accelerating\nthe convergence. Wen et al. [2024] also provided a similar understanding by proposing an intuitive\nriver-valley interpretation of the neural networks’ landscape. Generalized Smoothness.",
+      "size": 490,
+      "sentences": 5
+    },
+    {
+      "id": 31,
+      "content": "an intuitive\nriver-valley interpretation of the neural networks’ landscape. Generalized Smoothness. The smoothness condition plays a significant role in optimization theory. For a twice-differentiable function, the standard L-smooth assumption assumes an upper bound L on\nthe largest singular value of the Hessian [Nesterov et al., 2018], where L is a constant. Zhang et al.",
+      "size": 374,
+      "sentences": 5
+    },
+    {
+      "id": 32,
+      "content": "largest singular value of the Hessian [Nesterov et al., 2018], where L is a constant. Zhang et al. [2020b] was probably the first to generalize the upper bound L to be a linear function of the current\ngradient norm, i.e., (cid:13) (cid:13)∇2f(w) (cid:13) (cid:13)≤L(w)=L\n0\n+L\n1\n∥∇f(w)∥, which is strictly weaker than the standard\nsmoothness condition and is verified to be valid in some small neural networks.",
+      "size": 409,
+      "sentences": 3
+    },
+    {
+      "id": 33,
+      "content": "r than the standard\nsmoothness condition and is verified to be valid in some small neural networks. The idea was followed\nbyZhangetal.[2020a],whichderivedfinerpropertiesofthegeneralizedsmoothness. Furtherextensions\nof this generalized smoothness have also been developed since then. Li et al. [2023a] extended the\nlinear function of ∥∇f(w)∥ to ∥∇f(w)∥ρ with ρ≥1 and proved that GD with a constant learning rate\nconverges if and only if ρ<2. In another direction, Crawshaw et al. [2022], Liu et al.",
+      "size": 497,
+      "sentences": 7
+    },
+    {
+      "id": 34,
+      "content": "earning rate\nconverges if and only if ρ<2. In another direction, Crawshaw et al. [2022], Liu et al. [2024] developed\nanisotropic versions of the generalized smoothness assumption. Convergence under Generalized Smoothness. The convergence of SGD under the L-smoothness\nassumptionhasbeenextensivelystudied. Forthe(L ,L )-smoothness,mostanalysesfocusedonvarying\n0 1\nlearningrates,suchasSGDwithclipping[Zhangetal.,2020b,a,Qianetal.,2021],SignSGD[Crawshaw\netal.,2022],andnormalizedSGD[Zhaoetal.,2021].",
+      "size": 496,
+      "sentences": 7
+    },
+    {
+      "id": 35,
+      "content": "g[Zhangetal.,2020b,a,Qianetal.,2021],SignSGD[Crawshaw\netal.,2022],andnormalizedSGD[Zhaoetal.,2021]. Moreover,theiranalysesoftenrelyonthebounded\nnoise assumption or the subgaussian noise assumption. Li et al. [2023a] proved the convergence of SGD\nwith constant learning rate under (ρ,L ,L )-smoothness with 0≤ρ<2, by bounding the gradients\n0 ρ\nalong the optimization trajectory.",
+      "size": 377,
+      "sentences": 4
+    },
+    {
+      "id": 36,
+      "content": "r (ρ,L ,L )-smoothness with 0≤ρ<2, by bounding the gradients\n0 ρ\nalong the optimization trajectory. Their constant learning rate depends on the intial suboptimality\ngap, which in turn depends on both the loss function and initialization. Tyurin [2025] proposes a\nspecificadaptivelearningrate,underwhichGDconvergesfor(ρ,L ,L )-smoothfunctionsforanyρ>0.",
+      "size": 351,
+      "sentences": 3
+    },
+    {
+      "id": 37,
+      "content": "proposes a\nspecificadaptivelearningrate,underwhichGDconvergesfor(ρ,L ,L )-smoothfunctionsforanyρ>0. 0 ρ\nHowever, the proposed learning rate involves computing an integral, which typically does not have a\nclosed-form expression, and is also not necessarily monotonic, making it less practical and different\nfrom our settings. Note that the lower bound of SGD under the L-smoothness and bounded variance\nconditions is Ω(1/T1/4) [Arjevani et al., 2023].",
+      "size": 450,
+      "sentences": 3
+    },
+    {
+      "id": 38,
+      "content": "of SGD under the L-smoothness and bounded variance\nconditions is Ω(1/T1/4) [Arjevani et al., 2023]. The above analyses, under generalized smoothness\nconditions, also achieve the O(1/T1/4) bound, though some of them rely on stronger noise assumptions. 3 A Family of Novel Generalized Smoothness Assumptions\nWe first review the existing smoothness assumptions.",
+      "size": 358,
+      "sentences": 3
+    },
+    {
+      "id": 39,
+      "content": "ly of Novel Generalized Smoothness Assumptions\nWe first review the existing smoothness assumptions. For a twice continuously differentiable function\nf :Rd →R, the standard L-smooth assumption assumes that the spectral norm of the Hessian of the\nloss function is uniformly bounded, i.e.,\n(cid:13) (cid:13)∇2f(w) (cid:13) (cid:13)≤L, ∀w∈Rd.",
+      "size": 338,
+      "sentences": 2
+    },
+    {
+      "id": 40,
+      "content": "f the\nloss function is uniformly bounded, i.e.,\n(cid:13) (cid:13)∇2f(w) (cid:13) (cid:13)≤L, ∀w∈Rd. Although the L-smoothness assumption is widely used in optimization theory, it fails to capture the\nlocal smoothness of the loss function at different points, and even some simple and common functions,\nsuch as the exponential function, do not satisfy this assumption [Zhang et al., 2020b]. To generalize L-smoothness, Li et al.",
+      "size": 427,
+      "sentences": 3
+    },
+    {
+      "id": 41,
+      "content": "nction, do not satisfy this assumption [Zhang et al., 2020b]. To generalize L-smoothness, Li et al. [2023a] proposed the (ρ,L ,L )-smoothness:\n0 ρ\n(cid:13) (cid:13)∇2f(w) (cid:13) (cid:13)≤L\n0\n+L\nρ\n∥∇f(w)∥ρ, ∀w∈Rd. When ρ=1, it reduces to the (L ,L )-smoothness [Zhang et al., 2020b].",
+      "size": 284,
+      "sentences": 4
+    },
+    {
+      "id": 42,
+      "content": "13)≤L\n0\n+L\nρ\n∥∇f(w)∥ρ, ∀w∈Rd. When ρ=1, it reduces to the (L ,L )-smoothness [Zhang et al., 2020b]. The (ρ,L ,L )-smoothness\n0 1 0 ρ\nassumes that local smoothness is bounded by an increasing polynomial function of the gradient norm\nand is considered to be more consistent with the deep neural networks than the L-smooth assumption\nbased on some empirical verifications [Zhang et al., 2020b].",
+      "size": 391,
+      "sentences": 3
+    },
+    {
+      "id": 43,
+      "content": "networks than the L-smooth assumption\nbased on some empirical verifications [Zhang et al., 2020b]. We are particularly interested in the\n0≤ρ<2 case, where local smoothness is bounded by a sub-quadratic function of the gradient norm. This is because Li et al. [2023a] showed that GD may diverge for (ρ,L ,L ) functions with ρ≥2.",
+      "size": 327,
+      "sentences": 4
+    },
+    {
+      "id": 44,
+      "content": "orm. This is because Li et al. [2023a] showed that GD may diverge for (ρ,L ,L ) functions with ρ≥2. 0 ρ\n3\n===  4 ===\nAlthough (ρ,L ,L )-smoothness has been empirically validated as an effective assumption for\n0 ρ\ncharacterizing the loss landscape of deep neural networks, there are still some limitations. Firstly,\nthere exist simple examples showing that neural networks do not satisfy the (ρ,L ,L )-smoothness\n0 ρ\nwith 0≤ρ<2 [Patel et al., 2022]. We discuss some examples in Section 3.2 in detail.",
+      "size": 499,
+      "sentences": 6
+    },
+    {
+      "id": 45,
+      "content": "-smoothness\n0 ρ\nwith 0≤ρ<2 [Patel et al., 2022]. We discuss some examples in Section 3.2 in detail. This implies\nthat, based on the results in Li et al. [2023a], fundamental first-order optimizers like GD can diverge\neven under some simple examples, which is inconsistent with real practice.",
+      "size": 291,
+      "sentences": 4
+    },
+    {
+      "id": 46,
+      "content": "zers like GD can diverge\neven under some simple examples, which is inconsistent with real practice. Moreover, for nonconvex\nfunctions,thegradientnormisnotnecessarilymonotonicallydecreasingduringtheoptimizationprocess\nof GD, making the (ρ,L ,L )-smoothness assumption inappropriate to characterize the decreasing\n0 ρ\ntrend of the sharpness, especially in the early stages of training neural networks [Kalra and Barkeshli,\n2024, Gilmer et al., 2022].",
+      "size": 448,
+      "sentences": 2
+    },
+    {
+      "id": 47,
+      "content": "y in the early stages of training neural networks [Kalra and Barkeshli,\n2024, Gilmer et al., 2022]. These limitations raise a need for developing a novel family of generalized\nassumptions. 3.1 A Novel Family of Generalized Smoothness\nWe consider the following (ρ,K ,K )-smoothness, which relates the local smoothness with the function\n0 ρ\nsuboptimality gap. Definition 1.",
+      "size": 371,
+      "sentences": 4
+    },
+    {
+      "id": 48,
+      "content": "oothness, which relates the local smoothness with the function\n0 ρ\nsuboptimality gap. Definition 1. We say a twice differentiable function f :Rd →R is (ρ,K ,K ) smooth if\n0 ρ\n(cid:13) (cid:13)∇2f(w) (cid:13) (cid:13)≤K\n0\n+K\nρ\n(f(w)−f⋆)ρ (1)\nfor K ,K ≥0 and ρ>0, where we assume f⋆ =inf f(w)>−∞. 0 ρ w∈Rd\nNote that the lower bound f∗ is standard in nonconvex analysis, which should also be satisfied by\nneural networks. When K = 0, our generalized smoothness reduces to the classical L-smoothness.",
+      "size": 496,
+      "sentences": 5
+    },
+    {
+      "id": 49,
+      "content": "d by\nneural networks. When K = 0, our generalized smoothness reduces to the classical L-smoothness. ρ\nIt is not hard to see that the (ρ,K ,K )-smoothness is strictly weaker than the L-smoothness since\n0 ρ\nexponential functions are (ρ,K ,K )-smooth but not L-smooth. Moreover, we can prove that the\n0 ρ\n(ρ,K ,K )-smoothness family is also weaker than the (ρ,L ,L )-smoothness for 0≤ρ<2. 0 ρ 0 ρ\nLemma 1. Ifafunction f :Rd →Ris(ρ,L ,L )-smoothwith0≤ρ<2, thenitis(α,K ,K )-smooth\n0 ρ 0 α\nwith α= ρ .",
+      "size": 496,
+      "sentences": 6
+    },
+    {
+      "id": 50,
+      "content": "ma 1. Ifafunction f :Rd →Ris(ρ,L ,L )-smoothwith0≤ρ<2, thenitis(α,K ,K )-smooth\n0 ρ 0 α\nwith α= ρ . 2−ρ\nBased on Lemma 1, properties of (ρ,L ,L )-smoothness for 0≤ρ<2 as well as its applicability\n0 ρ\nto deep neural networks can be inherited by (ρ,K ,K )-smoothness. Moreover, the following simple\n0 ρ\nexampleshowsthat(ρ,K ,K )-smoothnessisstrictlyweakerthan(ρ,L ,L )-smoothnesswith0≤ρ<2\n0 ρ 0 ρ\nand cannot be covered by ρ≥2. Example 1.",
+      "size": 435,
+      "sentences": 5
+    },
+    {
+      "id": 51,
+      "content": "sisstrictlyweakerthan(ρ,L ,L )-smoothnesswith0≤ρ<2\n0 ρ 0 ρ\nand cannot be covered by ρ≥2. Example 1. The following function\n(cid:26)\n2x+xsinx, x∈[0,+∞),\nf(x)=\n2(ex−1), x∈(−∞,0). is (1,K ,K )-smooth but not (ρ,L ,L )-smooth for any ρ>0. 0 1 0 ρ\nThis example also illustrates that compared to (ρ,L ,L )-smoothness, (ρ,K ,K )-smoothness is\n0 ρ 0 ρ\nbetter at capturing the properties of functions with multiple stationary points or local minima, which\nis a common case in deep neural network training.",
+      "size": 496,
+      "sentences": 5
+    },
+    {
+      "id": 52,
+      "content": "multiple stationary points or local minima, which\nis a common case in deep neural network training. 3.2 Generalized Smoothness in Neural Networks\nWe have shown that (ρ,K ,K )-smoothness is a more general assumption than (ρ,L ,L )-smoothness\n0 ρ 0 ρ\nfor 0≤ρ<2. Next, we demonstrate that (ρ,K ,K )-smoothness is more applicable to deep neural\n0 ρ\nnetworks. We adopt the two examples in Patel et al.",
+      "size": 396,
+      "sentences": 4
+    },
+    {
+      "id": 53,
+      "content": "moothness is more applicable to deep neural\n0 ρ\nnetworks. We adopt the two examples in Patel et al. [2022], where for binary classification tasks, simple\nfeed forward network and recurrent neural network both fail to satisfy the (ρ,L ,L )-smoothness with\n0 ρ\n0≤ρ<2, but satisfy the (ρ,K ,K )-smoothness. 0 ρ\nExample 2 (Example 1, Patel et al. [2022]).",
+      "size": 351,
+      "sentences": 5
+    },
+    {
+      "id": 54,
+      "content": "th\n0 ρ\n0≤ρ<2, but satisfy the (ρ,K ,K )-smoothness. 0 ρ\nExample 2 (Example 1, Patel et al. [2022]). Consider the following simple multi-layer feed forward\nnetwork for binary classification:\nz =σ(w z ), i=1,2,3\ni i i−1\nyˆ=φ(w z ),\n4 3\n4\n===  5 ===\n\u0000\u0016\u0000\u0011\u0000\u0013\n\u0000\u0015\u0000\u0011\u0000\u001b\n\u0000\u0015\u0000\u0011\u0000\u0019\n\u0000\u0015\u0000\u0011\u0000\u0017\n\u0000\u0015\u0000\u0011\u0000\u0015\n\u0000\u0014\u0000\u0011\u0000\u0013 \u0000\u0013\u0000\u0011\u0000\u001b \u0000\u0013\u0000\u0011\u0000\u0019 \u0000\u0013\u0000\u0011\u0000\u0017 \u0000\u0013\u0000\u0011\u0000\u0015 \u0000\u0013\u0000\u0011\u0000\u0013 \u0000\u0013\u0000\u0011\u0000\u0015 \u0000\u0013\u0000\u0011\u0000\u0017 \u0000O\u0000R\u0000J\u0000\u000bf f*\u0000\f\n\u0000\f\u0000V\u0000V\u0000H\u0000Q\u0000K\u0000W\u0000R\u0000R\u0000P\u00006\u0000\u000b\u0000J\u0000R\u0000O\n\u0000\u001a\u0000\u0013\u0000\u0013\u0000\u0013\n\u0000\u0019\u0000\u0013\u0000\u0013\u0000\u0013\n\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013\n\u0000\u0017\u0000\u0013\u0000\u0013\u0000\u0013\n\u0000\u0016\u0000\u0013\u0000\u0013\u0000\u0013\n\u0000\u0015\u0000\u0013\u0000\u0013\u0000\u0013\n\u0000\u0014\u0000\u0013\u0000\u0013\u0000\u0013\n\u0000Q\u0000R\u0000L\u0000W\u0000D\u0000U\u0000H\u0000W\u0000,\n5.4\n5.2\n5.0\n4.8\n4.6\n4.4\n4.2\n0.52 0.54 0.56 0.58 0.60 0.62 log(f f*)\n(a) ResNet\n)ssenhtoomS(gol\n600\n500\n400\n300\n200\n100\nnoitaretI\n(b) NanoGPT\nFigure 1: Local smoothness vs. function suboptimality gap on training (a) ResNet18 on CIFAR-10 (b)\nNanoGPT on Tiny TinyShakespeare character dataset.",
+      "size": 756,
+      "sentences": 4
+    },
+    {
+      "id": 55,
+      "content": "ity gap on training (a) ResNet18 on CIFAR-10 (b)\nNanoGPT on Tiny TinyShakespeare character dataset. Both x and y axes are in log scale and the\ncolor bar indicates the iteration number. We use f∗ =0 in the plots. where z is the input feature, σ is the activation function and φ is the sigmoid function. Given a sample\n0\npoint (z ,y), we aim to predict y. Let f(w) be the cross entropy loss plus a a ridge penalty.",
+      "size": 412,
+      "sentences": 6
+    },
+    {
+      "id": 56,
+      "content": "ple\n0\npoint (z ,y), we aim to predict y. Let f(w) be the cross entropy loss plus a a ridge penalty. Then\n0\nfor some simple distribution, f(w) is (ρ,K ,K )-smooth for ρ≥3 but not (ρ,L ,L )-smooth for any\n0 ρ 0 ρ\n0≤ρ<2. Example 3 (Example 2, Patel et al. [2022]). Consider the following simple recurrent neural network\nfor binary classification:\nh =σ(w h +w z ), i=0,1,2,3\ni 1 i−1 2 i\nyˆ=φ(w h ),\n3 3\nwhere σ is the activation function and φ is the sigmoid function.",
+      "size": 464,
+      "sentences": 6
+    },
+    {
+      "id": 57,
+      "content": "1,2,3\ni 1 i−1 2 i\nyˆ=φ(w h ),\n3 3\nwhere σ is the activation function and φ is the sigmoid function. Given a sample point (z ,z ,z ,z ,y),\n0 1 2 3\nwe sequentially observe z ,...,z and aim to predict y. Let f(w) be the cross entropy loss plus a\n0 3\na ridge penalty. Then for some simple distribution, f(w) is (ρ,K ,K )-smooth for ρ ≥ 3 but not\n0 ρ\n(ρ,L ,L )-smooth for any 0≤ρ<2. 0 ρ\nWe elaborate on these two examples in detail in Appendix B.",
+      "size": 441,
+      "sentences": 5
+    },
+    {
+      "id": 58,
+      "content": "0 ρ\n(ρ,L ,L )-smooth for any 0≤ρ<2. 0 ρ\nWe elaborate on these two examples in detail in Appendix B. In both cases, the loss function of\nneural networks either do not satisfy the (ρ,L ,L )-smoothness or only satisfy the case with ρ ≥ 2. 0 ρ\nFor the latter, GD with constant learning rates cannot guarantee convergence without additional\nassumptions.",
+      "size": 348,
+      "sentences": 4
+    },
+    {
+      "id": 59,
+      "content": "atter, GD with constant learning rates cannot guarantee convergence without additional\nassumptions. In contrast, in Section 4, we show that GD can converge for (ρ,K ,K )-smooth functions\n0 ρ\nfor any ρ≥0, highlighting the advantage of the (ρ,K ,K )-smoothness assumption. 0 ρ\n3.3 Empirical Validation of the Assumption\nToempiricallyinvestigatethepositedrelationshipbetweenlocalsmoothnessandthelosssub-optimality\ngap within neural networks, we perform numerical experiments.",
+      "size": 472,
+      "sentences": 3
+    },
+    {
+      "id": 60,
+      "content": "calsmoothnessandthelosssub-optimality\ngap within neural networks, we perform numerical experiments. As direct Hessian computation is\noften intractable, we approximate local smoothness following Zhang et al. [2020b], Crawshaw et al. [2022]. Given consecutive iterates w and w , we define the update direction d ≜w −w .",
+      "size": 317,
+      "sentences": 5
+    },
+    {
+      "id": 61,
+      "content": "awshaw et al. [2022]. Given consecutive iterates w and w , we define the update direction d ≜w −w . The\nt t+1 t t+1 t\nsmoothness Lˆ(w ) is then estimated by:\nt\n∥∇f(w +γd )−∇f(w )∥\nLˆ(w )= max t t t 2\nt γ∈{δ1,...,δn} ∥γd t ∥ 2\nwhere the sample points are δ =i/n; we use n=6, yielding γ ∈{1/6,2/6,3/6,4/6,5/6,1}. i\nOurexperimentalvalidationincludesbothConvolutionalNeuralNetworks(CNNs)andTransformers. The CNN configuration involves training a ResNet18 on CIFAR-10 for 20 epochs.",
+      "size": 477,
+      "sentences": 6
+    },
+    {
+      "id": 62,
+      "content": "CNNs)andTransformers. The CNN configuration involves training a ResNet18 on CIFAR-10 for 20 epochs. The Transformer\nconfiguration consists of training a NanoGPT model (6 blocks, 384 embedding dimension, 6 attention\nheads) on the TinyShakespeare character dataset for 600 steps. Both models are trained with SGD\nwith momentum (lr=1e−4). Both experiments were conducted using a single NVIDIA A100(40GB)\nPCIE GPU.",
+      "size": 410,
+      "sentences": 5
+    },
+    {
+      "id": 63,
+      "content": "with momentum (lr=1e−4). Both experiments were conducted using a single NVIDIA A100(40GB)\nPCIE GPU. As shown in the log-log plots, a polynomial dependence of the local smoothness on the\nfunction suboptimality gap is generally clear, showing the applicability of Assumption 2.",
+      "size": 275,
+      "sentences": 3
+    },
+    {
+      "id": 64,
+      "content": "ss on the\nfunction suboptimality gap is generally clear, showing the applicability of Assumption 2. Also, as one\ncanobservefromthe plots, thelocalsmoothnesscan beextremelylarge atthebeginningofthetraining\nprocess, which also provides evidence for the importance of using small learning rates in the initial\nphase of training.",
+      "size": 325,
+      "sentences": 2
+    },
+    {
+      "id": 65,
+      "content": "rovides evidence for the importance of using small learning rates in the initial\nphase of training. 5\n[  ]\n\n===  6 ===\n3.4 Properties of the Novel Generalized Smoothness\nSimilar to (ρ,L ,L )-smoothness [Li et al., 2023a], Definition 1 indicates that ∇f is locally Lipschitz\n0 ρ\ncontinuous. Therefore, by careful analysis through integration, we are able to obtain the following\nlocally Lipschitz continuous property of ∇f.",
+      "size": 422,
+      "sentences": 3
+    },
+    {
+      "id": 66,
+      "content": "rough integration, we are able to obtain the following\nlocally Lipschitz continuous property of ∇f. We first define two constants C ,C which only depend\n1 2\non K ,K and ρ:\n0 ρ\n1 −1\n1 1 K2ρ 2\nC = √ , C = √ √ 0 . 1 (cid:0) 2+ 2 (cid:1)(cid:112) 3ρK 2 2 3+ 6 1\nρ K2ρ\nρ\nLemma 2. Suppose f is (ρ,K ,K )-smooth. Let ∆=f(x)−f⋆,\n0 ρ\n(cid:110) (cid:111)\nL(∆):=2K 0 +K ρ (2∆)ρ and r(∆):=min C 1 ∆−ρ− 2 1 ,C 2 .",
+      "size": 400,
+      "sentences": 5
+    },
+    {
+      "id": 67,
+      "content": "oth. Let ∆=f(x)−f⋆,\n0 ρ\n(cid:110) (cid:111)\nL(∆):=2K 0 +K ρ (2∆)ρ and r(∆):=min C 1 ∆−ρ− 2 1 ,C 2 . Then for any x,y∈Rd satisfying ∥y−x∥≤r(∆), we have\n∥∇f(y)−∇f(x)∥≤L(∆)∥y−x∥\nand\nL(∆)\nf(y)≤f(x)+⟨∇f(x),y−x⟩+ ∥y−x∥2. 2\nLemma 2 is useful for our convergence analysis. As long as the consecutive iterates ∥w −w ∥\nt+1 t\nare small enough, we can obtain a descent lemma and proceed with an analysis similar to that used\nunder the L-smoothness assumption.",
+      "size": 447,
+      "sentences": 5
+    },
+    {
+      "id": 68,
+      "content": "descent lemma and proceed with an analysis similar to that used\nunder the L-smoothness assumption. 4 Theory of GD\nIn this section, we analyze GD for (ρ,K ,K )-smooth functions:\n0 ρ\nw =w −η ∇f(w ). t+1 t t t\nWe consider two learning rate settings: constant learning rate and increasing learning rate, i.e.,\nη ≤η ,t=0,...,T −1. The increasing learning rate strategy can be viewed as a specific type of\nt t+1\nlearning rate warmup, which will be validated empirically in Section 4.2.",
+      "size": 479,
+      "sentences": 4
+    },
+    {
+      "id": 69,
+      "content": "a specific type of\nt t+1\nlearning rate warmup, which will be validated empirically in Section 4.2. We show that the increasing\nlearning rate leads to a faster convergence rate compared to the constant learning rate. We first list the\nassumptions we require for convergence analysis. Assumption 1. We assume f(w )−f⋆ <∞, where f⋆ =inf f(w). 0 w∈Rd\nAssumption 2. f(w) is (ρ,K ,K )-smooth. 0 ρ\nWe use ∆ ≜f(w )−f⋆ for simplicity in the following analysis.",
+      "size": 451,
+      "sentences": 7
+    },
+    {
+      "id": 70,
+      "content": "ption 2. f(w) is (ρ,K ,K )-smooth. 0 ρ\nWe use ∆ ≜f(w )−f⋆ for simplicity in the following analysis. t t\n4.1 Upper Bounds\nWe first present the results under the general nonconvex scheme. Theorem 1. Suppose Assumptions 1 and 2 hold. {w } is generated by GD. Let the learning rate\nt\n(cid:110) (cid:111)\nη\nt\n=\n4\n√1\n2+4\nmin\nK\n1\n0\n,\n3ρ\n1\nKρ\n∆−\nt\nρ . Then it holds that ∆\nt\n≥∆\nt+1\nfor all t∈[T], and\n2(f(w )−f⋆) (cid:32) K ∆ K ∆ (cid:80)T−1∆ρ (cid:33)\nmin∥∇f(w )∥2 ≤ 0 =O 0 0 + ρ 0 t=0 t .",
+      "size": 482,
+      "sentences": 8
+    },
+    {
+      "id": 71,
+      "content": "∈[T], and\n2(f(w )−f⋆) (cid:32) K ∆ K ∆ (cid:80)T−1∆ρ (cid:33)\nmin∥∇f(w )∥2 ≤ 0 =O 0 0 + ρ 0 t=0 t . (2)\nt<T t (cid:80)T−1η T T2\nt=0 t\n(cid:110) (cid:111)\nMoreover, if we use a constant learning rate η =\n4\n√1\n2+4\nmin\nK\n1\n0\n,\n3ρ\n1\nKρ\n∆−\n0\nρ , then we have ∆\nt\n≥∆\nt+1\nfor all t∈[T], and\n(cid:32) (cid:33)\n2(f(w )−f⋆) K ∆ +K ∆ρ+1\nmin∥∇f(w )∥2 ≤ 0 =O 0 0 ρ 0 . (3)\nt<T t ηT T\n6\n===  7 ===\nWe can conduct a simple comparison between the two results in Theorem 1.",
+      "size": 456,
+      "sentences": 3
+    },
+    {
+      "id": 72,
+      "content": "3)\nt<T t ηT T\n6\n===  7 ===\nWe can conduct a simple comparison between the two results in Theorem 1. Since the function\ngap ∆ is monotonically decreasing during the optimization process, the learning rate schedule {η } is\nt t\nmonotonically increasing, thus can be viewed as a specific adaptive strategy of learning rate warmup.",
+      "size": 326,
+      "sentences": 2
+    },
+    {
+      "id": 73,
+      "content": "notonically increasing, thus can be viewed as a specific adaptive strategy of learning rate warmup. By (cid:80)T−1∆ρ ≤ T∆ρ, we know that the convergence rate with learning rate warmup is better than\nt=0 t 0\nthat with a constant learning rate, showing an acceleration effect when K is significant, i.e., the local\nρ\nsmoothness is varying and highly dependent on the suboptimality.",
+      "size": 379,
+      "sentences": 2
+    },
+    {
+      "id": 74,
+      "content": "is significant, i.e., the local\nρ\nsmoothness is varying and highly dependent on the suboptimality. This can likely happen since K can\n0\nbe quite small, as it doesn’t need to globally bound the Hessian norm as in the case of L-smoothness. Moreover, to provide more insights into how significant this gap can be, we further analyze the convex\nconvergence of GD as presented in Theorem 2. Theorem 2. Suppose Assumptions 1 and 2 hold. Further assume that f is convex.",
+      "size": 463,
+      "sentences": 6
+    },
+    {
+      "id": 75,
+      "content": "esented in Theorem 2. Theorem 2. Suppose Assumptions 1 and 2 hold. Further assume that f is convex. Define w⋆ =\n(cid:110) (cid:111)\nargmin\nw∈Rd\nf(w)andD\n0\n=∥w\n0\n−w⋆∥. Ifweusethelearningratescheduleη\nt\n=\n8\n√1\n2+8\nmin\nK\n1\n0\n,\n3ρ\n1\nKρ\n∆−\nt\nρ ,\nthen we have ∆ ≤∆ , and\nt+1 t\n \nD2K (cid:0) D2K (cid:1)max{ 1− 1 ρ ,1} ∆max{ρ−1,0}\nf(w\nT−1\n)−f(w⋆)≤O 0\nT\n0 + 0 ρ\nTmax{\n1−\n1\nρ\n,0}\n0 .",
+      "size": 378,
+      "sentences": 6
+    },
+    {
+      "id": 76,
+      "content": "(cid:0) D2K (cid:1)max{ 1− 1 ρ ,1} ∆max{ρ−1,0}\nf(w\nT−1\n)−f(w⋆)≤O 0\nT\n0 + 0 ρ\nTmax{\n1−\n1\nρ\n,0}\n0 . (cid:110) (cid:111)\nMoreover, if we use the constant learning rate η\nt\n= η =\n8\n√1\n2+8\nmin\nK\n1\n0\n,\n3ρ\n1\nKρ\n∆−\n0\nρ , then we have\n∆ ≤∆ , and\nt+1 t\n(cid:18) D2K D2K ∆ρ(cid:19)\nf(w )−f(w⋆)≤O 0 0 + 0 ρ 0 .",
+      "size": 300,
+      "sentences": 2
+    },
+    {
+      "id": 77,
+      "content": "1\nKρ\n∆−\n0\nρ , then we have\n∆ ≤∆ , and\nt+1 t\n(cid:18) D2K D2K ∆ρ(cid:19)\nf(w )−f(w⋆)≤O 0 0 + 0 ρ 0 . T−1 T T\nFrom Theorem 2, to obtain an ϵ-optimal solution f(w)−f(w⋆)≤ϵ, the required iteration number\nis O (cid:18) K0D 0 2 + KρD 0 2∆m 0 ax{0,ρ−1} (cid:19) for the warm-up schedule and O (cid:16) K0D 0 2 + KρD 0 2∆ρ 0 (cid:17) for the constant\nϵ ϵmax{0,1−ρ} ϵ ϵ\nlearning rate.",
+      "size": 375,
+      "sentences": 2
+    },
+    {
+      "id": 78,
+      "content": "ule and O (cid:16) K0D 0 2 + KρD 0 2∆ρ 0 (cid:17) for the constant\nϵ ϵmax{0,1−ρ} ϵ ϵ\nlearning rate. Therefore, we can clearly see that the convergence rate of GD with the specific warm-up\nschedule is strictly better than that of GD with a constant learning rate if K >0. Specifically, if ρ≥1,\nρ\nthe convergence rate of GD with the warmup learning rate schedule is O (cid:16) K0 ϵ D 0 2 +K ρ D 0 2∆ρ 0 −1 (cid:17) , which\nimplies an acceleration of Θ(∆ T) compared to using a constant learning rate.",
+      "size": 498,
+      "sentences": 3
+    },
+    {
+      "id": 79,
+      "content": "0 −1 (cid:17) , which\nimplies an acceleration of Θ(∆ T) compared to using a constant learning rate. 0\nWe also come across the following simple but intuitive example to illustrate that the difference in\nK terms can be significant. ρ\nExample 4. Consider a specific 2-dimensional function f(x,y)=h(x)+g(y), with\n √\ne− K1x−1− 1, x∈(−∞,−√1 )\n 2 K1 1\nh(x)=  e √ K 2 1 1 K x− 1 x 1 2 − , 1, x x ∈ ∈ [− (√ √ 1 K 1 1 , , + √ ∞ K 1 1 ) ] , g(y)= 2 K 1 y2. 2 K1\nNote that f is (1,K ,K )-smooth and f∗ =0.",
+      "size": 498,
+      "sentences": 5
+    },
+    {
+      "id": 80,
+      "content": "(√ √ 1 K 1 1 , , + √ ∞ K 1 1 ) ] , g(y)= 2 K 1 y2. 2 K1\nNote that f is (1,K ,K )-smooth and f∗ =0. This function is a simple construction that approximates\n1 1\nthe river-valley loss landscape presented in Wen et al. [2024], which is believed to capture the properties\nof neural networks. The landscape is very sharp along the x-axis and mild along the y-axis, where the\ny-axis can be interpreted as the river. Consider the initialization x 0 = lo √ g( K ∆ 1 0) with ∆ 0 >e and y 0 >1.",
+      "size": 484,
+      "sentences": 6
+    },
+    {
+      "id": 81,
+      "content": "nterpreted as the river. Consider the initialization x 0 = lo √ g( K ∆ 1 0) with ∆ 0 >e and y 0 >1. Then GD with warmup can converge Θ˜(∆ ) times faster than using constant learning rates. A detailed\n0\nexplanation for this can be found in Appendix D.4. This gap also highlights the importance of warmup\nwhen the training doesn’t have a good initialization (∆ is large).",
+      "size": 369,
+      "sentences": 5
+    },
+    {
+      "id": 82,
+      "content": "hlights the importance of warmup\nwhen the training doesn’t have a good initialization (∆ is large). 0\nTherefore, we can provide a theoretical explanation for the empirical advantages of learning rate\nwarmup [Kalra and Barkeshli, 2024, Gilmer et al., 2022] based on the theorems. At the beginning of\ntraining, the initialization may be poor, leading to a large function gap ∆ and high local smoothness\n0\n(cid:13) (cid:13)∇2f(w\n0\n) (cid:13) (cid:13)≤K\n0\n+K\n1\n∆ρ\n0\n.",
+      "size": 463,
+      "sentences": 3
+    },
+    {
+      "id": 83,
+      "content": "tion gap ∆ and high local smoothness\n0\n(cid:13) (cid:13)∇2f(w\n0\n) (cid:13) (cid:13)≤K\n0\n+K\n1\n∆ρ\n0\n. Thus, the initial learning rate of a constant (or non-increasing) learning\nrate schedule must be sufficiently small (O(K−1∆−ρ)), to prevent oscillation or divergence. As training\nρ 0\nprogresses, the function gap ∆ t decreases, leading to a reduction in (cid:13) (cid:13)∇2f(w t ) (cid:13) (cid:13) , which in turn allows a\nlarger learning rate.",
+      "size": 444,
+      "sentences": 3
+    },
+    {
+      "id": 84,
+      "content": "tion in (cid:13) (cid:13)∇2f(w t ) (cid:13) (cid:13) , which in turn allows a\nlarger learning rate. Learning rate warmup accelerates this process, getting the model into regions of\nthe loss landscape with lower local smoothness more quickly. Moreover, it enables the use of larger\nlearning rates after entering the smooth regions, which is often denoted as the target learning rate in\nthe warm-up strategy. Our theory shows that this acceleration can be significant.",
+      "size": 466,
+      "sentences": 4
+    },
+    {
+      "id": 85,
+      "content": "learning rate in\nthe warm-up strategy. Our theory shows that this acceleration can be significant. 7\n===  8 ===\n103\n102\n101\n100\n101\n102\n103\n104\n105\n106 0 20 40 60 80 100\nIteration\n)elacs gol(\nssoL\nLoss\nConstant LR 0.10\nLinear Warmup Theoretical Warmup\n0.08\n0.06\n0.04\n0.02\n0.00 0 20 40 60 80 100\nIteration\n(a) lossconvergence\netaR gninraeL\nLearning Rate\nConstant LR (0.0016) Linear Warmup\nTheoretical Warmup\n(b) lrshceduleinthetraining\nFigure 2: An empirical experiment based on the synthetic problem setting in Example 4.",
+      "size": 521,
+      "sentences": 3
+    },
+    {
+      "id": 86,
+      "content": "nthetraining\nFigure 2: An empirical experiment based on the synthetic problem setting in Example 4. The loss\nconvergence curves are on the left side, and the learning rate dynamics are on the right side. 4.2 Empirical Validation of the Theoretical Schedule\nIn this section, we provide some empirical evidence to support our claim that the theoretically derived\nschedule {η } in Theorem 1 is a valid representation of the warmup schedules. t\nSynthetic Experiment.",
+      "size": 462,
+      "sentences": 4
+    },
+    {
+      "id": 87,
+      "content": "hedule {η } in Theorem 1 is a valid representation of the warmup schedules. t\nSynthetic Experiment. We do an empirical validation of the simple synthetic river-valley mini-\nmization problem described in Example 4. In the specific experimental setup, we set ∆ =1000 and\n0\nw K a 1 rm = u 1 p 0, d x e 0 sc = rib l e o √ g d ( K ∆ i1n 0) T a h n e d or y e 0 m = 1 2 , . an W d e li c n o e n a s r id w er ar 3 m s u c p h .",
+      "size": 422,
+      "sentences": 5
+    },
+    {
+      "id": 88,
+      "content": "K ∆ i1n 0) T a h n e d or y e 0 m = 1 2 , . an W d e li c n o e n a s r id w er ar 3 m s u c p h . ed T u o le e s n f s o u r re co a m f p ai a r ri c s o o m n: pa co ri n s s o t n a , n w t, e o c u a r re th fu e l o ly re t t u ic n a e l\nthe learning rate scale for all schedules, i.e., we find an optimal constant to multiply the learning rate\nto achieve the fastest convergence (without leading to divergence).",
+      "size": 420,
+      "sentences": 3
+    },
+    {
+      "id": 89,
+      "content": "t to multiply the learning rate\nto achieve the fastest convergence (without leading to divergence). The results are shown in Figure 2,\nwhere we can observe that the theoretical warmup schedule and linear warmup schedule achieve a\nsimilar significant acceleration in loss convergence compared to the constant schedule. The learning\nrate dynamics figure also shows that both warmup schedules enable a much larger stable learning rate\ncompared to the constant schedule without warmup. ResNet on CIFAR.",
+      "size": 498,
+      "sentences": 4
+    },
+    {
+      "id": 90,
+      "content": "much larger stable learning rate\ncompared to the constant schedule without warmup. ResNet on CIFAR. We train a ResNet18 on CIFAR-10 for 100 epochs with SGD (without momen-\ntum), using the linear warmup schedule, no warmup (constant) schedule, and our theoretical schedule\n(cid:110) (cid:111)\nη\nt\n=\n4\n√1\n2+4\nmin\nK\n1\n0\n,\n3ρ\n1\nKρ\n∆−\nt\nρ . Followingcommonpractice,wesetthefirst10epochsasthewarm-up\nphase, and we do cosine decay after this initial phase.",
+      "size": 449,
+      "sentences": 4
+    },
+    {
+      "id": 91,
+      "content": "npractice,wesetthefirst10epochsasthewarm-up\nphase, and we do cosine decay after this initial phase. We set ρ=1 for the theoretical schedule, and\ntune K ∈ {1,4,8,16} and K ∈ {1/4,1/2,1,4}. For the constant and linear warmup schedules, we\n0 ρ\nset the target learning rate to be the same as the target learning rate of the theoretical schedule, i.e.,\n√1 1 , to ensure a fair comparison.",
+      "size": 383,
+      "sentences": 3
+    },
+    {
+      "id": 92,
+      "content": "as the target learning rate of the theoretical schedule, i.e.,\n√1 1 , to ensure a fair comparison. 4 2 A +4 s K d0isplayed in Figure 3, we can observe that the theoretical schedule increases similarly to the\nlinear warmup schedule, but is steeper in the first place, making a more concave curve. Also, since we\nuse mini-batch gradients instead of full gradients, the loss is not monotonically decreasing, so there is\nsome small oscillation before the schedule reaches a plateau.",
+      "size": 478,
+      "sentences": 3
+    },
+    {
+      "id": 93,
+      "content": "monotonically decreasing, so there is\nsome small oscillation before the schedule reaches a plateau. This learning rate schedule shows a valid\nwarmup phase and achieves the plateau faster than the linear warmup schedule. Moreover, we list the\nperformance in Table 1, showing that the theoretical schedule achieves even better performance than\nlinear warmup, outperforming the constant schedule.",
+      "size": 393,
+      "sentences": 3
+    },
+    {
+      "id": 94,
+      "content": "schedule achieves even better performance than\nlinear warmup, outperforming the constant schedule. Therefore, the theoretical schedule employed in\nTheorem 1 can be considered a valid representative of the warmup schedules, and thus, our theory built\non this schedule does present the benefits of doing warmup.",
+      "size": 309,
+      "sentences": 2
+    },
+    {
+      "id": 95,
+      "content": "p schedules, and thus, our theory built\non this schedule does present the benefits of doing warmup. Theoretical Warmup Linear Warmup No Warmup (Constant)\nTest Epoch Accuracy 0.8589±0.0023 0.8577±0.0023 0.8562±0.0019\nTable 1: The test epoch accuracy after 100 epochs of training with different warm-up schedules. The\nresults are reported as mean ± standard deviation over 6 independent runs.",
+      "size": 390,
+      "sentences": 3
+    },
+    {
+      "id": 96,
+      "content": "t warm-up schedules. The\nresults are reported as mean ± standard deviation over 6 independent runs. 8\n[  ]\n\n===  9 ===\n0.100000\n0.080000\n0.060000\n0.040000\n0.020000\n0.000000\n0 500 1000 1500 2000 2500 3000 3500 4000 Train Step\netaR\ngninraeL\nZoomed-in View (First 4000 Steps)\n0.100000\n0.080000\n0.060000\n0.040000\n0.020000\nRaw: customized lr schedule\nS lin m e o a o r t l h r e s d c h ( e = du 0 l .",
+      "size": 396,
+      "sentences": 3
+    },
+    {
+      "id": 97,
+      "content": "00\n0.040000\n0.020000\nRaw: customized lr schedule\nS lin m e o a o r t l h r e s d c h ( e = du 0 l . e 9): customized lr schedule 0.000000\n0 5000 10000 15000 20000 25000 30000 35000 40000 Train Step\n(a) lrscheduleinwarmupperiod\netaR\ngninraeL\nFull Learning Rate Schedule Comparison\nRaw: customized lr schedule\nSmoothed (=0.9): customized lr schedule linear lr schedule\n(b) lrshceduleinthewholetraining\nFigure 3: A comparison between warmup learning rate schedules in ResNet training.",
+      "size": 481,
+      "sentences": 2
+    },
+    {
+      "id": 98,
+      "content": "nthewholetraining\nFigure 3: A comparison between warmup learning rate schedules in ResNet training. The blue line\nis the theoretical warmup schedule derived in Theorem 1, and the yellow line is the standard linear\nwarmup. We do smoothing for the blue line in the plot to make it clearer. 4.3 Lower Bound of GD\nIn this section, we consider the lower bound of GD with non-increasing learning rate schedules under\nthe special case of ρ=1. Theorem 3.",
+      "size": 446,
+      "sentences": 5
+    },
+    {
+      "id": 99,
+      "content": "r bound of GD with non-increasing learning rate schedules under\nthe special case of ρ=1. Theorem 3. Given K ,ϵ as the desired accuracy, ∆ as the initial loss gap, for GD with any non-\n1 √\nincreasinglearningratesequence{η }, thereexistsafunctionf :R→Rthatis(1,ϵ K ,4πK )-smooth,\nt 1 1\nlower bounded by f∗ and f(w )−f⋆ ≤8∆, such that GD needs at least\n0\n(cid:18)\nK\n∆2(cid:19)\nΩ 1\nϵ2\niterations to achieve ∥∇f(w)∥≤ϵ.",
+      "size": 413,
+      "sentences": 3
+    },
+    {
+      "id": 100,
+      "content": "f⋆ ≤8∆, such that GD needs at least\n0\n(cid:18)\nK\n∆2(cid:19)\nΩ 1\nϵ2\niterations to achieve ∥∇f(w)∥≤ϵ. ThelowerboundmatchestheupperboundresultforconstantlearningratesinTheorem1, implying\nthe tightness of the bounds. The proof of Theorem 3 is presented in Appendix D.3. The specific\nlower bound construction is based on the use of trigonometric functions, which satisfy the (1,K ,K )-\n0 1\nsmoothness but cannot be adopted by the (ρ,L ,L )-smoothness assumptions for any ρ>0 as noted\n0 ρ\nin Example 1.",
+      "size": 496,
+      "sentences": 4
+    },
+    {
+      "id": 101,
+      "content": "ut cannot be adopted by the (ρ,L ,L )-smoothness assumptions for any ρ>0 as noted\n0 ρ\nin Example 1. Note that compared to the lower bound for (1,L ,L )-smoothness presented in Zhang et al. [2020b],\n0 1\nTheorem 3 is more general since it allows general non-increasing learning rate schedules rather than\nonly constant learning rates. This requires novel construction and proof techniques and may be of\ninterest for future study on lower bounds.",
+      "size": 443,
+      "sentences": 4
+    },
+    {
+      "id": 102,
+      "content": "es novel construction and proof techniques and may be of\ninterest for future study on lower bounds. Also, Theorem 3 does not have additional logarithmic terms\nin the lower bound, which serves as evidence for the fact that (1,K ,K )-smoothness is strictly weaker\n0 1\nthan (1,L ,L )-smoothness and more difficult to optimize. 0 1\n5 Theory of SGD\nIn this section, we analyze SGD for (ρ,K ,K )-smooth functions:\n0 ρ\nw =w −η g ,\nt+1 t t t\nwhere g =∇f(w ,ξ ).",
+      "size": 453,
+      "sentences": 3
+    },
+    {
+      "id": 103,
+      "content": "ction, we analyze SGD for (ρ,K ,K )-smooth functions:\n0 ρ\nw =w −η g ,\nt+1 t t t\nwhere g =∇f(w ,ξ ). We first make the following assumptions on the noise. t t t\nAssumption 3. E ∇f(w,ξ)=∇f(w) and ∥∇f(w,ξ)−∇f(w)∥≤σ for some σ >0 and all w∈Rd,\nξ\nwith probability 1. Assumption4. E ∇f(w,ξ)=∇f(w)and∥∇f(w,ξ)−∇f(w)∥2 ≤A(f(w)−f⋆)+B∥∇f(w)∥2+σ2\nξ\nfor some A≥0,B ≥0,σ >0 and all w∈Rd, with probability 1.",
+      "size": 393,
+      "sentences": 6
+    },
+    {
+      "id": 104,
+      "content": "∇f(w,ξ)−∇f(w)∥2 ≤A(f(w)−f⋆)+B∥∇f(w)∥2+σ2\nξ\nfor some A≥0,B ≥0,σ >0 and all w∈Rd, with probability 1. Assumption 3 is commonly used in stochastic optimization, especially under generalized smoothness\nsettings[Zhangetal.,2020a,b,Lietal.,2023b,Crawshawetal.,2022],forexample(L ,L )-smoothness.",
+      "size": 289,
+      "sentences": 2
+    },
+    {
+      "id": 105,
+      "content": "othness\nsettings[Zhangetal.,2020a,b,Lietal.,2023b,Crawshawetal.,2022],forexample(L ,L )-smoothness. 0 1\nAssuption 4 was originally introduced by Khaled and Richtárik [2023] in the expectation form,\nand is a more general noise assumption compared with the bounded variance assumption or the\nrelaxed growth condition [Bottou et al., 2018].",
+      "size": 337,
+      "sentences": 2
+    },
+    {
+      "id": 106,
+      "content": "ompared with the bounded variance assumption or the\nrelaxed growth condition [Bottou et al., 2018]. It covers a wide range of randomness sources, such\n9\n[  ]\n\n===  10 ===\nas subsampling [Gower et al., 2019] and gradient compression [Alistarh et al., 2017, Khirirat et al.,\n2018], which may not be captured by the bounded variance assumption.",
+      "size": 341,
+      "sentences": 2
+    },
+    {
+      "id": 107,
+      "content": "et al., 2017, Khirirat et al.,\n2018], which may not be captured by the bounded variance assumption. We adopt this assumption in\nour theoretical analysis to consider more general settings, and also explore how learning rate warmup\ncan help with convergence when the noise term is hard to handle.",
+      "size": 294,
+      "sentences": 2
+    },
+    {
+      "id": 108,
+      "content": "o explore how learning rate warmup\ncan help with convergence when the noise term is hard to handle. Also note that the assumptions we\nconsidered here can be relaxed to the sub-gaussian noise assumptions, with all the theorems still valid\nup to some logarithmic terms, and we include the corresponding details in Appendix G.\n5.1 Bounded Noise\nIn this section, we use the following notations\nr ≜min (cid:110) C ∆ −ρ− 2 1 ,C (cid:111) , L ≜2K +K (2∆ )ρ, and G ≜ (cid:113) K ∆ +K 3ρ∆ρ+1\nt 1 t 2 t 0 ρ t t 0 t ρ t\nto simplify the increasing learning rates in the theorems.",
+      "size": 567,
+      "sentences": 2
+    },
+    {
+      "id": 109,
+      "content": "K ∆ +K 3ρ∆ρ+1\nt 1 t 2 t 0 ρ t t 0 t ρ t\nto simplify the increasing learning rates in the theorems. For Theorem 5, we simply replace ∆ in\nt\nr ,L ,G with 4∆ to obtain r,L,G, and use them to simplify the constant learning rate. t t t 0\nTheorem 4. Suppose Assumptions 1, 2 and 3 hold with ρ ≥ 1. {w } is generated by SGD. Let\nt\n(cid:26) (cid:113) (cid:27)\nη t =min 8( √ 2+ 1 1)K0 , 8( √ 2+1)K 1 ρ(3∆t)ρ , 2 r σ t, σ2 ∆ T 0 Lt , 2σGt √∆ T 0 log\nδ\n1 .",
+      "size": 445,
+      "sentences": 6
+    },
+    {
+      "id": 110,
+      "content": "d:27)\nη t =min 8( √ 2+ 1 1)K0 , 8( √ 2+1)K 1 ρ(3∆t)ρ , 2 r σ t, σ2 ∆ T 0 Lt , 2σGt √∆ T 0 log\nδ\n1 . Then with probability at least 1−δ,\nit holds that ∆ ≤4∆ ,∀t∈[T] and\nt 0\n(cid:18) ∆ ∆ (cid:16) (cid:17)(cid:19)\nmin∥∇f(w )∥2 ≤O 0 (K +K ∆ )+σ 0 C−1∆ +C−1\nt<T t T 0 ρ avg,ρ T 1 avg,ρ− 2 1 2\n (cid:115) \n∆ log1\n+Oσ 0\nT\nδ (K\n0\n+K\nρ\n∆\navg,ρ\n)1/2 ,\nwhere ∆ =\n(cid:80)T−1∆ρ/T. avg,ρ t=0 t\nTheorem 5.",
+      "size": 395,
+      "sentences": 3
+    },
+    {
+      "id": 111,
+      "content": "15) \n∆ log1\n+Oσ 0\nT\nδ (K\n0\n+K\nρ\n∆\navg,ρ\n)1/2 ,\nwhere ∆ =\n(cid:80)T−1∆ρ/T. avg,ρ t=0 t\nTheorem 5. Under the same assumptions as Theorem 5, if we use a constant learning rate η ≡η =\nt\n(cid:26) (cid:113) (cid:27) (cid:16) (cid:113) (cid:17)\nmin 8( √ 2+ 1 1)K0 , 8( √ 2+1)K 1 ρ(12∆0)ρ , 2 r σ , σ ∆ 2T 0 L , σG √∆ 2T 0 log\nδ\n1 ,∆ σα 0 ,whereα=(G+LC 2 ) 1+ 2log1 δ .",
+      "size": 364,
+      "sentences": 3
+    },
+    {
+      "id": 112,
+      "content": "√ 2+1)K 1 ρ(12∆0)ρ , 2 r σ , σ ∆ 2T 0 L , σG √∆ 2T 0 log\nδ\n1 ,∆ σα 0 ,whereα=(G+LC 2 ) 1+ 2log1 δ . Then with probability at least 1−δ, it holds that ∆ ≤4∆ ,∀t∈[T] and\nt 0\nmin∥∇f(w )∥2 ≤O (cid:18) ∆ 0 (K +K ∆ρ)+σ ∆ 0 (cid:16) C−1∆ ρ− 2 1 +C−1 (cid:17)(cid:19)\nt<T t T 0 ρ 0 T 1 0 2\n (cid:115) (cid:113) \n∆ log1 log1\n+Oσ 0\nT\nδ (K\n0\n+K\nρ\n∆ρ\n0\n)1/2+σ\nT\nδ C\n2\n(K\n0\n+K\nρ\n∆ρ\n0\n).",
+      "size": 377,
+      "sentences": 2
+    },
+    {
+      "id": 113,
+      "content": "0 2\n (cid:115) (cid:113) \n∆ log1 log1\n+Oσ 0\nT\nδ (K\n0\n+K\nρ\n∆ρ\n0\n)1/2+σ\nT\nδ C\n2\n(K\n0\n+K\nρ\n∆ρ\n0\n). Wecanseethatinthestochasticsettings,bothconstantlearningratesandthelearningrateschedule\n√\nadapted to ∆ achieve the O(1/ T) convergence rate with high probability, which matches the optimal\nt\nrate [Arjevani et al., 2023].",
+      "size": 320,
+      "sentences": 2
+    },
+    {
+      "id": 114,
+      "content": ") convergence rate with high probability, which matches the optimal\nt\nrate [Arjevani et al., 2023]. However, it is not hard to see that to ensure convergence, we take the\nadaptivelearningrateη =g(∆ )andtheconstantlearningrateη =g(4∆ )inthesamepattern, where\nt t 0\ng is a monotonically decreasing function.",
+      "size": 305,
+      "sentences": 2
+    },
+    {
+      "id": 115,
+      "content": "onstantlearningrateη =g(4∆ )inthesamepattern, where\nt t 0\ng is a monotonically decreasing function. Therefore, we have η ≥ η and ∆ ≤ (4∆ )ρ, and the\nt avg,ρ 0\nterms introduced by K in the convergence rates are also correspondingly related to ∆ and (4∆ )ρ,\nρ avg,ρ 0\nindicating that the convergence rate in Theorem 4 is better than that in Theorem 5. We also note that\n∆ can be significantly smaller than (4∆ )ρ, which is reflected in the following convex example. avg,ρ 0\nExample 5.",
+      "size": 482,
+      "sentences": 4
+    },
+    {
+      "id": 116,
+      "content": "icantly smaller than (4∆ )ρ, which is reflected in the following convex example. avg,ρ 0\nExample 5. Consider the case that f is convex and noise is dominant in the convergence, then ∆ is\n√ t\ngenerally in the order of O(1/ t) following a similar analysis through the combination of Liu and Zhou\n[2023] and Theorem 2. Then\n(cid:80)T−1∆ρ\n=O(logT) if ρ=2 and O(1) if ρ>2. In this case, ∆\nt=0 t √ avg,ρ\ncan be improved over ∆ρ up to a factor of O(T), resulting in a Θ( T) times smaller convergence rate.",
+      "size": 498,
+      "sentences": 5
+    },
+    {
+      "id": 117,
+      "content": "an be improved over ∆ρ up to a factor of O(T), resulting in a Θ( T) times smaller convergence rate. 0\nIn the stochastic setting, we cannot guarantee that ∆ decreases at every step. Nevertheless, in\nt\npractice, as long as SGD does not diverge, ∆ typically shows a decreasing trend. Hence, η presented\nt t\nin Theorem 4 is approximately increasing and can be interpreted as a specific adaptive learning rate\nwarmupstrategy,whichisalsoverifiedinSection4.2.",
+      "size": 452,
+      "sentences": 4
+    },
+    {
+      "id": 118,
+      "content": "be interpreted as a specific adaptive learning rate\nwarmupstrategy,whichisalsoverifiedinSection4.2. Moreover,astrainingprogresses,localsmoothness\nalso decreases with the decrease of ∆ , allowing the model to reach flatter regions of the loss landscape\nt\nand use larger learning rates afterwards, just like the deterministic case. 10\n===  11 ===\n5.2 ABC-Inequality\nWe use the same notations r ,L ,G as in Section 5.1 to simplify the increasing learning rate in\nt t t\nTheorem6.",
+      "size": 475,
+      "sentences": 3
+    },
+    {
+      "id": 119,
+      "content": "ame notations r ,L ,G as in Section 5.1 to simplify the increasing learning rate in\nt t t\nTheorem6. Wereplace∆ inr ,L ,G with8∆ toobtainr,L,Gandusethemtosimplifytheconstant\nt t t t 0\nlearning rate in Theorem 7. Theorem 6. Suppose Assumptions 1, 2 and 4 hold with ρ ≥ 1. {w } is generated by SGD.",
+      "size": 295,
+      "sentences": 5
+    },
+    {
+      "id": 120,
+      "content": "in Theorem 7. Theorem 6. Suppose Assumptions 1, 2 and 4 hold with ρ ≥ 1. {w } is generated by SGD. If the\nt\nlearning rate η be adapted to ∆ as described in (19), then with probability at least 1−δ, it holds that\nt t\n∆ ≤4∆ ,∀t∈[T] and\nt 0\nmin∥∇f(w )∥2\nt\nt<T\n≤O (cid:18) ∆ 0 (K +K ∆ )+σ ∆ 0 (cid:16) C−1∆ +C−1 (cid:17) + ∆ 0 √ A (cid:16)(cid:112) K + (cid:112) K ∆ (cid:17)(cid:19)\nT 0 ρ avg,ρ T 1 avg,ρ− 2 1 2 T 0 ρ avg,ρ\n(cid:115) \n+O ∆ 0\nT\nlog1 δ (cid:16)(cid:16) σ+ (cid:112) A∆\n0\n(cid:17) (K\n0\n+K\nρ\n∆\navg,ρ\n)1/2+ (cid:112) B∆\n0\n(K\n0\n+K\nρ\n∆\navg,ρ\n) (cid:17) ,\nwhere ∆ =\n(cid:80)T−1∆ρ/T.",
+      "size": 592,
+      "sentences": 5
+    },
+    {
+      "id": 121,
+      "content": ") (K\n0\n+K\nρ\n∆\navg,ρ\n)1/2+ (cid:112) B∆\n0\n(K\n0\n+K\nρ\n∆\navg,ρ\n) (cid:17) ,\nwhere ∆ =\n(cid:80)T−1∆ρ/T. avg,ρ t=0 t\nTheorem 7.",
+      "size": 122,
+      "sentences": 2
+    },
+    {
+      "id": 122,
+      "content": "2+ (cid:112) B∆\n0\n(K\n0\n+K\nρ\n∆\navg,ρ\n) (cid:17) ,\nwhere ∆ =\n(cid:80)T−1∆ρ/T. avg,ρ t=0 t\nTheorem 7. Under the same assumptions as Theorem 6, if we use a constant learning rate as in (20),\nthen with probability at least 1−δ, it holds that ∆ ≤8∆ ,∀t∈[T] and\nt 0\nmin∥∇f(w )∥2\nt\nt<T\n≤O (cid:18) ∆ 0 (K +K ∆ρ)+σ ∆ 0 (cid:16) C−1∆ ρ− 2 1 +C−1 (cid:17) + ∆ 0 √ A (cid:18) (cid:112) K + (cid:113) K ∆ρ (cid:19)(cid:19)\nT 0 ρ 0 T 1 0 2 T 0 ρ 0\n(cid:115) \n+O ∆ 0\nT\nlog1 δ (cid:16)(cid:16) σ+ (cid:112) A∆\n0\n(cid:17) (K\n0\n+K\nρ\n∆ρ\n0\n)1/2+ (cid:112) B∆\n0\n(K\n0\n+K\nρ\n∆ρ\n0\n) (cid:17) .",
+      "size": 573,
+      "sentences": 3
+    },
+    {
+      "id": 123,
+      "content": "cid:16) σ+ (cid:112) A∆\n0\n(cid:17) (K\n0\n+K\nρ\n∆ρ\n0\n)1/2+ (cid:112) B∆\n0\n(K\n0\n+K\nρ\n∆ρ\n0\n) (cid:17) . Due to space limitations, we present only the main terms in Theorem 7 and the complete result,\ntogether with the learning rate choices, are presented in Appendix F. Note that if A=B =0, then\nTheorem 6 and Theorem 7 cover the results of Theorem 4 and Theorem 5, respectively.",
+      "size": 374,
+      "sentences": 2
+    },
+    {
+      "id": 124,
+      "content": "if A=B =0, then\nTheorem 6 and Theorem 7 cover the results of Theorem 4 and Theorem 5, respectively. Similar to\nthe discussion in Section 5.1, since ∆ should be generally decreasing in the training process, η is\nt t\napproximately increasing and can be regarded as a specific learning rate warmup strategy. Moreover, as we can see from the two convergence rates, the extra gradient noise in Assumption 4\nintroduces even more benefits of warmup.",
+      "size": 442,
+      "sentences": 3
+    },
+    {
+      "id": 125,
+      "content": "onvergence rates, the extra gradient noise in Assumption 4\nintroduces even more benefits of warmup. As we noted in the previous examples, ∆ can be\navg,ρ\nsignificantly smaller than ∆ρ.",
+      "size": 183,
+      "sentences": 2
+    },
+    {
+      "id": 126,
+      "content": "fits of warmup. As we noted in the previous examples, ∆ can be\navg,ρ\nsignificantly smaller than ∆ρ. Thus, by comparing the results in Theorem 6 and 7, we notice that the\n0\nspecific warmup schedule can reduce the dependence of convergence rates on both A and B, which\nfurther demonstrates that learning rate warmup may be beneficial not only when the local smoothness\nis largely varying over the landscape, but also when the gradient noise is large and related to the\nlandscape.",
+      "size": 477,
+      "sentences": 3
+    },
+    {
+      "id": 127,
+      "content": "varying over the landscape, but also when the gradient noise is large and related to the\nlandscape. 6 Conclusion\nThepaperinvestigatesatheoreticalexplanationforthebenefitsofthelearningratewarmupstrategy. We\nproposed a novel family of generalized smoothness assumptions to better describe the local smoothness\nvariation in the training process.",
+      "size": 342,
+      "sentences": 3
+    },
+    {
+      "id": 128,
+      "content": "d smoothness assumptions to better describe the local smoothness\nvariation in the training process. Then, under the novel smoothness assumptions, we proved that GD\nand SGD can both benefit from the warmup strategy, showing potentially a Θ(T) times acceleration\n√\nfor the deterministic setting and Θ( T) times for the stochastic settings in convergence speed over\nusing only a constant or non-increasing learning rate schedule.",
+      "size": 426,
+      "sentences": 2
+    },
+    {
+      "id": 129,
+      "content": "settings in convergence speed over\nusing only a constant or non-increasing learning rate schedule. Moreover, when a more general noise\nassumptionisconsidered, weshowthatwarmupcanalsobebeneficialinhandlingtheextranoiseterms,\nfurther highlighting the importance of doing warmup. A limitation of this work is that the analysis\nonly applies to SGD, but not to SGD with momentum or Adam, which are generally more popular in\npractical tasks.",
+      "size": 435,
+      "sentences": 3
+    },
+    {
+      "id": 130,
+      "content": "to SGD, but not to SGD with momentum or Adam, which are generally more popular in\npractical tasks. However, we believe that our analysis can be extended to these optimizers, since the\ndescribed benefits of warm-up in this paper arise mainly from our generalized smoothness assumptions,\nwhich are independent of the choice of an optimizer. Also, the lower bound results currently only\napply to the (1,K ,K )-smoothness setting, which may not be general enough.",
+      "size": 459,
+      "sentences": 3
+    },
+    {
+      "id": 131,
+      "content": "results currently only\napply to the (1,K ,K )-smoothness setting, which may not be general enough. These are potentially\n0 1\ninteresting future topics. 11\n===  12 ===\nReferences\nDan Alistarh, Demjan Grubic, Jerry Li, Ryota Tomioka, and Milan Vojnovic. Qsgd: Communication-\nEfficient SGD via Gradient Quantization and Encoding. In Conference on Neural Information\nProcessing Systems (NeurIPS), pages 1709–1720, 2017. Yossi Arjevani, Yair Carmon, John C. Duchi, Dylan J.",
+      "size": 468,
+      "sentences": 6
+    },
+    {
+      "id": 132,
+      "content": "sing Systems (NeurIPS), pages 1709–1720, 2017. Yossi Arjevani, Yair Carmon, John C. Duchi, Dylan J. Foster, Nathan Srebro, and Blake Woodworth. Lower bounds for non-convex stochastic optimization. Mathematical Programming, 199(1-2):165–214,\n2023. Léon Bottou, Frank E. Curtis, and Jorge Nocedal. Optimization Methods for Large-Scale Machine\nLearning. SIAM Review, 60(2):223–311, 2018. Stephen P Boyd and Lieven Vandenberghe. Convex optimization. Cambridge university press, 2004.",
+      "size": 479,
+      "sentences": 11
+    },
+    {
+      "id": 133,
+      "content": "018. Stephen P Boyd and Lieven Vandenberghe. Convex optimization. Cambridge university press, 2004. Jeremy Cohen, Simran Kaur, Yuanzhi Li, J Zico Kolter, and Ameet Talwalkar. Gradient descent on\nneural networks typically occurs at the edge of stability. In International Conference on Learning\nRepresentations, 2021. URL https://openreview.net/forum?id=jh-rTtvkGeM. Michael Crawshaw, Mingrui Liu, Francesco Orabona, Wei Zhang, and Zhenxun Zhuang.",
+      "size": 446,
+      "sentences": 9
+    },
+    {
+      "id": 134,
+      "content": "um?id=jh-rTtvkGeM. Michael Crawshaw, Mingrui Liu, Francesco Orabona, Wei Zhang, and Zhenxun Zhuang. Robustness to\nunbounded smoothness of generalized signsgd. Advances in neural information processing systems,\n35:9955–9968, 2022. JustinGilmer,BehroozGhorbani,AnkushGarg,SnehaKudugunta,BehnamNeyshabur,DavidCardoze,\nGeorge Edward Dahl, Zachary Nado, and Orhan Firat. A loss curvature perspective on training\ninstabilities of deep learning models.",
+      "size": 445,
+      "sentences": 6
+    },
+    {
+      "id": 135,
+      "content": "o, and Orhan Firat. A loss curvature perspective on training\ninstabilities of deep learning models. In International Conference on Learning Representations, 2022. Akhilesh Gotmare, Nitish Shirish Keskar, Caiming Xiong, and Richard Socher. A closer look at deep\nlearning heuristics: Learning rate restarts, warmup and distillation. arXiv preprint arXiv:1810.13243,\n2018. Akhilesh Gotmare, Nitish Shirish Keskar, Caiming Xiong, and Richard Socher.",
+      "size": 445,
+      "sentences": 7
+    },
+    {
+      "id": 136,
+      "content": "arXiv:1810.13243,\n2018. Akhilesh Gotmare, Nitish Shirish Keskar, Caiming Xiong, and Richard Socher. A closer look at deep\nlearning heuristics: Learning rate restarts, warmup and distillation. In International Conference on\nLearning Representations, 2019. URL https://openreview.net/forum?id=r14EOsCqKX. RobertManselGower,NicolasLoizou,XunQian,AlibekSailanbayev,EgorShulgin,andPeterRichtárik. Sgd: General Analysis and Improved Rates.",
+      "size": 433,
+      "sentences": 7
+    },
+    {
+      "id": 137,
+      "content": ",XunQian,AlibekSailanbayev,EgorShulgin,andPeterRichtárik. Sgd: General Analysis and Improved Rates. In International Conference on Machine Learning,\nvolume abs/1901.09401, 2019. Priya Goyal, Piotr Dollár, Ross Girshick, Pieter Noordhuis, Lukasz Wesolowski, Aapo Kyrola, Andrew\nTulloch, Yangqing Jia, and Kaiming He. Accurate, large minibatch sgd: Training imagenet in 1 hour. arXiv preprint arXiv:1706.02677, 2017. KaimingHe,XiangyuZhang,ShaoqingRen,andJianSun.",
+      "size": 461,
+      "sentences": 7
+    },
+    {
+      "id": 138,
+      "content": "et in 1 hour. arXiv preprint arXiv:1706.02677, 2017. KaimingHe,XiangyuZhang,ShaoqingRen,andJianSun. Deepresiduallearningforimagerecognition. In Proceedings of the IEEE conference on computer vision and pattern recognition, pages 770–778,\n2016. Stanisław Jastrzębski, Zac Kenton, Devansh Arpit, Nicolas Ballas, Asja Fischer, Amos Storkey, and\nYoshua Bengio. Three factors influencing minima in SGD, 2018. URL https://openreview.net/\nforum?id=rJma2bZCW. Dayal Singh Kalra and Maissam Barkeshli.",
+      "size": 492,
+      "sentences": 9
+    },
+    {
+      "id": 139,
+      "content": "SGD, 2018. URL https://openreview.net/\nforum?id=rJma2bZCW. Dayal Singh Kalra and Maissam Barkeshli. Why warmup the learning rate? underlying mechanisms\nand improvements. Advances in Neural Information Processing Systems, 37:111760–111801, 2024. Ahmed Khaled and Peter Richtárik. Better Theory for SGD in the Nonconvex World. Transactions on\nMachine Learning Research (TMLR), 2023, 2023. SaritKhirirat,HamidRezaFeyzmahdavian,andMikaelJohansson.Distributedlearningwithcompressed\ngradients.",
+      "size": 487,
+      "sentences": 10
+    },
+    {
+      "id": 140,
+      "content": "aritKhirirat,HamidRezaFeyzmahdavian,andMikaelJohansson.Distributedlearningwithcompressed\ngradients. arXiv preprint arXiv:1806.06573, 2018. Diederik P Kingma and Jimmy Ba. Adam: A method for stochastic optimization. arXiv preprint\narXiv:1412.6980, 2014. 12\n===  13 ===\nAtli Kosson, Bettina Messmer, and Martin Jaggi. Analyzing & reducing the need for learning rate\nwarmup in gpt training. Advances in Neural Information Processing Systems, 37:2914–2942, 2024.",
+      "size": 458,
+      "sentences": 8
+    },
+    {
+      "id": 141,
+      "content": "rate\nwarmup in gpt training. Advances in Neural Information Processing Systems, 37:2914–2942, 2024. Haochuan Li, Jian Qian, Yi Tian, Alexander Rakhlin, and Ali Jadbabaie. Convex and Non-convex\nOptimization Under Generalized Smoothness. In Conference on Neural Information Processing\nSystems (NeurIPS), 2023a. HaochuanLi,AlexanderRakhlin,andAliJadbabaie. ConvergenceofAdamUnderRelaxedAssumptions. In Conference on Neural Information Processing Systems (NeurIPS), 2023b.",
+      "size": 468,
+      "sentences": 8
+    },
+    {
+      "id": 142,
+      "content": "amUnderRelaxedAssumptions. In Conference on Neural Information Processing Systems (NeurIPS), 2023b. Liyuan Liu, Haoming Jiang, Pengcheng He, Weizhu Chen, Xiaodong Liu, Jianfeng Gao, and Jiawei\nHan. On the Variance of the Adaptive Learning Rate and Beyond. In International Conference on\nLearning Representations (ICLR), 2020. Yuxing Liu, Rui Pan, and Tong Zhang. Adagrad under anisotropic smoothness. arXiv preprint\narXiv:2406.15244, 2024. Zijian Liu and Zhengyuan Zhou.",
+      "size": 470,
+      "sentences": 9
+    },
+    {
+      "id": 143,
+      "content": "under anisotropic smoothness. arXiv preprint\narXiv:2406.15244, 2024. Zijian Liu and Zhengyuan Zhou. Revisiting the last-iterate convergence of stochastic gradient methods. arXiv preprint arXiv:2312.08531, 2023. Ilya Loshchilov and Frank Hutter. SGDR: Stochastic gradient descent with warm restarts. In\nInternational Conference on Learning Representations, 2017. URL https://openreview.net/\nforum?id=Skq89Scxx. Yura Malitsky and Konstantin Mishchenko. Adaptive Gradient Descent without Descent.",
+      "size": 493,
+      "sentences": 11
+    },
+    {
+      "id": 144,
+      "content": "m?id=Skq89Scxx. Yura Malitsky and Konstantin Mishchenko. Adaptive Gradient Descent without Descent. In Interna-\ntional Conference on Machine Learning (ICML), pages 6702–6712, 2020. Yurii Nesterov et al. Lectures on convex optimization, volume 137. Springer, 2018. Vivak Patel, Shushu Zhang, and Bowen Tian. Global Convergence and Stability of Stochastic Gradient\nDescent. In Conference on Neural Information Processing Systems (NeurIPS), 2022.",
+      "size": 443,
+      "sentences": 10
+    },
+    {
+      "id": 145,
+      "content": "tochastic Gradient\nDescent. In Conference on Neural Information Processing Systems (NeurIPS), 2022. JiangQian, YurenWu, BojinZhuang, ShaojunWang, andJingXiao. UnderstandingGradientClipping\nInIncrementalGradientMethods. InInternational Conference on Artificial Intelligence and Statistics\n(AISTATS), pages 1504–1512, 2021. Samuel L. Smith, Pieter-Jan Kindermans, and Quoc V. Le. Don’t decay the learning rate, increase\nthe batch size. In International Conference on Learning Representations, 2018.",
+      "size": 496,
+      "sentences": 8
+    },
+    {
+      "id": 146,
+      "content": "rning rate, increase\nthe batch size. In International Conference on Learning Representations, 2018. URL https:\n//openreview.net/forum?id=B1Yy1BxCZ. Marc Teboulle and Yakov Vaisbourd. An elementary approach to tight worst case complexity analysis\nof gradient based methods. Mathematical Programming, 201(1):63–96, 2023. Hugo Touvron, Louis Martin, Kevin Stone, Peter Albert, Amjad Almahairi, Yasmine Babaei, Nikolay\nBashlykov, Soumya Batra, Prajjwal Bhargava, Shruti Bhosale, et al.",
+      "size": 481,
+      "sentences": 7
+    },
+    {
+      "id": 147,
+      "content": "mahairi, Yasmine Babaei, Nikolay\nBashlykov, Soumya Batra, Prajjwal Bhargava, Shruti Bhosale, et al. Llama 2: Open foundation and\nfine-tuned chat models. arXiv preprint arXiv:2307.09288, 2023. Alexander Tyurin. Toward a Unified Theory of Gradient Descent under Generalized Smoothness. In\nForty-second International Conference on Machine Learning, 2025. Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Łukasz\nKaiser, and Illia Polosukhin.",
+      "size": 476,
+      "sentences": 7
+    },
+    {
+      "id": 148,
+      "content": "eer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Łukasz\nKaiser, and Illia Polosukhin. Attention is all you need. Advances in neural information processing\nsystems, 30, 2017. Kaiyue Wen, Zhiyuan Li, Jason Wang, David Hall, Percy Liang, and Tengyu Ma. Understanding\nwarmup-stable-decay learning rates: A river valley loss landscape perspective. arXiv preprint\narXiv:2410.05192, 2024. Bohang Zhang, Jikai Jin, Cong Fang, and Liwei Wang.",
+      "size": 447,
+      "sentences": 7
+    },
+    {
+      "id": 149,
+      "content": "pective. arXiv preprint\narXiv:2410.05192, 2024. Bohang Zhang, Jikai Jin, Cong Fang, and Liwei Wang. Improved analysis of clipping algorithms for\nnon-convex optimization. Advances in Neural Information Processing Systems, 33:15511–15521,\n2020a. 13\n===  14 ===\nJingzhao Zhang, Tianxing He, Suvrit Sra, and Ali Jadbabaie. Why Gradient Clipping Accelerates\nTraining: A Theoretical Justification for Adaptivity. In International Conference on Learning\nRepresentations (ICLR), 2020b.",
+      "size": 477,
+      "sentences": 8
+    },
+    {
+      "id": 150,
+      "content": "ustification for Adaptivity. In International Conference on Learning\nRepresentations (ICLR), 2020b. Shen-Yi Zhao, Yin-Peng Xie, and Wu-Jun Li. On the convergence and improvement of stochastic\nnormalized gradient descent. Science China Information Sciences, 64:1–13, 2021. A Full ResNet Results\nThe data for all the 6 runs of the ResNet experiment is listed in Table 2. Warm-up Schedule Metric Individual Runs Mean ± Std. Dev. Val Acc.",
+      "size": 434,
+      "sentences": 9
+    },
+    {
+      "id": 151,
+      "content": "experiment is listed in Table 2. Warm-up Schedule Metric Individual Runs Mean ± Std. Dev. Val Acc. [0.8567, 0.8600, 0.8623, 0.8595, 0.8553, 0.8599] 0.8589±0.0023\nTheoretical Warmup\nTrain Loss [0.0425, 0.0276, 0.0031, 0.0504, 0.0138, 0.0633] 0.0335±0.0208\nVal Acc. [0.8549, 0.8593, 0.8570, 0.8612, 0.8550, 0.8590] 0.8577±0.0023\nLinear Warmup\nTrain Loss [0.1043, 0.0413, 0.0122, 0.0242, 0.0244, 0.0242] 0.0384±0.0306\nVal Acc.",
+      "size": 423,
+      "sentences": 6
+    },
+    {
+      "id": 152,
+      "content": "23\nLinear Warmup\nTrain Loss [0.1043, 0.0413, 0.0122, 0.0242, 0.0244, 0.0242] 0.0384±0.0306\nVal Acc. [0.8532, 0.8546, 0.8559, 0.8573, 0.8578, 0.8585] 0.8562±0.0019\nNo Warmup\nTrain Loss [0.0196, 0.0300, 0.0344, 0.0355, 0.0675, 0.0819] 0.0448±0.0221\nTable 2: Detailed results for different warm-up schedules, including individual run data, mean, and\nstandard deviation over 6 runs. B Examples in Section 3.2\nThe two examples are from Patel et al. [2022].",
+      "size": 451,
+      "sentences": 4
+    },
+    {
+      "id": 153,
+      "content": "ard deviation over 6 runs. B Examples in Section 3.2\nThe two examples are from Patel et al. [2022]. Readers can also refer to their paper for a detailed\ndescription. B.1 Feed Forward Neural Network\nWe consider that σ is linear and φ is sigmoid. Suppose we have two sample points (y,z) = (0,0)\nand (y,z) = (1,1) with equal probability. The output yˆ satisfies: yˆ = 1 if z = 0 and yˆ =\n2\n(1+exp{−w w w w })−1 if z = 1.",
+      "size": 417,
+      "sentences": 7
+    },
+    {
+      "id": 154,
+      "content": "ual probability. The output yˆ satisfies: yˆ = 1 if z = 0 and yˆ =\n2\n(1+exp{−w w w w })−1 if z = 1. The binary cross entropy with ridge penalty can be written\n1 2 3 4\nas\n4\n1(cid:88)\nf (w)=−ylogyˆ−(1−y)log(1−yˆ)+ w2. z,y 2 i\ni=1\nTaking expectation over (z,y), we obtain that\n1 1 1\nf(w)= log2+ log(1+exp{−w w w w })+ ∥w∥2.",
+      "size": 320,
+      "sentences": 4
+    },
+    {
+      "id": 155,
+      "content": "i\ni=1\nTaking expectation over (z,y), we obtain that\n1 1 1\nf(w)= log2+ log(1+exp{−w w w w })+ ∥w∥2. 2 2 1 2 3 4 2\nA simple calculation shows that\n   \nw w w w\n2 3 4 1\n∇f(w)= −0.5   w 1 w 3 w 4  +   w 2  ,\n1+exp{−w 1 w 2 w 3 w 4 } w 1 w 2 w 4   w 3 \nw w w w\n1 2 3 4\n14\n===  15 ===\nand\n \n0 w w w w w w\n3 4 w 4 2 3\n∇2f(w)= −0.5 \n\nw 3 w 4 0 w 1 w 4 w 1 w 3 \n\n1+exp{w 1 w 2 w 3 w 4 } w 2 w 4 w 1 w 4 0 w 1 w 2 \nw w w w w w 0\n2 3 1 3 1 2\n(cid:124) (cid:123)(cid:122) (cid:125)\nA\n  ⊤\nw w w w w w\n2 3 4 2 3 4\n+ (1 0 + .5 e e x x p p { ( w w 1 1 w w 2 2 w w 3 3 w w 4 4 } ) )2    w w 1 1 w w 3 2 w w 4 4       w w 1 1 w w 3 2 w w 4 4    +I 4\nw w w w w w\n1 2 3 1 2 3\n(cid:124) (cid:123)(cid:122) (cid:125)\nB\nWe first show that f is not (ρ,L ,L )-smooth for any 0≤ρ<2.",
+      "size": 795,
+      "sentences": 2
+    },
+    {
+      "id": 156,
+      "content": "cid:124) (cid:123)(cid:122) (cid:125)\nB\nWe first show that f is not (ρ,L ,L )-smooth for any 0≤ρ<2. Let w=(0,w ,w ,w )⊤. Then\n0 ρ 4 4 4\n1\n∥∇f(w)∥ ≤ |w |3+3|w |. 1 4 4 4\nSince (cid:13) (cid:13)∇2f(w) (cid:13) (cid:13) F is lower bounded by ∇2f(w) (1,1) , we have\n(cid:13) (cid:13)∇2f(w) (cid:13) (cid:13) ≥ 1 w6. F 8 4\nTherefore, if f is (ρ,L ,L )-smooth, then it must hold that ρ≥2. 0 ρ\nNext, we show that f is (ρ,K ,K )-smooth for some ρ>0.",
+      "size": 441,
+      "sentences": 6
+    },
+    {
+      "id": 157,
+      "content": ",L )-smooth, then it must hold that ρ≥2. 0 ρ\nNext, we show that f is (ρ,K ,K )-smooth for some ρ>0. Note that\n0 ρ\n  (cid:32) 4 (cid:33)2\n∥A∥2 F = (1+exp{w 0.5 w w w })2  (cid:88) (w i w j )2 ≤ (cid:88) w i 2 ,\n1 2 3 4 1≤i<j≤4 i=1\n \n∥B∥2 F = ( 0 1 .2 + 5 e e x x p p { { w 2w w 1 w w 2 w w 3 w } 4 ) } 4  (cid:88) (w i w j w k )4+2(w 1 w 2 w 3 w 4 )2 (cid:88) (w i w j )2 \n1 2 3 4 1≤i<j<k≤4 1≤i<j≤4\n≤ (cid:88) (w w w )4+ (cid:88) (w w )2\ni j k i j\n1≤i<j<k≤4 1≤i<j≤4\n(cid:32) 4 (cid:33)6 (cid:32) 4 (cid:33)2\n(cid:88) (cid:88)\n≤ w2 + w2 ,\ni i\ni=1 i=1\nwhere in the first inequality we use e2x x2 ≤1 and e2x ≤1.",
+      "size": 615,
+      "sentences": 3
+    },
+    {
+      "id": 158,
+      "content": "cid:88) (cid:88)\n≤ w2 + w2 ,\ni i\ni=1 i=1\nwhere in the first inequality we use e2x x2 ≤1 and e2x ≤1. Combining the above results, we\n(1+ex)4 (1+ex)4\nobtain that\n(cid:32) 4 (cid:33)6 (cid:32) 4 (cid:33)2\n(cid:88) (cid:88)\n∥∇2f(w)∥2 ≤3 w2 +6 w2 +12. F i i\ni=1 i=1\nMoreover, it is not hard to see that f⋆ ≤log2 and\n4\n1(cid:88) 1\nf(w)−f⋆ ≥ w2− log2. 2 i 2\ni=1\nTherefore, we conclude that f is (ρ,K ,K )-smooth with some K ,K >0 and ρ≥3.",
+      "size": 431,
+      "sentences": 4
+    },
+    {
+      "id": 159,
+      "content": "≥ w2− log2. 2 i 2\ni=1\nTherefore, we conclude that f is (ρ,K ,K )-smooth with some K ,K >0 and ρ≥3. 0 1 0 1\nB.2 Recurrent Neural Network\nWe consider that σ is linear and φ is sigmoid. Suppose we have two sample points (z,y)=(1,0,0,0,1)\nand (0,0,0,0,0) with equal probability. Fix h = 0 and w = 1. We have yˆ =\nexp{w\n1\n3w2z0 }\n. The\nbinary cross entropy with ridge penalty can be\n0\nwritten as\n3 1+exp{w\n1\n3w2z0 }\n2\n1(cid:88)\nf (w)=−ylogyˆ−(1−y)log(1−yˆ)+ w2.",
+      "size": 456,
+      "sentences": 7
+    },
+    {
+      "id": 160,
+      "content": "ridge penalty can be\n0\nwritten as\n3 1+exp{w\n1\n3w2z0 }\n2\n1(cid:88)\nf (w)=−ylogyˆ−(1−y)log(1−yˆ)+ w2. z,y 2 i\ni=1\n15\n===  16 ===\nTaking expectation over (z,y) we obtain that\nf(w)= 1(cid:0) log2+log (cid:0) 1+exp (cid:0) w3w (cid:1)(cid:1) −w3w +w2+w2(cid:1)\n2 1 2 1 2 1 2\n∇f(w)=   −3 − w 2 2 w 1 2 1 3 w 1 2 + 1 e + x e p x ( 1 p w ( 1 1 3 w w 1 3 2 w ) 2 ) + + w w 2 1  \n 9w 1 4w 2 2exp(w 1 3w2 ) − 3w1w2 +1 3w 1 5w2exp(w 1 3w2 ) − 3w 1 2 1 \n∇2f(w)= 2(1+exp(w 1 3w2 ))2 1+exp(w 1 3w2 ) 2(1+exp(w 1 3w2 ))2 2 1+exp(w 1 3w2 ) .",
+      "size": 532,
+      "sentences": 2
+    },
+    {
+      "id": 161,
+      "content": "− 3w 1 2 1 \n∇2f(w)= 2(1+exp(w 1 3w2 ))2 1+exp(w 1 3w2 ) 2(1+exp(w 1 3w2 ))2 2 1+exp(w 1 3w2 ) .  3w 1 5w2exp(w 1 3w2 ) − 3w 1 2 1 w 1 6exp(w 1 3w2 ) +1 \n2(1+exp(w\n1\n3w2 ))2 2 1+exp(w\n1\n3w2 ) 2(1+exp(w\n1\n3w2 ))2\nWe first show that f is not (ρ,L ,L )-smooth for any 0≤ρ<2. Let w =0. We have\n0 ρ 2\n|w |3\n∥f(w)∥ =|w |+ 1 . 1 1 4\nConsider the bottom right entry of ∇2f(w), we have\n(cid:13) (cid:13)∇2f(w) (cid:13) (cid:13) > w 1 6 .",
+      "size": 432,
+      "sentences": 5
+    },
+    {
+      "id": 162,
+      "content": "sider the bottom right entry of ∇2f(w), we have\n(cid:13) (cid:13)∇2f(w) (cid:13) (cid:13) > w 1 6 . F 8\nTherefore, if f is (ρ,L ,L )-smooth, then it must hold that ρ≥2. 0 ρ\nNext, we show that f is (ρ,K ,K )-smooth for some ρ≥0.",
+      "size": 227,
+      "sentences": 3
+    },
+    {
+      "id": 163,
+      "content": ",L )-smooth, then it must hold that ρ≥2. 0 ρ\nNext, we show that f is (ρ,K ,K )-smooth for some ρ≥0. We directly compute\n0 ρ\nexp (cid:8) 2w3w (cid:9) (cid:18) 243 1 (cid:19)\n∥∇2f(w)∥2 ≤ 1 2 w8w4+9w10w2+ w12\nF (1+exp{w3w }) 4 4 1 2 1 2 2 1\n1 2\n+\n9 (cid:0) 3w2w2+w4(cid:1)\n+5\n1+exp{w3w } 1 2 1\n1 2\nexp (cid:8) 2w3w (cid:9) (cid:18) 243 (cid:19) exp (cid:8) 2w3w (cid:9) 1\n= 1 2 w8 w4+9w2w2 + 1 2 w12\n(1+exp{w3w }) 4 1 4 2 1 2 (1+exp{w3w }) 42 1\n1 2 1 2\n(cid:124) (cid:123)(cid:122) (cid:125) (cid:124) (cid:123)(cid:122) (cid:125)\nA B\n+\n9 (cid:0) 3w2w2+w4(cid:1)\n+5.",
+      "size": 563,
+      "sentences": 3
+    },
+    {
+      "id": 164,
+      "content": ":123)(cid:122) (cid:125) (cid:124) (cid:123)(cid:122) (cid:125)\nA B\n+\n9 (cid:0) 3w2w2+w4(cid:1)\n+5. 1+exp{w3w } 1 2 1\n1 2\n(cid:124) (cid:123)(cid:122) (cid:125)\nC\nSince e2x x2 ≤1 and e2x ≤1, we have\n(1+ex)4 (1+ex)4\nA= exp (cid:8) 2w 1 3w 2 (cid:9) (cid:0) w3w (cid:1)2 w2 (cid:18) 243 w2+9w2 (cid:19)\n(1+exp{w3w }) 4 1 2 1 4 2 1\n1 2\n243 243\n≤ w2(w2+w2)≤ (w2+w2)2,\n4 1 1 2 4 1 2\n1 1\nB ≤ w12 ≤ (w2+w2)6,\n2 1 2 1 2\n3\nC ≤9×(3w2w2+w4)≤9× (w2+w2)2.",
+      "size": 442,
+      "sentences": 2
+    },
+    {
+      "id": 165,
+      "content": "w2(w2+w2)≤ (w2+w2)2,\n4 1 1 2 4 1 2\n1 1\nB ≤ w12 ≤ (w2+w2)6,\n2 1 2 1 2\n3\nC ≤9×(3w2w2+w4)≤9× (w2+w2)2. 1 2 1 2 1 2\nCombining the above results, we obtain that\n∥∇2f(θ)∥2 ≤ 243(cid:0) w2+w2(cid:1)2 + 1 (w2+w2)6+ 27 (w2+w2)2+5\nF 4 1 2 2 1 2 2 1 2\n≤256\n(cid:0) w2+w2(cid:1)2\n+\n(cid:0) w2+w2(cid:1)6\n+5\n1 2 1 2\nMoreover, note that f⋆ ≤log2 and\n1\nf(w)−f⋆ ≥w2+w2− log2. 1 2 2\nWe conclude that f is (ρ,K ,K )-smooth with some K ,K >0 and ρ≥3.",
+      "size": 431,
+      "sentences": 3
+    },
+    {
+      "id": 166,
+      "content": "and\n1\nf(w)−f⋆ ≥w2+w2− log2. 1 2 2\nWe conclude that f is (ρ,K ,K )-smooth with some K ,K >0 and ρ≥3. 0 1 0 1\n16\n===  17 ===\nC Proofs for Section 3\nC.1 Proof of Lemma 1\nProof. Since f is (ρ,L ,L )-smooth with 0≤ρ<2, by [Li et al., 2023a, Lemma 3.5] we have that for\n0 ρ\nall w∈Rd,\n∥∇f(w)∥2\nf(w)−f⋆ ≥ . 2L +2ρ+1L ∥∇f(w)∥ρ\n0 ρ\nIf 2L ≤2ρ+1L ∥∇f(w)∥ρ, we obtain that\n0 ρ\n∥∇f(w)∥2 ∥∇f(w)∥2−ρ\nf(w)−f⋆ ≥ = .",
+      "size": 397,
+      "sentences": 5
+    },
+    {
+      "id": 167,
+      "content": "2L +2ρ+1L ∥∇f(w)∥ρ\n0 ρ\nIf 2L ≤2ρ+1L ∥∇f(w)∥ρ, we obtain that\n0 ρ\n∥∇f(w)∥2 ∥∇f(w)∥2−ρ\nf(w)−f⋆ ≥ = . 2ρ+2L ∥∇f(w)∥ρ 2ρ+2L\nρ ρ\nBy the definition of (ρ,L ,L )-smoothness we have\n0 ρ\n∥∇2f(w)∥≤L 0 +L ρ ∥∇f(w)∥ρ ≤L 0 +L ρ 2− 2 ρ2 ρ( 2 ρ − + ρ 2) (f(w)−f⋆)2− ρ ρ . If 2L >2ρ+1L ∥∇f(w)∥ρ, ∥∇f(w)∥ is bounded:\n0 ρ\nL\n∥∇f(w)∥ρ < 0 .",
+      "size": 320,
+      "sentences": 3
+    },
+    {
+      "id": 168,
+      "content": "2 ρ( 2 ρ − + ρ 2) (f(w)−f⋆)2− ρ ρ . If 2L >2ρ+1L ∥∇f(w)∥ρ, ∥∇f(w)∥ is bounded:\n0 ρ\nL\n∥∇f(w)∥ρ < 0 . 2ρL\nρ\nAgain, by the definition of (ρ,L ,L )-smoothness we have\n0 ρ\nL\n∥∇2f(w)∥≤L +L ∥∇f(w)∥ρ ≤L + 0 ≤2L\n0 ρ 0 2ρ 0\nCombining the two cases, we obtain that\n∥∇2f(w)∥≤2L 0 +L ρ 2− 2 ρ2 ρ( 2 ρ − + ρ 2) (f(w)−f⋆)2− ρ ρ . This completes the proof. C.2 Proof of Lemma 2\nFor any two points x,y∈Rd, we define\n(cid:90) t\nh(t):= K +K (f(x+v(y−x))−f⋆)ρdv,t∈[0,1].",
+      "size": 450,
+      "sentences": 5
+    },
+    {
+      "id": 169,
+      "content": "of Lemma 2\nFor any two points x,y∈Rd, we define\n(cid:90) t\nh(t):= K +K (f(x+v(y−x))−f⋆)ρdv,t∈[0,1]. (4)\n0 ρ\n0\nBy the definition of (ρ,K ,K )-smoothness we have\n0 ρ\n(cid:90) t\n∥∇2f(x+v(y−x))∥dv ≤h(t). (5)\n0\nNote that\n(cid:90) 1\n∥∇f(y)−∇f(x)∥=∥ ∇2f(x+t(y−x))(y−x)dt∥\n0\n(cid:90) 1\n≤∥y−x∥ ∥∇2f(x+t(y−x))∥dt≤h(1)∥y−x∥,\n0\nand\n(cid:90) 1\nf(y)−f(x)= ⟨∇f(x+t(y−x)−∇f(x),y−x⟩dt+⟨∇f(x),y−x⟩\n0\n(cid:90) 1\n(6)\n≤∥y−x∥ ∥∇f(x+t(y−x))−∇f(x)∥ +⟨∇f(x),y−x⟩\n0\n1\n≤⟨∇f(x),y−x⟩+ h(1)∥y−x∥2.",
+      "size": 467,
+      "sentences": 3
+    },
+    {
+      "id": 170,
+      "content": "⟨∇f(x),y−x⟩\n0\n(cid:90) 1\n(6)\n≤∥y−x∥ ∥∇f(x+t(y−x))−∇f(x)∥ +⟨∇f(x),y−x⟩\n0\n1\n≤⟨∇f(x),y−x⟩+ h(1)∥y−x∥2. 2\nTo prove Lemma 2, it suffices to bound h(1). We need the following Grönwall’s inequality. 17\n===  18 ===\nLemma 3 (Lemma A.3, Li et al. [2023a]). Let u : [a,b] → [0,∞) and l : [0,∞) → (0,∞) be two\ncontinuous functions. Suppose u′(t)≤l(u(t)) for all t∈[a,b], then it holds for all t∈[a,b] that\n(cid:90) u(t) 1\ndw ≤t−a. l(w)\nu(a)\nLemma 4. Suppose Assumption 2 holds.",
+      "size": 465,
+      "sentences": 9
+    },
+    {
+      "id": 171,
+      "content": "holds for all t∈[a,b] that\n(cid:90) u(t) 1\ndw ≤t−a. l(w)\nu(a)\nLemma 4. Suppose Assumption 2 holds. For any x,y ∈ Rd, define h(t) as in (4). Let m > 0\nbe any positive number and a = K +K (m+f(x)−f⋆)ρ. We have that h(1) ≤ a if a∥y−x∥2 +\n0 ρ\n∥y−x∥∥∇f(x)∥≤m. Proof. For any x,y∈Rd, we have\n(cid:90) 1\nf(y)−f(x)= ⟨∇f(x+w(y−x)),y−x⟩dw\n0\n(cid:90) 1(cid:90) w\n= ⟨∇2f(x+v(y−x))(y−x),y−x⟩dvdw+⟨∇f(x),y−x⟩\n0 0\n(cid:90) 1(cid:90) w\n≤∥y−x∥2 ∥∇2f(x+v(y−x))∥dvdw+⟨∇f(x),y−x⟩.",
+      "size": 460,
+      "sentences": 8
+    },
+    {
+      "id": 172,
+      "content": "v(y−x))(y−x),y−x⟩dvdw+⟨∇f(x),y−x⟩\n0 0\n(cid:90) 1(cid:90) w\n≤∥y−x∥2 ∥∇2f(x+v(y−x))∥dvdw+⟨∇f(x),y−x⟩. 0 0\nReplacing y with x+t(y−x) we obtain that\n(cid:90) 1(cid:90) w\nf(x+t(y−x))−f(x)≤t2∥y−x∥2 ∥∇2f(x+vt(y−x))∥dvdw+t⟨∇f(x),y−x⟩\n0 0\n(cid:90) 1(cid:90) tw\n=t2∥y−x∥2 ∥∇2f(x+v(y−x))∥dvdw+t⟨∇f(x),y−x⟩\n0 0\n(cid:90) 1\n≤t2∥y−x∥2 h(wt)dw+t∥∇f(x)∥∥y−x∥\n0\n≤∥y−x∥2h(t)+∥∇f(x)∥∥y−x∥,\nwhere the second inequality is due to (5) and the last inequality is due to the fact that h(·) is positive\nand monotonically increasing and 0≤t≤1.",
+      "size": 516,
+      "sentences": 2
+    },
+    {
+      "id": 173,
+      "content": "he last inequality is due to the fact that h(·) is positive\nand monotonically increasing and 0≤t≤1. Then,\nh′(t)=K +K (f((x+t(y−x))−f⋆)ρ =K +K (f((x+t(y−x))−f(x)+f(x)−f⋆)ρ\n0 ρ 0 ρ\n≤K +K\n(cid:0) ∥y−x∥2h(t)+∥y−x∥∥∇f(x)∥+f(x)−f⋆(cid:1)ρ\n. 0 ρ\nBy Lemma 3, let l(w)=K +K (cid:0) ∥y−x∥2w+∥y−x∥∥∇f(x)∥+f(x)−f⋆(cid:1)ρ, we obtain that\n0 ρ\n(cid:90) h(1) 1\ndw ≤1. l(w)\nh(0)\nIf l(a) ≤ a for some a > 0, then (cid:82)h(1) 1 dw ≤ 1 ≤ a ≤ (cid:82)a 1 dw.",
+      "size": 439,
+      "sentences": 4
+    },
+    {
+      "id": 174,
+      "content": "(1) 1\ndw ≤1. l(w)\nh(0)\nIf l(a) ≤ a for some a > 0, then (cid:82)h(1) 1 dw ≤ 1 ≤ a ≤ (cid:82)a 1 dw. By the monotonicity of the\n0 l(w) l(a) 0 l(w)\nintegral, we have h(1)≤a. Since we let a=K +K (m+f(x)−f⋆)ρ, l(a)≤a is equiavlent to\n0 ρ\na∥y−x∥2+∥y−x∥∥∇f(x)∥≤m. Lemma 5 (Bounded Gradient). Suppose Assumption 2 holds. Let ∆=f(x)−f⋆. It holds that\n(cid:113)\n∥∇f(x)∥≤2 K ∆+K 3ρ∆ρ+1. (7)\n0 ρ\nProof. By Lemma 4, let m=2∆, we obtain that h(1)≤K +K (3∆)ρ =:a, if\n0 ρ\n∥y−x∥2(K +K (3∆)ρ)+∥y−x∥∥∇f(x)∥≤2∆.",
+      "size": 492,
+      "sentences": 10
+    },
+    {
+      "id": 175,
+      "content": "y Lemma 4, let m=2∆, we obtain that h(1)≤K +K (3∆)ρ =:a, if\n0 ρ\n∥y−x∥2(K +K (3∆)ρ)+∥y−x∥∥∇f(x)∥≤2∆. 0 ρ\nEquivalently,\n(cid:112)\n−∥∇f(x)∥+ ∥∇f(x)∥2+8a∆\n∥y−x∥≤ =:r.\n2a\n18\n===  19 ===\nFor y satisfying ∥y−x∥≤r, by (6), we have\nh(1) a\nf(y)−f(x)≤⟨∇f(x),y−x⟩+ ∥y−x∥2 ≤⟨∇f(x),y−x⟩+ ∥y−x∥2. 2 2\nLetting y=x− η ∇f(x), we obtain that\n∥∇f(x)∥\na\n−∆≤f(y)−f(x)≤−η∥∇f(x)∥+ η2. 2\nTherefore, we obtain that\na\ng(η):= η2−η∥∇f(x)∥+∆≥0,∀η ∈[0,r]. (8)\n2\nIt is not hard to see that argmin η∈Rg(η) = ∥∇f\na\n(x)∥.",
+      "size": 486,
+      "sentences": 5
+    },
+    {
+      "id": 176,
+      "content": "t\na\ng(η):= η2−η∥∇f(x)∥+∆≥0,∀η ∈[0,r]. (8)\n2\nIt is not hard to see that argmin η∈Rg(η) = ∥∇f\na\n(x)∥. We th\n√\nen consider two cases: ∥∇f\na\n(x)∥ ≤ r and\n∥∇f(x)∥ >r. Suppose ∥∇f(x)∥ ≤r. Equivalently, ∥∇f(x)∥≤ a∆. By (8) we need\na a\n√\n∥∇f(x)∥≤ 2a∆. √\nNow suppose ∥∇f(x)∥ >r. Equivalently, ∥∇f(x)∥> a∆. By (8) we need\na\na\nr2−r∥∇f(x)∥+∆≥0. 2\nEquivalently,\n(cid:114)\n8\n∥∇f(x)∥≤ a∆. 3\n(cid:113) √\nCombing the above two cases, we conclude that ∥∇f(x)∥≤ 8a∆≤2 a∆=2 (cid:112) K ∆+K 3ρ∆ρ+1.",
+      "size": 477,
+      "sentences": 11
+    },
+    {
+      "id": 177,
+      "content": "id:113) √\nCombing the above two cases, we conclude that ∥∇f(x)∥≤ 8a∆≤2 a∆=2 (cid:112) K ∆+K 3ρ∆ρ+1. 3 0 ρ\nProof of Lemma 2\nProof. By Lemma 4, for any m>0, we have h(1)≤K +K (m+∆)ρ =:a, if\n0 ρ\n2m\n∥y−x∥≤ =:r.\n(cid:113)\n∥∇f(x)∥+ ∥∇f(x)∥2+4am\n√\nLetA=K ∆+K 3ρ∆ρ+1andB =A+m(K +K (m+∆)ρ). ByLemma5,wehave∥∇f(x)∥≤2 A,\n0 ρ 0 ρ\nand thus\nm\nr ≥ √ √ . A+ B\nLet\n(cid:40)\n1\n(cid:18)\nK\n(cid:19)1/ρ (cid:41)\nm=max ∆, 0 . 3 K\n1\nIf K ≤K 3ρ∆ρ, we have m=∆, A≤2K 3ρ∆ρ+1 and\n0 1 1\nB =2K ∆+K 3ρ∆ρ+1+K 2ρ∆ρ+1 ≤4K 3ρ∆ρ+1.",
+      "size": 496,
+      "sentences": 6
+    },
+    {
+      "id": 178,
+      "content": "∆, 0 . 3 K\n1\nIf K ≤K 3ρ∆ρ, we have m=∆, A≤2K 3ρ∆ρ+1 and\n0 1 1\nB =2K ∆+K 3ρ∆ρ+1+K 2ρ∆ρ+1 ≤4K 3ρ∆ρ+1. 0 1 1 1\nThus\nm 1\n√ A+ √ B ≥ (cid:0) 2+ √ 2 (cid:1) √ 3ρK 1 ∆ρ− 2 1 =:C 1\n∆−ρ−\n2\n1\n. (cid:16) (cid:17)1/ρ\nIf K 0 >K 1 3ρ∆ρ, we have m= 1 3 K K 0 1 , A≤2K 0 ∆≤2K 0 m and\nB ≤2K m+m(K +K (2m)ρ)≤4mK . 0 0 1 0\nThus\n1 −1\nm m 1 K2ρ 2\n√ √ ≥ √ √ = √ √ 0 =:C . A+ B (cid:0) 2+ 2 (cid:1) K m 2 3+ 6 1 2\n0 K2ρ\n1\n19\n===  20 ===\nNext we bound a=K +K (m+∆)ρ. If m=∆, we have\n0 1\nK +K (m+∆)ρ =K +K 2ρ∆ρ.",
+      "size": 486,
+      "sentences": 7
+    },
+    {
+      "id": 179,
+      "content": "1 2\n0 K2ρ\n1\n19\n===  20 ===\nNext we bound a=K +K (m+∆)ρ. If m=∆, we have\n0 1\nK +K (m+∆)ρ =K +K 2ρ∆ρ. 0 1 0 1\n(cid:16) (cid:17)1/ρ\nIf m= 1 K0 , we have\n3 K1\n(cid:18)\n2\n(cid:19)ρ\nK +K (m+∆)ρ ≤K +K 2ρmρ =K + K ≤2K . 0 1 0 1 0 3 0 0\nCombining the above results, we get the desired result. D Proofs for Section 4\nFor simplicity, we let ∆ =f(w )−f⋆, r =min (cid:110) C ∆ −ρ− 2 1 ,C (cid:111) and L =2K +K (2∆ )ρ.\nt t t 1 t 2 t 0 ρ t\nD.1 Proof of Theorem 1\n(cid:113)\nProof.",
+      "size": 465,
+      "sentences": 5
+    },
+    {
+      "id": 180,
+      "content": "− 2 1 ,C (cid:111) and L =2K +K (2∆ )ρ.\nt t t 1 t 2 t 0 ρ t\nD.1 Proof of Theorem 1\n(cid:113)\nProof. WefirstnotethatifK ≤K (3∆ )ρ,wehaver =C ∆ −ρ− 2 1 and∥∇f(w )∥≤2 K ∆ +K 3ρ∆ρ+1 ≤\n0 ρ t t 1 t t 0 t ρ t\n(cid:114)\n(cid:113) (cid:16) (cid:17)1/ρ\n2 2K ρ 3ρ∆ρ t +1, and if K 0 >K ρ (3∆ t )ρ, we have r t =C 2 and ∥∇f(w t )∥≤2 2 3 K 0 K K 0 1 . (cid:110) (cid:111)\nThe\nT\nn\nh\nb\ne\ny\nre\nL\nfo\ne\nr\nm\ne,\nm\nto\na\ne\n2\nn\n,\nsure∥w\nt+1\n−w\nt\n∥=η\nt\n∥∇f(w\nt\n)∥≤r\nt\n,itsufficestosetη\nt\n=\n4\n√1\n2+4\nmin\nK\n1\n0\n,\n3ρK\n1\nρ∆ρ t\n.",
+      "size": 500,
+      "sentences": 3
+    },
+    {
+      "id": 181,
+      "content": "2\nn\n,\nsure∥w\nt+1\n−w\nt\n∥=η\nt\n∥∇f(w\nt\n)∥≤r\nt\n,itsufficestosetη\nt\n=\n4\n√1\n2+4\nmin\nK\n1\n0\n,\n3ρK\n1\nρ∆ρ t\n. L\nf(w )≤f(w )+⟨∇f(w ),w −w ⟩+ t ∥w −w ∥2\nt+1 t t t+1 t 2 t+1 t\nL\n=f(w )−η ∥∇f(w )∥2+ tη2∥∇f(w )∥2\nt t t 2 t t\nη\n≤f(w )− t ∥∇f(w )∥2 ≤f(w ),\nt 2 t t\nwhere the last inequality is due to η t ≤ (2+2 √ 2)(K0 1 +Kρ(3∆t)ρ) ≤ 2K0+K 1 ρ(2∆t)ρ = L 1 t . Telescoping the\nabove inequation from t=0 to t=T −1 we obtain that\nT−1\n(cid:88) η ∥∇f(w )∥2 ≤2(f(w )−f(w ))≤2∆ .",
+      "size": 456,
+      "sentences": 3
+    },
+    {
+      "id": 182,
+      "content": "he\nabove inequation from t=0 to t=T −1 we obtain that\nT−1\n(cid:88) η ∥∇f(w )∥2 ≤2(f(w )−f(w ))≤2∆ . t t 0 T 0\nt=0\n√\nNote that 1/η ≤(4 2+4)(K +K (3∆ )ρ). Using the QM-GM inequality, we have\nt 0 ρ t\nT (cid:88) −1 T2 1 T2\nη ≥ ≥ √ . t (cid:80)T−11/η 4 2+4(cid:80)T−1K +K (3∆ )ρ\nt=0 t=0 t t=0 0 ρ t\nThis completes the proof for the increasing learning rate. (cid:110) (cid:111)\nNow suppose we use the constant learning rate η ≤ √1 min 1 , 1 .",
+      "size": 437,
+      "sentences": 5
+    },
+    {
+      "id": 183,
+      "content": "learning rate. (cid:110) (cid:111)\nNow suppose we use the constant learning rate η ≤ √1 min 1 , 1 . Similar to the\n4 2+4 K0 Kρ(3∆0)ρ\nincreasing learning rate, we have ∥w −w ∥≤r and\n1 0 0\nη\nf(w )≤f(w )− ∥∇f(w )∥2 ≤f(w ). 1 0 2 0 0\n(cid:110) (cid:111)\nThis means ∆\n1\n≤ ∆\n0\nand thus η ≤\n4\n√1\n2+4\nmin\nK\n1\n0\n,\nKρ(3\n1\n∆1)ρ\n. By induction, it is not hard to see\n(cid:110) (cid:111)\nthat η ≤ √1 min 1 , 1 ,∀t∈[T].",
+      "size": 405,
+      "sentences": 5
+    },
+    {
+      "id": 184,
+      "content": "ρ(3\n1\n∆1)ρ\n. By induction, it is not hard to see\n(cid:110) (cid:111)\nthat η ≤ √1 min 1 , 1 ,∀t∈[T]. Therefore, following the same analysis as the increasing\n4 2+4 K0 Kρ(3∆t)ρ\nlearning rate, we have\nT−1\nη (cid:88) ∥∇f(w )∥2 ≤2∆ . t 0\nt=0\nThis completes the proof. 20\n===  21 ===\nD.2 Proof of Theorem 2\nWe first prove the cocoercivity for (ρ,K ,K )-smooth convex functions, similar to the property of the\n0 ρ\nL-smooth convex functions.",
+      "size": 433,
+      "sentences": 5
+    },
+    {
+      "id": 185,
+      "content": "or (ρ,K ,K )-smooth convex functions, similar to the property of the\n0 ρ\nL-smooth convex functions. The proof follows a similar approach to that in [Li et al., 2023a]. Lemma 6. Under the same conditions as in Lemma 2, for any x ,x such that ∥x −x∥≤r(x) and\n1 2 1\n∥x −x∥≤r(x), where r(x) is defined in Lemma 2. Then we have\n2\n∥∇f(x )−∇f(x )∥≤L(x)∥x −x ∥,\n1 2 1 2\nand\nL(x)\nf(x )≤f(x )+⟨∇f(x ),x −x ⟩+ ∥x −x ∥2,\n2 1 1 2 1 2 2 1\nwhere L(x) is defined in Lemma 2. Proof.",
+      "size": 465,
+      "sentences": 6
+    },
+    {
+      "id": 186,
+      "content": "L(x)\nf(x )≤f(x )+⟨∇f(x ),x −x ⟩+ ∥x −x ∥2,\n2 1 1 2 1 2 2 1\nwhere L(x) is defined in Lemma 2. Proof. Let m > 0, ∆ = f(x)−f⋆, a = K +K (m+∆)ρ and r := √2m . Let\n0 ρ\n∥∇f(x)∥+ ∥∇f(x)∥2+4am\n∥y−x∥≤r, by Lemma 4, we have\na\nf(y)≤f(x)+⟨∇f(x),y−x⟩+ ∥y−x∥2\n2\na\n≤f(x)+∥∇f(x)∥∥y−x∥+ ∥y−x∥2\n2\n1 (cid:18)(cid:113) (cid:19)(cid:18) (cid:113) (cid:19)\n≤f(x)+ ∥∇f(x)∥2+4am−∥∇f(x)∥ 3∥∇f(x)∥+ ∥∇f(x)∥2+4am\n8a (9)\nm ∥∇f(x)∥\n(cid:18)(cid:113) (cid:19)\n=f(x)+ + ∥∇f(x)∥2+4am−∥∇f(x)∥\n2 4a\nm m\n=f(x)+ + ≤f(x)+m.",
+      "size": 486,
+      "sentences": 4
+    },
+    {
+      "id": 187,
+      "content": "a (9)\nm ∥∇f(x)∥\n(cid:18)(cid:113) (cid:19)\n=f(x)+ + ∥∇f(x)∥2+4am−∥∇f(x)∥\n2 4a\nm m\n=f(x)+ + ≤f(x)+m. (cid:113)\n2 1+ 1+ 4am\n∥∇f(x)∥2\nThen, for ∥x −x∥≤r and ∥x −x∥≤r, we have\n1 2\n(cid:90) 1\n∥∇f(x\n1\n)−∇f(x\n2\n)∥≤∥x\n1\n−x\n2\n∥ (cid:13) (cid:13)∇2f(x\n1\n+t(x\n2\n−x\n1\n)) (cid:13) (cid:13)dt\n0\n(cid:90) 1\n≤∥x −x ∥ (K +K (f(x +t(x −x ))−f⋆)ρ)dt\n1 2 0 ρ 1 2 1\n0\n≤∥x −x ∥(K +K (f(x)−f⋆+m)ρ),\n2 1 0 ρ\nwherethesecondinequalityisduetoAssumption2andtheinthelastinequalityweuse∥x +t(x −x )−x∥≤\n1 2 1\n(cid:26) (cid:16) (cid:17)1/ρ (cid:27)\nr for t∈[0,1] and (9).",
+      "size": 540,
+      "sentences": 2
+    },
+    {
+      "id": 188,
+      "content": "inequalityweuse∥x +t(x −x )−x∥≤\n1 2 1\n(cid:26) (cid:16) (cid:17)1/ρ (cid:27)\nr for t∈[0,1] and (9). Setting m=max f(x)−f⋆,1 K0 and following the proof of Lemma 2\n3 Kρ\nwe obtain the desired result. Lemma 7. Suppose Assumption 2 holds and f is convex. Then for any given x∈Rd, we have\n1 r(x)\n∥∇f(x)−∇f(y)∥2 ≤f(x)−f(y)−⟨∇f(y),x−y⟩, ∀y such that ∥y−x∥≤ ,\nL(x) 2\n(cid:110) (cid:111)\nwhere L(x)=2K 0 +K ρ (2∆)ρ,∆=f(x)−f⋆ and r(x)=min C 1 ∆−ρ− 2 1,C 2 as defined in Lemma 2. Proof.",
+      "size": 474,
+      "sentences": 6
+    },
+    {
+      "id": 189,
+      "content": "1)\nwhere L(x)=2K 0 +K ρ (2∆)ρ,∆=f(x)−f⋆ and r(x)=min C 1 ∆−ρ− 2 1,C 2 as defined in Lemma 2. Proof. Define ϕ (z):=f(z)−⟨∇f(x),z⟩. It is not hard to verify that ϕ is (ρ,K ,K )-smooth. Note\nx x 0 ρ\nthat if ∥y−x∥≤ r(x), we have\n2\n(cid:13) (cid:13)\n(cid:13) 1 (cid:13) 1\n(cid:13) (cid:13) y− L(x) ∇ϕ x (y)−x(cid:13) (cid:13) ≤∥y−x∥+ L(x) ∥∇ϕ x (y)∥≤2∥y−x∥≤r(x),\nwhere the second last inequality is due to Lemma 2.",
+      "size": 409,
+      "sentences": 5
+    },
+    {
+      "id": 190,
+      "content": ") (cid:13) ≤∥y−x∥+ L(x) ∥∇ϕ x (y)∥≤2∥y−x∥≤r(x),\nwhere the second last inequality is due to Lemma 2. Applying Lemma 6 with points y− 1 ∇ϕ (y)\nL(x) x\nand y, we obtain that\n(cid:18) 1 (cid:19) (cid:28) 1 (cid:29) L(x) (cid:13) (cid:13) 1 (cid:13) (cid:13) 2\nϕ x y− L(x)∇ϕ (y) ≤ϕ x (y)+ ∇ϕ x (y),− L(x) ∇ x ϕ(y) + 2 (cid:13) (cid:13)L(x) ∇ϕ x (y)(cid:13) (cid:13)\nx\n21\n===  22 ===\n1\n=ϕ (y)− ∥∇ϕ (y)∥2.",
+      "size": 397,
+      "sentences": 2
+    },
+    {
+      "id": 191,
+      "content": "∇ x ϕ(y) + 2 (cid:13) (cid:13)L(x) ∇ϕ x (y)(cid:13) (cid:13)\nx\n21\n===  22 ===\n1\n=ϕ (y)− ∥∇ϕ (y)∥2. x 2L(x) x\nSubstituting the definition of ϕ and noting that x=argmin ϕ (z), we obtain the desired result. x z x\nProof of Theorem 2\nLet ∆ t =f(w t )−f(w⋆) and D t =∥w t −w⋆∥ for simplicity. We first note that ∥w t+1 −w t ∥≤ r 2 t\nfollowing a similar analysis in the proof of Theorem 1.",
+      "size": 382,
+      "sentences": 4
+    },
+    {
+      "id": 192,
+      "content": "ty. We first note that ∥w t+1 −w t ∥≤ r 2 t\nfollowing a similar analysis in the proof of Theorem 1. We then calculate that\n−2η ⟨w −w⋆,∇f(w )⟩+η2∥∇f(w )∥2\nt t t t t\n=−2η (f(w )−f(w⋆))+η2∥∇f(w )∥2+2η (f(w )−f(w⋆)+⟨∇f(w ),w⋆−w ⟩)\nt t t t t t t t\n2η\n≤−2η (f(w )−f(w⋆))+η2∥∇f(w )∥2− t ∥∇f(w )∥2\nt t t t L t\nt\n(cid:18) (cid:19)\n2\n=−2η ∆ +η ∥∇f(w )∥2 η − ,\nt t t t t L\nt\nwhere the inequality is due to Lemma 7. Similar to the analysis in the proof of Theorem 1, η ≤ 2 .",
+      "size": 462,
+      "sentences": 4
+    },
+    {
+      "id": 193,
+      "content": "where the inequality is due to Lemma 7. Similar to the analysis in the proof of Theorem 1, η ≤ 2 . Therefore, we obtain that\nt Lt\n∥w −w⋆∥2 =∥w −w⋆∥2−2η ⟨w −w⋆,∇f(w )⟩+η2∥∇f(w )∥2\nt+1 t t t t t t\n≤∥w −w⋆∥2−2η (f(w )−f(w⋆)). t t t\nTelescoping the above inequality from t=0 to T −1, we obtain that\nT−1\n(cid:88) 1\nη ∆ ≤ D2.",
+      "size": 319,
+      "sentences": 4
+    },
+    {
+      "id": 194,
+      "content": "). t t t\nTelescoping the above inequality from t=0 to T −1, we obtain that\nT−1\n(cid:88) 1\nη ∆ ≤ D2. t t 2 0\nt=0\nBy the definition of η , we have\nt\nT (cid:88) −1 min (cid:26) ∆ t, ∆ t (cid:27) ≤ (cid:16) 4 √ 2+4 (cid:17) D2,\nK K (3∆ )ρ 0\n0 ρ t\nt=0\nand thus\n(cid:26) ∆ ∆ (cid:27) (cid:16) √ (cid:17)D2\nminmin t, t ≤ 4 2+4 0.\nt∈[T] K 0 K ρ (3∆ t )ρ T\nNote that following the same analysis in the proof of Theorem 1, we have that f(w ) ≤ f(w )−\nt+1 t\nηt ∥∇f(w )∥2, which implies that ∆ is decreasing.",
+      "size": 496,
+      "sentences": 3
+    },
+    {
+      "id": 195,
+      "content": "f of Theorem 1, we have that f(w ) ≤ f(w )−\nt+1 t\nηt ∥∇f(w )∥2, which implies that ∆ is decreasing. If ρ≥1, we have that\n2 t t\n(cid:26) ∆ ∆ (cid:27) (cid:40) ∆ ∆1−ρ (cid:41) (cid:16) √ (cid:17)D2\nminmin t, t =min T−1, 0 ≤ 4 2+4 0.\nt∈[T] K 0 K ρ (3∆ t )ρ K 0 3ρK ρ T\n√ √\nThis implies that either ∆ T−1 ≤ (cid:0) 4 2+4 (cid:1)D 0 2 T K0 or T ≤ (cid:0) 4 2+4 (cid:1)3ρ ∆ D 1 0 2 − K ρ ρ.",
+      "size": 384,
+      "sentences": 2
+    },
+    {
+      "id": 196,
+      "content": "at either ∆ T−1 ≤ (cid:0) 4 2+4 (cid:1)D 0 2 T K0 or T ≤ (cid:0) 4 2+4 (cid:1)3ρ ∆ D 1 0 2 − K ρ ρ. If 0<ρ<1, we have that\n0\n(cid:26) ∆ ∆ (cid:27) (cid:40) ∆ ∆1−ρ (cid:41) (cid:16) √ (cid:17)D2\nminmin t, t =min T−1, T−1 ≤ 4 2+4 0.\nt∈[T] K 0 K ρ (3∆ t )ρ K 0 3ρK ρ T\n√ √\nThis implies that either ∆ T−1 ≤ (cid:0) 4 2+4 (cid:1)D 0 2 T K0 or ∆1 T − − ρ 1 ≤ (cid:0) 4 2+4 (cid:1)3ρD T 0 2Kρ.",
+      "size": 386,
+      "sentences": 2
+    },
+    {
+      "id": 197,
+      "content": "either ∆ T−1 ≤ (cid:0) 4 2+4 (cid:1)D 0 2 T K0 or ∆1 T − − ρ 1 ≤ (cid:0) 4 2+4 (cid:1)3ρD T 0 2Kρ. (cid:110) (cid:111)\nFor constant learning rate η\nt\n=η =\n8\n√1\n2+8\nmin\nK\n1\n0\n,\nKρ(3\n1\n∆0)ρ\n, we have\nD2 (cid:16) √ (cid:17)(cid:18) D2K D2K (3∆ )ρ(cid:19)\n∆ ≤ 0 ≤ 4 2+4 0 0 + 0 ρ 0 . T−1 2ηT T T\nThis completes the proof. 22\n===  23 ===\nD.3 Proof of Theorem 3\nProof. We consider three cases of {η }:\nt\n1. η ≤ 2 ,∀t. t K1∆\n2. η > 2 ,∀t. t K1∆\n3. ∃τ, η > 2 ,t≤τ and η ≤ 2 ,t>τ.",
+      "size": 471,
+      "sentences": 8
+    },
+    {
+      "id": 198,
+      "content": "er three cases of {η }:\nt\n1. η ≤ 2 ,∀t. t K1∆\n2. η > 2 ,∀t. t K1∆\n3. ∃τ, η > 2 ,t≤τ and η ≤ 2 ,t>τ. t K1∆ t K1∆\nCase 1\nWe construct the following function:\n (cid:16) (cid:17)\nh(x)=\n\n\n−\n2\n4 ϵ\n2\nϵ\n(cid:16)\nϵ\n(cid:16) 6\nx\n√\nx\n−\nK\n+\n1\n√\n√\nx\n1\n2 K\n1\n− 1 (cid:17)\n+\nK\n+\n1 2 3 4\n√\nx\n5\n√\n4\n5\nϵ\nK (cid:17)\nϵ\n1\n,\n,\n,\nx\nx\nx\n∈\n∈\n∈\n(cid:104)\n(\n(cid:16) −\n−\n√\n∞\n√\n1\nK 1\n,\n1\n−\n,\n,\n+\n√\n√\n∞\nK\n1\nK 1 1 1(cid:17)\n)\n(cid:105) (10)\nK1 4 K1 K1\n√\nwith initial point y 0 = √ K 1 1 + ∆ ϵ .",
+      "size": 473,
+      "sentences": 5
+    },
+    {
+      "id": 199,
+      "content": "+\n√\n√\n∞\nK\n1\nK 1 1 1(cid:17)\n)\n(cid:105) (10)\nK1 4 K1 K1\n√\nwith initial point y 0 = √ K 1 1 + ∆ ϵ . We can verify that h is (ϵ K 1 ,0)-smooth and h(y 0 )−f∗ ≤2∆+ϵ. Then as η t ≤ K 2 1∆ for all t≥0, we have y t ≥y t−1 − K 4 1 ϵ ∆ if y t ≥ √ K 1 1 . Therefore, it takes at least\ny 0 − √ K 1 1 ≥ K 1 ∆2\n4ϵ 4ϵ2\nK1∆\niterations. Case 2\n√\nGiven x , we define x =x − (cid:80)t−1η K ∆,∀t∈N.",
+      "size": 380,
+      "sentences": 5
+    },
+    {
+      "id": 200,
+      "content": "√ K 1 1 ≥ K 1 ∆2\n4ϵ 4ϵ2\nK1∆\niterations. Case 2\n√\nGiven x , we define x =x − (cid:80)t−1η K ∆,∀t∈N. We define\n0 t 0 s=0 s 1\nf(x)=f (x),x∈(x ,x ],\nt t+1 t\nand\nf (x)=a sin(b x+c )+d , x∈(x ,x ]\nt t t t t t+1 t\nwith\nb = 2π = √ 2π ≤π (cid:112) K , c =arctan (cid:16) − η tK ∆ (cid:17) −b x\nt x −x η K ∆ 1 t 2π 1 t t\nt t+1 t 1\n(cid:114)\nη η2 α\na = tK ∆2 1+ t K2∆2, d =a +∆− t ∆,\nt 2π 1 4π2 1 t t α + (cid:112) 1+α2\nt t\n√\nwhere α = K1.",
+      "size": 428,
+      "sentences": 3
+    },
+    {
+      "id": 201,
+      "content": ")\nη η2 α\na = tK ∆2 1+ t K2∆2, d =a +∆− t ∆,\nt 2π 1 4π2 1 t t α + (cid:112) 1+α2\nt t\n√\nwhere α = K1. It is not hard to verify that\nt bt\nf (x )=f (x )=∆,\nt t+1 t+1 t+1\n(cid:112)\nf′(x )=f′ (x )= K ∆,\nt t+1 t+1 t+1 1\nf′′(x )=f′′ (x )=K ∆. t t+1 t+1 t+1 1\nThen we can link all these f together. Moreover, note that\nt\n(cid:115)\n|f\nt\n′′(x)|= (cid:12) (cid:12)a\nt\nb2\nt\nsin(b\nt\nx+c\nt\n) (cid:12) (cid:12)≤a\nt\nb2\nt\n=K\n1\n∆ 1+\nα\n1\n2\n≤2πK\n1\n∆,\nt\nwhere in the last inequality we use α = 1 η K ∆> 1.",
+      "size": 483,
+      "sentences": 4
+    },
+    {
+      "id": 202,
+      "content": ") (cid:12)≤a\nt\nb2\nt\n=K\n1\n∆ 1+\nα\n1\n2\n≤2πK\n1\n∆,\nt\nwhere in the last inequality we use α = 1 η K ∆> 1. Also note that\nt 2π t 1 π\nα 1 1\nf (x)=a sin(b x+c )+d ≥d −a =∆− t ∆>∆− ∆= ∆,\nt t t t t t t α + (cid:112) 1+α2 2 2\nt t\n23\n===  24 ===\nwhere in the second inequality we use √αt < 1. If f⋆ = 0, we immediately obtain that f is\nαt+ 1+α2\nt\n2\n(1,0,4πK )-smooth. Next, we extend f(x) from x to +∞ to achieve this. Define\n1 0\nG(t)=∆ (cid:104) 1+2 (cid:112) K (t−x )+2K (t−x )2 (cid:105) e− √ K1(t−x0),t>x .",
+      "size": 497,
+      "sentences": 5
+    },
+    {
+      "id": 203,
+      "content": "e this. Define\n1 0\nG(t)=∆ (cid:104) 1+2 (cid:112) K (t−x )+2K (t−x )2 (cid:105) e− √ K1(t−x0),t>x . 1 0 1 0 0\n√\nIt is not hard to verify that G(x ) = ∆, G′(x ) = K ∆ and G′′(x ) = K ∆. Moreover, we have\n0 0 1 0 1\nG(t)>0,t>x and G(t)→0 as t→∞. Therefore, G⋆ =0. We compute that\n0\nG′′(t)=∆K e− √ K1(t−x0) (cid:104) 1−6 (cid:112) K (t−x )+2K (t−x )2 (cid:105) .",
+      "size": 358,
+      "sentences": 6
+    },
+    {
+      "id": 204,
+      "content": ". We compute that\n0\nG′′(t)=∆K e− √ K1(t−x0) (cid:104) 1−6 (cid:112) K (t−x )+2K (t−x )2 (cid:105) . 1 1 0 1 0\nTherefore, we have\n|G′′(t)|≤∆K e− √ K1(t−x0) (cid:104) 1+6 (cid:112) K (t−x )+2K (t−x )2 (cid:105)\n1 1 0 1 0\nWe immediately obtain that G(t) is (1,0,3K )-smooth. Finally, we define\n1\n(cid:40)\nG(x), x>x ,\nf(x)= 0\nf (x), x∈(x ,x ],t∈N\nt t+1 t\n√\nWe have that f is (1,0,4πK )-smooth, f⋆ =0, f(x )−f⋆ =∆ and f′(x )= K ∆,∀t∈N. √ 1 0 t 1\nCase 3 We let ϵ≤ 2 K1∆ and ϵ≤ √1 for simplicity.",
+      "size": 489,
+      "sentences": 5
+    },
+    {
+      "id": 205,
+      "content": "f⋆ =0, f(x )−f⋆ =∆ and f′(x )= K ∆,∀t∈N. √ 1 0 t 1\nCase 3 We let ϵ≤ 2 K1∆ and ϵ≤ √1 for simplicity. We construct the funct\n5\nion:\n2ητ K1\n\nh(x), x∈(−∞,x ]\n τ+1\nf(x)= g(x), x∈(x ,x ] (11)\nτ+1 τ\n f (x), x∈(x ,x ] for all t≤τ −1\nt t+1 t\n√\nwhere h is defined in (10), g and f are functions to be defined. x =x − (cid:80)t η K ∆ and the\n√t t+1 0 s=0 s 1\nw in h it e i r a e lp M oin > t 0 is i x s 0 a = co y n 0 s + ta (cid:80) nt τ s= to 0 η b s e d K et 1 e ∆ rm . i y n 0 ed > .",
+      "size": 479,
+      "sentences": 5
+    },
+    {
+      "id": 206,
+      "content": "> t 0 is i x s 0 a = co y n 0 s + ta (cid:80) nt τ s= to 0 η b s e d K et 1 e ∆ rm . i y n 0 ed > . √ K 1 1 liesinthedomainofhandh(y 0 )=2∆+ 4 √5 K ϵ 1 +M,\nThe basic idea of our construction in this case is to let the (τ +1)-th iterate be x =y . Then,\nτ+1 0\nthe worst-case convergence in Case 1 can be applied. We then want the iterates with large learning\nrates (t≤τ), making no progress in convergence. We construct trigonometric functions f ,t≤τ −1 to\nt\nachieve this.",
+      "size": 470,
+      "sentences": 6
+    },
+    {
+      "id": 207,
+      "content": "aking no progress in convergence. We construct trigonometric functions f ,t≤τ −1 to\nt\nachieve this. Finally, we use a polynomial function g to link the functions f and h.\nτ−1\nFor t≤τ −1, we define\nf (x)=a sin(b x+c )+d , x∈(x ,x ] (12)\nt t t t t t+1 t\nwith\nb = 2π = √ 2π ≤π (cid:112) K , c =arctan (cid:16) − η tK ∆ (cid:17) −b x\nt x −x η K ∆ 1 t 2π 1 t t\nt t+1 t 1\n(cid:114)\nη η2 α\na = tK ∆2 1+ t K2∆2, d =a +g(x )− t ∆,\nt 2π 1 4π2 1 t t τ α + (cid:112) 1+α2\nt t\n√\nwhere α = K1 and g(x )∈[7∆,8∆] is to be determined.",
+      "size": 517,
+      "sentences": 3
+    },
+    {
+      "id": 208,
+      "content": "∆,\nt 2π 1 4π2 1 t t τ α + (cid:112) 1+α2\nt t\n√\nwhere α = K1 and g(x )∈[7∆,8∆] is to be determined. Note that f∗ =0 (achieved when x=0). By Lemm\nt\na 8,\nbtwe\nhave th\nτ\nat f is (1,0,K )-smooth. Also, with the above parameter choices, we have\nt 1\nf (x )=f (x )=g(x ),\nt t+1 t+1 t+1 τ\n(cid:112)\nf′(x )=f′ (x )= K ∆,\nt t+1 t+1 t+1 1\nf′′(x )=f′′ (x )=K ∆.",
+      "size": 348,
+      "sentences": 4
+    },
+    {
+      "id": 209,
+      "content": "=f (x )=g(x ),\nt t+1 t+1 t+1 τ\n(cid:112)\nf′(x )=f′ (x )= K ∆,\nt t+1 t+1 t+1 1\nf′′(x )=f′′ (x )=K ∆. t t+1 t+1 t+1 1\nThenwecanlinkallthesef ,t≤τ−1togethertoachieve(1,0,K )-smoothfunction,asintheboundary\nt 1\nx and x , the function value and derivatives are the same. t t+1\n24\n===  25 ===\nNext, we try to construct a polynomial function g to link f and h. We first show how to\nτ−1\ninterpolate a normalized polynomial function g¯.",
+      "size": 426,
+      "sentences": 3
+    },
+    {
+      "id": 210,
+      "content": "nction g to link f and h. We first show how to\nτ−1\ninterpolate a normalized polynomial function g¯. Let g¯(z) = az4+bz3+cz2+dz+e,z ∈ [0,1] and\ng′(0)=A,g′(1)=B,g′′(0)=C,g′′(1)=D. We have a= 2A−2B+C+D,b= −3A+3B−2C−D,c= C,d=\n4 3 2\nA. (cid:16) (cid:17)\nWe scale g¯ to obtain our desired link function g. Let g(y)=g¯ y−xτ+1 ,y ∈[x ,x ]. To link\nxτ−xτ+1 τ+1 τ\nf and h, we need\nτ−1\ng′(x )=h′(x ), g′(x )=f′ (x ),\nτ+1 τ+1 τ τ−1 τ\ng′′(x )=h′′(x ), g′′(x )=f′′ (x ).",
+      "size": 456,
+      "sentences": 5
+    },
+    {
+      "id": 211,
+      "content": "nd h, we need\nτ−1\ng′(x )=h′(x ), g′(x )=f′ (x ),\nτ+1 τ+1 τ τ−1 τ\ng′′(x )=h′′(x ), g′′(x )=f′′ (x ). τ+1 τ+1 τ τ−1 τ\nSubstituting the corresponding values, we obtain that\n1 (cid:112) 1\n2ϵ= g¯′(0), K ∆= g¯′(1),\nx −x 1 x −x\nτ τ+1 τ τ+1\n1 1\n0= g¯′′(0), K ∆= g¯′′(1). (x −x )2 1 (x −x )2\nτ τ+1 τ τ+1\nTherefore, we have\nA=2ϵ(x −x ), B = (cid:112) K ∆(x −x ), C =0, D =K ∆(x −x )2.\nτ τ+1 1 τ τ+1 1 τ τ+1\nNote that\n(cid:112)\nx =x −η g′(x )=x −η K ∆. τ+1 τ τ τ τ τ 1\n√\nWe consider the case ηK ∆ > 6.",
+      "size": 490,
+      "sentences": 4
+    },
+    {
+      "id": 212,
+      "content": "τ τ+1\nNote that\n(cid:112)\nx =x −η g′(x )=x −η K ∆. τ+1 τ τ τ τ τ 1\n√\nWe consider the case ηK ∆ > 6. Since x −x = η K ∆, it is not hard to verify that D =\n1 τ τ+1 τ 1 B\nη K ∆>6. Let\nτ 1\n1 1 5ϵ\ne= D− B+7∆+ √ .",
+      "size": 207,
+      "sentences": 4
+    },
+    {
+      "id": 213,
+      "content": "−x = η K ∆, it is not hard to verify that D =\n1 τ τ+1 τ 1 B\nη K ∆>6. Let\nτ 1\n1 1 5ϵ\ne= D− B+7∆+ √ . 12 2 4 K\n1\nNow we obtain our desired link function g:\n(cid:18) (cid:19)\ny−x\ng(y):=g¯ τ+1 ,y ∈[x ,x ], where\nx −x τ+1 τ\nτ τ+1\ng¯(z)=az4+bz3+cz2+dz+e,z ∈[0,1],\n2A−2B+C+D −3A+3B−2C−D C\na= , b= , c= , d=A, (13)\n4 3 2\n1 1 5ϵ\ne= D− B+7∆+ √ ,\n12 2 4 K\n1\nA=2ϵ(x −x ), B = (cid:112) K ∆(x −x ), C =0, D =K ∆(x −x )2.\nτ τ+1 1 τ τ+1 1 τ τ+1\nBy Lemma 9, we have that g is (1,0,K\n1\n)-smooth and g(x\nτ\n)= 1\n2\nA+7∆+\n4\n√5\nK\nϵ\n1\n∈[7∆,8∆], where\nwe use √5ϵ ≤ 1∆ and A≤∆.",
+      "size": 552,
+      "sentences": 3
+    },
+    {
+      "id": 214,
+      "content": "t g is (1,0,K\n1\n)-smooth and g(x\nτ\n)= 1\n2\nA+7∆+\n4\n√5\nK\nϵ\n1\n∈[7∆,8∆], where\nwe use √5ϵ ≤ 1∆ and A≤∆. 4 K1 2 √\nNow we conclude that f defined in (11) is (1,ϵ K ,K )-smooth, since at each junction point, the\n1 1 √\nleftandrightfunctionsshareidenticalvalues,firstandsecondderivatives. f isalso(1, K ,K )-smooth\n1 1\nif ϵ≤1. Finally, by g(x\nτ+1\n)=h(x\nτ+1\n)=e=\n1\n1\n2\nD− 1\n2\nB+7∆+\n4\n√5\nK\nϵ\n1\n, we have\n(cid:18) (cid:19)\n1 5ϵ 1 1 5ϵ\n2ϵ x − √ + √ = D− B+7∆+ √ .",
+      "size": 450,
+      "sentences": 4
+    },
+    {
+      "id": 215,
+      "content": "=\n1\n1\n2\nD− 1\n2\nB+7∆+\n4\n√5\nK\nϵ\n1\n, we have\n(cid:18) (cid:19)\n1 5ϵ 1 1 5ϵ\n2ϵ x − √ + √ = D− B+7∆+ √ . τ+1 K 4 K 12 2 4 K\n1 1 1\nIt takes at least\n1 D− 1B+7∆ 2∆ K ∆2\n12 2 ≥ = 1\n(cid:16) (cid:17) (cid:16) (cid:17)\n4ϵ2 2 4ϵ2 2 4ϵ2\nK1∆ K1∆\niterations to reach an ϵ-stationary point. For the case η K ∆∈(2,6], it is easier to construct such a function g using a similar analysis since\nτ 1\nη K ∆ is bounded. We thus omit this case. τ 1\n25\n===  26 ===\nLemma 8. Suppose g(x )>2π∆+ 1∆.",
+      "size": 473,
+      "sentences": 6
+    },
+    {
+      "id": 216,
+      "content": "ce\nτ 1\nη K ∆ is bounded. We thus omit this case. τ 1\n25\n===  26 ===\nLemma 8. Suppose g(x )>2π∆+ 1∆. Consider the function defined in (12). We have f (x)>0,\nτ 2 t\n|f′′(x)|≤K f(x) and f (x )=g(x ) for all x∈(x ,x ], t≤τ −1. 1 t t τ t+1 t\n√\nProof.",
+      "size": 244,
+      "sentences": 7
+    },
+    {
+      "id": 217,
+      "content": "e f (x)>0,\nτ 2 t\n|f′′(x)|≤K f(x) and f (x )=g(x ) for all x∈(x ,x ], t≤τ −1. 1 t t τ t+1 t\n√\nProof. By the definition of α := K1, we have\nt bt\n√\n(cid:113) K\na =∆α 1+α2, b = 1.\nt t t t α\nt\nWe calculate f′′(x):\nt\n(cid:115)\n|f\nt\n′′(x)|= (cid:12) (cid:12)a\nt\nb2\nt\nsin(b\nt\nx+c\nt\n) (cid:12) (cid:12)≤a\nt\nb2\nt\n=K\n1\n∆ 1+\nα\n1\n2\n≤2πK\n1\n∆,\nt\nwhere in the last inequality we use α = 1 η K ∆> 1.",
+      "size": 382,
+      "sentences": 3
+    },
+    {
+      "id": 218,
+      "content": ") (cid:12)≤a\nt\nb2\nt\n=K\n1\n∆ 1+\nα\n1\n2\n≤2πK\n1\n∆,\nt\nwhere in the last inequality we use α = 1 η K ∆> 1. Then, we calculate f (x):\nt 2π t 1 π t\nα 1\nf (x)=a sin(b x+c )+d ≥d −a =g(x )− t ∆>g(x )− ∆>2π∆,\nt t t t t t t τ α + (cid:112) 1+α2 τ 2\nt t\nwhere in the second inequality we use √αt < 1 and the last inequality is due to the condition on\nαt+ 1+α2\nt\n2\ng(x ). Then we immediately obtain that |f′′(x)|≤K f(x).",
+      "size": 405,
+      "sentences": 3
+    },
+    {
+      "id": 219,
+      "content": "ity is due to the condition on\nαt+ 1+α2\nt\n2\ng(x ). Then we immediately obtain that |f′′(x)|≤K f(x). τ 1\nWe calculate f (x ):\nt t\nf (x )=a sin(c )+d =−∆α2+d\nt t t t t t t\nα\n=−∆α2+a +g(x )− t ∆\nt t τ α + (cid:112) 1+α2\nt t\n(cid:113) α\n=−∆α2+∆α 1+α2+g(x )− t ∆\nt t t τ α + (cid:112) 1+α2\nt t\n=g(x ). τ\nLemma 9. Consider the function g(y) defined in (13). Then it holds that\n1 5ϵ\ng(x )=e,g(x )= A+7∆+ √ ,\nτ+1 τ 2 4 K\n1\ng(y)≥∆, |g′′(y)|≤K ∆,∀y ∈[x ,x ]. 1 τ+1 τ\nProof.",
+      "size": 463,
+      "sentences": 7
+    },
+    {
+      "id": 220,
+      "content": "s that\n1 5ϵ\ng(x )=e,g(x )= A+7∆+ √ ,\nτ+1 τ 2 4 K\n1\ng(y)≥∆, |g′′(y)|≤K ∆,∀y ∈[x ,x ]. 1 τ+1 τ\nProof. Firstly,\n1 1 1 1 5ϵ\ng(x )=g¯(0)=e, g(x )=g¯(1)= A+ B− D+e= A+7∆+ √ .",
+      "size": 168,
+      "sentences": 3
+    },
+    {
+      "id": 221,
+      "content": "∆,∀y ∈[x ,x ]. 1 τ+1 τ\nProof. Firstly,\n1 1 1 1 5ϵ\ng(x )=g¯(0)=e, g(x )=g¯(1)= A+ B− D+e= A+7∆+ √ . τ+1 τ 2 2 12 2 4 K\n1\nMoreover, for 0≤z ≤1, we compute\ng¯(z)=az4+bz3+dz+e\n(cid:18) (cid:19) (cid:18) (cid:19) (cid:18) (cid:19)\n1 1 1 1\n=A z4−z3+z +Bz3 1− Z +Dz3 − + z +e\n2 2 3 4\n(cid:18) (cid:19) (cid:18) (cid:19)\n1 1 1 1 1 5ϵ\n≥Bz3 1− z +Dz3 − + z + D− B+7∆+ √ ,\n2 3 4 12 2 4 K\n1\nwhere the inequality is due to 1z4−z3+z ≥0, ∀0≤z ≤1. Let ηK ∆=n for simplicity. We have\n2 1\nthat B =n∆ and D =n2∆.",
+      "size": 493,
+      "sentences": 6
+    },
+    {
+      "id": 222,
+      "content": "ality is due to 1z4−z3+z ≥0, ∀0≤z ≤1. Let ηK ∆=n for simplicity. We have\n2 1\nthat B =n∆ and D =n2∆. Then we have\n(cid:18) 1 (cid:19) (cid:16) n n (cid:17) nB 1 5ϵ\ng¯(z)≥B z3− z4 +B − z3+ z4 + − B+7∆+ √\n2 3 4 12 2 4 K\n1\n(cid:18) (cid:19)\n1 n n 1 1 5ϵ\n=B − z4+ z4+z3− z3+ n− +7∆+ √\n2 4 3 12 2 4 K\n1\nn (cid:0) 6n2−28n+33 (cid:1) 5ϵ\n=∆ +7∆+ √\n−12(n−2)3 4 K\n1\n≥∆,\n26\n===  27 ===\nwhere in the last inequality we use\nn(6n2−28n+33)\n>−1,∀n>6. Therefore, we have g(y)≥∆,∀ y ∈\n−12(n−2)3\n[x ,x ].",
+      "size": 484,
+      "sentences": 5
+    },
+    {
+      "id": 223,
+      "content": "e last inequality we use\nn(6n2−28n+33)\n>−1,∀n>6. Therefore, we have g(y)≥∆,∀ y ∈\n−12(n−2)3\n[x ,x ]. τ+1 τ\nFinally, we calculate g¯′′:\ng¯′′(z)=12az2+6bz =6Az(z−1)+6Bz(1−z)+Dz(3z−2), z ∈[0,1]\nThen\n3 3 1\n|g¯′′(z)|≤ A+ B+ D\n2 2 3\n3 1 1\n≤ A+ D+ D\n2 4 3\n7\n≤2∆+ D\n12\n3 7\n= ∆+ ∆(η K ∆)2 ≤∆(η K ∆)2,\n2 12 τ 1 τ 1\n(cid:16) (cid:17)\nwhere we use A≤∆ and η K ∆>6. By g′′(y)= 1 g¯ y−xτ+1 , we have\nτ 1 (xτ−xτ+1)2 xτ−xτ+1\n∆(η K ∆)2\n|g′′(y)|≤ τ 1 =K ∆,\n(x −x )2 1\nτ τ+1\n√\nwhere we use x −x =η K ∆.",
+      "size": 482,
+      "sentences": 4
+    },
+    {
+      "id": 224,
+      "content": "e\nτ 1 (xτ−xτ+1)2 xτ−xτ+1\n∆(η K ∆)2\n|g′′(y)|≤ τ 1 =K ∆,\n(x −x )2 1\nτ τ+1\n√\nwhere we use x −x =η K ∆. This completes the proof. τ τ+1 τ 1\nD.4 Explanation of Example 4\n• Toshowf is(1\n√\n,K\n1\n,K\n1\n)-smooth,firstnotethatf(x,y)≥0,f⋆ =0and(cid:13) (cid:13)∇2f(x,y) (cid:13) (cid:13)=\n√\nmax{|h′′(x)|,K\n1\n}. For |x| ≤ 1/ K 1 , we have (cid:13) (cid:13)∇2f(x,y) (cid:13) (cid:13) = K 1 ≤ K 1 + f(x,y). For x > 1/ K 1 , we have\n(cid:13) (cid:13)∇2f(x,y) (cid:13) (cid:13)=K\n1\ne √ K1x−1 ≤K\n1\n+K\n1\nf(x,y).",
+      "size": 491,
+      "sentences": 5
+    },
+    {
+      "id": 225,
+      "content": "or x > 1/ K 1 , we have\n(cid:13) (cid:13)∇2f(x,y) (cid:13) (cid:13)=K\n1\ne √ K1x−1 ≤K\n1\n+K\n1\nf(x,y). • Consider first the constant learning rate case. At the starting point, we have h(x) = ∆ and\n0\n∇h(x) = K ∆ . To enable stable training in the first place, we need to take η = η ≤ 2 , or\notherwise th\n1\ne a\n0\nlgorithm will suffer oscillation on the x-axis. 0 K1∆\nThen we look at the y-axis, which is a simple quadratic problem.",
+      "size": 426,
+      "sentences": 5
+    },
+    {
+      "id": 226,
+      "content": "r oscillation on the x-axis. 0 K1∆\nThen we look at the y-axis, which is a simple quadratic problem. For each iteration, we have\ny =y −ηK y =(1−ηK )y =(1−ηK )t+1y , (14)\nt+1 t 1 t 1 t 1 0\nwhich requires t=Θ( 1 )=Θ(∆ ) iterations to converge in the y-axis. ηK1 0\n(cid:16) (cid:17)\n• Next, we consider the adaptive warmup strategy, with η =O min{ 1 , 1 } . With this learning\nt K1 K1∆t\nrate schedule, it takes log(∆ ) steps to converge to around 0 in the x-axis.",
+      "size": 459,
+      "sentences": 5
+    },
+    {
+      "id": 227,
+      "content": "his learning\nt K1 K1∆t\nrate schedule, it takes log(∆ ) steps to converge to around 0 in the x-axis. 0\nThen, we know that the local smoothness of the curvature is K 1 when x≤ √ K 1 1 , which means that\nafter converging to around 0 in the x-axis, we have η = Θ( 1 ). Based on (14), it takes around\nt K1\nΘ( 1 )=Θ(1) iterations to converge in the y-axis.",
+      "size": 350,
+      "sentences": 3
+    },
+    {
+      "id": 228,
+      "content": "e η = Θ( 1 ). Based on (14), it takes around\nt K1\nΘ( 1 )=Θ(1) iterations to converge in the y-axis. ηK1\nT us h in er g ef c o o r n e s , t w an e t c l a e n ar c n o i n n c g lu ra d t e es th i a n t t G hi D s s w p i e t c h ifi w c a r r i m ve u r- p va c l a l n ey c e o x n a v m er p g l e e. Θ( lo ∆ g∆ 0 0 )=Θ˜(∆ 0 ) times faster than\nE Proof for Section 5.1\nLet n = g −∇f(w ).",
+      "size": 391,
+      "sentences": 3
+    },
+    {
+      "id": 229,
+      "content": "r p g l e e. Θ( lo ∆ g∆ 0 0 )=Θ˜(∆ 0 ) times faster than\nE Proof for Section 5.1\nLet n = g −∇f(w ). We also define r = min (cid:110) C ∆ −ρ− 2 1 ,C (cid:111) ,L = 2K +K (2∆ )ρ and G =\nt t t t 1 t 2 t 0 ρ t t\n(cid:113)\nK ∆ +K 3ρ∆ρ+1. 0 t ρ t\nLemma 10 (Azuma-Hoeffding Inequality). Let {X ,F }n be a martingale difference sequence with\nk k k=0\nrespect to a filtration {F }. Suppose the increments are bounded almost surely:\nk\n27\n===  28 ===\n|X −X |≤c , a.s. for all k ≥0.",
+      "size": 469,
+      "sentences": 5
+    },
+    {
+      "id": 230,
+      "content": ". Suppose the increments are bounded almost surely:\nk\n27\n===  28 ===\n|X −X |≤c , a.s. for all k ≥0. k k−1 k\nThen, for any t>0,\n(cid:18) t2 (cid:19)\nP(X −X ≥t)≤exp − . n 0 2 (cid:80)n c2\nk=1 k\nEquivalently,\n (cid:118) \n(cid:117) n\nP X\nn\n−X\n0\n≤ (cid:117) (cid:116)2 (cid:88) c2\nk\nlog(1/δ)≥1−δ. t=1\nLemma 11. Let the adaptive learning rate in Theorem 4 be\n \n(cid:114)\n 1 1 r ∆ ∆ \nη =min √ , √ , t , 0 , 0 .",
+      "size": 411,
+      "sentences": 6
+    },
+    {
+      "id": 231,
+      "content": "t the adaptive learning rate in Theorem 4 be\n \n(cid:114)\n 1 1 r ∆ ∆ \nη =min √ , √ , t , 0 , 0 . t 8( 2+1)K 0 8 (cid:0) 2+1 (cid:1) K ρ (3∆ t )ρ 2σ σ2TL t 2σG (cid:113) T log1\nt δ\nThen it holds that η (∥∇f(w )∥+σ) ≤ r , η ≤ 1 , ση ∥∇f(w )∥ ≤ ∆ , (cid:80)T−1σ2η2L ≤ ∆ and\nt t t t 2Lt t t 0 t=0 t t 0\n2 (cid:80)T σ2η2∥∇f(w )∥2log1 ≤∆2. t=0 t t δ 0\nProof. As in Appendix D.1, we know that\n(cid:26) (cid:27)\n1 1 1 r\n√ min , ≤ t .",
+      "size": 430,
+      "sentences": 4
+    },
+    {
+      "id": 232,
+      "content": "g1 ≤∆2. t=0 t t δ 0\nProof. As in Appendix D.1, we know that\n(cid:26) (cid:27)\n1 1 1 r\n√ min , ≤ t . 4 (cid:0) 2+1 (cid:1) K 0 K ρ (3∆ t )ρ ∥∇f(w t )∥\nBy the first three conditions of η , we have\nt\nr r\nη (σ+∥∇f(w )∥)≤ t + t =r . t t 2 2 t\nSince L =2K +K (2∆ )ρ, it is not hard to verify that η ≤ 1 . The remaining three inequalities\ncan be d t irectly 0 verifi ρ ed by t noting that ∥∇f(w )∥≤G by L t emm 2L at5. t t\nLemma 12.",
+      "size": 425,
+      "sentences": 7
+    },
+    {
+      "id": 233,
+      "content": "ities\ncan be d t irectly 0 verifi ρ ed by t noting that ∥∇f(w )∥≤G by L t emm 2L at5. t t\nLemma 12. Let the constant learning rate in Theorem 5 be\n \n(cid:114)\n 1 1 r ∆ ∆ ∆ \nη =min √ , √ , , 0 , 0 , 0 ,\n8( 2+1)K 0 8 (cid:0) 2+1 (cid:1) K ρ (3∆ c )ρ 2σ σ2TL σG (cid:113) 2T log1 σα \nδ\nwhere ∆ c = 4∆ 0 ,r = min (cid:110) C 1 ∆ − c ρ− 2 1 ,C 2 (cid:111) ,L = 2K 0 +K ρ (2∆ c )ρ, G = (cid:113) K 0 ∆ c +K ρ 3ρ∆ρ c +1, and\n(cid:16) (cid:113) (cid:17)\nα = (G+LC ) 1+ 2log1 .",
+      "size": 474,
+      "sentences": 3
+    },
+    {
+      "id": 234,
+      "content": "c )ρ, G = (cid:113) K 0 ∆ c +K ρ 3ρ∆ρ c +1, and\n(cid:16) (cid:113) (cid:17)\nα = (G+LC ) 1+ 2log1 . Then as long as ∆ ≤ 4∆ , it holds that η(σ+∥∇f(w )∥) ≤ r,η ≤\n2 δ t 0 t\n1 ,σ2η2LT ≤∆ ,2σ2η2G2T log1 ≤∆2 and σηα≤∆ . 2L 0 δ 0 0\nProof. Note that ∥∇f(w )∥ ≤ G ≤ G if ∆ ≤ ∆ = 4∆ . Then the proof is almost the same as in\nt t t c 0\nLemma 11 by replacing ∆ with 4∆ . t 0\nLemma 13. Consider the adaptive learning rate defined in Lemma 11. Suppose ∆ ≤4∆ .",
+      "size": 445,
+      "sentences": 8
+    },
+    {
+      "id": 235,
+      "content": "∆ with 4∆ . t 0\nLemma 13. Consider the adaptive learning rate defined in Lemma 11. Suppose ∆ ≤4∆ . Then we\nt 0\nhave\n∆ (cid:18) ∆ ∆ (cid:16) (cid:17)(cid:19)\n0 ≤O 0 (K +K ∆ )+σ 0 C−1∆ +C−1\n(cid:80)T−1η T 0 ρ avg,ρ T 1 avg,ρ− 2 1 2\nt=0 t\n (cid:115) \n∆ log1\n+Oσ 0\nT\nδ (K\n0\n+K\nρ\n∆\navg,ρ\n)1/2 . Moreover, consider the constant learning rate defined in Lemma 12.",
+      "size": 360,
+      "sentences": 6
+    },
+    {
+      "id": 236,
+      "content": "0\nT\nδ (K\n0\n+K\nρ\n∆\navg,ρ\n)1/2 . Moreover, consider the constant learning rate defined in Lemma 12. We have\n∆ 0 ≤O (cid:18) ∆ 0 (K +K ∆ρ)+σ ∆ 0 (cid:16) C−1∆ ρ− 2 1 +C−1 (cid:17)(cid:19)\nηT T 0 ρ 0 T 1 0 2\n (cid:115) (cid:113) \n∆ log1 log1\n+Oσ 0\nT\nδ (K\n0\n+K\nρ\n∆ρ\n0\n)1/2+σ\nT\nδ C\n2\n(K\n0\n+K\nρ\n∆ρ\n0\n). 28\n===  29 ===\nProof. By the HM-AM inequality, we have\n(cid:80)T 1\n1\n≤ t=0 ηt. (15)\n(cid:80)T−1η T2\nt=0 t\nThe summation (cid:80) 1 of the first two items in η is O(T (K +K ∆ )).",
+      "size": 478,
+      "sentences": 6
+    },
+    {
+      "id": 237,
+      "content": "(15)\n(cid:80)T−1η T2\nt=0 t\nThe summation (cid:80) 1 of the first two items in η is O(T (K +K ∆ )). We then calculate\nt<T ηt t 0 ρ avg,ρ\nT−1 T−1\n(cid:88) 2σ (cid:88)(cid:16) ρ−1 (cid:17) (cid:16) (cid:17)\n≤2σ C−1∆ 2 +C−1 =2σT C−1∆ +C−1 ,\nr t 1 t 2 1 avg,ρ− 2 1 2\nt=0 t=0\nT (cid:88) −1 (cid:115) σ2 ∆ TL t ≤ (cid:115) σ ∆ 2T2 (cid:118) (cid:117) (cid:117) (cid:116) T (cid:88) −1 L t =O   (cid:115) σ ∆ 2T3 (K 0 +K ρ ∆ avg,ρ )1/2  ,\n0 0 0\nt=0 t=0\n(cid:113) (cid:113)\nT\n(cid:88)\n−1σG\nt\nT log1\nδ =\nσ T log1\nδ\nT\n(cid:88)\n−1(cid:113)\nK ∆ +K 3ρ∆ρ+1\n∆ ∆ 0 t ρ t\n0 0\nt=0 t=0\n(cid:113)\n≤\n2σ\n√\nT log1\nδ\nT\n(cid:88)\n−1(cid:113)\nK +K 3ρ∆ρ\n∆ 0 ρ t\n0 t=0\n(cid:113) (cid:118)\n2σ T2log1(cid:117)T−1\n≤ √\nδ(cid:117)\n(cid:116)\n(cid:88)\nK +K 3ρ∆ρ\n∆ 0 ρ t\n0 t=0\n(cid:115) \nσ2T3log1\n=O\n∆\nδ (K\n0\n+K\nρ\n∆\navg,ρ\n)1/2 .",
+      "size": 798,
+      "sentences": 2
+    },
+    {
+      "id": 238,
+      "content": "(cid:116)\n(cid:88)\nK +K 3ρ∆ρ\n∆ 0 ρ t\n0 t=0\n(cid:115) \nσ2T3log1\n=O\n∆\nδ (K\n0\n+K\nρ\n∆\navg,ρ\n)1/2 . 0\nPlugging the above inequations into (15) we obtain the desired result. Forconstantlearningrate,wesimplyreplace∆ with4∆ . Theproofisalmostthesameasadaptive\nt 0\nlearning rate. E.1 Proof of Theorem 4\nProof. We define\nτ :=min{min{t:f(w )−f⋆ >4∆ },T}. t 0\nFor t<τ, by Lemma 11 we have ∥w −w ∥=η ∥g ∥≤η (σ+∥∇f(w )∥)≤r .",
+      "size": 414,
+      "sentences": 7
+    },
+    {
+      "id": 239,
+      "content": "τ :=min{min{t:f(w )−f⋆ >4∆ },T}. t 0\nFor t<τ, by Lemma 11 we have ∥w −w ∥=η ∥g ∥≤η (σ+∥∇f(w )∥)≤r . By Lemma 2,\nt+1 t t t t t t\nL\nf(w )≤f(w )+⟨∇f(w ),w −w ⟩+ t ∥w −w ∥2\nt+1 t t t+1 t 2 t+1 t\nL\n=f(w )−η ⟨∇f(w ),g ⟩+ tη2∥g ∥2\nt t t t 2 t t\n≤f(w )−η ∥∇f(w )∥2−η ⟨∇f(w ),n ⟩+L η2∥n ∥2+L η2∥∇f(w )∥2\nt t t t t t t t t t t t\n1\n≤f(w )− η ∥∇f(w )∥2−η ⟨∇f(w ),n ⟩+L η2∥n ∥2,\nt 2 t t t t t t t t\nwhere in the last inequality we use η ≤ 1 by Lemma 11.",
+      "size": 440,
+      "sentences": 3
+    },
+    {
+      "id": 240,
+      "content": "η ⟨∇f(w ),n ⟩+L η2∥n ∥2,\nt 2 t t t t t t t t\nwhere in the last inequality we use η ≤ 1 by Lemma 11. Telescoping the above inequality from t=0\nto τ −1, we obtain that\nt 2Lt\nτ−1 τ−1 τ−1\nf(w )≤f(w )− 1(cid:88) η ∥∇f(w )∥2− (cid:88) η ⟨∇f(w ),n ⟩+ (cid:88) L η2∥n ∥2. (16)\nτ 0 2 t t t t t t t t\nt=0 t=0 t=0\n29\n===  30 ===\nLet X :=−η ⟨∇f(w ),n ⟩1 . It is not hard to verify that − (cid:80)τ η ⟨∇f(w ),n ⟩= (cid:80)T X and\nt t t t τ≥t t=0 t t t t=0 t\nE[X |g ,...,g ]=0,∀t∈[T].",
+      "size": 470,
+      "sentences": 4
+    },
+    {
+      "id": 241,
+      "content": "at − (cid:80)τ η ⟨∇f(w ),n ⟩= (cid:80)T X and\nt t t t τ≥t t=0 t t t t=0 t\nE[X |g ,...,g ]=0,∀t∈[T]. Therefore, {X } is a martingale difference sequence. By Lemma 10,\nt 0 t−1 t\n(cid:118)\nτ (cid:117) T\n− (cid:88) η ⟨∇f(w ),n ⟩≤ (cid:117) (cid:116)2 (cid:88) η2∥∇f(w )∥2∥n ∥21 log 1\nt t t t t t τ≥t δ\nt=0 t=0\nholds with probability at least 1−δ.",
+      "size": 342,
+      "sentences": 3
+    },
+    {
+      "id": 242,
+      "content": "6)2 (cid:88) η2∥∇f(w )∥2∥n ∥21 log 1\nt t t t t t τ≥t δ\nt=0 t=0\nholds with probability at least 1−δ. Plugging this into (16), we obtain that\nτ−1 τ−1\nf(w )≤f(w )− 1(cid:88) η ∥∇f(w )∥2+η ⟨∇f(w ),n ⟩+ (cid:88) L η2∥n ∥2\nτ 0 2 t t τ τ τ t t t\nt=0 t=0\n(cid:118)\n(cid:117) T\n+ (cid:117) (cid:116)2 (cid:88) η2∥∇f(w )∥2∥n ∥21 log 1\nt t t τ≥t δ\nt=0\nT−1\n≤f(w )+η ∥∇f(w )∥∥n ∥+ (cid:88) L η2∥n ∥2\n0 τ τ τ t t t\nt=0\n(cid:118)\n(cid:117) T\n+ (cid:117) (cid:116)2 (cid:88) η2∥∇f(w )∥2∥n ∥2log 1\nt t t δ\nt=0\n≤f(w )+3∆ ,\n0 0\nwhere we use ∥n ∥≤σ and Lemma 11.",
+      "size": 542,
+      "sentences": 2
+    },
+    {
+      "id": 243,
+      "content": ":116)2 (cid:88) η2∥∇f(w )∥2∥n ∥2log 1\nt t t δ\nt=0\n≤f(w )+3∆ ,\n0 0\nwhere we use ∥n ∥≤σ and Lemma 11. Therefore, ∆ ≤4∆ and we must have τ =T with probability\nt τ 0\nat least 1−δ. This means ∆ ≤4∆ ,∀t∈[T]. By (16) and τ =T, we obtain that\nt 0\nT−1\n1 (cid:88) η ∥∇f(w )∥2 ≤4∆ . 2 t t 0\nt=0\nTherefore,\n1 ∆\nmin∥∇f(w )∥2 ≤ 0 . 8 t<T t (cid:80)T−1η\nt=0 t\nBy Lemma 13, we obtain the desired result. E.2 Proof of Theorem 5\nProof. We define\nτ :=min{min{t:f(w )−f⋆ >4∆ },T}.",
+      "size": 460,
+      "sentences": 8
+    },
+    {
+      "id": 244,
+      "content": "obtain the desired result. E.2 Proof of Theorem 5\nProof. We define\nτ :=min{min{t:f(w )−f⋆ >4∆ },T}. t 0\nWealsodefiner =min (cid:110) C 1 (4∆ 0 )−ρ− 2 1 ,C 2 (cid:111) ,L=2K 0 +K ρ (8∆ 0 )ρandG= (cid:113) 4K 0 ∆ 0 +K ρ 3ρ(4∆ 0 )ρ+1.",
+      "size": 231,
+      "sentences": 4
+    },
+    {
+      "id": 245,
+      "content": "C 1 (4∆ 0 )−ρ− 2 1 ,C 2 (cid:111) ,L=2K 0 +K ρ (8∆ 0 )ρandG= (cid:113) 4K 0 ∆ 0 +K ρ 3ρ(4∆ 0 )ρ+1. For t < τ, by Lemma 12, we have ∥w −w ∥ = η∥g ∥ ≤ η(∥∇f(w )∥+σ) ≤ r. By similar\nt+1 t t t\n30\n===  31 ===\nanalysis to Appendix E.1, we obtain that with probability at least 1−δ,\nτ−1 τ−1 τ−1\nf(w )≤f(w )− 1(cid:88) η∥∇f(w )∥2− (cid:88) ⟨∇f(w ),n ⟩+ (cid:88) Lη2∥n ∥2\nτ 0 2 t t t t\nt=0 t=0 t=0\nτ−1 τ−1\n≤f(w )− 1(cid:88) η∥∇f(w )∥2+ (cid:88) Lη2∥n ∥2+η∥∇f(w )∥∥n ∥\n0 2 t t τ τ\nt=0 t=0\n(cid:118)\n(cid:117) τ\n+ (cid:117) (cid:116)2 (cid:88) η2∥∇f(w\nt\n)∥2∥n\nt\n∥2log 1\nδ\nt=0\nT−1 (cid:114)\n≤f(w )+ (cid:88) Lη2∥n ∥2+η∥∇f(w )∥∥n ∥+ 2η2∥∇f(w )∥2∥n ∥2log 1\n0 t τ τ τ τ δ\nt=0 (17)\n(cid:118)\n(cid:117) τ−1\n+ (cid:117) (cid:116)2 (cid:88) η2∥∇f(w )∥2∥n ∥2log 1\nt t δ\nt=0\nT−1 (cid:114)\n≤f(w )+ (cid:88) Lη2∥n ∥2+η∥∇f(w )∥∥n ∥+ 2η2∥∇f(w )∥2∥n ∥2log 1\n0 t τ τ τ τ δ\nt=0\n(cid:114)\n1\n+ 2Tη2G2σ2log\nδ\n(cid:32) (cid:114) (cid:33)\n1\n≤f(w )+2∆ +η∥∇f(w )∥∥n ∥ 1+ 2log ,\n0 0 τ τ δ\nwhere in the second inequality we use Lemma 10, the second to last inequality is due to t<τ and the\nlast inequality is due to ∥n ∥≤σ and Lemma 12.\nt\nSince ∥w −w ∥≤r, by Lemma 2 we have\nτ τ−1\n∥∇f(w )∥≤∥∇f(w )∥+∥∇f(w )−∇f(w )∥\nτ τ−1 τ−1 τ\n≤∥∇f(w )∥+L∥w −w ∥ (18)\nτ−1 τ−1 τ\n≤G+Lr ≤G+LC .",
+      "size": 1237,
+      "sentences": 2
+    },
+    {
+      "id": 246,
+      "content": "τ τ−1\n∥∇f(w )∥≤∥∇f(w )∥+∥∇f(w )−∇f(w )∥\nτ τ−1 τ−1 τ\n≤∥∇f(w )∥+L∥w −w ∥ (18)\nτ−1 τ−1 τ\n≤G+Lr ≤G+LC . 2\nPlugging (18) into (17), we obtain that\n(cid:32) (cid:114) (cid:33)\n1\nf(w )≤f(w )+2∆ +ησ 1+ 2log (G+LC )≤f(w )+3∆ ,\nτ 0 0 δ 2 0 0\nwhere the last inequality is due to Lemma 12. This means ∆ ≤4∆ and τ =T with probability at\nτ 0\nleast 1−δ. By (17) and τ =T, we have\nT−1\n1 η (cid:88) ∥∇f(w )∥2 ≤4∆ . 2 t 0\nt=0\nTherefore, with probability at least 1−δ we have\n1 ∆\nmin∥∇f(w )∥2 ≤ 0.",
+      "size": 478,
+      "sentences": 5
+    },
+    {
+      "id": 247,
+      "content": "8) ∥∇f(w )∥2 ≤4∆ . 2 t 0\nt=0\nTherefore, with probability at least 1−δ we have\n1 ∆\nmin∥∇f(w )∥2 ≤ 0. 8 t<T t ηT\nBy Lemma 13, we obtain the desired result. 31\n===  32 ===\nF Proof for Section 5.2\nIn Theorem 6, we employ the following adaptive learning rate\n(cid:40) (cid:26) (cid:27) (cid:40) (cid:41)\n1 1 1 1 1 1\nη =min √ √ , ,√ √ √ ,\nt 6(B+1)(4 2+4) K 0 K ρ (3∆ t )ρ 6A(2+ 2) K 0 (cid:112) K 1 (3∆ t )ρ\n(19)\n(cid:115) (cid:115) (cid:41)\nr ∆2 ∆\n√t , 0 , 0 .",
+      "size": 455,
+      "sentences": 4
+    },
+    {
+      "id": 248,
+      "content": "(3∆ t )ρ 6A(2+ 2) K 0 (cid:112) K 1 (3∆ t )ρ\n(19)\n(cid:115) (cid:115) (cid:41)\nr ∆2 ∆\n√t , 0 , 0 . 6σ 4G2 t (A∆ t +BG2 t +σ2)T log1 δ L t (A∆ t +σ2)T\nIn Theorem 7, we employ the following constant learning rate\n(cid:40) (cid:26) (cid:27) (cid:40) (cid:41)\n1 1 1 1 1 1\nη =min √ √ , ,√ √ √ , ,\n6(B+1)(4 2+4) K 0 K ρ (3∆ c )ρ 6A(2+ 2) K 0 (cid:112) K 1 (3∆ c )ρ\n(cid:115) (cid:115)\nr ∆2 ∆\n√ , 0 , 0 , (20)\n6σ 2G2(A∆ c +BG2+σ2)T log1 δ L(A∆ c +σ2)T\n\n1 1 \n√ , (cid:16) √ √ (cid:17) ,\nAα α 1 A+ B(G+C L)+σ \n2 2\nwhere ∆ =8∆ .",
+      "size": 521,
+      "sentences": 2
+    },
+    {
+      "id": 249,
+      "content": ")T log1 δ L(A∆ c +σ2)T\n\n1 1 \n√ , (cid:16) √ √ (cid:17) ,\nAα α 1 A+ B(G+C L)+σ \n2 2\nwhere ∆ =8∆ . c 0\nLemma 14. Let the adaptive learning rate in Theorem 6 be\n(cid:40) (cid:26) (cid:27) (cid:40) (cid:41)\n1 1 1 1 1 1\nη =min √ √ , ,√ √ √ , ,\nt 6(B+1)(4 2+4) K 0 K ρ (3∆ t )ρ 6A(2+ 2) K 0 (cid:112) K 1 (3∆ t )ρ\n(cid:115) (cid:115) (cid:41)\nr ∆2 ∆\n√t , 0 , 0 .",
+      "size": 359,
+      "sentences": 3
+    },
+    {
+      "id": 250,
+      "content": "0 K ρ (3∆ t )ρ 6A(2+ 2) K 0 (cid:112) K 1 (3∆ t )ρ\n(cid:115) (cid:115) (cid:41)\nr ∆2 ∆\n√t , 0 , 0 . 6σ 4G2 t (A∆ t +BG2 t +σ2)T log1 δ L t (A∆ t +σ2)T\nThen it holds that\n(cid:16) (cid:17)\n2η2 A∆ +(B+1)∥∇f(w )∥2+σ2 ≤r2,\nt t t t\nT−1\nη ≤\n1\n,\n(cid:88)\nL\nη2(cid:0)\nA∆\n+σ2(cid:1)\n≤∆\nt 2(B+1)L t t t 0\nt\nt=0\n(cid:16) (cid:17)1/2\nη ∥∇f(w )∥ A∆ +B∥∇f(w )∥2+σ2 ≤∆\nt t t t 0\nT\n2 (cid:88) η2∥∇f(w )∥2 (cid:16) A∆ +B∥∇f(w )∥2+σ2 (cid:17) log 1 ≤∆2. t t t t δ 0\nt=0\nProof.",
+      "size": 458,
+      "sentences": 3
+    },
+    {
+      "id": 251,
+      "content": "t 0\nT\n2 (cid:88) η2∥∇f(w )∥2 (cid:16) A∆ +B∥∇f(w )∥2+σ2 (cid:17) log 1 ≤∆2. t t t t δ 0\nt=0\nProof. We first note that\n(cid:26) (cid:27)\nr 1 1 1\nt ≥ √ min , ,\n∥∇f(w t )∥ 4 (cid:0) 2+1 (cid:1) K 0 K ρ (3∆ t )ρ\n(cid:40) (cid:41)\nr 1 1 1\n√t ≥ √ min √ , . ∆ t 2+ 2 K 0 (cid:112) K ρ (3∆ t )ρ\n√\nBy considering the first five terms in η and noting that B+1≤B+1, we have\nt\n(cid:16) (cid:17) r2\n2η2 A∆ +(B+1)∥∇f(w )∥2+σ2 ≤ t ×3=r2. t t t 3 t\nIt is not hard to verify that η ≤ 1 .",
+      "size": 470,
+      "sentences": 5
+    },
+    {
+      "id": 252,
+      "content": "6) (cid:17) r2\n2η2 A∆ +(B+1)∥∇f(w )∥2+σ2 ≤ t ×3=r2. t t t 3 t\nIt is not hard to verify that η ≤ 1 . The remaining inequations can be directly verified by\nt 2(B+1)Lt\nnoting that ∥∇f(w )∥≤G by Lemma 5.\nt t\n32\n===  33 ===\nLemma 15.",
+      "size": 228,
+      "sentences": 3
+    },
+    {
+      "id": 253,
+      "content": "be directly verified by\nt 2(B+1)Lt\nnoting that ∥∇f(w )∥≤G by Lemma 5.\nt t\n32\n===  33 ===\nLemma 15. Let the constant learning rate in Theorem 7 be\n(cid:40) (cid:26) (cid:27) (cid:40) (cid:41)\n1 1 1 1 1 1\nη =min √ √ , ,√ √ √ , ,\n6(B+1)(4 2+4) K 0 K ρ (3∆ c )ρ 6A(2+ 2) K 0 (cid:112) K 1 (3∆ c )ρ\n(cid:115) (cid:115)\nr ∆2 ∆\n√ , 0 , 0 ,\n6σ 2G2(A∆ c +BG2+σ2)T log1 δ L(A∆ c +σ2)T\n\n1 1 \n√ , (cid:16) √ √ (cid:17)\nAα α 1 A+ B(G+C L)+σ \n2 2\nwhere ∆ c = 8∆ 0 ,r = min (cid:110) C 1 ∆ − c ρ− 2 1 ,C 2 (cid:111) ,L t = 2K 0 +K ρ (2∆ c )ρ, G = (cid:113) K 0 ∆ c +K ρ 3ρ∆ρ c +1 and\n(cid:16) (cid:113) (cid:17)\nα=(G+LC ) 1+ 2log1 .",
+      "size": 620,
+      "sentences": 2
+    },
+    {
+      "id": 254,
+      "content": "(2∆ c )ρ, G = (cid:113) K 0 ∆ c +K ρ 3ρ∆ρ c +1 and\n(cid:16) (cid:113) (cid:17)\nα=(G+LC ) 1+ 2log1 . Then as long as ∆ ≤8∆ , we have\n2 δ t 0\n2η2(cid:0) A∆ +(B+1)G2+σ2(cid:1) ≤r2,\nc\nη ≤ 1 , η2LT (cid:0) A∆ +σ2(cid:1) ≤∆ ,\n2(B+1)L c 0\n2η2G2(cid:0) A∆ +BG2+σ2(cid:1) T log 1 ≤∆2,\nc δ 0\n√\nη Aα≤1,\n(cid:18) 1√ √ √ (cid:19)\nηα A+ BG+ BC L+σ ≤∆ . 2 2 0\nProof. Note that ∥∇f(w )∥ ≤ G ≤ G if ∆ ≤ ∆ = 8∆ . Then the proof is almost the same as in\nt t t c 0\nLemma 14, by replacing ∆ with 8∆ . t 0\nLemma 16.",
+      "size": 493,
+      "sentences": 6
+    },
+    {
+      "id": 255,
+      "content": "Then the proof is almost the same as in\nt t t c 0\nLemma 14, by replacing ∆ with 8∆ . t 0\nLemma 16. Consider the adaptive learning rate defined in Lemma 14. Suppose ∆ ≤4∆ ,∀t∈[T].",
+      "size": 178,
+      "sentences": 4
+    },
+    {
+      "id": 256,
+      "content": "8∆ . t 0\nLemma 16. Consider the adaptive learning rate defined in Lemma 14. Suppose ∆ ≤4∆ ,∀t∈[T]. t 0\nThen we have\n∆ 0 ≤O (cid:18) ∆ 0 (K +K ∆ )+σ ∆ 0 (cid:16) C−1∆ +C−1 (cid:17) + ∆ 0 √ A (cid:16)(cid:112) K + (cid:112) K ∆ (cid:17)(cid:19)\n(cid:80)T−1η T 0 ρ avg,ρ T 1 avg,ρ− 2 1 2 T 0 ρ avg,ρ\nt=0 t\n(cid:115) \n+O ∆ 0\nT\nlog1 δ (cid:16)(cid:16) σ+ (cid:112) A∆\n0\n(cid:17) (K\n0\n+K\nρ\n∆\navg,ρ\n)1/2+ (cid:112) B∆\n0\n(K\n0\n+K\nρ\n∆\navg,ρ\n) (cid:17) ,\nMoreover, consider the constant learning rate defined in Lemma 15.",
+      "size": 514,
+      "sentences": 5
+    },
+    {
+      "id": 257,
+      "content": "(K\n0\n+K\nρ\n∆\navg,ρ\n) (cid:17) ,\nMoreover, consider the constant learning rate defined in Lemma 15. We have\n∆ 0 ≤O (cid:18) ∆ 0 (K +K ∆ρ)+σ ∆ 0 (cid:16) C−1∆ ρ− 2 1 +C−1 (cid:17) + ∆ 0 √ A (cid:18) (cid:112) K + (cid:113) K ∆ρ (cid:19)(cid:19)\nηT T 0 ρ 0 T 1 0 2 T 0 ρ 0\n(cid:115) \n+O ∆ 0 T log1 δ (cid:16)(cid:16) σ+ (cid:112) A∆ 0 (cid:17) (K 0 +K ρ ∆ρ 0 )1/2+ (cid:112) B∆ 0 (K 0 +K ρ ∆ρ 0 ) (cid:17) \n √ (cid:16)√ √ (cid:17)\nα A+ B(G+C L)+σ\nα A∆ 2\n+O 0 + . T T\nProof.",
+      "size": 478,
+      "sentences": 3
+    },
+    {
+      "id": 258,
+      "content": "(K 0 +K ρ ∆ρ 0 ) (cid:17) \n √ (cid:16)√ √ (cid:17)\nα A+ B(G+C L)+σ\nα A∆ 2\n+O 0 + . T T\nProof. First, by the HM-AM inequality, we have\n(cid:80)T 1\n1\n≤ t=0 ηt. (21)\n(cid:80)T−1η T2\nt=0 t\nThe summation (cid:80) 1 of the first five terms in η in Lemma 14 is\nt<T ηt t\nO (cid:16) T(B+1)(K +K ∆ )+T √ A (cid:16)(cid:112) K + (cid:112) K ∆ (cid:17) +Tσ (cid:16) C−1∆ +C−1 (cid:17)(cid:17) .",
+      "size": 387,
+      "sentences": 4
+    },
+    {
+      "id": 259,
+      "content": "+K ∆ )+T √ A (cid:16)(cid:112) K + (cid:112) K ∆ (cid:17) +Tσ (cid:16) C−1∆ +C−1 (cid:17)(cid:17) . 0 ρ avg,ρ 0 ρ avg,ρ 1 avg,ρ−1 2\n2\n33\n===  34 ===\nWe note that\nG =2 (cid:113) K ∆ +3ρK ∆ρ+1 ≤2 (cid:112) 4∆ (cid:113) K +K 3ρ∆ρ,\nt 0 t ρ t 0 0 ρ t\nwhere in the equality we use the definition of G and in the inequality we use ∆ ≤4∆ .",
+      "size": 331,
+      "sentences": 2
+    },
+    {
+      "id": 260,
+      "content": "t ρ t 0 0 ρ t\nwhere in the equality we use the definition of G and in the inequality we use ∆ ≤4∆ . Consider the\nt t 0\nsecond to last term in η in Lemma 14, we calculate\nt\nT (cid:88) −1 (cid:113) (cid:16)(cid:112) √ (cid:17)\nG A∆ +BG2+σ2 ≤G A∆ + BG +σ\nt t t t t t\nt=0\nT−1 √ √\n≤ (cid:88) 8 A∆ (K +K 3ρ∆ρ)1/2+16 B∆ (K +K 3ρ∆ρ)+4σ (cid:112) ∆ (K +K 3ρ∆ρ)1/2\n0 0 ρ t 0 0 ρ t 0 0 ρ t\nt=0\n=O (cid:16) T √ A∆ (K +K ∆ )1/2+T √ B∆ (K +K ∆ )+Tσ (cid:112) ∆ (K +K ∆ )1/2 (cid:17) .",
+      "size": 470,
+      "sentences": 2
+    },
+    {
+      "id": 261,
+      "content": "0 0 ρ t\nt=0\n=O (cid:16) T √ A∆ (K +K ∆ )1/2+T √ B∆ (K +K ∆ )+Tσ (cid:112) ∆ (K +K ∆ )1/2 (cid:17) . 0 0 ρ avg,ρ 0 0 ρ avg,ρ 0 0 ρ avg,ρ\nThen we have\n(cid:115)\nT (cid:88) −1 4G2 t (A∆ t +BG2 t +σ2)T log1 δ\n∆2\nt=0 0\n (cid:115) \n=O\n(cid:16)(cid:112)\nA∆\n0\n+σ\n(cid:17) T3/\n∆\n2log1\nδ (K\n0\n+K\nρ\n∆\navg,ρ\n)1/2+\n√\nB\n(cid:114)\nT3/2log\n1\nδ\n(K\n0\n+K\nρ\n∆\navg,ρ\n).",
+      "size": 352,
+      "sentences": 2
+    },
+    {
+      "id": 262,
+      "content": "0\n+σ\n(cid:17) T3/\n∆\n2log1\nδ (K\n0\n+K\nρ\n∆\navg,ρ\n)1/2+\n√\nB\n(cid:114)\nT3/2log\n1\nδ\n(K\n0\n+K\nρ\n∆\navg,ρ\n). 0\nConsider the last term in η in Lemma 14, we calculate\nt\nT−1 T−1 T−1\n(cid:88)(cid:112) (cid:88)(cid:112) (cid:112) (cid:88) (cid:112) (cid:112)\nL (A∆ +σ2)≤ A∆ L +σ L ≤ 2 A∆ L +σ L\nt t t t t 0 t t\nt=0 t=0 t=0\n= T (cid:88) −1 (cid:16) 2 (cid:112) A∆ +σ (cid:17)(cid:113) 2K +K 2ρ∆ρ\n0 0 ρ t\nt=0\n=O (cid:16) T (cid:16) 2 (cid:112) A∆ +σ (cid:17) (K +K ∆ )1/2 (cid:17) .",
+      "size": 466,
+      "sentences": 2
+    },
+    {
+      "id": 263,
+      "content": "3) 2K +K 2ρ∆ρ\n0 0 ρ t\nt=0\n=O (cid:16) T (cid:16) 2 (cid:112) A∆ +σ (cid:17) (K +K ∆ )1/2 (cid:17) . 0 0 ρ avg,ρ\nThen we have\n(cid:115)\nT (cid:88) −1 L t (A∆ t +σ2)T ≤ (cid:114) T T (cid:88) −1 (cid:112) L (cid:16)(cid:112) A∆ +σ (cid:17)\n∆ ∆ t t\n0 0\nt=0 t=0\n(cid:114) T−1\nT (cid:88)(cid:112) (cid:16) (cid:112) (cid:17)\n≤ L 2 A∆ +σ\n∆ t 0\n0\nt=0\n(cid:115)\n= T3/2 (cid:16) 2 (cid:112) A∆ +σ (cid:17) (2K +K 2ρ∆ )1/2\n∆ 0 0 ρ avg,ρ\n0\n (cid:115) \n=O\n(cid:16)(cid:112)\nA∆\n0\n+σ\n(cid:17) T\n∆\n3/2\n(K\n0\n+K\nρ\n∆\navg,ρ\n)1/2 .",
+      "size": 515,
+      "sentences": 2
+    },
+    {
+      "id": 264,
+      "content": "0 ρ avg,ρ\n0\n (cid:115) \n=O\n(cid:16)(cid:112)\nA∆\n0\n+σ\n(cid:17) T\n∆\n3/2\n(K\n0\n+K\nρ\n∆\navg,ρ\n)1/2 . 0\nCombining the above results and plugging into (21), we get the desired result. Forconstantlearningrate,wesimplyreplace∆ with8∆ . Theproofisalmostthesameasadaptive\nt 0\nlearning rate. F.1 Proof of Theorem 6\nProof. We define\nτ :=min{min{t:f(w )−f⋆ >4∆ },T}. t 0\nFor t<τ, by Lemma 14 we have\n(cid:16) (cid:17) (cid:16) (cid:17)\n∥w −w ∥2 =η2∥g ∥2 ≤2η2 ∥n ∥2+∥∇f(w )∥2 ≤2η2 A∆ +(B+1)∥∇f(w )∥2+σ2 ≤r2.",
+      "size": 495,
+      "sentences": 7
+    },
+    {
+      "id": 265,
+      "content": ") (cid:17) (cid:16) (cid:17)\n∥w −w ∥2 =η2∥g ∥2 ≤2η2 ∥n ∥2+∥∇f(w )∥2 ≤2η2 A∆ +(B+1)∥∇f(w )∥2+σ2 ≤r2. t+1 t t t t t t t t t t\n34\n===  35 ===\nBy Lemma 2,\nL\nf(w )=f(w )+⟨∇f(w ),w −w ⟩+ t ∥w −w ∥2\nt+1 t t t+1 t 2 t+1 t\n(cid:16) (cid:17)\n≤f(w )−η ∥∇f(w )∥2−η ⟨∇f(w ),n ⟩+L η2 ∥n ∥2+∥∇f(w )∥2\nt t t t t t t t t t\n≤f(w )−η ∥∇f(w )∥2−η ⟨∇f(w ),n ⟩+L η2(1+B)∥∇f(w )∥2+L η2(cid:0) A∆ +σ2(cid:1)\nt t t t t t t t t t t t\n≤f(w )− 1 η ∥∇f(w )∥2−η ⟨∇f(w ),n ⟩+L η2(cid:0) A∆ +σ2(cid:1) ,\nt 2 t t t t t t t t\nwhere in the last inequality we use η ≤ 1 by Lemma 14.",
+      "size": 546,
+      "sentences": 2
+    },
+    {
+      "id": 266,
+      "content": "2(cid:0) A∆ +σ2(cid:1) ,\nt 2 t t t t t t t t\nwhere in the last inequality we use η ≤ 1 by Lemma 14. Telescoping the above inequation from\nt=0 to τ −1, we obtain that\nt 2(B+1)Lt\nτ−1 τ−1 τ−1\nf(w )≤f(w )− 1(cid:88) η ∥∇f(w )∥2− (cid:88) η ⟨∇f(w ),n ⟩+ (cid:88) L η2(cid:0) A∆ +σ2(cid:1) .",
+      "size": 285,
+      "sentences": 2
+    },
+    {
+      "id": 267,
+      "content": "−1\nf(w )≤f(w )− 1(cid:88) η ∥∇f(w )∥2− (cid:88) η ⟨∇f(w ),n ⟩+ (cid:88) L η2(cid:0) A∆ +σ2(cid:1) . τ 0 2 t t t t t t t t\nt=0 t=0 t=0\nSimilar to the analysis in Appendix E.1, by Lemma 10 we have that with probability at least 1−δ,\nτ−1 T−1\nf(w )≤f(w )− 1(cid:88) η ∥∇f(w )∥2+ (cid:88) L η2(cid:0) A∆ +σ2(cid:1) +η ∥∇f(w )∥∥n ∥\nτ 0 2 t t t t t τ τ τ\nt=0 t=0\n(cid:118)\n(cid:117) T\n+ (cid:117) (cid:116)2 (cid:88) η2∥∇f(w )∥2∥n ∥2log 1\nt t t δ\nt=0\n≤f(w )+3∆ ,\n0 0\nwhere the last inequality is due to ∥n ∥2 ≤ A∆ +B∥∇f(w )∥2 +σ2 and Lemma 14.",
+      "size": 536,
+      "sentences": 2
+    },
+    {
+      "id": 268,
+      "content": "δ\nt=0\n≤f(w )+3∆ ,\n0 0\nwhere the last inequality is due to ∥n ∥2 ≤ A∆ +B∥∇f(w )∥2 +σ2 and Lemma 14. Therefore\nt t t\n∆ ≤ 4∆ and we must have τ = T with probability at least 1−δ. Following similar analysis to\nτ 0\nAppendix E.1, we have\n1 ∆\nmin∥∇f(w )∥2 ≤ 0 . 8 t<T t (cid:80)T−1η\nt=0 t\nBy Lemma 16, we obtain the desired result. F.2 Proof of Theorem 7\nProof. We define\nτ :=min{min{t:f(w )−f⋆ >8∆ },T}.",
+      "size": 397,
+      "sentences": 6
+    },
+    {
+      "id": 269,
+      "content": "obtain the desired result. F.2 Proof of Theorem 7\nProof. We define\nτ :=min{min{t:f(w )−f⋆ >8∆ },T}. t 0\nWealsodefiner =min (cid:110) C 1 (8∆ 0 )−ρ− 2 1 ,C 2 (cid:111) ,L=2K 0 +K ρ (16∆ 0 )ρandG= (cid:113) 8K 0 ∆ 0 +K ρ 3ρ(8∆ 0 )ρ+1. For t<τ, we have L ≤L and G ≤G. t t\nFor t<τ, by Lemma 15, we have\n(cid:16) (cid:17) (cid:16) (cid:17)\n∥w −w ∥2 ≤2η2 ∥∇f(w )∥2+∥n ∥2 ≤2η2 A∆ +(B+1)∥∇f(w )∥2+σ2\nt+1 t t t t t\n≤2η2(cid:0) 8A∆ +(B+1)G2+σ2(cid:1) ≤r2.",
+      "size": 445,
+      "sentences": 6
+    },
+    {
+      "id": 270,
+      "content": "η2 ∥∇f(w )∥2+∥n ∥2 ≤2η2 A∆ +(B+1)∥∇f(w )∥2+σ2\nt+1 t t t t t\n≤2η2(cid:0) 8A∆ +(B+1)G2+σ2(cid:1) ≤r2. 0\nBy similar analysis to Appendix F.1, we obtain that with probability at least 1−δ,\n35\n===  36 ===\nτ−1 τ−1\nf(w )≤f(w )− 1(cid:88) η∥∇f(w )∥2+ (cid:88) Lη2(cid:0) A∆ +σ2(cid:1) +η∥∇f(w )∥∥n ∥\nτ 0 2 t t τ τ\nt=0 t=0\n(cid:118)\n(cid:117) τ\n+ (cid:117) (cid:116)2 (cid:88) η2∥∇f(w\nt\n)∥2∥n\nt\n∥2log 1\nδ\nt=0\nτ−1 τ−1 (cid:32) (cid:114) (cid:33)\n≤f(w )− 1(cid:88) η∥∇f(w )∥2+ (cid:88) Lη2(cid:0) A∆ +σ2(cid:1) +η∥∇f(w )∥∥n ∥ 1+ 2log 1\n0 2 t t τ τ δ\nt=0 t=0\n(cid:118)\n(cid:117) τ−1\n+ (cid:117) (cid:116)2 (cid:88) η2∥∇f(w )∥2∥n ∥2log 1\nt t δ\nt=0\n(cid:114)\n≤f(w\n)+TLη2(cid:0)\n8A∆\n+σ2(cid:1)\n+ 2Tη2G2(8A∆ +BG2+σ2)log\n1\n0 0 0 δ\n(cid:32) (cid:114) (cid:33)\n1\n+η∥∇f(w )∥∥n ∥ 1+ 2log\nτ τ δ\n(cid:32) (cid:114) (cid:33)\n1\n≤f(w )+2∆ +η∥∇f(w )∥∥n ∥ 1+ 2log ,\n0 0 τ τ δ\n(22)\n√ √\nwhere the last inequality is due to Lemma 15.",
+      "size": 902,
+      "sentences": 2
+    },
+    {
+      "id": 271,
+      "content": "≤f(w )+2∆ +η∥∇f(w )∥∥n ∥ 1+ 2log ,\n0 0 τ τ δ\n(22)\n√ √\nwhere the last inequality is due to Lemma 15. Note that ∥n ∥ ≤ A∆ + B∥∇f(w )∥+σ ≤\n√ √ √ τ τ τ\n1 A∆ + 1 A+ B∥∇f(w )∥+σ. Then we have\n2 τ 2 τ\n(cid:32) (cid:114) (cid:33)\n1\nη∥∇f(w )∥∥n ∥ 1+ 2log\nτ τ δ\n(cid:32) (cid:114) 1 (cid:33) (cid:18) η√ (cid:18) 1√ √ (cid:19)(cid:19) (23)\n= 1+ 2log ∥∇f(w )∥ A∆ +η A+ B∥∇f(w )∥+σ\nδ τ 2 τ 2 τ\n1\n≤ ∆ +∆ ,\n2 τ 0\nwhere in the inequality we bound ∥∇f(w )∥ as in (18) and use Lemma 15.",
+      "size": 469,
+      "sentences": 3
+    },
+    {
+      "id": 272,
+      "content": "δ τ 2 τ 2 τ\n1\n≤ ∆ +∆ ,\n2 τ 0\nwhere in the inequality we bound ∥∇f(w )∥ as in (18) and use Lemma 15. Plugging (23) into (22) we\nτ\nobtain that with probability at least 1−δ,\n1\nf(w )≤f(w )+3∆ + ∆ . τ 0 0 2 τ\nThis means with probability at least 1−δ, ∆ ≤ 8∆ and thus τ = T. Similar to the analysis in\nτ 0\nAppendix F.1, we have\n1 ∆\nmin∥∇f(w )∥2 ≤ 0. 16 t<T t ηT\nBy Lemma 16, we get the desired result.",
+      "size": 396,
+      "sentences": 4
+    },
+    {
+      "id": 273,
+      "content": "τ 0\nAppendix F.1, we have\n1 ∆\nmin∥∇f(w )∥2 ≤ 0. 16 t<T t ηT\nBy Lemma 16, we get the desired result. G Extension to Sub-gaussian Noise\nWe first present the sub-Gaussian version of the ABC inequality noise assumption. (cid:110) (cid:111)\nAssumption 5. P(∥n ∥≥t)≤2exp − t2 for some c>0 and ∀t>0. t c(A∆t+B∥∇f(xt)∥2+σ2)\nLet E =c(A∆ +BG2+σ2)log (cid:0)2T(cid:1). We have\nt t t δ\nT−1\n(cid:88)\nP(∪T−1∥n ∥2 >E )≤ P(∥n ∥2 >E )≤2Te−log(2T/δ) =δ.",
+      "size": 435,
+      "sentences": 7
+    },
+    {
+      "id": 274,
+      "content": "log (cid:0)2T(cid:1). We have\nt t t δ\nT−1\n(cid:88)\nP(∪T−1∥n ∥2 >E )≤ P(∥n ∥2 >E )≤2Te−log(2T/δ) =δ. t=0 t t t t\nt=0\n36\n===  37 ===\nThen, with probability at least 1−δ, we have\n(cid:18) (cid:19)\n2T\n∥n ∥2 ≤c(A∆ +BG2+σ2)log . t t t δ\nTherefore, the convergence rate under Assumption 5 exceeds that in Theorems 6 and 7 by at most\na logarithmic factor. 37",
+      "size": 350,
+      "sentences": 5
+    }
+  ]
+}

@@ -1,0 +1,1923 @@
+{
+  "source": "ArXiv",
+  "filename": "264_AI_ML_A_Compositional_Kernel_Model_for_Feature.pdf",
+  "domain": "AI",
+  "total_chars": 102667,
+  "total_chunks": 319,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\nA Compositional Kernel Model for Feature Learning\nFeng Ruan, Keli Liu and Michael Jordan\n*Department of Statistics and Data Science, Northwestern University. *Company E.\n*Department of Statistics and Computer Science, University of California, Berkeley.",
+      "size": 264,
+      "sentences": 2
+    },
+    {
+      "id": 2,
+      "content": "ty. *Company E.\n*Department of Statistics and Computer Science, University of California, Berkeley. *E-mail: fengruan@northwestern.edu; keli.liu25@gmail.com; jordan@cs.berkeley.edu;\nAbstract\nWestudyacompositionalvariantofkernelridgeregressioninwhichthepredictorisapplied\ntoacoordinate-wisereweightingoftheinputs.Formulatedasavariationalproblem,thismodel\nprovidesasimpletestbedforfeaturelearningincompositionalarchitectures.Fromtheperspec-\ntiveofvariableselection,weshowhowrelevantvariablesarerecoveredwhilenoisevariablesare\neliminated.",
+      "size": 535,
+      "sentences": 3
+    },
+    {
+      "id": 3,
+      "content": "c-\ntiveofvariableselection,weshowhowrelevantvariablesarerecoveredwhilenoisevariablesare\neliminated. We establish guarantees showing that both global minimizers and stationary points\ndiscardnoisecoordinateswhenthenoisevariablesareGaussiandistributed.Acentralfindingis\nthat ℓ -type kernels, such as the Laplace kernel, succeed in recovering features contributing to\n1\nnonlinear effects at stationary points, whereas Gaussian kernels recover only linear ones.",
+      "size": 456,
+      "sentences": 2
+    },
+    {
+      "id": 4,
+      "content": "ing to\n1\nnonlinear effects at stationary points, whereas Gaussian kernels recover only linear ones. 1 Introduction\nDeeplearninghasachievedremarkablesuccessacrossdomainssuchasvision,language,andscience. Awidelybelievedexplanationforthissuccessisrepresentationlearning—alsocalledfeaturelearning\n— the empirically observed ability of deep models to automatically extract task-relevant features\nfrom raw data, without manual engineering, to support downstream prediction [1].",
+      "size": 471,
+      "sentences": 3
+    },
+    {
+      "id": 5,
+      "content": "-relevant features\nfrom raw data, without manual engineering, to support downstream prediction [1]. This ability is generally attributed to two fundamental ingredients of deep models: (i) their\ncompositional architecture and (ii) the use of optimization.",
+      "size": 254,
+      "sentences": 2
+    },
+    {
+      "id": 6,
+      "content": "ingredients of deep models: (i) their\ncompositional architecture and (ii) the use of optimization. The compositionality of the architecture\nendows the model with the ability to form intermediate representations of the data via composition\nofsimpletransformations.Theserepresentationsarenotmanuallydefinedbutarelearnedfromdata\nby optimizing a loss function designed to minimize prediction error.",
+      "size": 394,
+      "sentences": 2
+    },
+    {
+      "id": 7,
+      "content": "lydefinedbutarelearnedfromdata\nby optimizing a loss function designed to minimize prediction error. However,despitetheempiricalsuccessofthisparadigm,ourtheoreticalunderstandingofhowand\nwhy such representations emerge remains fundamentally limited. In particular, it remains unclear\nhow the interplay between compositional structure and optimization gives rise to task-aligned fea-\ntures — and under what conditions this mechanism succeeds or fails.",
+      "size": 448,
+      "sentences": 3
+    },
+    {
+      "id": 8,
+      "content": "gives rise to task-aligned fea-\ntures — and under what conditions this mechanism succeeds or fails. To address this gap, we study\nastylizedcompositionalmodelthatpreservesthesetwocoreingredientsoffeaturelearning—while\nremaining simple enough to enable analysis of how features are learnt during training.",
+      "size": 303,
+      "sentences": 2
+    },
+    {
+      "id": 9,
+      "content": "arning—while\nremaining simple enough to enable analysis of how features are learnt during training. Our starting point is the classical kernel ridge regression (KRR) framework, which aims to\nlearn a nonlinear function f that predicts the response Y ∈ R from the covariate X ∈ Rd, where\n(X,Y) ∼ P [2]. The function f is chosen from a reproducing kernel Hilbert space H (e.g., Sobelev\n1\n5202\npeS\n71\n]GL.sc[\n1v85141.9052:viXra\n===  2 ===\nspace).",
+      "size": 442,
+      "sentences": 3
+    },
+    {
+      "id": 10,
+      "content": "g kernel Hilbert space H (e.g., Sobelev\n1\n5202\npeS\n71\n]GL.sc[\n1v85141.9052:viXra\n===  2 ===\nspace). In KRR, the learning problem is formulated as the solution to the variational problem\nminE[(Y −f(X))2]+λ∥f∥2 . H\nf\nHere,∥f∥ denotestheRKHSnorm.Theexpectationtermmeasurestheaccuracyofapproximation,\nH\nwhiletheregularizationtermλ∥f∥2 imposesacertainamountofsmoothness,whichhelpstoachieve\nH\ngood generalization to unseen test data.",
+      "size": 427,
+      "sentences": 3
+    },
+    {
+      "id": 11,
+      "content": "∥2 imposesacertainamountofsmoothness,whichhelpstoachieve\nH\ngood generalization to unseen test data. To incorporate feature learning into this framework, we introduce a compositional variant of\nKRR, in which the function f ∈H is applied to a learned coordinate-wise reweighting of the input\nminminE(cid:2) (Y −f(β◦X))2(cid:3) +λ∥f∥2 .",
+      "size": 333,
+      "sentences": 2
+    },
+    {
+      "id": 12,
+      "content": "d to a learned coordinate-wise reweighting of the input\nminminE(cid:2) (Y −f(β◦X))2(cid:3) +λ∥f∥2 . (1.1)\nH\nβ f\nHere, β ∈ Rd defines a learnable input transformation (coordinate-wise reweighting), where β ◦\nX ∈ Rd denotes the Hadamard product, defined by (β ◦X) = β X for j = 1,2,...,d. In this\nj j j\nsetup,featurelearning correspondstolearningβ:themodeladaptivelyup-weightsanddown-weights\ncoordinates before applying the predictor f.\nBuilding on this formulation, we use the model as a simple testbed to study feature learning.",
+      "size": 528,
+      "sentences": 2
+    },
+    {
+      "id": 13,
+      "content": "or f.\nBuilding on this formulation, we use the model as a simple testbed to study feature learning. In\nthis paper, we formalize this question through the perspective of variable selection:\nIf Y depends only on a few coordinates of X, can the compositional model (1.1) recover these relevant\nfeatures and eliminate irrelevant ones through joint optimization of f and β?",
+      "size": 368,
+      "sentences": 2
+    },
+    {
+      "id": 14,
+      "content": "ecover these relevant\nfeatures and eliminate irrelevant ones through joint optimization of f and β? Formally, we assume Y depends on X only through a subset of coordinates X :=(X ) , i.e.,\nS∗ j j∈S∗\nE[Y|X]=E[Y|X ] (1.2)\nS∗\nfor some unknown index subset S ⊂ {1,2,...,d}. For identifiability, we define S as the minimal\n∗ ∗\nsubset of coordinates of X that suffices to predict Y (a precise definition is given in Definition 3).",
+      "size": 424,
+      "sentences": 3
+    },
+    {
+      "id": 15,
+      "content": "set of coordinates of X that suffices to predict Y (a precise definition is given in Definition 3). From the perspective of variable selection, a central goal of feature learning is to discard as many\nnoisevariablesaspossible—andamoreambitiousone—recoveringtheexactsupport,sothatsupp(β)\nmatches the true relevant features. 1.1 Overview of Main Results\nFeature learning in this model is governed by the double minimization in (1.1).",
+      "size": 431,
+      "sentences": 3
+    },
+    {
+      "id": 16,
+      "content": "iew of Main Results\nFeature learning in this model is governed by the double minimization in (1.1). Since for each fixed\nβ,theinnerminimizationreducestoastandardKRRsolutionwithweightedinputβ◦X,thisleads\nus to the reduced objective\nJ(β,λ):= minE(cid:2) (Y −f(β◦X))2(cid:3) +λ∥f∥2 . (1.3)\nH\nf∈H\nThe learning problem thus reduces to minimizing J(β,λ) over β.",
+      "size": 355,
+      "sentences": 3
+    },
+    {
+      "id": 17,
+      "content": "f(β◦X))2(cid:3) +λ∥f∥2 . (1.3)\nH\nf∈H\nThe learning problem thus reduces to minimizing J(β,λ) over β. From the perspective of variable\nselection, two fundamental questions drive our analysis:\n(P1) Under what conditions does minimizing J(β,λ) yield a sparse β that discards all the noise\nvariables? (P2) More stringently, when does β exactly recover all relevant features, i.e., supp(β)=S ?",
+      "size": 387,
+      "sentences": 4
+    },
+    {
+      "id": 18,
+      "content": "iables? (P2) More stringently, when does β exactly recover all relevant features, i.e., supp(β)=S ? ∗\nAnswering these questions is far from straightforward: the objective J is nonconvex in β and\ndependsonitnonlinearly.Thismotivatesourstudyofthelandscape ofJ,includingitsfirstvariation,\nglobal minimizers, and stationary points.",
+      "size": 327,
+      "sentences": 3
+    },
+    {
+      "id": 19,
+      "content": "tesourstudyofthelandscape ofJ,includingitsfirstvariation,\nglobal minimizers, and stationary points. We analyze these objects under various data distribu-\ntions (X,Y) ∼ P and translation-invariant RKHS H, with particular focus on when the landscape\n2\n===  3 ===\npromotes variable selection as a form of feature learning.",
+      "size": 319,
+      "sentences": 2
+    },
+    {
+      "id": 20,
+      "content": "focus on when the landscape\n2\n===  3 ===\npromotes variable selection as a form of feature learning. Methodologically, we use tools from prob-\nability, Fourier analysis, and the calculus of variations to uncover how the geometry of J reflects\nthe interplay between P and H, and when this variational objective identifies predictive features.",
+      "size": 340,
+      "sentences": 2
+    },
+    {
+      "id": 21,
+      "content": "the interplay between P and H, and when this variational objective identifies predictive features. Our results are purely static in nature: we characterize the landscape of J and the statistical\nproperties of its global minimizers and critical points, which serves as a foundation for studying\nfeature learning in J.",
+      "size": 316,
+      "sentences": 2
+    },
+    {
+      "id": 22,
+      "content": "al minimizers and critical points, which serves as a foundation for studying\nfeature learning in J. Questions about the dynamics of optimization algorithms, or about finite\nsample effects arising from replacing E by its empirical counterpart E , are clearly important in\nemp\npractice. However, these investigations should build on the present foundation and are best pursued\nas separate lines of work beyond the scope of this paper.",
+      "size": 432,
+      "sentences": 3
+    },
+    {
+      "id": 23,
+      "content": "e present foundation and are best pursued\nas separate lines of work beyond the scope of this paper. WiththegoalofcharacterizingthelandscapeofJ inmind,wenowsummarizeourmainresults,\nshowing how J induces variable selection at its stationary points and global minimizers.",
+      "size": 268,
+      "sentences": 2
+    },
+    {
+      "id": 24,
+      "content": "inresults,\nshowing how J induces variable selection at its stationary points and global minimizers. • (Global Minimizer Recovers Features Perfectly,Section3)Assumingtherelevantandirrelevant\nfeaturesarestatisticallyindependent,forsmallλtheglobalminimizerofJ exactlyrecoversthe\ntruefeatures.Theindependenceassumptionisnotmerelytechnical:inmanyapplications,truly\npredictive features in a system—such as object shape in an image—should vary independently\nof background clutter or sensor noise.",
+      "size": 489,
+      "sentences": 2
+    },
+    {
+      "id": 25,
+      "content": "m—such as object shape in an image—should vary independently\nof background clutter or sensor noise. However, the objective J is nonconvex, and global minimization is rarely tractable in nonconvex\nsettings. This shifts our focus to understanding the behavior of local minima and stationary points.",
+      "size": 296,
+      "sentences": 3
+    },
+    {
+      "id": 26,
+      "content": "ettings. This shifts our focus to understanding the behavior of local minima and stationary points. • (Stationary Points Eliminate Noise Variables, Section 4) A striking feature of the objective\nJ is its ability to filter out irrelevant variables—even at stationary points, not just global\nminima.SupposetheirrelevantfeaturesfollowaGaussiandistribution,acanonicaldistribution\nfor modeling noise.",
+      "size": 395,
+      "sentences": 3
+    },
+    {
+      "id": 27,
+      "content": ".SupposetheirrelevantfeaturesfollowaGaussiandistribution,acanonicaldistribution\nfor modeling noise. Then, we show that any stationary point β with nontrivial predictive\n†\npower—formally, J(β ,λ)<E[Y2]—must assign zero weight to all irrelevant coordinates. This\n†\ndenoising effect holds regardless of the distribution of relevant features and holds for all λ>0.",
+      "size": 360,
+      "sentences": 3
+    },
+    {
+      "id": 28,
+      "content": "†\ndenoising effect holds regardless of the distribution of relevant features and holds for all λ>0. These results ensure that stationary points with nontrivial prediction is automatically noise-\nfree—but can they also recover the relevant features? We provide some answers to this in Section 5.",
+      "size": 294,
+      "sentences": 3
+    },
+    {
+      "id": 29,
+      "content": "free—but can they also recover the relevant features? We provide some answers to this in Section 5. • (Advantage of Laplace over Gaussian Kernels) A key theme in our analysis is that recovery of\nrelevantfeaturesatstationarypointsdependscriticallyonthechoiceofH.WesayafeatureX\ni\nhasamaineffectifE[Y|X ]̸=E[Y].Amongcommonkernels,thosebasedontheℓ norm—such\ni 1\nas the Laplace kernel—enjoy a distinctive advantage: they are sensitive to main effects of any\nform.",
+      "size": 458,
+      "sentences": 3
+    },
+    {
+      "id": 30,
+      "content": "s the Laplace kernel—enjoy a distinctive advantage: they are sensitive to main effects of any\nform. As an example, the point β = 0 can never be stationary if any feature exhibits a main\neffect.Incontrast,Gaussiankernelsrespondonlytolineareffects:ifthefeaturesarenonlinearly\npredictive but linearly uncorrelated with Y, then β =0 is stationary despite E[Y|X ]̸=E[Y]. i\n• (Laplace Kernel Detects All Main Effects) This advantage of Laplace kernels extends beyond\nthe origin β = 0.",
+      "size": 478,
+      "sentences": 3
+    },
+    {
+      "id": 31,
+      "content": "Kernel Detects All Main Effects) This advantage of Laplace kernels extends beyond\nthe origin β = 0. Assuming mutual independence between the relevant features, we show that\nwithin any bounded region, every stationary point β must assign nonzero weights to features\n†\nthatcarryamaineffectforsmallenoughλ.Theindependenceassumptionensuresthatvariation\nin E[Y|X] can be attributed to individual features X in an unambiguous way.",
+      "size": 424,
+      "sentences": 2
+    },
+    {
+      "id": 32,
+      "content": "ionensuresthatvariation\nin E[Y|X] can be attributed to individual features X in an unambiguous way. In short, ℓ -\ni 1\ntype kernels enable local optima—not just global optima—to recover all relevant features that\nexhibit main effects. • (RecoveringInteractionsRequiresCoordination)Incontrast,recoveringfeaturesinvolvedonlyin\ninteractioneffectsrequirescoordinationamongvariables.Assumemutualindependencebetween\nthe relevant features.",
+      "size": 431,
+      "sentences": 3
+    },
+    {
+      "id": 33,
+      "content": "ioneffectsrequirescoordinationamongvariables.Assumemutualindependencebetween\nthe relevant features. We say that a feature X participates in an interaction if E[Y|X ]̸=\ni S\\{i}\nE[Y|X ]forsomeindexsetS ⊂{1,2,...,d}wherei∈S.Inwords,X contributesinformation\nS i\nabout Y beyond what is already contained in the other variables of S. We further assume that\nX has no main effect, meaning E[Y|X ]=E[Y].",
+      "size": 394,
+      "sentences": 2
+    },
+    {
+      "id": 34,
+      "content": "ned in the other variables of S. We further assume that\nX has no main effect, meaning E[Y|X ]=E[Y]. i i\nIfallinteractionpartnersareinactive(i.e.,β =0forallj ∈S\\{i}),thenthepartialderivative\nj\nwithrespecttoβ canvanish—implyingX isundetectableinisolation.Thisoccurs,forexample,\ni i\n3\n===  4 ===\natβ =0,whichisastationarypointundersuchconditions.However,oncethepartnerfeatures\n(X ) become active—that is, their coefficients β are nonzero—the partial derivative\nj j∈S\\{i} j\nwith respect to β becomes nonzero.",
+      "size": 504,
+      "sentences": 2
+    },
+    {
+      "id": 35,
+      "content": "ir coefficients β are nonzero—the partial derivative\nj j∈S\\{i} j\nwith respect to β becomes nonzero. As a result, any stationary point with sufficiently active\ni\npartners (meaning that (β ) are bounded away from 0) must also activate X . j j∈S\\{i} i\nWe conclude with a brief discussion of the algorithmic implications from our main results above. These are not formal guarantees, but qualitative insights that follow naturally from our study.",
+      "size": 441,
+      "sentences": 4
+    },
+    {
+      "id": 36,
+      "content": "ve. These are not formal guarantees, but qualitative insights that follow naturally from our study. • (Automatic Elimination of Irrelevant Features)Ifaniterativealgorithmisinitializedatapoint\nβ0 with J(β0,λ) < E[Y2] and the objective decreases monotonically, then every iterate βt\nmaintains J(βt,λ)<E[Y2], and its limiting stationary point will automatically exclude irrele-\nvant features.",
+      "size": 389,
+      "sentences": 3
+    },
+    {
+      "id": 37,
+      "content": "J(βt,λ)<E[Y2], and its limiting stationary point will automatically exclude irrele-\nvant features. In this sense, J embeds a denoising principle: once predictive power is achieved,\nirrelevant features vanish under any descent algorithm.",
+      "size": 236,
+      "sentences": 2
+    },
+    {
+      "id": 38,
+      "content": "inciple: once predictive power is achieved,\nirrelevant features vanish under any descent algorithm. • (TheInteractionBarrier)Featureswithmaineffectsgeneratedescentdirectionsintheobjective\n(afirst-ordervariation),sotheyarereadilydiscoveredbylocalsearch.Bycontrast,interaction-\nonly features produce no such first-order signal and remain hidden until their partner variables\nare active.",
+      "size": 384,
+      "sentences": 2
+    },
+    {
+      "id": 39,
+      "content": "ures produce no such first-order signal and remain hidden until their partner variables\nare active. Thus, our analysis suggests that either higher-order variations are needed to detect\nthem, or their recovery relies on the numerical algorithm’s trajectory. In the later case, initial-\nization becomes important—algorithms starting too close to the origin may fail to escape flat\nregions where interaction signals are suppressed.",
+      "size": 428,
+      "sentences": 3
+    },
+    {
+      "id": 40,
+      "content": "g too close to the origin may fail to escape flat\nregions where interaction signals are suppressed. 1.2 Related Work\nThispapercontributestothegrowinglineofworkonunderstandingfeaturelearning,broadlydefined\nastheprocessbywhichcompositionalmodelsautomaticallyextractpredictiverepresentationsfrom\nrawinputsbyminimizingdata-drivenobjectives[1].Akeyconceptualdistinctionoffeature learning\nfrom classical variable selection is that feature learning is inherently continuous and optimization-\ndriven: instead of making discrete keep-or-discard decisions over coordinates, the representation is\nparametrizedbyreal-valuedweightsortransformationsthatareoptimizedjointlywiththepredictor,\nwith the goal of achieving better generalization on unseen data.",
+      "size": 740,
+      "sentences": 2
+    },
+    {
+      "id": 41,
+      "content": "eoptimizedjointlywiththepredictor,\nwith the goal of achieving better generalization on unseen data. Ourfocusinthispaperisonthestructureofthesolutions—specifically,thesupportoftheglobal\nminimizer and stationary points. By studying these supports, we view feature learning through the\nlens of variable selection, thereby providing a theoretical foundation that connects the continuous\nlandscape of feature learning with the discrete problem of selecting relevant variables.",
+      "size": 471,
+      "sentences": 3
+    },
+    {
+      "id": 42,
+      "content": "continuous\nlandscape of feature learning with the discrete problem of selecting relevant variables. That said, there are two lines of related work for this piece of manuscript. • (Variable selection in kernel methods) Early work by Vapnik and collaborators considered\nvariable selection in kernel-based models (e.g., support vector machines), using a variational\nformulation similar to (1.1) but with a binary restriction β ∈ {0,1}d [3, 4].",
+      "size": 440,
+      "sentences": 3
+    },
+    {
+      "id": 43,
+      "content": ", using a variational\nformulation similar to (1.1) but with a binary restriction β ∈ {0,1}d [3, 4]. Subsequent stud-\niesintroducedcontinuousrelaxations—conceptuallyclosetoourproposedmodel(1.1)—mainly\nfor applications in bioinformatics and related areas [5–8]. Our paper can be viewed as a con-\ntinuation of this line: we treat β as continuous and learn it through optimization.",
+      "size": 377,
+      "sentences": 3
+    },
+    {
+      "id": 44,
+      "content": "iewed as a con-\ntinuation of this line: we treat β as continuous and learn it through optimization. The crucial\ndifference is that previous work did not analyze the statistical variable selection properties of\nthe resulting solutions of β in any continuous relaxations—not even for global minimizers, let\nalone stationary points.",
+      "size": 329,
+      "sentences": 2
+    },
+    {
+      "id": 45,
+      "content": "ons of β in any continuous relaxations—not even for global minimizers, let\nalone stationary points. As a result, our work provides the missing statistical foundation for\nthis line of research, with guarantees for both global minimizers and stationary points, under\nvarious distributional assumptions P and choices of RKHS H.\n• (Feature learning in kernel methods)Arecentlineofwork—motivatedbytheempiricalsuccess\nof deep learning—has studied feature learning in the context of kernel methods.",
+      "size": 491,
+      "sentences": 2
+    },
+    {
+      "id": 46,
+      "content": "theempiricalsuccess\nof deep learning—has studied feature learning in the context of kernel methods. The key idea\nis to extend predictors from the form f(X) to two-layer such as f(β ◦X), as studied in this\npaper, or more generally f(UX) with a learnable matrix U [9–16]. These formulations are\ncompositionalinnatureandaimtoendowkernelmethodswiththeabilitytoadaptivelydiscover\n4\n===  5 ===\nlow-dimensional, task-relevant representations.",
+      "size": 435,
+      "sentences": 3
+    },
+    {
+      "id": 47,
+      "content": "hodswiththeabilitytoadaptivelydiscover\n4\n===  5 ===\nlow-dimensional, task-relevant representations. Empirically, these two parameterizations often\noffer complementary advantages in practice: the diagonal form f(β ◦X) acts directly on raw\nfeatures, making it suited to datasets where individual features carry interpretable meaning\n(e.g., tabular datasets), while the full matrix form f(UX) allows learning linear combinations\nof features and is conceptually closer to two-layer neural networks [11, 12, 16–18].",
+      "size": 510,
+      "sentences": 2
+    },
+    {
+      "id": 48,
+      "content": "r combinations\nof features and is conceptually closer to two-layer neural networks [11, 12, 16–18]. The main contribution of this work is to provide a statistical and variational foundation for\nlearningf(β◦X):wecharacterizewhenthecontinuous,optimization-drivenformulationoffea-\nturelearninginkernelmethods(1.1)yieldsstatisticallyvalidvariableselection.Thisperspective\nis crucial to feature learning because, in regimes where the coordinates of X are independent,\ncorrectvariableselectioninβ isanecessaryprerequisiteforgeneralization.Amajortheoretical\nresult in this paper reveals that the choice of kernel—particularly the Laplace kernel—plays a\ndecisiveroleinenablingsuchfeaturerecovery.Atthesametime,weestablishastrongdenoising\nproperty of J, showing how irrelevant features can be removed through continuous optimiza-\ntion.",
+      "size": 826,
+      "sentences": 2
+    },
+    {
+      "id": 49,
+      "content": "ng\nproperty of J, showing how irrelevant features can be removed through continuous optimiza-\ntion. Taken together, these results clarify when optimization in compositional kernel methods\ncan be relied upon to achieve genuine feature learning rather than spurious fits. Another recent line of work centers on the so-called AGOP (Average Gradient Outer Prod-\nuct) method [12].",
+      "size": 375,
+      "sentences": 3
+    },
+    {
+      "id": 50,
+      "content": "r recent line of work centers on the so-called AGOP (Average Gradient Outer Prod-\nuct) method [12]. This line of work also adopts the parameterization f(β ◦X) (and f(UX))\nwithin kernel ridge regression and can be viewed as operating on the same objective J. AGOP\nrelies on an iterative update scheme β(t+1) = AGOP(β(t)) (and U(t+1) = AGOP(U(t)) resp.)",
+      "size": 351,
+      "sentences": 2
+    },
+    {
+      "id": 51,
+      "content": "ve J. AGOP\nrelies on an iterative update scheme β(t+1) = AGOP(β(t)) (and U(t+1) = AGOP(U(t)) resp.) designedtoextractalow-dimensionalsetofrelevantfeatures,andhasbeenstudiedboththeoret-\nically—withgeneralizationerrorboundsthatoutperformthatofstandardkernelmethods—and\nempirically, with remarkable success on tasks such as tabular dataset predictions [12, 16]. Our\nstudy takes a complementary perspective.",
+      "size": 403,
+      "sentences": 3
+    },
+    {
+      "id": 52,
+      "content": "on tasks such as tabular dataset predictions [12, 16]. Our\nstudy takes a complementary perspective. Instead of analyzing a specific iterative scheme, we\nfocus on the optimization landscape of J itself and establish population-level guarantees on\nfeature recovery for its global minimizers and stationary points. These results hold under more\nrelaxed distributional assumptions and highlight how the geometry of J shapes variable selec-\ntion independently of any algorithmic choices.",
+      "size": 482,
+      "sentences": 4
+    },
+    {
+      "id": 53,
+      "content": "ghlight how the geometry of J shapes variable selec-\ntion independently of any algorithmic choices. A central insight of this analysis is that the\nchoice of kernel is crucial: whereas existing guarantees primary focus on smooth kernels, we\nshow that nonsmooth ℓ -type kernels such as the Laplace kernel enables the recovery of non-\n1\nlinear main effects that Gaussian kernels miss.",
+      "size": 381,
+      "sentences": 2
+    },
+    {
+      "id": 54,
+      "content": "s the Laplace kernel enables the recovery of non-\n1\nlinear main effects that Gaussian kernels miss. Interestingly, a recent algorithmic development\non AGOP—namely xRFM [17], a state-of-the-art method for tabular datasets—demonstrates\nempirically that adopting the Laplace kernel improves generalization over other kernels (e.g.,\nGaussian), aligning with the theoretical insights developed in this paper.",
+      "size": 403,
+      "sentences": 2
+    },
+    {
+      "id": 55,
+      "content": "ver other kernels (e.g.,\nGaussian), aligning with the theoretical insights developed in this paper. 1.3 Technical Contributions\nFromatechnicalstandpoint,themostdirectlyrelatedworkisarecentfoundationalstudyofcompo-\nsitional models of the form f(UX), which shares one author with the present paper [14, 15]. In that\nwork, both the matrix U ∈Rd×d and the function f ∈H are learned jointly. While some arguments\ninthispaperareinspiredbythatlineofwork,thepresentstudydepartsfromitintwocrucialways.",
+      "size": 492,
+      "sentences": 4
+    },
+    {
+      "id": 56,
+      "content": "some arguments\ninthispaperareinspiredbythatlineofwork,thepresentstudydepartsfromitintwocrucialways. First, we restrict attention to the diagonal case U = diag(β), focusing on variable selection behav-\nior, so a coordinate system is fixed in advance. Second—and more significantly—we relax the key\nassumptions on the kernel: earlier work assumes smooth, rotationally invariant kernels (e.g., Gaus-\nsian),whereashereweworkwiththeLaplacekernelandotherℓ -typekernels,whicharenonsmooth\n1\nand anisotropic.",
+      "size": 499,
+      "sentences": 3
+    },
+    {
+      "id": 57,
+      "content": "n),whereashereweworkwiththeLaplacekernelandotherℓ -typekernels,whicharenonsmooth\n1\nand anisotropic. This relaxation is essential to the main conceptual insight developed in Section 5. Our analysis\nshows that the choice of kernel fundamentally shapes the feature recovery behavior of stationary\npoints.",
+      "size": 301,
+      "sentences": 3
+    },
+    {
+      "id": 58,
+      "content": "that the choice of kernel fundamentally shapes the feature recovery behavior of stationary\npoints. The Laplace kernel, induced by the ℓ norm, enjoys a distinct advantage: it can detect main\n1\neffects of any form—linear or nonlinear—whereas Gaussian kernels are sensitive only to linear main\neffects.",
+      "size": 299,
+      "sentences": 2
+    },
+    {
+      "id": 59,
+      "content": "of any form—linear or nonlinear—whereas Gaussian kernels are sensitive only to linear main\neffects. At a fundamental level, the Laplace kernel effectively involves the map (x,x′) (cid:55)→ |x−x′|\non R2 in its derivative, which is conditionally negative definite, while the Gaussian kernel involves\n5\n===  6 ===\n|x−x′|2,whichisnot.Fourieranalysismakesthisdistinctionpreciseandshowsthatthisconditional\nnegative definiteness underlies the contrasting feature recovery behaviors.",
+      "size": 475,
+      "sentences": 2
+    },
+    {
+      "id": 60,
+      "content": "howsthatthisconditional\nnegative definiteness underlies the contrasting feature recovery behaviors. Toaccommodatethesebroaderassumptions,Section2revisitsthevariationalfoundations,estab-\nlishing continuity, directional differentiability, and stationarity conditions. In particular, we derive\nfirstvariationofJ thatunderpinslateranalysis,withspecialcaredevotedtothenonsmoothbehav-\nior of the Laplace kernel.",
+      "size": 405,
+      "sentences": 3
+    },
+    {
+      "id": 61,
+      "content": "fJ thatunderpinslateranalysis,withspecialcaredevotedtothenonsmoothbehav-\nior of the Laplace kernel. Sections 3 and 4 then present initial variable selection results for global\nminimizersandstationarypoints.Remarkably,weshowthatanystationarypointofJ withnontriv-\nialpredictionpowereliminatesnoisefeatureswhentheyareGaussiandistributed.Finally,Section5\nbuilds on these foundations to develop the central conceptual message new to the literature: non-\nsmooth, anisotropic ℓ -type kernels such as the Laplace kernel give rise to qualitatively different\n1\nstationary-pointstructuresthatenablestrongerrelevantfeaturerecoveryguarantees.There,wealso\nexplain why ℓ -type kernels are indispensable to this phenomenon.",
+      "size": 707,
+      "sentences": 2
+    },
+    {
+      "id": 62,
+      "content": "rerecoveryguarantees.There,wealso\nexplain why ℓ -type kernels are indispensable to this phenomenon. Taken together, Sections 2–5\n1\nprovide the complete story for this paper. We list important open questions in Section 6. 1.4 Notation\nLet x ∈ Rd be a vector. We write x = (x ,...,x ), where x denotes the i-th coordinate of x, and\n1 d i\ndefine its support as supp(x) := {i ∈ {1,...,d} : x ̸= 0}.",
+      "size": 394,
+      "sentences": 5
+    },
+    {
+      "id": 63,
+      "content": "otes the i-th coordinate of x, and\n1 d i\ndefine its support as supp(x) := {i ∈ {1,...,d} : x ̸= 0}. For a subset S ⊂ {1,...,d}, we write\ni\nx ∈ R|S| for the subvector of x containing coordinates {x : i ∈ S}. We use ∥·∥ to denote the\nS i p\nℓ norm on Rd. We use e ∈ Rd to denote the i-th standard basis vector. We use z¯ to denote the\np i\ncomplex conjugate of a complex number z ∈C. The Fourier transform of a function f :Rd →C is denoted by fˆ.",
+      "size": 442,
+      "sentences": 6
+    },
+    {
+      "id": 64,
+      "content": "conjugate of a complex number z ∈C. The Fourier transform of a function f :Rd →C is denoted by fˆ. We use the convention:\n(cid:90) (cid:90)\nfˆ(ω)= f(x)e−2πi⟨x,ω⟩dx, f(x)= fˆ(ω)e2πi⟨x,ω⟩dω. Rd Rd\nThe reason for the 2πi choice is that it makes the least appearance of dimensional constants. 2 Preliminaries\n2.1 Translation Invariant RKHS\nWenowgiveaquickreviewoftranslationinvariantreproducingkernelHilbertspaces(RKHS);more\ngeneral references on RKHS can be found in [2, 19].",
+      "size": 472,
+      "sentences": 5
+    },
+    {
+      "id": 65,
+      "content": "ariantreproducingkernelHilbertspaces(RKHS);more\ngeneral references on RKHS can be found in [2, 19]. Let H be a Hilbert space of real-valued continuous function on Rd associated to a translation-\ninvariant kernel, and C(Rd) denote the space of continuous functions equipped with L norm.",
+      "size": 285,
+      "sentences": 2
+    },
+    {
+      "id": 66,
+      "content": "slation-\ninvariant kernel, and C(Rd) denote the space of continuous functions equipped with L norm. The\n∞\nspace H is defined in terms of the Fourier transform by\n(cid:40) (cid:41)\n(cid:90) |fˆ|2(ω)\nH := f :f ∈C(Rd)∩L (Rd),∥f∥2 = dω <∞\n2 H k(ω)\nRd\nwhere we require k ∈L (Rd) to be even, strictly positive satisfying the normalizing condition:\n1\n(cid:90)\nk(ω)dω =1. Rd\nLemma 1 (Continuous embedding). For any f ∈H, ∥f∥ ≤∥f∥ , and lim f(x)=0. L∞ H x→∞\nProof.",
+      "size": 455,
+      "sentences": 5
+    },
+    {
+      "id": 67,
+      "content": ")dω =1. Rd\nLemma 1 (Continuous embedding). For any f ∈H, ∥f∥ ≤∥f∥ , and lim f(x)=0. L∞ H x→∞\nProof. By Cauchy-Schwartz, we have\n(cid:90) |fˆ|2(ω) (cid:90)\n∥f∥2 ≤∥fˆ∥2 ≤ dω k(ω)dω =∥f∥2 . L∞ L1\nRd\nk(ω)\nRd\nH\n6\n===  7 ===\nBy the Riemann-Lebesgue lemma, we get lim f(x)=0. x→∞\nGiven that H is continuously embedded into C(Rd), this means that H is a reproducing kernel\nHilbert space. We then define the kernel function\n(cid:90)\nK(x)= k(ω)e2πi⟨x,ω⟩dω.",
+      "size": 446,
+      "sentences": 8
+    },
+    {
+      "id": 68,
+      "content": "eproducing kernel\nHilbert space. We then define the kernel function\n(cid:90)\nK(x)= k(ω)e2πi⟨x,ω⟩dω. Rd\nNotethatK isreal-valuedaskiseven,andcontinuousask ∈L (Rd).LetK(x,x′)=K(x−x′).The\n1\ncontinuous function K(x,·) lies in H, and have Fourier transform k(ω)e−2πi⟨ω,x⟩. These functions\nK(x,·) are known as reproducing kernel. Each f ∈H can be represented as\nf(x)=⟨f,K(x,·)⟩ , ∀x∈Rd. H\nLemma 2 (Denseness of H in L (µ)).",
+      "size": 416,
+      "sentences": 6
+    },
+    {
+      "id": 69,
+      "content": "rnel. Each f ∈H can be represented as\nf(x)=⟨f,K(x,·)⟩ , ∀x∈Rd. H\nLemma 2 (Denseness of H in L (µ)). For any probability measure µ on (Rd,B(Rd)), the Hilbert\n2\nspace H is dense in L (µ). 2\n(cid:82)\nProof. Suppose this is not true. There is nonzero f ∈L (µ) such that fhdµ=0 for all h∈H. In\n2\nparticular, taking h(·) = K(·−z) ∈ H, we obtain (cid:82) f(x)K(x−z)dµ(x) = 0 for all z ∈ Rd.",
+      "size": 383,
+      "sentences": 8
+    },
+    {
+      "id": 70,
+      "content": ". In\n2\nparticular, taking h(·) = K(·−z) ∈ H, we obtain (cid:82) f(x)K(x−z)dµ(x) = 0 for all z ∈ Rd. Using\nthe Fourier inversion formula, K(x−z)= (cid:82) k(ω)e2πi⟨x−z,ω⟩dω, we get\n(cid:90)(cid:90)\nf(x)k(ω)e2πi⟨x−z,ω⟩dωdµ(x)=0 ∀z ∈Rd. DefinetheFouriertransformoff underµasF(ω):= (cid:82) f(x)e2πi⟨x,ω⟩dµ(x).Thentheaboveequation\nbecomes\n(cid:90)\nF(ω)k(ω)e−2πi⟨z,ω⟩dω =0 ∀z ∈Rd. That is, the inverse Fourier transform of F(ω)k(ω) is identically zero.",
+      "size": 447,
+      "sentences": 5
+    },
+    {
+      "id": 71,
+      "content": "k(ω)e−2πi⟨z,ω⟩dω =0 ∀z ∈Rd. That is, the inverse Fourier transform of F(ω)k(ω) is identically zero. Since k(ω) > 0, this implies\nF(ω)=0 almost everywhere ω, so f =0 in L (µ)—a contradiction. 2\n2.1.1 Examples\nTwo classical examples that readers should bear in minds are:\nExample 1 (Gaussian RKHS). The Gaussian RKHS corresponds to the case where\nK(x)=e−∥x∥2\n2, and\nk(ω)=πd/2e−π2∥ω∥2\n2. The reproducing kernel is K(x,x′)=e−∥x−x′∥2 2, which defines the Gaussian RKHS on Rd. ♣\nExample 2 (Laplace RKHS).",
+      "size": 498,
+      "sentences": 7
+    },
+    {
+      "id": 72,
+      "content": "g kernel is K(x,x′)=e−∥x−x′∥2 2, which defines the Gaussian RKHS on Rd. ♣\nExample 2 (Laplace RKHS). The Laplace RKHS corresponds to the case where\n2d\nK(x)=e−∥x∥ 1, and k(ω)= . Πd (1+4π2ω2)\ni=1 i\nThe reproducing kernel is K(x,x′)=e−∥x−x′∥1, which defines the Laplace RKHS on Rd. ♣\nThe above examples are canonical members of a broader family of translation-invariant RKHSs.",
+      "size": 372,
+      "sentences": 5
+    },
+    {
+      "id": 73,
+      "content": "Rd. ♣\nThe above examples are canonical members of a broader family of translation-invariant RKHSs. A classical result of Schoenberg [20] states that K(x) = ψ(∥x∥2) defines a translation-invariant\n2\nRKHS on Rd for all d if and only if ψ is non-constant and admits the representation\n(cid:90) ∞\nψ(z)= e−tzµ(dt)\n0\n7\n===  8 ===\n(cid:82) (cid:82)∞\nfor some finite measure µ on [0,∞). Under our normalization, K(0)= k(ω)dω = µ(dt)=1, so\n0\nin what follows we assume that µ is a probability measure.",
+      "size": 491,
+      "sentences": 4
+    },
+    {
+      "id": 74,
+      "content": "malization, K(0)= k(ω)dω = µ(dt)=1, so\n0\nin what follows we assume that µ is a probability measure. This perspective leads to the following\nclass of RKHSs, with the Gaussian RKHS arising as a simple special case. Example 3 (RadialKernelRKHS). Let µ be a probability measure with compact support in (0,∞). Define\n(cid:90) ∞ (cid:90) ∞\nK(x)=ψ(∥x∥2)= e−t∥x∥2 2µ(dt), k(ω)= (πt−1)d/2e−π2t−1∥ω∥2 2µ(dt). 2\n0 0\nThen K and k form a Fourier transform pair, and define a translation-invariant RKHS as above.",
+      "size": 498,
+      "sentences": 6
+    },
+    {
+      "id": 75,
+      "content": "2\n0 0\nThen K and k form a Fourier transform pair, and define a translation-invariant RKHS as above. We can also use such functions ψ to define analogous ℓ -type kernels where the Laplace kernel\n1\nserves as a special instance. Example 4 (ℓ typeRKHS). Let µ be a probability measure with compact support in (0,∞). Define\n1\n(cid:90) ∞ (cid:90) ∞ (2t)d\nK(x)=ψ(∥x∥ )= e−t∥x∥ 1µ(dt), k(ω)= µ(dt).",
+      "size": 390,
+      "sentences": 5
+    },
+    {
+      "id": 76,
+      "content": "ct support in (0,∞). Define\n1\n(cid:90) ∞ (cid:90) ∞ (2t)d\nK(x)=ψ(∥x∥ )= e−t∥x∥ 1µ(dt), k(ω)= µ(dt). 1 Πd (t2+4π2ω2)\n0 0 i=1 i\nThen K and k are a Fourier transform pair, and define a translation-invariant RKHS as above. 2.2 Kernel Ridge Regression\nLet X ∈Rd be a random vector, and Y ∈R be a random variable with E[Y2]<∞. We define\nI(f,β,λ):=E[(Y −f(β◦X))2]+λ∥f∥2\nH\nand consider the following minimization problem, which we will refer to as kernel ridge regression:\nJ(β,λ)=minI(f,β,λ).",
+      "size": 484,
+      "sentences": 5
+    },
+    {
+      "id": 77,
+      "content": "lowing minimization problem, which we will refer to as kernel ridge regression:\nJ(β,λ)=minI(f,β,λ). f∈H\nTheexistenceofauniqueminimizertothisproblemisknown[2].Wedenotethisminimizerbyf . β,λ\nLemma 3. We always have J(β,λ)≤E[Y2]. Proof. Plug in the test function f =0, we get E[Y2]=I(0,β,λ)≥J(β,λ). Lemma 4. The minimizer f to this problem satisfies\nβ,λ\nE[(Y −f (β◦X))g(β◦X)]=λ⟨f ,g⟩ , ∀g ∈H. β,λ β,λ H\nProof. This follows by setting the first variation of f (cid:55)→I(f,β,λ) equal to zero.",
+      "size": 488,
+      "sentences": 10
+    },
+    {
+      "id": 78,
+      "content": "β,λ β,λ H\nProof. This follows by setting the first variation of f (cid:55)→I(f,β,λ) equal to zero. We denote\nr (x,y):=y−f (β◦x)\nβ,λ β,λ\nwhich we will refer to as the residual function at β. This residual r captures the part of y that is\nβ,λ\nnot explained by the regression model f evaluated on the transformed input β◦x. β,λ\nLemma 5. We always have E[r (X,Y)2]≤E[Y2] and λ∥f ∥2 ≤E[Y2]. β,λ β,λ H\nProof. We note E[Y2]≥J(β,λ)=E[r (X,Y)2]+λ∥f ∥2 . β,λ β,λ H\nLemma 6.",
+      "size": 463,
+      "sentences": 9
+    },
+    {
+      "id": 79,
+      "content": "2] and λ∥f ∥2 ≤E[Y2]. β,λ β,λ H\nProof. We note E[Y2]≥J(β,λ)=E[r (X,Y)2]+λ∥f ∥2 . β,λ β,λ H\nLemma 6. We have\nE[r (X,Y)K(β◦X,z)]=λf (z), ∀z ∈Rd. β,λ β,λ\n8\n===  9 ===\nProof. For every z ∈Rd, define g :=K(·,z)∈H. Applying Lemma 4 with g , we get\nz z\nE[r (X,Y)g (β◦X)]=λ⟨f ,g ⟩ . β,λ z β,λ z H\nBy the reproducing property of the RKHS H, ⟨f ,g ⟩ =⟨f ,K(·,z)⟩ =f (z). Substituting\nβ,λ z H β,λ H β,λ\nback completes the proof.",
+      "size": 417,
+      "sentences": 10
+    },
+    {
+      "id": 80,
+      "content": "f the RKHS H, ⟨f ,g ⟩ =⟨f ,K(·,z)⟩ =f (z). Substituting\nβ,λ z H β,λ H β,λ\nback completes the proof. WeestablishanidentitythatconnectstheRKHSnormoff totheresidualr andthekernel\nβ,λ β,λ\nK. Throughout the rest, we always use (X′,Y′) to denote an independent copy of (X,Y). Lemma 7. We always have\nE[r (X,Y)r (X′,Y′)K(β◦X,β◦X′)]=λ2∥f ∥2 . β,λ β,λ β,λ H\nProof. By Lemma 6, for any z ∈Rd, we have\nE[r (X,Y)K(β◦X,z)]=λf (z).",
+      "size": 417,
+      "sentences": 7
+    },
+    {
+      "id": 81,
+      "content": "β◦X′)]=λ2∥f ∥2 . β,λ β,λ β,λ H\nProof. By Lemma 6, for any z ∈Rd, we have\nE[r (X,Y)K(β◦X,z)]=λf (z). β,λ β,λ\nSetting z =β◦X′ for an independent copy (X′,Y′) in Lemma 6, we obtain\nE[r (X,Y)K(β◦X,β◦X′)|X′]=λf (β◦X′). β,λ β,λ\nMultiplying both sides by r (X′,Y′) and taking expectation gives\nβ,λ\nE[r (X,Y)r (X′,Y′)K(β◦X,β◦X′)]=λE[r (X′,Y′)f (β◦X′)]. β,λ β,λ β,λ β,λ\nFinally, applying Lemma 4 with g =f gives\nβ,λ\nE[r (X,Y)f (β◦X)]=λ∥f ∥2 .",
+      "size": 433,
+      "sentences": 6
+    },
+    {
+      "id": 82,
+      "content": "f (β◦X′)]. β,λ β,λ β,λ β,λ\nFinally, applying Lemma 4 with g =f gives\nβ,λ\nE[r (X,Y)f (β◦X)]=λ∥f ∥2 . β,λ β,λ β,λ H\nCombining the last two identities establishes the desired relation. 2.3 Continuity in Parameter\nA fundamental property is that the minimizer f and the objective J depend continuously on the\nβ\nparameter β. This fact essentially follows from the reinterpretation of the f(UX) model in related\nwork [14]; for completeness, we include a self-contained proof in this manuscript.",
+      "size": 487,
+      "sentences": 5
+    },
+    {
+      "id": 83,
+      "content": "model in related\nwork [14]; for completeness, we include a self-contained proof in this manuscript. First, we prove\nLemma 8. Foreveryλ>0,themappingβ (cid:55)→f (β◦X)iscontinuousundertheL (P)norm,i.e.,\nβ,λ 2\nlim E[(f (β′◦X)−f (β◦X))2]=0. β′,λ β,λ\nβ′→β\nAlso, the function β (cid:55)→J(β,λ) is continuous in Rd. The proof of Lemma 8 is given in Appendix A.1. As a consequence, we get\nLemma 9. For every λ > 0, the minimizer f depends continuously on β in the Hilbert space\nβ,λ\nH-norm:\nlim ∥f −f ∥ =0.",
+      "size": 497,
+      "sentences": 7
+    },
+    {
+      "id": 84,
+      "content": "y λ > 0, the minimizer f depends continuously on β in the Hilbert space\nβ,λ\nH-norm:\nlim ∥f −f ∥ =0. β′→β β′,λ β,λ H\nProof. The functional I(f,β,λ) is quardratic in f. Therefore, we have\nI(f,β,λ)=J(β,λ)+Q(f −f )\nβ,λ\n9\n===  10 ===\nwhere Q(·) is a quadratic term that is lower bounded by λ∥·∥2 . The same identity holds when\nH\nreplacing β with β′. This shows that\nλ∥f −f ∥2 +J(β′,λ)≤I(f ,β′,λ).",
+      "size": 391,
+      "sentences": 5
+    },
+    {
+      "id": 85,
+      "content": "The same identity holds when\nH\nreplacing β with β′. This shows that\nλ∥f −f ∥2 +J(β′,λ)≤I(f ,β′,λ). β,λ β′,λ H β,λ\nSince f ∈ H is continuous and uniformly bounded in Rd, we get I(f ,β′,λ) → I(f ,β,λ) =\nβ,λ β,λ β,λ\nJ(β,λ) as β′ →β. Also, by Lemma 8, we have J(β′,λ)→J(β,λ). This implies\nlimsupλ∥f −f ∥2 ≤limsup(I(f ,β′,λ)−J(β′,λ))=0. β,λ β′,λ H β,λ\nβ′→β β′→β\nThe proof is thus complete. 2.4 First Variation\nWe study the first variation of J(β,λ) with respect to the parameter β.",
+      "size": 476,
+      "sentences": 7
+    },
+    {
+      "id": 86,
+      "content": "mplete. 2.4 First Variation\nWe study the first variation of J(β,λ) with respect to the parameter β. To this end, we define for\nevery β,x,x′ ∈Rd\nK (x,x′):=K(β◦x,β◦x′)=K(β◦(x−x′)). β\nWe use the notation\n1\nDK (x,x′)[v]:= lim (K (x,x′)−K (x,x′))\nβ s→0+ s β+sv β\nto refer to the directional derivative (also called Gˆateaux differential) of the map β (cid:55)→ K (x,x′)\nβ\nevaluated at β in the direction v ∈Rd, whenever the limit exists.",
+      "size": 432,
+      "sentences": 4
+    },
+    {
+      "id": 87,
+      "content": "of the map β (cid:55)→ K (x,x′)\nβ\nevaluated at β in the direction v ∈Rd, whenever the limit exists. Theorem 1 provides an explicit expression for the directional derivative of the objective function\nJ(β,λ) with respect to the parameter β. Given any direction v, we write\n1\nDJ(β,λ)[v]:= lim (J(β+sv,λ)−J(β,λ))\ns→0+ s\nif the limit exists. Theorem 1. Let β ∈Rd and v ∈Rd.",
+      "size": 368,
+      "sentences": 5
+    },
+    {
+      "id": 88,
+      "content": "e\n1\nDJ(β,λ)[v]:= lim (J(β+sv,λ)−J(β,λ))\ns→0+ s\nif the limit exists. Theorem 1. Let β ∈Rd and v ∈Rd. Suppose that for every x,x′ ∈Rd the directional derivative\nDK (x,x′)[v]\nβ+tv\nexistsforallt∈[0,ϵ)andiscontinuousint.Inaddition,assumetheuniformintegrabilitycondition:\n(cid:34) (cid:35)\nE sup (DK (X,X′)[v])2 <∞. β+tv\nt∈[0,ϵ)\nThen the directional derivative DJ(β,λ)[v] exists and is given by\n1\nDJ(β,λ)[v]=− E[r (X,Y)r (X′,Y′)DK (X,X′)[v]].",
+      "size": 436,
+      "sentences": 5
+    },
+    {
+      "id": 89,
+      "content": "tional derivative DJ(β,λ)[v] exists and is given by\n1\nDJ(β,λ)[v]=− E[r (X,Y)r (X′,Y′)DK (X,X′)[v]]. λ β,λ β,λ β\nIn the above, (X′,Y′) denote an independent copy of (X,Y). Relatedformulashaveappearedintheauthor’searlierworkonf(UX)model[14],thoughunder\nstronger smoothness assumptions, i.e., full Fr´echet differentiability on the map β (cid:55)→ K (x,x′) for\nβ\nfixed x,x′, and in more specialized settings where K is assumed to be a radial basis kernel.",
+      "size": 452,
+      "sentences": 3
+    },
+    {
+      "id": 90,
+      "content": "for\nβ\nfixed x,x′, and in more specialized settings where K is assumed to be a radial basis kernel. 10\n===  11 ===\nIncontrast,ouranalysisestablishesthedirectionaldifferentiabilityofJ underaminimalassump-\ntion: that the map β (cid:55)→K (x,x′) admits directional derivatives that satisfy a uniform integrability\nβ\ncondition.",
+      "size": 322,
+      "sentences": 2
+    },
+    {
+      "id": 91,
+      "content": "(cid:55)→K (x,x′) admits directional derivatives that satisfy a uniform integrability\nβ\ncondition. This relaxation is crucial for handling kernels such as the Laplace kernel, where the\nmap β (cid:55)→ K (x,x′) is not Fr´echet differentiable, yet directional derivatives (i.e., Gˆateaux differen-\nβ\ntials) remain well-defined. Our proof is inspired by prior work but departs from it in details. See\nAppendix A.2 for the full argument.",
+      "size": 433,
+      "sentences": 4
+    },
+    {
+      "id": 92,
+      "content": "f is inspired by prior work but departs from it in details. See\nAppendix A.2 for the full argument. 2.4.1 Examples\nWe illustrate Theorem 1 for two representative RKHSs introduced earlier: one induced by a radial\nkernel and one by an ℓ -type kernel. Both are defined through a function ψ of the form\n1\n(cid:90) ∞\nψ(z)= e−tzµ(dt), for z ≥0\n0\nwhere µ is a probability measure with compact support that is contained in (0,∞).",
+      "size": 421,
+      "sentences": 4
+    },
+    {
+      "id": 93,
+      "content": "µ(dt), for z ≥0\n0\nwhere µ is a probability measure with compact support that is contained in (0,∞). The function ψ\nis differentiable on [0,∞) with\n(cid:90) ∞\nψ′(z)=− te−tzµ(dt), for z ≥0\n0\nwhere ψ′(0) is understood as the right-hand derivative of ψ at 0. Example5(FirstVariationforRadialKernelRKHS). Letµbeaprobabilitymeasurewithsupport\nin a compact subset of (0,∞), and define ψ as above.",
+      "size": 389,
+      "sentences": 4
+    },
+    {
+      "id": 94,
+      "content": "nelRKHS). Letµbeaprobabilitymeasurewithsupport\nin a compact subset of (0,∞), and define ψ as above. In example 3, we showed that\nK(x)=ψ(∥x∥2)\n2\ndefines a radial kernel and induces an RKHS H. For such kernels, K (x,x′)=ψ(∥β◦(x−x′)∥2) is\nβ 2\ncontinuously differentiable in β, with directional derivative\n(cid:88)\nDK (x,x′)[v]=2ψ′(∥β◦(x−x′)∥2)· β v (x −x′)2.\nβ 2 i i i i\ni\nSince ψ′ is bounded by |ψ′(0)| = (cid:82) tµ(dt), the uniform integrability condition in Theorem 1 holds\nwhenever X has finite fourth moment.",
+      "size": 511,
+      "sentences": 3
+    },
+    {
+      "id": 95,
+      "content": "tµ(dt), the uniform integrability condition in Theorem 1 holds\nwhenever X has finite fourth moment. In this case, the directional derivative DJ(β,λ)[v] exists for\nall β and v, and is given by\n2 (cid:88)\nDJ(β,λ)[v]=− E[r (X,Y)r (X′,Y′)·ψ′(∥β◦(X−X′)∥2)· β v (X −X′)2]. λ β,λ β,λ 2 i i i i\ni\nThisgivesthefirstvariationformulatoradialkernelRKHSs.Inparticular,thedirectionalderivative\nDJ(β,λ)[v] is linear in the direction v. ♣\nWe can analogously compute the directional derivative for ℓ type kernel RKHS.",
+      "size": 500,
+      "sentences": 3
+    },
+    {
+      "id": 96,
+      "content": "in the direction v. ♣\nWe can analogously compute the directional derivative for ℓ type kernel RKHS. 1\nExample 6 (First Variation for ℓ -type RKHS). Let µ be a probability measure with support in\n1\na compact subset of (0,∞), and define ψ as above.",
+      "size": 246,
+      "sentences": 3
+    },
+    {
+      "id": 97,
+      "content": "Let µ be a probability measure with support in\n1\na compact subset of (0,∞), and define ψ as above. In example 4, we showed that\nK(x)=ψ(∥x∥ )\n1\n11\n===  12 ===\ndefines an ℓ type kernel and induces an RKHS H. For such kernels, K (x,x′)=ψ(∥β◦(x−x′)∥ )\n1 β 1\nis directionally differentiable for every β and direction v, with directional derivative\n(cid:88)\nDK (x,x′)[v]=ψ′(∥β◦(x−x′)∥ )· w(β ;v )|x −x′|,\nβ 1 i i i i\ni\nwhere\n(cid:40)\nsgn(β )v β ̸=0\nw(β ;v ):= i i i .",
+      "size": 461,
+      "sentences": 2
+    },
+    {
+      "id": 98,
+      "content": "v]=ψ′(∥β◦(x−x′)∥ )· w(β ;v )|x −x′|,\nβ 1 i i i i\ni\nwhere\n(cid:40)\nsgn(β )v β ̸=0\nw(β ;v ):= i i i . i i\n|v | β =0\ni i\nSince ψ′ is bounded, the uniform integrability condition in Theorem 1 holds whenever X has finite\nsecond moment. In this case, the directional derivative DJ(β,λ)[v] exists for all β and v, with\n1 (cid:88)\nDJ(β,λ)[v]=− E[r (X,Y)r (X′,Y′)·ψ′(∥β◦(X−X′)∥ )· w(β ;v )|X −X′|].",
+      "size": 389,
+      "sentences": 3
+    },
+    {
+      "id": 99,
+      "content": "for all β and v, with\n1 (cid:88)\nDJ(β,λ)[v]=− E[r (X,Y)r (X′,Y′)·ψ′(∥β◦(X−X′)∥ )· w(β ;v )|X −X′|]. λ β,λ β,λ 1 i i i i\ni\nUnlike the radial kernel RKHSs, the directional derivative DJ(β,λ)[v] is not linear in v. Thus, for\nℓ type kernels, the objective J is not differentiable in the classical (Fr´echet) sense. ♣\n1\nTheorem 1 and the above examples illustrate that, in many scenarios of interest, the directional\nderivative DJ(β,λ)[v] exists for all β ∈ Rd and all directions v ∈ Rd.",
+      "size": 482,
+      "sentences": 3
+    },
+    {
+      "id": 100,
+      "content": "of interest, the directional\nderivative DJ(β,λ)[v] exists for all β ∈ Rd and all directions v ∈ Rd. Motivated by these results,\nthroughout the paper we will be only interested in scenarios where DJ(β,λ)[v] exists for all β and\ndirections v.\nThis directional regularity is fundamental—it enables a principled notion of stationarity, which\nplay a central role in understanding the landscape of J.",
+      "size": 394,
+      "sentences": 2
+    },
+    {
+      "id": 101,
+      "content": "a principled notion of stationarity, which\nplay a central role in understanding the landscape of J. 2.5 Directional Stationarity and Local Optimality\nThis paper is concerned with the minimization problem of J(β,λ) over β:\ninf J(β,λ).",
+      "size": 233,
+      "sentences": 2
+    },
+    {
+      "id": 102,
+      "content": "ocal Optimality\nThis paper is concerned with the minimization problem of J(β,λ) over β:\ninf J(β,λ). β∈Rd\nIngeneral,theobjectiveJ(β,λ)isnonconvexintheparameterβ,soglobalminimizationistypically\nintractablefornumericalalgorithms.Itisthereforemorenaturaltostudylocalnotionsofoptimality,\nwhich better reflect the types of solutions produced by numerical optimization methods. Definition 1. We say that β ∈Rd is a global minimizer of J(β,λ) if J(β ,λ)=inf J(β,λ).",
+      "size": 457,
+      "sentences": 4
+    },
+    {
+      "id": 103,
+      "content": "ion methods. Definition 1. We say that β ∈Rd is a global minimizer of J(β,λ) if J(β ,λ)=inf J(β,λ). ∗ ∗ β∈Rd\nWe say that β ∈Rd is a local minimizer of J(β,λ) if there exists δ >0 such that\n†\nJ(β ,λ)≤J(β,λ) for all β ∈Rd with ∥β−β ∥≤δ. † †\nWhen the objective J admits directional derivatives at every β, a basic necessary condition for\nlocal optimality is the nonnegativity of all directional derivatives. Lemma 10. If β is a local minimizer of J, then DJ(β ,λ)[v]≥0 for all v ∈Rd. † †\nProof.",
+      "size": 491,
+      "sentences": 8
+    },
+    {
+      "id": 104,
+      "content": "derivatives. Lemma 10. If β is a local minimizer of J, then DJ(β ,λ)[v]≥0 for all v ∈Rd. † †\nProof. Suppose β is a local minimizer, and DJ(β ,λ)[v] exists. Then\n† †\n1\nDJ(β ,λ)[v]= lim (J(β +sv,λ)−J(β ,λ))≥0. † s→0+ s † †\nThis completes the proof. 12\n===  13 ===\nThis motivates the notion of directional stationary points (also known as D-stationary points in\nthe variational analysis literature [21]). Definition 2. We say that β ∈Rd is a directional stationary point of J if\n†\nDJ(β ,λ)[v]≥0, ∀v ∈Rd.",
+      "size": 500,
+      "sentences": 10
+    },
+    {
+      "id": 105,
+      "content": "Definition 2. We say that β ∈Rd is a directional stationary point of J if\n†\nDJ(β ,λ)[v]≥0, ∀v ∈Rd. †\nRemark 1. We restrict attention to directional stationarity, which captures the minimal first-\norder condition associated with local minimizers. Stronger notions, such as Clarke stationarity, are\noftenmoreconvenientforalgorithmicpurposesbutrequireestablishingadditionalregularity[21].A\ndetailed discussion will be deferred to a future, separate paper focused on algorithms.",
+      "size": 474,
+      "sentences": 5
+    },
+    {
+      "id": 106,
+      "content": "arity[21].A\ndetailed discussion will be deferred to a future, separate paper focused on algorithms. In the rest of the paper, we study the statistical properties of global minimizers β , local mini-\n∗\nmizers, and directional stationary points β .",
+      "size": 246,
+      "sentences": 2
+    },
+    {
+      "id": 107,
+      "content": "cal properties of global minimizers β , local mini-\n∗\nmizers, and directional stationary points β . While global minimizers provide a natural benchmark,\n†\nour main interest lies in whether local minimizers and stationary points—typically reached by iter-\native algorithms—can still support feature learning, that is, whether they recover low-dimensional\nstructure in the data that is relevant for prediction.",
+      "size": 408,
+      "sentences": 2
+    },
+    {
+      "id": 108,
+      "content": "hat is, whether they recover low-dimensional\nstructure in the data that is relevant for prediction. 3 Global Minimizers\nTowards understanding the landscape of the J, we begin by analyzing the global minimizers of J,\nand focus on two foundational questions. Q1 (Existence). Does J(β,λ) attain its minimum at some β ∈Rd?",
+      "size": 318,
+      "sentences": 4
+    },
+    {
+      "id": 109,
+      "content": "focus on two foundational questions. Q1 (Existence). Does J(β,λ) attain its minimum at some β ∈Rd? This question ensures the global minimizers are well-defined and excludes degenerate cases where\nminimizers“escapetoinfinity”.Onapositiveside,wewillshowthataglobalminimizerofJ always\nexists whenever X is a continuous random variable. Q2 (Feature Recovery). Does the global minimizer of J(β,λ) select the coordinates of X that are\npredictive of Y?",
+      "size": 445,
+      "sentences": 6
+    },
+    {
+      "id": 110,
+      "content": "ecovery). Does the global minimizer of J(β,λ) select the coordinates of X that are\npredictive of Y? Thisraisesafundamentalstatisticalquestion:canthecompositionalmodelf(β◦X)uncoverthe\nrelevant sparse structure in the data at its global minimizer? 3.1 Existence\nIn this section, we address the question (Q1). We show that when X has a continuous distribution,\nJ admits a global minimizer in Rd. Theorem 2. Assume X has continuous density on its support. Then, for every λ>0,\nlim J(β,λ)=E[Y2].",
+      "size": 490,
+      "sentences": 8
+    },
+    {
+      "id": 111,
+      "content": ". Theorem 2. Assume X has continuous density on its support. Then, for every λ>0,\nlim J(β,λ)=E[Y2]. β→∞\nAs a corollary, the function J admits a global minimizer β ∈Rd with J(β ,λ)=inf J(β,λ). ∗ ∗ β∈Rd\nProof. First, by plugging a test function of all zero, we see that\nJ(β,λ)≤I(0,β,λ)=E[Y2], ∀β ∈Rd. Next, we expand the objective:\nI(f,β,λ)=E[Y2]−2E[Yf(β◦X)]+E[f(β◦X)2]+λ∥f∥2 .",
+      "size": 375,
+      "sentences": 8
+    },
+    {
+      "id": 112,
+      "content": "(0,β,λ)=E[Y2], ∀β ∈Rd. Next, we expand the objective:\nI(f,β,λ)=E[Y2]−2E[Yf(β◦X)]+E[f(β◦X)2]+λ∥f∥2 . H\n13\n===  14 ===\nApplying the reproducing property and Cauchy–Schwarz inequality yields\nE[Yf(β◦X)]=E[Y⟨K(β◦X,·),f⟩ ]\nH\n=⟨E[YK(β◦X,·)],f⟩ ≤∥E[YK(β◦X,·)]∥ ∥f∥ . H H H\nThe squared RKHS norm admits an explicit expression:\n∥E[YK(β◦X,·)]∥2 =⟨E[YK(β◦X,·)],E[Y′K(β◦X′,·)]⟩ =E[YY′K(β◦X,β◦X′)]\nH H\nwhere (X′,Y′)∼P is an independent copy of (X,Y).",
+      "size": 436,
+      "sentences": 4
+    },
+    {
+      "id": 113,
+      "content": "[YK(β◦X,·)],E[Y′K(β◦X′,·)]⟩ =E[YY′K(β◦X,β◦X′)]\nH H\nwhere (X′,Y′)∼P is an independent copy of (X,Y). Combining the above gives a lower bound\nI(f,β,λ)≥E[Y2]−2 (cid:112) E[YY′K(β◦X,β◦X′)]∥f∥ +λ∥f∥2 . H H\nMinimizing the right-hand side over ∥f∥ ∈[0,∞) gives\nH\nJ(β,λ)=minI(f,β,λ)≥E[Y2]−λ−1E[YY′K(β◦X,β◦X′)]. f\nNotethatK(β◦x,β◦x′)=K(β◦(x−x′))→0asβ →∞whenx̸=x′.Additionally,P(X ̸=X′)=1\nsince X is assumed to have continuous density.",
+      "size": 425,
+      "sentences": 4
+    },
+    {
+      "id": 114,
+      "content": "(β◦(x−x′))→0asβ →∞whenx̸=x′.Additionally,P(X ̸=X′)=1\nsince X is assumed to have continuous density. As K is uniformly bounded, Lebesgue’s dominated\nconvergence theorem then implies E[YY′K(β◦X,β◦X′)]→0 as β →∞. This leads to\nliminfJ(β,λ)≥E[Y2]. β→∞\nSince J(β,λ)≤E[Y2] for all β, this implies the limit lim J(β,λ) exists and equals E[Y2]. β→∞\nFinally, since J is continuous in β (by Lemma 8) and bounded above by E[Y2], it must attain\nits infimum over Rd.",
+      "size": 453,
+      "sentences": 5
+    },
+    {
+      "id": 115,
+      "content": "e J is continuous in β (by Lemma 8) and bounded above by E[Y2], it must attain\nits infimum over Rd. That is, there exists β ∈Rd such that\n∗\nJ(β ,λ)= inf J(β,λ). ∗\nβ∈Rd\nThis completes the proof. ContinuityofX servesasasufficientconditionforJ toadmitafiniteminimizer.Inthepresence\nofdiscretevariables,itmayhappenthatlimsup J(β,λ)<E[Y2](see[14,Section5]).However,\nβ→∞\nwe are not aware of any situation where there is a global minimizer at infinity—a question we leave\nopen.",
+      "size": 470,
+      "sentences": 4
+    },
+    {
+      "id": 116,
+      "content": "not aware of any situation where there is a global minimizer at infinity—a question we leave\nopen. 3.2 Feature Recovery\nFrom a variable selection perspective, we are interested in whether the global minimizer β of the\n∗\npopulation objective J(β,λ) captures relevant features of the input X—those that are predictive of\nthe response Y. This leads to three guiding questions. (a) CharacterizationofRelevantFeatures:Howshouldweformallydefinetheminimalsetoffeatures\nin X sufficient for predicting Y?",
+      "size": 495,
+      "sentences": 4
+    },
+    {
+      "id": 117,
+      "content": "RelevantFeatures:Howshouldweformallydefinetheminimalsetoffeatures\nin X sufficient for predicting Y? (b) Irrelevant Feature Elimination: Does the minimizer β assign zero weight to features that are\n∗\nunrelated to the prediction of Y? (c) Recovery of Predictive Structure: Does the minimizer β capture at least some—or all—of the\n∗\nfeatures that contribute to predicting Y? We address these three questions in the subsections that follow.",
+      "size": 436,
+      "sentences": 4
+    },
+    {
+      "id": 118,
+      "content": "s that contribute to predicting Y? We address these three questions in the subsections that follow. 14\n===  15 ===\n3.2.1 Core Sufficient Feature Set\nToformalizethenotionoftask-relevantfeatures,weintroducetheconceptofacoresufficientfeature\nset:thesmallestsubsetoftheinputX thatretainsallinformationneededtopredicttheresponseY. Definition 3 (Core Sufficient Feature Set). Let\n(cid:92)\nS := {S ⊂{1,2,...,d}:E[Y|X]=E[Y|X ]}.",
+      "size": 420,
+      "sentences": 5
+    },
+    {
+      "id": 119,
+      "content": "seY. Definition 3 (Core Sufficient Feature Set). Let\n(cid:92)\nS := {S ⊂{1,2,...,d}:E[Y|X]=E[Y|X ]}. (3.1)\n∗ S\nIf S additionally satisfies E[Y|X]=E[Y|X ], then it is called the core sufficient feature set. ∗ S∗\nRemark 2. This notion parallels the classical concept of the central mean subspace for sufficient\ndimension reduction.",
+      "size": 328,
+      "sentences": 6
+    },
+    {
+      "id": 120,
+      "content": "on parallels the classical concept of the central mean subspace for sufficient\ndimension reduction. The central mean subspace is the smallest linear subspace U ⊆ Rd such that\nE[Y|X]=E[Y|P X],whereP istheorthogonalprojectionontoU [22,23].Incontrast,thecoresuf-\nU U\nficientfeaturesetseeksaminimalsubsetofcoordinateindicesS suchthatE[Y|X]=E[Y|X ].Both\nS\naim to identify minimal representations of the input X that preserve the full predictive information\nabout Y, though in different structural forms.",
+      "size": 498,
+      "sentences": 2
+    },
+    {
+      "id": 121,
+      "content": "nput X that preserve the full predictive information\nabout Y, though in different structural forms. Remark 3. Note that a core sufficient feature set may not always exist. For instance, if X =X\n1 2\nand E[Y|X]=E[Y|X ]=E[Y|X ], then both {1} and {2} satisfy the condition E[Y|X]=E[Y|X ]\n1 2 S\nbut their intersection {1}∩{2} = ∅ does not satisfy E[Y|X] = E[Y] in general. Consequently, the\nset S defined in (3.1) fails to satisfy E[Y|X]=E[Y|X ], and no core sufficient feature set exists.",
+      "size": 485,
+      "sentences": 5
+    },
+    {
+      "id": 122,
+      "content": "set S defined in (3.1) fails to satisfy E[Y|X]=E[Y|X ], and no core sufficient feature set exists. ∗ S∗\nDespite the ill-conditioned case noted in the preceding remark, Proposition 3 shows that, under\nthemildassumptionthatthefeaturevectorX iscontinuous,thecoresufficientfeaturesetS exists. ∗\nProposition 3. Assume X has continuous density with support Rd. Then the core sufficient feature\nset S exists. ∗\nProof. We call a subset S ⊂{1,2,...,d} a sufficient feature set if\nE[Y|X]=E[Y|X ].",
+      "size": 486,
+      "sentences": 7
+    },
+    {
+      "id": 123,
+      "content": "set S exists. ∗\nProof. We call a subset S ⊂{1,2,...,d} a sufficient feature set if\nE[Y|X]=E[Y|X ]. S\nAmong all such sets, we consider those with the smallest cardinality. Let S′ denote one such set.",
+      "size": 198,
+      "sentences": 5
+    },
+    {
+      "id": 124,
+      "content": "S\nAmong all such sets, we consider those with the smallest cardinality. Let S′ denote one such set. BelowweshowthatS′ ⊂S foranysufficientfeaturesetS.Suppose,forthesakeofcontradiction,\nthat this is not true for some sufficient feature set S. Since S′ ̸⊂ S and, by definition, S′ has\ncardinalitylessthanorequaltothatofS,itmustbethatS′\\S ̸=∅andS\\S′ ̸=∅.Wecanthuswrite\nS =A∪B and S′ =A∪C,\nwhere A=S∩S′, and B,C ⊂{1,2,...,d} are nonempty, disjoint from each other and from A.",
+      "size": 470,
+      "sentences": 3
+    },
+    {
+      "id": 125,
+      "content": "and S′ =A∪C,\nwhere A=S∩S′, and B,C ⊂{1,2,...,d} are nonempty, disjoint from each other and from A. By\nthe definition of sufficiency of S,S′, we have:\nE[Y|X ,X ]=E[Y|X ,X ]. A B A C\nSince X has a continuous density with support Rd, the conditional distribution (X ,X )|X =x\nB C A A\nhas full support in R|B|+|C| for any x ∈ R|A|. Therefore, we know that conditioning on (X ,X )\nA A B\nor on (X ,X ) must give the same value as conditioning only on X . Thus,\nA C A\nE[Y|X ,X ]=E[Y|X ]=E[Y|X ,X ].",
+      "size": 491,
+      "sentences": 5
+    },
+    {
+      "id": 126,
+      "content": "X ) must give the same value as conditioning only on X . Thus,\nA C A\nE[Y|X ,X ]=E[Y|X ]=E[Y|X ,X ]. A B A A C\nThus,Aisitselfasufficientfeatureset.ButA⊊S′byconstruction,whichcontradictstheminimality\nof S′. This proves that S′ is a subset of every sufficient feature set. 15\n===  16 ===\nWith this property, we know that\nS′ ⊂S for every sufficient feature set S,\nso the intersection over all sufficient sets equals S′.",
+      "size": 415,
+      "sentences": 5
+    },
+    {
+      "id": 127,
+      "content": "t\nS′ ⊂S for every sufficient feature set S,\nso the intersection over all sufficient sets equals S′. Since S′ is itself sufficient by construction, it\nsatisfies the definition of the core sufficient feature set. This proves existence. Beyond Proposition 3, we believe that the core sufficient feature set S exists in a wide range of\n∗\npractical scenarios, though a full characterization is beyond the scope of this paper.",
+      "size": 420,
+      "sentences": 4
+    },
+    {
+      "id": 128,
+      "content": "e range of\n∗\npractical scenarios, though a full characterization is beyond the scope of this paper. For instance,\nwhenX isuniformlydistributedon the hypercube, thesetS existsas aconsequenceofthe Fourier\n∗\nexpansion applied to E[Y|X] [24]. This belief is also supported by a large body of work in sufficient\ndimension reduction, where analogous constructs—such as the central mean subspace—are known\nto exist under remarkably mild assumptions [23].",
+      "size": 447,
+      "sentences": 3
+    },
+    {
+      "id": 129,
+      "content": "tructs—such as the central mean subspace—are known\nto exist under remarkably mild assumptions [23]. To enable a rigorous study of feature learning, we need to focus on settings where a well-defined\ntarget structure exists. Therefore, we assume the existence of core sufficient feature set throughout:\nAssumption 3.1. The core sufficient feature set S exists for the distribution (X,Y)∼P.",
+      "size": 387,
+      "sentences": 4
+    },
+    {
+      "id": 130,
+      "content": "throughout:\nAssumption 3.1. The core sufficient feature set S exists for the distribution (X,Y)∼P. ∗\nGiven Assumption 3.1, there is a meaningful statistical target—the core sufficient feature set\nS , which captures the minimal collection of input features required to predict the response Y. The\n∗\nproblemofvariableselectionconcernswhetherminimizingJ successfullyrecoversS .Understanding\n∗\nwhenandwhythisrecoveryoccursiscentraltounravelinghowcompositionalmodelf(β◦X)learns\nstructure from data.",
+      "size": 493,
+      "sentences": 4
+    },
+    {
+      "id": 131,
+      "content": "andwhythisrecoveryoccursiscentraltounravelinghowcompositionalmodelf(β◦X)learns\nstructure from data. 3.2.2 Irrelevant Feature Elimination\nWefirststudyoneaspectoffeaturelearning:whendoestheglobalminimizerβ eliminateirrelevant\n∗\nfeaturesbysettingcoordinatesoutsidethecoresufficientfeaturesetS tozero?Suchsparsityshows\n∗\nthat the model can suppress irrelevant inputs automatically. Assumption 3.2. Assume that X and X are probabilistically independent.",
+      "size": 448,
+      "sentences": 4
+    },
+    {
+      "id": 132,
+      "content": "levant inputs automatically. Assumption 3.2. Assume that X and X are probabilistically independent. Here, S denotes\nthe core sufficient feature set of the S d ∗ istributi S o ∗ c n (X,Y) ∼ P, and Sc = {1,2,...,d}\\S de ∗ notes its\n∗ ∗\ncomplement. This assumption states that the relevant features in X for predicting Y—namely, those in the\ncore sufficient feature set S —are independent of the remaining features X .",
+      "size": 415,
+      "sentences": 5
+    },
+    {
+      "id": 133,
+      "content": "Y—namely, those in the\ncore sufficient feature set S —are independent of the remaining features X . Such structural inde-\n∗ Sc\n∗\npendenceavoidspotentialstatisticalconfounding,makingitclearinprincipletodistinguishrelevant\nfeatures based solely on their predictive contribution.",
+      "size": 276,
+      "sentences": 2
+    },
+    {
+      "id": 134,
+      "content": "kingitclearinprincipletodistinguishrelevant\nfeatures based solely on their predictive contribution. Assumption 3.2 is satisfied in synthetic settings where the data generation process is at least\npartially controlled—for example, in applications such as computer experiments—where we can\nintentionally design X to follow a specific distribution, such as isotropic Gaussian [25]. ForasubsetS ∈{1,2,...,d},Π :Rd →Rd denotethecoordinateprojectionontoS,definedby\nS\n(cid:40)\nβ for j ∈S\n(Π β) = j .",
+      "size": 492,
+      "sentences": 3
+    },
+    {
+      "id": 135,
+      "content": "1,2,...,d},Π :Rd →Rd denotethecoordinateprojectionontoS,definedby\nS\n(cid:40)\nβ for j ∈S\n(Π β) = j . S j 0 for j ∈Sc\nTheorem 4. Assume Assumptions 3.1, 3.2. For every λ>0\nJ(β,λ)≥J(Π β,λ), ∀β ∈Rd. S∗\nThe inequality is strict when Cov(Π β◦X)̸=0 and J(β,λ)<E[Y2]. Sc\n∗\n16\n===  17 ===\nProof. For every ξ in Rd, we define the translated function τ f by\nξ\n(τ f)(x):=f(x+ξ), ∀x∈Rd.",
+      "size": 373,
+      "sentences": 7
+    },
+    {
+      "id": 136,
+      "content": "7 ===\nProof. For every ξ in Rd, we define the translated function τ f by\nξ\n(τ f)(x):=f(x+ξ), ∀x∈Rd. ξ\nBythetranslation-invarianceoftheRKHSH,wehave∥τ f∥ =∥f∥ .Bytheminimizingproperty\nξ H H\nof J, we deduce for every vector ξ in Rd, and f ∈H that\nE[(Y −f(β◦Π X+ξ))2]+λ∥f∥2\nS∗ H\n=E[(Y −(τ f)(β◦Π X))2]+λ∥τ f∥2\nξ S∗ ξ H\n=E[(Y −(τ f)(Π β◦X))2]+λ∥τ f∥2 ≥J(Π β,λ). ξ S∗ ξ H S∗\nDefine c:=E[(Y −E[Y|X])2].",
+      "size": 395,
+      "sentences": 4
+    },
+    {
+      "id": 137,
+      "content": "]+λ∥τ f∥2\nξ S∗ ξ H\n=E[(Y −(τ f)(Π β◦X))2]+λ∥τ f∥2 ≥J(Π β,λ). ξ S∗ ξ H S∗\nDefine c:=E[(Y −E[Y|X])2]. Since E[Y|X]=E[Y|Π X], we can decompose the squared error as\nS∗\nE[(Y −f(β◦Π X+ξ))2]=E(cid:2) (E[Y|Π X]−f(β◦Π X+ξ))2(cid:3) +c. S∗ S∗ S∗\nSubstituting into the previous inequality gives\nE(cid:2) (E[Y|Π X]−f(β◦Π X+ξ))2(cid:3) +λ∥f∥2 +c≥J(Π β,λ).",
+      "size": 342,
+      "sentences": 4
+    },
+    {
+      "id": 138,
+      "content": "uting into the previous inequality gives\nE(cid:2) (E[Y|Π X]−f(β◦Π X+ξ))2(cid:3) +λ∥f∥2 +c≥J(Π β,λ). S∗ S∗ H S∗\nByAssumption3.2,Π X andΠ X areindependent.Therefore,settingξ :=β◦Π X,wemay\nS∗ S\n∗\nc S\n∗\nc\ncondition on Π X to obtain\nSc\n∗\nE(cid:2) (E[Y|Π X]−f(β◦Π X+β◦Π X))2 |Π X (cid:3) +λ∥f∥2 +c≥J(Π β,λ).",
+      "size": 301,
+      "sentences": 2
+    },
+    {
+      "id": 139,
+      "content": "ondition on Π X to obtain\nSc\n∗\nE(cid:2) (E[Y|Π X]−f(β◦Π X+β◦Π X))2 |Π X (cid:3) +λ∥f∥2 +c≥J(Π β,λ). S∗ S∗ S ∗ c S ∗ c H S∗\nTaking expectation on both sides, and using X =Π X+Π X, we get\nS∗ S\n∗\nc\nI(f,β,λ)=E[(Y −f(β◦X))2]+λ∥f∥2\nH\n=E[(Y −f(β◦Π X+β◦Π X))2]+λ∥f∥2\nS∗ S ∗ c H\n=E(cid:2) (E[Y|Π X]−f(β◦Π X+β◦Π X))2(cid:3) +λ∥f∥2 +c≥J(Π β,λ). S∗ S∗ S ∗ c H S∗\nBy minimizing over f ∈H, we get\nJ(β,λ)=minI(f,β,λ)≥J(Π β,λ). f\nS∗\nThis proves the desired inequality.",
+      "size": 452,
+      "sentences": 4
+    },
+    {
+      "id": 140,
+      "content": "minimizing over f ∈H, we get\nJ(β,λ)=minI(f,β,λ)≥J(Π β,λ). f\nS∗\nThis proves the desired inequality. Our derivation shows equality holds in J(β,λ)=J(Π β,λ) only if the minimizer f obeys\nS∗ β,λ\n(τ )f =(τ )f for almost all ξ =β◦Π X,ξ′ =β◦Π X′\nξ β,λ ξ′ β,λ Sc Sc\n∗ ∗\nwhereX,X′ areindependentcopiesfromP.IfCov(Π β◦X)̸=0,thenwithpositiveprobabilitywe\nSc\n∗\nhaveξ ̸=ξ′.Fixsucharealizationwithξ ̸=ξ′.Then,forthethedeterministicvectorz =ξ−ξ′ ̸=0,\nf (x+z)=f (x) ∀x∈Rd.",
+      "size": 456,
+      "sentences": 3
+    },
+    {
+      "id": 141,
+      "content": "ξ′.Fixsucharealizationwithξ ̸=ξ′.Then,forthethedeterministicvectorz =ξ−ξ′ ̸=0,\nf (x+z)=f (x) ∀x∈Rd. β,λ β,λ\nHowever,sincef ∈H,itsatisfieslim f (x)=0accordingtoLemma1.Inturn,thisimplies\nβ,λ x→∞ β,λ\nthat f must be identically zero. As a consequence, it must follow that J(β,λ)=E[Y2]. β,λ\nWe provide sufficient and necessary conditions for which the minimum value J(β ,λ)<E[Y2]. ∗\nAssumption 3.3. Assume E[Y|X]̸=0 under L (P). 2\n17\n===  18 ===\nLemma 11.",
+      "size": 450,
+      "sentences": 7
+    },
+    {
+      "id": 142,
+      "content": "mum value J(β ,λ)<E[Y2]. ∗\nAssumption 3.3. Assume E[Y|X]̸=0 under L (P). 2\n17\n===  18 ===\nLemma 11. Assumption 3.3 holds if and only if\ninf J(β,λ)<E[Y2]. β∈Rd\nProof. Assume E[Y|X]̸=0. Let 1∈Rd denote the all-ones vector. We claim that J(1,λ)<E[Y2]. Suppose instead that J(1,λ)=E[Y2].",
+      "size": 283,
+      "sentences": 10
+    },
+    {
+      "id": 143,
+      "content": "Let 1∈Rd denote the all-ones vector. We claim that J(1,λ)<E[Y2]. Suppose instead that J(1,λ)=E[Y2]. Then the minimizer f must be identically zero, which by\n1,λ\nLemma 4 implies E[Yg(X)] = 0 for all g ∈ H. Since H is dense in L (P ) by Lemma 2, it follows\n2 X\nthat E[Yg(X)] = 0 for all g ∈ L (P ), and hence E[Y|X] = 0 almost surely—contradicting our\n2 X\nassumption E[Y|X]̸=0. We conclude that J(1,λ)<E[Y2], and thus inf J(β,λ)<E[Y2]. β∈Rd\nConversely, assume E[Y|X] = 0.",
+      "size": 468,
+      "sentences": 6
+    },
+    {
+      "id": 144,
+      "content": "]̸=0. We conclude that J(1,λ)<E[Y2], and thus inf J(β,λ)<E[Y2]. β∈Rd\nConversely, assume E[Y|X] = 0. Then the minimizer f is the zero function for every β. As a\nβ,λ\nresult, J(β,λ)=E[Y2] for all β, and hence inf J(β,λ)=E[Y2]. β∈Rd\nWe are now ready to state our main result, which combines Theorem 4 and Lemma 11. Assumption 3.4. Assume the irrelevant features (X ) has nondegenerate covariance. i i∈Sc\n∗\nTheorem 5. Assume Assumptions 3.1, 3.2, 3.3, 3.4.",
+      "size": 451,
+      "sentences": 10
+    },
+    {
+      "id": 145,
+      "content": "tures (X ) has nondegenerate covariance. i i∈Sc\n∗\nTheorem 5. Assume Assumptions 3.1, 3.2, 3.3, 3.4. For every regularization parameter λ>0,\nsupp(β )⊂S , ∀ β minimizing J(·,λ). ∗ ∗ ∗\nRemark 4. If J(·,λ) does not attain its infimum in Rd, we interpret the set of global minimizers\nasempty.Inthiscase,allconclusionsinvolvingglobalminimizersshouldbeunderstoodasvacuously\ntrue. The same remark applies to later statements. Proof of Theorem 5. Fix λ > 0 and let β be a global minimizer.",
+      "size": 480,
+      "sentences": 9
+    },
+    {
+      "id": 146,
+      "content": "remark applies to later statements. Proof of Theorem 5. Fix λ > 0 and let β be a global minimizer. Suppose, for contradiction, that\n∗\nsupp(β ) ̸⊂ S . Then Π β ̸= 0. Under Assumption 3.3, we have J(β ,λ) < E[Y2] by Lemma 11. ∗ ∗ Sc ∗ ∗\n∗\nMoreover, Assumption 3.4 guarantees that Cov(Π β ◦ X) ̸= 0. Finally, combining Assump-\nSc ∗\n∗\ntions3.1and3.2,Theorem4impliesthestrictinequalityJ(β ,λ)>J(Π β ,λ),contradictingthe\n∗ S∗ ∗\noptimality of β . This completes the proof.",
+      "size": 465,
+      "sentences": 9
+    },
+    {
+      "id": 147,
+      "content": "rictinequalityJ(β ,λ)>J(Π β ,λ),contradictingthe\n∗ S∗ ∗\noptimality of β . This completes the proof. ∗\n3.2.3 Relevant Feature Recovery\nIn contrast to the previous subsection on eliminating irrelevant features, we now ask the comple-\nmentary question: when does the global minimizer β retain features that are truly predictive of Y?",
+      "size": 330,
+      "sentences": 3
+    },
+    {
+      "id": 148,
+      "content": "mentary question: when does the global minimizer β retain features that are truly predictive of Y? ∗\nThatis,doesβ assignsnonzeroweightstothecomponentsofthecoresufficientfeaturesetS ?This\n∗ ∗\nquestion is critical for understanding whether feature learning preserves all information relevant for\nprediction—not just filters out the noise. Theorem 6. Assume Assumptions 3.1, 3.2. There exists λ >0 such that for every λ∈(0,λ ):\n0 0\nsupp(β )⊃S , ∀ β minimizing J(·,λ). ∗ ∗ ∗\nProof.",
+      "size": 477,
+      "sentences": 6
+    },
+    {
+      "id": 149,
+      "content": "here exists λ >0 such that for every λ∈(0,λ ):\n0 0\nsupp(β )⊃S , ∀ β minimizing J(·,λ). ∗ ∗ ∗\nProof. For any f ∈H, we have\nI(f,β,λ)=E[(Y −f(β◦X))2]+λ∥f∥2\nH\n≥E[(Y −E[Y|β◦X])2]=E[(Y −E[Y|X ])2]\nsupp(β)\nwheretheinequalityfollowsfromtheoptimalityofconditionalexpectation.Takingtheinfimumover\nf yields, for any β and any λ>0,\nJ(β,λ)≥E[(Y −E[Y|X ])2].",
+      "size": 344,
+      "sentences": 3
+    },
+    {
+      "id": 150,
+      "content": "nditionalexpectation.Takingtheinfimumover\nf yields, for any β and any λ>0,\nJ(β,λ)≥E[(Y −E[Y|X ])2]. supp(β)\n18\n===  19 ===\nSinceS isthecoresufficientfeatureset,anysetS withE[Y|X]=E[Y|X ]mustobeyS ⊂S.Thus,\n∗ S ∗\ninf{E[(Y −E[Y|X ])2|S ̸⊂S}>E[(Y −E[Y|X])2],\nS ∗\nwhich implies the existence of ε>0 such that for all λ>0,\ninf{J(β,λ)|S ̸⊂supp(β)}≥E[(Y −E[Y|X])2]+ϵ.",
+      "size": 359,
+      "sentences": 2
+    },
+    {
+      "id": 151,
+      "content": "hich implies the existence of ε>0 such that for all λ>0,\ninf{J(β,λ)|S ̸⊂supp(β)}≥E[(Y −E[Y|X])2]+ϵ. ∗\nOn the other hand, since H is dense in L (P ) by Lemma 2, where P denotes the distribution\n2 X X\nof X, the regression function x (cid:55)→ E[Y|X = x] can be approximated arbitrarily well in L (P ) by\n2 X\nfunctions in H. In particular, there exists f ∈H such that\nε\nE[(Y −f (X))]2 <E[(Y −E[Y|X])2]+ϵ/2. ε\nLet 1∈Rd denote the all-ones vector.",
+      "size": 442,
+      "sentences": 3
+    },
+    {
+      "id": 152,
+      "content": "exists f ∈H such that\nε\nE[(Y −f (X))]2 <E[(Y −E[Y|X])2]+ϵ/2. ε\nLet 1∈Rd denote the all-ones vector. Then for sufficiently small λ>0,\nJ(1,λ)≤I(f ,1,λ)=E[(Y −f (X))]2+λ∥f ∥2 <E[(Y −E[Y|X])2]+ϵ,\nε ε ε H\nso we have\ninf{J(β,λ)|S ̸⊂supp(β)}>J(1,λ)≥inf{J(β,λ)|β ∈Rd}. ∗\nItfollowsthat,forthesesmallλ>0,anyglobalminimizerβ ofJ(·,λ)mustsatisfysupp(β )⊃S ,\n∗ ∗ ∗\nsince otherwise its objective would exceed J(1,λ).",
+      "size": 402,
+      "sentences": 4
+    },
+    {
+      "id": 153,
+      "content": "minimizerβ ofJ(·,λ)mustsatisfysupp(β )⊃S ,\n∗ ∗ ∗\nsince otherwise its objective would exceed J(1,λ). 4 Stationary Points and Irrelevant Feature Elimination\nTheprecedingresultscharacterizethestatisticalbehaviorofglobalminimizers,providingconditions\nunder which they eliminate irrelevant features and retain those that are predictive.",
+      "size": 331,
+      "sentences": 2
+    },
+    {
+      "id": 154,
+      "content": "dingconditions\nunder which they eliminate irrelevant features and retain those that are predictive. However, in\npractice,suchglobalminimizersmaybecomputationallyintractable—duetothenonconvexityofthe\nobjective, iterative algorithms are typically guaranteed to converge only to stationary points. This\nraises a fundamental question for feature learning: do stationary points preserve similar statistical\nstructure, or are such guarantees unique to global optima?",
+      "size": 460,
+      "sentences": 3
+    },
+    {
+      "id": 155,
+      "content": "nary points preserve similar statistical\nstructure, or are such guarantees unique to global optima? Unlikeglobalminimizers,stationarypointsaremoredifficulttocharacterize,andanalyzingthem\nrequires more delicate analytical techniques. To proceed, we divide the analysis into two parts. This\nsection focuses on the following question:\n(Q3) Do stationary points eliminate irrelevant features?",
+      "size": 388,
+      "sentences": 4
+    },
+    {
+      "id": 156,
+      "content": "section focuses on the following question:\n(Q3) Do stationary points eliminate irrelevant features? We provide a positive result: if the irrelevant features are Gaussian distributed, then every sta-\ntionary point necessarily suppresses them—that is, any nonzero coordinate of a stationary point\nmust correspond to a relevant feature for predicting the response. Assumption 4.1. The irrelevant features (X ) are jointly Gaussian distributed with nondegen-\ni i∈Sc\n∗\nerate covariance. Theorem 7.",
+      "size": 492,
+      "sentences": 5
+    },
+    {
+      "id": 157,
+      "content": "features (X ) are jointly Gaussian distributed with nondegen-\ni i∈Sc\n∗\nerate covariance. Theorem 7. Assume Assumptions 3.1, 3.2, 4.1. Then, for every λ>0,\nDJ(β,λ)[v]≤0, where v =−Π β.\nSc\n∗\nThe inequality is strict if J(β,λ)<E[Y2] and Π β ̸=0. Sc\n∗\nRemark 5.",
+      "size": 257,
+      "sentences": 5
+    },
+    {
+      "id": 158,
+      "content": "β,λ)[v]≤0, where v =−Π β.\nSc\n∗\nThe inequality is strict if J(β,λ)<E[Y2] and Π β ̸=0. Sc\n∗\nRemark 5. Compared to Theorem 4, Theorem 7 provides a sharper conclusion: it identifies a\ndescentdirectionv =−Π β towardtherelevantfeaturesubsets.Thisdirectionhasanaturalinter-\nSc\n∗\npretation—itremovesweightfromirrelevantcoordinateswhileleavingtherelevantonesunchanged. This refinement relies on the additional Gaussian assumption on the irrelevant features. 19\n===  20 ===\nProof. Fix β ∈ Rd.",
+      "size": 482,
+      "sentences": 6
+    },
+    {
+      "id": 159,
+      "content": "on the additional Gaussian assumption on the irrelevant features. 19\n===  20 ===\nProof. Fix β ∈ Rd. Since the problem is translation-invariant, we can without loss of generality\nassume E[X]=0. Let ξ ∈Rd be a Gaussian random vector independent of (X,Y) with\nξ =(0,ξ′), ξ′ = d X ∼N(0,Cov(X )).",
+      "size": 291,
+      "sentences": 5
+    },
+    {
+      "id": 160,
+      "content": "Let ξ ∈Rd be a Gaussian random vector independent of (X,Y) with\nξ =(0,ξ′), ξ′ = d X ∼N(0,Cov(X )). Sc Sc\n∗ ∗\n√\nLetπ s denotetheprobabilitymeasureoftherandomvector sβ Sc ◦X Sc ∈R|S ∗ c|.Foreveryfunction\n∗ ∗\nf ∈H and s>0, we define P as the convolution type operator:\ns\n√\n(P f)(x)=E (cid:2) f(x+ sβ◦ξ) (cid:3)\ns ξ\n√\n=E (cid:2) f(x ,x + sβ ◦ξ′) (cid:3)\nξ′ S∗ S\n∗\nc S\n∗\nc\n(cid:90)\n= f((x ,x +y))π (dy).",
+      "size": 398,
+      "sentences": 2
+    },
+    {
+      "id": 161,
+      "content": "(cid:3)\ns ξ\n√\n=E (cid:2) f(x ,x + sβ ◦ξ′) (cid:3)\nξ′ S∗ S\n∗\nc S\n∗\nc\n(cid:90)\n= f((x ,x +y))π (dy). S∗ S\n∗\nc s\nFor every such function f, we use the independence of ξ′ and (X,Y), along with the tower property\nand Jensen’s inequality to get\n√\nE[(Y −(P f)(β◦X))2]=E[(Y −E[f(β◦X+ sβ◦ξ)|X])2]\ns\n√ (4.1)\n≤E[(Y −f(β◦X+ sβ◦ξ))2]. Let β(s) :=β−sv with v =−Π β. Then β(s) =β+sΠ β.",
+      "size": 370,
+      "sentences": 4
+    },
+    {
+      "id": 162,
+      "content": "β◦X+ sβ◦ξ)|X])2]\ns\n√ (4.1)\n≤E[(Y −f(β◦X+ sβ◦ξ))2]. Let β(s) :=β−sv with v =−Π β. Then β(s) =β+sΠ β. We expand vectors in Rd by grouping\nSc Sc\n∗ ∗\ncoordinates in S and Sc:\n∗ ∗\n√ √\nβ◦X+ sβ◦ξ =(β ◦X , β ◦X + sβ ◦ξ′)\nS∗ S∗ S\n∗\nc S\n∗\nc S\n∗\nc\n. β(s)◦X =(β ◦X , (1+s)β ◦X )\nS∗ S∗ S\n∗\nc S\n∗\nc\nSince ξ′ has the same Gaussian distribution as X and since ξ′ is independent of X whereas X\nS\n∗\nc S∗\nand X are independent, we conclude the following equality in distribution:\nSc\n∗\n√\n(X ,β◦X+ sβ◦ξ)= d (X ,β(s)◦X).",
+      "size": 498,
+      "sentences": 5
+    },
+    {
+      "id": 163,
+      "content": "ependent, we conclude the following equality in distribution:\nSc\n∗\n√\n(X ,β◦X+ sβ◦ξ)= d (X ,β(s)◦X). S∗ S∗\nAs a result,\n√\nE[(E[Y|X ]−f(β◦X+ sβ◦ξ))2]=E[(E[Y|X ]−f(β(s)◦X))2]. S∗ S∗\nUsing that E[Y|X]=E[Y|X ], and adding E[(Y −E[Y|X])2] on both sides, we get for all f,\nS∗\n√\nE[(Y −f(β◦X+ sβ◦ξ))2]=E[(Y −f(β(s)◦X))2]. (4.2)\nCombining (4.1) and (4.2), we have established for every f ∈H,\nE[(Y −(P f)(β◦X))2]≤E[(Y −f(β(s)◦X))2].",
+      "size": 421,
+      "sentences": 4
+    },
+    {
+      "id": 164,
+      "content": "bining (4.1) and (4.2), we have established for every f ∈H,\nE[(Y −(P f)(β◦X))2]≤E[(Y −f(β(s)◦X))2]. (4.3)\ns\nAdditionally, since P f is a convolution type operator, we can compute its Fourier transform as\ns\nfollows. We define the Fourier transform of the measure π as\ns\n(cid:90)\nπ (η):= e−2πi⟨η,y⟩π (dy).",
+      "size": 303,
+      "sentences": 3
+    },
+    {
+      "id": 165,
+      "content": "s\nfollows. We define the Fourier transform of the measure π as\ns\n(cid:90)\nπ (η):= e−2πi⟨η,y⟩π (dy). (cid:98)s s\n20\n===  21 ===\nThen,\n(cid:90)(cid:90)\nP(cid:100)s f(ω)= f((x\nS∗\n,x\nS\n∗\nc\n+y))e−2πi⟨x,ω⟩dxπ\ns\n(dy)\n(cid:90) (cid:90)(cid:90)\n= π (dy) f((x ,x +y))e−2πi⟨x,ω⟩dx dx\ns S∗ S\n∗\nc S∗ S\n∗\nc\n(cid:90)\n= e2πi⟨ωS∗ c,y⟩π\ns\n(dy)·f(cid:98)(ω)=f(cid:98)(ω)·π\n(cid:98)s\n(−ω\nSc\n). ∗\n(cid:82)\nBecause ∥π\n(cid:98)s\n∥\nL∞\n≤ π\ns\n(dy)=1, this immediately implies |P(cid:100)s f|(ω)≤|f(cid:98)|(ω) for all ω.",
+      "size": 494,
+      "sentences": 4
+    },
+    {
+      "id": 166,
+      "content": "(cid:98)s\n∥\nL∞\n≤ π\ns\n(dy)=1, this immediately implies |P(cid:100)s f|(ω)≤|f(cid:98)|(ω) for all ω. Thus\n∥P f∥2 =\n(cid:90) |P(cid:100)s f|(ω)2\ndω ≤\n(cid:90) |f(cid:98)|(ω)2\ndω =∥f∥2 . (4.4)\ns H k(ω) k(ω) H\nCombining (4.3) and (4.4), we have shown for every f ∈H,\nE[(Y −(P f)(β◦X))2]+λ∥P f∥2 ≤E[(Y −f(β(s)◦X))2]+λ∥f∥2 . s s H H\nThus, taking infimum over f ∈H on both sides yields J(β,λ)≤J(β(s),λ). This yields\n1\nDJ(β,λ)[v]=− lim (J(β(s),λ)−J(β,λ))≤0\ns→0+ s\nas desired.",
+      "size": 466,
+      "sentences": 5
+    },
+    {
+      "id": 167,
+      "content": "des yields J(β,λ)≤J(β(s),λ). This yields\n1\nDJ(β,λ)[v]=− lim (J(β(s),λ)−J(β,λ))≤0\ns→0+ s\nas desired. WeshowtheaboveinequalityisstrictwhenJ(β,λ)<E[Y2]andΠ β ̸=0.LetΣ:=Cov(X ). Sc Sc\n∗ ∗\nWe compute the Fourier transform of the Gaussian measure π and get\ns\nπ (cid:98)s (ω S ∗ c )=e−2π2s∥(β◦ω)S∗ c∥2 Σ where ∥η∥2 Σ :=η⊤Ση.",
+      "size": 317,
+      "sentences": 4
+    },
+    {
+      "id": 168,
+      "content": "f the Gaussian measure π and get\ns\nπ (cid:98)s (ω S ∗ c )=e−2π2s∥(β◦ω)S∗ c∥2 Σ where ∥η∥2 Σ :=η⊤Ση. Following the above derivation, and using Fatou’s lemma, we get for all f ∈H,\nliminf\n1\n(∥f∥2 −∥P f∥2 )≥liminf\n(cid:90) |f(cid:98)|(ω)2\n(1−|π (−ω )|2)dω\ns→0+ s H s H s→0+ k(ω) (cid:98)s S ∗ c\n(cid:90) |f(cid:98)|(ω)2\n≥2π2· ·∥(β◦ω) ∥2 dω ≥0. k(ω) S ∗ c Σ\nThe quantity is strictly positive unless f is zero.",
+      "size": 404,
+      "sentences": 3
+    },
+    {
+      "id": 169,
+      "content": "d:98)|(ω)2\n≥2π2· ·∥(β◦ω) ∥2 dω ≥0. k(ω) S ∗ c Σ\nThe quantity is strictly positive unless f is zero. Since\nJ(β(s),λ)=I(β(s),f β(s),λ ,λ)=E[(Y −f β(s),λ (β(s)◦X))2]+λ (cid:13) (cid:13)f β(s),λ (cid:13) (cid:13) 2 H\nJ(β,λ)≤I(β,P s f β(s),λ ,λ)=E[(Y −(P s f β(s),λ )(β◦X))2]+λ (cid:13) (cid:13)P s f β(s),λ (cid:13) (cid:13) 2 H\nwe get\n1\nDJ(β,λ)[v]=− lim (J(β(s),λ)−J(β,λ))\ns→0+ s\n1 (cid:13) (cid:13)2 (cid:13) (cid:13)2\n≤−λli s m →0 in + f s ((cid:13)P s f β(s),λ (cid:13) H −(cid:13)f β(s),λ (cid:13) H )\n≤−2π2λliminf\n(cid:90) |f(cid:98)\nβ(s),λ\n|(ω)2\n·∥(β◦ω) ∥2dω.",
+      "size": 562,
+      "sentences": 3
+    },
+    {
+      "id": 170,
+      "content": "id:13) H −(cid:13)f β(s),λ (cid:13) H )\n≤−2π2λliminf\n(cid:90) |f(cid:98)\nβ(s),λ\n|(ω)2\n·∥(β◦ω) ∥2dω. s→0+ k(ω) S ∗ c Σ\n21\n===  22 ===\n(cid:13) (cid:13)\nSince β(s) →β by Lemma 9, we get (cid:13)f β(s),λ −f β,λ(cid:13) H →0, as s→0+.",
+      "size": 230,
+      "sentences": 2
+    },
+    {
+      "id": 171,
+      "content": "=\n(cid:13) (cid:13)\nSince β(s) →β by Lemma 9, we get (cid:13)f β(s),λ −f β,λ(cid:13) H →0, as s→0+. Therefore, for every R >0,\nwe apply Lebesgue’s dominated convergence theorem to get\nliminf\n(cid:90) |f(cid:98)\nβ(s),λ\n|(ω)2\n·∥(β◦ω) ∥2dω ≥liminf\n(cid:90) |f(cid:98)\nβ(s),λ\n|(ω)2\n·∥(β◦ω) ∥2dω\ns→0+ k(ω) S ∗ c Σ s→0+ ∥ω∥≤R k(ω) S ∗ c Σ\n=\n(cid:90) |f(cid:98)β,λ |(ω)2\n·∥(β◦ω) ∥2dω.",
+      "size": 377,
+      "sentences": 2
+    },
+    {
+      "id": 172,
+      "content": "·∥(β◦ω) ∥2dω\ns→0+ k(ω) S ∗ c Σ s→0+ ∥ω∥≤R k(ω) S ∗ c Σ\n=\n(cid:90) |f(cid:98)β,λ |(ω)2\n·∥(β◦ω) ∥2dω. k(ω) S ∗ c Σ\n∥ω∥≤R\nSince the result holds for every R>0, we deduce\nDJ(β,λ)[v]≤−2π2λ\n(cid:90) |f(cid:98)β,λ |(ω)2\n·∥(β◦ω) ∥2dω. k(ω) S ∗ c Σ\nTheright-handsideequalszeroonlyinoneoftwocases:eitherf isidenticallyzero,whichimplies\nβ,λ\nJ(β,λ)=E[Y2], or β =0, meaning β has no support outside the relevant coordinates. Sc\n∗\nCorollary 1. Assume Assumptions 3.1, 3.2, 4.1. Let λ > 0.",
+      "size": 474,
+      "sentences": 6
+    },
+    {
+      "id": 173,
+      "content": "rt outside the relevant coordinates. Sc\n∗\nCorollary 1. Assume Assumptions 3.1, 3.2, 4.1. Let λ > 0. If β is a directional stationary point\n†\nof J(·,λ), then one of the following must hold:\n(i) Π β =0 or (ii) J(β ,λ)=E[Y2]. Sc † †\n∗\nRemark6. ComparedtoTheorem5,whichconcernsglobalminimizersofJ,Corollary1showsthat\nasimilarfeatureeliminationpropertyholdsmorebroadlyatdirectionalstationarypoints—underan\nadditional Gaussian assumption on the irrelevant features X .",
+      "size": 462,
+      "sentences": 7
+    },
+    {
+      "id": 174,
+      "content": "atdirectionalstationarypoints—underan\nadditional Gaussian assumption on the irrelevant features X . In particular, any stationary point\nSc\n∗\nthat achieves nontrivial prediction error must lie entirely within the relevant feature subspace. This\nextends the statistical interpretation of feature sparsity beyond the global minimum.",
+      "size": 329,
+      "sentences": 3
+    },
+    {
+      "id": 175,
+      "content": "ubspace. This\nextends the statistical interpretation of feature sparsity beyond the global minimum. 5 Stationary Points and Relevant Feature Recovery\nIn this section, we continue our analysis of stationary points of J, turning to the feature recovery\nquestion complementary to (Q3):\n(Q4) Can stationary points capture at least some—or all features—in S ?",
+      "size": 354,
+      "sentences": 3
+    },
+    {
+      "id": 176,
+      "content": "tion complementary to (Q3):\n(Q4) Can stationary points capture at least some—or all features—in S ? ∗\nThe answer to (Q4) is subtle and depends not only on the data distribution but, more crucially,\non the choice of kernel K. The kernel defines the RKHS H and shapes the nonconvex landscape of\nJ, thereby influencing which features can be identified at stationary points.",
+      "size": 370,
+      "sentences": 2
+    },
+    {
+      "id": 177,
+      "content": "onconvex landscape of\nJ, thereby influencing which features can be identified at stationary points. Our analysis shows that ℓ -type RKHS (Example 4) are particularly effective for this purpose,\n1\nenabling recovery of relevant features under milder distributional assumptions than commonly used\nradial kernel RKHS (Example 3) such as the Gaussian RKHS. We outline the underlying intuition\nin Section 5.1, and briefly recall the kernel class here.",
+      "size": 445,
+      "sentences": 3
+    },
+    {
+      "id": 178,
+      "content": "RKHS. We outline the underlying intuition\nin Section 5.1, and briefly recall the kernel class here. Specifically, we focus on the following class of ℓ -type translation-invariant kernels:\n1\n(cid:90) ∞\nK(x,x′)=ψ(∥x−x′∥ ), where ψ(z)= e−tzµ(dt) (5.1)\n1\n0\nwhere µ is a probability measure whose support is compact, and contained in (0,∞). The Laplace\nkernel arises from the Dirac measure at z =1, i.e. µ=δ , in which case ψ(t)=e−t. This will serve\n1\nas our canonical example.",
+      "size": 472,
+      "sentences": 6
+    },
+    {
+      "id": 179,
+      "content": "rac measure at z =1, i.e. µ=δ , in which case ψ(t)=e−t. This will serve\n1\nas our canonical example. In contrast, the Gaussian kernel does not belong to this class. All main results in this section focus on the ℓ -type kernel class, addressing (Q4) under various\n1\ndistributional assumptions. We assume E[Y]=0 throughout this section. 22\n===  23 ===\nRemark 7.",
+      "size": 358,
+      "sentences": 7
+    },
+    {
+      "id": 180,
+      "content": "us\n1\ndistributional assumptions. We assume E[Y]=0 throughout this section. 22\n===  23 ===\nRemark 7. TheassumptionE[Y]=0iswithoutlossofgenerality.Otherwise,onemaysubtractthe\nmean from Y before regression or, equivalently, reformulate the problem with an intercept term γ:\nminminminE[(Y −f(β◦X)−γ)2]+λ∥f∥2 . H\nβ f γ\nThe objective J(β,λ) can then be defined accordingly, and all subsequent results continue to hold. 5.1 Why the Laplace Kernel?",
+      "size": 440,
+      "sentences": 6
+    },
+    {
+      "id": 181,
+      "content": "en be defined accordingly, and all subsequent results continue to hold. 5.1 Why the Laplace Kernel? A First Indication\nWe aim to understand when stationarypoints of J recover the relevant features—this is the central\nquestion posed in (Q4). As we will see, the answer depends not only on the data distribution but\nalso on the choice of kernel K, which fundamentally shapes the optimization landscape.",
+      "size": 400,
+      "sentences": 4
+    },
+    {
+      "id": 182,
+      "content": "ribution but\nalso on the choice of kernel K, which fundamentally shapes the optimization landscape. To build intuition for this kernel dependence, we consider a simpler diagnostic question:\n(Q5) Suppose the true feature set S ̸= ∅. (i) When is β = 0 not stationary? (ii) When does every\n∗\nstationary point β of J satisfy supp(β)∩S ̸=∅?",
+      "size": 335,
+      "sentences": 4
+    },
+    {
+      "id": 183,
+      "content": "When is β = 0 not stationary? (ii) When does every\n∗\nstationary point β of J satisfy supp(β)∩S ̸=∅? ∗\nThisquestion(Q5)servesasabasictestofwhetherthekernelsupportssignaldetection.Question\n(i) is the most basic: it asks whether the trivial solution β =0 can be ruled out a stationary point. Question (ii) is stronger—it asks whether all stationary points capture some relevant feature.",
+      "size": 383,
+      "sentences": 4
+    },
+    {
+      "id": 184,
+      "content": "int. Question (ii) is stronger—it asks whether all stationary points capture some relevant feature. The\ntwo questions in (Q5) are in fact equivalent under the additional assumptions of Theorem 7, since\nTheorem 7 ensures that every stationary point satisfies supp(β)⊆S . ∗\nPerhaps surprisingly, the Laplace kernel—and more broadly, the class of ℓ -type kernels—passes\n1\nthis test under much weaker assumptions than the commonly used Gaussian kernel.",
+      "size": 448,
+      "sentences": 4
+    },
+    {
+      "id": 185,
+      "content": "pe kernels—passes\n1\nthis test under much weaker assumptions than the commonly used Gaussian kernel. We start by\npresenting the positive guarantees shared by all the ℓ type kernels. 1\nTheorem 8. Suppose the ℓ -type kernel is used in the objective J. Then the directional derivative\n1\nat β =0 along the direction e for every 1≤i≤p satisfies\ni\nDJ(0,λ)[e i ]= λ 1 ·ψ′(0)· (cid:90) (cid:12) (cid:12) E[Ye−2πiζXi] (cid:12) (cid:12) 2 2π 1 2ζ2 dζ. R\nAs a result, DJ(0,λ)[e ]<0 if and only if E[Y|X ]̸=0.",
+      "size": 496,
+      "sentences": 6
+    },
+    {
+      "id": 186,
+      "content": "Ye−2πiζXi] (cid:12) (cid:12) 2 2π 1 2ζ2 dζ. R\nAs a result, DJ(0,λ)[e ]<0 if and only if E[Y|X ]̸=0. i i\nThe key to Theorem 8 lies in the structure of the ℓ -type kernel, which induces a bivariate map\n1\n(x,x′) (cid:55)→ |x−x′| on R×R.",
+      "size": 233,
+      "sentences": 3
+    },
+    {
+      "id": 187,
+      "content": "he structure of the ℓ -type kernel, which induces a bivariate map\n1\n(x,x′) (cid:55)→ |x−x′| on R×R. This map is classically known to be conditionally negative definite, a\nfactwemakepreciseinLemma12viaaFourierrepresentation.Thegeneraldefinitionofconditional\nnegative definite kernel can be found in the monograph [26], though this definition is not needed for\nour purpose; the lemma provides all that is required for our analysis. Lemma 12.",
+      "size": 439,
+      "sentences": 3
+    },
+    {
+      "id": 188,
+      "content": "is not needed for\nour purpose; the lemma provides all that is required for our analysis. Lemma 12. Let ν be a probability measure on R, and let f ∈ L (ν) be complex-valued, satisfying\n2\nthe mean-zero condition\n(cid:90)\nf(x)dν(x)=0. R\nSuppose (cid:82) x2ν(dx)<∞. Then\n(cid:90)(cid:90) f(x)f(x′)|x−x′|dν(x)dν(x′)=− (cid:90) (cid:12) (cid:12) (cid:12) (cid:90) f(x)e−2πiζxdν(x) (cid:12) (cid:12) (cid:12) 2 1 dζ.",
+      "size": 409,
+      "sentences": 5
+    },
+    {
+      "id": 189,
+      "content": "=− (cid:90) (cid:12) (cid:12) (cid:12) (cid:90) f(x)e−2πiζxdν(x) (cid:12) (cid:12) (cid:12) 2 1 dζ. R2 R(cid:12) R (cid:12) 2π2ζ2\nAs a result, the left-hand side is always nonpositive, and is strictly negative whenever f ̸≡0 ν-a.e. Proof. For each s>0, the function z (cid:55)→e−s|z| has the Fourier inversion representation\n(cid:90) 2s\ne−s|z| = e−2πiζzm (ζ)dζ, m (ζ):= .",
+      "size": 371,
+      "sentences": 4
+    },
+    {
+      "id": 190,
+      "content": ":55)→e−s|z| has the Fourier inversion representation\n(cid:90) 2s\ne−s|z| = e−2πiζzm (ζ)dζ, m (ζ):= . s s 4π2ζ2+s2\nR\n23\n===  24 ===\nApplying this to the kernel e−s|x−x′| and using Fubini’s theorem, we get\n(cid:90)(cid:90) (cid:90) (cid:12)(cid:90) (cid:12)2\nf(x)f(x′)e−s|x−x′|dν(x)dν(x′)= (cid:12) (cid:12) f(x)e−2πiζxdν(x) (cid:12) (cid:12) m s (ζ)dζ.",
+      "size": 350,
+      "sentences": 2
+    },
+    {
+      "id": 191,
+      "content": "12)2\nf(x)f(x′)e−s|x−x′|dν(x)dν(x′)= (cid:12) (cid:12) f(x)e−2πiζxdν(x) (cid:12) (cid:12) m s (ζ)dζ. (cid:12) (cid:12)\nSince |x−x′| = lim 1(1−e−s|x−x′|), with the uniform bound |1(1−e−s|x−x′|)| ≤ |x−x′| for\ns→0+ s s\nall s>0, the Lebesgue’s dominated convergence theorem applies:\n(cid:90)(cid:90)\nf(x)f(x′)|x−x′|dν(x)dν(x′)= lim\n1(cid:90)(cid:90)\nf(x)f(x′) (cid:0) 1−e−s|x−x′|(cid:1) dν(x)dν(x′).",
+      "size": 394,
+      "sentences": 2
+    },
+    {
+      "id": 192,
+      "content": "f(x)f(x′)|x−x′|dν(x)dν(x′)= lim\n1(cid:90)(cid:90)\nf(x)f(x′) (cid:0) 1−e−s|x−x′|(cid:1) dν(x)dν(x′). s→0+ s\n(cid:82)\nSince fdν =0, the integral of the constant term vanishes, so we have\n(cid:90)(cid:90) f(x)f(x′)|x−x′|dν(x)dν(x′)=− s l → im 0+ 1 s (cid:90) (cid:12) (cid:12) (cid:12) (cid:12) (cid:90) f(x)e−2πiζxdν(x) (cid:12) (cid:12) (cid:12) (cid:12) 2 m s (ζ)dζ\n=− (cid:90) (cid:12) (cid:12) (cid:12) (cid:90) f(x)e−2πiζxdν(x) (cid:12) (cid:12) (cid:12) 2 1 dζ\n(cid:12) (cid:12) 2π2ζ2\nwhere the last equality follows from monotone convergence, since m (ζ)/s↑ 1 as s→0+.",
+      "size": 573,
+      "sentences": 2
+    },
+    {
+      "id": 193,
+      "content": "(cid:12) 2π2ζ2\nwhere the last equality follows from monotone convergence, since m (ζ)/s↑ 1 as s→0+. s 2π2ζ2\nThis completes the proof. Proof of Theorem 8. We apply the first variation formula of J. By definition\n1\nDK (x,x′)[e ]= lim (K −K )(x,x′)\n0 i s→0+ s sei 0\n1\n= lim (ψ(s|x −x′|)−ψ(0))=ψ′(0)|x −x′|. s→0+ s i i i i\nSince E[Y]=0, f is the zero function. Thus, r (x,y)=y−f (0)=y. Therefore,\n0,λ 0,λ 0,λ\n1 1\nDJ(0,λ)[e ]=− E[r (X,Y)r (X′,Y′)DK (X,X′)[e ]]=− ψ′(0)·E[YY′|X −X′|].",
+      "size": 478,
+      "sentences": 8
+    },
+    {
+      "id": 194,
+      "content": "y. Therefore,\n0,λ 0,λ 0,λ\n1 1\nDJ(0,λ)[e ]=− E[r (X,Y)r (X′,Y′)DK (X,X′)[e ]]=− ψ′(0)·E[YY′|X −X′|]. i λ 0,λ 0,λ 0 i λ i i\nLet f (x )=E[Y|X =x ]. Then E[f (X )]=E[Y]=0.",
+      "size": 167,
+      "sentences": 4
+    },
+    {
+      "id": 195,
+      "content": "X′)[e ]]=− ψ′(0)·E[YY′|X −X′|]. i λ 0,λ 0,λ 0 i λ i i\nLet f (x )=E[Y|X =x ]. Then E[f (X )]=E[Y]=0. Applying Lemma 12, we get\ni i i i i i\nE[YY′|X −X′|]=E[f (X )f (X′)|X −X′|]\ni i i i i i i i\n=− (cid:90) (cid:12) (cid:12) E[f i (X i )e−2πiζXi] (cid:12) (cid:12) 2 2π 1 2ζ2 dζ\nR\n=− (cid:90) (cid:12) (cid:12) E[Ye−2πiζXi] (cid:12) (cid:12) 2 1 dζ\n2π2ζ2\nR\nInparticular,E[YY′|X −X′|]<0sincef ̸=0underP.Finally,wenoteψ′(0)=− (cid:82)∞ tµ(dt).Since\ni i i 0\nµ is not concentrated at 0, we get ψ′(0)<0.",
+      "size": 494,
+      "sentences": 4
+    },
+    {
+      "id": 196,
+      "content": "rP.Finally,wenoteψ′(0)=− (cid:82)∞ tµ(dt).Since\ni i i 0\nµ is not concentrated at 0, we get ψ′(0)<0. As a result, we obtain\nDJ(0,λ)[e i ]= λ 1 ψ′(0)· (cid:90) (cid:12) (cid:12) E[Ye−2πiζXi] (cid:12) (cid:12) 2 2π 1 2ζ2 dζ <0. R\nThis completes the proof. An immediate consequence of Theorem 8 is the following corollary. Corollary 2. For ℓ type kernel, β =0 is stationary for J if and only if E[Y|X ]=0 for all i.",
+      "size": 411,
+      "sentences": 6
+    },
+    {
+      "id": 197,
+      "content": "llary. Corollary 2. For ℓ type kernel, β =0 is stationary for J if and only if E[Y|X ]=0 for all i. 1 i\n24\n===  25 ===\nOur analysis shows that ℓ -type kernels are sensitive to marginal signals of any kind: at β = 0,\n1\nthe objective is not stationary whenever some feature has a nonzero main effect, i.e., E[Y|X ] ̸= 0.\ni\nBy contrast, radial basis kernels (e.g., Gaussian kernel) are far more restrictive.",
+      "size": 404,
+      "sentences": 4
+    },
+    {
+      "id": 198,
+      "content": "E[Y|X ] ̸= 0.\ni\nBy contrast, radial basis kernels (e.g., Gaussian kernel) are far more restrictive. As we will see in\nSection 5.1.1, they only respond to marginal signals of linear type, i.e., when E[YX ]̸=0. i\nOn the downside, when the signal is nontrivial but lacks main effects—meaning E[Y|X ] = 0\ni\nfor all i but E[Y|X]̸=0—the objective J(β,λ) has vanishing directional derivatives at β =0, and\nthus provides no first-order information for identifying relevant features.",
+      "size": 474,
+      "sentences": 3
+    },
+    {
+      "id": 199,
+      "content": "erivatives at β =0, and\nthus provides no first-order information for identifying relevant features. In such cases, even ℓ -type\n1\nkernels are powerless at β = 0. This highlights a limitation of first-order analysis: detecting such\nhigher-order signals likely requires exploiting higher-order variation in J, a problem we leave open. 5.1.1 Comparison to Radial Basis Kernels\nOur analysis focuses on ℓ -type kernels because they are sensitive to marginal signals of all type.",
+      "size": 473,
+      "sentences": 4
+    },
+    {
+      "id": 200,
+      "content": "Our analysis focuses on ℓ -type kernels because they are sensitive to marginal signals of all type. To\n1\nplacethisincontext,wecontrastthemwithradialbasiskernels(e.g.,Gaussian),whichexhibitmore\nselective behavior at β =0: they respond only to marginal signals of linear type, as we show below. Consider\n(cid:90) ∞\nK(x,x′)=ψ(∥x−x′∥ 2 ), where ψ(z)= e−tzµ(dt)\n2\n0\nforsomenonnegativeprobabilitymeasureµwithcompactsupportin(0,∞).Thisclassincludesthe\nGaussian kernel as a canonical example.",
+      "size": 484,
+      "sentences": 3
+    },
+    {
+      "id": 201,
+      "content": "ilitymeasureµwithcompactsupportin(0,∞).Thisclassincludesthe\nGaussian kernel as a canonical example. We assume X has finite fourth moments in this subsection 5.1.1. Lemma13. SupposetheradialbasiskernelisusedintheobjectiveJ.Thenthedirectionalderivative\nat β =0 along the direction e for every 1≤i≤p is zero, i.e., DJ(0,λ)[e ]=0 for all i. Moreover,\ni i\n1 1\nlim (J(se ,λ)−J(0,λ))= ψ′(0)·(E[YX ])2 ≤0. s→0+ s2 i λ i\nThe right-hand side is strictly negative if and only if E[YX ]̸=0. i\nProof.",
+      "size": 487,
+      "sentences": 7
+    },
+    {
+      "id": 202,
+      "content": "X ])2 ≤0. s→0+ s2 i λ i\nThe right-hand side is strictly negative if and only if E[YX ]̸=0. i\nProof. Fix i and define\n1\nG (s):=− ·E[r (X,Y)r (X′,Y′)ψ′(s2|X −X′|2)|X −X′|2]. i λ sei,λ sei,λ i i i i\nBy Theorem 1, for every s, the directional derivative at se along e exists and satisfies\ni i\nDJ(se ,λ)[e ]=sG (s). i i i\nIn particular, DJ(0,λ)[e ]=0 for all 1≤i≤p. i\nBy Lemma 8, the map s (cid:55)→ r (X,Y) is continuous in L (P).",
+      "size": 426,
+      "sentences": 7
+    },
+    {
+      "id": 203,
+      "content": "lar, DJ(0,λ)[e ]=0 for all 1≤i≤p. i\nBy Lemma 8, the map s (cid:55)→ r (X,Y) is continuous in L (P). Since ψ′ is continuous and\nsei,λ 2\nbounded, and X has finite fourth moments, it follows that G is continuous by the dominated\ni\nconvergence theorem. Therefore, we have\n(cid:90) s (cid:90) s s2\nJ(se ,λ)−J(0,λ)= DJ(te ,λ)[e ]dt= tG (t)dt= G (0)+o(s2) (s→0). i i i i 2 i\n0 0\nThis yields\n1 1\nlim (J(se ,λ)−J(0,λ))= G (0). s→0+ s2 i 2 i\n25\n===  26 ===\nIt remains to compute G (0).",
+      "size": 475,
+      "sentences": 6
+    },
+    {
+      "id": 204,
+      "content": "yields\n1 1\nlim (J(se ,λ)−J(0,λ))= G (0). s→0+ s2 i 2 i\n25\n===  26 ===\nIt remains to compute G (0). Since E[Y]=0, the minimizing function at β =0 is f ≡0, the zero\ni 0,λ\nfunction, and hence r (X,Y)=Y. Substituting into the definition of G (t) gives\n0,λ i\n2 2\nG (0)=− ψ′(0)·E[YY′|X −X′|2]= ψ′(0)·(E[YX ])2.\ni λ i i λ i\nThe claim follows by combining the last two identities.",
+      "size": 372,
+      "sentences": 4
+    },
+    {
+      "id": 205,
+      "content": "[YY′|X −X′|2]= ψ′(0)·(E[YX ])2.\ni λ i i λ i\nThe claim follows by combining the last two identities. Radial basis kernels suffer from a fundamental limitation: at β = 0, they detect only marginal\nsignals of linear type (i.e., when E[YX ] ̸= 0) and ignore other nonlinear main effects. The lemma\ni\nformalizes this: J(β,λ) is second-order flat at β = 0, with all first-order directional derivatives\nvanishing, and the leading second-order term depending only on E[YX ].",
+      "size": 466,
+      "sentences": 3
+    },
+    {
+      "id": 206,
+      "content": "rder directional derivatives\nvanishing, and the leading second-order term depending only on E[YX ]. This restriction persists\ni\nunderreparameterization.Forexample,settingβ = (cid:112) |θ |anddefiningJ˜(θ,λ):=J( (cid:112) |θ|,λ)yields\ni i\ns\nJ˜(se ,λ)−J˜(0,λ)=− ψ′(0)E[YX ]2+o(|s|) (s→0+)\ni λ i\nso the objective varies at first order but still only through E[YX ].",
+      "size": 362,
+      "sentences": 2
+    },
+    {
+      "id": 207,
+      "content": "0)E[YX ]2+o(|s|) (s→0+)\ni λ i\nso the objective varies at first order but still only through E[YX ]. i\nThusthedependenceonlinearcorrelationsisintrinsic,andradialkernelscannotrevealnonlinear\nmaineffectsthroughitsleading-orderbehaviornearzero.Thismotivatesourfocusonℓ -typekernels.",
+      "size": 278,
+      "sentences": 2
+    },
+    {
+      "id": 208,
+      "content": "nonlinear\nmaineffectsthroughitsleading-orderbehaviornearzero.Thismotivatesourfocusonℓ -typekernels. 1\n5.2 A Decomposition of Directional Derivative\nIn this subsection, we analyze the directional derivative\nDJ(β,λ)[e ]\ni\natageneralβ alongthecoordinatedirectionse .Werestrictattentiontoℓ -typekernelsandassume\ni 1\nX has finite second moment, which guarantees the existence of the derivative (see Example 6). 5.2.1 An Integral Representation\nLemma 14. Let β ∈Rd satisfy β ≥0.",
+      "size": 472,
+      "sentences": 4
+    },
+    {
+      "id": 209,
+      "content": "the derivative (see Example 6). 5.2.1 An Integral Representation\nLemma 14. Let β ∈Rd satisfy β ≥0. Then\ni\n1\nDJ(β,λ)[e ]=− ·E[r (X,Y)r (X′,Y′)ψ′(∥β◦(X−X′)∥ )|X −X′|]. i λ β,λ β,λ 1 i i\nProof. With β ≥0, we get\ni\n1\nDK (x,x′)[e ]= lim (K (x,x′)−K (x,x′))=ψ′(∥β◦(x−x′)∥ )|x −x′|. β i s→0+ s β+sei β 1 i i\nSubstituting this into the first variation formula from Theorem 1 gives the result. We recall the definition of ψ from (5.1).",
+      "size": 426,
+      "sentences": 8
+    },
+    {
+      "id": 210,
+      "content": "first variation formula from Theorem 1 gives the result. We recall the definition of ψ from (5.1). The function ψ and its derivative ψ′ satisfy\n(cid:90) ∞ (cid:90) ∞\nψ(z)= e−tzµ(dt), ψ′(z)=− te−tzµ(dt). 0 0\nFor each t>0, using the Fourier inversion formula, we get\n(cid:90) (cid:89) d 2t\ne−t∥x∥1 = e−2πi⟨ω,x⟩q (ω)dω, where q (ω):= .",
+      "size": 332,
+      "sentences": 4
+    },
+    {
+      "id": 211,
+      "content": "urier inversion formula, we get\n(cid:90) (cid:89) d 2t\ne−t∥x∥1 = e−2πi⟨ω,x⟩q (ω)dω, where q (ω):= . t t 4π2ω2+t2\nRd j=1 j\n26\n===  27 ===\nCombining the two, we obtain for every x in Rd:\n(cid:90) ∞(cid:90)\nψ (cid:0) ∥x∥ (cid:1) = e−2πi⟨ω,x⟩q (ω)dωµ(dt)\n1 t\n0 Rd (5.2)\n(cid:90) ∞(cid:90)\nψ′(cid:0) ∥x∥ (cid:1) =− e−2πi⟨ω,x⟩tq (ω)dωµ(dt). 1 t\n0 Rd\nThese formulas yield an integral representation for the directional derivative DJ(·)[e ]. i\nLemma 15. Let β ∈Rd with β ≥0.",
+      "size": 466,
+      "sentences": 5
+    },
+    {
+      "id": 212,
+      "content": "integral representation for the directional derivative DJ(·)[e ]. i\nLemma 15. Let β ∈Rd with β ≥0. Then\ni\n1 (cid:90) ∞(cid:90) (cid:104) (cid:105)\nDJ(β,λ)[e ]= E r (X,Y)r (X′,Y′)e−2πi⟨ω,β◦(X−X′)⟩|X −X′| ·tq (ω)dωµ(dt). i λ β,λ β,λ i i t\n0 Rd\nProof. By Lemma 14, DJ(β,λ)[e ] is expressed in terms of ψ′(∥β◦(X−X′)∥ ). By (5.2), we have\ni 1\n(cid:90) ∞(cid:90)\nψ′(cid:0) ∥β◦(x−x′)∥ (cid:1) =− e−2πi⟨ω,β◦(x−x′)⟩tq (ω)dωµ(dt).",
+      "size": 420,
+      "sentences": 7
+    },
+    {
+      "id": 213,
+      "content": ".2), we have\ni 1\n(cid:90) ∞(cid:90)\nψ′(cid:0) ∥β◦(x−x′)∥ (cid:1) =− e−2πi⟨ω,β◦(x−x′)⟩tq (ω)dωµ(dt). 1 t\n0 Rd\nSubstituting this representation into the expression for DJ(β,λ)[e ] in Lemma 14 and applying\ni\nFubini’stheoremtoexchangetheorderofexpectationandintegrationyieldsthedesiredformula.",
+      "size": 289,
+      "sentences": 2
+    },
+    {
+      "id": 214,
+      "content": "and applying\ni\nFubini’stheoremtoexchangetheorderofexpectationandintegrationyieldsthedesiredformula. 5.2.2 A Proxy for Directional Derivative\nIn Section 5.1, we show that ℓ -type kernels prevent β =0 from being stationary whenever there is\n1\nanontrivial maineffectfeature.This conclusionrelies ona keyfact: thebivariate function(x,x′)(cid:55)→\n|x−x′| is conditionally negative definite, which forces the directional derivative DJ(0,λ)[e ] to be\ni\nstrictly negative whenever Y depends marginally on some coordinate X .",
+      "size": 516,
+      "sentences": 2
+    },
+    {
+      "id": 215,
+      "content": "rivative DJ(0,λ)[e ] to be\ni\nstrictly negative whenever Y depends marginally on some coordinate X . This is made precise via\ni\nthe Fourier representation of |x−x′| in Lemma 12. Thisraisesanaturalquestion:doesthesamemechanismextendtogeneralβ ̸=0?Topursuethis,\nwe aim to expand the conditionally negative definite kernel (x,x′)(cid:55)→|x−x′| within the directional\nderivative formula. Let us define\nR (X,Y):=r (X,Y)e−2πi⟨ω,β◦X⟩.",
+      "size": 427,
+      "sentences": 4
+    },
+    {
+      "id": 216,
+      "content": "d:55)→|x−x′| within the directional\nderivative formula. Let us define\nR (X,Y):=r (X,Y)e−2πi⟨ω,β◦X⟩. β,ω,λ β,λ\nOur earlier formula of directional derivative (Lemma 15) shows\n1 (cid:90) ∞(cid:90) (cid:104) (cid:105)\nDJ(β,λ)[e ]= E R (X,Y)R (X′,Y′) |X −X′| ·tq (ω)dωµ(dt). i λ β,ω,λ β,ω,λ i i t\n0 Rd\nTo pursue a Fourier-based representation, we are led to consider the quadratic form\n(cid:104) (cid:105)\nE R (X,Y)R (X′,Y′)|X −X′|\nβ,ω,λ β,ω,λ i i\nwith the aim of applying Lemma 12.",
+      "size": 477,
+      "sentences": 4
+    },
+    {
+      "id": 217,
+      "content": "rm\n(cid:104) (cid:105)\nE R (X,Y)R (X′,Y′)|X −X′|\nβ,ω,λ β,ω,λ i i\nwith the aim of applying Lemma 12. However, a key difficulty arises: the lemma crucially relies on\nthe mean-zero condition, which does not hold in our setting—E[R (X,Y)]̸=0 in general. β,ω,λ\nTo overcome this obstacle, we work with a centered integrand:\nS (x,y)=R (x,y)−E[R (X,Y)].",
+      "size": 345,
+      "sentences": 3
+    },
+    {
+      "id": 218,
+      "content": "al. β,ω,λ\nTo overcome this obstacle, we work with a centered integrand:\nS (x,y)=R (x,y)−E[R (X,Y)]. β,ω,λ β,ω,λ β,ω,λ\n27\n===  28 ===\nThis leads to the following quantity, which we view as a proxy for the directional derivative:\n1 (cid:90) ∞(cid:90) (cid:104) (cid:105)\nS (β,λ)= E S (X,Y)S (X′,Y′)|X −X′| ·tq (ω)dωµ(dt). i λ β,ω,λ β,ω,λ i i t\n0 Rd\nAfter centering, this proxy quantity admits a Fourier-type representation. Lemma 16.",
+      "size": 431,
+      "sentences": 5
+    },
+    {
+      "id": 219,
+      "content": "ω,λ i i t\n0 Rd\nAfter centering, this proxy quantity admits a Fourier-type representation. Lemma 16. S i (β,λ)=− λ 1 (cid:90) ∞(cid:90) (cid:90) (cid:12) (cid:12) E[S β,ω,λ (X,Y)e−2πiζXi] (cid:12) (cid:12) 2 2π 1 2ζ2 dζ·tq t (ω)dωµ(dt). 0 Rd R\nProof. Let us define T (x ):=E[S (X,Y)|X =x ]. Then\nβ,ω,λ i β,ω,λ i i\nE[T (X )]=E[S (X,Y)]=0.",
+      "size": 336,
+      "sentences": 6
+    },
+    {
+      "id": 220,
+      "content": "Rd R\nProof. Let us define T (x ):=E[S (X,Y)|X =x ]. Then\nβ,ω,λ i β,ω,λ i i\nE[T (X )]=E[S (X,Y)]=0. β,ω,λ i β,ω,λ\nWe now compute\n(cid:104) (cid:105) (cid:104) (cid:105)\nE S (X,Y)S (X′,Y′)|X −X′| =E T (X )T (X′)|X −X′|\nβ,ω,λ β,ω,λ i i β,ω,λ i β,ω,λ i i i\n=− (cid:90) (cid:12) (cid:12) E[T β,ω,λ (X i )e−2πiζXi] (cid:12) (cid:12) 2 2π 1 2ζ2 dζ\nR\n=− (cid:90) (cid:12) (cid:12) E[S β,ω,λ (X,Y)e−2πiζXi] (cid:12) (cid:12) 2 2π 1 2ζ2 dζ.",
+      "size": 430,
+      "sentences": 4
+    },
+    {
+      "id": 221,
+      "content": "1 2ζ2 dζ\nR\n=− (cid:90) (cid:12) (cid:12) E[S β,ω,λ (X,Y)e−2πiζXi] (cid:12) (cid:12) 2 2π 1 2ζ2 dζ. R\nThefirstandthirdequalityfollowfromthetowerpropertyofconditionalexpectation,andthesecond\nfrom Lemma 12, noting that T satisfies the mean-zero condition. Finally, using the identity\nE[S (X,Y)e−2πiζXi]=Cov(r (X,Y)e−2πi⟨ω,β◦X⟩,e2πiζXi)\nβ,ω,λ β,λ\nwe arrive at the following formula, which will be useful for future reference. Lemma 17.",
+      "size": 431,
+      "sentences": 4
+    },
+    {
+      "id": 222,
+      "content": "β,ω,λ β,λ\nwe arrive at the following formula, which will be useful for future reference. Lemma 17. 1 (cid:90) ∞(cid:90) (cid:90) (cid:12) (cid:12)2 1\nS (β,λ)=− (cid:12)Cov(r (X,Y)e−2πi⟨ω,β◦X⟩,e2πiζXi)(cid:12) dζ·tq (ω)dωµ(dt). i λ (cid:12) β,λ (cid:12) 2π2ζ2 t\n0 Rd R\n5.2.3 Error Control\nWe now quantify the error between the directional derivative DJ(β,λ)[e ] and its proxy S (β,λ).",
+      "size": 383,
+      "sentences": 4
+    },
+    {
+      "id": 223,
+      "content": "rol\nWe now quantify the error between the directional derivative DJ(β,λ)[e ] and its proxy S (β,λ). i i\nThedifferencebetweenthetwoarisesfromthelackofcenteringintheoriginalintegrand,specifically\nthe presence of the nonzero mean term E[R (X,Y)]. β,ω,λ\nThe following lemmas provide bounds to control this discrepancy. Let\nM :=sup{t:t∈supp(µ)}\nµ\ndenote the upper endpoint of the support of the measure µ.\nLemma 18. For every β,λ,\n(cid:90) ∞(cid:90)\n|E[R (X,Y)]|2tq (ω)dωµ(dt)≤λM E[Y2].",
+      "size": 481,
+      "sentences": 5
+    },
+    {
+      "id": 224,
+      "content": "of the measure µ.\nLemma 18. For every β,λ,\n(cid:90) ∞(cid:90)\n|E[R (X,Y)]|2tq (ω)dωµ(dt)≤λM E[Y2]. β,ω,λ t µ\n0 Rd\n28\n===  29 ===\nProof. We begin by observing that t≤M for all t in the support of µ, and so\nµ\n(cid:90) ∞(cid:90) (cid:90) ∞(cid:90)\n|E[R (X,Y)]|2tq (ω)dωµ(dt)≤M · |E[R (X,Y)]|2q (ω)dωµ(dt). β,ω,λ t µ β,ω,λ t\n0 Rd 0 Rd\nTo evaluate the right-hand side, we expand:\n|E[R (X,Y)]|2 =E[R (X,Y)R (X′,Y′)]\nβ,ω,λ β,ω,λ β,ω,λ\n=E[r (X,Y)r (X′,Y′)e−2πi⟨ω,β◦(X−X′)⟩].",
+      "size": 466,
+      "sentences": 5
+    },
+    {
+      "id": 225,
+      "content": "expand:\n|E[R (X,Y)]|2 =E[R (X,Y)R (X′,Y′)]\nβ,ω,λ β,ω,λ β,ω,λ\n=E[r (X,Y)r (X′,Y′)e−2πi⟨ω,β◦(X−X′)⟩]. β,λ β,λ\nwhere (X′,Y′) is an independent copy of (X,Y). By (5.2), we have\n(cid:90) ∞(cid:90)\nK (x,x′)=ψ(∥β◦(x−x′)∥ )= e−2πi⟨ω,β◦(x−x′)⟩q (ω)dωµ(dt).",
+      "size": 247,
+      "sentences": 3
+    },
+    {
+      "id": 226,
+      "content": "(X,Y). By (5.2), we have\n(cid:90) ∞(cid:90)\nK (x,x′)=ψ(∥β◦(x−x′)∥ )= e−2πi⟨ω,β◦(x−x′)⟩q (ω)dωµ(dt). β 1 t\n0 Rd\nApplying Fubini’s theorem, and using the representation above, we obtain:\n(cid:90) ∞(cid:90)\n|E[R (X,Y)]|2q (ω)dωµ(dt)\nβ,ω,λ t\n0 Rd\n(cid:20) (cid:90) ∞(cid:90) (cid:21)\n=E r (X,Y)r (X′,Y′)· e−2πi⟨ω,β◦(X−X′)⟩q (ω)dωµ(dt)\nβ,λ β,λ t\n0 Rd\n=E[r (X,Y)r (X′,Y′)·K (X,X′)]. β,λ β,λ β\nBy Lemma 7, this expectation equals λ2∥f ∥2 , and is at most λE[Y2] by Lemma 5.\nβ,λ H\nThis completes the proof.",
+      "size": 498,
+      "sentences": 4
+    },
+    {
+      "id": 227,
+      "content": "this expectation equals λ2∥f ∥2 , and is at most λE[Y2] by Lemma 5.\nβ,λ H\nThis completes the proof. Lemma 19. For every β,i,λ,\n(cid:90) ∞(cid:90)\n|E[R (X,Y)|X −X′|]|2tq (ω)dωµ(dt)≤2M E[Y2]E[|X |2]. β,ω,λ i i t µ i\n0 Rd\nProof. By definition |R |(x,y)≤|r |(x,y) for all β,ω,x,y and thus\nβ,ω,λ β,λ\nE[|R (X,Y)|2]≤E[|r (X,Y)|2]≤E[Y2]. β,ω,λ β,λ\nBy Cauchy-Schwartz inequality, this implies\n|E[R (X,Y)|X −X′|]|2 ≤E[|R (X,Y)|2]E[|X −X′|2]≤2E[Y2]E[|X |2].",
+      "size": 446,
+      "sentences": 6
+    },
+    {
+      "id": 228,
+      "content": "hy-Schwartz inequality, this implies\n|E[R (X,Y)|X −X′|]|2 ≤E[|R (X,Y)|2]E[|X −X′|2]≤2E[Y2]E[|X |2]. β,ω,λ i i β,ω,λ i i i\n(cid:82)(cid:82) (cid:82) (cid:82)\nThe estimate then follows from tq (ω)dωµ(dt)= tµ(dt)≤M µ(dt)=M . t µ µ\nWith these lemmas in preparation, we reach the final conclusion. Let\nM :=maxE[X2], and M :=E[Y2]. X i Y\ni\nLemma 20. For every β,i,λ,\n1\n|DJ(β,λ)[e ]−S (β,λ)|≤C(√ +1). i i\nλ\nThe constant C <∞ depends only on M , M and M . X Y µ\n29\n===  30 ===\nProof. Fix β,i,λ.",
+      "size": 486,
+      "sentences": 9
+    },
+    {
+      "id": 229,
+      "content": "√ +1). i i\nλ\nThe constant C <∞ depends only on M , M and M . X Y µ\n29\n===  30 ===\nProof. Fix β,i,λ. Note\nλ·|DJ(β,λ)[e ]−S (β,λ)|=∆ +∆ +∆\ni i 1 2 3\nwhere\n(cid:90) ∞(cid:90)\n∆ = E[R (X,Y)]E[R (X′,Y′)|X −X′|] tq (ω)dωµ(dt)\n1 β,ω,λ β,ω,λ i i t\n0 Rd\n(cid:90) ∞(cid:90)\n∆ = E[R (X,Y)]E[R (X′,Y′)|X −X′|] tq (ω)dωµ(dt)\n2 β,ω,λ β,ω,λ i i t\n0 Rd\n(cid:90) ∞(cid:90)\n∆ = E[R (X,Y)]E[R (X′,Y′)] tq (ω)dωµ(dt)\n3 β,ω,λ β,ω,λ t\n0 Rd\n(cid:82)\nThe measure tq (ω)dωµ(dt) is finite with tq (ω)dωµ(dt) ≤ M .",
+      "size": 487,
+      "sentences": 5
+    },
+    {
+      "id": 230,
+      "content": ")dωµ(dt)\n3 β,ω,λ β,ω,λ t\n0 Rd\n(cid:82)\nThe measure tq (ω)dωµ(dt) is finite with tq (ω)dωµ(dt) ≤ M . Applying the Cauchy–Schwarz\nt t µ\ninequality and invoking Lemmas 18 and 19, we obtain that the error terms |∆ |,|∆ | are bounded\n√ 1 2\nby C λ and |∆ | is bounded by Cλ, where C <∞ depends only on M ,M ,M . 3 X Y µ\nRemark 8.",
+      "size": 323,
+      "sentences": 3
+    },
+    {
+      "id": 231,
+      "content": "nded\n√ 1 2\nby C λ and |∆ | is bounded by Cλ, where C <∞ depends only on M ,M ,M . 3 X Y µ\nRemark 8. WhilebothSections5.2.1and5.2.3involveFourieranalysis—oneexploitstheforward\ntransform of ψ′ (e.g., Lemma 15), the other through the inverse transform of ψ (e.g., Lemma 18)\n—this repetition is necessary. The key is that error control requires expansion in the frequency\ndomain, where bounds involving M emerge (Lemma 18).",
+      "size": 419,
+      "sentences": 4
+    },
+    {
+      "id": 232,
+      "content": "ror control requires expansion in the frequency\ndomain, where bounds involving M emerge (Lemma 18). We do not know how to carry out error\nµ\ncontrol without working in the frequency domain. 5.2.4 Conclusion\nWe conclude by presenting the decomposition of the directional derivative DJ(β,λ)[e ]. For clarity\ni\nof presentation, we define M (β,λ):=−λS (β,λ). i i\nTheorem 9. Let β ∈Rd satisfy β ≥0, and let λ∈(0,1).",
+      "size": 409,
+      "sentences": 6
+    },
+    {
+      "id": 233,
+      "content": "presentation, we define M (β,λ):=−λS (β,λ). i i\nTheorem 9. Let β ∈Rd satisfy β ≥0, and let λ∈(0,1). Then\ni\n1 1\nDJ(β,λ)[e ]=− M (β,λ)+ √ R (β,λ)\ni λ i λ i\nwhere |R (β,λ)|≤C for some constant C <∞ depending only on M , M , and M , and where\ni X Y µ\n(cid:90)(cid:90)(cid:90) (cid:12) (cid:12)2 1\nM (β,λ)= (cid:12)Cov(r (X,Y)e−2πi⟨ω,β◦X⟩,e2πiζXi)(cid:12) dζ·tq (ω)dωµ(dt)\ni (cid:12) β,λ (cid:12) 2π2ζ2 t\nProof.",
+      "size": 406,
+      "sentences": 4
+    },
+    {
+      "id": 234,
+      "content": "12)Cov(r (X,Y)e−2πi⟨ω,β◦X⟩,e2πiζXi)(cid:12) dζ·tq (ω)dωµ(dt)\ni (cid:12) β,λ (cid:12) 2π2ζ2 t\nProof. This follows from Lemma 17 and 20, and M (β,λ)=−λS (β,λ)\ni i\nTheorem 9 decomposes the directional derivative DJ(β,λ)[e ] into two terms: M (β,λ) scaled\n√ i i\nby 1/λ, and a remainder term R (β,λ) scaled by 1/ λ. Crucially, the remainder term R (β,λ) is\ni i\nuniformly bounded.",
+      "size": 374,
+      "sentences": 2
+    },
+    {
+      "id": 235,
+      "content": "ainder term R (β,λ) scaled by 1/ λ. Crucially, the remainder term R (β,λ) is\ni i\nuniformly bounded. The term M (β,λ) aggregates the squared covariance between the modulated\ni\nresidual r\nβ,λ\n(X,Y)e−2πi⟨ω,β◦X⟩ and the coordinate function e2πiζXi evaluated at the current β,\nso intuitively it quantifies the extent to which feature X explains what remains in the residual\ni\nr (X,Y).Thisdecompositionholdsforallβ andanydatadistributionwithfinitesecondmoments.",
+      "size": 455,
+      "sentences": 2
+    },
+    {
+      "id": 236,
+      "content": "the residual\ni\nr (X,Y).Thisdecompositionholdsforallβ andanydatadistributionwithfinitesecondmoments. β,λ\nWe note M (β,λ) depends on λ since the residual r depends on λ.",
+      "size": 167,
+      "sentences": 2
+    },
+    {
+      "id": 237,
+      "content": "ibutionwithfinitesecondmoments. β,λ\nWe note M (β,λ) depends on λ since the residual r depends on λ. As a result, we are unsure\ni β,λ\nwhetheritistheleadingterm.Inthenextsubsection,wewillevaluateM (β,λ)underthefunctional\ni\nANOVAmodelandidentifyregimeswhereitisuniformly bounded away from zero.Intheseregimes,\n−M (β,λ)/λ is the dominating term in DJ(β,λ)[e ] for small λ, and the interpretation is that the\ni i\nfeature X explains the residual and are detectable through the directional derivative DJ(β,λ)[e ].",
+      "size": 506,
+      "sentences": 3
+    },
+    {
+      "id": 238,
+      "content": "feature X explains the residual and are detectable through the directional derivative DJ(β,λ)[e ]. i i\n30\n===  31 ===\n5.3 Functional ANOVA Model\nBy definition of the core feature set S , we have\n∗\nE[Y|X]=E[Y|X ]\nS∗\nso all predictive information in X is contained in X . To quantify how each coordinate X within\nS∗ j\nS contributes—either individually or through interactions—we impose the following assumption. ∗\nAssumption 5.1. The variables (X ) in S are mutually independent.",
+      "size": 477,
+      "sentences": 5
+    },
+    {
+      "id": 239,
+      "content": "mpose the following assumption. ∗\nAssumption 5.1. The variables (X ) in S are mutually independent. j j∈S∗ ∗\nUnder this independence assumption 5.1, the regression function f(x) = E[Y|X = x] admits a\nunique functional ANOVA decomposition [27]:\n(cid:88)\nf(x)=f + f (x ),\n0 S S\n∅̸=S⊆S∗\nwherex =(x ) andeachf dependsonlyonthecoordinatesinS,andthecomponentfunctions\nS j j∈S S\nf satisfy the orthogonality conditions:\nS\nE[f (X )|X ]=0, ∀T ̸=S.",
+      "size": 437,
+      "sentences": 4
+    },
+    {
+      "id": 240,
+      "content": "ndthecomponentfunctions\nS j j∈S S\nf satisfy the orthogonality conditions:\nS\nE[f (X )|X ]=0, ∀T ̸=S. S S T\nIn this decomposition, the constant term is f = E[Y] = 0, the first-order component is f (X ) =\n0 i i\nE[Y|X ], and the second-order componet is f (X ,X ) = E[Y|X ,X ]−E[Y|X ]−E[Y|X ], and\ni i,j i j i j i j\nso on for higher-order terms.",
+      "size": 341,
+      "sentences": 2
+    },
+    {
+      "id": 241,
+      "content": "onet is f (X ,X ) = E[Y|X ,X ]−E[Y|X ]−E[Y|X ], and\ni i,j i j i j i j\nso on for higher-order terms. Each f captures a distinct contribution to the regression function—\nS\nwhetheramaineffectfromindividualfeatures(|S|=1)orfrominteractionsamongmultiplefeatures\n(|S| > 1). The decomposition makes explicit the contributions of individual features and their\ninteractions. In what follows, we use the functional ANOVA model as a stylized framework to understand\nfeature learning.",
+      "size": 472,
+      "sentences": 4
+    },
+    {
+      "id": 242,
+      "content": "follows, we use the functional ANOVA model as a stylized framework to understand\nfeature learning. Although some of the results can be extended to slightly weaker conditions—such\nas replacing mutual independence with pairwise or approximate independence—we do not pursue\nthat direction here, as it would be a distraction from the main ideas.",
+      "size": 341,
+      "sentences": 2
+    },
+    {
+      "id": 243,
+      "content": "ndependence—we do not pursue\nthat direction here, as it would be a distraction from the main ideas. 5.3.1 Decomposition of Directional Derivative under Functional ANOVA\nUnder the functional ANOVA model, the directional derivative at those β with β =0\ni\nDJ(β,λ)[e ]\ni\nadmits a particularly simple decomposition. The perhaps surprise fact is that the term M (β,λ) in\ni\nthe decomposition (Theorem 9) becomes independent of λ. Lemma 21 offers the key insight. Lemma 21. Suppose X is independent of (X ) .",
+      "size": 500,
+      "sentences": 5
+    },
+    {
+      "id": 244,
+      "content": "mes independent of λ. Lemma 21 offers the key insight. Lemma 21. Suppose X is independent of (X ) . Then, at every β with β =0,\ni j j̸=i i\nCov (cid:0) r (X,Y)e−2πi⟨ω,β◦X⟩,e2πiζXi (cid:1) =E[(Y −E[Y|X ])e−2πi⟨ω,β◦X⟩e−2πiζXi]. β,λ supp(β)\nIn particular, the right-hand side—and hence the covariance term—is independent of λ. Proof. Let β =0. By definition,\ni\nr (X,Y)e−2πi⟨ω,β◦X⟩\nβ,λ\n=(Y −E[Y|X ])e−2πi⟨ω,β◦X⟩+(E[Y|X ]−f (β◦X))e−2πi⟨ω,β◦X⟩.",
+      "size": 437,
+      "sentences": 8
+    },
+    {
+      "id": 245,
+      "content": ". By definition,\ni\nr (X,Y)e−2πi⟨ω,β◦X⟩\nβ,λ\n=(Y −E[Y|X ])e−2πi⟨ω,β◦X⟩+(E[Y|X ]−f (β◦X))e−2πi⟨ω,β◦X⟩. supp(β) supp(β) β,λ\n31\n===  32 ===\nSince X\ni\nis independent of X\nsupp(β)\n, the second term above is independent of e2πiζXi. Therefore,\nCov (cid:0) r (X,Y)e−2πi⟨ω,β◦X⟩, e2πiζXi (cid:1) =Cov (cid:0) (Y −E[Y|X ])e−2πi⟨ω,β◦X⟩, e2πiζXi (cid:1) . β,λ supp(β)\nSince the first factor in the covariance is mean-zero, the conclusion follows. Theorem 10. Let β ∈Rd satisfy β =0, and let λ∈(0,1).",
+      "size": 484,
+      "sentences": 7
+    },
+    {
+      "id": 246,
+      "content": "variance is mean-zero, the conclusion follows. Theorem 10. Let β ∈Rd satisfy β =0, and let λ∈(0,1). Assume Assumptions 3.1, 3.2, 5.1. Let\ni\n(cid:90)(cid:90)(cid:90) (cid:12) (cid:104) (cid:105)(cid:12)2 1\nM (β):= (cid:12)E (Y −E[Y|X ])e−2πi⟨ω,β◦X⟩e−2πiζXi (cid:12) dζ·tq (ω)dωµ(dt). i (cid:12) supp(β) (cid:12) 2π2ζ2 t\nThen\n1 1\nDJ(β,λ)[e ]=− M (β)+ √ R (β,λ)\ni λ i λ i\nwhere |R (β,λ)|≤C for some constant C <∞ depending only on M , M , and M . i X Y µ\nProof.",
+      "size": 458,
+      "sentences": 7
+    },
+    {
+      "id": 247,
+      "content": "i λ i λ i\nwhere |R (β,λ)|≤C for some constant C <∞ depending only on M , M , and M . i X Y µ\nProof. This is a consequence of Theorem 9 and Lemma 21.",
+      "size": 148,
+      "sentences": 3
+    },
+    {
+      "id": 248,
+      "content": "∞ depending only on M , M , and M . i X Y µ\nProof. This is a consequence of Theorem 9 and Lemma 21. Theorem 10 refines the earlier decomposition in Theorem 9 by showing that the directional\n√\nderivative DJ(β,λ)[e ] splits into a dominant term −M (β)/λ, and a smaller term of order 1/ λ,\ni i\nwhichisnegligiblewhenM (β)>0.Indeed,Theorem10notonlyshowsthatforanyβ withβ =0,\ni i\nlim λDJ(β,λ)[e ]=−M (β),\ni i\nλ→0+\nbut also, via the uniform bound |R (β,λ)|≤C, yields the stronger statement\ni\nlim sup |λDJ(β,λ)[e ]+M (β)|=0.",
+      "size": 516,
+      "sentences": 4
+    },
+    {
+      "id": 249,
+      "content": "via the uniform bound |R (β,λ)|≤C, yields the stronger statement\ni\nlim sup |λDJ(β,λ)[e ]+M (β)|=0. i i\nλ→0+β∈Rd:βi=0\nIt is therefore important to understand when the leading term M (β) is strictly postive. i\nLemma 22. M (β)≥0 with equality holds if and only if E[Y|X ]=E[Y|X ]. i supp(β)∪{i} supp(β)\n(cid:82)∞\nProof. We investigate when equality M (β)=0 holds. Let us denote Q(ω)= tq (ω)µ(dt). Since\ni 0 t\nq is strictly positive and µ is not concentrated at zero, we get Q(ω)>0 for all ω.",
+      "size": 488,
+      "sentences": 8
+    },
+    {
+      "id": 250,
+      "content": "dt). Since\ni 0 t\nq is strictly positive and µ is not concentrated at zero, we get Q(ω)>0 for all ω. Thus,\nt\n(cid:90)(cid:90) (cid:12) (cid:12)2 Q(ω)\nM (β)= (cid:12)E[(Y −E[Y|X ])e−2πi⟨ω,β◦X⟩e−2πiζXi](cid:12) dζdω. i (cid:12) supp(β) (cid:12) 2π2ζ2\nThe weights Q(ω)/(2π2ζ2) is strictly positive. Thus, M (β)=0 if and only if\ni\nE[(Y −E[Y|X ])e−2πi⟨ω,β◦X⟩e−2πiζXi]=0 a.e. ω,ζ.",
+      "size": 373,
+      "sentences": 6
+    },
+    {
+      "id": 251,
+      "content": "s strictly positive. Thus, M (β)=0 if and only if\ni\nE[(Y −E[Y|X ])e−2πi⟨ω,β◦X⟩e−2πiζXi]=0 a.e. ω,ζ. supp(β)\nThis implies the characteristic function of the random variable\nE[Y|X ]−E[Y|X ]\nsupp(β)∪{i} supp(β)\nis almost everywhere zero, so the random variable must vanish almost surely. Therefore, the leading term M (β)>0 if and only if E[Y|X ]̸=E[Y|X ]; that is,\ni supp(β)∪{i} supp(β)\nif X helps explain the target Y beyond what is already captured by X . i supp(β)\n32\n===  33 ===\nRemark 9.",
+      "size": 490,
+      "sentences": 6
+    },
+    {
+      "id": 252,
+      "content": "elps explain the target Y beyond what is already captured by X . i supp(β)\n32\n===  33 ===\nRemark 9. Theorem 10 and Lemma 22 together provide intuitions how the objective J learns\nrelevant features. They show that when X helps explain the target Y beyond what is already\ni\ncaptured by X , then the term M (β) is strictly positive, making the derivative DJ(β,λ)[e ]\nsupp(β) i i\nstrictly negative for small λ, thereby pushing the model to activate that coordinate i.",
+      "size": 463,
+      "sentences": 4
+    },
+    {
+      "id": 253,
+      "content": "supp(β) i i\nstrictly negative for small λ, thereby pushing the model to activate that coordinate i. 5.4 Relevant Feature Recovery\nInthissection,weprovideanswersto(Q4)—namely,understandwhenstationarypointsofJ recover\ntherelevantfeatures.Tothisend,weassumeindependenceofthefeaturevariables(Assumption5.1),\nand work under the functional ANOVA model (section 5.3)\n(cid:88)\nE[Y|X]= f (X ).",
+      "size": 384,
+      "sentences": 2
+    },
+    {
+      "id": 254,
+      "content": "es(Assumption5.1),\nand work under the functional ANOVA model (section 5.3)\n(cid:88)\nE[Y|X]= f (X ). S S\n∅̸=S⊆S∗\nA feature i∈S may contribute to prediction through one of two types of signals: (i) a main effect,\n∗\nmeaningtheunivariatecomponentf intheANOVAexpansionisnonzero,i.e.,f (X )̸≡0inL (P);\ni i i 2\nor(ii)aninteraction,meaningiappearsinsomehigher-ordercomponentf with|S|≥2andf ̸≡0\nS S\nfor some S ∋i.",
+      "size": 404,
+      "sentences": 2
+    },
+    {
+      "id": 255,
+      "content": "r(ii)aninteraction,meaningiappearsinsomehigher-ordercomponentf with|S|≥2andf ̸≡0\nS S\nfor some S ∋i. In the subsections that follow, we investigate regimes under which stationary points\nof J recover the corresponding feature.",
+      "size": 224,
+      "sentences": 2
+    },
+    {
+      "id": 256,
+      "content": "ollow, we investigate regimes under which stationary points\nof J recover the corresponding feature. 5.4.1 Recovery of Main Effects\nWe begin with the case where a relevant feature i∈S contributes through a main effect—that is,\n∗\nE[Y|X ]̸=0.Inthiscase,weshowthatthedirectionalderivativeDJ(β,λ)[e ]isuniformlynegative\ni i\nover a neighborhood of β where β =0, ensuring the model is driven to activate coordinate i.\ni\nTheorem 11. Assume Assumptions 3.1, 3.2, 5.1.",
+      "size": 458,
+      "sentences": 3
+    },
+    {
+      "id": 257,
+      "content": "uring the model is driven to activate coordinate i.\ni\nTheorem 11. Assume Assumptions 3.1, 3.2, 5.1. Suppose i ∈ S has a main effect: E[Y|X ] ̸= 0. ∗ i\nThen, for every compact set C⊂{β ∈Rd :β =0}, we have\ni\ninf M (β)>0. i\nβ∈C\nConsequently, there exist constants ε>0 and λ >0 such that for all λ∈(0,λ ) and all β ∈C,\n0 0\nλ·DJ(β,λ)[e ]≤−ε. i\nRemark10.",
+      "size": 348,
+      "sentences": 6
+    },
+    {
+      "id": 258,
+      "content": "t constants ε>0 and λ >0 such that for all λ∈(0,λ ) and all β ∈C,\n0 0\nλ·DJ(β,λ)[e ]≤−ε. i\nRemark10. Theorem11showsthatanyfeatureiwithanontrivialmaineffectinducesauniformly\nnegativedirectionalderivativeacrosscompactsetswhereitisinactive(i.e,β =0).Thisguaranteesa\ni\ndescent direction toward activating X , reinforcing the idea that features of main effects are reliably\ni\ndetectable by the objective when λ is small. Proof of Theorem 11.",
+      "size": 435,
+      "sentences": 4
+    },
+    {
+      "id": 259,
+      "content": "es of main effects are reliably\ni\ndetectable by the objective when λ is small. Proof of Theorem 11. We note M (β) is not continuous in β due to the discontinuity of supp(β). i\nTo remedy this issue, we define for every i, subset A⊂{1,2,...,d}, and β ∈Rd\n(cid:90)(cid:90)(cid:90) (cid:12) (cid:12)2 1\nN (β)= (cid:12)E[(Y −E[Y|X ])e−2πi⟨ω,β◦X⟩e−2πiζXi](cid:12) dζ·tq (ω)dωµ(dt). i,A (cid:12) A (cid:12) 2π2ζ2 t\nBy definition, M (β)=N (β) when supp(β)=A.",
+      "size": 450,
+      "sentences": 5
+    },
+    {
+      "id": 260,
+      "content": "id:12) dζ·tq (ω)dωµ(dt). i,A (cid:12) A (cid:12) 2π2ζ2 t\nBy definition, M (β)=N (β) when supp(β)=A. i i,A\nWe claim that N (β) is lower semicontinuous. Fix any sequence β(n) → β. For each fixed\ni,A\n(ω,ζ,t), the inner expectation in the integrand is continuous in β, so the integrand converges\npointwise. Moreover, the integrand is nonnegative. By Fatou’s lemma, we conclude\nliminfN (β(n))≥N (β),\ni,A i,A\nn→∞\n33\n===  34 ===\nso N is lower semicontinuous on Rd. i,A\nNext, we show N (β) > 0 when i ̸∈ A.",
+      "size": 498,
+      "sentences": 8
+    },
+    {
+      "id": 261,
+      "content": "i,A\nn→∞\n33\n===  34 ===\nso N is lower semicontinuous on Rd. i,A\nNext, we show N (β) > 0 when i ̸∈ A. To see this, suppose N (β) = 0. Then the integrand\ni,A i,A\nvanishes almost everywhere,\nE[(Y −E[Y|X ])e−2πi⟨ω,β◦X⟩e−2πiζXi]=0 a.e. ω,ζ. A\nThis implies that the characteristic function of the random variable\nE[(Y −E[Y|X ])|X ] where B :=supp(β)\nA B∪{i}\nvanishes almost everywhere, so the random variable must be zero almost surely.",
+      "size": 429,
+      "sentences": 6
+    },
+    {
+      "id": 262,
+      "content": "B :=supp(β)\nA B∪{i}\nvanishes almost everywhere, so the random variable must be zero almost surely. However, consider\nits inner product with the main effect component f (X ). If i̸∈A, then\ni i\nE(cid:2)E[Y −E[Y|X ]|X ]·f (X ) (cid:3) =E[(Y −E[Y|X ])·f (X )]\nA B∪{i} i i A i i\n=E[Y ·f (X )]−E[E[Y|X ]·f (X )]\ni i A i i\n=E[f2(X )],\ni i\nwhere the last equality uses that E[f (X )]=0 and X is independent of X whenever i∈/ A.",
+      "size": 419,
+      "sentences": 3
+    },
+    {
+      "id": 263,
+      "content": "2(X )],\ni i\nwhere the last equality uses that E[f (X )]=0 and X is independent of X whenever i∈/ A. Since\ni i i A\nf (X ) = E[Y|X ] ̸≡ 0 by assumption, we have E[f2(X )] > 0, contradicting the claim that the\ni i i i i\nrandom variable is zero. Thus, we have N (β)>0 when i̸∈A. i,A\nWe now return to the proof of Theorem 11. Fix any subset A ⊂ {1,...,d}\\{i}.",
+      "size": 354,
+      "sentences": 5
+    },
+    {
+      "id": 264,
+      "content": "N (β)>0 when i̸∈A. i,A\nWe now return to the proof of Theorem 11. Fix any subset A ⊂ {1,...,d}\\{i}. The function\nN (β) is lower semicontinuous and strictly positive on the compact set C. By the extreme value\ni,A\ntheorem, it attains its minimum on C. Thus, there exists a constant ε >0 such that\nA\nN (β)≥ε ∀β ∈C. i,A A\nLet ε>0 be the minimum of all such ε over subsets A⊂{1,...,d}\\{i}. A\nFor any β ∈C, we have i∈/ supp(β) by assumption, so\nM (β)=N (β)≥ϵ ≥ϵ>0.",
+      "size": 457,
+      "sentences": 6
+    },
+    {
+      "id": 265,
+      "content": "subsets A⊂{1,...,d}\\{i}. A\nFor any β ∈C, we have i∈/ supp(β) by assumption, so\nM (β)=N (β)≥ϵ ≥ϵ>0. i i,supp(β) supp(β)\nThis shows inf M (β)>0, as desired. β∈C i\nFinally, by Theorem 10, there exists C <∞ such that for all λ∈(0,1), and for all β ∈C\n√\nλ·DJ(β,λ)[e ]≤−M (β)+C λ.\ni i\nItfollowsthatforsufficientlysmallλ>0,wehaveλ·DJ(β,λ)[e ]≤−ϵmustholdforallβ ∈C. i\nCorollary 3. Assume Assumptions 3.1, 3.2, 5.1. Suppose i∈S has a main effect: E[Y|X ]̸=0.",
+      "size": 449,
+      "sentences": 7
+    },
+    {
+      "id": 266,
+      "content": "llβ ∈C. i\nCorollary 3. Assume Assumptions 3.1, 3.2, 5.1. Suppose i∈S has a main effect: E[Y|X ]̸=0. ∗ i\nForeverycompactsubsetCinRd,thereisλ >0suchthatforallλ∈(0,λ ),ifβ isadirectional\n0 0\nstationary point of J(·,λ), then one of the following must hold:\n(i) i∈supp(β ) or (ii) β ̸∈C.",
+      "size": 282,
+      "sentences": 5
+    },
+    {
+      "id": 267,
+      "content": "0 0\nstationary point of J(·,λ), then one of the following must hold:\n(i) i∈supp(β ) or (ii) β ̸∈C. † †\nCorollary 3 strengthens Corollary 2 by extending the signal-extraction property from the origin\nβ =0toarbitrarycompactsubsetsofRd.OnceamaineffectexistsforafeatureX ,anydirectional\ni\nstationary point that remains within a bounded region must include X for small λ.\ni\n34\n===  35 ===\n5.4.2 Recovery of Interactions\nNext,weconsiderfeaturesi∈S thatcontributeonlythroughinteractionterms—thatis,f ≡0but\n∗ i\nf ̸≡0forsomeS ∋iwith|S|≥2.ThisimpliesinparticularE[Y|X ]̸=E[Y|X ].Attheorigin\nS S S\\{i}\nβ = 0, the directional derivative DJ(0,λ)[e ] vanishes (Corollary 2), reflecting that X does not\ni i\ninfluencetheobjectiveatfirstorderwhenconsideredindependentlyofothervariables.Consequently,\nlearning such features requires moving away from the origin to parameter configurations of β that\ncapture their joint contribution.",
+      "size": 914,
+      "sentences": 2
+    },
+    {
+      "id": 268,
+      "content": "moving away from the origin to parameter configurations of β that\ncapture their joint contribution. WeshowthatoncetheothervariablesinaninteractionsetS aresufficientlyactive,theobjective\ninduces a descent direction along coordinate i.",
+      "size": 233,
+      "sentences": 2
+    },
+    {
+      "id": 269,
+      "content": "ninteractionsetS aresufficientlyactive,theobjective\ninduces a descent direction along coordinate i. Specifically, we show that the directional derivative\nDJ(β,λ)[e ] is uniformly negative over a neighborhood of β where β =0, and β remains bounded\ni i j\nawayfromzeroforallj ∈S\\{i}.Theinterpretationisthatthemodelisdriventoactivatecoordinate\ni once its interaction partners are already represented in the current parameter configuration. Theorem 12. Assume Assumptions 3.1, 3.2, 5.1.",
+      "size": 481,
+      "sentences": 4
+    },
+    {
+      "id": 270,
+      "content": "y represented in the current parameter configuration. Theorem 12. Assume Assumptions 3.1, 3.2, 5.1. Let i∈S ⊂S where E[Y|X ]̸=E[Y|X ]. ∗ S\\{i} S\nLet C be a compact set in Rd with C⊂ (cid:8) β ∈Rd :β =0 and β >0 for all j ∈S\\{i} (cid:9) . Then,\ni j\ninf M (β)>0. i\nβ∈C\nConsequently, there exist constants ε>0 and λ >0 such that for all λ∈(0,λ ) and all β ∈C,\n0 0\nλ·DJ(β,λ)[e ]≤−ε. i\nRemark 11.",
+      "size": 391,
+      "sentences": 8
+    },
+    {
+      "id": 271,
+      "content": "constants ε>0 and λ >0 such that for all λ∈(0,λ ) and all β ∈C,\n0 0\nλ·DJ(β,λ)[e ]≤−ε. i\nRemark 11. Theorem 12 shows that a feature i involved interactions with other variables X\nS\\{i}\ninduces a uniformly negative directional derivative over compact sets where β = 0 and the other\ni\ncoordinates in S\\{i} are active. This ensures a descent direction along e , and such features can be\ni\nlearned through coordinated activation of their interaction partners when λ is small.",
+      "size": 470,
+      "sentences": 4
+    },
+    {
+      "id": 272,
+      "content": "ures can be\ni\nlearned through coordinated activation of their interaction partners when λ is small. Mathematically, Theorem 12 generalizes Theorem 11: when S = {i}, the interaction reduces to\na main effect and the condition on S\\{i} is vacuous. Conceptually, the key distinction is that main\neffectsareidentifiablefromfirst-ordervariationalreadyatβ =0,whereasinteractioneffectsbecome\nidentifiable once the other variables in S are sufficiently active. Proof of Theorem 12.",
+      "size": 472,
+      "sentences": 4
+    },
+    {
+      "id": 273,
+      "content": "ectsbecome\nidentifiable once the other variables in S are sufficiently active. Proof of Theorem 12. We define for every i, subset A⊂{1,2,...,d}, and β ∈Rd\n(cid:90)(cid:90)(cid:90) (cid:12) (cid:12)2 1\nN (β)= (cid:12)E[(Y −E[Y|X ])e−2πi⟨ω,β◦X⟩e−2πiζXi](cid:12) dζ·tq (ω)dωµ(dt). i,A (cid:12) A (cid:12) 2π2ζ2 t\nBy definition, M (β)=N (β) when supp(β)=A. Also, N (β) is lower semicontinuous in Rd. i i,A i,A\nWe show N (β)>0 when i̸∈A and S\\{i}⊂supp(β). To see this, suppose N (β)=0.",
+      "size": 480,
+      "sentences": 7
+    },
+    {
+      "id": 274,
+      "content": "tinuous in Rd. i i,A i,A\nWe show N (β)>0 when i̸∈A and S\\{i}⊂supp(β). To see this, suppose N (β)=0. Then\ni,A i,A\nE[(Y −E[Y|X ])e−2πi⟨ω,β◦X⟩e−2πiζXi]=0 a.e. ω,ζ. A\nThis implies that the characteristic function of the random variable\nE[(Y −E[Y|X ])|X ] where B :=supp(β)\nA B∪{i}\nvanishes almost everywhere, so the random variable must be zero almost surely. However, consider\nits inner product with g(X ):=E[Y|X ]−E[Y|X ].",
+      "size": 420,
+      "sentences": 7
+    },
+    {
+      "id": 275,
+      "content": "riable must be zero almost surely. However, consider\nits inner product with g(X ):=E[Y|X ]−E[Y|X ]. If i̸∈A and S\\{i}⊂B, then S ⊂B∪{i},\nS S S\\{i}\n35\n===  36 ===\nand\nE(cid:2)E[Y −E[Y|X ]|X ]·g(X ) (cid:3) =E[(Y −E[Y|X ])·g(X )]\nA B∪{i} S A S\n=E[Y ·g(X )]−E[E[Y|X ]·g(X )]\nS A S\n=E[g2(X )],\nS\nwhere the last equality follows from the orthogonality of ANOVA components:\n(cid:88) (cid:88)\nE[E[Y|X ]·g(X )]=E[ f (X )· f (X )]=0.",
+      "size": 423,
+      "sentences": 3
+    },
+    {
+      "id": 276,
+      "content": "rom the orthogonality of ANOVA components:\n(cid:88) (cid:88)\nE[E[Y|X ]·g(X )]=E[ f (X )· f (X )]=0. A S T T W W\nT⊂A i∈W,W⊂S\nThis yields a contradiction, since E[g2(X )]>0 by assumption. Therefore, N (β)>0 when i̸∈A\nS i,A\nand S\\{i}⊂supp(β). We now return to the proof of Theorem 12. Fix any subset A⊂{1,...,d}\\{i}. By construction\nof C, we have β =0 and S\\{i}⊂supp(β) for all β ∈C. Therefore, the preceding argument apply,\ni\nand we conclude that N (β)>0 for all β ∈C.",
+      "size": 466,
+      "sentences": 7
+    },
+    {
+      "id": 277,
+      "content": "for all β ∈C. Therefore, the preceding argument apply,\ni\nand we conclude that N (β)>0 for all β ∈C. Moreover, since N is lower semicontinuous, and\ni,A i,A\nC is compact, it attains its minimum on C. Thus, there exists a constant ε >0 such that\nA\nN (β)≥ε ∀β ∈C. i,A A\nLet ε>0 be the minimum of all such ε over subsets A⊂{1,...,d}\\{i}. A\nFor any β ∈C, we have i∈/ supp(β) by assumption, so\nM (β)=N (β)≥ϵ ≥ϵ>0. i i,supp(β) supp(β)\nThis shows inf M (β)>0, as desired.",
+      "size": 462,
+      "sentences": 6
+    },
+    {
+      "id": 278,
+      "content": "pp(β) by assumption, so\nM (β)=N (β)≥ϵ ≥ϵ>0. i i,supp(β) supp(β)\nThis shows inf M (β)>0, as desired. β∈C i\nFinally, by Theorem 10, there exists C <∞ such that for all λ∈(0,1), and for all β ∈C\n√\nλ·DJ(β,λ)[e ]≤−M (β)+C λ.\ni i\nItfollowsthatforsufficientlysmallλ>0,wehaveλ·DJ(β,λ)[e ]≤−ϵmustholdforallβ ∈C. i\nCorollary 4. Assume Assumptions 3.1, 3.2, and 5.1. Let i∈S ⊂S with E[Y|X ]̸=E[Y|X ],\n∗ S\\{i} S\nand let C⊂Rd be a compact set such that\nβ >0 for all j ∈S\\{i}, for all β ∈C.",
+      "size": 476,
+      "sentences": 6
+    },
+    {
+      "id": 279,
+      "content": "]̸=E[Y|X ],\n∗ S\\{i} S\nand let C⊂Rd be a compact set such that\nβ >0 for all j ∈S\\{i}, for all β ∈C. j\nThenthereexistsλ >0suchthatforallλ∈(0,λ ),ifβ isadirectionalstationarypointofJ(·,λ),\n0 0 †\nthen one of the following holds:\n(i) i∈supp(β ) or (ii) β ̸∈C. † †\nCorollary 4 complements Corollary 3 by extending the signal-extraction guarantee to nonlin-\near interaction effects.",
+      "size": 375,
+      "sentences": 3
+    },
+    {
+      "id": 280,
+      "content": "ements Corollary 3 by extending the signal-extraction guarantee to nonlin-\near interaction effects. Specifically, once an interaction involving X is present—that is, E[Y|X ]̸=\ni S\nE[Y|X ]forsomeS ∋i—anydirectionalstationarypointmustincludeX aslongastheremain-\nS\\{i} i\ning variables in S \\{i} are sufficiently active (i.e., their corresponding β are bounded away from\nj\nzero) and λ is sufficiently small.",
+      "size": 403,
+      "sentences": 2
+    },
+    {
+      "id": 281,
+      "content": "ntly active (i.e., their corresponding β are bounded away from\nj\nzero) and λ is sufficiently small. In this sense, interaction effects can still be learned, provided the\nother interacting variables are already active. 36\n===  37 ===\n6 Open Problems\nWe list some open questions which are important for theoretical or numerical development of the\ncompositional kernel model.",
+      "size": 372,
+      "sentences": 3
+    },
+    {
+      "id": 282,
+      "content": "ons which are important for theoretical or numerical development of the\ncompositional kernel model. • (Dynamical problem) This paper has focused on the statics of the variational problem, but\nin practice one needs iterative schemes to minimize the nonconvex objective J. Important\nquestions concern the design of initialization and the choice of update dynamics. For example,\nour analysis shows that when predictive features contribute only through interactions, β =0 is\nalways a stationary point.",
+      "size": 497,
+      "sentences": 4
+    },
+    {
+      "id": 283,
+      "content": "t when predictive features contribute only through interactions, β =0 is\nalways a stationary point. This indicates the importance of carefully chosen initializations to\nensure recovery of the true signals. • (Finite sample rates) Our analysis is at the population level; in practice we only have access\nto finite sample data. How many samples suffice to guarantee that the same variable selection\nresults hold with high probability?",
+      "size": 432,
+      "sentences": 4
+    },
+    {
+      "id": 284,
+      "content": "y samples suffice to guarantee that the same variable selection\nresults hold with high probability? • (Generalizationerror)IntheregimeswherethecoordinatesofX areindependent,selectingthe\nright features is a necessary prerequisite for good generalization. How do our population-level\nvariable selection results translate into guarantees on finite sample generalization error? Does\nan ℓ norm penalization on β help reduce sample complexity and improve generalization?",
+      "size": 464,
+      "sentences": 4
+    },
+    {
+      "id": 285,
+      "content": "n error? Does\nan ℓ norm penalization on β help reduce sample complexity and improve generalization? 1\n• (Dependence) In the context of predictive feature recovery, our results assume independence\nbetween covariates. As explained earlier, this independence is mainly used for attributing pre-\ndiction signals to individual features and feature subsets. Extending the analysis to dependent\ndesigns is particularly interesting.",
+      "size": 424,
+      "sentences": 5
+    },
+    {
+      "id": 286,
+      "content": "tures and feature subsets. Extending the analysis to dependent\ndesigns is particularly interesting. • (Scale) This paper discusses the problem of feature learning through the lens of variable selec-\ntion. However, we do not analyze what the magnitude of β means. Scale plays a crucial role\nin trading-off approximation and regularization, and the real problem is to learn all the intrin-\nsic scales of the data, a point being raised in the related work on f(UX) model [14].",
+      "size": 473,
+      "sentences": 5
+    },
+    {
+      "id": 287,
+      "content": "l the intrin-\nsic scales of the data, a point being raised in the related work on f(UX) model [14]. Can the\nβ-parameterized model learn such scales automatically? • (Nonsmoothkernelsandthef(UX)context)Thispaperhasdemonstratedthebenefitofusing\ncoordinate-wiseℓ\n1\n-typekernels,suchastheLaplacekernele−∥x−x′∥1,forsparsefeaturerecovery.",
+      "size": 332,
+      "sentences": 3
+    },
+    {
+      "id": 288,
+      "content": "itofusing\ncoordinate-wiseℓ\n1\n-typekernels,suchastheLaplacekernele−∥x−x′∥1,forsparsefeaturerecovery. A natural next question is whether nonsmooth but rotationally invariant kernels, such as the\nrotationalversionoftheLaplacekernele−∥x−x′∥2,canaidrecoveryoflow-dimensionalsubspaces\nin the related f(UX) context.",
+      "size": 308,
+      "sentences": 2
+    },
+    {
+      "id": 289,
+      "content": "noftheLaplacekernele−∥x−x′∥2,canaidrecoveryoflow-dimensionalsubspaces\nin the related f(UX) context. 7 Acknowledgements\nFeng Ruan would like to thank Dmitriy Drusvyatskiy and Damek Davis for conversations that\nmotivatedtherevisionofthiswork,whosefirstversionappearedonlineaboutfouryearsago[28].This\nrevisionmakessignificanteffortstoclarifythestructureoftheargumentsandincorporatenewresults\non denoising for stationary points, with the aim of presenting the framework in a more systematic\nand transparent manner.",
+      "size": 510,
+      "sentences": 2
+    },
+    {
+      "id": 290,
+      "content": "onary points, with the aim of presenting the framework in a more systematic\nand transparent manner. An independent motivation of this revision is to provide a self-contained\nexposition (with some generalization) of some results in one author’s related work [14, 15]—which\ndevelops a geometric foundation for compositional kernel models f(UX)—in a more accessible style\ntobroaderaudience.FengRuanwouldalsoliketothankYangLiforcarefullyreadingthemanuscript\nand for his encouragement.",
+      "size": 480,
+      "sentences": 2
+    },
+    {
+      "id": 291,
+      "content": "ience.FengRuanwouldalsoliketothankYangLiforcarefullyreadingthemanuscript\nand for his encouragement. 37\n===  38 ===\nReferences\n[1] Bengio,Y.,Courville,A.,Vincent,P.:Representationlearning:Areviewandnewperspectives. IEEE transactions on pattern analysis and machine intelligence 35(8), 1798–1828 (2013)\n[2] Cucker, F., Smale, S.: On the mathematical foundations of learning.",
+      "size": 372,
+      "sentences": 3
+    },
+    {
+      "id": 292,
+      "content": "nce 35(8), 1798–1828 (2013)\n[2] Cucker, F., Smale, S.: On the mathematical foundations of learning. Bulletin of the American\nmathematical society 39(1), 1–49 (2002)\n[3] Weston, J., Mukherjee, S., Chapelle, O., Pontil, M., Poggio, T., Vapnik, V.: Feature selection\nfor SVMs. In: Advances in Neural Information Processing Systems (2000)\n[4] Guyon, I., Weston, J., Barnhill, S., Vapnik, V.: Gene selection for cancer classification using\nsupport vector machines.",
+      "size": 459,
+      "sentences": 3
+    },
+    {
+      "id": 293,
+      "content": ", Barnhill, S., Vapnik, V.: Gene selection for cancer classification using\nsupport vector machines. Machine learning 46(1), 389–422 (2002)\n[5] Grandvalet,Y.,Canu,S. :AdaptivescalingforfeatureselectioninSVMs.In:AdvancesinNeural\nInformation Processing, vol. 15 (2002)\n[6] Cao, B., Shen, D., Sun, J.-T., Yang, Q., Chen, Z.: Feature selection in a kernel space. In:\nProceedings of the 24th International Conference on Machine Learning, pp. 121–128 (2007)\n[7] Allen, G.I.",
+      "size": 466,
+      "sentences": 6
+    },
+    {
+      "id": 294,
+      "content": "edings of the 24th International Conference on Machine Learning, pp. 121–128 (2007)\n[7] Allen, G.I. : Automatic feature selection via weighted kernels and regularization. Journal of\nComputational and Graphical Statistics 22(2), 284–299 (2013)\n[8] Chen, J., Stern, M., Wainwright, M.J., Jordan, M.I. : Kernel feature selection via conditional\ncovarianceminimization.In:AdvancesinNeuralInformationProcessing(NIPS),vol.31(2017)\n[9] Fukumizu, K., Bach, F.R., Jordan, M.I.",
+      "size": 467,
+      "sentences": 5
+    },
+    {
+      "id": 295,
+      "content": "AdvancesinNeuralInformationProcessing(NIPS),vol.31(2017)\n[9] Fukumizu, K., Bach, F.R., Jordan, M.I. : Kernel dimension reduction in regression. The Annals\nof Statistics 37(4), 1871–1905 (2009)\n[10] Jordan,M.I.,Liu,K.,Ruan,F. :Ontheself-penalizationphenomenoninfeatureselection.arXiv\npreprint arXiv:2110.05852 (2021)\n[11] Chen, Y., Li, Y., Liu, K., Ruan, F.: Kernel learning in ridge regression” automatically” yields\nexact low rank solution.",
+      "size": 441,
+      "sentences": 4
+    },
+    {
+      "id": 296,
+      "content": ", K., Ruan, F.: Kernel learning in ridge regression” automatically” yields\nexact low rank solution. arXiv preprint arXiv:2310.11736 (2023)\n[12] Radhakrishnan, A., Beaglehole, D., Pandit, P., Belkin, M.: Mechanism for feature learning in\nneural networks and backpropagation-free machine learning models. Science 383(6690), 1461–\n1467 (2024)\n[13] Follain, B., Bach, F.: Enhanced feature learning via regularisation: Integrating neural networks\nand kernel methods.",
+      "size": 461,
+      "sentences": 3
+    },
+    {
+      "id": 297,
+      "content": ", F.: Enhanced feature learning via regularisation: Integrating neural networks\nand kernel methods. arXiv preprint arXiv:2407.17280 (2024)\n[14] Li, Y., Ruan, F.: On the kernel learning problem. arXiv preprint arXiv:2502.11665 (2025)\n[15] Li,Y.,Ruan,F. :Gradientflowinthekernellearningproblem.arXivpreprintarXiv:2506.08550\n(2025)\n[16] Zhu,L.,Davis,D.,Drusvyatskiy,D.,Fazel,M. :Iterativelyreweightedkernelmachinesefficiently\nlearn sparse functions.",
+      "size": 446,
+      "sentences": 5
+    },
+    {
+      "id": 298,
+      "content": "D.,Drusvyatskiy,D.,Fazel,M. :Iterativelyreweightedkernelmachinesefficiently\nlearn sparse functions. arXiv preprint arXiv:2505.08277 (2025)\n[17] Beaglehole, D., Holzmu¨ller, D., Radhakrishnan, A., Belkin, M.: xrfm: Accurate, scalable, and\ninterpretablefeaturelearningmodelsfortabulardata.arXivpreprintarXiv:2508.10053(2025)\n[18] Danhofer, D.A., D’Ascenzo, D., Dubach, R., Poggio, T.: Position: A theory of deep learning\n38\n===  39 ===\nmust include compositional sparsity.",
+      "size": 470,
+      "sentences": 3
+    },
+    {
+      "id": 299,
+      "content": "Poggio, T.: Position: A theory of deep learning\n38\n===  39 ===\nmust include compositional sparsity. arXiv preprint arXiv:2507.02550 (2025)\n[19] Aronszajn, N.: Theory of reproducing kernels. Transactions of the American Mathematical\nSociety 68(3), 337–404 (1950)\n[20] Schoenberg, I.J. : Metric spaces and completely monotone functions. Annals of Mathematics,\n811–841 (1938)\n[21] Rockafellar, R.T., Wets, R.J.-B. : Variational Analysis. Grundlehren der Mathematischen\nWissenschaften, vol. 317.",
+      "size": 491,
+      "sentences": 8
+    },
+    {
+      "id": 300,
+      "content": ".T., Wets, R.J.-B. : Variational Analysis. Grundlehren der Mathematischen\nWissenschaften, vol. 317. Springer, Berlin (1998)\n[22] Cook, R.D., Li, B.: Dimension reduction for conditional mean in regression. The Annals of\nStatistics 30(2), 455–474 (2002)\n[23] Cook, R.D. : Regression Graphics: Ideas for Studying Regressions Through Graphics, Reprint,\n2009 edn. Wiley Series in Probability and Statistics. John Wiley & Sons, New York (1998)\n[24] O’Donnell, R.: Analysis of Boolean Functions.",
+      "size": 488,
+      "sentences": 9
+    },
+    {
+      "id": 301,
+      "content": "d Statistics. John Wiley & Sons, New York (1998)\n[24] O’Donnell, R.: Analysis of Boolean Functions. Cambridge University Press, Cambridge, UK\n(2014)\n[25] Santner, T.J., Williams, B.J., Notz, W.I. : The Design and Analysis of Computer Experiments. Springer Series in Statistics. Springer, New York (2003)\n[26] Wendland, H.: Scattered Data Approximation. Cambridge Monographs on Applied and\nComputational Mathematics, vol. 17. Cambridge University Press, Cambridge (2004)\n[27] Stone, C.J.",
+      "size": 486,
+      "sentences": 9
+    },
+    {
+      "id": 302,
+      "content": "d\nComputational Mathematics, vol. 17. Cambridge University Press, Cambridge (2004)\n[27] Stone, C.J. : The use of polynomial splines and their tensor products in multivariate function\nestimation. The Annals of Statistics, 118–171 (1994)\n[28] Ruan, F., Liu, K., Jordan, M.I. : Taming nonconvexity in kernel feature selection–favorable\nproperties of the laplace kernel.",
+      "size": 366,
+      "sentences": 6
+    },
+    {
+      "id": 303,
+      "content": "M.I. : Taming nonconvexity in kernel feature selection–favorable\nproperties of the laplace kernel. arXiv preprint arXiv:2106.09387 (2021)\n39\n===  40 ===\nA Proofs\nA.1 Proof of Lemma 8\nBy Lemma 6, we get\nE[r (X,Y)K(β◦X,β◦X′)]=λf (β◦X′). β,λ β,λ\nThe same identity holds by replacing β by β′. Let K (x,x′)=K(β◦x,β◦x′).",
+      "size": 314,
+      "sentences": 5
+    },
+    {
+      "id": 304,
+      "content": "X,β◦X′)]=λf (β◦X′). β,λ β,λ\nThe same identity holds by replacing β by β′. Let K (x,x′)=K(β◦x,β◦x′). Thus, the difference\nβ\n∆ (x)=f (β⊙x)−f (β′◦x) satisfies\nβ,β′ β,λ β′,λ\nE[r (X,Y)·(K −K )(X,X′)]−E[∆ (X)K (X,X′)]=λ∆ (X′)\nβ,λ β β′ β,β′ β′ β,β′\nWe multiply both sides by ∆ (X′) and take expectation. Note that\nβ,β′\n(cid:90)\nE[∆ (X)∆ (X′)K (X,X′)]=E[∆ (X)∆ (X′) e−2πi⟨β◦(X−X′)⟩k(ω)dω]\nβ,β′ β,β′ β β,β′ β,β′\n(cid:90) (cid:12) (cid:12)2\n= (cid:12)E[∆ (X)e−2πi⟨β◦X⟩](cid:12) k(ω)dω ≥0.",
+      "size": 478,
+      "sentences": 5
+    },
+    {
+      "id": 305,
+      "content": "]\nβ,β′ β,β′ β β,β′ β,β′\n(cid:90) (cid:12) (cid:12)2\n= (cid:12)E[∆ (X)e−2πi⟨β◦X⟩](cid:12) k(ω)dω ≥0. (cid:12) β,β′ (cid:12)\nWe thus deduce the inequality\nE[r (X,Y)·(K −K )(X,X′)·∆ (X′)]≥λE[∆ (X)2]. β,λ β β′ β,β′ β,β′\nApplyig Cauchy-Schwartz to the left-hand-side yields\n(cid:113)\nλE[∆ (X)2]≤ E[r (X,Y)2∆ (X′)2]·E[(K −K )2(X,X′)]. β,β′ β,λ β,β′ β β′\nBy independence of (X,Y) and (X′,Y′), we may further simplify the first factor:\nE[r (X,Y)2·∆ (X′)2]=E[r (X,Y)2]·E[∆ (X)2].",
+      "size": 470,
+      "sentences": 4
+    },
+    {
+      "id": 306,
+      "content": ") and (X′,Y′), we may further simplify the first factor:\nE[r (X,Y)2·∆ (X′)2]=E[r (X,Y)2]·E[∆ (X)2]. β,λ β,β′ β,λ β,β′\nNote E[r (X,Y)2]≤E[Y2] by Lemma 5. Substituting these bounds back gives\nβ,λ\n1\nE[∆ (X)2]≤ ·E[Y2]·E[(K −K )2(X,X′)]. β,β′ λ2 β β′\nBy the Lebesgue’s dominated convergence theorem, we get E[(K −K )2(X,X′)] → 0 as β′ → β.\nβ β′\nThis implies E[∆2 (X)]→0 as β′ →β. In other words, we have shown\nβ,β′\nlim E[(f (β′◦X)−f (β◦X))2]=0\nβ′,λ β,λ\nβ′→β\nas desired. We then prove J is continuous in β.",
+      "size": 500,
+      "sentences": 6
+    },
+    {
+      "id": 307,
+      "content": "own\nβ,β′\nlim E[(f (β′◦X)−f (β◦X))2]=0\nβ′,λ β,λ\nβ′→β\nas desired. We then prove J is continuous in β. By definition,\nJ(β,λ)=E[r (X,Y)2]+λ∥f ∥2 . β,λ β,λ H\nApplying Lemma 4 with g =f , we get λ∥f ∥2 =E[r (X,Y)f (X)]. Substituting this into\nβ,λ β,λ H β,λ β,λ\nthe above expression yields\nJ(β,λ)=E[r (X,Y)2]+E[r (X,Y)f (X)]=E[Y2]−E[Yf (β◦X)]. β,λ β,λ β,λ β,λ\nSince f (β◦X) is continuous in β in L (P) and Y ∈L (P), the map β (cid:55)→J(β,λ) is continuous.",
+      "size": 449,
+      "sentences": 6
+    },
+    {
+      "id": 308,
+      "content": ",λ\nSince f (β◦X) is continuous in β in L (P) and Y ∈L (P), the map β (cid:55)→J(β,λ) is continuous. β,λ 2 2\n40\n===  41 ===\nA.2 Proof of Theorem 1\nA.2.1 Representation of the Minimizer and the Minimum Value\nWe define\nL (P ):={g :Rd →R|E[g(X)2]<∞},\n2 X\nand introduce the operator\nΦ :L (P )(cid:55)→C(Rd), g (cid:55)→E[g(X)K(β◦X,·)]. β 2 X\nLemma 23. For every g ∈L (P ), the function Φ (g)∈H, and its RKHS norm is given by\n2 X β\n∥Φ (g)∥2 =E[g(X)g(X′)K (X,X′)].",
+      "size": 457,
+      "sentences": 4
+    },
+    {
+      "id": 309,
+      "content": "∈L (P ), the function Φ (g)∈H, and its RKHS norm is given by\n2 X β\n∥Φ (g)∥2 =E[g(X)g(X′)K (X,X′)]. β H β\nIn particular, Φ maps into H.\nβ\nProof. By direct computation, the Fourier transform of Φ (g) is given by\nβ\nΦ(cid:99)β (g)=k(ω)·E[g(X)e−2πi⟨ω,β◦X⟩]. By definition of the RKHS norm, we have\n∥Φ (g)∥2 =\n(cid:90) |Φ(cid:99)β (g)|2(ω)\ndω =\n(cid:90)\n|E[g(X)e−2πi⟨ω,β◦X⟩]|2k(ω)dω.",
+      "size": 377,
+      "sentences": 4
+    },
+    {
+      "id": 310,
+      "content": "norm, we have\n∥Φ (g)∥2 =\n(cid:90) |Φ(cid:99)β (g)|2(ω)\ndω =\n(cid:90)\n|E[g(X)e−2πi⟨ω,β◦X⟩]|2k(ω)dω. β H k(ω)\nExpanding the squared modulus as an expectation over independent copies (X,X′), we obtain\n(cid:90)\n∥Φ (g)∥2 = E[g(X)g(X′)e−2πi⟨ω,β◦(X−X′)⟩]k(ω)dω. β H\nFinally, since K and k form a Fourier transform pair, we conclude\n∥Φ (g)∥2 =E[g(X)g(X′)K(β◦X,β◦X′)]. β H\nLet us define\n1\ng (x):= E[r (X,Y)|X =x]. (A.1)\nβ,λ λ β,λ\nThen g ∈L (P ) since E[r (X,Y)2]≤E[Y2]<∞. β,λ 2 X β,λ\nLemma 24.",
+      "size": 484,
+      "sentences": 6
+    },
+    {
+      "id": 311,
+      "content": ":= E[r (X,Y)|X =x]. (A.1)\nβ,λ λ β,λ\nThen g ∈L (P ) since E[r (X,Y)2]≤E[Y2]<∞. β,λ 2 X β,λ\nLemma 24. At every β, the minimizer f admits the representation\nβ,λ\nf =Φ (g ). β,λ β β,λ\nAdditionally,\nJ(β,λ)=I(Φ (g ),β,λ)= min I(Φ (g),β,λ). β β,λ β\ng∈L2(P X)\nProof. The representation f =Φ (g ) follows from Lemma 6.\nβ,λ β β,λ\nFor the second identity, observe that\nJ(β,λ)=I(f ,β,λ)=I(Φ (g ),β,λ),\nβ,λ β β,λ\n41\n===  42 ===\nand for any g ∈L (P ), we have Φ (g)∈H, so\n2 X β\nI(Φ (g),β,λ)≥ inf I(f,β,λ)=J(β,λ).",
+      "size": 497,
+      "sentences": 7
+    },
+    {
+      "id": 312,
+      "content": "41\n===  42 ===\nand for any g ∈L (P ), we have Φ (g)∈H, so\n2 X β\nI(Φ (g),β,λ)≥ inf I(f,β,λ)=J(β,λ). β\nf∈H\nHence, J(β,λ)=min g∈L2(P X) I(Φ β (g),β,λ), with equality attained at g =g β,λ . A.2.2 The functional L and its Differentiability\nWe define for every β ∈Rd, and g ∈L (P ),\n2 X\nL(g,β,λ):=I(Φ (g),β,λ). (A.2)\nβ\nThen\nL(g,β,λ)=E[(Y −Φ (g)(β◦X))2]+λ∥Φ (g)∥2\nβ β H\n=E[(Y −E[g(X′)K (X,X′)|X])2]+λE[g(X)g(X′)K (X,X′)].",
+      "size": 414,
+      "sentences": 4
+    },
+    {
+      "id": 313,
+      "content": "en\nL(g,β,λ)=E[(Y −Φ (g)(β◦X))2]+λ∥Φ (g)∥2\nβ β H\n=E[(Y −E[g(X′)K (X,X′)|X])2]+λE[g(X)g(X′)K (X,X′)]. β β\nWe denote the directional derivative of L at (g,β,λ) along direction v by\n1\nDL(g,β,λ)[v]:= lim (L(g,β+sd,λ)−L(g,β,λ)). (A.3)\ns→0+ s\nLemma 25. Letβ ∈Rd andv ∈Rd satisfytheassumptionsofTheorem1.Forg ∈L (P ),wehave\n2 X\nDL(g,β,λ)[v]=−2E[(Y −Φ (g)(β◦X))g(X′)DK (X,X′)[v]]+λE[g(X)g(X′)DK (X,X′)[v]]. β β β\nIn particular,\n1\nDL(g ,β,λ)[v]=− E[r (X,Y)r (X′,Y′)DK (X,X′)[v]]. β,λ λ β,λ β,λ β\nProof.",
+      "size": 492,
+      "sentences": 6
+    },
+    {
+      "id": 314,
+      "content": "v]]. β β β\nIn particular,\n1\nDL(g ,β,λ)[v]=− E[r (X,Y)r (X′,Y′)DK (X,X′)[v]]. β,λ λ β,λ β,λ β\nProof. Under the stated assumptions, we can differentiate L(g,β,λ) along the direction v under the\nexpectation using Lebesgue’s dominated convergence theorem. This gets the first identity. We specialize g =g in the first identity. Since f =Φ (g ), we get that\nβ,λ β,λ β β,λ\nr (x,y)=y−Φ (g )(β◦x). β,λ β β,λ\nSubstitutingthisexpressionintotheformulaandsimplifyingthetwotermsyieldsthesecondidentity. Lemma 26.",
+      "size": 499,
+      "sentences": 9
+    },
+    {
+      "id": 315,
+      "content": "Substitutingthisexpressionintotheformulaandsimplifyingthetwotermsyieldsthesecondidentity. Lemma 26. Let β ∈Rd and v ∈Rd satisfy the assumptions of Theorem 1. Then the mapping\n(t ,t )(cid:55)→DL(g ,β+t v,λ)[v]\n1 2 β+t1v,λ 2\nis continuous on [0,ϵ)×[0,ϵ). Proof. Applying Lemma 25 gives\nDL(g ,β+t v,λ)[v]\nβ+t1v,λ 2\n=−2E[(Y −E[g (X′)K (X,X′)|X])g (X′)DK (X,X′)[v]]\nβ+t1v,λ β+t2v β+t1v,λ β+t2v\n+λE[g (X)g (X′)DK (X,X′)[v]]. β+t1v,λ β+t1v,λ β+t2v\n42\n===  43 ===\nNext we check continuity of the terms.",
+      "size": 494,
+      "sentences": 7
+    },
+    {
+      "id": 316,
+      "content": "(X)g (X′)DK (X,X′)[v]]. β+t1v,λ β+t1v,λ β+t2v\n42\n===  43 ===\nNext we check continuity of the terms. By Lemma A.1, r (X,Y) is continuous in β with respect\nβ,λ\nto the L (P) norm. As a result, g (X) is continuous in t with respect to the L (P)-norm. In\n2 β+tv,λ 2\naddition,ourassumptionsonthekernelfunctionK ensurethatDK (X,X′)[v]andK (X,X′)\nβ+tv β+tv\ndepend continuously on t ∈ [0,ϵ) in the L (P)-norm.",
+      "size": 400,
+      "sentences": 5
+    },
+    {
+      "id": 317,
+      "content": "onK ensurethatDK (X,X′)[v]andK (X,X′)\nβ+tv β+tv\ndepend continuously on t ∈ [0,ϵ) in the L (P)-norm. Following Lebesgue’s dominated convergence\n2\ntheorem, one shows the map (t ,t )(cid:55)→DL(g ,β+t v,λ)[v] is continuous on [0,ϵ)×[0,ϵ). 1 2 β+t1v,λ 2\nA.2.3 Finalizing Argument\nDefine, for s>0, the difference quotient:\n1\n∆ J(β,λ):= (J(β+sv,λ)−J(β,λ)). s,v s\nBy the minimizing property of J, we get J(β,λ)≤L(g ,β,λ).",
+      "size": 414,
+      "sentences": 4
+    },
+    {
+      "id": 318,
+      "content": "t:\n1\n∆ J(β,λ):= (J(β+sv,λ)−J(β,λ)). s,v s\nBy the minimizing property of J, we get J(β,λ)≤L(g ,β,λ). Hence,\nβ+sv,λ\n1\n∆ J(β,λ)≥ (L(g ,β+sv,λ)−L(g ,β,λ))\ns,v s β+sv,λ β+sv,λ\n=DL(g ,β+s˜v,λ)[v]\nβ+sv,λ\nfor some s˜∈[0,s]. By the continuity of DL established in Lemma 26, it follows that\nliminf∆ J(β,λ)≥DL(g ,β,λ)[v]. s,v β,λ\ns→0+\nNow, by reversing the role of β and β+sv, we obtain the reverse inequality:\nlimsup∆ J(β,λ)≤DL(g ,β,λ)[v].",
+      "size": 429,
+      "sentences": 5
+    },
+    {
+      "id": 319,
+      "content": "y reversing the role of β and β+sv, we obtain the reverse inequality:\nlimsup∆ J(β,λ)≤DL(g ,β,λ)[v]. s,v β,λ\ns→0+\nThis shows that lim ∆ J(β,λ) exists, and thus\ns→0+ s,v\nDJ(β,λ)[v]= lim ∆ J(β,λ)=DL(g ,β,λ)[v]. s,v β,λ\ns→0+\nThe claimed formula on DJ(β,λ)[v] in Theorem 1 then follows from Lemma 25. 43",
+      "size": 298,
+      "sentences": 4
+    }
+  ]
+}

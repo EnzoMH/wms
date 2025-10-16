@@ -1,0 +1,1437 @@
+{
+  "source": "ArXiv",
+  "filename": "223_AI_ML_On_Integer_Programming_for_the_Binarized.pdf",
+  "domain": "AI",
+  "total_chars": 82301,
+  "total_chunks": 238,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\nOn Integer Programming for the Binarized Neural Network\nVerification Problem\nWoojin Kim, James Luedtke\nOctober 3, 2025\nAbstract\nBinarized neural networks (BNNs) are feedforward neural networks with binary weights\nand activation functions.",
+      "size": 249,
+      "sentences": 1
+    },
+    {
+      "id": 2,
+      "content": "eural networks (BNNs) are feedforward neural networks with binary weights\nand activation functions. In the context of using a BNN for classification, the verification\nproblem seeks to determine whether a small perturbation of a given input can lead it to be\nmisclassified by the BNN, and the robustness of the BNN can be measured by solving the\nverification problem over multiple inputs. The BNN verification problem can be formulated as\nanintegerprogramming(IP)problem.",
+      "size": 470,
+      "sentences": 3
+    },
+    {
+      "id": 3,
+      "content": "multiple inputs. The BNN verification problem can be formulated as\nanintegerprogramming(IP)problem. However,thenaturalIPformulationisoftenchallenging\ntosolveduetoalargeintegralitygapinducedbybig-M constraints. Wepresenttwotechniques\ntoimprovetheIPformulation. First,weintroduceanewmethodforobtainingalinearobjective\nforthemulti-classsetting. Second,weintroduceanewtechniqueforgeneratingvalidinequalities\nfortheIPformulationthatexploitstherecursivestructureofBNNs.",
+      "size": 463,
+      "sentences": 6
+    },
+    {
+      "id": 4,
+      "content": "techniqueforgeneratingvalidinequalities\nfortheIPformulationthatexploitstherecursivestructureofBNNs. Wefindthatourtechniques\nenableverifyingBNNsagainstahigherrangeofinputperturbationthanexistingIPapproaches\nwithin a limited time. 1 Introduction\nBinarized neural networks (BNNs) are feedforward neural networks with binary weights and acti-\nvation functions (Hubara et al. (2016)). BNNs consist of the input layer ℓ = 0, L hidden layers\nℓ = 1,...,L, and the output layer ℓ = L+1.",
+      "size": 477,
+      "sentences": 5
+    },
+    {
+      "id": 5,
+      "content": ". BNNs consist of the input layer ℓ = 0, L hidden layers\nℓ = 1,...,L, and the output layer ℓ = L+1. Each layer ℓ ∈ {0,1,...,L+1} consists of nℓ neurons,\nNℓ = {1,...,nℓ}. Every i ∈ Nℓ is connected to every j ∈ Nℓ−1 with weight Wℓ ∈ {−1,0,1} and\nij\nhas bias bℓ ∈ Z for ℓ ∈ {1,...,L+1}.",
+      "size": 283,
+      "sentences": 4
+    },
+    {
+      "id": 6,
+      "content": "s connected to every j ∈ Nℓ−1 with weight Wℓ ∈ {−1,0,1} and\nij\nhas bias bℓ ∈ Z for ℓ ∈ {1,...,L+1}. i\nThanks to binary weights and activation functions, BNNs drastically reduce memory size and\naccesses and substantially improve power-efficiency over standard neural networks, replacing most\narithmetic operations with bit-wise operations (Hubara et al. (2016)). BNNs have also achieved\nnearly state-of-the-art results in image classification (Hubara et al. (2016)).",
+      "size": 465,
+      "sentences": 5
+    },
+    {
+      "id": 7,
+      "content": "have also achieved\nnearly state-of-the-art results in image classification (Hubara et al. (2016)). Moreover, BNNs have\nachievedresultscomparabletofeedforwardneuralnetworksinimagedetection(Kungetal. (2018)),\nimage super resolution (Ma et al. (2019)), and text classification (Shridhar et al. (2020)). For these\nreasons, BNNs have been applied in small embedded devices (McDanel et al. (2017)).",
+      "size": 392,
+      "sentences": 8
+    },
+    {
+      "id": 8,
+      "content": "020)). For these\nreasons, BNNs have been applied in small embedded devices (McDanel et al. (2017)). In this work, we study the verification problem associated with a given BNN that is used to\nclassify feature vectors. BNNs map a feature vector in [0,1]n0 whose coordinates are quantized as\nmultiples of 1 for q ∈ N to the real output vector by the function f = (f ,...,f ) : 1Zn0 ∩\nq 1 nL+1 q +\n[0,1]n0 → RnL+1 which is defined recursively using weights and biases in each layer.",
+      "size": 479,
+      "sentences": 5
+    },
+    {
+      "id": 9,
+      "content": "∩\nq 1 nL+1 q +\n[0,1]n0 → RnL+1 which is defined recursively using weights and biases in each layer. (See Section\n2 for the detailed definition of f.) Each t ∈ NL+1 corresponds to a class. A feature vector\nx¯ ∈ 1Zn0 ∩[0,1]n0 is classified as the class t¯∈ NL+1 that corresponds to argmax f (x¯). q + t∈NL+1 t\nVerifying BNNs against input perturbation for multiple feature vectors provides a measure of\ntheir robustness.",
+      "size": 418,
+      "sentences": 4
+    },
+    {
+      "id": 10,
+      "content": "NNs against input perturbation for multiple feature vectors provides a measure of\ntheir robustness. The BNN verification problem is defined for a given trained BNN, a given feature\n1\n5202\ntcO\n1\n]GL.sc[\n1v52510.0152:viXra\n===  2 ===\nvector x¯ with class t¯, and input perturbation ϵ > 0.",
+      "size": 286,
+      "sentences": 2
+    },
+    {
+      "id": 11,
+      "content": "tcO\n1\n]GL.sc[\n1v52510.0152:viXra\n===  2 ===\nvector x¯ with class t¯, and input perturbation ϵ > 0. We say that x¯ is ϵ-verified if the BNN classifies\nx0 as t¯for every feature vector x0 ∈ 1Zn0 ∩[0,1]n0 having distance between x0 and x¯ at most ϵ.\nq +\nThe BNN verification problem is to determine whether a given x¯ can be ϵ-verified in the BNN.",
+      "size": 344,
+      "sentences": 2
+    },
+    {
+      "id": 12,
+      "content": ".\nq +\nThe BNN verification problem is to determine whether a given x¯ can be ϵ-verified in the BNN. The\nanswer is true if and only if there does not exist a feature vector x0 with distance at most ϵ from x¯\nsatisfying f (x0) > f (x0) for some class t ̸= t¯, which is equivalent to the following maximum z∗(x¯)\nt t¯ ϵ\nbeing non-positive:\n(cid:110) (cid:111)\nz∗(x¯) = max f (x0)−f (x0) : t ∈ NL+1\\{t¯} .",
+      "size": 401,
+      "sentences": 3
+    },
+    {
+      "id": 13,
+      "content": "z∗(x¯)\nt t¯ ϵ\nbeing non-positive:\n(cid:110) (cid:111)\nz∗(x¯) = max f (x0)−f (x0) : t ∈ NL+1\\{t¯} . (1)\nϵ t t¯\nx0∈1Zn0 ∩[0,1]n0\nq +\n∥x0−x¯∥p≤ϵ\nHere, the maximum perturbation from x¯ is defined using an ℓ norm.",
+      "size": 208,
+      "sentences": 2
+    },
+    {
+      "id": 14,
+      "content": "x0∈1Zn0 ∩[0,1]n0\nq +\n∥x0−x¯∥p≤ϵ\nHere, the maximum perturbation from x¯ is defined using an ℓ norm. For the most part, in this\np\nwork we focus on the case of p = 1, but the integer programming (IP) approaches we consider can\nalso be directly applied to the cases of p = ∞ and p = 2, with the caveat that when using an ℓ\n2\nnorm, the resulting IP formulations we consider become integer (convex) quadratic programs, as\nopposed to integer linear programs.",
+      "size": 451,
+      "sentences": 2
+    },
+    {
+      "id": 15,
+      "content": "ions we consider become integer (convex) quadratic programs, as\nopposed to integer linear programs. This paper contributes to the literature exploring IP methods to solve the BNN verification\nproblem. IP methods to solve the BNN verification problem can be implemented by solving (1)\nto optimality – we refer to this as the BNN verification optimization problem. However, to verify\na BNN, the process of solving (1) can be terminated as soon as the sign of z∗(x¯) is determined.",
+      "size": 478,
+      "sentences": 4
+    },
+    {
+      "id": 16,
+      "content": "fy\na BNN, the process of solving (1) can be terminated as soon as the sign of z∗(x¯) is determined. ϵ\nSpecifically, the solution process of (1) can be terminated when a feasible solution with a positive\nobjective value is found, or a non-positive upper bound for the optimal objective value is obtained. If we terminate an optimization algorithm for solving (1) according to this condition, we refer to\nthis as the BNN verification problem.",
+      "size": 440,
+      "sentences": 3
+    },
+    {
+      "id": 17,
+      "content": "ithm for solving (1) according to this condition, we refer to\nthis as the BNN verification problem. Our first contribution is to present a new way for obtaining a linear objective of the BNN\nverification problem by creating a single optimization problem that incorporates the decision of\nwhich alternative class a perturbed feature vector is misclassified as, rather than considering each\nalternative class separately.",
+      "size": 418,
+      "sentences": 2
+    },
+    {
+      "id": 18,
+      "content": "rbed feature vector is misclassified as, rather than considering each\nalternative class separately. Our second contribution is to describe a new technique for generating\nvalid inequalities for the IP formulation by exploiting the recursive structure of BNNs. These valid\ninequalities, called layerwise derived valid inequalities, are generated by considering one layer at a\ntime and solving IP subproblems to check validity among a set of natural candidate inequalities.",
+      "size": 470,
+      "sentences": 3
+    },
+    {
+      "id": 19,
+      "content": "a\ntime and solving IP subproblems to check validity among a set of natural candidate inequalities. While deriving these valid inequalities requires solving IP subproblems, these IP subproblems are\nmuch easier to solve than the full BNN verification problem because they consider only a single\nlayer at a time and do not include any of the “big-M” constraints required for the IP formulation\nof the BNN verification problem. Khalil et al.",
+      "size": 437,
+      "sentences": 3
+    },
+    {
+      "id": 20,
+      "content": "“big-M” constraints required for the IP formulation\nof the BNN verification problem. Khalil et al. (2019) study the problem of attacking a BNN, which is equivalent to the BNN\nverification problem. They present a mixed-integer linear programming (MILP) formulation of the\nproblem and propose a heuristic for generating solutions that works by propagating a target from\nthe last layer to the first layer by solving a single-layer MILP at each step.",
+      "size": 446,
+      "sentences": 4
+    },
+    {
+      "id": 21,
+      "content": "gating a target from\nthe last layer to the first layer by solving a single-layer MILP at each step. This approach is proven\nto be successful at finding successful attacks (i.e., showing an input x¯ cannot be ϵ-verified) but\ncannot positively verify a solution. Interestingly, our method also proceeds in layers, but from the\ninitial layer forwards, and its strength is in being able to ϵ-verify inputs.",
+      "size": 402,
+      "sentences": 3
+    },
+    {
+      "id": 22,
+      "content": "layers, but from the\ninitial layer forwards, and its strength is in being able to ϵ-verify inputs. Han and G´omez (2021)\nalso study the MILP formulation of the BNN verification problem and study the convex hull for\na single neuron to improve this MILP formulation. Lubczyk and Neto (2024) extended Han and\nGo´mez’s work by exploring the convex hull for a pair of neurons in the same hidden layer.",
+      "size": 396,
+      "sentences": 3
+    },
+    {
+      "id": 23,
+      "content": "Han and\nGo´mez’s work by exploring the convex hull for a pair of neurons in the same hidden layer. Using\nthis convex hull, they proposed a constraint generation framework to solve the MILP problem for\nthe BNN verification problem. In related work on feedforward (not binarized) neural networks,\nFischetti and Jo (2018) addressed the problem of verifying such networks. They formulated this\nproblem as an MILP problem and exploited the idea of fixing variables to solve this MILP problem.",
+      "size": 487,
+      "sentences": 4
+    },
+    {
+      "id": 24,
+      "content": "s\nproblem as an MILP problem and exploited the idea of fixing variables to solve this MILP problem. 2\n===  3 ===\nOur layerwise derived valid inequalities represent an adaptation and extension of this approach to\nthe BNN setting. Another approach for solving the BNN verification problem is to formulate it as a Boolean\nsatisfiability problem (Amir et al. (2021), Jia and Rinard (2020), Kov´asznai et al. (2021), Naro-\ndytska et al. (2018)).",
+      "size": 440,
+      "sentences": 6
+    },
+    {
+      "id": 25,
+      "content": "(Amir et al. (2021), Jia and Rinard (2020), Kov´asznai et al. (2021), Naro-\ndytska et al. (2018)). These papers formulated the condition that x¯ can be ϵ-verified in a given\nBNN with Boolean formulas in the case that the maximum perturbation from x¯ is defined using an\nℓ norm. Ivashchenko et al.",
+      "size": 296,
+      "sentences": 6
+    },
+    {
+      "id": 26,
+      "content": "as in the case that the maximum perturbation from x¯ is defined using an\nℓ norm. Ivashchenko et al. (2023) explored a different method for solving the BNN verification\n∞\nproblem by describing the set of all feasible output vectors or an overapproximation of this set as\na star set and checking whether this star set contains an output vector from a perturbed feature\nvector misclassified by the BNN. This work also handles the case that the maximum perturbation\nis defined using an ℓ norm.",
+      "size": 489,
+      "sentences": 4
+    },
+    {
+      "id": 27,
+      "content": "the BNN. This work also handles the case that the maximum perturbation\nis defined using an ℓ norm. Shih et al. (2019) and Zhang et al. (2021) addressed a different\n∞\nproblem of counting the number of perturbed feature vectors misclassified by the BNN in the case\nthat the maximum perturbation is defined using an ℓ norm.",
+      "size": 320,
+      "sentences": 5
+    },
+    {
+      "id": 28,
+      "content": "tors misclassified by the BNN in the case\nthat the maximum perturbation is defined using an ℓ norm. We focus on the IP approach due to\n1\nits inherent flexibility, for example, in easily adapting the set of allowed perturbations from x¯ to\nbe defined by an ℓ , ℓ , or ℓ norm, and to investigate and extend the limits of the IP approach. 1 2 ∞\nWhile our work focuses on verifying a given BNN after it has been trained, for completeness,\nwe briefly mention some methods for training BNNs. Hubara et al.",
+      "size": 499,
+      "sentences": 4
+    },
+    {
+      "id": 29,
+      "content": "as been trained, for completeness,\nwe briefly mention some methods for training BNNs. Hubara et al. (2016) trained BNNs by using\na gradient descent method similar to the training of feedforward neural networks, and Geiger\nand Team (2020) trained BNNs by using a pseudo-gradient method. Bernardelli et al. (2023)\nand Toro Icarte et al. (2019) trained BNNs by solving constraint programming or mixed integer\nprogramming problems. To improve training BNNs, Martinez et al.",
+      "size": 469,
+      "sentences": 7
+    },
+    {
+      "id": 30,
+      "content": "traint programming or mixed integer\nprogramming problems. To improve training BNNs, Martinez et al. (2020) applied activation\nscaling, and Tang et al. (2017) applied activation approximation. Finally, we mention that the BNN verification problem is closely related to the problem of\nfinding counterfactual explanations for such networks.",
+      "size": 337,
+      "sentences": 5
+    },
+    {
+      "id": 31,
+      "content": "problem is closely related to the problem of\nfinding counterfactual explanations for such networks. Counterfactual explanations seek to find a\nfeature vector that is as close as possible to a given feature vector while leading to a specific alter-\nnative desired prediction (Mothilal et al. (2020), Wachter et al. (2018)). Recently, counterfactual\nexplanations for several machine learning prediction models, including k-nearest neighbors, have\nbeen explored (Contardo et al.",
+      "size": 475,
+      "sentences": 5
+    },
+    {
+      "id": 32,
+      "content": "hine learning prediction models, including k-nearest neighbors, have\nbeen explored (Contardo et al. (2024), Vivier-Ardisson et al. (2024)). A method for solving the\nBNN verification problem can be used to solve the counterfactual explanation problem by conduct-\ning a binary search to (approximately) find the smallest ϵ such that the feature is classified as a\ntarget class. This paper is organized as follows.",
+      "size": 411,
+      "sentences": 5
+    },
+    {
+      "id": 33,
+      "content": "allest ϵ such that the feature is classified as a\ntarget class. This paper is organized as follows. In Section 2, we introduce an existing IP formulation of\nthe BNN verification problem and describe methods for obtaining linear constraints and a linear\nobjective in this IP formulation, including our method for obtaining a linear objective by incorpo-\nrating the decision of which alternative class a perturbed feature vector is misclassified into a single\noptimization problem.",
+      "size": 479,
+      "sentences": 3
+    },
+    {
+      "id": 34,
+      "content": "h alternative class a perturbed feature vector is misclassified into a single\noptimization problem. In Section 3, we describe our technique for deriving layerwise derived valid\ninequalities and our approach for using these valid inequalities to solve the BNN verification prob-\nlem. We present the results of a computational study in Section 4 and conclude with a discussion\nof potential future directions in Section 5. Notation.",
+      "size": 429,
+      "sentences": 4
+    },
+    {
+      "id": 35,
+      "content": "in Section 4 and conclude with a discussion\nof potential future directions in Section 5. Notation. We use [M] to represent the set {1,...,M} for M ∈ N.\n2 IP Formulations\nTo obtain an IP formulation for problem (1), x0 ∈ 1Zn0 ∩ [0,1]n0 is defined as a vector of the\nq +\ndecision variables that represent a perturbed feature vector, and xℓ ∈ {0,1}nℓ is defined as the\nvector of decision variables that represent the output of the ℓth hidden layer for ℓ ∈ [L], which is\nobtained recursively from xℓ−1 as explained in the following paragraphs.",
+      "size": 539,
+      "sentences": 3
+    },
+    {
+      "id": 36,
+      "content": "ayer for ℓ ∈ [L], which is\nobtained recursively from xℓ−1 as explained in the following paragraphs. Also, X0 is defined as the\n3\n===  4 ===\nset of all perturbed feature vectors to verify over:\n(cid:110) 1 (cid:111)\nX0 = x0 ∈ Zn0 ∩[0,1]n0 : ∥x0−x¯∥ ≤ ϵ . q + p\nThe usual description of a BNN describes the output of each neuron as +1 or −1. In order\nto derive an IP formulation that can be directly solved by IP solvers, we will instead encode the\noutputs with binary (0/1) valued variables.",
+      "size": 490,
+      "sentences": 4
+    },
+    {
+      "id": 37,
+      "content": "rectly solved by IP solvers, we will instead encode the\noutputs with binary (0/1) valued variables. Given a binary output vector xℓ−1, it can be converted\nto a +1/−1 valued vector via the transformation 2xℓ−1−1. Thus, for each layer ℓ ∈ [L+1], the\nfirst component of BNN propagation is to multiply the input 2xℓ−1−1 with Wℓ and add bℓ. We\nintroduce the notation aℓ = (aℓ,...,aℓ ) for this affine function of xℓ−1:\n1 nℓ\naℓ(xℓ−1) = Wℓ(2xℓ−1−1)+bℓ.",
+      "size": 445,
+      "sentences": 4
+    },
+    {
+      "id": 38,
+      "content": "ce the notation aℓ = (aℓ,...,aℓ ) for this affine function of xℓ−1:\n1 nℓ\naℓ(xℓ−1) = Wℓ(2xℓ−1−1)+bℓ. Then, the output of each each ℓ ∈ [L] is obtained from its input xℓ−1 via the transformation\nxℓ = 1R (aℓ(xℓ−1)),\n+\nwhere 1R is the indicator function mapping non-negative numbers to 1 and negative numbers to\n+\n0.1\nApplying aℓ and 1R alternately L times and aL+1 lastly results in f. Thus, f can be written\n+\nas follows:\nf(x0) = aL+1(1R (aL(1R (aL−1(···1R (a1(x0))···))))).",
+      "size": 472,
+      "sentences": 2
+    },
+    {
+      "id": 39,
+      "content": "lts in f. Thus, f can be written\n+\nas follows:\nf(x0) = aL+1(1R (aL(1R (aL−1(···1R (a1(x0))···))))). + + +\nUsing these observations, (1) can be written as the following (nonlinear) IP problem:\n(cid:110) (cid:111)\nmax max aL+1(xL)−aL+1(xL) : t ∈ NL+1\\{t¯} (2a)\nt t¯\nx0,...,xL\ns.t. xℓ = 1R (aℓ(xℓ−1)), ∀ℓ ∈ [L], (2b)\n+\nx0 ∈ X0, (2c)\nxℓ ∈ {0,1}nℓ , ∀ℓ ∈ [L].",
+      "size": 354,
+      "sentences": 3
+    },
+    {
+      "id": 40,
+      "content": "2a)\nt t¯\nx0,...,xL\ns.t. xℓ = 1R (aℓ(xℓ−1)), ∀ℓ ∈ [L], (2b)\n+\nx0 ∈ X0, (2c)\nxℓ ∈ {0,1}nℓ , ∀ℓ ∈ [L]. (2d)\n2.1 Constraint Formulation\nThelayerpropagationconstraints(2b)andtheinputperturbationconstraint(2c)includenonlinear\nconstraints in their description. We review how these constraints can be reformulated using linear\nconstraints in order to obtain a linear IP formulation.",
+      "size": 374,
+      "sentences": 4
+    },
+    {
+      "id": 41,
+      "content": "onstraints can be reformulated using linear\nconstraints in order to obtain a linear IP formulation. 2.1.1 Layer Propagation Constraint Formulation\nTo formulate the layer propagation constraints (2b) with linear constraints, the following constants\nare defined for ℓ ∈ [L] and i ∈ Nℓ:\n(cid:88)\nLBℓ := (Wℓ −|Wℓ|)\ni ij ij\nj∈Nℓ−1\n(cid:88)\nUBℓ := (Wℓ +|Wℓ|)\ni ij ij\nj∈Nℓ−1 (3)\n (cid:24) (cid:25)\n  2\nq((cid:80) j∈N0W\ni\n1\nj\n−b1\ni\n)\n− 1 (ℓ = 1)\nq 2 q\nR i ℓ := (cid:24)(cid:80) Wℓ−bℓ (cid:25) .",
+      "size": 490,
+      "sentences": 2
+    },
+    {
+      "id": 42,
+      "content": "  2\nq((cid:80) j∈N0W\ni\n1\nj\n−b1\ni\n)\n− 1 (ℓ = 1)\nq 2 q\nR i ℓ := (cid:24)(cid:80) Wℓ−bℓ (cid:25) .  2 j∈Nℓ−1 ij i −1 (ℓ ∈ {2,...,L}).  2\n1ThisisequivalenttothestandarddescriptionofBNNpropagationinwhichthe+1/−1outputisdefinedbythe\nsign function. 4\n===  5 ===\nSince Wℓ ∈ {−1,0,1} it follows that for any xℓ−1 ∈ [0,1]nℓ−1\nij\n(cid:88)\nLBℓ ≤ 2 Wℓxℓ−1 ≤ UBℓ. i ij j i\nj∈Nℓ−1\nThe following lemma describes how the layer propagation constraints can be modeled with linear\nconstraints.",
+      "size": 479,
+      "sentences": 5
+    },
+    {
+      "id": 43,
+      "content": "owing lemma describes how the layer propagation constraints can be modeled with linear\nconstraints. This extends the formulation of Han and G´omez (2021), which assumes Wℓ ∈ {−1,1}\nij\nand bℓ = 0. The proof is in the Appendix. i\nLemma 1.",
+      "size": 236,
+      "sentences": 4
+    },
+    {
+      "id": 44,
+      "content": "nd G´omez (2021), which assumes Wℓ ∈ {−1,1}\nij\nand bℓ = 0. The proof is in the Appendix. i\nLemma 1. Each (x0,x1) ∈ X0 × {0,1}n1 satisfies (2b) for ℓ = 1 if and only if it satisfies the\nfollowing inequalities:\n(cid:88) (cid:16) 1(cid:17)\n2 W1x0 ≥ R1−LB1+ x1+LB1, ∀i ∈ N1, (4)\nij j i i q i i\nj∈N0\n(cid:88) (cid:16) 1(cid:17) (cid:16) 1(cid:17)\n2 W1x0 ≤ UB1−R1+ x1+ R1− , ∀i ∈ N1.",
+      "size": 377,
+      "sentences": 4
+    },
+    {
+      "id": 45,
+      "content": "j i i q i i\nj∈N0\n(cid:88) (cid:16) 1(cid:17) (cid:16) 1(cid:17)\n2 W1x0 ≤ UB1−R1+ x1+ R1− , ∀i ∈ N1. (5)\nij j i i q i i q\nj∈N0\nFor ℓ ∈ {2,...,L}, (xℓ−1,xℓ) ∈ {0,1}nℓ−1 × {0,1}nℓ satisfies (2b) if and only if it satisfies the\nfollowing inequalities:\n(cid:88)\n2 Wℓxℓ−1 ≥ (Rℓ−LBℓ+1)xℓ+LBℓ, ∀i ∈ Nℓ, (6)\nij j i i i i\nj∈Nℓ−1\n(cid:88)\n2 Wℓxℓ−1 ≤ (UBℓ−Rℓ+1)xℓ+(Rℓ−1), ∀i ∈ Nℓ. (7)\nij j i i i i\nj∈Nℓ−1\nThus, the nonlinear constraints (2b) can be replaced with the linear constraints (4)- (7).",
+      "size": 483,
+      "sentences": 3
+    },
+    {
+      "id": 46,
+      "content": "i\nj∈Nℓ−1\nThus, the nonlinear constraints (2b) can be replaced with the linear constraints (4)- (7). 2.1.2 Input Perturbation Constraint Formulation\nThe input perturbation constraint (2c) can be formulated by defining the integer-valued decision\nvariable y to represent qx0, for i ∈ N0. Then, x0 ∈ X0 if and only if x0 ∈ Rn0, and there exist\ni i +\ny ∈ Zn0 satisfying the following constraints:\n+\ny = qx0, (8)\ny ≤ q1, (9)\n∥x0−x¯∥ ≤ ϵ.",
+      "size": 432,
+      "sentences": 3
+    },
+    {
+      "id": 47,
+      "content": "e exist\ni i +\ny ∈ Zn0 satisfying the following constraints:\n+\ny = qx0, (8)\ny ≤ q1, (9)\n∥x0−x¯∥ ≤ ϵ. (10)\np\nIn the case of p = 1 or p = ∞, (10) can be formulated with linear constraints using standard\ntechniques. In the case of p = 2, (10) can be formulated as a convex quadratic constraint. 2.2 Objective Formulation\nFinally,toobtainalinearIPformulationof (2)weexploretwomethodstoobtainalinearobjective.",
+      "size": 403,
+      "sentences": 4
+    },
+    {
+      "id": 48,
+      "content": "Formulation\nFinally,toobtainalinearIPformulationof (2)weexploretwomethodstoobtainalinearobjective. The first approach, which has been used in Han and G´omez (2021), Lubczyk and Neto (2024),\nis to consider separately each alternative class t ∈ NL+1 \\ {t¯}. Each such class t results in the\n5\n===  6 ===\nfollowing IP problem with linear objective:\nz∗(x¯,t) = max aL+1(xL)−aL+1(xL)\nϵ t t¯\ns.t. (4)−(5),\n(6)−(7), ∀ℓ ∈ {2,...,L},\n(8)−(10), (11)\nx0 ∈ Rn0 ,\n+\nxℓ ∈ {0,1}nℓ , ∀ℓ ∈ [L],\ny ∈\nZn0\n.",
+      "size": 487,
+      "sentences": 4
+    },
+    {
+      "id": 49,
+      "content": "t. (4)−(5),\n(6)−(7), ∀ℓ ∈ {2,...,L},\n(8)−(10), (11)\nx0 ∈ Rn0 ,\n+\nxℓ ∈ {0,1}nℓ , ∀ℓ ∈ [L],\ny ∈\nZn0\n. +\nThe optimal solution of (2) can be obtained by solving (11) for each t ∈ NL+1 \\{t¯} and choosing\nt that achieves the maximum of z∗(x¯,t). ϵ\nFor problems with more than two classes, we propose an alternative approach for obtaining\na linear objective which directly includes the choice of the alternative class t in the formulation,\nthereby avoiding the need to solve (11) for each t ∈ NL+1\\{t¯}.",
+      "size": 496,
+      "sentences": 3
+    },
+    {
+      "id": 50,
+      "content": "rnative class t in the formulation,\nthereby avoiding the need to solve (11) for each t ∈ NL+1\\{t¯}. Thus, for each t ∈ NL+1\\{t¯} let\nz ∈ {0,1} be a decision variable indicating whether t is selected as the alternative class, and for\nt\neach i ∈ NL let v ∈ {0,1} be a decision variable that is used to represent the product z xL. The\nti t i\nproof of the following lemma is in the appendix. Lemma 2.",
+      "size": 396,
+      "sentences": 4
+    },
+    {
+      "id": 51,
+      "content": "to represent the product z xL. The\nti t i\nproof of the following lemma is in the appendix. Lemma 2. The following IP problem is equivalent to (2):\n(cid:88) (cid:88)\nmax 2(WL−WL)v\nti t¯i ti\nt∈NL+1\\{t¯}i∈NL\n(cid:88) (cid:16) (cid:88) (cid:17)\n+ − (WL−WL)+(bL−bL) z (12a)\nti t¯i t t¯ t\nt∈NL+1\\{t¯} i∈NL\ns.t.",
+      "size": 304,
+      "sentences": 4
+    },
+    {
+      "id": 52,
+      "content": "(cid:88) (cid:16) (cid:88) (cid:17)\n+ − (WL−WL)+(bL−bL) z (12a)\nti t¯i t t¯ t\nt∈NL+1\\{t¯} i∈NL\ns.t. (4)−(5),\n(6)−(7), ∀ℓ ∈ {2,...,L},\n(8)−(10),\n(cid:88)\nz = 1, (12b)\nt\nt∈NL+1\\{t¯}\n(cid:88)\nv = xL, ∀i ∈ NL, (12c)\nti i\nt∈NL+1\\{t¯}\nv ≤ z , ∀t ∈ NL+1\\{t¯}, i ∈ NL, (12d)\nti t\nx0 ∈ Rn0 , (12e)\n+\nxℓ ∈ {0,1}nℓ , ∀ℓ ∈ [L], (12f)\ny ∈\nZn0\n, (12g)\n+\nz ∈ {0,1}, ∀t ∈ NL+1\\{t¯}, (12h)\nt\nv ∈ {0,1}, ∀t ∈ NL+1\\{t¯}, i ∈ NL.",
+      "size": 409,
+      "sentences": 2
+    },
+    {
+      "id": 53,
+      "content": "[L], (12f)\ny ∈\nZn0\n, (12g)\n+\nz ∈ {0,1}, ∀t ∈ NL+1\\{t¯}, (12h)\nt\nv ∈ {0,1}, ∀t ∈ NL+1\\{t¯}, i ∈ NL. (12i)\nti\n2.3 Valid Inequalities for Neurons\nHan and G´omez (2021) explored the following convex hull for a single neuron for ℓ ∈ {2,...,L}\n6\n===  7 ===\nand i ∈ Nℓ in the case of bℓ = 0:\nconv({(xℓ−1,xℓ\ni\n) ∈ {0,1}nℓ−1 ×{0,1} : xℓ\ni\n= 1R\n+\n(aℓ\ni\n(xℓ−1))}). (13)\nIn the following theorem, we extend the results in Han and G´omez (2021) to a general case\nwhere bℓ are not necessarily zero.",
+      "size": 484,
+      "sentences": 3
+    },
+    {
+      "id": 54,
+      "content": "we extend the results in Han and G´omez (2021) to a general case\nwhere bℓ are not necessarily zero. This theorem is proved in the Appendix. Theorem 3. Forℓ ∈ {2,...,L}andi ∈ Nℓ, (13)isthesetof(xℓ−1,xℓ) ∈ [0,1]nℓ−1×[0,1]satisfying\ni\nthe following inequalities for J ⊂ {j ∈ Nℓ−1 : Wℓ ̸= 0}:\nij\n(cid:88)\n(Wℓ(2xℓ−1−1)−(2xℓ−1)) ≥ (Rℓ−UBℓ+1)xℓ, (14a)\nij j i i i i\nj∈J\n(cid:88)\n(Wℓ(2xℓ−1−1)−(2xℓ−1)) ≤ (Rℓ−LBℓ−1)(−xℓ+1).",
+      "size": 413,
+      "sentences": 4
+    },
+    {
+      "id": 55,
+      "content": "(2xℓ−1)) ≥ (Rℓ−UBℓ+1)xℓ, (14a)\nij j i i i i\nj∈J\n(cid:88)\n(Wℓ(2xℓ−1−1)−(2xℓ−1)) ≤ (Rℓ−LBℓ−1)(−xℓ+1). (14b)\nij j i i i i\nj∈J\nSince the number of inequalities described in this theorem grows exponentially with the number\nof nodes in a hidden layer, these would be used to improve the LP relaxation of the formulation\n(12) by adding them via a cutting plane procedure.",
+      "size": 364,
+      "sentences": 2
+    },
+    {
+      "id": 56,
+      "content": "to improve the LP relaxation of the formulation\n(12) by adding them via a cutting plane procedure. LubczykandNeto(2024)extendedHanandG´omez(2021)byinvestigatingthefollowingconvex\nhull for a pair of neurons in the same hidden layer for ℓ ∈ {2,...,L} and i,k ∈ Nℓ satisfying i < k\nin the case where nℓ−1 is an even integer larger than 2, every entry in Wℓ is nonzero, and bℓ = 0:\nconv({(xℓ−1,xℓ\ni\n,xℓ\nk\n) : xℓ−1 ∈ {0,1}nℓ−1 ,xℓ\ni\n= 1R\n+\n(aℓ\ni\n(xℓ−1)),xℓ\nk\n= 1R\n+\n(aℓ\nk\n(xℓ−1))}).",
+      "size": 477,
+      "sentences": 2
+    },
+    {
+      "id": 57,
+      "content": "conv({(xℓ−1,xℓ\ni\n,xℓ\nk\n) : xℓ−1 ∈ {0,1}nℓ−1 ,xℓ\ni\n= 1R\n+\n(aℓ\ni\n(xℓ−1)),xℓ\nk\n= 1R\n+\n(aℓ\nk\n(xℓ−1))}). In this work, a relaxation IP problem to the IP problem (11) is solved for a fixed alternative\nclass t ∈ NL+1 to tackle the BNN verification problem.",
+      "size": 249,
+      "sentences": 2
+    },
+    {
+      "id": 58,
+      "content": "oblem (11) is solved for a fixed alternative\nclass t ∈ NL+1 to tackle the BNN verification problem. This computational study shows some\nimprovement in the optimal objective value of the LP relaxation of the IP formulation compared\nto Han and G´omez (2021), but this does translate to significant improvement in the ability to solve\nthe BNN verification problem.",
+      "size": 361,
+      "sentences": 2
+    },
+    {
+      "id": 59,
+      "content": "his does translate to significant improvement in the ability to solve\nthe BNN verification problem. 3 Layerwise Derived Valid Inequalities\nWe explore an alternative approach for deriving valid inequalities for (11) that is based on recur-\nsively approximating the set of “reachable vectors” at each layer. Starting from X0, Xℓ is defined recursively as follows for ℓ ∈ [L]:\nXℓ = 1R (aℓ(Xℓ−1)).",
+      "size": 393,
+      "sentences": 3
+    },
+    {
+      "id": 60,
+      "content": "each layer. Starting from X0, Xℓ is defined recursively as follows for ℓ ∈ [L]:\nXℓ = 1R (aℓ(Xℓ−1)). +\nThen, Xℓ is the set of all output vectors of layer ℓ that can be obtained from a perturbed input\nvector in the set X0. Since the objective (2a) only depends on xL, (2) can be formulated as the\nfollowing IP problem:\n(cid:110) (cid:111)\nmax max aL+1(xL)−aL+1(xL) : t ∈ NL+1\\{t¯}\nt t¯\nxL (15)\ns.t. xL ∈ XL.",
+      "size": 405,
+      "sentences": 5
+    },
+    {
+      "id": 61,
+      "content": "P problem:\n(cid:110) (cid:111)\nmax max aL+1(xL)−aL+1(xL) : t ∈ NL+1\\{t¯}\nt t¯\nxL (15)\ns.t. xL ∈ XL. The above IP problem implies that (2) can be solved with access to a description for XL, which\nmotivates studying valid inequalities for this set. We observe that valid inequalities for Xℓ can be\nobtained using a relaxation of the set Xℓ−1 since Xℓ = 1R (aℓ(Xℓ−1)).",
+      "size": 365,
+      "sentences": 4
+    },
+    {
+      "id": 62,
+      "content": "id inequalities for Xℓ can be\nobtained using a relaxation of the set Xℓ−1 since Xℓ = 1R (aℓ(Xℓ−1)). Since a full description for\n+\nX0 is given, this motivates an iterative approach in which we derive valid inequalities for the set\nXℓ based on an outer approximation of the set Xℓ−1 for ℓ = 2,...,L. We refer to such inequalities\nas layerwise derived valid inequalities.",
+      "size": 369,
+      "sentences": 2
+    },
+    {
+      "id": 63,
+      "content": "he set Xℓ−1 for ℓ = 2,...,L. We refer to such inequalities\nas layerwise derived valid inequalities. 7\n===  8 ===\n3.1 Variable Fixing\nWe first investigate layerwise derived valid inequalities for Xℓ for ℓ ∈ [L] of the form\n1−c\nxℓ = i (16)\ni 2\nfor i ∈ Nℓ and c ∈ {−1,1}. In the case of c = −1, (16) is equivalent to xℓ = 1 and (16) is\ni i i\nequivalent to xℓ = 0 in the case of c = 1. For these reasons, valid equalities for Xℓ of the form\ni i\n(16) are called variable fixings.",
+      "size": 474,
+      "sentences": 4
+    },
+    {
+      "id": 64,
+      "content": "c = 1. For these reasons, valid equalities for Xℓ of the form\ni i\n(16) are called variable fixings. This idea of identifying variable fixings is related to the work of\nFischetti and Jo (2018) who apply a similar technique to fix binary variables in the IP formulation\nof the feedforward neural network verification problem. Our approach is to consider each equality of the form (16) and determine if it is a valid equality.",
+      "size": 423,
+      "sentences": 4
+    },
+    {
+      "id": 65,
+      "content": "Our approach is to consider each equality of the form (16) and determine if it is a valid equality. The following theorem describes an IP problem that can be solved to determine validity of such an\nequality. Theorem 4. Consider ℓ ∈ [L], i ∈ Nℓ, and c ∈ {−1,1}. Let Xℓ−1 ⊂ {0,1}nℓ−1 satisfy Xℓ−1 ⊇\ni out out\nXℓ−1 and define\n(cid:110) (cid:88) (cid:111)\nz∗ = max c Wℓxℓ−1 : xℓ−1 ∈ Xℓ−1 . (17)\ni ij j out\nj∈Nℓ−1\nIf z∗ ≤ c Rℓ/2, where Rℓ is defined in (3), then (16) is a valid equality for Xℓ.",
+      "size": 490,
+      "sentences": 6
+    },
+    {
+      "id": 66,
+      "content": "i ij j out\nj∈Nℓ−1\nIf z∗ ≤ c Rℓ/2, where Rℓ is defined in (3), then (16) is a valid equality for Xℓ. i i i\nThe details are described in Section 3.3, but to preview this, the idea is to use Theorem 4\nto obtain outer approximations of the sets Xℓ by setting X0 as X0, and then recursively using\nout\nthe theorem to derive valid inequalities to define valid inequalities to define Xℓ based on the\nout\npreviously determined Xℓ−1 for ℓ = 1,...,L.\nout\nTo prove this theorem, we use the following lemma.",
+      "size": 494,
+      "sentences": 2
+    },
+    {
+      "id": 67,
+      "content": "previously determined Xℓ−1 for ℓ = 1,...,L.\nout\nTo prove this theorem, we use the following lemma. Lemma 5. Consider ℓ ∈ [L], i ∈ Nℓ, and c ∈ {−1,1}. Then xℓ−1 ∈ {0,1}nℓ−1 satisfies\ni\nc\ni\n(cid:80)\nj∈Nℓ−1\nW\ni\nℓ\nj\nxℓ\nj\n−1 ≤ c\ni\nR\ni\nℓ/2 if and only if 1R\n+\n(aℓ\ni\n(xℓ−1)) = 1−\n2\nci. . Proof.",
+      "size": 287,
+      "sentences": 6
+    },
+    {
+      "id": 68,
+      "content": "(cid:80)\nj∈Nℓ−1\nW\ni\nℓ\nj\nxℓ\nj\n−1 ≤ c\ni\nR\ni\nℓ/2 if and only if 1R\n+\n(aℓ\ni\n(xℓ−1)) = 1−\n2\nci. . Proof. In the case of c = −1, the following statements hold for ℓ = 1:\ni\n(cid:88)\n2c W1x0 ≤ c R1,\ni ij j i i\nj∈N0\n(cid:88)\n⇔ 2 W1x0 ≥ R1,\nij j i\nj∈N0\n(cid:88) 1 (cid:88) 1 2\n⇔ 2 W1x0 ≥ R1+ , (2 W1x0,R1+ ∈ Z)\nij j i q ij j i q q\nj∈N0 j∈N0\n(cid:88) (cid:88) 1 2\n⇔ 2 W1x0 ≥ W1 −b1, (R1+ is the smallest element of Z\nij j ij i i q q\nj∈N0 j∈N0\n(cid:88)\nnot smaller than W1 −b1)\nij i\nj∈N0\n⇔ a1(x0) ≥ 0,\ni\n1−c\n⇔ 1R\n+\n(a1\ni\n(x0)) = 1 =\n2\ni .",
+      "size": 526,
+      "sentences": 4
+    },
+    {
+      "id": 69,
+      "content": "j∈N0\n(cid:88)\nnot smaller than W1 −b1)\nij i\nj∈N0\n⇔ a1(x0) ≥ 0,\ni\n1−c\n⇔ 1R\n+\n(a1\ni\n(x0)) = 1 =\n2\ni . For ℓ ∈ {2,...,L}, the same arguments hold because 2 (cid:80) Wℓxℓ−1 and Rℓ + 1 are even\nj∈Nℓ−1 ij j i\nintegers, and Rℓ+1 is the smallest even integer not smaller than (cid:80) Wℓ −bℓ.",
+      "size": 284,
+      "sentences": 2
+    },
+    {
+      "id": 70,
+      "content": "ven\nj∈Nℓ−1 ij j i\nintegers, and Rℓ+1 is the smallest even integer not smaller than (cid:80) Wℓ −bℓ. i j∈Nℓ−1 ij i\n8\n===  9 ===\nIn the case of c = 1, the following statements hold for ℓ = 1:\ni\n(cid:88)\n2c W1x0 ≤ c R1,\ni ij j i i\nj∈N0\n(cid:88)\n⇔ 2 W1x0 ≤ R1,\nij j i\nj∈N0\n(cid:88) 1 (cid:88) 1 2\n⇔ 2 W1x0 < R1+ , (2 W1x0,R1+ ∈ Z)\nij j i q ij j i q q\nj∈N0 j∈N0\n(cid:88) (cid:88) 1 2\n⇔ 2 W1x0 < W1 −b1, (R1+ is the smallest element in Z\nij j ij i i q q\nj∈N0 j∈N0\n(cid:88)\nnot smaller than W1 −b1)\nij i\nj∈N0\n⇔ a1(x0) < 0,\ni\n1−c\n⇔ 1R\n+\n(a1\ni\n(x0)) = 0 =\n2\ni .",
+      "size": 552,
+      "sentences": 2
+    },
+    {
+      "id": 71,
+      "content": "j∈N0\n(cid:88)\nnot smaller than W1 −b1)\nij i\nj∈N0\n⇔ a1(x0) < 0,\ni\n1−c\n⇔ 1R\n+\n(a1\ni\n(x0)) = 0 =\n2\ni . For ℓ ∈ {2,...,L}, the same arguments hold because 2 (cid:80) Wℓxℓ−1 and Rℓ + 1 are even\nj∈Nℓ−1 ij j i\nintegers, and Rℓ+1 is the smallest even integer not smaller than (cid:80) Wℓ −bℓ. □\ni j∈Nℓ−1 ij i\n. Proof of Theorem 4. Let xℓ ∈ Xℓ and let xℓ−1 ∈ Xℓ−1 be such that xℓ = 1R (aℓ(xℓ−1)). Then\n+\nxℓ−1 ∈ Xℓ−1 because Xℓ−1 ⊇ Xℓ−1.",
+      "size": 427,
+      "sentences": 6
+    },
+    {
+      "id": 72,
+      "content": "ℓ ∈ Xℓ and let xℓ−1 ∈ Xℓ−1 be such that xℓ = 1R (aℓ(xℓ−1)). Then\n+\nxℓ−1 ∈ Xℓ−1 because Xℓ−1 ⊇ Xℓ−1. Then z∗ ≤ c R /2 implies\nout out i i\n(cid:88)\nc Wℓxℓ−1 ≤ c R /2\ni ij j i i\nj∈Nℓ−1\nwhich by Lemma 5 implies\n1−c\nxℓ\ni\n= 1R\n+\n(aℓ\ni\n(xℓ−1)) =\n2\ni . Therefore, (16) is a valid equality for Xℓ.",
+      "size": 288,
+      "sentences": 4
+    },
+    {
+      "id": 73,
+      "content": "y Lemma 5 implies\n1−c\nxℓ\ni\n= 1R\n+\n(aℓ\ni\n(xℓ−1)) =\n2\ni . Therefore, (16) is a valid equality for Xℓ. □\nAlthoughcheckingwhetheravariablefixingisvalidrequiressolvingtheIP(17), thisIPismuch\neasier to solve than the original verification IP as it considers only a single layer at a time and the\nconstraints defining the outer approximation of Xℓ−1 do not involve any “big-M” constraint (17).",
+      "size": 386,
+      "sentences": 3
+    },
+    {
+      "id": 74,
+      "content": "he\nconstraints defining the outer approximation of Xℓ−1 do not involve any “big-M” constraint (17). Furthermore, it can be solved very efficiently for certain structures of Xℓ−1 as discussed in the\nout\nfollowing paragraphs. First, consider the case ℓ ∈ {2,...,L} and assume Xℓ−1 is defined only by variable fixings, e.g.,\nout\nas is the case if it is defined recursively only the result of Theorem 4.",
+      "size": 399,
+      "sentences": 3
+    },
+    {
+      "id": 75,
+      "content": "riable fixings, e.g.,\nout\nas is the case if it is defined recursively only the result of Theorem 4. Then, (17) can be solved\nby setting xℓ−1 to 1 if c Wℓ = 1 and the variable xℓ−1 is not fixed in Xℓ−1, and setting all other\nj i ij j out\nunfixed variables to 0. For ℓ = 1, the special form of the set X0 also allows (17) to be solved efficiently. We describe\nherehowthisisdoneforthecasep = 1. Themethodsforsolving(17)forthecasesp = 2andp = ∞\nare described in Appendix A.4.",
+      "size": 471,
+      "sentences": 5
+    },
+    {
+      "id": 76,
+      "content": "oneforthecasep = 1. Themethodsforsolving(17)forthecasesp = 2andp = ∞\nare described in Appendix A.4. For p = 1, the following inequality holds because x0 ∈ [0,1]n0:\n(cid:88) (cid:88)\nc W1x0 ≤ max(c W1,0). (18)\ni ij j i ij\nj∈N0 j∈N0\nInequality (18) is satisfied at equality by xˆ defined by xˆ = x¯ for j with W1 = 0, xˆ = 1 for j\nj j ij j\nwith W1 = c , and xˆ = 0 for j with W1 = −c . If ∥xˆ−x¯∥ ≤ ϵ, xˆ ∈ X0, so the optimal objective\nij i j ij i 1\n9\n===  10 ===\nvalue is (cid:80) max(c W1,0).",
+      "size": 492,
+      "sentences": 5
+    },
+    {
+      "id": 77,
+      "content": "∥ ≤ ϵ, xˆ ∈ X0, so the optimal objective\nij i j ij i 1\n9\n===  10 ===\nvalue is (cid:80) max(c W1,0). Otherwise, by iteratively decreasing xˆ by 1 for j with W1 = c and\nj∈N0 i ij j q ij i\nxˆ > x¯ or increasing xˆ by 1 for j with W1 = −c and xˆ < x¯ we can obtain a solution x∗ ∈ X0\nj j j q ij i j j\nsatisfying ∥x∗−x¯∥ = 1⌊qϵ⌋, x∗ = x¯ for j with W1 = 0, x∗ > x¯ for j with W1 = c , and x∗ < x¯\n1 q j j ij j j ij i j j\nfor j with W1 = −c .",
+      "size": 436,
+      "sentences": 2
+    },
+    {
+      "id": 78,
+      "content": "j with W1 = 0, x∗ > x¯ for j with W1 = c , and x∗ < x¯\n1 q j j ij j j ij i j j\nfor j with W1 = −c . The following inequalities are satisfied by every x ∈ X0 and hold at equality\nij i\nfor x∗:\n(cid:88) (cid:88) (cid:88)\nc W1x0 = c W1(x0−x¯ )+c W1x¯\ni ij j i ij j j i ij j\nj∈N0 j∈N0 j∈N0\n(cid:88) (cid:88)\n≤ |x0−x¯ |+c W1x¯ (c W1 ∈ {−1,0,1})\nj j i ij j i ij (19)\nj∈N0 j∈N0\n1 (cid:88)\n≤ ⌊qϵ⌋+c W1x¯\nq i ij j\nj∈N0\nwhere the last inequality follows because (cid:80) |x0−x¯ | = ∥x0−x¯∥ ≤ ϵ and (cid:80) |x0−x¯ | is a\nj∈N0 j j 1 j∈N0 j j\nmultipleof 1.",
+      "size": 543,
+      "sentences": 2
+    },
+    {
+      "id": 79,
+      "content": "ecause (cid:80) |x0−x¯ | = ∥x0−x¯∥ ≤ ϵ and (cid:80) |x0−x¯ | is a\nj∈N0 j j 1 j∈N0 j j\nmultipleof 1. Itfollowsthattheoptimalobjectivevalueof (17)inthiscaseis 1⌊qϵ⌋+c (cid:80) W1x¯\nq q i j∈N0 ij j\nand this value is achieved by x∗. 3.2 Two-variable Inequalities\nWe next seek to derive sufficient conditions for inequalities of the following form to be valid in-\nequalities for Xℓ for ℓ ∈ [L]:\nc +c\nc xℓ+c xℓ ≤ i k , (20)\ni i k k 2\nfor i,k ∈ Nℓ satisfying i > k, and c ,c ∈ {−1,1}.",
+      "size": 477,
+      "sentences": 3
+    },
+    {
+      "id": 80,
+      "content": "or ℓ ∈ [L]:\nc +c\nc xℓ+c xℓ ≤ i k , (20)\ni i k k 2\nfor i,k ∈ Nℓ satisfying i > k, and c ,c ∈ {−1,1}. The following theorem presents an IP that\ni k\nyields a sufficient condition for (20) to be a valid inequality for Xℓ. Theorem 6. Consider ℓ ∈ [L], i,k ∈ Nℓ satisfying i < k, and c ,c ∈ {−1,1}. Let Xℓ−1 ⊂\ni k out\n{0,1}nℓ−1 satisfy Xℓ−1 ⊇ Xℓ−1 and define\nout\n(cid:110) (cid:88) (cid:88) (cid:111)\nz∗ = max c Wℓxℓ−1 : xℓ−1 ∈ Xℓ−1,c Wℓ xℓ−1 ≥ c Rℓ/2 .",
+      "size": 447,
+      "sentences": 5
+    },
+    {
+      "id": 81,
+      "content": "fine\nout\n(cid:110) (cid:88) (cid:88) (cid:111)\nz∗ = max c Wℓxℓ−1 : xℓ−1 ∈ Xℓ−1,c Wℓ xℓ−1 ≥ c Rℓ/2 . (21)\ni ij j out k kj j k k\nj∈Nℓ−1 j∈Nℓ−1\nIf z∗ ≤ c Rℓ/2, where Rℓ is defined in (3), then (20) is a valid inequality for Xℓ. i i i\n. Proof. Letxℓ ∈ Xℓ andletxℓ−1 ∈ Xℓ−1 besuchthatxℓ = 1R\n+\n(aℓ(xℓ−1))andobservexℓ−1 ∈ X\no\nℓ\nu\n−\nt\n1\nsince Xℓ−1 ⊇ Xℓ−1. out\nObserve that for a binary variable x and c ∈ {−1,1}, it holds that cx ∈ {c+1, c−1}. 2 2\nSuppose that c xℓ = c k −1.",
+      "size": 468,
+      "sentences": 7
+    },
+    {
+      "id": 82,
+      "content": "a binary variable x and c ∈ {−1,1}, it holds that cx ∈ {c+1, c−1}. 2 2\nSuppose that c xℓ = c k −1. Then,\nk k 2\nc +1 c −1 c +c\nc xℓ+c xℓ ≤ i + k = i k\ni i k k 2 2 2\nand hence (20) is satisfied. Thus, assume now that c xℓ = c k +1, and hence xℓ = c k +1 because c ∈ {−1,1}. Then Lemma\nk k 2 k 2 k\n5 implies\n(cid:88)\nc Wℓ xℓ−1 > c Rℓ/2\nk kj j k k\nj∈Nℓ−1\nand hence xℓ−1 is feasible to (21).",
+      "size": 386,
+      "sentences": 5
+    },
+    {
+      "id": 83,
+      "content": "2 k 2 k\n5 implies\n(cid:88)\nc Wℓ xℓ−1 > c Rℓ/2\nk kj j k k\nj∈Nℓ−1\nand hence xℓ−1 is feasible to (21). Hence,\n(cid:88)\nc Wℓxℓ−1 ≤ z∗ ≤ c R /2\ni ij j i i\nj∈Nℓ−1\n10\n===  11 ===\nwhich again by Lemma 5 implies\n1−c\nxℓ\ni\n= 1R\n+\n(aℓ\ni\n(xℓ−1)) =\n2\ni . Thus, c xℓ = ci−1 and hence\ni i 2\nc −1 c +1 c +c\nc xℓ+c xℓ = i + k = i k\ni i k k 2 2 2\nand hence gain (20) is satisfied.",
+      "size": 361,
+      "sentences": 3
+    },
+    {
+      "id": 84,
+      "content": "hence\ni i 2\nc −1 c +1 c +c\nc xℓ+c xℓ = i + k = i k\ni i k k 2 2 2\nand hence gain (20) is satisfied. □\nOnce again, solving (20) is expected to be much simpler than solving the original verification\nproblem as it only includes the constraints defining the outer approximation of Xℓ−1 and one other\nconstraint and does not contain any “big-M” constraints. 3.3 Algorithms\nWe now describe how we propose to use the layerwise derived valid inequalities to solve the IP\nproblem for BNN verification.",
+      "size": 491,
+      "sentences": 3
+    },
+    {
+      "id": 85,
+      "content": "opose to use the layerwise derived valid inequalities to solve the IP\nproblem for BNN verification. Algorithm 1: VerifyBnn(x¯,ϵ)\nInput: input vector x¯, input perturbation ϵ\nOutput: if x¯ is ϵ-verified, returns TRUE, else returns FALSE\n1 Initialize X in = (X i 0 n ,··· ,X i L n ) ← (∅,··· ,∅)\n2 X in ← UpdateInApprox(0,X in ,{x¯})\n3 Initialize X o 0 ut ← X0\n4 for ℓ = 1,··· ,L do\n5 X in ,N fi ℓ x ,X o ℓ ut ← PhaseOneFixVar(ℓ,X in ,X o ℓ u − t 1)\n6 Add constraints xℓ ∈ X o ℓ ut for ℓ ∈ [L] to (12) and start the solution process but with a\nlimit of one node, and let z∗ be the best objective value (lower bound) and z¯ be the best\nupper bound on the optimal objective value\n7 if z¯≤ 0 then\n8 return TRUE\n9 else if z∗ > 0 then\n10 return FALSE\n11 else\n12 X in ,X o 1 ut ← GenTwoVarIneq(1,X in ,X o 0 ut ,N fi 1 x ,X o 1 ut )\n13 for ℓ = 2,··· ,L do\n14 X in ,N fi ℓ x ,X o ℓ ut ← PhaseTwoFixVar(ℓ,X in ,X o ℓ u − t 1,N fi ℓ x ,X o ℓ ut )\n15 X in ,X o ℓ ut ← GenTwoVarIneq(ℓ,X in ,X o ℓ u − t 1,N fi ℓ x ,X o ℓ ut )\n16 Solve (12) by adding constraints xℓ ∈ X o ℓ ut for ℓ ∈ [L], and obtain z ϵ ∗(x¯) from the\noptimal objective value\n17 if z ϵ ∗(x¯) ≤ 0 then\n18 return TRUE\n19 else\n20 return FALSE\n11\n===  12 ===\nOur proposed method is described in Algorithm 1.",
+      "size": 1257,
+      "sentences": 2
+    },
+    {
+      "id": 86,
+      "content": "return TRUE\n19 else\n20 return FALSE\n11\n===  12 ===\nOur proposed method is described in Algorithm 1. The algorithm consists of two phases. In\nthe first phase, we only try to fix variables, since in this case the validity verification problem (17)\nis easy to solve. This is described in lines 3 - 5, where variable fixings are identified by calling\nAlgorithm 2 for each ℓ ∈ [L], which outputs an outer approximation for Xℓ (Xℓ ) based on fixing\nout\nvariables in the set Nℓ ⊆ Nℓ.",
+      "size": 476,
+      "sentences": 4
+    },
+    {
+      "id": 87,
+      "content": "which outputs an outer approximation for Xℓ (Xℓ ) based on fixing\nout\nvariables in the set Nℓ ⊆ Nℓ. Then, the generated variable fixings are added to the IP formulation\nfix\n(12) as constraints and (12) is solved by an IP solver with a limit of one node (i.e., the IP solver\nonly processes the root node of the branch-and-bound tree).",
+      "size": 333,
+      "sentences": 2
+    },
+    {
+      "id": 88,
+      "content": "limit of one node (i.e., the IP solver\nonly processes the root node of the branch-and-bound tree). If the IP solver solves the verification\nproblemwithinthatlimit(e.g.,byfindingafeasiblesolutionwithpositiveobjectivevalueorproving\na non-positive upper bound), then it returns the result accordingly. Otherwise, Algorithm 1 moves\nto the second phase.",
+      "size": 348,
+      "sentences": 3
+    },
+    {
+      "id": 89,
+      "content": "r bound), then it returns the result accordingly. Otherwise, Algorithm 1 moves\nto the second phase. In this phase, two-variable inequalities are generated by Algorithm 4 for\nℓ ∈ [L] and additional variable fixings are checked, which may be possible due to the improved\nouter approximations defined by the two-variable inequalities. For layers ℓ ∈ {2,...,L}, Algorithm\n4 outputs an outer approximation Xℓ that is potentially a subset of the one generated in the first\nout\nphase.",
+      "size": 477,
+      "sentences": 4
+    },
+    {
+      "id": 90,
+      "content": "an outer approximation Xℓ that is potentially a subset of the one generated in the first\nout\nphase. The inequalities defining these outer approximations are added to the IP formulation (12)\nand it is solved. In order to answer the verification question, it is only necessary to determine the\nsign of the optimal value of (12).",
+      "size": 326,
+      "sentences": 3
+    },
+    {
+      "id": 91,
+      "content": "the verification question, it is only necessary to determine the\nsign of the optimal value of (12). Thus, when solving (12) the process can be terminated if either\nthe best objective value of a feasible solution found is positive or the best upper bound for the\noptimal objective value is non-positive.",
+      "size": 302,
+      "sentences": 2
+    },
+    {
+      "id": 92,
+      "content": "solution found is positive or the best upper bound for the\noptimal objective value is non-positive. Algorithm 2: PhaseOneFixVar(ℓ,X ,Xℓ−1)\nin out\nInput: layer ℓ, inner approximation X , outer approximation Xℓ−1 for Xℓ−1\nin out\nOutput: X , set Nℓ of i ∈ Nℓ where xℓ is fixed in Xℓ, outer approximation Xℓ for Xℓ\nin fix i out\n1 Initialize Nℓ ← ∅\nfix\n2 Initialize X o ℓ ut ← {0,1}nℓ\n3 for i ∈ Nℓ do\n4 for c i ∈ {−1,1} do\n5 Solve the IP subproblem (17), and obtain the optimal objective value z∗\n6 if ℓ = 1 then\n7 Let xi,ci be optimal solution obtained when solving (17)\n8 X in ← UpdateInApprox(0,X in ,{xi,ci})\n9 if z∗ ≤ c i R i ℓ/2 then\n(cid:110)(cid:16) (cid:17)(cid:111)\n10 Nℓ ← Nℓ ∪ i, −ci+1\nfix fix 2\n(cid:110) (cid:111)\n11 X o ℓ ut ← X o ℓ ut ∩ xℓ ∈ {0,1}nℓ : xℓ i = −c 2 i+1\n12 return X in ,N fi ℓ x ,X o ℓ ut\nAlgorithms 2, 3, and 4 generate variable fixings in phase 1, variable fixings in phase 2, and\ntwo-variable inequalities, respectively.",
+      "size": 948,
+      "sentences": 2
+    },
+    {
+      "id": 93,
+      "content": "iable fixings in phase 1, variable fixings in phase 2, and\ntwo-variable inequalities, respectively. These algorithms check whether each candidate layerwise\nderived valid inequality is valid for Xℓ by solving the IP subproblem (17) or (20). When solving\nthese IP subproblems, if the upper bound on the optimal objective value falls below c Rℓ/2 the\ni i\noptimization process is terminated since we then know the candidate inequality is valid.",
+      "size": 440,
+      "sentences": 3
+    },
+    {
+      "id": 94,
+      "content": "/2 the\ni i\noptimization process is terminated since we then know the candidate inequality is valid. On the\notherhand,ifthelowerbound(incumbentobjectivevalue)exceedsc Rℓ/2,theoptimizationprocess\ni i\nis terminated since we can then conclude that we are not able to verify validity of the candidate\ninequality. In Algorithms 2 and 3, the neuron fixed by the candidate is added to Nℓ because this\nfix\nset is exploited in Algorithms 3 and 4 to retrieve candidates for layerwise derived valid inequalities.",
+      "size": 500,
+      "sentences": 3
+    },
+    {
+      "id": 95,
+      "content": "is exploited in Algorithms 3 and 4 to retrieve candidates for layerwise derived valid inequalities. 12\n===  13 ===\nAlgorithm 3: PhaseTwoFixVar(ℓ,X ,Xℓ−1,Nℓ ,Xℓ )\nin out fix out\nInput: layer ℓ, inner approximation X , outer approximation Xℓ−1 for Xℓ−1, set Nℓ of\nin out fix\ni ∈ Nℓ where xℓ is fixed in Xℓ, outer approximation Xℓ for Xℓ\ni out\nOutput: X , Nℓ , Xℓ\nin fix out\n1 for i ∈ Nℓ\\Nℓ do\nfix\n2 for c i ∈ {−1,1} do\n3 if max xℓ∈Xℓ c i xℓ i > ci 2 −1 then\nin\n4 continue\n5 Solve the IP subproblem (17), and obtain a set Xℓ−1 of feasible solutions and the\nfeas\noptimal objective value z∗\n6 X in ← UpdateInApprox(ℓ,X in ,1R + (aℓ(X f ℓ e − as 1)))\n7 if z∗ ≤ c i R i ℓ/2 then\n(cid:16) (cid:17)\n8 Nℓ ← Nℓ ∪{ i, −ci+1 }\nfix fix 2\n(cid:110) (cid:111)\n9 X o ℓ ut ← X o ℓ ut ∩ xℓ ∈ {0,1}nℓ : xℓ i = −c 2 i+1\n10 return X in ,N fi ℓ x ,X o ℓ ut\nAlgorithm 4: GenTwoVarIneq(ℓ,X ,Xℓ−1,Nℓ ,Xℓ )\nin out fix out\nInput: layer ℓ, inner approximation X , outer approximation Xℓ−1 for Xℓ−1, set Nℓ of\nin out fix\ni ∈ Nℓ where xℓ is fixed in Xℓ, outer approximation Xℓ for Xℓ\ni out\nOutput: X , Xℓ\nin out\n1 Initialize N p ℓ air ← {(i,c i ,k,c k ) : i,k ∈ Nℓ\\N fi ℓ x ,c i ,c k ∈ {−1,1},i < k}, fail count ← 0\n2 Sort Nℓ in a descending order by the score based on Xℓ\npair in\n3 for (i,c i ,k,c k ) ∈ N p ℓ air in descending order of score(i,c i ,k,c k ) do\n4 if max xℓ∈Xℓ (c i xℓ i +c k xℓ k ) > ci+ 2 c k then\nin\n5 continue\n6 Solve the IP subproblem (21), and obtain a set Xℓ−1 of feasible solutions and the\nfeas\noptimal objective value z∗\n7 X in ← UpdateInApprox(ℓ,X in ,1R + (aℓ(X f ℓ e − as 1)))\n8 if z∗ ≤ c i R i ℓ/2 then\n(cid:110) (cid:111)\n9 X o ℓ ut ← X o ℓ ut ∩ xℓ ∈ {0,1}nℓ : c i xℓ i +c k xℓ k ≤ ci+ 2 c k\n10 fail count ← 0\n11 else\n12 fail count ← fail count+1\n13 if fail count ≥ max fail then\n14 break\n15 return X in ,X o ℓ ut\n13\n===  14 ===\nAlgorithm 5: UpdateInApprox(ℓ,X ,Xℓ )\nin feas\nInput: layer ℓ, inner approximation X , set Xℓ ⊆ Xℓ\nin feas out\nOutput: X\nin\n1 Xℓ ← Xℓ ∪Xℓ\nin in feas\n2 for ℓ′ = ℓ+1,··· ,L do\n3 Initialize Xℓ′ ← 1R (aℓ′(Xℓ′−1))\nfeas + feas\n4 Xℓ′ ← Xℓ′ ∪Xℓ′\nin in feas\n5 return X in\nTo limit the time spent checking validity of candidates, Algorithms 3 and 4 use an inner ap-\nproximation X\ni\nℓ\nn\nfor 1R\n+\n(aℓ(X\no\nℓ\nu\n−\nt\n1)) to detect candidates that will not lead to a valid inequality,\nand hence avoid solving (17) or (20) for those candidates.",
+      "size": 2353,
+      "sentences": 2
+    },
+    {
+      "id": 96,
+      "content": "hat will not lead to a valid inequality,\nand hence avoid solving (17) or (20) for those candidates. For each candidate layerwise derived\ninequality, if the maximum of the left-hand side over Xℓ is larger than the right-hand side, this\nin\ncandidate is not valid for Xℓ, so solving the IP subproblem can be avoided. In Algorithm 1,\nX = (X0,··· ,XL) is initialized by propagating the input feature vector x¯ through the BNN.",
+      "size": 421,
+      "sentences": 3
+    },
+    {
+      "id": 97,
+      "content": "ithm 1,\nX = (X0,··· ,XL) is initialized by propagating the input feature vector x¯ through the BNN. In\nin in in\nAlgorithm 2 these sets are expanded by propagating the optimal solution obtained when solving\n(17) at layer 1 (which are in X0 by definition) through the BNN, thus yielding solutions in Xℓ\nwhich are added to Xℓ for ℓ = 0,...,L. In Algorithms 3 and 4, for each layer ℓ ∈ {1,...,L}, each\nin\ntime we solve (17) or (20) to check validity of a candidate inequality we collect the set of feasible\nsolutions Xℓ−1 obtained by the solver, which by definition are in the set Xℓ−1.",
+      "size": 582,
+      "sentences": 2
+    },
+    {
+      "id": 98,
+      "content": "the set of feasible\nsolutions Xℓ−1 obtained by the solver, which by definition are in the set Xℓ−1. These are then\nfeas out\npropagated forwarded as X\nf\nℓ\ne\n′\nas\n= 1R\n+\n(aℓ′(X\nf\nℓ\ne\n′\na\n−\ns\n1)) for ℓ′ = ℓ,...,L and these sets are added to X\ni\nℓ\nn\n′.",
+      "size": 248,
+      "sentences": 2
+    },
+    {
+      "id": 99,
+      "content": "f\nℓ\ne\n′\nas\n= 1R\n+\n(aℓ′(X\nf\nℓ\ne\n′\na\n−\ns\n1)) for ℓ′ = ℓ,...,L and these sets are added to X\ni\nℓ\nn\n′. Since the set Xℓ−1 is completely determined when processing layer ℓ in Algorithm 3, this process\nout\nensures that Xℓ ⊆ Xℓ for all ℓ, and hence if a candidate valid inequality is violated by a vector\nin out\nin Xℓ we can conclude that solving (17) or (20) cannot lead to a verification that the inequality is\nin\nvalid.",
+      "size": 415,
+      "sentences": 2
+    },
+    {
+      "id": 100,
+      "content": "n conclude that solving (17) or (20) cannot lead to a verification that the inequality is\nin\nvalid. As a final strategy to limit the computational time spent solving (20) on candidates that do\nnot yield valid inequalities, Algorithm 4 includes a heuristic stopping rule that quits the process\nif it seems unlikely to yield more additional valid inequalities.",
+      "size": 358,
+      "sentences": 2
+    },
+    {
+      "id": 101,
+      "content": "pping rule that quits the process\nif it seems unlikely to yield more additional valid inequalities. The idea is to check the candidate\ninequalities in a sequence defined by a score that correlates with how likely they are to yield a\nvalid inequality, and then terminate once the number of consecutive failed attempts exceeds a pre-\nspecified limit ‘max fail’.",
+      "size": 359,
+      "sentences": 2
+    },
+    {
+      "id": 102,
+      "content": "terminate once the number of consecutive failed attempts exceeds a pre-\nspecified limit ‘max fail’. The score that we use for a candidate inequality (i,c ,k,c ) ∈ Nℓ also\ni k pair\nleverages the inner approximations we have built and is defined as:\n|{xˆℓ ∈ Xℓ : xˆℓ = −ci+1}|+|{xˆℓ ∈ Xℓ : xˆℓ = −c k +1}|\nscore(i,c ,k,c ) = in i 2 in k 2 .",
+      "size": 338,
+      "sentences": 2
+    },
+    {
+      "id": 103,
+      "content": "ined as:\n|{xˆℓ ∈ Xℓ : xˆℓ = −ci+1}|+|{xˆℓ ∈ Xℓ : xˆℓ = −c k +1}|\nscore(i,c ,k,c ) = in i 2 in k 2 . i k |Xℓ |\nin\nTo understand the intuition for this score, consider the case of c = c = 1, so that the candidate\ni k\ninequality is of the form xℓ + xℓ ≤ 1, and the score sums the fraction of solutions in the inner\ni k\napproximation Xℓ which have xℓ = 0 and which have xℓ = 0.",
+      "size": 373,
+      "sentences": 2
+    },
+    {
+      "id": 104,
+      "content": "he fraction of solutions in the inner\ni k\napproximation Xℓ which have xℓ = 0 and which have xℓ = 0. A high score suggests most solutions\nin i k\nin Xℓ have either xℓ = 0 or xℓ = 0 and hence the candidate inequality might be satisfied. The\nout i k\nintuition behind the other cases is similar. 4 Computational Study\nWe pursue a computational study to investigate how IP methods work to solve the BNN verifi-\ncation problem for multiple test instances.",
+      "size": 448,
+      "sentences": 4
+    },
+    {
+      "id": 105,
+      "content": "nvestigate how IP methods work to solve the BNN verifi-\ncation problem for multiple test instances. The following five IP methods are considered in the\n14\n===  15 ===\nNetwork L n1 n2 n3 n4 Error Rate\n1 2 100 100 * * 7.53%\n2 2 200 100 * * 5.52%\n3 2 300 200 * * 4.19%\n4 3 100 100 100 * 7.33%\n5 3 200 100 100 * 5.08%\n6 3 300 200 100 * 3.68%\n7 4 200 100 100 100 5.04%\n8 4 300 200 100 100 3.46%\n9 4 500 300 200 100 2.32%\nTable 1: Networks in computational study\ncomputational study:\n• Many-IP: solve the IP problem (11) for all t,\n• 1-IP: solve the IP problem (12),\n• 1-IP+HG: solve (12) by employing a constraint generation approach with (14),\n• 1-IP+Fix: solve (12) by employing the variant of Algorithm 1 where non-root nodes are\nexplored in solving (12) in phase 1, and phase 2 is skipped,\n• 1-IP+Fix+2Var: solve (12) by employing Algorithm 1.",
+      "size": 842,
+      "sentences": 2
+    },
+    {
+      "id": 106,
+      "content": "ving (12) in phase 1, and phase 2 is skipped,\n• 1-IP+Fix+2Var: solve (12) by employing Algorithm 1. Many-IP and 1-IP are compared to explore the impact of the technique for obtaining a linear\nobjective. The methods 1-IP, 1-IP+HG, 1-IP+Fix, and 1-IP+Fix+2Var are compared to explore\nthe impact of the techniques for generating layerwise derived valid inequalities. 4.1 Test Instances\nUnless stated otherwise, the maximum perturbation from x¯ is defined using an ℓ norm in our test\n1\ninstances.",
+      "size": 492,
+      "sentences": 4
+    },
+    {
+      "id": 107,
+      "content": "ted otherwise, the maximum perturbation from x¯ is defined using an ℓ norm in our test\n1\ninstances. Each test instance in the computational study consists of a BNN, x¯, and ϵ. Nine BNNs are\ntrained for the computational study by using Hubara et al. (2016)’s method based on a gradient\ndescent method with the MNIST train dataset. The MNIST dataset consists of feature vectors\nrepresenting handwritten digits from 0 to 9, so nL+1 = 10.",
+      "size": 434,
+      "sentences": 5
+    },
+    {
+      "id": 108,
+      "content": "NIST dataset consists of feature vectors\nrepresenting handwritten digits from 0 to 9, so nL+1 = 10. These feature vectors are originally 784-\ndimensional non-negative integer vectors whose coordinates are at most 255, but they are scaled\nto 784-dimensional non-negative real vectors whose coordinates are at most 1, so n0 = 784 and\nq = 255. The number of hidden layers, the number of neurons in hidden layers, and the error rate\nof each network are reported in Table 1.",
+      "size": 469,
+      "sentences": 3
+    },
+    {
+      "id": 109,
+      "content": "the number of neurons in hidden layers, and the error rate\nof each network are reported in Table 1. The error rate of each network is computed as the portion\nof feature vectors misclassified by this network in the MNIST test dataset. For each network, we consider 10 instances, defined by 10 different feature vectors x¯. For each\ndigit from 0 to 9, one feature vector in the MNIST test dataset whose t¯is this digit is randomly\nchosen.",
+      "size": 436,
+      "sentences": 4
+    },
+    {
+      "id": 110,
+      "content": "from 0 to 9, one feature vector in the MNIST test dataset whose t¯is this digit is randomly\nchosen. For each network and feature vector x¯, six values are obtained for ϵ by employing Algorithm\n6 with max iter = 6. Algorithm 6 is a binary search that attempts to find the largest ϵ under\nwhich x¯ can be ϵ-verified using a given method and time limit in each iteration.",
+      "size": 368,
+      "sentences": 3
+    },
+    {
+      "id": 111,
+      "content": "e largest ϵ under\nwhich x¯ can be ϵ-verified using a given method and time limit in each iteration. In Algorithm\n6, if x¯ is ϵ-verified for the current ϵ, ϵ is increased based on the smallest input perturbation ϵ\nUB\n15\n===  16 ===\nAlgorithm 6: Perturbation Selection\nInput: ϵ , max iter\ninit\nOutput: ϵ ,ϵ : lower and upper bound on maximum value of ϵ for which x¯ is ϵ-verified\nLB UB\n1 ϵ LB ← 0,ϵ UB ← NULL\n2 ϵ ← ϵ init\n3 for i = 1,...,max iter do\n4 Attempt to solve (1) with a time limit for x¯ and ϵ and let z¯ be the best upper bound\nobtained.",
+      "size": 546,
+      "sentences": 2
+    },
+    {
+      "id": 112,
+      "content": "4 Attempt to solve (1) with a time limit for x¯ and ϵ and let z¯ be the best upper bound\nobtained. 5 if z¯≤ 0 then\n6 ϵ LB ← ϵ\n7 if ϵ UB is NULL then\n8 ϵ ← 2ϵ\n9 else\n10 ϵ ← ϵ+ϵUB\n2\n11 else\n12 ϵ UB ← ϵ\n13 ϵ ← ϵ+ϵLB\n2\n14 return ϵ, ϵ LB , ϵ UB\nunder which x¯ may not be ϵ -verified. Otherwise, ϵ is decreased to the average of ϵ and the\nUB\nlargest input perturbation ϵ under which x¯ is ϵ -verified.",
+      "size": 395,
+      "sentences": 3
+    },
+    {
+      "id": 113,
+      "content": "ecreased to the average of ϵ and the\nUB\nlargest input perturbation ϵ under which x¯ is ϵ -verified. Different IP methods for the BNN\nLB LB\nverification may result in different sequences of ϵ in Algorithm 6 based on their ability to solve the\nverification problem at a given ϵ within the time limit. This approach is used for determining the\nϵ values in the test instances in order to find challenging instances, i.e., those in which determining\nwhether x¯ is ϵ-verified is nontrivial.",
+      "size": 484,
+      "sentences": 3
+    },
+    {
+      "id": 114,
+      "content": "ind challenging instances, i.e., those in which determining\nwhether x¯ is ϵ-verified is nontrivial. The initial value ϵ is set to 1 in the case that the maximum\ninit\nperturbation from x¯ is defined by an ℓ norm, 1 in the case that the maximum perturbation is\n1 255\ndefined by ℓ norm, and 1 in the case that the maximum perturbation is defined by ℓ norm.",
+      "size": 353,
+      "sentences": 2
+    },
+    {
+      "id": 115,
+      "content": "n is\n1 255\ndefined by ℓ norm, and 1 in the case that the maximum perturbation is defined by ℓ norm. ∞ 32 2\n4.2 Implementation Details\nIn the IP method 1-IP+HG, (14) are generated by solving the LP relaxation problem of the IP\nproblem (12) and adding violated inequalities (14a) and (14b) in an iterative manner. In each\niteration, for each ℓ ∈ {2,...,L} and i ∈ Nℓ, an inequality (14b) with the largest violation is added\nto (12).",
+      "size": 430,
+      "sentences": 3
+    },
+    {
+      "id": 116,
+      "content": "for each ℓ ∈ {2,...,L} and i ∈ Nℓ, an inequality (14b) with the largest violation is added\nto (12). Likewise, (14a) with the largest violation is added to (12) as a constraint. This iteration\nis repeated until either no violated inequalities are found or the optimal objective value of the LP\nrelaxation problem does not improve by 1% over the last 10 iterations.",
+      "size": 363,
+      "sentences": 3
+    },
+    {
+      "id": 117,
+      "content": "al objective value of the LP\nrelaxation problem does not improve by 1% over the last 10 iterations. Our test instances are\ndifferent than those used in Han and G´omez (2021) (ours have more layers in the BNN and non-\nbinary inputs) and we obtain qualitatively different results than those presented in Han and G´omez\n(2021).",
+      "size": 324,
+      "sentences": 2
+    },
+    {
+      "id": 118,
+      "content": "nputs) and we obtain qualitatively different results than those presented in Han and G´omez\n(2021). Thus, to validate our implementation, in Appendix A.6 we present results of additional\nexperiments with the method 1-IP+HG on the instances used in Han and G´omez (2021) which\nindicates that our implementation achieves qualitatively similar results to what is reported in Han\nand G´omez (2021) on those instances.",
+      "size": 413,
+      "sentences": 2
+    },
+    {
+      "id": 119,
+      "content": "eves qualitatively similar results to what is reported in Han\nand G´omez (2021) on those instances. In the IP method 1-IP+Fix and 1-IP+Fix+2Var, in Algorithm 2, the IP subproblem (17) is\nsolved using the method described at the end of Section 3.1 (i.e., without an IP solver).",
+      "size": 276,
+      "sentences": 2
+    },
+    {
+      "id": 120,
+      "content": "m (17) is\nsolved using the method described at the end of Section 3.1 (i.e., without an IP solver). In 1-IP+Fix+2Var, two-variable inequalities for the first hidden layer are not generated, and\nvariable fixings for the second hidden layer are not generated in phase 2 because two-variable\n16\n===  17 ===\nMany-IP 1-IP 1-IP 1-IP 1-IP\nNetwork +HG +Fix +Fix\n+2Var\n1 7.23 7.23 7.23 7.23 7.23\n2 6.15 6.48 6.48 6.48 6.48\n3 1.60 5.45 5.32 6.28 6.28\n4 6.07 6.28 6.28 6.18 6.28\n5 5.55 6.35 6.35 6.55 7.35\n6 2.95 4.30 3.95 4.43 5.45\n7 4.51 5.06 5.06 5.29 6.49\n8 2.51 3.89 3.78 3.99 5.28\n9 0.64 2.17 2.06 2.34 3.88\nTable 2: Average maximum ϵ under which x¯ is ϵ-verified by each method within the time limit.",
+      "size": 696,
+      "sentences": 2
+    },
+    {
+      "id": 121,
+      "content": "3.88\nTable 2: Average maximum ϵ under which x¯ is ϵ-verified by each method within the time limit. inequalities for the first hidden layer are unlikely to be generated for the test instances. The\nnetworks are dense, and ϵ is much smaller than n0 = 784 in test instances, so for i,k ∈ N1\nsatisfying i < k and c ,c ∈ {−1,1}, it is likely to find xˆ0 ∈ X0 where 2c (cid:80) W1xˆ0 and\ni k i j∈N0 ij j\n2c (cid:80) W1 xˆ0 achieve their maximum over X0.",
+      "size": 446,
+      "sentences": 3
+    },
+    {
+      "id": 122,
+      "content": "∈ X0 where 2c (cid:80) W1xˆ0 and\ni k i j∈N0 ij j\n2c (cid:80) W1 xˆ0 achieve their maximum over X0. If both x1 and x1 are not fixed, xˆ0 violates\nk j∈N0 kj j i k\n(20), so two-variable inequalities for the first hidden layer are rarely generated. As a result of not\ngenerating two-variable inequalities for the first hidden layer, variable fixings for the second hidden\nlayer cannot be generated in phase 2.",
+      "size": 405,
+      "sentences": 3
+    },
+    {
+      "id": 123,
+      "content": "he first hidden layer, variable fixings for the second hidden\nlayer cannot be generated in phase 2. We use max fail = 100 as the number of consecutive failures\nafter which we terminate attempting to generate two-variable inequalities. The time limit for all IP methods is 3600 seconds. In the IP method Many-IP, the time limit\nto solve the IP problem (11) for each t is set to 400 seconds because there are nine alternative\nclasses.",
+      "size": 432,
+      "sentences": 4
+    },
+    {
+      "id": 124,
+      "content": "ve the IP problem (11) for each t is set to 400 seconds because there are nine alternative\nclasses. In 1-IP+HG, 1-IP+Fix, and 1-IP+Fix+2Var, a time limit on the phase for generating\nvalid inequalities of 2700 seconds is imposed. The time limit to solve (12) after generating the\ninequalities is set to 3600 seconds subtract the time spent generating valid inequalities.",
+      "size": 369,
+      "sentences": 3
+    },
+    {
+      "id": 125,
+      "content": "ting the\ninequalities is set to 3600 seconds subtract the time spent generating valid inequalities. If the\ntime limit is hit, the best upper bound for the optimal objective value is used instead of the best\nobjective value to answer the BNN verification problem because x¯ is ϵ-verified if and only if the\nbest upper bound is non-positive. All IP methods are implemented in Python, and Gurobi 10.0.3 is used as the IP solver.",
+      "size": 425,
+      "sentences": 3
+    },
+    {
+      "id": 126,
+      "content": "non-positive. All IP methods are implemented in Python, and Gurobi 10.0.3 is used as the IP solver. All\nexperiments in the computational study are run on an Ubuntu desktop with 32 GB RAM and 16\nIntel Core i7-10700 CPUs running at 2.90 GHz. 4.3 Results\nWe first collect the maximum ϵ under which x¯ is ϵ-verified for each IP method, network, and x¯ in\nthe case that the maximal perturbation from x¯ is defined using an ℓ norm. The maximum ϵ is\n1\nobtained from using Algorithm 6 with max iter = 6.",
+      "size": 495,
+      "sentences": 5
+    },
+    {
+      "id": 127,
+      "content": "¯ is defined using an ℓ norm. The maximum ϵ is\n1\nobtained from using Algorithm 6 with max iter = 6. For the same test instance, one IP method\nmaysucceedinverifyingtheBNN,butanotherIPmethodfailsbecauseitmaynotbeabletoverify\nthe BNN within the time limit. As a result, the set of ϵ defining the six instances may differ by IP\nmethods for the same network and x¯, and the maximum ϵ may differ. ForeachIPmethodandnetwork, thearithmeticmeanofthemaximumϵovertenx¯ ispresented\nin Table 2.",
+      "size": 481,
+      "sentences": 5
+    },
+    {
+      "id": 128,
+      "content": "differ. ForeachIPmethodandnetwork, thearithmeticmeanofthemaximumϵovertenx¯ ispresented\nin Table 2. Many-IP achieves the smallest maximum ϵ, and 1-IP+HG achieves a smaller maximum\nϵthanthe1-IP.ExceptforNetwork4,1-IP+Fixresultsinalargermaximumϵthan1-IP.Method1-\nIP+Fix+2Var yields the largest maximum ϵ in every case.",
+      "size": 315,
+      "sentences": 3
+    },
+    {
+      "id": 129,
+      "content": "ixresultsinalargermaximumϵthan1-IP.Method1-\nIP+Fix+2Var yields the largest maximum ϵ in every case. These results indicate that the using the\nproposed variable fixing approach yields modest improvement in the ability to find the maximum\n17\n===  18 ===\n# of Many-IP 1-IP\nNetwork\nInstances\n1 60 153.1(3) 29.4\n2 57 721.9(12) 110.5\n3 20 1420.8(10) 358.9\n4 59 269.7(8) 58.4(2)\n5 56 986.5(18) 286.5(8)\n6 39 1941.8(18) 568.3(7)\n7 56 972.3(22) 279.7(12)\n8 34 1654.4(17) 503.1(7)\n9 18 2852.2(13) 710.8(3)\nTable 3: Verification time (seconds) of Many-IP and 1-IP\n1-IP 1-IP 1-IP 1-IP\n# of\nNetwork +HG +Fix +Fix\nInstances\n+2Var\n1 60 29.4 31.6 5.6 7.0\n2 60 119.6 124.3 16.8 16.2\n3 52 779.5(10) 842.5(13) 58.4(4) 62.7(4)\n4 59 58.4(2) 75.4(1) 15.2(2) 11.3\n5 55 296.1(9) 377.9(9) 61.7(7) 30.1(1)\n6 46 612.2(13) 942.1(14) 130.4(12) 56.3(2)\n7 52 267.8(12) 376.7(15) 84.3(12) 36.1(4)\n8 36 582.5(12) 722.1(12) 119.9(11) 36.0(2)\n9 25 1183.8(11) 1445.2(11) 276.1(9) 68.3(1)\nTable 4: Verification time (seconds) of IP methods based on 1-IP\nϵ at which an input can be verified, and using two-variable layer-wise derived inequalities yields\nsignificantly more improvement.",
+      "size": 1147,
+      "sentences": 2
+    },
+    {
+      "id": 130,
+      "content": "fied, and using two-variable layer-wise derived inequalities yields\nsignificantly more improvement. We next investigate in more detail the ability of the different methods to solve verification\nproblems for various values of ϵ. We first compare Many-IP and 1-IP.",
+      "size": 262,
+      "sentences": 3
+    },
+    {
+      "id": 131,
+      "content": "methods to solve verification\nproblems for various values of ϵ. We first compare Many-IP and 1-IP. To do so, for each network\nand feature vector we consider the subset of ϵ values that are solved by both of these methods,\nand compute the shifted geometric mean of solution times to solve the IP problem (12) (for 1-IP)\nor to solve (11) for all t (for Many-IP), with a shift of 1.",
+      "size": 379,
+      "sentences": 3
+    },
+    {
+      "id": 132,
+      "content": "o solve the IP problem (12) (for 1-IP)\nor to solve (11) for all t (for Many-IP), with a shift of 1. These results are presented in Table 3,\nwhere for Many-IP, the number in parenthesis is the number of test instances where the time limit\nis hit in solving (11) for at least one t and for 1-IP, the number in parenthesis is the number of\ntest instances where the time limit is hit in solving (12).",
+      "size": 396,
+      "sentences": 2
+    },
+    {
+      "id": 133,
+      "content": "number in parenthesis is the number of\ntest instances where the time limit is hit in solving (12). We find that 1-IP solves the verification\nproblem much more quickly than Many-IP, indicating that our technique for obtaining a linear\nobjective leads to faster BNN verification. Considering the superiority of 1-IP over Many-IP, we\nexclude Many-IP from further comparisons. In Table 4 we report the geometric average verification times over the instances tested by all\nIP methods based on 1-IP.",
+      "size": 493,
+      "sentences": 4
+    },
+    {
+      "id": 134,
+      "content": "the geometric average verification times over the instances tested by all\nIP methods based on 1-IP. The set of test instances in this case is based on the set of ϵ values\nthat were solved by all 1-IP methods. This set of test instances may differ from the set used in\nthe Many-IP and 1-IP comparison due to the exclusion of Many-IP from this comparison. The\nnumber in parenthesis is the number of test instances where the time limit is hit when solving (12).",
+      "size": 458,
+      "sentences": 4
+    },
+    {
+      "id": 135,
+      "content": "umber in parenthesis is the number of test instances where the time limit is hit when solving (12). We find that 1-IP+HG’s verification times are larger than 1-IP’s, and 1-IP+Fix’s are shorter than\n18\n[  ]\n\n===  19 ===\n1-IP 1-IP 1-IP 1-IP\nNetwork +HG +Fix +Fix\n+2Var\n1 116.4% 116.4% 32.5% 18.2%\n2 120.8% 120.8% 36.0% 19.9%\n3 131.2% 132.9% 50.3% 30.5%\n4 125.4% 124.9% 49.1% 13.9%\n5 137.4% 137.8% 67.4% 20.5%\n6 150.7% 153.3% 82.4% 25.6%\n7 144.1% 150.2% 82.0% 31.7%\n8 178.8% 179.3% 93.8% 26.9%\n9 180.2% 180.2% 109.2% 13.8%\nTable 5: LP gap of IP methods based on 1-IP\n1-IP’s.",
+      "size": 571,
+      "sentences": 2
+    },
+    {
+      "id": 136,
+      "content": "179.3% 93.8% 26.9%\n9 180.2% 180.2% 109.2% 13.8%\nTable 5: LP gap of IP methods based on 1-IP\n1-IP’s. Thus, we conclude that using inequalities (14) does not accelerate BNN verification, but\nvariable fixings do. We also find that 1-IP+Fix+2Var’s verification times are similar to 1-IP+Fix’s\nforNetworks1-4, and1-IP+Fix+2Var’sverificationtimesareshorterthan1-IP+Fix’sforNetworks\n5-9.",
+      "size": 380,
+      "sentences": 3
+    },
+    {
+      "id": 137,
+      "content": "P+Fix’s\nforNetworks1-4, and1-IP+Fix+2Var’sverificationtimesareshorterthan1-IP+Fix’sforNetworks\n5-9. This suggests that the two-variable layerwise derived inequalities are more helpful for BNN\nverification of networks with more hidden layers. We next investigate the LP gaps of (12) over instances tested by all IP methods based on 1-\nIP.",
+      "size": 337,
+      "sentences": 3
+    },
+    {
+      "id": 138,
+      "content": "rs. We next investigate the LP gaps of (12) over instances tested by all IP methods based on 1-\nIP. The LP gap is defined as (z∗ −z∗)/z¯ where z∗ is the optimal objective value of the LP\nLP UB LP\nrelaxation problem of (12) after adding any valid inequalities introduced by the method, z∗ is the\nbest objective value from a feasible solution to (12) obtained by the method, and\nz¯ = max (aL+1(xL)−aL+1(xL)).",
+      "size": 406,
+      "sentences": 3
+    },
+    {
+      "id": 139,
+      "content": "ve value from a feasible solution to (12) obtained by the method, and\nz¯ = max (aL+1(xL)−aL+1(xL)). UB t t¯\nxL∈{0,1}nL\nt∈NL+1\nWeusez¯ asthedenominatorinsteadof|z∗|becausez∗ maybenearzeroforsomeinstances,which\nUB\nwould skew interpretation of these relative optimality gaps when averaged over different instances. The quantity z¯ is positive by definition and is a natural upper bound on the optimal value of\nUB\n(12). Table 5 reports the average LP gaps for each method.",
+      "size": 468,
+      "sentences": 4
+    },
+    {
+      "id": 140,
+      "content": "l upper bound on the optimal value of\nUB\n(12). Table 5 reports the average LP gaps for each method. We find that the LP gaps of 1-IP+HG\nand 1-IP are similar, 1-IP+Fix yields significant improvement over 1-IP, and 1-IP-Fix+2Var yields\nfurther significant improvement beyond that.",
+      "size": 278,
+      "sentences": 3
+    },
+    {
+      "id": 141,
+      "content": "ficant improvement over 1-IP, and 1-IP-Fix+2Var yields\nfurther significant improvement beyond that. Although 1-IP+HG does not improve LP gaps on\ntheseinstances,weremarkthatinthesupplementalexperimentsreportedinAppendixA.6wefound\nthat on the instances used in Han and G´omez (2021) the use of the single-neuron valid inequalities\ndid yield modest reduction in the LP gap, although even on these instances this reduction still did\nnot translate into reduced time to solve the verification problem.",
+      "size": 495,
+      "sentences": 2
+    },
+    {
+      "id": 142,
+      "content": "stances this reduction still did\nnot translate into reduced time to solve the verification problem. Table 6 presents additional results for the IP methods based on 1-IP. These results are averaged\noverall445instancessolvedbyallthesemethods. Therow‘Preprocessingtime’presentstheshifted\ngeometric mean of times to generate layerwise derived valid inequalities (resp. (14)) for 1-IP+Fix\nand 1-IP+Fix+2Var (resp. 1-IP+HG).",
+      "size": 418,
+      "sentences": 6
+    },
+    {
+      "id": 143,
+      "content": "e layerwise derived valid inequalities (resp. (14)) for 1-IP+Fix\nand 1-IP+Fix+2Var (resp. 1-IP+HG). The row ‘verification time’ is the shifted geometric mean of\ntimestosolvetheverificationproblem–ifamethoddoesnotsolveaninstancewithinthetimelimit,\nthen the time limit is used for that instance. The row ‘# of solved instances (veri. )’ reports the\nnumberofinstancesforwhicheachIPmethodsolvedtheverificationproblemwithinthetimelimit. Row ‘# of nodes (veri.",
+      "size": 454,
+      "sentences": 7
+    },
+    {
+      "id": 144,
+      "content": "instancesforwhicheachIPmethodsolvedtheverificationproblemwithinthetimelimit. Row ‘# of nodes (veri. )’ is the shifted geometric mean of the number of nodes in the branch-and-\nbound tree when solving the verification problem (again, for instances hitting the time limit, this is\njustthenumberofnodesexploredwithinthelimit).",
+      "size": 322,
+      "sentences": 3
+    },
+    {
+      "id": 145,
+      "content": "(again, for instances hitting the time limit, this is\njustthenumberofnodesexploredwithinthelimit). Inalltheverificationtimesthesolutionof (12)\n19\n===  20 ===\n1-IP 1-IP 1-IP 1-IP\n+HG +Fix +Fix\n+2Var\nPreprocessing time (seconds) 0.0 10.8 7.0 15.2\nVerification time (seconds) 211.7 258.9 40.6 25.5\n# of solved instances (veri.) 376 370 388 431\n# of nodes (veri.) 9228.2 9501.0 78.0 7.3\nOptimization time (seconds) 298.2 352.0 62.6 36.7\n# of solved instances (opt.) 347 347 359 406\n# of nodes (opt.)",
+      "size": 495,
+      "sentences": 5
+    },
+    {
+      "id": 146,
+      "content": "time (seconds) 298.2 352.0 62.6 36.7\n# of solved instances (opt.) 347 347 359 406\n# of nodes (opt.) 16389.5 16540.8 241.1 31.4\nOptimality gap 22.5% 24.4% 19.2% 4.8%\nTable 6: Other metrics of IP methods based on 1-IP (445 instances)\nMany-IP 1-IP 1-IP 1-IP 1-IP\nNorm +HG +Fix +Fix\n+2Var\nℓ 0.018 0.026 0.020 0.025 0.032\n∞\nℓ 0.029 0.051 0.051 0.247 0.312\n2\nTable 7: Maximum ϵ under which x¯ is ϵ-verified for ℓ norm and ℓ norm\n∞ 2\nisterminatedassoonastheverificationquestionisanswered(e.g.,iftheupperboundbecomesnon-\npositive or the lower bound becomes positive).",
+      "size": 559,
+      "sentences": 3
+    },
+    {
+      "id": 147,
+      "content": "onquestionisanswered(e.g.,iftheupperboundbecomesnon-\npositive or the lower bound becomes positive). To provide further insight into the quality of these\nformulations we also attempted to solve (12) without terminating once the verification question is\nanswered. Theresultsofthisexperimentarereportedintherows‘Optimizationtime’,‘(#ofsolved\ninstances (opti. )’, ‘(# of nodes (opti. ))’, which are defined analogously as the verification results.",
+      "size": 443,
+      "sentences": 5
+    },
+    {
+      "id": 148,
+      "content": "nces (opti. )’, ‘(# of nodes (opti. ))’, which are defined analogously as the verification results. Row ‘optimality gap’ presents the arithmetic mean of relative optimality gaps obtained in solving\n(12) without the early termination, where the relative optimality gap is defined as (z¯−z∗)/z¯ ,\nUB\nwhere z¯ is the best bound for the optimal objective value of (12) obtained by the method. A shift\nis set to 1 in every shifted geometric mean.",
+      "size": 441,
+      "sentences": 5
+    },
+    {
+      "id": 149,
+      "content": "bjective value of (12) obtained by the method. A shift\nis set to 1 in every shifted geometric mean. These results confirm the significant time reduction\nobtained using variable fixing and the proposed two-variable inequalities, and indicate that this\nreduction is obtained thanks to the dramatic reduction in the number of branch-and-bound nodes\nrequiredtoeitheranswertheverificationproblemortosolvetheoptimizationproblem.",
+      "size": 422,
+      "sentences": 3
+    },
+    {
+      "id": 150,
+      "content": "branch-and-bound nodes\nrequiredtoeitheranswertheverificationproblemortosolvetheoptimizationproblem. Theresults\nalso reinforce that the single-neuron inequalities used in 1-IP+HG do not yield improvement. All results so far have been reported for the case in which the maximum perturbation from x¯\nis defined using the ℓ norm. To illustrate the versatility of the IP approach, we also conducted\n1\nanalogous experiments using the ℓ and ℓ norm.",
+      "size": 441,
+      "sentences": 4
+    },
+    {
+      "id": 151,
+      "content": "e versatility of the IP approach, we also conducted\n1\nanalogous experiments using the ℓ and ℓ norm. The detailed results of these experiments are\n∞ 2\npresented in Appendix A.5, and we present a summary here. Table 7 presents the arithmetic mean\nofthemaximumϵovertenfeaturevectorsx¯ foreachIPmethodonNetwork5. Oncegain, Many-IP\nachieves the smallest maximum ϵ in both cases. Method 1-IP+HG again yields smaller maximum ϵ\nthan1-IPinthecaseofp = ∞andthesameinthecaseofp = 2.",
+      "size": 471,
+      "sentences": 5
+    },
+    {
+      "id": 152,
+      "content": ". Method 1-IP+HG again yields smaller maximum ϵ\nthan1-IPinthecaseofp = ∞andthesameinthecaseofp = 2. 1-IP+Fixyieldssimilarmaximum\nϵ to 1-IP in the case of p = ∞ and larger maximum ϵ than 1-IP in the case of p = 2. Thus, it seems\nthat generating variable fixings alone does not improve BNN verification by the IP methods in the\ncase of p = ∞, but it does in the case of p = 2.",
+      "size": 374,
+      "sentences": 4
+    },
+    {
+      "id": 153,
+      "content": "improve BNN verification by the IP methods in the\ncase of p = ∞, but it does in the case of p = 2. 1-IP+Fix+2Var yields the largest maximum ϵ in\nboth cases, showing that generating layerwise derived valid inequalities enables verifying the BNN\nagainst a higher range of ϵ in the case of p = ∞ and p = 2.",
+      "size": 303,
+      "sentences": 2
+    },
+    {
+      "id": 154,
+      "content": "inequalities enables verifying the BNN\nagainst a higher range of ϵ in the case of p = ∞ and p = 2. 20\n===  21 ===\n5 Conclusion\nIn this paper, we investigate an IP method that exploits the technique for obtaining a linear\nobjective and a technique for generating layerwise derived valid inequalities to solve the BNN\nverification problem. Our computational study shows that our IP method verifies BNNs against\na higher range of input perturbation than existing IP methods.",
+      "size": 471,
+      "sentences": 3
+    },
+    {
+      "id": 155,
+      "content": "our IP method verifies BNNs against\na higher range of input perturbation than existing IP methods. The technique for obtaining a\nlinear objective leads to solving the BNN verification problem faster by solving a single IP problem\ninstead of multiple IP problems for each alternative class. The technique for generating layerwise\nderived valid inequalities enables more efficient BNN verification by yielding smaller LP gaps at\nthe expense of solving IP subproblems involving a single layer.",
+      "size": 490,
+      "sentences": 3
+    },
+    {
+      "id": 156,
+      "content": "tion by yielding smaller LP gaps at\nthe expense of solving IP subproblems involving a single layer. One future direction on IP methods for the BNN verification problem is investigating valid\ninequalitiesthatinvolvemorethantwovariables,astheinequalitiesweinvestigatedcontainatmost\ntwo variables. Another future direction related to the BNN verification problem is counterfactual\nexplanationsforBNNs.",
+      "size": 398,
+      "sentences": 3
+    },
+    {
+      "id": 157,
+      "content": "her future direction related to the BNN verification problem is counterfactual\nexplanationsforBNNs. AsdiscussedinSection1,thesecounterfactualexplanationscanbeobtained\nby solving the BNN verification problem for various input perturbations. Thus, a possible direction\nof research for counterfactual explanations for BNNs is to consider whether information from these\nrelated instances can be shared to accelerate the overall process.",
+      "size": 432,
+      "sentences": 3
+    },
+    {
+      "id": 158,
+      "content": "r whether information from these\nrelated instances can be shared to accelerate the overall process. For example, it may be possible\nto reduce the number of candidates for layerwise derived valid inequalities to check. References\nAmir G, Wu H, Barrett C, Katz G (2021) An smt-based approach for verifying binarized neural networks. Groote JF, Larsen KG, eds., Tools and Algorithms for the Construction and Analysis of Systems,\n203–222 (Springer).",
+      "size": 445,
+      "sentences": 4
+    },
+    {
+      "id": 159,
+      "content": "en KG, eds., Tools and Algorithms for the Construction and Analysis of Systems,\n203–222 (Springer). Balas E (1985) Disjunctive programming and a hierarchy of relaxations for discrete optimization problems. SIAM Journal on Algebraic Discrete Methods 6(3):466–486. Bernardelli AM, Gualandi S, Lau HC, Milanesi S (2023) The bemi stardust: A structured ensemble of\nbinarized neural networks. Sellmann M, Tierney K, eds., Learning and Intelligent Optimization, 443–\n458 (Springer).",
+      "size": 476,
+      "sentences": 5
+    },
+    {
+      "id": 160,
+      "content": "networks. Sellmann M, Tierney K, eds., Learning and Intelligent Optimization, 443–\n458 (Springer). Contardo C, Fukasawa R, Rousseau LM, Vidal T (2024) Optimal counterfactual explanations for k-nearest\nneighbors using mathematical optimization and constraint programming. Basu A, Mahjoub AR,\nSalazar Gonz´alez JJ, eds., Combinatorial Optimization, 318–331 (Springer). FischettiM,JoJ(2018)Deepneuralnetworksandmixedintegerlinearoptimization.Constraints 23(3):296–\n309.",
+      "size": 466,
+      "sentences": 5
+    },
+    {
+      "id": 161,
+      "content": "FischettiM,JoJ(2018)Deepneuralnetworksandmixedintegerlinearoptimization.Constraints 23(3):296–\n309. Geiger L, Team P (2020) Larq: An open-source library for training binarized neural networks. Journal of\nOpen Source Software 5(45):1746. Han S, G´omez A (2021) Single-neuron convexification for binarized neural networks. https://optimization-\nonline.org/wp-content/uploads/2021/05/8419.pdf, accessed May 27, 2021.",
+      "size": 413,
+      "sentences": 5
+    },
+    {
+      "id": 162,
+      "content": "works. https://optimization-\nonline.org/wp-content/uploads/2021/05/8419.pdf, accessed May 27, 2021. Hubara I, Courbariaux M, Soudry D, El-Yaniv R, Bengio Y (2016) Binarized neural networks. Lee D,\nSugiyamaM,vonLuxburgU,GuyonI,GarnettR,eds.,Adv.inNeuralInformationProcessingSystems,\nvolume 29, 4107—-4115 (Curran Associates, Inc.). Ivashchenko M, Choi SW, Nguyen LV, Tran HD (2023) Verifying binary neural networks on continuous\ninput space using star reachability. The IEEE International Conf.",
+      "size": 493,
+      "sentences": 6
+    },
+    {
+      "id": 163,
+      "content": "ary neural networks on continuous\ninput space using star reachability. The IEEE International Conf. on Formal Methods in Software\nEngineering, 7–17 (IEEE). Jia K, Rinard M (2020) Efficient exact verification of binarized neural networks. Larochelle H, Ranzato\nM, Hadsell R, Balcan MF, Lin HT, eds., Adv. in Neural Information Processing Systems, volume 33,\n1782–1795 (Curran Associates, Inc.). Khalil EB, Gupta A, Dilkina B (2019) Combinatorial attacks on binarized neural networks.",
+      "size": 482,
+      "sentences": 7
+    },
+    {
+      "id": 164,
+      "content": "es, Inc.). Khalil EB, Gupta A, Dilkina B (2019) Combinatorial attacks on binarized neural networks. International\nConf. on Learning Representations, URL https://openreview.net/forum?id=S1lTEh09FQ. 21\n===  22 ===\nKov´asznaiG,Gajd´arK,NarodytskaN(2021)Portfoliosolverforverifyingbinarizedneuralnetworks.Annales\nMathematicae et Informaticae 53:183–200. KungJ,ZhangD,vanderWalG,ChaiS,MukhopadhyayS(2018)Efficientobjectdetectionusingembedded\nbinarized neural networks.",
+      "size": 463,
+      "sentences": 6
+    },
+    {
+      "id": 165,
+      "content": "anderWalG,ChaiS,MukhopadhyayS(2018)Efficientobjectdetectionusingembedded\nbinarized neural networks. Journal of Signal Processing Systems 90(6):877–890. LubczykD,NetoJ(2024)Neuronpairsinbinarizedneuralnetworksrobustnessverificationviaintegerlinear\nprogramming. Basu A, Mahjoub AR, Salazar Gonz´alez JJ, eds., Combinatorial Optimization, 305–317\n(Springer). MaY,XiongH,HuZ,MaL(2019)Efficientsuperresolutionusingbinarizedneuralnetwork.TheIEEE/CVF\nConf.",
+      "size": 449,
+      "sentences": 5
+    },
+    {
+      "id": 166,
+      "content": "ger). MaY,XiongH,HuZ,MaL(2019)Efficientsuperresolutionusingbinarizedneuralnetwork.TheIEEE/CVF\nConf. on Computer Vision and Pattern Recognition Workshops, 694—-703 (IEEE). Martinez B, Yang J, Bulat A, Tzimiropoulos G (2020) Training binary neural networks with real-to-binary\nconvolutions. International Conf. on Learning Representations. McDanel B, Teerapittayanon S, Kung HT (2017) Embedded binarized neural networks. Gunningberg P,\nVoigt T, Mottola L, Lu C, eds., Proc. of the International Conf.",
+      "size": 498,
+      "sentences": 9
+    },
+    {
+      "id": 167,
+      "content": "ed neural networks. Gunningberg P,\nVoigt T, Mottola L, Lu C, eds., Proc. of the International Conf. on Embedded Wireless Systems and\nNetworks, 168–173 (Junction Publishing). Mothilal R, Sharma A, Tan C (2020) Explaining machine learning classifiers through diverse counterfactual\nexplanations. Hildebrandt M, Castillo C, Celis E, Ruggieri S, Taylor L, Zanfir-Fortuna G, eds., Conf. on Fairness, Accountability, and Transparency, 607–617 (ACM).",
+      "size": 443,
+      "sentences": 7
+    },
+    {
+      "id": 168,
+      "content": "ylor L, Zanfir-Fortuna G, eds., Conf. on Fairness, Accountability, and Transparency, 607–617 (ACM). NarodytskaN,KasiviswanathanS,RyzhykL,SagivM,WalshT(2018)Verifyingpropertiesofbinarizeddeep\nneural networks. McIlraith S, Weinberger K, eds., Proc. of the AAAI Conf. on Artificial Intelligence,\nvolume 32, 6615—-6624 (AAAI). Shih A, Darwiche A, Choi A (2019) Verifying binarized neural networks by angluin-style learning.",
+      "size": 419,
+      "sentences": 7
+    },
+    {
+      "id": 169,
+      "content": "). Shih A, Darwiche A, Choi A (2019) Verifying binarized neural networks by angluin-style learning. Janota\nM, Lynce I, eds., Theory and Applications of Satisfiability Testing, 354–370 (Springer). Shridhar K, Jain H, Agarwal A, Kleyko D (2020) End to end binarized neural networks for text classifica-\ntion. Moosavi NS, Fan A, Shwartz V, Glavaˇs G, Joty S, Wang A, Wolf T, eds., Proc. of SustaiNLP:\nWorkshoponSimpleandEfficientNaturalLanguageProcessing,29–34(AssociationforComputational\nLinguistics).",
+      "size": 499,
+      "sentences": 6
+    },
+    {
+      "id": 170,
+      "content": "rkshoponSimpleandEfficientNaturalLanguageProcessing,29–34(AssociationforComputational\nLinguistics). TangW,HuaG,WangL(2017)Howtotrainacompactbinaryneuralnetworkwithhighaccuracy? SinghS,\nMarkovitchS,eds.,Proc.oftheAAAIConf.onArtificialIntelligence,volume31,2625—-2631(AAAI). Toro Icarte R, Illanes L, Castro M, Cire A, McIlraith S, Beck C (2019) Training binarized neural networks\nusing mip and cp. Schiex T, de Givry S, eds., Principles and Practice of Constraint Programming,\n401–417 (Springer).",
+      "size": 495,
+      "sentences": 5
+    },
+    {
+      "id": 171,
+      "content": "Schiex T, de Givry S, eds., Principles and Practice of Constraint Programming,\n401–417 (Springer). Vivier-ArdissonG,ForelA,ParmentierA,VidalT(2024)Cf-opt: Counterfactualexplanationsforstructured\nprediction. https://arxiv.org/pdf/2405.18293, accessed May 28, 2024. Wachter S, Mittelstadt B, Russell C (2018) Counterfactual explanations without opening the black box:\nAutomated decisions and the gdpr. Harvard Journal of Law and Technology 31(2):841–888.",
+      "size": 452,
+      "sentences": 5
+    },
+    {
+      "id": 172,
+      "content": "e black box:\nAutomated decisions and the gdpr. Harvard Journal of Law and Technology 31(2):841–888. ZhangY,ZhaoZ,ChenG,SongF,ChenT(2021)Bdd4bnn: Abdd-basedquantitativeanalysisframeworkfor\nbinarizedneuralnetworks.SilvaA,LeinoKRM,eds.,ComputerAidedVerification,175–200(Springer). A Appendix\nA.1 Proof of Lemma 1\nWeprovefollowingLemma1ontheformulationforthelayerpropagationconstraint(2b)introduced\nin Section 2.1.1 with the definition on LBℓ, UBℓ, and Rℓ for ℓ ∈ [L] and i ∈ Nℓ. i i i\nLemma 1.",
+      "size": 490,
+      "sentences": 5
+    },
+    {
+      "id": 173,
+      "content": "ced\nin Section 2.1.1 with the definition on LBℓ, UBℓ, and Rℓ for ℓ ∈ [L] and i ∈ Nℓ. i i i\nLemma 1. Each (x0,x1) ∈ X0 × {0,1}n1 satisfies (2b) for ℓ = 1 if and only if it satisfies the\nfollowing inequalities:\n(cid:88) (cid:16) 1(cid:17)\n2 W1x0 ≥ R1−LB1+ x1+LB1, ∀i ∈ N1, (4)\nij j i i q i i\nj∈N0\n22\n===  23 ===\n(cid:88) (cid:16) 1(cid:17) (cid:16) 1(cid:17)\n2 W1x0 ≤ UB1−R1+ x1+ R1− , ∀i ∈ N1.",
+      "size": 392,
+      "sentences": 3
+    },
+    {
+      "id": 174,
+      "content": "0\n22\n===  23 ===\n(cid:88) (cid:16) 1(cid:17) (cid:16) 1(cid:17)\n2 W1x0 ≤ UB1−R1+ x1+ R1− , ∀i ∈ N1. (5)\nij j i i q i i q\nj∈N0\nFor ℓ ∈ {2,...,L}, (xℓ−1,xℓ) ∈ {0,1}nℓ−1 × {0,1}nℓ satisfies (2b) if and only if it satisfies the\nfollowing inequalities:\n(cid:88)\n2 Wℓxℓ−1 ≥ (Rℓ−LBℓ+1)xℓ+LBℓ, ∀i ∈ Nℓ, (6)\nij j i i i i\nj∈Nℓ−1\n(cid:88)\n2 Wℓxℓ−1 ≤ (UBℓ−Rℓ+1)xℓ+(Rℓ−1), ∀i ∈ Nℓ. (7)\nij j i i i i\nj∈Nℓ−1\n. Proof of Lemma 1.",
+      "size": 412,
+      "sentences": 4
+    },
+    {
+      "id": 175,
+      "content": "∈Nℓ−1\n(cid:88)\n2 Wℓxℓ−1 ≤ (UBℓ−Rℓ+1)xℓ+(Rℓ−1), ∀i ∈ Nℓ. (7)\nij j i i i i\nj∈Nℓ−1\n. Proof of Lemma 1. The following constraints are equivalent to (2b):\nxℓ = 1 ⇒ aℓ(xℓ−1) ≥ 0\ni i\n(cid:88) (cid:88)\n⇔ 2 Wℓxℓ−1 ≥ Wℓ −bℓ, ∀ℓ ∈ [L],i ∈ Nℓ,\nij j ij i\nj∈Nℓ−1 j∈Nℓ−1\nxℓ = 0 ⇒ aℓ(xℓ−1) < 0\ni i\n(cid:88) (cid:88)\n⇔ 2 Wℓxℓ−1 < Wℓ −bℓ, ∀ℓ ∈ [L],i ∈ Nℓ. ij j ij i\nj∈Nℓ−1 j∈Nℓ−1\nFor i ∈ N1 and j ∈ N0, W1x0 is a multiple of 1.",
+      "size": 409,
+      "sentences": 5
+    },
+    {
+      "id": 176,
+      "content": "< Wℓ −bℓ, ∀ℓ ∈ [L],i ∈ Nℓ. ij j ij i\nj∈Nℓ−1 j∈Nℓ−1\nFor i ∈ N1 and j ∈ N0, W1x0 is a multiple of 1. Also, R1+ 1 is the smallest multiple of 2 not\nij j q i q q\nsmaller than (cid:80) W1 −b1, and R1− 1 is the largest multiple of 2 smaller than (cid:80) W1 −b1. j∈N0 ij i i q q j∈N0 ij i\nHence, the above constraints can be written as follows for ℓ = 1:\n(cid:88) 1\nx1 = 1 ⇒ 2 W1x0 ≥ R1+ , ∀i ∈ N1,\ni ij j i q\nj∈N0\n(cid:88) 1\nx1 = 0 ⇒ 2 W1x0 ≤ R1− , ∀i ∈ N1.",
+      "size": 452,
+      "sentences": 4
+    },
+    {
+      "id": 177,
+      "content": ":88) 1\nx1 = 1 ⇒ 2 W1x0 ≥ R1+ , ∀i ∈ N1,\ni ij j i q\nj∈N0\n(cid:88) 1\nx1 = 0 ⇒ 2 W1x0 ≤ R1− , ∀i ∈ N1. i ij j i q\nj∈N0\nFor ℓ ∈ {2,...,L}, i ∈ Nℓ, and j ∈ Nℓ−1, Wℓxℓ−1 is an integer. Also, Rℓ +1 is the smallest\nij j i\neven integer not smaller than (cid:80) Wℓ −bℓ, and Rℓ−1 is the largest even integer smaller than\nj∈Nℓ−1 ij i i\n(cid:80) Wℓ −bℓ.",
+      "size": 341,
+      "sentences": 3
+    },
+    {
+      "id": 178,
+      "content": "n (cid:80) Wℓ −bℓ, and Rℓ−1 is the largest even integer smaller than\nj∈Nℓ−1 ij i i\n(cid:80) Wℓ −bℓ. Hence, the above constraints can be written as follows for ℓ ∈ {2,...,L}:\nj∈Nℓ−1 ij i\n(cid:88)\nxℓ = 1 ⇒ 2 Wℓxℓ−1 ≥ Rℓ+1, ∀i ∈ Nℓ,\ni ij j i\nj∈Nℓ−1\n(cid:88)\nxℓ = 0 ⇒ 2 Wℓxℓ−1 ≤ Rℓ−1, ∀i ∈ Nℓ. i ij j i\nj∈Nℓ−1\nFor ℓ ∈ [L], i ∈ Nℓ, and j ∈ Nℓ−1, Wℓ ∈ {−1,0,1} and xℓ−1 ∈ [0,1]. Hence, LBℓ is a lower\nij j i\nbound for 2 (cid:80) Wℓxℓ−1 because it is minus two times the number of −1 in {Wℓ : j ∈ Nℓ−1}.",
+      "size": 496,
+      "sentences": 4
+    },
+    {
+      "id": 179,
+      "content": "j i\nbound for 2 (cid:80) Wℓxℓ−1 because it is minus two times the number of −1 in {Wℓ : j ∈ Nℓ−1}. j∈Nℓ−1 ij j ij\nAlso, UBℓ is an upper bound for 2 (cid:80) Wℓxℓ−1 because it is two times the number of 1 in\ni j∈Nℓ−1 ij j\n{Wℓ : j ∈ Nℓ−1}.",
+      "size": 237,
+      "sentences": 2
+    },
+    {
+      "id": 180,
+      "content": "und for 2 (cid:80) Wℓxℓ−1 because it is two times the number of 1 in\ni j∈Nℓ−1 ij j\n{Wℓ : j ∈ Nℓ−1}. ij\nBy exploiting this lower bound and upper bound, it can be concluded that (x0,x1) ∈ X0 ×\n{0,1}n1 satisfies (2b) if and only if it satisfies (4) and (5), and (xℓ−1,xℓ) ∈ {0,1}nℓ−1 ×{0,1}nℓ\nsatisfies (2b) if and only if it satisfies (6) and (7) for ℓ ∈ {2,...,L}. □\n23\n===  24 ===\nA.2 Proof of Lemma 2\n. Proof.",
+      "size": 410,
+      "sentences": 4
+    },
+    {
+      "id": 181,
+      "content": "only if it satisfies (6) and (7) for ℓ ∈ {2,...,L}. □\n23\n===  24 ===\nA.2 Proof of Lemma 2\n. Proof. First, from a feasible solution (xˆ0,...,xˆL,tˆ) to (2) where t is considered as a decision\nvariable, we obtain a feasible solution to (12) with the same objective value. From (xˆ0,...,xˆL,tˆ),\nyˆ is defined as qxˆ0. Also, zˆ is defined as 1 (t), and vˆ is defined as zˆxˆL. t {tˆ} ti t i\nBy Lemma 1, (xˆ0,...,xˆL,yˆ,zˆ,vˆ) satisfies (4)-(5) and (6)-(7) for ℓ ∈ {2,...,L}.",
+      "size": 471,
+      "sentences": 7
+    },
+    {
+      "id": 182,
+      "content": ". t {tˆ} ti t i\nBy Lemma 1, (xˆ0,...,xˆL,yˆ,zˆ,vˆ) satisfies (4)-(5) and (6)-(7) for ℓ ∈ {2,...,L}. By the\ndefinition of yˆ, (xˆ0,...,xˆL,yˆ,zˆ,vˆ) satisfies (8)-(9) and (12g). By the definition of zˆ and vˆ,\n(xˆ0,...,xˆL,yˆ,zˆ,vˆ) satisfies (12b)-(12c) and (12h)-(12i). Also, (xˆ0,...,xˆL,yˆ,zˆ,vˆ) satisfies (12d)\nbecause zˆ and xˆL are binary, so (xˆ0,...,xˆL,yˆ,zˆ,vˆ) is a feasible solution to (12). Thedefinitionsofzˆandvˆ implieszˆ = 0fort ̸= tˆ, zˆ = 1, andvˆ = zˆxˆL.",
+      "size": 476,
+      "sentences": 6
+    },
+    {
+      "id": 183,
+      "content": "feasible solution to (12). Thedefinitionsofzˆandvˆ implieszˆ = 0fort ̸= tˆ, zˆ = 1, andvˆ = zˆxˆL. Withthisimplication,\nt tˆ ti t i\nthe objective value of (xˆ0,...,xˆL,tˆ) in (2) is same as the objective value of (xˆ0,...,xˆL,yˆ,zˆ,vˆ) in\n(12) by following steps:\n(cid:88)\naL+1(xˆL)−aL+1(xˆL) = zˆ(aL+1(xˆL)−aL+1(xˆL))\ntˆ t¯ t t t¯\nt∈NL+1\\{t¯}\n(cid:88) (cid:16) (cid:88) (cid:17)\n= zˆ (WL−WL)(2xˆL−1)+(bL−bL)\nt ti t¯i i t t¯\nt∈NL+1\\{t¯} i∈NL\n(cid:88) (cid:88)\n= 2(WL−WL)zˆxˆL\nti t¯i t i\nt∈NL+1\\{t¯}i∈NL\n(22)\n(cid:88) (cid:16) (cid:88) (cid:17)\n+ − (WL−WL)+(bL−bL) zˆ\nti t¯i t t¯ i\nt∈NL+1\\{t¯} i∈NL\n(cid:88) (cid:88)\n= 2(WL−WL)vˆ\nti t¯i ti\nt∈NL+1\\{t¯}i∈NL\n(cid:88) (cid:16) (cid:88) (cid:17)\n+ − (WL−WL)+(bL−bL) zˆ.",
+      "size": 714,
+      "sentences": 3
+    },
+    {
+      "id": 184,
+      "content": "= 2(WL−WL)vˆ\nti t¯i ti\nt∈NL+1\\{t¯}i∈NL\n(cid:88) (cid:16) (cid:88) (cid:17)\n+ − (WL−WL)+(bL−bL) zˆ. ti t¯i t t¯ i\nt∈NL+1\\{t¯} i∈NL\nNext, from a feasible solution (xˆ0,...,xˆL,yˆ,zˆ,vˆ) to (12), we obtain a feasible solution to (2)\nwiththesameobjectivevaluewheretisconsideredasadecisionvariable. From(xˆ0,...,xˆL,yˆ,zˆ,vˆ),\ntˆis defined as t satisfying zˆ = 1, whose uniqueness is guaranteed by (12b) and (12h).",
+      "size": 409,
+      "sentences": 3
+    },
+    {
+      "id": 185,
+      "content": ",yˆ,zˆ,vˆ),\ntˆis defined as t satisfying zˆ = 1, whose uniqueness is guaranteed by (12b) and (12h). t\nBy (4)-(7) and Lemma 1, (xˆ0,...,xˆL,tˆ) satisfies the layer propagation constraints (2b). By\n(8)-(10), (12e), and (12g), (xˆ0,...,xˆL,tˆ) satisfies the input perturbation constraint (2c). Hence,\n(xˆ0,...,xˆL,tˆ) is a feasible solution to (2). By (22), the objective value of (xˆ0,...,xˆL,yˆ,zˆ,vˆ) in (12) is same as the objective value of\n(xˆ0,...,xˆL,tˆ) in (2).",
+      "size": 467,
+      "sentences": 5
+    },
+    {
+      "id": 186,
+      "content": "value of (xˆ0,...,xˆL,yˆ,zˆ,vˆ) in (12) is same as the objective value of\n(xˆ0,...,xˆL,tˆ) in (2). The first equality holds because zˆ = 0 for t ̸= tˆ, and zˆ = 1. The last equality\nt tˆ\nholds because vˆ = zˆxˆL. For t ̸= tˆ, vˆ ≥ 0 by (12i), and vˆ ≤ zˆ = 0 by (12d), so vˆ = 0 = zˆxˆL. ti t i ti ti t ti t i\nAlso, vˆ = zˆxˆL by following steps:\ntˆi tˆ i\n(cid:88)\nvˆ = vˆ (For all t other than tˆ, vˆ = 0)\ntˆi ti ti\nt∈NL+1\\{t¯}\n= xˆL (By (12c))\ni\n= zˆxˆL.",
+      "size": 456,
+      "sentences": 5
+    },
+    {
+      "id": 187,
+      "content": "cid:88)\nvˆ = vˆ (For all t other than tˆ, vˆ = 0)\ntˆi ti ti\nt∈NL+1\\{t¯}\n= xˆL (By (12c))\ni\n= zˆxˆL. tˆ i\nFor these reasons, (12) is equivalent to (2). □\nA.3 Proof of Convex Hull Characterization for a Single Neuron\nWe prove Theorem 3 on the characterization for the convex hull (13) for a single neuron introduced\nin Section 2.3, which is an extension of the main result in Han and G´omez (2021).",
+      "size": 396,
+      "sentences": 3
+    },
+    {
+      "id": 188,
+      "content": "euron introduced\nin Section 2.3, which is an extension of the main result in Han and G´omez (2021). To simplify the\n24\n===  25 ===\nstatement of this theorem, ℓ ∈ {2,...,L} and i ∈ Nℓ are fixed, and the following notations are\ndefined for j ∈ Nℓ−1 with LBℓ, UBℓ, and Rℓ defined in Section 2.1.1:\ni i i\nx := xℓ−1,\nu := xℓ,\ni\nw := Wℓ,\nj ij\n(cid:88)\nLB := LBℓ = (Wℓ −|Wℓ|),\ni ij ij\nj∈Nℓ−1\n(cid:88)\nUB := UBℓ = (Wℓ +|Wℓ|),\ni ij ij\nj∈Nℓ−1\n(cid:24)(cid:80) Wℓ −bℓ(cid:25)\nR := Rℓ = 2 j∈Nℓ−1 ij i −1.",
+      "size": 492,
+      "sentences": 2
+    },
+    {
+      "id": 189,
+      "content": "UB := UBℓ = (Wℓ +|Wℓ|),\ni ij ij\nj∈Nℓ−1\n(cid:24)(cid:80) Wℓ −bℓ(cid:25)\nR := Rℓ = 2 j∈Nℓ−1 ij i −1. i 2\nThen, this theorem can be restated as follows:\nTheorem 3 (Restated) The set of (x,u) ∈ [0,1]nℓ−1 ×[0,1] satisfying the following inequalities\nfor all J ⊂ {j ∈ Nℓ−1 : w ̸= 0} is (13):\nj\n(cid:88)\n(w (2x −1)−(2u−1)) ≥ (R−UB+1)u, (23a)\nj j\nj∈J\n(cid:88)\n(w (2x −1)−(2u−1)) ≤ (R−LB−1)(−u+1). (23b)\nj j\nj∈J\n. Proof.",
+      "size": 411,
+      "sentences": 4
+    },
+    {
+      "id": 190,
+      "content": "1)) ≥ (R−UB+1)u, (23a)\nj j\nj∈J\n(cid:88)\n(w (2x −1)−(2u−1)) ≤ (R−LB−1)(−u+1). (23b)\nj j\nj∈J\n. Proof. Consider the following sets:\nX+ = {(x,1) : x ∈ {0,1}nℓ−1 ,aℓ(x) ≥ 0},\ni\nX− = {(x,0) : x ∈ {0,1}nℓ−1 ,aℓ(x) < 0}. i\nBy the proof of Lemma 1, X+ and X− can be written as follows:\nX+ = (cid:110) (x,1) : x ∈ {0,1}nℓ−1 , (cid:88) w x ≥ R+1(cid:111) ,\nj j\n2\nj∈Nℓ−1\nwj̸=0\nX− = (cid:110) (x,0) : x ∈ {0,1}nℓ−1 , (cid:88) w x ≤ R−1(cid:111) .",
+      "size": 433,
+      "sentences": 5
+    },
+    {
+      "id": 191,
+      "content": "(cid:111) ,\nj j\n2\nj∈Nℓ−1\nwj̸=0\nX− = (cid:110) (x,0) : x ∈ {0,1}nℓ−1 , (cid:88) w x ≤ R−1(cid:111) . j j\n2\nj∈Nℓ−1\nwj̸=0\nBy exploiting total unimodularity of the constraints defining X+ and X− arising from w ∈\nj\n{−1,0,1} and R+1 ∈ Z, conv(X+) and conv(X−) can be obtained as follows:\n2\n(cid:26) (cid:27)\nconv(X+) = (x,1) : x ∈ [0,1]nℓ−1 , (cid:88) w x ≥ R+1 ,\nj j\n2\nj∈Nℓ−1\nwj̸=0\n(cid:26) (cid:27)\nconv(X−) = (x,0) : x ∈ [0,1]nℓ−1 , (cid:88) w x ≤ R−1 .",
+      "size": 450,
+      "sentences": 2
+    },
+    {
+      "id": 192,
+      "content": "R+1 ,\nj j\n2\nj∈Nℓ−1\nwj̸=0\n(cid:26) (cid:27)\nconv(X−) = (x,0) : x ∈ [0,1]nℓ−1 , (cid:88) w x ≤ R−1 . j j\n2\nj∈Nℓ−1\nwj̸=0\n25\n===  26 ===\nTheseconvexhullscanbeusedtodescribe(13)asfollowswherethelaststatementholdsbecause\nof compactness of conv(X+) and conv(X−) arising from finiteness of X+ and X−:\nconv(X+∪X−) = conv(conv(X+)∪conv(X−))\n= clconv(conv(X+)∪conv(X−)).",
+      "size": 359,
+      "sentences": 2
+    },
+    {
+      "id": 193,
+      "content": "ng from finiteness of X+ and X−:\nconv(X+∪X−) = conv(conv(X+)∪conv(X−))\n= clconv(conv(X+)∪conv(X−)). By Balas (1985)’s work on disjunctive programming, (x,u) ∈ Rnℓ−1 ×R is in (13) if and only if\nthere exist (x+,u+),(x−,u−) ∈ Rnℓ−1 ×R and λ ∈ [0,1] satisfying the following inequalities:\nx = x++x−,\nu = u++u−,\n0 ≤ x+ ≤ λ·1,\nu+ = λ,\n(cid:88)\n2 w x+ ≥ (R+1)λ,\nj j\nj∈Nℓ−1\nwj̸=0\n0 ≤ x− ≤ (1−λ)·1,\nu− = 0,\n(cid:88)\n2 w x− ≤ (R−1)(1−λ).",
+      "size": 428,
+      "sentences": 2
+    },
+    {
+      "id": 194,
+      "content": "(cid:88)\n2 w x+ ≥ (R+1)λ,\nj j\nj∈Nℓ−1\nwj̸=0\n0 ≤ x− ≤ (1−λ)·1,\nu− = 0,\n(cid:88)\n2 w x− ≤ (R−1)(1−λ). j j\nj∈Nℓ−1\nwj̸=0\nExistence of (x+,u+),(x−,u−) ∈ Rnℓ−1 × R and λ ∈ [0,1] satisfying the above inequalities is\nidentical to existence of x+ ∈ Rnℓ−1 satisfying the following inequalities, which are provided by\nsubstituting u− with 0, u+ and λ with u, and x− with x−x+:\nu u u\n− ·1 ≤ x+− ·1 ≤ ·1, (24)\n2 2 2\n(cid:16)1−u(cid:17) (cid:16)1−u(cid:17) (cid:16)1−u(cid:17)\n− ·1 ≤ x−x+− ·1 ≤ ·1, (25)\n2 2 2\n(cid:88)\n2 w x+ ≥ (R+1)u, (26)\nj j\nj∈Nℓ−1\nwj̸=0\n(cid:88) (cid:88)\n2 w x+ ≥ 2 w x −(R−1)(1−u).",
+      "size": 588,
+      "sentences": 2
+    },
+    {
+      "id": 195,
+      "content": "2 2 2\n(cid:88)\n2 w x+ ≥ (R+1)u, (26)\nj j\nj∈Nℓ−1\nwj̸=0\n(cid:88) (cid:88)\n2 w x+ ≥ 2 w x −(R−1)(1−u). (27)\nj j j j\nj∈Nℓ−1 j∈Nℓ−1\nwj̸=0 wj̸=0\nFor j satisfying w ̸= 0, (24)-(25) are equivalent to the following inequalities because w ∈ {−1,1}:\nj j\nu (cid:16) u(cid:17) u\n− ·1 ≤ w x+− ·1 ≤ ·1,\nj\n2 2 2\n(1−u) (cid:16) 1−u (cid:17) (1−u)\n− ·1 ≤ w x−x+−( ) ·1 ≤ ·1.",
+      "size": 356,
+      "sentences": 2
+    },
+    {
+      "id": 196,
+      "content": "id:17) u\n− ·1 ≤ w x+− ·1 ≤ ·1,\nj\n2 2 2\n(1−u) (cid:16) 1−u (cid:17) (1−u)\n− ·1 ≤ w x−x+−( ) ·1 ≤ ·1. j\n2 2 2\nByreplacingw x+ withitsmaximumattainedfromtheaboveinequalitiesin(26)-(27)andemploy-\nj j\ning Fourier-Motzkin Elimination to (24)-(25) to remove x+− u, existence of x+ ∈ Rnℓ−1 satisfying\n2\n26\n===  27 ===\n(24)-(27) is equivalent to whether the following inequalities are satisfied:\n(cid:16) u u (cid:17) (cid:16)u u(cid:17)\nmax − ,x + −1 ≤ min ,x − , ∀j ∈ Nℓ−1,\nj j\n2 2 2 2\n(cid:88)\nmin((w +1)u,2w x +(−w +1)(1−u)) ≥ (R+1)u,\nj j j j\nj∈Nℓ−1\nwj̸=0\n(cid:88) (cid:88)\nmin((w +1)u,2w x +(−w +1)(1−u)) ≥ 2 w x −(R−1)(1−u).",
+      "size": 621,
+      "sentences": 2
+    },
+    {
+      "id": 197,
+      "content": "(R+1)u,\nj j j j\nj∈Nℓ−1\nwj̸=0\n(cid:88) (cid:88)\nmin((w +1)u,2w x +(−w +1)(1−u)) ≥ 2 w x −(R−1)(1−u). j j j j j j\nj∈Nℓ−1 j∈Nℓ−1\nwj̸=0 wj̸=0\nThese inequalities are satisfied if and only if the following inequalities are satisfied because |w | = 1\nj\n(cid:80) (cid:80) (cid:80) (cid:80)\nifw ̸= 0, (−w +1) = (−w +|w |) = −LB,and (w +1) = (w +\nj j∈Nℓ−1 j j∈Nℓ−1 j j j∈Nℓ−1 j j∈Nℓ−1 j\nwj̸=0 wj̸=0\n|w |) = UB:\nj\n0 ≤ x ≤ 1, ∀j ∈ Nℓ−1,\nj\n0 ≤ u ≤ 1,\n(cid:88) (cid:88)\nmin(w (2x −1),2u−1) ≥ (R−LB+1)u− |w |,\nj j j\nj∈Nℓ−1 j∈Nℓ−1\nwj̸=0\n(cid:88) (cid:88)\nmax(w (2x −1),2u−1) ≤ (UB−R+1)u+R− w −1.",
+      "size": 579,
+      "sentences": 2
+    },
+    {
+      "id": 198,
+      "content": "−LB+1)u− |w |,\nj j j\nj∈Nℓ−1 j∈Nℓ−1\nwj̸=0\n(cid:88) (cid:88)\nmax(w (2x −1),2u−1) ≤ (UB−R+1)u+R− w −1. j j j\nj∈Nℓ−1 j∈Nℓ−1\nwj̸=0\nIf w ̸= 0, |w | = 1, so |{j ∈ Nℓ−1 : w ̸= 0}| = (cid:80) |w |.",
+      "size": 188,
+      "sentences": 2
+    },
+    {
+      "id": 199,
+      "content": "u+R− w −1. j j j\nj∈Nℓ−1 j∈Nℓ−1\nwj̸=0\nIf w ̸= 0, |w | = 1, so |{j ∈ Nℓ−1 : w ̸= 0}| = (cid:80) |w |. With this equality, by replacing min\nj j j j∈Nℓ−1 j\nand max in the last two inequalities with linear expressions involving J ⊂ {j ∈ Nℓ−1 : w ̸= 0},\nj\nthe set of (x,u) satisfying the last two inequalities can be written as the set of (x,u) satisfying the\nfollowing linear inequalities for all J ⊂ {j ∈ Nℓ−1 : w ̸= 0}:\nj\n(cid:88) (cid:88) (cid:16) (cid:88) (cid:17)\n(w (2x −1)−(2u−1)) ≥ (R−LB+1)u− |w |− |w | (2u−1),\nj j j j\nj∈J j∈Nℓ−1 j∈Nℓ−1\n(cid:88) (cid:88) (cid:16) (cid:88) (cid:17)\n(w (2x −1)−(2u−1)) ≤ (UB−R+1)u+R− w −1− |w | (2u−1).",
+      "size": 638,
+      "sentences": 3
+    },
+    {
+      "id": 200,
+      "content": "1\n(cid:88) (cid:88) (cid:16) (cid:88) (cid:17)\n(w (2x −1)−(2u−1)) ≤ (UB−R+1)u+R− w −1− |w | (2u−1). j j j j\nj∈J j∈Nℓ−1 j∈Nℓ−1\nThese inequalities are equivalent to (23a) and (23b) because (cid:80) |w | = UB−LB and\nj∈Nℓ−1 j 2\n(cid:80) (w − |w |) = LB, so (13) is the set of (x,u) ∈ [0,1]Nℓ−1 × [0,1] satisfying (23) for all\nj∈Nℓ−1 j j\nJ ⊂ {j ∈ Nℓ−1 : w ̸= 0}.",
+      "size": 357,
+      "sentences": 2
+    },
+    {
+      "id": 201,
+      "content": "is the set of (x,u) ∈ [0,1]Nℓ−1 × [0,1] satisfying (23) for all\nj∈Nℓ−1 j j\nJ ⊂ {j ∈ Nℓ−1 : w ̸= 0}. □\nj\nA.4 Implementation Details for Infinity-norm and 2-norm\nWe explain implementation details for the case that the maximum perturbation from x¯ is defined\nusinganℓ normorℓ norm. ThesedetailsareabouthowtosolvetheIPsubproblem(17)without\n∞ 2\nan IP solver in the case of ℓ = 1 and how to implement the input perturbation constraint (10).",
+      "size": 434,
+      "sentences": 3
+    },
+    {
+      "id": 202,
+      "content": "∞ 2\nan IP solver in the case of ℓ = 1 and how to implement the input perturbation constraint (10). We first consider solving (17) for the case of layer ℓ = 1 and p = ∞. In this case, the optimal\nsolution is obtained by setting x0 to min(x¯ +ϵ,1) for j satisfying c W1 = 1, setting x0 to max(x¯ −\nj j i ij j j\nϵ,0) for j satisfying c W1 = −1, and setting x0 to x¯ for j satisfying c W1 = 0.",
+      "size": 389,
+      "sentences": 3
+    },
+    {
+      "id": 203,
+      "content": "(x¯ −\nj j i ij j j\nϵ,0) for j satisfying c W1 = −1, and setting x0 to x¯ for j satisfying c W1 = 0. All constraints\ni ij j j i ij\ndefining X0 are of the form |x0−x¯ | ≤ ϵ, so this solution is feasible, and it immediate that no other\nj j\nsolution can yield a better objective value. 27\n===  28 ===\nWe next consider solving (17) for the case of layer ℓ = 1 and p = 2.",
+      "size": 365,
+      "sentences": 3
+    },
+    {
+      "id": 204,
+      "content": "bjective value. 27\n===  28 ===\nWe next consider solving (17) for the case of layer ℓ = 1 and p = 2. First, observe that given a\nfeasible solution xˆ0 ∈ 1Zn0 ∩[0,1]n0 to (17), if for some j ∈ N0 it holds that c W1(xˆ0 −x¯ ) ≤ 0,\nq + i ij j j\nthen another feasible solution with the same or better objective value can be obtained by replacing\nxˆ0 with x¯ .",
+      "size": 354,
+      "sentences": 3
+    },
+    {
+      "id": 205,
+      "content": "easible solution with the same or better objective value can be obtained by replacing\nxˆ0 with x¯ . Hence, we can restrict our search for an optimal solution of (17) to solutions xˆ0 that\nj j\nsatisfy:\nxˆ0 ≥ x¯ , for j such that c W1 = 1,\nj j i ij\nxˆ0 ≤ x¯ , for j such that c W1 = −1,\nj j i ij\nxˆ0 = x¯ , for j such that W1 = 0.\nj j ij\nLet N+ = {j ∈ N : W ̸= 0}.",
+      "size": 362,
+      "sentences": 2
+    },
+    {
+      "id": 206,
+      "content": "such that c W1 = −1,\nj j i ij\nxˆ0 = x¯ , for j such that W1 = 0.\nj j ij\nLet N+ = {j ∈ N : W ̸= 0}. Thus, we can restrict our attention to solutions defined by a vector\n0 0 ij\nz ∈ {0,1,...,q}N 0 + as follows:\n min(x¯ + zj,1) if c W1 = 1,\n  j q i ij\nxˆ0(z) = max(x¯ − zj,0) if c W1 = −1,\nj j q i ij\n\nx¯ if W1 = 0.\nj ij\nObserve that the objective in (17) and the expression ∥xˆ(z)−x¯∥ are monotone increasing in z,\n2\nand hence an optimal solution will be such that increasing z for any j ∈ N+ would be infeasible.",
+      "size": 515,
+      "sentences": 2
+    },
+    {
+      "id": 207,
+      "content": "2\nand hence an optimal solution will be such that increasing z for any j ∈ N+ would be infeasible. j 0\nNext, for z ∈ {0,1,...,q}N 0 + , define the set\n(cid:110) (cid:111)\nNS(z) = j ∈ N+ : (c W1 = 1 and xˆ0(z) ≤ 1−1/q) or (c W1 = −1 and xˆ0(z) ≥ 1/q) . 0 0 i ij j i ij j\nIf there exists z ∈ {0,1,...,q}N 0 + in which xˆ(z) is feasible to (17) and N 0 S(z) = ∅, then xˆ(z) is\noptimal to (17) since this solution obtains the best possible objective.",
+      "size": 446,
+      "sentences": 3
+    },
+    {
+      "id": 208,
+      "content": "0 S(z) = ∅, then xˆ(z) is\noptimal to (17) since this solution obtains the best possible objective. Otherwise, we claim that\nthere exists an optimal solution xˆ(z) that satisfies:\nmax{z : j ∈ NS(z)}−min{z : j ∈ NS(z)} ≤ 1.\nj 0 j 0\nConsider a solution that violates this condition. Another feasible solution with the same objective\nvalue can be obtained by decreasing z by one and increasing z by one, where j ∈ argmax{z :\nj1 j2 1 j\nj ∈ NS(z)} and j ∈ argmin{z : j ∈ NS(z)}.",
+      "size": 472,
+      "sentences": 3
+    },
+    {
+      "id": 209,
+      "content": "e and increasing z by one, where j ∈ argmax{z :\nj1 j2 1 j\nj ∈ NS(z)} and j ∈ argmin{z : j ∈ NS(z)}. Repeating this process will eventually yield a vector\n0 2 j 0\nz which satisfies this condition since there only finitely many elements achieving the max and min\nin the condition, and an element will necessarily be removed from one or the other as long as the\nmax is at least two larger than the min.",
+      "size": 399,
+      "sentences": 2
+    },
+    {
+      "id": 210,
+      "content": "ecessarily be removed from one or the other as long as the\nmax is at least two larger than the min. These arguments imply that an optimal solution to (17) can be obtained by first finding the\nmaximum m such that the solution xˆ(z) is satisfies ∥xˆ(z)−x¯∥ ≤ ϵ, where z = m for j ∈ N+. 2 j 0\nHavingfoundthissolution(e.g.,bybinarysearch),onewouldtheniterativelyselectsomej ∈ NS(z)\n0\nandincreasez , andrepeat(withoutselectinganyj morethanonce)untilnomorecanbeincreased\nj\nwithout violating ∥xˆ(z)−x¯∥ ≤ ϵ.",
+      "size": 500,
+      "sentences": 3
+    },
+    {
+      "id": 211,
+      "content": "eat(withoutselectinganyj morethanonce)untilnomorecanbeincreased\nj\nwithout violating ∥xˆ(z)−x¯∥ ≤ ϵ. 2\nFinally, we describe how the constraint (10) is formulated when using a MIP solver to solve the\nverification problem in the case of p = 2. We define a decision variable u to represent |x0 −x¯ |\nj j j\nfor each j ∈ N0.",
+      "size": 318,
+      "sentences": 3
+    },
+    {
+      "id": 212,
+      "content": "in the case of p = 2. We define a decision variable u to represent |x0 −x¯ |\nj j j\nfor each j ∈ N0. The following inequalities are added as constraints because (10) is satisfied if and\nonly if there exists u ∈ Rn0 satisfying the following inequalities:\n+\nu ≥ x0−x¯ , ∀j ∈ N0,\nj j j\nu ≥ −x0+x¯ , ∀j ∈ N0,\nj j j\n28\n===  29 ===\n# of Many-IP 1-IP\nNorm\ninstances\nℓ 47 143.1(16) 78.1(6)\n∞\nℓ 17 502.9(12) 311.6(2)\n2\nTable 8: Verification time (seconds) of Many-IP and 1-IP for ℓ norm and ℓ norm\n∞ 2\n1-IP 1-IP 1-IP 1-IP\n+HG +Fix +Fix\n+2Var\nPreprocessing time (seconds) 0.0 10.6 7.5 27.4\nVerification time (seconds) 98.6 147.2 100.6 44.9\n# of solved instances (veri.)",
+      "size": 658,
+      "sentences": 3
+    },
+    {
+      "id": 213,
+      "content": ") 0.0 10.6 7.5 27.4\nVerification time (seconds) 98.6 147.2 100.6 44.9\n# of solved instances (veri.) 38 35 37 44\n# of nodes (veri.) 1297.6 1283.6 1265.3 17.8\nOptimization time (seconds) 115.5 178.4 117.5 57.4\n# of solved instances (opt.) 37 33 37 42\n# of nodes (opt.) 2182.8 2587.9 2133.7 86.4\nLP gap 153.4% 156.3% 103.4% 35.2%\nOptimality gap 31.8% 46.8% 33.6% 11.0%\nTable 9: Metrics of IP methods based on 1-IP for ℓ norm (49 instances)\n∞\n(cid:88)\nu2 ≤ ϵ2.",
+      "size": 456,
+      "sentences": 5
+    },
+    {
+      "id": 214,
+      "content": "6% 11.0%\nTable 9: Metrics of IP methods based on 1-IP for ℓ norm (49 instances)\n∞\n(cid:88)\nu2 ≤ ϵ2. j\nj∈N0\nWe remark that we found through preliminary empirical study that this formulation technique\nwas computationally superior to the more direct approach of simply formulating the constraint as\nfollows:\n(cid:88)\n(x0−x¯ )2 ≤ ϵ2.",
+      "size": 329,
+      "sentences": 2
+    },
+    {
+      "id": 215,
+      "content": "the more direct approach of simply formulating the constraint as\nfollows:\n(cid:88)\n(x0−x¯ )2 ≤ ϵ2. j j\nj∈N0\nA.5 Detailed Computational Results for Infinity-norm and 2-norm\nWe present more detailed computational results for the case that the maximum perturbation from\nx¯ is defined using an ℓ norm or ℓ norm. Test instances for these cases are formed with Network\n∞ 2\n5 in Table 1, x¯, and ϵ that are chosen as explained in Section 4.1. WefirstinvestigatethetimerequiredtousetheIPproblem(12)(resp.",
+      "size": 496,
+      "sentences": 4
+    },
+    {
+      "id": 216,
+      "content": "re chosen as explained in Section 4.1. WefirstinvestigatethetimerequiredtousetheIPproblem(12)(resp. (11)forallt)tosolvethe\nthe verification problem. The shifted geometric mean (with a shift of 1) of times over all instances\ntested by both IP method Many-IP and 1-IP is computed for each method and displayed in Table\n8 for the case of p = ∞ and p = 2, along with the number of test instances.",
+      "size": 392,
+      "sentences": 4
+    },
+    {
+      "id": 217,
+      "content": "and displayed in Table\n8 for the case of p = ∞ and p = 2, along with the number of test instances. For Many-IP, the\nnumber in parenthesis is the number of test instances where the time limit is hit in solving (11)\nfor at least one t. For 1-IP, the number in parenthesis is the number of test instances where the\ntime limit is hit in solving (12).",
+      "size": 346,
+      "sentences": 2
+    },
+    {
+      "id": 218,
+      "content": "number in parenthesis is the number of test instances where the\ntime limit is hit in solving (12). We find that 1-IP’s verification times are smaller than Many-IP’s,\nindicating that our technique for obtaining a linear objective also leads to faster BNN verification\nin the case of p = ∞ and p = 2. Table9presentsresultsanalogoustothoseofTable6inthemainsections,butoninstanceswith\np = ∞.",
+      "size": 387,
+      "sentences": 3
+    },
+    {
+      "id": 219,
+      "content": "and p = 2. Table9presentsresultsanalogoustothoseofTable6inthemainsections,butoninstanceswith\np = ∞. We find that in this case, neither 1-IP+HG nor 1-IP+Fix yield improvement compared to\n1-IP, so generating (14) and variable fixings do not improve BNN verification.",
+      "size": 264,
+      "sentences": 3
+    },
+    {
+      "id": 220,
+      "content": "rovement compared to\n1-IP, so generating (14) and variable fixings do not improve BNN verification. Generating variable\nfixings decreases LP gaps, but this decrease does not lead to more effective BNN verification in\n29\n[  ]\n\n===  30 ===\n1-IP 1-IP 1-IP 1-IP\n+HG +Fix +Fix\n+2Var\nPreprocessing time (seconds) 0.0 35.1 6.7 9.2\nVerification time (seconds) 1215.6 1305.9 9.3 10.3\n# of solved instances (veri.) 12 12 22 22\n# of nodes (veri.)",
+      "size": 435,
+      "sentences": 3
+    },
+    {
+      "id": 221,
+      "content": "time (seconds) 1215.6 1305.9 9.3 10.3\n# of solved instances (veri.) 12 12 22 22\n# of nodes (veri.) 9844.0 9811.1 0.8 0.7\nOptimization time (seconds) 1549.9 1632.5 12.2 12.4\n# of solved instances (opt.) 11 11 21 22\n# of nodes (opt.)",
+      "size": 231,
+      "sentences": 4
+    },
+    {
+      "id": 222,
+      "content": "n time (seconds) 1549.9 1632.5 12.2 12.4\n# of solved instances (opt.) 11 11 21 22\n# of nodes (opt.) 16647.4 16607.7 7.1 5.0\nLP gap 165.1% 165.1% 12.5% 2.9%\nOptimality gap 46.5% 46.6% 1.8% 0.0%\nTable 10: Metrics of IP methods based on 1-IP for ℓ norm (22 instances)\n2\n1-IP 1-IP\n+Fix +Fix\n+2Var\nPreprocessing time (seconds) 7.0 24.0\nVerification time (seconds) 66.3 41.5\n# of solved instances (veri.) 35 42\n# of nodes (veri.) 33.6 4.8\nOptimization time (seconds) 82.3 82.9\n# of solved instances (opt.)",
+      "size": 499,
+      "sentences": 5
+    },
+    {
+      "id": 223,
+      "content": "5 42\n# of nodes (veri.) 33.6 4.8\nOptimization time (seconds) 82.3 82.9\n# of solved instances (opt.) 32 34\n# of nodes (opt.) 90.7 75.7\nLP gap 51.8% 24.0%\nOptimality gap 29.5% 16.9%\nTable 11: Metrics of 1-IP+Fix and 1-IP+Fix+2Var for ℓ norm (49 instances)\n2\nthe case of p = ∞. On the other hand, 1-IP+Fix+2Var yields improvement compared to the other\nIP methods based on 1-IP.",
+      "size": 374,
+      "sentences": 5
+    },
+    {
+      "id": 224,
+      "content": "On the other hand, 1-IP+Fix+2Var yields improvement compared to the other\nIP methods based on 1-IP. It implies that our technique for generating layerwise derived valid\ninequalities, mainly two-variable inequalities, also leads to more efficient BNN verification in the\ncase of p = ∞. Inthecaseofp = 2,thesamemetricsarecomputedoverall22instancestestedbyallIPmethods\nbased on 1-IP to compare these IP methods. Table 10 shows these metrics.",
+      "size": 438,
+      "sentences": 4
+    },
+    {
+      "id": 225,
+      "content": "tancestestedbyallIPmethods\nbased on 1-IP to compare these IP methods. Table 10 shows these metrics. 1-IP+HG does not\nresult in improvement compared to 1-IP, which means that generating (14) also does not improve\nBNN verification in the case of p = 2.",
+      "size": 250,
+      "sentences": 3
+    },
+    {
+      "id": 226,
+      "content": "1-IP, which means that generating (14) also does not improve\nBNN verification in the case of p = 2. 1-IP+Fix and 1-IP+Fix+2Var yield similar improvements\ncompared to 1-IP, which implies that generating variable fixings improves BNN verification in\nthe case of p = 2, but on these instances there does not appear to be further improvement from\ntwo-variable inequalities.",
+      "size": 369,
+      "sentences": 2
+    },
+    {
+      "id": 227,
+      "content": "on these instances there does not appear to be further improvement from\ntwo-variable inequalities. To better compare 1-IP+Fix and 1-IP+Fix+2Var, we report in Table 11 the results comparing\nthese instances on all 49 instances solved by these two methods (many of these were excluded in\nTable10sincetheywerenotsolvedby1-IPor1-IP+HG).Fromthistableweobservethatspending\nmore time in generating more layerwise derived valid inequalities, mainly two-variable inequalities,\nresults in reducing LP gaps and solving the verification problem more quickly on these instances.",
+      "size": 564,
+      "sentences": 2
+    },
+    {
+      "id": 228,
+      "content": ",\nresults in reducing LP gaps and solving the verification problem more quickly on these instances. 30\n===  31 ===\nNetwork L n1 n2\n1 1 32 *\n2 1 64 *\n3 1 128 *\n4 2 32 32\n5 2 64 64\n6 2 128 128\nTable 12: Networks in additional computational study\nA.6 Computational Study on Convex Hull Characterization for a Single Neuron\nWe pursue an additional computational study to validate our implementation for IP methods\nexploiting Theorem 3 on convex hull characterization for a single neuron.",
+      "size": 483,
+      "sentences": 2
+    },
+    {
+      "id": 229,
+      "content": "ementation for IP methods\nexploiting Theorem 3 on convex hull characterization for a single neuron. As we see in in Table\n5, the IP method 1-IP+HG employing the valid inequalities presented Theorem 3 does not yield\nsignificant decreases in LP gaps compared to the IP method 1-IP. However, using these valid\ninequalities resulted in smaller LP gaps in Han and G´omez (2021).",
+      "size": 373,
+      "sentences": 3
+    },
+    {
+      "id": 230,
+      "content": "1-IP. However, using these valid\ninequalities resulted in smaller LP gaps in Han and G´omez (2021). One possible reason for this\ndiscrepancy is that (14) cannot be used for ℓ = 1 in our computational study because q = 255, but\nthese valid inequalities can be used in the computational study of Han and G´omez (2021) because\nq = 1.",
+      "size": 330,
+      "sentences": 3
+    },
+    {
+      "id": 231,
+      "content": "e valid inequalities can be used in the computational study of Han and G´omez (2021) because\nq = 1. Toexaminewhetherthisguessiscorrect, anadditionalcomputationalstudyisconductedon\ntest instances based on ones in Han and G´omez (2021) to assess the impact of exploiting Theorem\n3.",
+      "size": 279,
+      "sentences": 2
+    },
+    {
+      "id": 232,
+      "content": "test instances based on ones in Han and G´omez (2021) to assess the impact of exploiting Theorem\n3. In this computational study, the IP method Many-IP and Many-IP+HG, which solves the IP\nproblem (11) by employing a constraint generation approach with (14) as 1-IP+HG for each t, are\ncompared because t is fixed in Han and G´omez (2021). Each test instance consists of a BNN, x¯, and ϵ. Six BNNs pretrained from Han and G´omez\n(2021) are used in this computational study.",
+      "size": 470,
+      "sentences": 4
+    },
+    {
+      "id": 233,
+      "content": "NN, x¯, and ϵ. Six BNNs pretrained from Han and G´omez\n(2021) are used in this computational study. These networks are trained on the MNIST training\ndataset by using Hubara et al. (2016)’s method, which implies n0 = 784 and nL+1 = 10. The\nnumbers of hidden layers and the number of neurons in hidden layers of each network are reported\nin Table 12.",
+      "size": 348,
+      "sentences": 5
+    },
+    {
+      "id": 234,
+      "content": "hidden layers and the number of neurons in hidden layers of each network are reported\nin Table 12. Feature vectors in the MNIST dataset are scaled to binary vectors by converting\ncoordinates smaller than 128 to 0 and the other coordinates to 1, which indicates q = 1. Ten\nfeature vectors are selected for x¯. For each digit from 0 to 9, one feature vector in the MNIST test\ndataset whose t¯is this digit is randomly chosen. Positive integers from 1 to 5 are used as ϵ.",
+      "size": 468,
+      "sentences": 5
+    },
+    {
+      "id": 235,
+      "content": "test\ndataset whose t¯is this digit is randomly chosen. Positive integers from 1 to 5 are used as ϵ. For each network and ϵ, the arithmetic mean of optimal objective values of the LP relaxation\nproblem of (11) over all x¯ and t (LP value) and the shifted geometric mean of times to solve the\nverification problem for all t with a shift of 1 over all x¯ (verification time) are computed for Many-\nIP and Many-IP+HG to compare these IP methods. Table 13 reports LP values and verification\ntimes.",
+      "size": 492,
+      "sentences": 4
+    },
+    {
+      "id": 236,
+      "content": "-\nIP and Many-IP+HG to compare these IP methods. Table 13 reports LP values and verification\ntimes. The number in parenthesis for verification time is the number of x¯ where the time limit is\nhit in solving (11) for at least one t for each network and ϵ. Many-IP+HG yields smaller LP values\nthan Many-IP as in Han and G´omez (2021), so our additional computational study validates our\nimplementation for IP methods employing the valid inequalities in Theorem 3.",
+      "size": 461,
+      "sentences": 3
+    },
+    {
+      "id": 237,
+      "content": "al study validates our\nimplementation for IP methods employing the valid inequalities in Theorem 3. In particular, the\ngap in LP values between Many-IP and Many-IP+HG becomes smaller for larger L and ϵ as in\nHan and G´omez (2021). However, Many-IP+HG results in larger verification times than Many-IP,\nwhich implies that even though using the inequalities in Theorem 3 improves LP relaxation values,\nit does not reduce BNN verification time.",
+      "size": 441,
+      "sentences": 3
+    },
+    {
+      "id": 238,
+      "content": "inequalities in Theorem 3 improves LP relaxation values,\nit does not reduce BNN verification time. 31\n===  32 ===\nLP value Verification time (seconds)\nNetwork ϵ\nMany-IP Many-IP+HG Many-IP Many-IP+HG\n1.0 24.5 6.2 1.2 1.7\n2.0 24.6 6.3 1.3 5.0\n1 3.0 24.7 7.9 1.4 5.8\n4.0 24.8 7.7 1.4 6.7\n5.0 24.8 7.9 1.5 8.6\n1.0 50.2 12.9 2.3 3.8\n2.0 50.4 16.9 4.2 9.9\n2 3.0 50.5 16.4 4.3 13.4\n4.0 50.7 18.5 4.3 16.9\n5.0 50.8 22.9 4.1 17.2\n1.0 80.7 15.9 4.5 8.6\n2.0 80.9 19.1 9.0 27.5\n3 3.0 81.2 20.3 9.2 34.1\n4.0 81.4 29.4 9.2 36.6\n5.0 81.6 31.8 9.3 49.3\n1.0 22.1 4.5 1.2 5.0\n2.0 22.1 11.0 1.4 21.1\n4 3.0 22.1 14.4 1.5 20.2\n4.0 22.1 16.6 1.4 22.6\n5.0 22.1 18.1 1.5 25.6\n1.0 29.9 12.7 2.5 8.6\n2.0 29.9 19.9 6.6 53.2\n5 3.0 29.9 23.6 6.9 47.5\n4.0 29.9 25.7 7.2 68.4\n5.0 29.9 27.0 7.5 84.8\n1.0 45.0 26.4 5.3 16.3\n2.0 45.0 36.2 28.7 1347.6(3)\n6 3.0 45.0 40.0 37.1 1312.6(3)\n4.0 45.0 42.2 50.4 1287.8(5)\n5.0 45.0 43.3 64.9 1175.9(4)\nTable 13: Metrics of Many-IP and Many-IP+HG\n32\n[  ]",
+      "size": 960,
+      "sentences": 2
+    }
+  ]
+}

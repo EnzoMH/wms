@@ -1,0 +1,813 @@
+{
+  "source": "ArXiv",
+  "filename": "201_AI_ML_Stable_Robot_Motions_on_Manifolds__Learn.pdf",
+  "domain": "AI",
+  "total_chars": 43205,
+  "total_chunks": 134,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\nStable Robot Motions on Manifolds: Learning\nLyapunov-Constrained Neural Manifold ODEs\nDavid Boetius1, Abdelrahman Abdelnaby1, Ashok Kumar2,\nStefan Leue1, Abdalla Swikir2 and Fares J. Abu-Dakka3\nAbstract\nLearning stable dynamical systems from data is crucial for safe and reliable robot motion planning and control. However,extendingstabilityguaranteestotrajectoriesdefinedonRiemannianmanifoldsposessignificantchallenges\ndue to the manifold’s geometric constraints.",
+      "size": 475,
+      "sentences": 2
+    },
+    {
+      "id": 2,
+      "content": "definedonRiemannianmanifoldsposessignificantchallenges\ndue to the manifold’s geometric constraints. To address this, we propose a general framework for learning stable\ndynamical systems on Riemannian manifolds using neural ordinary differential equations. Our method guarantees\nstability by projecting the neural vector field evolving on the manifold so that it strictly satisfies the Lyapunov\nstability criterion, ensuring stability at every system state.",
+      "size": 456,
+      "sentences": 3
+    },
+    {
+      "id": 3,
+      "content": "t it strictly satisfies the Lyapunov\nstability criterion, ensuring stability at every system state. By leveraging a flexible neural parameterisation for both\nthe base vector field and the Lyapunov function, our framework can accurately represent complex trajectories while\nrespecting manifold constraints by evolving solutions directly on the manifold.",
+      "size": 352,
+      "sentences": 2
+    },
+    {
+      "id": 4,
+      "content": "trajectories while\nrespecting manifold constraints by evolving solutions directly on the manifold. We provide an efficient training\nstrategy for applying our framework and demonstrate its utility by solving Riemannian LASA datasets on the unit\nquaternion(S3)andsymmetricpositive-definitematrixmanifolds,aswellasroboticmotionsevolvingonR3×S3.We\ndemonstrate the performance, scalability, and practical applicability of our approach through extensive simulations\nand by learning robot motions in a real-world experiment.",
+      "size": 517,
+      "sentences": 2
+    },
+    {
+      "id": 5,
+      "content": "ur approach through extensive simulations\nand by learning robot motions in a real-world experiment. I. INTRODUCTION\nThe deployment of robotic systems in complex real-world scenarios demands models that are highly expressive and\nrigorously stable. Learning from demonstrations enables non-expert users to teach robots new skills by providing\nexample trajectories [1]–[3].",
+      "size": 370,
+      "sentences": 4
+    },
+    {
+      "id": 6,
+      "content": "ions enables non-expert users to teach robots new skills by providing\nexample trajectories [1]–[3]. However, purely data-driven methods frequently lack formal stability guarantees\nrequired, in particular, in safety-critical domains.",
+      "size": 232,
+      "sentences": 2
+    },
+    {
+      "id": 7,
+      "content": "ds frequently lack formal stability guarantees\nrequired, in particular, in safety-critical domains. Robotic state variables, such as orientation, stiffness, or inertia, naturally reside on smooth non-Euclidean spaces\nthatareinherentlystructuredasRiemannianmanifolds[3]–[8].Toensurereliabletaskexecution,learnedtrajectories\nmust accurately capture complex motion patterns on Riemannian manifolds while reliably steering the system\ntoward a desired equilibrium state.",
+      "size": 465,
+      "sentences": 2
+    },
+    {
+      "id": 8,
+      "content": "erns on Riemannian manifolds while reliably steering the system\ntoward a desired equilibrium state. Stable dynamical systems offer a principled solution by guaranteeing trajectory\nconvergence and robustness to perturbations, significantly enhancing reliability in practice [9]–[16]. Recently, neural ordinary differential equations (NODEs) [17] have emerged as an expressive framework for\nmodelling continuous-time dynamical systems.",
+      "size": 433,
+      "sentences": 3
+    },
+    {
+      "id": 9,
+      "content": "ODEs) [17] have emerged as an expressive framework for\nmodelling continuous-time dynamical systems. NODEs offer the flexibility to represent intricate trajectories ef-\nfectively [10], [16], [18]–[20], also in high-dimensional spaces [21]. While stability of NODEs has been studied\nextensively within Euclidean spaces [22]–[24], stability guarantees for NODEs on Riemannian manifolds remain\nan underexplored area.",
+      "size": 412,
+      "sentences": 3
+    },
+    {
+      "id": 10,
+      "content": "ces [22]–[24], stability guarantees for NODEs on Riemannian manifolds remain\nan underexplored area. Without stability guarantees, learned dynamics may drift, oscillate, or exhibit unpredictable\nbehaviour, undermining both safety and performance. In this paper, we introduce stable neural manifold ordinary differential equations (sNMODE) — a novel stability\nframework that combines Lyapunov-based stability with NODEs evolving on arbitrary Riemannian manifolds.",
+      "size": 461,
+      "sentences": 3
+    },
+    {
+      "id": 11,
+      "content": "ework that combines Lyapunov-based stability with NODEs evolving on arbitrary Riemannian manifolds. Our\napproach jointly learns an expressive neural manifold vector field and a neural Lyapunov function. Projecting the\nvectorfieldusingaLyapunov-basedcorrectivetermguaranteesexponentialstabilitytowardsapredefinedequilibrium\nstate [22].",
+      "size": 334,
+      "sentences": 3
+    },
+    {
+      "id": 12,
+      "content": "Lyapunov-basedcorrectivetermguaranteesexponentialstabilitytowardsapredefinedequilibrium\nstate [22]. We uncover and resolve a significant issue in several stable NODE frameworks [20]–[22] that invalidates\ntheir stability guarantees and causes numerical instability in practice.",
+      "size": 276,
+      "sentences": 2
+    },
+    {
+      "id": 13,
+      "content": "[20]–[22] that invalidates\ntheir stability guarantees and causes numerical instability in practice. 1David Boetius, Abdelrahman Abdelnaby, and Stefan Leue are with the Department of Computer and Information\nSciences University of Konstanz, 78467 Konstanz, Germany {david.boetius, abdelrahman.abdelnaby,\nstefan.leue}@uni-konstanz.de\n2Ashok Kumar and Abdalla Swikir are with the Department of Robotics, Mohamed bin Zayed University of Artificial Intelligence, Abu\nDhabi, AE {ashok.kumar,abdalla.swikir}@mbzuai.ac.ae\n3Fares J. Abu-Dakka is with the Mechanical Engineering Department, New York University Abu Dhabi, Abu Dhabi, AE\nfa2656@nyu.edu\n5202\ntcO\n7\n]OR.sc[\n1v70750.0152:viXra\n===  2 ===\nFig.",
+      "size": 694,
+      "sentences": 2
+    },
+    {
+      "id": 14,
+      "content": "rsity Abu Dhabi, Abu Dhabi, AE\nfa2656@nyu.edu\n5202\ntcO\n7\n]OR.sc[\n1v70750.0152:viXra\n===  2 ===\nFig. 1: Learning Stable Motions on Riemannian Manifolds using sNMODE. A user demonstrates position-\norientationmotions(Left),whichlieonaRiemannianmanifold(Centre);sNMODElearnsastablevectorfield that\nenables the robot to autonomously perform the motion (Right).",
+      "size": 355,
+      "sentences": 3
+    },
+    {
+      "id": 15,
+      "content": ");sNMODElearnsastablevectorfield that\nenables the robot to autonomously perform the motion (Right). For practically applying our framework, we devise an efficient training strategy that divides training sNMODEs\nintopretrainingabasevectorfieldondemonstrations,pretrainingaLyapunovfunction,andfine-tuningthecomposed\nsystem under the stability projection. Our sNMODEs reliably replicate demonstration trajectories while providing\nstrong stability guarantees.",
+      "size": 455,
+      "sentences": 3
+    },
+    {
+      "id": 16,
+      "content": "sNMODEs reliably replicate demonstration trajectories while providing\nstrong stability guarantees. They outperform existing approaches [7], [8] in terms of efficiency, respectively,\nperformance and scalability.",
+      "size": 210,
+      "sentences": 2
+    },
+    {
+      "id": 17,
+      "content": "orm existing approaches [7], [8] in terms of efficiency, respectively,\nperformance and scalability. In summary, our main contributions are\n1) proposing sNMODE, a novel manifold-aware Lyapunov projection method that ensures stability on Rieman-\nnian manifolds without imposing restrictive assumptions on the manifold or model structure,\n2) resolving a critical stability issue in previous frameworks [20]–[22] that invalidates theoretical stability\nguarantees and causes numerical instability in practice,\n3) providing an efficient training strategy for learning stable robot motions from demonstrations,\n4) addressing a fundamental limitation of the Riemannian LASA dataset [8] regarding data realism, and\n5) performing an extensive experimental evaluation on several Riemannian manifolds, both in simulation and\non a real-world robot.",
+      "size": 835,
+      "sentences": 2
+    },
+    {
+      "id": 18,
+      "content": "erimental evaluation on several Riemannian manifolds, both in simulation and\non a real-world robot. II. RELATED WORK\nIn this section, we review existing works related to stable neural ODEs (NODEs) on Riemannian manifolds. Table I provides a concise comparison of our sNMODE framework to existing learning from demonstrations (LfD)\nframeworks. We first discuss approaches in Euclidean space.",
+      "size": 390,
+      "sentences": 5
+    },
+    {
+      "id": 19,
+      "content": "ting learning from demonstrations (LfD)\nframeworks. We first discuss approaches in Euclidean space. a) NODEs and Stability: NODEs [17] are a powerful paradigm for modelling complex continuous-time\ndynamical systems, from image processing [17], [23], [24] to learning robotic skills [10], [16], [19]–[21], [25]. Stability in NODEs is addressed using Lyapunov functions [20]–[24] and contraction metrics [11], [16].",
+      "size": 413,
+      "sentences": 4
+    },
+    {
+      "id": 20,
+      "content": "bility in NODEs is addressed using Lyapunov functions [20]–[24] and contraction metrics [11], [16]. However, these stability frameworks are fundamentally limited to Euclidean spaces and cannot handle data\nevolving on more general Riemannian manifolds. Additionally, we identify a critical equilibrium consistency issue\nin [22] that invalidates theoretical stability guarantees and causes numerical instability in practice. This issue also\naffects subsequent works [20], [21] that build upon [22].",
+      "size": 496,
+      "sentences": 4
+    },
+    {
+      "id": 21,
+      "content": "instability in practice. This issue also\naffects subsequent works [20], [21] that build upon [22]. We address this critical issue in Section IV-C.\nTABLE I: Comparison with Existing LfD Frameworks.",
+      "size": 196,
+      "sentences": 3
+    },
+    {
+      "id": 22,
+      "content": ". We address this critical issue in Section IV-C.\nTABLE I: Comparison with Existing LfD Frameworks. Riemannian Stability Learned Neural\nReference Manifold Guarantee Vector Field ODE\n[25] ××× ××× ✓✓✓ ✓✓✓\n[20], [21] ××× ✓✓✓∗ ✓✓✓ ✓✓✓\n[10], [16] ××× ✓✓✓ ✓✓✓ ✓✓✓\n[11] ××× ✓✓✓ ✓✓✓ ×××\n[3] ✓✓✓ ××× ✓✓✓ ✓✓✓\n[8] ✓✓✓ ✓✓✓ ××× ×××\n[7] ✓✓✓ ✓✓✓† ××× ✓✓✓\nOurs ✓✓✓ ✓✓✓ ✓✓✓ ✓✓✓\n∗Affected by the equilibrium point issue that we address in this paper.",
+      "size": 432,
+      "sentences": 3
+    },
+    {
+      "id": 23,
+      "content": "×× ✓✓✓\nOurs ✓✓✓ ✓✓✓ ✓✓✓ ✓✓✓\n∗Affected by the equilibrium point issue that we address in this paper. †Unlike the other approaches, the equilibrium point is not user-defined. ===  3 ===\nb) NODEs on Riemannian Manifolds: Neural Manifold ODEs (NMODEs) [26] provide an expressive frame-\nwork for learning dynamical systems while respecting manifold geometry. While [26] employs dynamic coordinate\ncharts to solve NMODEs, [3] projects the manifold data into a single tangent space.",
+      "size": 475,
+      "sentences": 4
+    },
+    {
+      "id": 24,
+      "content": "amic coordinate\ncharts to solve NMODEs, [3] projects the manifold data into a single tangent space. Both [26] and [3] lack stability\nguarantees. c) Stable Dynamical Systems on Riemannian Manifolds: Learning stable dynamical systems on Riemannian\nmanifolds combines differential geometry, control theory, and machine learning challenges.",
+      "size": 336,
+      "sentences": 3
+    },
+    {
+      "id": 25,
+      "content": "emannian\nmanifolds combines differential geometry, control theory, and machine learning challenges. Recent approaches [7],\n[8] focus on learning diffeomorphic mappings to transform stable canonical dynamics into complex behaviours\nusing NMODEs and Gaussian mixture models (GMMs). RSDS [7] uses NMODEs to construct diffeomorphisms for Riemannian stable dynamical systems, providing\ntheoretical stability guarantees through pullback operations.",
+      "size": 442,
+      "sentences": 3
+    },
+    {
+      "id": 26,
+      "content": "n stable dynamical systems, providing\ntheoretical stability guarantees through pullback operations. However, this method is costly, as it solves an NMODE\nat each time step, hindering real-time applications. Additionally, a fundamental issue in [7] is that the equilibrium\nof the learned diffeomorphism is assumed to automatically correspond to the desired equilibrium point, without\nenforcing this constraint during training.",
+      "size": 425,
+      "sentences": 3
+    },
+    {
+      "id": 27,
+      "content": "lly correspond to the desired equilibrium point, without\nenforcing this constraint during training. While [7] ensures convergence to some equilibrium point, users have no\ncontrol over the location of this equilibrium point. In contrast, SDS-RM [8] employs GMMs to effectively learn diffeomorphisms. Compared to RSDS, SDS-RM\nensures computational efficiency while guaranteeing convergence to a user-defined equilibrium point.",
+      "size": 424,
+      "sentences": 4
+    },
+    {
+      "id": 28,
+      "content": "nsures computational efficiency while guaranteeing convergence to a user-defined equilibrium point. Nevertheless,\nGMMs struggle with scalability in high-dimensional manifolds [27] and oftentimes fail to capture the complex\nnonlinear dynamics that neural networks handle well. Alternative approaches [28], [29] explore contraction theory on manifolds [28] and Riemannian motion poli-\ncies [29], but focus on tracking a reference trajectory rather than learning stable dynamics from demonstrations.",
+      "size": 496,
+      "sentences": 3
+    },
+    {
+      "id": 29,
+      "content": "focus on tracking a reference trajectory rather than learning stable dynamics from demonstrations. d) Positioning Our Approach: Our work addresses key limitations in current methods by merging the expres-\nsiveness of NODEs with stability guarantees on Riemannian manifolds. Unlike diffeomorphism-based methods [7],\n[8], we learn stable vector fields on manifolds directly, avoiding expensive inverse mappings.",
+      "size": 409,
+      "sentences": 3
+    },
+    {
+      "id": 30,
+      "content": "[7],\n[8], we learn stable vector fields on manifolds directly, avoiding expensive inverse mappings. Our approach retains\nthe computational benefits of NODEs while offering the geometric awareness crucial for robotic applications\ninvolving orientation, impedance, or other manifold-valued quantities. III. BACKGROUND\nThis section presents the mathematical foundations of Riemannian manifolds, Lyapunov stability, and numerical\nmethods for solving ODEs on Riemannian manifolds.",
+      "size": 475,
+      "sentences": 4
+    },
+    {
+      "id": 31,
+      "content": "nian manifolds, Lyapunov stability, and numerical\nmethods for solving ODEs on Riemannian manifolds. A. Riemannian Manifolds\nAnn-dimensionalmanifold MisatopologicalspacethatlocallyresemblesEuclideanspaceintheneighbourhood\nof each point x ∈ M. Each manifold is embedded in an Euclidean ambient space Rm ⊇ M, m ≥ n. Each manifold\nis defined by a collection of charts (φ : U → U′) with index set A, where each φ is a homomorphism\nx x x x∈A x\nbetween the open sets U ⊆ M and U′ ⊆ Rn.",
+      "size": 478,
+      "sentences": 2
+    },
+    {
+      "id": 32,
+      "content": "th index set A, where each φ is a homomorphism\nx x x x∈A x\nbetween the open sets U ⊆ M and U′ ⊆ Rn. A manifold is smooth if each transition map φ ◦φ−1 is smooth\nx x x y\nfor overlapping charts x,y ∈ A. Each point x ∈ M on a smooth manifold corresponds to an n-dimensional\ntangent space T M ⊆ Rm, which contains the velocities of curves passing through x. The tangent bundle TM =\nx\n(cid:83) T M is the disjoint union of all tangent spaces.",
+      "size": 437,
+      "sentences": 4
+    },
+    {
+      "id": 33,
+      "content": "sing through x. The tangent bundle TM =\nx\n(cid:83) T M is the disjoint union of all tangent spaces. The orthogonal projection projt : Rm → T M maps\nx∈M x x x\nvectors from the ambient space to the tangent space at x. A Riemannian manifold (M,g) is a smooth manifold equipped with a Riemannian metric g, which assigns to\neach tangent space T M a positive-definite inner product ⟨·,·⟩ : T M×T M → R that varies smoothly with x.\nx x x x\n(cid:112)\nThe induced norm is ∥u∥ = ⟨u,u⟩ .",
+      "size": 476,
+      "sentences": 4
+    },
+    {
+      "id": 34,
+      "content": "·,·⟩ : T M×T M → R that varies smoothly with x.\nx x x x\n(cid:112)\nThe induced norm is ∥u∥ = ⟨u,u⟩ . The Riemannian metric enables the definition of geometric concepts. In\nx x\nparticular, the length of a piecewise differentiable curve ξ : [a,b] → M is ℓ(ξ) = (cid:82)b ∥ξ˙(t)∥ dt, where ξ˙(t) =\na ξ(t)\ndξ(s) | is the velocity of ξ. The geodesic γ : [0,1] → M is the shortest curve with γ (0) = x, γ (1) = y,\nds s=t x,y x,y x,y\nand constant velocity ∥γ˙(t)∥ ,∀t ∈ [0,1].",
+      "size": 468,
+      "sentences": 4
+    },
+    {
+      "id": 35,
+      "content": "test curve with γ (0) = x, γ (1) = y,\nds s=t x,y x,y x,y\nand constant velocity ∥γ˙(t)∥ ,∀t ∈ [0,1]. The Riemannian distance between x,y ∈ M is d (x,y) = ℓ(γ ). γ(t) M x,y\nThe exponential map exp : T M → M is defined as exp (u) = γu(1), where γu is the unique geodesic\nx x x x x\nsatisfying γu(0) = x and γ˙u(0) = u.",
+      "size": 314,
+      "sentences": 3
+    },
+    {
+      "id": 36,
+      "content": "as exp (u) = γu(1), where γu is the unique geodesic\nx x x x x\nsatisfying γu(0) = x and γ˙u(0) = u. Its inverse, the logarithmic map log : M → T M, exists locally and\nx x x x\nsatisfies exp (log (y)) = y for y sufficiently close to x.\nx x\n===  4 ===\na) Differential Equations on Manifolds: A manifold ordinary differential equation (MODE) is specified by\na vector field f : M → TM such that f(x) ∈ T M for all x ∈ M. The solution of a MODE is the curve ξ :\nx\n[0,T] → M that satisfies the initial value problem\ndξ(t)\n= f(ξ(t)) ∈ T M, ξ(0) = x , ξ(t) ∈ M. (1)\ndt ξ(t) 0\nIf f is parameterised by a neural network, (1) is a neural manifold ordinary differential equation (NMODE).",
+      "size": 673,
+      "sentences": 2
+    },
+    {
+      "id": 37,
+      "content": "parameterised by a neural network, (1) is a neural manifold ordinary differential equation (NMODE). b) Lie Derivative: The Lie derivative of a smooth function F : M → R with respect to the vector field f :\nM → TM provides a directional derivative\nd\nL F(x) = F(ξ (t))| = ⟨∇MF(x),f(x)⟩\nf dt x t=0 x x\nwhere ξ is the solution of (1) with ξ (0) = x and ∇MF(x) ∈ T M is the Riemannian gradient of F at x. Below,\nx x x x\nwe provide an example of a Riemannian manifold: the unit quaternion manifold.",
+      "size": 492,
+      "sentences": 3
+    },
+    {
+      "id": 38,
+      "content": "at x. Below,\nx x x x\nwe provide an example of a Riemannian manifold: the unit quaternion manifold. We refer to [8] and [26] for further\nexamples of Riemannian manifolds. Example 1. The set of unit quaternions S3 = {x ∈ R4 | ∥x∥ = 1} equipped with the Euclidean inner\n2\nproduct⟨x,y⟩ = xTy formsathree-dimensionalRiemannianmanifoldembeddedinR4.Theexponentialmapexp :\nz x\nT S3 → S3 is given by exp (u) = cos(∥u∥)x+sin(∥u∥) u for u ̸= 0 and exp (0) = x.",
+      "size": 449,
+      "sentences": 5
+    },
+    {
+      "id": 39,
+      "content": "entialmapexp :\nz x\nT S3 → S3 is given by exp (u) = cos(∥u∥)x+sin(∥u∥) u for u ̸= 0 and exp (0) = x. The Lie derivative on S3\nx x ∥u∥ x\nis L F(x) = ∇S3F(x)Tf(x), where ∇S3F(x) = projt (∇R4F(x)) = ∇R4F(x)−x⟨∇R4F(x),x⟩ . f x x x x x x x\nB.",
+      "size": 236,
+      "sentences": 3
+    },
+    {
+      "id": 40,
+      "content": "L F(x) = ∇S3F(x)Tf(x), where ∇S3F(x) = projt (∇R4F(x)) = ∇R4F(x)−x⟨∇R4F(x),x⟩ . f x x x x x x x\nB. Stability\nIn this paper, we are primarily concerned with exponential stability on the Riemannian manifold M. Since\nsome manifolds, such as S3, do not permit global stability due to the Pointcare´-Hopf Theorem [30], we consider\nquasi-global stability, which allows additional unstable equilibrium points. Definition 1 (Quasi-Global Stability). Let f : M → TM be a vector field.",
+      "size": 475,
+      "sentences": 5
+    },
+    {
+      "id": 41,
+      "content": "stable equilibrium points. Definition 1 (Quasi-Global Stability). Let f : M → TM be a vector field. A point x is an equilibrium point\ne\nif f(x ) = 0. It is a stable equilibrium point if there exist α ≥ 0,β > 0 such that d (ξ(t),x ) ≤ βe−αtd (x ,x )\ne M e M 0 e\nfor every x ∈ M\\E, where ξ is the solution of (1) and E ⊂ M is a finite set. If α > 0, x is α-exponentially\n0 e\nstable. Theorem 1 (Lyapunov Function). Let f : M → TM with equilibrium point x .",
+      "size": 453,
+      "sentences": 8
+    },
+    {
+      "id": 42,
+      "content": "-exponentially\n0 e\nstable. Theorem 1 (Lyapunov Function). Let f : M → TM with equilibrium point x . Let V : M → R be a\ne ≥0\ncontinuously differentiable function with V(x ) = 0 and V(x) > 0 for x ∈ M\\E, where E ⊂ M is finite. If\ne\nthere exist α ≥ 0,c ,c ,p > 0, such that L V(x) ≤ −αV(x) and c d (x,x )p ≤ V(x) ≤ c d (x,x )p for\n1 2 f 1 M e 2 M e\nall x ∈ M, x is a stable equilibrium point. If α > 0, x is α-exponentially stable. e e\nWe refer to [31] for a proof of Theorem 1.",
+      "size": 475,
+      "sentences": 7
+    },
+    {
+      "id": 43,
+      "content": "ibrium point. If α > 0, x is α-exponentially stable. e e\nWe refer to [31] for a proof of Theorem 1. C. Numerical Solutions of MODEs\nFor training NMODEs, we require a method for numerically solving MODEs. A baseline approach for solving\nthe MODE (1) is the tangent space method (TS) [3].",
+      "size": 286,
+      "sentences": 5
+    },
+    {
+      "id": 44,
+      "content": "y solving MODEs. A baseline approach for solving\nthe MODE (1) is the tangent space method (TS) [3]. TS constructs an approximate numerical solution ξ˜ of (1)\n0:N\nby computing a numerical solution\nζ˜\nof the ODE\n0:N\ndζ(t)\n= (projt ◦f ◦exp )(ζ(t)), ζ(0) = log (x ),\ndt x r x r x r 0\nwhich evolves in the tangent space of a reference point x ∈ M. The numerical solution ζ˜ is computed using a\nr\nstandard technique for solving ODEs, such as the Euler method, or a Runge-Kutta method.",
+      "size": 478,
+      "sentences": 3
+    },
+    {
+      "id": 45,
+      "content": "d using a\nr\nstandard technique for solving ODEs, such as the Euler method, or a Runge-Kutta method. By projecting\nζ˜\nto the\nmanifold, we obtain the numerical solution of (1) as ξ˜ = exp (ζ˜) ∈ M for each i ∈ {0,...,N}. In our setting,\ni x i\nr\nthe equilibrium point x is a natural choice for the reference point x . e r\nBy evolving in only one tangent space, TS can introduce significant approximation error.",
+      "size": 407,
+      "sentences": 4
+    },
+    {
+      "id": 46,
+      "content": "nt x . e r\nBy evolving in only one tangent space, TS can introduce significant approximation error. The exp-step method\n(Exp) reduces this approximation error by switching the reference point frequently. The steps of the approximate\nsolution ξ˜ computed by Exp are ξ˜ = x and ξ˜ = exp (ζˆ′) for i ∈ {0,...,N −1}, where ζ˜′ is the endpoint\n0:N 0 0 i+1 ξ˜ i i\ni\nof a numerical solution of the ODE\ndζ (t)\ni\n= (projt ◦f ◦exp )(ζ (t)), ζ (0) = 0,\ndt\nξ˜\ni\nξ˜\ni\ni i\n===  5 ===\nFinetune under\n3.",
+      "size": 487,
+      "sentences": 4
+    },
+    {
+      "id": 47,
+      "content": "he ODE\ndζ (t)\ni\n= (projt ◦f ◦exp )(ζ (t)), ζ (0) = 0,\ndt\nξ˜\ni\nξ˜\ni\ni i\n===  5 ===\nFinetune under\n3. Pretrain Lyapunov\n2. Stability Projection\n1. Pretrain Base NMODE Function\nFig. 2: Our sNMODE Three-Stage Training Strategy. The NMODEs and the Lyapunov function are trained\non the human demonstrations . over the the time interval t ∈ [(i−1)T/N,iT/N]. Finally,thedynamic-chartmethod(DC)[26]leverageschartsinsteadoftangentspacestotransferEuclideanODE\nsolutions to the manifold.",
+      "size": 475,
+      "sentences": 8
+    },
+    {
+      "id": 48,
+      "content": "ethod(DC)[26]leverageschartsinsteadoftangentspacestotransferEuclideanODE\nsolutions to the manifold. Let φ : U → V be a chart of M with x ∈ U . DC solves an ODE in V until the\n0 0 0 0 0 0\nsolutionapproachestheboundaryofV .Oncethisisthecase,themethodswitchestoanadjacentchartφ : U → V\n0 1 1 1\nand solves another ODE, switching the chart again when the solution of the ODE approaches the boundary of V .",
+      "size": 400,
+      "sentences": 3
+    },
+    {
+      "id": 49,
+      "content": "another ODE, switching the chart again when the solution of the ODE approaches the boundary of V . 1\nThe ODE that is solved for the chart φ : U → V is\ni i i\ndζ (t)\ni = (DM φ ◦f ◦φ−1)(ζ (t)), ζ (t) ∈ V ,\ndt φ− i 1(ζ i (t)) i i i i i\nwhere DMφ : T M → Rn is the pushforward of φ with respect to x and the initial point ζ (0) is the end point\nx i x i i\nof the trajectory in the previous chart φ , respectively, x for i = 0.",
+      "size": 420,
+      "sentences": 2
+    },
+    {
+      "id": 50,
+      "content": ") is the end point\nx i x i i\nof the trajectory in the previous chart φ , respectively, x for i = 0. The steps of the overall numerical solution\ni−1 0\nare ξ˜ = x and ξ˜ = φ−1(ζ˜′′) for i ∈ {1,...,N} where ζ˜′′ is the endpoint of the trajectory in the chart φ . We\n0 0 i i i i i−1\nrefer to [26] for more details on DC. IV.",
+      "size": 320,
+      "sentences": 4
+    },
+    {
+      "id": 51,
+      "content": "int of the trajectory in the chart φ . We\n0 0 i i i i i−1\nrefer to [26] for more details on DC. IV. STABLE NEURAL MANIFOLD ODES\nIn this section, we introduce sNMODE, a novel expressive framework for learning quasi-globally exponentially\nstable neural ODEs defined on Riemannian manifolds.",
+      "size": 288,
+      "sentences": 4
+    },
+    {
+      "id": 52,
+      "content": "ework for learning quasi-globally exponentially\nstable neural ODEs defined on Riemannian manifolds. Our approach leverages the Lyapunov stability principles\nand generalises the successful stability projection proposed in [22] from Euclidean space to arbitrary Riemannian\nmanifolds.However,wefindthat[22]hasacriticalissuethatinvalidatesthetheoreticalstabilityguaranteesandleads\nto numerical instability in practice. We address this issue in our NMODE architecture, introduced in Section IV-A.",
+      "size": 491,
+      "sentences": 3
+    },
+    {
+      "id": 53,
+      "content": "stability in practice. We address this issue in our NMODE architecture, introduced in Section IV-A. Section IV-B contains our stability proof and Section IV-C discusses the implications of the stability issue in [22]\nin detail. Before progressing to our experiments, we introduce our efficient training strategy in Section IV-D, also\nvisualised in Fig. 2. A. NMODE Architecture\nLet x be the desired equilibrium point of the sNMODE to train.",
+      "size": 440,
+      "sentences": 6
+    },
+    {
+      "id": 54,
+      "content": "sed in Fig. 2. A. NMODE Architecture\nLet x be the desired equilibrium point of the sNMODE to train. Our approach is based on a neural base vector\ne\nfield g : M → TM and a positive definite neural Lyapunov function V : Rm → R. For obtaining a well-defined\nNMODE, we also require that ∇MV(x) ̸= 0 for every x ∈ M\\{x }. This is ensured by combining a convex\nx e\nneural network [32] with an invertible feature transformation [22].",
+      "size": 426,
+      "sentences": 5
+    },
+    {
+      "id": 55,
+      "content": "sured by combining a convex\nx e\nneural network [32] with an invertible feature transformation [22]. a) Base Vector Field: We first describe the architecture of our base vector field. Let h : Rm → Rm be any\nsmooth neural network. Our base vector field g : M → TM is\ng(x) = projt (h(x)−h(x )).",
+      "size": 291,
+      "sentences": 4
+    },
+    {
+      "id": 56,
+      "content": "m → Rm be any\nsmooth neural network. Our base vector field g : M → TM is\ng(x) = projt (h(x)−h(x )). (2)\nx e\nThis definition ensures g(x) ∈ T M and g(x ) = 0, so that x is an equilibrium point of g. When not enforc-\nx e e\ningg(x ) = 0,g maylearnanincorrectequilibriumpointormaynotevenpossessanequilibriumpoint.Thestability\ne\nissue in [22] is failing to enforce g(x ) = 0.",
+      "size": 370,
+      "sentences": 3
+    },
+    {
+      "id": 57,
+      "content": "ormaynotevenpossessanequilibriumpoint.Thestability\ne\nissue in [22] is failing to enforce g(x ) = 0. The implications of this are discussed in detail in Section IV-C.\ne\n[  ]\n\n===  6 ===\nb) Lyapunov Function: We define the candidate Lyapunov function V : M → R , similarly to [22], as\n≥0\nV(x) = σ(C(F(x))−C(F(x )))+εd (x,x )2, (3)\ne M e\nwhere F : Rm → Rm′ is a smooth invertible Lipschitz neural network [33], [34], C : Rm′ → R is a smooth convex\nneural network, ε > 0, and σ is the smoothed ReLU function [22].",
+      "size": 509,
+      "sentences": 2
+    },
+    {
+      "id": 58,
+      "content": "4], C : Rm′ → R is a smooth convex\nneural network, ε > 0, and σ is the smoothed ReLU function [22]. Eq. (3) ensures V(x ) = 0 and V(x) > 0\ne\nfor x ∈ Rm \\ {x }, while the invertibility of F and the convexity of C ensure that ∇MV(x) ̸= 0 for x ∈\ne x\nRm \\{x } [22]. Concretely, we use F(x) = [H(x),x]T, where H : Rm → Rk′ is a smooth neural network and\ne\ninvertibility is ensured by carrying over the input x to the output.",
+      "size": 420,
+      "sentences": 4
+    },
+    {
+      "id": 59,
+      "content": "a smooth neural network and\ne\ninvertibility is ensured by carrying over the input x to the output. Following [22], we use an input convex neural\nnetwork (ICNN) [32] for C.\nc) Stable Vector Field: Given the base vector field g, the Lyapunov function V, and the desired exponential\nstability rate α ≥ 0, we can now define the vector field f : M → TM of our sNMODE as\nReLU(L V(x)+αV(x))\nf(x) = g(x)−∇MV(x) g , (4)\nx ∥∇MV(x)∥ 2\nx x\nwhere we use the convention 0 · x = 0 when ∇MV(x) = 0.",
+      "size": 482,
+      "sentences": 2
+    },
+    {
+      "id": 60,
+      "content": "f(x) = g(x)−∇MV(x) g , (4)\nx ∥∇MV(x)∥ 2\nx x\nwhere we use the convention 0 · x = 0 when ∇MV(x) = 0. For isolated points, ∇MV(x) can be undefined\n0 x x\nsince∇Md (x,x )canbeundefinedonmanifoldsthatonlypermitquasi-globalstability,insteadofglobalstability. x M e\nIn this case, we let f(x) = 0. B. Stability Guarantee\nIn this section, we prove that the sNMODE (4) is stable. Theorem 2. Let x , f, and α be as in Section IV-A. The point x is a stable equilibrium point of (4).",
+      "size": 469,
+      "sentences": 8
+    },
+    {
+      "id": 61,
+      "content": "heorem 2. Let x , f, and α be as in Section IV-A. The point x is a stable equilibrium point of (4). If α > 0, x\ne e e\nis α-exponentially stable. Proof. Let x , f, g, V, and α be as in Section IV-A. Since V(x ) = 0 and g(x ) = projt (0) = 0, x is\ne e e x e\ne\nan equilibrium point of f. We now show that V satisfies Theorem 1. Theorem 2 then follow from Theorem 1\nimmediately.",
+      "size": 374,
+      "sentences": 8
+    },
+    {
+      "id": 62,
+      "content": "int of f. We now show that V satisfies Theorem 1. Theorem 2 then follow from Theorem 1\nimmediately. First, we have V(x ) = σ(C(F(x )) − C(F(x )) + εd (x ,x )2 = σ(0) + εd (x ,x )2 = 0.\ne e e M e e M e e\nSecond, V(x) > εd (x,x )2 > 0 for x ∈ M\\({x }∪E), where E are the finitely many points there ∇MV(x)\nM e e x\nis undefined. This also shows that V(x) ≥ c d (x,x )2 for c = ε > 0. The upper bound V(x) ≤ c d (x,x )2\n1 M e 1 2 M e\nfollows from F, σ,and C being Lipschitz [22].",
+      "size": 474,
+      "sentences": 5
+    },
+    {
+      "id": 63,
+      "content": "> 0. The upper bound V(x) ≤ c d (x,x )2\n1 M e 1 2 M e\nfollows from F, σ,and C being Lipschitz [22]. It remains to show that L V(x) ≤ −αV(x)\nf\nL V(x)\nf\n= ⟨∇MV(x),f(x)⟩\nx x\nReLU(L V(x)+αV(x))\n−⟨∇MV(x),∇MV(x)⟩ g\nx x x ∥∇MV(x)∥ 2\nx x\n= L V(x)−ReLU(L V(x)+αV(x)) ≤ −αV(x). g g\nThe last equation is established by differentiating two cases based on whether ReLU(L V(x)+αV(x)) is positive\ng\nor non-positive. This establishes Theorem 2.",
+      "size": 428,
+      "sentences": 5
+    },
+    {
+      "id": 64,
+      "content": "ases based on whether ReLU(L V(x)+αV(x)) is positive\ng\nor non-positive. This establishes Theorem 2. C. Stability Issue in [22]\nThe issue in [22] is that [22] does not ensure the desired equilibrium point x is actually an equilibrium point of\ne\nthe NODE f. This issue has carried over to later works [20], [21], which build upon [22]. What may appear as a\nminor technical detail has, in fact, significant theoretical and practical implications that we discuss in this section.",
+      "size": 475,
+      "sentences": 4
+    },
+    {
+      "id": 65,
+      "content": "l has, in fact, significant theoretical and practical implications that we discuss in this section. The framework of [22] is a special case of our framework when the Riemannian manifold is Euclidean space,\nexcept for one difference: In [22], g from (2) is unconstrained, such that we may have g(x ) ̸= 0. In consequence,\ne\nthe stabilised vector field f may also have f(x ) ̸= 0 in [22]. Since f(x ) = 0 is a prerequisite for stability, strictly\ne e\nspeaking, [22] does not offer stability guarantees.",
+      "size": 500,
+      "sentences": 4
+    },
+    {
+      "id": 66,
+      "content": "0 is a prerequisite for stability, strictly\ne e\nspeaking, [22] does not offer stability guarantees. Effectively, [22] enforces convergence to point where f(x ) can\ne\nbe non-zero. This leads to numerical issues in practice, since f is discontinuous if f(x ) ̸= 0. A numerical solver\ne\nencountering a point x that is equal to x up to machine precision, observes a rapid jump in the vector field f(x),\ne\nwhich drives away the numerical solution from the intended equilibrium point x .",
+      "size": 481,
+      "sentences": 4
+    },
+    {
+      "id": 67,
+      "content": "ctor field f(x),\ne\nwhich drives away the numerical solution from the intended equilibrium point x . This is visualised in Fig. 3.\ne\n===  7 ===\n(a) Numerical issues in [22]. (b) With Our Correction. Fig.3:Numericalsolutionsofavectorfieldstabilisedusing(a)[22]and(b)ourapproach.Inthisfigure,f(x ) ̸=\ne\n0 when using [22] as described in Section IV-C. This leads to numerical instability in [22], which is addressed by\nour correction. In this figure, M = R2 and V(x) = d (x,x ).",
+      "size": 474,
+      "sentences": 7
+    },
+    {
+      "id": 68,
+      "content": "tability in [22], which is addressed by\nour correction. In this figure, M = R2 and V(x) = d (x,x ). M e\nIn practice, not enforcing g(x ) = 0 leads to some training runs aborting due to numerical instability. If this\ne\ndoes not occur, the equilibrium point appears to be shifting during training. We observed this behaviour in our\npreliminary experiments, which led us to investigate the causes of this in [22].",
+      "size": 410,
+      "sentences": 5
+    },
+    {
+      "id": 69,
+      "content": "s behaviour in our\npreliminary experiments, which led us to investigate the causes of this in [22]. In a successful training run, the\nissues in [22] can be masked if the vector field learns to produce f(x ) ≈ 0.\ne\nD. Training Strategy\nWe present an efficient training strategy for fitting sNMODEs to a set of motion demonstrations. Training (4)\nusing gradient descent requires computing a costly second derivative of V, since it requires computing the gradient\nof ∇MV(x).",
+      "size": 471,
+      "sentences": 3
+    },
+    {
+      "id": 70,
+      "content": "ires computing a costly second derivative of V, since it requires computing the gradient\nof ∇MV(x). In practice, we found training (4) to require at least twice as much time as training (2), which does\nx\nnot require computing a second derivative.",
+      "size": 246,
+      "sentences": 2
+    },
+    {
+      "id": 71,
+      "content": "t least twice as much time as training (2), which does\nx\nnot require computing a second derivative. To train more efficiently, we split the training into three stages, where\nthe first stage has, in turn, two parts:\n1) fit the base vector field g to the demonstrations by\na) pretraining on estimated tangents and\nb) fit g using multiple shooting [35];\n2) train the Lyapunov function V to descend along the training trajectories and the solutions of g; and\n3) fine-tune the assembled stable vector field f on the demonstrations.",
+      "size": 526,
+      "sentences": 2
+    },
+    {
+      "id": 72,
+      "content": "and the solutions of g; and\n3) fine-tune the assembled stable vector field f on the demonstrations. While the first and second stages find a strong initialisation of g and V, the third stage smoothes out kinks\nintroduced by the stability projection. In the first stage, we first pretrain on estimated tangent vectors and then\nleverage multiple shooting [35] to further speed up training.",
+      "size": 387,
+      "sentences": 3
+    },
+    {
+      "id": 73,
+      "content": "on estimated tangent vectors and then\nleverage multiple shooting [35] to further speed up training. In the following, we define each loss function for a\nsingle human demonstration x ∈ MN of the motion we want to learn. In practice, we average each loss function\n0:N\nover a small batch of demonstrations.",
+      "size": 303,
+      "sentences": 3
+    },
+    {
+      "id": 74,
+      "content": "want to learn. In practice, we average each loss function\n0:N\nover a small batch of demonstrations. For the first stage, we estimate the tangent vectors as u = log (x ) for i ∈ {0,N − 1} and pretrain by\ni x i+1\ni\nminimising the mean squared error (MSE) between g(x ) and u\ni i\nN−1\n1 (cid:88)\nL = (g(x )−u )2.\ntangents i i\nN −1\ni=1\nNext, multiple shooting divides the demonstration x into K shorter fragments x (k) of length Nˆ ∈ {2,...,N}\n0:N 0:Nˆ\nwhere k ∈ {1,...,K} and trains on all fragments in parallel.",
+      "size": 508,
+      "sentences": 3
+    },
+    {
+      "id": 75,
+      "content": "(k) of length Nˆ ∈ {2,...,N}\n0:N 0:Nˆ\nwhere k ∈ {1,...,K} and trains on all fragments in parallel. Further, it adds a term to the loss function that\npenalises fragment solutions whose endpoint is not equal to the starting point of the next fragment.",
+      "size": 249,
+      "sentences": 2
+    },
+    {
+      "id": 76,
+      "content": "enalises fragment solutions whose endpoint is not equal to the starting point of the next fragment. We use a\nmanifold-aware MSE loss together with the multiple shooting penalty\nK Nˆ\nL = 1 (cid:88)(cid:88) d (ξ˜(k) ,x (k) )2\nMS KNˆ M i i\nk=1 i=0\nK−1\n+ λ MS (cid:88) d (ξ˜(k) ,ξ˜(k+1) ), (5)\nK −1 M Nˆ 0\nk=1\n===  8 ===\nOriginal [8] Improved (Ours)\nWShape GShape WShape GShape\nFig. 4: Unit Quaternion LASA Datasets.",
+      "size": 412,
+      "sentences": 3
+    },
+    {
+      "id": 77,
+      "content": "===\nOriginal [8] Improved (Ours)\nWShape GShape WShape GShape\nFig. 4: Unit Quaternion LASA Datasets. In our improved dataset, the LASA shapes are visibly distorted by the\nmanifold geometry, while the original dataset maintains the Euclidean geometry. The unit quaternions are displayed\nin an axis-angle representation. The stable NMODEs solutions follow the demonstrations from both datasets.",
+      "size": 391,
+      "sentences": 5
+    },
+    {
+      "id": 78,
+      "content": "xis-angle representation. The stable NMODEs solutions follow the demonstrations from both datasets. where ξ˜(k) is a numerical solution of the NMODE with vector field g for the fragment x (k) and λ ∈ R is a\n0:Nˆ 0:Nˆ MS ≥0\nhyperparameter. During training, we linearly increase the shot length Tˆ within a predefined interval. Training with\nlonger shots is more costly but necessary to learn high-level features of the trajectories.",
+      "size": 431,
+      "sentences": 5
+    },
+    {
+      "id": 79,
+      "content": "ng with\nlonger shots is more costly but necessary to learn high-level features of the trajectories. For the second stage, we train V to decay exponentially along the original training trajectories and the NMODE\nsolutions for g that were learned in stage one.",
+      "size": 258,
+      "sentences": 2
+    },
+    {
+      "id": 80,
+      "content": "ng the original training trajectories and the NMODE\nsolutions for g that were learned in stage one. Concretely, we train V to minimize the the loss function\nN\n1 (cid:88)\nL\nV\n= ReLU(V(xˆ\ni\n)−e−αtδ tV(x\n0\n)),\nN\ni=1\nwhere xˆ is either a human demonstration, or a solution for g. In practice, we again average L over a small\n0:N V\nbatch of both demonstrations and solutions of g.\nIn the third stage, we fine-tune the assembled sNMODE vector field f using the multiple shooting technique\nalso applied in stage one.",
+      "size": 509,
+      "sentences": 2
+    },
+    {
+      "id": 81,
+      "content": "he assembled sNMODE vector field f using the multiple shooting technique\nalso applied in stage one. The loss function is (5) with the only change that\nξ˜(k)\nare approximate solutions for f\n0:Nˆ\ninstead of g.\nV. EXPERIMENTS\nIn this section, we compare our sNMODE framework to the existing robotic motion learning frameworks\nRSDS [7] and SDS-RM [8] and demonstrate the practical applicability of our approach to real-world robot tasks.",
+      "size": 433,
+      "sentences": 2
+    },
+    {
+      "id": 82,
+      "content": "d SDS-RM [8] and demonstrate the practical applicability of our approach to real-world robot tasks. Additionally,wecomparedifferentNMODEsolversfromSectionIII-Candcompareourthree-stagetrainingstrategy\nto training (4) directly without a strong initialisation. Evaluation Details: Following previous work [8], [25], [36], we train on all trajectories and report training\nlosses.",
+      "size": 375,
+      "sentences": 3
+    },
+    {
+      "id": 83,
+      "content": ": Following previous work [8], [25], [36], we train on all trajectories and report training\nlosses. We use AdamW [37] for training, the Euler method for solving ODEs, and optimise learning rates, training\nduration, and shot lengths for multiple shooting by running 100 Optuna [38] trials for each NMODE. All\nhyperparameters are available online1 alongside our code. We implement our approach based on PyTorch [39]\nand torchdiffeq [40].",
+      "size": 435,
+      "sentences": 4
+    },
+    {
+      "id": 84,
+      "content": "e online1 alongside our code. We implement our approach based on PyTorch [39]\nand torchdiffeq [40]. Our experiments were run on an Ubuntu 24.04 compute server with an AMD Ryzen\nThreadripper 3960X CPU. A. Datasets\nWeusetheRoboTasks9dataset[21]andcreateimprovedversionsoftheunitquaternion(S3)and2×2symmetric\npositive-definite matrix (S2 ) Riemannian LASA datasets [8], where S2 is equipped with the affine-invariant\n++ ++\nmetric.",
+      "size": 427,
+      "sentences": 4
+    },
+    {
+      "id": 85,
+      "content": "ix (S2 ) Riemannian LASA datasets [8], where S2 is equipped with the affine-invariant\n++ ++\nmetric. RoboTasks9 contains demonstrations for nine robot tasks, such as opening a box or shelving a bottle. Each\ntask has nine demonstrations of 1000 samples of a robot’s end effector pose that lie on the R3×S3 manifold. Saveriano et al.",
+      "size": 330,
+      "sentences": 4
+    },
+    {
+      "id": 86,
+      "content": "ons of 1000 samples of a robot’s end effector pose that lie on the R3×S3 manifold. Saveriano et al. [8] construct Riemannian versions of the LASA datase [36] on S3 and S2 by embedding\n++\neach 2D LASA trajectory into a fixed tangent space at the goal and then projecting it onto the manifold using the\n1https://drive.google.com/file/d/1WZlMBKk4kJngwMAxgGIs09xvDWu2HSgU/\n[  ]\n\n===  9 ===\nTABLE II: Results for Our Improved Riemannian LASA Datasets.",
+      "size": 446,
+      "sentences": 3
+    },
+    {
+      "id": 87,
+      "content": "wMAxgGIs09xvDWu2HSgU/\n[  ]\n\n===  9 ===\nTABLE II: Results for Our Improved Riemannian LASA Datasets. This table reports the root mean squared\ndistance between the human demonstrations and the final learned solutions for different approaches. We compare\nthe tangent space (TS), exp-step (Exp), and dynamic chart (DC) methods for numerically solving NMODEs.",
+      "size": 354,
+      "sentences": 3
+    },
+    {
+      "id": 88,
+      "content": "tangent space (TS), exp-step (Exp), and dynamic chart (DC) methods for numerically solving NMODEs. S3 (Unit Quaternions) S2 (Symmetrix Positive-Definite 2×2 Matrices)\n++\nGShape NShape WShape BendedLine Multi4 CShape Sshape Zshape Leaf1 Multi3\nsNMODE (Ours)\n1. TS 0.11 0.19 0.06 0.41 0.15 0.0064 0.0056 0.0061 0.0047 0.0018\n2. Exp 0.11 0.18 0.10 0.33 0.11 0.0068 0.0049 0.0079 0.0037 0.0020\n3.",
+      "size": 392,
+      "sentences": 4
+    },
+    {
+      "id": 89,
+      "content": "4 0.0056 0.0061 0.0047 0.0018\n2. Exp 0.11 0.18 0.10 0.33 0.11 0.0068 0.0049 0.0079 0.0037 0.0020\n3. DC 0.20 0.19 0.10 0.27 0.15 0.0103 0.0079 0.0090 0.0077 0.0047\nSDS-RM[8] 1.32 1.37 1.39 1.39 0.93 0.0146 0.0071 0.0159 0.0091 0.0075\nexponential map.",
+      "size": 249,
+      "sentences": 3
+    },
+    {
+      "id": 90,
+      "content": ".0077 0.0047\nSDS-RM[8] 1.32 1.37 1.39 1.39 0.93 0.0146 0.0071 0.0159 0.0091 0.0075\nexponential map. This approach yields trajectories that (i) lie in a small neighbourhood of the goal — exhibiting\nminimal curvature — and (ii) these datasets provide an unrealistic advantage to approaches working in a single\ntangent space, since such approaches can directly reconstruct the Euclidean data. To address these shortcomings,\nwe propose an enhanced transfer procedure.",
+      "size": 463,
+      "sentences": 3
+    },
+    {
+      "id": 91,
+      "content": "truct the Euclidean data. To address these shortcomings,\nwe propose an enhanced transfer procedure. First, as in [8], we form four R3 trajectories for each of the 30 LASA\nshapes. We estimate velocities by v = x −x for i ∈ {0,...,N −1} and interpolate them linearly to obtain\ni i+1 i\na continuous velocity field v : [0,N] → R3. We then amplify v by a factor of 20 to ensure substantial manifold\ncoverage.",
+      "size": 403,
+      "sentences": 5
+    },
+    {
+      "id": 92,
+      "content": "field v : [0,N] → R3. We then amplify v by a factor of 20 to ensure substantial manifold\ncoverage. Finally, we integrate the scaled field dξ(t)/dt = −20v(t) on S3 and S2 starting from a fixed goal point,\n++\nusing the dynamic-chart method with a fourth-order Runge–Kutta solver, to generate Riemannian trajectories with\nsignificant curvature. The resulting datasets consist of four demonstrations of 1000 samples for each LASA shape,\nall terminating at a common target.",
+      "size": 468,
+      "sentences": 4
+    },
+    {
+      "id": 93,
+      "content": "ist of four demonstrations of 1000 samples for each LASA shape,\nall terminating at a common target. Example trajectories from our S3 dataset are shown in Figure 4. B. Numerical NMODE Solvers\nWe compare the three numerical NMODE solvers from Section III-C on our Riemannian LASA datasets when\nusing our three-stage training strategy. For this comparison, we select five LASA shapes each from S3 LASA\nand S2 LASA that we found to be challenging to fit in a preliminary evaluation.",
+      "size": 478,
+      "sentences": 5
+    },
+    {
+      "id": 94,
+      "content": "s each from S3 LASA\nand S2 LASA that we found to be challenging to fit in a preliminary evaluation. Perhaps surprisingly, using the\n++\ndynamic chart method (DC) does not outperform the tangent space (TS) and exp-step (Exp) approaches, although\nDC is considerably more accurate than TS and Exp [26]. Table II summarises the results of this experiment.",
+      "size": 350,
+      "sentences": 3
+    },
+    {
+      "id": 95,
+      "content": "onsiderably more accurate than TS and Exp [26]. Table II summarises the results of this experiment. Our results show that the sNMODEs learn to mitigate the\ninaccuracy of TS and Exp, so that TS and Exp match the performance of DC and even outperform it in many\ncases. This is possible, since TS and Exp use fewer highly non-linear manifold operations than DC, which makes\nit easier to train NMODEs solved using TS and Exp. At the same time, TS and Exp allow for faster training.",
+      "size": 477,
+      "sentences": 5
+    },
+    {
+      "id": 96,
+      "content": "er to train NMODEs solved using TS and Exp. At the same time, TS and Exp allow for faster training. In\nour remaining experiments, we use Exp on S3 and R3×S3 and TS on S2 . Figure 4 visualises a selection of our\n++\nresults on S3 LASA. C. Training Strategies\nWe compare our three-stage training strategy from Section IV-D to training (4) directly from a random parameter\ninitialisation (direct training). The comparison is based on the five shapes from our S3 LASA dataset also used in\nSection V-B.",
+      "size": 496,
+      "sentences": 6
+    },
+    {
+      "id": 97,
+      "content": "ing). The comparison is based on the five shapes from our S3 LASA dataset also used in\nSection V-B. We use the Exp-Step method in this experiment. WefirstcomparethetimerequirementsoftrainingthebaseNMODE(2)totrainingthesNMODE(4).Across100\nrepetitions, computing gradients of an NMODE solution with 100 time steps has a median runtime of 0.18s for\n(2) compared to 0.85s for (4)2. This difference allows our three-stage training strategy to significantly outpace\ndirect training.",
+      "size": 476,
+      "sentences": 5
+    },
+    {
+      "id": 98,
+      "content": "This difference allows our three-stage training strategy to significantly outpace\ndirect training. Concretely, our three-stage strategy achives a 1.99-fold speedup (IQR: 1.54–2.47) with a median\nruntime of 135s (IQR: 131s–182s) compared to 364s (IQR: 207s–502s) for direct training with indepently tuned\nhyperparameters.",
+      "size": 320,
+      "sentences": 2
+    },
+    {
+      "id": 99,
+      "content": "–182s) compared to 364s (IQR: 207s–502s) for direct training with indepently tuned\nhyperparameters. At the same time, both strategies achieve comparable loss values: the median loss of three-stage\ntraining is 0.11 (IQR: 0.11–0.18), while direct training achieves 0.14 (IQR: 0.10–0.15). 2The inter-quartile ranges (IQR) are within 0.004s of the median.",
+      "size": 351,
+      "sentences": 3
+    },
+    {
+      "id": 100,
+      "content": "g achieves 0.14 (IQR: 0.10–0.15). 2The inter-quartile ranges (IQR) are within 0.004s of the median. ===  10 ===\n× × × × × × × ×\nOpenBox ShelveBottle StackPlate Pouring FoldMat Navigate PanonStove Scooping GlassUpright\n#Tasks 2 3 4 5 6 7 8 9\nLoss 0.05 0.12 0.19 0.21 0.31 0.29 0.26 0.26\nTrain Time 1429s 1636s 1840s 1998s 2213s 2416s 2612s 2794s\nDimension 12 18 24 30 36 42 48 54\nFig. 5: Multi-Manipulator Results.",
+      "size": 413,
+      "sentences": 4
+    },
+    {
+      "id": 101,
+      "content": "1998s 2213s 2416s 2612s 2794s\nDimension 12 18 24 30 36 42 48 54\nFig. 5: Multi-Manipulator Results. We train stable NMODEs to jointly perform 2–9 tasks controlling multiple\nmanipulators simultaneously. “Train Time” is the duration of training, “Loss” is the root mean squared distance\nbetween the demonstrations and the learned solutions, and “Dimension” is the dimension of the manifold.",
+      "size": 387,
+      "sentences": 4
+    },
+    {
+      "id": 102,
+      "content": "een the demonstrations and the learned solutions, and “Dimension” is the dimension of the manifold. While\nthe loss is independent of problem size, the runtime of our approach scales linearly with the problem size. The\ntask illustrations are taken from [25]. D. Comparison with RSDS [7]\nWe perform a runtime comparison with RSDS [7], demonstrating the computational efficiency of our approach.",
+      "size": 392,
+      "sentences": 4
+    },
+    {
+      "id": 103,
+      "content": "orm a runtime comparison with RSDS [7], demonstrating the computational efficiency of our approach. Specifically, we compare the runtime of computing a tangent vector of the R3 × S3 manifold using RSDS\nand sNMODE. Since no code is available for RSDS, we recreated its model architecture.",
+      "size": 287,
+      "sentences": 3
+    },
+    {
+      "id": 104,
+      "content": "ld using RSDS\nand sNMODE. Since no code is available for RSDS, we recreated its model architecture. Over 100 repetitions,\nour approach computes tangent vectors in a median runtime of 0.002s versus 0.053s and gradients in 0.005s\nversus 0.161s, being one order of magnitude faster than RSDS during deployment and two orders of magnitude\nfaster during training3. Since the training process is discussed only sparsely in [7], we were unable to perform a\nmore detailed comparison with RSDS.",
+      "size": 485,
+      "sentences": 4
+    },
+    {
+      "id": 105,
+      "content": "is discussed only sparsely in [7], we were unable to perform a\nmore detailed comparison with RSDS. E. Comparison with SDS-RM [8]\nWe compare our approach to SDS-RM [8] on our improved Riemannian LASA datasets. Table II compares the\nperformance of our sNMODEs to the Gaussian mixture models (GMMs) learned by SDS-RM. For SDS-RM, we\nmanuallytunethenumberofGMMcomponentsandreportthebestresultfromfiverandomrestartsforeachdataset. Across the board, our sNMODEs outperform the GMMs learned by SDS-RM.",
+      "size": 494,
+      "sentences": 5
+    },
+    {
+      "id": 106,
+      "content": "erandomrestartsforeachdataset. Across the board, our sNMODEs outperform the GMMs learned by SDS-RM. This demonstrates that our approach\nis more suitable for learning complex shapes that span Riemannian manifolds than SDS-RM. Additionally, GMMs\nare known to scale poorly to high-dimensional manifolds [27], while sNMODE scales linearly in the manifold\ndimension, as demonstrated in the next section.",
+      "size": 398,
+      "sentences": 4
+    },
+    {
+      "id": 107,
+      "content": "[27], while sNMODE scales linearly in the manifold\ndimension, as demonstrated in the next section. F. Jointly Learning Stable Motions of Several Manipulators\nIn this section, we study learning a joint motion of several manipulators based on the RoboTasks9 dataset. This\ndemonstrates that our approach is suitable for highly complex tasks that require up to nine manipulators and shows\nthat the training time of our approach scales linearly in the manifold dimension.",
+      "size": 466,
+      "sentences": 3
+    },
+    {
+      "id": 108,
+      "content": "ulators and shows\nthat the training time of our approach scales linearly in the manifold dimension. To obtain a dataset of multi-\nmanipulator demonstrations, we combine tasks from the RoboTasks9 dataset [21] in a fixed order. Figure 5 presents\nour results on this dataset, demonstrating that our approach can effectively learn up to nine tasks while the training\ntime scales linearly in the manifold dimension.",
+      "size": 410,
+      "sentences": 3
+    },
+    {
+      "id": 109,
+      "content": "fectively learn up to nine tasks while the training\ntime scales linearly in the manifold dimension. G. Real-World Robot Experiment\nFinally, we demonstrate the real-world applicability of our approach by learning a practical, real-world motion\nanddeployingourlearnedsNMODEonaFrankaEmikaPandarobot.Manyfuturerobotapplicationsinhouseholds,\nshops, or libraries require placing objects on shelves. We choose the library task of placing a lying book upright\non a shelf, as illustrated in Fig.",
+      "size": 486,
+      "sentences": 3
+    },
+    {
+      "id": 110,
+      "content": "lves. We choose the library task of placing a lying book upright\non a shelf, as illustrated in Fig. 6, for this experiment. This task requires manipulating both the position and the\norientation of the book, meaning that our demonstrations evolve on R3×S3. We collect 20 human demonstrations\n3All runtime measurements have an IQR within 0.0005s of the median. ===  11 ===\nStart\nPose\nGoal\nPose\nFig. 6: Book Shelving Task.",
+      "size": 419,
+      "sentences": 7
+    },
+    {
+      "id": 111,
+      "content": "e an IQR within 0.0005s of the median. ===  11 ===\nStart\nPose\nGoal\nPose\nFig. 6: Book Shelving Task. Top Row: A librarian teaches the robot how to place a lying book upright on a shelf. Bottom Row: The robot autonomously performs the book shelving motion using sNMODE, successfully executing\nthe task from starting poses not contained in the demonstrations. and learn a sNMODE to follow these demonstrations.",
+      "size": 407,
+      "sentences": 6
+    },
+    {
+      "id": 112,
+      "content": "rting poses not contained in the demonstrations. and learn a sNMODE to follow these demonstrations. Figure 6 shows that the robot is able to perform the motion\ncorrectly, also from starting points that were not contained in the human demonstrations. A video of this robot\nexperiment is available in the supplementary material. VI. CONCLUSION\nWe propose sNMODE, a general and expressive framework based on neural manifold ODEs (NMODEs) for\nteaching robots complex motions from demonstrations.",
+      "size": 491,
+      "sentences": 6
+    },
+    {
+      "id": 113,
+      "content": "ork based on neural manifold ODEs (NMODEs) for\nteaching robots complex motions from demonstrations. By leveraging NMODEs, we enable robots to track data\nmodalitiesthatevolveonRiemannianmanifolds,suchasorientation.OurtheoreticalanalysisprovesthatsNMODEs\nare stable, thereby guaranteeing predictable, safe, and robust robot motions. We provide an efficient training\nstrategy for applying sNMODE in practice.",
+      "size": 405,
+      "sentences": 3
+    },
+    {
+      "id": 114,
+      "content": "nd robust robot motions. We provide an efficient training\nstrategy for applying sNMODE in practice. Our experimental results establish that sNMODE outperforms existing\nframeworks for learning stable dynamical systems on manifolds and demonstrate the practical applicability of our\napproach. REFERENCES\n[1] S. Schaal, “Is imitation learning the route to humanoid robots?” Trends Cogn. Sci., vol. 3, no. 6, pp. 233–242, 1999.",
+      "size": 423,
+      "sentences": 8
+    },
+    {
+      "id": 115,
+      "content": "tation learning the route to humanoid robots?” Trends Cogn. Sci., vol. 3, no. 6, pp. 233–242, 1999. [2] H. Ravichandar, A. S. Polydoros, S. Chernova, and A. Billard, “Recent advances in robot learning from demonstration,” Annu. Rev. Control Robot. Auton. Syst., vol. 3, no. 1, pp. 297–330, 2020. [3] W. Wang, M. Saveriano, and F. J. Abu-Dakka, “Learning deep robotic skills on riemannian manifolds,” IEEE Access, vol. 10, pp. 114143–114152, 2022.",
+      "size": 446,
+      "sentences": 16
+    },
+    {
+      "id": 116,
+      "content": "arning deep robotic skills on riemannian manifolds,” IEEE Access, vol. 10, pp. 114143–114152, 2022. [4] A.Ude,B.Nemec,T.Petric´,andJ.Morimoto,“OrientationinCartesianspacedynamicmovementprimitives,”inICRA. IEEE,2014,\npp. 2997–3004. [5] M. J. A. Zeestraten, “Programming by demonstration on Riemannian manifolds,” Ph.D. dissertation, University of Genoa, Italy, 2018.",
+      "size": 365,
+      "sentences": 8
+    },
+    {
+      "id": 117,
+      "content": "ng by demonstration on Riemannian manifolds,” Ph.D. dissertation, University of Genoa, Italy, 2018. [6] L.KoutrasandZ.Doulgeri,“AcorrectformulationfortheorientationdynamicmovementprimitivesforrobotcontrolintheCartesian\nspace,” in CoRL, vol. 100. PMLR, 2019, pp. 293–302. [7] J. Zhang, H. Beik-Mohammadi, and L. Rozo, “Learning riemannian stable dynamical systems via diffeomorphisms,” in CoRL, vol. 205. PMLR, 2022, pp. 1211–1221.",
+      "size": 430,
+      "sentences": 9
+    },
+    {
+      "id": 118,
+      "content": "annian stable dynamical systems via diffeomorphisms,” in CoRL, vol. 205. PMLR, 2022, pp. 1211–1221. [8] M. Saveriano, F. J. Abu-Dakka, and V. Kyrki, “Learning stable robotic skills on riemannian manifolds,” Robotics Auton. Syst., vol. 169, p. 104510, 2023. [9] A. J. Ijspeert, J. Nakanishi, H. Hoffmann, P. Pastor, and S. Schaal, “Dynamical movement primitives: Learning attractor models for\nmotor behaviors,” Neural Comput., vol. 25, no. 2, pp. 328–373, 2013.",
+      "size": 460,
+      "sentences": 11
+    },
+    {
+      "id": 119,
+      "content": "Learning attractor models for\nmotor behaviors,” Neural Comput., vol. 25, no. 2, pp. 328–373, 2013. ===  12 ===\n[10] A. Lemme, K. Neumann, R. Reinhart, and J. Steil, “Neural learning of vector fields for encoding stable dynamical systems,”\nNeurocomputing, vol. 141, pp. 3–14, 2014. [11] S. M. Khansari-Zadeh and A. Billard, “Learning stable nonlinear dynamical systems with gaussian mixture models,” IEEE Trans. Robotics, vol. 27, no. 5, pp. 943–957, 2011.",
+      "size": 455,
+      "sentences": 12
+    },
+    {
+      "id": 120,
+      "content": "cal systems with gaussian mixture models,” IEEE Trans. Robotics, vol. 27, no. 5, pp. 943–957, 2011. [12] K. Neumann and J. J. Steil, “Learning robot motions with stable dynamical systems under diffeomorphic transformations,” Robot. Auton. Syst., vol. 70, pp. 1–15, 2015. [13] N.PerrinandP.Schlehuber-Caissier,“Fastdiffeomorphicmatchingtolearngloballyasymptoticallystablenonlineardynamicalsystems,”\nSyst. Control Lett., vol. 96, pp. 51–59, 2016.",
+      "size": 444,
+      "sentences": 14
+    },
+    {
+      "id": 121,
+      "content": "ballyasymptoticallystablenonlineardynamicalsystems,”\nSyst. Control Lett., vol. 96, pp. 51–59, 2016. [14] C. Blocher, M. Saveriano, and D. Lee, “Learning stable dynamical systems using contraction theory,” in URAI. IEEE, 2017, pp. 124–129. [15] J.Duan,Y.Ou,J.Hu,Z.Wang,S.Jin,andC.Xu,“Fastandstablelearningofdynamicalsystemsbasedonextremelearningmachine,”\nIEEE T. Syst. Man Cy-S, vol. 49, no. 6, pp. 1175–1185, 2019.",
+      "size": 414,
+      "sentences": 12
+    },
+    {
+      "id": 122,
+      "content": "systemsbasedonextremelearningmachine,”\nIEEE T. Syst. Man Cy-S, vol. 49, no. 6, pp. 1175–1185, 2019. [16] F.Nawaz,T.Li,N.Matni,andN.Figueroa,“LearningcomplexmotionplansusingneuralODEswithsafetyandstabilityguarantees,”\nin ICRA. IEEE, 2024, pp. 17216–17222. [17] T.Q.Chen,Y.Rubanova,J.Bettencourt,andD.Duvenaud,“Neuralordinarydifferentialequations,”inNeurIPS,2018,pp.6572–6583.",
+      "size": 374,
+      "sentences": 9
+    },
+    {
+      "id": 123,
+      "content": "nova,J.Bettencourt,andD.Duvenaud,“Neuralordinarydifferentialequations,”inNeurIPS,2018,pp.6572–6583. [18] S.Gruenbacher,R.M.Hasani,M.Lechner,J.Cyranka,S.A.Smolka,andR.Grosu,“OntheverificationofneuralODEswithstochastic\nguarantees,” in AAAI. AAAI Press, 2021, pp. 11525–11535. [19] A. White, N. Kilbertus, M. Gelbrecht, and N. Boers, “Stabilized neural differential equations for learning dynamics with explicit\nconstraints,” in NeurIPS, 2023.",
+      "size": 440,
+      "sentences": 6
+    },
+    {
+      "id": 124,
+      "content": "d neural differential equations for learning dynamics with explicit\nconstraints,” in NeurIPS, 2023. [20] A. Sochopoulos, M. Gienger, and S. Vijayakumar, “Learning deep dynamical systems using stable neural ODEs,” in IROS. IEEE,\n2024, pp. 11163–11170. [21] S. Auddy, J. J. Hollenstein, M. Saveriano, A. J. Rodr´ıguez-Sa´nchez, and J. H. Piater, “Scalable and efficient continual learning from\ndemonstration via hypernetwork-generated stable dynamics model,” CoRR, vol. abs/2311.03600, 2023. [22] J.",
+      "size": 497,
+      "sentences": 7
+    },
+    {
+      "id": 125,
+      "content": "tration via hypernetwork-generated stable dynamics model,” CoRR, vol. abs/2311.03600, 2023. [22] J. Z. Kolter and G. Manek, “Learning stable deep dynamics models,” in NeurIPS, 2019, pp. 11126–11134. [23] Q.Kang,Y.Song,Q.Ding,andW.P.Tay,“StableneuralODEwithLyapunov-stableequilibriumpointsfordefendingagainstadversarial\nattacks,” in NeurIPS, 2021, pp. 14925–14937. [24] C.Luo,Y.Zou,W.Li,andN.Huang,“FxTS-Net:Fixed-timestablelearningframeworkforneuralODEs,”NeuralNetw.,vol.185,p. 107219, 2025.",
+      "size": 491,
+      "sentences": 9
+    },
+    {
+      "id": 126,
+      "content": "uang,“FxTS-Net:Fixed-timestablelearningframeworkforneuralODEs,”NeuralNetw.,vol.185,p. 107219, 2025. [25] S.Auddy,J.J.Hollenstein,M.Saveriano,A.J.Rodr´ıguez-Sa´nchez,andJ.H.Piater,“Continuallearningfromdemonstrationofrobotics\nskills,” Robotics Auton. Syst., vol. 165, p. 104427, 2023. [26] A.Lou,D.Lim,I.Katsman,L.Huang,Q.Jiang,S.Lim,andC.D.Sa,“Neuralmanifoldordinarydifferentialequations,”inNeurIPS,\n2020.",
+      "size": 405,
+      "sentences": 6
+    },
+    {
+      "id": 127,
+      "content": "sman,L.Huang,Q.Jiang,S.Lim,andC.D.Sa,“Neuralmanifoldordinarydifferentialequations,”inNeurIPS,\n2020. [27] F. J. Abu-Dakka, L. Rozo, and D. G. Caldwell, “Force-based variable impedance learning for robotic manipulation,” Robotics Auton. Syst., vol. 109, pp. 156–167, 2018. [28] H. C. Ravichandar and A. Dani, “Learning position and orientation dynamics from demonstrations via contraction analysis,” Auton. Robots, vol. 43, no. 4, pp. 897–912, 2019.",
+      "size": 447,
+      "sentences": 10
+    },
+    {
+      "id": 128,
+      "content": "cs from demonstrations via contraction analysis,” Auton. Robots, vol. 43, no. 4, pp. 897–912, 2019. [29] M.Mukadam,C.-A.Cheng,D.Fox,B.Boots,andN.Ratliff,“RiemannianmotionpolicyfusionthroughlearnableLyapunovfunction\nreshaping,” in CoRL. PMLR, 2020, pp. 204–219. [30] J. W. Milnor and D. W. Weaver, Topology from the differentiable viewpoint. Princeton University Press, 1997, vol. 21. [31] D. Wu, “Contraction analysis of nonlinear systems on riemannian manifolds.",
+      "size": 463,
+      "sentences": 12
+    },
+    {
+      "id": 129,
+      "content": "ess, 1997, vol. 21. [31] D. Wu, “Contraction analysis of nonlinear systems on riemannian manifolds. (analyse de contraction des syste`mes non-line´aires sur\ndes varie´te´s riemanniennes),” Ph.D. dissertation, University of Paris-Saclay, France, 2022. [32] B. Amos, L. Xu, and J. Z. Kolter, “Input convex neural networks,” in ICML, vol. 70. PMLR, 2017, pp. 146–155.",
+      "size": 364,
+      "sentences": 9
+    },
+    {
+      "id": 130,
+      "content": "L. Xu, and J. Z. Kolter, “Input convex neural networks,” in ICML, vol. 70. PMLR, 2017, pp. 146–155. [33] C.Szegedy,W.Zaremba,I.Sutskever,J.Bruna,D.Erhan,I.J.Goodfellow,andR.Fergus,“Intriguingpropertiesofneuralnetworks,”\nin ICLR (Poster), 2014. [34] W. Ruan, X. Huang, and M. Kwiatkowska, “Reachability analysis of deep neural networks with provable guarantees,” in IJCAI. ijcai.org, 2018, pp. 2651–2659.",
+      "size": 403,
+      "sentences": 9
+    },
+    {
+      "id": 131,
+      "content": "alysis of deep neural networks with provable guarantees,” in IJCAI. ijcai.org, 2018, pp. 2651–2659. [35] E. M. Turan and J. Ja¨schke, “Multiple shooting for training neural differential equations on time series,” IEEE Control. Syst. Lett.,\nvol. 6, pp. 1897–1902, 2022. [36] S. M. Khansari-Zadeh and A. Billard, “Learning stable nonlinear dynamical systems with Gaussian mixture models,” IEEE Trans. Robot., vol. 27, no. 5, pp. 943–957, 2011.",
+      "size": 441,
+      "sentences": 13
+    },
+    {
+      "id": 132,
+      "content": "mical systems with Gaussian mixture models,” IEEE Trans. Robot., vol. 27, no. 5, pp. 943–957, 2011. [37] I. Loshchilov and F. Hutter, “Decoupled weight decay regularization,” in ICLR. OpenReview.net, 2019. [38] T. Akiba, S. Sano, T. Yanase, T. Ohta, and M. Koyama, “Optuna: A next-generation hyperparameter optimization framework,” in\nSIGKDD. ACM, 2019, pp. 2623–2631.",
+      "size": 368,
+      "sentences": 10
+    },
+    {
+      "id": 133,
+      "content": "una: A next-generation hyperparameter optimization framework,” in\nSIGKDD. ACM, 2019, pp. 2623–2631. [39] A.Paszke,S.Gross,F.Massa,A.Lerer,J.Bradbury,G.Chanan,T.Killeen,Z.Lin,N.Gimelshein,L.Antiga,A.Desmaison,A.Ko¨pf,\nE. Yang, Z. DeVito, M. Raison, A. Tejani, S. Chilamkurthy, B. Steiner, L. Fang, J. Bai, and S. Chintala, “PyTorch: An Imperative\nStyle, High-Performance Deep Learning Library,” in NeurIPS, 2019, pp. 8024–8035. [40] R. T. Q. Chen, “torchdiffeq,” 2018. [Online].",
+      "size": 477,
+      "sentences": 7
+    },
+    {
+      "id": 134,
+      "content": "rning Library,” in NeurIPS, 2019, pp. 8024–8035. [40] R. T. Q. Chen, “torchdiffeq,” 2018. [Online]. Available: https://github.com/rtqichen/torchdiffeq",
+      "size": 150,
+      "sentences": 5
+    }
+  ]
+}

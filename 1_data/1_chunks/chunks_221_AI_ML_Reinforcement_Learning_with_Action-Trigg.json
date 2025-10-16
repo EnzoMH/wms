@@ -1,0 +1,1437 @@
+{
+  "source": "ArXiv",
+  "filename": "221_AI_ML_Reinforcement_Learning_with_Action-Trigg.pdf",
+  "domain": "AI",
+  "total_chars": 78658,
+  "total_chunks": 238,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\nReinforcement Learning with Action-Triggered Observations\nAlexanderRyabchenko* WenlongMou*\nAbstract\nWe study reinforcement learning problems where state observations are stochastically triggered by\nactions,aconstraintcommoninmanyreal-worldapplications. ThisframeworkisformulatedasAction-\nTriggered Sporadically Traceable Markov Decision Processes (ATST-MDPs), where each action has a\nspecifiedprobabilityoftriggeringastateobservation.",
+      "size": 445,
+      "sentences": 2
+    },
+    {
+      "id": 2,
+      "content": "n Processes (ATST-MDPs), where each action has a\nspecifiedprobabilityoftriggeringastateobservation. WederivetailoredBellmanoptimalityequations\nfor this framework and introduce the action-sequence learning paradigm in which agents commit to\nexecuting a sequence of actions until the next observation arrives. Under the linear MDP assumption,\nvalue-functions are shown to admit linear representations in an induced action-sequence feature map.",
+      "size": 441,
+      "sentences": 3
+    },
+    {
+      "id": 3,
+      "content": "alue-functions are shown to admit linear representations in an induced action-sequence feature map. Leveraging this structure, we propose off-policy estimators with statistical error guarantees for such\nfeaturemapsandintroduceST-LSVaI-UCB,avariantofLSVI-UCBadaptedforaction-triggeredsettings.",
+      "size": 292,
+      "sentences": 2
+    },
+    {
+      "id": 4,
+      "content": "for such\nfeaturemapsandintroduceST-LSVaI-UCB,avariantofLSVI-UCBadaptedforaction-triggeredsettings. r\nST-LSVI-UCBachievesregretOp Kd3p1´γq´3q,whereK isthenumberofepisodes,dthefeature\ndimension,andγthediscountfactor(per-stepepisodenon-terminationprobability).Crucially,thiswork\nestablishes the theoretical foundation for learning with sporadic, action-triggered observations while\ndemonstratingthatefficientlearningremainsfeasibleundersuchobservationconstraints.",
+      "size": 460,
+      "sentences": 2
+    },
+    {
+      "id": 5,
+      "content": "bservations while\ndemonstratingthatefficientlearningremainsfeasibleundersuchobservationconstraints. 1 Introduction\nReinforcementLearning(RL)addressessequentialdecision-makingproblemswhereanagentinteractswith\nan unknown environment to maximize rewards. As the environment changes in response to the agent’s ac-\ntions, it is typically expected for the agent to receive immediate feedback.",
+      "size": 386,
+      "sentences": 3
+    },
+    {
+      "id": 6,
+      "content": "nse to the agent’s ac-\ntions, it is typically expected for the agent to receive immediate feedback. However, in many real-world\nscenarios, observations may be delayed, intermittently available, or costly to obtain. While Partially Ob-\nservableMarkovDecisionProcesses(POMDPs)[Ast65]offerageneralframeworkforlimitedobservability,\ntheyoftenlackspecificityforscenarioswhereobservationavailabilitydirectlydependsonagent’sactions.",
+      "size": 424,
+      "sentences": 3
+    },
+    {
+      "id": 7,
+      "content": "y,\ntheyoftenlackspecificityforscenarioswhereobservationavailabilitydirectlydependsonagent’sactions. Toclosethisgap,weproposeanovelRLframeworkcharacterizedby“action-triggeredobservations,\"where\neachactionahasanassociatedprobabilityβpaq P r0,1sofrevealingthenewstateafterexecution. Apolicy\nmustthereforesimultaneouslyoptimizeactionsintheabsenceofimmediatestatefeedbackandstrategically\ndecide when to trigger observations to reduce uncertainty.",
+      "size": 441,
+      "sentences": 3
+    },
+    {
+      "id": 8,
+      "content": "ofimmediatestatefeedbackandstrategically\ndecide when to trigger observations to reduce uncertainty. This process involves executing sequences of\nactionsacrossmultipleconsecutiveroundswithoutenvironmentalfeedbackuntilastateobservationoccurs\n— an event we define as a “data-burst.\" We formalize this framework as Action-Triggered Sporadically\nTraceableMarkovDecisionProcesses(ATST-MDPs). Themaingoalofthisworkistodeveloptheoretical\nfoundationsforoptimallearningunderthisobservationmechanism.",
+      "size": 489,
+      "sentences": 4
+    },
+    {
+      "id": 9,
+      "content": "aingoalofthisworkistodeveloptheoretical\nfoundationsforoptimallearningunderthisobservationmechanism. The ATST-MDP framework with data-bursts captures several actively studied observation mechanisms in\nRL,addressingpracticalinformationconstraintsofreal-worldenvironments:\n1. Activesensing: [Sat+17;SR23;KSJ23]. Agentsmayemployspecializedsensingactionswithvarying\nobservation probabilities to reduce state uncertainty.",
+      "size": 415,
+      "sentences": 4
+    },
+    {
+      "id": 10,
+      "content": "ayemployspecializedsensingactionswithvarying\nobservation probabilities to reduce state uncertainty. For instance, in medical scenarios, practitioners\n*UniversityofTorontoandVectorInstitute. 1\n5202\ntcO\n2\n]GL.sc[\n1v94120.0152:viXra\n===  2 ===\npair treatment decisions with diagnostic tests of different invasiveness levels, which may themselves\naffectpatientstate—creatingatrade-offbetweentimelydiagnosisandlast-resortinterventions. 2. Paid observations: [NFB21; Bel+20; Wan+25].",
+      "size": 477,
+      "sentences": 5
+    },
+    {
+      "id": 11,
+      "content": "ffbetweentimelydiagnosisandlast-resortinterventions. 2. Paid observations: [NFB21; Bel+20; Wan+25]. Actions may include explicit decisions to purchase\nfeedback (receiving no observation otherwise), affecting rewards through additional costs. For exam-\nple, in marketing operations, companies execute promotional campaigns and then choose whether to\npurchasedetailedmarketpenetrationstudiestoassesscampaigneffectivenessandmarketresponse. 3. Intermittent feedback: [HS17; KTO18; CL25].",
+      "size": 483,
+      "sentences": 7
+    },
+    {
+      "id": 12,
+      "content": "udiestoassesscampaigneffectivenessandmarketresponse. 3. Intermittent feedback: [HS17; KTO18; CL25]. Data-bursts, occurring with fixed probability each\nround, may be guided by independent external events. This corresponds to scenarios with limited\nobservabilityduetounreliablesensorsorcommunicationchannelsthatonlysporadicallyprovideenvi-\nronmentaldata,e.g.,anautonomousvehiclesnavigatingthroughdensefogwithintermittentvisibility.",
+      "size": 429,
+      "sentences": 5
+    },
+    {
+      "id": 13,
+      "content": "deenvi-\nronmentaldata,e.g.,anautonomousvehiclesnavigatingthroughdensefogwithintermittentvisibility. Motivatedbypracticalconsiderations,ourworkfocusesonthetheoreticalunderpinnings: apreciseformu-\nlation of RL with action-triggered observations, a structural analysis of optimal policies for when and how\ntotriggerstateobservationstomaximizerewards,andrigorousregretguaranteesforepisodiclearning. Relatedwork.",
+      "size": 407,
+      "sentences": 3
+    },
+    {
+      "id": 14,
+      "content": "ggerstateobservationstomaximizerewards,andrigorousregretguaranteesforepisodiclearning. Relatedwork. Ourframeworkoverlapswithseveralwell-studiedsettings,yetnonedirectlycaptureaction-\ntriggeredobservations. AlthoughtheabsenceofstatefeedbacksuperficiallyresemblesRLwithobservation\ndelays[KE03;Wal+09;Lio23],thedelaysinATST-MDPsareendogenous,inducedbytheagent’sactions,\nwhereas classical delays are exogenous.",
+      "size": 405,
+      "sentences": 4
+    },
+    {
+      "id": 15,
+      "content": "edelaysinATST-MDPsareendogenous,inducedbytheagent’sactions,\nwhereas classical delays are exogenous. Goal-conditioned RL [Sch+15; And+18] provides observations\nonly upon goal attainment (state-triggered feedback), which is orthogonal to our action-triggered mecha-\nnism. ManyPOMDPformulations[PGT03;SV10;CYW24]modelbeliefupdatesunderpartialobservabil-\nity;however,existingworkgenerallydoesnotexploitthestructureinducedbyaction-triggeredobservations.",
+      "size": 448,
+      "sentences": 3
+    },
+    {
+      "id": 16,
+      "content": "-\nity;however,existingworkgenerallydoesnotexploitthestructureinducedbyaction-triggeredobservations. AmoredetaileddiscussionofrelatedworkcanbefoundinAppendixA. Ourcontributionsandpaperorganization:\n• In Section 2, we formally introduce ATST-MDPs, derive the associated Bellman optimality equations,\nandintroduceanaction-sequenceperspectiveviaanovelaction-sequencevalue-function.",
+      "size": 377,
+      "sentences": 3
+    },
+    {
+      "id": 17,
+      "content": "timality equations,\nandintroduceanaction-sequenceperspectiveviaanovelaction-sequencevalue-function. • In Section 3, under the Linear MDP assumption, the action-sequence value-function is shown to ad-\nmit a linear representation in an induced action-sequence feature map. We provide efficient off-policy\nestimationguaranteesforthisfeaturemapinSubsection3.1.",
+      "size": 356,
+      "sentences": 3
+    },
+    {
+      "id": 18,
+      "content": "feature map. We provide efficient off-policy\nestimationguaranteesforthisfeaturemapinSubsection3.1. • In Section 4, we propose ST-LSVI-UCB, an algorithm foraepisodic learning with geometrically dis-\nr\ntributedhorizonlengthsinlinearATST-MDPs,achievingOp Kd3p1´γq´3qregretwithhighproba-\nbility,providedsufficientlyaccurateestimationoftheaction-sequencefeaturemap.",
+      "size": 360,
+      "sentences": 3
+    },
+    {
+      "id": 19,
+      "content": "3qregretwithhighproba-\nbility,providedsufficientlyaccurateestimationoftheaction-sequencefeaturemap. Westressthatregret\nhere is measured against the optimal policy operating under the same observation constraints, not the\ninfeasiblepolicywithfullobservability,comparisontowhichwouldgenerallyleadtolinearregret. 2 Problem Setting\nWe introduce classical RL concepts and notation in Subsection 2.1 and then define our ATST-MDP in\nSubsection2.2asaspecialMDPontheaugmentedstatespace.",
+      "size": 477,
+      "sentences": 3
+    },
+    {
+      "id": 20,
+      "content": "Subsection 2.1 and then define our ATST-MDP in\nSubsection2.2asaspecialMDPontheaugmentedstatespace. Analysisofitsvalue-functions,includinga\nnovelaction-sequencevalue-function,ispresentedinSubsection2.3. 2\n===  3 ===\n2.1 PreliminariesandNotation\nMarkovDecisionProcessesandDiscountedReturns. Adiscrete-timediscountedMarkovDecisionPro-\ncess (MDP) is a 5-tuple pS,A,P,r,γq, where S,A are measurable state and action spaces respectively,\nPp.",
+      "size": 435,
+      "sentences": 4
+    },
+    {
+      "id": 21,
+      "content": "(MDP) is a 5-tuple pS,A,P,r,γq, where S,A are measurable state and action spaces respectively,\nPp. | s,aq P ∆ defines the transition probability measure over the next states given current state s and\nS\ntakenactiona,r : S ˆA Ñ r0,1sisadeterministicrewardfunction,andγ P p0,1q–discountfactor. We\nassumeAisafinitesetofcardinalityA,whereasS maycontaininfinitelymanyelements. The agent’s objective is to maximize expected discounted returns.",
+      "size": 436,
+      "sentences": 4
+    },
+    {
+      "id": 22,
+      "content": "maycontaininfinitelymanyelements. The agent’s objective is to maximize expected discounted returns. For a deterministic policy π : S Ñ A,\nthestate-actionvalue-functionQπ : S ˆA Ñ Risdefinedastheexpecteddiscountedreturnwhenstarting\nfromstates,executingactiona,andfollowingpolicyπ thereafter:\n” ˇ ı\nř ˇ\nQπps,aq “ E s h`1„Pp.|s h ,a hq,a h`1“πps h`1q 8 h“1 γh´1rps h ,a h qˇs 1 “ s,a 1 “ a . The corresponding state value-function Vπ : S Ñ R is defined as Vπpsq “ Qπps,πpsqq.",
+      "size": 472,
+      "sentences": 4
+    },
+    {
+      "id": 23,
+      "content": "1 “ s,a 1 “ a . The corresponding state value-function Vπ : S Ñ R is defined as Vπpsq “ Qπps,πpsqq. There exists an\noptimalpolicyπ˚ satisfyingV˚psq :“ Vπ˚ psq “ sup Vπpsqforeverystates(e.g.,see[Put94]). π\nDiscountingviaGeometricHorizon. Thestate-actionvalue-functioncanbeequivalentlyformulatedus-\ningageometrichorizoninterpretationbyconsideringanepisodeofrandomlengthH „ Geomp1´γq:\nγ\n” ˇ ı\nř ˇ\nQπps,aq “ E Hγ rps ,a qˇs “ s,a “ a .",
+      "size": 431,
+      "sentences": 5
+    },
+    {
+      "id": 24,
+      "content": "yconsideringanepisodeofrandomlengthH „ Geomp1´γq:\nγ\n” ˇ ı\nř ˇ\nQπps,aq “ E Hγ rps ,a qˇs “ s,a “ a . h“1 h h 1 1\nDiscountingfactorγ servesasafixedper-stepepisodenon-terminationprobability(e.g.,see[Man+23]). Augmented State Space. In situations where state observations may be unavailable for several consecu-\ntive rounds, the augmented state space X “ S\nˆAăN\n, provides a natural framework for reasoning under\nuncertainty.",
+      "size": 421,
+      "sentences": 4
+    },
+    {
+      "id": 25,
+      "content": "he augmented state space X “ S\nˆAăN\n, provides a natural framework for reasoning under\nuncertainty. Eachaugmentedstatex “ ps ;a ,...,a qconsistsofthelastobservedstates followedbya\n1 1 ∆ 1\nfinitesequenceof∆ P NYt0uactionstakensincethen,capturingthedistributionofthecurrentstates . ∆`1\nThebelieffunctionb : X Ñ ∆ representsthisdistributionass „ bp.|xq. For∆ ě 1,wehave\nS ∆`1\nş ś\nbps|xq “ Pps|s ,a q ∆ Pps |s ,a qds .",
+      "size": 414,
+      "sentences": 4
+    },
+    {
+      "id": 26,
+      "content": "esentsthisdistributionass „ bp.|xq. For∆ ě 1,wehave\nS ∆`1\nş ś\nbps|xq “ Pps|s ,a q ∆ Pps |s ,a qds . (1)\nS∆´1 ∆ ∆ i“2 i i´1 i´1 i\nAugmentedstatesareactivelyusedinRLwithdelays(e.g.,see[Bou+21]). Linear MDPs. When modeling complex environments with potentially large or continuous state spaces,\nstructural properties can be exploited to enable efficient learning.",
+      "size": 360,
+      "sentences": 5
+    },
+    {
+      "id": 27,
+      "content": "ge or continuous state spaces,\nstructural properties can be exploited to enable efficient learning. Linear MDPs represent a fundamental\nclass of RL problems where both transition dynamics and reward functions exhibit linearity in a feature\nspace. Asisstandardinthefield,wedefinethefollowinglinearMDPstructure:\nAssumption2.1(LinearMDP).",
+      "size": 335,
+      "sentences": 3
+    },
+    {
+      "id": 28,
+      "content": "ure\nspace. Asisstandardinthefield,wedefinethefollowinglinearMDPstructure:\nAssumption2.1(LinearMDP). Thereexistsafeaturemapϕ : SˆA Ñ Rdsuchthatforallps,aq P SˆA:\nPp¨|s,aq “ xϕps,aq, µp¨qy, rps,aq “ xϕps,aq, θy,\nwhere µ : S Ñ Rd consists of d finite signed measures over S and θ P Rd. Additionally, we require\n? ? sup ∥ϕps,aq∥ ď 1,∥θ∥ ď d,and∥|µ|pSq∥ ď d.\ns,a 2 2 2\nInthelinearMDPframework,thefeaturevectorsϕps,aqareknowntothelearner,whilethevectorspµ,θq\nare unknown.",
+      "size": 465,
+      "sentences": 6
+    },
+    {
+      "id": 29,
+      "content": "thelinearMDPframework,thefeaturevectorsϕps,aqareknowntothelearner,whilethevectorspµ,θq\nare unknown. This framework is widely used in the study of RL with function approximations. As shown\nin[Jin+19],itencompassesstandardRLsettingsincludingtabularMDPsandsimplexfeaturespaces. 3\n===  4 ===\nNotation. Let‘denoteconcatenationinageneralsense,e.g. px,yq “ x‘y andpx,yq‘z “ px,y,zq. Letδ “ Ipi “ jq. Forn P N,letrns “ t1,...,nu.",
+      "size": 421,
+      "sentences": 8
+    },
+    {
+      "id": 30,
+      "content": "nageneralsense,e.g. px,yq “ x‘y andpx,yq‘z “ px,y,zq. Letδ “ Ipi “ jq. Forn P N,letrns “ t1,...,nu. Forvectorx P RD,matrixM P RDˆD,andq P r1,8s,\nij\nlet∥x∥ denotel -norm,|||M||| –l tol operatornorm,λ pMq–minimaleigenvalueofmatrixM.",
+      "size": 230,
+      "sentences": 5
+    },
+    {
+      "id": 31,
+      "content": "andq P r1,8s,\nij\nlet∥x∥ denotel -norm,|||M||| –l tol operatornorm,λ pMq–minimaleigenvalueofmatrixM. q q q q q min\nForconvenience,foreverysymbolz P tβ,β¯,Mu,weconsidershort-handnotationz “ zpaqforalla P A.\na\n2.2 IntroducingAction-TriggeredSporadicallyTraceableMDPs\nThe Action-Triggered Sporadically Traceable Markov Decision Process (ATST-MDP) extends the tradi-\ntionalMDPbyincorporatingaction-dependentprobabilitiesofdata-bursts.",
+      "size": 429,
+      "sentences": 2
+    },
+    {
+      "id": 32,
+      "content": "s (ATST-MDP) extends the tradi-\ntionalMDPbyincorporatingaction-dependentprobabilitiesofdata-bursts. WedefineanATST-MDPasthe\n6-tuplepS,A,P,r,γ,βq,whereβ : A Ñ r0,1sassignstoeachactiona P Atheprobabilitythatexecuting\nthisactionwilltriggeradata-burst. Stateobservationsoccurthroughdata-bursts,whicharecriticaleventsin\nthisframework: whenandonlywhenadata-burstoccursisthecurrentstateoftheenvironmentrevealedto\ntheagent. Forconvenience,letβ¯ paq “ 1´βpaqdenotetheprobabilitythatadoesnotinvokeadata-burst.",
+      "size": 499,
+      "sentences": 4
+    },
+    {
+      "id": 33,
+      "content": "ledto\ntheagent. Forconvenience,letβ¯ paq “ 1´βpaqdenotetheprobabilitythatadoesnotinvokeadata-burst. From the agent’s perspective in an ATST-MDP, the interaction dynamics work as follows. At any point in\ntime, the agent’s knowledge is represented by an augmented state x P X, consisting of the last observed\nstate and actions executed since this observation.",
+      "size": 357,
+      "sentences": 4
+    },
+    {
+      "id": 34,
+      "content": "ted state x P X, consisting of the last observed\nstate and actions executed since this observation. The true environmental state is unknown to the agent,\nunless x P S. When the agent executes action a P A, one of two outcomes occurs: with probability βpaq,\nadata-burstistriggered,andtheagentobservestheactualcurrentenvironmentalstates „ bp¨|x‘aq;with\nprobabilityβ¯ paq,nodata-burstoccurs,andtheagentupdatesitsaugmentedstatetox‘a.",
+      "size": 429,
+      "sentences": 2
+    },
+    {
+      "id": 35,
+      "content": "ates „ bp¨|x‘aq;with\nprobabilityβ¯ paq,nodata-burstoccurs,andtheagentupdatesitsaugmentedstatetox‘a. Ingeneral,function\nβ neednotbeknowntotheagentbeforehand,butitcanbeforcertainapplications,e.g.,Example2.3. Foreffectivelearning,agentsrequireaccesstorewardinformation. Ourmodelspecifiesthatduringadata-\nburst,theagentreceivesthetotalaccumulatedreward.",
+      "size": 349,
+      "sentences": 4
+    },
+    {
+      "id": 36,
+      "content": "wardinformation. Ourmodelspecifiesthatduringadata-\nburst,theagentreceivesthetotalaccumulatedreward. Whilesomespecializedapplicationsmightallowfor\ncomplete trajectories of state-reward pairs to be revealed during data-bursts, our formulation addresses the\nmoregeneralcasewheresuchdetailedhistoryisunavailable,butoutcomesareperiodicallymeasurable. ThefollowingconcreteexamplesillustratethetypesofproblemsATST-MDPsallowustoanalyze. Example 2.2 (Faulty communication channel).",
+      "size": 472,
+      "sentences": 5
+    },
+    {
+      "id": 37,
+      "content": "sillustratethetypesofproblemsATST-MDPsallowustoanalyze. Example 2.2 (Faulty communication channel). In scenarios where the state observations occur with fixed\nprobabilityβ˚ everyround(e.g.,duetoafaultyenvironment-to-agentcommunicationchannel),wecanset\nβpaq “ β˚ foralla P A. Ineachround,withprobability1´β˚ theaugmentedstategrowsbyoneaction,\nandwithprobabilityβ˚ weremoveuncertaintybyobtainingthecurrentstateinS. Example2.3(Paidobservations).",
+      "size": 442,
+      "sentences": 4
+    },
+    {
+      "id": 38,
+      "content": "ndwithprobabilityβ˚ weremoveuncertaintybyobtainingthecurrentstateinS. Example2.3(Paidobservations). ConsideraLinearMDP(Assumption2.1)wheretheagenthastheoption\nto observe the current state at a price. Each action a has two versions with identical transition dynamics:\na (triggersobservationforacostcps,aq P r0,c s)anda (noobservation). Wecanmodelthisbysetting\n1 max 0\nβpa q “ δ andextendingfeature,reward,andmeasurevectorstoRd`1: fori P t0,1u,wedefine\ni i1\n« ff « ff « ff\n?",
+      "size": 472,
+      "sentences": 5
+    },
+    {
+      "id": 39,
+      "content": "“ δ andextendingfeature,reward,andmeasurevectorstoRd`1: fori P t0,1u,wedefine\ni i1\n« ff « ff « ff\n? b b\nϕps,aq d θ µp.q\nϕ1ps,a i q “ ? d 1 `1 1´ δi1 c c m p a s x ,aq , θ1 “ 1`c 1 max d` d 1 c max ? d , µ1p.q “ d` d 1 0 . To preserve the Linear MDP structure, we consider a scaled and shifted but equivalent reward function\nr1ps,a q “ rps,aq`cmax´δi1cps,aq P r0,1s,whichincorporatesobservationcosts. i 1`cmax\nExample 2.4 (Reset-to-observe).",
+      "size": 440,
+      "sentences": 6
+    },
+    {
+      "id": 40,
+      "content": "`cmax´δi1cps,aq P r0,1s,whichincorporatesobservationcosts. i 1`cmax\nExample 2.4 (Reset-to-observe). Consider a Linear MDP to which we add a “restart” action a˚, whose\nexecution always triggers a data-burst and transitions the environment to a random state according to\nprobabilitymeasureλp.qoverS,whileallstandardactionsdonotprovideobservations.",
+      "size": 345,
+      "sentences": 3
+    },
+    {
+      "id": 41,
+      "content": "dom state according to\nprobabilitymeasureλp.qoverS,whileallstandardactionsdonotprovideobservations. Wecanmodelthis\n4\n===  5 ===\nwithβpaq “ Ipa “ a˚qandextendingfeature,reward,andmeasurevectorstoRd`1 asfollows:\n« ff « ff « ff\nϕps,aq¨Ipa ‰ a˚q θ µp.q\nϕ1ps,aq “ , θ1 “ , µ1p.q “ . Ipa “ a˚q 0 λp.q\nWhile these examples, rooted in real-world observation constraints, provide compelling motivation for\nstudying ATST-MDP, they introduce additional structures beyond the core framework.",
+      "size": 479,
+      "sentences": 3
+    },
+    {
+      "id": 42,
+      "content": "g motivation for\nstudying ATST-MDP, they introduce additional structures beyond the core framework. Our paper focuses\non the most general ATST-MDP setting without additional assumptions beyond Assumption 2.1 in later\nsections,providingtheoreticalresultssupportedbyrigorousproofsintheappendix.",
+      "size": 292,
+      "sentences": 2
+    },
+    {
+      "id": 43,
+      "content": "Assumption 2.1 in later\nsections,providingtheoreticalresultssupportedbyrigorousproofsintheappendix. 2.3 Value-FunctionsandOptimalityintheAugmentedStateSpace\nWith runtime information about the current state in ATST-MDPs represented by an augmented state from\nX “ S ˆAăN ,itisnaturaltoconsideraugmentedpoliciesπ : X Ñ Aandappropriatevalue-functionson\ntheaugmentedstatespace.",
+      "size": 372,
+      "sentences": 2
+    },
+    {
+      "id": 44,
+      "content": "snaturaltoconsideraugmentedpoliciesπ : X Ñ Aandappropriatevalue-functionson\ntheaugmentedstatespace. Foreachaugmentedpolicyπ,wedefineavalue-functionQπ : XˆA Ñ r0, 1 s\n1´γ\nastheexpectedcumulativediscountedrewardwhenstartingfromaugmentedstatex P X (withhiddeninitial\nstates „ bp.|xq),executingactiona,andfollowingpolicyπ thereafter:\n1\n” ˇ ı\nř ˇ\nQπpx,aq “ E rps ,aq` 8 γh´1rps ,πpx qqˇx “ x, a “ a ,\n1 h“2 h h 1 1\n! whereexpectationisovers „ bp.|xq, s „ Pp.|s ,a q, x „ sn`1 withprobabilityβpanq .",
+      "size": 493,
+      "sentences": 3
+    },
+    {
+      "id": 45,
+      "content": ",\n1 h“2 h h 1 1\n! whereexpectationisovers „ bp.|xq, s „ Pp.|s ,a q, x „ sn`1 withprobabilityβpanq . 1 n`1 n n n`1 xn‘an otherwise\nThe state value-function Vπ : X Ñ r0, 1 s is similarly defined as Vπpxq “ Qπpx,πpxqq. Building on\n1´γ\nthesedefinitions,wecanestablishakeyrecursiverelationshipforthesevalue-functions. Theorem2.5. Underaugmentedpolicyπ : X Ñ A,theactionvalue-functionsatisfies:\n“ ‰ “ ‰\nQπpx,aq “ E rps,aq `γβpaqE Vπps1q `γβ¯ paqVπpx‘aq.",
+      "size": 447,
+      "sentences": 6
+    },
+    {
+      "id": 46,
+      "content": "X Ñ A,theactionvalue-functionsatisfies:\n“ ‰ “ ‰\nQπpx,aq “ E rps,aq `γβpaqE Vπps1q `γβ¯ paqVπpx‘aq. s„bp.|xq s1„bp.|x‘aq\nThis theorem directly connects to the classical Bellman equation framework in RL theory. For the set of\nmeasurablefunctionsV “ tV : X Ñ r0, 1 su,weobtaintheBellmanoptimalityoperatorT : V Ñ V as\n1´γ\n! ) “ ‰ “ ‰\nTVpxq “ max E rps,aq `γβpaqE Vps1q `γβ¯ paqVpx‘aq ,\ns„bp.|xq s1„bp.|x‘aq\naPA\nwhichturnsouttobeaγ-contraction.",
+      "size": 439,
+      "sentences": 4
+    },
+    {
+      "id": 47,
+      "content": "x E rps,aq `γβpaqE Vps1q `γβ¯ paqVpx‘aq ,\ns„bp.|xq s1„bp.|x‘aq\naPA\nwhichturnsouttobeaγ-contraction. ApplyingtheBanachfixed-pointtheorem,itfollowsthatthereexists\nanoptimalaugmentedpolicyπ˚ suchthatV˚pxq “ sup Vπpxqforallx P X. Theproofsoftheseclaims\nπ\nandTheorem2.5areprovidedinAppendixB. Introducing action-sequence value-function.",
+      "size": 331,
+      "sentences": 3
+    },
+    {
+      "id": 48,
+      "content": "ofsoftheseclaims\nπ\nandTheorem2.5areprovidedinAppendixB. Introducing action-sequence value-function. A key property of augmented policies in ATST-MDPs is\nthatthesequenceofactionsselectedbetweendata-burstsisobtainedbyrepeatedlyapplyingthepolicytothe\naugmented state that grows by appending each selected action. This recursive process allows us to define\naπpxq,thesequenceofactionsgeneratedbyapolicyπ atastatex,asfollows:\nDefinition 2.6.",
+      "size": 435,
+      "sentences": 4
+    },
+    {
+      "id": 49,
+      "content": "ows us to define\naπpxq,thesequenceofactionsgeneratedbyapolicyπ atastatex,asfollows:\nDefinition 2.6. For π : X Ñ A and n P N, let πpnq : X Ñ A be inductively defined as πp1q “ π and\nπpn`1qpxq “ πpx‘pπp1qpxq,...,πpnqpxqqq. Then,letaπpxq “ pπp1qpxq,πp2qpxq,...q.",
+      "size": 259,
+      "sentences": 3
+    },
+    {
+      "id": 50,
+      "content": "ined as πp1q “ π and\nπpn`1qpxq “ πpx‘pπp1qpxq,...,πpnqpxqqq. Then,letaπpxq “ pπp1qpxq,πp2qpxq,...q. 5\n===  6 ===\nAs a novel concept, we define action-sequence value-function Kπ : X ˆA N Ñ r0, 1 s as the expected\n1´γ\ncumulative discounted reward when starting from augmented state x P X and following sequence a “\npa ,a ,...q P A N untilthenextdata-burstandpolicyπ thereafter. Notably,Vπpxq “ Kπpx,aπpxqq.",
+      "size": 404,
+      "sentences": 4
+    },
+    {
+      "id": 51,
+      "content": "nce a “\npa ,a ,...q P A N untilthenextdata-burstandpolicyπ thereafter. Notably,Vπpxq “ Kπpx,aπpxqq. 1 2\nTo formalize this mathematically, let b P t0,1u denote the occurrence of a data-burst at round h (where\nh\nb |a „ Berpβpa qq)anddefineT “ minth P N : b “ 1uasthefirstroundwithadata-burst,sothat:\nh h h DB h\n” ˇ ı\nř ˇ\nKπpx,aq “ E\ns1„bp.|xq\nT\nh“\nDB\n1\nγh´1rps\nh\n,a\nh\nq`γTDBVπps\nTDB`1\nqˇx\n1\n“ x, pa\ni\nq T\ni“\nDB\n1\n“ a\n1:TDB\n. Forcleareranalysis,wecandecomposethisfunctionintotwocomponents.",
+      "size": 486,
+      "sentences": 4
+    },
+    {
+      "id": 52,
+      "content": "1\n“ x, pa\ni\nq T\ni“\nDB\n1\n“ a\n1:TDB\n. Forcleareranalysis,wecandecomposethisfunctionintotwocomponents. LetRpx,aqdenotetheexpected\ndiscounted reward until the next data-burst. Additionally, for every function V : S Ñ R (or V : X Ñ R),\nlet PVpx,aq denote the expected discounted value of V at the state observed at the next data-burst (0 if\nT “ 8).",
+      "size": 343,
+      "sentences": 4
+    },
+    {
+      "id": 53,
+      "content": "enote the expected discounted value of V at the state observed at the next data-burst (0 if\nT “ 8). Formally,wehave\nDB\n” ˇ ı\nř ˇ\nRpx,aq “ E TDB γh´1rps ,a qˇx “ x, pa q TDB “ a\ns1„bp.|xq\n”\nh“1 h\nˇ\nh 1 i i“1\nı\n1:TDB\nˇ\nPVpx,aq “ E γTDBVps qˇx “ x, pa q TDB “ a . s1„bp.|xq TDB`1 1 i i“1 1:TDB\nThisformulationyieldsacleardecompositionKπ “ R`PVπ. 3 Linear ATST-MDPs\nHere,weexplorethepropertiesofATST-MDPsunderAssumption2.1,withproofsprovidedinAppendixC.",
+      "size": 449,
+      "sentences": 4
+    },
+    {
+      "id": 54,
+      "content": "r ATST-MDPs\nHere,weexplorethepropertiesofATST-MDPsunderAssumption2.1,withproofsprovidedinAppendixC. ş\nForeveryactiona P A,defineitsaction-matrixasMpaq “ µpsqϕps,aqJds. Then,weextendthefeature\nS\nmapϕ : S ˆA Ñ Rd toallaugmentedstatex “ ps ;a ,...,a q P XzS asfollows:\n1 1 ∆\nś\nϕpxqJ “ ϕps ,a qJ ∆ Mpa q. 1 1 i“2 i\nThisextensionenablesustoestablishcruciallinearpropertiesofbeliefdistributions(1):\nLemma3.1(Linearityofbelief). Forallx P XzS,bp.|xq “ xϕpxq,µp.qyand∥ϕpxq∥ ď 1.",
+      "size": 470,
+      "sentences": 5
+    },
+    {
+      "id": 55,
+      "content": "liefdistributions(1):\nLemma3.1(Linearityofbelief). Forallx P XzS,bp.|xq “ xϕpxq,µp.qyand∥ϕpxq∥ ď 1. 2\nMoreover,foreverymapV : S Ñ r0,1{p1´γqsandpx,aq P X ˆA,itholdsthat\n“ ‰ “ ‰\nE rps,aq “ xϕpx‘aq, θy, and E Vps1q “ xϕpx‘aq, vy,\ns„bp.|xq s1„bp.|x‘aq\nş ? wherevectorv “ Vpsqdµpsqsatisfies∥v∥ ď d .",
+      "size": 295,
+      "sentences": 4
+    },
+    {
+      "id": 56,
+      "content": "θy, and E Vps1q “ xϕpx‘aq, vy,\ns„bp.|xq s1„bp.|x‘aq\nş ? wherevectorv “ Vpsqdµpsqsatisfies∥v∥ ď d . 2 1´γ\nLeveragingthisresultandconditioningonthefirstdata-bursttimeT , thecomponentsinthedecomposi-\nDB\ntionKπ “ R`PVπ canbewrittenas\n` ˘\nRpx,a‘aq “ ϕpx‘aqJ βpaqI `β¯ paqM paq θ,\n` 1 ˘\nPVπpx,a‘aq “ ϕpx‘aqJ βpaqI `β¯ paqM paq γvπ,\n2\nwheretype1and2action-sequencematricesM paq,M paq P Rdˆd arerespectivelydefinedas\n1 2\nÿ8 ” ś ś ı\nM paq “ I ` γkp k´1β¯ pa qqp k Mpa qq , (2a)\n1 i“1 i i“1 i\nk“1\nÿ8 ” ś ś ı\nM paq “ γkp k´1β¯ pa qqβpa qp k Mpa qq .",
+      "size": 538,
+      "sentences": 3
+    },
+    {
+      "id": 57,
+      "content": "k´1β¯ pa qqp k Mpa qq , (2a)\n1 i“1 i i“1 i\nk“1\nÿ8 ” ś ś ı\nM paq “ γkp k´1β¯ pa qqβpa qp k Mpa qq . (2b)\n2 i“1 i k i“1 i\nk“1\n6\n===  7 ===\nTo integrate these components into a unified representation, we introduce a new action-sequence feature\nmapψ : X ˆA N Ñ R2d,definedasfollows:\n` ˘\nψpx,a‘aqJ “ 1 ϕpx‘aqJ βpaqI `β¯ paqM paq , (3)\n2 12 12\nwhereI\n12\n“ rp1´γqI γIs P Rdˆ2d andM\n12\npaq “ rp1´γqM1paq γM2paqs P Rdˆ2d.",
+      "size": 412,
+      "sentences": 2
+    },
+    {
+      "id": 58,
+      "content": "¯ paqM paq , (3)\n2 12 12\nwhereI\n12\n“ rp1´γqI γIs P Rdˆ2d andM\n12\npaq “ rp1´γqM1paq γM2paqs P Rdˆ2d. Thisfeaturemapconstructionleadstoourmainresultfortheaction-sequencevalue-function:\n” ı\nş\nTheorem3.2(LinearityofKπ). Definevπ “ 2 θ{p1´γq P R2d,wherevπ “ Vπpsqdµpsq. 12 vπ S\nN\nThen,foreveryx P X andsequencea P A :\nKπpx,aq “ xψpx,aq, vπ y. 12\n?",
+      "size": 342,
+      "sentences": 5
+    },
+    {
+      "id": 59,
+      "content": "wherevπ “ Vπpsqdµpsq. 12 vπ S\nN\nThen,foreveryx P X andsequencea P A :\nKπpx,aq “ xψpx,aq, vπ y. 12\n? Moreover,itholdsthatsup ∥ψpx,aq∥ ď 1and (cid:13) (cid:13)vπ (cid:13) (cid:13) ď 4 d.\nx,a 2 12 2 1´γ\nTheorem3.2showsthatKπpx,aq,thoughdefinedoveraninfiniteaction-sequence,isfullycapturedbythe\ninnerproductofafixedvectorandaboundedfeaturemapinR2d. Givenaccesstothisfeaturemap,onecan\nuseregressiontechniquestolearnK˚,aswedemonstrateforepisodiclearninginSection4.",
+      "size": 458,
+      "sentences": 5
+    },
+    {
+      "id": 60,
+      "content": "hisfeaturemap,onecan\nuseregressiontechniquestolearnK˚,aswedemonstrateforepisodiclearninginSection4. 3.1 FeatureMapEstimationandOff-PolicyLearningofAction-Matrices\nHaving established the theoretical foundation for linear representation of action-sequence value-functions,\nwe now address practical implementation challenges regarding computation.",
+      "size": 344,
+      "sentences": 2
+    },
+    {
+      "id": 61,
+      "content": "sequence value-functions,\nwe now address practical implementation challenges regarding computation. While the linearity result of\nTheorem3.2istheoreticallyelegant,requiringexactknowledgeofaction-matricesisanunrealisticassump-\ntioninpracticalsettings,eventhoughitislessdemandingthanknowingthefulltransitiondynamicsµp.q.",
+      "size": 318,
+      "sentences": 2
+    },
+    {
+      "id": 62,
+      "content": "ssump-\ntioninpracticalsettings,eventhoughitislessdemandingthanknowingthefulltransitiondynamicsµp.q. This subsection addresses critical questions: Can we effectively approximate the action-sequence feature\nN x\nmapψondomainSˆA whenweonlyhaveestimatesofaction-matricesM andobservationprobabilities\na\np\nβ ? Also,canreliableestimatesbeobtainedfromoff-policydata? Weanswerbothquestionsaffirmatively. a\nToformalizethenotionofanacceptableapproximationofourfeaturemap,wedefineϵ-admissibility:\nDefinition3.3.",
+      "size": 498,
+      "sentences": 5
+    },
+    {
+      "id": 63,
+      "content": "ormalizethenotionofanacceptableapproximationofourfeaturemap,wedefineϵ-admissibility:\nDefinition3.3. Forϵ ě 0,functionψ p : S ˆA N Ñ R2d issaidtobeanϵ-admissibleestimationofψ in(3)\np p p\nifthefollowingthreeconditionshold: sup ∥pψ´ψqps,aq∥ ď ϵ,sup ∥ψps,aq∥ ď 1,andψps,.qis\ns,a 2 s,a 2\ncontinuouswithrespecttotheproducttopologyonA N andthestandardtopologyonR2d foreverys P S.\nThefollowingtheoremdescribesconstructionofϵ-admissibleestimations,givenestimatesforaction-matrices\nanddata-burstprobabilities.",
+      "size": 499,
+      "sentences": 2
+    },
+    {
+      "id": 64,
+      "content": "sconstructionofϵ-admissibleestimations,givenestimatesforaction-matrices\nanddata-burstprobabilities. Inparticular,thisconfirmsthatψ isa0-admissibleestimationofitself. Theorem 3.4. Assume estimates M x P R2dˆ2d and β p P r0,1s satisfy sup |||M x ´ M ||| ď ε and\na a aPA a a 2\nsup aPA |β p a ´β a | ď ε β forsomeε P r0, 1 2 ´ ? γ d sandε β P r0,1s. Letψ p : SˆA N Ñ R2dbetheestimatedaction-\nsequence feature map obtained from (3) by replacing action-matrices M and data-burst probabilities β\na ?",
+      "size": 492,
+      "sentences": 6
+    },
+    {
+      "id": 65,
+      "content": "nce feature map obtained from (3) by replacing action-matrices M and data-burst probabilities β\na ? a\nwiththeirestimatesM x , β p incomputation. Then,itholdsthatsup ∥pψ p ´ψqps,aq∥ ď 16dpε`ε { dq. a a s,a 2 1´γ β\n? Moreover,functionψ r ps,aq “ ψ p ps,a ? q isa 32dpε`ε β{ dq -admissibleestimationofψ. 1`16dpε`ε β{ dq{p1´γq 1´γ\nr\nThistheoremguaranteesadmissibilityofthenormalizedfeaturemapψgivenuniformboundsontheaction-\nmatrix and data-burst probability estimation errors.",
+      "size": 472,
+      "sentences": 7
+    },
+    {
+      "id": 66,
+      "content": "lizedfeaturemapψgivenuniformboundsontheaction-\nmatrix and data-burst probability estimation errors. Notably, the proof of the theorem shows that errors in\nestimating M and β propagate in a controlled manner through the infinite-horizon feature map construc-\na a\ntion,thankstothespecialalgebraicstructureofmatricesM . SeeAppendixC.2fortheproof. a\n7\n===  8 ===\nOff-policydatamodel.",
+      "size": 379,
+      "sentences": 4
+    },
+    {
+      "id": 67,
+      "content": "ecialalgebraicstructureofmatricesM . SeeAppendixC.2fortheproof. a\n7\n===  8 ===\nOff-policydatamodel. TodemonstratethattheassumptionsinTheorem3.4canbesatisfiedinpractice,\nwe consider a standard off-policy sampling approach for data collection.",
+      "size": 241,
+      "sentences": 4
+    },
+    {
+      "id": 68,
+      "content": "4canbesatisfiedinpractice,\nwe consider a standard off-policy sampling approach for data collection. We collect N samples from a\ndistributionD overS ˆA,creatingadatasetists ,a ,s1 ,b uN ,whereps ,a qaredrawni.i.dfromD,\nn n n n n“1 n n\nstates s1 are sampled independently from the true transition dynamics Pp.|s ,a q, and observation indica-\nn n n\ntorsb P t0,1usampledindependentlybasedonthetruedata-burstprobabilities,i.e.",
+      "size": 421,
+      "sentences": 2
+    },
+    {
+      "id": 69,
+      "content": "servation indica-\nn n n\ntorsb P t0,1usampledindependentlybasedonthetruedata-burstprobabilities,i.e. b |a „ Berpβ q.\nn n n an\nWeassumethatdistributionD providessufficientexplorationofthefeaturespace, formalizedbyrequiring\nthat its second moment matrix Σ “ Erϕps ,a qϕps ,a qJs is positive definite. The minimum eigenvalue\n1 1 1 1\nλ pΣq ą 0quantifiesthequalityofthisexploration.",
+      "size": 376,
+      "sentences": 3
+    },
+    {
+      "id": 70,
+      "content": "s positive definite. The minimum eigenvalue\n1 1 1 1\nλ pΣq ą 0quantifiesthequalityofthisexploration. Additionally,weassumethateitherthetrueprobabil-\nmin\nitiesβ areknownorthateachactionissampledwithpositiveprobability: p “ inf ErIpa “ aqs ą 0.\na min aPA 1\nx\nFor action-matrices, we employ ridge estimators with parameter λ ą 0: Mλ “ pXJX ` λI q´1XJY ,\na d a\nwhere X,Y P RNˆd have rows ϕps ,a q, ϕps1 ,aq respectively.",
+      "size": 415,
+      "sentences": 3
+    },
+    {
+      "id": 71,
+      "content": "er λ ą 0: Mλ “ pXJX ` λI q´1XJY ,\na d a\nwhere X,Y P RNˆd have rows ϕps ,a q, ϕps1 ,aq respectively. And, for data-burst probabilities, we\na n n řn\neitheremployempiricalmeanestimators: β\np\n“ ř\nN\nn“1\nbn Ipan“aq\n,orassumethattrueβ areknown. a N\nn“1\nIpan“aq a\nx p\nLemmas3.5and3.6providehigh-probabilityuniformboundsontheestimationerrorsforM1 andβ ,with\na a\ntheirproofspresentedinAppendixC.3. Lemma3.5.",
+      "size": 397,
+      "sentences": 4
+    },
+    {
+      "id": 72,
+      "content": "uniformboundsontheestimationerrorsforM1 andβ ,with\na a\ntheirproofspresentedinAppendixC.3. Lemma3.5. ThereexistsabsoluteconstantC ě 1suchthatforallp P p0,1qandN ě\n4C2dlogp2Ad{pq,by\nλminpΣq2\nx\nchoosingλ “ 1,ridgeestimatorsMλ satisfy\na\nˆ b ˙\nP sup |||M x λ´M ||| ď 4C dlogp2Ad{pq ě 1´p. aPA a a 2 NλminpΣq2\np\nLemma3.6. Forallp P p0,1qandN ě 1,empiricalmeanestimatorsβ satisfy\na\nˆ b ˙\nP sup |β p ´β | ď 12lnp3A{pq ě 1´p.",
+      "size": 416,
+      "sentences": 5
+    },
+    {
+      "id": 73,
+      "content": "orallp P p0,1qandN ě 1,empiricalmeanestimatorsβ satisfy\na\nˆ b ˙\nP sup |β p ´β | ď 12lnp3A{pq ě 1´p. aPA a a Npmin\nTherefore, both action-matrices and data-burst probabilities can be effectively estimated from off-policy\n? data,withestimationerrordecreasingatthestandardstatisticalrateofOp1{ Nq,whenλ pΣq,p ą 0.\nmin min\nCombining these lemmas with Theorem 3.4, we immediately obtain a complete practical framework for\nestimatingtheaction-sequencefeaturemapusingoff-policydata,asfollows. Corollary 3.7.",
+      "size": 500,
+      "sentences": 4
+    },
+    {
+      "id": 74,
+      "content": "l framework for\nestimatingtheaction-sequencefeaturemapusingoff-policydata,asfollows. Corollary 3.7. Consider action-sequence feature mapestimation procedure of Theorem 3.4. Letψ\nrM,β\noff-policy\nx p\ndenote the estimated feature map computed using estimates M1 and β constructed from N off-policy\na a M,β\nr\ndatapoints. Similarly,letψM denotetheestimatedfeaturemapcomputedusingtruedata-burstprob-\noff-policy\nx\nabilitiesβ andestimatesM1 constructedfromN datapoints.",
+      "size": 461,
+      "sentences": 5
+    },
+    {
+      "id": 75,
+      "content": "omputedusingtruedata-burstprob-\noff-policy\nx\nabilitiesβ andestimatesM1 constructedfromN datapoints. a a M\nThereexistsanabsoluteconstantc ą 0suchthatforallp P p0,1qandε P p0,1q,thefollowingholds:\n• IfN ě c¨\nd3logp2Ad{pq\n,thenψ\nrM,β\nisε-admissiblewithprobabilityatleast1´p. M,β ε2p1´γq2mintλminpΣq2,d2pminu off-policy\n• IfN ě c¨ d3logp2Ad{pq ,thenψ r M isε-admissiblewithprobabilityatleast1´p.",
+      "size": 391,
+      "sentences": 3
+    },
+    {
+      "id": 76,
+      "content": "pΣq2,d2pminu off-policy\n• IfN ě c¨ d3logp2Ad{pq ,thenψ r M isε-admissiblewithprobabilityatleast1´p. M ε2p1´γq2λminpΣq2 off-policy\nInthiscorollary,thedatasetrequirementforjointestimationofM ,β hasatleastlineardependenceonthe\na a\naction space size, whereas the requirement for estimating only M scales logarithmically with A. This is\na\nbecausep ď 1{A,makingthegapunavoidablesincetheestimationofeachβ reliesonN{Adatapoints\nmin a\nonaverage.",
+      "size": 436,
+      "sentences": 3
+    },
+    {
+      "id": 77,
+      "content": "ausep ď 1{A,makingthegapunavoidablesincetheestimationofeachβ reliesonN{Adatapoints\nmin a\nonaverage. Incontrast,theconditionλ pΣq ą 0isrelativelyeasytosatisfy,evenwhenthesupportofD\nmin\nisrestrictedtodpointsinS ˆAwhosefeaturemapsformanon-singularbasis. Thus,theassumptionthat\nβ are known is highly valuable for action-sequence feature map estimation, and it is plausible for many\na\nreal-worldapplications,e.g.,the“paidobservations\"inExample2.3.",
+      "size": 442,
+      "sentences": 3
+    },
+    {
+      "id": 78,
+      "content": "tion, and it is plausible for many\na\nreal-worldapplications,e.g.,the“paidobservations\"inExample2.3. 8\n===  9 ===\n4 Episodic Learning with Geometric Horizons\nThis section explores episodic reinforcement learning in a linear ATST-MDP (Figure 1), where the agent\ninteractswithanenvironmentoverK episodes. Eachepisodek hasrandomlengthofHk „ Geomp1´γq\nrounds,orequivalently,episodeterminationoccursindependentlywithprobability1´γ eachround.",
+      "size": 435,
+      "sentences": 3
+    },
+    {
+      "id": 79,
+      "content": "Geomp1´γq\nrounds,orequivalently,episodeterminationoccursindependentlywithprobability1´γ eachround. Atthe\nstartofeachepisode,theagentselectsapolicyandexecutesactionsaccordingtoit,observingthenewstate\nandtotalrewardonlyduringaction-triggereddata-burstsorepisodetermination(animplicitdata-burst).",
+      "size": 293,
+      "sentences": 2
+    },
+    {
+      "id": 80,
+      "content": "tate\nandtotalrewardonlyduringaction-triggereddata-burstsorepisodetermination(animplicitdata-burst). We allow the agent to select a burst-dependent policy π “ pπ q8 , where each deterministic policy π :\nu u“1 u\nX Ñ A governs actions until the u-th data-burst, at which point the agent switches to the following π . u`1\nThis approach generalizes stationary policies considered in previous sections to a more powerful class of\nadaptivestrategies.",
+      "size": 443,
+      "sentences": 3
+    },
+    {
+      "id": 81,
+      "content": "stationary policies considered in previous sections to a more powerful class of\nadaptivestrategies. Thelinearityproperties(e.g.,Theorem3.2)extendtoburst-dependentpolicies,withVπ\nandKπ definedasexpectedtotaldiscountedrewardsunderthispolicy-switchingmechanism. EpisodicLearningunderATST-MDP\nForeachepisodek “ 1,2,...,K:\nTheenvironmentinitializestotalrewardGk “ 0. 0\nTheagentselectsaburst-dependentpolicyπk basedondatafrompreviousepisodes.",
+      "size": 436,
+      "sentences": 4
+    },
+    {
+      "id": 82,
+      "content": "alizestotalrewardGk “ 0. 0\nTheagentselectsaburst-dependentpolicyπk basedondatafrompreviousepisodes. Theadversaryselectsaninitialstatesk andrevealsittotheagentasaugmentedstatexk “ sk. 1 1 1\nForroundsh “ 1,2,...:\n1. Theagentexecutesak determinedbyπk,incurringunobservedrewardrk “ rpsk,akq. h h h h\nTheenvironmentupdatesGk “ Gk `rk andsamplesnextstatesk „ Pp.|sk,akq. h h´1 h h`1 h h\n2. Episodeterminationoccurswithprobability1´γ: theenvironmentrevealspairp∅,Gkq. h\n3.",
+      "size": 465,
+      "sentences": 9
+    },
+    {
+      "id": 83,
+      "content": "h´1 h h`1 h h\n2. Episodeterminationoccurswithprobability1´γ: theenvironmentrevealspairp∅,Gkq. h\n3. Data-burstoccurswithprobabilityβpakq: theenvironmentrevealspairpsk , Gkq. h h`1 h\n4. Theagentupdatesxk “ sk ifdata-burstoccurred,andasxk “ xk ‘ak otherwise. h`1 h`1 h`1 h h\nFigure1: ExecutionprotocoloftheATST-MDPoverK episodeswithgeometrichorizons. To formalize episode termination, we introduce a termination state ∅ reached with probability 1´γ each\nround.",
+      "size": 457,
+      "sentences": 8
+    },
+    {
+      "id": 84,
+      "content": "ze episode termination, we introduce a termination state ∅ reached with probability 1´γ each\nround. Forallvalue-functionsV,K,andQ,wedefineVp∅q “ Kp∅,aq “ Qp∅,aq “ 0. Ineachepisodek P rKs,observationhistorycanbepresentedastuplespsk,ak,Rk,sk qBk corresponding\nu u u u`1 u“1\nto data-bursts.",
+      "size": 287,
+      "sentences": 3
+    },
+    {
+      "id": 85,
+      "content": "bservationhistorycanbepresentedastuplespsk,ak,Rk,sk qBk corresponding\nu u u u`1 u“1\nto data-bursts. Here, Bk represents the number of data-bursts (including termination) in episode k; sk P S\nu\ndenoteobservedstates,withsk “ ∅;ak “ aπ u k pskq P A N aresequencesofactionsthatwouldbeplayed\nBk`1 u u\nuntil the next data-burst based on policy πk from state sk; and Rk ě 0 are aggregated rewards for rounds\nu u\nbetweenobservingsk andsk .",
+      "size": 431,
+      "sentences": 2
+    },
+    {
+      "id": 86,
+      "content": "olicy πk from state sk; and Rk ě 0 are aggregated rewards for rounds\nu u\nbetweenobservingsk andsk . u u`1\nř\nThe agent’s objective is to minimize the total (expected) regret R “ K pV˚pskq ´ Vπk pskqq, i.e.,\nK k“1 1 1\nthe shortfall in the player’s expected cumulative reward compared to that of the optimal augmented policy\nπ˚ : X Ñ AinthisATST-MDP,whereexpectationistakenoverthestochasticdynamicsofeachepisode.",
+      "size": 409,
+      "sentences": 2
+    },
+    {
+      "id": 87,
+      "content": "nted policy\nπ˚ : X Ñ AinthisATST-MDP,whereexpectationistakenoverthestochasticdynamicsofeachepisode. It\nisworthnotingthatunderATST-MDP,π˚istheoptimalpolicythatbalancesblinddecision-makingwithout\nstate observations and the cost of acquiring new information through data-bursts. This policy is generally\ndifferent from the optimal policy in the underlying MDP, which always has access to the current state.",
+      "size": 403,
+      "sentences": 3
+    },
+    {
+      "id": 88,
+      "content": "ferent from the optimal policy in the underlying MDP, which always has access to the current state. π˚\nisthenaturalbenchmarkforevaluatinglearningalgorithmsinthissetting,asitrepresentsthebestpossible\nperformancegiventheconstraintsofsporadicobservations. 9\n===  10 ===\n4.1 Algorithm\nOur Algorithm 1 (ST-LSVI-UCB) is based on the Least-Squares Value Iteration with Uniform Confidence\nBound of Jin et al. [Jin+19], which we adapt to handle sporadic traceability and geometric horizons.",
+      "size": 481,
+      "sentences": 4
+    },
+    {
+      "id": 89,
+      "content": "ound of Jin et al. [Jin+19], which we adapt to handle sporadic traceability and geometric horizons. This\np\nalgorithmrequiresaccesstoanϵ-admissibleestimationmapψ,withregretboundsdependingonthisϵ. To stabilize computations, we use the effective horizon parameter H which serves three purposes: limit\nvalue iteration steps to H, cap the number of data-burst used in learning to mintBk,Hu per episode, and\nbound accumulated rewards as R k “ mintRk,Hu.",
+      "size": 447,
+      "sentences": 4
+    },
+    {
+      "id": 90,
+      "content": "-burst used in learning to mintBk,Hu per episode, and\nbound accumulated rewards as R k “ mintRk,Hu. Although separate parameters of similar magnitude\nu u\ncouldbeemployed,wesimplifyanalysisbyusingthecommonparameterH. ` ˘\nGiventhisparameter,wedefinetheeffectivehistoryatthestartofepisodekasHk “ sτ,aτ,Rτ,sτ\nNk\n,\nř N τ“1\nconsisting of at most H first data-burst-tuples from each episode (i.e., Nk “ k´1 mintBk1,Hu), with\nk1“1\nsτ P S Yt∅u denoting the next revealed state after sτ.",
+      "size": 477,
+      "sentences": 3
+    },
+    {
+      "id": 91,
+      "content": "isode (i.e., Nk “ k´1 mintBk1,Hu), with\nk1“1\nsτ P S Yt∅u denoting the next revealed state after sτ. Also, let ψ p τ “ ψ p psτ,aτq and ψτ “ ψpsτ,aτq,\nN\nwiththelatterbeingunknowntotheagentandusedsolelyinourtheoreticalanalysis. Algorithm1ST-LSVI-UCB\nInput: estimationfeaturemapψ p : S ˆA N Ñ R2d,discountfactorγ. Parameters: effectivehorizonH,regularizersλandρ. 1: forepisodek “ 1,...,K do\n2:\nCompileobservationsfromepisodes1,...,k´1intoeffectivehistoryHk. ř\n3: ComputeΛk “ λI ` Nk ψ p τpψ p τqJ.",
+      "size": 493,
+      "sentences": 6
+    },
+    {
+      "id": 92,
+      "content": "ileobservationsfromepisodes1,...,k´1intoeffectivehistoryHk. ř\n3: ComputeΛk “ λI ` Nk ψ p τpψ p τqJ. τ“1\n4: InitializeKkpx,aq “ 1 forallpx,aq P X ˆA N andu ě H.\nu 1´γ\n5: foru “ H ´1,...,1do ” ı\nř\n6: Computew u k “ pΛkq ! ´1 N τ“ k 1 mintRτ,Hu`max a K u k `1 psτ N) ,aq . p p\n7: SetK u kps,aq “ min 1´ 1 γ ,xψps,aq,w u ky`ρ∥ψps,aq∥ pΛkq´1 . 8: endfor\n9: Initializecounteru “ 1andreceivetheinitialstatesk. 1\n10: whileepisodek continuesdo\n11: Selectaction-sequenceak u P argmax aPAN K u kpsk u ,aq.",
+      "size": 494,
+      "sentences": 7
+    },
+    {
+      "id": 93,
+      "content": "tatesk. 1\n10: whileepisodek continuesdo\n11: Selectaction-sequenceak u P argmax aPAN K u kpsk u ,aq. 12: Playactionsfromak untileither:\nu\n13:\n(1)adata-burstoccurs,revealingsk andRk,or\nu`1 u\n14: (2)theepisodeterminatespsk “ ∅qandRk isrevealed. u`1 u\n15: Incrementu Ð u`1andbreakifepisodeterminated. 16: endwhile\n17: endfor\nAtahighlevel,ST-LSVI-UCBperformstwopassesoverallrounds. Thefirstpassperformsbackwardvalue-\niteration,computingparameterswk thatformtheK-value-functionsKk : SˆA N Ñ r0,p1´γq´1s.",
+      "size": 497,
+      "sentences": 6
+    },
+    {
+      "id": 94,
+      "content": "ackwardvalue-\niteration,computingparameterswk thatformtheK-value-functionsKk : SˆA N Ñ r0,p1´γq´1s. Using\nu u\ntheestimationmapψ p ,thesefunctionsaimtoapproximateoptimalK˚ps,aq “ xψps,aq, vπ˚ y. Thesecond\n12\npass executes the greedy policy by selecting action-sequences ak, maximizing Kkpsk,¨q, that the agent\nu u u\nfollowsuntilthenextdata-burst. Onlythesecondpassinvolvesactualinteractionwiththeenvironment. Theoptimizationinlines6and11requirescomputingmax aPAN K u kpsk u ,aq.",
+      "size": 477,
+      "sentences": 4
+    },
+    {
+      "id": 95,
+      "content": "nteractionwiththeenvironment. Theoptimizationinlines6and11requirescomputingmax aPAN K u kpsk u ,aq. Despiteinfinite-dimensionality\nN p\nof action-sequence space A , this problem can be framed as optimizing a convex function over Ψ “\ns\ntψ p ps,aq : a P A N u-acomplicatedbutcompactsetinR2d forϵ-admissibleψ p . Crucially,thecompactness\nguaranteestheexistenceofamaximizingaction-sequence.",
+      "size": 385,
+      "sentences": 4
+    },
+    {
+      "id": 96,
+      "content": "d forϵ-admissibleψ p . Crucially,thecompactness\nguaranteestheexistenceofamaximizingaction-sequence. Theγ-discountingandlowerboundoninf βpaq\na\n10\n===  11 ===\nprovidecomputationaladvantages,asactioninfluencedecaysexponentiallywithtimeuntiladata-burst. In\npractice,wecanapproximatelysolvesuchoptimizationproblemsbytruncatingthehorizonsandsolvingthe\nfinite-dimensionalproblemusinggradient-basedmethods,thoughtheworst-casecomputationalcomplexity\nisstillexponential.",
+      "size": 460,
+      "sentences": 4
+    },
+    {
+      "id": 97,
+      "content": "nalproblemusinggradient-basedmethods,thoughtheworst-casecomputationalcomplexity\nisstillexponential. Ourtheoreticalanalysisthereforeassumesaccesstoanoptimizationoracle. 4.2 TheoreticalGuarantees\nNowwearereadytopresentthemainresultforepisoadiclearning. Weassumethattheapproximatefeature\np\nmapψ usedinAlgorithm1isϵ-admissible,withϵ ď p1´γq{K. AccordingtoCorollary3.7,thiscanbe\nachievedusinganoff-policyestimationprocedure.",
+      "size": 419,
+      "sentences": 4
+    },
+    {
+      "id": 98,
+      "content": "le,withϵ ď p1´γq{K. AccordingtoCorollary3.7,thiscanbe\nachievedusinganoff-policyestimationprocedure. Givenaconfidenceparameterp P p0,1qandnumberof\nepisodesK,wesettheparametersinAlgorithm1as\n? H “ r\nlogpKp1´γq´1q\ns`1, λ “ 1, and ρ “ c¨dH ι for ι “ logp2dKH{pq,\n1´γ\nwherecisanabsoluteconstant. Theorem 4.1 (ST-LSVI-UCB regret guarantee).",
+      "size": 334,
+      "sentences": 4
+    },
+    {
+      "id": 99,
+      "content": "ι for ι “ logp2dKH{pq,\n1´γ\nwherecisanabsoluteconstant. Theorem 4.1 (ST-LSVI-UCB regret guarantee). There exists an absolute constant c ě 1, such that under\ntheabovesetup,withprobabilityatleast1´p,thetotalregretofAlgorithm1isatmost\n`a a ˘\nO r d3Kp1´γq´3ι2`d2p1´γq´2ι`ϵ¨ d2K3p1´γq´5ι ,\nr\nwhereO omitspolylogarithmicfactorsindependentoflogp1{pq. ThepraoofisprovidedinAppendixD.Notably,forsufficientlysmallϵ,theregretboundmatchestheclassi-\nr\ncalOp Kp1´γq´3qrateforMDPs(e.g.,see[Man+23]).",
+      "size": 483,
+      "sentences": 4
+    },
+    {
+      "id": 100,
+      "content": "rsufficientlysmallϵ,theregretboundmatchestheclassi-\nr\ncalOp Kp1´γq´3qrateforMDPs(e.g.,see[Man+23]). Inparticular,thisoptimalrateisaattainedwhen\nϵ “ Opp1 ´ γq{Kq, while the general guarantee holds under the milder condition ϵ ă p1´γq{K.\nCo`rollary 3.7 show˘s that this level of estimation accuracy can be achieved from off-policy data using\nr\nO K2d3{p1´γq4 samples,withhighprobability.",
+      "size": 384,
+      "sentences": 2
+    },
+    {
+      "id": 101,
+      "content": "on accuracy can be achieved from off-policy data using\nr\nO K2d3{p1´γq4 samples,withhighprobability. 5 Discussion and Future Work\nThisworkintroducesATST-MDPs,anovelframeworkthatcapturesthechallengesofreinforcementlearning\nin environments where state observability is action-triggered and sporadic.",
+      "size": 296,
+      "sentences": 2
+    },
+    {
+      "id": 102,
+      "content": "ofreinforcementlearning\nin environments where state observability is action-triggered and sporadic. Our theoretical contributions\nincludenewBellmanoptimalityequationsforthissetting,alinearstructureintheinducedaction-sequence\nfeature map, and rigorous approximation guarantees for learning feature maps from off-policy data.",
+      "size": 323,
+      "sentences": 2
+    },
+    {
+      "id": 103,
+      "content": "feature map, and rigorous approximation guarantees for learning feature maps from off-policy data. We\nalsodesignandanalyzeST-LSVI-UCB,analgorithmthatprovablyachieveslowregretinepisodiclearning\nundergeometrichorizons,providedaccesstoanaccurateestimationoftheaction-sequencefeaturemap. Several interesting questions remain open for future research. First, ST-LSVI-UCB assumes access to an\noptimizationoracleoveraction-sequences,acomputationallydemandingrequirementingeneral.",
+      "size": 472,
+      "sentences": 4
+    },
+    {
+      "id": 104,
+      "content": "access to an\noptimizationoracleoveraction-sequences,acomputationallydemandingrequirementingeneral. Designing\nefficientapproximationschemes, suchasrestrictingtofinite-depthactiontreesordevelopingtractablesur-\nrogateobjectives,wouldsignificantlyenhancepracticalapplicability. Second,whileweestablishoff-policy\nmethodsforestimatingaction-matricesanddata-burstprobabilities,afullyonlinealgorithmthatadaptively\nrefinestheseestimatesduringlearningwouldprovideamorerobustandpracticalsolution.",
+      "size": 485,
+      "sentences": 3
+    },
+    {
+      "id": 105,
+      "content": "rithmthatadaptively\nrefinestheseestimatesduringlearningwouldprovideamorerobustandpracticalsolution. Additionally, ATST-MDPs offer a novel perspective on RL with stochastic delays (e.g., [Bou+21]). Clas-\nsical models treat delays as exogenous; here they are endogenous, with actions shaping the distribution\nof observation times. A unifying view allows round-dependent data-burst probabilities β paq: when β is\nt t\n11\n===  12 ===\naction-independent,onerecoverssomeexogenousdelaymodels.",
+      "size": 484,
+      "sentences": 4
+    },
+    {
+      "id": 106,
+      "content": "ilities β paq: when β is\nt t\n11\n===  12 ===\naction-independent,onerecoverssomeexogenousdelaymodels. Analyzinghowdifferentdelay-generation\nmechanismsaffectlearningandregretpresentsapromisingresearchdirection. Overall,ourresultsestablishafoundationforlearningunderaction-triggeredstate-dependentobservations,\nand the flexibility of our formulation opens pathways toward addressing information constraints across a\nwiderangeofsequentialdecision-makingproblems. References\n[Ast65] K. J. Astrom.",
+      "size": 490,
+      "sentences": 4
+    },
+    {
+      "id": 107,
+      "content": "constraints across a\nwiderangeofsequentialdecision-makingproblems. References\n[Ast65] K. J. Astrom. “Optimal Control of Markov Processes with Incomplete State Information”. In:\nJournalofMathematicalAnalysisandApplications10.1(1965),pp.174–205. [Sat+17] Y. Satsangi, S. Whiteson, F. A. Oliehoek, and M. T. J. Spaan. “Exploiting submodular value\nfunctionsforscalingupactiveperception”.In:AutonomousRobots42.2(Aug.2017),pp.209–\n233. ISSN:1573-7527.",
+      "size": 445,
+      "sentences": 7
+    },
+    {
+      "id": 108,
+      "content": "nctionsforscalingupactiveperception”.In:AutonomousRobots42.2(Aug.2017),pp.209–\n233. ISSN:1573-7527. [SR23] J.ShangandM.S.Ryoo.ActiveVisionReinforcementLearningunderLimitedVisualObserv-\nability.2023. [KSJ23] M.Krale,T.D.Simao,andN.Jansen.Act-Then-Measure:ReinforcementLearningforPartially\nObservableEnvironmentswithActiveMeasuring.2023. [NFB21] H. A. Nam, S. L. Fleming, and E. Brunskill.",
+      "size": 387,
+      "sentences": 5
+    },
+    {
+      "id": 109,
+      "content": "ObservableEnvironmentswithActiveMeasuring.2023. [NFB21] H. A. Nam, S. L. Fleming, and E. Brunskill. “Reinforcement learning with state observation\ncosts in action-contingent noiselessly observable markov decision processes”. Proceedings of\nthe35thInternationalConferenceonNeuralInformationProcessingSystems(NeurIPS).NIPS\n’21.RedHook,NY,USA:CurranAssociatesInc.,2021. ISBN:9781713845393. [Bel+20] C. Bellinger, R. Coles, M. Crowley, and I. Tamblyn.",
+      "size": 447,
+      "sentences": 6
+    },
+    {
+      "id": 110,
+      "content": "sociatesInc.,2021. ISBN:9781713845393. [Bel+20] C. Bellinger, R. Coles, M. Crowley, and I. Tamblyn. Active Measure Reinforcement Learning\nforObservationCostMinimization.2020. [Wan+25] T.Wang,J.Liu,B.Lee,Z.Wu,andY.Wu.OCMDP:Observation-ConstrainedMarkovDeci-\nsionProcess.2025. [HS17] M. Hausknecht and P. Stone. Deep Recurrent Q-Learning for Partially Observable MDPs. 2017.",
+      "size": 372,
+      "sentences": 8
+    },
+    {
+      "id": 111,
+      "content": ". [HS17] M. Hausknecht and P. Stone. Deep Recurrent Q-Learning for Partially Observable MDPs. 2017. [KTO18] R.Klíma,K.Tuyls,andF.A.Oliehoek.“Model-BasedReinforcementLearningunderPeriod-\nicalObservability”.AAAISpringSymposia.2018. [CL25] G.ChenandS.-C.Liew.IntermittentlyObservableMarkovDecisionProcesses.2025. [KE03] K.KatsikopoulosandS.Engelbrecht.“Markovdecisionprocesseswithdelaysandasynchronous\ncostcollection”.In:IEEETransactionsonAutomaticControl48.4(2003),pp.568–574.",
+      "size": 474,
+      "sentences": 7
+    },
+    {
+      "id": 112,
+      "content": "thdelaysandasynchronous\ncostcollection”.In:IEEETransactionsonAutomaticControl48.4(2003),pp.568–574. [Wal+09] T.J.Walsh,A.Nouri,L.Li,andM.L.Littman.“Learningandplanninginenvironmentswith\ndelayedfeedback”.In:AutonomousAgentsandMulti-AgentSystems18(2009),pp.83–105. [Lio23] P.Liotet.DelaysinReinforcementLearning.2023. [Sch+15] T. Schaul, D. Horgan, K. Gregor, and D. Silver. “Universal Value Function Approximators”. Proceedings of the 32nd International Conference on Machine Learning. Ed.",
+      "size": 488,
+      "sentences": 7
+    },
+    {
+      "id": 113,
+      "content": "Function Approximators”. Proceedings of the 32nd International Conference on Machine Learning. Ed. by F. Bach and\nD. Blei. Vol. 37. Proceedings of Machine Learning Research. Lille, France: PMLR, 2015,\npp.1312–1320. [And+18] M.Andrychowicz,F.Wolski,A.Ray,J.Schneider,R.Fong,P.Welinder,B.McGrew,J.Tobin,\nP.Abbeel,andW.Zaremba.HindsightExperienceReplay.2018. 12\n===  13 ===\n[PGT03] J. Pineau, G. Gordon, and S. Thrun.",
+      "size": 414,
+      "sentences": 10
+    },
+    {
+      "id": 114,
+      "content": ".Zaremba.HindsightExperienceReplay.2018. 12\n===  13 ===\n[PGT03] J. Pineau, G. Gordon, and S. Thrun. “Point-based value iteration: an anytime algorithm for\nPOMDPs”.InternationalJointConferenceonArtificialIntelligence.2003. [SV10] D. Silver and J. Veness. “Monte-Carlo Planning in Large POMDPs”. Advances in Neural In-\nformationProcessingSystems.Ed.byJ.Lafferty,C.Williams,J.Shawe-Taylor,R.Zemel,and\nA.Culotta.Vol.23.CurranAssociates,Inc.,2010.",
+      "size": 442,
+      "sentences": 6
+    },
+    {
+      "id": 115,
+      "content": ".Ed.byJ.Lafferty,C.Williams,J.Shawe-Taylor,R.Zemel,and\nA.Culotta.Vol.23.CurranAssociates,Inc.,2010. [CYW24] Q.Cai,Z.Yang,andZ.Wang.ReinforcementLearningfromPartialObservation:LinearFunc-\ntionApproximationwithProvableSampleEfficiency.2024. [Put94] M. L. Puterman. “Discounted Markov Decision Problems”. In: Markov Decision Processes. JohnWiley&Sons,Ltd,1994.Chap.6,pp.142–276. ISBN:9780470316887.",
+      "size": 395,
+      "sentences": 7
+    },
+    {
+      "id": 116,
+      "content": "ems”. In: Markov Decision Processes. JohnWiley&Sons,Ltd,1994.Chap.6,pp.142–276. ISBN:9780470316887. [Man+23] D.Mandal,G.Radanovic,J.Gan,A.Singla,andR.Majumdar.OnlineReinforcementLearning\nwithUncertainEpisodeLengths.2023. [Bou+21] Y. Bouteiller, S. Ramstedt, G. Beltrame, C. Pal, and J. Binas. “Reinforcement Learning with\nRandomDelays”.InternationalConferenceonLearningRepresentations.2021. [Jin+19] C. Jin, Z. Yang, Z. Wang, and M. I. Jordan.",
+      "size": 443,
+      "sentences": 8
+    },
+    {
+      "id": 117,
+      "content": "ionalConferenceonLearningRepresentations.2021. [Jin+19] C. Jin, Z. Yang, Z. Wang, and M. I. Jordan. Provably Efficient Reinforcement Learning with\nLinearFunctionApproximation.2019. [KLC98] L.P.Kaelbling,M.L.Littman,andA.R.Cassandra.“PlanningandActinginPartiallyObserv-\nableStochasticDomains”.In:Artif.Intell.101(1998),pp.99–134. [SS12] T.SmithandR.Simmons.HeuristicSearchValueIterationforPOMDPs.2012. [Lio+22] P. Liotet, D. Maran, L. Bisi, and M. Restelli.",
+      "size": 456,
+      "sentences": 6
+    },
+    {
+      "id": 118,
+      "content": "euristicSearchValueIterationforPOMDPs.2012. [Lio+22] P. Liotet, D. Maran, L. Bisi, and M. Restelli. Delayed Reinforcement Learning by Imitation. 2022. [Sel+14] Y. Seldin, P. Bartlett, K. Crammer, and Y. Abbasi-Yadkori. “Prediction with Limited Advice\nand Multiarmed Bandits with Paid Observations”. Proceedings of the 31st International Con-\nferenceonMachineLearning.Ed.byE.P.XingandT.Jebara.Vol.32.ProceedingsofMachine\nLearningResearch.Bejing,China:PMLR,June2014,pp.280–287.",
+      "size": 475,
+      "sentences": 7
+    },
+    {
+      "id": 119,
+      "content": "XingandT.Jebara.Vol.32.ProceedingsofMachine\nLearningResearch.Bejing,China:PMLR,June2014,pp.280–287. [AB10] J.-Y.AudibertandS.Bubeck.“RegretBoundsandMinimaxPoliciesunderPartialMonitoring”. In:JournalofMachineLearningResearch11.94(2010),pp.2785–2836. [Ver11] R.Vershynin.Introductiontothenon-asymptoticanalysisofrandommatrices.2011. [Tro15] J.A.Tropp.AnIntroductiontoMatrixConcentrationInequalities.2015. [APS11] Y. Abbasi-yadkori, D. Pál, and C. Szepesvári.",
+      "size": 456,
+      "sentences": 6
+    },
+    {
+      "id": 120,
+      "content": "uctiontoMatrixConcentrationInequalities.2015. [APS11] Y. Abbasi-yadkori, D. Pál, and C. Szepesvári. “Improved Algorithms for Linear Stochastic\nBandits”. Advances in Neural Information Processing Systems. Ed. by J. Shawe-Taylor, R.\nZemel,P.Bartlett,F.Pereira,andK.Weinberger.Vol.24.CurranAssociates,Inc.,2011. 13\n===  14 ===\nA Additional Related Work\nPOMDPs and planning under partial observability.",
+      "size": 398,
+      "sentences": 7
+    },
+    {
+      "id": 121,
+      "content": "nc.,2011. 13\n===  14 ===\nA Additional Related Work\nPOMDPs and planning under partial observability. Classical work on decision making with incom-\nplete state information is captured by POMDPs; see the survey of [KLC98] and subsequent algorithmic\nadvances such as point-based value iteration (PBVI) [PGT03] and heuristic search value iteration (HSVI)\n[SS12]. Recent progress includes statistical and computational guarantees for learning and planning in\npartially observed settings [CYW24].",
+      "size": 489,
+      "sentences": 4
+    },
+    {
+      "id": 122,
+      "content": "ical and computational guarantees for learning and planning in\npartially observed settings [CYW24]. Much of this line is theoretical and algorithmic, with empirical val-\nidations on standard POMDP benchmarks; deep implementations typically combine belief updates with\nfunctionapproximation,butthecoreguaranteesaremodel-basedandnon-neural. RLwithdelayedobservations(andaugmentedstates).",
+      "size": 385,
+      "sentences": 3
+    },
+    {
+      "id": 123,
+      "content": "ion,butthecoreguaranteesaremodel-basedandnon-neural. RLwithdelayedobservations(andaugmentedstates). EarlyformulationsanalyzedelayedMDPsand\naugmented-state reductions that stack the last observed state with a queue of intervening actions [KE03;\nWal+09]. More recent work examines random delays in deep RL, showing robustness and performance\ntrade-offs under synthetic and real latency processes [Bou+21], and explores imitation/learning pipelines\nthatmusthandledelayedfeedback[Lio+22].",
+      "size": 484,
+      "sentences": 4
+    },
+    {
+      "id": 124,
+      "content": "rocesses [Bou+21], and explores imitation/learning pipelines\nthatmusthandledelayedfeedback[Lio+22]. Thisareamixestheory(augmented-stateequivalence,stability)\nwithempiricaldeepRL;implementationsoftenusestandardneuralagents(e.g.,DQN/actor-critic)evaluated\nunderinjecteddelays. Goal-conditioned reinforcement learning. Goal-conditioned RL provides observations (and learning\nsignals)whengoalsareachieved.",
+      "size": 401,
+      "sentences": 4
+    },
+    {
+      "id": 125,
+      "content": "ent learning. Goal-conditioned RL provides observations (and learning\nsignals)whengoalsareachieved. UniversalValueFunctionApproximators(UVFA)[Sch+15]parametrize\nvaluefunctionsbygoals,andHindsightExperienceReplay(HER)[And+18]augmentsreplaywithachieved\ngoalstoimprovesampleefficiency. TheseworksarepredominantlyempiricaldeepRL(CNN/RNNpolicies\nandvaluefunctionsonroboticsandnavigationtasks),withlimitedformalregretanalysis. Paidobservationsandinformationacquisition.",
+      "size": 463,
+      "sentences": 5
+    },
+    {
+      "id": 126,
+      "content": "ticsandnavigationtasks),withlimitedformalregretanalysis. Paidobservationsandinformationacquisition. Anotherrelatedlinestudiesdecisionmakingwhenob-\nservations incur explicit costs. In RL, agents may choose when to acquire measurements or labels, trading\nrewardforinformation[Bel+20;NFB21;Wan+25]. Inonlinelearning,closelyrelated“label-efficient\"and\nbudgeted feedback models investigate how querying constraints affect regret [Sel+14; AB10].",
+      "size": 439,
+      "sentences": 5
+    },
+    {
+      "id": 127,
+      "content": "ent\"and\nbudgeted feedback models investigate how querying constraints affect regret [Sel+14; AB10]. This area\nblends theoretical formulations (budget/constraint design, regret) with empirical demonstrations; deep im-\nplementationsappearmainlyinapplication-drivenstudies. Intermittentobservationsandunreliablesensing. Apracticalmotifisintermittentlyavailableobserva-\ntions due to sensing/communication failures.",
+      "size": 410,
+      "sentences": 4
+    },
+    {
+      "id": 128,
+      "content": "sing. Apracticalmotifisintermittentlyavailableobserva-\ntions due to sensing/communication failures. Deep Recurrent Q-Learning (DRQN) [HS17] tackles partial\nobservability (flickering screen) by replacing feedforward policies with RNNs, showing empirical gains\nunder dropped observations. Subsequent empirical studies examine control with sporadic measurements\nor packet loss [KTO18].",
+      "size": 382,
+      "sentences": 4
+    },
+    {
+      "id": 129,
+      "content": "ns. Subsequent empirical studies examine control with sporadic measurements\nor packet loss [KTO18]. More recent formulations introduce intermittently observable MDPs with model-\ning/algorithmicstructurebeyondad-hocmasking[CL25]. ThislineislargelyempiricaldeepRL. Active sensing and perception. Active perception frames sensing as a decision problem: agents select\nactions that improve informativeness while pursuing task reward.",
+      "size": 428,
+      "sentences": 6
+    },
+    {
+      "id": 130,
+      "content": "a decision problem: agents select\nactions that improve informativeness while pursuing task reward. Active-perception POMDPs [Sat+17]\nformalize this, and recent deep RL approaches study active vision and act-then-measure protocols that in-\nterleavetaskactionswithtargetedmeasurements[SR23;KSJ23].",
+      "size": 295,
+      "sentences": 2
+    },
+    {
+      "id": 131,
+      "content": "on and act-then-measure protocols that in-\nterleavetaskactionswithtargetedmeasurements[SR23;KSJ23]. Theseworksareprimarilyempiricaland\nuse deep neural networks (vision backbones with policy/value heads), sometimes with recurrent modules\nfor memory; theoretical analysis focuses on tractable planning surrogates and approximate belief updates\nratherthanregret.",
+      "size": 359,
+      "sentences": 2
+    },
+    {
+      "id": 132,
+      "content": "analysis focuses on tractable planning surrogates and approximate belief updates\nratherthanregret. 14\n===  15 ===\nB Augmented Policies: Proofs\nInthissection,weproveexistenceoftheoptimalaugmentedpolicyπ˚ : X Ñ A. Theargumentfollowsby\nclassicapplicationoftheBanachfixed-pointtheoremfortheBellmanoptimalityoperator(e.g.,see[Put94]). First,werestateandproveTheorem2.5. Theorem2.5(Restated).",
+      "size": 386,
+      "sentences": 4
+    },
+    {
+      "id": 133,
+      "content": "ellmanoptimalityoperator(e.g.,see[Put94]). First,werestateandproveTheorem2.5. Theorem2.5(Restated). Underaugmentedpolicyπ : X Ñ A,theactionvalue-functionsatisfies:\n“ ‰ “ ‰\nQπpx,aq “ E rps,aq `γβpaqE Vπps1q `γβ¯ paqVπpx‘aq. s„bp.|xq s1„bp.|x‘aq\nProof. Qπpx,aq is“the exp‰ected return when starting from x, taking action a, and following π thereafter. ThetermE rps,aq istheexpectedimmediaterewardforexecutingactiona.",
+      "size": 414,
+      "sentences": 7
+    },
+    {
+      "id": 134,
+      "content": "ion a, and following π thereafter. ThetermE rps,aq istheexpectedimmediaterewardforexecutingactiona. Afterexecutinga,the\ns„bp.|xq\nenvironmentproceedstoanaugmentedstatethatdependsonwhetheradata-burstoccurs:\n• with probability βpaq, the next state s1 „ bp¨ | x ‘ aq matches the next augmented state, and the\ncontinuationvalueisVπps1q;\n• withprobabilityβ¯ paq,nonewstateisobserved,thenextaugmentedstateisx‘a,andthecontinuation\nvalueisVπpx‘aq. Takingexpectationsanddiscountingyieldstheresult. TheoremB.1.",
+      "size": 499,
+      "sentences": 5
+    },
+    {
+      "id": 135,
+      "content": "x‘a,andthecontinuation\nvalueisVπpx‘aq. Takingexpectationsanddiscountingyieldstheresult. TheoremB.1. LetMbeanATST-MDPpS,A,P,r,γ,βq. Definethespaceofmeasurablevalue-functions\nV “ tV : X Ñ r0, 1 su,andtheBellmanoptimalityoperatorT : V Ñ V as\n1´γ\n! ) “ ‰ “ ‰\nTVpxq “ max E rps,aq `γβpaqE Vps1q `γβ¯ paqVpx‘aq . s„bp.|xq s1„bp.|x‘aq\naPA\nThen,Tisaγ-contraction,meaningthatforallV,U P V,wehave∥TV ´TU∥ ď γ∥V ´U∥ . 8 8\nProof.",
+      "size": 417,
+      "sentences": 8
+    },
+    {
+      "id": 136,
+      "content": "„bp.|x‘aq\naPA\nThen,Tisaγ-contraction,meaningthatforallV,U P V,wehave∥TV ´TU∥ ď γ∥V ´U∥ . 8 8\nProof. ForallV P V,letfunctionQ : X ˆA Ñ r0, 1 sbegivenby\nV 1´γ\n“ ‰ “ ‰\nQ px,aq “ E rps,aq `γβpaqE Vps1q `γβ¯ paqVpx‘aq,\nV s„bp.|xq s1„bp.|x‘aq\nsothattheBellmanoptimalityoperatorsatisfiesTVpxq “ max Q px,aq.",
+      "size": 300,
+      "sentences": 3
+    },
+    {
+      "id": 137,
+      "content": "¯ paqVpx‘aq,\nV s„bp.|xq s1„bp.|x‘aq\nsothattheBellmanoptimalityoperatorsatisfiesTVpxq “ max Q px,aq. a V\nFixarbitraryV,U P V. Foreveryx P X,wecanwrite\nˇ ˇ ˇ ˇ\nˇTVpxq´TUpxq ˇ\n“\nˇ\nmax Q px,aq´max Q px,aq\nˇ\nˇa V a Uˇ\nˇ ˇ\nď max Q px,aq´Q px,aq\nV U\na ˇ ˇ\nˇ “ ‰ ˇ\n“ maxˇγβpaqE pV ´Uqps1q `γβ¯ paqpV ´Uqpx‘aqˇ\ns1„bp.|x‘aq\na ` ˘\nď max γβpaq∥V ´U∥ `γβ¯ paq∥V ´U∥\na 8 8\n“ γ∥V ´U∥ . 8\nThus,Tisindeedaγ-contractiononV. Corollary B.2.",
+      "size": 420,
+      "sentences": 4
+    },
+    {
+      "id": 138,
+      "content": "max γβpaq∥V ´U∥ `γβ¯ paq∥V ´U∥\na 8 8\n“ γ∥V ´U∥ . 8\nThus,Tisindeedaγ-contractiononV. Corollary B.2. Under the conditions of Theorem B.1, there exists an optimal policy π˚ : X Ñ A that\nachievesVπ˚ pxq “ sup Vπpxqforeveryx P X.\nπ\n15\n===  16 ===\nProof. ItiseasytoverifythatfunctionV˚pxq :“ sup Vπpxqhastobeafixed-pointofTbyTheorem2.5. π\nFrom Theorem B.1 and Banach fixed-point theorem, we conclude that V˚ is the unique fixed-point of T.\nConsideranypolicyπ˚ : X Ñ Asuchthatforallx P X:\n! )",
+      "size": 485,
+      "sentences": 6
+    },
+    {
+      "id": 139,
+      "content": "onclude that V˚ is the unique fixed-point of T.\nConsideranypolicyπ˚ : X Ñ Asuchthatforallx P X:\n! ) “ ‰ “ ‰\nπ˚pxq P argmax E rps,aq `γβpaqE V˚ps1q `γβ¯ paqV˚px‘aq . s„bp.|xq s1„bp.|x‘aq\naPA\nThen, Vπ˚ “ V˚ because π˚ always selects an action that attains the supremum in the Bellman equation. Thereasoningfollows[Put94]. Additionally,weprovideformulasforRandPV,obtainedbyconditioningonT . DB\nN\nLemmaB.3.",
+      "size": 402,
+      "sentences": 6
+    },
+    {
+      "id": 140,
+      "content": "gfollows[Put94]. Additionally,weprovideformulasforRandPV,obtainedbyconditioningonT . DB\nN\nLemmaB.3. Forallx P X anda P A ,itholdsthat\n´ ¯\nř ś “ ‰\nRpx,aq “ 8 h“1 γh´\n´\n1 h i“ ´ 1 1β¯ pa\n¯\ni q E s„bp.|xr hq rps,a h q ,\nř ś “ ‰\nPVpx,aq “ 8 h“1 γh h i“ ´ 1 1β¯ pa i q βpa h qE s1„bp.|xr h`1q Vπps1q . wherexr “ x‘pa qh´1 P X foreveryh P N.\nh i i“1\nProof. LetPp.|aqdenotetheprobabilitymeasureofT\nDB\noverNYt8uwhentheagentscom\nś\nmitstoplaying\nsequence of actions a “ pa ,a ,...q P A N .",
+      "size": 479,
+      "sentences": 6
+    },
+    {
+      "id": 141,
+      "content": "measureofT\nDB\noverNYt8uwhentheagentscom\nś\nmitstoplaying\nsequence of actions a “ pa ,a ,...q P A N . Then, it holds that PpT ě h | aq “ h´1β¯ pa q and\nś 1 2 DB i“1 i\nPpT “ h | aq “ p h´1β¯ pa qqβpa qforallh P N.\nDB i“1 i h\nThen,byconditioningonT ,wecanwrite\nDB\n” ˇ ı\nř ˇ\nRpx,aq “ E TDB γh´1rps ,a qˇx “ x, pa q TDB “ a\nř\ns1„bp.|xq h“1 h h 1 i i“1 1:TDB\n“ 8 γh´1E rrps,a qs¨PpT ě h|aq\nř\nh“1 ´s\nś\n„bp.|x‘pa1,...¯,a h´1qq\n“\nk\n‰\nDB\n“ 8 h“1 γh´\n”\n1 h i“ ´ 1 1β¯ pa i q\nˇ\nE s„bp.|xr hq rps,a h q ,\nı\nˇ\nPVpx,aq “ E γTDBVps qˇx “ x, pa q TDB “ a\nř\ns1„bp.|xq TDB`1 1 i i“1 1:TDB\n“ 8 γhE rVps1qs¨PpT “ h|aq\nř\nh“1 ´s\nś\n1„bp.|x‘pa1,..¯.,a hqq DB\n“ ‰\n“ 8 h“1 γh h i“ ´ 1 1β¯ pa i q βpa h qE s1„bp.|xr h`1q Vπps1q .",
+      "size": 700,
+      "sentences": 2
+    },
+    {
+      "id": 142,
+      "content": "´s\nś\n1„bp.|x‘pa1,..¯.,a hqq DB\n“ ‰\n“ 8 h“1 γh h i“ ´ 1 1β¯ pa i q βpa h qE s1„bp.|xr h`1q Vπps1q . Thus,bothformulasarecorrect. C Linear ATST-MDPs: Proofs\nC.1 LinearityofBeliefandAction-SequenceValue-Function\nInthissubsection,weprove: Lemma3.1andTheorem3.2. Lemma3.1(Restated). Forallx P XzS,bp.|xq “ ϕpxqJµp.qand∥ϕpxq∥ ď 1. 2\nMoreover,foreverymapV : S Ñ r0,1{p1´γqsandpx,aq P X ˆA,itholdsthat\n“ ‰ “ ‰\nE rps,aq “ xϕpx‘aq, θy, and E Vps1q “ xϕpx‘aq, vy,\ns„bp.|xq s1„bp.|x‘aq\nş ?",
+      "size": 477,
+      "sentences": 6
+    },
+    {
+      "id": 143,
+      "content": "ˆA,itholdsthat\n“ ‰ “ ‰\nE rps,aq “ xϕpx‘aq, θy, and E Vps1q “ xϕpx‘aq, vy,\ns„bp.|xq s1„bp.|x‘aq\nş ? wherevectorv “ Vpsqdµpsqsatisfies∥v∥ ď d . 2 1´γ\n16\n===  17 ===\nProof. Weprovetheseclaimsseparately:\n1.",
+      "size": 202,
+      "sentences": 4
+    },
+    {
+      "id": 144,
+      "content": "evectorv “ Vpsqdµpsqsatisfies∥v∥ ď d . 2 1´γ\n16\n===  17 ===\nProof. Weprovetheseclaimsseparately:\n1. Linearityofbelief: Fixx P XzS andletx “ ps ;a ,...,a q. Then,thebeliefbp.|xqsatisfies\n1 1 ∆\n” ı\nş ś\nbp.|xq “ ∆ Pps |s ,a q Pps|s ,a qds\nS∆´1 i“2 i i´1 i´1 ∆ ∆ i\n” ı\nş ś\n“ ∆ ϕps ,a qJµps q ϕps ,a qJµp.qds\nS∆´1 i“2 i´1 i´1 i ∆ ∆ i\n„ ȷ\n´ ¯\nś ş\n“ ϕps ,a qJ ∆ µps qϕps ,a qJds µp.q\n1 1 i“2 S i i i i\n“ xϕpxq, µp.qy. 2. Norm bound: From Assumption 2.1, sup ∥ϕps,aq∥ ď 1.",
+      "size": 464,
+      "sentences": 6
+    },
+    {
+      "id": 145,
+      "content": "a qJds µp.q\n1 1 i“2 S i i i i\n“ xϕpxq, µp.qy. 2. Norm bound: From Assumption 2.1, sup ∥ϕps,aq∥ ď 1. Consider any x P XzS and a P A.\ns,a 2\nThen,usinglinearityofbelief,wecanwrite\nż\nϕpx‘aqJ “ ϕpxqJMpaq “ ϕpxqJµpsqϕps,aqJds “ E ϕps,aqJ,\ns„bp.|xq\nS\nfromwhichtheresultfollowsbyJensen’sinequalityduetoconvexityofl2-norm\n(cid:13) (cid:13)\n∥ϕpx‘aq∥ “ (cid:13)E ϕps,aq(cid:13) ď E ∥ϕps,aq∥ ď 1. 2 (cid:13) s„bp.|xq (cid:13) s„bp.|xq 2\n2\n3.",
+      "size": 429,
+      "sentences": 5
+    },
+    {
+      "id": 146,
+      "content": "∥ϕpx‘aq∥ “ (cid:13)E ϕps,aq(cid:13) ď E ∥ϕps,aq∥ ď 1. 2 (cid:13) s„bp.|xq (cid:13) s„bp.|xq 2\n2\n3. Linearity of expected reward and value-function: From Assumption 2.1, rps,aq “ ϕps,aqJθ. Now,forallpx,aq P pXzSqˆA,wehave:\n“ ‰ ş\nE rps,aq “ ϕpxqJµpsqϕps,aqJθds “ ϕpxqJMpaqθ “ ϕpx‘aqJθ. s„bp.|xq S\nSimilarly,forallx P XzS,itholdsthat\n“ ‰ ş\nE Vpsq “ ϕpxqJµpsqVpsqds “ ϕpxqJv,\ns„bp.|xq S\nş ? wherev “ µpsqVpsqdssatisfies∥v∥ ď sup |Vpsq|¨∥|µ|pSq∥ ď d . S 2 s 2 1´γ\n” ı\nş\nTheorem3.2(Restated).",
+      "size": 486,
+      "sentences": 7
+    },
+    {
+      "id": 147,
+      "content": "wherev “ µpsqVpsqdssatisfies∥v∥ ď sup |Vpsq|¨∥|µ|pSq∥ ď d . S 2 s 2 1´γ\n” ı\nş\nTheorem3.2(Restated). Definevπ “ 2 θ{p1´γq P R2d,wherevπ “ Vπpsqdµpsq. 12 vπ S\nN\nThen,foreveryx P X andsequencea P A :\nKπpx,aq “ xψpx,aq, vπ y. 12\n? Moreover,itholdsthatsup ∥ψpx,aq∥ ď 1and (cid:13) (cid:13)vπ (cid:13) (cid:13) ď 4 d.\nx,a 2 12 2 1´γ\nProof. FollowsimmediatelyfromthefollowingTheoremC.1,weprovelinearityinψ forbothRandPVπ\ninthedecompositionKπ “ R`PVπ.",
+      "size": 443,
+      "sentences": 7
+    },
+    {
+      "id": 148,
+      "content": "ediatelyfromthefollowingTheoremC.1,weprovelinearityinψ forbothRandPVπ\ninthedecompositionKπ “ R`PVπ. 17\n===  18 ===\nTheoremC.1(LinearityofRandPV withrespecttoψ). Foreveryx P X,sequencea P A N ,andfunction\nV : S Ñ r0,p1´γq´1s,itholdsthat\n« ff « ff\n2θ{p1´γq 0\nRpx,aq “ ψpx,aqJ and PVpx,aq “ ψpx,aqJ d ,\n0 2v\nd\nş ? wherev “ Vpsqdµpsqsatisfies∥v∥ ď d . Moreover,sup ∥ψpx,aq∥ ď 1. S 2 1´γ x,a 2\nProof.",
+      "size": 395,
+      "sentences": 6
+    },
+    {
+      "id": 149,
+      "content": "d ,\n0 2v\nd\nş ? wherev “ Vpsqdµpsqsatisfies∥v∥ ď d . Moreover,sup ∥ψpx,aq∥ ď 1. S 2 1´γ x,a 2\nProof. UsingLemmasB.3and3.1,wewrite\nÿ8 ´ ś ¯ “ ‰\nRpx,a‘aq “ E rrps,aqs`β¯ paq γk k´1β¯ pa q E rps,a q\ns„bp.|xq i“1 i k\nk“1\ns„bp.|x‘pa,a1,...,a k´1qq\nÿ8 ´ ś ¯\n“ ϕpx‘aqJθ`β¯ paq γk k´1β¯ pa q ϕpx‘pa,a ,...,a qqJθ\ni“1 i 1 k\n´ k“1 ¯\nř ś ś\n“ ϕpx‘aqJ I `β¯ paq 8 γkp k´1β¯ pa qqp k Mpa qq θ\nk“1 i“1 i i“1 i\n` ˘\n“ ϕpx‘aqJ βpaqI `β¯ paqM paq θ\n` 1 ˘\n“ 1ϕpx‘aqJ βpaq¨p1´γqI `β¯ paq¨p1´γqM paq p2θ{p1´γqq\n2 ” ı 1\n“ ψpx,aqJ 2θ{p1´γq ,\n0\nd\nÿ8 ś\nPVpx,a‘aq “ βpaqγ E Vpsq`β¯ paqγ γkp k´1β¯ pa qqβpa q E Vpsq\ni“1 i k\ns„bp.|x‘aq\nk“1\ns„bp.|x‘pa,a 1:kqqq\nÿ8 ´ ś ¯\n“ βpaqγϕpx‘aqJv`β¯ paqγ γk k´1β¯ pa q βpa qϕpx‘pa,...,a qqJv\ni“1 i k k\n´ k“1 ¯\nř ś ś\n“ ϕpx‘aqJ βpaqγI `β¯ paqγ 8 γkp k´1β¯ pa qqβpa qp k Mpa qq v\nk“1 i“1 i k i“1 i\n` ˘\n“ ϕpx‘aqJ βpaqγI `β¯ paqγM paq v\n” ı 2\n“ ψpx,aqJ 0 d .",
+      "size": 861,
+      "sentences": 5
+    },
+    {
+      "id": 150,
+      "content": "pa qqβpa qp k Mpa qq v\nk“1 i“1 i k i“1 i\n` ˘\n“ ϕpx‘aqJ βpaqγI `β¯ paqγM paq v\n” ı 2\n“ ψpx,aqJ 0 d . 2v\nToboundthel -norm,wewrite\n2\n(cid:13) ř ś (cid:13)\n∥ψpx,a‘aq∥ ď 1´γ ¨(cid:13)ϕpx‘aq`β¯ paq 8 γkp k´1β¯ pa qqϕpx‘a,a ,...,a qq(cid:13)\n2 2 (cid:13) k“1 i“1 i 1 k (cid:13)\n2\n(cid:13) ř ś (cid:13)\n` 1 (cid:13)βpaqγϕpx‘aq`β¯ paqγ 8 γkp k´1β¯ pa qqβpa qϕpx‘pa,...,a qq(cid:13)\n2 (cid:13) k“1 i“1 i k k (cid:13)\n´ ¯ 2\nř ř ř\n(a)\nď 1´γ ¨p1` 8 γkq` γ ¨pβpaq`β¯ paq 8 p k´1β¯ pa qqβpa qq\n2 k“1 2 k“1 i“1 i k\n´ ¯\nď 1´γ ¨ 1 ` γ ¨1 “ 1`γ ď 1.",
+      "size": 531,
+      "sentences": 2
+    },
+    {
+      "id": 151,
+      "content": "1` 8 γkq` γ ¨pβpaq`β¯ paq 8 p k´1β¯ pa qqβpa qq\n2 k“1 2 k“1 i“1 i k\n´ ¯\nď 1´γ ¨ 1 ` γ ¨1 “ 1`γ ď 1. 2 1´γ 2 2\n(cid:13) (cid:13)\nwhere(a)usesthefactthatsup x1(cid:13)ϕpx1q(cid:13)\n2\nď 1. C.2 ApproximationoftheAction-SequenceFeatureMap: Proofs\nInthissubsection,weproveTheorem3.4. AkeytechnicaltoolisLemmaC.2providedbelow. 18\n===  19 ===\nTheorem 3.4 (Restated). Assume M x P R2dˆ2d and β p P r0,1s satisfy sup |||M x ´ M ||| ď ε and\na a aPA a a 2\nsup aPA |β p a ´β a | ď ε β forsomeε P r0, 1 2 ´ ?",
+      "size": 494,
+      "sentences": 6
+    },
+    {
+      "id": 152,
+      "content": "satisfy sup |||M x ´ M ||| ď ε and\na a aPA a a 2\nsup aPA |β p a ´β a | ď ε β forsomeε P r0, 1 2 ´ ? γ d sandε β P r0,1s. Letψ p : SˆA N Ñ R2dbetheestimatedaction-\nsequence feature map obtained from (3) by replacing action-matrices M and data-burst probabilities β\na ? a\nwiththeirestimatesM x , β p incomputation. Then,itholdsthatsup ∥pψ p ´ψqps,aq∥ ď 16dpε`ε { dq. a a s,a 2 1´γ β\n? Moreover,functionψ r ps,aq “ ψ p ps,a ? q isa 32dpε`ε β{ dq -admissibleestimationofψ.",
+      "size": 468,
+      "sentences": 8
+    },
+    {
+      "id": 153,
+      "content": "s,a 2 1´γ β\n? Moreover,functionψ r ps,aq “ ψ p ps,a ? q isa 32dpε`ε β{ dq -admissibleestimationofψ. 1`16dpε`ε β{ dq{p1´γq 1´γ\nAt the core of the proof is the following more general lemma, which bounds the estimation error in the\nfeaturevectorψ usingthatofaction-matrices. x x\nLemmaC.2. AssumeestimatesM satisfysup |||M ´M ||| ď εanddefinenorm-correctedestimates\n? a aPA a a 2\nx x p p\nMc “ M {p1 ` ε dq. Also, suppose that estimates β P r0,1s satisfy sup |β ´ β | ď ε .",
+      "size": 468,
+      "sentences": 8
+    },
+    {
+      "id": 154,
+      "content": "a a 2\nx x p p\nMc “ M {p1 ` ε dq. Also, suppose that estimates β P r0,1s satisfy sup |β ´ β | ď ε . Let\na a a aPA a a β\nψ p ,ψ p : X ˆA Ñ R2dbetheestimatedaction-sequencefeaturemapsobtainedfromψbyreplacingM ,β\nc a a\nwiththeirestimatesM x (orM x c)andβ p ,respectively. Then,foralls P S anda P A N ,itholdsthat\na a a\n∥pψ p ´ψqps,aq∥ ď\n4d2\n¨pε`ε {d3{2q. c 2 β\n1´γ\n? Moreover,ifε ă p1{γ ´1q{ d,thenitholdsthat\np 4dp1´γq ? ∥pψ´ψqps,aq∥ ď ? ¨pε`ε { dq.",
+      "size": 446,
+      "sentences": 8
+    },
+    {
+      "id": 155,
+      "content": "2q. c 2 β\n1´γ\n? Moreover,ifε ă p1{γ ´1q{ d,thenitholdsthat\np 4dp1´γq ? ∥pψ´ψqps,aq∥ ď ? ¨pε`ε { dq. 2 β\np1´γp1`ε dqq2\nTakingthislemmaasgiven,letusproveTheorem3.4. ProofofTheorem3.4. Forε P r0, 1´ ? γ s,wehaveε ă 1{ ? γ´1 . So,bythesecondcaseofLemmaC.2,\n2 d d\np 4dp1´γq ? 16d ? sup ∥pψ´ψqps,aq∥ ď ? ¨pε`ε { dq ď ¨pε`ε { dq,\ns,a 2 p1´γp1`ε dqq2 β 1´γ β\n? whichprovesthefirststatement. Now,wehavetoshowthatψ\nr\nis\n32dpε`ε β{ dq\n-admissibleestimationofψ. 1´γ\n? Letϵ “\n16dpε`ε β{ dq\n.",
+      "size": 478,
+      "sentences": 18
+    },
+    {
+      "id": 156,
+      "content": "nt. Now,wehavetoshowthatψ\nr\nis\n32dpε`ε β{ dq\n-admissibleestimationofψ. 1´γ\n? Letϵ “\n16dpε`ε β{ dq\n. Then,foreverys,awritefollowing\n2 1´γ\n? p\nr ∥pψ´ψqps,aq∥ 2 ϵ 2 ∥ψps,aq∥ 2 32dpε`ε β { dq\n∥pψ´ψqps,aq∥ ď ` ď 2ε “ ,\n2 2\n1`ϵ 1`ϵ 1´γ\n2 2\np\nr ∥pψ´ψqps,aq∥ 2 ∥ψps,aq∥ 2 ϵ 2 1\n∥ψps,aq∥ ď ` ď ` “ 1. 2\n1`ϵ 1`ϵ 1`ϵ 1`ϵ\n2 2 2 2\nr N\nSo,weonlyhavetoshowcontinuityofψps,.qwithrespecttotheproducttopologyonA andthestandard\ntopology on R2d.",
+      "size": 425,
+      "sentences": 7
+    },
+    {
+      "id": 157,
+      "content": "eonlyhavetoshowcontinuityofψps,.qwithrespecttotheproducttopologyonA andthestandard\ntopology on R2d. This follows from the formula of ψ p , which is based on the γ-discounted summation of\nmatrixproducts. EachtermisboundedinoperatornormasshownbyLemmaC.4:\n´ ¯\nγn||| ś n M x ||| ď γn¨ ? dp1`ε ? dqn ď ? d¨ 1`γ n ,\ni“1 ai 2 2\nwhereexponentterm 1`γ P p0,1qensuresconvergenceandthereforecontinuityforψ p andψ r . 2\n19\n===  20 ===\nC.2.1 ProofofLemmaC.2\nThefollowinglemmasareusedtoproveLemmaC.2. ś ? LemmaC.3.",
+      "size": 500,
+      "sentences": 9
+    },
+    {
+      "id": 158,
+      "content": "r . 2\n19\n===  20 ===\nC.2.1 ProofofLemmaC.2\nThefollowinglemmasareusedtoproveLemmaC.2. ś ? LemmaC.3. Foralln P Nanda ,...a P A,itholdsthat||| n M ||| ď d.\n1 n i“1 ai 2\nProof. UsingtheLinearMDPAssumption2.1,wecanwrite\nż ż\nś ś\nn M “ µpsqϕps,a qJ n M ds “ µpsqϕpps;a ,...,a qqJds.",
+      "size": 275,
+      "sentences": 6
+    },
+    {
+      "id": 159,
+      "content": "ngtheLinearMDPAssumption2.1,wecanwrite\nż ż\nś ś\nn M “ µpsqϕps,a qJ n M ds “ µpsqϕpps;a ,...,a qqJds. i“1 ai 1 i“2 ai 1 n\nS S\nThen,byspectral-Frobeniusinequality,itfollowsthat\nc\nś ř (cid:13)ş (cid:13)2\n||| n M ||| ď (cid:13) µ psqϕpps;a ,...,a qqJds(cid:13)\ni“1 ai 2 iPrds(cid:13) S i 1 n (cid:13)\nb 2\nř\nď p|µ |pSqq2¨sup ∥ϕpxq∥2\niPrds i xPX 2\n? “ ∥|µ|pSq∥ ¨sup∥ϕpxq∥ ď d,\n2 2\nxPX\nwherethefinalinequalityfollowsfromAssumption2.1andLemma3.1. LemmaC.4.",
+      "size": 447,
+      "sentences": 4
+    },
+    {
+      "id": 160,
+      "content": "|pSq∥ ¨sup∥ϕpxq∥ ď d,\n2 2\nxPX\nwherethefinalinequalityfollowsfromAssumption2.1andLemma3.1. LemmaC.4. Supposethatforeverya P A,estimateM x P Rdˆd satisfies|||M ´M x ||| ď ε.\na a a 2\nś ? ? Then,foralln P Nanda ,...a P A,itholdsthat||| n M x ||| ď dp1`ε dqn. 1 n i“1 ai 2\nx x\nProof. LetE “ M ´M sothatM “ M `E and|||E ||| ď ε.\na a a a a a a 2\nAlso,letX0 “ M andX1 “ E . Then,wecanwrite\na a a a\nś ś\n||| n M x ||| “ ||| n pM `E q|||\ni“1 ai 2 ř i“1 a śi ai 2\nď\nbPt0,1un\n|\n´\n|| n\ni“1\nX\na\nbi\ni\n|||\n2 ¯\n(a) ř ?",
+      "size": 500,
+      "sentences": 8
+    },
+    {
+      "id": 161,
+      "content": "x ||| “ ||| n pM `E q|||\ni“1 ai 2 ř i“1 a śi ai 2\nď\nbPt0,1un\n|\n´\n|| n\ni“1\nX\na\nbi\ni\n|||\n2 ¯\n(a) ř ? ś ? ď d n rIpb “ 0q`Ipb “ 1q¨|||E ||| ds\nbPt0,1un i“1 i i ai 2\n? ř ? ď d¨ bPt0,1un pε dq∥b∥ 1\n? ? “ dp1`ε dqn,\nwhere(a)followsbyboundingconsecutiveblocksofneighbouringX0 matricesas|||X0X0 ...X0 ||| ď\n? a a l a l`1 ar 2\nd using Lemma C.3 and pairing each such block (except maybe one) with a neighbouring matrix X1,\n? a\nwhichhas|||X1||| “ |||E ||| ď d.\na 2 a 2\n? LemmaC.5. Letε P r0,1q.",
+      "size": 484,
+      "sentences": 11
+    },
+    {
+      "id": 162,
+      "content": "th a neighbouring matrix X1,\n? a\nwhichhas|||X1||| “ |||E ||| ď d.\na 2 a 2\n? LemmaC.5. Letε P r0,1q. SupposematricesA,B P Rdˆd satisfy|||A||| ď dand|||A´B||| ď ε. Then,\n? 2 2\nB1 “ B{p1`ε dqsatisfies|||A´B1||| ď 2ε. 2\n? Proof. LetA1 “ A{p1`ε dq. Usingthetriangleinequality,wecanwrite\n? |||A´B1||| 2 ď |||A´A1||| 2 `|||A1´B1||| 2 ď ε ? d ¨|||A||| 2 ` 1 ? ¨|||A´B||| 2 ď 2dε. 1`ε d 1`ε d\n20\n===  21 ===\n? x x\nLemmaC.6. UndertheconditionsofLemmaC.4,letMc “ M {p1`ε dq. Then,wehave\na a\nś ś ?",
+      "size": 485,
+      "sentences": 18
+    },
+    {
+      "id": 163,
+      "content": "===  21 ===\n? x x\nLemmaC.6. UndertheconditionsofLemmaC.4,letMc “ M {p1`ε dq. Then,wehave\na a\nś ś ? ||| n M x ´ n M ||| ď dp1`ε dqn´1nε, (4)\nś\ni“1 ai\nś\ni“1 ai 2\n||| n M x c ´ n M ||| ď 2d2nε. (5)\ni“1 ai i“1 ai 2\nProof. Toshow(4),wewrite\nś ś ř ś ś\n||| n M x ´ n M ||| ď n |||p k´1M x qpM x ´M qp n M q|||\ni“1 ai i“1 ai 2 ř k“1 ś i“1 ai a k a k i ś“k`1 ai 2\nď n ||| k´1M x ||| |||M x ´M ||| ||| n M |||\nk“1 ´ i“1 ai 2 a k a ¯k 2 i“k`1 ai 2\n(a) ř ? ? ? ?",
+      "size": 450,
+      "sentences": 10
+    },
+    {
+      "id": 164,
+      "content": "i 2\nď n ||| k´1M x ||| |||M x ´M ||| ||| n M |||\nk“1 ´ i“1 ai 2 a k a ¯k 2 i“k`1 ai 2\n(a) ř ? ? ? ? ď n dp1` dεqk´1¨ε¨ d ď dp1`ε dqn´1nε\nk“1\nwhere(a)followsfromLemmasC.3andC.4. Similarly,toprove(5),wewrite\nś ś ř ś ś\n||| n M x c ´ n M ||| ď n |||p k´1M x c qpM x c ´M qp n M q|||\ni“1 ai i“1 ai 2 ř k“1 ś i“1 ai a k a k i ś“k`1 ai 2\nď n ||| k´1M x c ||| |||M x c ´M ||| ||| n M |||\nk“1 i“1 ai 2 a k a k 2 i“k`1 ai 2\n(b) ř ? ? ď n p d¨2dε¨ dq “ 2d2nε,\nk“1\nwhere(b)followsfromLemmasC.3,C.4,andC.5.",
+      "size": 493,
+      "sentences": 8
+    },
+    {
+      "id": 165,
+      "content": "k a k 2 i“k`1 ai 2\n(b) ř ? ? ď n p d¨2dε¨ dq “ 2d2nε,\nk“1\nwhere(b)followsfromLemmasC.3,C.4,andC.5. ε\nLe\nP\nm\nr0\nm\n,\na\n1s\nC\n. L\n.7\ne\n. t\nL\nsa\net\n“\nse\n1\nqu\n´\nen\na\nce\na\ns\nn\np\nd\na\ni\ns b\nq8\ni“\n“\n1\n,\n1\npb\n´\ni\nq\nb\n8\ni“1\nfo\nw\nr\ni\ne\nth\nve\nv\nr\na\ny\nlu\ni\ne\nP\ns\nN\nin\n. r\nT\n0\nh\n,1\nen\ns\n,\nb\ni\ne\nth\nsu\no\nc\nld\nh\ns\nth\nth\na\na\nt\nt\nsup iPN|a\ni\n´b\ni\n| ď εforsome\ni i i i\nś ś\n@n P N, | n b ´ n a | ď nε, (6)\niř“1 i śi“1 i ś\n@γ P p0,1q, 8 γk|p k´1s b qb ´p k´1sa qa | ď 2ε . (7)\nk“1 i“1 i k i“1 i k 1´γ\nProof.",
+      "size": 484,
+      "sentences": 8
+    },
+    {
+      "id": 166,
+      "content": "ř“1 i śi“1 i ś\n@γ P p0,1q, 8 γk|p k´1s b qb ´p k´1sa qa | ď 2ε . (7)\nk“1 i“1 i k i“1 i k 1´γ\nProof. Toprove(6)forarbitraryn P N,wesimplywrite:\nś ś ř ś ś ś ś\n| n b ´ n a | ď n | k´1a n b ´ k a n b |\ni“1 i i“1 i řk“1 i“1 i śi“k i ś i“1 i i“k`1 i\n“ n |b ´a | k´1a n b\nk“1 k k i“1 i i“k`1 i\nď nε.",
+      "size": 292,
+      "sentences": 3
+    },
+    {
+      "id": 167,
+      "content": "b |\ni“1 i i“1 i řk“1 i“1 i śi“k i ś i“1 i i“k`1 i\n“ n |b ´a | k´1a n b\nk“1 k k i“1 i i“k`1 i\nď nε. Toprove(7)forarbitraryγ P p0,1q,considerthefinitesupremumoverallappropriatepairsofsequences:\nř ś ś ř\nS “ sup 8 γk|p k´1s b qb ´p k´1sa qa | ď 8 γk “ 1 ,\nk“1 i“1 i k i“1 i k k“1 1´γ\na,bPr0,1sN:sup\ni\n|ai´bi|ďε\nwithintentiontoshowthatS ď 2ε .",
+      "size": 338,
+      "sentences": 2
+    },
+    {
+      "id": 168,
+      "content": "ď 8 γk “ 1 ,\nk“1 i“1 i k i“1 i k k“1 1´γ\na,bPr0,1sN:sup\ni\n|ai´bi|ďε\nwithintentiontoshowthatS ď 2ε . Then,foralla,b P r0,1s N suchthatsup |a ´b | ď ε,wecanwrite:\n1´γ i i i\nř ś ś ř ś\n8 γk|p k´1s b qb ´p k´1sa qa | ď γ|b ´a |` 8 γk| s b ´sa |¨|p k´1s b qb |\nk“1 i“1 i k i“1 i k ř 1 1 kś“2 1 1 ś i“2 i k\n` 8 γk|sa |¨|p k´1s b qb ´p k´1sa qa |\nk“2 ř 1 ś i“2 i k i“2 i k\nď ε¨p1` 8 p k´1s b qb q\nř k“1ś i“1 i`1 k`1 ś\n`γ ¨ 8 γk|p k´1s b qb ´p k´1sa qa |\nk“1 i“1 i`1 k`1 i“1 i`1 k`1\nď 2ε`γS.",
+      "size": 482,
+      "sentences": 2
+    },
+    {
+      "id": 169,
+      "content": "qb q\nř k“1ś i“1 i`1 k`1 ś\n`γ ¨ 8 γk|p k´1s b qb ´p k´1sa qa |\nk“1 i“1 i`1 k`1 i“1 i`1 k`1\nď 2ε`γS. Therefore,itholdsthatS ď 2ε`γS andsoS ď 2ε . 1´γ\n21\n===  22 ===\nProofofLemmaC.2. Letβ p ¯ “ 1´β p P r0,1stoeasenotation. a a\nFromLemmaC.3,itfollowsthatmatricesM paq,M paqfrom(2)satisfy\n1 2\nř ś ś ř ? ? |||M paq||| ď 1` 8 γkp k´1β¯ q|||p k M q||| ď 8 γk d ď d , (8a)\n1 2\nř\nk“1\nś\ni“1 ai\nś\ni“1 ai 2\nř\nk“0\nś\n1´γ\n? ?",
+      "size": 409,
+      "sentences": 8
+    },
+    {
+      "id": 170,
+      "content": "| ď 1` 8 γkp k´1β¯ q|||p k M q||| ď 8 γk d ď d , (8a)\n1 2\nř\nk“1\nś\ni“1 ai\nś\ni“1 ai 2\nř\nk“0\nś\n1´γ\n? ? |||M paq||| ď 8 γkp k´1β¯ qβ |||p k M q||| ď 8 p k´1β¯ qβ d ď d. (8b)\n2 2 k“1 i“1 ai a k i“1 ai 2 k“1 i“1 ai a k\n? ? p\nPart1: Weprovetheresultforψ first. Supposeε P r0,p1´1{γq{ dq,sothatγp1`ε dq P r0,1q. x x x p\nLetM paq,M paqdenoteestimatesformatricesM paq,M paqcomputedusingestimatesM ,β . 1 2 1 1 a a\nř\nNote that for all c P r0,1q, 8 cnn “ c and sup cnn ď 1 .",
+      "size": 462,
+      "sentences": 8
+    },
+    {
+      "id": 171,
+      "content": "computedusingestimatesM ,β . 1 2 1 1 a a\nř\nNote that for all c P r0,1q, 8 cnn “ c and sup cnn ď 1 . Then, using Lemmas C.3, C.6, and\nn“0 p1´cq2 n 1´c\nC.7,wecanwrite:\nř ś ś ś ś\n|||M x paq´M paq||| ď 8 γk|||p k´1β p ¯ qp k M x q´p k´1β¯ qp k M q|||\n1 1 2\nř\nk“1\nś\ni“1 ai\nś\ni“1 ai i“1 ai i“1 ai 2\nď 8 γk||| k M x ´ k M |||\nk“1 ˇ i“1 ai i“1 ˇai 2\nř ˇś p ś ˇ ś\n` 8 γkˇ k´1β¯ ´ k´1β¯ ˇ||| k M |||\nk“1 i“1 ai i“1 ai i“1 ai 2\nř ? ř ? ď 8 γkp1`ε dqk´1kεd` 8 γkkε d\nk“1 k“1 β\n? ? “ p1´ γ γ p1 p1 ` ` ε ε ?",
+      "size": 494,
+      "sentences": 7
+    },
+    {
+      "id": 172,
+      "content": "“1 ai i“1 ai i“1 ai 2\nř ? ř ? ď 8 γkp1`ε dqk´1kεd` 8 γkkε d\nk“1 k“1 β\n? ? “ p1´ γ γ p1 p1 ` ` ε ε ? d d q qq2 ¨ 1` ε ε d ? d ` p1´ γ γq2 ¨ε β d\n? ď p1´γp1 d ` γ ε ? dqq2 pε`ε β { dq,\nř ś ś ś ś\n|||M x paq´M paq||| ď 8 γk|||p k´1β p ¯ qβ p p k M x q´p k´1β¯ qβ p k M q|||\n2 2 2 k“1 ´ i“1 ai a k i“1 ai ¯ i“1 ai a k i“1 ai 2\nś ś\nď sup kPN\nˇ\nγk ¨ ||| k i“1 M x ai ´ k i“1 M ai ||| 2\nˇ\n` ř 8 γk ˇ ˇp ś k´1β p ¯ qβ p ´p ś k´1β¯ qβ ˇ ˇ||| ś k M |||\nk“1 i“1 ai a k i“1 ai a k i“1 ai 2\n?",
+      "size": 478,
+      "sentences": 9
+    },
+    {
+      "id": 173,
+      "content": "ˇ\n` ř 8 γk ˇ ˇp ś k´1β p ¯ qβ p ´p ś k´1β¯ qβ ˇ ˇ||| ś k M |||\nk“1 i“1 ai a k i“1 ai a k i“1 ai 2\n? ď sup kPN γ ˇ kp1`ε dqk´1kεd ˇ\n` ř 8 γk ˇ ˇp ś k´1β p ¯ qβ p ´p ś k´1β¯ qβ ˇ ˇ ? d\nk“1 i“1 ai a k i“1 ai a k\n? ď 1´γp1 1 `ε ? dq ¨ 1` ε ε d ? d ` 1´ 2 γ ¨ε β d\n? ď 2d ? ¨pε`ε β { dq. 1´γp1`ε dq\nFrom(3),wehavethat\n` ˘\nψps,a‘aqJ “ 1 ϕps‘aqJ β I `β¯ M paq ,\n2 a 12 a 12\nwhereI\n12\n“ rp1´γqI γIs P Rdˆ2d andM\n12\npaq “ rp1´γqM1paq γM2paqs P Rdˆ2d.",
+      "size": 441,
+      "sentences": 9
+    },
+    {
+      "id": 174,
+      "content": "`β¯ M paq ,\n2 a 12 a 12\nwhereI\n12\n“ rp1´γqI γIs P Rdˆ2d andM\n12\npaq “ rp1´γqM1paq γM2paqs P Rdˆ2d. Then,usingthefactthat∥ϕps,aq∥ ď 1,itfollowsthat\n2\n∥pψ p ´ψqps,a‘aq∥ 2 ď 2 1 |||rp1´γqpM x 1´M1qpaq γpM x 2´M2qpaqsJ||| 2\n`\n2\n1 |β p\na\n´β\na\n|¨|||rp1´γqpI´M1paqq γpI´M2paqqsJ|||\n2\n( ď a) 1 p1´γq|||pM x ´M qpaq||| ` 1 γ|||pM x ´M qpaq|||\n2 1 1 2 2 2 2 2\n? ? ` 1 ε p1´γqp1` d{p1´γqq` 1 ε γp1` dq\n2 β 2 β\n(b) ? ? ď p1´ 2 γp d 1 p ` 1´ ε ? γq dqq2 ¨pε`ε β { dq`2ε β d\n? ď p1´ 4 γp d 1 p ` 1´ ε ?",
+      "size": 488,
+      "sentences": 8
+    },
+    {
+      "id": 175,
+      "content": "q\n2 β 2 β\n(b) ? ? ď p1´ 2 γp d 1 p ` 1´ ε ? γq dqq2 ¨pε`ε β { dq`2ε β d\n? ď p1´ 4 γp d 1 p ` 1´ ε ? γq dqq2 ¨pε`ε β { dq\n22\n===  23 ===\nx x\nwhere(a)followsfrom(8)and(b)fromtheboundson|||M paq´M paq||| and|||M paq´M paq||| above. 1 1 2 2 2 2\np\nPart2: Here,wewillprovetheresultforψ usingsimilarapproach. Supposeε P r0,1q. c\nx x x p\nLetMcpaq,McpaqdenoteestimatesformatricesM paq,M paqcomputedusingestimatesMc,β .",
+      "size": 409,
+      "sentences": 9
+    },
+    {
+      "id": 176,
+      "content": "P r0,1q. c\nx x x p\nLetMcpaq,McpaqdenoteestimatesformatricesM paq,M paqcomputedusingestimatesMc,β . 1 2 1 1 a a\nUsingLemmasC.3,C.6,andC.7,wewrite:\nř ś ś\n|||M xcpaq´M paq||| ď 8 γk||| k M x c ´ k M |||\n1 1 2\nř\nk“1 ˇ\nˇś\ni“1\np\nai\nś\ni“1 ˇ\nˇ\nai\nś\n2\n` 8 γkˇ k´1β¯ ´ k´1β¯ ˇ||| k M |||\nk“1 i“1 ai i“1 ai i“1 ai 2\nř ř ? ď 8 γk2d2kε` 8 γkkε d\nk“1 k“1 β\n?",
+      "size": 344,
+      "sentences": 4
+    },
+    {
+      "id": 177,
+      "content": "8 γkˇ k´1β¯ ´ k´1β¯ ˇ||| k M |||\nk“1 i“1 ai i“1 ai i“1 ai 2\nř ř ? ď 8 γk2d2kε` 8 γkkε d\nk“1 k“1 β\n? ď 2dγ ¨pdε`ε { dq,\np1´γq2 ´ β ¯\nś ś\n|||M x 2 cpaq´M 2 paq||| 2 ď sup kPN ˇ γk ¨ ||| k i“1 M x a c i ´ k i“1 M ai ||| 2 ˇ\n` ř 8 γk ˇ ˇp ś k´1β p ¯ qβ p ´p ś k´1β¯ qβ ˇ ˇ||| ś k M |||\nk“1 i“1 ai a k ˇ i“1 ai a k i“1 ai 2 ˇ\nď sup kPN γk2d2kε` ř 8 k“1 γk ˇ ˇp ś k i“ ´ 1 1β p ¯ ai qβ p a k ´p ś k i“ ´ 1 1β¯ ai qβ a k ˇ ˇ ? d\n? ? ď 2d2ε ` 2ε β d ď 2d ¨pdε`ε { dq.",
+      "size": 459,
+      "sentences": 6
+    },
+    {
+      "id": 178,
+      "content": "i“ ´ 1 1β p ¯ ai qβ p a k ´p ś k i“ ´ 1 1β¯ ai qβ a k ˇ ˇ ? d\n? ? ď 2d2ε ` 2ε β d ď 2d ¨pdε`ε { dq. 1´γ 1´γ 1´γ β\nAsinPart1,weconcludethat\n∥pψ p c ´ψqps,a‘aq∥ 2 ď 1 2 |||rp1´γqpM x 1 c´M1qpaq γpM x 2 c´M2qpaqsJ||| 2\n`\n2\n1 |β p\na\n´β\na\n|¨|||rp1´γqpI´M1paqq γpI´M2paqqsJ|||\n2\nď 1p1´γq|||pM xc´M qpaq||| ` 1γ|||pM xc´M qpaq|||\n2 1 1 2 2 2 2 2\n? ? ` 1 ε p1´γqp1` d{p1´γqq` 1 ε γp1` dq\n2 β 2 β\n(c) ? ? ď 2d ¨pdε`ε { dq`2ε d\n1´γ β β\n?",
+      "size": 427,
+      "sentences": 9
+    },
+    {
+      "id": 179,
+      "content": "2 2 2 2 2\n? ? ` 1 ε p1´γqp1` d{p1´γqq` 1 ε γp1` dq\n2 β 2 β\n(c) ? ? ď 2d ¨pdε`ε { dq`2ε d\n1´γ β β\n? ď 4d ¨pdε`ε { dq,\n1´γ β\nx x\nwhere(c)followsfromtheboundson|||Mcpaq´M paq||| and|||Mcpaq´M paq||| above. 1 1 2 2 2 2\nThisconcludestheproofofbothstatements. C.3 Off-policyEvaluation\nInthissubsection,weproveLemma3.5,whichwillfollowfromLemmaC.8,providedbelow. Wealsoprove\n? Lemma 3.6.",
+      "size": 379,
+      "sentences": 10
+    },
+    {
+      "id": 180,
+      "content": "nthissubsection,weproveLemma3.5,whichwillfollowfromLemmaC.8,providedbelow. Wealsoprove\n? Lemma 3.6. Corollary 3.7 follows immediately from these lemmas, by setting ε “ ε d small enough in\nβ\nTheorem3.4andpickingdatasetsizeinLemmas3.5and3.6largeenoughfortheresultinguniformbounds\ntoholdwithprobabilities1´p{2each. For the sake of notation, let xpnq :“ ϕps ,a q and ypnq :“ ϕps1 ,aq, so that X,Y P RNˆd have rows\nn n řa n a\nxpnq,ypnq respectively. Then,Σ “ Er1XJXs “ Er N xpnqpxpnqqJs.",
+      "size": 482,
+      "sentences": 6
+    },
+    {
+      "id": 181,
+      "content": "that X,Y P RNˆd have rows\nn n řa n a\nxpnq,ypnq respectively. Then,Σ “ Er1XJXs “ Er N xpnqpxpnqqJs. a N n“1\nx\nRecallthatweconsiderridgeestimatorsM “ pXJX `λI q´1XJY . a d a\nObserve that Erypnq | s ,a s “ MJx and ∥ypnq∥ ď 1 almost surely. Moreover, for zpnq :“ ypnq ´\na n n a n a 2 a a\nM x\n,itholdsthat∥zpnq∥\nď 2. Inthematrixform,weconsiderZ :“ Y ´XM . a n a 2 a a a\n23\n===  24 ===\nLemma 3.5 (Restated).",
+      "size": 401,
+      "sentences": 7
+    },
+    {
+      "id": 182,
+      "content": "pnq∥\nď 2. Inthematrixform,weconsiderZ :“ Y ´XM . a n a 2 a a a\n23\n===  24 ===\nLemma 3.5 (Restated). There exists absolute constant C ě 1 such that for all p P p0,1q and N ě\n4C2dlogp2Ad{pq,bychoosingλ\n“ 1,withprobabilityatleast1´p,itholdsthat\nλminpΣq2\nd\nsup|||M\nxλ´M\n||| ď 4C\nd logp2Ad{pq\n. a a 2 Nλ pΣq2\naPA min\nProof. WewillshowthatthisclaimholdsforthesameC ě 1asinLemmaC.8. Fix arbitrary p P p0,1q and N ě\n4C2dlogp2Ad{pq.",
+      "size": 423,
+      "sentences": 7
+    },
+    {
+      "id": 183,
+      "content": "lshowthatthisclaimholdsforthesameC ě 1asinLemmaC.8. Fix arbitrary p P p0,1q and N ě\n4C2dlogp2Ad{pq. As λ pΣq ď |||Σ||| ď 1, for this N, it holds that\nλminpΣq2 min 2\nPpEq ě 1´p,whereE denotestheeventfromLemmaC.8. ConditionedoneventE,foreverya P A,itholdsthat\n|||M xλ´M ||| ď |||pXJX `λI q´1XJZ ´λpXJX `λI q´1M |||\na a 2 d a d a 2\nď |||pXJX `λI q´1||| |||XJZ ||| `λ|||pXJX `λI q´1||| |||M |||\nd\n? 2 aa 2\n?",
+      "size": 403,
+      "sentences": 5
+    },
+    {
+      "id": 184,
+      "content": "q´1M |||\na a 2 d a d a 2\nď |||pXJX `λI q´1||| |||XJZ ||| `λ|||pXJX `λI q´1||| |||M |||\nd\n? 2 aa 2\n? d 2 a 2\n|||XJZ ||| `λ d C N logp2Ad{pq` d\na 2 a\nď ď\nλ m\na\nin pXJXq`λ Nλ mind pΣq´C Ndlogp2{pq\n2C Ndlogp2Ad{pq d logp2Ad{pq\nď “ 4C . Nλ pΣq{2 Nλ pΣq2\nmin min\n? Notethatweusethefactthat|||M ||| ď dfromLemmaC.3. a 2\nLemma C.8 (Concentration).",
+      "size": 339,
+      "sentences": 6
+    },
+    {
+      "id": 185,
+      "content": "Nλ pΣq2\nmin min\n? Notethatweusethefactthat|||M ||| ď dfromLemmaC.3. a 2\nLemma C.8 (Concentration). There exists an absolute constant C such that for all p P p0,1q and N ě\nC2¨dlogp2Ad{pq,eventE “ E XpX E q,where\nX aPA a\na\nE : λ pXJXq ě Nλ pΣq´C Ndlogp2{pq,\nX min a min\nE : ∥XJZ ∥ ď C N logp2Ad{pq,\na a 2\noccurswithprobabilityatleast1´p. Proof.",
+      "size": 342,
+      "sentences": 5
+    },
+    {
+      "id": 186,
+      "content": "Ndlogp2{pq,\nX min a min\nE : ∥XJZ ∥ ď C N logp2Ad{pq,\na a 2\noccurswithprobabilityatleast1´p. Proof. It will suffice to show that there exists constant C such that for every N ě C2 ¨ dlogp2Ad{pq, it\nholdsthatPpE q ě 1´ p andPpE q ě 1´ p foralla P A.\nX 2 a 2A\nPart1: ObservethatrowsinmatrixX areindependentsub-Gaussianvectorsthatareuniformlyboundedin\nl -normby1,becausesup ∥ϕps,aq∥ ď 1. UsingTheoremC.9,fixabsoluteconstantsC andc sothat\n2 s,a 2 1 1\n´ ¯\n?",
+      "size": 451,
+      "sentences": 4
+    },
+    {
+      "id": 187,
+      "content": "ormby1,becausesup ∥ϕps,aq∥ ď 1. UsingTheoremC.9,fixabsoluteconstantsC andc sothat\n2 s,a 2 1 1\n´ ¯\n? @N P N, @t ě 0, P |||XJX ´NΣ|||\n2\nď N maxtδ,δ2u ě 1´2expp´c\n1\nt2q forδ “ C1? d`t. N\na\nThen,weclaimthatPpE q ě 1´ p ifweselectC ě C ` 2{c . X 2 1 1\nNotethattheminimaleigenvalueofXJX canbeboundedfrombelowasfollows:\nλ pXJXq ě λ pNΣq´|||XJX ´NΣ||| . min min 2\na\nSo,bysettingt “ logp4{pq{c ,weobtainthat,forallN ě C ¨dlogp2{pq,itholdsthat\n1\n´ a ¯\nPpE q ě P |||XJX ´NΣ||| ď C ¨ Ndlogp2{pq\nX 2\n´ ¯\n?",
+      "size": 492,
+      "sentences": 7
+    },
+    {
+      "id": 188,
+      "content": "nthat,forallN ě C ¨dlogp2{pq,itholdsthat\n1\n´ a ¯\nPpE q ě P |||XJX ´NΣ||| ď C ¨ Ndlogp2{pq\nX 2\n´ ¯\n? ě P |||XJX ´NΣ|||\n2\nď N ¨ C1?",
+      "size": 129,
+      "sentences": 2
+    },
+    {
+      "id": 189,
+      "content": "tholdsthat\n1\n´ a ¯\nPpE q ě P |||XJX ´NΣ||| ď C ¨ Ndlogp2{pq\nX 2\n´ ¯\n? ě P |||XJX ´NΣ|||\n2\nď N ¨ C1? d`t\nN\ně 1´2expp´c t2q “ 1´ p.\n1 2\n24\n===  25 ===\nPart2: WeclaimthatPpE q ě 1´ p foreveryactiona P AifweselectC ě 8.\na 2A\nř\nObservethatforeveryactiona P A,ZJX “ N Spnq ,wherematricesSpnq :“ zpnq pxpnqqJ areindepen-\na n“1 a a a\ndentandsatisfythefollowingproperties:\nUniformlybounded: |||Spnq||| “ ∥zpnq∥ ∥xpnq∥ ď 2\n”a 2 a 2 ı2\nCentered: ErSpnqs “ E Erzpnq | xpnqspxpnqqJ “ Er0pxpnqqJs “ 0 .",
+      "size": 488,
+      "sentences": 3
+    },
+    {
+      "id": 190,
+      "content": "||| “ ∥zpnq∥ ∥xpnq∥ ď 2\n”a 2 a 2 ı2\nCentered: ErSpnqs “ E Erzpnq | xpnqspxpnqqJ “ Er0pxpnqqJs “ 0 . a a dˆd\nMoreover,itholdsthat\n„ ” ˇ ı ȷ\nˇ\n|||ErSpnqpSpnqqJs||| ď E ∥xpnq∥2¨E |||zpnqpzpnqqJ||| ˇxpnq ď 4,\na a 2 2 a a 2\n„ ” ˇ ı ȷ\nˇ\n|||ErpSpnqqJSpnqs||| ď E |||xpnqpxpnqqJ||| ¨E ∥zpnq∥2ˇxpnq ď 4,\na a 2 2 a 2\nwhichimpliesthatthevariancestatisticofthesumsatisfies\n! ) ř\nνpZJXq ď N max |||ErSpnq pSpnq qJs||| , |||ErpSpnq qJSpnq s||| ď 4N.",
+      "size": 435,
+      "sentences": 3
+    },
+    {
+      "id": 191,
+      "content": "atisticofthesumsatisfies\n! ) ř\nνpZJXq ď N max |||ErSpnq pSpnq qJs||| , |||ErpSpnq qJSpnq s||| ď 4N. a n“1 a a 2 a a 2\nByTheoremC.10,wehavethat\n´ ¯ ´ ¯\n@t ě 0, Pp|||XJZ ||| ě tq ď 2d¨exp ´t2{2 ď 2d¨exp ´t2{8 . a 2 4N`2t{3 N`t\na\nSo,forN ě C2¨logp2Ad{pq,fixingt “ 16N logp4Ad{pq ď N,yields\n´ ¯ ´ ¯ ´ ¯\nPpE q ě P ∥XJZ ∥ ď t ě 1´2d¨exp ´t2{8 ě 1´2d¨exp ´t2 “ 1´ p .",
+      "size": 360,
+      "sentences": 4
+    },
+    {
+      "id": 192,
+      "content": "16N logp4Ad{pq ď N,yields\n´ ¯ ´ ¯ ´ ¯\nPpE q ě P ∥XJZ ∥ ď t ě 1´2d¨exp ´t2{8 ě 1´2d¨exp ´t2 “ 1´ p . a a 2 N`t 16N 2A\na\nConclusion: Tosumup,thechoiceoftheabsoluteconstantC “ maxtC ` 2{c ,8uguaranteesthatfor\n1 1\nallp P p0,1qandN ě C2¨dlogp2Ad{pq,itholdsthatPpEq ě 1´p. TheoremC.9(Theorem5.39(5.40)from[Ver11]). LetAbeN ˆdmatrixwhoserowsA areindependent\ni\nsub-Gaussian vectors in Rd with common second moment matrix Σ. Let K :“ max ∥A ∥ denote\niPrNs i ψ2\nthe maximal sub-Gaussian norm among the rows.",
+      "size": 497,
+      "sentences": 5
+    },
+    {
+      "id": 193,
+      "content": "moment matrix Σ. Let K :“ max ∥A ∥ denote\niPrNs i ψ2\nthe maximal sub-Gaussian norm among the rows. Then, there exist constants c and C that depend only\non the value of K, such that, for every t ě 0, the following inequality holds with probability at least\n1´2expp´ct2q:\n? C d`t\n|||1AJA´Σ||| ď maxtδ,δ2u where δ “ ? . N 2 N\nTheorem C.10 (Theorem 6.1.1 (Matrix Bernstein) from [Tro15]).",
+      "size": 384,
+      "sentences": 6
+    },
+    {
+      "id": 194,
+      "content": "´Σ||| ď maxtδ,δ2u where δ “ ? . N 2 N\nTheorem C.10 (Theorem 6.1.1 (Matrix Bernstein) from [Tro15]). Let S ,...,S be independent R-valued\n1 n\ncenteredrandommatriceswithcommondimensionsd 1 ˆd 2 ,andsuppose ř thatforsomeL ě 0,itholdsthat\n|||S ||| ď L for every k P rns almost surely. Consider their sum Z :“ n S and let νpZq denote the\nk 2 k“1 k\nvariancestatisticofthesum:\n! ) νpZq :“ max |||ErZZJs||| ,|||ErZJZs||| . 2 2\nThen,forallt ě 0,itholdsthat\n˜ ¸\n´t2{2\nPp|||Z||| ě tq ď pd `d q¨exp .",
+      "size": 488,
+      "sentences": 7
+    },
+    {
+      "id": 195,
+      "content": "ErZZJs||| ,|||ErZJZs||| . 2 2\nThen,forallt ě 0,itholdsthat\n˜ ¸\n´t2{2\nPp|||Z||| ě tq ď pd `d q¨exp . 2 1 2\nνpZq`Lt{3\n25\n===  26 ===\np\nLemma3.6(Restated). Forallp P p0,1q,empiricalmeanestimatorsβ satisfy\na\nˆ b ˙\nP sup |β p ´β | ď 12lnp3A{pq ě 1´p. aPA a a Npmin\nř ř\nProof. For every a P A, let N “ N Ipa “ aq and S “ N b Ipa “ aq, so that β p “ S {N . a n“1 n a n“1 n n a a a\nAlso,letp “ ErIpa “ aqs,sothatp “ inf p .",
+      "size": 415,
+      "sentences": 7
+    },
+    {
+      "id": 196,
+      "content": "b Ipa “ aq, so that β p “ S {N . a n“1 n a n“1 n n a a a\nAlso,letp “ ErIpa “ aqs,sothatp “ inf p . a 1 min aPA a\nByMultiplicativeChernoffBound,forfixeda P Aandarbitraryε P p0,1q,wehave\nPpN ď 1Np q ď expp´Np {8q,\na 2 a a\nPp|S ´N β | “ |pN ´S q´N β¯ | ě εN maxtβ ,β¯ u|N q ď 2expp´ε2N maxtβ ,β¯ u{3q,\na a a a a a a a a a a a a\nwhichallowsustowrite\nPp|β p ´β | ě εq “ Pp|S ´N β | ě εN q\na a a a a a\nď Pp|S ´N β | ě εN |N ą 1Np q`PpN ď 1Np q\na a a a a 2 a a 2 a\nď 2expp´ε2Np maxtβ ,β¯ u{6q`expp´Np {8q\na a a a\nď 3expp´ε2Np {12q.",
+      "size": 524,
+      "sentences": 3
+    },
+    {
+      "id": 197,
+      "content": "`PpN ď 1Np q\na a a a a 2 a a 2 a\nď 2expp´ε2Np maxtβ ,β¯ u{6q`expp´Np {8q\na a a a\nď 3expp´ε2Np {12q. min\nTherefore,bytheuniformconfidencebound,foreveryp P p0,1q,itindeedholdsthat\nˆ b ˙\nP sup |β p ´β | ď 12lnp3A{pq ě 1´p. aPA a a Npmin\nD Episodic Learning: Proofs\nInthissection,weproveTheorem4.1. OurproofadaptstheapproachofJinetal. [Jin+19]forATST-MDPs\nwithgeometrichorizons. Fornotationalconvenience,letsk “ ∅forallk P rKsandu ą Bk `1. LetR τ “ mintRτ,Hu.",
+      "size": 455,
+      "sentences": 7
+    },
+    {
+      "id": 198,
+      "content": "geometrichorizons. Fornotationalconvenience,letsk “ ∅forallk P rKsandu ą Bk `1. LetR τ “ mintRτ,Hu. u\nFor burst-dependent policy π “ pπ q8 and n P N, let π “ pπ q8 denote the burst-dependent\nu u“1 pnq u`n´1 u“1\npolicy obtained by shifting the original policy by n ´ 1 data-bursts ahead. Then, we introduce notation\nKπ “ Kπ puq andVπ “ Vπ puq. u u\nD.1 SomeTechnicalLemmas\nIn this sections, we state some technical lemmas used in the proof of the main result.",
+      "size": 457,
+      "sentences": 6
+    },
+    {
+      "id": 199,
+      "content": "hnicalLemmas\nIn this sections, we state some technical lemmas used in the proof of the main result. The proofs of these\nlemmasaredeferredtolatersubsections. First,weneedthefollowinglemma,whichboundsthegrowthoftheestimator’snorm. a\nLemmaD.1(Boundforwk). Forallpk,uq P rKsˆrH ´1s,∥wk∥ ď 4 dkH3{λ.\nu u 2\n26\n===  27 ===\nProof.",
+      "size": 322,
+      "sentences": 5
+    },
+    {
+      "id": 200,
+      "content": "norm. a\nLemmaD.1(Boundforwk). Forallpk,uq P rKsˆrH ´1s,∥wk∥ ď 4 dkH3{λ.\nu u 2\n26\n===  27 ===\nProof. Foreveryvectorv P R2d,wehave\nˇ ˇ\nˇ ř ˇ\n|vJwk| “ ˇvJpΛkq´1 Nk ψ p τrR τ `sup Kk psτ ,aqsˇ\nu τ“1 a u`1 N\nř\nď Nk |vJpΛkq´1ψ p τ|¨2H\nτ“1c\n” ı” ı\nř ř\nď 2H ¨ Nk ∥v∥2 Nk ∥ψ p τ∥2\nτ“1 pΛkq´1 τ“1 pΛkq´1\na ? ď 2H ¨∥v∥ kH{λ¨ 2d,\n2\nwherethelaststepfollowsfromthefactthatNk ď kH andFactD.9. Basedonthislemma,wecanestablishthefollowingconcentrationresult. ? LemmaD.2.",
+      "size": 453,
+      "sentences": 8
+    },
+    {
+      "id": 201,
+      "content": "thatNk ď kH andFactD.9. Basedonthislemma,wecanestablishthefollowingconcentrationresult. ? LemmaD.2. UnderthesettingofTheorem4.1,letc betheconstantparameterizingρ(i.e.,ρ “ c ¨dH ι). ρ ρ\nThere exists an absolute constant C, independent of c , such that for all fixed p P r0,1s, if we let E denote\nρ\ntheeventthat\n@pk,uq P rKsˆrH ´1s : (cid:13) (cid:13) ř Nk ψ p τrVk psτ q´PVk psτ,aτqs (cid:13) (cid:13) ď C ¨ d ?",
+      "size": 410,
+      "sentences": 6
+    },
+    {
+      "id": 202,
+      "content": "pk,uq P rKsˆrH ´1s : (cid:13) (cid:13) ř Nk ψ p τrVk psτ q´PVk psτ,aτqs (cid:13) (cid:13) ď C ¨ d ? χ,\n(cid:13) τ“1 u`1 N u`1 (cid:13)\npΛkq´1\n1´γ\n@k P rKs : (cid:13) (cid:13) ř Nk ψ p τrR τ ´ErR τ |sτ,aτss (cid:13) (cid:13) ď C ¨Hd1{2 ? ι\n(cid:13) τ“1 (cid:13)\npΛkq´1\nwhereχ “ logp2pc `1qdKH{pq,thenPpEq ě 1´p{2\nρ\nSeeSectionD.3fortheproofofthislemma. ? To further simplify the notations, we let ϵ “ ϵ¨5ρ KH. Note that ϵ ě ϵ∥wk∥ `ϵρ by Lemma D.1.",
+      "size": 445,
+      "sentences": 6
+    },
+    {
+      "id": 203,
+      "content": "mma. ? To further simplify the notations, we let ϵ “ ϵ¨5ρ KH. Note that ϵ ě ϵ∥wk∥ `ϵρ by Lemma D.1. 2 2 u 2\nThis constant will be used throughout the rest of the proof. Also, let ψk “ ψpsk,akq be equal to 0 P R2d\nu u u\nwhensk “ ∅. u\nWe also need the following two lemmas. The first lemma provides lower bounds on the estimated action-\nsequencevalue-functionsontheeventthattheconcentrationboundsholdtrue. LemmaD.3(UCB).",
+      "size": 418,
+      "sentences": 9
+    },
+    {
+      "id": 204,
+      "content": "timated action-\nsequencevalue-functionsontheeventthattheconcentrationboundsholdtrue. LemmaD.3(UCB). UnderthesettingofTheorem4.1.,conditionedoneventE fromLemmaD.2,\nKkps,aq ě K˚ps,aq´pH ´uq¨ϵ\nu 2\nN\nforallps,a,u,kq P S ˆA ˆrHsˆrKs. Additionally, weneedthefollowinglemma, whichprovidesarecursiverelationonatermarisingfromthe\nerrordecomposition. LemmaD.4(Recursiveformula). Fork P rKs,u P rHs,wedefine\n• δk “ Vkpskq´Vπk pskq,\nu u u u u\n• ζk “ Erδk | sk,aks´δk .",
+      "size": 456,
+      "sentences": 6
+    },
+    {
+      "id": 205,
+      "content": "veformula). Fork P rKs,u P rHs,wedefine\n• δk “ Vkpskq´Vπk pskq,\nu u u u u\n• ζk “ Erδk | sk,aks´δk . u`1 u`1 u u u`1\nThen,conditionedontheeventE,wehavethatforeverypk,uq P rKsˆrH ´1s:\nδk ď δk `ζk `2ρ∥ψk∥ `ϵ . u u`1 u`1 u pΛkq´1 2\nSeeSectionD.4fortheproofofLemmaD.3andD.4. 27\n===  28 ===\nD.2 ProofofTheorem4.1\nGivenlemmasinSectionD.1,wearereadytoproveTheorem4.1. Tostartwith,letusrecallthestatement\nofthetheorem. a\np\nTheorem4.1(Restated).",
+      "size": 435,
+      "sentences": 7
+    },
+    {
+      "id": 206,
+      "content": "readytoproveTheorem4.1. Tostartwith,letusrecallthestatement\nofthetheorem. a\np\nTheorem4.1(Restated). SupposeAlgorithm1isexecutedwithϵ-admissiblefeaturemapψforϵ ď p1´γq{K.\nThereexistsanabsoluteconstantc ě 1,suchthat,forallfixedp P p0,1q,ifwesetH “ r\nlogpKp1´γq´1q\ns`1,\n? 1´γ\nλ “ 1,andρ “ c¨dH ιwithι “ logp2dKH{pq,thenwithprobabilityatleast1´p,thetotalregretisat\nmost\n`a a ˘\nO r d3Kp1´γq´3ι2`d2p1´γq´2ι`ϵ¨ d2K3p1´γq´5ι . Proof.",
+      "size": 425,
+      "sentences": 6
+    },
+    {
+      "id": 207,
+      "content": "ilityatleast1´p,thetotalregretisat\nmost\n`a a ˘\nO r d3Kp1´γq´3ι2`d2p1´γq´2ι`ϵ¨ d2K3p1´γq´5ι . Proof. WeconditionontheeventE fromLemmaD.2,whichoccurswithprobabilityatleast1´p{2. Then,\nusingLemmasD.3andD.4andthechoiceofϵ ,wecanwrite:\n2\nÿK ” ı ÿK\nR “ V˚pskq´Vπ kpskq ď pδk `Hϵ q\nK 1 1 1 1 2\nk“1 k“1\nÿK ÿH ÿK ÿK Hÿ´1\nď ζk ` δk `2ρ ∥ψk∥ `2KHϵ\nu H u pΛkq´1 2\nk“1u“1 k“1 k“1 u“1\nÿK ÿH ÿK ÿK Hÿ´1\nď ζk ` δk `2ρ ∥ψ pk∥ `4KHϵ .",
+      "size": 416,
+      "sentences": 4
+    },
+    {
+      "id": 208,
+      "content": "` δk `2ρ ∥ψk∥ `2KHϵ\nu H u pΛkq´1 2\nk“1u“1 k“1 k“1 u“1\nÿK ÿH ÿK ÿK Hÿ´1\nď ζk ` δk `2ρ ∥ψ pk∥ `4KHϵ . u H u pΛkq´1 2\nk“1u“1 k“1 k“1 u“1\n• Toboundthefirstcomponent,weuseAzuma-Hoeffdingforthemartingaledifferencesequencetζku\nu u,k\n(ordered chronologically with respect to rounds/episodes and including Bk ă u ď H with sk “ ∅),\nu\nwhichsatisfies|ζk| ď 2 . Forallt ě 0,wehave\nu 1´γ\n´ ¯ ´ ¯\nř ř\nP K H ζk ď t ě 1´exp ´t2 .",
+      "size": 412,
+      "sentences": 3
+    },
+    {
+      "id": 209,
+      "content": "sk “ ∅),\nu\nwhichsatisfies|ζk| ď 2 . Forallt ě 0,wehave\nu 1´γ\n´ ¯ ´ ¯\nř ř\nP K H ζk ď t ě 1´exp ´t2 . k“1 u“1 u 8KHp1´γq´2\nHence,withprobabilityatleast1´p{4,wehavethat\nÿK ÿH a a\nζk ď 8KHp1´γq´2¨ logp4{pq. u\nk“1u“1\n• Toboundthesecondcomponent,observethatforeachk P rKs\nδk “ Vkpsk q´Vπk psk q ď Ipsk H ‰∅q ´0 ď IpHkěHq,\nH H H H H 1´γ 1´γ\nanduseChernoffinequalityforbinaryindicatorsIpHk ě Hq.",
+      "size": 387,
+      "sentences": 4
+    },
+    {
+      "id": 210,
+      "content": "ď Ipsk H ‰∅q ´0 ď IpHkěHq,\nH H H H H 1´γ 1´γ\nanduseChernoffinequalityforbinaryindicatorsIpHk ě Hq. Forallδ ě 1,itholdsthat\n´ ¯ ´ ¯\nř KγH´1\nP K IpHk ě Hq ą p1`δqKγH´1 ď e´δ\nk“1 p1`´δq1`δ\n¯\nď exp ´δ2KγH´1 ď expp´δKγH´1{3q. 2`δ\nThen,byFactD.7,withprobabilityatleast1´p{4,bysettingδ “\n3logp4{pq\ně 1,itholdsthat\nKγH´1\nř\nK δk ď p1`δqKγH´1p1´γq´1\nk“1 H\nď pKγH´1`3logp4{pqqp1´γq´1\nď 6logp4{pqp1´γq´1. 28\n===  29 ===\nř\n• Toboundthethirdcomponent,letΛk “ Λk ` u´1 ψ p k pψ p k qJ.",
+      "size": 470,
+      "sentences": 4
+    },
+    {
+      "id": 211,
+      "content": "1\nď 6logp4{pqp1´γq´1. 28\n===  29 ===\nř\n• Toboundthethirdcomponent,letΛk “ Λk ` u´1 ψ p k pψ p k qJ. Then,writethefollowing\nu u1“1 u1 u1\nb\nř ř ? ř ř\nK H ∥ψ p k∥ ď H ¨ K H ∥ψ p k∥2\nk“1 u“1 u pΛkq´1 k“1 u“1 u pΛkq´1\nb\n( ď a) ? H ¨ ř K ř H 2∥ψ p k∥2\n? ř\nk“1 u“1 u pΛk\nu\nq´1\na\n` H ¨ K IpdetpΛk`1q ą 2detpΛkqq H{λ\nk“b1\n? ř ř\nď 2KH ¨ K H pψ p kqJpΛkq´1ψ p k\na ř k“1 u“1 u u u\n` H2{λ¨ K IpdetpΛk`1q ą 2detpΛkqq\nck“1\n´ ¯ ´ ¯\n(\nď\nb) ? 2KH ¨ 2log\ndetpΛK`1q\n`\n? H2λ´1¨log\ndetpΛK`1q\ndetpΛ1q 2 detpΛ1q\n(c) ?",
+      "size": 493,
+      "sentences": 9
+    },
+    {
+      "id": 212,
+      "content": "detpΛkqq\nck“1\n´ ¯ ´ ¯\n(\nď\nb) ? 2KH ¨ 2log\ndetpΛK`1q\n`\n? H2λ´1¨log\ndetpΛK`1q\ndetpΛ1q 2 detpΛ1q\n(c) ? a\nď 4 KH ¨ dlogp2KHq`4H ¨dlogp2KHq,\nwhere(a)followsfromFactD.8,(b)fromFactD.10,and(c)fromthefollowinginequality\n´ ¯ ´ ¯\ndetpΛK`1q ď λmaxpΛK`1q 2d ď λ`KH 2d “ p1`KHq2d ď p2KHq2d. detpΛ1q λminpΛ1q λ\nInconclusion,wehavethatwithprobabilityatleast1´p:\na a\nRpKq ď 8KHp1´γq´2¨ logp4{pq\n`6logp4{pqp1´γq´1\n´ ? a ¯\n`2ρ¨ 4 KH ¨ dlogp2KHq`4H ¨dlogp2KHq\n? `4KH ¨5ϵρ KH\n? ?",
+      "size": 459,
+      "sentences": 8
+    },
+    {
+      "id": 213,
+      "content": "Hp1´γq´2¨ logp4{pq\n`6logp4{pqp1´γq´1\n´ ? a ¯\n`2ρ¨ 4 KH ¨ dlogp2KHq`4H ¨dlogp2KHq\n? `4KH ¨5ϵρ KH\n? ? ď c ¨ d3KH3ι2`c ¨d2H2ι`c ¨ϵKH ¨ d2KH3ι,\n1 2 3\nforsomeabsoluteconstantsc ,c ,c . 1 2 3\nD.3 ProofofLemmaD.2\nInTheorem4.1,wehaveH “ r\nlogpKp1´γq´1q\ns`1,λ “ 1,andι “ logp2dKH{pq. 1´γ\na\nFrom Lemama D.1, ∥w\nu\nk∥\n2\nď 4 dkH3{λ.",
+      "size": 319,
+      "sentences": 7
+    },
+    {
+      "id": 214,
+      "content": "ehaveH “ r\nlogpKp1´γq´1q\ns`1,λ “ 1,andι “ logp2dKH{pq. 1´γ\na\nFrom Lemama D.1, ∥w\nu\nk∥\n2\nď 4 dkH3{λ. Hence, by combining Lemmas D.12 and D.13 for function\nclass Vp4 dkH3{λ,ρ,λq, we show that for all ε ą 0, with probability at least 1´p{4: for all pk,uq P\nrKsˆrH ´1s,\n„\n´ ¯\n(cid:13) (cid:13) ř Nk ψ p τrVk psτ q´PVk psτ,aτqs (cid:13) (cid:13) 2 ď 4 dlog kH`λ `2dlog 1` 16 ? ? dkH3\n(cid:13) τ“1 u`1 N u`1 (cid:13) pΛkq´1 p1´γq2 λ\nȷ\nε λ\n´ ¯ ´ ¯\n? `4d2log 1` 16ρ2 d `log 4 ` 8k2H2ε2 . ε2λ p λ\n?",
+      "size": 489,
+      "sentences": 7
+    },
+    {
+      "id": 215,
+      "content": "1 u`1 N u`1 (cid:13) pΛkq´1 p1´γq2 λ\nȷ\nε λ\n´ ¯ ´ ¯\n? `4d2log 1` 16ρ2 d `log 4 ` 8k2H2ε2 . ε2λ p λ\n? Wesetλ “ 1andρ “ c ¨dH ιandpickε “ d . Then,thereclearlyexistsabsoluteconstantC ą 0,\nρ p1´γqkH 1\nindependentofc ,suchthat\nρ\n(cid:13) (cid:13) ř Nk ψ p τrVk psτ q´PVk psτ,aτqs (cid:13) (cid:13) 2 ď C ¨ d2 logp2pc `1qdKH{pq. (cid:13) τ“1 u`1 N u`1 (cid:13)\npΛkq´1\n1 p1´γq2 ρ\n29\n===  30 ===\nForthesecondpart,wewillusetheconcentrationofself-normalizedprocess,whereR τ |sτ,aτ P r0,Hsisa\nH-sub-Gaussian.",
+      "size": 497,
+      "sentences": 6
+    },
+    {
+      "id": 216,
+      "content": "ndpart,wewillusetheconcentrationofself-normalizedprocess,whereR τ |sτ,aτ P r0,Hsisa\nH-sub-Gaussian. ByapplyingTheoremD.11,wecanfindabsoluteconstantC ą 0independentofc such\n2 ρ\nthatwithprobabilityatleast1´p{4: forallk P rKs,\n„ ȷ\n´ ¯ ´ ¯\n(cid:13) (cid:13) ř Nk ψ p τrR τ ´ErR τ |sτ,aτs (cid:13) (cid:13) 2 ď 4H2 dlog kH`λ `log 4\n(cid:13) τ“1 (cid:13) λ p\npΛkq´1\nď C ¨H2dlogp2kH{pq. 2\na\nFinally,setC “ maxtC ,C utofinishtheproof.",
+      "size": 426,
+      "sentences": 3
+    },
+    {
+      "id": 217,
+      "content": "(cid:13) τ“1 (cid:13) λ p\npΛkq´1\nď C ¨H2dlogp2kH{pq. 2\na\nFinally,setC “ maxtC ,C utofinishtheproof. 1 2\nD.4 ProofofLemmasD.3andD.4\nTheproofreliesonthefollowingtechnicallemma. Lemma D.5. Under the setting of Theorem 4.1, there exists an absolute constant c ě 1 such that for\n? ρ\nρ “ c ¨dH ιandarbitraryburst-dependentpolicyπ,ontheeventE fromLemmaD.2,forallpx,a,k,uq P\nρ\nN\nX ˆA ˆrKsˆrH ´1s:\nxψpx,aq,wky´Kπpx,aq “ PpVk ´Vπ qpx,aq`∆kpx,aq,\nu u u`1 u`1 u\nwhere∆kpx,aqsatisfies|∆kpx,aq| ď ρ∥ψpx,aq∥ .",
+      "size": 494,
+      "sentences": 6
+    },
+    {
+      "id": 218,
+      "content": "q,wky´Kπpx,aq “ PpVk ´Vπ qpx,aq`∆kpx,aq,\nu u u`1 u`1 u\nwhere∆kpx,aqsatisfies|∆kpx,aq| ď ρ∥ψpx,aq∥ . u u pΛkq´1\nSee Section D.4.1 for the proof of this lemma. Taking this lemma as given, let us now proceed with the\nproofsofLemmaD.3andD.4. ProofofLemmaD.3. WesetKkps,aq “ 1 ě K˚ps,aq. Moreover,forallu P rH ´1s,wehavethat\nH 1´γ\nKkps,aq “ xψ p ps,aq,wky`ρ∥ψ p ps,aq∥\nu u pΛkq´1\n?",
+      "size": 376,
+      "sentences": 6
+    },
+    {
+      "id": 219,
+      "content": "s,aq. Moreover,forallu P rH ´1s,wehavethat\nH 1´γ\nKkps,aq “ xψ p ps,aq,wky`ρ∥ψ p ps,aq∥\nu u pΛkq´1\n? ě xψps,aq,wky`ρ∥ψps,aq∥ ´pϵ∥wk∥ `ρϵ{ λq\nu pΛkq´1 u 2\n(a)\ně K˚ps,aq`PpVk ´V˚qps;aq´ϵ\nu`1 2\ně K˚ps,aq` infpKk ´K˚qps1,a1q´ϵ ,\nu`1 2\ns1,a1\nwhere(a)followsfromLemmasD.5andthechoiceofϵ . 2\nThen,thestatementfollowsbytrivialinductionoverufromu “ H tou “ 1. ProofofLemmaD.4.",
+      "size": 366,
+      "sentences": 5
+    },
+    {
+      "id": 220,
+      "content": "thechoiceofϵ . 2\nThen,thestatementfollowsbytrivialinductionoverufromu “ H tou “ 1. ProofofLemmaD.4. WecanwritethefollowingbyLemmaD.5foralls,a:\nKkps,aq´Kπk ps,aq “ xψ p ps,aq,wky`ρ∥ψ p ps,aq∥ ´xψps,aq, wπk y\nu u u pΛkq´1 u\nď xψps,aq,wky`ρ∥ψps,aq∥ ´xψps,aq, wπk y`ϵ\nu pΛkq´1 u 2\nď PpVk ´Vπk qps,aq`2ρ∥ψps,aq∥ `ϵ . u`1 u`1 pΛkq´1 2\nFromthechoiceofπk,wehavethat\nδk “ Kkpsk,akq´Kπk psk,akq\nu u u u u u u\nď PpVk ´Vπk qpsk,akq`2ρ∥ψpsk,akq∥ `ϵ\nu`1 u`1 u u u u pΛkq´1 2\n“ δk `ζk `2ρ∥ψk∥ `ϵ .",
+      "size": 482,
+      "sentences": 5
+    },
+    {
+      "id": 221,
+      "content": "q\nu u u u u u u\nď PpVk ´Vπk qpsk,akq`2ρ∥ψpsk,akq∥ `ϵ\nu`1 u`1 u u u u pΛkq´1 2\n“ δk `ζk `2ρ∥ψk∥ `ϵ . u`1 u`1 u pΛkq´1 2\nNotethatthisholdsevenwhensk “ ∅,as0 ď ϵ . u 2\n30\n===  31 ===\nD.4.1 ProofofLemmaD.5\nWefirststateandprovethefollowinglemma. LemmaD.6(Burst-dependentversionofTheorem3.2). UnderAssumption2.1,forarbitraryburst-dependent\npolicyπ “ pπ q8 andu P N,itholdsthat: forallpx,aq P X ˆA N ,\nu u“1\nKπpx,aq “ xψpx,aq, wπy,\nu u\n« ff\nwherewπ “ 2 ş θ{p1´γq satisfies∥wπ∥ ď 4 ?",
+      "size": 475,
+      "sentences": 5
+    },
+    {
+      "id": 222,
+      "content": "llpx,aq P X ˆA N ,\nu u“1\nKπpx,aq “ xψpx,aq, wπy,\nu u\n« ff\nwherewπ “ 2 ş θ{p1´γq satisfies∥wπ∥ ď 4 ? d.\nu Vπ psqdµpsq u 1´γ\nS u`1\nProof. FollowsbydecompositionKπ “ R`PVπ andTheoremC.1. u u`1\nNow we turn to the proof of Lemma D.5. As pψτqJwπ “ Kπpsτ,aτq by Lemma D.6, we have the\nu u\nfollowing\nř\nwk ´wπ “ pΛkq´1 Nk ψ p τrR τ `Vk psτ qs´wπ\nu u !",
+      "size": 342,
+      "sentences": 5
+    },
+    {
+      "id": 223,
+      "content": "πpsτ,aτq by Lemma D.6, we have the\nu u\nfollowing\nř\nwk ´wπ “ pΛkq´1 Nk ψ p τrR τ `Vk psτ qs´wπ\nu u ! τ“1 u`1 N u )\nř\n“ pΛkq´1 ´λwπ ` Nk ψ p τrR τ `Vk psτ q´Kπpsτ,aτqs\nu τ“1 u`1 N u\nř\n`pΛkq´1 Nk ψ p τpψτ ´ψ p τqJwπ\nτ“1 u\nř\n“ l´ooλoopoΛoo k mq´ ooo 1 owooo u π n`lpΛoo k ooqo ´ oo 1 ooooo N τ oo “ o k o 1 ooψ p oo τ ooroVoouo k ` oo1mpsoo τ N ooqoo´ooo P ooVoouo k o ` oo1opooso τ oo,oaoo τ ooqns\nq1 q2\nř ř\n`plΛoo k ooqo ´ oo 1 ooooo N\nτ\noo\n“\nk oo\n1\nooψ p oo τ ooro P oopoVmu k o\n`\noo1oo´oooVoouo π o\n`\noo1oqopooso τ oo,oaoo τ ooqns`lpΛooo k oqoo ´ oo 1 ooooo N\nτ\no\n“\no k o\n1\nooψo p oo τ oromR τ ooo´ooo E ooroRooo τ oo|soo τ o,ooaoo τ oosns\nq3 q4\nř ř\n`plΛooo k oqoo ´ oo 1 ooooo N\nτ\no\n“\no k o\n1\nooψo p oo τ oro E oooroRooo τ m|so τ oo,oaoo τ oosoo´ooo E ooroRooo τ o|osoo τ o,ooaoo τ oosns`lpΛooo k oqo ´ oo 1 ooooo N\nτ\noo\n“\no k o\n1\nooψo p om τpoψoo τ ooo´oooψo p oo τ oqoo J oowooou π n.\nq5 q6\nWeboundthesesixcomponentsseparately.",
+      "size": 930,
+      "sentences": 2
+    },
+    {
+      "id": 224,
+      "content": "ooψo p om τpoψoo τ ooo´oooψo p oo τ oqoo J oowooou π n.\nq5 q6\nWeboundthesesixcomponentsseparately. Notethat\nř ř\n|ψpx,aqJpΛkq´1 Nk ψ p τ| ď Nk |ψpx,aqJpΛkq´1ψ p τ|\nτ“1 τ“1\n” ı ” ı\nř ř\nď Nk ∥ψpx,aq∥2 1{2 Nk ∥ψ p τ∥2 1{2\nτ“1 pΛkq´1 τ“1 pΛkq´1\n? ? ď kH∥ψpx,aq∥ ¨ d\npΛkq´1\n? “ dkH ¨∥ψpx,aq∥ . pΛkq´1\n• Toboundq ,usingLemmaD.6,write\n1\n|xψpx,aq,q y| ď λ∥wπ∥ ∥ψpx,aq∥\n1 u pΛkq´1 pΛkq´1\n? ? ď λ∥wπ∥ ∥ψpx,aq∥ ď 4 dλ ¨∥ψpx,aq∥ . u 2 pΛkq´1 1´γ pΛkq´1\n• Toboundq andq ,weuseeventE sothat\n2 4\n?",
+      "size": 481,
+      "sentences": 9
+    },
+    {
+      "id": 225,
+      "content": "ď λ∥wπ∥ ∥ψpx,aq∥ ď 4 dλ ¨∥ψpx,aq∥ . u 2 pΛkq´1 1´γ pΛkq´1\n• Toboundq andq ,weuseeventE sothat\n2 4\n? |xψpx,aq,q `q y| ď C ¨dH χ¨∥ψpx,aq∥ ,\n2 4 pΛkq´1\nforsomeabsoluteconstantC ą 0independentofc . ρ\n31\n===  32 ===\n? • Toboundq ,usingTheoremC.1,observethatforsomevectorv suchthat∥v∥ ď 8 d:\n3 2 1´γ\nPpVk ´Vπ qpx;aq “ xψpx,aq,vy.",
+      "size": 323,
+      "sentences": 5
+    },
+    {
+      "id": 226,
+      "content": ",usingTheoremC.1,observethatforsomevectorv suchthat∥v∥ ď 8 d:\n3 2 1´γ\nPpVk ´Vπ qpx;aq “ xψpx,aq,vy. u`1 u`1\nThen,wecanwrite\nxψpx,aq,q 3 y “ xψpx,aq,vy´λlooψoopooxo,ooaooqm J opoΛooo k oqo ´ oo 1 oovn\nř\nc1\n`ψloopoxoo,oaoooqo J oopoΛooo k oqo ´ oo 1 ooooom Nk oooψo p oo τ oopoψooo τ oo´oooψo p oo τ ooqo J oovn,\nτ“1\nc2\nwherec ,c canbeboundedasfollows:\n1 2\n? ? |c | ď λ∥v∥ ∥ψpx,aq∥ ď 8 dλ ¨∥ψpx,aq∥\n1 2 pΛkq´1 1´γ pΛkq´1\nř\n|c | ď |ψpx,aqJpΛkq´1 Nk ψ p τ|¨ϵ∥v∥\n2 ? τ“1 ?",
+      "size": 467,
+      "sentences": 5
+    },
+    {
+      "id": 227,
+      "content": "v∥ ∥ψpx,aq∥ ď 8 dλ ¨∥ψpx,aq∥\n1 2 pΛkq´1 1´γ pΛkq´1\nř\n|c | ď |ψpx,aqJpΛkq´1 Nk ψ p τ|¨ϵ∥v∥\n2 ? τ“1 ? 2 a\nď dkH ¨∥ψpx,aq∥ ¨ϵ¨ 8 d ď 8 ϵ2d2kHp1´γq´2¨∥ψpx,aq∥ . pΛkq´1 1´γ pΛkq´1\n• Toboundq ,notethat,asrewardsareboundedtor0,1s,wehave\n5\n|ErR τ |sτ,aτs´ErRτ|sτ,aτss| ď γHp1´γq´1. ByFactD.7,forH ě logpKp1´γq´1q,γH ď ? 1 ,sowehave\n1´γ KH\nř\n|xψpx,aq,q y| ď γH ¨|ψpx,aqJpΛkq´1 Nk ψ p τ|\n5 1´γ τ“1\n? ď dk ?",
+      "size": 396,
+      "sentences": 7
+    },
+    {
+      "id": 228,
+      "content": "1´γq´1q,γH ď ? 1 ,sowehave\n1´γ KH\nř\n|xψpx,aq,q y| ď γH ¨|ψpx,aqJpΛkq´1 Nk ψ p τ|\n5 1´γ τ“1\n? ď dk ? H ¨∥ψpx,aq∥ ď dH ¨∥ψpx,aq∥\np1´γq KH pΛkq´1 pΛkq´1\n• Toboundq ,wewrite\n6\nř\n|xψpx,aq,q y| ď ϵ∥wπ∥ ¨|ψpx,aqJpΛkq´1 Nk ψ p τ|\n6 u 2 τ“1\n? ? ď ϵ¨ 4 d ¨ dkH ¨∥ψpx,aq∥\na1´γ pΛkq´1\nď 4 ϵ2d2kHp1´γq´2¨∥ψpx,aq∥\npΛkq´1\nb\nTosumup,forourchoiceofλ “ 1andϵ ď 1´γ wehavethat\nK\n? ∆kpx,aq ď p25`Cq¨dH χ¨∥ψpx,aq∥ . u pΛkq´1\nFinally, observe that c appears in χ only under the logarithm and C is an absolute constant.",
+      "size": 496,
+      "sentences": 8
+    },
+    {
+      "id": 229,
+      "content": "pΛkq´1\nFinally, observe that c appears in χ only under the logarithm and C is an absolute constant. There-\nρ ? forea, we can select c\nρ\nas an absolute\n? constant large enou\n? gh such that for ι ě logp2q, c\nρ\n¨ ι ě p25 `\nCq ι`logpc `1q,i.e. ρ “ c ¨dH ι ě p25`CqdH χforallK,H,d,p. ρ ρ\nD.5 SomeBasicFacts\nInthissection,wecollectsomebasicalgebraicfactsusedintheproofs. 32\n===  33 ===\nFactD.7. Forn ě logpKp1´γq´1q itholdsthatγn ď mint 1´γ, 1 u ď ? 1 . 1´γ K np1´γq Kn\nProof.",
+      "size": 470,
+      "sentences": 11
+    },
+    {
+      "id": 230,
+      "content": "33 ===\nFactD.7. Forn ě logpKp1´γq´1q itholdsthatγn ď mint 1´γ, 1 u ď ? 1 . 1´γ K np1´γq Kn\nProof. Aslogp1{xq ě 1´xforx ą 0,wecanwrite\n` ˘ ` ˘\nγn “ exp ´Hlogp1{γq ď exp ´logpKp1´γq´1q “ 1´γ. K\nMoreover,as1{x ě e´x forx ą 0,wealsohave\n` ˘\nγn “ exp ´nlogp1{γq ď 1 ď 1 . nlogp1{γq np1´γq\nThefinalinequalityfollowstrivially. FactD.8. LetA,B P Rdˆd bepositivedefinitematricesandx P Rd. IfA ľ B,then\nd\ndetpAq\n∥x∥ ď ∥x∥ . A B detpBq\nř\nFactD.9. Letpx qN beanRD-valuedsequenceandλ ą 0.",
+      "size": 475,
+      "sentences": 12
+    },
+    {
+      "id": 231,
+      "content": "Rd. IfA ľ B,then\nd\ndetpAq\n∥x∥ ď ∥x∥ . A B detpBq\nř\nFactD.9. Letpx qN beanRD-valuedsequenceandλ ą 0. Then,forΛ “ λI ` N x xJ,itholds\nn n“1 N n“1 n n\nthat\nÿN\n∥x ∥2 ď D.\nn pΛNq´1\nn“1\nProof. ProofisexactlythesameasinLemmaD.1from[Jin+19]. Fact D.10 ([APS11]).",
+      "size": 254,
+      "sentences": 7
+    },
+    {
+      "id": 232,
+      "content": "∥x ∥2 ď D.\nn pΛNq´1\nn“1\nProof. ProofisexactlythesameasinLemmaD.1from[Jin+19]. Fact D.10 ([APS11]). Let px q8 be an RD-valued sequence such that ∥x ∥ ď 1 for every n P N. Let\nn n“1 ř n 2\nΛ P RDˆD satisfyλ pΛ q ě 1anddefineΛ “ Λ ` N x xJ foreveryn P N. Then,itholdsthat:\n0 min 0 N 0 n“1 n n\nforallN P N,\n„ ȷ „ ȷ\nÿN\nlogpΛ q logpΛ q\nlog N ď ∥x ∥2 ď 2 log N . logpΛ 0 q n Λ´ n´ 1 1 logpΛ 0 q\nn“1\nD.6 ConcentrationInequalities\nTheorem D.11 (Self-Normalized Bound for Vector-Valued Martingales, [APS11]).",
+      "size": 497,
+      "sentences": 5
+    },
+    {
+      "id": 233,
+      "content": "centrationInequalities\nTheorem D.11 (Self-Normalized Bound for Vector-Valued Martingales, [APS11]). Let tε u8 be a R-\nτ τ“1\nvalued stochastic process with corresponding filtration tF u8 , such that ε|F be zero-mean and σ-\nτ τ“0 τ´1\nsub-Gaussian for every τ ě 1. Let tζ τ u8 τ“1 be an RD-valued ř stochastic process where ζ τ P F τ´1 . Let\nΛ P RDˆD beapositivedefinitematrixanddefineΛ “ λI ` N ζ ζJ forN ě 1.",
+      "size": 407,
+      "sentences": 4
+    },
+    {
+      "id": 234,
+      "content": "rocess where ζ τ P F τ´1 . Let\nΛ P RDˆD beapositivedefinitematrixanddefineΛ “ λI ` N ζ ζJ forN ě 1. Then,forallδ ą 0,\nN τ“1 τ τ\nwithprobabilityatleast1´δ,itholdsthat\n˜ ¸\n(cid:13)ř (cid:13) detpΛ q1{2detpΛq´1{2\n@N ě 0 : (cid:13) N ζ ε (cid:13) ď 2σ2log N . (cid:13) τ“1 τ τ(cid:13) pΛNq´1 δ\nLemmaD.12. LetV Ă RS beanarbitraryfunctionclasssuchthat, foreveryV P V, sup |Vpsq| ď 1 . s 1´γ\nLet ts\nτ\nu8\nτ“1\nbe a stochastic process on state space S with corresponding filtration tF τřu8\nτ“0\n.",
+      "size": 485,
+      "sentences": 6
+    },
+    {
+      "id": 235,
+      "content": "et ts\nτ\nu8\nτ“1\nbe a stochastic process on state space S with corresponding filtration tF τřu8\nτ“0\n. Let tζ\nτ\nu8\nτ“1\nbeanRD-valuedstochasticprocesswhereζ P F and∥ζ ∥ ď 1. LetΛ “ λI ` N ζ ζJ.",
+      "size": 189,
+      "sentences": 3
+    },
+    {
+      "id": 236,
+      "content": "řu8\nτ“0\n. Let tζ\nτ\nu8\nτ“1\nbeanRD-valuedstochasticprocesswhereζ P F and∥ζ ∥ ď 1. LetΛ “ λI ` N ζ ζJ. Then,\nτ τ´1 τ 2 N τ“1 τ τ\nforallδ ą 0,withprobabilityatleast1´δ,itholdsthatforallN ě 0andV P V\n„ ȷ\n´ ¯ ´ ¯\n(cid:13)ř ␣ ((cid:13)2\n(cid:13) N ζ Vps q´ErVps q | F s (cid:13) ď 4 D log N`λ `log Nε ` 8N2ε2 ,\n(cid:13) τ“1 τ τ τ τ´1 (cid:13)\npΛNq´1\np1´γq2 2 λ δ λ\nwhereN istheε-coveringnumberofV withrespecttodistpV,V1q “ sup |Vpsq´V1psq|. ε s\n33\n===  34 ===\nProof.",
+      "size": 459,
+      "sentences": 5
+    },
+    {
+      "id": 237,
+      "content": "ereN istheε-coveringnumberofV withrespecttodistpV,V1q “ sup |Vpsq´V1psq|. ε s\n33\n===  34 ===\nProof. TheresultfollowsbyapplyingTheoremD.11foreachelementintheε-coveringandusingtheunion\nboundfortheleft-handside,aswasdoneintheproofofLemmaD.4from[Jin+19]. Lemma D.13 (Covering number bound, [Jin+19]). Let ζ : S ˆA N Ñ RD be an arbitrary state-action-\nsequencefeaturemap,suchthatsup ∥ζps,aq∥ ď 1. ForL,B,λ ą 0,letVpL,B,λqdenotethefollow-\ns,a 2\ningparametricclassofmappingsfromS tor0, 1 s:\n1´γ\n! )",
+      "size": 491,
+      "sentences": 6
+    },
+    {
+      "id": 238,
+      "content": "ForL,B,λ ą 0,letVpL,B,λqdenotethefollow-\ns,a 2\ningparametricclassofmappingsfromS tor0, 1 s:\n1´γ\n! ) Vp.q “ mint 1´ 1 γ ,sup aPAN ζp.,aqJw`ρ∥ζp.,aq∥ Λ´1 u : ∥w∥ 2 ď L,ρ P r0,Bs,Λ ľ λI . Then,thecoveringnumberN ofVpL,B,λqwithrespecttodistpV,V1q “ sup |Vpsq´V1psq|satisfies\nε sPS\n´ ¯\nlogN ď D logp1`4L{εq`D2 log 1`8D1{2B2{pλε2q . ε\nProof. Accounting for the fact that we use a different feature map ζ : S ˆA N Ñ RD, the proof follows\nsimilarlytoLemmaD.6from[Jin+19]. 34",
+      "size": 466,
+      "sentences": 6
+    }
+  ]
+}

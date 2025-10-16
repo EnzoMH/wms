@@ -1,0 +1,1371 @@
+{
+  "source": "ArXiv",
+  "filename": "289_AI_ML_Optimized_Weight_Initialization_on_the_S.pdf",
+  "domain": "AI",
+  "total_chars": 77047,
+  "total_chunks": 227,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\n1\nOptimized Weight Initialization on the Stiefel Manifold\nfor Deep ReLU Neural Networks\nHyungu Lee, Taehyeong Kim, Hayoung Choi\nAbstract—Stable and efficient training of ReLU networks simple form, computational efficiency, and sparsity-inducing\nwith large depth is highly sensitive to weight initialization. properties in neuron activity [2], [5], [6].",
+      "size": 363,
+      "sentences": 2
+    },
+    {
+      "id": 2,
+      "content": "ge depth is highly sensitive to weight initialization. properties in neuron activity [2], [5], [6]. However, the ReLU\nImproper initialization can cause permanent neuron inactivation\nactivation suffers from the dying ReLU problem, when a\n(“dying ReLU”) and exacerbate gradient instability as network\npre-activation remains negative, its gradient vanishes and the\ndepth increases. Methods such as He, Xavier, and orthogonal\ninitialization preserve variance or promote approximate isometry.",
+      "size": 487,
+      "sentences": 4
+    },
+    {
+      "id": 3,
+      "content": "uch as He, Xavier, and orthogonal\ninitialization preserve variance or promote approximate isometry. corresponding parameters stop updating [7], [8]. This problem\nHowever, they do not necessarily regulate the pre-activation is one of the vanishing gradient [5], and it becomes more\nmean or control activation sparsity, and their effectiveness often pronounced in deeper networks. diminishes in very deep architectures.",
+      "size": 417,
+      "sentences": 4
+    },
+    {
+      "id": 4,
+      "content": "and their effectiveness often pronounced in deeper networks. diminishes in very deep architectures. This work introduces\nTo address the dying ReLU problem, various studies have\nan orthogonal initialization specifically optimized for ReLU by\nbeen proposed. The main approaches can be broadly classified\nsolving an optimization problem on the Stiefel manifold, thereby\npreserving scale and calibrating the pre-activation statistics from into three categories.",
+      "size": 457,
+      "sentences": 4
+    },
+    {
+      "id": 5,
+      "content": "thereby\npreserving scale and calibrating the pre-activation statistics from into three categories. First, some studies employ activation\nthe outset.",
+      "size": 148,
+      "sentences": 2
+    },
+    {
+      "id": 6,
+      "content": "activation statistics from into three categories. First, some studies employ activation\nthe outset. A family of closed-form solutions and an efficient functions that permit small gradients for negative inputs,\nsamplingschemearederived.Theoreticalanalysisatinitialization such as Leaky ReLU [7] or the exponential linear unit\nshows that prevention of the dying ReLU problem, slower decay\n(ELU)[9],ormodifythenetworkstructureitselfbyintroducing\nofactivationvariance,andmitigationofgradientvanishing,which\nresidual connections [10].",
+      "size": 529,
+      "sentences": 3
+    },
+    {
+      "id": 7,
+      "content": "yintroducing\nofactivationvariance,andmitigationofgradientvanishing,which\nresidual connections [10]. Second, there are widely used\ntogether stabilize signal and gradient flow in deep architectures.",
+      "size": 196,
+      "sentences": 2
+    },
+    {
+      "id": 8,
+      "content": "]. Second, there are widely used\ntogether stabilize signal and gradient flow in deep architectures. Empirically, across MNIST, Fashion-MNIST, multiple tabular methods that apply normalization techniques, such as batch\ndatasets, few-shot settings, and ReLU-family activations, our normalization [11], to each layer to stabilize the distribution\nmethod outperforms previous initializations and enables stable of activation values. Lastly, there are studies on initialization\ntraining in deep networks.",
+      "size": 499,
+      "sentences": 4
+    },
+    {
+      "id": 9,
+      "content": "stable of activation values. Lastly, there are studies on initialization\ntraining in deep networks. techniques that carefully set weights and biases to prevent\nIndex Terms—Weight initialization, semi-orthogonal matrix, neurondeactivationearlyintraining[5],[8].Amongthesethree\ndeep learning, FFNN, ReLU activation function approaches,thispaperfocusesonweightinitialization,whichis\ninvolved in the most fundamental stage of training. It proposes\nI.",
+      "size": 446,
+      "sentences": 4
+    },
+    {
+      "id": 10,
+      "content": "esonweightinitialization,whichis\ninvolved in the most fundamental stage of training. It proposes\nI. INTRODUCTION a new method to enhance the stability and performance of\nDEEP learning has achieved remarkable success across ReLU networks. various domains, driven by its ability to learn effective Early methods, such as Xavier initialization [5], were\nrepresentations from data through deep neural networks [1].",
+      "size": 410,
+      "sentences": 4
+    },
+    {
+      "id": 11,
+      "content": "such as Xavier initialization [5], were\nrepresentations from data through deep neural networks [1]. designed under the assumption of symmetric, zero-centered\nThese architectures come in various forms, each designed to activations (e.g., tanh, sigmoid), and often underperform with\naddress specific data processing challenges. A representative ReLU-based models due to the asymmetry of the function.",
+      "size": 398,
+      "sentences": 3
+    },
+    {
+      "id": 12,
+      "content": "ata processing challenges. A representative ReLU-based models due to the asymmetry of the function. example is the feed-forward neural network (FFNN), which In response, He initialization [8] scales weight variances\nserves as a fundamental building block in deep learning, where by 2/m, where m is the number of input units (fan-in) of\ninformation propagates unidirectionally from the input layer, the layer to compensate for ReLU’s half-activation.",
+      "size": 449,
+      "sentences": 3
+    },
+    {
+      "id": 13,
+      "content": "opagates unidirectionally from the input layer, the layer to compensate for ReLU’s half-activation. More\nthrough multiple hidden layers, to the output layer [2]. The recent approaches exploit geometric constraints and dynamical-\ndepthofthenetworkdeterminesrepresentationalcapacity,since isometry conditions to better tailor initialization to ReLU’s\nadditional layers enable the progressive extraction of more properties[12],[13].Inarecentstudy,Leeetal.",
+      "size": 452,
+      "sentences": 3
+    },
+    {
+      "id": 14,
+      "content": "tional layers enable the progressive extraction of more properties[12],[13].Inarecentstudy,Leeetal. [14]proposed\nabstract and complex features [3], [4]. On the other hand, a specific constructive method for orthogonal weight matrices\nincreasing depth may lead to the vanishing and exploding by applying QR decomposition to an all-ones matrix perturbed\ngradient phenomenon that hinders practical training and delays by a small term ϵ>0. While it is effective, this constructive\nconvergence [5].",
+      "size": 493,
+      "sentences": 4
+    },
+    {
+      "id": 15,
+      "content": "training and delays by a small term ϵ>0. While it is effective, this constructive\nconvergence [5]. method treats a key property—approximate angle preservation\nThe Rectified Linear Unit (ReLU) activation function is with the all-ones vector—as a byproduct of its procedure\nwidely adopted in modern deep learning models due to its rather than a direct optimization objective. Consequently, these\ndesirable characteristics are only approximately guaranteed.",
+      "size": 454,
+      "sentences": 4
+    },
+    {
+      "id": 16,
+      "content": "ization objective. Consequently, these\ndesirable characteristics are only approximately guaranteed. Allauthorscontributeequallytothispaper.ThisworkofH.Lee,T.Kim,and To address these limitations, this paper introduces a novel\nH.ChoiwassupportedbytheNationalResearchFoundationofKorea(NRF)\nweight initialization method derived from a principled opti-\ngrantfundedbytheKoreagovernment(MSIT)(No.2022R1A5A1033624and\nRS-2024-00342939).(Correspondingauthor:HayoungChoi. )HyunguLeeis mization framework.",
+      "size": 493,
+      "sentences": 4
+    },
+    {
+      "id": 17,
+      "content": "1A5A1033624and\nRS-2024-00342939).(Correspondingauthor:HayoungChoi. )HyunguLeeis mization framework. We formulate the design of the weight\nwiththeDepartmentofMathematics&NonlinearDynamicsandMathematical matrix as an optimization problem on the Stiefel manifold,\nApplicationCenter,KyungpookNationalUniversity,Daegu41566,Republicof\nwhichseeksasemi-orthogonalmatrixthatismaximallyaligned\nKorea(lewis9910@knu.ac.kr).TaehyeongKimiswiththeNonlinearDynamics\nandMathematicalApplicationCenter,KyungpookNationalUniversity,Daegu with the all-ones vector.",
+      "size": 542,
+      "sentences": 3
+    },
+    {
+      "id": 18,
+      "content": "namics\nandMathematicalApplicationCenter,KyungpookNationalUniversity,Daegu with the all-ones vector. This approach is motivated by our\n41566,RepublicofKorea(e-mail:thkim0519@knu.ac.kr).HayoungChoiis empiricalandtheoreticalfindingsthatsuchalignmentiscritical\nwiththeDepartmentofMathematics&NonlinearDynamicsandMathematical\nfor preventing neuron inactivation in ReLU networks. The\nApplicationCenter,KyungpookNationalUniversity,Daegu41566,Republic\nofKorea(e-mail:hayoung.choi@knu.ac.kr).",
+      "size": 483,
+      "sentences": 3
+    },
+    {
+      "id": 19,
+      "content": "ationCenter,KyungpookNationalUniversity,Daegu41566,Republic\nofKorea(e-mail:hayoung.choi@knu.ac.kr). resulting initialization scheme, obtained as the exact solution\n5202\nguA\n03\n]GL.sc[\n1v26300.9052:viXra\n===  2 ===\n2\ntothisoptimizationproblem,isdesignedtoinherentlypreserve II.",
+      "size": 276,
+      "sentences": 2
+    },
+    {
+      "id": 20,
+      "content": "GL.sc[\n1v26300.9052:viXra\n===  2 ===\n2\ntothisoptimizationproblem,isdesignedtoinherentlypreserve II. PRELIMINARIES\nsignalpropagationandstabilizetrainingdynamicsfromthevery\nBeforeintroducingourproposedweightinitializationmethod,\nfirst epoch, thereby mitigating the dying ReLU and vanishing\nwe provide a brief overview of the basic concepts and review\ngradient problems in deep and narrow architectures. prior works.",
+      "size": 413,
+      "sentences": 3
+    },
+    {
+      "id": 21,
+      "content": "w of the basic concepts and review\ngradient problems in deep and narrow architectures. prior works. To validate the practical benefits of our approach, the\nproposed initialization is evaluated on several benchmark tasks. A. Basic Concepts\nDeep ReLU neural networks trained on MNIST and Fashion-\nMNIST exhibit faster convergence and improved generaliza- FFNN is a composition of affine maps and pointwise\ntion compared to standard initializations [15].",
+      "size": 451,
+      "sentences": 5
+    },
+    {
+      "id": 22,
+      "content": "FFNN is a composition of affine maps and pointwise\ntion compared to standard initializations [15]. Robustness\nnonlinearities.Givenaninputx0 ∈RN0,theforwardrecursion\nto activation choice is assessed through experiments with for layers ℓ=1,...,L is given by\nvarious ReLU variants, confirming consistent performance yℓ =Wℓxℓ−1+bℓ, xℓ =ϕ(yℓ), (1)\ngains.",
+      "size": 349,
+      "sentences": 2
+    },
+    {
+      "id": 23,
+      "content": "en by\nvarious ReLU variants, confirming consistent performance yℓ =Wℓxℓ−1+bℓ, xℓ =ϕ(yℓ), (1)\ngains. In few-shot learning scenarios—where only a handful of\nlabeled examples are available—the initialization maintains where N denotes the number of units in the ℓ-th layer. Here,\nℓ\nstability and accuracy. Finally, the application to diverse Wℓ ∈ RNℓ×Nℓ−1 is the weight matrix, bℓ ∈ RNℓ is its bias\ntabulardatasetsdemonstratesitsversatilityacrossdifferentdata vector, ϕ:R→R is an activation function.",
+      "size": 496,
+      "sentences": 4
+    },
+    {
+      "id": 24,
+      "content": "bulardatasetsdemonstratesitsversatilityacrossdifferentdata vector, ϕ:R→R is an activation function. modalities.Acrossthesediversescenarios,ourproposedscheme For FFNN architectures based on fully connected layers,\nconsistently demonstrates superior performance compared to non-expanding configurations are widely employed, where\nexisting initialization methods, underscoring its effectiveness the number of neurons either remains constant or decreases\nin addressing the specific challenges of ReLU activation.",
+      "size": 508,
+      "sentences": 2
+    },
+    {
+      "id": 25,
+      "content": "rons either remains constant or decreases\nin addressing the specific challenges of ReLU activation. across layers. Such architectures, commonly found in standard\nThe main contributions of this paper are summarized as designs [2], [16], support hierarchical compression of features\nfollows. and often lead to improved generalization and interpretability.",
+      "size": 353,
+      "sentences": 4
+    },
+    {
+      "id": 26,
+      "content": "al compression of features\nfollows. and often lead to improved generalization and interpretability. 1) WesolveanoptimizationproblemontheStiefelmanifold Accordingly, in this work, a non-expanding architecture is\nto derive novel weight initialization and analyze its key considered, specified by the condition N 0 ≥N 1 ≥···≥N L . mathematical properties.",
+      "size": 352,
+      "sentences": 4
+    },
+    {
+      "id": 27,
+      "content": "analyze its key considered, specified by the condition N 0 ≥N 1 ≥···≥N L . mathematical properties. An activation function ϕ is a key component in neural\n2) We design an efficient algorithm that enables practical networks, introducing non-linearity that allows the model to\nweight initialization. learn complex, non-linear mappings.",
+      "size": 332,
+      "sentences": 4
+    },
+    {
+      "id": 28,
+      "content": "g non-linearity that allows the model to\nweight initialization. learn complex, non-linear mappings. Common choices include\n3) We theoretically and empirically demonstrate that the sigmoid[17],hyperbolictangent(tanh)[18],andrectifiedlinear\nproposed initialization alleviates early-stage issues in unit (ReLU) functions [6], each with distinct characteristics in\nReLU networks such as dying neurons and unstable terms of saturation, gradient flow, and computational cost. In\ngradients.",
+      "size": 483,
+      "sentences": 4
+    },
+    {
+      "id": 29,
+      "content": "ying neurons and unstable terms of saturation, gradient flow, and computational cost. In\ngradients. this paper, the activation function ϕ is chosen to be the ReLU,\n4) We show superior performance over previous initializa- defined element-wise as\ntions and stability of training in deep ReLU networks\nReLU(z)=max(0,z). across MNIST, Fashion-MNIST, and various tabular\nbenchmarks, including few-shot regimes and variants The ReLU activation is widely used due to its computational\nof ReLU activations.",
+      "size": 499,
+      "sentences": 4
+    },
+    {
+      "id": 30,
+      "content": "gimes and variants The ReLU activation is widely used due to its computational\nof ReLU activations. simplicity and beneficial properties for optimization. It intro-\nduces non-linearity while preserving gradient flow for positive\nNotations\ninputs, thereby mitigating the vanishing gradient problem. Throughout this paper, we adopt the following notation Furthermore, ReLU induces sparsity in the activations, as it\nconventions. Let R (resp. R ) be the set of real numbers (resp.",
+      "size": 477,
+      "sentences": 6
+    },
+    {
+      "id": 31,
+      "content": "sparsity in the activations, as it\nconventions. Let R (resp. R ) be the set of real numbers (resp. outputszeroforallnon-positivevalues.WhileReLUactivations\n+\nnonnegative real numbers). The standard inner product of two offer several optimization advantages, their effectiveness is\nvectors u and v is denoted by ⟨u,v⟩, and ∥v∥ denotes the closely tied to the choice of weight initialization [19], [20]. 2\nEuclidean norm. The vector max norm is denoted by ∥x∥ .",
+      "size": 459,
+      "sentences": 7
+    },
+    {
+      "id": 32,
+      "content": "oice of weight initialization [19], [20]. 2\nEuclidean norm. The vector max norm is denoted by ∥x∥ . Inappropriate initialization may lead to unbalanced activation\n∞\nThe superscript T denotes the transpose operator. Denote the statistics across layers, undermining training dynamics [21]. all-onesvectorofsizemby1 =[1,1,...,1]T ∈Rm andits Consequently, considerable research has been devoted to\nm\nnormalized version by ξ\nm\n= √1\nm\n1\nm\n.",
+      "size": 434,
+      "sentences": 6
+    },
+    {
+      "id": 33,
+      "content": "ts Consequently, considerable research has been devoted to\nm\nnormalized version by ξ\nm\n= √1\nm\n1\nm\n. The all-ones matrix of developing initialization schemes, as reviewed below. sizem×nisdenotedbyJ wherethesubscriptisshortened\nm×n\nto J for a square matrix of size m. And the m×m identity\nm B. Prior Works\nmatrixisdenotedbyI .Denotethezeromatrixofsizem×n\nm Before the widespread adoption of ReLU, activation func-\nby 0 .",
+      "size": 418,
+      "sentences": 4
+    },
+    {
+      "id": 34,
+      "content": "byI .Denotethezeromatrixofsizem×n\nm Before the widespread adoption of ReLU, activation func-\nby 0 . When the dimension is clear from context, we omit\nm×n tionssuchassigmoidandtanhweremorecommonlyused.One\nsubscripts on 1, ξ, J, I, and 0.\nofthemostinfluentialmethodsinthiscategoryisXavierinitial-\nWeusethenotationx∼N(µ,σ2)toindicatethatthescalar\nization [5], which draws a weight matrix W =[W ]∈Rm×n\nrandomvariablexfollowsaunivariatenormaldistributionwith ij\nmean µ∈R and variance σ2 >0.",
+      "size": 485,
+      "sentences": 2
+    },
+    {
+      "id": 35,
+      "content": "=[W ]∈Rm×n\nrandomvariablexfollowsaunivariatenormaldistributionwith ij\nmean µ∈R and variance σ2 >0. For the multivariate case, from a uniform distribution, i.e., for all i,j\nx∼N(µ,Σ) denotes that the random vector x∈Rd follows W ∼U (cid:16) − (cid:113) 6 , (cid:113) 6 (cid:17) . a multivariate normal distribution with mean vector µ ∈ Rd ij m+n m+n\nand covariance matrix Σ ∈ Rd×d, which is symmetric and Xavier initialization works well for activation functions with\npositive semidefinite.",
+      "size": 489,
+      "sentences": 3
+    },
+    {
+      "id": 36,
+      "content": "symmetric and Xavier initialization works well for activation functions with\npositive semidefinite. We write x∼U(a,b) to denote that x is symmetry around zero, effectively preserving variance in\ndistributed uniformly over the interval [a,b]⊂R, where a<b. shallow networks. However, because ReLU activations are\n===  3 ===\n3\nasymmetric, this method often struggles to avert the vanishing a strong positive alignment of WT1 with x immediately\ngradient problem in deeper ReLU-based networks.",
+      "size": 488,
+      "sentences": 4
+    },
+    {
+      "id": 37,
+      "content": "strong positive alignment of WT1 with x immediately\ngradient problem in deeper ReLU-based networks. implies ⟨Wx,1⟩ > 0. In other words, all pre-activations\nTo address the reduction in activation caused by ReLU remain strictly positive, thus preventing the dying ReLU\nzeroing out approximately half of its inputs, He et al. [8] phenomenon in deep ReLU networks. proposed to increase the variance more aggressively:\n(cid:16) (cid:17) III.",
+      "size": 436,
+      "sentences": 5
+    },
+    {
+      "id": 38,
+      "content": "in deep ReLU networks. proposed to increase the variance more aggressively:\n(cid:16) (cid:17) III. METHODOLOGY\nW ∼N 0, 2 ,\nij m Motivated by the angle-preserving behavior observed in (2),\nwe hypothesize that the alignment between the weight matrix\nwhere weights are sampled from a zero-mean normal distri-\nbution with variance 2.",
+      "size": 329,
+      "sentences": 3
+    },
+    {
+      "id": 39,
+      "content": "the weight matrix\nwhere weights are sampled from a zero-mean normal distri-\nbution with variance 2. This strategy compensates for the and the all-ones vector 1 serves as a key factor in determining\nm ReLUactivation.Denotethesetofallsemi-orthogonalmatrices\nsparsity introduced by ReLU, helping to preserve the variance\nas\nof activations in deeper networks. It has become standard in\nmany ReLU-based architectures, including various residual O := (cid:8) W ∈Rm×n :WWT =I or WTW =I (cid:9) .",
+      "size": 488,
+      "sentences": 3
+    },
+    {
+      "id": 40,
+      "content": "LU-based architectures, including various residual O := (cid:8) W ∈Rm×n :WWT =I or WTW =I (cid:9) . m,n m n\nnetwork designs, although it does not entirely prevent gradient (4)\ndegradation in extremely deep architectures. If m≤n, the rows of W are orthonormal, so that\nOther researchers investigated matrix structures and their\nWWT =I ,\nimpact on signal propagation. For instance, Saxe et al.",
+      "size": 391,
+      "sentences": 4
+    },
+    {
+      "id": 41,
+      "content": "igated matrix structures and their\nWWT =I ,\nimpact on signal propagation. For instance, Saxe et al. [13] m\nadvocated orthogonal initialization, leveraging the property whereas if m≥n, the columns of W are orthonormal, so that\nWWT = I to preserve signal norms through forward and\nWTW =I . backward passes in linear regimes. Orthogonal initialization n\nhas been shown to maintain dynamical isometry, thereby\nstabilizing gradient flow in deep networks.",
+      "size": 449,
+      "sentences": 5
+    },
+    {
+      "id": 42,
+      "content": "has been shown to maintain dynamical isometry, thereby\nstabilizing gradient flow in deep networks. Building upon this A. Empirical Motivation via Alignment Optimization\nintuition, Hu et al. [22] provided a theoretical justification We introduce an optimization-based framework for con-\nfor orthogonal initialization in deep linear networks.",
+      "size": 340,
+      "sentences": 3
+    },
+    {
+      "id": 43,
+      "content": "uce an optimization-based framework for con-\nfor orthogonal initialization in deep linear networks. Their structing semi-orthogonal weight matrices that are specifically\nanalysis demonstrates that orthogonal weights enable depth- aligned with directions favorable to ReLU activation.",
+      "size": 283,
+      "sentences": 2
+    },
+    {
+      "id": 44,
+      "content": "strates that orthogonal weights enable depth- aligned with directions favorable to ReLU activation. The\nindependent convergence, in contrast to Gaussian initialization, guiding principle stems from empirical observations indicating\nwhich requires network width to increase linearly with depth that the alignment between the semi-orthogonal weight matrix\nfor efficient training.",
+      "size": 377,
+      "sentences": 2
+    },
+    {
+      "id": 45,
+      "content": "rly with depth that the alignment between the semi-orthogonal weight matrix\nfor efficient training. This result offers a provable advantage and the all-ones vector, representing uniform positive inputs,\nfor orthogonal initialization in specific settings. correlates positively with network performance. Despite these theoretical benefits, orthogonal initialization To understand how semi-orthogonal weight matrices align\nremains challenging to apply in practice.",
+      "size": 462,
+      "sentences": 4
+    },
+    {
+      "id": 46,
+      "content": "n To understand how semi-orthogonal weight matrices align\nremains challenging to apply in practice. Generating exact withtheall-onesvector,wefirstobservehowrandomlysampled\northogonal matrices is computationally expensive, particularly semi-orthogonal matrices align with the all-ones vector to\nfor high-dimensional or convolutional layers. Moreover, its understand their effect on ReLU activation behavior.",
+      "size": 406,
+      "sentences": 3
+    },
+    {
+      "id": 47,
+      "content": "nsional or convolutional layers. Moreover, its understand their effect on ReLU activation behavior. Consider\neffectiveness diminishes in highly nonlinear regimes, where a collection of random semi-orthogonal matrices,\nthe orthogonality of weight matrices does not guarantee stable (cid:8) (cid:9)5000\nW ⊂O ,\nsignal propagation due to the nonlinear distortions introduced (k) k=1 64,64\nby activation functions.",
+      "size": 409,
+      "sentences": 3
+    },
+    {
+      "id": 48,
+      "content": "gnal propagation due to the nonlinear distortions introduced (k) k=1 64,64\nby activation functions. where each W is randomly generated using the orthogo-\n(k)\nWhile these methods have advanced the field, deep and nal initialization scheme of Saxe et al. [13], involving QR\nnarrow ReLU networks pose additional challenges. In such decomposition of a Gaussian matrix. For each k, define\narchitecture,thevanishinggradientandthedyingReLUbecome the 64-dimensional vector v = WT 1.",
+      "size": 474,
+      "sentences": 5
+    },
+    {
+      "id": 49,
+      "content": ", define\narchitecture,thevanishinggradientandthedyingReLUbecome the 64-dimensional vector v = WT 1. Since {v }5000\nk (k) k k=1\nespeciallypronounced.Recently,Leeetal. [14]addressedthese lie in a 64-dimensional space, it is challenging to visualize\ndifficulties by proposing a deterministic initialization method clustering or distribution patterns directly.",
+      "size": 356,
+      "sentences": 3
+    },
+    {
+      "id": 50,
+      "content": "es by proposing a deterministic initialization method clustering or distribution patterns directly. There are several\nthat constructs an orthogonal weight matrix via a perturbed all- dimension reduction methods to visualize them in a low-\none matrix 11T +ϵI for sufficiently small ϵ>0. This method dimensional space. Among them, we adopt Uniform Manifold\npreserves orthogonality in a manner particularly advantageous ApproximationandProjection(UMAP)[23]becauseitsupports\nfor narrow networks.",
+      "size": 491,
+      "sentences": 4
+    },
+    {
+      "id": 51,
+      "content": "articularly advantageous ApproximationandProjection(UMAP)[23]becauseitsupports\nfor narrow networks. Empirically, this weight initialization user-defined distance metrics, which allows us to employ the\nmaintains more positive entries than either He initialization 1-Wasserstein distance. This choice provides invariance to\nor standard orthogonal matrices, thereby reducing the risk of coordinate permutations and enables a meaningful comparison\nthe dying ReLU. Furthermore, Lee et al.",
+      "size": 483,
+      "sentences": 4
+    },
+    {
+      "id": 52,
+      "content": "coordinate permutations and enables a meaningful comparison\nthe dying ReLU. Furthermore, Lee et al. establish that their of the alignment vectors [24]. construction approximately preserves the angle between any In Fig. 1 (a) and (b), an identical 2D UMAP embedding is\ninput vector x and the all-ones vector 1.",
+      "size": 309,
+      "sentences": 5
+    },
+    {
+      "id": 53,
+      "content": "In Fig. 1 (a) and (b), an identical 2D UMAP embedding is\ninput vector x and the all-ones vector 1. Specifically, the used for both plots, i.e., each point occupies the same location\nproposed initialization W satisfies inbothsubfiguresandcorrespondstothesameW .InFig.1\n(k)\n(a), points are colored by their alignment score\n⟨x, 1⟩ ⟨Wx, 1⟩\n≈ , (2)\n∥x∥∥1∥ ∥Wx∥∥1∥ 64 64\n(cid:88)(cid:88)\ns =⟨v ,1⟩=1TW 1= (W ) ,\nk k (k) (k) ij\nso the angle between any positive input x and the all-ones\ni=1j=1\nvector 1 is preserved by W. Since\nwhich quantifies how strongly v aligns with the uniform\nk\n⟨Wx, 1⟩=⟨x, WT1⟩, (3) direction 1 = (1,1,...,1); that is, s = ⟨v ,1⟩ measures\nk k\n===  4 ===\n4\n(a) UMAP projection colored by mean inner product value s (b) UMAP projection colored by Classification accuracy α\nk k\nFig.",
+      "size": 797,
+      "sentences": 3
+    },
+    {
+      "id": 54,
+      "content": "red by mean inner product value s (b) UMAP projection colored by Classification accuracy α\nk k\nFig. 1: A two-dimensional UMAP projection of vectors v =WT 1.\nk (k)\nthe extent to which v projects onto the subspace spanned mal m-frames in Rn. Each element in O can be viewed\nk m,n\nby 1, or equivalently, the sum of all entries in W .",
+      "size": 330,
+      "sentences": 3
+    },
+    {
+      "id": 55,
+      "content": "s in Rn. Each element in O can be viewed\nk m,n\nby 1, or equivalently, the sum of all entries in W . This as a point on a nonlinear manifold embedded in Euclidean\n(k)\nreflects how uniformly the components of v are distributed space, constrained by 1m(m+1) nonlinear equations due\nk 2\nacrossallcoordinates,indicatingagloballyconsistentactivation to the orthonormality condition. Notably, O is a smooth\nm,n\npattern. In Fig.",
+      "size": 420,
+      "sentences": 5
+    },
+    {
+      "id": 56,
+      "content": "lyconsistentactivation to the orthonormality condition. Notably, O is a smooth\nm,n\npattern. In Fig. 1 (b), the points are colored instead by the Riemannian manifold, and it generalizes both the unit sphere\naverage one-shot classification accuracy α , obtained when Sn−1 =O and the orthogonal group O . k 1,n n,n\nW is used to initialize the middle layer of a simple fully An optimization problem is now formulated over the\n(k)\nconnected ReLU network trained on MNIST [15].",
+      "size": 471,
+      "sentences": 5
+    },
+    {
+      "id": 57,
+      "content": "n optimization problem is now formulated over the\n(k)\nconnected ReLU network trained on MNIST [15]. Specifically, Stiefel manifold O to satisfy the above criteria. The\nm,n\nthe network architecture is 784→64→64→10. The input- scalar 1TW1 , representing the sum of all entries of W,\nm n\nto-hidden (64×784) and hidden-to-output (10×64) weight is equivalent to tr(JT W), where J is the all-ones\nm×n m×n\nmatrices are initialized using orthogonal initialization. The matrix.",
+      "size": 468,
+      "sentences": 5
+    },
+    {
+      "id": 58,
+      "content": "ere J is the all-ones\nm×n m×n\nmatrices are initialized using orthogonal initialization. The matrix. Thus, the optimization can be posed as\nmiddle 64×64 weight matrix is set to the specific sample\nmax tr(JT W).",
+      "size": 209,
+      "sentences": 3
+    },
+    {
+      "id": 59,
+      "content": "optimization can be posed as\nmiddle 64×64 weight matrix is set to the specific sample\nmax tr(JT W). (5)\nW underevaluation.ForeachW ,werun100independent m×n\n(k) (k) W∈Om,n\none-shot trials: in each trial, one random image per digit class\nEquivalently, it can be expressed as\nis sampled from the MNIST training set, training proceeds\nfor 100 epochs using vanilla SGD (learning rate 0.01, batch min ∥J −W∥ , (6)\nm×n F\nsize 64, no weight decay) under cross-entropy loss, and we W∈Om,n\nmeasure test accuracy on the full MNIST test set.",
+      "size": 529,
+      "sentences": 2
+    },
+    {
+      "id": 60,
+      "content": "ht decay) under cross-entropy loss, and we W∈Om,n\nmeasure test accuracy on the full MNIST test set. The color in which interprets the problem as finding the closest point on\nFig. 1(b) represents the average test accuracy α k across these the Stiefel manifold to J m×n in terms of the Frobenius norm. 100 trials. Theorem 1. Every optimal solution of (6) can be explicitly\nAlthough Fig.",
+      "size": 384,
+      "sentences": 6
+    },
+    {
+      "id": 61,
+      "content": "robenius norm. 100 trials. Theorem 1. Every optimal solution of (6) can be explicitly\nAlthough Fig. 1 (a) and (b) are colored by two different\nexpressed as follows:\nscalar metrics—alignment score s and average classification\nk\naccuracy α k , respectively—the resulting spatial patterns are W(cid:102) =UVT, (7)\nremarkably similar.",
+      "size": 330,
+      "sentences": 5
+    },
+    {
+      "id": 62,
+      "content": "racy α k , respectively—the resulting spatial patterns are W(cid:102) =UVT, (7)\nremarkably similar. This visual correspondence suggests a\npositive relationship between the alignment of W (k) with the where U ∈ O m,m has its first column equal to ξ m , and\ndirection of the all-ones vector and the effectiveness of the V ∈O n,m has its first column equal to ξ n . corresponding initialization. A Pearson correlation analysis\nProof.",
+      "size": 430,
+      "sentences": 4
+    },
+    {
+      "id": 63,
+      "content": "its first column equal to ξ n . corresponding initialization. A Pearson correlation analysis\nProof. Note that the thin SVD of J is\non the dataset {(s ,α )}5000 revealed a strong, statistically m×n\nk k k=1\nsignificant linear correlation between s\nk\nand α\nk\n(r =0.8178). J\nm×n\n=U(cid:98) ΣV(cid:98) T,\nThis finding supports the hypothesis that alignment with the √\nwhere Σ is the m×m diagonal matrix with mn in the first\nall-onedirectionpositivelycontributestoperformanceinReLU\nnetworks.",
+      "size": 485,
+      "sentences": 5
+    },
+    {
+      "id": 64,
+      "content": "onal matrix with mn in the first\nall-onedirectionpositivelycontributestoperformanceinReLU\nnetworks. Motivated by this result, we construct a new class\ndiagonal element and 0 elsewhere, U(cid:98) ∈O\nm,m\nand V(cid:98) ∈O\nn,m\nof weight matrices W ∈Rm×n that satisfy the following two have their first columns equal to ξ m and ξ n , respectively. By\nthe orthogonal invariance of the Frobenius norm, it holds\ncriteria:\n( ( ii i ) ) T W he i v s a s l e u m e i o -o f r 1 th T o W gon 1 al, is maximized.",
+      "size": 499,
+      "sentences": 3
+    },
+    {
+      "id": 65,
+      "content": "lds\ncriteria:\n( ( ii i ) ) T W he i v s a s l e u m e i o -o f r 1 th T o W gon 1 al, is maximized. ∥J m×n −W∥ F = (cid:13) (cid:13)U(cid:98) T(J m×n −W)V(cid:98) (cid:13) (cid:13) F = (cid:13) (cid:13)Σ−U(cid:98) TW V(cid:98) (cid:13) (cid:13) F .",
+      "size": 248,
+      "sentences": 2
+    },
+    {
+      "id": 66,
+      "content": "−W)V(cid:98) (cid:13) (cid:13) F = (cid:13) (cid:13)Σ−U(cid:98) TW V(cid:98) (cid:13) (cid:13) F . m n\nSince no more than n orthonormal vectors can exist in Rn, the By setting Q = U(cid:98)TW V(cid:98) ∈ O m,m , the problem (6) can be\nrequirementofroworthonormalityimpliesm≤n.Throughout simply rewritten as\nthe paper, we adopt the assumption m≤n, i.e., WWT =I. min ∥Σ−Q∥2.",
+      "size": 372,
+      "sentences": 3
+    },
+    {
+      "id": 67,
+      "content": "≤n.Throughout simply rewritten as\nthe paper, we adopt the assumption m≤n, i.e., WWT =I. min ∥Σ−Q∥2. (8)\nF\nQ∈Om,m\nB. Optimization on the Stiefel Manifold\nNote that\nNote that O in (4) is a real Stiefel manifold, which\nm,n √\nmathematicallyrepresentsthecollectionofallorderedorthonor- ∥Σ−Q∥2 =mn+m−2 mnQ ,\nF 11\n===  5 ===\n5\nwhere Q is (1,1) entry of Q. So, solving (8) is equivalent A. Matrix Structure and Characterization\n11\nto maximizing Q .",
+      "size": 440,
+      "sentences": 4
+    },
+    {
+      "id": 68,
+      "content": "y of Q. So, solving (8) is equivalent A. Matrix Structure and Characterization\n11\nto maximizing Q . Since the first column vector of Q has\n11 Each matrix W ∈O(cid:101)m,n admits the decomposition\nnorm 1, it follows that the maximum possible value of Q is\n1. Thus, the optimal solution of (8) is 11  —vT — \n  1\nQ(cid:101) = (cid:20) 0 1 Q 0 ′ (cid:21) , whereQ′ ∈O m−1,m−1 . W =UVT =u | | 1 u | | 2 ··· u | | m     —v . . .",
+      "size": 432,
+      "sentences": 7
+    },
+    {
+      "id": 69,
+      "content": "0) 0 1 Q 0 ′ (cid:21) , whereQ′ ∈O m−1,m−1 . W =UVT =u | | 1 u | | 2 ··· u | | m     —v . . . 2 T —    , (11)\n—vT —\nm\nSince U(cid:98) Q(cid:101) is a semi-orthogonal matrix and U(cid:98) Q(cid:101) has the first where U ∈ O , V ∈ O , with the leading singular\nm,m n,m\ncolumn ξ m , U(cid:98) Q(cid:101) can be considered as an element in O m,m vectors aligned to the normalized all-ones vectors: u 1 =ξ m ,\nwhose the first column equals ξ m . Finally, set v 1 = ξ n .",
+      "size": 476,
+      "sentences": 6
+    },
+    {
+      "id": 70,
+      "content": "ormalized all-ones vectors: u 1 =ξ m ,\nwhose the first column equals ξ m . Finally, set v 1 = ξ n . Since every W ∈ O(cid:101)m,n is semi-orthogonal, it\nsatisfies WWT = I , ensuring that the transformation\nm\nU =U(cid:98) Q(cid:101) ∈O\nm,m\n, V =V(cid:98) ∈O\nn,m\n. preserves input norms:\nBy construction, the first columns of U and V are ξ and ξ , ∥WTx∥=∥x∥ for all x∈Rm. m n\nrespectively, and W(cid:102) =UVT.",
+      "size": 408,
+      "sentences": 5
+    },
+    {
+      "id": 71,
+      "content": "rst columns of U and V are ξ and ξ , ∥WTx∥=∥x∥ for all x∈Rm. m n\nrespectively, and W(cid:102) =UVT. On the other hand, the right-side composition WTW =\n(cid:80)m v vT does not yield the identity. Instead, it defines an\nThe optimal value of the objective function in (6) can be i=1 i i\northogonal projection onto the span of {v ,...,v }⊂Rn. explicitly computed by evaluating the solution characterized 1 m\nIn addition to orthogonality and projection properties, the\nin Theorem 1.",
+      "size": 478,
+      "sentences": 5
+    },
+    {
+      "id": 72,
+      "content": "olution characterized 1 m\nIn addition to orthogonality and projection properties, the\nin Theorem 1. Substituting the optimal solution W(cid:102) =UVT\nfollowing lemma captures a key structural characterization of\nyields\nthe matrices in O(cid:101)m,n . √\n1T m W1 n = (cid:0) UT1 m (cid:1)T (cid:0) VT1 n (cid:1) = mn. Lemma 1.",
+      "size": 324,
+      "sentences": 4
+    },
+    {
+      "id": 73,
+      "content": "trices in O(cid:101)m,n . √\n1T m W1 n = (cid:0) UT1 m (cid:1)T (cid:0) VT1 n (cid:1) = mn. Lemma 1. SupposethatW isasemi-orthogonalmatrix.Then\nthe following are equivalent:\nDenote the set of all optimal solutions to the maximization\n(i) W ∈O(cid:101)m,n ,\nproblem in (6) as O(cid:101)m,n . Equivalently,\n(ii) Wξ =ξ ,\nn m\n(cid:26) (cid:12) 1 (cid:27) (iii) WTξ m =ξ n . O(cid:101)m,n := W ∈O\nm,n\n(cid:12)\n(cid:12)\n√\nmn\n1T\nm\nW1\nn\n=ξ\nm\nTWξ\nn\n=1 . Proof.",
+      "size": 450,
+      "sentences": 7
+    },
+    {
+      "id": 74,
+      "content": "iii) WTξ m =ξ n . O(cid:101)m,n := W ∈O\nm,n\n(cid:12)\n(cid:12)\n√\nmn\n1T\nm\nW1\nn\n=ξ\nm\nTWξ\nn\n=1 . Proof. [(i) ⇒ (ii)] If W ∈ O(cid:101)m,n , by Theorem 1, W has\n(9) the decomposition W = UVT for U, V as in (11). Since\nT va h l e ue f s o m llo , w n i . ng is one example from the set O m,n for small v W 1 T ξ ξ n = = U 1 (cid:0) a V nd Tξ v i T (cid:1) ξ = n U = [1 0 0 · fo ·· r 0 a ] l T l = i ≥ u 2 = , i ξ t fo . llows that\nn n 1 m\nExample 1.",
+      "size": 443,
+      "sentences": 7
+    },
+    {
+      "id": 75,
+      "content": "id:1) ξ = n U = [1 0 0 · fo ·· r 0 a ] l T l = i ≥ u 2 = , i ξ t fo . llows that\nn n 1 m\nExample 1. Let m=2, n=3, and consider the matrix [(ii) ⇒ (iii)] If Wξ = ξ , then 1 = ξTξ =\nn m m m\n(Wξ )Tξ = ⟨ξ , WTξ ⟩, implying that WTξ = ξ ,\n(cid:34)√ √ √ √ √ √ (cid:35) n m n m m n\n6− 3 6− 3 6+2 3 since ∥WTξ ∥=1.",
+      "size": 306,
+      "sentences": 3
+    },
+    {
+      "id": 76,
+      "content": "⟩, implying that WTξ = ξ ,\n(cid:34)√ √ √ √ √ √ (cid:35) n m n m m n\n6− 3 6− 3 6+2 3 since ∥WTξ ∥=1. W =UVT = √ 6√ √ 6√ √ 6√ , (10) m √\n6+ 3 6+ 3 6−2 3, [(iii) ⇒ (i)] 1TWT1 = mn(ξTWTξ ) =\n6 6 3 √ √ n m n m\nmn(ξTξ ) = mn, so W is an optimal solution of (5),\nn n\nwhere U and U are semi-orthogonal matrices given by i.e., W ∈O(cid:101)m,n . (cid:34)\n√1 √1\n(cid:35)\n √1\n3\n√1\n6\n\nLemma 1 characterizes O(cid:101)m,n as the set of all semi-\nU = 2 2 ∈O , V =√1 √1 ∈O .",
+      "size": 463,
+      "sentences": 3
+    },
+    {
+      "id": 77,
+      "content": "1\n3\n√1\n6\n\nLemma 1 characterizes O(cid:101)m,n as the set of all semi-\nU = 2 2 ∈O , V =√1 √1 ∈O . orthogonalmatricesthatpreservethenormalizedall-onesvector. √1 −√1 2,2  3 6  3,2\n2 2 √1 −√2 Since the three conditions are equivalent, either (ii) or (iii) in\n3 6 Lemma 1 can fully characterize O(cid:101)m,n . This lemma plays a\nThen W ∈O\n2,3\nand ξ\nm\nTWξ\nn\n=1. Thus, W ∈O(cid:101)2,3 . central role in the derivation of subsequent properties.",
+      "size": 443,
+      "sentences": 6
+    },
+    {
+      "id": 78,
+      "content": "and ξ\nm\nTWξ\nn\n=1. Thus, W ∈O(cid:101)2,3 . central role in the derivation of subsequent properties. It is well known that any semi-orthonormal matrix can be\nThis article proposes to initialize the weight matrix of each extended to an orthonormal matrix when the number of rows\nlayer by independently sampling from O(cid:101)m,n . is strictly less than the number of columns [25].",
+      "size": 379,
+      "sentences": 5
+    },
+    {
+      "id": 79,
+      "content": "er by independently sampling from O(cid:101)m,n . is strictly less than the number of columns [25]. Specifically,\nfor a semi-orthonormal matrix W ∈ O(cid:101)m,n , where m < n,\nthere exists a matrix W⊥ ∈R(n−m)×n whose rows form an\nIV. THEORETICALPROPERTIES\northonormal basis for the orthogonal complement of the row\n(cid:20) (cid:21)\nW\nThis section investigates several properties of matrices space of W such that ∈O .",
+      "size": 418,
+      "sentences": 4
+    },
+    {
+      "id": 80,
+      "content": "d:20) (cid:21)\nW\nThis section investigates several properties of matrices space of W such that ∈O . Write\nW⊥ n,n\nin O(cid:101)m,n whose elements are the optimal solutions to the\nmaximization problem in (6). We first analyze its theoretical  wT  wT \n1 m+1\nc\ntu\nh\nr\na\ne\nr\ns\na\nt\nc\nh\nte\nat\nri\na\ns\nr\nt\ne\nic\np\ns,\nre\nh\ns\ni\ne\ng\nr\nh\nv\nl\ne\ni\nd\ngh\nu\nt\nn\nin\nd\ng\ner\nk\nth\ney\neo\ns\nr\nt\nt\nr\nh\nu\no\nc\ng\ntu\no\nr\nn\na\na\nl\nli\na\nt\nn\ny\nd\nco\na\nn\nli\ns\ng\ntr\nn\na\nm\nin\ne\nt\nn\n. t\nN\nf\ne\ne\nx\na\nt\n-\n,\nW =\n\n. . .",
+      "size": 482,
+      "sentences": 6
+    },
+    {
+      "id": 81,
+      "content": "c\ng\ntu\no\nr\nn\na\na\nl\nli\na\nt\nn\ny\nd\nco\na\nn\nli\ns\ng\ntr\nn\na\nm\nin\ne\nt\nn\n. t\nN\nf\ne\ne\nx\na\nt\n-\n,\nW =\n\n. . . \n\n∈O(cid:101)m,n , W⊥ =\n\n. . . \n\n∈O\nn−m,n\n, (12)\nwT wT\nwepresentanefficientconstructionmethodforweightmatrices m n\nin the solution set O(cid:101)m,n that exactly satisfy the prescribed where {w }n ⊂Rn forms orthonormal basis for Rn. i i=1\noptimization constraints.",
+      "size": 369,
+      "sentences": 9
+    },
+    {
+      "id": 82,
+      "content": "isfy the prescribed where {w }n ⊂Rn forms orthonormal basis for Rn. i i=1\noptimization constraints. ===  6 ===\n6\nAlgorithm 1 Generate W ∈O(cid:101)m,n via QR factorization Algorithm 2 Generate W ∈O(cid:101)m,n via Theorem 2\n1: Input: Positive integers n≥m≥2 1: Input: Positive integers n≥m≥2\n2: Output: W 2: Output: W\n3: Draw A ∈ Rm×(m−1) and B ∈ Rn×(m−1) with i.i.d.",
+      "size": 367,
+      "sentences": 3
+    },
+    {
+      "id": 83,
+      "content": "Positive integers n≥m≥2\n2: Output: W 2: Output: W\n3: Draw A ∈ Rm×(m−1) and B ∈ Rn×(m−1) with i.i.d.   (cid:112) (m−i)/(m−i+1) if i=j <m\n5 4 : : ( N ( V U ( , , 0 R S ,1 ) ) ) ← ← en q t q r r i r e (cid:0) (cid:0) s [ [ ξ ξ n m B A ] (cid:1) ] (cid:1) U V ∈ ∈ R R m n × × m m , , R S ∈ ∈ R R m m × × m m 3 4 : : L Dr ij aw = A 0 − ∈ 1 R / n (cid:112) × ( (m m − − 1) j w + ith 1) i ( .i m .d.",
+      "size": 397,
+      "sentences": 2
+    },
+    {
+      "id": 84,
+      "content": "× × m m 3 4 : : L Dr ij aw = A 0 − ∈ 1 R / n (cid:112) × ( (m m − − 1) j w + ith 1) i ( .i m .d. − N j) (0,1 i o f ) th j e e n < rw tri i i e se s for j ≤i\n6 7 8 : : : Λ Γ for ← ← i= 0 0 m m 1 × × , m . m ..,m do 5 6 : : ( Λ Q ← ,R 0 ) m ← ×m qr([ξ n A])\n7: for i=1,...,m do\n1 9 0 : : Λ Γ i i , , i i ← ← S R i, i i ,i / / |S |R i, i i , | i | 9 8 : : end Λ i f , o i r ←R i,i /|R i,i |\n11: end for\n10: Q←QΛ\n12: U ←UΛ\n13: V ←V Γ 11: Q←[q 2 ··· q m q 1 ]T, where q i : i-th columns of Q.",
+      "size": 489,
+      "sentences": 3
+    },
+    {
+      "id": 85,
+      "content": "11: end for\n10: Q←QΛ\n12: U ←UΛ\n13: V ←V Γ 11: Q←[q 2 ··· q m q 1 ]T, where q i : i-th columns of Q. 14: W ←UVT 12: W ←LQ+ξ m ξ n T\nProposition 1. The rows of W⊥ in (12) are in the subspace Note that Algorithm 1 requires QR decomposition for both\nn×n matrices and m×m matrices, respectively. The QR\northogonal to ξ , i.e.,\nn\ndecomposition of an m × m matrix has a computational\nW⊥ξ n = 0. complexity of O(m3). To reduce high complexity, we propose\nProof.",
+      "size": 453,
+      "sentences": 5
+    },
+    {
+      "id": 86,
+      "content": "ix has a computational\nW⊥ξ n = 0. complexity of O(m3). To reduce high complexity, we propose\nProof. By Lemma 1 (ii), it follows that\nan improved algorithm to construct W ∈O(cid:101)m,n with just one\nQR decomposition through the following process.",
+      "size": 246,
+      "sentences": 3
+    },
+    {
+      "id": 87,
+      "content": "gorithm to construct W ∈O(cid:101)m,n with just one\nQR decomposition through the following process. 1=∥ξ n ∥2 = (cid:13) (cid:13) (cid:13) (cid:13) (cid:20) W W ⊥ (cid:21) ξ n (cid:13) (cid:13) (cid:13) (cid:13) 2 =1+∥W⊥ξ n ∥2, {w F i o } r m i= W 1 ⊂ ∈ R O n (cid:101)m su ,n ch , c th o a n t si w de i T r i t s he th s e e i t -t o h f r o o r w tho v n ec o t r o m r a o l f v W ecto fo rs r\nall i=1,...,m. Define\nimplying W⊥ξ =0.",
+      "size": 436,
+      "sentences": 2
+    },
+    {
+      "id": 88,
+      "content": "f r o o r w tho v n ec o t r o m r a o l f v W ecto fo rs r\nall i=1,...,m. Define\nimplying W⊥ξ =0. n\nh :=w −proj (w ) for all i=1,...,m. (13)\nThis proposition reveals a fundamental structural property\ni i ξn i\nof any full orthonormal basis extended from a matrix W ∈ Geometrically, each h i is the orthogonal projection of w i onto\nO(cid:101)m,n . It demonstrates that the row space of the complete the (m−1)-dimensional subspace {x∈Rn :ξ n Tx=0}.",
+      "size": 447,
+      "sentences": 3
+    },
+    {
+      "id": 89,
+      "content": "It demonstrates that the row space of the complete the (m−1)-dimensional subspace {x∈Rn :ξ n Tx=0}. n × n orthogonal matrix is partitioned with respect to the\nProposition 2. Let n ≥ m ≥ 2. Consider H =\nall-ones vector ξ .",
+      "size": 221,
+      "sentences": 4
+    },
+    {
+      "id": 90,
+      "content": "x is partitioned with respect to the\nProposition 2. Let n ≥ m ≥ 2. Consider H =\nall-ones vector ξ . The first m basis vectors (the rows of\nn [h h ··· h ] where h is defined in (13), then Gram matrix\n1 2 m i\nW) collectively map ξ n to ξ m , while the remaining n−m HTH has following property:\nbasis vectors (the rows of W⊥) lie entirely in the subspace\n\no th r e th t o h g e o o n re a t l ic to al ξ b n a .",
+      "size": 409,
+      "sentences": 4
+    },
+    {
+      "id": 91,
+      "content": "rows of W⊥) lie entirely in the subspace\n\no th r e th t o h g e o o n re a t l ic to al ξ b n a . si T s h f i o s r c d o e m si p g l n e i t n e g s a tr n u d ct v u e r r a i l fy u i n n d g e t r h s e ta c n o d n in s g tru f c o t r i m on s (HTH) ij =hT i h j =  m m −1 if i=j,\n−1 if i̸=j\nmethods that follow. m\nfor all i,j =1,...,m.\nB. Construction of Proposed Weight Matrices\nProof.",
+      "size": 398,
+      "sentences": 4
+    },
+    {
+      "id": 92,
+      "content": "̸=j\nmethods that follow. m\nfor all i,j =1,...,m.\nB. Construction of Proposed Weight Matrices\nProof. By Lemma 1 it holds that for i=1,...,m,\nAs stated in Theorem 1, when m = 1, the set O(cid:101)1,n (cid:114)\n1\nc d o et n e t r a m in i s nis o t n ic ly co a ns s t i r n u g c l t e ion v . ec S t o or w ξ e n f , oc w u h s ic o h n t l h e e ad m s o t r o e g a en fu er ll a y l h i =w i −(w i Tξ n )ξ n =w i − m ξ n .",
+      "size": 424,
+      "sentences": 5
+    },
+    {
+      "id": 93,
+      "content": "s ic o h n t l h e e ad m s o t r o e g a en fu er ll a y l h i =w i −(w i Tξ n )ξ n =w i − m ξ n . (14)\nand nontrivial cases where m ≥ 2, for which the proposed Then it follows that\nalgorithm is applicable. Algorithm 1 presents a construction (cid:32) (cid:114) (cid:33)T (cid:32) (cid:114) (cid:33)\n1 1\nmethod to generate random weight matrices from O(cid:101)m,n hTh = w − ξ w − ξ\nusing (11).",
+      "size": 395,
+      "sentences": 3
+    },
+    {
+      "id": 94,
+      "content": ":33)\n1 1\nmethod to generate random weight matrices from O(cid:101)m,n hTh = w − ξ w − ξ\nusing (11). Algorithm 1 first constructs two tall matrices i j i m n j m n\n[ξ m A]∈Rm×m and [ξ n B]∈Rn×m, where A and B have =wTw − 1 ξTξ\ni.i.d.N(0,1)entries.ThenitperformsthinQRdecompositions i j m n n\non these blocks to obtain orthogonal factors U ∈ Rm×m  1− 1 = m−1, if i=j,\nand V ∈Rn×m, respectively.",
+      "size": 394,
+      "sentences": 2
+    },
+    {
+      "id": 95,
+      "content": "hese blocks to obtain orthogonal factors U ∈ Rm×m  1− 1 = m−1, if i=j,\nand V ∈Rn×m, respectively. Next, diagonal sign-correction = m m\nmatrices Λ and Γ are applied so that the first columns of U −1, if i̸=j\nm\nand V match ξ and ξ , respectively. Finally, W = UVT\nm n\nfor all i,j =1,...,m.\nyields a semi-orthogonal matrix in O(cid:101)m,n . In particular, U and\nV retain their fixed first column.",
+      "size": 397,
+      "sentences": 4
+    },
+    {
+      "id": 96,
+      "content": "a semi-orthogonal matrix in O(cid:101)m,n . In particular, U and\nV retain their fixed first column. In contrast, their remaining For m≥2, let\ncolumns are semi-orthogonal and uniformly sampled from the\n1\ncorrespondingsubspaceaccordingtotheHaardistribution[26]. P m :=HTH =I m − m J m . (15)\n===  7 ===\n7\nConsidermultiplyingP byanm-dimensionalvectorx∈Rm, Next, to show that W is semi-orthogonal, we compute\nm √\nthe product WWT. Since LQJT = nL(Qξ )1T =\nP x=(I −ξ ξT)x=x−ξ (ξTx).",
+      "size": 476,
+      "sentences": 6
+    },
+    {
+      "id": 97,
+      "content": "semi-orthogonal, we compute\nm √\nthe product WWT. Since LQJT = nL(Qξ )1T =\nP x=(I −ξ ξT)x=x−ξ (ξTx). √ n m\nm m m m m m nLe 1T =0,\nm m\nThis subtracts the component of the original vector x in the\n(cid:18) (cid:19)(cid:18) (cid:19)\n1 1\nd p i r r o e j c e t c i t o i n ng of x ξ o m n , to w ξ h ⊥ ic .",
+      "size": 300,
+      "sentences": 3
+    },
+    {
+      "id": 98,
+      "content": ") (cid:19)(cid:18) (cid:19)\n1 1\nd p i r r o e j c e t c i t o i n ng of x ξ o m n , to w ξ h ⊥ ic . h M ge o o re m o e v t e ri r c , a o l n ly e c c o a r n re s s e p e on th d a s t e P xact i l s y a t n o WWT = LQ+ √ mn J m×n QTLT + √ mn J m T ×n\nm m\nm×m symmetric positive semidefinite matrix. So, P m admits =LQQTLT + 1 J JT\na Cholesky decomposition P = LLT where L is a lower mn m×n m×n\nm (cid:18) (cid:19)\ntriangular matrix with nonnegative diagonal entries. 1 1\n= I − J + (nJ )=I .",
+      "size": 493,
+      "sentences": 4
+    },
+    {
+      "id": 99,
+      "content": "×n\nm (cid:18) (cid:19)\ntriangular matrix with nonnegative diagonal entries. 1 1\n= I − J + (nJ )=I . m m m mn m m\nLemma 2. Let m ≥ 2. Then P = I − 1J ∈ Rm×m\nm m m m\nadmits a unique Cholesky factorization Having shown that W is a semi-orthogonal matrix satisfying\nP =LLT,\nthe conditions of Lemma 1, it implies that W ∈O(cid:101)m,n .",
+      "size": 331,
+      "sentences": 5
+    },
+    {
+      "id": 100,
+      "content": "-orthogonal matrix satisfying\nP =LLT,\nthe conditions of Lemma 1, it implies that W ∈O(cid:101)m,n . m\nNext,weprovetheforwardinclusion(⊆).LetW beanarbi-\nwhere L∈Rm×m is a lower triangular matrix with nonnega- trarymatrixinO(cid:101)m,n .DefinethematrixM =W−√\nm\n1\nn\nJ\nm×n\n.",
+      "size": 271,
+      "sentences": 2
+    },
+    {
+      "id": 101,
+      "content": "wer triangular matrix with nonnega- trarymatrixinO(cid:101)m,n .DefinethematrixM =W−√\nm\n1\nn\nJ\nm×n\n. tive diagonal entries, explicitly given by By using the properties of W from Lemma 1, we compute\n(cid:114) m−i the product MMT as following:\n\nm−i+1\n, if i=j <m,\n(cid:18) 1 (cid:19)(cid:18) 1 (cid:19)\nL ij = − (cid:112) 1 , if 1≤j <i≤m, MMT = W − √ mn J m×n WT − √ mn J m T ×n\n0, (m−j+1)(m−j)\notherwise. =I m − m\n1\nJ m =P m . (16)\nFrom Lemma 2, we have MMT = P = LLT. It follows\nProof.",
+      "size": 495,
+      "sentences": 5
+    },
+    {
+      "id": 102,
+      "content": ")(m−j)\notherwise. =I m − m\n1\nJ m =P m . (16)\nFrom Lemma 2, we have MMT = P = LLT. It follows\nProof. The uniqueness follows from the fact that all leading m\nfrom [25, Theorem 7.3.11] that there exists a semi-orthogonal\nprincipalminorsofP arepositive,ensuringtheexistenceofa\nm matrix Q ∈ O such that M = LQ. To determine the\nunique Cholesky factor with nonnegative diagonal entries [27].",
+      "size": 385,
+      "sentences": 6
+    },
+    {
+      "id": 103,
+      "content": "O such that M = LQ. To determine the\nunique Cholesky factor with nonnegative diagonal entries [27]. m,n\nproperties of Q, we use the property from Lemma 1 that\nWξ n = ξ m , which implies Mξ n = Wξ n − √ m 1 n Jξ n =\nSince the Cholesky factor L of P m is explicitly available, ξ m −ξ m =0. Substituting the factorization gives L(Qξ n )=\nwe can construct the matrix HT = LQ for a certain semi- 0. From Lemma 2, the last column of L is zero. Thus, the\northogonal matrix Q∈O m,n .",
+      "size": 475,
+      "sentences": 6
+    },
+    {
+      "id": 104,
+      "content": "certain semi- 0. From Lemma 2, the last column of L is zero. Thus, the\northogonal matrix Q∈O m,n . Using the relation in (14), product M = LQ implies that M is determined solely by\n(cid:114)\n1\nthe first m−1 rows of Q. The property W ∈O(cid:101)m,n requires\nw =h + ξ fori=1,...,m. Mξ = 0. This yields a system of linear equations for the\ni i m n n\nterms x = qTξ for j = 1,2,...,m − 1.",
+      "size": 383,
+      "sentences": 6
+    },
+    {
+      "id": 105,
+      "content": "0. This yields a system of linear equations for the\ni i m n n\nterms x = qTξ for j = 1,2,...,m − 1. Since the first\nj j n\nIn matrix form, it can be expressed as\nm−1columnsofLarelinearlyindependent,qTξ =0forall\nj n\nW =HT + √ 1 J . j =1,2,...,m−1.Forq m T,thelastrowofQ,itmustbeaunit\nmn m×n vector orthogonal to {qT,...,qT }.",
+      "size": 322,
+      "sentences": 4
+    },
+    {
+      "id": 106,
+      "content": "1 J . j =1,2,...,m−1.Forq m T,thelastrowofQ,itmustbeaunit\nmn m×n vector orthogonal to {qT,...,qT }. For the decomposition\n1 m−1\nThe following theorem provides the mathematical foundation in(17)tobeauniquecharacterization,weconstrainthechoice\nfor this decomposition and guarantees that all such matrices ofthefactorizationsuchthatq m T isselectedfromtheremaining\nsatisfy the defining conditions of O(cid:101)m,n . 1-dimensional space spanned by ξ n . This leads to q m T =±ξ n .",
+      "size": 477,
+      "sentences": 5
+    },
+    {
+      "id": 107,
+      "content": "ning conditions of O(cid:101)m,n . 1-dimensional space spanned by ξ n . This leads to q m T =±ξ n . By convention, we choose the positive sign for the set. Thus,\nTheorem 2. Let m≥2. anyW ∈O(cid:101)m,n canbedecomposedintothedesiredform. (cid:26) (cid:27)\nO(cid:101)m,n = LQ+ √\nm\n1\nn\nJ\nm×n\n(cid:12) (cid:12)Q∈O\nm,n\n,QTe\n1\n=ξ\nn\n,\nThe following example with m = 2, n = 3 demonstrates\n(17) the construction of a matrix in O(cid:101)m,n as defined in (17).",
+      "size": 451,
+      "sentences": 8
+    },
+    {
+      "id": 108,
+      "content": "th m = 2, n = 3 demonstrates\n(17) the construction of a matrix in O(cid:101)m,n as defined in (17). where L is the m×m lower triangular matrix defined in\nExample 2. Let m = 2, n = 3. Then, by Lemma 2, the\nLemma 2. Cholesky factor is given as\nProof. First, we prove the reverse inclusion (⊇). Let W be\n(cid:34) (cid:35)\nan arbitrary matrix from the set on the right-hand side, such √1 0\nL= 2 . that W = LQ+ √ m 1 n J m×n , where Q ∈ O m,n is a semi- −√1 2 0\northogonal matrix whose m-th row is ξT.",
+      "size": 496,
+      "sentences": 8
+    },
+    {
+      "id": 109,
+      "content": "W = LQ+ √ m 1 n J m×n , where Q ∈ O m,n is a semi- −√1 2 0\northogonal matrix whose m-th row is ξT. By Lemma 1 it is\nn\nenough to show that Wξ = ξ and WWT = I . Since Consider the semi-orthogonal matrix\nn m m\nthe rows of Q are orthonormal and its m-th row is ξT, the (cid:34)√ √ √ (cid:35)\nn 3 3 −2 3\nvector Qξ n is equal to e m = [0,...,0,1]T. Then it follows Q= √ 6 1 √ 6 1 √1 6 ∈O m,n .",
+      "size": 387,
+      "sentences": 3
+    },
+    {
+      "id": 110,
+      "content": "n 3 3 −2 3\nvector Qξ n is equal to e m = [0,...,0,1]T. Then it follows Q= √ 6 1 √ 6 1 √1 6 ∈O m,n . that 3 3 3\n1\nWξ n =L(Qξ n )+ √ mn J m×n ξ n Note that the last row of Q is ξ n T. Then, LQ+ √ m 1 n J m×n is\nexactly the same as the matrix in Example 1, which belongs\n=Le +ξ =0+ξ =ξ . m m m m to O(cid:101)m,n . ===  8 ===\n8\nComputational Complexity: While both Algorithm 1 and The last equality holds from Lemma 1.",
+      "size": 415,
+      "sentences": 4
+    },
+    {
+      "id": 111,
+      "content": "8 ===\n8\nComputational Complexity: While both Algorithm 1 and The last equality holds from Lemma 1. And by the linearity\nAlgorithm 2 provide methods for generating a matrix W ∈ of expectation, it holds that\nO(cid:101)m,n ,theapproachinAlgorithm2,derivedfromTheorem2,is Cov[Wx]=E(cid:2) (Wx−WE[x])(Wx−WE[x])T(cid:3)\nsignificantly more efficient.",
+      "size": 343,
+      "sentences": 2
+    },
+    {
+      "id": 112,
+      "content": ",derivedfromTheorem2,is Cov[Wx]=E(cid:2) (Wx−WE[x])(Wx−WE[x])T(cid:3)\nsignificantly more efficient. Algorithm 1 requires two separate\nQR decompositions: one for an m×m matrix and another for\n=E(cid:2) W(x−E[x])(x−E[x])TWT(cid:3)\nan n×m matrix, resulting in a computational complexity of =W E(cid:2) (x−E[x])(x−E[x])T(cid:3) WT\nabout O(m3+nm2).",
+      "size": 343,
+      "sentences": 2
+    },
+    {
+      "id": 113,
+      "content": "resulting in a computational complexity of =W E(cid:2) (x−E[x])(x−E[x])T(cid:3) WT\nabout O(m3+nm2). In contrast, Algorithm 2 first computes\n=W Cov[x]WT\nthe fixed lower-triangular matrix L using a direct closed-form\nexpression from Lemma 2, which costs only O(m2). It then =σ2I m . performs a single QR decomposition on an n×m matrix to Since W is a semi-orthogonal matrix, the last equality holds. build the semi-orthogonal matrix Q.",
+      "size": 433,
+      "sentences": 5
+    },
+    {
+      "id": 114,
+      "content": "o Since W is a semi-orthogonal matrix, the last equality holds. build the semi-orthogonal matrix Q. This approach reduces\nthe total complexity to O(m2+nm2), removing the O(m3)\ntermentirely.Whentheratiom/niscloseto1,thiseliminated Proposition 3 shows that when the input vector x ∈ Rn\ncost becomes a substantial portion of the total computation, has a constant mean E[x] = µ1 n and isotropic covariance\npotentially cutting the initialization time in half.",
+      "size": 454,
+      "sentences": 3
+    },
+    {
+      "id": 115,
+      "content": "tant mean E[x] = µ1 n and isotropic covariance\npotentially cutting the initialization time in half. Cov[x] = σ2I n , the output Wx under a semi-orthogonal\ntransformation W ∈ O(cid:101)m,n also has an explicit mean and\nV. STATISTICALPROPERTIES covariance:\n(cid:114)\nIn this section, the statistical characteristics of matrices in E[Wx]=µ n 1 , Cov[Wx]=σ2I . O(cid:101)m,n are examined, together with their implications for signal m m m\npropagation in ReLU-based neural networks.",
+      "size": 477,
+      "sentences": 3
+    },
+    {
+      "id": 116,
+      "content": "mined, together with their implications for signal m m m\npropagation in ReLU-based neural networks. The discussion This result indicates that the transformation preserves isotropy\nbegins with the linear transformation f(x) = Wx for a and uniformly rescales the mean, which is beneficial for\nweight matrix W ∈O(cid:101)m,n , with emphasis on its influence over stabilizing signal propagation in deep networks.",
+      "size": 408,
+      "sentences": 2
+    },
+    {
+      "id": 117,
+      "content": "(cid:101)m,n , with emphasis on its influence over stabilizing signal propagation in deep networks. key input-output statistics-most notably covariance structure If we further assume that x follows a multivariate normal\nand distributional behavior in high-dimensional regimes. The distribution N(µ1 ,σ2I ), then the transformed vector Wx\nn n\nscope is then extended to multi-layer ReLU networks.",
+      "size": 394,
+      "sentences": 3
+    },
+    {
+      "id": 118,
+      "content": "(µ1 ,σ2I ), then the transformed vector Wx\nn n\nscope is then extended to multi-layer ReLU networks. A also follows a multivariate normal distribution with the same\nheuristic mean-field framework [12], [28] is adopted to trace mean and covariance as derived above, due to the affine\nthe evolution of activation statistics across layers. invariance of Gaussian distributions. However, this Gaussian\nassumptionmaynotholdinreal-worlddata.Empiricalevidence\nA.",
+      "size": 454,
+      "sentences": 4
+    },
+    {
+      "id": 119,
+      "content": "ian distributions. However, this Gaussian\nassumptionmaynotholdinreal-worlddata.Empiricalevidence\nA. Linear Transform Behavior showsthatmanypracticaldatasetsexhibitsignificantdepartures\nfrom normality, such as skewness, heavy tails, or outliers [29],\nBefore delving into the implications of the proposed ini-\n[30]. Consequently, the exact Gaussian form of the output y\ntialization scheme for ReLU-based neural networks, we first\nis not guaranteed in general.",
+      "size": 457,
+      "sentences": 4
+    },
+    {
+      "id": 120,
+      "content": "output y\ntialization scheme for ReLU-based neural networks, we first\nis not guaranteed in general. examine a fundamental aspect of forward propagation: the\nstatisticalbehaviorofthelineartransformationf(x)=Wxfor Let P(E) denote the probability of an event E under a\ngiven probability space.",
+      "size": 289,
+      "sentences": 2
+    },
+    {
+      "id": 121,
+      "content": "sformationf(x)=Wxfor Let P(E) denote the probability of an event E under a\ngiven probability space. Recall that the cumulative distribution\ntheproposedweightmatrixW ∈O(cid:101)m,n .Weaimtocharacterize\nfunction (CDF) of the standard normal distribution is defined\nthe statistical properties of W and its effect on the image of\nby\nW, as it plays a central role in shaping the dynamics of signal\n(cid:90) z 1 (cid:18) t2(cid:19)\npropagation through fully connected layers. Φ(z):= √ exp − dt, z ∈R.",
+      "size": 494,
+      "sentences": 3
+    },
+    {
+      "id": 122,
+      "content": "id:90) z 1 (cid:18) t2(cid:19)\npropagation through fully connected layers. Φ(z):= √ exp − dt, z ∈R. We denote by E[x] the expectation of the random vector −∞ 2π 2\nx, and by Cov[x] its covariance matrix (for a scalar random d\nWe write X −→X to denote convergence in distribution of\nd n\nvariable X, Cov[X] simply becomes Var[X]). We write X =\na sequence of random variables {X } to a random variable\nn\nY to denote that X and Y are equal in distribution. X, that is,\nProposition 3.",
+      "size": 478,
+      "sentences": 5
+    },
+    {
+      "id": 123,
+      "content": "a random variable\nn\nY to denote that X and Y are equal in distribution. X, that is,\nProposition 3. Let W ∈O(cid:101)m,n be given. For a random vector X − d →X if and only if lim P(X ≤z)=P(X ≤z)\nx ∈ Rn with E[x] = µ1 n , Cov[x] = σ2I n , (µ ∈ R, σ > 0), n n→∞ n\nit holds that for all z ∈R at which the cumulative distribution function of\n(cid:114) n X is continuous. E[Wx]=µ 1 , Cov[Wx]=σ2I . p\nm m m And we write X n −→ X to denote convergence in\nprobability, for ϵ>0,\nProof.",
+      "size": 475,
+      "sentences": 6
+    },
+    {
+      "id": 124,
+      "content": ", Cov[Wx]=σ2I . p\nm m m And we write X n −→ X to denote convergence in\nprobability, for ϵ>0,\nProof. By the linearity of expectation and the decomposition\nx=(x−µ1 n )+µ1 n , one can obtain that X n − p →X if and only if lim P(|X n −X|>ϵ)=0. n→∞\nE[Wx]=E[W (x−µ1 +µ1 )]\nn n Recall that the Stiefel manifold is defined as O ={Q∈\nn,m\n=E[W (x−µ1 n )+µW1 n ] Rn×m| QTQ = I m }. The elements of the Stiefel manifold\n=WE[x−µ1 ]+µE[W1 ] are sometimes called m–frames in Rn.",
+      "size": 463,
+      "sentences": 5
+    },
+    {
+      "id": 125,
+      "content": "I m }. The elements of the Stiefel manifold\n=WE[x−µ1 ]+µE[W1 ] are sometimes called m–frames in Rn. Let A ∈ Rn×m be\nn n\na standard Gaussian random matrix. We perform the QR\n=µW1\nn\ndecomposition of A, that is, A = QR, where Q ∈ O\n(cid:114) n,m\n=µ n 1 . lies on the Stiefel manifold and R ∈ Rm×m is an upper\nm m triangular matrix with nonnegative diagonal entries. It is well\n===  9 ===\n9\nknown that, under this construction, Q is uniformly distributed using Lemma 3.",
+      "size": 465,
+      "sentences": 6
+    },
+    {
+      "id": 126,
+      "content": "is well\n===  9 ===\n9\nknown that, under this construction, Q is uniformly distributed using Lemma 3. Then\non the Stiefel manifold O [31]. n,m  \n(cid:114)\nUsing the result of [32], the following lemma can be logn 1\nobtained. P  1 m ≤i a ≤ x m |W ij |≥C n + √ mn \n1≤j≤n\nLemma 3. Let Q(cid:98) = [Q(cid:98)ij ] ∈ O n,m−1 be a uniformly  (cid:114) \nlogn\nd fo i r str a i n b y ut C ed > ra 2 n , dom (m−1)–frame in the subspace ξ n ⊥.",
+      "size": 435,
+      "sentences": 5
+    },
+    {
+      "id": 127,
+      "content": " (cid:114) \nlogn\nd fo i r str a i n b y ut C ed > ra 2 n , dom (m−1)–frame in the subspace ξ n ⊥. Then =P  1 m ≤i a ≤ x m |(LQ) ij |≥C n \n1≤j≤n\nm (cid:32) (cid:114) (cid:33)\n(cid:88) logn\n (cid:12) (cid:12) (cid:114) logn  ≤ P 1 m ≤j a ≤ x n |(LQ) ij |≥C n\nP  1 m ≤i a ≤ x n (cid:12) (cid:12) Q(cid:98)ij (cid:12) (cid:12) ≥C n →0 (18) i=1 (cid:32) (cid:114) (cid:33)\nlogn\n1≤j≤m−1 =mP max |(LQ) |≥C →0\n1≤j≤n ij n\nas n→∞. as n→∞.",
+      "size": 436,
+      "sentences": 3
+    },
+    {
+      "id": 128,
+      "content": "0 (18) i=1 (cid:32) (cid:114) (cid:33)\nlogn\n1≤j≤m−1 =mP max |(LQ) |≥C →0\n1≤j≤n ij n\nas n→∞. as n→∞. Note that Q = [Q(cid:98) ξ\nn\n]T ∈ O\nm,n\n, where Q(cid:98) in Lemma 3\ncoincideswiththematrixQappearinginline11ofAlgorithm2. Note that W in Theorem 3 exactly matches W generated\nUsing Lemma 3, the following theorem holds. by Algorithm 2. Theorem 3. Let W = [W ij ] be a random matrix as W = Lemma 4.",
+      "size": 397,
+      "sentences": 7
+    },
+    {
+      "id": 129,
+      "content": "lowing theorem holds. by Algorithm 2. Theorem 3. Let W = [W ij ] be a random matrix as W = Lemma 4. [33, Theorem 1.1] Let y 1 ,...,y n be independent\nLQ+ √ m 1 n J m×n , where L is the fixed matrix from Lemma 2 mean 0 random vectors in Rm such that (cid:80)n i=1 y i has the\nand Q=[Q(cid:98) ξ\nn\n]T ∈O\nm,n\nwhere Q(cid:98) is a uniformly distributed identity covariance matrix. Let g be the standard Gaussian\nrandom (m − 1)–frame in the subspace ξ⊥. Then for any random vector in Rm.",
+      "size": 482,
+      "sentences": 7
+    },
+    {
+      "id": 130,
+      "content": "be the standard Gaussian\nrandom (m − 1)–frame in the subspace ξ⊥. Then for any random vector in Rm. Then for all measurable convex sets\nn\nC >2 and fixed m, A∈Rm,\n (cid:114)  (cid:12) (cid:12) (cid:12)P (cid:32) (cid:88) n y ∈A (cid:33) −P(g ∈A) (cid:12) (cid:12) (cid:12)≤(42m1/4+16) (cid:88) n E∥y ∥3. logn 1 (cid:12) i (cid:12) i 2\nP  1 m ≤i a ≤ x m |W ij |≥C n + √ mn →0 (19) (cid:12) i=1 (cid:12) i=1 (21)\n1≤j≤n\nTheorem 4. Fix m ∈ N. Let x = (x ,...,x ) ∈ Rn be a\n1 n\nas n→∞.",
+      "size": 483,
+      "sentences": 5
+    },
+    {
+      "id": 131,
+      "content": "cid:12) i=1 (cid:12) i=1 (21)\n1≤j≤n\nTheorem 4. Fix m ∈ N. Let x = (x ,...,x ) ∈ Rn be a\n1 n\nas n→∞. random vector with independent components satisfying\nProof.",
+      "size": 159,
+      "sentences": 3
+    },
+    {
+      "id": 132,
+      "content": "t x = (x ,...,x ) ∈ Rn be a\n1 n\nas n→∞. random vector with independent components satisfying\nProof. Since Q(cid:98) is uniformly distributed as an (m−1)–frame E[x ]=µ, Var(x )=σ2, E[|x |3]<∞ for all j =1,...,n.\nj j j\nin the subspace ξ⊥, it is invariant under left multiplication by\nn\nany R ∈ O\nm−1\n, i.e., RQ(cid:98)T = d Q(cid:98)T. For any nonzero vector Let W = [W\nij\n] ∈ O(cid:101)m,n be a random matrix as defined in\nv ∈Rm−1, let R∈O be such that v =RTe , where Theorem 3, independent of x.",
+      "size": 495,
+      "sentences": 3
+    },
+    {
+      "id": 133,
+      "content": "ndom matrix as defined in\nv ∈Rm−1, let R∈O be such that v =RTe , where Theorem 3, independent of x. Then\nm−1 ∥v∥ 1\ne =[1 0 ··· 0]T is the first standard basis vector. Then\n1\nW x−µ\n(cid:112)n1\nm m −→ d N (0, I )\nσ m\nvTQ(cid:98) T =∥v∥eTRQ(cid:98) T = d ∥v∥eTQ(cid:98) T =∥v∥qT, (20)\n1 1 1 as n→∞. Proof.",
+      "size": 302,
+      "sentences": 4
+    },
+    {
+      "id": 134,
+      "content": "(0, I )\nσ m\nvTQ(cid:98) T =∥v∥eTRQ(cid:98) T = d ∥v∥eTQ(cid:98) T =∥v∥qT, (20)\n1 1 1 as n→∞. Proof. Let z = (z ,...,z ) such that z := (x −µ)/σ for\nw a l i T n h d Q e (cid:98) r T d e e = q n d 1 ot i e ∥ s l i b t ∥ h y q e 1 T l fi i T , r w s t t h h e c e o r i e l - u t ( m h L n r Q o o w ) f i Q o i (cid:98) s f . t L h (cid:98) N e . o i w U -t s h d in e r g n o o w ( t 2 e o 0 f L ), L = ( Q L [ Q . L(cid:98) S ) i i n 0 c = e ], a F o l f o l r W j e . a .",
+      "size": 472,
+      "sentences": 7
+    },
+    {
+      "id": 135,
+      "content": "o o w ( t 2 e o 0 f L ), L = ( Q L [ Q . L(cid:98) S ) i i n 0 c = e ], a F o l f o l r W j e . a . T ch F h o e j n r = j E = 1 [z , j . 1 ] . , = . . 1 , . n 0 ., , , n l V e , t a d r w n e ( fi z j j n ∈ ) e = R y m 1 : , = b a e n w d th j e β z 3 j . - : t = S h in c E j c o [ e l | u z t m j h | e n 3] z v < ec a ∞ to re r . ∥l ∥2 =(LLT) =1− 1, it follows that j j j j\ni 2 ii m independent scalars, the vectors y ,...,y are independent\n1 n\nand E[y ]=0 and\nj\n(cid:114)\n1\n(LQ) = d 1− qT.",
+      "size": 494,
+      "sentences": 11
+    },
+    {
+      "id": 136,
+      "content": "ent scalars, the vectors y ,...,y are independent\n1 n\nand E[y ]=0 and\nj\n(cid:114)\n1\n(LQ) = d 1− qT. n n n\ni m 1 (cid:88) Var(y )= (cid:88) E[z2]w wT = (cid:88) w wT =WWT =I . j j j j j j m\nj=1 j=1 j=1\nFor i=1,...,m,\nTherefore, Lemma 4 applies to y .",
+      "size": 249,
+      "sentences": 3
+    },
+    {
+      "id": 137,
+      "content": "(cid:88) w wT =WWT =I . j j j j j j m\nj=1 j=1 j=1\nFor i=1,...,m,\nTherefore, Lemma 4 applies to y . For all measurable convex\nj\n(cid:32) (cid:114) (cid:33) sets A⊂Rm,\nlogn\nP 1 m ≤j a ≤ x n |(LQ) ij |≥C n (cid:12) (cid:12) (cid:32) (cid:88) n (cid:33) (cid:12) (cid:12) (cid:88) n\nsup(cid:12)P y ∈A −P(g ∈A)(cid:12)≤(42m1/4+16) E∥y ∥3,\n(cid:32) (cid:114) (cid:33) (cid:12) i (cid:12) i 2\n≤P ∥q ∥ ≥C logn →0 as n→∞ A (cid:12) i=1 (cid:12) i=1\n1 ∞ n\nwhere g ∼N(0,I ).",
+      "size": 463,
+      "sentences": 3
+    },
+    {
+      "id": 138,
+      "content": "id:12) i (cid:12) i 2\n≤P ∥q ∥ ≥C logn →0 as n→∞ A (cid:12) i=1 (cid:12) i=1\n1 ∞ n\nwhere g ∼N(0,I ). m\n===  10 ===\n10\nThe original input distribution is plotted as a dashed line, and\na Gaussian distribution with the same mean and variance is\nplotted as a dash-dotted black line for reference. As observed\ninthefigure,thetransformeddistributionbecomesincreasingly\nGaussian as n increases. B. Propagation in ReLU Networks\nDeep ReLU networks suffer from variance collapse and\ndying ReLU problems [35].",
+      "size": 497,
+      "sentences": 4
+    },
+    {
+      "id": 139,
+      "content": "ion in ReLU Networks\nDeep ReLU networks suffer from variance collapse and\ndying ReLU problems [35]. These problems are related to\nweight initialization and activation functions. Consider a standard FFNN architecture in which each layer\nℓ is recursively defined by:\ny(ℓ) =W(ℓ)x(ℓ−1)+b(ℓ), x(ℓ) =ReLU(y(ℓ)). (22)\nFig.2:ConvergenceofWxtonormaldistributionasdimension\nAs stated in the preliminary section, we assume a non-\nn increases.",
+      "size": 431,
+      "sentences": 4
+    },
+    {
+      "id": 140,
+      "content": "tonormaldistributionasdimension\nAs stated in the preliminary section, we assume a non-\nn increases. increasing architecture where the layer widths N for ℓ =\nℓ\n0,...,L satisfy N ≥N ≥···≥N . 0 1 L\nSince ∥y ∥ = |z |∥w ∥ , (cid:80)n E[∥y ∥3] = Given the central limit behavior established in Theorem 4,\nβ (cid:80)n E[∥w j 2 ∥3].",
+      "size": 324,
+      "sentences": 3
+    },
+    {
+      "id": 141,
+      "content": "0)n E[∥y ∥3] = Given the central limit behavior established in Theorem 4,\nβ (cid:80)n E[∥w j 2 ∥3]. And (cid:80) j n j ∥w 2 ∥3 c i= an 1 be i b 2 ounded it is reasonable to assume that the pre-activation vectors\n3 i=1 j 2 i=1 j 2 y(ℓ) in deep ReLU networks follow approximately Gaussian\nas follows:\ndistributions in high-dimensional settings.",
+      "size": 342,
+      "sentences": 2
+    },
+    {
+      "id": 142,
+      "content": "ReLU networks follow approximately Gaussian\nas follows:\ndistributions in high-dimensional settings. n (cid:18) (cid:19) n\n(cid:88) ∥w ∥3 ≤ max ∥w ∥ (cid:88) ∥w ∥2 The single-variable rectified Gaussian distribution is defined\nj 2 1≤j≤n j 2 j 2 as max(0,x) ∼ NR(µ,σ2) where x ∼ N(µ,σ2) [36].",
+      "size": 290,
+      "sentences": 2
+    },
+    {
+      "id": 143,
+      "content": "d Gaussian distribution is defined\nj 2 1≤j≤n j 2 j 2 as max(0,x) ∼ NR(µ,σ2) where x ∼ N(µ,σ2) [36]. This\ni=1 i=1\n(cid:18) (cid:19) (cid:32) n (cid:33) definitionnaturallyextendstothemultivariate.Ifx∼N(µ,Σ)\n(cid:88)\n= max ∥w ∥ tr w wT and z = max(0,x) where the maximum is applied ele-\nj 2 j j\n1≤j≤n mentwise, then z is said to follow a multivariate rectified\ni=1\n=m· max ∥w ∥ Gaussian distribution denotes z ∼NR(µ,Σ). Note that E[z]\nj 2\n1≤j≤n and Cov(z) are not µ and Σ, respectively.",
+      "size": 484,
+      "sentences": 3
+    },
+    {
+      "id": 144,
+      "content": "distribution denotes z ∼NR(µ,Σ). Note that E[z]\nj 2\n1≤j≤n and Cov(z) are not µ and Σ, respectively. Using the result\n≤m3/2max|W ij |. of [36], [37], the following lemma provides the closed-form\ni,j expressions of E[z] and Cov(z) when z ∼NR(µ1 ,σ2I ). n n\nIt implies that (cid:80)n E[∥w ∥3]≤m3/2E[max |W |]. Since\ni=1 j 2 i,j ij Lemma 5 ([36]). Let z ∼NR(µ1 ,σ2I ). Then\np n n\nmax |W |<1 and max |W |−→0, by uniform integra-\ni,j ij i,j ij\nbilityandTheorem2.20in[34],wehaveE[max\ni,j\n|W\nij\n|]→0.",
+      "size": 492,
+      "sentences": 8
+    },
+    {
+      "id": 145,
+      "content": "x |W |−→0, by uniform integra-\ni,j ij i,j ij\nbilityandTheorem2.20in[34],wehaveE[max\ni,j\n|W\nij\n|]→0. E[z]=(σϕ(α)+µΦ(α))1\nn\nLet K =(42m1/4+16)β 3 m3/2, then Cov(z)= (cid:16) (µ2+σ2)Φ(α)+µσϕ(α)−(σϕ(α)+µΦ(α))2 (cid:17) I ,\nn\nsup|P(Wz ∈A)−P(g ∈A)|≤K E[max|W |]→0\nA i,j ij where α = σ µ and ϕ and Φ are the probability density\nfunction and cumulative distribution function of the Gaussian\nas n→∞. For any a∈Rm and t∈R, consider the closed\ndistribution, respectively. half-space H := {x ∈ Rm| aTx ≤ t}.",
+      "size": 495,
+      "sentences": 4
+    },
+    {
+      "id": 146,
+      "content": "ny a∈Rm and t∈R, consider the closed\ndistribution, respectively. half-space H := {x ∈ Rm| aTx ≤ t}. Since H is\na,t a,t\nconvex, However, since lim Φ(α) = 1 and lim ϕ(α) = 0,\nα→∞ α→∞\n(cid:12) (cid:12) P(aTWz ≤t)−P(aTg ≤t) (cid:12) (cid:12) a sufficiently large α = µ/σ implies that the statistical\npropertiesoftheReLUoutput(e.g.meanandvariance)become\n= |P(Wz ∈H )−P(g ∈H )|\na,t a,t increasingly close to those of the Gaussian input. ≤ sup|P(Wz ∈A)−P(g ∈A)|→0. A Remark 1.",
+      "size": 469,
+      "sentences": 5
+    },
+    {
+      "id": 147,
+      "content": "|\na,t a,t increasingly close to those of the Gaussian input. ≤ sup|P(Wz ∈A)−P(g ∈A)|→0. A Remark 1. Moreover, for each coordinate z i of z ∼\nN(µ1,σ2I), P(z >0) = Φ (cid:0)µ(cid:1) = Φ(α).",
+      "size": 187,
+      "sentences": 4
+    },
+    {
+      "id": 148,
+      "content": "A Remark 1. Moreover, for each coordinate z i of z ∼\nN(µ1,σ2I), P(z >0) = Φ (cid:0)µ(cid:1) = Φ(α). By the Crame´r-Wold theorem [34, Proposition 2.17], as n→ i σ\n∞, Therefore, as α becomes large, most of the probability mass\nW x−µ\n(cid:112)n1\nm m −→ d N (0, I ) oftheinputliesinthepositiveregion.Inthisregime,theReLU\nσ m function behaves nearly as the identity map, and its effect on\nthe input distribution becomes negligible.",
+      "size": 426,
+      "sentences": 3
+    },
+    {
+      "id": 149,
+      "content": "on behaves nearly as the identity map, and its effect on\nthe input distribution becomes negligible. Consequently, the\nrectified Gaussian output is nearly indistinguishable from the\nTo empirically validate this result, we consider a non-\noriginal Gaussian input in functional terms. Gaussian input distribution. Fig.",
+      "size": 315,
+      "sentences": 4
+    },
+    {
+      "id": 150,
+      "content": ", we consider a non-\noriginal Gaussian input in functional terms. Gaussian input distribution. Fig. 2 shows the empirical dis-\nIn our setting, the proposed initialization ensures that the\nt a r n ib d u e ti a o c n h o en f t t r h y e o fi f r x st ∈ co R m n po is n i e n n d t e o p f en W den x t , ly w d h r e a r w e n W fro ∈ m O a (cid:101)m ch ,n i- pre-activation at layer ℓ follows N (cid:16)(cid:113) N N ℓ− ℓ 1 µ,σ2 (cid:17) , leading to\nsquared distribution with three degrees of freedom, χ2(3), for the rectification parameter:\nm=n∈{5,10,100}.",
+      "size": 561,
+      "sentences": 4
+    },
+    {
+      "id": 151,
+      "content": "distribution with three degrees of freedom, χ2(3), for the rectification parameter:\nm=n∈{5,10,100}. A total of1,000,000 input vectors were µ (cid:114) N µ\nα = ℓ = ℓ−1 ℓ−1. sampled for each value of n to estimate the output distribution.",
+      "size": 236,
+      "sentences": 3
+    },
+    {
+      "id": 152,
+      "content": "e µ (cid:114) N µ\nα = ℓ = ℓ−1 ℓ−1. sampled for each value of n to estimate the output distribution. ℓ σ N σ\nℓ ℓ ℓ−1\n===  11 ===\n11\nIndeepnetworkswithnon-increasingwidths(N <N ),the In both cases, the pre-activation y(ℓ) is approximately\nℓ ℓ−1\n(cid:113)\nscalingfactor Nℓ−1 contributestoincreasingα.Furthermore, Gaussian.Thus,x(ℓ) =ReLU(y(ℓ))isbydefinitiondistributed\nNℓ as NR(µ ,σ2).",
+      "size": 382,
+      "sentences": 3
+    },
+    {
+      "id": 153,
+      "content": "toincreasingα.Furthermore, Gaussian.Thus,x(ℓ) =ReLU(y(ℓ))isbydefinitiondistributed\nNℓ as NR(µ ,σ2). By the principle of induction, the proposition\nsince ReLU increases the mean and decreases the variance of ℓ ℓ\nholds for all ℓ=1,...,L.\nGaussian inputs, these effects accumulate across layers. As a\nresult, α grows with depth, pushing the activation distribution Forafixednetworkarchitecture,ensuringalargerectification\nfurther into the positive domain.",
+      "size": 452,
+      "sentences": 3
+    },
+    {
+      "id": 154,
+      "content": "ribution Forafixednetworkarchitecture,ensuringalargerectification\nfurther into the positive domain. This behavior alleviates parameter, α = (cid:113) Nℓ−1µℓ−1, involves either increasing the\nthe dying ReLU problem and helps preserve stable signal ℓ Nℓ σℓ−1\nmeanµ ordecreasingthevarianceσ .However,reducing\npropagation. ℓ−1 ℓ−1\nthe variance is an undesirable strategy, as it would cause\nWe formalize this observation in the following proposition,\nactivations to become near-constant.",
+      "size": 482,
+      "sentences": 3
+    },
+    {
+      "id": 155,
+      "content": "se\nWe formalize this observation in the following proposition,\nactivations to become near-constant. Therefore, the viable\nwhich characterizes the depth-wise behavior of activation\napproach is to control the mean. This mean shift is effective\nstatistics under our initialization. because as α increases, Φ(α) approaches 1 while the PDF\nProposition 4. Suppose that the input feature x(0) = ϕ(α) approaches 0.",
+      "size": 406,
+      "sentences": 5
+    },
+    {
+      "id": 156,
+      "content": "approaches 1 while the PDF\nProposition 4. Suppose that the input feature x(0) = ϕ(α) approaches 0. A key implication is that for inputs with\n(x(0),...,x(0))∈RN0 satisfies the following condition: a large α, the statistical properties of the signal are almost\n1 N0\nperfectly preserved after passing through the ReLU activation.",
+      "size": 326,
+      "sentences": 3
+    },
+    {
+      "id": 157,
+      "content": "erties of the signal are almost\n1 N0\nperfectly preserved after passing through the ReLU activation. E[x( j 0)]=µ 0 , Var(x( j 0))=σ 0 2, E[|x( j 0)|3]<∞ This mean shift mitigates the variance reduction by creating a\nlarge rectification parameter, and thus these stable properties\nfor all j = 1,...,N , with input dimension N is large. 0 0\nAssume that, for each layer ℓ, the weight matrix W(ℓ) ∈ can be preserved throughout all subsequent layers.",
+      "size": 445,
+      "sentences": 3
+    },
+    {
+      "id": 158,
+      "content": "that, for each layer ℓ, the weight matrix W(ℓ) ∈ can be preserved throughout all subsequent layers. O(cid:101)Nℓ,Nℓ−1 is a random matrix as defined in Theorem 3, Building on this result, we now examine how our proposed\nand that the bias satisfies b(ℓ) = 0. Then for each layer method mitigates common challenges in deep ReLU networks\nℓ=1,...,L, the distribution of the post-activation vector x(ℓ) during initialization.",
+      "size": 419,
+      "sentences": 3
+    },
+    {
+      "id": 159,
+      "content": "ReLU networks\nℓ=1,...,L, the distribution of the post-activation vector x(ℓ) during initialization. ReLU is known to suffer from three\nis approximately distributed as major issues [8], [38]: (a) the dying ReLU phenomenon,\nwhere neurons become inactive due to persistent negative pre-\nx(ℓ) ∼NR(µ 1 ,σ2I ),\nℓ Nℓ ℓ Nℓ activations; (b) the variance reduction, where ReLU truncation\nwhere µ and σ2 denote the mean and variance of the reduces the dynamic range of signals; and (c) the gradient\nℓ ℓ\ncomponents of x(ℓ), respectively.",
+      "size": 525,
+      "sentences": 2
+    },
+    {
+      "id": 160,
+      "content": "he reduces the dynamic range of signals; and (c) the gradient\nℓ ℓ\ncomponents of x(ℓ), respectively. vanishingproblem,especiallyindeepernetworkswithimproper\nscaling. Proof. We proceed by induction on the layer index ℓ.\na) DyingReLU: Undertheproposedinitialization,Propo-\nFirst, we prove for l = 1.",
+      "size": 296,
+      "sentences": 4
+    },
+    {
+      "id": 161,
+      "content": "n the layer index ℓ.\na) DyingReLU: Undertheproposedinitialization,Propo-\nFirst, we prove for l = 1. Since N is large, Theorem 4 sition 4 yields x(ℓ) ∼NR(µ 1, σ2I) with nondecreasing µ\n0 ℓ ℓ ℓ\nimplies that the pre-activation vector y(1) = W(1)x(0) is andnonincreasingσ ,sotherectificationparameterα =µ /σ\nℓ ℓ ℓ ℓ\napproximately Gaussian: increases with depth.",
+      "size": 357,
+      "sentences": 2
+    },
+    {
+      "id": 162,
+      "content": "creasingσ ,sotherectificationparameterα =µ /σ\nℓ ℓ ℓ ℓ\napproximately Gaussian: increases with depth. By Remark 1, P(x(ℓ) > 0) = Φ(α )\nj ℓ\n(cid:32)(cid:114)\nN\n(cid:33) and hence the inactivity probability 1−Φ(α\nℓ\n) decays rapidly,\ny(1) ∼N 0 µ 1 , σ2I . mitigating the dying ReLU phenomenon in deep networks.",
+      "size": 305,
+      "sentences": 3
+    },
+    {
+      "id": 163,
+      "content": "(α\nℓ\n) decays rapidly,\ny(1) ∼N 0 µ 1 , σ2I . mitigating the dying ReLU phenomenon in deep networks. N 0 N1 0 N1\n1 b) Variancereduction: Forα =µ /σ ,Lemma5\nℓ−1 ℓ−1 ℓ−1\nApplying the ReLU activation yields x(1) = ReLU(y(1)), gives\nwhich is approximately distributed as a rectified Gaussian σ2\nNR(µ 1 ,σ 1 2). This establishes the base case. σ2 ℓ =(1+α ℓ 2 −1 )Φ(α ℓ−1 )+α ℓ−1 ϕ(α ℓ−1 )\nℓ−1\nNowweproveforℓ≥2.Assumethepropositionholdsforlayer\n−\n(cid:0)\nϕ(α )+α Φ(α )\n(cid:1)2\n.",
+      "size": 472,
+      "sentences": 5
+    },
+    {
+      "id": 164,
+      "content": "ϕ(α ℓ−1 )\nℓ−1\nNowweproveforℓ≥2.Assumethepropositionholdsforlayer\n−\n(cid:0)\nϕ(α )+α Φ(α )\n(cid:1)2\n. ℓ−1 ℓ−1 ℓ−1\nℓ−1.Weshowthaty(ℓ) =W(ℓ)x(ℓ−1) remainsapproximately\nGaussian. There are two cases for the input vector x(ℓ−1).",
+      "size": 222,
+      "sentences": 3
+    },
+    {
+      "id": 165,
+      "content": "haty(ℓ) =W(ℓ)x(ℓ−1) remainsapproximately\nGaussian. There are two cases for the input vector x(ℓ−1). Since Φ(a) → 1 and ϕ(a) → 0 as a → ∞, it follows that\n(i) If N is large, then by the multivariate central limit σ σ 2 ℓ 2 →1asα ℓ−1 →∞.Hence,foranyϵ∈(0,1)thereexists\nℓ−1 ℓ−1\ntheorem, the linear transformation y(ℓ) = W(ℓ)x(ℓ−1) is δ > 0 such that if α ℓ−1 ≥ δ then (1−ϵ)σ ℓ 2 −1 ≤ σ ℓ 2 ≤\napproximatelyGaussian,eventhoughx(ℓ−1) followsarectified σ ℓ 2 −1 .",
+      "size": 455,
+      "sentences": 3
+    },
+    {
+      "id": 166,
+      "content": "δ then (1−ϵ)σ ℓ 2 −1 ≤ σ ℓ 2 ≤\napproximatelyGaussian,eventhoughx(ℓ−1) followsarectified σ ℓ 2 −1 . In particular, once α ℓ−1 ≥δ, the layerwise variance is\nmaintained within a one-sided (1−ϵ) lower bound, preventing\nGaussian distribution. cumulative variance decay and preserving activation dynamic\n(ii)IfN ℓ−1 isnotlarge,weexploitthefactthattherectification range. (cid:113)\nparameter α ℓ−1 = N N ℓ ℓ − − 2 1 µ σℓ ℓ − − 2 2 grows with depth.",
+      "size": 441,
+      "sentences": 4
+    },
+    {
+      "id": 167,
+      "content": "herectification range. (cid:113)\nparameter α ℓ−1 = N N ℓ ℓ − − 2 1 µ σℓ ℓ − − 2 2 grows with depth. By the c) Vanishing gradients: Let D(ℓ) be a diagonal matrix\ninductive hypothesis, x(ℓ−1) follows a rectified Gaussian whose ith diagonal element is 1 if x(ℓ) >0 and 0 otherwise. i\nlaw.",
+      "size": 285,
+      "sentences": 4
+    },
+    {
+      "id": 168,
+      "content": "−1) follows a rectified Gaussian whose ith diagonal element is 1 if x(ℓ) >0 and 0 otherwise. i\nlaw. For a sufficiently large α , the rectified Gaussian Backpropagation satisfies\nℓ−1\ndistribution of x(ℓ−1) becomes almost indistinguishable from\nj δ(ℓ) =(W(ℓ+1))TD(ℓ+1)δ(ℓ+1),\na true Gaussian distribution, as the mass at zero vanishes. where δ(ℓ) is the gradient of the loss with respect to the\nx(ℓ−1) ∼NR(µ ,σ2 )−→ d N(µ ,σ2 )asα →∞. ℓ−1 ℓ−1 ℓ−1 ℓ−1 ℓ−1 pre-activation at layer ℓ.",
+      "size": 479,
+      "sentences": 5
+    },
+    {
+      "id": 169,
+      "content": "spect to the\nx(ℓ−1) ∼NR(µ ,σ2 )−→ d N(µ ,σ2 )asα →∞. ℓ−1 ℓ−1 ℓ−1 ℓ−1 ℓ−1 pre-activation at layer ℓ. Under the proposed initialization,\nTherefore, y(ℓ) = W(ℓ)x(ℓ−1) is a linear transformation of α ℓ = µ ℓ /σ ℓ increases with depth, hence P(x( j ℓ) > 0) =\nan approximately Gaussian vector, which results in y(ℓ) also Φ(α ) → 1 and E[D(ℓ)] = Φ(α )I → I. Together with\nℓ ℓ\nbeing approximately Gaussian.",
+      "size": 398,
+      "sentences": 4
+    },
+    {
+      "id": 170,
+      "content": "ts in y(ℓ) also Φ(α ) → 1 and E[D(ℓ)] = Φ(α )I → I. Together with\nℓ ℓ\nbeing approximately Gaussian. the semi-orthogonality of W(ℓ) and the variance reduction\n===  12 ===\n12\nDepth Proposed Lee He Xavier Orth. Rand. Depth Proposed Lee He Xavier Orth. Rand.",
+      "size": 254,
+      "sentences": 6
+    },
+    {
+      "id": 171,
+      "content": "on\n===  12 ===\n12\nDepth Proposed Lee He Xavier Orth. Rand. Depth Proposed Lee He Xavier Orth. Rand. 10 97.59 97.87 97.55 97.57 97.56 97.30 10 88.15 87.66 88.17 87.52 87.96 87.58\n20 97.57 97.53 97.43 97.23 97.00 96.31 20 88.29 87.65 88.17 87.44 87.67 87.04\n30 97.17 96.14 97.21 97.10 97.14 96.44 30 87.92 88.65 87.80 87.00 87.62 86.93\n40 97.19 95.83 97.06 96.04 97.07 95.13 40 88.03 87.73 87.53 87.64 87.45 10.00\n50 97.28 96.02 96.52 82.74 11.35 11.35 50 87.77 88.68 87.23 10.00 10.00 10.00\n60 97.17 94.74 96.44 82.07 11.35 11.35 60 87.98 85.94 87.59 10.00 10.00 10.00\n70 97.25 96.00 93.70 11.35 11.35 11.35 70 87.83 86.59 86.97 10.00 10.00 10.00\n80 96.64 84.82 95.95 11.35 11.35 11.35 80 87.78 77.89 84.92 10.00 10.00 10.00\n90 97.04 88.46 95.91 11.35 11.35 11.35 90 87.88 81.78 85.50 10.00 10.00 10.00\n100 96.98 95.17 93.69 11.35 11.35 11.35 100 87.70 79.09 83.33 10.00 10.00 10.00\n(a) MNIST (b) Fashion-MNIST\nTABLE I: Test accuracy (%) by depth and initialization method.",
+      "size": 972,
+      "sentences": 5
+    },
+    {
+      "id": 172,
+      "content": "00 10.00\n(a) MNIST (b) Fashion-MNIST\nTABLE I: Test accuracy (%) by depth and initialization method. Dataset Activation Proposed Lee He Xavier Orthogonal Random\n50 100 50 100 50 100 50 100 50 100 50 100\nReLU 97.12 96.33 97.25 84.15 96.39 95.24 11.35 11.35 93.94 11.35 11.35 11.35\nLeakyReLU 97.08 96.29 97.16 11.35 96.62 95.39 86.52 11.35 87.36 11.35 11.35 11.35\nPReLU 96.93 96.52 97.46 11.35 95.99 94.60 95.02 11.35 11.35 11.35 11.35 11.35\nMNIST\nELU 97.67 97.59 97.79 74.25 96.62 96.34 97.17 11.35 97.73 88.75 86.56 11.35\nSELU 97.39 96.45 97.62 96.40 96.57 95.33 96.59 96.61 97.22 97.07 96.52 96.31\nReLU 88.15 87.81 87.82 86.54 87.63 86.97 10.00 10.00 85.30 10.00 10.00 10.00\nLeakyReLU 88.36 87.89 86.87 74.37 87.10 86.16 86.22 10.00 85.81 10.00 10.00 10.00\nPReLU 87.75 87.77 88.28 75.94 86.81 86.91 79.44 10.00 86.80 10.00 10.00 10.00\nFashion-MNIST\nELU 88.05 88.29 88.43 78.15 87.29 85.30 87.90 10.00 88.22 70.18 83.02 10.00\nSELU 87.60 87.25 84.55 71.13 87.01 85.45 87.64 85.97 87.92 87.50 87.22 83.85\nTABLE II: Accuracy (%) of different initialization methods and various activation functions on MNIST and Fashion-MNIST at\ndepths 50 and 100.\nabove, this limits layerwise Jacobian contraction and prevents are trained on the full MNIST and the full Fashion-MNIST\nexponential gradient decay in deep ReLU networks.",
+      "size": 1312,
+      "sentences": 2
+    },
+    {
+      "id": 173,
+      "content": "ined on the full MNIST and the full Fashion-MNIST\nexponential gradient decay in deep ReLU networks. datasets, respectively. The output layer uses softmax for\nclassification. TABLE I (a) and (b) present the classification\naccuracy obtained on MNIST and Fashion-MNIST datasets\nacross varying network depths and initialization methods. VI.",
+      "size": 336,
+      "sentences": 5
+    },
+    {
+      "id": 174,
+      "content": "d on MNIST and Fashion-MNIST datasets\nacross varying network depths and initialization methods. VI. EXPERIMENTALRESULTS\nThis section empirically demonstrates the effectiveness of First, for D =10∼30, all initialization schemes perform\nthe proposed initialization on deep ReLU networks. The comparably well, achieving high accuracy on both datasets. proposed initialization is evaluated against several widely However, as depth increases, significant differences emerge.",
+      "size": 469,
+      "sentences": 5
+    },
+    {
+      "id": 175,
+      "content": "on is evaluated against several widely However, as depth increases, significant differences emerge. adopted initialization methods—Lee, Orthogonal, Xavier, He, Notably, the proposed initialization consistently maintains sta-\nand Random—on the MNIST and Fashion-MNIST datasets. bleandhighaccuracyevenatdepthsuptoD =100,achieving\nAll experiments employ an FFNN with ReLU activations in 96.98%onMNISTand87.70%onFashion-MNIST.Incontrast,\nall hidden layers, implemented in PyTorch.",
+      "size": 476,
+      "sentences": 3
+    },
+    {
+      "id": 176,
+      "content": "ons in 96.98%onMNISTand87.70%onFashion-MNIST.Incontrast,\nall hidden layers, implemented in PyTorch. The networks commonly used initializations such as Xavier, Orthogonal,\nare trained using cross-entropy loss and optimized with the and Random exhibit severe performance degradation beyond\nAdam algorithm. The learning rate is scaled with depth as D = 50, with accuracy collapsing to near random levels.",
+      "size": 401,
+      "sentences": 3
+    },
+    {
+      "id": 177,
+      "content": ". The learning rate is scaled with depth as D = 50, with accuracy collapsing to near random levels. √\nlr=0.001/ depth,followingestablishedpractice[39],except WhileLeeinitializationandHeinitializationdemonstratebetter\nfor Lee et al. [14], where a fixed learning rate of 0.001 is used robustnessduetotheirReLU-awaredesign,theydonotentirely\nto match prior work. All models are trained with a batch size prevent performance degradation in very deep networks.",
+      "size": 454,
+      "sentences": 5
+    },
+    {
+      "id": 178,
+      "content": "rk. All models are trained with a batch size prevent performance degradation in very deep networks. In\nof 256 for 100 epochs, and classification accuracy on the test particular, the Lee initialization exhibits noticeable fluctuations\nsplit is reported as the evaluation metric. as the depth increases, indicating unstable training dynamics at\nlarge depths. In comparison, He initialization exhibits a more\ngradual decline in accuracy as depth increases. A.",
+      "size": 456,
+      "sentences": 6
+    },
+    {
+      "id": 179,
+      "content": "In comparison, He initialization exhibits a more\ngradual decline in accuracy as depth increases. A. Effect of Network Depth on Performance\nThis stability is a result of the fact that the proposed\nTo investigate how well the proposed initialization supports\ninitialization method maintains the signal variance stably even\ndeep ReLU networks, experiments are conducted by varying\nin deep networks and effectively mitigates the dying ReLU\nthe network depth.",
+      "size": 454,
+      "sentences": 3
+    },
+    {
+      "id": 180,
+      "content": "e conducted by varying\nin deep networks and effectively mitigates the dying ReLU\nthe network depth. Specifically, a fully connected FFNN with\nphenomenon, as theoretically proven in the previous section. architecture:\nOn the other hand, other initialization methods are analyzed\n784→64→···→64→10 to fail to prevent variance collapse as depth increases, leading\n(cid:124) (cid:123)(cid:122) (cid:125) to learning failure.",
+      "size": 419,
+      "sentences": 3
+    },
+    {
+      "id": 181,
+      "content": "ce collapse as depth increases, leading\n(cid:124) (cid:123)(cid:122) (cid:125) to learning failure. Dhiddenlayers\n===  13 ===\n13\nDataset (k) Depth Proposed Lee He Xavier Orthogonal Random\n10 42.48 ± 3.93 37.75 ± 4.56 27.42 ± 2.93 28.09 ± 4.50 32.54 ± 3.58 23.79 ± 4.87\nMNIST (1) 50 39.57 ± 3.80 36.74 ± 4.47 13.80 ± 2.62 10.78 ± 1.41 10.00 ± 1.45 10.08 ± 0.63\n100 37.23 ± 4.92 28.23 ± 3.97 12.85 ± 2.92 9.93 ± 0.44 9.92 ± 0.40 9.98 ± 0.69\n10 52.86 ± 3.89 44.30 ± 4.15 34.35 ± 5.01 35.85 ± 5.66 42.22 ± 4.20 28.67 ± 5.05\nMNIST (2) 50 48.64 ± 3.89 43.85 ± 4.35 15.52 ± 2.90 10.64 ± 1.52 9.91 ± 0.53 9.93 ± 0.41\n100 45.72 ± 4.20 34.05 ± 4.20 13.57 ± 2.47 9.86 ± 0.67 10.17 ± 0.59 10.10 ± 0.81\n10 63.79 ± 2.73 53.00 ± 3.99 43.67 ± 4.90 44.73 ± 4.84 52.28 ± 3.52 35.73 ± 5.96\nMNIST (4) 50 58.86 ± 3.73 54.73 ± 3.38 16.41 ± 2.95 11.62 ± 2.11 9.96 ± 0.47 9.98 ± 0.65\n100 56.70 ± 3.11 44.81 ± 3.85 13.90 ± 2.17 10.08 ± 0.45 9.76 ± 0.49 10.15 ± 0.70\n10 71.73 ± 2.21 62.36 ± 2.92 53.92 ± 4.76 52.90 ± 3.76 61.97 ± 3.80 44.67 ± 6.13\nMNIST (8) 50 67.67 ± 2.58 63.33 ± 2.77 17.96 ± 3.45 10.94 ± 2.46 9.99 ± 0.67 9.84 ± 0.50\n100 66.35 ± 2.73 52.45 ± 4.01 14.45 ± 2.44 9.89 ± 0.60 9.93 ± 0.44 10.05 ± 0.53\n10 46.78 ± 4.27 43.48 ± 4.94 37.62 ± 5.08 36.80 ± 5.11 41.50 ± 6.28 31.55 ± 6.74\nFashion-MNIST (1) 50 46.19 ± 4.08 37.19 ± 5.42 20.29 ± 3.97 11.81 ± 3.10 10.14 ± 1.67 10.00 ± 0.00\n100 45.07 ± 4.28 28.88 ± 8.82 14.81 ± 4.18 10.00 ± 0.00 10.00 ± 0.00 10.00 ± 0.00\n10 55.99 ± 4.15 52.44 ± 4.05 46.37 ± 4.62 45.29 ± 5.25 49.68 ± 5.68 42.05 ± 5.27\nFashion-MNIST (2) 50 54.94 ± 4.15 47.05 ± 5.48 23.61 ± 5.48 12.36 ± 2.96 10.24 ± 0.86 10.00 ± 0.00\n100 55.21 ± 4.19 40.40 ± 8.90 16.20 ± 3.62 10.00 ± 0.00 10.00 ± 0.00 10.00 ± 0.00\n10 62.32 ± 3.09 58.53 ± 3.17 53.33 ± 4.18 52.62 ± 4.60 56.22 ± 3.34 49.17 ± 3.58\nFashion-MNIST (4) 50 60.85 ± 2.97 57.05 ± 3.68 25.12 ± 4.78 13.12 ± 3.35 10.00 ± 0.00 10.00 ± 0.00\n100 60.40 ± 3.11 51.14 ± 8.45 17.15 ± 4.17 10.00 ± 0.00 10.00 ± 0.00 10.00 ± 0.00\n10 67.65 ± 1.66 64.49 ± 2.32 60.68 ± 2.91 58.83 ± 3.57 62.65 ± 2.27 54.36 ± 5.38\nFashion-MNIST (8) 50 66.75 ± 1.96 63.65 ± 2.97 30.00 ± 6.98 13.69 ± 3.98 10.33 ± 1.45 10.00 ± 0.00\n100 66.05 ± 2.25 58.66 ± 9.23 20.98 ± 4.25 10.00 ± 0.00 10.00 ± 0.00 10.00 ± 0.00\nTABLE III: Few-shot classification accuracy (%) for various initialization methods and network depths.",
+      "size": 2341,
+      "sentences": 2
+    },
+    {
+      "id": 182,
+      "content": "LE III: Few-shot classification accuracy (%) for various initialization methods and network depths. The number following\neach dataset name indicates the number of shots (k). Values are reported as mean ± standard deviation. The highest mean\naccuracy in each row is shown in bold. (a) MNIST 4-shot (b) Fashion-MNIST 4-shot\nFig. 3: 4-shot classification accuracy for various initialization methods and network depths. B. Effectiveness across ReLU Family Activation the results in TABLE I.",
+      "size": 486,
+      "sentences": 8
+    },
+    {
+      "id": 183,
+      "content": "methods and network depths. B. Effectiveness across ReLU Family Activation the results in TABLE I. The proposed initialization achieves high accuracy on\nTo test the robustness of our initialization, we examine its MNIST and Fashion-MNIST for LeakyReLU, PReLU, ELU,\ninteraction with other popular activation functions from the SELU, and standard ReLU, with a drop of less than 1%\nReLU family. To examine the interaction between activation when transitioning from D = 50 to D = 100.",
+      "size": 480,
+      "sentences": 5
+    },
+    {
+      "id": 184,
+      "content": "LU family. To examine the interaction between activation when transitioning from D = 50 to D = 100. This con-\nvariants and initialization schemes, we replaced the ReLU acti- sistent performance across activation variants demonstrates\nvation in each hidden layer with LeakyReLU [7], PReLU [8], the robustness and low variance of the proposed method.",
+      "size": 348,
+      "sentences": 3
+    },
+    {
+      "id": 185,
+      "content": "hidden layer with LeakyReLU [7], PReLU [8], the robustness and low variance of the proposed method. In\nELU[9],andSELU[40],respectively.Thenetworkarchitecture contrast, Lee initialization performs competitively at D =50,\nand training protocol were identical to those in the previous often matching or slightly exceeding the proposed method. experiments, and the same set of initialization methods was However,itsstabilitydegradessignificantlyatD =100,where\nevaluated.",
+      "size": 466,
+      "sentences": 3
+    },
+    {
+      "id": 186,
+      "content": "et of initialization methods was However,itsstabilitydegradessignificantlyatD =100,where\nevaluated. We tested depths of D = 50 and D = 100 to it fails to train under several activation functions, such as\nhighlight failures due to poor initialization, as confirmed by LeakyReLU and PReLU, on MNIST and Fashion-MNIST.",
+      "size": 315,
+      "sentences": 2
+    },
+    {
+      "id": 187,
+      "content": "ilures due to poor initialization, as confirmed by LeakyReLU and PReLU, on MNIST and Fashion-MNIST. He\n===  14 ===\n14\nDataset Samples Features N Output N Task Architecture\n0 D\nAdult 48,842 14 2 Classification 14→8→···→8→2\nCancer 569 30 2 Classification 30→16→···→16→2\nPima 768 8 2 Classification 8→4→···→4→2\nIonosphere 351 34 2 Classification 34→16→···→16→2\nWine 178 13 3 Classification 13→8→···→8→3\nDiabetes 442 10 1 Regression 10→8→···→8→1\nTABLE IV: Description of tabular datasets.",
+      "size": 484,
+      "sentences": 2
+    },
+    {
+      "id": 188,
+      "content": "n 13→8→···→8→3\nDiabetes 442 10 1 Regression 10→8→···→8→1\nTABLE IV: Description of tabular datasets. Dataset α Proposed Lee He Xavier Orthogonal Random\n0\n50 100 50 100 50 100 50 100 50 100 50 100\n-2 76.07 76.07 85.33 76.64 85.58 76.07 76.07 76.07 76.07 76.07 76.07 76.07\n0 85.91 85.39 85.33 85.64 76.07 85.52 76.07 76.07 76.07 76.07 76.07 76.07\nAdult\n2 85.79 85.86 85.59 85.64 76.07 76.07 76.07 76.07 76.07 76.07 76.07 76.07\n50 76.07 76.07 76.07 76.07 76.07 76.07 76.07 76.07 76.07 76.07 76.07 76.07\n-2 83.33 86.84 96.49 93.86 89.47 88.60 63.16 63.16 96.49 63.16 63.16 63.16\n0 94.74 92.11 94.74 93.86 89.47 81.58 97.37 95.61 96.49 63.16 63.16 63.16\nCancer\n2 97.37 97.37 95.61 94.74 90.35 83.33 93.86 63.16 96.49 63.16 63.16 63.16\n50 71.05 42.11 86.84 78.07 63.16 63.16 63.16 63.16 63.16 63.16 63.16 63.16\n-2 64.29 65.58 68.18 65.58 64.94 64.94 64.94 64.94 64.94 64.94 64.94 64.94\n0 74.03 72.73 73.38 71.43 64.94 64.94 64.94 64.94 64.94 64.94 64.94 64.94\nPima\n2 71.43 73.38 72.73 72.73 64.94 64.94 64.94 64.94 64.94 64.94 64.94 64.94\n50 56.49 56.49 64.94 64.94 64.94 64.94 64.94 64.94 64.94 64.94 64.94 64.94\n-2 70.42 69.01 88.73 91.55 84.51 87.32 92.96 64.79 87.32 64.79 64.79 64.79\n0 94.37 87.32 94.37 91.55 88.73 78.87 91.55 64.79 92.96 64.79 64.79 64.79\nIonosphere\n2 91.55 90.14 92.96 94.37 78.87 70.42 87.32 64.79 91.55 64.79 64.79 64.79\n50 64.79 80.28 92.96 73.24 64.79 64.79 64.79 64.79 64.79 64.79 64.79 64.79\n-2 80.56 47.22 80.56 77.78 38.89 38.89 38.89 38.89 38.89 38.89 38.89 38.89\n0 86.11 94.44 83.33 88.89 38.89 38.89 38.89 38.89 38.89 38.89 38.89 38.89\nWine\n2 91.67 88.89 94.44 97.22 38.89 38.89 38.89 38.89 38.89 38.89 38.89 38.89\n50 44.44 58.33 83.33 83.33 38.89 38.89 38.89 38.89 38.89 38.89 38.89 38.89\n-2 70.53 71.46 161.88 161.88 62.63 162.78 73.33 73.87 70.68 72.84 72.79 162.83\n0 61.59 59.62 161.88 161.88 66.42 72.84 56.46 162.83 73.32 160.03 162.41 162.83\nDiabetes\n2 53.75 54.09 161.88 161.88 64.64 73.18 63.65 72.97 60.77 162.83 162.79 162.83\n50 72.15 71.09 161.90 161.90 73.08 71.93 73.46 143.81 73.83 72.98 156.69 162.83\nTABLE V: Classification accuracy (%) for tabular datasets and RMSE for regression.",
+      "size": 2128,
+      "sentences": 2
+    },
+    {
+      "id": 189,
+      "content": "98 156.69 162.83\nTABLE V: Classification accuracy (%) for tabular datasets and RMSE for regression. Numbers shown under each initializer\nindicate network depth. Boldface denotes the best score among initializations for each (dataset,α ), and underlined boldface\n0\nmarks the best α within the same initializer.",
+      "size": 309,
+      "sentences": 3
+    },
+    {
+      "id": 190,
+      "content": "ions for each (dataset,α ), and underlined boldface\n0\nmarks the best α within the same initializer. initialization, by comparison, consistently supports learning Theexperimentswereconductedwiththenumberoftraining\nacross depths and activation types but exhibits lower overall data k = 1,2,4,8 using the same network architecture\naccuracy than the proposed method, especially on MNIST at and comparison methods as in the previous section. Each\ndepth 100.",
+      "size": 452,
+      "sentences": 3
+    },
+    {
+      "id": 191,
+      "content": "d method, especially on MNIST at and comparison methods as in the previous section. Each\ndepth 100. Orthogonal, Xavier, and Random initializations configuration was repeated 50 times to ensure statistical\nalready exhibited poor performance under standard ReLU significance. and continue to fail at deeper depths across most activation AsshowninTABLEIII,indeepnetworks(50or100layers),\nfunctions.",
+      "size": 394,
+      "sentences": 4
+    },
+    {
+      "id": 192,
+      "content": "at deeper depths across most activation AsshowninTABLEIII,indeepnetworks(50or100layers),\nfunctions. Nonetheless, a limited recovery is observed when most conventional initialization methods, such as Xavier and\ncombined with ELU or SELU, particularly on the Fashion- He, suffer from a sharp performance drop or fail to train. In\nMNIST dataset.",
+      "size": 342,
+      "sentences": 3
+    },
+    {
+      "id": 193,
+      "content": "ularly on the Fashion- He, suffer from a sharp performance drop or fail to train. In\nMNIST dataset. contrast, the proposed method exhibits a significantly smaller\ndrop in accuracy with increasing depth, demonstrating superior\nC. Few-Shot Learning performance compared to any other method. To evaluate the proposed initialization method in data- Fig. 3 provides a representation of these trends for the\nscarce scenarios, we conducted a series of few-shot learning 4-shot learning.",
+      "size": 479,
+      "sentences": 5
+    },
+    {
+      "id": 194,
+      "content": "these trends for the\nscarce scenarios, we conducted a series of few-shot learning 4-shot learning. The shaded area represents the standard\nexperiments. These scenarios are particularly challenging deviation of the accuracy of each method.",
+      "size": 238,
+      "sentences": 3
+    },
+    {
+      "id": 195,
+      "content": "experiments. These scenarios are particularly challenging deviation of the accuracy of each method. The plot of the\nbecausethemodelmustlearntogeneralizefromatinynumber proposed method shows a remarkably stable and slow decrease\nof training examples per class, making the initial state of the in accuracy as the network gets deeper, demonstrating its\nnetwork weights a critical factor for successful training and robustness. In contrast, the curves for Xavier, He, Orthogonal,\nconvergence.",
+      "size": 488,
+      "sentences": 4
+    },
+    {
+      "id": 196,
+      "content": "uccessful training and robustness. In contrast, the curves for Xavier, He, Orthogonal,\nconvergence. and Random initialization, respectively, exhibit a sharp decline\n===  15 ===\n15\nin performance, with accuracy collapsing after 30-40 layers, networks. By exploiting the structure of the Stiefel manifold,\nand fail to learn in deeper architectures.",
+      "size": 346,
+      "sentences": 4
+    },
+    {
+      "id": 197,
+      "content": "ks. By exploiting the structure of the Stiefel manifold,\nand fail to learn in deeper architectures. Lee initialization also our work demonstrates that initialization can play a decisive\nmaintainsarespectableperformancebutshowsasteeperdecline role in stabilizing training, extending depth scalability, and\nand a larger standard deviation compared to the proposed improvinggeneralizationperformance.Futureworkmayextend\nmethod.",
+      "size": 424,
+      "sentences": 3
+    },
+    {
+      "id": 198,
+      "content": "d deviation compared to the proposed improvinggeneralizationperformance.Futureworkmayextend\nmethod. this framework to convolutional architectures, attention-based\nmodels, and adaptive optimization strategies on manifolds,\nfurther bridging rigorous mathematical design with practical\nD. Tabular Data\nadvances in deep learning.",
+      "size": 325,
+      "sentences": 2
+    },
+    {
+      "id": 199,
+      "content": "her bridging rigorous mathematical design with practical\nD. Tabular Data\nadvances in deep learning. Toassessgeneralizationbeyondimagedomains,severaltabu-\nlar datasets were used, covering both classification (Adult [41],\nCancer [42], Pima [43], Ionosphere [44], Wine [45]) and REFERENCES\nregression(Diabetes[46])tasks(TABLEIV).Astabularinputs\n[1] B.Hanin,D.A.Roberts,andS.Yaida,ThePrinciplesofDeepLearning\nrequire explicit scaling, all features were standardized to unit Theory:AnEffectiveTheoryApproachtoUnderstandingNeuralNetworks.",
+      "size": 532,
+      "sentences": 2
+    },
+    {
+      "id": 200,
+      "content": "l features were standardized to unit Theory:AnEffectiveTheoryApproachtoUnderstandingNeuralNetworks. variance (σ2 = 1), and the mean µ was shifted to control CambridgeUniversityPress,2022,arXiv:2106.10165.\nα = µ/σ2. Experiments used α ∈ {−2, 0, 2, 50}. Models [2] I.Goodfellow,Y.Bengio,andA.Courville,Deeplearning. MITpress\nCambridge,2016. were fully connected FFNN(architecture details in TABLE IV).",
+      "size": 399,
+      "sentences": 6
+    },
+    {
+      "id": 201,
+      "content": "Deeplearning. MITpress\nCambridge,2016. were fully connected FFNN(architecture details in TABLE IV). [3] Y.Bengioetal.,“Learningdeeparchitecturesforai,”Foundationsand\nTraining settings followed those of the prior experiments, and trends®inMachineLearning,vol.2,no.1,pp.1–127,2009. [4] Y.LeCun,Y.Bengio,andG.Hinton,“Deeplearning,”nature,vol.521,\nevaluation used accuracy for classification and root mean\nno.7553,pp.436–444,2015. squared error (RMSE) for regression.",
+      "size": 463,
+      "sentences": 6
+    },
+    {
+      "id": 202,
+      "content": "racy for classification and root mean\nno.7553,pp.436–444,2015. squared error (RMSE) for regression. [5] X. Glorot and Y. Bengio, “Understanding the difficulty of training\nThetabularresultsaresummarizedinTABLEV.Acrossboth deep feedforward neural networks,” in Proceedings of the thirteenth\ninternationalconferenceonartificialintelligenceandstatistics. JMLR\nclassificationandregressiondatasets,theproposedinitialization\nWorkshopandConferenceProceedings,2010,pp.249–256.",
+      "size": 467,
+      "sentences": 4
+    },
+    {
+      "id": 203,
+      "content": "onandregressiondatasets,theproposedinitialization\nWorkshopandConferenceProceedings,2010,pp.249–256. consistently shows strong performance among the compared [6] V. Nair and G. E. Hinton, “Rectified linear units improve restricted\nmethods (TABLE V). Performance is sensitive to the rectifi- boltzmannmachines,”inProceedingsofthe27thinternationalconference\ncation parameter: negative shifts (α = −2) and excessively onmachinelearning(ICML-10),2010,pp.807–814.",
+      "size": 457,
+      "sentences": 3
+    },
+    {
+      "id": 204,
+      "content": "ion parameter: negative shifts (α = −2) and excessively onmachinelearning(ICML-10),2010,pp.807–814. 0 [7] A. L. Maas, A. Y. Hannun, and A. Y. Ng, “Rectifier nonlinearities\nlarge shifts (α =50) degrade accuracy and increase RMSE,\n0 improveneuralnetworkacousticmodels,”inProc.icml. Atlanta,GA,\nwhereas setting (α =2) yields the best results. When α <0, 2013. 0 0\nmany first-layer pre-activations fall below zero, so ReLU turns [8] K. He, X. Zhang, S. Ren, and J.",
+      "size": 460,
+      "sentences": 5
+    },
+    {
+      "id": 205,
+      "content": "many first-layer pre-activations fall below zero, so ReLU turns [8] K. He, X. Zhang, S. Ren, and J. Sun, “Delving deep into rectifiers:\nSurpassing human-level performance on imagenet classification,” in\nthose units off and gradients weaken. When α is very large,\n0 ProceedingsoftheIEEEinternationalconferenceoncomputervision,\npre-activations stay strongly positive, so ReLU behaves nearly 2015,pp.1026–1034. linearly, reducing the model’s nonlinearity. Hence, selecting a [9] D.-A.",
+      "size": 481,
+      "sentences": 5
+    },
+    {
+      "id": 206,
+      "content": "nearly 2015,pp.1026–1034. linearly, reducing the model’s nonlinearity. Hence, selecting a [9] D.-A. Clevert, T. Unterthiner, and S. Hochreiter, “Fast and accurate\ndeepnetworklearningbyexponentiallinearunits(elus),”arXivpreprint\nmoderate α (here, α =2) is critical for stable and accurate\n0 0 arXiv:1511.07289,2015.\ntraining on a deep ReLU network.",
+      "size": 347,
+      "sentences": 4
+    },
+    {
+      "id": 207,
+      "content": "=2) is critical for stable and accurate\n0 0 arXiv:1511.07289,2015.\ntraining on a deep ReLU network. [10] K.He,X.Zhang,S.Ren,andJ.Sun,“Deepresiduallearningforimage\nrecognition,”inProceedingsoftheIEEEconferenceoncomputervision\nandpatternrecognition,2016,pp.770–778. VII. CONCLUSION [11] S.IoffeandC.Szegedy,“Batchnormalization:Acceleratingdeepnetwork\ntrainingbyreducinginternalcovariateshift,”inInternationalconference\nThis paper provided a weight initialization for deep ReLU\nonmachinelearning.",
+      "size": 493,
+      "sentences": 4
+    },
+    {
+      "id": 208,
+      "content": "nternationalconference\nThis paper provided a weight initialization for deep ReLU\nonmachinelearning. pmlr,2015,pp.448–456. networks by formulating and solving an optimization problem [12] J.Pennington,S.Schoenholz,andS.Ganguli,“Resurrectingthesigmoid\non the Stiefel manifold. Unlike conventional approaches such in deep learning through dynamical isometry: theory and practice,”\nAdvancesinneuralinformationprocessingsystems,vol.30,2017.",
+      "size": 435,
+      "sentences": 4
+    },
+    {
+      "id": 209,
+      "content": "dynamical isometry: theory and practice,”\nAdvancesinneuralinformationprocessingsystems,vol.30,2017. as Xavier, He, and orthogonal initialization, the proposed\n[13] A.M.Saxe,J.L.McClelland,andS.Ganguli,“Exactsolutionstothe\nmethod simultaneously preserves semi-orthogonality. It max- nonlineardynamicsoflearningindeeplinearneuralnetworks,”arXiv\nimizes alignment with the all-ones vector, thereby directly preprintarXiv:1312.6120,2013.",
+      "size": 432,
+      "sentences": 3
+    },
+    {
+      "id": 210,
+      "content": "ks,”arXiv\nimizes alignment with the all-ones vector, thereby directly preprintarXiv:1312.6120,2013. [14] H.Lee,Y.Kim,S.Y.Yang,andH.Choi,“Improvedweightinitialization\nregulating pre-activation statistics. We derived closed-form\nfordeepandnarrowfeedforwardneuralnetwork,”NeuralNetworks,vol. characterizationsoftheoptimalsolutionset,developedefficient 176,p.106362,2024.",
+      "size": 367,
+      "sentences": 4
+    },
+    {
+      "id": 211,
+      "content": "”NeuralNetworks,vol. characterizationsoftheoptimalsolutionset,developedefficient 176,p.106362,2024. sampling algorithms, and established theoretical guarantees [15] Y.LeCun,L.Bottou,Y.Bengio,andP.Haffner,“Gradient-basedlearning\non variance preservation, mean calibration, and asymptotic applied to document recognition,” Proceedings of the IEEE, vol. 86,\nno.11,pp.2278–2324,1998. distributional behavior.",
+      "size": 404,
+      "sentences": 5
+    },
+    {
+      "id": 212,
+      "content": "t recognition,” Proceedings of the IEEE, vol. 86,\nno.11,pp.2278–2324,1998. distributional behavior. [16] Y. Bengio, P. Lamblin, D. Popovici, and H. Larochelle, “Greedy\nTheoretical analysis demonstrated that the proposed initial- layer-wisetrainingofdeepnetworks,”Advancesinneuralinformation\nization systematically alleviates critical early-stage training processingsystems,vol.19,2006.",
+      "size": 385,
+      "sentences": 4
+    },
+    {
+      "id": 213,
+      "content": "tion\nization systematically alleviates critical early-stage training processingsystems,vol.19,2006. [17] D. E. Rumelhart, G. E. Hinton, and R. J. Williams, “Learning repre-\nissues—most notably the dying ReLU phenomenon, variance\nsentationsbyback-propagatingerrors,”nature,vol.323,no.6088,pp. decay, and gradient vanishing—by promoting stable signal and 533–536,1986. gradient propagation across layers.",
+      "size": 402,
+      "sentences": 4
+    },
+    {
+      "id": 214,
+      "content": "gradient vanishing—by promoting stable signal and 533–536,1986. gradient propagation across layers. Empirical validation con- [18] Y. LeCun, B. Boser, J. S. Denker, D. Henderson, R. E. Howard,\nW.Hubbard,andL.D.Jackel,“Backpropagationappliedtohandwritten\nfirmed these advantages on MNIST, Fashion-MNIST, tabular\nzipcoderecognition,”Neuralcomputation,vol.1,no.4,pp.541–551,\nclassification/regression tasks, and few-shot learning scenarios. 1989.",
+      "size": 443,
+      "sentences": 4
+    },
+    {
+      "id": 215,
+      "content": "tion,vol.1,no.4,pp.541–551,\nclassification/regression tasks, and few-shot learning scenarios. 1989. The method consistently outperformed existing initialization [19] L.Lu,Y.Shin,Y.Su,andG.E.Karniadakis,“Dyingreluandinitializa-\ntion:Theoryandnumericalexamples,”arXivpreprintarXiv:1903.06733,\nschemes across depths of up to 100 layers and showed\n2019.\nrobustness across the ReLU family of activation functions, [20] H.wooLee,H.Choi,andH.Kim,“Robustweightinitializationfortanh\nthereby establishing its broad applicability.",
+      "size": 519,
+      "sentences": 3
+    },
+    {
+      "id": 216,
+      "content": "ee,H.Choi,andH.Kim,“Robustweightinitializationfortanh\nthereby establishing its broad applicability. neuralnetworkswithfixedpointanalysis,”inTheThirteenthInternational\nConferenceonLearningRepresentations,ICLR2025,2025. Taken together, these results highlight the importance of\n[21] M. Skorski, A. Temperoni, and M. Theobald, “Revisiting weight\ngeometrically informed initialization in the design of deep initializationofdeepneuralnetworks,”inProceedingsofACML,2021.",
+      "size": 464,
+      "sentences": 3
+    },
+    {
+      "id": 217,
+      "content": "initialization in the design of deep initializationofdeepneuralnetworks,”inProceedingsofACML,2021. ===  16 ===\n16\n[22] W. Hu, L. Xiao, and J. Pennington, “Provable benefit of orthogonal\ninitialization in optimizing deep linearnetworks,” in 8th International\nConferenceonLearningRepresentations,ICLR2020,2020. [23] L. McInnes, J. Healy, and J. Melville, “Umap: Uniform manifold\napproximationandprojectionfordimensionreduction,”arXivpreprint\narXiv:1802.03426,2018.",
+      "size": 462,
+      "sentences": 3
+    },
+    {
+      "id": 218,
+      "content": "form manifold\napproximationandprojectionfordimensionreduction,”arXivpreprint\narXiv:1802.03426,2018. [24] G. Peyre´, M. Cuturi et al., “Computational optimal transport: With\napplications to data science,” Foundations and Trends® in Machine\nLearning,vol.11,no.5-6,pp.355–607,2019. [25] R.A.HornandC.R.Johnson,Matrixanalysis. Cambridgeuniversity\npress,2012. [26] F. Mezzadri, “How to generate random matrices from the classical\ncompactgroups,”arXivpreprintmath-ph/0609050,2006.",
+      "size": 474,
+      "sentences": 5
+    },
+    {
+      "id": 219,
+      "content": "ow to generate random matrices from the classical\ncompactgroups,”arXivpreprintmath-ph/0609050,2006. [27] N.J.Higham,Accuracyandstabilityofnumericalalgorithms. SIAM,\n2002. [28] G.YangandS.Schoenholz,“Meanfieldresidualnetworks:Ontheedge\nofchaos,”Advancesinneuralinformationprocessingsystems,vol.30,\n2017. [29] M.J.Blanca,J.Arnau,D.Lo´pez-Montiel,R.Bono,andR.Bendayan,\n“Skewnessandkurtosisinrealdatasamples,”Methodology,2013.",
+      "size": 422,
+      "sentences": 5
+    },
+    {
+      "id": 220,
+      "content": "nau,D.Lo´pez-Montiel,R.Bono,andR.Bendayan,\n“Skewnessandkurtosisinrealdatasamples,”Methodology,2013. [30] J.RaymaekersandP.J.Rousseeuw,“Transformingvariablestocentral\nnormality,”MachineLearning,vol.113,no.8,pp.4953–4975,2024. [31] J.A.Tropp,“Acomparisonprincipleforfunctionsofauniformlyrandom\nsubspace,”ProbabilityTheoryandRelatedFields,vol.153,no.3,pp. 759–769,2012. [32] T.Jiang,“Maximaofentriesofhaardistributedmatrices,”Probability\nTheoryandRelatedFields,vol.131,no.1,pp.121–144,2005.",
+      "size": 487,
+      "sentences": 5
+    },
+    {
+      "id": 221,
+      "content": "fentriesofhaardistributedmatrices,”Probability\nTheoryandRelatedFields,vol.131,no.1,pp.121–144,2005. [33] M.Raicˇ,“Amultivariateberry–esseentheoremwithexplicitconstants,”\nBernoulli,vol.25,no.4A,pp.2824–2853,2019. [34] A.W.VanderVaart,Asymptoticstatistics. Cambridgeuniversitypress,\n2000,vol.3. [35] S.S.Schoenholz,J.Gilmer,S.Ganguli,andJ.Sohl-Dickstein,“Deep\ninformationpropagation,”arXivpreprintarXiv:1611.01232,2016.",
+      "size": 417,
+      "sentences": 5
+    },
+    {
+      "id": 222,
+      "content": "mer,S.Ganguli,andJ.Sohl-Dickstein,“Deep\ninformationpropagation,”arXivpreprintarXiv:1611.01232,2016. [36] M.Beauchamp,“Onnumericalcomputationforthedistributionofthe\nconvolutionofNindependentrectifiedGaussianvariables,”Journalde\nlasocie´te´ franc¸aisedestatistique,vol.159,no.1,pp.88–111,2018. [37] O. Wright, Y. Nakahira, and J. M. Moura, “An analytic solution to\ncovariancepropagationinneuralnetworks,”inInternationalConference\nonArtificialIntelligenceandStatistics. PMLR,2024,pp.4087–4095.",
+      "size": 490,
+      "sentences": 4
+    },
+    {
+      "id": 223,
+      "content": "lnetworks,”inInternationalConference\nonArtificialIntelligenceandStatistics. PMLR,2024,pp.4087–4095. [38] B. Hanin and D. Rolnick, “How to start training: The effect of\ninitializationandarchitecture,”inNeurIPS,2018. [39] G.Yang,D.Yu,C.Zhu,andS.Hayou,“TensorprogramsVI:Feature\nlearningininfinitedepthneuralnetworks,”inTheTwelfthInternational\nConference on Learning Representations, 2024. [Online].",
+      "size": 395,
+      "sentences": 5
+    },
+    {
+      "id": 224,
+      "content": "thneuralnetworks,”inTheTwelfthInternational\nConference on Learning Representations, 2024. [Online]. Available:\nhttps://openreview.net/forum?id=17pVDnpwwl\n[40] G. Klambauer, T. Unterthiner, A. Mayr, and S. Hochreiter, “Self-\nnormalizingneuralnetworks,”Advancesinneuralinformationprocessing\nsystems,vol.30,2017. [41] B.BeckerandR.Kohavi,“Adult,”https://archive.ics.uci.edu/ml/datasets/\nadult,1996,UCIMachineLearningRepository.",
+      "size": 424,
+      "sentences": 4
+    },
+    {
+      "id": 225,
+      "content": "dR.Kohavi,“Adult,”https://archive.ics.uci.edu/ml/datasets/\nadult,1996,UCIMachineLearningRepository. [42] W.Wolberg,O.Mangasarian,N.Street,andW.Street,“Breastcancer\nwisconsin (diagnostic),” https://archive.ics.uci.edu/ml/datasets/breast+\ncancer+wisconsin+(diagnostic),1993,UCIMachineLearningRepository. [43] J.W.Smith,J.E.Everhart,W.C.Dickson,W.C.Knowler,andR.S.",
+      "size": 361,
+      "sentences": 3
+    },
+    {
+      "id": 226,
+      "content": "tic),1993,UCIMachineLearningRepository. [43] J.W.Smith,J.E.Everhart,W.C.Dickson,W.C.Knowler,andR.S. Johannes,“Usingtheadaplearningalgorithmtoforecasttheonsetof\ndiabetesmellitus,”inProceedingsoftheAnnualSymposiumonComputer\nApplicationinMedicalCare,1988,p.261. [44] V.G.Sigillito,S.P.Wing,L.V.Hutton,andK.B.Baker,“Classification\nof radar returns from the ionosphere using neural networks,” Johns\nHopkinsAPLTechnicalDigest,vol.10,no.3,pp.262–266,1989.",
+      "size": 448,
+      "sentences": 4
+    },
+    {
+      "id": 227,
+      "content": "the ionosphere using neural networks,” Johns\nHopkinsAPLTechnicalDigest,vol.10,no.3,pp.262–266,1989. [45] S. Aeberhard and M. Forina, “Wine,” https://archive.ics.uci.edu/ml/\ndatasets/wine,1992,UCIMachineLearningRepository. [46] B. Efron, T. Hastie, I. Johnstone, and R. Tibshirani, “Least angle\nregression,”TheAnnalsofStatistics,vol.32,no.2,pp.407–499,2004.",
+      "size": 356,
+      "sentences": 3
+    }
+  ]
+}

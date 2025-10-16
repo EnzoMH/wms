@@ -1,0 +1,1587 @@
+{
+  "source": "ArXiv",
+  "filename": "117_AI_ML_Optimal_Scaling_Needs_Optimal_Norm.pdf",
+  "domain": "AI",
+  "total_chars": 107653,
+  "total_chunks": 263,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\nPreprint. Underreview. OPTIMAL SCALING NEEDS OPTIMAL NORM\nOlegFilatov,JiangtaoWang,JanEbert,StefanKesselheim\nJu¨lichSupercomputingCentre\nForschungszentrumJu¨lich\n{o.filatov,jian.wang,ja.ebert,s.kesselheim}@fz-juelich.de\nABSTRACT\nDespite recent progress in optimal hyperparameter transfer under model and\ndatasetscaling,nounifyingexplanatoryprinciplehasbeenestablished.",
+      "size": 379,
+      "sentences": 3
+    },
+    {
+      "id": 2,
+      "content": "parameter transfer under model and\ndatasetscaling,nounifyingexplanatoryprinciplehasbeenestablished. Usingthe\nScionoptimizer, wediscoverthatjoint optimalscalingacrossmodelanddataset\nsizes is governed by a single invariant: the operator norm of the output layer. Acrossmodelswithupto1.3Bparameterstrainedonupto138Btokens,theopti-\nmallearningrate/batchsizepair(η∗,B∗)consistentlyhasthesameoperatornorm\nvalue—aphenomenonwetermnormtransfer.",
+      "size": 435,
+      "sentences": 3
+    },
+    {
+      "id": 3,
+      "content": "ingrate/batchsizepair(η∗,B∗)consistentlyhasthesameoperatornorm\nvalue—aphenomenonwetermnormtransfer. Thisconstantnormconditionis\nnecessarybutnotsufficient: whileforeachdatasetsize,multiple(η,B)reachthe\noptimalnorm,onlyaunique(η∗,B∗)achievesthebestloss. Asasufficientcon-\ndition,weprovidethefirstmeasurementof(η∗,B∗)scalingwithdatasetsizefor\nScion,andfindthatthescalingrulesareconsistentwiththoseoftheAdamopti-\nmizer.",
+      "size": 415,
+      "sentences": 3
+    },
+    {
+      "id": 4,
+      "content": "alingwithdatasetsizefor\nScion,andfindthatthescalingrulesareconsistentwiththoseoftheAdamopti-\nmizer. Tuning per-layer-group learning rates also improves model performance,\nwith the output layer being the most sensitive and hidden layers benefiting from\nlowerlearningrates. Weprovidepracticalinsightsonnorm-guidedoptimalscal-\ning and release our Distributed Scion (Disco) implementation with logs from\novertwothousandrunstosupportresearchonLLMtrainingdynamicsatscale.",
+      "size": 465,
+      "sentences": 3
+    },
+    {
+      "id": 5,
+      "content": "co) implementation with logs from\novertwothousandrunstosupportresearchonLLMtrainingdynamicsatscale. SDLAML/disco sdlaml-llm/norm-transfer\n1 INTRODUCTION\nRecentadvancementsinthedomainofLargeLanguageModels(LLMs)havebeenlargelydrivenby\nthe principle of scale. Increasing model size and training dataset volume consistently yields more\ncapablesystems(Hoffmannetal.,2022;Kaplanetal.,2020),yetatanincreasingcomputationalcost.",
+      "size": 419,
+      "sentences": 3
+    },
+    {
+      "id": 6,
+      "content": "yields more\ncapablesystems(Hoffmannetal.,2022;Kaplanetal.,2020),yetatanincreasingcomputationalcost. Consequently,achievingoptimalscaling—atrainingregimewherehyperparametersareoptimally\nconfiguredwithgrowingscale—becomesanecessarysteptopushthemodelfrontierfurther. To address the challenge of hyperparameter tuning, several powerful yet disparate methods have\nemerged.",
+      "size": 367,
+      "sentences": 3
+    },
+    {
+      "id": 7,
+      "content": "ddress the challenge of hyperparameter tuning, several powerful yet disparate methods have\nemerged. Theoretically grounded frameworks like Maximum Update Parametrization (µP) (Yang\netal.,2022)helptransferoptimalhyperparameterswithmodelscaling. Meanwhile,empiricalscal-\ninglaws(Lietal.,2025)providerulesofthumbforsettinghyperparametersoptimallywhentheory\nisabsent,suchaswithdatasetsizescaling.",
+      "size": 392,
+      "sentences": 3
+    },
+    {
+      "id": 8,
+      "content": "viderulesofthumbforsettinghyperparametersoptimallywhentheory\nisabsent,suchaswithdatasetsizescaling. Yet,theseapproachesoftenfeellikepiecesofapuzzle,\nwithaunifyingprincipleforscalingacrossbothmodelanddatasetdimensionsremainingelusive.",
+      "size": 233,
+      "sentences": 2
+    },
+    {
+      "id": 9,
+      "content": "ecesofapuzzle,\nwithaunifyingprincipleforscalingacrossbothmodelanddatasetdimensionsremainingelusive. Recently, an emerging paradigm of norm-based optimization (Bernstein & Newhouse, 2024a;\nPethicketal.,2025a)hasofferedanewlensthroughwhichtoviewtrainingdynamics: itreframes\noptimizationasaprocessthatcontrolstheoperatornormsofthemodel’sweightmatricesandgra-\ndientupdates. Thisperspectiveenablesmonitoringofmodelpropertiesduringtraining,potentially\nrevealinginsightsdeeperthanthelosscurvealone.",
+      "size": 491,
+      "sentences": 3
+    },
+    {
+      "id": 10,
+      "content": "monitoringofmodelpropertiesduringtraining,potentially\nrevealinginsightsdeeperthanthelosscurvealone. Thisraisesanaturalquestion: canthenorm-\nbasedperspectiveshedlightonhowtounifyoptimalmodelanddatasetsizescaling? Inthiswork, wearguethattheanswerisyes. Bytrackingandanalyzinglayernormsacrossthou-\nsandsofexperiments,wehavemadeseveraldiscoveries,summarizedbelow:\n• Unifying invariant for optimal scaling.",
+      "size": 401,
+      "sentences": 4
+    },
+    {
+      "id": 11,
+      "content": "experiments,wehavemadeseveraldiscoveries,summarizedbelow:\n• Unifying invariant for optimal scaling. The operator norm of the output layer\n∥W ∥ (see Definition 2) for the optimal learning rate (η) and batch size (B)\nout RMS→∞\nconfiguration has the same value — in other words, is invariant or “transfers” — with\n1\n5202\ntcO\n4\n]GL.sc[\n1v17830.0152:viXra\n===  2 ===\nPreprint. Underreview. bothmodelscaling(inwidthanddepth)anddatasetscaling(Fig.2).",
+      "size": 443,
+      "sentences": 4
+    },
+    {
+      "id": 12,
+      "content": ":viXra\n===  2 ===\nPreprint. Underreview. bothmodelscaling(inwidthanddepth)anddatasetscaling(Fig.2). Werefertothisphe-\nnomenonasnormtransfer,anditprovidesanecessaryconditionforoptimality. However,\nitisnotsufficient, asmultiplenon-optimal(η,B)pairscanreachthesameoptimalnorm\nvalue(Fig.3a). • ScalingrulesfortheScionoptimizer.",
+      "size": 323,
+      "sentences": 6
+    },
+    {
+      "id": 13,
+      "content": "enon-optimal(η,B)pairscanreachthesameoptimalnorm\nvalue(Fig.3a). • ScalingrulesfortheScionoptimizer. Asasufficientconditionforoptimality,weempiri-\ncallymeasuretherelationshipbetweenoptimallearningrateη∗,batchsizeB,anddataset\nsize D. The result is η∗(B,D) ∝ B0.62 ·D−0.56, matching the known square-root scal-\ning rules for the Adam optimizer. We further find that the optimal batch size scales as\nB∗(D) ∝ D0.45±0.07, leading to η∗(D) ∝ D−0.28±0.07.",
+      "size": 447,
+      "sentences": 4
+    },
+    {
+      "id": 14,
+      "content": "ther find that the optimal batch size scales as\nB∗(D) ∝ D0.45±0.07, leading to η∗(D) ∝ D−0.28±0.07. For fixed D, one can trade off\n√\nη∗ ↔ B∗ via the η ∝ B rule within a low-sensitivity region around the optimal norm\n(Fig.3b). Whilethemodelperformanceisinsensitivetothischange,thisfreedomcanbe\nofcomputationaladvantage,allowingfortrainingwithlargerbatchsizes. • Optimal per-layer-group learning rate. Performance can be improved by up to 6% in\nrelative loss through additional per-layer-group tuning.",
+      "size": 499,
+      "sentences": 5
+    },
+    {
+      "id": 15,
+      "content": "Performance can be improved by up to 6% in\nrelative loss through additional per-layer-group tuning. We observe that a learning rate\nratioη : η : η = 1 : 1/8 : 1isconsistentlyoptimalacrossdatasetsizesand\ninput hidden output\nbatch sizes (Fig. 4). We also find the uniform 1 : 1 : 1 layout to be close to the optimal\none. Amonglayergroups,theoutputlayeristhemostsensitivetotuning,withsensitivity\ndecreasinggraduallyforthehiddenlayersandthentheinputlayer. • Distributed Scion/Muon and experimental logs.",
+      "size": 499,
+      "sentences": 6
+    },
+    {
+      "id": 16,
+      "content": "inggraduallyforthehiddenlayersandthentheinputlayer. • Distributed Scion/Muon and experimental logs. To facilitate further research on\nlarge-scale training dynamics, we release Disco1, a distributed implementation of the\nScion/Muonoptimizercompatiblewithmodernparallelizationstrategies,alongwithnorm\nlogs2fromovertwothousandtrainingrunsconductedforthisstudy. 2 METHODOLOGY\n2.1 BACKGROUND&TERMINOLOGY\nRecently, a fundamental shift in the field of optimal scaling occurred with the work of Yang et al.",
+      "size": 498,
+      "sentences": 4
+    },
+    {
+      "id": 17,
+      "content": "Recently, a fundamental shift in the field of optimal scaling occurred with the work of Yang et al. (2024). Itchangedthefocusfrommodelparametrizationstowardsthenormperspectivebyshowing\nthatMaximumUpdateParametrization(µP)(Yangetal.,2022)canbederivedfromamorefunda-\nmentalprinciple: enforcingaspectralconditiononthemodelweightsandtheirupdatesduringthe\ntraining. Webrieflyexplaintheideabehindeachofthembelow.",
+      "size": 406,
+      "sentences": 4
+    },
+    {
+      "id": 18,
+      "content": "ononthemodelweightsandtheirupdatesduringthe\ntraining. Webrieflyexplaintheideabehindeachofthembelow. µP introducestheoreticallygroundedscalingrulesforhyperparametersasafunctionofmodelwidth\nin order to ensure “maximal” feature learning in the infinite width limit. This way, the model is\nguaranteed to learn meaningful features while remaining stable as one scales up its size.",
+      "size": 375,
+      "sentences": 4
+    },
+    {
+      "id": 19,
+      "content": "model is\nguaranteed to learn meaningful features while remaining stable as one scales up its size. As an\nimportant by-product, it was found that models with different widths, once parameterized within\nµP,allsharethesameoptimalhyperparameters(e.g.learningrate)—thereforeallowingforwhat\nisknownaszero-shothyperparametertransfer.",
+      "size": 326,
+      "sentences": 2
+    },
+    {
+      "id": 20,
+      "content": "yperparameters(e.g.learningrate)—thereforeallowingforwhat\nisknownaszero-shothyperparametertransfer. Thispropertyhasbeenextensivelyusedforthepast\nyears to ensure optimal model scaling by tuning hyperparameters for a small (proxy) model, and\nthen effortlessly transferring them to a larger one (OpenAI et al., 2024; Gunter et al., 2024; Dey\netal.,2024;MetaAI,2025;Zuoetal.,2025). Inturn,thespectralconditionspecifiesboundsonthenormsofweightsandweightupdatesthatare\nnecessarytoensurefeaturelearning.",
+      "size": 496,
+      "sentences": 3
+    },
+    {
+      "id": 21,
+      "content": "onditionspecifiesboundsonthenormsofweightsandweightupdatesthatare\nnecessarytoensurefeaturelearning. Moreformally:\nDefinition 1 (Spectral condition).",
+      "size": 148,
+      "sentences": 2
+    },
+    {
+      "id": 22,
+      "content": "htupdatesthatare\nnecessarytoensurefeaturelearning. Moreformally:\nDefinition 1 (Spectral condition). Consider applying a gradient update ∆W ℓ ∈ Rdℓ out ×dℓ in to the\nℓthweightmatrixW ℓ ∈ Rdℓ out ×dℓ in foralayerℓ = 1,...,L. Thespectralnormsofthesematrices\nshouldsatisfy\n(cid:32)(cid:115) (cid:33) (cid:32)(cid:115) (cid:33)\ndℓ dℓ\n∥W ∥ =Θ out and ∥∆W ∥ =Θ out , (1)\nℓ ∗ dℓ ℓ ∗ dℓ\nin in\nwhere ∥W∥ is the spectral norm, also equal to the largest singular value of W, and ∥x∥ =\n√ ∗ RMS\n∥x∥ / d. ThesymbolΘisemployedfollowingthe”Big-O”notation,indicatingscalingbehaviour\n2\n1https://github.com/SDLAML/disco\n2https://wandb.ai/sdlaml-llm/norm-transfer/reports/\nNorm-Transfer--VmlldzoxNDYwNjE2Mw\n2\n===  3 ===\nPreprint.",
+      "size": 708,
+      "sentences": 3
+    },
+    {
+      "id": 23,
+      "content": "wandb.ai/sdlaml-llm/norm-transfer/reports/\nNorm-Transfer--VmlldzoxNDYwNjE2Mw\n2\n===  3 ===\nPreprint. Underreview. (inthiscase,“constant”3)w.r.t. infinitewidthlimitd→+∞. IfconditionsinDefinition1aremet,\nthezero-shothyperparametertransferisguaranteedandthemodelisbeingtrainedintheµP regime. LetusrewriteDefinition1inamore“natural”wayas:\n∥W ∥ =Θ(1) and ∥∆W ∥ =Θ(1), (2)\nℓ RMS→RMS ℓ RMS→RMS\nwherewefollowLargeetal. (2024)andintroducethecoreconceptofthiswork:\nDefinition 2 (Induced operator norm4).",
+      "size": 492,
+      "sentences": 7
+    },
+    {
+      "id": 24,
+      "content": "followLargeetal. (2024)andintroducethecoreconceptofthiswork:\nDefinition 2 (Induced operator norm4). Given a matrix W ∈ Rdout×din and two normed vector\nspaces(Rdin,∥·∥\nα\n)and(Rdout,∥·∥\nβ\n),the“αtoβ”inducedoperatornormisgivenby:\n∥Wx∥\n∥W∥ = max β. (3)\nα→β x∈Rdin ∥x∥ α\nTheoperatornormswearemostinterestedinwillbe:\n∥W∥ :=max ∥col (W)∥ , (4)\n1→RMS j j RMS\n(cid:112)\n∥W∥ := d /d ∥W∥ , (5)\nRMS→RMS in out ∗\n∥W∥ :=max d ∥row (W)∥ , (6)\nRMS→∞ i in i RMS\nwhererow (.",
+      "size": 456,
+      "sentences": 4
+    },
+    {
+      "id": 25,
+      "content": "12)\n∥W∥ := d /d ∥W∥ , (5)\nRMS→RMS in out ∗\n∥W∥ :=max d ∥row (W)∥ , (6)\nRMS→∞ i in i RMS\nwhererow (. )andcol (.)denotethei-throwandj-thcolumnofamatrix. Inordertocontrolthe\ni j\noperator norms, Bernstein & Newhouse (2024a) derived duality maps, i.e. transformation rules of\nthegradientsinducedbyagivennorm. Applyingthesetransformationsnotonlykeepsthegradient\nupdateswithintherequiredbound(e.g.Eq.2),butalsoensuresthesteepestdescentunderthechosen\nnorm(Bernstein&Newhouse,2024b).",
+      "size": 474,
+      "sentences": 5
+    },
+    {
+      "id": 26,
+      "content": "uiredbound(e.g.Eq.2),butalsoensuresthesteepestdescentunderthechosen\nnorm(Bernstein&Newhouse,2024b). Forthenormsin Eq.4–6,thecorrespondingdualitymaps\nforthegradientGwithsingularvaluedecomposition(SVD)G=UΣV⊤are:\ncol (G)\n∥.∥ : col (G)(cid:55)→ j (7)\n1→RMS j ∥col (G)∥\nj RMS\n(cid:113)\n∥.∥ RMS→RMS : G(cid:55)→ d d o i u n t ×UV⊤ (8)\n1 row (G)\n∥.∥ : row (G)(cid:55)→ i (9)\nRMS→∞ i d ∥row (G)∥\nin i RMS\nwherethe∥.∥ normwasaddedbyPethicketal.",
+      "size": 435,
+      "sentences": 2
+    },
+    {
+      "id": 27,
+      "content": "G)\n∥.∥ : row (G)(cid:55)→ i (9)\nRMS→∞ i d ∥row (G)∥\nin i RMS\nwherethe∥.∥ normwasaddedbyPethicketal. (2025a).Moreover,theywrappedthenorm-\nRMS→∞\nbasedapproachoutlinedaboveintoaScionoptimizer. Within Scion, one has to assign an operator norm to each layer, e.g. out of those in Eq. 4–6. The\ncorresponding duality maps determine how raw gradients should be transformed for those layers\nbefore the optimizer updates the weights.",
+      "size": 423,
+      "sentences": 6
+    },
+    {
+      "id": 28,
+      "content": "how raw gradients should be transformed for those layers\nbefore the optimizer updates the weights. For simplicity, layers are typically grouped as input,\nhidden, and output, and norms are assigned to these groups. Importantly, model weights are not\nexplicitlytransformedwithinScion;onlytheweightupdatesare,viadualitymaps.",
+      "size": 321,
+      "sentences": 3
+    },
+    {
+      "id": 29,
+      "content": "tly, model weights are not\nexplicitlytransformedwithinScion;onlytheweightupdatesare,viadualitymaps. Oneprominentexampleofthenorm-basedviewonmodeloptimizationistheMuonoptimizer(Jor-\ndanetal.,2024),whichprovedtooutperformAdamatscale(Liuetal.,2025;Wangetal.,2025)and\nshowedgreatperformanceformodelsupto1Tparameters(Teametal.,2025). Muoncanbeviewed\nasaspecificinstantiationofScion: itoptimizeshiddenlayersunder∥.∥ assumption,and\nRMS→RMS\nuses Adam for the remaining parameters.",
+      "size": 472,
+      "sentences": 3
+    },
+    {
+      "id": 30,
+      "content": "ion: itoptimizeshiddenlayersunder∥.∥ assumption,and\nRMS→RMS\nuses Adam for the remaining parameters. However, only in the case with no exponential moving\naverage does Adam coincide with the steepest descent in “max-of-max norm” (Bernstein & New-\nhouse,2024b). Sincethisisuncommoninpractice,no“natural”normapplies,makingMuonhard\nto analyze through the norm lens.",
+      "size": 360,
+      "sentences": 3
+    },
+    {
+      "id": 31,
+      "content": "ncethisisuncommoninpractice,no“natural”normapplies,makingMuonhard\nto analyze through the norm lens. By contrast, Scion naturally incorporates the norm perspective,\nupdatingeverylayerwithanassigned,layer-specificnorm,makingiteasytointerpret.",
+      "size": 240,
+      "sentences": 2
+    },
+    {
+      "id": 32,
+      "content": "the norm perspective,\nupdatingeverylayerwithanassigned,layer-specificnorm,makingiteasytointerpret. In practice, using norm-based optimizers as of now looks like a free lunch: they require only one\nmomentumbuffer5(comparedtotwoforAdam),resultinbetterperformancewithalmostnocompu-\ntationaloverheadinlarge-scaledistributedscenarios,andbydesignhavezero-shothyperparameter\ntransferbuiltin.",
+      "size": 384,
+      "sentences": 2
+    },
+    {
+      "id": 33,
+      "content": "aloverheadinlarge-scaledistributedscenarios,andbydesignhavezero-shothyperparameter\ntransferbuiltin. Moreover, thenorm-basedapproachprovidesmoreinsightsintothedynamicsof\nthemodeltraining:optimizer-assignednormscanbeusednaturallytomonitorthetrainingdynamics\nonaper-layerbasis. ThisobservationleadsustodiscoveriesthatwedescribeinSec.3. 3Formally,f(x)=Θ(g(x))ifthereareconstantsA,B >0suchthatA·g(x)≤f(x)≤B·g(x). 4Inthefollowingwewillomit“inducedoperator”forsimplicity.",
+      "size": 464,
+      "sentences": 5
+    },
+    {
+      "id": 34,
+      "content": "constantsA,B >0suchthatA·g(x)≤f(x)≤B·g(x). 4Inthefollowingwewillomit“inducedoperator”forsimplicity. 5Orevennone,seeScionLight(Pethicketal.,2025a). 3\n===  4 ===\nPreprint. Underreview. 2.2 TRAININGSETUP\nIn all experiments, we use the Llama 3 architecture (Grattafiori et al., 2024) and torchtitan\ntrainingframework(Liangetal.,2025). Mostoftheexperimentsareperformedonthesmall-scale\nproxymodelwithatotalsizeof69Mtrainableparameters,includinginput/outputembeddinglayers.",
+      "size": 466,
+      "sentences": 7
+    },
+    {
+      "id": 35,
+      "content": "esmall-scale\nproxymodelwithatotalsizeof69Mtrainableparameters,includinginput/outputembeddinglayers. ForadditionalablationsinSec.3.2,wescaleupthemodelupto×12inwidth(to1.3Bparameters)\nandupto×32indepth(to168M).Notably,weemployanorm-everywhereapproach,inspired\nby the concept of well-normedness in Large et al. (2024) and the recent line of work (Loshchilov\net al., 2025; Kim et al., 2025).",
+      "size": 387,
+      "sentences": 3
+    },
+    {
+      "id": 36,
+      "content": "ess in Large et al. (2024) and the recent line of work (Loshchilov\net al., 2025; Kim et al., 2025). Effectively, we ensure that the input x to every Linear layer is\nnormalized to ||x|| = 1 by a preceding RMSNorm layer without learnable parameters. More\nRMS\ndetailsonmodelconfigurationsareprovidedinAppendix A.2andAppendixA.3. As optimizer, we use Scion without weight decay (i.e.",
+      "size": 379,
+      "sentences": 5
+    },
+    {
+      "id": 37,
+      "content": "tionsareprovidedinAppendix A.2andAppendixA.3. As optimizer, we use Scion without weight decay (i.e. its unconstrained version) (Pethick et al.,\n2025a) without momentum and with the norm assumptions ∥.∥ ⇒ ∥.∥ ⇒\n1→RMS RMS→RMS\n∥.∥ for input ⇒ hidden ⇒ output layers. Furthermore, we developed its distributed ver-\nRMS→∞\nsion, which natively integrates into torchtitan, supports FSDP/DDP/TP/EP/CP/PP strategies,\nand greatly speeds up the training at scale compared to the standard implementation.",
+      "size": 492,
+      "sentences": 4
+    },
+    {
+      "id": 38,
+      "content": "PP strategies,\nand greatly speeds up the training at scale compared to the standard implementation. We make it\nopenlyavailableandprovidemoredetailsinAppendixA.5. Forpretraining,weuseahigh-qualitypartitionoftheNemotron-CCdataset(Suetal.,2025),Llama\n3tokenizer(Grattafiorietal.,2024)withavocabularysizeof128,256(afterpadding)andacontext\nwindow of 4096. All the models are pretrained with the causal language modelling task.",
+      "size": 421,
+      "sentences": 4
+    },
+    {
+      "id": 39,
+      "content": ")andacontext\nwindow of 4096. All the models are pretrained with the causal language modelling task. Unless\nstatedotherwise,aconstantlearningrateschedulewithoutwarmupandwithoutdecayisused. This\nallows us, for a given set of hyperparameters, to perform a single long run and evaluate progres-\nsivelylargerdatasetsizes,ratherthanconductingseveralrunsforeachdatasetindividually,thereby\nsubstantiallyreducingcomputationalcosts(Huetal.,2024;Ha¨geleetal.,2024).",
+      "size": 454,
+      "sentences": 4
+    },
+    {
+      "id": 40,
+      "content": "atasetindividually,thereby\nsubstantiallyreducingcomputationalcosts(Huetal.,2024;Ha¨geleetal.,2024). 2.3 OPTIMALNORMMEASUREMENT\nOurinitialintuitionwasthatforagivenmodelanddatascale, thereisalwayssomeoptimalnorm\nvalue, corresponding to some optimal hyperparameter choice.",
+      "size": 269,
+      "sentences": 2
+    },
+    {
+      "id": 41,
+      "content": "datascale, thereisalwayssomeoptimalnorm\nvalue, corresponding to some optimal hyperparameter choice. To establish this, we focus on the\noutput layer with the Scion-assigned ∥.∥ norm (hereafter referred to as output norm) as\nRMS→∞\nbeingthemostnaturallayertostudy.6 Thechoiceof∥.∥ normismotivatedbyBernstein&\nRMS→∞\nNewhouse(2024a)asmappingfroma“natural”continuousRMSnormsemanticsforhiddenmodel\nrepresentationsontoadiscretevocabulary,althoughwealsoablatethisinAppendixA.11.2.",
+      "size": 471,
+      "sentences": 2
+    },
+    {
+      "id": 42,
+      "content": "ticsforhiddenmodel\nrepresentationsontoadiscretevocabulary,althoughwealsoablatethisinAppendixA.11.2. Since\nbydefaultwedisablemomentumandanyregularization,weareonlyleftwithlearningrate(η)and\nbatchsize(B)ashyperparameterstotuneforoptimality.",
+      "size": 238,
+      "sentences": 2
+    },
+    {
+      "id": 43,
+      "content": "egularization,weareonlyleftwithlearningrate(η)and\nbatchsize(B)ashyperparameterstotuneforoptimality. To extract the optimal hyperparameter configuration and the corresponding optimal norm, we run\nan (η,B) grid search for a given model and a given pretraining dataset size (hereafter referred to\nas horizon D, measured in tokens), and evaluate the model performance with training loss (cross-\nentropy of the next token prediction).",
+      "size": 429,
+      "sentences": 2
+    },
+    {
+      "id": 44,
+      "content": "nd evaluate the model performance with training loss (cross-\nentropy of the next token prediction). Since we train in a non-repeating “infinite-data” regime,\ntraining loss faithfully reflects model performance and its generalization. First, we examine how\ntheoptimalnorm,associatedtoa(η∗,B∗)configurationoptimalforagivenhorizon,changesasthe\nhorizonincreases.Then,wefixthehorizonandscaleupthemodelinwidthanddepth,repeatingthe\nsameoptimalnormmeasurement.",
+      "size": 452,
+      "sentences": 3
+    },
+    {
+      "id": 45,
+      "content": "ases.Then,wefixthehorizonandscaleupthemodelinwidthanddepth,repeatingthe\nsameoptimalnormmeasurement. Thisway,westudybothmodelanddatasetscalingdirections. Practically, foreverybatchsizeweareinterestedin“marginalising”or“profiling”acrosslearning\nrates,i.e.pickingtheoptimaloneandthecorrespondingoutputnorm(seeAppendixA.2fordetails\non the grid and random seed variations).",
+      "size": 368,
+      "sentences": 3
+    },
+    {
+      "id": 46,
+      "content": "loneandthecorrespondingoutputnorm(seeAppendixA.2fordetails\non the grid and random seed variations). However, an empirically lowest-loss point across the\nlearning rate grid turned out to be a statistically noisy estimate; therefore, for each batch size, we\nperform a fit to the distribution of training loss vs. output norm across learning rates. Finally,\nwe extract the optimal norm value from the fitted curve and the corresponding learning rate from\nthe nearest data point to the fitted optimum.",
+      "size": 497,
+      "sentences": 3
+    },
+    {
+      "id": 47,
+      "content": "fitted curve and the corresponding learning rate from\nthe nearest data point to the fitted optimum. We provide more details on the fitting procedure in\nAppendixA.4. 6Theoutputlayerisinvarianttobothwidthanddepthscaling,itisthemostsensitivetolearningratetuning\n(Sec.3.4),anditcanbeviewedasalinearclassifieronthelearnedhiddenrepresentations.Theseconsiderations\nmakeusbelievethattheoutputlayerplaysa“representative”rolefortheentiremodel,thusmakingitadistinct\nlayertoanalyse. 4\n===  5 ===\nPreprint.",
+      "size": 493,
+      "sentences": 4
+    },
+    {
+      "id": 48,
+      "content": "a“representative”rolefortheentiremodel,thusmakingitadistinct\nlayertoanalyse. 4\n===  5 ===\nPreprint. Underreview. 3 RESULTS\n3.1 OUTPUTNORMDYNAMICS\nFirst, we describe how the output layer norm evolves depending on the hyperparameter settings. Fromlearningratescans, weobservethatindeedthereisanoptimalnormvalueforagivenbatch\nsizeandhorizon(Fig.1a).",
+      "size": 346,
+      "sentences": 5
+    },
+    {
+      "id": 49,
+      "content": "arningratescans, weobservethatindeedthereisanoptimalnormvalueforagivenbatch\nsizeandhorizon(Fig.1a). Furthermore,learningrateispositivelycorrelatedwiththeoutputnorm:\nthehigherthelearningrate,thehigherthenorm.SinceweuseanunconstrainedversionofScion,the\nnormsgenerallygrowwiththenumberofgradientsteps(Fig.1bandAppendixA.6). However,we\nnotethatnormvaluescanalsobeconstrainedduringtrainingwithweightdecay(seeAppendixA.9)\norwithvariousspectralclippingtechniques(Newhouseetal.,2025).",
+      "size": 476,
+      "sentences": 3
+    },
+    {
+      "id": 50,
+      "content": "rainingwithweightdecay(seeAppendixA.9)\norwithvariousspectralclippingtechniques(Newhouseetal.,2025). Intriguingly,thenormgrowth\nisnotlinearinlog-logscalebutpiecewiselinear:withtheslopeabruptlychangingforallbatchsizes\natthenormvalueof26−27 andthenat29−210,whereforthelatterthedynamicsentersthe“tur-\nbulence”region. Thisslopechangemayhavethesamenatureasarecentlyobservedphenomenon\nin the loss curve dynamics (Mircea et al., 2025).",
+      "size": 427,
+      "sentences": 3
+    },
+    {
+      "id": 51,
+      "content": "mayhavethesamenatureasarecentlyobservedphenomenon\nin the loss curve dynamics (Mircea et al., 2025). Last but not least, we observe that learning rate\ncontrols the “ offset” of norm curves, and batch size controls the “decoupling degree” of curves:\nwhileearlyintrainingthecurvesofsameηbutdifferentBareidentical,theslopechangeat26−27\nnormismorepronouncedforlargerbatchsizes. Interestingly,afterdecouplingthecurvesseemto\nconvergeagaintothesameslope,thatislowerthantheinitialone.",
+      "size": 475,
+      "sentences": 3
+    },
+    {
+      "id": 52,
+      "content": "erestingly,afterdecouplingthecurvesseemto\nconvergeagaintothesameslope,thatislowerthantheinitialone. 6.0\n5.5\n5.0\n4.5\n23 24 25 26 27 28 29 210\n||W out||RMS\nssoL\nniarT\nB=128 samples, D=233 tokens\n2\n0\n2\n4\n6\n8\n10\n)\n(2gol\n210\n28\n26\n24\n22\n102 103 104 105 106\nStep\n(a)\nSMR||tuoW||\nOutput norm vs step for different ( ,B)\n=7.8e-03, B=32\n=3.1e-02, B=32\n=1.2e-01, B=32\n=5.0e-01, B=32\n=7.8e-03, B=128\n=3.1e-02, B=128 =1.2e-01, B=128\n=5.0e-01, B=128 =7.8e-03, B=512\n=3.1e-02, B=512\n=1.2e-01, B=512\n=5.0e-01, B=512\n=7.8e-03, B=2048\n=3.1e-02, B=2048\n=1.2e-01, B=2048\n=5.0e-01, B=2048\n(b)\nFigure1: (a)Interplayoftrainingloss, outputlayernorm∥W ∥ andlearningrate.",
+      "size": 646,
+      "sentences": 2
+    },
+    {
+      "id": 53,
+      "content": "2048\n=5.0e-01, B=2048\n(b)\nFigure1: (a)Interplayoftrainingloss, outputlayernorm∥W ∥ andlearningrate. out RMS→∞\nResultsarefortheproxymodel(69Mparameters),batchsizeB = 128samplesandhorizonD =\n233 tokens. Points are colored by log (η) where η is the learning rate. Black dashed lines mark\n2\nthe optimal configuration with minimum training loss. (b) Growth of the output layer norm vs.\ngradientsteps.",
+      "size": 395,
+      "sentences": 5
+    },
+    {
+      "id": 54,
+      "content": "al configuration with minimum training loss. (b) Growth of the output layer norm vs.\ngradientsteps. Eachcurvecorrespondstoa(learningrateη,batchsizeB)pair,withB measured\ninsamples; colourencodesbatchsizeandline style encodeslearningrate. Seealsothe sameplot\nvs. tokenhorizonsinAppendixA.6. 3.2 OPTIMALNORMTRANSFER\nAfteranalysinglearningratescansacrossbatchsizes,horizonsandmodelsofvaryingwidth/depth,\nwe visualise results in Fig. 2, with an extended set of plots in Appendix A.7 and Appendix A.13.",
+      "size": 496,
+      "sentences": 6
+    },
+    {
+      "id": 55,
+      "content": "h,\nwe visualise results in Fig. 2, with an extended set of plots in Appendix A.7 and Appendix A.13. Eachdatapointcorrespondstooptimallytunedlearningrateη∗ foragivenbatchsize,minimising\ntraining loss for that horizon and model. We report our observations below, separately for each\ndirectionofscaling.",
+      "size": 300,
+      "sentences": 4
+    },
+    {
+      "id": 56,
+      "content": "r that horizon and model. We report our observations below, separately for each\ndirectionofscaling. Datascaling: Afterprofilingacrosslearningratesandplottingoptimalnormagainstbatchsize,we\nobservethatforagivenhorizonthereisasingleoptimalbatchsizewiththecorrespondingoptimal\noutput norm ∥W ∥ = 27.0±0.2. Intriguingly, this norm value transfers across horizons. out RMS→∞\nWerefertothisphenomenonasnormtransfer: theoptimal(η,B)configurationforagivenhorizon\nmustresultintheoptimalnormof≈ 27.",
+      "size": 486,
+      "sentences": 5
+    },
+    {
+      "id": 57,
+      "content": "menonasnormtransfer: theoptimal(η,B)configurationforagivenhorizon\nmustresultintheoptimalnormof≈ 27. Alsonotethattheoptimalbatchsizegrowswithhorizon\nscaling,whichwediscussinSec.3.3. Model width scaling: It is expected to preserve the optimal norm by the design of our optimizer\nviathespectralcondition(Eq.1). Indeed,inFig.2bweobservethatscalingupinwidthbyafactor\n5\n[  ]\n\n===  6 ===\nPreprint. Underreview.",
+      "size": 403,
+      "sentences": 5
+    },
+    {
+      "id": 58,
+      "content": "1). Indeed,inFig.2bweobservethatscalingupinwidthbyafactor\n5\n[  ]\n\n===  6 ===\nPreprint. Underreview. 5.4\n5.2\n5.0\n4.8\n4.6\n4.4\n4.2\n4.0\n3.8\n5.0 5.5 6.0 6.5 7.0 7.5 8.0 8.5\nlog||W out||RMS\nssol\nniarT\nScaling horizon for proxy model (69M)\nHorizon [tokens] 4.6\n231 (2.1 B) 235 (34 B)\n233 (8.6 B) 237 (137 B)\n4.4\n4.2\n4.0\n3.8\nBBaattcchh ssiizzee [[ssaammpplleess]]\n3322 22004488 3.6\n5.0 5.5 6.0 6.5 7.0 7.5 8.0\nlog||W out||RMS\n(a)\nssol\nniarT\nScaling width/depth for 233 (8.6 B) token horizon\nd=256, L=4 (69M)\nd=1024, L=4 (314M) d=256, L=32 (91M)\nd=3072, L=4 (1.3B) d=256, L=128 (168M)\nBBaattcchh ssiizzee [[ssaammpplleess]]\n3322 11002244\n(b)\nFigure2: Traininglossvs.",
+      "size": 657,
+      "sentences": 4
+    },
+    {
+      "id": 59,
+      "content": "256, L=128 (168M)\nBBaattcchh ssiizzee [[ssaammpplleess]]\n3322 11002244\n(b)\nFigure2: Traininglossvs. outputlayernormacrossbatchsizes. (a)Fixedproxymodel(69M\nparameters) while increasing token horizon from 231 to 237. (b) Fixed token horizon 233 while\nscalingwidth/depthoftheproxymodelasindicatedinthelegend. Eachbatchsizepoint(increasing\nfrom 32 in ×2 steps, reflected by marker size) has its learning rate optimally tuned.",
+      "size": 422,
+      "sentences": 5
+    },
+    {
+      "id": 60,
+      "content": "nt(increasing\nfrom 32 in ×2 steps, reflected by marker size) has its learning rate optimally tuned. The optimal\nbatchsizeperhorizon/modelconfigurationisindicatedbythefilledmarker.Allcurvesshareoptimal\nnormat7.0±0.2acrosshorizonsand7.4±0.2acrossmodels(greyband). of ×12 while keeping the horizon fixed results in the nested “µP-style” curves, sharing the same\noptimalnormwhileresultinginlowerlossaswescaleup.",
+      "size": 407,
+      "sentences": 3
+    },
+    {
+      "id": 61,
+      "content": "in the nested “µP-style” curves, sharing the same\noptimalnormwhileresultinginlowerlossaswescaleup. Modeldepthscaling: Althoughnotobviousapriori,weobserveexperimentallythatscalingupin\nthenumberoflayersbyafactorof×32resultsinnormtransfer. Thisisquitesurprising,sincewe\ndonotemployanyoftheestablisheddepth-transfertechniques(Bordelonetal.,2023;Yangetal.,\n2023;Deyetal.,2025).",
+      "size": 372,
+      "sentences": 3
+    },
+    {
+      "id": 62,
+      "content": "mployanyoftheestablisheddepth-transfertechniques(Bordelonetal.,2023;Yangetal.,\n2023;Deyetal.,2025). WeablatetheminAppendixA.10andfindthatinoursetuptheyallinduce\nlearningratetransfer,butourstrategy(noresidualscalingfactors,initializationrescalingoflayers\n(cid:112)\npriortoresidualsby1/ 2N )resultsinthelowestloss. Wespeculatethatthismayberelated\nlayers\ntoournorm-everywhereapproach(Sec.2.2)anduniformityinnormtreatmentbytheoptimizer\nandweightinitialization.",
+      "size": 456,
+      "sentences": 3
+    },
+    {
+      "id": 63,
+      "content": "norm-everywhereapproach(Sec.2.2)anduniformityinnormtreatmentbytheoptimizer\nandweightinitialization. Additionalablations: Inpractice,oneisinterestedinrunningScionwithnon-zeromomentumand\nwithadecayinglearningrateschedule. WestudytheimpactofthesetwooptionsinAppendixA.11\nandobservethattheybothshownormtransfer. Notably,theadditionofmomentumlargelyreduces\nsensitivity to batch size choice with multiple values resulting in the same optimal norm and loss\n(Fig. 9).",
+      "size": 459,
+      "sentences": 5
+    },
+    {
+      "id": 64,
+      "content": "ity to batch size choice with multiple values resulting in the same optimal norm and loss\n(Fig. 9). The impact of learning rate decay is also important, as we find it greatly flattens the\nnormoptimumandthusreducessensitivitytolearningratechoice(Fig.13b). Lastbutnotleast,in\nAppendixA.11.2wefindthatnormtransferphenomenonoccursnotonlyin∥W ∥ norm,\nout RMS→∞\nbutalsoin∥W ∥ and∥W ∥ fortheinputembedding.",
+      "size": 399,
+      "sentences": 4
+    },
+    {
+      "id": 65,
+      "content": "rmtransferphenomenonoccursnotonlyin∥W ∥ norm,\nout RMS→∞\nbutalsoin∥W ∥ and∥W ∥ fortheinputembedding. out RMS→RMS in 1→RMS\n↬SummaryI:WithintheScionframework,optimalnormtransfersinbothmodel(viawidth\nanddepth)anddatascalingdirections: itisnecessarytochoosethehyperparameterconfigura-\ntionsothatthemodeloutputnorm∥W ∥ fallsintotheoptimalregion. Substituting\nout RMS→∞\nalternativenorms(∥W ∥ or∥W ∥ )maintainstheconsistencyofthetrans-\nout RMS→RMS in 1→RMS\nfer.",
+      "size": 453,
+      "sentences": 3
+    },
+    {
+      "id": 66,
+      "content": "ut RMS→∞\nalternativenorms(∥W ∥ or∥W ∥ )maintainstheconsistencyofthetrans-\nout RMS→RMS in 1→RMS\nfer. Thesamebehaviourholdswithnon-zeromomentumandlearningratedecay. 3.3 OPTIMAL(η,B)SCALINGRULE\nDespitethediscoverednormguidance,itisstillnotobvioushowtoselectthecorrespondingoptimal\ncombination of learning rate and batch size for a given horizon. Or more generally, what is the\nsufficientconditionforoptimality? InthisSection,weexplorethisquestion. 6\n[  ]\n\n===  7 ===\nPreprint. Underreview.",
+      "size": 486,
+      "sentences": 7
+    },
+    {
+      "id": 67,
+      "content": "ditionforoptimality? InthisSection,weexplorethisquestion. 6\n[  ]\n\n===  7 ===\nPreprint. Underreview. 2 1 2 1\n2 3\n2 3\n2 5\n2 5\n2 7\n2 7\n2 9\nBatch size [samples]\n2 11 3 6 2 4 2 5 5 1 6 2 Free fit 2 9\n128 1024 Heuristic fit\n231 232 233 234 235 236 237 25 26 27 28 29 210 211\nHorizon reaching optimal norm [tokens] B [samples]\n(a)\nlamitpo\nHorizon [tokens]\n231 (2.1 B) 233 (8.6 B)\n235 (34 B)\n237 (137 B)\nlog2 = log2B+ log2D+ = 0.62 ± 0.05, = -0.56 ± 0.05\n= 9.8 ± 1.6; R2 = 0.92\n(b)\nFigure3:(a)(η,B)combinationsthatreachtheoptimalnorm∥W ∥ =27.0±0.2fora\nout RMS→∞\ngiventokenhorizon.Coloursdenotebatchsize(B);they-axisislearningrate(η).Solidanddashed\nlines denote free and heuristic fits (described in text).",
+      "size": 697,
+      "sentences": 5
+    },
+    {
+      "id": 68,
+      "content": "they-axisislearningrate(η).Solidanddashed\nlines denote free and heuristic fits (described in text). (b) Optimal learning rate per batch size\nacrosshorizons. Circledmarkersindicateoptimal(η∗,B∗)withthelowestloss. Withinahorizon,\nmarker transparency linearly interpolates between the lowest- and highest-loss runs, with higher\ntransparency indicating higher training loss. Error bars show systematic variation from the fitting\nmethod(AppendixA.4).",
+      "size": 445,
+      "sentences": 5
+    },
+    {
+      "id": 69,
+      "content": "ng higher training loss. Error bars show systematic variation from the fitting\nmethod(AppendixA.4). Dashedlinesareajointlinearregressionwithlog η∗ ∼log B+log D.\n2 2 2\nFig.3aillustratesthattheoptimalnormconditionobservedinFig.2isnecessarybutnotsufficient. For each token horizon (x-axis), we plot the learning rates (y-axis) and batch sizes (colour) that\nreach7 the optimal-norm region ∥W ∥ ∈ [26.8, 27.2].",
+      "size": 405,
+      "sentences": 4
+    },
+    {
+      "id": 70,
+      "content": "ng rates (y-axis) and batch sizes (colour) that\nreach7 the optimal-norm region ∥W ∥ ∈ [26.8, 27.2]. One can observe that for a given\nout RMS→∞\nhorizon,everybatchsizewillreachoptimalnormwithasufficientlyhighlearningrate. Wefitthe\ndata with linear models log η = α log B +β log D +γ (free fit) and log η =\n2 first 2 first 2 first first 2\n1.5log B − log D + γ (heuristic fit).",
+      "size": 373,
+      "sentences": 3
+    },
+    {
+      "id": 71,
+      "content": "g D +γ (free fit) and log η =\n2 first 2 first 2 first first 2\n1.5log B − log D + γ (heuristic fit). For the free fit, we find the exponents α =\n2 2 first first first\n1.32±0.03andβ =0.96±0.03,whichareclosetothevaluesfromtheheuristicfit. first\nHence,wecannotrelyontheoutputnormasaguidetoselectingoptimalhyperparameters;itisonly\nanecessaryandnotasufficientcondition. Letusnowstudysufficientconditionsbyfirstunfolding\nFig.2aandincludingoptimallearningrateinformationthatwasprofiledaway.",
+      "size": 482,
+      "sentences": 4
+    },
+    {
+      "id": 72,
+      "content": "ientconditionsbyfirstunfolding\nFig.2aandincludingoptimallearningrateinformationthatwasprofiledaway. Specifically,weare\ninterestedinhowtheoptimallearningrateη∗ changeswithinafixedhorizonDwiththebatchsize\nB change,andthenwithhorizonsD scaledup. Fig.3bshowsthecorrespondingdatapointsalong\nwithalinearregressionfitlog η∗(B,D)=αlog B+βlog D+γ.Notethatonlycircledmarkers\n2 2 2\nareper-horizonoptimawiththelowestloss.",
+      "size": 409,
+      "sentences": 3
+    },
+    {
+      "id": 73,
+      "content": "log η∗(B,D)=αlog B+βlog D+γ.Notethatonlycircledmarkers\n2 2 2\nareper-horizonoptimawiththelowestloss. Weobserveseveralthings:\n• The coefficients of the fit α = 0.62 ± 0.05, β = −0.56 ± 0.05 are consistent with a\nwell-establishedsquare-rootscalingwithbatchsize(Malladietal.,2024)anddatahorizon\n(Bjorcketal.,2025)forAdam,respectively. SimilartoAIetal.(2025);Satoetal.",
+      "size": 363,
+      "sentences": 4
+    },
+    {
+      "id": 74,
+      "content": "ietal.,2024)anddatahorizon\n(Bjorcketal.,2025)forAdam,respectively. SimilartoAIetal.(2025);Satoetal. (2025)\nweobservenosurgephenomenon(Lietal.,2024),i.e.transitionforafixedDfromη∗ ∝\n√ √\nB toη∗ ∝ 1/ B scalingrulesforbatchsizeshigherthanthecriticalone(Zhangetal.,\n2025). Theoretically,Jianlin(2025)explainsthisfromthemeanfieldtheoryperspective. • DifferentbatchsizesB resultindifferentlosses, andforeachhorizonD thereisanopti-\nmal one B∗(D), as emphasized in Fig.",
+      "size": 460,
+      "sentences": 5
+    },
+    {
+      "id": 75,
+      "content": "esB resultindifferentlosses, andforeachhorizonD thereisanopti-\nmal one B∗(D), as emphasized in Fig. 3b with circled markers and marker transparency\nforrelativelossdifference.",
+      "size": 174,
+      "sentences": 2
+    },
+    {
+      "id": 76,
+      "content": "), as emphasized in Fig. 3b with circled markers and marker transparency\nforrelativelossdifference. Theoptimalbatchsizeincreaseswithhorizonscaling: inAp-\npendixA.8wemeasurewithextendedsetofhorizonsB∗(D)∝D0.45±0.07,whichiscon-\n√\nsistentwithAdam(Lietal.,2025;Bergsmaetal.,2025)andintriguinglywithB∗ ∝ D.\n• Using B∗(D) ∝ D0.45 and log η∗(B,D) ∝ 0.62log B − 0.56log D with the\n2 2 2\ncorresponding uncertainties, we obtain for the optimal learning rate scaling η∗(D) ∝\n7Optimalnormwillmostlikelybereachedatsomepoint(providedlearningratesweepresolutioninFig.3a\nistoosmall),sinceinunconstrainedSciontheweightnormsaregrowingintime(seeSec.3.1andFig.1b).",
+      "size": 644,
+      "sentences": 3
+    },
+    {
+      "id": 77,
+      "content": "ninFig.3a\nistoosmall),sinceinunconstrainedSciontheweightnormsaregrowingintime(seeSec.3.1andFig.1b). 7\n[  ]\n\n===  8 ===\nPreprint. Underreview. D−0.28±0.07. This observation is consistent with Li et al. (2025) but appears to be in\ntension with Shen et al. (2024); Bergsma et al. (2025), albeit our methodologies are not\nfullycomparable.8 Again,thisisinterestinglyclosetoη∗(D)∝D−1/4.",
+      "size": 380,
+      "sentences": 8
+    },
+    {
+      "id": 78,
+      "content": "5), albeit our methodologies are not\nfullycomparable.8 Again,thisisinterestinglyclosetoη∗(D)∝D−1/4. • Sincethereexistsasingleoptimalbatchsizeforeachdatahorizon,thenumberofdevices\nusable for training is fundamentally capped: beyond a point, increasing the number of\ndeviceseitherhurtsthroughput(smallper-devicemicrobatchsizetokeeptheoptimalglobal\nbatchsize)ordegradesloss(leavingtheoptimalbatchsizeregiontokeepthroughput).This\nhintstowardsaninterestingresearchdirection: ifthislimitcanbebypassed.",
+      "size": 495,
+      "sentences": 2
+    },
+    {
+      "id": 79,
+      "content": "eregiontokeepthroughput).This\nhintstowardsaninterestingresearchdirection: ifthislimitcanbebypassed. • In fact, for a fixed horizon, it is not a single optimal (η∗,B∗) but an optimal region\n(η∗ ±∆η, B∗ ±∆B) that results in near-optimality (opacity in Fig. 3b). We relate this\ntothenotionoflearningratesensitivity(Wortsmanetal.,2023)thatwerephraseasnorm\nsensitivity. Wethinkthisregionisdefinedbythe“flatness”ofthehorizoncurve(Fig.2a)\naround the optimal norm value.",
+      "size": 462,
+      "sentences": 5
+    },
+    {
+      "id": 80,
+      "content": ". Wethinkthisregionisdefinedbythe“flatness”ofthehorizoncurve(Fig.2a)\naround the optimal norm value. Within this region, one can “exchange” learning rate for\n√\nbatchsizeviatheη ∝ B rule,thusallowingforsomeflexibilityinoptimalhyperparam-\neterchoice,e.g.trainingwithlargerbatchsizes.",
+      "size": 280,
+      "sentences": 3
+    },
+    {
+      "id": 81,
+      "content": "ule,thusallowingforsomeflexibilityinoptimalhyperparam-\neterchoice,e.g.trainingwithlargerbatchsizes. ↬ Summary II: For Scion, we measure the following hyperparameter scaling rules inducing\nthesufficientoptimalscalingcondition:\nη∗(D)∝D−0.28±0.07 and B∗(D)∝D0.45±0.07, (10)\nconsistentwiththeAdam’sscalingexponents.ForafixedhorizonD,onecantradeoffη∗ ↔B∗\n√\nviatheη ∝ Brulewithintheregionoflownormsensitivity,withoutlossinperformance. By\nScion’sdesign,theseobservationsholdtruewithmodelwidthscaling.",
+      "size": 493,
+      "sentences": 3
+    },
+    {
+      "id": 82,
+      "content": "sitivity,withoutlossinperformance. By\nScion’sdesign,theseobservationsholdtruewithmodelwidthscaling. 3.4 OPTIMALPER-LAYER-GROUPLEARNINGRATE\nBest configurations for horizon=233 (8.6 B), B=128\nTop 10% loss: [4.11, 4.18]\n20 Others: [4.19, 4.76] Top 1: 4.11 ± 0.01 Top 2: 4.12 ± 0.01 Top 3: 4.12 ± 0.02\n2 2 Equal LRs at 24: 4.13 ± 0.00\n8\n2 4 6\n4\n2 6 2\n0 28 26 24 22 20\n2 8\ninput hidden output\ntnuoc\n20 Best input= output configuration per horizon, B=512\n229 (0.5 B): loss = 5.10 | equal @ 21: 5.45\n2 1 2 2 3 3 1 3 ( ( 2 8 .",
+      "size": 518,
+      "sentences": 3
+    },
+    {
+      "id": 83,
+      "content": "figuration per horizon, B=512\n229 (0.5 B): loss = 5.10 | equal @ 21: 5.45\n2 1 2 2 3 3 1 3 ( ( 2 8 . . 1 6 B B ) ) : : l l o o s s s s = = 4 4 . . 3 0 8 6 | | e e q q u u a a l l @ @ 2 2 1 2 : : 4 4 . .2 6 2 6 235 (34 B): loss = 3.93 | equal @ 23: 4.00\n2 2\nTop-10% loss counts per layer group\n2 3\n2 4\n2 5\ninput 2 6 hidden\noutput\ninput hidden output\n(a) (b)\nFigure4: (a)Parallel-coordinatesviewofper-layer-grouplearningratetuning.",
+      "size": 428,
+      "sentences": 6
+    },
+    {
+      "id": 84,
+      "content": "nput hidden output\n(a) (b)\nFigure4: (a)Parallel-coordinatesviewofper-layer-grouplearningratetuning. Resultsarefor\ntheproxymodel(69Mparameters)andbatchsizeB =128samples,averagedacrossrandomseeds\nas described in Appendix A.2. Dark gray lines are the top 10% runs (loss 4.11–4.18); light gray\nlinesaretheremainder(loss4.19–4.76). Orangetraceshighlightthethreebestsettings. Theinset\nhistogram shows the distribution of top 10% counts for each layer group.",
+      "size": 451,
+      "sentences": 5
+    },
+    {
+      "id": 85,
+      "content": "hreebestsettings. Theinset\nhistogram shows the distribution of top 10% counts for each layer group. (b) Best learning rate\nlayouts per training horizon under the constraint η = η . Results are for the proxy\ninput output\nmodel (69M parameters) and batch size B = 512 samples. All horizons favor a V-shaped layout\nwithη smallerthantheinput/outputlearningratesbythesame×1/8factor. Inthelegendwe\nhidden\nalsoreportlossfortheoptimalη =η =η ≡ηlayout(“equal@η”).",
+      "size": 454,
+      "sentences": 6
+    },
+    {
+      "id": 86,
+      "content": "esbythesame×1/8factor. Inthelegendwe\nhidden\nalsoreportlossfortheoptimalη =η =η ≡ηlayout(“equal@η”). input hidden output\nSofar,weapproachedscalingfroma“global”learningratepointofview. However,thismaynotbe\nthecase,andintricatedynamicscanemergewherevariouslayersrequiredifferentlearningratesat\n8Forexample, becauseofweightdecayusageinBergsmaetal. (2025), whichsignificantlyaffectsnorm\ndynamicsbyconstrainingit,aswediscussinSec.5. 8\n[  ]\n\n===  9 ===\nPreprint. Underreview.",
+      "size": 468,
+      "sentences": 7
+    },
+    {
+      "id": 87,
+      "content": "yaffectsnorm\ndynamicsbyconstrainingit,aswediscussinSec.5. 8\n[  ]\n\n===  9 ===\nPreprint. Underreview. differentscalestobetrainedoptimally,thusquestioningourconclusionssofar. InthisSection,we\nexploreifthisisthecase.",
+      "size": 212,
+      "sentences": 5
+    },
+    {
+      "id": 88,
+      "content": "estobetrainedoptimally,thusquestioningourconclusionssofar. InthisSection,we\nexploreifthisisthecase. Fig.4apresentsresultsforaproxymodel(69Mparameters),fixeddatahorizon(8.6Btokens)and\nfixedbatchsize(B = 128samples,optimalforthishorizon)wherewerungridsearchoverlearn-\ningratevaluesη ∈ {2−8,2−7,...,20}forinput(tokenembedding),output(linearprojectiononto\nvocabulary) and hidden (all the other) layers, averaged across random seeds (Appendix A.2).",
+      "size": 443,
+      "sentences": 3
+    },
+    {
+      "id": 89,
+      "content": "iononto\nvocabulary) and hidden (all the other) layers, averaged across random seeds (Appendix A.2). We\nobservethatthereislittleoptimallearningrateimbalanceacrosslayergroups,anduniformlearning\nrateassignmentresultsinthesamelossastheoptimalconfigurationswithinuncertainties.",
+      "size": 272,
+      "sentences": 2
+    },
+    {
+      "id": 90,
+      "content": "anduniformlearning\nrateassignmentresultsinthesamelossastheoptimalconfigurationswithinuncertainties. Further-\nmore, from the width of the optimal nodes count histograms per layer groups, we conclude that\nthe output layer is the most sensitive to learning rate mistuning, with the sensitivity progressively\ndecreasingforhiddenandtheninputlayers. From analysing Fig.",
+      "size": 363,
+      "sentences": 3
+    },
+    {
+      "id": 91,
+      "content": "ning, with the sensitivity progressively\ndecreasingforhiddenandtheninputlayers. From analysing Fig. 4a and additional ones for different batch sizes (Appendix A.12) we found\nthattheconfigurationη : η : η = 1 : 1/8 : 1isalwaysamongthetop10%. This\ninput output hidden\nsymmetrysimplifiesthelearningscanandnotablycontradictstheoptimalconfigurationssuggested\nin Pethick et al. (2025a) and Riabinin et al. (2025).",
+      "size": 407,
+      "sentences": 6
+    },
+    {
+      "id": 92,
+      "content": "ycontradictstheoptimalconfigurationssuggested\nin Pethick et al. (2025a) and Riabinin et al. (2025). To study dynamics with horizon scaling, we\nperformthelearningrategridscansameasinFig.4abutwithconstrainingη = η 9,for\ninput output\ntheproxymodelwithB =512. Fig.4billustratestheresults,whereweseetheoptimalhiddenratio\n(η /η = 1/8)transferacrosshorizons,aswellasthatitbringslossimprovementw.r.t. a\ninput hidden\nconstant learning ratebaseline.",
+      "size": 439,
+      "sentences": 6
+    },
+    {
+      "id": 93,
+      "content": "sshorizons,aswellasthatitbringslossimprovementw.r.t. a\ninput hidden\nconstant learning ratebaseline. Lastly, wenote that again, due tothe optimizer design, we expect\ntheseobservationstoholdtrueundermodelwidthscaling. ↬SummaryIII:Uniformlearningrateconfigurationacrosslayersisastrongbaseline,which\nstillcanbeimprovedwithadditionalhiddenlayergrouptuning: η :η :η =1:\ninput output hidden\n1/8:1yieldsarelativelossimprovementofupto6%andistransferableacrossdatasetsizes.",
+      "size": 463,
+      "sentences": 4
+    },
+    {
+      "id": 94,
+      "content": "input output hidden\n1/8:1yieldsarelativelossimprovementofupto6%andistransferableacrossdatasetsizes. 4 RELATED WORK\nHyperparameterswithmodelscaling Yangetal. (2022)showedhowtotransferoptimalhyper-\nparametersfromasmalltoalargemodelinaprincipledwayviaMaximalUpdateParametrization\n(µP).Everettetal.(2024)latershowedthatsuchtransferisalsopossibleinotherparametrizations. Yangetal.(2023);Deyetal.(2025)extendedthemethodtowardsmodelscalingindepth.",
+      "size": 440,
+      "sentences": 5
+    },
+    {
+      "id": 95,
+      "content": "inotherparametrizations. Yangetal.(2023);Deyetal.(2025)extendedthemethodtowardsmodelscalingindepth. Empiri-\ncally,scalinglawsonhowtosetoptimalhyperparametersasafunctionofcompute(DeepSeek-AI\netal.,2024),loss(Huetal.,2024)ormodelsize(Porianetal.,2025)weremeasured.",
+      "size": 262,
+      "sentences": 3
+    },
+    {
+      "id": 96,
+      "content": "ctionofcompute(DeepSeek-AI\netal.,2024),loss(Huetal.,2024)ormodelsize(Porianetal.,2025)weremeasured. Hyperparameterswithdatascaling Remainspoorlyunderstoodtheoretically:Smith&Le(2018)\nshowedforSGDhowtoadjustlearningrateandbatchsizebymodellingoptimizationtrajectoryas\nastochasticdifferentialequation(SDE).Largely,theproblemhasbeenapproachedexperimentally\nbymeasuringhyperparameterscalingrulesasafunctionofthedatasetsize(Shenetal.,2024;Hu\netal.,2024;Filatovetal.,2025;Bergsmaetal.,2025;Lietal.,2025).",
+      "size": 497,
+      "sentences": 2
+    },
+    {
+      "id": 97,
+      "content": "ionofthedatasetsize(Shenetal.,2024;Hu\netal.,2024;Filatovetal.,2025;Bergsmaetal.,2025;Lietal.,2025). (η,B) scaling rules Historically, studies of interaction between learning rate and batch size\nemerged as an experimental effort to scale batch size without losing performance (Keskar et al.,\n2017;Goyaletal.,2018;Hiltonetal.,2022).",
+      "size": 330,
+      "sentences": 2
+    },
+    {
+      "id": 98,
+      "content": "scale batch size without losing performance (Keskar et al.,\n2017;Goyaletal.,2018;Hiltonetal.,2022). Later,adeeperunderstandhasemergedfromvarious\ntheoretical angles: SDE (Malladi et al., 2024), loss curvature (McCandlish et al., 2018), random\nmatrixtheory(Granzioletal.,2021). Norm-based optimization Starting from the spectral condition (Yang et al., 2024), the approach\nof transforming gradient updates based on norm assumptions was fully established in Large et al.",
+      "size": 467,
+      "sentences": 3
+    },
+    {
+      "id": 99,
+      "content": "ch\nof transforming gradient updates based on norm assumptions was fully established in Large et al. (2024);Bernstein&Newhouse(2024a), andrecentlyexploredinconstrainingweightsthemselves\n(Newhouseetal.,2025). Thesteepestdescentviewallowedforconnectionswithmanifoldlearning\n(Cesista, 2025) and optimizer design (Riabinin et al., 2025).",
+      "size": 332,
+      "sentences": 3
+    },
+    {
+      "id": 100,
+      "content": "wedforconnectionswithmanifoldlearning\n(Cesista, 2025) and optimizer design (Riabinin et al., 2025). This line of work has led to Muon\n(Jordanetal.,2024)andScion(Pethicketal.,2025a;b),alongwithimprovements(Ahnetal.,2025;\nAmseletal.,2025),andbenchmarks(Wenetal.,2025;Semenovetal.,2025)thereof. 9InterminologyofBernstein&Newhouse(2024a)thiscorrespondstomasstuning. 9\n===  10 ===\nPreprint. Underreview.",
+      "size": 398,
+      "sentences": 5
+    },
+    {
+      "id": 101,
+      "content": "inologyofBernstein&Newhouse(2024a)thiscorrespondstomasstuning. 9\n===  10 ===\nPreprint. Underreview. 5 CONCLUSION AND DISCUSSION\nInthiswork,wedemonstratethattheoperatornormoftheoutputlayerisapowerfulmeasurethat\nguidesjointoptimalscalingacrossbothmodelanddatasetdimensions. Informally, onemayview\nourresultsas:\naffects\n1.",
+      "size": 319,
+      "sentences": 5
+    },
+    {
+      "id": 102,
+      "content": "toptimalscalingacrossbothmodelanddatasetdimensions. Informally, onemayview\nourresultsas:\naffects\n1. (η, B, D)choice===⇒layeroperatornorm(Sec.3.1)\nrequires\n2. optimalloss====⇒optimalnorm(Sec.3.2)\n3. optimalη∗(D),B∗(D)scalingrules= y = iel ⇒ d optimalloss(Sec.3.3)\nInwords,weempirically(1)studyhownormsevolvewithhyperparameterchangeandhowtotune\nthemtodesiredvalues;(2)demonstratethattheoptimalhyperparameterconfigurationmusthavea\npredefined(output)layernorminordertobetransferableacrossdataandmodelscales; (3)derive\noptimalhyperparameterscalingrulesresultinginoptimalloss.",
+      "size": 570,
+      "sentences": 3
+    },
+    {
+      "id": 103,
+      "content": "ferableacrossdataandmodelscales; (3)derive\noptimalhyperparameterscalingrulesresultinginoptimalloss. WhileweareconfidentthatthescalingrulesinSec.3.3holdatevenlargerscales,westilldon’tknow\nwhytheyareinducedinthisform,verymuchresemblingsquare-rootand1/4-powerlaws.Moreover,\nhowdotheserulesconnectwithourmainfinding,anecessaryconditionofscalingtrajectoryin(data,\nmodel)axestohavethesameconstantvalue—oronemightsay,toremainonamanifold(Bernstein,\n2025).",
+      "size": 447,
+      "sentences": 2
+    },
+    {
+      "id": 104,
+      "content": "ryin(data,\nmodel)axestohavethesameconstantvalue—oronemightsay,toremainonamanifold(Bernstein,\n2025). Atthispointmorenewquestionsarise:\n• Whydoesoptimalnormtransfer? Itispuzzlingwhatmakestheoptimalscalingtrajectory\nremainontheconstantnormmanifold,aswellaswhatdefinesitsstructure. • Whatisthereasonbehindoptimalscalingrules? Whileweshowhowtosethyperparame-\ntersoptimally,thereissomethingmissinginthenormperspectivetoexplainit. • Whichnormisexactlyoptimal?",
+      "size": 452,
+      "sentences": 6
+    },
+    {
+      "id": 105,
+      "content": "tersoptimally,thereissomethingmissinginthenormperspectivetoexplainit. • Whichnormisexactlyoptimal? Wepaidmostofourattentionto∥W ∥ ,butare\nout RMS→∞\ntheobservedphenomenareallyspecifictothisoneonly? AndtotheScionoptimizeronly? • How can the constant norm condition be leveraged? It looks like a naturally emerging\ninductivebiasthatonecantakeadvantageoftooptimizethetrainingprocess.",
+      "size": 379,
+      "sentences": 6
+    },
+    {
+      "id": 106,
+      "content": "looks like a naturally emerging\ninductivebiasthatonecantakeadvantageoftooptimizethetrainingprocess. We don’t yet have answers to those questions, but we believe our study scratches the surface of\nexcitingphenomenathatremaintobefullyunderstood. ACKNOWLEDGMENTS\nWe thank Kaiyue Wen and Ismail Khalfaoui Hassani for helpful discussions and feedback on the\nmanuscript. ThisresearchwassupportedbyTrustLLMfundedbyHorizonEuropeGA101135671,\nandbytheHelmholtzFoundationModelInitiativeasapartoftheSynergyUnit.",
+      "size": 499,
+      "sentences": 4
+    },
+    {
+      "id": 107,
+      "content": "undedbyHorizonEuropeGA101135671,\nandbytheHelmholtzFoundationModelInitiativeasapartoftheSynergyUnit. Theauthorsgrate-\nfully acknowledge the Gauss Centre for Supercomputing e.V. (www.gauss-centre.eu) for funding\nthis project by providing computing time on the GCS Supercomputer JUWELS at Ju¨lich Super-\ncomputingCentre(JSC).PartsofcomputationalresourceswereprovidedbytheGermanAIservice\ncenterWestAI.",
+      "size": 397,
+      "sentences": 3
+    },
+    {
+      "id": 108,
+      "content": "r-\ncomputingCentre(JSC).PartsofcomputationalresourceswereprovidedbytheGermanAIservice\ncenterWestAI. REFERENCES\nKwangjun Ahn, Byron Xu, Natalie Abreu, Ying Fan, Gagik Magakyan, Pratyusha Sharma,\nZheng Zhan, and John Langford. Dion: Distributed orthonormalized updates. arXiv preprint\narXiv:2504.05295,2025.",
+      "size": 305,
+      "sentences": 4
+    },
+    {
+      "id": 109,
+      "content": "and John Langford. Dion: Distributed orthonormalized updates. arXiv preprint\narXiv:2504.05295,2025. EssentialAI,:,IshaanShah,AnthonyM.Polloreno,KarlStratos,PhilipMonk,AdarshChaluvaraju,\nAndrew Hojel, Andrew Ma, Anil Thomas, Ashish Tanwer, Darsh J Shah, Khoi Nguyen, Kurt\nSmith,MichaelCallahan,MichaelPust,MohitParmar,PeterRushton,PlatonMazarakis,Ritvik\nKapila,SaurabhSrivastava,SomanshuSingla,TimRomanski,YashVanjani,andAshishVaswani. Practicalefficiencyofmuonforpretraining.",
+      "size": 475,
+      "sentences": 5
+    },
+    {
+      "id": 110,
+      "content": "a,SomanshuSingla,TimRomanski,YashVanjani,andAshishVaswani. Practicalefficiencyofmuonforpretraining. arXivpreprintarXiv:2505.02222,2025. Noah Amsel, David Persson, Christopher Musco, and Robert M. Gower. The polar express: Op-\ntimal matrix sign methods and their application to the muon algorithm, 2025. URL https:\n//arxiv.org/abs/2505.16932. 10\n===  11 ===\nPreprint. Underreview. Shane Bergsma, Nolan Dey, Gurpreet Gosal, Gavia Gray, Daria Soboleva, and Joel Hestness.",
+      "size": 468,
+      "sentences": 9
+    },
+    {
+      "id": 111,
+      "content": "derreview. Shane Bergsma, Nolan Dey, Gurpreet Gosal, Gavia Gray, Daria Soboleva, and Joel Hestness. Power lines: Scaling laws for weight decay and batch size in llm pre-training. arXiv preprint\narXiv:2505.13738,2025. Jeremy Bernstein. Modular manifolds. Thinking Machines Lab: Connectionism, 2025. doi: 10. 64434/tml.20250926. https://thinkingmachines.ai/blog/modular-manifolds/. Jeremy Bernstein and Laker Newhouse. Modular duality in deep learning. arXiv preprint\narXiv:2410.21265,2024a.",
+      "size": 489,
+      "sentences": 12
+    },
+    {
+      "id": 112,
+      "content": "nstein and Laker Newhouse. Modular duality in deep learning. arXiv preprint\narXiv:2410.21265,2024a. Jeremy Bernstein and Laker Newhouse. Old optimizer, new norm: An anthology. arXiv preprint\narXiv:2409.20325,2024b. Johan Bjorck, Alon Benhaim, Vishrav Chaudhary, Furu Wei, and Xia Song. Scaling optimal lr\nacrosstokenhorizons. arXivpreprintarXiv:2409.19913,2025. Blake Bordelon, Lorenzo Noci, Mufan Bill Li, Boris Hanin, and Cengiz Pehlevan.",
+      "size": 440,
+      "sentences": 10
+    },
+    {
+      "id": 113,
+      "content": "Xiv:2409.19913,2025. Blake Bordelon, Lorenzo Noci, Mufan Bill Li, Boris Hanin, and Cengiz Pehlevan. Depthwise\nhyperparameter transfer in residual networks: Dynamics and scaling limit. arXiv preprint\narXiv:2309.16620,2023. Franz Louis Cesista. Muon and a selective survey on Steepest Descent in Riemannian and\nnon-RiemannianManifolds,April2025. URLhttp://leloykun.github.io/ponder/\nsteepest-descent-non-riemannian/. Tri Dao.",
+      "size": 423,
+      "sentences": 8
+    },
+    {
+      "id": 114,
+      "content": "anifolds,April2025. URLhttp://leloykun.github.io/ponder/\nsteepest-descent-non-riemannian/. Tri Dao. Flashattention-2: Faster attention with better parallelism and work partitioning. arXiv\npreprintarXiv:2307.08691,2023.",
+      "size": 218,
+      "sentences": 5
+    },
+    {
+      "id": 115,
+      "content": "aster attention with better parallelism and work partitioning. arXiv\npreprintarXiv:2307.08691,2023. DeepSeek-AI,:,XiaoBi,DeliChen,GuantingChen,ShanhuangChen,DamaiDai,ChengqiDeng,\nHonghuiDing,KaiDong,QiushiDu,ZheFu,HuazuoGao,KaigeGao,WenjunGao,RuiqiGe,\nKangGuan,DayaGuo,JianzhongGuo,GuangboHao,ZhewenHao,YingHe,WenjieHu,Panpan\nHuang, ErhangLi, GuoweiLi, JiashiLi, YaoLi, Y.K.Li, WenfengLiang, FangyunLin, A.X.",
+      "size": 408,
+      "sentences": 3
+    },
+    {
+      "id": 116,
+      "content": ",WenjieHu,Panpan\nHuang, ErhangLi, GuoweiLi, JiashiLi, YaoLi, Y.K.Li, WenfengLiang, FangyunLin, A.X. Liu, BoLiu, WenLiu, XiaodongLiu, XinLiu, YiyuanLiu, HaoyuLu, ShanghaoLu, FuliLuo,\nShirongMa,XiaotaoNie,TianPei,YishiPiao,JunjieQiu,HuiQu,TongzhengRen,ZehuiRen,\nChongRuan,ZhangliSha,ZhihongShao,JunxiaoSong,XuechengSu,JingxiangSun,Yaofeng\nSun,MinghuiTang,BingxuanWang,PeiyiWang,ShiyuWang,YaohuiWang,YongjiWang,Tong\nWu,Y.Wu,XinXie,ZhendaXie,ZiweiXie,YiliangXiong,HanweiXu,R.X.Xu,YanhongXu,\nDejianYang,YuxiangYou,ShuipingYu,XingkaiYu,B.Zhang,HaoweiZhang,LecongZhang,\nLiyue Zhang, Mingchuan Zhang, Minghua Zhang, Wentao Zhang, Yichao Zhang, Chenggang\nZhao,YaoZhao,ShangyanZhou,ShunfengZhou,QihaoZhu,andYuhengZou.",
+      "size": 707,
+      "sentences": 2
+    },
+    {
+      "id": 117,
+      "content": "Wentao Zhang, Yichao Zhang, Chenggang\nZhao,YaoZhao,ShangyanZhou,ShunfengZhou,QihaoZhu,andYuhengZou. Deepseekllm:\nScalingopen-sourcelanguagemodelswithlongtermism.arXivpreprintarXiv:2401.02954,2024. Nolan Dey, Quentin Anthony, and Joel Hestness. The practitioner’s guide to the maxi-\nmal update parameterization, Sep 2024. URL https://www.cerebras.ai/blog/\nthe-practitioners-guide-to-the-maximal-update-parameterization.",
+      "size": 418,
+      "sentences": 5
+    },
+    {
+      "id": 118,
+      "content": ". URL https://www.cerebras.ai/blog/\nthe-practitioners-guide-to-the-maximal-update-parameterization. Nolan Dey, Bin Claire Zhang, Lorenzo Noci, Mufan Li, Blake Bordelon, Shane Bergsma, Cengiz\nPehlevan, BorisHanin, andJoelHestness. Don’tbelazy: Completepenablescompute-efficient\ndeeptransformers. arXivpreprintarXiv:2505.01618,2025.",
+      "size": 330,
+      "sentences": 5
+    },
+    {
+      "id": 119,
+      "content": "on’tbelazy: Completepenablescompute-efficient\ndeeptransformers. arXivpreprintarXiv:2505.01618,2025. Katie Everett, Lechao Xiao, Mitchell Wortsman, Alexander A. Alemi, Roman Novak, Peter J.\nLiu, Izzeddin Gur, Jascha Sohl-Dickstein, Leslie Pack Kaelbling, Jaehoon Lee, and Jeffrey\nPennington. Scaling exponents across parameterizations and optimizers. arXiv preprint\narXiv:2407.05872,2024. Wei Feng, Will Constable, and Yifan Mao. Getting started with fully sharded data paral-\nlel (fsdp2), 2025.",
+      "size": 494,
+      "sentences": 7
+    },
+    {
+      "id": 120,
+      "content": "g, Will Constable, and Yifan Mao. Getting started with fully sharded data paral-\nlel (fsdp2), 2025. URL https://docs.pytorch.org/tutorials/intermediate/\nFSDP_tutorial.html. OlegFilatov,JanEbert,JiangtaoWang,andStefanKesselheim. Timetransfer: Onoptimallearning\nrateandbatchsizeintheinfinitedatalimit. arXivpreprintarXiv:2410.05838,2025. PriyaGoyal,PiotrDolla´r,RossGirshick,PieterNoordhuis,LukaszWesolowski,AapoKyrola,An-\ndrewTulloch,YangqingJia,andKaimingHe.",
+      "size": 458,
+      "sentences": 7
+    },
+    {
+      "id": 121,
+      "content": ",RossGirshick,PieterNoordhuis,LukaszWesolowski,AapoKyrola,An-\ndrewTulloch,YangqingJia,andKaimingHe. Accurate,largeminibatchsgd: Trainingimagenet\nin1hour. arXivpreprintarXiv:1706.02677,2018. 11\n===  12 ===\nPreprint. Underreview. Diego Granziol, Stefan Zohren, and Stephen Roberts. Learning rates as a function of batch size:\nArandommatrixtheoryapproachtoneuralnetworktraining. arXivpreprintarXiv:2006.09092,\n2021.",
+      "size": 412,
+      "sentences": 8
+    },
+    {
+      "id": 122,
+      "content": "atch size:\nArandommatrixtheoryapproachtoneuralnetworktraining. arXivpreprintarXiv:2006.09092,\n2021. AaronGrattafiori,AbhimanyuDubey,AbhinavJauhri,AbhinavPandey,AbhishekKadian,Ahmad\nAl-Dahle,AieshaLetman,AkhilMathur,AlanSchelten,AlexVaughan,AmyYang,AngelaFan,\nAnirudh Goyal, Anthony Hartshorn, Aobo Yang, Archi Mitra, Archie Sravankumar, Artem Ko-\nrenev, Arthur Hinsvark, Arun Rao, Aston Zhang, Aurelien Rodriguez, Austen Gregerson, Ava\nSpataru, Baptiste Roziere, Bethany Biron, Binh Tang, Bobbie Chern, Charlotte Caucheteux,\nChaya Nayak, Chloe Bi, Chris Marra, Chris McConnell, Christian Keller, Christophe Touret,\nChunyang Wu, Corinne Wong, Cristian Canton Ferrer, Cyrus Nikolaidis, Damien Allonsius,\nDaniel Song, Danielle Pintz, Danny Livshits, Danny Wyatt, David Esiobu, Dhruv Choudhary,\nDhruv Mahajan, Diego Garcia-Olano, Diego Perino, Dieuwke Hupkes, Egor Lakomkin, Ehab\nAlBadawy, Elina Lobanova, Emily Dinan, Eric Michael Smith, Filip Radenovic, Francisco\nGuzma´n,FrankZhang,GabrielSynnaeve,GabrielleLee,GeorgiaLewisAnderson,GovindThat-\ntai,GraemeNail,GregoireMialon,GuanPang,GuillemCucurell,HaileyNguyen,HannahKore-\nvaar,HuXu,HugoTouvron,IliyanZarov,ImanolArrietaIbarra,IsabelKloumann,IshanMisra,\nIvanEvtimov,JackZhang,JadeCopet,JaewonLee,JanGeffert,JanaVranes,JasonPark,JayMa-\nhadeokar,JeetShah,JelmervanderLinde,JenniferBillock,JennyHong,JenyaLee,JeremyFu,\nJianfengChi, JianyuHuang, JiawenLiu, JieWang, JiecaoYu, JoannaBitton, JoeSpisak, Jong-\nsoo Park, Joseph Rocca, Joshua Johnstun, Joshua Saxe, Junteng Jia, Kalyan Vasuden Alwala,\nKarthikPrasad,KartikeyaUpasani,KatePlawiak,KeLi,KennethHeafield,KevinStone,Khalid\nEl-Arini, Krithika Iyer, Kshitiz Malik, Kuenley Chiu, Kunal Bhalla, Kushal Lakhotia, Lauren\nRantala-Yeary,LaurensvanderMaaten,LawrenceChen,LiangTan,LizJenkins,LouisMartin,\nLovishMadaan,LuboMalo,LukasBlecher,LukasLandzaat,LukedeOliveira,MadelineMuzzi,\nMaheshPasupuleti,MannatSingh,ManoharPaluri,MarcinKardas,MariaTsimpoukelli,Mathew\nOldham, Mathieu Rita, Maya Pavlova, Melanie Kambadur, Mike Lewis, Min Si, Mitesh Ku-\nmar Singh, Mona Hassan, Naman Goyal, Narjes Torabi, Nikolay Bashlykov, Nikolay Bogoy-\nchev,NiladriChatterji,NingZhang,OlivierDuchenne,OnurC¸elebi,PatrickAlrassy,Pengchuan\nZhang,PengweiLi,PetarVasic,PeterWeng,PrajjwalBhargava,PratikDubal,PraveenKrishnan,\nPunitSinghKoura,PuxinXu,QingHe,QingxiaoDong,RagavanSrinivasan,RajGanapathy,Ra-\nmonCalderer,RicardoSilveiraCabral,RobertStojnic,RobertaRaileanu,RohanMaheswari,Ro-\nhitGirdhar,RohitPatel,RomainSauvestre,RonniePolidoro,RoshanSumbaly,RossTaylor,Ruan\nSilva, Rui Hou, Rui Wang, Saghar Hosseini, Sahana Chennabasappa, Sanjay Singh, Sean Bell,\nSeohyun Sonia Kim, Sergey Edunov, Shaoliang Nie, Sharan Narang, Sharath Raparthy, Sheng\nShen,ShengyeWan,ShrutiBhosale,ShunZhang,SimonVandenhende,SoumyaBatra,Spencer\nWhitman,StenSootla,StephaneCollot,SuchinGururangan,SydneyBorodinsky,TamarHerman,\nTaraFowler,TarekSheasha,ThomasGeorgiou,ThomasScialom,TobiasSpeckbacher,TodorMi-\nhaylov,TongXiao,UjjwalKarn,VedanujGoswami,VibhorGupta,VigneshRamanathan,Viktor\nKerkez, Vincent Gonguet, Virginie Do, Vish Vogeti, V´ıtor Albiero, Vladan Petrovic, Weiwei\nChu, Wenhan Xiong, Wenyin Fu, Whitney Meers, Xavier Martinet, Xiaodong Wang, Xiaofang\nWang, Xiaoqing Ellen Tan, Xide Xia, Xinfeng Xie, Xuchao Jia, Xuewei Wang, Yaelle Gold-\nschlag, Yashesh Gaur, Yasmine Babaei, Yi Wen, Yiwen Song, Yuchen Zhang, Yue Li, Yuning\nMao,ZacharieDelpierreCoudert,ZhengYan,ZhengxingChen,ZoePapakipos,AadityaSingh,\nAayushiSrivastava,AbhaJain,AdamKelsey,AdamShajnfeld,AdithyaGangidi,AdolfoVictoria,\nAhuvaGoldstand,AjayMenon,AjaySharma,AlexBoesenberg,AlexeiBaevski,AllieFeinstein,\nAmanda Kallet, Amit Sangani, Amos Teo, Anam Yunus, Andrei Lupu, Andres Alvarado, An-\ndrewCaples,AndrewGu,AndrewHo,AndrewPoulton,AndrewRyan,AnkitRamchandani,An-\nnieDong,AnnieFranco,AnujGoyal,AparajitaSaraf,ArkabandhuChowdhury,AshleyGabriel,\nAshwinBharambe,AssafEisenman,AzadehYazdan,BeauJames,BenMaurer,BenjaminLeon-\nhardi, Bernie Huang, Beth Loyd, Beto De Paola, Bhargavi Paranjape, Bing Liu, Bo Wu, Boyu\nNi,BradenHancock,BramWasti,BrandonSpence,BraniStojkovic,BrianGamido,BrittMon-\ntalvo,CarlParker,CarlyBurton,CatalinaMejia,CeLiu,ChanghanWang,ChangkyuKim,Chao\nZhou,ChesterHu,Ching-HsiangChu,ChrisCai,ChrisTindal,ChristophFeichtenhofer,Cynthia\nGao, Damon Civin, Dana Beaty, Daniel Kreymer, Daniel Li, David Adkins, David Xu, Davide\nTestuggine, DeliaDavid, DeviParikh, DianaLiskovich, DidemFoss, DingkangWang, DucLe,\nDustin Holland, Edward Dowling, Eissa Jamil, Elaine Montgomery, Eleonora Presani, Emily\nHahn,EmilyWood,Eric-TuanLe,ErikBrinkman,EstebanArcaute,EvanDunbar,EvanSmoth-\ners, Fei Sun, Felix Kreuk, Feng Tian, Filippos Kokkinos, Firat Ozgenel, Francesco Caggioni,\n12\n===  13 ===\nPreprint.",
+      "size": 4728,
+      "sentences": 3
+    },
+    {
+      "id": 123,
+      "content": "ix Kreuk, Feng Tian, Filippos Kokkinos, Firat Ozgenel, Francesco Caggioni,\n12\n===  13 ===\nPreprint. Underreview.",
+      "size": 112,
+      "sentences": 2
+    },
+    {
+      "id": 124,
+      "content": "g Tian, Filippos Kokkinos, Firat Ozgenel, Francesco Caggioni,\n12\n===  13 ===\nPreprint. Underreview. FrankKanayet,FrankSeide,GabrielaMedinaFlorez,GabriellaSchwarz,GadaBadeer,Georgia\nSwee, Gil Halpern, Grant Herman, Grigory Sizov, Guangyi, Zhang, Guna Lakshminarayanan,\nHakanInan,HamidShojanazeri,HanZou,HannahWang,HanwenZha,HarounHabeeb,Harri-\nsonRudolph, HelenSuk, HenryAspegren, HunterGoldman, HongyuanZhan, IbrahimDamlaj,\nIgorMolybog,IgorTufanov,IliasLeontiadis,Irina-ElenaVeliche,ItaiGat,JakeWeissman,James\nGeboski,JamesKohli,JaniceLam,JaphetAsher,Jean-BaptisteGaya,JeffMarcus,JeffTang,Jen-\nniferChan,JennyZhen,JeremyReizenstein,JeremyTeboul,JessicaZhong,JianJin,JingyiYang,\nJoeCummings,JonCarvill,JonShepard,JonathanMcPhie,JonathanTorres,JoshGinsburg,Jun-\njie Wang, Kai Wu, Kam Hou U, Karan Saxena, Kartikay Khandelwal, Katayoun Zand, Kathy\nMatosich, Kaushik Veeraraghavan, Kelly Michelena, Keqian Li, Kiran Jagadeesh, Kun Huang,\nKunal Chawla, Kyle Huang, Lailin Chen, Lakshya Garg, Lavender A, Leandro Silva, Lee Bell,\nLei Zhang, Liangpeng Guo, Licheng Yu, Liron Moshkovich, Luca Wehrstedt, Madian Khabsa,\nManav Avalani, Manish Bhatt, Martynas Mankus, Matan Hasson, Matthew Lennie, Matthias\nReso, Maxim Groshev, Maxim Naumov, Maya Lathi, Meghan Keneally, Miao Liu, Michael L.\nSeltzer,MichalValko,MichelleRestrepo,MihirPatel,MikVyatskov,MikayelSamvelyan,Mike\nClark, Mike Macey, Mike Wang, Miquel Jubert Hermoso, Mo Metanat, Mohammad Rastegari,\nMunish Bansal, Nandhini Santhanam, Natascha Parks, Natasha White, Navyata Bawa, Nayan\nSinghal, Nick Egebo, Nicolas Usunier, Nikhil Mehta, Nikolay Pavlovich Laptev, Ning Dong,\nNorman Cheng, Oleg Chernoguz, Olivia Hart, Omkar Salpekar, Ozlem Kalinli, Parkin Kent,\nParthParekh,PaulSaab,PavanBalaji,PedroRittner,PhilipBontrager,PierreRoux,PiotrDollar,\nPolinaZvyagina,PrashantRatanchandani,PritishYuvraj,QianLiang,RachadAlao,RachelRo-\ndriguez,RafiAyub,RaghothamMurthy,RaghuNayani,RahulMitra,RangaprabhuParthasarathy,\nRaymond Li, Rebekkah Hogan, Robin Battey, Rocky Wang, Russ Howes, Ruty Rinott, Sachin\nMehta, SachinSiby, SaiJayeshBondu, SamyakDatta, SaraChugh, SaraHunt, SargunDhillon,\nSasha Sidorov, Satadru Pan, Saurabh Mahajan, Saurabh Verma, Seiji Yamamoto, Sharadh Ra-\nmaswamy, Shaun Lindsay, Shaun Lindsay, Sheng Feng, Shenghao Lin, Shengxin Cindy Zha,\nShishir Patil, Shiva Shankar, Shuqiang Zhang, Shuqiang Zhang, Sinong Wang, Sneha Agarwal,\nSoji Sajuyigbe, Soumith Chintala, Stephanie Max, Stephen Chen, Steve Kehoe, Steve Satter-\nfield,SudarshanGovindaprasad,SumitGupta,SummerDeng,SungminCho,SunnyVirk,Suraj\nSubramanian, Sy Choudhury, Sydney Goldman, Tal Remez, Tamar Glaser, Tamara Best, Thilo\nKoehler, Thomas Robinson, Tianhe Li, Tianjun Zhang, Tim Matthews, Timothy Chou, Tzook\nShaked, Varun Vontimitta, Victoria Ajayi, Victoria Montanez, Vijai Mohan, Vinay Satish Ku-\nmar, Vishal Mangla, Vlad Ionescu, Vlad Poenaru, Vlad Tiberiu Mihailescu, Vladimir Ivanov,\nWei Li, Wenchen Wang, Wenwen Jiang, Wes Bouaziz, Will Constable, Xiaocheng Tang, Xiao-\njian Wu, Xiaolan Wang, Xilun Wu, Xinbo Gao, Yaniv Kleinman, Yanjun Chen, Ye Hu, Ye Jia,\nYe Qi, Yenda Li, Yilin Zhang, Ying Zhang, Yossi Adi, Youngjin Nam, Yu, Wang, Yu Zhao,\nYuchenHao,YundiQian,YunluLi,YuziHe,ZachRait,ZacharyDeVito,ZefRosnbrick,Zhao-\nduoWen,ZhenyuYang,ZhiweiZhao,andZhiyuMa.",
+      "size": 3293,
+      "sentences": 3
+    },
+    {
+      "id": 125,
+      "content": "n,YunluLi,YuziHe,ZachRait,ZacharyDeVito,ZefRosnbrick,Zhao-\nduoWen,ZhenyuYang,ZhiweiZhao,andZhiyuMa. Thellama3herdofmodels. arXivpreprint\narXiv:2407.21783,2024.",
+      "size": 159,
+      "sentences": 3
+    },
+    {
+      "id": 126,
+      "content": "uoWen,ZhenyuYang,ZhiweiZhao,andZhiyuMa. Thellama3herdofmodels. arXivpreprint\narXiv:2407.21783,2024. Tom Gunter, Zirui Wang, Chong Wang, Ruoming Pang, Andy Narayanan, Aonan Zhang, Bowen\nZhang, Chen Chen, Chung-Cheng Chiu, David Qiu, Deepak Gopinath, Dian Ang Yap, Dong\nYin, Feng Nan, Floris Weers, Guoli Yin, Haoshuo Huang, Jianyu Wang, Jiarui Lu, John Pee-\nbles, Ke Ye, Mark Lee, Nan Du, Qibin Chen, Quentin Keunebroek, Sam Wiseman, Syd Evans,\nTao Lei, Vivek Rathod, Xiang Kong, Xianzhi Du, Yanghao Li, Yongqiang Wang, Yuan Gao,\nZaidAhmed,ZhaoyangXu,ZhiyunLu,AlRashid,AlbinMadappallyJose,AlecDoane,Alfredo\nBencomo, Allison Vanderby, Andrew Hansen, Ankur Jain, Anupama Mann Anupama, Areeba\nKamal,BuguWu,CarolinaBrum,CharlieMaalouf,ChinguunErdenebileg,ChrisDulhanty,Do-\nminik Moritz, Doug Kang, Eduardo Jimenez, Evan Ladd, Fangping Shi, Felix Bai, Frank Chu,\nFredHohman,HadasKotek,HannahGillisColeman,JaneLi,JeffreyBigham,JefferyCao,Jeff\nLai, Jessica Cheung, Jiulong Shan, Joe Zhou, John Li, Jun Qin, Karanjeet Singh, Karla Vega,\nKelvinZou,LauraHeckman,LaurenGardiner,MargitBowler,MariaCordell,MengCao,Nicole\nHay, Nilesh Shahdadpuri, Otto Godwin, Pranay Dighe, Pushyami Rachapudi, Ramsey Tantawi,\nRomanFrigg,SamDavarnia,SanskrutiShah,SaptarshiGuha,SashaSirovica,ShenMa,Shuang\nMa, Simon Wang, Sulgi Kim, Suma Jayaram, Vaishaal Shankar, Varsha Paidi, Vivek Kumar,\nXin Wang, Xin Zheng, Walker Cheng, Yael Shrager, Yang Ye, Yasu Tanaka, Yihao Guo, Yun-\nsong Meng, Zhao Tang Luo, Zhi Ouyang, Alp Aygar, Alvin Wan, Andrew Walkingshaw, Andy\nNarayanan, Antonie Lin, Arsalan Farooq, Brent Ramerth, Colorado Reed, Chris Bartels, Chris\nChaney,DavidRiazati,EricLiangYang,ErinFeldman,GabrielHochstrasser,GuillaumeSeguin,\n13\n===  14 ===\nPreprint.",
+      "size": 1730,
+      "sentences": 4
+    },
+    {
+      "id": 127,
+      "content": "avidRiazati,EricLiangYang,ErinFeldman,GabrielHochstrasser,GuillaumeSeguin,\n13\n===  14 ===\nPreprint. Underreview.",
+      "size": 112,
+      "sentences": 2
+    },
+    {
+      "id": 128,
+      "content": "ricLiangYang,ErinFeldman,GabrielHochstrasser,GuillaumeSeguin,\n13\n===  14 ===\nPreprint. Underreview. Irina Belousova, Joris Pelemans, Karen Yang, Keivan Alizadeh Vahid, Liangliang Cao, Mah-\nyar Najibi, Marco Zuliani, Max Horton, Minsik Cho, Nikhil Bhendawade, Patrick Dong, Piotr\nMaj, Pulkit Agrawal, Qi Shan, Qichen Fu, Regan Poston, Sam Xu, Shuangning Liu, Sushma\nRao,TashweenaHeeramun,ThomasMerth,UdayRayala,VictorCui,VivekRangarajanSridhar,\nWencong Zhang, Wenqi Zhang, Wentao Wu, Xingyu Zhou, Xinwen Liu, Yang Zhao, Yin Xia,\nZhileRen,andZhongzhengRen.",
+      "size": 554,
+      "sentences": 3
+    },
+    {
+      "id": 129,
+      "content": "ng, Wenqi Zhang, Wentao Wu, Xingyu Zhou, Xinwen Liu, Yang Zhao, Yin Xia,\nZhileRen,andZhongzhengRen. Appleintelligencefoundationlanguagemodels. arXivpreprint\narXiv:2407.21075,2024. JacobHilton,KarlCobbe,andJohnSchulman. Batchsize-invarianceforpolicyoptimization. arXiv\npreprintarXiv:2110.00641,2022.",
+      "size": 298,
+      "sentences": 6
+    },
+    {
+      "id": 130,
+      "content": "be,andJohnSchulman. Batchsize-invarianceforpolicyoptimization. arXiv\npreprintarXiv:2110.00641,2022. Jordan Hoffmann, Sebastian Borgeaud, Arthur Mensch, Elena Buchatskaya, Trevor Cai, Eliza\nRutherford,DiegodeLasCasas,LisaAnneHendricks,JohannesWelbl,AidanClark,TomHen-\nnigan, Eric Noland, Katie Millican, George van den Driessche, Bogdan Damoc, Aurelia Guy,\nSimon Osindero, Karen Simonyan, Erich Elsen, Jack W. Rae, Oriol Vinyals, and Laurent Sifre. Trainingcompute-optimallargelanguagemodels.",
+      "size": 491,
+      "sentences": 5
+    },
+    {
+      "id": 131,
+      "content": "h Elsen, Jack W. Rae, Oriol Vinyals, and Laurent Sifre. Trainingcompute-optimallargelanguagemodels. arXivpreprintarXiv:2203.15556,2022. ShengdingHu,YugeTu,XuHan,ChaoqunHe,GanquCui,XiangLong,ZhiZheng,YeweiFang,\nYuxiangHuang,WeilinZhao,XinrongZhang,ZhengLengThai,KaihuoZhang,ChongyiWang,\nYuan Yao, Chenyang Zhao, Jie Zhou, Jie Cai, Zhongwu Zhai, Ning Ding, Chao Jia, Guoyang\nZeng, Dahai Li, Zhiyuan Liu, and Maosong Sun.",
+      "size": 418,
+      "sentences": 4
+    },
+    {
+      "id": 132,
+      "content": ", Jie Cai, Zhongwu Zhai, Ning Ding, Chao Jia, Guoyang\nZeng, Dahai Li, Zhiyuan Liu, and Maosong Sun. Minicpm: Unveiling the potential of small\nlanguagemodelswithscalabletrainingstrategies. arXivpreprintarXiv:2404.06395,2024. AlexanderHa¨gele,ElieBakouch,AtliKosson,LoubnaBenAllal,LeandroVonWerra,andMartin\nJaggi. Scalinglawsandcompute-optimaltrainingbeyondfixedtrainingdurations. arXivpreprint\narXiv:2405.18392,2024. Su Jianlin. Rethinking learning rate and batch size (part 3): Muon, Sep 2025.",
+      "size": 493,
+      "sentences": 8
+    },
+    {
+      "id": 133,
+      "content": "rXiv:2405.18392,2024. Su Jianlin. Rethinking learning rate and batch size (part 3): Muon, Sep 2025. URL https:\n//kexue.fm/archives/11285. KellerJordan,YuchenJin,VladoBoza,JiachengYou,FranzCesista,LakerNewhouse,andJeremy\nBernstein. Muon: An optimizer for hidden layers in neural networks, 2024. URL https:\n//kellerjordan.github.io/posts/muon/. Jared Kaplan, Sam McCandlish, Tom Henighan, Tom B. Brown, Benjamin Chess, Rewon Child,\nScott Gray, Alec Radford, Jeffrey Wu, and Dario Amodei.",
+      "size": 485,
+      "sentences": 9
+    },
+    {
+      "id": 134,
+      "content": "Tom B. Brown, Benjamin Chess, Rewon Child,\nScott Gray, Alec Radford, Jeffrey Wu, and Dario Amodei. Scaling laws for neural language\nmodels. arXivpreprintarXiv:2001.08361,2020. NitishShirishKeskar,DheevatsaMudigere,JorgeNocedal,MikhailSmelyanskiy,andPingTakPe-\nterTang. Onlarge-batchtrainingfordeeplearning: Generalizationgapandsharpminima. arXiv\npreprintarXiv:1609.04836,2017.",
+      "size": 376,
+      "sentences": 7
+    },
+    {
+      "id": 135,
+      "content": "batchtrainingfordeeplearning: Generalizationgapandsharpminima. arXiv\npreprintarXiv:1609.04836,2017. Jeonghoon Kim, Byeongchan Lee, Cheonbok Park, Yeontaek Oh, Beomjun Kim, Taehwan Yoo,\nSeongjinShin,DongyoonHan,JinwooShin,andKangMinYoo. Peri-ln: Revisitingnormaliza-\ntionlayerinthetransformerarchitecture. arXivpreprintarXiv:2502.02732,2025. TimLarge,YangLiu,MinyoungHuh,HyojinBahng,PhillipIsola,andJeremyBernstein. Scalable\noptimizationinthemodularnorm. arXivpreprintarXiv:2405.14813,2024.",
+      "size": 489,
+      "sentences": 8
+    },
+    {
+      "id": 136,
+      "content": "sola,andJeremyBernstein. Scalable\noptimizationinthemodularnorm. arXivpreprintarXiv:2405.14813,2024. HouyiLi,WenzhenZheng,QiufengWang,HanshanZhang,ZiliWang,ShijieXuyang,YuantaoFan,\nZhenyuDing,HaoyingWang,NingDing,ShuigengZhou,XiangyuZhang,andDaxinJiang.Pre-\ndictablescale: Parti–optimalhyperparameterscalinglawinlargelanguagemodelpretraining. arXivpreprintarXiv:2503.04715,2025.",
+      "size": 377,
+      "sentences": 5
+    },
+    {
+      "id": 137,
+      "content": "optimalhyperparameterscalinglawinlargelanguagemodelpretraining. arXivpreprintarXiv:2503.04715,2025. Shuaipeng Li, Penghao Zhao, Hailin Zhang, Xingwu Sun, Hao Wu, Dian Jiao, Weiyan Wang,\nChengjunLiu,ZhengFang,JinbaoXue,YangyuTao,BinCui,andDiWang. Surgephenomenon\ninoptimallearningrateandbatchsizescaling. arXivpreprintarXiv:2405.14578,2024.",
+      "size": 339,
+      "sentences": 5
+    },
+    {
+      "id": 138,
+      "content": "Wang. Surgephenomenon\ninoptimallearningrateandbatchsizescaling. arXivpreprintarXiv:2405.14578,2024. Wanchao Liang, Tianyu Liu, Less Wright, Will Constable, Andrew Gu, Chien-Chin Huang, Iris\nZhang,WeiFeng,HowardHuang,JunjieWang,etal.Torchtitan:One-stoppytorchnativesolution\nfor production ready llm pretraining. In The Thirteenth International Conference on Learning\nRepresentations,2025. 14\n===  15 ===\nPreprint. Underreview.",
+      "size": 425,
+      "sentences": 7
+    },
+    {
+      "id": 139,
+      "content": "th International Conference on Learning\nRepresentations,2025. 14\n===  15 ===\nPreprint. Underreview. JingyuanLiu,JianlinSu,XingchengYao,ZhejunJiang,GuokunLai,YulunDu,YidaoQin,Weixin\nXu, Enzhe Lu, Junjie Yan, Yanru Chen, Huabin Zheng, Yibo Liu, Shaowei Liu, Bohong Yin,\nWeiran He, Han Zhu, Yuzhi Wang, Jianzhou Wang, Mengnan Dong, Zheng Zhang, Yongsheng\nKang,HaoZhang,XinranXu,YutaoZhang,YuxinWu,XinyuZhou,andZhilinYang. Muonis\nscalableforllmtraining. arXivpreprintarXiv:2502.16982,2025.",
+      "size": 485,
+      "sentences": 6
+    },
+    {
+      "id": 140,
+      "content": "YuxinWu,XinyuZhou,andZhilinYang. Muonis\nscalableforllmtraining. arXivpreprintarXiv:2502.16982,2025. IlyaLoshchilov,Cheng-PingHsieh,SimengSun,andBorisGinsburg.ngpt:Normalizedtransformer\nwithrepresentationlearningonthehypersphere. arXivpreprintarXiv:2410.01131,2025. Sadhika Malladi, Kaifeng Lyu, Abhishek Panigrahi, and Sanjeev Arora. On the sdes and scaling\nrulesforadaptivegradientalgorithms. arXivpreprintarXiv:2205.10287,2024. Sam McCandlish, Jared Kaplan, Dario Amodei, and OpenAI Dota Team.",
+      "size": 495,
+      "sentences": 9
+    },
+    {
+      "id": 141,
+      "content": "XivpreprintarXiv:2205.10287,2024. Sam McCandlish, Jared Kaplan, Dario Amodei, and OpenAI Dota Team. An empirical model of\nlarge-batchtraining. arXivpreprintarXiv:1812.06162,2018. Meta AI. Introducing llama 4: Advancing multimodal intelligence, 2025. URL https://ai. meta.com/blog/llama-4-multimodal-intelligence/. Andrei Mircea, Supriyo Chakraborty, Nima Chitsazan, Milind Naphade, Sambit Sahu, Irina Rish,\nand Ekaterina Lobacheva.",
+      "size": 431,
+      "sentences": 9
+    },
+    {
+      "id": 142,
+      "content": "riyo Chakraborty, Nima Chitsazan, Milind Naphade, Sambit Sahu, Irina Rish,\nand Ekaterina Lobacheva. Training dynamics underlying language model scaling laws: Loss\ndecelerationandzero-sumlearning. arXivpreprintarXiv:2506.05447,2025. LakerNewhouse,R.PrestonHess,FranzCesista,AndriiZahorodnii,JeremyBernstein,andPhillip\nIsola. Trainingtransformerswithenforcedlipschitzconstants. arXivpreprintarXiv:2507.13338,\n2025.",
+      "size": 412,
+      "sentences": 6
+    },
+    {
+      "id": 143,
+      "content": "lip\nIsola. Trainingtransformerswithenforcedlipschitzconstants. arXivpreprintarXiv:2507.13338,\n2025. OpenAI, Josh Achiam, Steven Adler, Sandhini Agarwal, Lama Ahmad, Ilge Akkaya, Floren-\ncia Leoni Aleman, Diogo Almeida, Janko Altenschmidt, Sam Altman, Shyamal Anadkat, Red\nAvila, Igor Babuschkin, Suchir Balaji, Valerie Balcom, Paul Baltescu, Haiming Bao, Moham-\nmad Bavarian, Jeff Belgum, Irwan Bello, Jake Berdine, Gabriel Bernadett-Shapiro, Christopher\nBerner, Lenny Bogdonoff, Oleg Boiko, Madelaine Boyd, Anna-Luisa Brakman, Greg Brock-\nman, Tim Brooks, Miles Brundage, Kevin Button, Trevor Cai, Rosie Campbell, Andrew Cann,\nBrittany Carey, Chelsea Carlson, Rory Carmichael, Brooke Chan, Che Chang, Fotis Chantzis,\nDerekChen, SullyChen, RubyChen, JasonChen, MarkChen, BenChess, ChesterCho, Casey\nChu, Hyung Won Chung, Dave Cummings, Jeremiah Currier, Yunxing Dai, Cory Decareaux,\nThomasDegry,NoahDeutsch,DamienDeville,ArkaDhar,DavidDohan,SteveDowling,Sheila\nDunning, Adrien Ecoffet, Atty Eleti, Tyna Eloundou, David Farhi, Liam Fedus, Niko Felix,\nSimo´n Posada Fishman, Juston Forte, Isabella Fulford, Leo Gao, Elie Georges, Christian Gib-\nson, Vik Goel, Tarun Gogineni, Gabriel Goh, Rapha Gontijo-Lopes, Jonathan Gordon, Morgan\nGrafstein, Scott Gray, Ryan Greene, Joshua Gross, Shixiang Shane Gu, Yufei Guo, Chris Hal-\nlacy, Jesse Han, Jeff Harris, Yuchen He, Mike Heaton, Johannes Heidecke, Chris Hesse, Alan\nHickey, Wade Hickey, Peter Hoeschele, Brandon Houghton, Kenny Hsu, Shengli Hu, Xin Hu,\nJoost Huizinga, Shantanu Jain, Shawn Jain, Joanne Jang, Angela Jiang, Roger Jiang, Haozhun\nJin, Denny Jin, Shino Jomoto, Billie Jonn, Heewoo Jun, Tomer Kaftan, Łukasz Kaiser, Ali Ka-\nmali,IngmarKanitscheider,NitishShirishKeskar,TabarakKhan,LoganKilpatrick,JongWook\nKim, Christina Kim, Yongjik Kim, Jan Hendrik Kirchner, Jamie Kiros, Matt Knight, Daniel\nKokotajlo, Łukasz Kondraciuk, Andrew Kondrich, Aris Konstantinidis, Kyle Kosic, Gretchen\nKrueger, Vishal Kuo, Michael Lampe, Ikai Lan, Teddy Lee, Jan Leike, Jade Leung, Daniel\nLevy, Chak Ming Li, Rachel Lim, Molly Lin, Stephanie Lin, Mateusz Litwin, Theresa Lopez,\nRyan Lowe, Patricia Lue, Anna Makanju, Kim Malfacini, Sam Manning, Todor Markov, Yaniv\nMarkovski,BiancaMartin,KatieMayer,AndrewMayne,BobMcGrew,ScottMayerMcKinney,\nChristineMcLeavey,PaulMcMillan,JakeMcNeil,DavidMedina,AalokMehta,JacobMenick,\nLuke Metz, Andrey Mishchenko, Pamela Mishkin, Vinnie Monaco, Evan Morikawa, Daniel\nMossing, TongMu, MiraMurati, OlegMurk, DavidMe´ly, AshvinNair, ReiichiroNakano, Ra-\njeevNayak,ArvindNeelakantan,RichardNgo,HyeonwooNoh,LongOuyang,CullenO’Keefe,\nJakub Pachocki, Alex Paino, Joe Palermo, Ashley Pantuliano, Giambattista Parascandolo, Joel\nParish, Emy Parparita, Alex Passos, Mikhail Pavlov, Andrew Peng, Adam Perelman, Filipe\nde Avila Belbute Peres, Michael Petrov, Henrique Ponde de Oliveira Pinto, Michael, Pokorny,\nMichellePokrass,VitchyrH.Pong,TollyPowell,AletheaPower,BorisPower,ElizabethProehl,\nRaul Puri, Alec Radford, Jack Rae, Aditya Ramesh, Cameron Raymond, Francis Real, Kendra\nRimbach, Carl Ross, Bob Rotsted, Henri Roussez, Nick Ryder, Mario Saltarelli, Ted Sanders,\n15\n===  16 ===\nPreprint.",
+      "size": 3161,
+      "sentences": 4
+    },
+    {
+      "id": 144,
+      "content": "ss, Bob Rotsted, Henri Roussez, Nick Ryder, Mario Saltarelli, Ted Sanders,\n15\n===  16 ===\nPreprint. Underreview.",
+      "size": 112,
+      "sentences": 2
+    },
+    {
+      "id": 145,
+      "content": "ed, Henri Roussez, Nick Ryder, Mario Saltarelli, Ted Sanders,\n15\n===  16 ===\nPreprint. Underreview. Shibani Santurkar, Girish Sastry, Heather Schmidt, David Schnurr, John Schulman, Daniel Sel-\nsam,KylaSheppard,TokiSherbakov,JessicaShieh,SarahShoker,PranavShyam,SzymonSidor,\nEric Sigler, Maddie Simens, Jordan Sitkin, Katarina Slama, Ian Sohl, Benjamin Sokolowsky,\nYangSong,NatalieStaudacher,FelipePetroskiSuch,NatalieSummers,IlyaSutskever,JieTang,\nNikolasTezak,MadeleineB.Thompson,PhilTillet,AminTootoonchian,ElizabethTseng,Pre-\nston Tuggle, Nick Turley, Jerry Tworek, Juan Felipe Cero´n Uribe, Andrea Vallone, Arun Vi-\njayvergiya,ChelseaVoss,CarrollWainwright,JustinJayWang,AlvinWang,BenWang,Jonathan\nWard, Jason Wei, CJ Weinmann, Akila Welihinda, Peter Welinder, Jiayi Weng, Lilian Weng,\nMatt Wiethoff, Dave Willner, Clemens Winter, Samuel Wolrich, Hannah Wong, Lauren Work-\nman, Sherwin Wu, Jeff Wu, Michael Wu, Kai Xiao, Tao Xu, Sarah Yoo, Kevin Yu, Qiming\nYuan,WojciechZaremba,RowanZellers,ChongZhang,MarvinZhang,ShengjiaZhao,Tianhao\nZheng,JuntangZhuang,WilliamZhuk,andBarretZoph.",
+      "size": 1085,
+      "sentences": 3
+    },
+    {
+      "id": 146,
+      "content": "nZellers,ChongZhang,MarvinZhang,ShengjiaZhao,Tianhao\nZheng,JuntangZhuang,WilliamZhuk,andBarretZoph. Gpt-4technicalreport. arXivpreprint\narXiv:2303.08774,2024. Thomas Pethick, Wanyun Xie, Kimon Antonakopoulos, Zhenyu Zhu, Antonio Silveti-Falls, and\nVolkan Cevher. Training deep learning models with norm-constrained lmos. arXiv preprint\narXiv:2502.07529,2025a. Thomas Pethick, Wanyun Xie, Mete Erdogan, Kimon Antonakopoulos, Tony Silveti-Falls, and\nVolkanCevher.",
+      "size": 461,
+      "sentences": 7
+    },
+    {
+      "id": 147,
+      "content": "omas Pethick, Wanyun Xie, Mete Erdogan, Kimon Antonakopoulos, Tony Silveti-Falls, and\nVolkanCevher. Generalizedgradientnormclipping&non-euclidean(l ,l )-smoothness. arXiv\n0 1\npreprintarXiv:2506.01913,2025b. Tomer Porian, Mitchell Wortsman, Jenia Jitsev, Ludwig Schmidt, and Yair Carmon. Resolving\ndiscrepanciesincompute-optimalscalingoflanguagemodels. arXivpreprintarXiv:2406.19146,\n2025. Artem Riabinin, Egor Shulgin, Kaja Gruntkowska, and Peter Richta´rik. Gluon: Making muon &\nsciongreatagain!",
+      "size": 496,
+      "sentences": 8
+    },
+    {
+      "id": 148,
+      "content": "abinin, Egor Shulgin, Kaja Gruntkowska, and Peter Richta´rik. Gluon: Making muon &\nsciongreatagain! (bridgingtheoryandpracticeoflmo-basedoptimizersforllms). arXivpreprint\narXiv:2505.13416,2025. Naoki Sato, Hiroki Naganuma, and Hideaki Iiduka. Convergence bound and critical batch size of\nmuonoptimizer. arXivpreprintarXiv:2507.01598,2025. AndreiSemenov,MatteoPagliardini,andMartinJaggi.Benchmarkingoptimizersforlargelanguage\nmodelpretraining. arXivpreprintarXiv:2509.01440,2025.",
+      "size": 478,
+      "sentences": 9
+    },
+    {
+      "id": 149,
+      "content": "nJaggi.Benchmarkingoptimizersforlargelanguage\nmodelpretraining. arXivpreprintarXiv:2509.01440,2025. YikangShen,MatthewStallone,MayankMishra,GaoyuanZhang,ShawnTan,AdityaPrasad,Adri-\nanaMezaSoria,DavidD.Cox,andRameswarPanda. Powerscheduler: Abatchsizeandtoken\nnumberagnosticlearningratescheduler. arXivpreprintarXiv:2408.13359,2024. SamuelL.SmithandQuocV.Le. Abayesianperspectiveongeneralizationandstochasticgradient\ndescent. arXivpreprintarXiv:1710.06451,2018.",
+      "size": 459,
+      "sentences": 8
+    },
+    {
+      "id": 150,
+      "content": "yesianperspectiveongeneralizationandstochasticgradient\ndescent. arXivpreprintarXiv:1710.06451,2018. DanSu,KezhiKong,YingLin,JosephJennings,BrandonNorick,MarkusKliegl,MostofaPatwary,\nMohammad Shoeybi, and Bryan Catanzaro. Nemotron-cc: Transforming common crawl into a\nrefinedlong-horizonpretrainingdataset. arXivpreprintarXiv:2412.02595,2025. Jianlin Su, Murtadha Ahmed, Yu Lu, Shengfeng Pan, Wen Bo, and Yunfeng Liu. Roformer: En-\nhancedtransformerwithrotarypositionembedding.",
+      "size": 476,
+      "sentences": 7
+    },
+    {
+      "id": 151,
+      "content": "Shengfeng Pan, Wen Bo, and Yunfeng Liu. Roformer: En-\nhancedtransformerwithrotarypositionembedding. Neurocomputing,568:127063,2024.",
+      "size": 131,
+      "sentences": 3
+    },
+    {
+      "id": 152,
+      "content": "ng Liu. Roformer: En-\nhancedtransformerwithrotarypositionembedding. Neurocomputing,568:127063,2024. Kimi Team, Yifan Bai, Yiping Bao, Guanduo Chen, Jiahao Chen, Ningxin Chen, Ruijue Chen,\nYanruChen,YuankunChen,YutianChen,ZhuofuChen,JialeiCui,HaoDing,MengnanDong,\nAngangDu,ChenzhuangDu,DikangDu,YulunDu,YuFan,YichenFeng,KelinFu,BofeiGao,\nHongcheng Gao, Peizhong Gao, Tong Gao, Xinran Gu, Longyu Guan, Haiqing Guo, Jianhang\nGuo, HaoHu, XiaoruHao, TianhongHe, WeiranHe, WenyangHe, ChaoHong, YangyangHu,\nZhenxing Hu, Weixiao Huang, Zhiqi Huang, Zihao Huang, Tao Jiang, Zhejun Jiang, Xinyi Jin,\nYongsheng Kang, Guokun Lai, Cheng Li, Fang Li, Haoyang Li, Ming Li, Wentao Li, Yanhao\nLi, Yiwei Li, Zhaowei Li, Zheming Li, Hongzhan Lin, Xiaohan Lin, Zongyu Lin, Chengyin\nLiu, Chenyu Liu, Hongzhang Liu, Jingyuan Liu, Junqi Liu, Liang Liu, Shaowei Liu, T. Y. Liu,\nTianweiLiu,WeizhouLiu,YangyangLiu,YiboLiu,YipingLiu,YueLiu,ZhengyingLiu,Enzhe\nLu,LijunLu,ShenglingMa,XinyuMa,YingweiMa,ShaoguangMao,JieMei,XinMen,Yibo\nMiao,SiyuanPan,YeboPeng,RuoyuQin,BowenQu,ZeyuShang,LidongShi,ShengyuanShi,\n16\n===  17 ===\nPreprint.",
+      "size": 1104,
+      "sentences": 4
+    },
+    {
+      "id": 153,
+      "content": "Miao,SiyuanPan,YeboPeng,RuoyuQin,BowenQu,ZeyuShang,LidongShi,ShengyuanShi,\n16\n===  17 ===\nPreprint. Underreview.",
+      "size": 112,
+      "sentences": 2
+    },
+    {
+      "id": 154,
+      "content": "n,YeboPeng,RuoyuQin,BowenQu,ZeyuShang,LidongShi,ShengyuanShi,\n16\n===  17 ===\nPreprint. Underreview. FeifanSong,JianlinSu,ZhengyuanSu,XinjieSun,FloodSung,HeyiTang,JiawenTao,Qifeng\nTeng, ChensiWang, DingluWang, FengWang, HaimingWang, JianzhouWang, JiaxingWang,\nJinhongWang,ShengjieWang,ShuyiWang,YaoWang,YejieWang,YiqinWang,YuxinWang,\nYuzhiWang,ZhaojiWang,ZhengtaoWang,ZhexuWang,ChuWei,QianqianWei,WenhaoWu,\nXingzheWu,YuxinWu,ChenjunXiao,XiaotongXie,WeiminXiong,BoyuXu,JingXu,Jinjing\nXu, L. H. Xu, Lin Xu, Suting Xu, Weixin Xu, Xinran Xu, Yangchuan Xu, Ziyao Xu, Junjie\nYan,YuziYan,XiaofeiYang,YingYang,ZhenYang,ZhilinYang,ZonghanYang,HaotianYao,\nXingcheng Yao, Wenjie Ye, Zhuorui Ye, Bohong Yin, Longhui Yu, Enming Yuan, Hongbang\nYuan, Mengjie Yuan, Haobing Zhan, Dehao Zhang, Hao Zhang, Wanlu Zhang, Xiaobin Zhang,\nYangkunZhang, YizhiZhang, YongtingZhang, YuZhang, YutaoZhang, YutongZhang, Zheng\nZhang, Haotian Zhao, Yikai Zhao, Huabin Zheng, Shaojie Zheng, Jianren Zhou, Xinyu Zhou,\nZaida Zhou, Zhen Zhu, Weiyu Zhuang, and Xinxing Zu.",
+      "size": 1035,
+      "sentences": 3
+    },
+    {
+      "id": 155,
+      "content": "Zheng, Shaojie Zheng, Jianren Zhou, Xinyu Zhou,\nZaida Zhou, Zhen Zhu, Weiyu Zhuang, and Xinxing Zu. Kimi k2: Open agentic intelligence. arXivpreprintarXiv:2507.20534,2025. ShucheWang, FengzhuoZhang, JiaxiangLi, CunxiaoDu, ChaoDu, TianyuPang, ZhuoranYang,\nMingyi Hong, and Vincent YF Tan. Muon outperforms adam in tail-end associative memory\nlearning. arXivpreprintarXiv:2509.26030,2025. KaiyueWen,DavidHall,TengyuMa,andPercyLiang. Fantasticpretrainingoptimizersandwhere\ntofindthem.",
+      "size": 481,
+      "sentences": 8
+    },
+    {
+      "id": 156,
+      "content": "025. KaiyueWen,DavidHall,TengyuMa,andPercyLiang. Fantasticpretrainingoptimizersandwhere\ntofindthem. arXivpreprintarXiv:2509.02046,2025. MitchellWortsman,PeterJ.Liu,LechaoXiao,KatieEverett,AlexAlemi,BenAdlam,JohnD.Co-\nReyes,IzzeddinGur,AbhishekKumar,RomanNovak,JeffreyPennington,JaschaSohl-dickstein,\nKelvinXu,JaehoonLee,JustinGilmer,andSimonKornblith. Small-scaleproxiesforlarge-scale\ntransformertraininginstabilities. arXivpreprintarXiv:2309.14322,2023.",
+      "size": 454,
+      "sentences": 7
+    },
+    {
+      "id": 157,
+      "content": "ll-scaleproxiesforlarge-scale\ntransformertraininginstabilities. arXivpreprintarXiv:2309.14322,2023. GregYang, EdwardJ.Hu, IgorBabuschkin, SzymonSidor, XiaodongLiu, DavidFarhi, NickRy-\nder, Jakub Pachocki, Weizhu Chen, and Jianfeng Gao. Tensor programs v: Tuning large neural\nnetworksviazero-shothyperparametertransfer. arXivpreprintarXiv:2203.03466,2022. Greg Yang, Dingli Yu, Chen Zhu, and Soufiane Hayou. Tensor programs vi: Feature learning in\ninfinite-depthneuralnetworks.",
+      "size": 476,
+      "sentences": 7
+    },
+    {
+      "id": 158,
+      "content": "Chen Zhu, and Soufiane Hayou. Tensor programs vi: Feature learning in\ninfinite-depthneuralnetworks. arXivpreprintarXiv:2310.02244,2023. GregYang,JamesB.Simon,andJeremyBernstein. Aspectralconditionforfeaturelearning. arXiv\npreprintarXiv:2310.17813,2024. Hanlin Zhang, Depen Morwani, Nikhil Vyas, Jingfeng Wu, Difan Zou, Udaya Ghai, Dean Fos-\nter, and Sham Kakade. How does critical batch size scale in pre-training? arXiv preprint\narXiv:2410.21676,2025.",
+      "size": 452,
+      "sentences": 9
+    },
+    {
+      "id": 159,
+      "content": "m Kakade. How does critical batch size scale in pre-training? arXiv preprint\narXiv:2410.21676,2025. JingweiZuo,MaksimVelikanov,IlyasChahed,YounesBelkada,DhiaEddineRhayem,Guillaume\nKunsch,HakimHacid,HamzaYous,BrahimFarhat,IbrahimKhadraoui,MugariyaFarooq,Giu-\nlia Campesan, Ruxandra Cojocaru, Yasser Djilali, Shi Hu, Iheb Chaabane, Puneesh Khanna,\nMohamed El Amine Seddik, Ngoc Dung Huynh, Phuc Le Khac, Leen AlQadi, Billel Moked-\ndem, Mohamed Chami, Abdalgader Abubaker, Mikhail Lubinets, Kacper Piskorski, and Slim\nFrikha.",
+      "size": 522,
+      "sentences": 4
+    },
+    {
+      "id": 160,
+      "content": "oked-\ndem, Mohamed Chami, Abdalgader Abubaker, Mikhail Lubinets, Kacper Piskorski, and Slim\nFrikha. Falcon-h1: A family of hybrid-head language models redefining efficiency and perfor-\nmance. arXivpreprintarXiv:2507.22448,2025. 17\n===  18 ===\nPreprint. Underreview. A APPENDIX\nA.1 LLMUSAGE\nLLMs were used solely to aid in polishing the writing and improving the clarity of exposition.",
+      "size": 384,
+      "sentences": 6
+    },
+    {
+      "id": 161,
+      "content": "SAGE\nLLMs were used solely to aid in polishing the writing and improving the clarity of exposition. In addition, code-assistant tools were occasionally used for minor programming support, such as\ncode completion and syntax suggestions; they were not employed to design algorithms, generate\nexperiments,orimplementtheproposedmethodsfromscratch.",
+      "size": 343,
+      "sentences": 2
+    },
+    {
+      "id": 162,
+      "content": "e not employed to design algorithms, generate\nexperiments,orimplementtheproposedmethodsfromscratch. A.2 MODELTRAININGCONFIGURATION\n• Proxymodel,69Mparameters: 4hiddenlayerswithd = 256,Multi-HeadAttention\nmodel\nwith n = 4 and n = 4, SwiGLU activation function with MLP expansion\nheads kv−heads\nfactor f = 2.75, RoPE with θ = 10000 (Su et al., 2024), Llama 3 tokenizer with\nMLP\nvocabularysizeof128256(afterpadding)(Grattafiorietal.,2024), inputandoutputem-\nbeddinglayersarenottied.",
+      "size": 479,
+      "sentences": 2
+    },
+    {
+      "id": 163,
+      "content": "bularysizeof128256(afterpadding)(Grattafiorietal.,2024), inputandoutputem-\nbeddinglayersarenottied. • ×4(12) wider model, 314M (1.3B) parameters: same as proxy, except d =\nmodel\n1024(3072). Inwidthscaling, wekeepfixedd = 64andscalethenumberofheads\nhead\naccordingly. • ×8(32) deeper model, 91M (168M) parameters: same as proxy, except 32 (128) hidden\nlayers.",
+      "size": 357,
+      "sentences": 4
+    },
+    {
+      "id": 164,
+      "content": "dingly. • ×8(32) deeper model, 91M (168M) parameters: same as proxy, except 32 (128) hidden\nlayers. • Semi-orthogonalinitializationforhiddenlinearlayersandrow-wisenormalizedGaussian\ninitializationforinput/outputembeddinglayers(Pethicketal.,2025a). Initialisationofthe\nlast layer of both MLP and attention blocks (those with the output being added with the\n(cid:112)\nresidualstream)ismultipliedby1/ 2N .",
+      "size": 402,
+      "sentences": 4
+    },
+    {
+      "id": 165,
+      "content": "n blocks (those with the output being added with the\n(cid:112)\nresidualstream)ismultipliedby1/ 2N . layers\n• Dropout disabled, no biases in all Linear layers, no weight sharing between input and\noutputembeddinglayers. • norm-everywhere: normalise input to every Linear layer via RMSNorm without\nlearnable parameters with ϵ = 1e−20.",
+      "size": 331,
+      "sentences": 3
+    },
+    {
+      "id": 166,
+      "content": "ere: normalise input to every Linear layer via RMSNorm without\nlearnable parameters with ϵ = 1e−20. Effectively, this correspondsto Pre-LN setup with\nQK-normplusthreeadditionalnormalisationlayers: V-norm,O-norm(beforeoutputpro-\njectionmatrixinAttentionblock),andMLP-norm(afterSwiGLUandbeforethelastMLP\nlayer). Residualconnections,includingtheonesinjectingtheinputembeddinglayerinfor-\nmation,remainintact.",
+      "size": 404,
+      "sentences": 3
+    },
+    {
+      "id": 167,
+      "content": "er). Residualconnections,includingtheonesinjectingtheinputembeddinglayerinfor-\nmation,remainintact. • Randomseeds:\n– ForallproxymodelrunsinSec.3.2andSec.3.3: 30\n– For all width/depth-scaled-up model runs: interleaved 30 + 3034 (every 22 step is\n30,everyother22stepis3034)\n– ForlayoutscansinFig.4aandFig.11: averagingover30+3034+303409forthe\nthree “core” learning rate values ({2−4,2−6,2−8} for B = 32, {2−2,2−4,2−6} for\nB =128,{2−1,2−3,2−5}forB =512),3034+303409fortherest\n– ForlayoutscansinFig.4b: 30\n• torchtitancodebase,(Liangetal.,2025),FSDP2(Fengetal.,2025),FlashAttention-2\n(Dao,2023)\nA.3 OPTIMIZERCONFIGURATION\nExceptdedicatedablations,weusethefollowingsetofhyperparameters:\n• Unconstrainedversion(withoutweightdecay),\n• Learningrateη: gridwith20.5 stepfortheproxymodel,and21 stepforthewidth/depth-\nscaled-upmodels,\n• momentumµ=0,withoutNesterovmomentum,\n• nowarmup,constantlearningrateschedule,\n• ϵ=1e−20(usedingradientnormalisation),\n18\n===  19 ===\nPreprint.",
+      "size": 967,
+      "sentences": 3
+    },
+    {
+      "id": 168,
+      "content": "rmup,constantlearningrateschedule,\n• ϵ=1e−20(usedingradientnormalisation),\n18\n===  19 ===\nPreprint. Underreview. • orthogonalization of gradients for hidden layers (∥.∥ norm assumption) with\nRMS→RMS\nNewton-Schulz algorithm for n = 5 with original Muon coefficients a,b,c =\niter\n(3.4445,−4.7750,2.0315)(Jordanetal.,2024). A.4 OPTIMALNORMFITTING&LOSSSMOOTHING\nAfter na¨ıvely taking the empirical optimum across the learning rate grid (e.g. as the one empha-\nsized with dashed black lines in Fig.",
+      "size": 493,
+      "sentences": 5
+    },
+    {
+      "id": 169,
+      "content": "optimum across the learning rate grid (e.g. as the one empha-\nsized with dashed black lines in Fig. 1a), we found that the corresponding norm scans, although\nstillindicating normtransfer, are quitenoisy (e.g. compareFig. 2avs. Fig.6a). From Fig.1a we\nnoted that data points in loss vs. norm plot resemble parabola if plotted in log-log scale. Further-\nmore, we know by design that at initialization (step 0) the output norm equals to 1, and train loss\nequalsto11.765.",
+      "size": 467,
+      "sentences": 8
+    },
+    {
+      "id": 170,
+      "content": "design that at initialization (step 0) the output norm equals to 1, and train loss\nequalsto11.765. Withthis,wechosetoperformaconstrainedfitwithasecond-orderpolynomial\nfunction in log-log scale log(loss) = alog(norm)2 +blog(norm)+c, where the free term c is\nfixedatpreciselythelossvalueatinitialization. Wedothisusingweightedleastsquaresfittingwith\nnp.linalg.lstsq, where the weighting is done with inverse uncertainties coming from loss\nsmoothing,describedbelow.",
+      "size": 462,
+      "sentences": 3
+    },
+    {
+      "id": 171,
+      "content": ", where the weighting is done with inverse uncertainties coming from loss\nsmoothing,describedbelow. Forrobustness,onlysevendatapointsaroundtheempiricaloptimum\nare used in the fit. The optimal loss and norm values are then extracted as the parabola optimum\ncoordinates. Optimallearningrateistakenfromthedatapointclosesttothefittedoptimum. Results\nofsuchfitsforFig.2canbefoundinFig.12.",
+      "size": 383,
+      "sentences": 5
+    },
+    {
+      "id": 172,
+      "content": "rateistakenfromthedatapointclosesttothefittedoptimum. Results\nofsuchfitsforFig.2canbefoundinFig.12. Since running several random seeds is computationally intensive, we perform loss smoothing to\nestimate the loss variance and make loss estimates more robust.",
+      "size": 257,
+      "sentences": 3
+    },
+    {
+      "id": 173,
+      "content": "nsive, we perform loss smoothing to\nestimate the loss variance and make loss estimates more robust. Essentially, for a given horizon\npoint, instead of taking its loss value, we average it with the previous and next evaluated points\n(67Mtokensaway,ore.g.128stepsfromeachotherwithB =128).Empiricallyestimatedstandard\ndeviationisthenusedinthefitsasdescribedabove.",
+      "size": 360,
+      "sentences": 2
+    },
+    {
+      "id": 174,
+      "content": "fromeachotherwithB =128).Empiricallyestimatedstandard\ndeviationisthenusedinthefitsasdescribedabove. Weemploylosssmoothingonlyforsmallbatch\nsizesB ≤128,asthosehavinglargelossvariance,andforlargetokenhorizonsD ≥233,tostayin\ntheregionoflargelyconvergedloss(whichcanbelocallylinearlyapproximated)andthereforenot\nbiastheestimate.",
+      "size": 324,
+      "sentences": 2
+    },
+    {
+      "id": 175,
+      "content": "regionoflargelyconvergedloss(whichcanbelocallylinearlyapproximated)andthereforenot\nbiastheestimate. InordertogetvarianceestimateinFig.3bwithoutrunningseveralrandomseedruns,wevarythe\nfitting procedure outlined above (with/without fitting, with/without loss smoothing, with/without\nconstrainttolossatinitialization),thusresultingin6totalvariations.Foreachofthosewetrackhow\noptimal norm/loss/learning rate changes, and propagate this variance to plotting and downstream\nanalysis.",
+      "size": 476,
+      "sentences": 2
+    },
+    {
+      "id": 176,
+      "content": "l norm/loss/learning rate changes, and propagate this variance to plotting and downstream\nanalysis. 19\n===  20 ===\nPreprint. Underreview. A.5 DISTRIBUTEDSCION\nWeimplementedadistributedversionofScion/Muon. Inthissection,webrieflydescribetheimple-\nmentation. We assume that the vectorized momentum buffer update is performed before applying\ntheactualweightupdate. A.5.1 DDP-DISCO\nAsawarm-up,wefirstconsidertheDDPcase(notethataDDP-basedversionofMuonhasalready\nbeen implemented in modded-nanogpt10).",
+      "size": 495,
+      "sentences": 7
+    },
+    {
+      "id": 177,
+      "content": "considertheDDPcase(notethataDDP-basedversionofMuonhasalready\nbeen implemented in modded-nanogpt10). Our implementation differs slightly from theirs, as\nwedonotexplicitlyapplycommunication–computationoverlapforDDP.",
+      "size": 213,
+      "sentences": 2
+    },
+    {
+      "id": 178,
+      "content": "tion differs slightly from theirs, as\nwedonotexplicitlyapplycommunication–computationoverlapforDDP. Algorithm1:Discostep ddp\nInput: Parameters{p }P−1withP =|{p}|,worldsizeM,localrankr\ni i=0\nbucket size←M ;\ntotal buckets←⌈P/M⌉;\nglobal updates←arrayoflengthP ;\n/* Step 1: Compute local updates */\nfori=0toP −1do\nifimodM =rthen\ng\ni\n← GETMOMENTUM(p\ni\n);\nu ← LMO(g );\ni i\nglobal updates[i]←u ;\ni\n/* Step 2: Communicate updates in buckets */\nforb=0tototal buckets−1do\nstart idx←b·M;\nend idx←min(start idx+M, P);\nmy idx←start idx+r;\nifmy idx<end idxthen\nu ←global updates[my idx];\nsend\nelse\nu ←0\nsend\n{u\nj\n}M\nj=\n−\n0\n1 ← ALLGATHER(u\nsend\n);\nforj =0toend idx−start idx−1do\nglobal updates[start idx+j]←u ;\nj\n/* Step 3: Apply updates vectorized */\nAPPLYUPDATES({p\ni\n}P\ni=\n−\n0\n1,global updates);\nHelperfunctions:\n• GETMOMENTUM(p): returnsthemomentumofpfromthemomentumbuffer.",
+      "size": 862,
+      "sentences": 2
+    },
+    {
+      "id": 179,
+      "content": "0\n1,global updates);\nHelperfunctions:\n• GETMOMENTUM(p): returnsthemomentumofpfromthemomentumbuffer. • LMO(g): runstheLMObasedonthechosennormofp. • ALLGATHER(u): gathersonetensorufromeachrankinthedata-parallelgroup. • APPLYUPDATES({p},{u}): applies the global updates {u} to the parameters {p} in a\nsinglevectorizedoperation. Noticethisversionworksout-of-the-boxforPP+DDP,aswecouldleteachPP(PipelineParallelism)\nstageonlymanagethepartsofthemodelthatthecurrentPPstagesneededforforwardandbackward.",
+      "size": 494,
+      "sentences": 5
+    },
+    {
+      "id": 180,
+      "content": "ineParallelism)\nstageonlymanagethepartsofthemodelthatthecurrentPPstagesneededforforwardandbackward. TomakeitworkwithTP,oneneedstodoanextraall-gatherinthelocalupdateloop. 10https://github.com/KellerJordan/modded-nanogpt\n20\n===  21 ===\nPreprint. Underreview.",
+      "size": 256,
+      "sentences": 4
+    },
+    {
+      "id": 181,
+      "content": "lupdateloop. 10https://github.com/KellerJordan/modded-nanogpt\n20\n===  21 ===\nPreprint. Underreview. A.5.2 FSDP-DISCO\nHere, “FSDP” refers to a combination of FSDP2 with arbitrary parallelisms, including Data Par-\nallelism (DP), Context Parallelism (CP), Expert Parallelism (EP), Tensor Parallelism (TP), and\nPipelineParallelism(PP).Inthissection,werestrictourdiscussiontoFSDPandEP(viaDP2EP).",
+      "size": 390,
+      "sentences": 4
+    },
+    {
+      "id": 182,
+      "content": "elism (TP), and\nPipelineParallelism(PP).Inthissection,werestrictourdiscussiontoFSDPandEP(viaDP2EP). In principle, there is no need to treat DP and PP separately: one only needs to all-gather the full\ngradientbeforecommunicationintheFSDPcasetoensurecompatibilitywithTP. We assume the design of this work, which applies an ∥.∥ norm for the LLM’s embedding\n1→RMS\nlayer and an ∥.∥ norm for the output linear layer.",
+      "size": 410,
+      "sentences": 3
+    },
+    {
+      "id": 183,
+      "content": "pplies an ∥.∥ norm for the LLM’s embedding\n1→RMS\nlayer and an ∥.∥ norm for the output linear layer. (SignNorm is also acceptable and re-\nRMS→∞\nmainscompatibleifonestrictlyfollowsScion’sdesign.) The FSDP2 implementation in PyTorch shards weights and gradients along the tensor’s first di-\nmension. We discuss Disco under this assumption and further assume that each tensor or matrix\ncorrespondstoasinglelayer.",
+      "size": 408,
+      "sentences": 4
+    },
+    {
+      "id": 184,
+      "content": "isco under this assumption and further assume that each tensor or matrix\ncorrespondstoasinglelayer. Consequently, fusedtensorssuchasfused QKVinattentionlayers\norfused W13inSwiGLUarenotsupported. Under these hypotheses, we can classify parameters into three groups: embedding, experts,\nand(pure-)fsdp. Forupdates,noextracommunicationisrequiredforembeddingandexperts\nparameters,thankstotheShard(0)strategyinFSDP2.",
+      "size": 411,
+      "sentences": 4
+    },
+    {
+      "id": 185,
+      "content": "noextracommunicationisrequiredforembeddingandexperts\nparameters,thankstotheShard(0)strategyinFSDP2. Algorithm2:Discostep embedding\nInput: Embeddingparameters{p }P−1\ni i=0\n/* Initialise updates storage */\nupdates←arrayoflengthP ;\n/* get momentum and compute LMO update on local shards */\nfori=0toP −1do\ng\ni\n← GETMOMENTUM(p\ni\n);\nu ← LMO(g );\ni i\nupdates[i]←u ;\ni\n/* Apply updates vectorized */\nAPPLYUPDATES({p\ni\n}P\ni=\n−\n0\n1, updates);\nAlgorithm3:Discostep experts\nInput: Expertparameters{p }P−1,transposeflagtranspose\ni i=0\n/* Initialise updates storage */\nupdates←arrayoflengthP ;\n/* get momentum and compute LMO update on local shards */\nfori=0toP −1do\ng\ni\n← GETMOMENTUM(p\ni\n);\nu\ni\n← BATCHEDLMO(g\ni\n; transpose experts=transpose);\nupdates[i]←u ;\ni\n/* Apply updates vectorized */\nAPPLYUPDATES({p\ni\n}P\ni=\n−\n0\n1, updates);\nNoting that MoE expert weights are typically laid out as either (total experts,d ,d ) or\nout in\n(total experts,d ,d ), we apply a transpose in the latter case to ensure that the output dimen-\nin out\nsioncomesfirst.",
+      "size": 1034,
+      "sentences": 2
+    },
+    {
+      "id": 186,
+      "content": "), we apply a transpose in the latter case to ensure that the output dimen-\nin out\nsioncomesfirst. InanFSDP+DP2EPsetting,eachgradientpassedtoLMOisthereforea3Dtensor\nwith layout (local experts,d ,d ). Accordingly, SVD or Newton-Schulz-based algorithms must\nout in\ncorrectlyhandlebatchedinputs. 21\n===  22 ===\nPreprint. Underreview. Andbelowisthealgorithmforpurelyfsdp-shardparameters.",
+      "size": 383,
+      "sentences": 6
+    },
+    {
+      "id": 187,
+      "content": "dinputs. 21\n===  22 ===\nPreprint. Underreview. Andbelowisthealgorithmforpurelyfsdp-shardparameters. Algorithm4:Discostep fsdp\nInput: FSDP-shardedparameters{p }P−1,worldsizeM overfsdp,localrankr\ni i=0\nbucket size←M;\ntotal buckets←⌈P/M⌉;\nglobal updates←arrayoflengthP;\nforb=0tototal buckets−1do\nstart←b·M; end←min(start+M, P);\nmy idx←start+r;\nforj =0toM −1do\ni←start+j;\nifi<endthen\ng\ni\n← GETMOMENTUM(p\ni\n) // row-sharded by FSDP;\nsend list[j]←g ;\ni\nelse\nsend list[j]←0 // zero padding\nrecv list← ALLTOALL(send list)\ng⋆ ← CONCATROWS(recv list) // reconstruct full gradient for p\ni⋆\nu⋆ ← LMO(g⋆)\nupdates send list← SPLITROWS(u⋆, M) // split u⋆ by rows;\nupdates recv list← ALLTOALL(updates send list);\nforj =0toend−start−1do\nglobal updates[start+j]←updates recv list[j];\n/* Single vectorized apply */\nAPPLYUPDATES({p\ni\n}P\ni=\n−\n0\n1,global updates);\nHelperfunctions:\n• ALLTOALL(list): list-basedALLTOALLoverdp shard cp.",
+      "size": 912,
+      "sentences": 5
+    },
+    {
+      "id": 188,
+      "content": "}P\ni=\n−\n0\n1,global updates);\nHelperfunctions:\n• ALLTOALL(list): list-basedALLTOALLoverdp shard cp. • CONCATROWS(list): concatenatesrow-shardsintoafulltensor. • SPLITROWS(u,M): splitsuintoM contiguousrowblocks. 22\n===  23 ===\nPreprint. Underreview.",
+      "size": 247,
+      "sentences": 5
+    },
+    {
+      "id": 189,
+      "content": "lltensor. • SPLITROWS(u,M): splitsuintoM contiguousrowblocks. 22\n===  23 ===\nPreprint. Underreview. A.6 OUTPUTNORMEVOLUTIONWITHDIFFERENT(η,B)\n210\n28\n26\n24\n22\n228 231 234 237\nHorizon [tokens]\n||\nW||\nSMR\ntuo\nOutput norm vs horizon for different ( ,B)\n=7.8e-03, B=32\n=3.1e-02, B=32\n=1.2e-01, B=32\n=5.0e-01, B=32\n=7.8e-03, B=128\n=3.1e-02, B=128\n=1.2e-01, B=128\n=5.0e-01, B=128\n=7.8e-03, B=512\n=3.1e-02, B=512\n=1.2e-01, B=512\n=5.0e-01, B=512\n=7.8e-03, B=2048\n=3.1e-02, B=2048\n=1.2e-01, B=2048\n=5.0e-01, B=2048\n(a)\n210\n28\n26\n24\n22\n102 103 104 105 106\nStep\n||\nW||\nSMR\ntuo\nOutput norm vs step for different ( ,B)\n=7.8e-03, B=32\n=3.1e-02, B=32\n=1.2e-01, B=32\n=5.0e-01, B=32\n=7.8e-03, B=128\n=3.1e-02, B=128\n=1.2e-01, B=128\n=5.0e-01, B=128\n=7.8e-03, B=512\n=3.1e-02, B=512\n=1.2e-01, B=512\n=5.0e-01, B=512\n=7.8e-03, B=2048\n=3.1e-02, B=2048\n=1.2e-01, B=2048\n=5.0e-01, B=2048\n(b)\nFigure 5: Growth of the output layer norm ∥W ∥ vs. horizon, in tokens (a) and\nout RMS→∞\nnumberofsteps(b).",
+      "size": 970,
+      "sentences": 5
+    },
+    {
+      "id": 190,
+      "content": "5: Growth of the output layer norm ∥W ∥ vs. horizon, in tokens (a) and\nout RMS→∞\nnumberofsteps(b). Resultsarefortheproxymodel(69Mparameters). Eachcurveisa(learning\nrate η, batch size B) pair, with B measured in samples: colour encodes batch size and line style\nencodeslearningrate,asdescribedinthelegend. 23\n[  ]\n\n===  24 ===\nPreprint. Underreview.",
+      "size": 348,
+      "sentences": 5
+    },
+    {
+      "id": 191,
+      "content": "line style\nencodeslearningrate,asdescribedinthelegend. 23\n[  ]\n\n===  24 ===\nPreprint. Underreview. A.7 SUPPLEMENTARYPLOTSTOFIG.2\n5.4\n5.2\n5.0\n4.8\n4.6\n4.4\n4.2\n4.0\n3.8\n5.0 5.5 6.0 6.5 7.0 7.5 8.0 8.5\nlog||W out||RMS\nssol\nniarT\nScaling horizon for proxy model (69M)\nHorizon [tokens] 5.4\n229 (0.5 B) 234 (17 B)\n230 (1.1 B) 235 (34 B)\n231 (2.1 B) 236 (69 B) 5.2\n232 (4.3 B) 237 (137 B)\n233 (8.6 B)\n5.0\n4.8\n4.6\n4.4\n4.2\nBBaattcchh ssiizzee [[ssaammpplleess]]\n4.0\n3322 22004488\n3.8\n5.0 5.5 6.0 6.5 7.0 7.5 8.0 8.5\nlog||W out||RMS\n(a)\nssol\nniarT\nScaling horizon for proxy model (69M)\nHorizon [tokens]\n229 (0.5 B) 234 (17 B)\n230 (1.1 B) 235 (34 B)\n231 (2.1 B) 236 (69 B)\n232 (4.3 B) 237 (137 B)\n233 (8.6 B)\nBBaattcchh ssiizzee [[ssaammpplleess]]\n3322 22004488\n(b)\n5.4\n5.2\n5.0\n4.8\n4.6\n4.4\n4.2\n4.0\n3.8\n5.0 5.5 6.0 6.5 7.0 7.5 8.0 8.5\nlog||W out||RMS\nssol\nniarT\nScaling horizon for proxy model (69M)\nHorizon [tokens] 5.4\n229 (0.5 B) 234 (17 B)\n230 (1.1 B) 235 (34 B)\n231 (2.1 B) 236 (69 B) 5.2\n232 (4.3 B) 237 (137 B)\n233 (8.6 B)\n5.0\n4.8\n4.6\n4.4\n4.2\nBBaattcchh ssiizzee [[ssaammpplleess]]\n4.0\n3322 22004488\n3.8\n5.0 5.5 6.0 6.5 7.0 7.5 8.0 8.5\nlog||W out||RMS\n(c)\nssol\nniarT\nScaling horizon for proxy model (69M)\nHorizon [tokens]\n229 (0.5 B) 234 (17 B)\n230 (1.1 B) 235 (34 B)\n231 (2.1 B) 236 (69 B)\n232 (4.3 B) 237 (137 B)\n233 (8.6 B)\nBBaattcchh ssiizzee [[ssaammpplleess]]\n3322 22004488\n(d)\n4.4\n4.2\n4.0\n3.8\n3.6\n5 6 7 8\nlog||W out||RMS\nssol\nniarT\nScaling width/depth for 233 (8.6 B) token horizon\nd=256, L=4 (69M)\nd=1024, L=4 (314M) d=256, L=32 (91M)\nd=3072, L=4 (1.3B) d=256, L=128 (168M) 4.4\n4.2\n4.0\n3.8\nBBaattcchh ssiizzee [[ssaammpplleess]]\n3322 11002244\n3.6\n5 6 7 8\nlog||W out||RMS\n(e)\nssol\nniarT\nScaling width/depth for 233 (8.6 B) token horizon\nd=256, L=4 (69M)\nd=1024, L=4 (314M) d=256, L=32 (91M)\nd=3072, L=4 (1.3B) d=256, L=128 (168M)\nBBaattcchh ssiizzee [[ssaammpplleess]]\n3322 11002244\n(f)\nFigure6: (a)Fig.2awithanextendedsetofhorizons,rawdata(i.e.",
+      "size": 1945,
+      "sentences": 4
+    },
+    {
+      "id": 192,
+      "content": "zee [[ssaammpplleess]]\n3322 11002244\n(f)\nFigure6: (a)Fig.2awithanextendedsetofhorizons,rawdata(i.e. nolosssmoothing,nofitting,\nseeAppendixA.4fordetailsonfittingandlosssmoothing). (b)Sameas(a)+losssmoothing. (c)\nSame as (a) + fitting. (d) Same as (a) + fitting + loss smoothing. (e) Fig. 2b, raw data (no loss\nsmoothing,nofitting). (f)Sameas(e)+losssmoothing. 24\n[  ]\n\n===  25 ===\nPreprint. Underreview.",
+      "size": 402,
+      "sentences": 10
+    },
+    {
+      "id": 193,
+      "content": "loss\nsmoothing,nofitting). (f)Sameas(e)+losssmoothing. 24\n[  ]\n\n===  25 ===\nPreprint. Underreview. A.8 OPTIMALB∗(D)MEASUREMENT\n2 1\n2 2\n2 3\n2 4\n2 5\n2 6\n2 7\n2 8\n25 26 27 28 29 210 211\nB [samples]\nlamitpo\nHorizon [tokens] 210\n229 (0.5 B) 234 (17 B) 230 (1.1 B) 235 (34 B)\n231 (2.1 B) 236 (69 B)\n232 (4.3 B) 237 (137 B)\n233 (8.6 B)\n29\n28\n27\nlog2 = log2B+ log2D+\n= 0.55 ± 0.03, = -0.53 ± 0.02 = 9.1 ± 0.77; R2 = 0.94 26\n229 230 231 232 233 234 235 236 237\nHorizon [tokens]\n(a)\n]selpmas[\nB\nFit: B = a * Horizon^b\nb (exponent) = 0.450 ± 0.066 a (scale) = 0.009 ± 0.013 R² = 0.868\n(b)\nFigure 7: (a) Same as Fig.",
+      "size": 603,
+      "sentences": 5
+    },
+    {
+      "id": 194,
+      "content": "^b\nb (exponent) = 0.450 ± 0.066 a (scale) = 0.009 ± 0.013 R² = 0.868\n(b)\nFigure 7: (a) Same as Fig. 3b, but with extended set of horizons. (b) Optimal batch size B∗ vs.\nhorizon,asextractedfrom(a)). Thelineisapower-lawfit(describedinlegend). Fig. 3b, for the sake of clarity and simplicity, illustrates only four horizons. This is not really\nsufficienttoextractpreciselythescalingofoptimal(η∗,B∗)(circledmarkers)withD,asitwould\nmean fitting of four data points.",
+      "size": 460,
+      "sentences": 7
+    },
+    {
+      "id": 195,
+      "content": "reciselythescalingofoptimal(η∗,B∗)(circledmarkers)withD,asitwould\nmean fitting of four data points. We therefore perform the ordinary least squares (OLS) fit on the\nextended set of 9 horizons from Fig. 7a, effectively fitting the x-coordinate of the circled markers\nwithaline. WemodeloptimalbatchsizedependencyonhorizonDasapowerlawB∗(D)=aDb\nandpresentresultsonFig.7b. WeextractB∗ ∝D0.45±0.07,consistentwiththesquare-rootscaling.",
+      "size": 428,
+      "sentences": 5
+    },
+    {
+      "id": 196,
+      "content": "awB∗(D)=aDb\nandpresentresultsonFig.7b. WeextractB∗ ∝D0.45±0.07,consistentwiththesquare-rootscaling. A.9 NORMCONSTRAINTWITHWEIGHTDECAY\n27\n26\n25\n24\n23\n22\n21\n20\n21 23 25 27 29 211 213\nstep\nSMR\n1|niW|\n27\n26\n25\n24\n23\n22\n= 1.0 = 0.1 21\n= 1.0 = 0.01\n= 0.0625 = 0.1\n= 0.0625 = 0.01 20\n21 23 25 27 29 211 213\nstep\n(a)\nSMR|tuoW|\n= 1.0 = 0.1\n= 1.0 = 0.01\n= 0.0625 = 0.1\n= 0.0625 = 0.01\n(b)\nFigure 8: Operator norm against number of gradient update steps.",
+      "size": 443,
+      "sentences": 3
+    },
+    {
+      "id": 197,
+      "content": "= 0.0625 = 0.1\n= 0.0625 = 0.01\n(b)\nFigure 8: Operator norm against number of gradient update steps. Fixed batch size B = 32,\nmomentumµ = 0.1,twovaluesoflearningrateη = {0.0625,1. }andtwovaluesofweightdecay\nλ = {0.01,0.1} (applied as in Pethick et al. (2025a)), for a proxy model (69M parameters). (a)\n∥W ∥ norm(b)∥W ∥ . Weseeforλ=0.1bothnormsconvergingto1/λ,while\nin 1→RMS out RMS→∞\nforλ=0.01asymptoticvaluesarenotconclusive. 25\n[  ]\n\n===  26 ===\nPreprint. Underreview.",
+      "size": 469,
+      "sentences": 8
+    },
+    {
+      "id": 198,
+      "content": "MS out RMS→∞\nforλ=0.01asymptoticvaluesarenotconclusive. 25\n[  ]\n\n===  26 ===\nPreprint. Underreview. A.10 ABLATIONOFDEPTHTRANSFERTECHNIQUES\nModel:sameasourproxymodel(AppendixA.2),withtheonlydifferenceintheheadconfiguration:\nn = 2, n = 1. We run a combination of two ablations: (i) weight initialisation\nqueryheads kvheads\ndepth-wisescaling(viagains/variance),and(ii)residualbranchsummationratios.",
+      "size": 395,
+      "sentences": 5
+    },
+    {
+      "id": 199,
+      "content": "ation\nqueryheads kvheads\ndepth-wisescaling(viagains/variance),and(ii)residualbranchsummationratios. For weight initialisation, the depth-wise scaling factors are applied to only the output linear pro-\njection of attention and SwiGLU. We compare three flavours of depth init scaling: identity\n(baseline),total-depth,andrelative-depth,definedbymultiplyingthegainσby\n 1/ (cid:112) 2N scalebytotal-depth,\n √ layers\nσ∗= 1/ 2l scalebyrelative-depth, (11)\ni\n1 scalebyidentity.",
+      "size": 472,
+      "sentences": 3
+    },
+    {
+      "id": 200,
+      "content": ":112) 2N scalebytotal-depth,\n √ layers\nσ∗= 1/ 2l scalebyrelative-depth, (11)\ni\n1 scalebyidentity. whereN isthetotalnumberofTransformerblocks,andl ∈ {1,...,2N }istherelative\nlayers i layers\n(cid:113)\ndepth of the current block; σ is the scaled orthogonal gain, σ = dout, for hidden weights W ∈\ndin\nRdout×din. Each transformer block is assigned depth 2, since attention and FFN sub-blocks each count as\ndepth1. Whenusingrelative-depth,thedepthofallFFNblockscanbeoffsetby1.",
+      "size": 472,
+      "sentences": 4
+    },
+    {
+      "id": 201,
+      "content": "FFN sub-blocks each count as\ndepth1. Whenusingrelative-depth,thedepthofallFFNblockscanbeoffsetby1. Fordepth-wiseresidualscaling,wewritetheresidualconnectionintransformeras:\n(cid:0) (cid:1)\nY = α·X + β·Block Norm(X) , (12)\nwhereX istheblockinputandBlock(·)denoteseitherself-attentionoraFFN,andNormisRM-\nSNorminoursetup.",
+      "size": 318,
+      "sentences": 3
+    },
+    {
+      "id": 202,
+      "content": "2)\nwhereX istheblockinputandBlock(·)denoteseitherself-attentionoraFFN,andNormisRM-\nSNorminoursetup. Weconsiderthreedepth-wiseresidualscalingschemes:\n(cid:0)2Nlayers−1, 1 (cid:1) scalebydepth-normalized,\n 2Nlayers 2Nlayers\n(α,β)= (1, 1 ) scalebycompleteP, (13)\n(1,1\n2\n)\nNlayers\nscalebyidentity. depth-normalizedLargeetal. (2024)scalesboththeresidualandblockcontributionspropor-\ntionallytodepth. completePDeyetal. (2025)preservestheresidualbranchwhilescalingdown\nthe block contribution by depth.",
+      "size": 498,
+      "sentences": 6
+    },
+    {
+      "id": 203,
+      "content": "completePDeyetal. (2025)preservestheresidualbranchwhilescalingdown\nthe block contribution by depth. identity corresponds to the conventional unscaled residual\nformulation. Wefixedbatchsize(B)to32samples,thesequencelengthto4096,andthenumberoftrainingsteps\nto2048. ExperimentswereconductedusingproxymodelswithdepthsN ∈ {2,16,64}. For\nlayers\nallmodels,weperformedasweepoverthelearningrate{2−4,2−3,2−2,2−1,20}.",
+      "size": 406,
+      "sentences": 6
+    },
+    {
+      "id": 204,
+      "content": "depthsN ∈ {2,16,64}. For\nlayers\nallmodels,weperformedasweepoverthelearningrate{2−4,2−3,2−2,2−1,20}. We report the final-step losses in Table 1, Table 2, and Table 3 for the three depths, respectively,\nwith the two lowest losses highlighted. From the perspective of learning rate transfer, we find\nthat with our optimizer, the optimal learning rate consistently remains around 2−2, regardless of\nweight initialisation or residual scaling.",
+      "size": 437,
+      "sentences": 4
+    },
+    {
+      "id": 205,
+      "content": "ning rate consistently remains around 2−2, regardless of\nweight initialisation or residual scaling. We also observe that combining total-depth weight\ninitialisationwithidentityresidualscalingyieldsanegligibleimprovementcomparedtousing\nidentityweightinitialisation. 26\n===  27 ===\nPreprint. Underreview.",
+      "size": 302,
+      "sentences": 4
+    },
+    {
+      "id": 206,
+      "content": "gibleimprovementcomparedtousing\nidentityweightinitialisation. 26\n===  27 ===\nPreprint. Underreview. Table1: 2layers(B =32,steps=2048)\nLearningrateη\nResidualinit Residualmultiplier\n2−4 2−3 2−2 2−1 20\ntotal-depth identity 4.20 4.11 4.09 4.13 4.22\ntotal-depth depth-normalized 4.20 4.12 4.11 4.17 4.21\ntotal-depth completeP 4.22 4.15 4.16 4.17 4.28\nidentity identity 4.19 4.10 4.10 4.13 4.23\nidentity depth-normalized 4.22 4.12 4.12 4.13 4.21\nidentity completeP 4.21 4.15 4.13 4.16 4.24\nrelative-depth identity 4.20 4.11 4.09 4.13 4.23\nrelative-depth depth-normalized 4.20 4.13 4.11 4.16 4.25\nrelative-depth completeP 4.21 4.16 4.14 4.18 4.24\nTable2: 16layers(B =32,steps=2048)\nLearningrateη\nResidualinit Residualmultiplier\n2−4 2−3 2−2 2−1 20\ntotal-depth identity 3.81 3.75 3.73 3.77 3.88\ntotal-depth depth-normalized 3.85 3.79 3.80 3.84 3.92\ntotal-depth completeP 3.87 3.82 3.82 3.85 3.94\nidentity identity 3.81 3.74 3.75 3.79 3.89\nidentity depth-normalized 3.83 3.78 3.78 3.83 3.92\nidentity completeP 3.86 3.81 3.81 3.85 3.94\nrelative-depth identity 3.82 3.79 3.74 3.80 3.90\nrelative-depth depth-normalized 3.84 3.79 3.80 3.83 3.95\nrelative-depth completeP 3.88 3.82 3.82 3.85 3.95\nTable3: 64layers(B=32,steps=2048)\nLearningrateη\nResidualinit Residualmultiplier\n2−4 2−3 2−2 2−1 20\ntotal-depth identity 3.67 3.60 3.60 3.65 3.79\ntotal-depth depth-normalized 3.71 3.65 3.65 3.69 3.80\ntotal-depth completeP 3.72 3.67 3.67 3.72 3.82\nidentity identity 3.70 3.63 3.62 3.66 3.78\nidentity depth-normalized 3.70 3.64 3.64 3.69 3.80\nidentity completeP 3.70 3.70 3.67 3.72 3.82\nrelative-depth identity 3.70 3.61 3.61 3.67 3.82\nrelative-depth depth-normalized 3.71 3.65 3.65 3.69 3.80\nrelative-depth completeP 3.72 3.68 3.67 3.73 3.83\n27\n===  28 ===\nPreprint.",
+      "size": 1745,
+      "sentences": 4
+    },
+    {
+      "id": 207,
+      "content": "3.71 3.65 3.65 3.69 3.80\nrelative-depth completeP 3.72 3.68 3.67 3.73 3.83\n27\n===  28 ===\nPreprint. Underreview. A.11 ABLATIONSONFIG.2A\nA.11.1 MOMENTUM&LEARNINGRATEDECAY\nIn thisset of experiments weset momentum to0.1 (which isby default disabled inthe main text)\nand firstly run the same horizon scaling experiment for the proxy model (69M parameters) with\nthe constant learning rate schedule and evaluate at the same horizons D = {231,233,235,237} as\nFig.2a. TheresultsarepresentedinFig.9a.",
+      "size": 491,
+      "sentences": 4
+    },
+    {
+      "id": 208,
+      "content": "and evaluate at the same horizons D = {231,233,235,237} as\nFig.2a. TheresultsarepresentedinFig.9a. Hereweperformlosssmoothinginthesamewayas\nfortheno-momentumscenario, butdonotperformthefitting, i.e. foreachbatchsizewetakethe\noptimalnormfromtheempiricallybestperforminglearningraterun. Wefindthatthecurveslook\nmore like “blobs”, where multiple batch sizes give almost the same performance and are centered\naround the optimal norm (which also transfers across horizons).",
+      "size": 468,
+      "sentences": 5
+    },
+    {
+      "id": 209,
+      "content": "e same performance and are centered\naround the optimal norm (which also transfers across horizons). Also the loss difference between\nhorizonsisnotwell-pronouncedasintheno-momentumscenario. Then,weaddlearningratedecay,wherewestartfromcheckpointsofthehorizonsspecifiedabove,\nassume that that constitutes 75% of the total horizon, and linearly decay learning rate to 0 for the\nrest25%. Likewise,wesmoothlossvaluesandtakeoptimumvalueperbatchsizeacrossempirical\nonesonthelearningrategrid.",
+      "size": 483,
+      "sentences": 4
+    },
+    {
+      "id": 210,
+      "content": "ikewise,wesmoothlossvaluesandtakeoptimumvalueperbatchsizeacrossempirical\nonesonthelearningrategrid. InFig.9bweseethatthereispotentiallyaslightdriftoftheoptimal\nnorm with horizon scaling. However, after examining individual scans (Fig. 13) we surprisingly\nfoundthatforlonghorizonsthelearningratedecaysmoothsoutthenormoptimum: abroadrange\n(factor×4−8innorm)oflearningratesresultsinthesameloss.",
+      "size": 391,
+      "sentences": 4
+    },
+    {
+      "id": 211,
+      "content": "tedecaysmoothsoutthenormoptimum: abroadrange\n(factor×4−8innorm)oflearningratesresultsinthesameloss. Hence,thereisnolongerasingle\noptimal norm, but rather a sizeable range, indicating that learning rate decay significantly reduces\nnormsensitivity. Therefore,weconcludethattheseamingdriftinFig.9bisnotsignificant.",
+      "size": 311,
+      "sentences": 3
+    },
+    {
+      "id": 212,
+      "content": "ificantly reduces\nnormsensitivity. Therefore,weconcludethattheseamingdriftinFig.9bisnotsignificant. 4.2\n4.1\n4.0\n3.9\n3.8\n3.7\n3.6\n3.5\n5.0 5.5 6.0 6.5 7.0 7.5 8.0 8.5\nlog||W out||RMS\nssol\nniarT\nScaling horizon for proxy model (69M)\n4.2\nHorizon [tokens]\n231 (2.1 B) 235 (34 B)\n233 (8.6 B) 237 (137 B) 4.1\n4.0\n3.9\n3.8\n3.7\nBBaattcchh ssiizzee [[ssaammpplleess]]\n3.6\n3322 11002244\n3.5\n5 6 7 8 9\nlog||W out||RMS\n(a)\nssol\nniarT\nScaling horizon for proxy model (69M)\nHorizon [tokens]\n231 + decay (2.9 B) 235 + decay (46 B)\n233 + decay (11 B) 237 + decay (184 B)\nBBaattcchh ssiizzee [[ssaammpplleess]]\n3322 11002244\n(b)\nFigure9: SameasFig.2abutwithmomentum=0.1.",
+      "size": 650,
+      "sentences": 3
+    },
+    {
+      "id": 213,
+      "content": "BBaattcchh ssiizzee [[ssaammpplleess]]\n3322 11002244\n(b)\nFigure9: SameasFig.2abutwithmomentum=0.1. (a)Withoutlearningratedecay. (b)With\nlinearlearningratedecayto0forextra25%ofthetotalhorizon. 28\n[  ]\n\n===  29 ===\nPreprint. Underreview. A.11.2 NORMCHOICE\nIn this Section, we ablate if it is only the output layer normthat induces norm transfer. We replot\nFig.2a,withlosssmoothingandwithoutfitting,butnowwhereweuse∥.∥ normofthe\nRMS→RMS\noutputor∥.∥ oftheinputlayersinsteaddefault∥.∥ oftheoutputlayer.",
+      "size": 497,
+      "sentences": 7
+    },
+    {
+      "id": 214,
+      "content": "tnowwhereweuse∥.∥ normofthe\nRMS→RMS\noutputor∥.∥ oftheinputlayersinsteaddefault∥.∥ oftheoutputlayer. Weobserve\n1→RMS RMS→∞\nin Fig. 10 (see also individual norm scans in Fig. 14) that interestingly both norms induce norm\ntransfer.",
+      "size": 228,
+      "sentences": 4
+    },
+    {
+      "id": 215,
+      "content": "10 (see also individual norm scans in Fig. 14) that interestingly both norms induce norm\ntransfer. 5.4\n5.2\n5.0\n4.8\n4.6\n4.4\n4.2\n4.0\n3.8\n4 5 6 7 8\nlog||W out||RMS RMS\nssol\nniarT\nScaling horizon for proxy model (69M)\nHorizon [tokens] 5.4\n231 (2.1 B) 235 (34 B)\n233 (8.6 B) 237 (137 B) 5.2\n5.0\n4.8\n4.6\n4.4\n4.2\nBBaattcchh ssiizzee [[ssaammpplleess]] 4.0\n3322 22004488\n3.8\n1 2 3 4 5 6 7 8\nlog||W in||1 RMS\n(a)\nssol\nniarT\nScaling horizon for proxy model (69M)\nHorizon [tokens]\n231 (2.1 B) 235 (34 B)\n233 (8.6 B) 237 (137 B)\nBBaattcchh ssiizzee [[ssaammpplleess]]\n3322 22004488\n(b)\nFigure 10: Same as Fig.",
+      "size": 597,
+      "sentences": 3
+    },
+    {
+      "id": 216,
+      "content": "8.6 B) 237 (137 B)\nBBaattcchh ssiizzee [[ssaammpplleess]]\n3322 22004488\n(b)\nFigure 10: Same as Fig. 2a but with ∥W ∥ norm for the X-axis changed to: (a)\nout RMS→∞\n∥W ∥ (outputlayer). (b)∥W ∥ (inputlayer). out RMS→RMS in 1→RMS\nA.12 LEARNINGRATELAYOUTFORADDITIONALBATCHSIZESANDHORIZONS\nBest configurations for horizon=231 (2.1 B), B=32\nTop 10% loss: [4.49, 4.66]\n22 O To t p h e 1 r : s 4 : . [ 4 4 9 .6 ± 8, 0 5 . .",
+      "size": 414,
+      "sentences": 6
+    },
+    {
+      "id": 217,
+      "content": "=231 (2.1 B), B=32\nTop 10% loss: [4.49, 4.66]\n22 O To t p h e 1 r : s 4 : . [ 4 4 9 .6 ± 8, 0 5 . . 0 8 1 9]\nTop 2: 4.54 ± 0.04\n24\nT\nE\no\nq\np\nu a\n3\nl\n:\nL\n4\nR\n.5\ns\n6\na t\n±\n2\n0.40\n:\n1\n4.54 ± 0.04\n6\n26 4\n28 2\n0 26 24 22\n210\ninput hidden output\ntnuoc\nBest configurations for horizon=231 (2.1 B), B=128\nTop 10% loss: [4.32, 4.43]\n20 O To t p h e 1 r : s 4 : . [ 3 4 2 .4 ± 3, 0 5 . .",
+      "size": 377,
+      "sentences": 6
+    },
+    {
+      "id": 218,
+      "content": "231 (2.1 B), B=128\nTop 10% loss: [4.32, 4.43]\n20 O To t p h e 1 r : s 4 : . [ 3 4 2 .4 ± 3, 0 5 . . 0 6 1 9]\nTop 2: 4.33 ± 0.01\n22\nT\nE\no\nq\np\nu a\n3\nl\n:\nL\n4\nR\n.3\ns\n7\na t\n±\n2\n0.20\n:\n1\n4.43 ± 0.01\nTop-10% loss counts per layer group\n8\n24 6 4\n26 2\n026 24 22 20\ni h n i p d u d t en 28\noutput\ninput hidden output\n(a)\ntnuoc\nBest configurations for horizon=231 (2.1 B), B=512\nTop 10% loss: [4.40, 4.59]\n21 O To t p h e 1 r : s 4 : . [ 4 4 0 .5 ± 9, 0 6 . .",
+      "size": 448,
+      "sentences": 6
+    },
+    {
+      "id": 219,
+      "content": "231 (2.1 B), B=512\nTop 10% loss: [4.40, 4.59]\n21 O To t p h e 1 r : s 4 : . [ 4 4 0 .5 ± 9, 0 6 . . 0 4 2 5]\nTop 2: 4.42 ± 0.02\n21\nT\nE\no\nq\np\nu a\n3\nl\n:\nL\n4\nR\n.4\ns\n3\na t\n±\n2\n0.10\n:\n3\n4.67 ± 0.06\nTop-10% loss counts per layer group\n23 6 4\n25 2\n025 23 21 21\ni h n i p d u d t en 27\noutput\ninput hidden output\n(b)\ntnuoc\nTop-10% loss counts per layer group\ninput hidden\noutput\n(c)\nBest configurations for horizon=233 (8.6 B), B=32\nTop 10% loss: [4.53, 4.60]\n22 O To t p h e 1 r : s 4 : .",
+      "size": 481,
+      "sentences": 4
+    },
+    {
+      "id": 220,
+      "content": "nfigurations for horizon=233 (8.6 B), B=32\nTop 10% loss: [4.53, 4.60]\n22 O To t p h e 1 r : s 4 : . [ 5 4 3 .6 ± 0, 0 5 . . 0 6 1 4]\nTop 2: 4.55 ± 0.02\n24\nT\nE\no\nq\np\nu a\n3\nl\n:\nL\n4\nR\n.5\ns\n7\na t\n±\n2\n0.60\n:\n4\n4.61 ± 0.00\n6\n26 4\n28 2\n028 26 24 22\n210\ninput hidden output\ntnuoc\nBest configurations for horizon=233 (8.6 B), B=128\nTop 10% loss: [4.11, 4.18]\n20 O To t p h e 1 r : s 4 : . [ 1 4 1 .1 ± 9, 0 4 . .",
+      "size": 403,
+      "sentences": 6
+    },
+    {
+      "id": 221,
+      "content": "233 (8.6 B), B=128\nTop 10% loss: [4.11, 4.18]\n20 O To t p h e 1 r : s 4 : . [ 1 4 1 .1 ± 9, 0 4 . . 0 7 1 6]\nTop 2: 4.12 ± 0.01\n22\nT\nE\no\nq\np\nu a\n3\nl\n:\nL\n4\nR\n.1\ns\n2\na t\n±\n2\n0.40\n:\n2\n4.13 ± 0.00\nTop-10% loss counts per layer group\n8\n24 6 4\n26 2\n028 26 24 22 20\ni h n i p d u d t en 28\noutput\ninput hidden output\n(d)\ntnuoc\nBest configurations for horizon=233 (8.6 B), B=512\nTop 10% loss: [4.08, 4.16]\n21 O To t p h e 1 r : s 4 : . [ 0 4 8 .1 ± 7, 0 5 . .",
+      "size": 451,
+      "sentences": 6
+    },
+    {
+      "id": 222,
+      "content": "233 (8.6 B), B=512\nTop 10% loss: [4.08, 4.16]\n21 O To t p h e 1 r : s 4 : . [ 0 4 8 .1 ± 7, 0 5 . . 0 1 1 6]\nTop 2: 4.09 ± 0.01\n21\nT\nE\no\nq\np\nu a\n3\nl\n:\nL\n4\nR\n.1\ns\n0\na t\n±\n2\n0.10\n:\n0\n4.22 ± 0.02\nTop-10% loss counts per layer group\n23 6 4\n25 2\n027 25 23 21 21\ni h n i p d u d t en 27\noutput\ninput hidden output\n(e)\ntnuoc\nTop-10% loss counts per layer group\ninput hidden\noutput\n(f)\nFigure11: ExtendedversionofFig.4awithadditionalbatchsizesandhorizons. Top(bottom)\nrow: D = 231(233) token horizons.",
+      "size": 493,
+      "sentences": 5
+    },
+    {
+      "id": 223,
+      "content": "edversionofFig.4awithadditionalbatchsizesandhorizons. Top(bottom)\nrow: D = 231(233) token horizons. Batch sizes, in samples: B = 32 (left), B = 128 (middle),\nB =512(right). PerformanceisaveragedacrossrandomseedsasdescribedinAppendixA.2. Note\nthattheoptimalB∗is128forbothD =231andD =233accordingtoFig.3b. 29\n[  ]\n\n===  30 ===\nPreprint. Underreview. A.13 INDIVIDUALNORMSCANSANDFITS\n6.00\n5.75\n5.50\n5.25 5.00\n4.75\n4.50\n4.25\n4.00\n3.75 21 22 23 24 25 26 27 28 29\n)B 1.2(\n132\nbs=32\n5\n6\n. .",
+      "size": 482,
+      "sentences": 9
+    },
+    {
+      "id": 224,
+      "content": "0\n5.75\n5.50\n5.25 5.00\n4.75\n4.50\n4.25\n4.00\n3.75 21 22 23 24 25 26 27 28 29\n)B 1.2(\n132\nbs=32\n5\n6\n. . 7\n0\n5\n0 bs=64\n5\n6\n. . 7\n0\n5\n0 bs=128\n5\n6\n. . 7\n0\n5\n0 am=in0:. 1lo6g02, bx=-62.7.135, 5y, c4=. b 1511 s . = 76 2 5 56\n5\n6\n. . 7\n0\n5\n0 bs=512\n5\n6\n. . 7\n0\n5\n0 bs=1024\n5\n6\n. . 7\n0\n5\n0 bs=2048\n5.50 5.50 5.50 5.50 5.50 5.50\n5.25 5.25 5.25 5.25 5.25 5.25 5.00 5.00 5.00 5.00 5.00 5.00\n4.75 4.75 4.75 4.75 4.75 4.75\n4.50 4.50 4.50 4.50 4.50 4.50\n4.25 4.25 4.25 4.25 4.25 4.25\nam=in0:.",
+      "size": 476,
+      "sentences": 16
+    },
+    {
+      "id": 225,
+      "content": "4.75 4.75 4.75 4.75 4.75 4.75\n4.50 4.50 4.50 4.50 4.50 4.50\n4.25 4.25 4.25 4.25 4.25 4.25\nam=in0:. 1lo2g32, bx=-71.6.857, 9y, c4=.1518.765\n3\n4\n. . 7\n0\n5\n0\n2\nam\n1\n=in0:. 1lo4\n2\ng0\n2\n2, bx=-72\n2\n.2. 3\n062, 6y, c\n2\n4=. 4\n1411.76\n2\n5\n5 26 27 28 29 3\n4\n. . 7\n0\n5\n0\n2\nam\n1\n=in0:. 1lo5\n2\ng4\n2\n2, bx=-62\n2\n.9. 3\n122, 8y, c\n2\n4=. 4\n141.76\n2\n5\n5 26 27 28 29 3\n4\n. . 7\n0\n5\n0\n21 22 23 24 25 26 27 28 29 3\n4\n. . 7\n0\n5\n0\n2\nam\n1\n=in0:. 1lo8\n2\ng5\n2\n2, bx=-62\n2\n.1. 3\n288, 6y, c\n2\n4=.",
+      "size": 467,
+      "sentences": 18
+    },
+    {
+      "id": 226,
+      "content": "2 23 24 25 26 27 28 29 3\n4\n. . 7\n0\n5\n0\n2\nam\n1\n=in0:. 1lo8\n2\ng5\n2\n2, bx=-62\n2\n.1. 3\n288, 6y, c\n2\n4=. 4\n171.76\n2\n5\n5 26 27 28 29 3\n4\n. . 7\n0\n5\n0\n2\nam\n1\n=in0:. 1lo9\n2\ng4\n2\n2, bx=-52\n2\n.8. 3\n288, 5y, c\n2\n5=. 4\n1015.76\n2\n5\n5 26 27 28 29 3\n4\n. . 7\n0\n5\n0\n2\nam\n1\n=in0:. 2lo1\n2\ng5\n2\n2, bx=-52\n2\n.4. 3\n354, 2y, c\n2\n5=. 4\n1319.76\n2\n5\n5 26 27 28 29\n6.00\n5.75\n5.50\n5.25 5.00\n4.75\n4.50\n4.25\n4.00 3.75 22 24 26 28 210\n)B 6.8(\n332\nam=in0:. 1lo1g62, bx=-71.8.872, 3y, c4=.1519.765 (WLS)\n5\n6\n. . 7\n0\n5\n0\n5\n6\n. .",
+      "size": 493,
+      "sentences": 20
+    },
+    {
+      "id": 227,
+      "content": "6 28 210\n)B 6.8(\n332\nam=in0:. 1lo1g62, bx=-71.8.872, 3y, c4=.1519.765 (WLS)\n5\n6\n. . 7\n0\n5\n0\n5\n6\n. . 7\n0\n5\n0\n5\n6\n. . 7\n0\n5\n0 am=in0:. 1lo5g92, bx=-62.9.119, 3y, c4=.1119.765\n5\n6\n. . 7\n0\n5\n0\n5\n6\n. . 7\n0\n5\n0\n5\n6\n. . 7\n0\n5\n0\n5.50 5.50 5.50 5.50 5.50 5.50\n5.25 5.25 5.25 5.25 5.25 5.25 5.00 5.00 5.00 5.00 5.00 5.00\n4.75 4.75 4.75 4.75 4.75 4.75\n4.50 4.50 4.50 4.50 4.50 4.50\n4.25 4.25 4.25 4.25 4.25 4.25\n3 4 . . 7 0 5 0 am 2 =i 2 n0:. 1lo2g82, bx=-71.6.9 2 46 4 , 0y, c4=.1218.765 2 (W 6 LS) 28 2103 4 .",
+      "size": 500,
+      "sentences": 18
+    },
+    {
+      "id": 228,
+      "content": "3 4 . . 7 0 5 0 am 2 =i 2 n0:. 1lo2g82, bx=-71.6.9 2 46 4 , 0y, c4=.1218.765 2 (W 6 LS) 28 2103 4 . . 7 0 5 0 am 2 =i 2 n0:. 1lo4g32, bx=-72.2.0 2 98 4 , 8y, c4=.1115.765 2 (W 6 LS) 28 2103 4 . . 7 0 5 0 22 24 26 28 2103 4 . . 7 0 5 0 am 2 =i 2 n0:. 1lo8g12, bx=-62.4.3 2 43 4 , 4y, c4=.1214.765 26 28 2103 4 . . 7 0 5 0 am 2 =i 2 n0:. 1lo9g42, bx=-62.2.4 2 10 4 , 6y, c4=.1219.765 26 28 2103 4 . . 7 0 5 0 am 2 =i 2 n0:.",
+      "size": 421,
+      "sentences": 17
+    },
+    {
+      "id": 229,
+      "content": "m 2 =i 2 n0:. 1lo9g42, bx=-62.2.4 2 10 4 , 6y, c4=.1219.765 26 28 2103 4 . . 7 0 5 0 am 2 =i 2 n0:. 1lo8g62, bx=-62.2.3 2 31 4 , 5y, c4=.1515.765 26 28 210\n6.00\n5.75\n5.50\n5.25\n5.00\n4.75\n4.50\n4.25\n4.00\n3.75 23 24 25 26 27 28 29 210\n)B 43(\n532\nam=in0:. 1lo1g32, bx=-81, .y8024,. 5c6=11.765 (WLS)\n5\n6\n. . 7\n0\n5\n0 am=in0:. 1lo1g82, bx=-71.9.877, 6y, c4=.1218.765 (WLS)\n5\n6\n. . 7\n0\n5\n0 am=in0:. 1lo2g72, bx=-71.7.957, 2y, c4=.1112.765 (WLS)\n5\n6\n. . 7\n0\n5\n0 am=in0:.",
+      "size": 460,
+      "sentences": 15
+    },
+    {
+      "id": 230,
+      "content": "LS)\n5\n6\n. . 7\n0\n5\n0 am=in0:. 1lo2g72, bx=-71.7.957, 2y, c4=.1112.765 (WLS)\n5\n6\n. . 7\n0\n5\n0 am=in0:. 1lo4g62, bx=-72.2.182, 7y, c4=.1012.765\n5\n6\n. . 7\n0\n5\n0 am=in0:. 1lo6g42, bx=-62.8.296, 3y, c3=.1917.765\n5\n6\n. . 7\n0\n5\n0 am=in0:. 1lo8g72, bx=-62.4.430, 7y, c4=.1013.765\n5\n6\n. . 7\n0\n5\n0 am=in0:.",
+      "size": 294,
+      "sentences": 15
+    },
+    {
+      "id": 231,
+      "content": ".1917.765\n5\n6\n. . 7\n0\n5\n0 am=in0:. 1lo8g72, bx=-62.4.430, 7y, c4=.1013.765\n5\n6\n. . 7\n0\n5\n0 am=in0:. 1lo8g12, bx=-62.5.325, 5y, c4=.1019.765\n5.50 5.50 5.50 5.50 5.50 5.50\n5.25 5.25 5.25 5.25 5.25 5.25\n5.00 5.00 5.00 5.00 5.00 5.00\n4.75 4.75 4.75 4.75 4.75 4.75\n4.50 4.50 4.50 4.50 4.50 4.50\n4.25 4.25 4.25 4.25 4.25 4.25\n4.00 4.00 4.00 4.00 4.00 4.00\n3.75 23 24 25 26 27 28 29 210 3.75 23 24 25 26 27 28 29 210 3.75 23 24 25 26 27 28 29 210 3.75 23 24 25 26 27 28 29 210 3.75 23 24 25 26 27 28 29 210 3.75 23 24 25 26 27 28 29 210\n6.00\n5.75\n5.50\n5.25 5.00\n4.75\n4.50\n4.25\n4.00\n3.7524 25 26 27 28 29 210\n)B 731(\n732\nam=in0:.",
+      "size": 621,
+      "sentences": 7
+    },
+    {
+      "id": 232,
+      "content": "29 210\n6.00\n5.75\n5.50\n5.25 5.00\n4.75\n4.50\n4.25\n4.00\n3.7524 25 26 27 28 29 210\n)B 731(\n732\nam=in0:. 1lo0g22, bx=-81.3.669, 7y, c4=.1617.765 (WLS)\n5\n6\n. . 7\n0\n5\n0 am=in0:. 1lo1g72, bx=-71.8.884, 9y, c4=.1417.765 (WLS)\n5\n6\n. . 7\n0\n5\n0 am=in0:. 1lo3g22, bx=-71.5.989, 8y, c4=.1119.765 (WLS)\n5\n6\n. . 7\n0\n5\n0 am=in0:. 1lo3g32, bx=-72.6.073, 3y, c3=.1917.765\n5\n6\n. . 7\n0\n5\n0 am=in0:. 1lo4g72, bx=-72.3.135, 3y, c3=.1818.765\n5\n6\n. . 7\n0\n5\n0 am=in0:. 1lo6g42, bx=-62.9.257, 5y, c3=.1816.765\n5\n6\n. .",
+      "size": 489,
+      "sentences": 18
+    },
+    {
+      "id": 233,
+      "content": "72.3.135, 3y, c3=.1818.765\n5\n6\n. . 7\n0\n5\n0 am=in0:. 1lo6g42, bx=-62.9.257, 5y, c3=.1816.765\n5\n6\n. . 7\n0\n5\n0 am=in0:.",
+      "size": 116,
+      "sentences": 6
+    },
+    {
+      "id": 234,
+      "content": ".1818.765\n5\n6\n. . 7\n0\n5\n0 am=in0:. 1lo6g42, bx=-62.9.257, 5y, c3=.1816.765\n5\n6\n. . 7\n0\n5\n0 am=in0:. 1lo7g22, bx=-62.7.352, 4y, c3=.1912.765\n5.50 5.50 5.50 5.50 5.50 5.50\n5.25 5.25 5.25 5.25 5.25 5.25 5.00 5.00 5.00 5.00 5.00 5.00\n4.75 4.75 4.75 4.75 4.75 4.75\n4.50 4.50 4.50 4.50 4.50 4.50\n4.25 4.25 4.25 4.25 4.25 4.25\n4.00 4.00 4.00 4.00 4.00 4.00\n3.7524 25 26 27 28 29 210 3.7524 25 26 27 28 29 210 3.7524 25 26 27 28 29 210 3.7524 25 26 27 28 29 210 3.7524 25 26 27 28 29 210 3.7524 25 26 27 28 29 210\n(a)\n5.50\n5.25\n5.00\n4.75 4.50\n4.25\n4.00\n3.75\n3.50\n22 24 26 28 210\n)B 6.8(\n332\nbs=32\n5\n5\n.",
+      "size": 594,
+      "sentences": 7
+    },
+    {
+      "id": 235,
+      "content": "28 29 210\n(a)\n5.50\n5.25\n5.00\n4.75 4.50\n4.25\n4.00\n3.75\n3.50\n22 24 26 28 210\n)B 6.8(\n332\nbs=32\n5\n5\n. . 2\n5\n5\n0 bs=64\n5\n5\n. . 2\n5\n5\n0 bs=128\n5\n5\n. . 2\n5\n5\n0 am=in0:. 1lo5g92, bx=-62.9.119, 3y, c4=. b 1119 s . = 76 2 5 56\n5\n5\n. . 2\n5\n5\n0 bs=512\n5\n5\n. . 2\n5\n5\n0 bs=1024\n5.00 5.00 5.00 5.00 5.00\n4.75 4.75 4.75 4.75 4.75 4.50 4.50 4.50 4.50 4.50\n4.25 4.25 4.25 4.25 4.25\n4.00 4.00 4.00 4.00 4.00\n3.75 3.75 3.75 3.75 3.75\nam=in0:. 1lo1g62, bx=-71.8.872, 3y, c4=.1519.765 (WLS) 3.50 am=in0:.",
+      "size": 483,
+      "sentences": 15
+    },
+    {
+      "id": 236,
+      "content": "4.00\n3.75 3.75 3.75 3.75 3.75\nam=in0:. 1lo1g62, bx=-71.8.872, 3y, c4=.1519.765 (WLS) 3.50 am=in0:. 1lo2g82, bx=-71.6.946, 0y, c4=.1218.765 (WLS) 3.50 am=in0:. 1lo4g32, bx=-72.2.098, 8y, c4=.1115.765 (WLS) 3.50 3.50 am=in0:. 1lo8g12, bx=-62.4.343, 4y, c4=.1214.765 3.50 am=in0:. 1lo9g42, bx=-62.2.410, 6y, c4=.1219.765\n22 24 26 28 210 22 24 26 28 210 22 24 26 28 210 22 24 26 28 210 22 24 26 28 210\n5.50\n5.25\n5.00\n4.75 4.50\n4.25\n4.00\n3.75\n3.50\n21 23 25 27 29 211 213\n)B 6.8(\n332\nbs=32\n5\n5\n. .",
+      "size": 491,
+      "sentences": 7
+    },
+    {
+      "id": 237,
+      "content": "8 210\n5.50\n5.25\n5.00\n4.75 4.50\n4.25\n4.00\n3.75\n3.50\n21 23 25 27 29 211 213\n)B 6.8(\n332\nbs=32\n5\n5\n. . 2\n5\n5\n0 bs=64\n5\n5\n. . 2\n5\n5\n0 bs=128\n5\n5\n. . 2\n5\n5\n0 bs=256\n5\n5\n. . 2\n5\n5\n0 bs=512 am=in0:. 1lo6g52, bx=-62.9.259, 2y, c3=.181.765\n5\n5\n. . 2\n5\n5\n0 bs=1024\n5.00 5.00 5.00 5.00 5.00\n4.75 4.75 4.75 4.75 4.75 4.50 4.50 4.50 4.50 4.50\n4.25 4.25 4.25 4.25 4.25\n4.00 4.00 4.00 4.00 4.00\n3.75 3.75 3.75 3.75 3.75\nam=in0:. 1lo1g82, bx=-81.1.962, 2y, c3=.1912.765 (WLS) 3.50 am=in0:.",
+      "size": 473,
+      "sentences": 13
+    },
+    {
+      "id": 238,
+      "content": "4.00\n3.75 3.75 3.75 3.75 3.75\nam=in0:. 1lo1g82, bx=-81.1.962, 2y, c3=.1912.765 (WLS) 3.50 am=in0:. 1lo3g42, bx=-72.7.017, 2y, c3=.1717.765 (WLS) 3.50 am=in0:. 1lo4g02, bx=-72.5.182, 7y, c3=.1711.765 (WLS) 3.50 am=in0:. 1lo5g12, bx=-72.2.290, 5y, c3=.1713.765 3.50 3.50 am=in0:.",
+      "size": 277,
+      "sentences": 5
+    },
+    {
+      "id": 239,
+      "content": "82, 7y, c3=.1711.765 (WLS) 3.50 am=in0:. 1lo5g12, bx=-72.2.290, 5y, c3=.1713.765 3.50 3.50 am=in0:. 1lo8g42, bx=-62.4.389, 2y, c4=.1011.765\n21 23 25 27 29 211 213 21 23 25 27 29 211 213 21 23 25 27 29 211 213 21 23 25 27 29 211 213 21 23 25 27 29 211 213\n5.50\n5.25\n5.00\n4.75 4.50\n4.25\n4.00\n3.75\n3.50\n22 24 26 28 210\n)B 6.8(\n332\nam=in0:. 1lo2g12, bx=-81.1.987, 5y, c3=.16 b 19 s .7 = 65 3 ( 2 WLS)\n5\n5\n. . 2\n5\n5\n0 b am s = = in0 6 :. 1l 4 o4g02, bx=-72.6.164, 5y, c3=.1515.765 (WLS)\n5\n5\n. .",
+      "size": 489,
+      "sentences": 8
+    },
+    {
+      "id": 240,
+      "content": "2 WLS)\n5\n5\n. . 2\n5\n5\n0 b am s = = in0 6 :. 1l 4 o4g02, bx=-72.6.164, 5y, c3=.1515.765 (WLS)\n5\n5\n. . 2\n5\n5\n0 bs am = =in0 1 :. 2 1lo5 8 g42, bx=-72.2.295, 0y, c3=.1516.765 (WLS)\n5\n5\n. . 2\n5\n5\n0 bs=256 am=in0:. 1lo6g12, bx=-72.1.239, 2y, c3=.161.765\n5\n5\n. . 2\n5\n5\n0 bs=512\n5\n5\n. . 2\n5\n5\n0 bs=1024\n5.00 5.00 5.00 5.00 5.00\n4.75 4.75 4.75 4.75 4.75 4.50 4.50 4.50 4.50 4.50\n4.25 4.25 4.25 4.25 4.25\n4.00 4.00 4.00 4.00 4.00\n3.75 3.75 3.75 3.75 3.75\n3.50 3.50 3.50 3.50 am=in0:.",
+      "size": 473,
+      "sentences": 14
+    },
+    {
+      "id": 241,
+      "content": "4.25 4.25 4.25 4.25\n4.00 4.00 4.00 4.00 4.00\n3.75 3.75 3.75 3.75 3.75\n3.50 3.50 3.50 3.50 am=in0:. 1lo7g72, bx=-62.7.349, 2y, c3=.171.765 3.50 am=in0:.",
+      "size": 151,
+      "sentences": 2
+    },
+    {
+      "id": 242,
+      "content": "75 3.75 3.75 3.75\n3.50 3.50 3.50 3.50 am=in0:. 1lo7g72, bx=-62.7.349, 2y, c3=.171.765 3.50 am=in0:. 1lo8g62, bx=-62.4.481, 7y, c3=.1913.765\n22 24 26 28 210 22 24 26 28 210 22 24 26 28 210 22 24 26 28 210 22 24 26 28 210\n5.50\n5.25\n5.00\n4.75 4.50\n4.25\n4.00\n3.75\n3.50\n21 23 25 27 29 211 213\n)B 6.8(\n332\nbs=32 5.50 bs=64 5.50 bs=128 5.50 bs=256 5.50 bs=512 5.50 bs=1024\n5.25 5.25 5.25 5.25 5.25\n5.00 5.00 5.00 5.00 5.00\n4.75 4.75 4.75 4.75 4.75 4.50 4.50 4.50 4.50 4.50\n4.25 4.25 4.25 4.25 4.25\n4.00 4.00 4.00 4.00 4.00\n3.75 3.75 3.75 3.75 3.75\nam=in0:.",
+      "size": 549,
+      "sentences": 3
+    },
+    {
+      "id": 243,
+      "content": "4.50 4.50 4.50\n4.25 4.25 4.25 4.25 4.25\n4.00 4.00 4.00 4.00 4.00\n3.75 3.75 3.75 3.75 3.75\nam=in0:. 1lo2g32, bx=-71.9.9, 3y7, 4c.=1111.765 (WLS) 3.50 am=in0:. 1lo3g72, bx=-72.5.056, 5y, c3=.1917.765 (WLS) 3.50 am=in0:. 1lo5g12, bx=-72.2.117, 8y, c3=.1911.765 (WLS) 3.50 am=in0:. 1lo7g02, bx=-62.7.370, 8y, c3=.1915.7653.50 am=in0:. 1lo9g32, bx=-62.3.434, 2y, c4=.1013.7653.50 am=in0:.",
+      "size": 383,
+      "sentences": 6
+    },
+    {
+      "id": 244,
+      "content": "2, bx=-62.7.370, 8y, c3=.1915.7653.50 am=in0:. 1lo9g32, bx=-62.3.434, 2y, c4=.1013.7653.50 am=in0:. 2lo3g02, bx=-52.6.682, 0y, c4=.1312.765\n21 23 25 27 29 211 213 21 23 25 27 29 211 213 21 23 25 27 29 211 213 21 23 25 27 29 211 213 21 23 25 27 29 211 213\n5.50\n5.25\n5.00\n4.75 4.50\n4.25\n4.00\n3.75\n3.50\n22 24 26 28 210\n)B 6.8(\n332\nam=in0:. 1lo2g92, bx=-72.8.0, 0y6, 3c.=914 b 1 s .7 = 65 3 ( 2 WLS)\n5\n5\n. . 2\n5\n5\n0 bs=64\n5\n5\n. . 2\n5\n5\n0 bs=128\n5\n5\n. . 2\n5\n5\n0 bs=256\n5\n5\n. . 2\n5\n5\n0 bs=512 am=in0:.",
+      "size": 495,
+      "sentences": 12
+    },
+    {
+      "id": 245,
+      "content": "5\n5\n. . 2\n5\n5\n0 bs=64\n5\n5\n. . 2\n5\n5\n0 bs=128\n5\n5\n. . 2\n5\n5\n0 bs=256\n5\n5\n. . 2\n5\n5\n0 bs=512 am=in0:. 2lo2g92, bx=-52.8.626, 3y, c4=.1011.765\n5\n5\n. . 2\n5\n5\n0 bs=1024\n5.00 5.00 5.00 5.00 5.00\n4.75 4.75 4.75 4.75 4.75 4.50 4.50 4.50 4.50 4.50\n4.25 4.25 4.25 4.25 4.25\n4.00 4.00 4.00 4.00 4.00\n3.75 3.75 3.75 3.75 3.75\n3.50 am=in0:. 1lo3g92, bx=-72.5.029, 6y, c3=.1818.765 (WLS) 3.50 am=in0:. 1lo5g72, bx=-72.0.292, 9y, c3=.1816.765 (WLS) 3.50 am=in0:.",
+      "size": 447,
+      "sentences": 14
+    },
+    {
+      "id": 246,
+      "content": "9, 6y, c3=.1818.765 (WLS) 3.50 am=in0:. 1lo5g72, bx=-72.0.292, 9y, c3=.1816.765 (WLS) 3.50 am=in0:. 2lo0g02, bx=-62.2.561, 0y, c3=.1911.765 3.50 3.50 am=in0:. 2lo9g02, bx=-52.0.985, 2y, c4=.1216.765\n22 24 26 28 210 22 24 26 28 210 22 24 26 28 210 22 24 26 28 210 22 24 26 28 210\n(b)\nFigure12: IndividualnormscansforvariousbatchsizesB(columns),acrossvarioushorizons\nDin(a),acrossvariousmodelsin(b)(rows).",
+      "size": 403,
+      "sentences": 4
+    },
+    {
+      "id": 247,
+      "content": "ormscansforvariousbatchsizesB(columns),acrossvarioushorizons\nDin(a),acrossvariousmodelsin(b)(rows). Weplottrainloss(Y-axis)againsttheoutputlayer\noperator norm ∥W ∥ , where each point corresponds to a different learning rate run and\nout RMS→∞\nerrorbarscorrespondtolosssmoothingvariance(seeAppendixA.4). Thebest-losspointforeach\n(B,D)ispinpointedwiththebluedashedline,fittedcurvesareshownwithbluesolidlines. These\nfit results are used for: (a) Fig. 2a and Fig. 3b, (b) Fig.",
+      "size": 471,
+      "sentences": 6
+    },
+    {
+      "id": 248,
+      "content": "curvesareshownwithbluesolidlines. These\nfit results are used for: (a) Fig. 2a and Fig. 3b, (b) Fig. 2b, from top to bottom rows: proxy, ×4-\nwidth,×12-width,×8-depth,×32-depth. 30\n[  ]\n\n===  31 ===\nPreprint. Underreview.",
+      "size": 219,
+      "sentences": 7
+    },
+    {
+      "id": 249,
+      "content": "om rows: proxy, ×4-\nwidth,×12-width,×8-depth,×32-depth. 30\n[  ]\n\n===  31 ===\nPreprint. Underreview. 4.2\n4.1\n4.0\n3.9\n3.8\n3.7\n3.6\n3.5 21 23 25 27 29\n)B 1.2(\n132\nmin: log2 x7.19, y3.81 bs=32 4.2 min: log2 x6.63, y3.82 bs=64 4.2 min: log2 x6.32, y3.8 b 7 s=128 4.2 min: log2 x6.23, y3.9 b 2 s=256 4.2 min: log2 x6.23, y3.9 b 5 s=512 4.2 min: log2 x6.3, y4.0 b 4 s=1024\n4.1 4.1 4.1 4.1 4.1\n4.0 4.0 4.0 4.0 4.0\n3.9 3.9 3.9 3.9 3.9\n3.8 3.8 3.8 3.8 3.8\n3.7 3.7 3.7 3.7 3.7\n3.6 3.6 3.6 3.6 3.6\n3.5 21 23 25 27 293.5 21 23 25 27 293.5 21 23 25 27 293.5 21 23 25 27 293.5 21 23 25 27 29\n4.2\n4.1\n4.0\n3.9\n3.8\n3.7\n3.6\n3.5 21 23 25 27 29\n)B 6.8(\n332\nmin: log2 x7.47, y3.8 4.2 min: log2 x7.15, y3.75 4.2 min: log2 x6.29, y3.74 4.2 min: log2 x6.67, y3.82 4.2 min: log2 x6.36, y3.8 4.2 min: log2 x6.61, y3.79\n4.1 4.1 4.1 4.1 4.1\n4.0 4.0 4.0 4.0 4.0\n3.9 3.9 3.9 3.9 3.9\n3.8 3.8 3.8 3.8 3.8\n3.7 3.7 3.7 3.7 3.7\n3.6 3.6 3.6 3.6 3.6\n3.5 21 23 25 27 29 3.5 21 23 25 27 29 3.5 21 23 25 27 29 3.5 21 23 25 27 29 3.5 21 23 25 27 29\n4.2\n4.1\n4.0\n3.9\n3.8\n3.7\n3.6\n3.5 21 23 25 27 29\n)B 43(\n532\nmin: log2 x7.42, y3.8 4.2 min: log2 x7.09, y3.76 4.2 min: log2 x6.51, y3.74 4.2 min: log2 x6.53, y3.7 4.2 min: log2 x6.63, y3.69 4.2 min: log2 x7.09, y3.72\n4.1 4.1 4.1 4.1 4.1\n4.0 4.0 4.0 4.0 4.0\n3.9 3.9 3.9 3.9 3.9\n3.8 3.8 3.8 3.8 3.8\n3.7 3.7 3.7 3.7 3.7\n3.6 3.6 3.6 3.6 3.6\n3.5 21 23 25 27 29 3.5 21 23 25 27 29 3.5 21 23 25 27 29 3.5 21 23 25 27 29 3.5 21 23 25 27 29\n4.2\n4.1\n4.0\n3.9\n3.8\n3.7\n3.6\n3.5 22 24 26 28 210\n)B 731(\n732\nmin: log2 x8.3, y3.85 4.2 min: log2 x7.93, y3.84 4.2 4.2 4.2 4.2 min: log2 x6.38, y3.65\n4.1 4.1 4.1 4.1 4.1\n4.0 4.0 4.0 4.0 4.0\n3.9 3.9 3.9 3.9 3.9\n3.8 3.8 3.8 3.8 3.8\n3.7 3.7 3.7 3.7 3.7\n3.6 3.6 3.6 3.6 3.6\n3.5 22 24 26 28 210 3.5 min: 2 lo 2 g2 x7.19, y 24 3.81 26 28 210 3.5 min: 2 lo 2 g2 x7.27, y 24 3.72 26 28 210 3.5 min: 2 lo 2 g2 x6.94, y 24 3.65 26 28 210 3.5 22 24 26 28 210\n(a)\n4.2\n4.1\n4.0\n3.9\n3.8\n3.7\n3.6\n3.520 21 22 23 24 25 26 27 28\n)B 9.2(\n132\nmin: log2 x7.66, y3.",
+      "size": 1975,
+      "sentences": 4
+    },
+    {
+      "id": 250,
+      "content": "210\n(a)\n4.2\n4.1\n4.0\n3.9\n3.8\n3.7\n3.6\n3.520 21 22 23 24 25 26 27 28\n)B 9.2(\n132\nmin: log2 x7.66, y3. b 8 s 9 =32 4.2 min: log2 x6.91, y3. b 8 s=64 4.2 min: log2 x6.38, y3 b .7 s 6 =128 4.2 min: log2 x6.4, y3.",
+      "size": 206,
+      "sentences": 3
+    },
+    {
+      "id": 251,
+      "content": "=32 4.2 min: log2 x6.91, y3. b 8 s=64 4.2 min: log2 x6.38, y3 b .7 s 6 =128 4.2 min: log2 x6.4, y3. b 85 s=256 4.2 min: log2 x6.67, y3 b .8 s 7 =512 4.2 min: log2 x6.15, y b 3. s 8 = 9 1024\n4.1 4.1 4.1 4.1 4.1\n4.0 4.0 4.0 4.0 4.0\n3.9 3.9 3.9 3.9 3.9\n3.8 3.8 3.8 3.8 3.8\n3.7 3.7 3.7 3.7 3.7\n3.6 3.6 3.6 3.6 3.6\n3.520 21 22 23 24 25 26 27 28 3.520 21 22 23 24 25 26 27 28 3.520 21 22 23 24 25 26 27 28 3.520 21 22 23 24 25 26 27 28 3.520 21 22 23 24 25 26 27 28\n4.2\n4.1\n4.0\n3.9\n3.8\n3.7\n3.6\n3.5 21 23 25 27 29\n)B 11(\n332\nmin: log2 x7.99, y3.75 4.2 min: log2 x7.23, y3.74 4.2 min: log2 x6.97, y3.77 4.2 min: log2 x6.95, y3.77 4.2 4.2\n4.1 4.1 4.1 4.1 4.1\n4.0 4.0 4.0 4.0 4.0\n3.9 3.9 3.9 3.9 3.9\n3.8 3.8 3.8 3.8 3.8\n3.7 3.7 3.7 3.7 3.7\n3.6 3.6 3.6 3.6 3.6\n3.5 21 23 25 27 29 3.5 21 23 25 27 29 3.5 21 23 25 27 29 3.5 2 m 1 in: log2 x6 2 .7 3 4, y3.76 25 27 29 3.5 2 m 1 in: log2 x6 2 .9 3 1, y3.75 25 27 29\n4.2\n4.1\n4.0\n3.9\n3.8\n3.7\n3.6\n3.525 26 27 28 29 210\n)B 64(\n532\nmin: log2 x8.81, y3.82 4.2 min: log2 x7.98, y3.71 4.2 min: log2 x7.71, y3.68 4.2 min: log2 x7.61, y3.71 4.2 min: log2 x7.39, y3.71 4.2 min: log2 x7.14, y3.68\n4.1 4.1 4.1 4.1 4.1\n4.0 4.0 4.0 4.0 4.0\n3.9 3.9 3.9 3.9 3.9\n3.8 3.8 3.8 3.8 3.8\n3.7 3.7 3.7 3.7 3.7\n3.6 3.6 3.6 3.6 3.6\n3.525 26 27 28 29 210 3.525 26 27 28 29 210 3.525 26 27 28 29 210 3.525 26 27 28 29 210 3.525 26 27 28 29 210\n4.2\n4.1\n4.0\n3.9\n3.8\n3.7\n3.6\n3.5 26 27 28 29 210\n)B 481(\n732\nmin: log2 x9.46, y3.73 4.2 min: log2 x8.44, y3.69 4.2 min: log2 x8.52, y3.69 4.2 min: log2 x8.44, y3.65 4.2 min: log2 x8.11, y3.66 4.2 min: log2 x7.81, y3.64\n4.1 4.1 4.1 4.1 4.1\n4.0 4.0 4.0 4.0 4.0\n3.9 3.9 3.9 3.9 3.9\n3.8 3.8 3.8 3.8 3.8\n3.7 3.7 3.7 3.7 3.7\n3.6 3.6 3.6 3.6 3.6\n3.5 26 27 28 29 210 3.5 26 27 28 29 210 3.5 26 27 28 29 210 3.5 26 27 28 29 210 3.5 26 27 28 29 210\n(b)\nFigure13: Individualoutputnorm∥W ∥ scansforvariousbatchsizesB (columns)\nout RMS→∞\nacross various horizons D (rows).",
+      "size": 1907,
+      "sentences": 3
+    },
+    {
+      "id": 252,
+      "content": "dualoutputnorm∥W ∥ scansforvariousbatchsizesB (columns)\nout RMS→∞\nacross various horizons D (rows). (a) with momentum = 0.1, no learning rate decay. (b) with\nmomentum=0.1,withlearningratedecaylinearlyto0for25%oftotalhorizon. 31\n===  32 ===\nPreprint. Underreview. 6.00\n5.75\n5.50\n5.25 5.00\n4.75\n4.50\n4.25\n4.00 3.75 21 21 23 25 27 29\n)B 1.2(\n132\nmin: log2 x7.5, y4.57 bs=32 6.00 min: log2 x6.87, y4.4 b 1 s=64 6.00 min: log2 x6.52, y4. b 4 s=128 6.00 min: log2 x6.84, y4.",
+      "size": 468,
+      "sentences": 7
+    },
+    {
+      "id": 253,
+      "content": "2 6.00 min: log2 x6.87, y4.4 b 1 s=64 6.00 min: log2 x6.52, y4. b 4 s=128 6.00 min: log2 x6.84, y4. b 52 s=256 6.00 bs=512 6.00 bs=1024 6.00 min: log2 x4.96, y5 b .4 s=2048\n5.75 5.75 5.75 5.75 5.75 5.75\n5.50 5.50 5.50 5.50 5.50 5.50\n5.25 5.25 5.25 5.25 5.25 5.25 5.00 5.00 5.00 5.00 5.00 5.00\n4.75 4.75 4.75 4.75 4.75 4.75\n4.50 4.50 4.50 4.50 4.50 4.50\n4.25 4.25 4.25 4.25 4.25 4.25\n3 4 . . 7 0 5 0 21 21 23 25 27 293 4 . . 7 0 5 0 21 21 23 25 27 293 4 . . 7 0 5 0 21 21 23 25 27 293 4 . .",
+      "size": 489,
+      "sentences": 10
+    },
+    {
+      "id": 254,
+      "content": "7 0 5 0 21 21 23 25 27 293 4 . . 7 0 5 0 21 21 23 25 27 293 4 . . 7 0 5 0 21 21 23 25 27 293 4 . . 7 0 5 0 2 m 1 in: log2 x 21 5.67, y4.6 2 7 3 25 27 293 4 . . 7 0 5 0 2 m 1 in: log2 x 21 5.61, y5.0 2 3 3 25 27 293 4 . .",
+      "size": 220,
+      "sentences": 10
+    },
+    {
+      "id": 255,
+      "content": "x 21 5.67, y4.6 2 7 3 25 27 293 4 . . 7 0 5 0 2 m 1 in: log2 x 21 5.61, y5.0 2 3 3 25 27 293 4 . . 7 0 5 0 21 21 23 25 27 29\n6.00\n5.75\n5.50\n5.25 5.00\n4.75\n4.50\n4.25\n4.00 3.75 21 23 25 27 29\n)B 6.8(\n332\nmin: log2 x8.21, y4.54 6.00 min: log2 x7.31, y4.3 6.00 6.00 min: log2 x6.27, y4.19 6.00 6.00 6.00\n5.75 5.75 5.75 5.75 5.75 5.75\n5.50 5.50 5.50 5.50 5.50 5.50\n5.25 5.25 5.25 5.25 5.25 5.25 5.00 5.00 5.00 5.00 5.00 5.00\n4.75 4.75 4.75 4.75 4.75 4.75\n4.50 4.50 4.50 4.50 4.50 4.50\n4.25 4.25 4.25 4.25 4.25 4.25\n3 4 .",
+      "size": 515,
+      "sentences": 5
+    },
+    {
+      "id": 256,
+      "content": ".00\n4.75 4.75 4.75 4.75 4.75 4.75\n4.50 4.50 4.50 4.50 4.50 4.50\n4.25 4.25 4.25 4.25 4.25 4.25\n3 4 . . 7 0 5 0 21 23 25 27 29 3 4 . . 7 0 5 0 2 m 1 in: log2 x6 2 .9 3 4, y4.15 25 27 29 3 4 . . 7 0 5 0 21 23 25 27 29 3 4 . . 7 0 5 0 2 m 1 in: log2 x6 2 , 3 y4.23 25 27 29 3 4 . . 7 0 5 0 2 m 1 in: log2 x5 2 .5 3 1, y4.28 25 27 29 3 4 . .",
+      "size": 336,
+      "sentences": 12
+    },
+    {
+      "id": 257,
+      "content": "in: log2 x6 2 , 3 y4.23 25 27 29 3 4 . . 7 0 5 0 2 m 1 in: log2 x5 2 .5 3 1, y4.28 25 27 29 3 4 . . 7 0 5 0 2 m 1 in: log2 x5 2 .5 3 , y4.49 25 27 29\n6.00\n5.75\n5.50\n5.25\n5.00\n4.75\n4.50\n4.25\n4.00\n3.7522 23 24 25 26 27 28 29 210\n)B 43(\n532\nmin: log2 x7.94, y4.49 6.00 min: log2 x7.98, y4.27 6.00 min: log2 x7.84, y4.12 6.00 min: log2 x6.93, y4.01 6.00 min: log2 x6.44, y3.97 6.00 min: log2 x5.87, y4.03 6.00 min: log2 x5.48, y4.09\n5.75 5.75 5.75 5.75 5.75 5.75\n5.50 5.50 5.50 5.50 5.50 5.50\n5.25 5.25 5.25 5.25 5.25 5.25\n5.00 5.00 5.00 5.00 5.00 5.00\n4.75 4.75 4.75 4.75 4.75 4.75\n4.50 4.50 4.50 4.50 4.50 4.50\n4.25 4.25 4.25 4.25 4.25 4.25\n4.00 4.00 4.00 4.00 4.00 4.00\n3.7522 23 24 25 26 27 28 29 210 3.7522 23 24 25 26 27 28 29 210 3.7522 23 24 25 26 27 28 29 210 3.7522 23 24 25 26 27 28 29 210 3.7522 23 24 25 26 27 28 29 210 3.7522 23 24 25 26 27 28 29 210\n6.00\n5.75\n5.50\n5.25 5.00\n4.75\n4.50\n4.25\n4.00\n3.75 24 25 26 27 28 29 210\n)B 731(\n732\nmin: log2 x7.91, y4.65 6.00 min: log2 x7.97, y4.46 6.00 min: log2 x8.24, y4.22 6.00 min: log2 x7.78, y3.97 6.00 min: log2 x6.83, y3.88 6.00 min: log2 x6.23, y3.86 6.00 min: log2 x5.94, y3.92\n5.75 5.75 5.75 5.75 5.75 5.75\n5.50 5.50 5.50 5.50 5.50 5.50\n5.25 5.25 5.25 5.25 5.25 5.25 5.00 5.00 5.00 5.00 5.00 5.00\n4.75 4.75 4.75 4.75 4.75 4.75\n4.50 4.50 4.50 4.50 4.50 4.50\n4.25 4.25 4.25 4.25 4.25 4.25\n4.00 4.00 4.00 4.00 4.00 4.00\n3.75 24 25 26 27 28 29 210 3.75 24 25 26 27 28 29 210 3.75 24 25 26 27 28 29 210 3.75 24 25 26 27 28 29 210 3.75 24 25 26 27 28 29 210 3.75 24 25 26 27 28 29 210\n(a)\n6.00\n5.75\n5.50\n5.25 5.00\n4.75\n4.50\n4.25\n4.00 3.75 21 23 25 27 29\n)B 1.2(\n132\nbs=32 6.00 bs=64 min: log2 x4.57, y4.41 6.00 bs=128 min: log2 x4.17, y4.4 6.00 min: log2 x5.44, y4.",
+      "size": 1718,
+      "sentences": 5
+    },
+    {
+      "id": 258,
+      "content": "bs=32 6.00 bs=64 min: log2 x4.57, y4.41 6.00 bs=128 min: log2 x4.17, y4.4 6.00 min: log2 x5.44, y4. b 52 s=256 6.00 bs=512 min: log2 x3.82, y4.67 6.00 bs=1024 6.00 bs=2048 min: log2 x4.53, y5.4\n5.75 5.75 5.75 5.75 5.75 5.75\n5.50 5.50 5.50 5.50 5.50 5.50\n5.25 5.25 5.25 5.25 5.25 5.25 5.00 5.00 5.00 5.00 5.00 5.00\n4.75 4.75 4.75 4.75 4.75 4.75\n4.50 4.50 4.50 4.50 4.50 4.50\n4.25 4.25 4.25 4.25 4.25 4.25\nmin: log2 x5.48, y4.57 3 4 . . 7 0 5 0 21 23 25 27 29 3 4 . . 7 0 5 0 21 23 25 27 29 3 4 . .",
+      "size": 496,
+      "sentences": 7
+    },
+    {
+      "id": 259,
+      "content": "5 4.25\nmin: log2 x5.48, y4.57 3 4 . . 7 0 5 0 21 23 25 27 29 3 4 . . 7 0 5 0 21 23 25 27 29 3 4 . . 7 0 5 0 21 23 25 27 29 3 4 . . 7 0 5 0 21 23 25 27 29 3 4 . . 7 0 5 0 2 m 1 in: log2 x5 2 . 3 44, y5.03 25 27 29 3 4 . .",
+      "size": 220,
+      "sentences": 13
+    },
+    {
+      "id": 260,
+      "content": "9 3 4 . . 7 0 5 0 21 23 25 27 29 3 4 . . 7 0 5 0 2 m 1 in: log2 x5 2 . 3 44, y5.03 25 27 29 3 4 . . 7 0 5 0 21 23 25 27 29\n6.00\n5.75\n5.50\n5.25 5.00\n4.75\n4.50\n4.25\n4.00 3.75 22 24 26 28 210\n)B 6.8(\n332\nmin: log2 x6.68, y4.54 6.00 min: log2 x5.24, y4.3 6.00 min: log2 x4.84, y4.15 6.00 min: log2 x4, y4.19 6.00 min: log2 x3.94, y4.23 6.00 min: log2 x3.85, y4.28 6.00\n5.75 5.75 5.75 5.75 5.75 5.75\n5.50 5.50 5.50 5.50 5.50 5.50\n5.25 5.25 5.25 5.25 5.25 5.25 5.00 5.00 5.00 5.00 5.00 5.00\n4.75 4.75 4.75 4.75 4.75 4.75\n4.50 4.50 4.50 4.50 4.50 4.50\n4.25 4.25 4.25 4.25 4.25 4.25\n3 4 .",
+      "size": 580,
+      "sentences": 8
+    },
+    {
+      "id": 261,
+      "content": ".00\n4.75 4.75 4.75 4.75 4.75 4.75\n4.50 4.50 4.50 4.50 4.50 4.50\n4.25 4.25 4.25 4.25 4.25 4.25\n3 4 . . 7 0 5 0 22 24 26 28 210 3 4 . . 7 0 5 0 22 24 26 28 210 3 4 . . 7 0 5 0 22 24 26 28 210 3 4 . . 7 0 5 0 22 24 26 28 210 3 4 . . 7 0 5 0 22 24 26 28 210 3 4 . .",
+      "size": 261,
+      "sentences": 12
+    },
+    {
+      "id": 262,
+      "content": ". . 7 0 5 0 22 24 26 28 210 3 4 . . 7 0 5 0 22 24 26 28 210 3 4 . . 7 0 5 0 22 24 26 28 210 3 4 . . 7 0 5 0 min 2 : 2 log2 x6.42 2 , 4 y4.49 26 28 210\n6.00\n5.75\n5.50\n5.25\n5.00\n4.75\n4.50\n4.25\n4.00\n3.75 22 24 26 28 210\n)B 43(\n532\nmin: log2 x6.16, y4.49 6.00 min: log2 x6.37, y4.27 6.00 min: log2 x6.14, y4.12 6.00 min: log2 x4.71, y4.01 6.00 min: log2 x4.19, y3.97 6.00 min: log2 x4.39, y4.03 6.00 min: log2 x4.52, y4.09\n5.75 5.75 5.75 5.75 5.75 5.75\n5.50 5.50 5.50 5.50 5.50 5.50\n5.25 5.25 5.25 5.25 5.25 5.25\n5.00 5.00 5.00 5.00 5.00 5.00\n4.75 4.75 4.75 4.75 4.75 4.75\n4.50 4.50 4.50 4.50 4.50 4.50\n4.25 4.25 4.25 4.25 4.25 4.25\n4.00 4.00 4.00 4.00 4.00 4.00\n3.75 22 24 26 28 210 3.75 22 24 26 28 210 3.75 22 24 26 28 210 3.75 22 24 26 28 210 3.75 22 24 26 28 210 3.75 22 24 26 28 210\n6.00\n5.75\n5.50\n5.25 5.00\n4.75\n4.50\n4.25\n4.00\n3.75 22 24 26 28 210\n)B 731(\n732\nmin: log2 x6, y4.65 6.00 min: log2 x6.54, y4.46 6.00 min: log2 x7.33, y4.22 6.00 min: log2 x6.02, y3.97 6.00 min: log2 x4.71, y3.88 6.00 min: log2 x4.41, y3.86 6.00 min: log2 x4.98, y3.92\n5.75 5.75 5.75 5.75 5.75 5.75\n5.50 5.50 5.50 5.50 5.50 5.50\n5.25 5.25 5.25 5.25 5.25 5.25 5.00 5.00 5.00 5.00 5.00 5.00\n4.75 4.75 4.75 4.75 4.75 4.75\n4.50 4.50 4.50 4.50 4.50 4.50\n4.25 4.25 4.25 4.25 4.25 4.25\n4.00 4.00 4.00 4.00 4.00 4.00\n3.75 22 24 26 28 210 3.75 22 24 26 28 210 3.75 22 24 26 28 210 3.75 22 24 26 28 210 3.75 22 24 26 28 210 3.75 22 24 26 28 210\n(b)\nFigure14: IndividualnormscansforvariousbatchsizesB (columns)acrossvarioushorizons\nD(rows).",
+      "size": 1511,
+      "sentences": 9
+    },
+    {
+      "id": 263,
+      "content": "210\n(b)\nFigure14: IndividualnormscansforvariousbatchsizesB (columns)acrossvarioushorizons\nD(rows). (a)For∥W ∥ (outputlayer). (b)For∥W ∥ (inputlayer). out RMS→RMS in 1→RMS\n32\n[  ]",
+      "size": 178,
+      "sentences": 4
+    }
+  ]
+}

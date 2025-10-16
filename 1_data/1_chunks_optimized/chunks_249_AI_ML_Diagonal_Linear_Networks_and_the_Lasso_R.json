@@ -1,0 +1,939 @@
+{
+  "source": "ArXiv",
+  "filename": "249_AI_ML_Diagonal_Linear_Networks_and_the_Lasso_R.pdf",
+  "domain": "AI",
+  "total_chars": 53080,
+  "total_chunks": 155,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\nDiagonal Linear Networks and\nthe Lasso Regularization Path\nRapha¨el Berthier∗\nSeptember 24, 2025\nAbstract\nDiagonal linear networks are neural networks with linear activation\nand diagonal weight matrices. Their theoretical interest is that their im-\nplicit regularization can be rigorously analyzed: from a small initializa-\ntion, the training of diagonal linear networks converges to the linear pre-\ndictorwithminimal1-normamongminimizersofthetrainingloss.",
+      "size": 467,
+      "sentences": 2
+    },
+    {
+      "id": 2,
+      "content": "near networks converges to the linear pre-\ndictorwithminimal1-normamongminimizersofthetrainingloss. Inthis\npaper,wedeepenthisanalysisshowingthatthefulltrainingtrajectoryof\ndiagonallinearnetworksiscloselyrelatedtothelassoregularizationpath. In this connection, the training time plays the role of an inverse regular-\nization parameter. Both rigorous results and simulations are provided to\nillustrate this conclusion.",
+      "size": 416,
+      "sentences": 4
+    },
+    {
+      "id": 3,
+      "content": "zation parameter. Both rigorous results and simulations are provided to\nillustrate this conclusion. Under a monotonicity assumption on the lasso\nregularization path, the connection is exact while in the general case, we\nshow an approximate connection.",
+      "size": 251,
+      "sentences": 3
+    },
+    {
+      "id": 4,
+      "content": "ization path, the connection is exact while in the general case, we\nshow an approximate connection. ∗SorbonneUniversit´e,Inria,CentreInriadeSorbonneUniversit´e,Paris,France\n1\n5202\npeS\n32\n]GL.sc[\n1v66781.9052:viXra\n===  2 ===\nContents\n1 Introduction 3\n2 The u◦v case — statement of the results 5\n2.1 Connection to the lasso under a monotonicity assumption . . . . 5\n2.2 Simulations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .",
+      "size": 440,
+      "sentences": 35
+    },
+    {
+      "id": 5,
+      "content": "ty assumption . . . . 5\n2.2 Simulations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6\n2.3 Approximate connection to the lasso in the general case . . . . . 6\n2.4 Related work and final remarks . . . . . . . . . . . . . . . . . . .",
+      "size": 246,
+      "sentences": 58
+    },
+    {
+      "id": 6,
+      "content": "e general case . . . . . 6\n2.4 Related work and final remarks . . . . . . . . . . . . . . . . . . . 8\n3 The u◦u case — statement of the results 9\n3.1 Connection to the positive lasso under a monotonicity assumption 10\n3.2 Approximate connection to the positive lasso in the general case 10\n4 The u◦u case — proofs of the results 11\n4.1 Mirror flow interpretation . . . . . . . . . . . . . . . . . . . . . . 11\n4.2 Uniform bound on the trajectories . . . . . . . . . . . . . . . . .",
+      "size": 481,
+      "sentences": 63
+    },
+    {
+      "id": 7,
+      "content": ". . . . . . . . . . . . 11\n4.2 Uniform bound on the trajectories . . . . . . . . . . . . . . . . . 12\n4.3 The positive lasso and linear complementarity problems . . . . . 16\n4.4 Thepositivelassoregularizationpathandparametriclinearcom-\nplementarity problems . . . . . . . . . . . . . . . . . . . . . . . . 17\n4.5 Proof of Theorem 3.2. . . . . . . . . . . . . . . . . . . . . . . . . 19\n4.6 Proof of Theorem 3.1. . . . . . . . . . . . . . . . . . . . . . . . .",
+      "size": 459,
+      "sentences": 106
+    },
+    {
+      "id": 8,
+      "content": ". . . . . . . . . . . 19\n4.6 Proof of Theorem 3.1. . . . . . . . . . . . . . . . . . . . . . . . . 22\n5 The u◦v case — proof of the results 22\n5.1 Reductions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 23\n5.1.1 Reduction of the lasso to the positive lasso . . . . . . . . 23\n5.1.2 Reduction of dynamics in the u◦v case to the u◦u case. 24\n5.2 Proofs . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 25\n5.2.1 Proof of Theorem 2.1 . . . . . . . . . . . . . . . . . . .",
+      "size": 499,
+      "sentences": 126
+    },
+    {
+      "id": 9,
+      "content": ". . . . . . . . . . . . . . . . 25\n5.2.1 Proof of Theorem 2.1 . . . . . . . . . . . . . . . . . . . . 25\n5.2.2 Proof of Theorem 2.2 . . . . . . . . . . . . . . . . . . . . 26\nReferences 27\n2\n===  3 ===\n1 Introduction\nContext. Thecompositionoflayersenablesaneuralnetworktolearnamod-\nular representation of the data.",
+      "size": 314,
+      "sentences": 58
+    },
+    {
+      "id": 10,
+      "content": "n\nContext. Thecompositionoflayersenablesaneuralnetworktolearnamod-\nular representation of the data. However, the reasons why learning the com-\nponents of this representation is computationally amenable through gradient\ndescent methods and why it leads to excellent generalization properties are still\nnot fully understood [3].",
+      "size": 326,
+      "sentences": 3
+    },
+    {
+      "id": 11,
+      "content": "methods and why it leads to excellent generalization properties are still\nnot fully understood [3]. In order to address this questions, machine learning theory has studied\nthe gradient flow training of linear networks—where the activation is linear—\nand diagonal linear networks (DLNs)—where, in addition, weight matrices are\ndiagonal.",
+      "size": 335,
+      "sentences": 2
+    },
+    {
+      "id": 12,
+      "content": "on is linear—\nand diagonal linear networks (DLNs)—where, in addition, weight matrices are\ndiagonal. These studies have pointed out that a certain implicit regulariza-\ntion phenomenon appears when training neural networks: the gradient de-\nscentminimizescertainregularizationpenalties, althoughnotexplicitlypresent\nin the loss function [31].",
+      "size": 340,
+      "sentences": 2
+    },
+    {
+      "id": 13,
+      "content": "entminimizescertainregularizationpenalties, althoughnotexplicitlypresent\nin the loss function [31]. This phenomenon has been shown to be benefi-\ncial for the generalization properties of the trained networks, and thus sug-\ngested to be a key ingredient in the success of neural networks. See, e.g.,\n[16, 21, 9, 20] for contributions to the implicit regularization of neural net-\nworks and [32, 34, 33, 17, 20, 2, 27, 28, 25, 10, 4, 26] for more contributions\nspecifically on DLNs.",
+      "size": 480,
+      "sentences": 3
+    },
+    {
+      "id": 14,
+      "content": "rks and [32, 34, 33, 17, 20, 2, 27, 28, 25, 10, 4, 26] for more contributions\nspecifically on DLNs. We now briefly recall the form of this phenomenon in the case of DLNs. Consider the minimization of quadratic function:\n1\nℓ(x)= ⟨x,Mx⟩−⟨r,x⟩, x∈Rd. 2\nWe assume that this function is convex, i.e. that M is positive semidefinite,\nand that it is lower-bounded, i.e. that r ∈ SpanM. The minimization of such\nfunctions arises, e.g., when solving linear least-squares problems.",
+      "size": 471,
+      "sentences": 7
+    },
+    {
+      "id": 15,
+      "content": "SpanM. The minimization of such\nfunctions arises, e.g., when solving linear least-squares problems. ADLN(withtwolayers)consistsinparametrizingx=u◦v,where◦denotes\nthe component-wise product of the two vectors u,v ∈ Rd, and training the\nparameters u and v with the gradient flow on ℓ(x) = ℓ(u◦v). This induces a\ntrajectory u(t),v(t) as well as an effective linear parameter x(t) = u(t)◦v(t).",
+      "size": 389,
+      "sentences": 4
+    },
+    {
+      "id": 16,
+      "content": "◦v). This induces a\ntrajectory u(t),v(t) as well as an effective linear parameter x(t) = u(t)◦v(t). When initialized from a suitable infinitesimal initialization x(0), the training of\nDLNs is shown to converge to the minimizer of ℓ with mininimal 1-norm [33]. Asaconsequence,theminimizerselectedbythetrainingofaDLNbenefitsfrom\na sparsifying effect, which is beneficial for the generalization properties of the\ntrained network. Contributions.",
+      "size": 441,
+      "sentences": 5
+    },
+    {
+      "id": 17,
+      "content": "ffect, which is beneficial for the generalization properties of the\ntrained network. Contributions. For a regularization parameter λ ⩾ 0, we define the lasso\nobjective as\nLasso(x,λ)=ℓ(x)+λ∥x∥ . 1\nIn other words, the result above states that DLNs converge to a minimum of\nthe lasso objective with infinitesimal regularization parameter λ=0+. In this work, we show that there is in fact a deeper connection between the\ntraining trajectory of DLNs and the lasso regularization path.",
+      "size": 479,
+      "sentences": 5
+    },
+    {
+      "id": 18,
+      "content": "fact a deeper connection between the\ntraining trajectory of DLNs and the lasso regularization path. The connection\nholds in the same infinitesimal initialization limit. When x(0) is of magnitude\n3\n===  4 ===\nε≪1,thetimetisjointlyrescaledast(s,ε)=\n1(cid:0) log1(cid:1)\ns. Considertheaverage\n2 ε\nof the trajectory of x:\n1(cid:90) t\nx(t)= x(u)du.",
+      "size": 343,
+      "sentences": 3
+    },
+    {
+      "id": 19,
+      "content": ")=\n1(cid:0) log1(cid:1)\ns. Considertheaverage\n2 ε\nof the trajectory of x:\n1(cid:90) t\nx(t)= x(u)du. t\n0\nWe then have the following informal result:\nAs ε → 0, in this joint regime, for all s > 0, x(t(s,ε)) (approxi-\nmately) minimizes the lasso objective Lasso\n(cid:0) .,1(cid:1)\n. s\nIn the informal result above, the parenthesized word “approximately” refers\nto a more technical discussion.",
+      "size": 389,
+      "sentences": 3
+    },
+    {
+      "id": 20,
+      "content": "nformal result above, the parenthesized word “approximately” refers\nto a more technical discussion. Under a monotonicity assumption on the lasso\nregularization path, we show that Lasso\n(cid:0) x(t(s,ε)),1(cid:1)\nconverges to the mini-\nmum of Lasso\n(cid:0) .,1(cid:1)\nas ε → 0.",
+      "size": 276,
+      "sentences": 2
+    },
+    {
+      "id": 21,
+      "content": "t Lasso\n(cid:0) x(t(s,ε)),1(cid:1)\nconverges to the mini-\nmum of Lasso\n(cid:0) .,1(cid:1)\nas ε → 0. However, when the\ns\nlasso regularization path\ns\nis not monotone, we only show that x(t(s,ε)) is an approximate minimizer of\nLasso\n(cid:0) .,1(cid:1)\n, even in the limit ε → 0, where the suboptimality gap is controled\ns\nby the deviation from the monotonicity assumption. This distinction is also\napparent in simulations.",
+      "size": 419,
+      "sentences": 3
+    },
+    {
+      "id": 22,
+      "content": "y the deviation from the monotonicity assumption. This distinction is also\napparent in simulations. ThisresultshowsthatearlystoppingthetrainingofDLNscanofferatradeoff\nbetween sparsity and data fitting. An earlier stopping time leads to a sparser\nlinearmodel. ThisdeepenstheconnectionbetweenDLNsandsparseregression. Our results also cover the case x = u ◦ u, that is less motivated by the\ntheoretical study of neural networks, but that is algebraically more elegant.",
+      "size": 465,
+      "sentences": 6
+    },
+    {
+      "id": 23,
+      "content": "less motivated by the\ntheoretical study of neural networks, but that is algebraically more elegant. As\naconsequence,weprovidetheproofsintheu◦ucasefirst,andthendeducethe\nproofs in the u◦v by a reduction to the u◦u case. This systematic reduction\nstrategy might be of independent interest for the study of DLNs. Outline. Sec. 2 is the one of interest for most readers. It contains the results\ninthecasex=u◦vandtheirdiscussions.",
+      "size": 425,
+      "sentences": 7
+    },
+    {
+      "id": 24,
+      "content": "is the one of interest for most readers. It contains the results\ninthecasex=u◦vandtheirdiscussions. Sec.2.1providestheexactconnection\nunder the monotonicity assumption on the lasso regularization path, Sec. 2.2\npresents simulations that illustrate the results, and Sec. 2.3 covers the general\ncase, beyond the monotonicity assumption. Sec. 2.4 concludes this section by\ndiscussing in more detail the related work and a speculative conclusion for the\ntheory of neural networks. Sec.",
+      "size": 481,
+      "sentences": 8
+    },
+    {
+      "id": 25,
+      "content": "n more detail the related work and a speculative conclusion for the\ntheory of neural networks. Sec. 3 contains the parallel results in the case x = u◦u. Sec. 4 contains\nthe proofs of the results in the u◦u case. This section contains the bulk of the\ntechnical effort of this paper, as the proofs in the u◦v case, provided in Sec. 5,\nare obtained by a systematic reduction to the u◦u case. Notations. We denote ⟨.,.⟩ the canonical inner product on Rd and ∥.∥ the\nassociated norm.",
+      "size": 478,
+      "sentences": 9
+    },
+    {
+      "id": 26,
+      "content": "u◦u case. Notations. We denote ⟨.,.⟩ the canonical inner product on Rd and ∥.∥ the\nassociated norm. We note ∥.∥ the 1-norm on vectors: ∥x∥ =\n(cid:80)d\n|x |. 1 1 i=1 i\nWeusethenotationx⩾0todenotethatxhasallcoordinatesnonnegative. If x is a real number, we denote x =max(x,0) its positive part and x =\n+ −\nmax(−x,0) its negative part. Whenφisaunivariatefunctionandx∈Rd,wedenoteφ(x)=(φ(x ),...,φ(x ))\n1 d\nthe component-wise application of φ to x.",
+      "size": 443,
+      "sentences": 7
+    },
+    {
+      "id": 27,
+      "content": "variatefunctionandx∈Rd,wedenoteφ(x)=(φ(x ),...,φ(x ))\n1 d\nthe component-wise application of φ to x. This notation is used, for instance,\n4\n===  5 ===\nfor φ = log, for φ(x) = x2, for φ(x) = x or for φ(x) = x . We thus denote\n+ −\nx2 =x◦x. We sometimes write explicitly the dependence of the constants on some pa-\nrameters,forinstanceC =C (M,r,α). Withoutanyindex,thenotationC(...)\ni i\nindicates a constant that depends on the parameters between the parentheses.",
+      "size": 459,
+      "sentences": 5
+    },
+    {
+      "id": 28,
+      "content": ",thenotationC(...)\ni i\nindicates a constant that depends on the parameters between the parentheses. This constant can change from one occurrence to the next. We denote 1 = (1,...,1) the vector of ones, whose dimension is implicit\nfrom the context. WhenI isasubsetof{1,...,d},wedenoteA thesubmatrixofAwherethe\nI\ncolumns whose index are in I are selected, and A the submatrix of A where\nI,I\nboth the rows and the columns whose index are in I are selected.",
+      "size": 453,
+      "sentences": 4
+    },
+    {
+      "id": 29,
+      "content": "and A the submatrix of A where\nI,I\nboth the rows and the columns whose index are in I are selected. 2 The u ◦ v case — statement of the results\nSetting. Diagonal linear networks consist in parametrizing x as a product of\ntwovectorsx=u◦v. Westudythetrainingofsuchnetworkswiththegradient\nflow, i.e.,\ndu dv\n=−∇ (ℓ(u◦v)) , =−∇ (ℓ(u◦v)) . (2.1)\ndt u dt v\nWestudythisflowinthelimitofsmallinitialization. Moreprecisely,wedenote\n√\nuε(t) and vε(t) the solutions of Eqs.",
+      "size": 460,
+      "sentences": 6
+    },
+    {
+      "id": 30,
+      "content": "flowinthelimitofsmallinitialization. Moreprecisely,wedenote\n√\nuε(t) and vε(t) the solutions of Eqs. (2.1) with initial conditions uε(0) = εβ\n√\nand vε(0) = εγ, where β and γ are fixed vectors in Rd and ε is a small\nparameter. We denote xε(t) = uε(t)◦vε(t). The scalings in ε are chosen so\nthat xε(0) is of order ε. For non-degeneracy reasons, we assume that for all\ni∈{1,...,d}, β ̸=±γ . i i\nWe also define xε(t)= 1(cid:82)t xε(u)du the average of the trajectory of xε.",
+      "size": 468,
+      "sentences": 7
+    },
+    {
+      "id": 31,
+      "content": ",...,d}, β ̸=±γ . i i\nWe also define xε(t)= 1(cid:82)t xε(u)du the average of the trajectory of xε. The\nt 0\ngoal of our analyses is to connect the average of the trajectory to the lasso\noptimization problem\nmin. Lasso(z,λ). (2.2)\nz∈Rd\nWe denote Lasso (λ) = min Lasso(z,λ) the minimum of this optimization\n∗ z∈Rd\nproblem. Define a rescaled time\n2\ns= t. (2.3)\nlog1\nε\nBelow,wefrequentlyabusenotationsandusethesamenotationforrescaled\nversionsoffunctionsoftime.",
+      "size": 456,
+      "sentences": 6
+    },
+    {
+      "id": 32,
+      "content": "log1\nε\nBelow,wefrequentlyabusenotationsandusethesamenotationforrescaled\nversionsoffunctionsoftime. Forinstance,xε(s)denotesxε(t)wheret= log1 εs. 2\n2.1 Connection to the lasso under a monotonicity assump-\ntion\nTheorem 2.1. For all s>0, let x(s) denote a minimizer of the lasso\nÅ 1ã\nmin.Lasso x, . x∈Rd s\n5\n===  6 ===\nAssume that s>0(cid:55)→sx(s) is coordinate-wise monotone. Then\nÅ 1ã Å1ã\nLasso xε(s), −−−→Lasso .",
+      "size": 413,
+      "sentences": 6
+    },
+    {
+      "id": 33,
+      "content": "=\nAssume that s>0(cid:55)→sx(s) is coordinate-wise monotone. Then\nÅ 1ã Å1ã\nLasso xε(s), −−−→Lasso . s ε→0 ∗ s\nAs lim x(s) = 0, a sufficient condition that ensures s (cid:55)→ sx(s) to be\ns→0+\nmonotone, is to have the lasso regularization path s (cid:55)→ x(s) itself monotone.",
+      "size": 276,
+      "sentences": 3
+    },
+    {
+      "id": 34,
+      "content": "(s) to be\ns→0+\nmonotone, is to have the lasso regularization path s (cid:55)→ x(s) itself monotone. Underthelattercondition,thelassoregularizationpathhasalreadybeenshown\nto be equivalent to computationally cheaper algorithms such as the least angle\nregressionalgorithm[15],incrementalforwardstagewiseregression[18]orboost-\ning [29].",
+      "size": 332,
+      "sentences": 2
+    },
+    {
+      "id": 35,
+      "content": "the least angle\nregressionalgorithm[15],incrementalforwardstagewiseregression[18]orboost-\ning [29]. Moreover, it is also argued that even when s(cid:55)→x(s) is not monotone,\nthe solutions of these different algorithms might not be very far, see for exam-\nple Figure 1 in [15].",
+      "size": 277,
+      "sentences": 2
+    },
+    {
+      "id": 36,
+      "content": "solutions of these different algorithms might not be very far, see for exam-\nple Figure 1 in [15]. A sufficient condition for the lasso regularization path to\nbe monotone, derived in the latter article, is to have S(M )−1S1 ⩾ 0 for all\nII\nsubsets I ⊂ {1,...,d} and for all diagonal sign matrices S ∈ R|I|×|I| (see also\n[18, Sec. 6] for a succinct statement).",
+      "size": 358,
+      "sentences": 3
+    },
+    {
+      "id": 37,
+      "content": "} and for all diagonal sign matrices S ∈ R|I|×|I| (see also\n[18, Sec. 6] for a succinct statement). The monotonicity of s (cid:55)→ sx(s) specifically has been studied, to the best of\nour knowledge, only in the case of the positive lasso, which corresponds to the\nparametrization x=u2, see Sec. 3.1. 2.2 Simulations\nIn order to illustrate the results of this paper and discuss the importance of the\nmonotonicity assumption, we provide some simulations. The code is available\non github [5].",
+      "size": 489,
+      "sentences": 6
+    },
+    {
+      "id": 38,
+      "content": "e of the\nmonotonicity assumption, we provide some simulations. The code is available\non github [5]. We randomly generate problem instances in dimension d=4 as follows. We\nconsider the quadratic function ℓ(x) = 1∥Xx−y∥2, where n = 3, X ∈ Rn×d\n2\nand y ∈Rn are independent and have i.i.d. standard normal entries. In this case, the lasso regularization path is almost surely unique [30]. We\nobserveempiricallythats(cid:55)→sx(s)ismonotonewithprobability0.76,over1000\nrandom instances.",
+      "size": 481,
+      "sentences": 7
+    },
+    {
+      "id": 39,
+      "content": "]. We\nobserveempiricallythats(cid:55)→sx(s)ismonotonewithprobability0.76,over1000\nrandom instances. Thus Theorem 2.1 applies in a majority of cases. In all simulations, we take ε=10−5, β =1 and γ =0. Figure 1 compares the average trajectory xε(s) of DLNs with the lasso reg-\nularization path x(s) on problems generated randomly as above.",
+      "size": 337,
+      "sentences": 5
+    },
+    {
+      "id": 40,
+      "content": "ry xε(s) of DLNs with the lasso reg-\nularization path x(s) on problems generated randomly as above. We observe\nthatthetrajectoryxε(s)isqualitativelysimilartox(s)inallinstances,andthat\nthe suboptimality gap\n(cid:0)\nLasso\n(cid:0) xε(s),1(cid:1)\n−Lasso\n(cid:0)1(cid:1)(cid:1)\n/Lasso\n(cid:0)1(cid:1)\nremains rel-\ns ∗ s ∗ s\natively small (below 0.04 on the provided instances).",
+      "size": 372,
+      "sentences": 2
+    },
+    {
+      "id": 41,
+      "content": "/Lasso\n(cid:0)1(cid:1)\nremains rel-\ns ∗ s ∗ s\natively small (below 0.04 on the provided instances). However, the comparison\nis much tighter in the monotone case than in the nonmonotone case; in par-\nticular, the suboptimality gap is an order of magnitude smaller for monotone\ninstances. 2.3 Approximate connection to the lasso in the general\ncase\nWe now provide an approximate optimality results in the nonmonotone case\nthat comforts the simulations.",
+      "size": 450,
+      "sentences": 3
+    },
+    {
+      "id": 42,
+      "content": "ow provide an approximate optimality results in the nonmonotone case\nthat comforts the simulations. 6\n===  7 ===\n0.0\n0.1\n0.2\n0.3\n0.4\n0.5\n0.6\n0.7\n0 5 10 15 20\ns=2t/log1\nix\nx1 x1 0.5\nx2 x2\nx x 3 4 x x 3 4 0.4\n0.3\n0.2\n0.1\n0.0\n0 5 10 15 20\ns=2t/log1\nix\nx1 x1\nx2 x2\nx x 3 4 x x 3 4\n0.004\n0.003\n0.002\n0.001\n0.000\n0 5 10 15 20\ns=2t/log1\npag\nytilamitpobus\nevitaleR\n0.0030\n0.0025\n0.0020\n0.0015\n0.0010\n0.0005\n0.0000\n0 5 10 15 20\ns=2t/log1\npag\nytilamitpobus\nevitaleR\n(a) Monotone instances\n0.25\n0.00 0.25\n0.50\n0.75\n1.00\n1.25\n0 5 10 15 20\ns=2t/log1\nix\nx x 1 2 x x 1 2 3 x x 3 4 x x 3 4 2\n1\n0\n0 5 10 15 20\ns=2t/log1\nix\nx1 x1 x2 x2 x x 3 4 x x 3 4\n0.020\n0.015\n0.010\n0.005\n0.000\n0 5 10 15 20\ns=2t/log1\npag\nytilamitpobus\nevitaleR\n0.03\n0.02\n0.01\n0.00\n0 5 10 15 20\ns=2t/log1\npag\nytilamitpobus\nevitaleR\n(b) Nonmonotone instances\nFigure 1: Comparison between the average trajectory xε(s) of DLNs and\nthe lasso regularization path x(s).",
+      "size": 915,
+      "sentences": 2
+    },
+    {
+      "id": 43,
+      "content": "1: Comparison between the average trajectory xε(s) of DLNs and\nthe lasso regularization path x(s). In the subfigure (a), problems in-\nstances are generated randomly conditionally on the monotonicity of s (cid:55)→\nsx(s). Conversely, in the subfigure (b), problems instances are generated\nrandomly conditionally on the non-monotonicity of s (cid:55)→ sx(s). We pro-\nvide two instances of each case, one in each column.",
+      "size": 417,
+      "sentences": 4
+    },
+    {
+      "id": 44,
+      "content": "non-monotonicity of s (cid:55)→ sx(s). We pro-\nvide two instances of each case, one in each column. In each instance,\nwe plot the coordinates xε(s) along with x (s), and the suboptimality gap\ni i\n(cid:0)\nLasso\n(cid:0) xε(s),1(cid:1)\n−Lasso (1/s)\n(cid:1)\n/Lasso (1/s). Simulationdetailsareprovided\ns ∗ ∗\nin Sec. 2.2. 7\n[  ]\n\n===  8 ===\nTheorem 2.2. For all s>0, let x(s) denote a minimizer of the lasso\nÅ 1ã\nmin.Lasso x, .",
+      "size": 421,
+      "sentences": 7
+    },
+    {
+      "id": 45,
+      "content": "===  8 ===\nTheorem 2.2. For all s>0, let x(s) denote a minimizer of the lasso\nÅ 1ã\nmin.Lasso x, . x∈Rd s\nAssume that s > 0 (cid:55)→ x(s) is absolutely continuous on compact subsets of\n(0,+∞). Let\n(cid:88) d (cid:90) sñÅ d ã Å d ã ô\nz↓(s)= (ux (u) ) + (ux (u) ) du. (2.4)\ndu i + du i −\ni=1 0 − −\nHeuristically, z↓(s) quantifies the deviation from monotonicity of z(s)=sx(s).",
+      "size": 374,
+      "sentences": 5
+    },
+    {
+      "id": 46,
+      "content": "i + du i −\ni=1 0 − −\nHeuristically, z↓(s) quantifies the deviation from monotonicity of z(s)=sx(s). Then, there exists a constant C =C(d,M,r,α)>0 such that\nÅ 1ã Å1ã ñ (1+s)1/2 1+s ô\nlimsupLasso xε(s), ⩽Lasso +C z↓(s)1/2+ z↓(s) . s ∗ s s s2\nε→0\nThistheorempredictsthatthesuboptimalitygapspikeswhenthelassoregu-\nlarizationpathisnotmonotone(whenz↓(s)islarge)andthendecaysafterwards\n(as s increases). This is consistent with the observations in Figure 1.",
+      "size": 450,
+      "sentences": 4
+    },
+    {
+      "id": 47,
+      "content": "rge)andthendecaysafterwards\n(as s increases). This is consistent with the observations in Figure 1. 2.4 Related work and final remarks\nAdditional related work. In contrast with many works on diagonal linear\nnetworks, this paper does not assume any statistical model for the data that\ngeneratedthelossℓ,andfocusesonlyontheoptimizationanalysis. Inparticular,\nourresultscouldcovernoisyornoiselessdata,andgeneraldesignmatrices.",
+      "size": 423,
+      "sentences": 5
+    },
+    {
+      "id": 48,
+      "content": "imizationanalysis. Inparticular,\nourresultscouldcovernoisyornoiselessdata,andgeneraldesignmatrices. This\nis in contrast with many works that require a restricted isometry property, or a\ncoherence assumption on the design matrix [32, 34, 20]. Under a statistical linear model with additive noise, early stopping is used\nin DLNs to achieve optimal rates [32, 34, 20].",
+      "size": 365,
+      "sentences": 4
+    },
+    {
+      "id": 49,
+      "content": "ar model with additive noise, early stopping is used\nin DLNs to achieve optimal rates [32, 34, 20]. Similarly, in the same setting,\nthe regularization parameter of the lasso is usually chosen proportional to the\nmagnitude of the additive noise [19, Chapter 11]. Our work sheds light on this\ncorrespondence: a non-zero regularization parameter corresponds to a finite\nstopping time.",
+      "size": 381,
+      "sentences": 3
+    },
+    {
+      "id": 50,
+      "content": "on this\ncorrespondence: a non-zero regularization parameter corresponds to a finite\nstopping time. More specifically, some earlier works have noted the similarity between the\ntrajectory of DLNs and the lasso regulization path [32, 4, 26]. Vaskevicius et\nal. noted that t/log1 plays the role of an inverse regularization parameter in\nε\ntheir statistical guarantee [32] (see discussion below their Thm. 1).",
+      "size": 404,
+      "sentences": 5
+    },
+    {
+      "id": 51,
+      "content": "regularization parameter in\nε\ntheir statistical guarantee [32] (see discussion below their Thm. 1). However,\nthey note that “the gradient descent optimization path [of DLNs] [...] exhibits\nqualitativeandquantitativedifferencesfromthelassoregularizationpath.” Our\ncontribution argues that the qualitative differences are only due to the fact\nthat the lasso regularization path corresponds to the averaged gradient descent\noptimizationpath,withmilddifferencesdiscussedinthispaper(seealsoFig.1).",
+      "size": 492,
+      "sentences": 3
+    },
+    {
+      "id": 52,
+      "content": "e averaged gradient descent\noptimizationpath,withmilddifferencesdiscussedinthispaper(seealsoFig.1). Finally, the author proved Thm. 3.1, the equivalent of Thm. 2.1 in the case\nx=u◦u,butonlywhenM isamatrixwithnon-positiveoff-diagonalentries[4]. (In this case, the monotonicity assumption is guaranteed.) 8\n===  9 ===\nFinal remarks. This works strengthens our understanding of the implicit\nregularizationofneuralnetworks.",
+      "size": 419,
+      "sentences": 7
+    },
+    {
+      "id": 53,
+      "content": "l remarks. This works strengthens our understanding of the implicit\nregularizationofneuralnetworks. Notonlytheasymptoticconvergencepointis\nimplicitely regularized, but also the full trajectory of the neural network. The\nearlier the neural networks is stopped, the more regularized the solution is. Ourprooftechnique providesawaytoanalyze the implicitregularizationin\nadynamical way,thatis,astimeevolves.",
+      "size": 403,
+      "sentences": 5
+    },
+    {
+      "id": 54,
+      "content": "oftechnique providesawaytoanalyze the implicitregularizationin\nadynamical way,thatis,astimeevolves. Wehopethatthisnewperspectivewill\nhelp to tackle a major difficulty of the implicit regularization line of research:\nwe do not know how to describe the implicit regularization of more complex\nneural networks, beyond DLNs.",
+      "size": 320,
+      "sentences": 2
+    },
+    {
+      "id": 55,
+      "content": "not know how to describe the implicit regularization of more complex\nneural networks, beyond DLNs. For instance, the implicit regularization of\nmatrixfactorizationproblemscannotbedescribedbythenuclearnorm, asone\nwould expect from a natural generalization of the results on DLNs [1, 22]. We\nhopethatthisdiscrepancycanbeunderstoodthroughadynamicalstudyofthe\ndeviation between matrix factorization dynamics and nuclear norm minimizers. 3 The u ◦ u case — statement of the results\nSetting.",
+      "size": 485,
+      "sentences": 4
+    },
+    {
+      "id": 56,
+      "content": "rization dynamics and nuclear norm minimizers. 3 The u ◦ u case — statement of the results\nSetting. In this section, we state an alternative version of the results of this\npaper, in the case where the regressor x is parametrized as x = u2 = u◦u\ninstead of x = u◦v. This study is less directly related to simplified models of\nneural networks, and has the disadvantage of constraining the sign of x, but\nit enables an elegant theory.",
+      "size": 431,
+      "sentences": 4
+    },
+    {
+      "id": 57,
+      "content": "networks, and has the disadvantage of constraining the sign of x, but\nit enables an elegant theory. Moreover, as we discuss in Section 5, the case\nx=u◦v can be reduced to the case x=u2, thus in fact the bulk of the theory\nis contained in this case, and the case x=u◦v follows as corollaries. In the case x=u2, the gradient flow dynamics\ndu =−∇ (cid:0) ℓ(u2) (cid:1) (3.1)\ndt u\ncan be written a closed-form differential equation in x=u2:\ndx\n=−4x◦∇ℓ(x).",
+      "size": 451,
+      "sentences": 3
+    },
+    {
+      "id": 58,
+      "content": "ℓ(u2) (cid:1) (3.1)\ndt u\ncan be written a closed-form differential equation in x=u2:\ndx\n=−4x◦∇ℓ(x). (3.2)\ndt\nIn this section, we denote uε(t) the solution of Eq. (3.1) with initial condition\n√\nuε(0) = εα where α is a fixed vector in Rd and ε is a small parameter. We\ndenote xε(t) = uε(t)2. We assume that all coordinates α of α are nonzero: if\ni\nα =0, byEq. (3.2), the coordinate ofxε(t)remains zeroforallt⩾0, thus this\ni i\ncase is degenerate.",
+      "size": 443,
+      "sentences": 6
+    },
+    {
+      "id": 59,
+      "content": "i\nα =0, byEq. (3.2), the coordinate ofxε(t)remains zeroforallt⩾0, thus this\ni i\ncase is degenerate. Again,wedefinexε(t)= 1(cid:82)t xε(u)dutheaverageofthetrajectoryofx. The\nt 0\ngoal of our analyses is to connect the average of the trajectory to the positive\nlasso optimization problem\nmin.Lasso(x,λ) . (3.3)\nx⩾0\nWe denote PosLasso ∗ (λ) = min x⩾0 Lasso(x,λ) the minimum of this opti-\nmization problem.",
+      "size": 401,
+      "sentences": 5
+    },
+    {
+      "id": 60,
+      "content": "(3.3)\nx⩾0\nWe denote PosLasso ∗ (λ) = min x⩾0 Lasso(x,λ) the minimum of this opti-\nmization problem. 9\n===  10 ===\nDefine a rescaled time\n4\ns= t. (3.4)\nlog1\nε\n3.1 Connection to the positive lasso under a monotonicity\nassumption\nTheorem 3.1. For all s>0, let x(s) denote a minimizer of the positive lasso\nÅ 1ã\nmin.Lasso x, . x⩾0 s\nAssume that s>0(cid:55)→sx(s) is nondecreasing (coordinate-wise). Then\nÅ 1ã Å1ã\nLasso xε(s), −−−→PosLasso .",
+      "size": 436,
+      "sentences": 5
+    },
+    {
+      "id": 61,
+      "content": "hat s>0(cid:55)→sx(s) is nondecreasing (coordinate-wise). Then\nÅ 1ã Å1ã\nLasso xε(s), −−−→PosLasso . s ε→0 ∗ s\nThe monotonicity of s (cid:55)→ sx(s) translates into the monotonicity of the so-\nlution of the parametric linear complementarity problem (4.11), introduced in\nSec. 4.4. This monotonicity has first been studied in a different context, the\nanalysis of elastoplastic structures [12].",
+      "size": 391,
+      "sentences": 5
+    },
+    {
+      "id": 62,
+      "content": "icity has first been studied in a different context, the\nanalysis of elastoplastic structures [12]. Cottle proposes an algorithm to test\nwhether the solution of a given problem is monotone, and derives necessary\nand sufficient conditions under which monotonicity holds for all possible val-\nues of r [11]. See also [24] when M is non-invertible. A sufficient condition\nfor monotonicity is when M is a positive definite matrix with non-positive off-\ndiagonal entries. The author has proved Thm.",
+      "size": 493,
+      "sentences": 5
+    },
+    {
+      "id": 63,
+      "content": "M is a positive definite matrix with non-positive off-\ndiagonal entries. The author has proved Thm. 3.1 under this more restrictive\nassumption [4]. 3.2 Approximate connection to the positive lasso in the\ngeneral case\nWe now turn to the general case. Theorem 3.2. For all s>0, let x(s) denote a minimizer of the positive lasso\nÅ 1ã\nmin.Lasso x, . x⩾0 s\nAssume that s > 0 (cid:55)→ x(s) is absolutely continuous on compact subsets of\n(0,+∞). Let\n(cid:88) d (cid:90) sÅ d ã\nz↓(s)= (ux (u)) du.",
+      "size": 490,
+      "sentences": 8
+    },
+    {
+      "id": 64,
+      "content": "olutely continuous on compact subsets of\n(0,+∞). Let\n(cid:88) d (cid:90) sÅ d ã\nz↓(s)= (ux (u)) du. (3.5)\ndu i\ni=1 0 −\nHeuristically, z↓(s) quantifies the deviation from monotonicity of z(s)=sx(s). Then, there exists a constant C =C(d,M,r,α)>0 such that\nÅ 1ã Å1ã ñ (1+s)1/2 1+s ô\nlimsupLasso xε(s), ⩽PosLasso +C z↓(s)1/2+ z↓(s) . s ∗ s s s2\nε→0\n10\n===  11 ===\n4 The u ◦ u case — proofs of the results\nThis section is organized as follows.",
+      "size": 438,
+      "sentences": 5
+    },
+    {
+      "id": 65,
+      "content": "2\nε→0\n10\n===  11 ===\n4 The u ◦ u case — proofs of the results\nThis section is organized as follows. The first four subsections gather some elements to prepare the proofs. In\nSec. 4.1, we recall the mirror flow perspective on the DLN dynamics [23]. In\nSec. 4.2, we prove a preliminary bound on the DLN dynamics, that is uniform\nin time t and for ε small enough. Its proof is independent from the rest of\nthe proofs, and can be skipped in a first reading. Sec.",
+      "size": 458,
+      "sentences": 8
+    },
+    {
+      "id": 66,
+      "content": ". Its proof is independent from the rest of\nthe proofs, and can be skipped in a first reading. Sec. 4.3 introduces linear\ncomplementaryproblems,thatprovideaprimal-dualperspectiveonthepositive\nlasso. Thisprimal-dualperspectiveiscrucialtoourproofs. Sec.4.4extendsthis\nintroductiontoparametric linearcomplementarityproblems,whereaparameter\ns varies in the problem. Finally, in Sec. 4.5, we prove Thm. 3.2 and in Sec. 4.6, we deduce the proof\nof Thm. 3.1. Additional notations for the proofs.",
+      "size": 488,
+      "sentences": 12
+    },
+    {
+      "id": 67,
+      "content": "ove Thm. 3.2 and in Sec. 4.6, we deduce the proof\nof Thm. 3.1. Additional notations for the proofs. When applied to a d×d matrix, ∥.∥\ndenotes the operator norm associated to the norm ∥.∥ on Rd. When A is a\npositive semidefinite operator on a linear space V, we denote ⟨.,.⟩ = ⟨.,A.⟩\nA\nthe semidefinite inner product on V associated to A and ∥.∥ the associated\nA\nseminorm. When A ∈ Rd×k is a matrix, we denote A† ∈ Rk×d its Moore-Penrose\npseudo-inverse.",
+      "size": 452,
+      "sentences": 8
+    },
+    {
+      "id": 68,
+      "content": "ciated\nA\nseminorm. When A ∈ Rd×k is a matrix, we denote A† ∈ Rk×d its Moore-Penrose\npseudo-inverse. If f :Rd →R is a function that has a unique minimizer on a set C, then we\ndenote argmin f(x) this unique minimizer. x∈C\n4.1 Mirror flow interpretation\nWe recall the interpretation of the DLN dynamics as a mirror flow [23]. For a\ngeneral introduction on mirror flows, we refer to [7, Chap. 4]. Eq.",
+      "size": 396,
+      "sentences": 7
+    },
+    {
+      "id": 69,
+      "content": "cs as a mirror flow [23]. For a\ngeneral introduction on mirror flows, we refer to [7, Chap. 4]. Eq. (3.2) can be interpreted as a mirror flow\nd∇h(xε)\n=−∇ℓ(xε), (4.1)\ndt\nwhere the mirror map\nd\n1(cid:88)\nh(x)= (x logx −x )\n4 i i i\ni=1\nis the entropy of the vector x>0. AcentraltoolinanalyzingmirrorflowsistheBregmandivergenceassociated\nto the mirror map h. For x,y >0, it is defined as\nD(x,y)=h(x)−h(y)−⟨∇h(y),x−y⟩\n=\n1(cid:88) d Å\nx log\nx\ni −x +y\nã\n.",
+      "size": 448,
+      "sentences": 6
+    },
+    {
+      "id": 70,
+      "content": "ap h. For x,y >0, it is defined as\nD(x,y)=h(x)−h(y)−⟨∇h(y),x−y⟩\n=\n1(cid:88) d Å\nx log\nx\ni −x +y\nã\n. (4.2)\n4 i y i i\ni\ni=1\n11\n===  12 ===\nNote that, by convexity of the mirror map h, the Bregman divergence D is\nalwaysnonnegative. Inourcase,thisBregmandivergencecanbeinterpretedas\na relative entropy. Themirrorvariable∇h(xε)hasaninitialization∇h(xε(0))thatisdiverging\nas ε→0:\n1 1Å 1ã\n∇h(xε(0))= logxε(0)=− log 1+O(1).",
+      "size": 415,
+      "sentences": 4
+    },
+    {
+      "id": 71,
+      "content": "∇h(xε)hasaninitialization∇h(xε(0))thatisdiverging\nas ε→0:\n1 1Å 1ã\n∇h(xε(0))= logxε(0)=− log 1+O(1). 4 4 ε\nFor this reason, we define a rescaled mirror variable\n4 1\nwε(s)=− ∇h(xε(s))=− logxε(s). log1 log1\nε ε\nWe have wε(0) −−−→ 1. This rescaled version particularly fits the analysis in\nε→0\nthe rescaled time s. For instance,\ndwε 4 dtd∇h(xε)\n=− = ∇ℓ(xε)=−r+Mxε. (4.3)\nds log1 ds dt (Eq.",
+      "size": 385,
+      "sentences": 5
+    },
+    {
+      "id": 72,
+      "content": "ε→0\nthe rescaled time s. For instance,\ndwε 4 dtd∇h(xε)\n=− = ∇ℓ(xε)=−r+Mxε. (4.3)\nds log1 ds dt (Eq. (4.1))\nε\n4.2 Uniform bound on the trajectories\nThe goal of this section is to prove that the trajectories xε(t) of the DLN dy-\nnamics are bounded uniformly in t⩾0 and ε>0 sufficiently small. Proposition 4.1. There exists C =C(d,M,r,α)>0 and ε =ε (α)>0 such\n0 0\nthat\n∀ε∈(0,ε ),∀t⩾0, ∥xε(t)∥⩽C.",
+      "size": 392,
+      "sentences": 5
+    },
+    {
+      "id": 73,
+      "content": "oposition 4.1. There exists C =C(d,M,r,α)>0 and ε =ε (α)>0 such\n0 0\nthat\n∀ε∈(0,ε ),∀t⩾0, ∥xε(t)∥⩽C. 0\nTo prove this result, we first note that as the DLN dynamics are a gradient\nflow, the function values must be nonincreasing along trajectories. Lemma 4.2. For all ε>0, t(cid:55)→ℓ(xε(t)) is nonincreasing. As a consequence, there exists C =C (M,r,α),C =C (M,r,α)>0 such\n1 1 2 2\nthat for all 0<ε⩽1, for all t⩾0, ℓ(xε(t))⩽C and ∥Mxε(t)∥⩽C . 1 2\nProof. Using Eq.",
+      "size": 460,
+      "sentences": 8
+    },
+    {
+      "id": 74,
+      "content": "α)>0 such\n1 1 2 2\nthat for all 0<ε⩽1, for all t⩾0, ℓ(xε(t))⩽C and ∥Mxε(t)∥⩽C . 1 2\nProof. Using Eq. (3.2),\nd (ℓ(xε))= (cid:88) d ∂ ℓ(xε) dxε i =−4 (cid:88) d xε(∂ ℓ(xε))2 ⩽0. dt i dt i i\ni=1 i=1\nThis proves that t(cid:55)→ℓ(xε(t)) is nonincreasing. Moreover,thecontinuousfunctionℓisboundedbyaconstantC =C (M,r,α)\n1 1\non the compact interval [0,α2] ⊂ Rd. As a consequence, for all 0 < ε ⩽ 1, for\nall t⩾0,\nℓ(xε(t))⩽ℓ(xε(0))=ℓ(εα2)⩽C .",
+      "size": 432,
+      "sentences": 7
+    },
+    {
+      "id": 75,
+      "content": "nterval [0,α2] ⊂ Rd. As a consequence, for all 0 < ε ⩽ 1, for\nall t⩾0,\nℓ(xε(t))⩽ℓ(xε(0))=ℓ(εα2)⩽C . 1\n12\n===  13 ===\nFinally, let x =x (r,M) be the minimum norm minimizer of ℓ. Then for any\n∗ ∗\nx∈Rd,\nÄ ä\n∥Mx∥2 ⩽∥M∥∥M1/2x∥2 ⩽2∥M∥ ∥M1/2x ∥2+∥M1/2(x−x )∥2\n∗ ∗\nÄ ä\n=2∥M∥ ∥M1/2x ∥2+2ℓ(x)−2ℓ(x ) . ∗ ∗\nThus the lemma holds with\nÄ ä\nC (M,r,α)=2∥M∥ ∥M1/2x ∥2+2C (M,r,α)−2ℓ(x ) . 2 ∗ 1 ∗\nThisresultprovesProp.4.1whenM ispositivedefinite. However,theproof\nin the positive semidefinite case requires more work.",
+      "size": 499,
+      "sentences": 7
+    },
+    {
+      "id": 76,
+      "content": "4.1whenM ispositivedefinite. However,theproof\nin the positive semidefinite case requires more work. Our strategy consists in\ncharacterizing the flow xε(t) from its image Mxε(t), and, as a consequence,\nshowing that xε(t) is bounded by a bound on its image Mxε(t). These argu-\nments are the two lemmas below. Lemma 4.3. For all t⩾0,\nxε(t)= argmin D(x,xε(0)), (4.4)\nx⩾0,Mx=Mxε(t)\nwhereD(x,y)isdefinedinEq.(4.2). NotethatweextendD(x,y)tocoordinates\nx =0 by setting by continuity 0log0=0. i\nProof.",
+      "size": 492,
+      "sentences": 8
+    },
+    {
+      "id": 77,
+      "content": "inedinEq.(4.2). NotethatweextendD(x,y)tocoordinates\nx =0 by setting by continuity 0log0=0. i\nProof. A point x > 0 is a minimizer of min. x⩾0,Mx=Mxε(t) D(x,xε(0)) if and\nonly if Mx = Mxε(t) and ∇ D(x,xε(0)) ∈ SpanM. For x = xε(t) > 0, only\nx\nthe second condition needs to be checked. As ∇ D(x,y)=∇h(x)−∇h(y) and\nx\nby Eq. (4.1), we have\n∇ D(xε(t),xε(0))=∇h(xε(t))−∇h(xε(0))\nx\n(cid:90) t\n= (r−Mxε(t′))dt′ ∈SpanM. 0\nMoreover, xε(t) is the unique minimizer as D(.,.)",
+      "size": 461,
+      "sentences": 9
+    },
+    {
+      "id": 78,
+      "content": "∇h(xε(0))\nx\n(cid:90) t\n= (r−Mxε(t′))dt′ ∈SpanM. 0\nMoreover, xε(t) is the unique minimizer as D(.,.) is marginally strictly convex\ninitsfirstvariable. Thisjustifiesusingthenotationargmin. Thisconcludesthe\nproof. Lemma 4.4. There exists ε = ε (α) > 0 and C = C(d,M) > 0 such that for\n0 0\nall 0<ε⩽ε , for all y =Mu for some u∈Rd, u⩾0, denoting\n0\nx(y)= argmin D(x,xε(0)), (4.5)\nx⩾0,Mx=y\nwe have\n∥x(y)∥⩽C(1+∥y∥2). Before we prove this last lemma, let us combine the above lemmas to prove\nProp. 4.1.",
+      "size": 493,
+      "sentences": 9
+    },
+    {
+      "id": 79,
+      "content": "y)∥⩽C(1+∥y∥2). Before we prove this last lemma, let us combine the above lemmas to prove\nProp. 4.1. 13\n===  14 ===\nProof of Proposition 4.1. By Lemma 4.3,\nxε(t)= argmin D(x,xε(0)). (4.6)\nx>0,Mx=Mxε(t)\nUsing Lemma 4.4 and then Lemma 4.2, there exists ε = ε (α) > 0 such that\n0 0\nfor all 0<ε<ε ,\n0\n∥xε(t)∥⩽C(d,M)(1+∥Mxε(t)∥2)⩽C(d,M)(1+C (M,r,α)2). 2\nWearenowonlyleftwiththeproofofLemma4.4tofinishthissection. This\nresult requires a Caratheodory theorem on cones.",
+      "size": 460,
+      "sentences": 8
+    },
+    {
+      "id": 80,
+      "content": "eftwiththeproofofLemma4.4tofinishthissection. This\nresult requires a Caratheodory theorem on cones. Let a , i∈I, denote a finite\ni\nfamily of vectors in Rd. The cone generated by (a ) is defined as\ni i∈I\n(cid:40) (cid:12) (cid:41)\n(cid:88) (cid:12)\nCone(a ,i∈I)= λ a (cid:12)λ ⩾0,i∈I . i i i(cid:12) i\n(cid:12)\ni∈I\nTheorem 4.5 ([8]). Let a ,...,a ∈Rd and y ∈Cone(a ,...,a ). 1 k 1 k\nThere exists a linearly independent subfamily a , i ∈ I, I ⊂ {1,...,k} such\ni\nthat y ∈Cone(a ,i∈I).",
+      "size": 481,
+      "sentences": 7
+    },
+    {
+      "id": 81,
+      "content": "There exists a linearly independent subfamily a , i ∈ I, I ⊂ {1,...,k} such\ni\nthat y ∈Cone(a ,i∈I). i\nIn particular, y is in the cone generated by a subfamily of at most d vectors. To be precise, Carath´eodory’s theorem usually refers to the last statement. However, below, we are interested in the linear independence statement, which\nfollows easily from the same proof. (cid:80)\nProof. As y ∈ Cone(a ,...,a ), y can be decomposed as y = λ a with\n1 k i∈I i i\nI ⊂ {1,...,k} and λ ⩾ 0, i ∈ I.",
+      "size": 491,
+      "sentences": 6
+    },
+    {
+      "id": 82,
+      "content": "∈ Cone(a ,...,a ), y can be decomposed as y = λ a with\n1 k i∈I i i\nI ⊂ {1,...,k} and λ ⩾ 0, i ∈ I. Consider such a decomposition with I of\ni\nminimal cardinality. We will show that in this case, the a , i ∈ I are linearly\ni\nindependent. By contradiction, assume that there exists µ , i∈I, not all equal to 0, such\ni\n(cid:80) (cid:80)\nthat µ a =0. Then for all t, we have that y = (λ −tµ )a .",
+      "size": 390,
+      "sentences": 5
+    },
+    {
+      "id": 83,
+      "content": "all equal to 0, such\ni\n(cid:80) (cid:80)\nthat µ a =0. Then for all t, we have that y = (λ −tµ )a . We will\ni∈I i i i∈I i i i\nusethisdegreeoffreedominttoremoveanelementfromI,andthuscontradict\nthe minimality of I. Without loss of generality, we can assume that there exists a positive µ . i\n(We can consider −µ instead of µ.) Consider\nτ =inf{t⩾0|λ −tµ =0 for some i∈I} . i i\nNote that τ < ∞ as there exists i ∈ I such that µ > 0.",
+      "size": 427,
+      "sentences": 7
+    },
+    {
+      "id": 84,
+      "content": "ider\nτ =inf{t⩾0|λ −tµ =0 for some i∈I} . i i\nNote that τ < ∞ as there exists i ∈ I such that µ > 0. Then for all i ∈ I,\ni\nλ −τµ ⩾0, with equality for at least one i∈I, that we denote i . Then y =\ni i 0\n(cid:80)\n(λ −τµ )a . Thus I is not minimal, which gives a contradiction. i∈I\\{i0} i i i\nWe now use Caratheodory’s theorem to show a central lemma. Let us give\nfirst the motivation. Consider a feasible linear system Ax = b. The minimum\nnorm solution x = A†b is bounded in norm by ∥A†∥∥b∥.",
+      "size": 489,
+      "sentences": 9
+    },
+    {
+      "id": 85,
+      "content": "r a feasible linear system Ax = b. The minimum\nnorm solution x = A†b is bounded in norm by ∥A†∥∥b∥. We now consider the\n14\n===  15 ===\nsame question for the system Ax = b with the additional constraint x ⩾ 0\n(assuming there exists at least one such solution). How can the minimum norm\nsolution be bounded? Carath´eodory’s theorem enables to prove that, the non-\nnegative minimum norm solution is, again, bounded by a constant proportional\nto the norm of b.\nLemma 4.6. Let A ∈ Rd×k.",
+      "size": 481,
+      "sentences": 6
+    },
+    {
+      "id": 86,
+      "content": "m solution is, again, bounded by a constant proportional\nto the norm of b.\nLemma 4.6. Let A ∈ Rd×k. There exists C = C(A) > 0 such that for all\ny =Au for some u∈Rk, u⩾0, denoting\nx(y)= argmin ∥x∥, (4.7)\nx⩾0,Ax=y\nwe have\n∥x(y)∥⩽C∥y∥. Proof. First, we note that ∥x∥ diverges as ∥x∥ → ∞, x ⩾ 0,Ax = y. As a\nconsequence, the minimizer in Eq. (4.5) is well-defined as the unique minimizer\nof a strictly convex function on a compact set. Inthisproof,weshowthatthelemmaholdswithC :=max ∥(A )†∥.",
+      "size": 487,
+      "sentences": 8
+    },
+    {
+      "id": 87,
+      "content": "strictly convex function on a compact set. Inthisproof,weshowthatthelemmaholdswithC :=max ∥(A )†∥. I⊂{1,...,k} I\nDenote a ,...,a the columns of A. Let y = Au for some u ⩾ 0. Then\n1 k\ny ∈Cone(a ,...,a ). By Caratheodory’s theorem, there exists a linearly inde-\n1 k\npendent subfamily a , i ∈ I, such that y ∈ Cone(a ,i ∈ I), i.e., y = A v for\ni i I\nsome v ∈ RI, v ⩾ 0. The matrix A has full column rank, thus v = (A )†y. I I\nConsider x∈Rk such that x =v if i∈I, and x =0 otherwise.",
+      "size": 479,
+      "sentences": 8
+    },
+    {
+      "id": 88,
+      "content": "has full column rank, thus v = (A )†y. I I\nConsider x∈Rk such that x =v if i∈I, and x =0 otherwise. Then Ax=y\ni i i\nand x⩾0. Thus\n∥x(y)∥⩽∥x∥=∥v∥=∥(A )†y∥⩽∥(A )†∥∥y∥⩽C∥y∥. I I\nThis completes the proof. We are now ready to prove Lemma 4.4. Proof of Lemma 4.4. First, we note that D(x,xε(0)) diverges as ∥x∥ → ∞,\nx ⩾ 0. As a consequence, the minimizer in Eq. (4.5) is well-defined as the\nunique minimizer of a strictly convex function on a compact set.",
+      "size": 449,
+      "sentences": 10
+    },
+    {
+      "id": 89,
+      "content": "n Eq. (4.5) is well-defined as the\nunique minimizer of a strictly convex function on a compact set. The only difference between Lemma 4.4 and Lemma 4.6 is that the former\nminimizes D(x,xε(0)) while the latter minimizes ∥x∥. However, the two quan-\ntities are comparable in the sense that there exists ε = ε (α), C = C (d),\n0 0 1 1\nC =C (d)>0 such that for all 0<ε⩽ε , for all x⩾0,\n2 2 0\n1Å 1ã Å 1ã 1\nlog ∥x∥−C ⩽D(x,xε(0))⩽C log ∥x∥+ ∥x∥2+1.",
+      "size": 439,
+      "sentences": 4
+    },
+    {
+      "id": 90,
+      "content": "such that for all 0<ε⩽ε , for all x⩾0,\n2 2 0\n1Å 1ã Å 1ã 1\nlog ∥x∥−C ⩽D(x,xε(0))⩽C log ∥x∥+ ∥x∥2+1. (4.8)\n8 ε 1 3 ε 4\nIndeed,\nD(x,xε(0))=\n1(cid:88) d Å\nx log\nx\ni −x +εα2\nã\n4 i εα2 i i\ni=1 i\n1(cid:88) d 1Å 1 ã 1(cid:88) d 1 ε (cid:88) d\n= x logx + log −1 ∥x∥ + x log + α2. 4 i i 4 ε 1 4 i α2 4 i\ni=1 i=1 i i=1\n15\n===  16 ===\nFor the lower-bound, we use that u (cid:55)→ ulogu is bounded from below on R ⩾0 . Thus there exists ε =ε (α) such that, for all ε<ε ,\n1 1 1\n1Å 1ã\nD(x,xε(0))⩾−C (d)+ log ∥x∥.",
+      "size": 497,
+      "sentences": 4
+    },
+    {
+      "id": 91,
+      "content": "R ⩾0 . Thus there exists ε =ε (α) such that, for all ε<ε ,\n1 1 1\n1Å 1ã\nD(x,xε(0))⩾−C (d)+ log ∥x∥. 1 8 ε\nFor the upper-bound, we have\nD(x,xε(0))=\n1(cid:88) d Å\nx log\nx\ni −x +εα2\nã\n4 i εα2 i i\ni=1 i\n1(cid:88) d Å 1 1 ã ε (cid:88) d\n⩽ x logx +log +log + α2. 4 i i ε α2 4 i\ni=1 i i=1\nWeuselogy ⩽y fory >0. Thusthereexistsε =ε (α),C =C (d)suchthat,\n2 2 2 2\nfor all ε<ε ,\n2\n1 1Å 1ã (cid:88) d 1 Å 1ã\nD(x,xε(0))⩽ ∥x∥2+ log x +1⩽ ∥x∥2+C (d) log ∥x∥+1. 4 2 ε i 4 2 ε\ni=1\nThus Eq.",
+      "size": 471,
+      "sentences": 6
+    },
+    {
+      "id": 92,
+      "content": "Å 1ã (cid:88) d 1 Å 1ã\nD(x,xε(0))⩽ ∥x∥2+ log x +1⩽ ∥x∥2+C (d) log ∥x∥+1. 4 2 ε i 4 2 ε\ni=1\nThus Eq. (4.8) holds for ε⩽ε (α):=min(ε (α),ε (α)). 0 1 2\nWe now define β(y) = argmin ∥β∥. By Lemma 4.6, ∥β(y)∥ ⩽\nβ⩾0,Mβ=y\nC (M)∥y∥. Then we have,\n3\n1Å 1ã\nlog ∥x(y)∥⩽C (d)+D(x(y),xε(0)) by Eq. (4.8)\n8 ε 1\n⩽C (d)+D(β(y),xε(0)) by the variational definition of x(y)\n1\nÅ 1ã 1\n⩽C (d)+C (d) log ∥β(y)∥+ ∥β(y)∥2 by Eq. (4.8)\n4 2 ε 4\nÅ 1ã\n⩽C (d)+C (d,M) log ∥y∥+C (d,M)∥y∥2.",
+      "size": 458,
+      "sentences": 8
+    },
+    {
+      "id": 93,
+      "content": "1ã 1\n⩽C (d)+C (d) log ∥β(y)∥+ ∥β(y)∥2 by Eq. (4.8)\n4 2 ε 4\nÅ 1ã\n⩽C (d)+C (d,M) log ∥y∥+C (d,M)∥y∥2. 4 5 ε 6\nAssuming that ε is small enough so that 1log 1 ⩾1, we have\n0 8 ε0\n∥x(y)∥⩽C (d)+8C (d,M)∥y∥+C (d,M)∥y∥2 ⩽C(d,M)(1+∥y∥2). 4 5 6\n4.3 The positive lasso and linear complementarity prob-\nlems\nThe positive lasso is in fact a constrained quadratic optimization problem:\nmin. x⩾0 1\n2\n⟨x,Mx⟩ − ⟨r,x⟩ + λ⟨1,x⟩. As a consequence, its primal dual for-\nmulation is a linear complementarity problem [13].",
+      "size": 498,
+      "sentences": 6
+    },
+    {
+      "id": 94,
+      "content": "+ λ⟨1,x⟩. As a consequence, its primal dual for-\nmulation is a linear complementarity problem [13]. 16\n===  17 ===\nProposition 4.7. Let x∈Rd. The vector x is a minimizer of the optimization\nproblem (3.3) if and only if there exists v ∈Rd such that (v,x) is a solution of\nv =−r+λ1+Mx,\n(4.9)\nv ⩾0, x⩾0, ⟨v,x⟩=0 . The system above has the form of a linear complementarity problem (LCP)\n[13]. This result is classical and its proof follows from convex duality [6, Section\n5].",
+      "size": 471,
+      "sentences": 7
+    },
+    {
+      "id": 95,
+      "content": "blem (LCP)\n[13]. This result is classical and its proof follows from convex duality [6, Section\n5]. We recall it for the sake of completeness. Proof. For simplicity, we denote q = −r + λ1. The Lagrangian associated\nto (3.3) is\n1\nL(x,v)=Lasso(x,λ)−⟨v,x⟩= ⟨x,Mx⟩+⟨q,x⟩−⟨v,x⟩\n2\nwhere v ∈ Rd is the Lagrange multiplier associated to the constraint x ⩾ 0. As the optimization problem (3.3) is convex, the KKT conditions are necessary\nand sufficient for optimality.",
+      "size": 459,
+      "sentences": 7
+    },
+    {
+      "id": 96,
+      "content": "timization problem (3.3) is convex, the KKT conditions are necessary\nand sufficient for optimality. The stationarity condition is\n0=∇ L(x,v)=q+Mx−v,\nx\nthefeasibilityconditionsarex⩾0andv ⩾0,andthecomplementaryslackness\ncondition is ⟨v,x⟩=0. This proves Prop. 4.7. WenowstudytheexistenceanduniquenessofthesolutionoftheLCP(4.9). Note that if M is positive definite, there exists a unique solution (v,x) [13,\nThm.3.1.6].",
+      "size": 416,
+      "sentences": 6
+    },
+    {
+      "id": 97,
+      "content": "CP(4.9). Note that if M is positive definite, there exists a unique solution (v,x) [13,\nThm.3.1.6]. InthemoregeneralcasewhereM ispositivesemidefinite,existence\nstill holds but uniqueness is more subtle. For instance, the positive lasso (3.3)\nmight not have a unique minimizer, thus we might not have uniqueness of the\nsolution in x. However, we have uniqueness in v.\nProposition 4.8. There exists a solution of the LCP (4.9).",
+      "size": 425,
+      "sentences": 6
+    },
+    {
+      "id": 98,
+      "content": "in x. However, we have uniqueness in v.\nProposition 4.8. There exists a solution of the LCP (4.9). Moreover, the\nsolution of the LCP is unique in v in the sense that if (v,x) and (v′,x′) are two\nsolutions of the LCP, then v =v′. Proof. Existence. By [14], it suffices to show that Lasso(x,λ) = ℓ(x)+λ⟨1,x⟩\nis bounded from below on the set {x|x ⩾ 0}. The first term ℓ(x) is bounded\nfrom below on Rd (as r ∈ Span(M)), and the second term is nonnegative on\n{x|x⩾0}. Uniqueness.",
+      "size": 474,
+      "sentences": 9
+    },
+    {
+      "id": 99,
+      "content": "unded\nfrom below on Rd (as r ∈ Span(M)), and the second term is nonnegative on\n{x|x⩾0}. Uniqueness. The result is provided in [13, Thm. 3.1.7(d)]. 4.4 The positive lasso regularization path and parametric\nlinear complementarity problems\nIn Sec. 3, we consider a solution x(s) of the positive lasso with regularization\nparameter λ = 1, s > 0. For varying s, we obtain a certain parametrization\ns\n17\n===  18 ===\nof the regularization path of the positive lasso.",
+      "size": 459,
+      "sentences": 7
+    },
+    {
+      "id": 100,
+      "content": "obtain a certain parametrization\ns\n17\n===  18 ===\nof the regularization path of the positive lasso. In this section, we draw a\nconnection with so-called parametric LCPs. From Prop. 4.7, there exists v(s) such that (v(s),x(s)) is a solution of the\nLCP\n1\nv(s)=−r+ 1+Mx(s),\ns (4.10)\nv(s)⩾0, x(s)⩾0, ⟨v(s),x(s)⟩=0 . Denote w(s)=sv(s) and z(s)=sx(s). Then\nw(s)=−sr+1+Mz(s),\n(4.11)\nw(s)⩾0, z(s)⩾0, ⟨w(s),z(s)⟩=0 . This is a parametric LCP, where the parameter is s [13, Sec. 4.5].",
+      "size": 474,
+      "sentences": 8
+    },
+    {
+      "id": 101,
+      "content": "w(s)⩾0, z(s)⩾0, ⟨w(s),z(s)⟩=0 . This is a parametric LCP, where the parameter is s [13, Sec. 4.5]. Note that while the LCP (4.10) is defined only for s > 0, the LCP (4.11)\nis also defined for s = 0. This extension is rather trivial, the solution of both\nLCPs being simple for s small enough, as shown in the following lemma. Lemma 4.9. Assume 0 ⩽ s < 1 . Then the LCP (4.11) has a unique\n∥r∥∞\nsolution (w(s),z(s)) = (1−sr,0).",
+      "size": 425,
+      "sentences": 8
+    },
+    {
+      "id": 102,
+      "content": "emma 4.9. Assume 0 ⩽ s < 1 . Then the LCP (4.11) has a unique\n∥r∥∞\nsolution (w(s),z(s)) = (1−sr,0). If further s > 0, this means that the LCP\n(4.10) has a unique solution (v(s),x(s))= (cid:0) −r+ 11,0 (cid:1) . s\nProof. (w(s),z(s))=(1−sr,0)isasolutionof (4.11). Asthesolutionisunique\nin w, 1−sr is the unique solution in w. But as 1−sr > 0, this imposes that\nz(s)=0 is the unique solution in z by complementarity. We now prove a simple regularity result on solutions of parametric LCPs. Lemma4.10.",
+      "size": 497,
+      "sentences": 9
+    },
+    {
+      "id": 103,
+      "content": "omplementarity. We now prove a simple regularity result on solutions of parametric LCPs. Lemma4.10. Letw(s)betheuniquesolutioninwoftheparametricLCP (4.11). Then s ⩾ 0 (cid:55)→ w(s) is Lipschitz continuous and thus absolutely continuous,\ndw ∈SpanM and ∥dw∥ ⩽∥r∥ . ds ds M† M†\nProof. Let s,s′ ⩾ 0 and (w,z) = (w(s),z(s)), (w′,z′) = (w(s′),z(s′)) denote\nsolutions of the parametric LCP (4.11) for the respective values s,s′. Then, we\nhave\nw =−sr+1+Mz, and w′ =−s′r+1+Mz′.",
+      "size": 469,
+      "sentences": 8
+    },
+    {
+      "id": 104,
+      "content": "arametric LCP (4.11) for the respective values s,s′. Then, we\nhave\nw =−sr+1+Mz, and w′ =−s′r+1+Mz′. Hence, w−w′ =−(s−s′)r+M(z−z′)∈SpanM and\n∥w−w′∥2 =⟨w−w′,−(s−s′)r+M(z−z′)⟩\nM† M†\n=−(s−s′)⟨w−w′,r⟩ +⟨w−w′,z−z′⟩\nM†\n=−(s−s′)⟨w−w′,r⟩ +⟨w,z⟩−⟨w′,z⟩−⟨w,z′⟩+⟨w′,z′⟩. M†\nWe can use H¨older’s inequality to bound the first term. Furthermore, by com-\nplementarity slackness ⟨z,w⟩ = ⟨z′,w′⟩ = 0. Finally, all vectors w,w′,z,z′ are\nnonnegative, thus ⟨w′,z⟩,⟨w,z′⟩⩾0.",
+      "size": 453,
+      "sentences": 6
+    },
+    {
+      "id": 105,
+      "content": "lackness ⟨z,w⟩ = ⟨z′,w′⟩ = 0. Finally, all vectors w,w′,z,z′ are\nnonnegative, thus ⟨w′,z⟩,⟨w,z′⟩⩾0. Thus, we have\n∥w−w′∥2 ⩽|s−s′|∥w−w′∥ ∥r∥ ,\nM† M† M†\n18\n===  19 ===\ni.e.,\n∥w−w′∥ ⩽|s−s′|∥r∥ . M† M†\nThis proves that the map s (cid:55)→ w(s) is Lipschitz continuous. As for all s,s′,\nw(s) − w(s′) ∈ SpanM, we have dw ∈ SpanM. The inequality above also\nds\nshows that ∥dw∥ ⩽∥r∥ . ds M† M†\n4.5 Proof of Theorem 3.2\nFor all s>0, x(s) is a minimizer of min. x⩾0 Lasso (cid:0) x,1\ns\n(cid:1) .",
+      "size": 484,
+      "sentences": 8
+    },
+    {
+      "id": 106,
+      "content": "4.5 Proof of Theorem 3.2\nFor all s>0, x(s) is a minimizer of min. x⩾0 Lasso (cid:0) x,1\ns\n(cid:1) . We use the notations\nof Sec. 4.4: by Prop. 4.7, there exists v(s) such that (v(s),x(s)) is a solution\nof the LCP (4.10). For s > 0, denote w(s) = sv(s) and z(s) = sx(s). Then\n(w(s),z(s))aresolutionoftheparametricLCP(4.11). Weextendthisdefinition\nof(w,z)with(w(0),z(0))=(1,0),whichasolutionoftheLCP(4.11)fors=0.",
+      "size": 410,
+      "sentences": 8
+    },
+    {
+      "id": 107,
+      "content": "cLCP(4.11). Weextendthisdefinition\nof(w,z)with(w(0),z(0))=(1,0),whichasolutionoftheLCP(4.11)fors=0. In this proof, the solution (w(s),z(s)) of the parametric LCP will be com-\npared to (wε(s),zε(s)) where wε(s) is defined in Sec. 4.1 and\n(cid:90) s\nzε(s)=sxε(s)= xε(u)du. 0\nNote that :\ndzε\n=xε(s). (4.12)\nds\nIntegrating Eq. (4.3), we obtain\nwε(s)=wε(0)−sr+Mzε(s). (4.13)\nThis equation has a similarity with the first equation of the LCP (4.11). We now seek to bound\n1\n∆ε(s):= ∥zε(s)−z(s)∥2 .",
+      "size": 490,
+      "sentences": 9
+    },
+    {
+      "id": 108,
+      "content": "imilarity with the first equation of the LCP (4.11). We now seek to bound\n1\n∆ε(s):= ∥zε(s)−z(s)∥2 . 2 M\nAt s = 0, we have by definition, zε(0) = 0 and by Lemma 4.9, z(0) = 0. Thus\n∆ε(s)=0. We compute the derivative of ∆ε(s):\nd∆ε ≠dzε(s) dz(s) ∑\n= − ,M(zε(s)−z(s))\nds ds ds\nWe use Eqs. (4.12), (4.13) and the first equation of (4.11):\nd∆ε ≠ dz(s) ∑\n= xε(s)− ,wε(s)−w(s)+1−wε(0)\nds ds\n≠dz(s) ∑\n=⟨xε(s),wε(s)⟩−⟨xε(s),w(s)⟩− ,wε(s) (4.14)\nds\n≠dz(s) ∑ ≠dz(s) ∑\n+ ,w(s) +⟨xε(s),1−wε(0)⟩− ,1−wε(0) .",
+      "size": 492,
+      "sentences": 6
+    },
+    {
+      "id": 109,
+      "content": "⟨xε(s),wε(s)⟩−⟨xε(s),w(s)⟩− ,wε(s) (4.14)\nds\n≠dz(s) ∑ ≠dz(s) ∑\n+ ,w(s) +⟨xε(s),1−wε(0)⟩− ,1−wε(0) . ds ds\nWe now upper-bound each term separately:\n19\n===  20 ===\n• The function u > 0 (cid:55)→ ulogu is uniformly lower bounded by a universal\nconstant thus\nd\n1 (cid:88) C(d)\n⟨xε(s),wε(s)⟩=− xε(s)logxε(s)⩽ . log1 i i log1\nε i=1 ε\n• We have xε(s)⩾0 and w(s)⩾0 thus −⟨xε(s),w(s)⟩⩽0. • If dzi(s) ⩾0, we use that by Prop. 4.1,\nds\n1 C(d,M,r,α)\nwε(s)=− logxε(s)⩾− . i log1 i log1\nε ε\nIf dzi(s) ⩽0, we use Eq.",
+      "size": 500,
+      "sentences": 6
+    },
+    {
+      "id": 110,
+      "content": "that by Prop. 4.1,\nds\n1 C(d,M,r,α)\nwε(s)=− logxε(s)⩾− . i log1 i log1\nε ε\nIf dzi(s) ⩽0, we use Eq. (4.3) and Prop. 4.1 to obtain\nds\nwε(s)⩽C(d,M,r,α)(1+s). i\nThus\n− ≠dz(s) ,wε(s) ∑ ⩽C(d,M,r,α) (cid:88) d ñ 1 Ådz i (s)ã +(1+s) Ådz i (s)ã ô . ds log1 ds ds\ni=1 ε + −\n• Let i ∈ {1,...,d}. We show that dzi(s)w (s) = 0. From Eqs. (4.11),\nds i\nwe have w (s)z (s) = 0. If w (s) = 0, then the conclusion is obvi-\ni i i\nous. Otherwise z (s) = 0.",
+      "size": 436,
+      "sentences": 12
+    },
+    {
+      "id": 111,
+      "content": "we have w (s)z (s) = 0. If w (s) = 0, then the conclusion is obvi-\ni i i\nous. Otherwise z (s) = 0. Differentiating w (s)z (s) = 0, we obtain\ni i i\ndwi(s)z (s)+w (s)dzi(s) = 0. As z (s) = 0, this gives the desired conclu-\nds i i ds i\nsion. ¨ ∂\nThus, we have dz(s),w(s) =0. ds\n• Note that 1−wε(0) = 1+ 1 logxε(0) = 2 logα. This enables to\nlog1 log1\nε ε\nbound the last two terms, using again Prop. 4.1. Recallthatz↓(s)= (cid:80)d (cid:82)sÄ dzi(u) ä du.",
+      "size": 450,
+      "sentences": 10
+    },
+    {
+      "id": 112,
+      "content": "bound the last two terms, using again Prop. 4.1. Recallthatz↓(s)= (cid:80)d (cid:82)sÄ dzi(u) ä du. Denotealsoz↑(s)= (cid:80)d (cid:82)sÄ dzi(u) ä du. i=1 0 du − i=1 0 du +\nIntegrating the bounds obtained between 0 and s, we have\nñ ô\n∆ε(s)⩽C(d,M,r,α) 1 (cid:0) s+z↑(s) (cid:1) +(1+s)z↓(s) . log1\nε\nAt this point, we have bounded ∥zε(s) − z(s)∥2 , or, equivalently, ∥xε(s) −\nM\nx(s)∥2 ,wherex(s)isaminimizerofthepositivelassowithregularizationλ= 1.",
+      "size": 446,
+      "sentences": 6
+    },
+    {
+      "id": 113,
+      "content": "or, equivalently, ∥xε(s) −\nM\nx(s)∥2 ,wherex(s)isaminimizerofthepositivelassowithregularizationλ= 1. M s\nHowever, as M might not be positive definite, we can not conclude directly. The positive lasso objective function Lasso(x,1) is a quadratic function on\ns\nthe set of nonnegative vectors x⩾0:\nÅ 1ã 1 1\nLasso x, =g (x):= ⟨x,Mx⟩−⟨r,x⟩+ ⟨1,x⟩.",
+      "size": 341,
+      "sentences": 3
+    },
+    {
+      "id": 114,
+      "content": "c function on\ns\nthe set of nonnegative vectors x⩾0:\nÅ 1ã 1 1\nLasso x, =g (x):= ⟨x,Mx⟩−⟨r,x⟩+ ⟨1,x⟩. s s 2 s\n20\n===  21 ===\nAs a consequence, we can compute Lasso(xε(s),1/s) = g (xε(s)) using the\ns\nsecond-order approximation of g at x(s):\ns\nÅ 1ã Å1ã\nLasso xε(s), −PosLasso =g (xε(s))−g (x(s))\ns ∗ s s s\n1\n=⟨∇g (x(s)),xε(s)−x(s)⟩+ ∥xε(s)−x(s)∥2\ns 2 M\n≠ 1 ∑ 1\n= Mx(s)−r+ 1,xε(s)−x(s) + ∥xε(s)−x(s)∥2\ns 2 M\n1\n=⟨v(s),xε(s)−x(s)⟩+ ∥xε(s)−x(s)∥2\n2 M\n1\n= Eε(s)\ns2\nwhere Eε(s)=⟨w(s),zε(s)−z(s)⟩+∆ε(s).",
+      "size": 492,
+      "sentences": 2
+    },
+    {
+      "id": 115,
+      "content": ")∥2\ns 2 M\n1\n=⟨v(s),xε(s)−x(s)⟩+ ∥xε(s)−x(s)∥2\n2 M\n1\n= Eε(s)\ns2\nwhere Eε(s)=⟨w(s),zε(s)−z(s)⟩+∆ε(s). We compute\ndEε(s) ≠dw(s) ∑ ≠ dz(s)∑ d∆ε(s)\n= ,zε(s)−z(s) +⟨w(s),xε(s)⟩− w(s), + . ds ds ds ds\nFor the first term, we use the Cauchy-Schwarz inequality and Lemma 4.10. Moreover,severaltermscanceloutwiththeexpressionofthederivativeof∆ε(s)\nin Eq. (4.14). We obtain\ndEε(s) ≠dz(s) ∑\n⩽∥r∥ ∥zε(s)−z(s)∥ +⟨xε(s),wε(s)⟩− ,wε(s)\nds M† M ds\n≠dz(s) ∑\n+⟨xε(s),1−wε(0)⟩− ,1−wε(0) .",
+      "size": 467,
+      "sentences": 6
+    },
+    {
+      "id": 116,
+      "content": "≠dz(s) ∑\n⩽∥r∥ ∥zε(s)−z(s)∥ +⟨xε(s),wε(s)⟩− ,wε(s)\nds M† M ds\n≠dz(s) ∑\n+⟨xε(s),1−wε(0)⟩− ,1−wε(0) . ds\nAll of these terms have been bounded above. Integrating between 0 and s, we\nobtain\nEε(s)⩽C(d,M,r,α) ñ(cid:90) s ∆ε(u)1/2du+ 1 (cid:0) s+z↑(s) (cid:1) +(1+s)z↓(s) ô\nlog1\n0 ε\n(cid:34) Ç å1/2\n⩽C(d,M,r,α) s 1 (cid:0) s+z↑(s) (cid:1) +(1+s)z↓(s)\nlog1\nε\n(cid:35)\n+ 1 (cid:0) s+z↑(s) (cid:1) +(1+s)z↓(s) .",
+      "size": 400,
+      "sentences": 3
+    },
+    {
+      "id": 117,
+      "content": ") s 1 (cid:0) s+z↑(s) (cid:1) +(1+s)z↓(s)\nlog1\nε\n(cid:35)\n+ 1 (cid:0) s+z↑(s) (cid:1) +(1+s)z↓(s) . log1\nε\nThis allows use to conclude\nÅ 1ã Å1ã\nlimsupLasso xε(s), −PosLasso\ns ∗ s\nε→0\n1\n=limsup Eε(s)\ns2\nε→0\nñ ô\n(1+s)1/2 1+s\n⩽C(d,M,r,α) z↓(s)1/2+ z↓(s) . s s2\n21\n===  22 ===\n4.6 Proof of Theorem 3.1\nThm. 3.1 is an application of Thm. 3.2. However, to apply Thm. 3.2, we need\nto prove that s(cid:55)→x(s) is absolutely continuous. This is proven in the following\nlemma (in combination with Lemma 4.9).",
+      "size": 499,
+      "sentences": 8
+    },
+    {
+      "id": 118,
+      "content": "s) is absolutely continuous. This is proven in the following\nlemma (in combination with Lemma 4.9). Lemma 4.11. Under the assumptions of Thm. 3.1, the function s⩾0(cid:55)→z(s)\nis absolutely continuous on compact subsets of [0,+∞). Proof. From Lemma 4.10, we have that s ⩾ 0 (cid:55)→ w(s) is C (M,r)-Lipschitz\n1\ncontinuous for some constant C (M,r) > 0.",
+      "size": 354,
+      "sentences": 7
+    },
+    {
+      "id": 119,
+      "content": "we have that s ⩾ 0 (cid:55)→ w(s) is C (M,r)-Lipschitz\n1\ncontinuous for some constant C (M,r) > 0. Using the linear relationship\n1\nw(s) = −sr+1+Mz(s), this implies that z ⩾ 0 (cid:55)→ P z(s) is C (M,r)-\nSpanM 2\nLipschitz continuous for some constant C (M,r) > 0, where P denotes\n2 SpanM\nthe orthogonal projection onto SpanM. Denote also P denotes the orthogonal projection onto kerM. We have\nkerM\nthecomplementarityslackness⟨w(s),z(s)⟩=0. Recallthatw(s)∈1+SpanM.",
+      "size": 463,
+      "sentences": 5
+    },
+    {
+      "id": 120,
+      "content": "rojection onto kerM. We have\nkerM\nthecomplementarityslackness⟨w(s),z(s)⟩=0. Recallthatw(s)∈1+SpanM. Thus we obtain\n0=⟨w(s),z(s)⟩=⟨w(s),P z(s)⟩+⟨w(s),P z(s)⟩\nSpanM kerM\n(4.15)\n=⟨w(s),P z(s)⟩+⟨1,P z(s)⟩. SpanM kerM\nConsider s ⩽s . As s(cid:55)→z(s) is monotone, we have\n1 2\n∥z(s )−z(s )∥ =⟨1,z(s )−z(s )⟩\n2 1 1 2 1\n=⟨1,P z(s )−P z(s )⟩\nSpanM 2 SpanM 1\n+⟨1,P z(s )−P z(s )⟩. kerM 2 kerM 1\nWe use H¨older’s inequality and Eq.",
+      "size": 421,
+      "sentences": 7
+    },
+    {
+      "id": 121,
+      "content": ")−P z(s )⟩\nSpanM 2 SpanM 1\n+⟨1,P z(s )−P z(s )⟩. kerM 2 kerM 1\nWe use H¨older’s inequality and Eq. (4.15):\n√\n∥z(s )−z(s )∥ ⩽ d∥P z(s )−P z(s )∥\n2 1 1 SpanM 2 SpanM 1\n+⟨w(s ),P z(s )⟩−⟨w(s ),P z(s )⟩\n1 SpanM 1 2 SpanM 2\n√\n⩽ dC (M,r)|s −s |+⟨w(s )−w(s ),P z(s )⟩\n2 2 1 1 2 SpanM 1\n+⟨w(s ),P z(s )−P z(s )⟩\n2 SpanM 1 SpanM 2\n√\n⩽ dC (M,r)|s −s |+C (M,r)|s −s |C (M,r)s\n2 2 1 1 2 1 2 2\n√\nÄ ä\n+ d+C (M,r)s C (M,r)|s −s |\n1 1 2 2 1\n⩽C (d,M,r)(1+s +s )|s −s |.",
+      "size": 452,
+      "sentences": 3
+    },
+    {
+      "id": 122,
+      "content": "s |C (M,r)s\n2 2 1 1 2 1 2 2\n√\nÄ ä\n+ d+C (M,r)s C (M,r)|s −s |\n1 1 2 2 1\n⩽C (d,M,r)(1+s +s )|s −s |. 3 1 2 2 1\nThis proves that z ⩾0(cid:55)→z(s) is Lipchistz, and thus absolutely continuous, on\ncompact subsets of [0,+∞). 5 The u ◦ v case — proof of the results\nThe strategy of this section is to reduce the u◦v case to the u2 case. The\nreduction methods are detailed in Sec. 5.1. In Sec. 5.1.1, we reduce the lasso\nproblemtoapositivelassoproblem.",
+      "size": 446,
+      "sentences": 7
+    },
+    {
+      "id": 123,
+      "content": "ethods are detailed in Sec. 5.1. In Sec. 5.1.1, we reduce the lasso\nproblemtoapositivelassoproblem. InSec.5.1.2,wereducetheDLNdynamics\nin the u◦v case to the dynamics in the u2 case. Finally, in Sec. 5.2, we use\ntheseelementstodeduceThm.2.1fromThm.3.1andThm.2.2fromThm.3.2. 22\n===  23 ===\n5.1 Reductions\n5.1.1 Reduction of the lasso to the positive lasso\nWe study the minimization of the lasso objective:\n1\nmin. {Lasso(x,λ)=ℓ(x)+λ∥x∥ } , ℓ(x)= ⟨x,Mx⟩−⟨r,x⟩.",
+      "size": 457,
+      "sentences": 9
+    },
+    {
+      "id": 124,
+      "content": "study the minimization of the lasso objective:\n1\nmin. {Lasso(x,λ)=ℓ(x)+λ∥x∥ } , ℓ(x)= ⟨x,Mx⟩−⟨r,x⟩. x∈Rd 1 2\nWe want to connect the lasso minimization problem to a positive lasso min-\nimization problem (3.3). This can be seen as a complexification of the lasso\nminimization problem, as contrained minimization problems are arguably more\ndelicate to deal with than unconstrained ones. However, the lasso objective is\nquadratic on nonnegative vectors, while it is not on the full space Rd (when\nλ>0).",
+      "size": 498,
+      "sentences": 5
+    },
+    {
+      "id": 125,
+      "content": "sso objective is\nquadratic on nonnegative vectors, while it is not on the full space Rd (when\nλ>0). The constrained minimization of a quadratic has some advantages over\nthe unconstrained minimization of a non-smooth function. The strategy is to decompose x as the difference x = ypos −yneg of two\nnonnegativevectorsypos,yneg ⩾0. Forinstance, acanonicalchoicewouldbeto\ntake ypos =x and yneg =x .",
+      "size": 394,
+      "sentences": 4
+    },
+    {
+      "id": 126,
+      "content": "o\nnonnegativevectorsypos,yneg ⩾0. Forinstance, acanonicalchoicewouldbeto\ntake ypos =x and yneg =x . Note that for such a decomposition,\n+ −\nÅ yposã\nℓ(x)=ℓ(cid:101)(y), y = ,\nyneg\nwhere ℓ(cid:101)is the quadratic function\n1 Å M −M ã Å r ã\nℓ(cid:101)(y)=\n2\n⟨y,M(cid:102)y⟩−⟨r\n(cid:101)\n,y⟩, M(cid:102)=\n−M M\n, r\n(cid:101)\n=\n−r\n. We define the lasso objective associated to ℓ(cid:101):\nLflasso(y,λ)=ℓ(cid:101)(y)+λ∥y∥\n1\n.",
+      "size": 418,
+      "sentences": 4
+    },
+    {
+      "id": 127,
+      "content": "=\n−r\n. We define the lasso objective associated to ℓ(cid:101):\nLflasso(y,λ)=ℓ(cid:101)(y)+λ∥y∥\n1\n. WedenoteP„osLasso(cid:0)(λ)=min y⩾0 Lflasso(y,λ)theminimumofthepositivelasso\noptimization problem associated to ℓ(cid:101). Lemma 5.1. (1) For any y =(ypos,yneg)∈R2d,\n⩾0\nLasso(ypos−yneg,λ)⩽Lflasso(y,λ),\nwith equality if and only if λ=0 or ⟨ypos,yneg⟩=0. (2) If z minimizes Lasso(.,λ) over Rd, then y = (z ,z ) ∈ R2d minimizes\n+ − ⩾0\nLflasso(.,λ) over R2\n⩾\nd\n0\n. (3) Lasso\n∗\n(λ)=P„osLasso(cid:0)∗ (λ).",
+      "size": 499,
+      "sentences": 7
+    },
+    {
+      "id": 128,
+      "content": "(z ,z ) ∈ R2d minimizes\n+ − ⩾0\nLflasso(.,λ) over R2\n⩾\nd\n0\n. (3) Lasso\n∗\n(λ)=P„osLasso(cid:0)∗ (λ). 23\n===  24 ===\nProof. (1) Consider y =(ypos,yneg)∈R2d. ⩾0\nLasso(ypos−yneg,λ)=ℓ(ypos−yneg)+λ∥ypos−yneg∥\n1\n⩽ℓ(ypos−yneg)+λ(∥ypos∥ +∥yneg∥ )\n1 1\n=ℓ(cid:101)(y)+λ∥y∥\n1\n=Lflasso(y,λ). There is equality if and only if λ = 0 or there is equality in the triangle\ninequality, which happens if and only if ⟨ypos,yneg⟩=0. (2) Let z be a minimizer of Lasso(.,λ) over Rd. Consider y = (ypos,yneg) ∈\nR2d.",
+      "size": 489,
+      "sentences": 8
+    },
+    {
+      "id": 129,
+      "content": "y if ⟨ypos,yneg⟩=0. (2) Let z be a minimizer of Lasso(.,λ) over Rd. Consider y = (ypos,yneg) ∈\nR2d. Then, from (1),\n⩾0\nLflasso(y,λ)⩾Lasso(ypos−yneg,λ)⩾Lasso(z,λ)=Lflasso((z\n+\n,z\n−\n),λ),\nwheretheequalityholdsinthelaststepas⟨z ,z ⟩=0. Asaconsequence,\n+ −\n(z\n+\n,z\n−\n) minimizes Lflasso(.,λ) over R2\n⩾\nd\n0\n. (3) From (1), we have Lasso\n∗\n(λ) ⩽ P„osLasso(cid:0)(λ). Further, if z is a minimizer\nof Lasso(.,λ) over Rd, then\nLasso\n∗\n(λ)=Lasso(z,λ)=Lflasso((z\n+\n,z\n−\n),λ)⩾P„osLasso(cid:0)(λ).",
+      "size": 484,
+      "sentences": 7
+    },
+    {
+      "id": 130,
+      "content": "izer\nof Lasso(.,λ) over Rd, then\nLasso\n∗\n(λ)=Lasso(z,λ)=Lflasso((z\n+\n,z\n−\n),λ)⩾P„osLasso(cid:0)(λ). This proves the equality. 5.1.2 Reduction of dynamics in the u◦v case to the u◦u case\nRecall that the dynamics in the u◦v case are defined by\ndu\n=−∇ (ℓ(u◦v))=−v◦∇ℓ(u◦v),\ndt u\ndv\n=−∇ (ℓ(u◦v))=−u◦∇ℓ(u◦v). dt v\nConsider\n1 1\nppos = (u+v), pneg = (u−v). 2 2\nThen\nu◦v =(ppos)2−(pneg)2.",
+      "size": 379,
+      "sentences": 5
+    },
+    {
+      "id": 131,
+      "content": "∇ (ℓ(u◦v))=−u◦∇ℓ(u◦v). dt v\nConsider\n1 1\nppos = (u+v), pneg = (u−v). 2 2\nThen\nu◦v =(ppos)2−(pneg)2. Define (cid:101)t= t. Then\n2\ndppos dt1Ådu dvã du dv\n= + = + =−v◦∇ℓ(u◦v)−u◦∇ℓ(u◦v)\nd(cid:101)t d(cid:101)t2 dt dt dt dt\n=−2ppos◦∇ℓ((ppos)2−(pneg)2)=−2ppos◦∇\nypos\nℓ(cid:101)((ppos)2,(pneg)2)\nÄ ä\n=−∇\nppos\nℓ(cid:101)((ppos)2,(pneg)2) . 24\n===  25 ===\nSimilarly,\ndpneg Ä ä\n=−∇\npneg\nℓ(cid:101)((ppos)2,(pneg)2) .",
+      "size": 406,
+      "sentences": 5
+    },
+    {
+      "id": 132,
+      "content": ":101)((ppos)2,(pneg)2) . 24\n===  25 ===\nSimilarly,\ndpneg Ä ä\n=−∇\npneg\nℓ(cid:101)((ppos)2,(pneg)2) . d(cid:101)t\nThus we obtain\nd Å pposã Ç ÇÅ pposã2åå\nd(cid:101)t\npneg\n=−∇\n(ppos,pneg)\nℓ(cid:101)\npneg\n. This is an equation of the form (3.1) in the u◦u case. As a consequence, we\nhave reduced a gradient flow on ℓ in the u◦v case to a gradient flow on ℓ(cid:101)in the\nu◦u case. 5.2 Proofs\nThe proofs of Thms. 2.1 and 2.2 are provided by reductions to Thms. 3.1 and\n3.2 respectively.",
+      "size": 481,
+      "sentences": 8
+    },
+    {
+      "id": 133,
+      "content": "roofs\nThe proofs of Thms. 2.1 and 2.2 are provided by reductions to Thms. 3.1 and\n3.2 respectively. Ineachtheorem,weareprovidedaminimizerx(s)ofLasso (cid:0) .,1(cid:1) overRd. By\ns\nLemma 5.1(2), (x\n+\n(s),x\n−\n(s)) minimizes Lflasso (cid:0) .,1\ns\n(cid:1) over R2\n⩾\nd\n0\n. This minimizer\nof the positive lasso will be used in applying Thms 3.1 and 3.2. Further,weusethereductionofSec.5.1.2fromtheu◦v casetotheu2 case.",
+      "size": 413,
+      "sentences": 7
+    },
+    {
+      "id": 134,
+      "content": "used in applying Thms 3.1 and 3.2. Further,weusethereductionofSec.5.1.2fromtheu◦v casetotheu2 case. We keep the same notations in this section, but now denote the dependence in\nε of the solutions. Thus, with (cid:101)t= t, we have\n2\nd Å ppos,εã Ç ÇÅ ppos,εã2åå\nd(cid:101)t\npneg,ε\n=−∇\n(ppos,ε,pneg,ε)\nℓ(cid:101)\npneg,ε\n. Again, this is an equation of the form (3.1) in the u2 case. Å ypos,εã Å ppos,εã2 Å ypos,εã\nDenote = and itstime-average. Theapplication\nyneg,ε pneg,ε yneg,ε\nÅ ypos,εã\nof Thms.",
+      "size": 496,
+      "sentences": 7
+    },
+    {
+      "id": 135,
+      "content": ",εã2 Å ypos,εã\nDenote = and itstime-average. Theapplication\nyneg,ε pneg,ε yneg,ε\nÅ ypos,εã\nof Thms. 3.1 and 3.2 decribe the performance of in the minimization\nyneg,ε\nof the positive lasso objective Lflasso (cid:0) .,1\ns(cid:101)\n(cid:1) , where s\n(cid:101)\nis defined in coherence with\nEq. (3.4):\n4 2\ns\n(cid:101)\n=\nlog1\n(cid:101)t=\nlog1\nt\n(Eq. =\n(2.3))\ns.\nε ε\n5.2.1 Proof of Theorem 2.1\nIn Thm. 2.1, it is assumed that s (cid:55)→ sx(s) is coordinate-wise monotone.",
+      "size": 465,
+      "sentences": 6
+    },
+    {
+      "id": 136,
+      "content": "Proof of Theorem 2.1\nIn Thm. 2.1, it is assumed that s (cid:55)→ sx(s) is coordinate-wise monotone. As a\nconsequence, s (cid:55)→ s(x (s),x (s)) is coordinate-wise non-decreasing. Thus we\n+ −\ncan apply Thm. 3.1. We obtain\nÅÅ ypos,ε(s) ã 1ã Å1ã\nLflasso\nyneg,ε(s)\n,\ns\n−\nε\n−\n→\n−→\n0\nP„osLasso(cid:0)∗\ns\n. 25\n===  26 ===\nWerecallfromSec.5.1.2thatxε =uε◦vε =(ppos,ε)2−(pneg,ε)2 =ypos,ε−yneg,ε.",
+      "size": 387,
+      "sentences": 7
+    },
+    {
+      "id": 137,
+      "content": "(cid:0)∗\ns\n. 25\n===  26 ===\nWerecallfromSec.5.1.2thatxε =uε◦vε =(ppos,ε)2−(pneg,ε)2 =ypos,ε−yneg,ε. Thus, using Lemma 5.1(1), (3), we obtain\nÅ 1ã Å1ã Å 1ã Å1ã\nLasso xε(s), −Lasso =Lasso ypos,ε(s)−yneg,ε(s), −Lasso\ns ∗ s s ∗ s\nÅÅ ypos,ε(s) ã 1ã Å1ã\n⩽Lflasso\nyneg,ε(s)\n,\ns\n−P„osLasso(cid:0)∗\ns\n−−−→0. ε→0\n5.2.2 Proof of Theorem 2.2\nIn Thm. 2.2, it is assumed that s (cid:55)→ sx(s) is absolutely continuous. As a\nconsequence, s(cid:55)→s(x (s),x (s)) is absolutely continuous.",
+      "size": 474,
+      "sentences": 6
+    },
+    {
+      "id": 138,
+      "content": "x(s) is absolutely continuous. As a\nconsequence, s(cid:55)→s(x (s),x (s)) is absolutely continuous. Thus we can apply\n+ −\nThm. 3.2. Note that the quantity z↓(s) defined in Eq. (3.5), when x(s) is replaced by\n(x (s),x (s)), corresponds to the quantity z↓(s) defined in Eq. (2.4). Thus,\n+ −\napplying Thm. 3.2, we obtain\nÅÅ ypos,ε(s) ã 1ã Å1ã ñ (1+s)1/2 1+s ô\nlimsupLflasso\nyneg,ε(s)\n,\ns\n⩽P„osLasso(cid:0)∗\ns\n+C\ns\nz↓(s)1/2+\ns2\nz↓(s) .",
+      "size": 431,
+      "sentences": 9
+    },
+    {
+      "id": 139,
+      "content": "1ã Å1ã ñ (1+s)1/2 1+s ô\nlimsupLflasso\nyneg,ε(s)\n,\ns\n⩽P„osLasso(cid:0)∗\ns\n+C\ns\nz↓(s)1/2+\ns2\nz↓(s) . ε→0\nThus, combining with Lemma 5.1(1), (3), we obtain\nÅ 1ã Å 1ã\nlimsupLasso xε(s), =limsupLasso ypos,ε(s)−yneg,ε(s),\ns s\nε→0 ε→0\nÅÅ ypos,ε(s) ã 1ã\n⩽limsupLflasso\nyneg,ε(s)\n,\ns\nε→0\nÅ1ã ñ (1+s)1/2 1+s ô\n⩽P„osLasso(cid:0)∗\ns\n+C\ns\nz↓(s)1/2+\ns2\nz↓(s)\nÅ1ã ñ (1+s)1/2 1+s ô\n⩽Lasso +C z↓(s)1/2+ z↓(s) .",
+      "size": 393,
+      "sentences": 2
+    },
+    {
+      "id": 140,
+      "content": "1+s ô\n⩽P„osLasso(cid:0)∗\ns\n+C\ns\nz↓(s)1/2+\ns2\nz↓(s)\nÅ1ã ñ (1+s)1/2 1+s ô\n⩽Lasso +C z↓(s)1/2+ z↓(s) . ∗ s s s2\nAcknowledgements\nTheauthorisgratefultoLoucasPillaud-Vivienfornumerousstimulatingdiscus-\nsions and for providing valuable insights that have improved the development\nof this work. The author also acknowledges support from the ANR and the\nMinist`ere de l’Enseignement Sup´erieur et de la Recherche. 26\n===  27 ===\nReferences\n[1] Sanjeev Arora, Nadav Cohen, Wei Hu, and Yuping Luo.",
+      "size": 487,
+      "sentences": 4
+    },
+    {
+      "id": 141,
+      "content": "de la Recherche. 26\n===  27 ===\nReferences\n[1] Sanjeev Arora, Nadav Cohen, Wei Hu, and Yuping Luo. Implicit regu-\nlarization in deep matrix factorization. Advances in Neural Information\nProcessing Systems, 2019. [2] ShaharAzulay,EdwardMoroshko,MorShpigelNacson,BlakeWoodworth,\nNathanSrebro,AmirGloberson,andDanielSoudry. Ontheimplicitbiasof\ninitialization shape: Beyond infinitesimal mirror descent. In International\nConference on Machine Learning, pages 468–477. PMLR, 2021.",
+      "size": 475,
+      "sentences": 8
+    },
+    {
+      "id": 142,
+      "content": "tesimal mirror descent. In International\nConference on Machine Learning, pages 468–477. PMLR, 2021. [3] Peter Bartlett, Andrea Montanari, and Alexander Rakhlin. Deep learning:\na statistical viewpoint. Acta Numerica, 30:87–201, 2021. [4] Rapha¨elBerthier.Incrementallearningindiagonallinearnetworks.Journal\nof Machine Learning Research, 24(171):1–26, 2023. [5] Rapha¨el Berthier. Github repository. https://github.com/\nraphael-berthier/dln-lasso, 2025. [6] StephenBoydandLievenVandenberghe.",
+      "size": 489,
+      "sentences": 11
+    },
+    {
+      "id": 143,
+      "content": "sitory. https://github.com/\nraphael-berthier/dln-lasso, 2025. [6] StephenBoydandLievenVandenberghe. ConvexOptimization. Cambridge\nUniversity Press, 2004. [7] S´ebastienBubeck.Convexoptimization: Algorithmsandcomplexity.Foun-\ndations and Trends® in Machine Learning, 8(3-4):231–357, 2015. [8] Constantin Carath´eodory. U¨ber den variabilit¨atsbereich der fourier’schen\nkonstantenvonpositivenharmonischenfunktionen. Rendiconti Del Circolo\nMatematico di Palermo (1884-1940), 32(1):193–217, 1911.",
+      "size": 492,
+      "sentences": 9
+    },
+    {
+      "id": 144,
+      "content": "monischenfunktionen. Rendiconti Del Circolo\nMatematico di Palermo (1884-1940), 32(1):193–217, 1911. [9] Lenaic Chizat and Francis Bach. Implicit bias of gradient descent for wide\ntwo-layer neural networks trained with the logistic loss. In Conference on\nLearning Theory, pages 1305–1338. PMLR, 2020. [10] Hung-HsuChou,JohannesMaly,andHolgerRauhut.Moreisless: inducing\nsparsity via overparameterization. Information and Inference: A Journal\nof the IMA, 12(3), 2023. [11] Richard Cottle.",
+      "size": 485,
+      "sentences": 9
+    },
+    {
+      "id": 145,
+      "content": "arameterization. Information and Inference: A Journal\nof the IMA, 12(3), 2023. [11] Richard Cottle. Monotone solutions of the parametric linear complemen-\ntarity problem. Mathematical Programming, 3(1):210–224, 1972. [12] RichardCottle. Aparametriclinearcomplementarilyproblem(problemby\nG. Maier). SIAM Review, 15(2):381–384, 1973. [13] Richard Cottle, Jong-Shi Pang, and Richard E Stone. The linear comple-\nmentarity problem. SIAM, 2009. [14] Curtis Eaves. The linear complementarity problem.",
+      "size": 493,
+      "sentences": 13
+    },
+    {
+      "id": 146,
+      "content": "inear comple-\nmentarity problem. SIAM, 2009. [14] Curtis Eaves. The linear complementarity problem. Management science,\n17(9):612–634, 1971. 27\n===  28 ===\n[15] BradleyEfron,TrevorHastie,IainJohnstone,andRobertTibshirani.Least\nangle regression. The Annals of Statistics, 32(3):407–499, 2004. [16] Suriya Gunasekar, Blake Woodworth, Srinadh Bhojanapalli, Behnam\nNeyshabur,andNatiSrebro.Implicitregularizationinmatrixfactorization. Advances in Neural Information Processing Systems, 2017.",
+      "size": 486,
+      "sentences": 9
+    },
+    {
+      "id": 147,
+      "content": "plicitregularizationinmatrixfactorization. Advances in Neural Information Processing Systems, 2017. [17] Jeff HaoChen, Colin Wei, Jason Lee, and Tengyu Ma. Shape matters:\nUnderstanding the implicit bias of the noise covariance. In Conference on\nLearning Theory, pages 2315–2357. PMLR, 2021. [18] TrevorHastie,JonathanTaylor,RobertTibshirani,andGuentherWalther. Forward stagewise regression and the monotone lasso. Electronic Journal\nof Statistics, 1:1–29, 2007.",
+      "size": 461,
+      "sentences": 9
+    },
+    {
+      "id": 148,
+      "content": "orward stagewise regression and the monotone lasso. Electronic Journal\nof Statistics, 1:1–29, 2007. [19] Trevor Hastie, Robert Tibshirani, and Martin Wainwright. Statistical\nlearning with sparsity. Monographs on statistics and applied probability,\n2015. [20] JiangyuanLi,ThanhNguyen,ChinmayHegde,andKaWaiWong. Implicit\nsparse regularization: The impact of depth and early stopping. Advances\nin Neural Information Processing Systems, 2021. [21] Yuanzhi Li, Tengyu Ma, and Hongyang Zhang.",
+      "size": 486,
+      "sentences": 9
+    },
+    {
+      "id": 149,
+      "content": "ces\nin Neural Information Processing Systems, 2021. [21] Yuanzhi Li, Tengyu Ma, and Hongyang Zhang. Algorithmic regularization\nin over-parameterized matrix sensing and neural networks with quadratic\nactivations. In Conference on Learning Theory, pages 2–47. PMLR, 2018. [22] Zhiyuan Li, Yuping Luo, and Kaifeng Lyu. Towards resolving the implicit\nbiasofgradientdescentformatrixfactorization: Greedylow-ranklearning. Internation Conference on Learning Representations, 2021.",
+      "size": 473,
+      "sentences": 8
+    },
+    {
+      "id": 150,
+      "content": "rixfactorization: Greedylow-ranklearning. Internation Conference on Learning Representations, 2021. [23] Zhiyuan Li, Tianhao Wang, Jason Lee, and Sanjeev Arora. Implicit bias\nof gradient descent on reparametrized models: On equivalence to mirror\ndescent. Advances in Neural Information Processing Systems, 2022. [24] Nimrod Megiddo. On monotonicity in parametric linear complementarity\nproblems. Mathematical Programming, 12:60–66, 1977.",
+      "size": 437,
+      "sentences": 8
+    },
+    {
+      "id": 151,
+      "content": "notonicity in parametric linear complementarity\nproblems. Mathematical Programming, 12:60–66, 1977. [25] Mor Shpigel Nacson, Kavya Ravichandran, Nathan Srebro, and Daniel\nSoudry. Implicit bias of the step size in linear diagonal neural networks. In International Conference on Machine Learning, pages 16270–16295. PMLR, 2022. [26] Scott Pesme and Nicolas Flammarion. Saddle-to-saddle dynamics in diag-\nonal linear networks. Advances in Neural Information Processing Systems,\n2023.",
+      "size": 480,
+      "sentences": 9
+    },
+    {
+      "id": 152,
+      "content": "le dynamics in diag-\nonal linear networks. Advances in Neural Information Processing Systems,\n2023. [27] ScottPesme,LoucasPillaud-Vivien,andNicolasFlammarion.Implicitbias\nof SGD for diagonal linear networks: a provable benefit of stochasticity. Advances in Neural Information Processing Systems, 2021. 28\n===  29 ===\n[28] Loucas Pillaud-Vivien, Julien Reygner, and Nicolas Flammarion. Label\nnoise(stochastic)gradientdescentimplicitlysolvestheLassoforquadratic\nparametrisation.",
+      "size": 476,
+      "sentences": 6
+    },
+    {
+      "id": 153,
+      "content": "marion. Label\nnoise(stochastic)gradientdescentimplicitlysolvestheLassoforquadratic\nparametrisation. In Conference on Learning Theory, pages 2127–2159. PMLR, 2022. [29] Saharon Rosset, Ji Zhu, and Trevor Hastie. Boosting as a regularized path\nto a maximum margin classifier. Journal of Machine Learning Research,\n5(Aug):941–973, 2004. [30] RyanTibshirani. Thelassoproblemanduniqueness. Electronic Journal of\nStatistics, 7:1456–1490, 2013. [31] Gal Vardi.",
+      "size": 453,
+      "sentences": 11
+    },
+    {
+      "id": 154,
+      "content": "Thelassoproblemanduniqueness. Electronic Journal of\nStatistics, 7:1456–1490, 2013. [31] Gal Vardi. On the implicit bias in deep-learning algorithms. Communica-\ntions of the ACM, 66(6):86–93, 2023. [32] Tomas Vaskevicius, Varun Kanade, and Patrick Rebeschini. Implicit reg-\nularization for optimal sparse recovery. Advances in Neural Information\nProcessing Systems, 2019. [33] BlakeWoodworth,SuriyaGunasekar,JasonLee,EdwardMoroshko,Pedro\nSavarese, Itay Golan, Daniel Soudry, and Nathan Srebro.",
+      "size": 492,
+      "sentences": 9
+    },
+    {
+      "id": 155,
+      "content": "riyaGunasekar,JasonLee,EdwardMoroshko,Pedro\nSavarese, Itay Golan, Daniel Soudry, and Nathan Srebro. Kernel and rich\nregimes in overparametrized models. In Conference on Learning Theory,\npages 3635–3673. PMLR, 2020. [34] Peng Zhao, Yun Yang, and Qiao-Chu He. High-dimensional linear regres-\nsion via implicit regularization. Biometrika, 109(4):1033–1046, 2022. 29",
+      "size": 362,
+      "sentences": 8
+    }
+  ]
+}

@@ -1,0 +1,1179 @@
+{
+  "source": "ArXiv",
+  "filename": "065_AGV_Safe_cooperative_robot_dynamics_on_graph.pdf",
+  "domain": "AGV",
+  "total_chars": 61847,
+  "total_chunks": 195,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\n0002\nbeF\n42\n]OR.sc[\n1v4102000/sc:viXra\nSafe Cooperative Robot Dynamics on Graphs∗\nRobert W. Ghrist† Daniel E. Koditschek‡\nOctober 25, 2018\nAbstract\nThis paper initiates the use of vector fields to design, optimize, and implement reactive schedules\nforsafe cooperative robot patternson planargraphs. WeconsiderAutomated GuidedVehicles(AGV’s)\noperating upon a predefined network of pathways.",
+      "size": 400,
+      "sentences": 2
+    },
+    {
+      "id": 2,
+      "content": "rgraphs. WeconsiderAutomated GuidedVehicles(AGV’s)\noperating upon a predefined network of pathways. In contrast to the case of locally Euclidean configu-\nration spaces, regularization of collisions isnolonger alocal procedure,andissues concerningtheglobal\ntopology ofconfiguration spacesmustbeaddressed. Thefocusofthepresentinquiryistheachievement\nofsafe,efficient,cooperativepatternsinthesimplestnontrivialexample(apairofrobotsonaY-network)\nbymeans of a state-event heirarchical controller.",
+      "size": 491,
+      "sentences": 4
+    },
+    {
+      "id": 3,
+      "content": "plestnontrivialexample(apairofrobotsonaY-network)\nbymeans of a state-event heirarchical controller. 1 Introduction\nRecentliterature suggeststhe growingawarenessofa needfor “reactive”scheduling whereinone desiresnot\nmerelyasingledeploymentofresourcesbutaplanforsuccessivere-deploymentsagainstachangingenviron-\nment [19]. But scheduling problems have been traditionally solved by appeal to a discrete representationof\nthe domainathand.",
+      "size": 433,
+      "sentences": 3
+    },
+    {
+      "id": 4,
+      "content": "problems have been traditionally solved by appeal to a discrete representationof\nthe domainathand. Thusthe needfor“tracking”changinggoalsintroducesaconceptualdilemma: there is\nno obvious topology by which proximity to the target of a given deployment can be measured. In contrast\nto problemsentailingthe managementofinformationalone,problemsinmanyroboticsandautomationset-\ntings involve the management of work — the exchange of energy in the presence of geometric constraints.",
+      "size": 476,
+      "sentences": 3
+    },
+    {
+      "id": 5,
+      "content": "s involve the management of work — the exchange of energy in the presence of geometric constraints. In these settings, it may be desirable to postpone the imposition of a discrete representationlong enoughto\ngain the benefit of the natural topology that accompanies the original domain. This paper explores the use of vector fields for reactive scheduling of safe cooperative robot patterns on\ngraphs. Theword“safe”meansthatobstacles—designatedillegalportionsoftheconfigurationspace—are\navoided.",
+      "size": 495,
+      "sentences": 4
+    },
+    {
+      "id": 6,
+      "content": "aphs. Theword“safe”meansthatobstacles—designatedillegalportionsoftheconfigurationspace—are\navoided. The word “cooperative” connotes situations wherein physically distributed agents are collectively\nresponsibleforexecuting the schedule. The word“pattern”refersto tasksthatcannotbe encodedsimply in\nterms of a point goal in the configuration space.",
+      "size": 346,
+      "sentences": 4
+    },
+    {
+      "id": 7,
+      "content": "ttern”refersto tasksthatcannotbe encodedsimply in\nterms of a point goal in the configuration space. The word “reactive” will be interpreted as requiring that\nthe desired pattern reject perturbations: conditions close but slightly removed from those desired remain\nclose and, indeed, converge toward the exactly desired pattern.",
+      "size": 327,
+      "sentences": 2
+    },
+    {
+      "id": 8,
+      "content": "y removed from those desired remain\nclose and, indeed, converge toward the exactly desired pattern. 1.1 Setting: AGV’s on a Guidepath Network of Wires\nAnautomatedguidedvehicle(AGV)isanunmannedpoweredcart“capableoffollowinganexternalguidance\nsignal to deliver a unit load from destination to destination” where, in most common applications, the\nguidepathsignalis buriedinthe floor[5]. Thus,the AGV’s workspaceis anetworkofwires—agraph.",
+      "size": 434,
+      "sentences": 3
+    },
+    {
+      "id": 9,
+      "content": "ons, the\nguidepathsignalis buriedinthe floor[5]. Thus,the AGV’s workspaceis anetworkofwires—agraph. The\nmotivationtochooseAGVbasedmaterialshandlingsystemsovermoreconventionalfixedconveyorsrestsnot\nsimplyintheireaseofreconfigurabilitybutinthepotentialtheyofferforgracefulresponsetoperturbationsin\nnormalplantoperation.",
+      "size": 317,
+      "sentences": 3
+    },
+    {
+      "id": 10,
+      "content": "configurabilitybutinthepotentialtheyofferforgracefulresponsetoperturbationsin\nnormalplantoperation. In realproductionfacilities, the flow ofwork in processfluctuates constantly in the\n∗Supported in part by National Science Foundation Grant IRI-9510673 [DK] and by National Science Foundation Grant\nDMS-9971629[RG].Asketchoftheseideasappearedasaconferenceproceedings [11].",
+      "size": 371,
+      "sentences": 2
+    },
+    {
+      "id": 11,
+      "content": "Science Foundation Grant\nDMS-9971629[RG].Asketchoftheseideasappearedasaconferenceproceedings [11]. †SchoolofMathematics,GeorgiaInstitute ofTechnology, Atlanta,GA30017,USA.ghrist@math.gatech.edu\n‡Department of Electrical Engineering and Computer Science, The University of Michigan, Ann Arbor, MI 48109-2110,\nUSA.kod@eecs.umich.edu\n1\n===  2 ===\nSAFE ROBOT DYNAMICS 2\nface of unanticipated workstation downtime, variations in process rate, and, indeed, variations in materials\ntransport and delivery rates [7].",
+      "size": 508,
+      "sentences": 2
+    },
+    {
+      "id": 12,
+      "content": "variations in process rate, and, indeed, variations in materials\ntransport and delivery rates [7]. Of course, realizing their potential robustness against these fluctuations in\nwork flow remains an only partially fulfilled goal of contemporary AGV systems. Choreographing the interacting routes of multiple AGVs in a non-conflicting manner presents a novel,\ncomplicated, and necessarily on-line planning problem.",
+      "size": 412,
+      "sentences": 3
+    },
+    {
+      "id": 13,
+      "content": "n a non-conflicting manner presents a novel,\ncomplicated, and necessarily on-line planning problem. Nominal routes might be designed offline but they\ncannevertrulybetraversedwiththenominaltiming,forallthereasonsdescribedabove. Evenundernormal\noperating conditions, no single nominal schedule can suffice to coordinate the workflow as the production\nvolume orproduct mix changesovertime: new vehicles need to be addedor deleted andthe routing scheme\nadapted.",
+      "size": 457,
+      "sentences": 3
+    },
+    {
+      "id": 14,
+      "content": "product mix changesovertime: new vehicles need to be addedor deleted andthe routing scheme\nadapted. Inanycase,abnormalconditions—unscheduledprocessdowntimes; blockedworkstations;failed\nvehicles — continually arise, demanding altered routes. ThetrafficcontrolschemesdeployedincontemporaryAGVsystemsaredesignedtosimplifythereal-time\nroute planning and adaptation process by “blocking zone control” strategies.",
+      "size": 407,
+      "sentences": 3
+    },
+    {
+      "id": 15,
+      "content": "tosimplifythereal-time\nroute planning and adaptation process by “blocking zone control” strategies. The workspace is partitioned\nintoasmallnumberofcellsand,regardlessofthedetailsoftheirsourceanddestinationtasks,notwoAGVs\nare ever allowedinto the same cell at the same time [5]. Clearly, this simplificationresults in significantloss\nof a network’s traffic capacity.",
+      "size": 365,
+      "sentences": 3
+    },
+    {
+      "id": 16,
+      "content": "e time [5]. Clearly, this simplificationresults in significantloss\nof a network’s traffic capacity. In this paper, we will consider a centralized approach that employs dynamical systems theory to focus\non real-time responsiveness and efficiency as opposed to computational complexity or average throughput. No doubt, beyond a certain maximum number of vehicles,the necessity to compute in the high dimensional\nconfiguration space will limit the applicability of any algorithms that arise.",
+      "size": 488,
+      "sentences": 4
+    },
+    {
+      "id": 17,
+      "content": "the high dimensional\nconfiguration space will limit the applicability of any algorithms that arise. However, this point of view\nseems not to have been carefully explored in the literature. Indeed, we will sketch some ideas about how\nan approach that starts from the coupled version of the problem may lend sufficient insight to move back\nand forth between the individuals’ and the group’s configuration spaces even in real time.",
+      "size": 428,
+      "sentences": 3
+    },
+    {
+      "id": 18,
+      "content": "ove back\nand forth between the individuals’ and the group’s configuration spaces even in real time. For the sake\nof concreteness we will work in the so-called “pickup and delivery” (as opposed to the “stop and go” [2])\nparadigmofassemblyorfabrication,andwewillnotbeconcernedwithwarehousingstyleAGVapplications. 1.2 Contributions of the Paper\nThe paper is organized as follows.",
+      "size": 376,
+      "sentences": 3
+    },
+    {
+      "id": 19,
+      "content": "hwarehousingstyleAGVapplications. 1.2 Contributions of the Paper\nThe paper is organized as follows. In §2, we review fundamental facts about the topology of graphs, with\nwhich we define the class of edge point fields — locally defined dynamics that realize single letter patterns. These act collectively as a toolbox from which to build a hybrid controller for achieving arbitrary patterns\nwith a single AGV.",
+      "size": 408,
+      "sentences": 4
+    },
+    {
+      "id": 20,
+      "content": "toolbox from which to build a hybrid controller for achieving arbitrary patterns\nwith a single AGV. This represents a slight generalization of the scheme the second author and colleagues\nhave proposed in [4]. The problem of dynamics and control on non-trivial graphs is then considered in §3, beginning with a\ndetailed discussion of a natural intrinsic coordinate system in which to frame the configuration space.",
+      "size": 413,
+      "sentences": 3
+    },
+    {
+      "id": 21,
+      "content": "iled discussion of a natural intrinsic coordinate system in which to frame the configuration space. We\npresent a topological analysis of the configuration space for a pair of AGV’s on a Y-shaped graph — the\nsimplest nontrivial situation.",
+      "size": 237,
+      "sentences": 2
+    },
+    {
+      "id": 22,
+      "content": "he configuration space for a pair of AGV’s on a Y-shaped graph — the\nsimplest nontrivial situation. Here, a clarification of the configuration space presentation leads easily to a\nvector field construction that brings all initial conditions of two robots on the graph to any desired pair of\ngoal points while guaranteeing safety (i.e., no collisions along the way).",
+      "size": 365,
+      "sentences": 2
+    },
+    {
+      "id": 23,
+      "content": "h to any desired pair of\ngoal points while guaranteeing safety (i.e., no collisions along the way). The desire for a more decoupled\ncontroller — the hope of an “interleaving”of otherwise independent individual patterns — impels a revised\napproachto safe navigation leading to the construction of a vector field that enables the AGV’s to “dance”\nabout one other at a vertex.",
+      "size": 373,
+      "sentences": 2
+    },
+    {
+      "id": 24,
+      "content": "o the construction of a vector field that enables the AGV’s to “dance”\nabout one other at a vertex. The dynamical features of this circulating field are suggestive of a hybrid construction that would allow\nmultiple independent patterns to be safely interleaved. We proceedin §4 to constructa 12-symbolgrammar\nof so-called “monotone” cycles: those patterns which exclude multiple robots on a single edge of the graph.",
+      "size": 416,
+      "sentences": 3
+    },
+    {
+      "id": 25,
+      "content": "lled “monotone” cycles: those patterns which exclude multiple robots on a single edge of the graph. The goal of this excursion is to tune limit cycles visiting various docking stations in such a way as to be\noptimal with respect to certain notions of distance or performance. We complete our treatment of this fundamental example by synthesizing the grammar results into a\nstate-eventcontrolledhybridsystemfor achievingcooperativepatterns.",
+      "size": 439,
+      "sentences": 3
+    },
+    {
+      "id": 26,
+      "content": "izing the grammar results into a\nstate-eventcontrolledhybridsystemfor achievingcooperativepatterns. Appendix A is included to place on\na rigorous foundation the use of vector fields on graphs and configuration spaces thereof. 2 Notation and Background\n===  3 ===\nSAFE ROBOT DYNAMICS 3\n2.1 Graph Topology\nA graph, Γ, consists of a finite collection of 0-dimensional vertices V:={v }N, and 1-dimensional edges\ni 1\nE:={e }M assembledasfollows.",
+      "size": 440,
+      "sentences": 3
+    },
+    {
+      "id": 27,
+      "content": "ection of 0-dimensional vertices V:={v }N, and 1-dimensional edges\ni 1\nE:={e }M assembledasfollows. Eachedgeishomeomorphictotheclosedinterval[0,1]attachedtoV alongits\nj 1\nboundarypoints{0}and{1}.1 WeplaceuponΓthequotienttopologygivenbytheendpointidentifications:\nNeighborhoods of a point in the interior of e are homeomorphic images of interval neighborhoods of the\nj\ncorrespondingpoint in [0,1],and neighborhoodsof a vertex v consistof the union of homeomorphicimages\ni\nof half-open neighborhoods of the endpoints for all incident edges.",
+      "size": 538,
+      "sentences": 2
+    },
+    {
+      "id": 28,
+      "content": "e union of homeomorphicimages\ni\nof half-open neighborhoods of the endpoints for all incident edges. The configuration spaces we consider in §3 and following are self-products of graphs. The topology of\nΓ×Γ is easily understoodin terms ofthe topologyofΓ as follows[17]. Let (x,y)∈Γ×Γ denote anordered\npair in the product. Then any small neighborhood of (x,y) within Γ×Γ is the union of neighborhoods\nof the form N(u)×N(v), where N(·) denotes neighborhood within Γ.",
+      "size": 463,
+      "sentences": 5
+    },
+    {
+      "id": 29,
+      "content": "Γ×Γ is the union of neighborhoods\nof the form N(u)×N(v), where N(·) denotes neighborhood within Γ. In other words, the products of\nneighborhoods form a basis of neighborhoods in the product space.",
+      "size": 196,
+      "sentences": 2
+    },
+    {
+      "id": 30,
+      "content": ". In other words, the products of\nneighborhoods form a basis of neighborhoods in the product space. Given a graph, Γ, outfitted with a finite number N of non-colliding AGV’s constrained to move on Γ,\nthe (labeled) configuration space of safe motions is defined as\nC:=(Γ×...×Γ)−N(∆), (1)\nwhere ∆:={(x ) ∈ Γ×...×Γ : x = x for some j 6= k} denotes the pairwise diagonal and N(·) denotes\ni j k\n(small) neighborhood. For general graphs, the topological features of C can be extremely complicated.",
+      "size": 491,
+      "sentences": 4
+    },
+    {
+      "id": 31,
+      "content": "mall) neighborhood. For general graphs, the topological features of C can be extremely complicated. We do not treat the\ngeneral aspects of this problem comprehensively in this paper; rather, we restrict attention to the simplest\nnontrivial example which illustrates nicely the relevant features present in the more general situation. The\ntopologicalcharacteristicsofgeneralconfigurationspacesongraphsistreatedin[8,9].",
+      "size": 417,
+      "sentences": 4
+    },
+    {
+      "id": 32,
+      "content": "eral situation. The\ntopologicalcharacteristicsofgeneralconfigurationspacesongraphsistreatedin[8,9]. Mathematically,itis\nusually mostinteresting to pass to the quotient of C by the action of the permutation grouponN elements,\nthus forgetting the identities of the AGV elements; however, as such spaces are almost completely divorced\nfrom any applications involving coordinated transport, we work on the “full” configuration space C.\nInordertoproceed,itisnecessarytoclarifywhatwemeanby avectorfieldonasimplicialcomplexthat\nfails to be a manifold.",
+      "size": 544,
+      "sentences": 3
+    },
+    {
+      "id": 33,
+      "content": "eed,itisnecessarytoclarifywhatwemeanby avectorfieldonasimplicialcomplexthat\nfails to be a manifold. This is a nontrivial issue: for example, in the case of a graph, the tangent space to a\nvertex with incidence number greater than two is not well-defined. We defer a more detailed discussion of\nthesestatementstoAppendixA.Theessentialdifferenceisthatweconstructsemiflows: flowswhichpossess\nunique forward orbits.",
+      "size": 411,
+      "sentences": 3
+    },
+    {
+      "id": 34,
+      "content": "ppendixA.Theessentialdifferenceisthatweconstructsemiflows: flowswhichpossess\nunique forward orbits. 2.2 Edge Point Fields for Single AGV Control\nIn the context of describing and executing patterns or periodic motions on a graph, one desires a set of\nbuilding blocks for moving from one goal to the next. We introduce the terminology and philosophy for\nconstructing patterns by way of the simplest possible examples: a single AGV on a graph.",
+      "size": 440,
+      "sentences": 3
+    },
+    {
+      "id": 35,
+      "content": "osophy for\nconstructing patterns by way of the simplest possible examples: a single AGV on a graph. This avoids the\nadditional topological complications present in the context of cooperative motion. We thus introduce the class of edge point fields as a dynamical toolbox for a hybrid controller.",
+      "size": 295,
+      "sentences": 3
+    },
+    {
+      "id": 36,
+      "content": "n. We thus introduce the class of edge point fields as a dynamical toolbox for a hybrid controller. Given a\nspecified goal point g ∈ e within an edge of Γ, an edge point field is a locally defined vector field X on Γ\nj g\nwith the following properties:\nLocally Defined: X is defined on a neighborhood N(e ) of the goal-edge e within the graph topology. g j j\nFurthermore, forward orbits under X are uniquely defined.",
+      "size": 415,
+      "sentences": 3
+    },
+    {
+      "id": 37,
+      "content": "l-edge e within the graph topology. g j j\nFurthermore, forward orbits under X are uniquely defined. g\nPoint Attractor: every forward orbit of X asymptotically approaches the unique fixed point g ∈e .2\ng j\nNavigation-Like: X admits a C0 Lyapunov function, Φ :Γ→R. g g\nThe following existence lemma (whose trivial proof we omit) holds. 1 Wewillassumeawayinthesequelthepossibilityof“homoclinic”edges whoseboundarypointsareattached tothesame\nvertex.",
+      "size": 445,
+      "sentences": 5
+    },
+    {
+      "id": 38,
+      "content": "meawayinthesequelthepossibilityof“homoclinic”edges whoseboundarypointsareattached tothesame\nvertex. 2 Whenitisnotclearfromthecontext, weshalldenotethegoalpointachievedbyanedgepointflowasg(Xg)={g}. ===  4 ===\nSAFE ROBOT DYNAMICS 4\nLemma 1 Given any edge e ⊂Γ which is contractible within Γ, there exists an edge point field X for any\nj g\ndesired goal g ∈e .",
+      "size": 356,
+      "sentences": 3
+    },
+    {
+      "id": 39,
+      "content": "which is contractible within Γ, there exists an edge point field X for any\nj g\ndesired goal g ∈e . j\nThe only occasion for which an edge e is not contractible in Γ is in the “homoclinic case” when both\nj\nendpoints of e are attached to the same vertex, forming a loop. In such instances, one may avoid the\nj\nproblemby subdividing the edge to include more vertices,which is verynatural in the setting of this paper,\nsince vertices correspond to workstations along a path.",
+      "size": 469,
+      "sentences": 3
+    },
+    {
+      "id": 40,
+      "content": "s verynatural in the setting of this paper,\nsince vertices correspond to workstations along a path. 2.3 Discrete Regulation of Patterns\nWeadoptthestandardframeworkofsymbolicdynamics[13]. Byanexcursiononagraphismeanta(possibly\ninfinite) sequence of edges from the graph, E = e ...e ... ∈ EZ, having the property that each pair of\ni1 iN\ncontiguous edges, e and e share a vertex in common.",
+      "size": 386,
+      "sentences": 3
+    },
+    {
+      "id": 41,
+      "content": "EZ, having the property that each pair of\ni1 iN\ncontiguous edges, e and e share a vertex in common. The set of excursions forms a language, L: the\nij ij+1\nso-called subshift on the alphabet defined by the named edges (we assume each name is unique) [13]. The\nshift operator, σ, defines a discrete dynamical system on the set of excursions, mapping the set of infinite\nsequences into itself by decrementing the time index.",
+      "size": 421,
+      "sentences": 3
+    },
+    {
+      "id": 42,
+      "content": "et of excursions, mapping the set of infinite\nsequences into itself by decrementing the time index. An M-block extension of the original language arises\nin the obvious way from grouping together each successive block of M contiguous letters from an original\nsequence, and it is clear how σ induces a shift operator, σM on this derived set of sequences.",
+      "size": 352,
+      "sentences": 2
+    },
+    {
+      "id": 43,
+      "content": "inal\nsequence, and it is clear how σ induces a shift operator, σM on this derived set of sequences. Givenalegalblock,B =e ...e ∈L,wewillsaythatanexcursionrealizesthatpatternifitsM-block\ni1 iM\nextension eventually reaches the “goal” BBBBB... under the iterates of σM. In other words, after some\nfinite number of applications of σ, the excursionconsists of repetitions of the block B (terminating possibly\nwith the empty edge).",
+      "size": 425,
+      "sentences": 3
+    },
+    {
+      "id": 44,
+      "content": "σ, the excursionconsists of repetitions of the block B (terminating possibly\nwith the empty edge). In a previous paper [4], the second author and colleagues introduced a very simple but effective discrete\neventcontrollerfor regulatingpatterns ongraphsfrom allreachableinitial edges by pruning the graphback\nto a tree (imposing an ordering). Of course, this simple idea has a much longer history.",
+      "size": 395,
+      "sentences": 3
+    },
+    {
+      "id": 45,
+      "content": "graphback\nto a tree (imposing an ordering). Of course, this simple idea has a much longer history. In robotics it was\nintroducedin [14]as “pre-imagebackchaining;”pursuedin [15]as a method for building verifiablehardened\nautomation via the metaphor of a funneling; and in [6] as a means of prescribing sensor specifications from\ngoals and action sets.",
+      "size": 350,
+      "sentences": 3
+    },
+    {
+      "id": 46,
+      "content": "a funneling; and in [6] as a means of prescribing sensor specifications from\ngoals and action sets. In the discrete event systems literature an optimal versionof this procedure has been\nintroduced in [3] and a generalization recently has been proposed in [18]. Let E0:=B ⊂E denote the edges of Γ that appear in the block of letters specifying the desired pattern. Denote by\nEn+1 ⊂E − Ek\nk≤n\n[\nthoseedgesthatshareavertexwithanedgeinEn butarenotinanyofthe previouslydefinedsubsets.",
+      "size": 479,
+      "sentences": 4
+    },
+    {
+      "id": 47,
+      "content": "E − Ek\nk≤n\n[\nthoseedgesthatshareavertexwithanedgeinEn butarenotinanyofthe previouslydefinedsubsets. This\nyields a finite partition of E into “levels,” {Ep}P , such that for each edge, ep ∈ Ep, there can be found\np=0 i\na legal successor edge, ep−1 ∈ Ep−1, such that epep−1 ∈ L is a legal block in the language.",
+      "size": 309,
+      "sentences": 2
+    },
+    {
+      "id": 48,
+      "content": "d\np=0 i\na legal successor edge, ep−1 ∈ Ep−1, such that epep−1 ∈ L is a legal block in the language. Note that we\nj i j\nhave implicitly assumed E0 is reachable from the entire graph — otherwise, there will be some “leftover”\ncomponent of E forming the last cell in the partition starting within which it is not possible to achieve the\npattern.",
+      "size": 342,
+      "sentences": 2
+    },
+    {
+      "id": 49,
+      "content": "ing the last cell in the partition starting within which it is not possible to achieve the\npattern. Note as well that we impose some ordering of each cell Ep = {ep} Mp: the edges of E0 = B are\ni i=1\nordered by their appearance in the block; the ordering of edges in higher level cells is arbitrary. We may now define a “graphcontroller”law, G:E →E as follows.",
+      "size": 359,
+      "sentences": 3
+    },
+    {
+      "id": 50,
+      "content": "es in higher level cells is arbitrary. We may now define a “graphcontroller”law, G:E →E as follows. Fromthe nature of the partition{Ep}\nabove, it is clear that the least legal successor function,\ni+1modM :p=0\nL(ep):= , (2)\ni min{j ≤M :epep−1 ∈L} :p>0\n(cid:26) p i j\nis well-defined. From this, we construct the graph controller:\nG(ep):=ep−1 .",
+      "size": 342,
+      "sentences": 4
+    },
+    {
+      "id": 51,
+      "content": "L} :p>0\n(cid:26) p i j\nis well-defined. From this, we construct the graph controller:\nG(ep):=ep−1 . (3)\ni L(p,i)\nItfollowsalmostdirectlyfromthedefinitionofthisfunctionthatits successiveapplicationtoanyedgeleads\neventually to a repetition of the desired pattern:\nProposition 2 The iterates of G on E achieve the pattern B. ===  5 ===\nSAFE ROBOT DYNAMICS 5\n2.4 Hybrid Edge Point Fields\nA semiflow, (X)t, on the graphinduces excursionsin L parametrizedby an initial conditionas follows.",
+      "size": 483,
+      "sentences": 4
+    },
+    {
+      "id": 52,
+      "content": "A semiflow, (X)t, on the graphinduces excursionsin L parametrizedby an initial conditionas follows. The\nfirst letter corresponds to the edge in which the initial condition is located (initial conditions at vertices are\nassigned to the incident edge along which the semiflow points). The next letter is added to the sequence by\nmotion through a vertex from one edge to the next.",
+      "size": 377,
+      "sentences": 3
+    },
+    {
+      "id": 53,
+      "content": "ts). The next letter is added to the sequence by\nmotion through a vertex from one edge to the next. Wewillsayoftwoedgepointfields,X ,X onagraph,Γ,thatX prepares X ,denotedX ≻X ,ifthe\n1 2 1 2 1 2\ngoal of the first is in the domain of attraction of the second, g(X )⊂N(X ). Given any finite collection of\n1 2\nedge point fields on Γ, we will choose some 0<α<1 and assume that their associatedLyapunov functions\nhave been scaled in such a fashion that X ≻ X , implies (Φ )−1[0,α] ⊂ N(X ).",
+      "size": 484,
+      "sentences": 4
+    },
+    {
+      "id": 54,
+      "content": "atedLyapunov functions\nhave been scaled in such a fashion that X ≻ X , implies (Φ )−1[0,α] ⊂ N(X ). In other words, an α\n1 2 1 2\ncrossing of the trajectory Φ ◦(X )t signals arrival in N(X ). 1 1 2\nSuppose now that for every edge in some pattern block, e0 ∈E0, there has been designated a goalpoint,\ni\ng0, alongwith anedge pointfieldX0 takingthat goal,g(X0)=g0.",
+      "size": 360,
+      "sentences": 3
+    },
+    {
+      "id": 55,
+      "content": "here has been designated a goalpoint,\ni\ng0, alongwith anedge pointfieldX0 takingthat goal,g(X0)=g0. Assume aswellthatthe edgepoint field\ni i i i\nassociated with each previous edge in the pattern prepares the flow associated with the next edge, in other\nwords, using the successor function (2) we have,\ng X0 ⊂N X0 .",
+      "size": 314,
+      "sentences": 2
+    },
+    {
+      "id": 56,
+      "content": "sociated with the next edge, in other\nwords, using the successor function (2) we have,\ng X0 ⊂N X0 . j L(j)\n(cid:0) (cid:1) (cid:16) (cid:17)\nNow construct edge point fields on all the edges of Γ such that the tree representation of their ≻ relations\nis exactly the tree pruned from the original graph above — namely we have\ng Xp ⊂N Xp−1 . j L(j)\n(cid:0) (cid:1) (cid:16) (cid:17)\nWe are finally in a position to construct a hybrid semi-flow on Γ.",
+      "size": 446,
+      "sentences": 3
+    },
+    {
+      "id": 57,
+      "content": "cid:0) (cid:1) (cid:16) (cid:17)\nWe are finally in a position to construct a hybrid semi-flow on Γ. This feedback controller will run the\npiece-wise smooth vector field, x˙ =X, as follows\nXp :x∈ep and Φp >α\nX:= j j j . (4)\nXp−1 :x∈ep−1 or Φp ≤α\n( L(j) L(j) j\nIt is clear from the construction that progress from edge to edge of the state of this flow echoes the graph\ntransition rule G, constructed above.",
+      "size": 405,
+      "sentences": 3
+    },
+    {
+      "id": 58,
+      "content": "from edge to edge of the state of this flow echoes the graph\ntransition rule G, constructed above. Proposition 3 The edge transitions induced by the hybrid controller (4) are precisely the iterates of the\ngraph map, G, (3) in the language, L.\n3 The Y-Graph\nWe now turn our attention to the safe control of multiple AGV’s on a graph work-space via vector fields.",
+      "size": 361,
+      "sentences": 2
+    },
+    {
+      "id": 59,
+      "content": "w turn our attention to the safe control of multiple AGV’s on a graph work-space via vector fields. For the remainder of this work, we consider the simplest example of a non-trivial configuration space: that\nassociated to the Y-graph, Υ, having four vertices {v }3 and three edges {e }3, as illustrated in Figure 1.\ni 0 i 1\nAlthough this is a simple scenario comparedto what one finds in a typical setting, there are severalreasons\nwhy this example is in many respects canonical. 1.",
+      "size": 482,
+      "sentences": 3
+    },
+    {
+      "id": 60,
+      "content": "s in a typical setting, there are severalreasons\nwhy this example is in many respects canonical. 1. Simplicity: Any graph may be constructed by gluing K-prong graphs together for various K. The\nK = 3 model we consider is the simplest nontrivial case and is instructive for understanding the\nrichness and challenges of local cooperative dynamics on graphs. 2.",
+      "size": 358,
+      "sentences": 4
+    },
+    {
+      "id": 61,
+      "content": "structive for understanding the\nrichness and challenges of local cooperative dynamics on graphs. 2. Genericitywithrespecttographs: GraphswhichconsistofcopiesofΥgluedtogether,thetrivalent\ngraphs, are generic in the sense that any nontrivial graph may be perturbed in a neighborhood of the\nvertex set so as to be trivalent. For example, the 4-valent graph resembling the letter ‘X’ may be\nperturbed slightly to resemble the letter ‘H’ — a trivalent graph.",
+      "size": 453,
+      "sentences": 4
+    },
+    {
+      "id": 62,
+      "content": "resembling the letter ‘X’ may be\nperturbed slightly to resemble the letter ‘H’ — a trivalent graph. An induction argument shows that\nthis is true for all graphs. Hence, the dynamics on an arbitrary graph are approximated by patching\ntogether dynamics on copies of Υ. ===  6 ===\nSAFE ROBOT DYNAMICS 6\n3. Genericity with respect to local dynamics: Finally, pairwise local AGV interactions on an ar-\nbitrary graph restrict precisely to the dynamics of two agents on Υ as follows.",
+      "size": 476,
+      "sentences": 5
+    },
+    {
+      "id": 63,
+      "content": "eractions on an ar-\nbitrary graph restrict precisely to the dynamics of two agents on Υ as follows. Given a vertex v of a\ngraph Γ, assume that two AGV’s, x and y, are on different edges e and e incident to v and moving\n1 2\ntowardsv with the goalof switching positions. A collision is imminent unless one AGV “moves out of\nthe way” onto some other edge e incident to v. The local interactions thus restrict to dynamics of a\n3\npair of AGV’s on the subgraph defined by {v;e ,e ,e }.",
+      "size": 479,
+      "sentences": 3
+    },
+    {
+      "id": 64,
+      "content": "nteractions thus restrict to dynamics of a\n3\npair of AGV’s on the subgraph defined by {v;e ,e ,e }. Hence, the case we treat in this paper is the\n1 2 3\ngeneric scenario for the local resolution of collision singularities in cooperative dynamics on graphs. 3.1 Intrinsic Coordinates\nThe configuration space of N points on Υ is a subset of the N-fold cartesian product Υ×Υ×···×Υ.",
+      "size": 377,
+      "sentences": 3
+    },
+    {
+      "id": 65,
+      "content": "tes\nThe configuration space of N points on Υ is a subset of the N-fold cartesian product Υ×Υ×···×Υ. Since each graph which is physically relevant to the setting of this paper is embedded in a factory floor\nor ceiling and thus planar, the configuration space CN(Υ) embeds naturally in R2N. We wish to modify\nthis embedding to facilitate both analysis on and visualization of the configuration space.",
+      "size": 398,
+      "sentences": 3
+    },
+    {
+      "id": 66,
+      "content": "modify\nthis embedding to facilitate both analysis on and visualization of the configuration space. We will present\nalternate embeddings in both higher and lower dimensional Euclidean spaces for these purposes. We begin with representing the configuration space within a higher-dimensional Euclidean space via a\ncoordinatesystemwhichisintrinsic: it isindependent ofhow the graphis embeddedinspace.",
+      "size": 396,
+      "sentences": 3
+    },
+    {
+      "id": 67,
+      "content": "n space via a\ncoordinatesystemwhichisintrinsic: it isindependent ofhow the graphis embeddedinspace. We illustrate\nthiscoordinatesystemwiththeY-graphΥ,notingthatafewsimplemodificationsyieldsacoordinatescheme\nfor more general graphs. Let {e }3 denote the three edges in Υ, parametrized so that e is identified with [0,1] with each {0} at\ni 1 i\nthe center v of Υ.",
+      "size": 360,
+      "sentences": 3
+    },
+    {
+      "id": 68,
+      "content": "ges in Υ, parametrized so that e is identified with [0,1] with each {0} at\ni 1 i\nthe center v of Υ. Any point in Υ is thus givenby a vector x in the {e } basis whose magnitude |x|∈[0,1]\n0 i\ndetermines the position of the point in the e direction. Denote by ι(x) the value of i so that x = |x|e . i ι(x)\nThisparametrizationembedsΥasthepositiveunitaxisframeinR3. Likewise,apointinC isgivenasapair\nofdistinctvectors(x,y), i.e.,asthe positive unitaxisframeinR3 crossitselfsitting insideofR3×R3 ∼ =R6.",
+      "size": 496,
+      "sentences": 5
+    },
+    {
+      "id": 69,
+      "content": "distinctvectors(x,y), i.e.,asthe positive unitaxisframeinR3 crossitselfsitting insideofR3×R3 ∼ =R6. We havethus embedded the configurationspace oftwo distinctpoints onΥ inthe positive orthantofR6. It\nis clear that one can embed the more general configuration space of N points on Υ in R3N in this manner.",
+      "size": 304,
+      "sentences": 3
+    },
+    {
+      "id": 70,
+      "content": "ear that one can embed the more general configuration space of N points on Υ in R3N in this manner. This coordinate system is particularly well-suited to describing vector fields on C and in implementing\nnumerical simulations of dynamics, as the coordinates explicitly keep track of the physical position of each\npoint on the graph. 3.2 A Topological Analysis\nMore useful for visualization purposes, however, is the following construction which embeds C within R3.",
+      "size": 464,
+      "sentences": 3
+    },
+    {
+      "id": 71,
+      "content": "useful for visualization purposes, however, is the following construction which embeds C within R3. v\nPSfrag replacements PSfr1ag replacements\nv\n0\ne 1 v 1\nv\n2\nv\n3\ne 3 v 0 e 2 e 1\ne\nv 3 v 2 2\ne\n3\nFigure 1: [left] The Y-graph Υ; [right] the configuration space C embedded in R3. Theorem 1 The configuration space C associated to a pair of AGV’s restricted to the Y-graph Υ is home-\nomorphic to a punctured disc with six 2-simplices attached as in Figure 1.",
+      "size": 454,
+      "sentences": 3
+    },
+    {
+      "id": 72,
+      "content": "o the Y-graph Υ is home-\nomorphic to a punctured disc with six 2-simplices attached as in Figure 1. ===  7 ===\nSAFE ROBOT DYNAMICS 7\nProof: RecallthatCconsistsofpairsofdistinctvectors(x,y)inintrinsiccoordinates. Restrictattention\nto the subspace D ⊂C defined by\nD :={(x,y)∈C :ι(x)6=ι(y)}, (5)\nwhere an undefined index is considered to be different than one which is defined. Thus, D consists of those\nconfigurations for which both AGV’s do not occupy the same edge interior.",
+      "size": 474,
+      "sentences": 4
+    },
+    {
+      "id": 73,
+      "content": "Thus, D consists of those\nconfigurations for which both AGV’s do not occupy the same edge interior. The set D has a natural cellular decomposition as follows. There are 2 AGV’s and 3 edges in Υ; hence,\nthere are 3·2 = 6 cells D ⊂ D where i := ι(x) 6= ι(y) =: j. Since (the closure of) each edge in Υ is\ni,j\nhomeomorphicto[0,1](determinedby|·|), thecell D ishomeomorphicto([0,1]×[0,1])−{(0,0)},where,\ni,j\nof course, the origin (0,0) is removed as it belongs to the diagonal ∆.",
+      "size": 475,
+      "sentences": 4
+    },
+    {
+      "id": 74,
+      "content": "]×[0,1])−{(0,0)},where,\ni,j\nof course, the origin (0,0) is removed as it belongs to the diagonal ∆. A path in D can move from cell to\ncell only along the subsets where the index of one AGV changes: e.g., |x| = 0 or |y| = 0. Thus, the edges\n{0}×(0,1] and (0,1]×{0} of the punctured square D are attached respectively to D and D , where\ni,j k,j i,k\nk is the unique index not equal to i or j.",
+      "size": 389,
+      "sentences": 3
+    },
+    {
+      "id": 75,
+      "content": "are attached respectively to D and D , where\ni,j k,j i,k\nk is the unique index not equal to i or j. Furthermore, each 2-cell D has a product structure as follows: decompose D along lines of constant\ni,j i,j\nθ := tan−1 |y| . It is clear that θ is the angle in the unit first quadrant in which D sits. Hence, each\n|x| i,j\nD\ni,j\nis deco(cid:16)mpo(cid:17)sed into a product of a closed interval S\ni,j\n:=θ ∈[0,π/2] (an ‘angular’ coordinate) with the\nhalf-open interval (0,1] (a ‘radial’ coordinate).",
+      "size": 495,
+      "sentences": 4
+    },
+    {
+      "id": 76,
+      "content": "j\n:=θ ∈[0,π/2] (an ‘angular’ coordinate) with the\nhalf-open interval (0,1] (a ‘radial’ coordinate). As this product decomposition is respected along the gluing\nedges, we have a decomposition of all of D into the product of (0,1]×S, where S is a cellular complex\ngiven by gluing the six segments S end-to-end cyclically along their endpoints. The set S is a 1-manifold\ni,j\nwithout boundarysince eachS is a closedinterval,eachofwhoseendpoints is gluedto preciselyone other\ni,j\nS .",
+      "size": 478,
+      "sentences": 3
+    },
+    {
+      "id": 77,
+      "content": "boundarysince eachS is a closedinterval,eachofwhoseendpoints is gluedto preciselyone other\ni,j\nS . Hence, by the classification of 1-manifolds, S is homeomorphic to a circle. We have thus decomposed\ni,j\nD as the cross product of a circle with (0,1] — a punctured unit disc. The complement of D in C consists of those regions where ι(x) = ι(y).",
+      "size": 343,
+      "sentences": 4
+    },
+    {
+      "id": 78,
+      "content": "0,1] — a punctured unit disc. The complement of D in C consists of those regions where ι(x) = ι(y). For each i = 1..3, the subset\nof C where ι(x) = ι(y) = i is homeomorphic to ((0,1]×(0,1])−{|x| = |y|}: this consists of two disjoint\ntriangular “fins.” A total of six such fins are thus attached to D along the six edges where |x| or |y|=0.",
+      "size": 339,
+      "sentences": 3
+    },
+    {
+      "id": 79,
+      "content": "lar “fins.” A total of six such fins are thus attached to D along the six edges where |x| or |y|=0. In\nthe coordinatesofthe productdecompositionfor D, these fins emanatealongthe radiallines where θ equals\nzero or π/2, yielding the topological space illustrated in Figure 1. ⋄\nThe precise drawing of Figure 1 represents this punctured disc D as a hexagon-shaped complex with a\npuncturedcenter: this followsfromthe cellularstructureofD asbeing builtfromsixsquaressewntogether.",
+      "size": 474,
+      "sentences": 3
+    },
+    {
+      "id": 80,
+      "content": "puncturedcenter: this followsfromthe cellularstructureofD asbeing builtfromsixsquaressewntogether. Corollary 4 Given any pair of goals g:=(g ,g ) where g and g live on different branches of Υ, there\n1 2 1 2\nexists a navigation function (of class piecewise real-analytic) generating a semiflow which sends all but a\nmeasure-zero set of initial conditions to g under the gradient semiflow.",
+      "size": 387,
+      "sentences": 2
+    },
+    {
+      "id": 81,
+      "content": "flow which sends all but a\nmeasure-zero set of initial conditions to g under the gradient semiflow. Proof: ThesubsetD⊂C ishomeomorphictoapunctureddiscS×(0,1],andmaybeeasilycompactified\nto an annulus S ×[0,1] by removing an open neighborhood of the diagonal. Then, the conditions for the\ntheorems of Koditschek and Rimon [12] are met, since an annulus is a sphereworld. Hence, not only does a\nnavigationfunction Φ on this subspace exist, but an explicit procedure for determining Φ is given [12].",
+      "size": 495,
+      "sentences": 4
+    },
+    {
+      "id": 82,
+      "content": "gationfunction Φ on this subspace exist, but an explicit procedure for determining Φ is given [12]. One\nmay then extend Φ to the remainder of C as follows: choose a point (x,y) on the fin and define\n1\nΦ(0,y) ; |x|<|y|\n1−|x|\nΦ(x,y):= , (6)\n 1 Φ(x,0) ; |y|<|x|\n 1−|y|\nso that Φ increases sharply along the fins.",
+      "size": 311,
+      "sentences": 2
+    },
+    {
+      "id": 83,
+      "content": "|<|y|\n1−|x|\nΦ(x,y):= , (6)\n 1 Φ(x,0) ; |y|<|x|\n 1−|y|\nso that Φ increases sharply along the fins. This directs the gradient flow to monotonically “descend” away\n\nfrom the diagonal and onto D. Note that D is forward-invariant under the dynamics, and, that upon\nprescribing the vector field on the fins to point transversally into D, we have defined a semiflow, and hence\na well-defined navigationalprocedure.",
+      "size": 410,
+      "sentences": 2
+    },
+    {
+      "id": 84,
+      "content": "t transversally into D, we have defined a semiflow, and hence\na well-defined navigationalprocedure. ⋄\nThis result is very satisfying in the sense that it guarantees a navigation function by applying existing\ntheory to a situation which, from the definition alone, would not appear to be remotely related to a sphere-\nworld.",
+      "size": 323,
+      "sentences": 2
+    },
+    {
+      "id": 85,
+      "content": "ation which, from the definition alone, would not appear to be remotely related to a sphere-\nworld. However,adeeperanalysisofconfigurationspacesofgraphs[9]revealsthatformorethantwoAGV’s,\nthe configuration space is never a sphereworld.3 Hence, we consider an alternate solution to the problem of\n3The configuration space of a graph turns out to be aspherical: there are no essential closed spheres of dimension larger\nthanone.",
+      "size": 425,
+      "sentences": 2
+    },
+    {
+      "id": 86,
+      "content": "raph turns out to be aspherical: there are no essential closed spheres of dimension larger\nthanone. ===  8 ===\nSAFE ROBOT DYNAMICS 8\nrealizing compatible goals by means of a vector field on the configuration space. This method is adaptable\nto more complicated settings.",
+      "size": 269,
+      "sentences": 3
+    },
+    {
+      "id": 87,
+      "content": "f a vector field on the configuration space. This method is adaptable\nto more complicated settings. 3.3 Example: a Circulating Flow\nBefore proceeding with a general scheme for controlling two agents on the Y-graph, we present a simple\nexample of a vector field on the configuration space which can be used to regularize collisions about a\ngeneric trivalent vertex.",
+      "size": 364,
+      "sentences": 3
+    },
+    {
+      "id": 88,
+      "content": "he configuration space which can be used to regularize collisions about a\ngeneric trivalent vertex. Theorem 1 and Figure 1 suggest a natural circulating flow on the configuration\nspace C which has the effect of inducing a “dance” between the pair of AGV’s which cycles through all\ncombinations of distinct point goals. Theorem 2 There exists a piecewise-smooth vector field X on C which has the following properties:\n1. X defines a nonsingular semiflow on C;\n2.",
+      "size": 461,
+      "sentences": 4
+    },
+    {
+      "id": 89,
+      "content": "ector field X on C which has the following properties:\n1. X defines a nonsingular semiflow on C;\n2. The diagonal ∆ is repelling with respect to X; and\n3. Every orbit of X approaches a unique attracting limit cycle on C which cycles through all possible\nordered pairs of distinct edge-states. Proof: Denote by D that portion of the configuration space which corresponds to the AGV’s being\non distinct edges of the graph: as proven earlier, D is homeomorphic to a punctured disc.",
+      "size": 477,
+      "sentences": 5
+    },
+    {
+      "id": 90,
+      "content": "V’s being\non distinct edges of the graph: as proven earlier, D is homeomorphic to a punctured disc. The intrinsic\ncoordinates on the configuration space C is illustrated in Figure 2, where only D is shown for illustration\npurposes. The reader should think of this as a collection of six square coordinate planes, attached together\npairwise along axes with the origin removed (this is actually an isometry for the natural product metric). The six triangular fins are then attached as per Figure 1.",
+      "size": 496,
+      "sentences": 4
+    },
+    {
+      "id": 91,
+      "content": "sometry for the natural product metric). The six triangular fins are then attached as per Figure 1. (e ,0) (0,e )\n3 2\n(0,e ) (e ,0)\n1 1\nPSfrag replacements PSfrag replacements\n(e ,0)\n1\n(0,e )\n3\n(e ,0)\n2\n(0,e )\n(e ,0) (0,e ) 1\n2 3\n(e ,0)\n3\n(0,e )\n2\nFigure 2: [left] The coordinate system on the unfinned region D of C; [right] The circulating flow with a\ntypical orbit.",
+      "size": 368,
+      "sentences": 3
+    },
+    {
+      "id": 92,
+      "content": "coordinate system on the unfinned region D of C; [right] The circulating flow with a\ntypical orbit. Recal that any point in the graph is represented as a vector x=|x|e for some i. Denote by eˆ the unit\ni i\ntangent vectorin eachtangent space T e pointing in the positive (outward)direction towardsthe endpoint\nx i\nv . The vector field we propose is the following: given (x,y)∈C,\ni\n1.",
+      "size": 382,
+      "sentences": 3
+    },
+    {
+      "id": 93,
+      "content": "ction towardsthe endpoint\nx i\nv . The vector field we propose is the following: given (x,y)∈C,\ni\n1. If ι(x)=ι(y) then\nx˙ =−|y|eˆ\nι(x) 0<|x|<|y|\ny˙ =|y|(1−|y|)eˆ\n(cid:26) ι(y) (cid:27) (7)\nx˙ =|x|(1−|x|)eˆ\nι(x) 0<|y|<|x|\ny˙ =−|x|eˆ\nι(y)\n(cid:26) (cid:27)\n[  ]\n\n===  9 ===\nSAFE ROBOT DYNAMICS 9\n2. If ι(x)=ι(y)+1 or |x|=0 then\nx˙ =|y|eˆ\n(ι(y)+1) 0≤|x|<|y|\ny˙ =|y|(1−|y|)eˆ\n(cid:26) ι(y) (cid:27) (8)\nx˙ =|x|(1−|x|)eˆ\nι(x) 0<|y|≤|x|\ny˙ =−|x|eˆ\nι(y)\n(cid:26) (cid:27)\n3.",
+      "size": 466,
+      "sentences": 4
+    },
+    {
+      "id": 94,
+      "content": ")eˆ\n(cid:26) ι(y) (cid:27) (8)\nx˙ =|x|(1−|x|)eˆ\nι(x) 0<|y|≤|x|\ny˙ =−|x|eˆ\nι(y)\n(cid:26) (cid:27)\n3. If ι(y)=ι(x)+1 or |y|=0 then\nx˙ =−|y|eˆ\nι(x) 0<|x|≤|y|\ny˙ =|y|(1−|y|)eˆ\n(cid:26) ι(y) (cid:27) (9)\nx˙ =|x|(1−|x|)eˆ\nι(x) 0≤|y|<|x|\ny˙ =|x|eˆ\n(ι(x)+1)\n(cid:26) (cid:27)\nNote that all addition operations on ι(x) and ι(y) are performed mod three. The vectorfield is nonsingularas follows: if |x||y|6=0, then the vector field is by inspection nonsingular.",
+      "size": 451,
+      "sentences": 3
+    },
+    {
+      "id": 95,
+      "content": "orfield is nonsingularas follows: if |x||y|6=0, then the vector field is by inspection nonsingular. If |x|=0, then |y|>0=|x| since the points are distinct. It then follows from Equation (8) that the vector\nfield on this region has d|x|/dt=|y|6=0. A similar argument holds for the case where |y|=0. The vector field defines a semiflow as follows: on those regions where 0 6= |x| 6= |y|6= 0, the vector field\nis smooth and hence defines a true flow.",
+      "size": 447,
+      "sentences": 5
+    },
+    {
+      "id": 96,
+      "content": "those regions where 0 6= |x| 6= |y|6= 0, the vector field\nis smooth and hence defines a true flow. Along the lines where |x| = |y|, the vector field is only C0, but\nnevertheless is constructed so as to define unique solution curves; hence the region D, where ι(x) 6= ι(y),\nis invariant under the flow.",
+      "size": 301,
+      "sentences": 2
+    },
+    {
+      "id": 97,
+      "content": "define unique solution curves; hence the region D, where ι(x) 6= ι(y),\nis invariant under the flow. Finally, along the branch line curves where |x| = 0 or |y| = 0, the vector field\npoints into the the branch lines from the fins, implying that the dynamics is a semiflow (see the remarks in\nAppendix A). This vector field admits a C0 Lyapunov function Φ:C →[0,1) of the form\n1−|(|x|−|y|)| : ι(x)=ι(y)\nΦ(x,y):= .",
+      "size": 410,
+      "sentences": 3
+    },
+    {
+      "id": 98,
+      "content": "tor field admits a C0 Lyapunov function Φ:C →[0,1) of the form\n1−|(|x|−|y|)| : ι(x)=ι(y)\nΦ(x,y):= . (10)\n1−max{|x|,|y|} : ι(x)6=ι(y)\n(cid:26)\nFrom Equation (7), one computes that on the fins (ι(x)=ι(y)),\ndΦ d|x| d|y|\n=− ( − ) <0, (11)\ndt dt dt\n(cid:12) (cid:12)\n(cid:12) (cid:12)\n(cid:12) (cid:12)\nsince here |x|6=|y|. Furthermore, on the disc D(cid:12)(ι(x)6=ι(y)),(cid:12)Φ changes as\ndΦ\n=Φ(Φ−1).",
+      "size": 398,
+      "sentences": 3
+    },
+    {
+      "id": 99,
+      "content": "ince here |x|6=|y|. Furthermore, on the disc D(cid:12)(ι(x)6=ι(y)),(cid:12)Φ changes as\ndΦ\n=Φ(Φ−1). (12)\ndt\nHence, Φ strictly decreases off of the boundary of the disc\n∂D:={(x,y):|x|=1 or |y|=1}=Φ−1(0). (13)\nItfollowsfromthecomputationofdΦ/dtthatthediagonalset∆ofΥ×Υisrepelling,andthattheboundary\ncycle ∂D is an attracting limit cycle.",
+      "size": 335,
+      "sentences": 4
+    },
+    {
+      "id": 100,
+      "content": "fdΦ/dtthatthediagonalset∆ofΥ×Υisrepelling,andthattheboundary\ncycle ∂D is an attracting limit cycle. ⋄\nThe action of the vector field is to descend off of the “fins” of C onto the regionD, and then to circulate\nabout while pushing out to the boundary cycle ∂D, as in Figure 2. This example illustrates how one can use a relatively simple vector field on the configuration space to\nconstruct a pattern which is free from collisions.",
+      "size": 430,
+      "sentences": 3
+    },
+    {
+      "id": 101,
+      "content": "imple vector field on the configuration space to\nconstruct a pattern which is free from collisions. In fact, one could use this circulating flow to regularize\npotential collisions between AGV’s in a general graph setting by localizing the dynamics near a pairwise\ncollision to those on a trivalent subgraph.",
+      "size": 307,
+      "sentences": 2
+    },
+    {
+      "id": 102,
+      "content": "raph setting by localizing the dynamics near a pairwise\ncollision to those on a trivalent subgraph. ===  10 ===\nSAFE ROBOT DYNAMICS 10\n4 Patterns and Vector Fields for Monotone Cycles\nOptimization of patterns in the workspace is deeply entwined with the geometry of the configurationspace:\nin [10], it is shown that various Finsler structures on C can be chosen to optimize total distance traveled or\nnet time elapsed.",
+      "size": 418,
+      "sentences": 2
+    },
+    {
+      "id": 103,
+      "content": "ious Finsler structures on C can be chosen to optimize total distance traveled or\nnet time elapsed. The net result of this inquiry is that minimizing Euclidean distance (in the product of\nthe graph metric) on the cells of the configurationspace yields locally optimal configuration sequences with\nrespecttobothdistancetraversedandelapsedtime. Inthissection,weconsidertheproblemofconstructing\nvector fields which are tuned to trace out specific patterns of cooperative dynamics.",
+      "size": 477,
+      "sentences": 3
+    },
+    {
+      "id": 104,
+      "content": "fconstructing\nvector fields which are tuned to trace out specific patterns of cooperative dynamics. We begin with a\nspecification of a suitable language for describing patterns. 4.1 A Grammar for Patterns\nThe setting we envisage is as follows: the three ends of the graph Υ are stations at which an AGV can\nperform some function. The AGV pair is requiredto execute an orderedsequence of functions, requiring an\ninterleavedsequence of visitations.",
+      "size": 446,
+      "sentences": 4
+    },
+    {
+      "id": 105,
+      "content": "equiredto execute an orderedsequence of functions, requiring an\ninterleavedsequence of visitations. In order to proceedwith vector field controlsfor cooperativepatterns, it\nis helpfulto constructthe appropriatesymbolic language,as donein§2for singleAGVsystems. Denote the\npair of AGV states as x and y respectively. Also, denote the three docking stations as vertices v through\n1\nv as in Figure 1.",
+      "size": 397,
+      "sentences": 4
+    },
+    {
+      "id": 106,
+      "content": "d y respectively. Also, denote the three docking stations as vertices v through\n1\nv as in Figure 1. The grammar G we use is defined as follows:\n3\n• (xi): These represent configurations for which the AGV x is docked at the vertex v , i = 1..3. The\ni\nAGV y is at an unspecified undocked position. • (yi): These represent configurations for which the AGV y is docked at the vertex v , i = 1..3. The\ni\nAGV x is at an unspecified undocked position.",
+      "size": 443,
+      "sentences": 6
+    },
+    {
+      "id": 107,
+      "content": "the AGV y is docked at the vertex v , i = 1..3. The\ni\nAGV x is at an unspecified undocked position. • (xiyj): These representconfigurationsfor which the AGV x is dockedat vertexv while the AGV y is\ni\nsimultaneously docked at the vertex v , j 6=i. j\nForexample,theword(x1)(y2)(x3y2)executesasequenceinwhichthefirstAGVdocksatStationv ,then\n1\nundocks while the second AGV docks at Station v . Finally, the AGV’s simultaneously dock at Stations v\n2 3\nand v respectively.",
+      "size": 466,
+      "sentences": 5
+    },
+    {
+      "id": 108,
+      "content": "V docks at Station v . Finally, the AGV’s simultaneously dock at Stations v\n2 3\nand v respectively. 2\nAs we have assumed from the beginning, the one-dimensional nature of the graph-constraints precludes\nthe presence of multiple agents at a single docking station; hence, there are exactly twelve symbols in the\ngrammar G. From this assumption, it follows that particular attention is to be paid to those trajectories\nwhichdonotmakeexcursionsontothe“fins”oftheconfigurationspace.",
+      "size": 478,
+      "sentences": 3
+    },
+    {
+      "id": 109,
+      "content": "n is to be paid to those trajectories\nwhichdonotmakeexcursionsontothe“fins”oftheconfigurationspace. Itisobviousfromthephysicalnature\nof the problem that planning paths which involve traveling on the fins is not a locally optimal trajectory\nwithrespecttominimizing distanceorelapsedtime. Sufficetosaythatwerestrictattentionforthemoment\nto trajectories, and limit cycles for patterns in particular, which are constrained to the region D⊂C.",
+      "size": 437,
+      "sentences": 3
+    },
+    {
+      "id": 110,
+      "content": "trajectories, and limit cycles for patterns in particular, which are constrained to the region D⊂C. We identify each symbol with a region of the boundary of the unbranched portion of C; namely, ∂D is\npartitioned into twelve docking zones as in Figure 3. Note further that there is a cyclic ordering, < , on G\n∂\ninduced by the orientation on the boundary of the disc along which the zones lie.",
+      "size": 392,
+      "sentences": 3
+    },
+    {
+      "id": 111,
+      "content": "ering, < , on G\n∂\ninduced by the orientation on the boundary of the disc along which the zones lie. By a cyclic ordering, we\nmean a way of determining whether a point q lies between any ordered pair of points (p ,p ). 1 2\nWe proceed with the analysis of limit cycles on C. Consider the class of pattern vector fields, X , on C:\nP\nfor every X ∈X ,\nP\n1. X defines a semiflow on C and a genuine flow off of the non-manifold set of C;\n2.",
+      "size": 433,
+      "sentences": 4
+    },
+    {
+      "id": 112,
+      "content": "every X ∈X ,\nP\n1. X defines a semiflow on C and a genuine flow off of the non-manifold set of C;\n2. There is a unique limit cycle γ which is attracting and which traces out a nonempty word in the\ngrammar G;\n3. The diagonal set ∆ is a repellor with respect to X;\n4. There are no fixed invariant sets of X which attract a subset of positive measure save γ.",
+      "size": 354,
+      "sentences": 5
+    },
+    {
+      "id": 113,
+      "content": "to X;\n4. There are no fixed invariant sets of X which attract a subset of positive measure save γ. Then, the class of monotone vector fields, X , is that subset of X for which the limit cycle, γ, lies in D.\nM P\nA wordw composed of elements w=w w ...w in the grammar G said to be monotone with respect to the\n1 2 n\n===  11 ===\nSAFE ROBOT DYNAMICS 11\n(x3y2)\nPSfrag replacements\n(x3y1) (x3) (y2) (x1y2)\n(y1) (x1)\n(x2y1) (x2) (y3) (x1y3)\n(x2y3)\nFigure 3: The six pairs of contiguous edges in ∂D each corresponds to a configuration where one AGV is\ndocked at an extreme vertex of the graph.",
+      "size": 585,
+      "sentences": 3
+    },
+    {
+      "id": 114,
+      "content": "n ∂D each corresponds to a configuration where one AGV is\ndocked at an extreme vertex of the graph. Outermost vertices of ∂D are points where both AGV’s are\ndocked. Labelling the edges (xi) and (yj) and the vertices (xiyj) yieldsd the cyclically ordered grammar G.\ncyclic ordering < if w <w <w for every i (index operations all mod n). The following result justifies\n∂ i−1 i i+1\nour use of the term monotone in describing those limit cycles which lie on the disc.",
+      "size": 463,
+      "sentences": 4
+    },
+    {
+      "id": 115,
+      "content": "es\n∂ i−1 i i+1\nour use of the term monotone in describing those limit cycles which lie on the disc. Theorem 3 Within the class of vector fields X , the limit cycles traceout monotone words in the cyclically\nM\nordered grammar (G,< ). ∂\nProof: Any limit cycle of the flow must be embedded (the curve does not intersect itself). After a\nsmallperturbation, one may assume that the boundary zone ∂D is visited by γ in a finite number of points,\nQ:=γ∩∂D.",
+      "size": 448,
+      "sentences": 4
+    },
+    {
+      "id": 116,
+      "content": "on, one may assume that the boundary zone ∂D is visited by γ in a finite number of points,\nQ:=γ∩∂D. Thereisacyclicorder< ,definedviatimewithrespecttothedynamicsofthelimitcycle: i.e.,\nt\nthe orderin whichpoints are visitedby γ. This is contrastedwith the induced cyclic ordering< onthe set\n∂\nQgivenbytheorientationoftheboundarycurve∂D,uptoachoicebetweenclockwiseandcounterclockwise. The theorem follows from showing that < = < up to a cyclic permutation and a choice of orientation of\nt ∂\n∂D.",
+      "size": 490,
+      "sentences": 4
+    },
+    {
+      "id": 117,
+      "content": "m follows from showing that < = < up to a cyclic permutation and a choice of orientation of\nt ∂\n∂D. Induct on J the number of points in Q. For J = 1, the theorem is trivially true, so assume that the\norderingsareequivalentforallembeddedcurvesonadiscwithlessthanJ boundary-intersections. Consider\ntwo points p,q ∈ Q which are consecutive in the < ordering. There is an embedded sub-arc α ⊂ γ which\nt\nconnectsptoqwithintheinteriorofD.",
+      "size": 432,
+      "sentences": 5
+    },
+    {
+      "id": 118,
+      "content": "ive in the < ordering. There is an embedded sub-arc α ⊂ γ which\nt\nconnectsptoqwithintheinteriorofD. BytheJordanCurveTheorem[17],αseparatesDintotwotopological\ndiscs; hence, γ must lie entirely within the closure of one of these discs. Consider the open subdisc whose\nintersection with γ is empty and collapse the closure of this disc to a point: this yields a modified curve γ˜\nwhich is still embedded in a disc having J −1 intersections with the boundary, as illustrated in Figure 4.",
+      "size": 483,
+      "sentences": 4
+    },
+    {
+      "id": 119,
+      "content": "s still embedded in a disc having J −1 intersections with the boundary, as illustrated in Figure 4. By induction, the ordering < equals < up to orientationon this subdisc. Reinserting the distinct points p\nt ∂\nand q by “blowing up” the crushed disc does not change the ordering properties, since these were chosen to\nbe adjacent. ⋄\nHence,theonyadmissiblewordsinthegrammarG arethosewhicharemonotone.",
+      "size": 398,
+      "sentences": 4
+    },
+    {
+      "id": 120,
+      "content": "se were chosen to\nbe adjacent. ⋄\nHence,theonyadmissiblewordsinthegrammarG arethosewhicharemonotone. Itis,however,possible\nto realize many if not all of the non-monotone cycles as limit cycles for a semiflow on the full configuration\nspace C; one must design the semiflow so as to utilize the fins for “jumping” over regions of D cut off by\nthe limit cycle. Such vector fields quickly become very convoluted, even for relatively simple non-monotone\nlimit cycles.",
+      "size": 461,
+      "sentences": 4
+    },
+    {
+      "id": 121,
+      "content": "vector fields quickly become very convoluted, even for relatively simple non-monotone\nlimit cycles. ===  12 ===\nSAFE ROBOT DYNAMICS 12\np q x\nα\nPSfrag replacements PSfrag replacements\np\nq\nx\nα\nFigure4: TheembeddedarcαdividesD (picturedasasmoothdisc)intotwodiscs,oneofwhichiscollapsed\nto a point x.",
+      "size": 295,
+      "sentences": 2
+    },
+    {
+      "id": 122,
+      "content": "e4: TheembeddedarcαdividesD (picturedasasmoothdisc)intotwodiscs,oneofwhichiscollapsed\nto a point x. 4.2 Isotopy Classes of Limit Cycles\nGivenalimitcycleγ whichtracesoutapatternbyvisitingtheboundaryzone∂DintheorderedsetQ⊂∂D,\none wants to know which other limit cycles minimize a given performance functional while still visiting Q\nin the proper sequence. The mathematical framework for dealing with this problem is the notion of isotopy\nclasses of curves.",
+      "size": 454,
+      "sentences": 3
+    },
+    {
+      "id": 123,
+      "content": "he mathematical framework for dealing with this problem is the notion of isotopy\nclasses of curves. Twosubsets A andA ofasetB aresaidto be (ambiently)isotopic rel C (whereC ⊂B)ifthereexists\n0 1\na continuous 1-parameter family of homeomorphisms, f :B→B such that\nt\n1. f is the identity map on B;\n0\n2. f (A )=A ; and\n1 0 1\n3. f | is the identity map on C for all t.\nt C\nAst increases,f deformsB,pushingA toA withoutcuttingortearingthespacesandwithoutdisturbing\nt 0 1\nC.\nThere are two ways in which optimization questions relate to isotopy classes of limit cycles: (1) Given\nan element of the grammarG, in which isotopy class (rel the docking zones) of curves does an optimal limit\ncycle reside?",
+      "size": 692,
+      "sentences": 2
+    },
+    {
+      "id": 124,
+      "content": "mmarG, in which isotopy class (rel the docking zones) of curves does an optimal limit\ncycle reside? (2) Within a given isotopy class of cycles rel Q, which particular cycle is optimal?",
+      "size": 184,
+      "sentences": 2
+    },
+    {
+      "id": 125,
+      "content": "cycle reside? (2) Within a given isotopy class of cycles rel Q, which particular cycle is optimal? Fora monotonelimitcycle onD, the abovequestion(1)focusesonthe locationofthe cycle withrespect\nto the central point (0,0), which is deleted from the disc D. It is a standard fact from planar topology\nthat every curve in the punctured disc has a well-defined winding number, which measures how many times\nthe cycle goes about the origin, and, furthermore, that this number is either -1, 0, or 1 if the cycle is an\nembedded curve.",
+      "size": 526,
+      "sentences": 3
+    },
+    {
+      "id": 126,
+      "content": "origin, and, furthermore, that this number is either -1, 0, or 1 if the cycle is an\nembedded curve. This winding number determines the isotopy class of the curve in D. Hence, the problem\npresentsitself: givenanelementofthegrammarG,whichisotopyclassrelthedockingzonesisoptimal(with\nrespect to any/all of the functionals defined)? Is the winding number zero or nonzero?4\nTo briefly address this question, we define the gap angles associated to a limit cycle.",
+      "size": 456,
+      "sentences": 3
+    },
+    {
+      "id": 127,
+      "content": "r nonzero?4\nTo briefly address this question, we define the gap angles associated to a limit cycle. Given the docking\nzones Q = {q ,q ,...,q } ordered with respect to time, we define the gap angles to be the successive\n1 2 J\ndifferences in the angularcoordinates of the q : thus ga :=P(q )−P(q ), where P denotes projectionof\nj j j+1 j\npoints in D onto their angular coordinates and subtraction is performed with respect to the orientation on\n∂D.",
+      "size": 446,
+      "sentences": 2
+    },
+    {
+      "id": 128,
+      "content": "onto their angular coordinates and subtraction is performed with respect to the orientation on\n∂D. Forsimplicity,weconsidertheoptimization–isotopyprobleminthecaseofadiscretecostfunctionalW ,\nd\ndefined to be the intersection number of the path with the branch locus of C — i.e., the number of times an\nAGV occupies the central vertex (the shared resource in the problem). Similar arguments are possible for\nother natural performance metrics [10].",
+      "size": 445,
+      "sentences": 3
+    },
+    {
+      "id": 129,
+      "content": "esource in the problem). Similar arguments are possible for\nother natural performance metrics [10]. Proposition 5 There is a W -minimizing embedded monotone cycle on D (rel a given docking zone Q)\nd\nhaving winding number zero with respect to the origin if there is a gap angle greater than π. Conversely, if\nthere are no gap angles greater than π, then there is a W -minimizing embedded cycle of index ±1. d\n4Thedifferencebetween+1and-1istheorientationoftime.",
+      "size": 459,
+      "sentences": 4
+    },
+    {
+      "id": 130,
+      "content": "s a W -minimizing embedded cycle of index ±1. d\n4Thedifferencebetween+1and-1istheorientationoftime. ===  13 ===\nSAFE ROBOT DYNAMICS 13\nProof: Let Q consist of the points {q }J on the boundary circle. The gap angles {ga }J are the\nj 1 j 1\ndifferences of the angles between the points q and q (indices mod J). Since ga = 2π, there can be\nj j+1 j j\nat most one gap angle greater than π.",
+      "size": 383,
+      "sentences": 5
+    },
+    {
+      "id": 131,
+      "content": "and q (indices mod J). Since ga = 2π, there can be\nj j+1 j j\nat most one gap angle greater than π. To simplify the problem, use a 1-parameter family P of maps from\nt\nP\nthe identity P to the projection P = P which deforms D to the boundary circle S := ∂D by projecting\n0 1\ncontinuously along radial lines. The index of a curve on D is invariant under this deformation, as is the\nfunction W . d\nDenote by γ , the subarc of γ between points q and q (all indices mod J).",
+      "size": 466,
+      "sentences": 5
+    },
+    {
+      "id": 132,
+      "content": "as is the\nfunction W . d\nDenote by γ , the subarc of γ between points q and q (all indices mod J). Denote by α the subarc\nj j j+1 j\nof the boundary S between points q and q , where the arc is chosen to subtend the gap angle ga . Since\nj j+1 j\nthe boundarycurveS =∪ α is acurveofindex ±1,the arcsγ andα areisotopicinD reltheir endpoints\nj j j j\nfor all j if and only if γ is a curve of index ±1.",
+      "size": 394,
+      "sentences": 4
+    },
+    {
+      "id": 133,
+      "content": "γ andα areisotopicinD reltheir endpoints\nj j j j\nfor all j if and only if γ is a curve of index ±1. Assumefirstthatthereisagapanglega >π withγ anindex±1curveonS whichintersectsthebranch\nj\nangles Θ = {nπ/3 : n ∈ Z} in a minimal number of points among all other closed curves on S which visit\nthe points Q in the specified order. It follows that the arc P(γ ) subtends an angle greater than π and thus\nj\nincrements W by at least three.",
+      "size": 433,
+      "sentences": 3
+    },
+    {
+      "id": 134,
+      "content": "lows that the arc P(γ ) subtends an angle greater than π and thus\nj\nincrements W by at least three. One may replace γ by a curve γ′ which substitutes for the arc γ one\nd j j j\nwhich wraps around ‘the other way’ monotonically. This changes the index of γ from nonzero to zero, since\nthe arc γ′ is no longer isotopic to α . Also, it is clear that this either decreases the number of intersections\nj j\nwith Θ or leaves this number unchanged.",
+      "size": 438,
+      "sentences": 4
+    },
+    {
+      "id": 135,
+      "content": "that this either decreases the number of intersections\nj j\nwith Θ or leaves this number unchanged. We must show that the replacement arc γ′ can be chosen in such a way that is does not intersect the\nj\nremainder of γ. However, since γ is a curve of index ±1, we may isotope each arc γ to the boundary curve\ni\nα without changing the value of W . Thus, we may remove γ and replace it with the curve which is, say,\ni d j\na geodesic (in the natural metric geometry) from q to q .",
+      "size": 474,
+      "sentences": 4
+    },
+    {
+      "id": 136,
+      "content": "ce it with the curve which is, say,\ni d j\na geodesic (in the natural metric geometry) from q to q . As this curve does not approachthe boundary\nj j+1\nS apart from its ends, the new curve γ′ is an embedded curve of index zero without an increase in W . d\nAssume now, on the contrary, that γ is a W minimizer of index zero which has all gap angles strictly\nd\nless than π.",
+      "size": 369,
+      "sentences": 3
+    },
+    {
+      "id": 137,
+      "content": "he contrary, that γ is a W minimizer of index zero which has all gap angles strictly\nd\nless than π. Then each arc from γ must intersect the branch set Θ in at most three components, since,\ni\notherwise, the subtended arc would be in excess of 4π/3.",
+      "size": 247,
+      "sentences": 2
+    },
+    {
+      "id": 138,
+      "content": "et Θ in at most three components, since,\ni\notherwise, the subtended arc would be in excess of 4π/3. In the case where there exists an arc with exactly\nthreeintersectionswiththe branchset,thisarcmaybereplacedbyanarcwhichgoesaroundthesingularity\nin the other direction without changing the number of intersections with the branch set (since there are a\ntotal of six branch lines); however,the index of the curve is toggled between zero and nonzero.",
+      "size": 446,
+      "sentences": 2
+    },
+    {
+      "id": 139,
+      "content": "e a\ntotal of six branch lines); however,the index of the curve is toggled between zero and nonzero. The final caseis that in whicheacharc intersectsthe branchset in atmost twoplaces. However,since γ\nis acurveofindex zero,somearcγ mustnotbe isotopictoα . Hence, the projectiondeformationsP must\nj j t\npush γ to a curvein the boundarywhich S whose subtended gapangle is 2π−ga >π. Thus, γ intersects\nj j j\nthe branch set in at least three places, yielding a contradiction.",
+      "size": 469,
+      "sentences": 5
+    },
+    {
+      "id": 140,
+      "content": "−ga >π. Thus, γ intersects\nj j j\nthe branch set in at least three places, yielding a contradiction. Replacing γ by the appropriate arc which\nj\nis isotopic to α yields a W -minimal cycle of nonzero index. ⋄\nj d\n4.3 Tuning Cycles\nInordertoproceedwiththeconstructionofvectorfieldswhichrealizemonotonecycles,weworkwithvector\nfieldsonthesmoothunitdiscinR2 andmapthesetotheannularregionD oftheconfigurationspaceviathe\npush-forwardinduced by the naturalhomeomorphism.",
+      "size": 460,
+      "sentences": 4
+    },
+    {
+      "id": 141,
+      "content": "etotheannularregionD oftheconfigurationspaceviathe\npush-forwardinduced by the naturalhomeomorphism. It will be convenientto keep trackof which “wedge”\nof the annular region a point (r,θ) is. To do so, we introduce a parity function\nP(θ):=(−1){⌊3θ/π⌋+⌊6θ/π⌋}, (14)\nwhere ⌊t⌋ is the integer-valued floor function.",
+      "size": 311,
+      "sentences": 3
+    },
+    {
+      "id": 142,
+      "content": "e a parity function\nP(θ):=(−1){⌊3θ/π⌋+⌊6θ/π⌋}, (14)\nwhere ⌊t⌋ is the integer-valued floor function. Recall the notation for the intrinsic coordinates for a point x\non the graph Υ: x = |x|eˆ , where |x| ∈[0,1] is the distance from x to the central vertex, and eˆ is the\nι(x) ι(x)\nunit tangent vector pointing along the direction of the ι(x)-edge. Here the index, ι(x) is an integer (defined\nmodulo 3) and will be undefined in the case when |x|=0, i.e., x is at the central vertex.",
+      "size": 479,
+      "sentences": 3
+    },
+    {
+      "id": 143,
+      "content": "(defined\nmodulo 3) and will be undefined in the case when |x|=0, i.e., x is at the central vertex. Lemma 6 The following is a piecewise-linear homeomorphism from the punctured unit disc in R2 to the\n===  14 ===\nSAFE ROBOT DYNAMICS 14\nsubset D: F(r,θ)=(x,y) where,\nr P(θ)=+1\n|x|= 3\nr cot θ P(θ)=−1\n( 2\nr(cid:12)tan 3 θ(cid:12) P(θ)=+1\n|y|= (cid:12) 2 (cid:12)\n(cid:12) (cid:12) .",
+      "size": 378,
+      "sentences": 2
+    },
+    {
+      "id": 144,
+      "content": "3\nr cot θ P(θ)=−1\n( 2\nr(cid:12)tan 3 θ(cid:12) P(θ)=+1\n|y|= (cid:12) 2 (cid:12)\n(cid:12) (cid:12) . (15)\n( (cid:12) r (cid:12) P(θ)=−1\n(cid:12) (cid:12)\nι(x)= −(cid:12)3 (θ−(cid:12)π)\n2π\nι(y)= j− 3 θ k\n2π\nj k\nThe inverse of this homeomorphism is given by F−1(x,y)=(r,θ), where,\n2 tan−1 |y| − 2π (ι(y)+1) ι(y)=ι(x)+1\n3 |x| 3 or |x|=0\nθ =\n −\n3\n2 tan−1\n|\n|\nx\ny|\n|\n− 2\n3\nπ (ι(x)−1) ι(x\no\n)\nr\n=\n|y\nι(\n|\ny\n=\n)+\n0\n1 .",
+      "size": 414,
+      "sentences": 2
+    },
+    {
+      "id": 145,
+      "content": "3 |x| 3 or |x|=0\nθ =\n −\n3\n2 tan−1\n|\n|\nx\ny|\n|\n− 2\n3\nπ (ι(x)−1) ι(x\no\n)\nr\n=\n|y\nι(\n|\ny\n=\n)+\n0\n1 . (16)\n|x| P(θ)=+1\nr=\n|y| P(θ)=−1\n(cid:26)\nNote that all θ values are defined modulo 2π and all index values are integers defined modulo 3. Proof: Begin by working on the region D ⊂ D where ι(x) = 1 and ι(y) = 2. As noted earlier, this\n1,2\nsubspace is isometric to the positive unit square in R2 with the origin removed. We need to map this to\nthe subset {(r,θ): r ∈(0,1],θ ∈[0,π/3]}.",
+      "size": 484,
+      "sentences": 5
+    },
+    {
+      "id": 146,
+      "content": "uare in R2 with the origin removed. We need to map this to\nthe subset {(r,θ): r ∈(0,1],θ ∈[0,π/3]}. The simplest such homeomorphism is to first shrink along radial\nlines, leaving the angle invariant; hence\n|x| :|x|≤|y|\nr = (17)\n|y| :|y|≤|x|\n(cid:26)\nNext,wesqueezethequarter-circleintoasixthofacirclebymultiplying theangleby2/3,leavingtheradial\ncoordinate invariant:\n2 |y|\nθ = tan−1 . (18)\n3 |x|\nThisgivesthebasicformofF−1asperEquation(16).",
+      "size": 440,
+      "sentences": 4
+    },
+    {
+      "id": 147,
+      "content": "ial\ncoordinate invariant:\n2 |y|\nθ = tan−1 . (18)\n3 |x|\nThisgivesthebasicformofF−1asperEquation(16). ToextendthistotheremainderofD,itisnecessaryto\ncarefullykeeptrackofι(x) andι(y)andsubtractoffthe appropriateanglefromthe computationofθ. Also,\nthe condition of |x| ≤ |y|, etc., in Equation (17) is incorrect on other domains of D, since the inequalities\nflip as one traverses from square to square: the parity function P(θ) keeps track of which “wedge” one is\nworking on.",
+      "size": 469,
+      "sentences": 4
+    },
+    {
+      "id": 148,
+      "content": "ses from square to square: the parity function P(θ) keeps track of which “wedge” one is\nworking on. To determine F from F−1 is a tedious but unenlightening calculation, made more unpleasant by the\nvarious indices to be kept track of. Briefly, given r and θ on the first sixth of the unit disc, one knows from\nEquation (17) that either |x| = r or |y| = r, depending on whether θ is above or below π/4.",
+      "size": 400,
+      "sentences": 3
+    },
+    {
+      "id": 149,
+      "content": "ws from\nEquation (17) that either |x| = r or |y| = r, depending on whether θ is above or below π/4. To solve for\n3 3\nthe other magnitude, one invertsEquation(18) to obtain|y|=r tan θ or|x|=r cot θ respectively. To\n2 2\ngeneralize this to the other D\ni,j\ndomains of D, it is necessary to(cid:12)take ab(cid:12)solute valu(cid:12)es and(cid:12)to use the parity\n(cid:12) (cid:12) (cid:12) (cid:12)\nfunction P(θ) as before.",
+      "size": 419,
+      "sentences": 3
+    },
+    {
+      "id": 150,
+      "content": "cid:12)es and(cid:12)to use the parity\n(cid:12) (cid:12) (cid:12) (cid:12)\nfunction P(θ) as before. Finally, the computation of the index is(cid:12) obtain(cid:12)able from t(cid:12)he com(cid:12)binatorics of the\ncoordinate system as illustrated in Figure 2. ⋄\nHence,bytakingthepush-forwardofavectorfieldX =(r˙,θ˙)withrespecttoF,oneobtainsthepiecewise\nsmooth vector field,\n˙\n|x|=r˙\n|y ˙ |=r˙ tan( 3 θ) + 3 rθ˙sec2( 3 θ) P(θ)=+1\n 2 2 2 !",
+      "size": 438,
+      "sentences": 3
+    },
+    {
+      "id": 151,
+      "content": "sthepiecewise\nsmooth vector field,\n˙\n|x|=r˙\n|y ˙ |=r˙ tan( 3 θ) + 3 rθ˙sec2( 3 θ) P(θ)=+1\n 2 2 2 ! , (19)\n |x ˙ |=r˙(cid:12)\n(cid:12) (cid:12)\ncot( 3\n2\nθ)(cid:12)\n(cid:12) (cid:12)\n+\n2\n3 rθ˙csc2(\n2\n3 θ)\nP(θ)=−1\n|y ˙ |=r˙(cid:12) (cid:12) !",
+      "size": 245,
+      "sentences": 2
+    },
+    {
+      "id": 152,
+      "content": "2)\ncot( 3\n2\nθ)(cid:12)\n(cid:12) (cid:12)\n+\n2\n3 rθ˙csc2(\n2\n3 θ)\nP(θ)=−1\n|y ˙ |=r˙(cid:12) (cid:12) ! (cid:12) (cid:12)\n (cid:12) (cid:12)\n===  15 ===\nSAFE ROBOT DYNAMICS 15\nwhich simplifies to:\n˙\n|x|=r˙\n  \n\n\n |\n|\nx\ny\n˙\n˙\n|\n|\n=\n=\nr\nr\n˙\n˙ |\n|\n|\n| x\nx\ny\ny\n|\n| |\n|\n+\n+\n2\n2\n3\n3\nθ\nθ\n˙\n˙\n1+\n(cid:18)\n|\n|\nx\ny\n|\n|\n|\n|\n|\nx\nx\ny|\n|\n|\n(cid:19)\n2\n2 \n\n\n\nP(θ)=+1\n.",
+      "size": 373,
+      "sentences": 2
+    },
+    {
+      "id": 153,
+      "content": "|\n| |\n|\n+\n+\n2\n2\n3\n3\nθ\nθ\n˙\n˙\n1+\n(cid:18)\n|\n|\nx\ny\n|\n|\n|\n|\n|\nx\nx\ny|\n|\n|\n(cid:19)\n2\n2 \n\n\n\nP(θ)=+1\n. (20)\n 1+  P(θ)=−1\nGiven a simple closed cu\nrve\n\n\n\nγ\n|y\ni\n˙\nn\n|=\nR2\nr˙\nwhich has no\n(cid:18)\nn\n|\nz\ny\ne\n|\nr\n(cid:19)\no w\n\n\n\ninding number with respect to the origin, γ\nmay be parametrized as {(r,θ) : r = f(θ)} for some periodic positive function f. To construct a vector\nfield on R2 whose limit sets consist of the origin as a source and γ as an attracting limit cycle, it suffices\nto take the push-forward of the vector field r˙ = r(1 − r) θ˙ = ω under the planar homeomorphism\nφ:(r,θ)7→(f(θ)r,θ), which rescales linearly in the angular component.",
+      "size": 666,
+      "sentences": 2
+    },
+    {
+      "id": 154,
+      "content": "nder the planar homeomorphism\nφ:(r,θ)7→(f(θ)r,θ), which rescales linearly in the angular component. The calculations follow:\nr˙ r˙ f rf′ r(1−r)\nφ = Dφ =\n∗ θ˙ θ˙ r 0 1 ω r\n(cid:18) (cid:19) (cid:18) (cid:19)(cid:12) (cid:12) r7→ f (cid:20) (cid:21)(cid:18) (cid:19)(cid:12) (cid:12) r7→ f\nr 1− r (cid:12) (cid:12)−f′ω (cid:12) (cid:12) .",
+      "size": 336,
+      "sentences": 2
+    },
+    {
+      "id": 155,
+      "content": ") (cid:21)(cid:18) (cid:19)(cid:12) (cid:12) r7→ f\nr 1− r (cid:12) (cid:12)−f′ω (cid:12) (cid:12) . (21)\n= f\n (cid:18) (cid:19) \nω\n \nHence,givenf(θ),wemaytuneavectorfieldtotraceoutthedesiredlimitcycleandthenuseEquations(15)\nand (16) to map it into intrinsic coordinates.",
+      "size": 274,
+      "sentences": 2
+    },
+    {
+      "id": 156,
+      "content": "otraceoutthedesiredlimitcycleandthenuseEquations(15)\nand (16) to map it into intrinsic coordinates. 4.4 Optimal Chords within a Hybrid Controller\nTo design optimal cycles with winding number zero, then, we turn to constructing customized portions of\nlimit cycles,orchords whichcanbe piecedtogethervia astate-actuatedhybridcontroller,muchasin§2.",
+      "size": 344,
+      "sentences": 2
+    },
+    {
+      "id": 157,
+      "content": "s of\nlimit cycles,orchords whichcanbe piecedtogethervia astate-actuatedhybridcontroller,muchasin§2. In\notherwords,insteadofbuilding asimplefixedvectorfieldwithalimitcycle,wewilluseasetofvectorfields\nwhich vary discretely in time and which may be pieced together so as to tune a limit cycle to the desired\nspecifications.",
+      "size": 320,
+      "sentences": 2
+    },
+    {
+      "id": 158,
+      "content": "in time and which may be pieced together so as to tune a limit cycle to the desired\nspecifications. There is nothing in this construction which relies on the index-zero property and thus these\nchords can be used to generate all monotone limit cycles on C.\nLet G denote a word representing a desired monotone limit cycle on the configurations space C. Choose\npoints {q } on the boundary of D which correspond to the docking zones for the cycle given by G. Choose\ni\narcs α on D which connect q to q (using cyclic index notation).",
+      "size": 527,
+      "sentences": 2
+    },
+    {
+      "id": 159,
+      "content": "for the cycle given by G. Choose\ni\narcs α on D which connect q to q (using cyclic index notation). The arcs α are assumed given in the\ni i i+1 i\nintrinsic coordinates on D, as would be the case if one were determining a length-minimizing curve.",
+      "size": 244,
+      "sentences": 2
+    },
+    {
+      "id": 160,
+      "content": "intrinsic coordinates on D, as would be the case if one were determining a length-minimizing curve. In the case where the limit cycle α:=∪ α is an embedded curve of nonzero index, the procedure of the\ni i\nprevious subsection determines a vector field X on C which realizes α as an attracting limit cycle with the\nα\nappropriate dynamics on the complementary region. Recall: one translates α to a curve on the disc model\nviathehomeomorphismofEquation(16).",
+      "size": 453,
+      "sentences": 3
+    },
+    {
+      "id": 161,
+      "content": "ry region. Recall: one translates α to a curve on the disc model\nviathehomeomorphismofEquation(16). Then,representingthelimitcycleαasafunctionf (θ),onetakes\nα\nthe vector field of Equation (21) and, if desired, takes the image of this vector field under Equation (20). If, however, this is not the case, consider the arc α for a fixed j and construct an index ±1 cycle\nj\nβj =∪ βj which has docking zones {q } such that βj =α .",
+      "size": 425,
+      "sentences": 4
+    },
+    {
+      "id": 162,
+      "content": "a fixed j and construct an index ±1 cycle\nj\nβj =∪ βj which has docking zones {q } such that βj =α . Then the vector field Xj as constructed above\ni i i j j\nhas β as an attracting limit cycle. Denote by Φj the Lyapunov function which measures proximity to β:\nΦj(p) := p−βj (with distance measured in say the product metric on C).",
+      "size": 328,
+      "sentences": 3
+    },
+    {
+      "id": 163,
+      "content": "ich measures proximity to β:\nΦj(p) := p−βj (with distance measured in say the product metric on C). Then, consider the modified\nLyapunov function Ψj(p):=Φj(p)+kp−q k, which measures the distance to the endpoint of the arc βj\n(cid:13) (cid:13) j+1 j\nin additio(cid:13)n to the(cid:13)proximity to βj. Repeatthisprocedureforeachj,yieldingthevectorfields{Xj}whichattractrespectivelytolimitcycles\nβj. It follows that Xj prepares Xj+1 since the goal point of Xj, q lies on the attracting set of Xj+1.",
+      "size": 495,
+      "sentences": 4
+    },
+    {
+      "id": 164,
+      "content": "It follows that Xj prepares Xj+1 since the goal point of Xj, q lies on the attracting set of Xj+1. j+1\nThe Lyapunov functions {Ψj} serveas a set of funnels which channel the orbit into the sequence of arcs α ,\nj\n===  16 ===\nSAFE ROBOT DYNAMICS 16\nforming α.",
+      "size": 257,
+      "sentences": 2
+    },
+    {
+      "id": 165,
+      "content": "ich channel the orbit into the sequence of arcs α ,\nj\n===  16 ===\nSAFE ROBOT DYNAMICS 16\nforming α. One scalesthe Ψj so that a Ψj <ǫ eventtriggers the switching in the hybridcontrollerfrom Xj\nto Xj+1:\nX1 : Φj >ǫ∀j\nX := (22)\nXj : Φj <ǫ and Ψj >ǫ\n(cid:26)\nBy construction, the hybrid controller (22) realizes a limit cycle within ǫ of α as the attracting set.",
+      "size": 357,
+      "sentences": 2
+    },
+    {
+      "id": 166,
+      "content": "onstruction, the hybrid controller (22) realizes a limit cycle within ǫ of α as the attracting set. 5 Future Directions\nA point of primary concern is the adaptability of the global topologicalapproachto systems which increase\nin complexity, either through more intricate graphs or through increased numbers of AGV’s. The latter\nis of greater difficulty than the former, since the dimension of the resulting configuration space is equal to\nthe number of AGV’s.",
+      "size": 459,
+      "sentences": 3
+    },
+    {
+      "id": 167,
+      "content": "e former, since the dimension of the resulting configuration space is equal to\nthe number of AGV’s. Hence, no matter how simple the underlying graph is, a system with ten indepen-\ndent AGV’s will require a dynamical controller on a (topologically complicated) ten-dimensional space: a\nformidable problem both from the topological, dynamical, and computational viewpoints. However,there are some approacheswhich may facilitate working with such spaces.",
+      "size": 451,
+      "sentences": 3
+    },
+    {
+      "id": 168,
+      "content": "ational viewpoints. However,there are some approacheswhich may facilitate working with such spaces. Consider the model\nspace C with which this paper is concerned: although a two-dimensional space, C can be realized as the\nproductofagraph(acirclewithsixradialedgesattached)withtheinterval(0,1].",
+      "size": 293,
+      "sentences": 3
+    },
+    {
+      "id": 169,
+      "content": "e, C can be realized as the\nproductofagraph(acirclewithsixradialedgesattached)withtheinterval(0,1]. Infact,ifweconsiderthe\ncirculating flow of Equations (7)-(9), one can view this as a product field of a semiflow on the graph (which\n“circulates”) with a vector field on the factor (0,1] (which “pushes out” to the boundary). A similar approach is feasible for arbitrary graphs.",
+      "size": 377,
+      "sentences": 3
+    },
+    {
+      "id": 170,
+      "content": "or (0,1] (which “pushes out” to the boundary). A similar approach is feasible for arbitrary graphs. The following result has recently been proven [8]:\nTheorem 4 Given agraph Γ, the configuration space of N distinct points on Γ can bedeformation retracted\nto a subcomplex whose dimension is bounded above by the number of vertices of Γ of valency greater than\ntwo.5\nThis theorem implies the existence of low-dimensional spines which carry all of the topology of the\nconfiguration space.",
+      "size": 485,
+      "sentences": 3
+    },
+    {
+      "id": 171,
+      "content": "the existence of low-dimensional spines which carry all of the topology of the\nconfiguration space. For example, the above theorem implies that the configuration space of N points on\nthe Y-graph can be continuously deformed to a one-dimensional graph, regardless of the size of N. Since\nthe full space can be deformation retracted onto the spine, a vector field defined on the spine can be pulled\nback continuously to the full configuration space, thus opening up the possibility of reducing the control\nproblem to that on a simpler space.",
+      "size": 539,
+      "sentences": 2
+    },
+    {
+      "id": 172,
+      "content": "space, thus opening up the possibility of reducing the control\nproblem to that on a simpler space. Addtional results about the topology of configurationspaces on graphs\nmay yield computationally tractible means of dealing with complex path planning: for example, having a\npresentation for the fundamental group of a configuration space of a graph in terms of a suitably simple\nset of cycles would be extremely well-suited to a hybrid controlalgorithm based on “localized” vector fields\nsupported on small portions of the full configuration space.",
+      "size": 546,
+      "sentences": 2
+    },
+    {
+      "id": 173,
+      "content": "thm based on “localized” vector fields\nsupported on small portions of the full configuration space. The optimization problem is another avenue for inquiry. The fact that a dynamical approach allows\nfor increased density of AGV’s on a graph (as compared with blocking-zone strategies) would indicate an\nincreased efficiency with respect to, say, elapsed time-of-flight. However, a more careful investigation of the\ntuning of optimal cycles is warranted.",
+      "size": 452,
+      "sentences": 4
+    },
+    {
+      "id": 174,
+      "content": "time-of-flight. However, a more careful investigation of the\ntuning of optimal cycles is warranted. Webelievethatthe benefitsassociatedwithusingthe fullconfigurationspacetotune optimaldynamical\ncycles justifies a careful exploration of these challenging spaces. A The Topology and Dynamics of Graphs\nIn this appendix, we provide a careful basis for the use of vector fields on configuration spaces of graphs.",
+      "size": 408,
+      "sentences": 4
+    },
+    {
+      "id": 175,
+      "content": "ppendix, we provide a careful basis for the use of vector fields on configuration spaces of graphs. In the setting of manifolds, all of the constructions used in this paper are entirely natural and well-defined. However, on spaces like C, the most fundamental of notions (like the Existence and Uniqueness Theorems\nfor ODEs) are not in general valid. We begin by defining vector fields on graphs.",
+      "size": 396,
+      "sentences": 4
+    },
+    {
+      "id": 176,
+      "content": "iqueness Theorems\nfor ODEs) are not in general valid. We begin by defining vector fields on graphs. For present purposes, we find it convenient to work with\nan intrinsic formulation (i.e., directly in the graph rather than via an embedding in a Euclidean space) of\n5We have since learned of two others who have independently proved this result: [16], having learned of these spaces fron\n[11];and[1],whodiscoveredthesespaceswhileworkingonthetopologyofBrownianmotionongraphs.",
+      "size": 473,
+      "sentences": 3
+    },
+    {
+      "id": 177,
+      "content": "spaces fron\n[11];and[1],whodiscoveredthesespaceswhileworkingonthetopologyofBrownianmotionongraphs. ===  17 ===\nSAFE ROBOT DYNAMICS 17\nthese objects. To this end, denote by v a vertex with K incident edges {e }K, and by {X }K a collection\ni 1 i 1\nof nonsingular vector fields locally defined on a neighborhood of the endpoint of each e (homeomorphic to\ni\n[0,1)). Lemma 7 A set of nonsingular vector fields {X } on the local edge set of a graph Γ generates a well-defined\ni\nsemiflow on Γ if\n1.",
+      "size": 491,
+      "sentences": 4
+    },
+    {
+      "id": 178,
+      "content": "ector fields {X } on the local edge set of a graph Γ generates a well-defined\ni\nsemiflow on Γ if\n1. Each edge field X generates a well-defined local semiflow on (0,1); and\ni\n2. The magnitude of the endpoint vectors kX (0)k (taken with respect to the attaching homeomorphisms)\ni\nare all identical; and\n3. Among the signs of the endpoint vectors X (0) (either positive if pointing into [0,ǫ) or negative if\ni\npointing out) there is a single positive sign.",
+      "size": 453,
+      "sentences": 4
+    },
+    {
+      "id": 179,
+      "content": "her positive if pointing into [0,ǫ) or negative if\ni\npointing out) there is a single positive sign. Proof: Since the vector field is well-defined away from the vertex, it is only necessary to have the\nmagnitudes kX (0)k agree in order to have a well-defined function kXk on Γ. In order to make this a\ni\nwell-defined field of directions, we must also consider in which direction the vector is pointing. Again, this\nis determined off of the vertex by (1).",
+      "size": 453,
+      "sentences": 4
+    },
+    {
+      "id": 180,
+      "content": "ider in which direction the vector is pointing. Again, this\nis determined off of the vertex by (1). Condition (3) means that at the vertex, there is a unique direction\nalong which the vector field is pointing out: all other edges point in. Hence, the direction field, as well as\nthe magnitude field, is well-defined. The semiflow property follows naturally from this. Assume that the Nth edge of Γ has the positive sign.",
+      "size": 420,
+      "sentences": 6
+    },
+    {
+      "id": 181,
+      "content": "semiflow property follows naturally from this. Assume that the Nth edge of Γ has the positive sign. Then, givenaninitialpoint x∈Γ, ifx∈e , then the orbitof x under the localfield X remains ine and\nN N N\nis well-defined.",
+      "size": 219,
+      "sentences": 3
+    },
+    {
+      "id": 182,
+      "content": "point x∈Γ, ifx∈e , then the orbitof x under the localfield X remains ine and\nN N N\nis well-defined. If x ∈ e for some j 6= N, then the union of the edges e ∪e is a manifold homeomorphic\nj j N\nto R on which the vector fields X and X combine to yield a well-defined vector field, since the directions\nj N\nare“opposite.” As we arenow on a manifold, the standardExistence Theoremimplies that x has a forward\norbit (which passes through the vertex and continues into e ).",
+      "size": 466,
+      "sentences": 2
+    },
+    {
+      "id": 183,
+      "content": "Theoremimplies that x has a forward\norbit (which passes through the vertex and continues into e ). Thus every point on Γ has a well-defined\nN\nforward orbit. ⋄\nInthe casewherethe vectorfields havesingularities,itis a simplermatter. Ifthe singularitiesarenotat\nthe vertex, then there is no difference. If there is a singularity at the vertex, then condition (3) in Lemma 7\nis void — all such vector fields are well-defined.",
+      "size": 421,
+      "sentences": 5
+    },
+    {
+      "id": 184,
+      "content": "ity at the vertex, then condition (3) in Lemma 7\nis void — all such vector fields are well-defined. Inordertoextendtheseresultstotheconfigurationspaceofthispaper,considerthespaceC =Υ×Υ−∆\nand let (x,y)∈C denote a point on the branch set of C. Because of the structure of Υ and the fact that the\ndiagonalpoints aredeleted, itfollowsthatatmostoneAGV mayoccupyanon-manifoldpointofΥ. Hence,\na neighborhoodof(x,y) inC has anaturalproductstructureN ∼ =Υ×R.",
+      "size": 449,
+      "sentences": 3
+    },
+    {
+      "id": 185,
+      "content": "occupyanon-manifoldpointofΥ. Hence,\na neighborhoodof(x,y) inC has anaturalproductstructureN ∼ =Υ×R. LetP :N →Υ denote projection\nonto the first factor.",
+      "size": 151,
+      "sentences": 3
+    },
+    {
+      "id": 186,
+      "content": "(x,y) inC has anaturalproductstructureN ∼ =Υ×R. LetP :N →Υ denote projection\nonto the first factor. Lemma 8 A nonsingular vector field X on the individual cells of C generates a well-defined semiflow if (1)\nthe projection of the local vector fields onto the graph factor, P (X| ), satisfies Lemma 7 for each point\n∗ {x}×Υ\nx in the branch set of C; and (2) the projections of the vector fields on the branch set to the R-factor are\nequal up to the attaching maps.",
+      "size": 462,
+      "sentences": 3
+    },
+    {
+      "id": 187,
+      "content": "jections of the vector fields on the branch set to the R-factor are\nequal up to the attaching maps. Proof: Offofthebranchset,thespaceisamanifoldandhencethevectorfieldgivesawell-definedflow. If p is a point on the branch line, condition (2) implieds that the vector field is well-defined with respect\nto the attaching maps and the net effect in the R-factor is a drift in this direction.",
+      "size": 386,
+      "sentences": 3
+    },
+    {
+      "id": 188,
+      "content": "with respect\nto the attaching maps and the net effect in the R-factor is a drift in this direction. In the graph factor,\ncondition (1) and the proof of Lemma 7 implies that there is a unique forward orbit through p. ⋄\nHeuristically, this condition means that, as in the case of a graph, the vector field must point “in” on all\nbut one sheet of the configuration space in order to have well-defined orbits. We may thus lift the criteria\nof Lemma 7 to the product configuration space.",
+      "size": 482,
+      "sentences": 3
+    },
+    {
+      "id": 189,
+      "content": "e well-defined orbits. We may thus lift the criteria\nof Lemma 7 to the product configuration space. All of the vector fields in this paper are so constructed. References\n[1] A. Abrams. Configuration spaces of graphs and Brownian motion(?). PhD thesis, UC Berkeley, 2000. In preparation. ===  18 ===\nSAFE ROBOT DYNAMICS 18\n[2] Y. A. Bozer and M. M. Srinivasan. Tandem configurations for automated guided vehicle systems and\nthe analysis of single vehicle loops. IIE Transactions, 23(1):72–82,1991.",
+      "size": 496,
+      "sentences": 11
+    },
+    {
+      "id": 190,
+      "content": "uided vehicle systems and\nthe analysis of single vehicle loops. IIE Transactions, 23(1):72–82,1991. [3] Y. Brave and M. Heymann. On optimal attraction of discrete-event processes. Information Science,\n67(3):245–276,1993. [4] R. R. Burridge, A. A. Rizzi, and D. E. Koditschek. Sequential composition of dynamically dexterous\nrobot behaviors. Int. J. Rob. Res., (to appear). [5] G. A. Castleberry. The AGV Handbook. Braun-Brumfield, Ann Arbor, MI, 1991. [6] M. Erdmann.",
+      "size": 467,
+      "sentences": 16
+    },
+    {
+      "id": 191,
+      "content": "ar). [5] G. A. Castleberry. The AGV Handbook. Braun-Brumfield, Ann Arbor, MI, 1991. [6] M. Erdmann. Understanding action and sensing by designing actions-based sensors. Int. J. Rob. Res.,\n14(5):483–509,1995. [7] S. B. Gershwin. Manufacturing Systems Engineering. Prentice Hall, Englewood Cliffs, NJ, 1994. [8] R. Ghrist. Configurationspaces and braid groups ongraphs in robotics. To appear, Braids, Links, and\nMapping Class Groups: the Proceedings of Joan Birman’s 70th Birthday, 2000. [9] R. Ghrist.",
+      "size": 500,
+      "sentences": 17
+    },
+    {
+      "id": 192,
+      "content": "nks, and\nMapping Class Groups: the Proceedings of Joan Birman’s 70th Birthday, 2000. [9] R. Ghrist. Configuration spaces of graphs. Preprint, 2000. [10] R. Ghrist. Geometric optimization on configuration spaces of networks. Preprint, 2000. [11] R. Ghrist and D. E. Koditschek. Safe cooperative robot dynamics on graphs. In Y. Nakayama, editor,\nEighth Intl. Symp. on Robotic Research, pages 81–92.Springer-Verlag, 1998. [12] D. E. Koditschek and E.Rimon.",
+      "size": 453,
+      "sentences": 13
+    },
+    {
+      "id": 193,
+      "content": "l. Symp. on Robotic Research, pages 81–92.Springer-Verlag, 1998. [12] D. E. Koditschek and E.Rimon. Robotnavigationfunctions on manifolds with boundary. Advances in\nApplied Mathematics, 11:412–442,1990. [13] D. Lind and B. Marcus. Introduction to Symbolic Dynamics and Coding Theory. Cambridge, 1995. [14] T. Lozano-Perez, M. T. Mason, and R. H. Taylor. Automatic synthesis of fine-motion strategies for\nrobots. Int. J. Rob. Res., 3(1):3–23, 1984. [15] M. T. Mason. The mechanics of manipulation.",
+      "size": 496,
+      "sentences": 16
+    },
+    {
+      "id": 194,
+      "content": "es for\nrobots. Int. J. Rob. Res., 3(1):3–23, 1984. [15] M. T. Mason. The mechanics of manipulation. In Proc. International Conference on Robotics and\nAutomation, pages 544–548,March 1985. [16] R. J. Milgram and S. Kaufman. Topological characterization of safe coordinated vehicle motion. In\npreparation, November 1999. [17] J. R. Munkres. Topology, A First Course. Prentice Hall, 1975. [18] R. Sengupta. An optimal control theory for discrete event control systems. SIAM J.",
+      "size": 473,
+      "sentences": 18
+    },
+    {
+      "id": 195,
+      "content": "Hall, 1975. [18] R. Sengupta. An optimal control theory for discrete event control systems. SIAM J. Control and\nOptimization, 36(2):488–541,1998. [19] S. F. Smith. Reactive scheduling systems. In D. E. Brown and W. T. Schering, editors, Intelligent\nScheduling Systems, pages 155–192.Kluwer Academic Publishers, Boston, MA, 1995.",
+      "size": 328,
+      "sentences": 8
+    }
+  ]
+}

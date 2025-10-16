@@ -1,0 +1,1977 @@
+{
+  "source": "ArXiv",
+  "filename": "272_AI_ML_Understanding_Outer_Optimizers_in_Local_.pdf",
+  "domain": "AI",
+  "total_chars": 110922,
+  "total_chunks": 328,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\nUnderstanding Outer Optimizers in Local SGD: Learning\nRates, Momentum, and Acceleration\nAhmed Khaled1,∗, Satyen Kale2,†, Arthur Douillard3, Chi Jin1,\nRob Fergus4,5, and Manzil Zaheer5\n1Princeton University, 2Google Research 3Google DeepMind\n4New York University 5FAIR at Meta\nAbstract\nModern machine learning often requires training with large batch size, distributed data, and massively\nparallelcomputehardware(likemobileandotheredgedevicesordistributeddatacenters).",
+      "size": 478,
+      "sentences": 1
+    },
+    {
+      "id": 2,
+      "content": "data, and massively\nparallelcomputehardware(likemobileandotheredgedevicesordistributeddatacenters). Communication\nbecomes a major bottleneck in such settings but methods like Local Stochastic Gradient Descent (Local\nSGD) show great promise in reducing this additional communication overhead. Local SGD consists of\nthreeparts: alocaloptimizationprocess, anaggregationmechanism, andanouteroptimizerthatusesthe\naggregated updates from the nodes to produce a new model.",
+      "size": 465,
+      "sentences": 3
+    },
+    {
+      "id": 3,
+      "content": "mechanism, andanouteroptimizerthatusesthe\naggregated updates from the nodes to produce a new model. While there exists an extensive literature\non understanding the impact of hyperparameters in the local optimization process, the choice of outer\noptimizer and its hyperparameters is less clear. We study the role of the outer optimizer in Local SGD,\nand prove new convergence guarantees for the algorithm.",
+      "size": 404,
+      "sentences": 3
+    },
+    {
+      "id": 4,
+      "content": "e role of the outer optimizer in Local SGD,\nand prove new convergence guarantees for the algorithm. In particular, we show that tuning the outer\nlearning rate allows us to (a) trade off between optimization error and stochastic gradient noise variance,\nand (b) make up for ill-tuning of the inner learning rate. Our theory suggests that the outer learning\nrate should sometimes be set to values greater than 1.",
+      "size": 410,
+      "sentences": 3
+    },
+    {
+      "id": 5,
+      "content": "Our theory suggests that the outer learning\nrate should sometimes be set to values greater than 1. We extend our results to settings where we use\nmomentum in the outer optimizer, and we show a similar role for the momentum-adjusted outer learning\nrate. Wealsostudyaccelerationintheouteroptimizerandshowthatitimprovestheconvergencerateasa\nfunctionofthenumberofcommunicationrounds,improvingupontheconvergencerateofprioralgorithms\nthat apply acceleration locally.",
+      "size": 460,
+      "sentences": 3
+    },
+    {
+      "id": 6,
+      "content": "mmunicationrounds,improvingupontheconvergencerateofprioralgorithms\nthat apply acceleration locally. Finally, we also introduce a novel data-dependent analysis of Local SGD\nthat yields further insights on outer learning rate tuning. We conduct comprehensive experiments with\nstandard language models and various outer optimizers to validate our theory. 1 Introduction\nTraining very large scale machine learning models requires a lot of compute.",
+      "size": 443,
+      "sentences": 4
+    },
+    {
+      "id": 7,
+      "content": "theory. 1 Introduction\nTraining very large scale machine learning models requires a lot of compute. This compute is often centrally\ncontrolled by a single entity and tightly connected in a data center. Gradients are constantly synchronized,\nhardware failures are controlled and mitigated, and things (mostly) run smoothly. Building this training\ninfrastructure is expensive, however, and centralized control might not be desirable for all models.",
+      "size": 446,
+      "sentences": 5
+    },
+    {
+      "id": 8,
+      "content": "nfrastructure is expensive, however, and centralized control might not be desirable for all models. This\nhas led to a surge of interest in decentralized collaborative training of large-scale models across different,\npotentially poorly connected clusters (Douillard, Feng, Rusu, Chhaparia, et al., 2023; Jaghouar, Ong, and\nHagemann, 2024; Jaghouar, Ong, Basra, et al., 2024).",
+      "size": 374,
+      "sentences": 2
+    },
+    {
+      "id": 9,
+      "content": "u, Chhaparia, et al., 2023; Jaghouar, Ong, and\nHagemann, 2024; Jaghouar, Ong, Basra, et al., 2024). This has motivated the adoption of federated learning\nalgorithms in training language models, chiefly for scalability and communication efficiency rather than data\nprivacy. Efficient parallelization strategies also factored in the remarkable recent training of DeepSeek V3 and\nR1 on a tight budget (DeepSeek-AI, Liu, et al., 2024; DeepSeek-AI, Guo, et al., 2025).",
+      "size": 463,
+      "sentences": 3
+    },
+    {
+      "id": 10,
+      "content": "pSeek V3 and\nR1 on a tight budget (DeepSeek-AI, Liu, et al., 2024; DeepSeek-AI, Guo, et al., 2025). A foundational algorithm in distributed and federated optimization is Local SGD (Wang, Charles, et al.,\n2021).",
+      "size": 210,
+      "sentences": 2
+    },
+    {
+      "id": 11,
+      "content": "nal algorithm in distributed and federated optimization is Local SGD (Wang, Charles, et al.,\n2021). Many popular algorithms fit in the FedOpt template (Reddi et al., 2021) (Algorithm 1), including\nFedAdam (Reddi et al., 2021), FedRR (Mishchenko, Khaled, and Richtárik, 2022; Malinovsky and Richtárik,\n2022), DiLoCo (Douillard, Feng, Rusu, Chhaparia, et al., 2023; Jaghouar, Ong, and Hagemann, 2024) and\n∗PartofthisworkwasdoneduringaninternshipatGoogleDeepMind. †CurrentlyatApple.",
+      "size": 479,
+      "sentences": 3
+    },
+    {
+      "id": 12,
+      "content": "nd Hagemann, 2024) and\n∗PartofthisworkwasdoneduringaninternshipatGoogleDeepMind. †CurrentlyatApple. 1\n5202\npeS\n21\n]GL.sc[\n1v93401.9052:viXra\n===  2 ===\nmanyothers. FedOptsolvestheminimizationproblemmin f(x)givenaccesstoM differentcomputational\nx∈Rd\nnodes and unbiased stochastic gradients of f. FedOpt consists of three main components: an inner update\nloop on every client, an aggregation of the client updates, and then an outer update step taken on the server.",
+      "size": 463,
+      "sentences": 4
+    },
+    {
+      "id": 13,
+      "content": "ry client, an aggregation of the client updates, and then an outer update step taken on the server. Algorithm 1 The FedOpt Algorithmic Template\n1: Input. Update rules LocalUpdate and OuterUpdate. Initial point x 0 . 2: for communication rounds r =0,1,...,R−1 do\n3: Broadcast x r to each node m\n4: for each node m in parallel do\n5: Set y m,r,0 =x r . 6: for local steps h=0,1,...,H −1 do\n7: Set y m,r,h+1 =LocalUpdate(y m,r,h ,g m,r,h ) for stochastic gradient g m,r,h at y m,r,h .",
+      "size": 480,
+      "sentences": 6
+    },
+    {
+      "id": 14,
+      "content": "−1 do\n7: Set y m,r,h+1 =LocalUpdate(y m,r,h ,g m,r,h ) for stochastic gradient g m,r,h at y m,r,h . 8: end for\n9: Communicate y m,r,H to the server. 10: end for\n11: Compute the update or “outer gradient” ∆ˆ r,H = M 1 (cid:80)M m=1 (y m,r,H −x r ). 12: Update x r+1 =OuterUpdate(x r ,−∆ˆ r,H ). 13: end for\nWhen both the local and outer update rules correspond to gradient descent (i.e. x =x −β∆ for some\nnew old\nstepsize β and update vector ∆), the corresponding algorithm is Generalized Local SGD.",
+      "size": 498,
+      "sentences": 6
+    },
+    {
+      "id": 15,
+      "content": "some\nnew old\nstepsize β and update vector ∆), the corresponding algorithm is Generalized Local SGD. If we additionally\ntake the outer stepsize to be 1, we get Local SGD. Local SGD simply does H steps of SGD on each node, and\nthen averages the result after applying the updates. This is the most common form in which the algorithm\nis analyzed, as in e.g.",
+      "size": 353,
+      "sentences": 4
+    },
+    {
+      "id": 16,
+      "content": "r applying the updates. This is the most common form in which the algorithm\nis analyzed, as in e.g. (Stich, 2019; Khaled, Mishchenko, and Richtárik, 2020; Woodworth, Patel, Stich,\net al., 2020; Koloskova et al., 2020; Glasgow, Yuan, and Ma, 2022; Patel, Glasgow, Zindari, et al., 2024). In practice, different choices of outer optimizers perform better. For example, DiLoCo/OpenDiLoCo use\nSGD with Nesterov Momentum as the outer optimizer (Douillard, Feng, Rusu, Chhaparia, et al., 2023).",
+      "size": 488,
+      "sentences": 5
+    },
+    {
+      "id": 17,
+      "content": "SGD with Nesterov Momentum as the outer optimizer (Douillard, Feng, Rusu, Chhaparia, et al., 2023). This\nhas motivated much analysis of different outer optimizers and their impact (Reddi et al., 2021; Malinovsky,\nMishchenko, and Richtárik, 2022; Jhunjhunwala, Wang, and Joshi, 2023; Sun et al., 2024). However, our\ntheoreticalunderstandingofthefundamentalGeneralizedLocalSGDalgorithmremainslimited.",
+      "size": 398,
+      "sentences": 3
+    },
+    {
+      "id": 18,
+      "content": "). However, our\ntheoreticalunderstandingofthefundamentalGeneralizedLocalSGDalgorithmremainslimited. Inparticular,\nitisnotclearwhythebileveloptimizationstructureofthealgorithmishelpfulfromanoptimizationperspective,\neven in the i.i.d. setting where the data distribution is the same on all the nodes. Additionally and to the\nbest of our knowledge, we have no explicit expressions for what the ideal learning rate pair (η,γ) should be.",
+      "size": 432,
+      "sentences": 5
+    },
+    {
+      "id": 19,
+      "content": "r knowledge, we have no explicit expressions for what the ideal learning rate pair (η,γ) should be. Empirically, outer optimizers employing Nesterov acceleration have the best performance, yet to the best of\nour knowledge why or how it improves convergence is not known. Contributions. Our paper takes steps to address the above questions and makes the following contributions.",
+      "size": 377,
+      "sentences": 4
+    },
+    {
+      "id": 20,
+      "content": "utions. Our paper takes steps to address the above questions and makes the following contributions. • We conduct a novel, tighter analysis of Generalized Local SGD (Theorem 3.3) that shows the outer\nlearning rate plays a dual role.",
+      "size": 231,
+      "sentences": 3
+    },
+    {
+      "id": 21,
+      "content": "alysis of Generalized Local SGD (Theorem 3.3) that shows the outer\nlearning rate plays a dual role. It (a) interpolates between two extreme regimes: taking many effective\nsteps at the cost of higher variance to taking fewer steps but at reduced variance and (b) increases the\nalgorithmic robustness to hyperparameter tuning by making up for ill-tuned inner learning rates. The\nlatter holds even in the absence of any stochastic gradient noise.",
+      "size": 443,
+      "sentences": 3
+    },
+    {
+      "id": 22,
+      "content": "-tuned inner learning rates. The\nlatter holds even in the absence of any stochastic gradient noise. • We extend the above analysis to cover Generalized Local SGD where the outer optimizer also uses\nmomentum (Theorem 3.5) and show that this gives additional leeway in tuning γ.",
+      "size": 276,
+      "sentences": 3
+    },
+    {
+      "id": 23,
+      "content": "optimizer also uses\nmomentum (Theorem 3.5) and show that this gives additional leeway in tuning γ. • We provide a convergence analysis for Local SGD with an accelerated outer optimizer and unaccelerated\ninner optimizer (Theorem 3.6), showing that using Nesterov acceleration in the outer loop achieves better\ndependence on the number of communication rounds R in the drift terms compared to standard Local\nSGD and improving upon the convergence rate of FedAc (Yuan and Ma, 2020).",
+      "size": 479,
+      "sentences": 2
+    },
+    {
+      "id": 24,
+      "content": "ompared to standard Local\nSGD and improving upon the convergence rate of FedAc (Yuan and Ma, 2020). • We also derive an adaptive, data-dependent, high-probability guarantee for the convergence of Local SGD\nwith GD as the outer optimizer (Theorem 3.8) that shows further benefits of tuning the outer stepsize in\nmore nuanced settings.",
+      "size": 333,
+      "sentences": 2
+    },
+    {
+      "id": 25,
+      "content": "er (Theorem 3.8) that shows further benefits of tuning the outer stepsize in\nmore nuanced settings. 2\n===  3 ===\n• We additionally conduct an extensive empirical analysis for training large-scale language models with\nvarious outer optimizers (gradient descent, accelerated gradient descent, and Schedule-Free gradient\ndescent). We now review related work, then proceed to our main results.",
+      "size": 389,
+      "sentences": 3
+    },
+    {
+      "id": 26,
+      "content": "and Schedule-Free gradient\ndescent). We now review related work, then proceed to our main results. 2 Related Work\nThere is a rich literature on algorithms for communication-efficient distributed optimization for federated\nlearning (Konečný et al., 2016), where multiple clients collaborate on solving a machine learning problem\n(Wang, Charles, et al., 2021).",
+      "size": 358,
+      "sentences": 3
+    },
+    {
+      "id": 27,
+      "content": "e multiple clients collaborate on solving a machine learning problem\n(Wang, Charles, et al., 2021). Federated learning algorithms are designed to reduce the effect of data\nheterogeneity (Karimireddy et al., 2020; Wang, Charles, et al., 2021; Murata and Suzuki, 2021), ensure the\ndata stays private (Wei et al., 2020), deal with intermittent or cyclic client availability (Eichner et al., 2019),\namong other issues.",
+      "size": 414,
+      "sentences": 2
+    },
+    {
+      "id": 28,
+      "content": "), deal with intermittent or cyclic client availability (Eichner et al., 2019),\namong other issues. As models have grown larger in size over the past few years, going from a few million parameters to billions\n(Brown et al., 2020), the scale of training runs has also grown to include many more devices divided across\nmultiple computing clusters rather than a single cluster (Diskin et al., 2021; Huang, Huang, and Liu, 2022;\nBorzunov et al., 2022; Douillard, Feng, Rusu, Chhaparia, et al., 2023).",
+      "size": 496,
+      "sentences": 2
+    },
+    {
+      "id": 29,
+      "content": "uang, Huang, and Liu, 2022;\nBorzunov et al., 2022; Douillard, Feng, Rusu, Chhaparia, et al., 2023). Even within a single datacenter,\ntraining runs now involve tens of thousands of GPUs (Jiang et al., 2024). This has motivated researchers\nto develop and use algorithms inspired by the federated learning setting for large-scale training instead.",
+      "size": 344,
+      "sentences": 3
+    },
+    {
+      "id": 30,
+      "content": "lop and use algorithms inspired by the federated learning setting for large-scale training instead. Examples of such algorithms include DiLoCo (Douillard, Feng, Rusu, Chhaparia, et al., 2023), its open cousin\nOpenDiLoCo (Jaghouar, Ong, and Hagemann, 2024), DiPaCo (Douillard, Feng, Rusu, Kuncoro, et al., 2024),\nand others (Liu et al., 2024; Liang et al., 2024; DeepSeek-AI, Liu, et al., 2024).",
+      "size": 394,
+      "sentences": 2
+    },
+    {
+      "id": 31,
+      "content": ", et al., 2024),\nand others (Liu et al., 2024; Liang et al., 2024; DeepSeek-AI, Liu, et al., 2024). Federated learning methods\nthus have found use in pretraining and fine-tuning language models (Jaghouar, Ong, and Hagemann, 2024;\nYang et al., 2025), and may prove particularly important for scaling even larger models in the future (Iacob\net al., 2024; Sani et al., 2024; Rush et al., 2024). We note that the use of methods for federated learning even\nfor i.i.d.",
+      "size": 462,
+      "sentences": 3
+    },
+    {
+      "id": 32,
+      "content": "., 2024; Rush et al., 2024). We note that the use of methods for federated learning even\nfor i.i.d. distributed training is not new, and is perhaps being “re-discovered” as training runs grow too large\nto fit on single clusters. For example, Lin et al. (2020) argued that using Local SGD can be more efficient\nthan traditional Minibatch SGD in some settings. Ortiz et al. (2021) also conducted experiments studying\nthe trade-offs of using Local SGD in training image classification models.",
+      "size": 489,
+      "sentences": 7
+    },
+    {
+      "id": 33,
+      "content": "ted experiments studying\nthe trade-offs of using Local SGD in training image classification models. The most popular algorithm in the federated optimization literature is Local SGD or Federated Averag-\ning (Wang, Charles, et al., 2021). It is a generalization of minibatch SGD that, rather than communicating\nat every step of the optimization process, communicates only intermittently.",
+      "size": 385,
+      "sentences": 3
+    },
+    {
+      "id": 34,
+      "content": "her than communicating\nat every step of the optimization process, communicates only intermittently. Local SGD shows remarkable\nefficiency in many settings in practice, and therefore its convergence and generalization properties have been\nthe subject of intense theoretical investigation over the past few years (Stich, 2019; Khaled, Mishchenko, and\nRichtárik, 2020; Woodworth, Patel, Stich, et al., 2020; Woodworth, Patel, and Srebro, 2020; Patel, Glasgow,\nWang, et al., 2023; Glasgow, Yuan, and Ma, 2022; Gu, Lyu, Huang, et al., 2023; Patel, Glasgow, Zindari,\net al., 2024).",
+      "size": 575,
+      "sentences": 2
+    },
+    {
+      "id": 35,
+      "content": "Glasgow, Yuan, and Ma, 2022; Gu, Lyu, Huang, et al., 2023; Patel, Glasgow, Zindari,\net al., 2024). Many variants of Local SGD exist, including those that use random reshuffling instead of\ni.i.d.",
+      "size": 194,
+      "sentences": 2
+    },
+    {
+      "id": 36,
+      "content": "4). Many variants of Local SGD exist, including those that use random reshuffling instead of\ni.i.d. sampling locally (Yun, Rajput, and Sra, 2022; Mishchenko, Khaled, and Richtárik, 2022), adaptive\nmethods such as Adam (Reddi et al., 2021; Wang, Lin, and Chen, 2022), and modifications to handle\ndata heterogeneity (Karimireddy et al., 2020; Mitra et al., 2021), personalization (Hanzely et al., 2020), or\nadditionally use gradient compression (Haddadpour et al., 2021; Safaryan, Hanzely, and Richtárik, 2021).",
+      "size": 509,
+      "sentences": 3
+    },
+    {
+      "id": 37,
+      "content": "ionally use gradient compression (Haddadpour et al., 2021; Safaryan, Hanzely, and Richtárik, 2021). GeneralizedLocalSGD,whereweusetwostepsizes(asinAlgorithm1),isknowntobeimportantinmanaging\nthe trade-off between converging quickly and converging to a mismatched point in heterogeneous distributed\noptimization (Woodworth, Patel, and Srebro, 2020; Charles and Konečný, 2020; Patel, Glasgow, Zindari,\net al., 2024). Our focus here is on the homogeneous or i.i.d.",
+      "size": 460,
+      "sentences": 3
+    },
+    {
+      "id": 38,
+      "content": "nečný, 2020; Patel, Glasgow, Zindari,\net al., 2024). Our focus here is on the homogeneous or i.i.d. data setting; Here, the most related works are\n(Karimireddy et al., 2020; Malinovsky, Mishchenko, and Richtárik, 2022; Jhunjhunwala, Wang, and Joshi,\n2023; Sun et al., 2024) and we discuss our work’s relation to theirs in detail in the next section after reviewing\nsome preliminaries.",
+      "size": 384,
+      "sentences": 3
+    },
+    {
+      "id": 39,
+      "content": "uss our work’s relation to theirs in detail in the next section after reviewing\nsome preliminaries. 3\n===  4 ===\n3 Theory\nIn this section we conduct the study our main algorithm, Generalized Local SGD (Algorithm 1 with\nLocalUpdate(y,g) = y−ηg and OuterUpdate(x,∆) = x−γ∆). We first review some preliminaries, then\npresent our main results. 3.1 Preliminaries\nWe are solving the optimization problem minf(x), where we assume f satisfies the following curvature and\nx∈Rd\nregularity condition.",
+      "size": 489,
+      "sentences": 4
+    },
+    {
+      "id": 40,
+      "content": "problem minf(x), where we assume f satisfies the following curvature and\nx∈Rd\nregularity condition. Assumption 3.1. The function f is differentiable, convex, has L-Lipschitz gradients, and has a minimizer x . ∗\nWe suppose that we can access a stochastic first-order oracle that given a point x returns a gradient g(x) that\nsatisfies the following assumption. Assumption 3.2.",
+      "size": 374,
+      "sentences": 5
+    },
+    {
+      "id": 41,
+      "content": "at given a point x returns a gradient g(x) that\nsatisfies the following assumption. Assumption 3.2. Given a point x∈Rd, the stochastic gradients g(x)∈Rd are (a) unbiased in expectation\n(cid:104) (cid:105)\nE[g(x)] = ∇f(x), and (b) has variance bounded as E ∥g(x)−∇f(x)∥2 ≤ σ2, where E[·] denotes the\nexpectation operator.",
+      "size": 320,
+      "sentences": 3
+    },
+    {
+      "id": 42,
+      "content": "and (b) has variance bounded as E ∥g(x)−∇f(x)∥2 ≤ σ2, where E[·] denotes the\nexpectation operator. Our setting is distributed, but with identically distributed data: there are M different nodes, but they\nall sample stochastic gradients from the same data distribution in an i.i.d. (independent and identically\ndistributed) manner. We denote the inner product between two vectors a and b by ⟨a,b⟩ and by ∥·∥ the\ncorresponding Euclidean norm.",
+      "size": 440,
+      "sentences": 4
+    },
+    {
+      "id": 43,
+      "content": "the inner product between two vectors a and b by ⟨a,b⟩ and by ∥·∥ the\ncorresponding Euclidean norm. For the purpose of theoretical analysis, can write Generalized Local SGD\nsuccinctly as\ny =x , g =Stochastic gradient of y\nm,r,0 r m,r,h m,r,h\ny =y −ηg , for m=1,...,M in parallel and h=0,1,...,H −1 in sequence. m,r,h+1 m,r,h m,r,h\nH−1 M\n(cid:88) 1 (cid:88)\nx =x −γη g .",
+      "size": 369,
+      "sentences": 3
+    },
+    {
+      "id": 44,
+      "content": "parallel and h=0,1,...,H −1 in sequence. m,r,h+1 m,r,h m,r,h\nH−1 M\n(cid:88) 1 (cid:88)\nx =x −γη g . (GEN-LOC-SGD)\nr+1 r M m,r,h\nh=0 m=1\nTo simplify our analysis, we follow (Stich, 2019) and define the virtual sequences\nM M\ndef 1 (cid:88) def 1 (cid:88)\ny = y , g = g\nr,h M m,r,h r,h M m,r,h (1)\nm=1 m=1\ng\nd\n=\nefE\n[g ]=∇f(y ), g\nd\n=\nefE\n[g ].",
+      "size": 341,
+      "sentences": 3
+    },
+    {
+      "id": 45,
+      "content": "1 (cid:88)\ny = y , g = g\nr,h M m,r,h r,h M m,r,h (1)\nm=1 m=1\ng\nd\n=\nefE\n[g ]=∇f(y ), g\nd\n=\nefE\n[g ]. m,r,h r,h−1 m,r,h m,r,h r,h r,h−1 r,h\n3.2 Main convergence result\nRecallthatweconsiderAlgorithm1theparticularcasewhenLocalUpdate(y,g)=y−ηgandOuterUpdate(x,∆)=\nx−γ∆. ExistingresultsontheconvergenceofGen.",
+      "size": 302,
+      "sentences": 3
+    },
+    {
+      "id": 46,
+      "content": "icularcasewhenLocalUpdate(y,g)=y−ηgandOuterUpdate(x,∆)=\nx−γ∆. ExistingresultsontheconvergenceofGen. LocalSGD.Whentheouterstepsizeγ =1,theconvergence\nof (GEN-LOC-SGD) is very well understood, with tightly matching upper and lower bounds (Khaled,\nMishchenko, and Richtárik, 2020; Woodworth, Patel, Stich, et al., 2020; Glasgow, Yuan, and Ma, 2022).",
+      "size": 346,
+      "sentences": 3
+    },
+    {
+      "id": 47,
+      "content": "shchenko, and Richtárik, 2020; Woodworth, Patel, Stich, et al., 2020; Glasgow, Yuan, and Ma, 2022). In\nparticular, the best rate for the algorithm is\nE (cid:34) f (cid:32) 1 R (cid:88) −1H (cid:88) −1 y (cid:33)(cid:35) −f(x )≤O (cid:32) L∥x 0 −x ∗ ∥2 + σ √ ∥x 0 −x ∗ ∥ + L1 3σ2 3 ∥x 0 −x ∗ ∥3 4(cid:33) .",
+      "size": 305,
+      "sentences": 2
+    },
+    {
+      "id": 48,
+      "content": "d:33)(cid:35) −f(x )≤O (cid:32) L∥x 0 −x ∗ ∥2 + σ √ ∥x 0 −x ∗ ∥ + L1 3σ2 3 ∥x 0 −x ∗ ∥3 4(cid:33) . (2)\nRH\nr=0h=0\nr,h ∗ RH MRH H1 3R2\n3\nThe first two terms in the above convergence guarantee show that increasing the number of local steps has\nthe same effect as increasing the number of communication rounds R, and are identical to the convergence\nguarantee of doing RH steps of SGD with minibatch size M. Local SGD differs from ordinary minibatch\nSGD in the last term, which shows different scaling between H and R, where increasing R helps more than\nincreasing H. This is because increasing H incurrs additional client drift that slows down the convergence of\nthe algorithm in the presence of stochastic gradient noise.",
+      "size": 720,
+      "sentences": 2
+    },
+    {
+      "id": 49,
+      "content": "rift that slows down the convergence of\nthe algorithm in the presence of stochastic gradient noise. When the outer stepsize γ is allowed to vary, the\n4\n===  5 ===\nconvergence of the algorithm is less clear. Karimireddy et al. (2020) gives the following convergence rate in\nthe absence of data heterogeneity,\nE (cid:34) f (cid:32) 1 R (cid:88) −1 x (cid:33)(cid:35) −f(x )≤O (cid:32) L∥x 0 −x ∗ ∥2 + σ∥ √ x 0 −x ∗ ∥ (cid:33) ,\nR r ∗ R MR\nr=0\nfor specially chosen η and γ pairs.",
+      "size": 476,
+      "sentences": 4
+    },
+    {
+      "id": 50,
+      "content": "d:32) L∥x 0 −x ∗ ∥2 + σ∥ √ x 0 −x ∗ ∥ (cid:33) ,\nR r ∗ R MR\nr=0\nfor specially chosen η and γ pairs. This rate matches that of Minibatch SGD, but does not recover the\nconvergence rate of vanilla Local SGD given by Equation (2). Jhunjhunwala, Wang, and Joshi (2023) also\ngive a guarantee for Generalized Local SGD with a specific outer learning rate that is always at least 1 and\nthat depends on the heterogeneity of the iterates across the different clients.",
+      "size": 457,
+      "sentences": 3
+    },
+    {
+      "id": 51,
+      "content": "ways at least 1 and\nthat depends on the heterogeneity of the iterates across the different clients. Since the analysis is conducted\nin the heterogeneous setting, the local stepsize required to scale with 1/H. A guarantee that applies to any\nouter learning rate in the nonconvex, heterogeneous setting given by (Sun et al., 2024).",
+      "size": 329,
+      "sentences": 3
+    },
+    {
+      "id": 52,
+      "content": "ies to any\nouter learning rate in the nonconvex, heterogeneous setting given by (Sun et al., 2024). The limiting factor in existing analysis is that we are forced to choose the local stepsize η to scale as 1 ,\nLH\nwhereas to obtain Equation (2) we sometimes need to choose η to be much larger, on the order of 1. If we\nL\naim to accurately characterize the convergence of (GEN-LOC-SGD), our analysis has to encompass both\nlarge and small local stepsizes η. New analysis.",
+      "size": 468,
+      "sentences": 4
+    },
+    {
+      "id": 53,
+      "content": "(GEN-LOC-SGD), our analysis has to encompass both\nlarge and small local stepsizes η. New analysis. We now present our main convergence theorem for (GEN-LOC-SGD). Theorem 3.3. Suppose that Theorems 3.1 and 3.2 hold.",
+      "size": 214,
+      "sentences": 5
+    },
+    {
+      "id": 54,
+      "content": "ur main convergence theorem for (GEN-LOC-SGD). Theorem 3.3. Suppose that Theorems 3.1 and 3.2 hold. Then the iterates generated by Generalized Local\nSGD run with local stepsize η >0 and outer stepsize γ >0 for R communication rounds and with H local\nsteps per round satisfy,\nE (cid:34) f (cid:32) 1 R (cid:88) −1H (cid:88) −1 y (cid:33)(cid:35) −f(x )≤O (cid:32) ∥x 0 −x ∗ ∥2 + ησ2(1+(γ−1) + ) +Lη2σ2H (cid:33) , (3)\nRH r,h ∗ ηγRH M\nr=0h=0\nwhere (a) =max(a,0).",
+      "size": 460,
+      "sentences": 4
+    },
+    {
+      "id": 55,
+      "content": ") ∥x 0 −x ∗ ∥2 + ησ2(1+(γ−1) + ) +Lη2σ2H (cid:33) , (3)\nRH r,h ∗ ηγRH M\nr=0h=0\nwhere (a) =max(a,0). and provided the stepsizes η and γ jointly satisfy ηL(1+(γ−1) H)≤ 1. + + 4\nImplications of Theorem 3.3. BeforegivingaproofsketchforTheorem3.3,wefirstdiscussitsimplications. Observe that when γ ≤ 1, we are allowed to choose η larger than Ω( 1 ). This is crucial to obtain the\nLH\nrate of Equation (2).",
+      "size": 399,
+      "sentences": 6
+    },
+    {
+      "id": 56,
+      "content": "are allowed to choose η larger than Ω( 1 ). This is crucial to obtain the\nLH\nrate of Equation (2). Indeed, when γ = 1, the requirement on η reduces to ηL ≤ 1 and we can choose η\n4\nfollowing (Woodworth, Patel, Stich, et al., 2020) as\n (cid:115) (cid:34) (cid:35)1\n1 M∥x −x ∥2 ∥x −x ∥2 3\nη =min , 0 ∗ , 0 ∗ \n4L σ2RH Lσ2H2R\nPlugging this choice of η yields the convergence guarantee of Equation (2).",
+      "size": 400,
+      "sentences": 3
+    },
+    {
+      "id": 57,
+      "content": ", 0 ∗ \n4L σ2RH Lσ2H2R\nPlugging this choice of η yields the convergence guarantee of Equation (2). Alternatively, when 8ηL≤1, the\nstepsize requirement is met if we choose ηγLH ≤ 1 and we immediately get the Minibatch SGD guarantee. 8\nIn particular, choose η=O (cid:0) 1 (cid:1) and γ=O (cid:16) γ∗ (cid:17) , the rate then becomes\nRL ηLH\n8L∥x −x ∥2 σ2H γ σ2\nf(y )−f(x )≤ 0 ∗ + + ∗ ,\nout ∗ γ R 8R2L 4LMH\n∗\nwhere y denotes the average over all iterations and clients as in Equation (3).",
+      "size": 484,
+      "sentences": 3
+    },
+    {
+      "id": 58,
+      "content": "t ∗ γ R 8R2L 4LMH\n∗\nwhere y denotes the average over all iterations and clients as in Equation (3). Then for R large enough we\nout\n(cid:18)(cid:113) (cid:19)\ncan choose γ =O LD2σ2MH and this gives us the minibatch SGD rate\n∗ Rσ2\nLD2 σD\nf(y )−f(x )≤ + √ . out ∗ R MRH\nThis confirms the intuition that at the extremes, manipulating the stepsizes γ and η allows us to interpolate\nbetween minibatch SGD and (vanilla) Local SGD, as observed by (Woodworth, Patel, and Srebro, 2020).",
+      "size": 476,
+      "sentences": 3
+    },
+    {
+      "id": 59,
+      "content": "between minibatch SGD and (vanilla) Local SGD, as observed by (Woodworth, Patel, and Srebro, 2020). In\nfact, Theorem 3.3 allows us to go a step further and get an explicit expression for the optimal inner and outer\nstepsizes depending on the problem parameters. This is given by the following proposition. 5\n===  6 ===\nProposition 3.4. Let h(η,γ) be defined as\nD2 η(1+(γ−1) )σ2\nh(η,γ)= +Lσ2Hη2+ + . (4)\nηγRH M\nConsider the optimization problem:\n1\nmin h(η,γ) subject to ηL(1+(γ−1) H)≤ .",
+      "size": 485,
+      "sentences": 6
+    },
+    {
+      "id": 60,
+      "content": "+Lσ2Hη2+ + . (4)\nηγRH M\nConsider the optimization problem:\n1\nmin h(η,γ) subject to ηL(1+(γ−1) H)≤ . (5)\nη>0,γ>0 + 4\nThe solution (η∗,γ∗) is given by comparing the following two candidates. 1. Candidate (η∗,γ∗) defined by γ∗ =1 and η∗ =min( 1 ,η′ ) where η′ is the unique positive root of the\nA A A A 4L A A\ncubic equation\nσ2 D2\n2LHσ2η3+ η2− =0. M RH\n2.",
+      "size": 352,
+      "sentences": 6
+    },
+    {
+      "id": 61,
+      "content": "η′ is the unique positive root of the\nA A A A 4L A A\ncubic equation\nσ2 D2\n2LHσ2η3+ η2− =0. M RH\n2. Candidate (η∗,γ∗) for the regime γ ≥1 with 4ηL<1, where (a) the constraint is enforced with equality:\nB B\n(cid:18) (cid:19)\n1 1\nγ (η)=1+ −1 ,\nB H 4Lη\nand (b) η∗ is the unique positive root of the cubic equation\nB\n4L2D2(H −1) σ2(H −1)\n− +2Lσ2Hη(ηL(H −1)+1)2+ (ηL(H −1)+1)2 =0.",
+      "size": 374,
+      "sentences": 3
+    },
+    {
+      "id": 62,
+      "content": "ositive root of the cubic equation\nB\n4L2D2(H −1) σ2(H −1)\n− +2Lσ2Hη(ηL(H −1)+1)2+ (ηL(H −1)+1)2 =0. R MH\nThe optimal solution (η∗,γ∗) is the candidate pair from {(η∗,γ∗),(η∗,γ∗)} that yields the smaller value of\nA A B B\nh(η,γ). The proof of the above proposition is straightforward and follows by writing the KKT conditions for the\noptimization problem in Equation (5).",
+      "size": 369,
+      "sentences": 3
+    },
+    {
+      "id": 63,
+      "content": "ightforward and follows by writing the KKT conditions for the\noptimization problem in Equation (5). A consequence of Theorem 3.4 is that in the case of ill-tuning of the\ninner stepsize η, a large outer stepsize γ can make up for it. For example, if σ →0 and ηLH ≪O(1), we can\nmake up for this by choosing γ as 1 . Thus, we can interpret the outer learning rate γ as having two dual\nηLH\nroles.",
+      "size": 392,
+      "sentences": 4
+    },
+    {
+      "id": 64,
+      "content": "by choosing γ as 1 . Thus, we can interpret the outer learning rate γ as having two dual\nηLH\nroles. (a) It allows us to interpolate between minibatch SGD (γ >1) and vanilla Local SGD (γ =1), giving\nus the better of the two rates, and (b) it provides us some additional leeway in hyperparameter tuning by\nmaking up for ill-tuned inner learning rate η. Our theory suggests that in the worst case, choices of γ <1 are not useful from an optimization perspective. We should either choose γ = 1 or γ > 1.",
+      "size": 499,
+      "sentences": 5
+    },
+    {
+      "id": 65,
+      "content": "es of γ <1 are not useful from an optimization perspective. We should either choose γ = 1 or γ > 1. This can be seen even on quadratic objectives, for example if\nf(x) = x⊤Qx for some positive definite matrix Q, then a straightforward computation gives the expected\n2\niterate after H local steps and R communication rounds is\nE[x ]=((1−γ)I+γ(I−ηQ)H)x . R 0\nFrom this, it is clear that if η is chosen such that (I−ηQ)H has eigenvalues smaller than 1, we should choose\nγ ≥1.",
+      "size": 471,
+      "sentences": 4
+    },
+    {
+      "id": 66,
+      "content": "clear that if η is chosen such that (I−ηQ)H has eigenvalues smaller than 1, we should choose\nγ ≥1. Whileif(I−ηQ)H hasanyeigenvalueslargerthan1, weshouldjustchooseγ =0(i.e. justdon’tapply\nthe algorithm at all). In other words, γ can make up for a learning rate that is too small, but not a learning\nrate that is too large. This observation does not exclude that γ < 1 can be useful from a generalization\nperspective, as noted for the case of a single client by Zhou et al.",
+      "size": 471,
+      "sentences": 5
+    },
+    {
+      "id": 67,
+      "content": "e useful from a generalization\nperspective, as noted for the case of a single client by Zhou et al. (2021), in the presence of data heterogeneity,\nas noted by Charles and Konecný (2021), or in the presence of time-varying noise (see next subsection). Proof sketch for Theorem 3.3.",
+      "size": 280,
+      "sentences": 3
+    },
+    {
+      "id": 68,
+      "content": "021), or in the presence of time-varying noise (see next subsection). Proof sketch for Theorem 3.3. We first start by expanding the update for the round iterate x −x =\nr+1 ∗\nx −x +x −x similar to (Karimireddy et al., 2020) to get,\nr+1 r r ∗\n(cid:13) (cid:13)2\n∥x −x ∥2 =∥x −x ∥2−2γη H (cid:88) −1 ⟨x −x ,g ⟩+γ2η2 (cid:13) (cid:13) H (cid:88) −1 g (cid:13) (cid:13)\nr+1 ∗ r ∗ r ∗ r,h (cid:13) r,h(cid:13)\n(cid:13) (cid:13)\nh=0 h=0\n(cid:13) (cid:13)2\n=∥x −x ∥2−2γη H (cid:88) −1 ⟨x −y ,g ⟩−2γη H (cid:88) −1 ⟨y −x ,g ⟩+γ2η2 (cid:13) (cid:13) H (cid:88) −1 g (cid:13) (cid:13) ,\nr ∗ r r,h r,h r,h ∗ r,h (cid:13) r,h(cid:13)\n(cid:13) (cid:13)\nh=0 h=0 h=0\nwhere g is defined as in Equation (1).",
+      "size": 689,
+      "sentences": 3
+    },
+    {
+      "id": 69,
+      "content": "r,h ∗ r,h (cid:13) r,h(cid:13)\n(cid:13) (cid:13)\nh=0 h=0 h=0\nwhere g is defined as in Equation (1). Karimireddy et al. (2020) and Jhunjhunwala, Wang, and Joshi\nr,h\n(2023) control the inner product −⟨x −y ,g ⟩ by either using smoothness or Young’s inequality; This\nr r,h r,h\nwould force us to bound the stray ∥y −x ∥2 and take the local stepsize η to be small in order to ensure\nr,h r\n6\n===  7 ===\nconvergence.",
+      "size": 409,
+      "sentences": 3
+    },
+    {
+      "id": 70,
+      "content": "−x ∥2 and take the local stepsize η to be small in order to ensure\nr,h r\n6\n===  7 ===\nconvergence. Instead, we rely on bounding this quantity directly by viewing it as the regret in the online\nconvex optimization sense with respect to the comparator x . Observe that the virtual sequence of averaged\nr\nlocal iterates satisfies y =y −ηg , and thus through standard regret analysis we have\nr,h+1 r,h r,h\nH (cid:88) −1 −⟨x −y ,g ⟩= −∥y r,h −x r ∥2 + η H (cid:88) −1 ∥g ∥2.",
+      "size": 469,
+      "sentences": 3
+    },
+    {
+      "id": 71,
+      "content": "analysis we have\nr,h+1 r,h r,h\nH (cid:88) −1 −⟨x −y ,g ⟩= −∥y r,h −x r ∥2 + η H (cid:88) −1 ∥g ∥2. (6)\nr r,h r,h 2η 2 r,h\nh=0 h=0\nThe negative terms −∥y −x ∥2 in Equation (6) turn out to be crucial in obtaining an analysis that\nr,H r\nworks for all η and not just small η. With this change and through carefully bounding the variance terms\nfollowing (Khaled, Mishchenko, and Richtárik, 2020; Woodworth, Patel, Stich, et al., 2020), we obtain the\nguarantee of Theorem 3.3.",
+      "size": 470,
+      "sentences": 3
+    },
+    {
+      "id": 72,
+      "content": "nd Richtárik, 2020; Woodworth, Patel, Stich, et al., 2020), we obtain the\nguarantee of Theorem 3.3. The full proof is provided in Section B.2. Comparison with results on related algorithms. Malinovsky, Mishchenko, and Richtárik (2022)\nanalyze a closely related variant of the algorithm that uses federated random reshuffling (Mishchenko,\nKhaled, and Richtárik, 2022) as a base.",
+      "size": 377,
+      "sentences": 4
+    },
+    {
+      "id": 73,
+      "content": "gorithm that uses federated random reshuffling (Mishchenko,\nKhaled, and Richtárik, 2022) as a base. This is a significantly different algorithm that doesn’t allow for an\narbitrary number of local steps H and depends on f posessing finite-sum structure. Nevertheless, we can\nstill specialize (Malinovsky and Richtárik, 2022, Theorem 2) approximately to our setting, by using H as the\nnumber of data points in an epoch.",
+      "size": 417,
+      "sentences": 3
+    },
+    {
+      "id": 74,
+      "content": "2022, Theorem 2) approximately to our setting, by using H as the\nnumber of data points in an epoch. In our notation, their convergence guarantee reads\nE (cid:34) f (cid:32) 1 R (cid:88) −1 x (cid:33)(cid:35) −f(x )≤O (cid:32) ∥x 0 −x ∗ ∥2 +η2H2σ2 (cid:33) ,\nR r ∗ ηγHR\nr=0\nunder the conditions ηH ≤ 1 and 1≤γ ≤ 1 . Their theory thus also suggests that γ ≥1 can be useful.",
+      "size": 371,
+      "sentences": 3
+    },
+    {
+      "id": 75,
+      "content": "under the conditions ηH ≤ 1 and 1≤γ ≤ 1 . Their theory thus also suggests that γ ≥1 can be useful. L LηH\nOptimizing over η and γ yields the convergence rate\nE (cid:34) f (cid:32) 1 R (cid:88) −1 x (cid:33)(cid:35) −f(x )≤O (cid:32) L∥x 0 −x ∗ ∥2 (cid:33) ,\nR r ∗ R\nr=0\nthis rate is the same as gradient descent for R steps (since the finite-sum structure means that per-epoch we\napproximate one step of gradient descent when η is small).",
+      "size": 437,
+      "sentences": 3
+    },
+    {
+      "id": 76,
+      "content": "te-sum structure means that per-epoch we\napproximate one step of gradient descent when η is small). A similar rate is derived in (Li, Acharya, and\nRichtárik, 2024; Li and Richtárik, 2024) if we have access to the proximal operator (i.e. we can do many local\nsteps H on a modified objective).",
+      "size": 291,
+      "sentences": 3
+    },
+    {
+      "id": 77,
+      "content": "e have access to the proximal operator (i.e. we can do many local\nsteps H on a modified objective). Li, Acharya, and Richtárik (2024) in particular show that an outer learning\nrate greater than 1 can be particularly useful for improving the convergence of FedProx (Li, Sahu, et al., 2020)\nin the heterogeneous setting when the smoothness constant varies significantly between different clients. Analysis with momentum.",
+      "size": 418,
+      "sentences": 4
+    },
+    {
+      "id": 78,
+      "content": "hen the smoothness constant varies significantly between different clients. Analysis with momentum. Our analysis suggests that values of γ >1 are potentially very useful, but in\npractice such values are rarely used. One reason this might be the case is because the momentum effectively\nactsasastepsizemultiplier,i.e. inthepresenceofmomentumparameterµtheeffectiveouterstepsizebecomes\nγ . Our next theorem establishes this rigorously. 1−µ\nTheorem 3.5. Suppose that Theorems 3.1 and 3.2 hold.",
+      "size": 489,
+      "sentences": 8
+    },
+    {
+      "id": 79,
+      "content": "next theorem establishes this rigorously. 1−µ\nTheorem 3.5. Suppose that Theorems 3.1 and 3.2 hold. Suppose that the outer update is gradient descent\nwith momentum, OuterUpdate(x ,−∆ )=x +γ∆ +µ(x −x ) with momentum parameter µ∈[0,1)\nr r,H r r,H r r−1\nand the local update is gradient descent LocalUpdate(y,g) = y−ηg in Algorithm 1. Let the step sizes η,γ\n(cid:18) (cid:16) (cid:17) (cid:19)\nsatisfy ηL 1+ γ −1 H ≤ 1 and ηγµLH ≤ 1 .",
+      "size": 430,
+      "sentences": 5
+    },
+    {
+      "id": 80,
+      "content": "Let the step sizes η,γ\n(cid:18) (cid:16) (cid:17) (cid:19)\nsatisfy ηL 1+ γ −1 H ≤ 1 and ηγµLH ≤ 1 . Then after R rounds of communication, the averaged\n1−µ 4 1−µ 16\n+\niterate satisfies\n (cid:16) (cid:17) \nE[f(y)]−f(x\n∗\n)≤O (1−µ\nη\n)\nγ\n∥\nH\nz 0\nR\n−x ∗ ∥2 +Lη2σ2H + ησ2 1+(\nM\n1− γ µ −1) + +\n1\nη\n−\nγµ\nµM\nσ2 ,\nwhere y¯is defined as the average of all local iterates across training (as in Equation (3)) and (a) =max(a,0). +\nThe proof is provided in Section B.3.",
+      "size": 458,
+      "sentences": 3
+    },
+    {
+      "id": 81,
+      "content": "tes across training (as in Equation (3)) and (a) =max(a,0). +\nThe proof is provided in Section B.3. Theorem 3.5 shows the requirement on the outer stepsize is relaxed from\na requirement on γ to a requirement on γ , allowing us to reap the same benefits of γ >1 observed earlier if\n1−µ\nwe also tune µ. This benefit was first observed in (Sun et al., 2024) for nonconvex optimization with small\nlocal stepsize η provided we use an additional momentum buffer.",
+      "size": 456,
+      "sentences": 4
+    },
+    {
+      "id": 82,
+      "content": "r nonconvex optimization with small\nlocal stepsize η provided we use an additional momentum buffer. Our work gives direct theoretical support to\nthis observation even with a single momentum buffer and allowing for large η. 7\n===  8 ===\n3.3 Convergence with accelerated outer optimizer\nWenowconsidertheuseofacceleration. Tothebestofourknowledge,thecombinationofanacceleratedouter\noptimizer with an unaccelerated inner optimizer, as in e.g.",
+      "size": 438,
+      "sentences": 4
+    },
+    {
+      "id": 83,
+      "content": "edge,thecombinationofanacceleratedouter\noptimizer with an unaccelerated inner optimizer, as in e.g. DiLoCo (Douillard, Feng, Rusu, Chhaparia, et al.,\n2023; Jaghouar, Ong, and Hagemann, 2024), has not been analyzed in the literature before. We take steps\ntowards addressing this gap and understanding the convergence properties of such algorithms by considering\nNesterov’s accelerated gradient descent (Nesterov, 2018) as the outer optimizer and (stochastic) gradient\ndescent as the inner optimizer.",
+      "size": 498,
+      "sentences": 3
+    },
+    {
+      "id": 84,
+      "content": "t (Nesterov, 2018) as the outer optimizer and (stochastic) gradient\ndescent as the inner optimizer. The following theorem gives a convergence guarantee for this setting. Theorem 3.6. Suppose that Theorems 3.1 and 3.2 hold and the stepsizes satisfy 2Lη ≤1 and γ ≤1.",
+      "size": 264,
+      "sentences": 4
+    },
+    {
+      "id": 85,
+      "content": "ing. Theorem 3.6. Suppose that Theorems 3.1 and 3.2 hold and the stepsizes satisfy 2Lη ≤1 and γ ≤1. Suppose\nthat the outer update is accelerated gradient descent with Nesterov momentum as follows\nu =x −η∆ , z =z −γ η∆ , x =(1−τ )u +τ z ,\nr+1 r r,H r+1 r r r,H r+1 r+1 r+1 r+1 r+1\nwith parameters γ = γ(r+1) and τ = 2 , and the local update is gradient descent LocalUpdate(y,g)=y−ηg\nr 2 r r+2\nin Algorithm 1.",
+      "size": 407,
+      "sentences": 4
+    },
+    {
+      "id": 86,
+      "content": "nd τ = 2 , and the local update is gradient descent LocalUpdate(y,g)=y−ηg\nr 2 r r+2\nin Algorithm 1. Then after R rounds of H steps, the final iterate u satisfies\nR\n2∥x −x ∥2 RLη2σ2H RL2η3σ2H2 γησ2R\nE[f(u )]−f(x )≤ 0 ∗ + + + . (7)\nR ∗ γηR2H 2M 2 2M\nTo understand the implications of the above guarantee, we specialize it with a tuned pair of learning rates\n(γ,η) below. Corollary 3.7.",
+      "size": 383,
+      "sentences": 4
+    },
+    {
+      "id": 87,
+      "content": "e above guarantee, we specialize it with a tuned pair of learning rates\n(γ,η) below. Corollary 3.7. In the same setting as Theorem 3.6, setting γ =1 in Equation (7), and choosing\n(cid:40) 1 (cid:18) 2MD2 (cid:19)1/3 (cid:18) 4D2 (cid:19)1/4 (cid:114) 4MD2 (cid:41)\nη =min , , , ,\n2L R3Lσ2H2 3R3L2σ2H3 R3Hσ2\nwhere D =∥x −x ∥ and the final iterate u satisfies\n0 ∗ R\n(cid:16)LD2 L1/3σ2/3D4/3 L1/2σ1/2D3/2 σD (cid:17)\nE[f(u )]−f(x )≤O + + + √ .",
+      "size": 440,
+      "sentences": 3
+    },
+    {
+      "id": 88,
+      "content": "rate u satisfies\n0 ∗ R\n(cid:16)LD2 L1/3σ2/3D4/3 L1/2σ1/2D3/2 σD (cid:17)\nE[f(u )]−f(x )≤O + + + √ . (8)\nR ∗ R2H RM1/3H1/3 R5/4H1/4 MRH\nEquation (8) shows that in the absence of noise, we obtain a rate accelerated in R but not H. This intuitively\nmakessense,sincewedoaccelerationonlyintheouterloop. Inthepresenceofnoise,wehaveintheworst-case\nthe unimprovable √σD term and two additional noise terms that characterize the drift suffered by this\nMRH\nalgorithm.",
+      "size": 457,
+      "sentences": 3
+    },
+    {
+      "id": 89,
+      "content": "√σD term and two additional noise terms that characterize the drift suffered by this\nMRH\nalgorithm. Notably, the drift terms have much better dependence on R compared to Local SGD, as given by\nEquation(2). YuanandMa(2020)analyzeFedAC,anacceleratedvariantofLocalSGDthatusesacceleration\nlocally and applies simple averaging as the outer optimizer. Their algorithm enjoys the convergence rate\n(cid:18) LD2 L1/3σ2/3D4/3 L1/2σ1/2D3/2 σD (cid:19)\nE[f(x )]−f(x )≤O + + + √ .",
+      "size": 467,
+      "sentences": 4
+    },
+    {
+      "id": 90,
+      "content": "the convergence rate\n(cid:18) LD2 L1/3σ2/3D4/3 L1/2σ1/2D3/2 σD (cid:19)\nE[f(x )]−f(x )≤O + + + √ . out ∗ R2H RH1/3 RH1/4 MRH\nComparing with Equation (8), our algorithm enjoys better dependence on R and M in the denominators of\nthe two drift terms while using momentum sequences only on the server.",
+      "size": 297,
+      "sentences": 2
+    },
+    {
+      "id": 91,
+      "content": "and M in the denominators of\nthe two drift terms while using momentum sequences only on the server. 3.4 Data-dependent convergence result\nTo further understand the role of the outer stepsize, we now present a data-dependent, high-probability\nguaranteeforGeneralizedLocalSGDinTheorem3.8,comparedtotheratherworst-caseanalysisofTheorem3.3. This analysis may also provide insights into practical tuning of the outer learning rate\nTheorem 3.8. Suppose that Theorems 3.1 and 3.2 hold.",
+      "size": 478,
+      "sentences": 4
+    },
+    {
+      "id": 92,
+      "content": "to practical tuning of the outer learning rate\nTheorem 3.8. Suppose that Theorems 3.1 and 3.2 hold. Then in Algorithm 1 with outer update x=x−γ∆\nand local update y =y−ηg, if the local stepsize satisfies η ≤ 1 then with probability at least 1−δ the iterates\nL\ngenerated satisfy\nf (cid:32) 1 R (cid:88) −1H (cid:88) −1 y (cid:33) −f(x )≤O˜ (cid:32) ∥x 0 −x ∗ ∥2 + γη (cid:88) ∥g ∥2+γησ2\nRH r,h ∗ γηRH RH r,h\nr=0 h=0 r,h\n(cid:32) (cid:33)2  2 (cid:115) (cid:33)\n+ |1 R − H γ|η (cid:88) (cid:88) ∥g r,h ∥ + γ η H  M 1 m r ax (cid:88) ∥g m,r,h ∥ +ησ M 1 R (cid:88) ∥g m,r,h ∥2 .",
+      "size": 577,
+      "sentences": 3
+    },
+    {
+      "id": 93,
+      "content": "id:88) (cid:88) ∥g r,h ∥ + γ η H  M 1 m r ax (cid:88) ∥g m,r,h ∥ +ησ M 1 R (cid:88) ∥g m,r,h ∥2 . r h m,h m,r,h\n8\n===  9 ===\nThe proof of Theorem 3.8 is provided in Section B.5. Compared to Theorem 3.3, the guarantee we obtain\nhere is weaker in some areas, e.g., the variance term γησ2 does not benefit from increasing M. On the other\nhand, this guarantee is a high-probability and data-dependent guarantee.",
+      "size": 409,
+      "sentences": 3
+    },
+    {
+      "id": 94,
+      "content": "increasing M. On the other\nhand, this guarantee is a high-probability and data-dependent guarantee. To the best of our knowledge, this\nis the first high-probability convergence guarantee for Local SGD in the literature. Theorem 3.8 allows us to\nobserve another potential benefit of using γ ≠ 1. To see how, let us make the simplifying assumption that\n∥gˆ ∥ ≊ G and ∥g ∥ ≊ G .",
+      "size": 376,
+      "sentences": 4
+    },
+    {
+      "id": 95,
+      "content": "t of using γ ≠ 1. To see how, let us make the simplifying assumption that\n∥gˆ ∥ ≊ G and ∥g ∥ ≊ G . Observe that by the triangle inequality we have G ≤ G , but in fact G\nr,h 1 m,r,h 2 1 2 1\ncan be significantly smaller than G , particularly in the later stages of the optimization process, due to the\n2\nvariance reduction effect of averaging together the gradients on different nodes.",
+      "size": 384,
+      "sentences": 3
+    },
+    {
+      "id": 96,
+      "content": "ess, due to the\n2\nvariance reduction effect of averaging together the gradients on different nodes. Then we can rewrite the\nabove guarantee as\n(cid:18) d2 ηHG2 √ (cid:19)\nf(y)−f(x )≤O˜ 0 +γηG2+γησ2+|1−γ|ηHG2+ 2 +ησ HG (9)\n∗ γηRH 1 1 γ 2\nThe γ that minimizes this upper bound is given by the following proposition. Proposition 3.9. Let g(x)= a +bx+|1−x|c for a,b,c≥0.",
+      "size": 366,
+      "sentences": 4
+    },
+    {
+      "id": 97,
+      "content": "r bound is given by the following proposition. Proposition 3.9. Let g(x)= a +bx+|1−x|c for a,b,c≥0. x\n• if a≥b+c, then (cid:112) a/(b+c) minimizes g,\n• if b−c≥0 and a≤b−c, then (cid:112) a/(b−c) minimizes g,\n• Otherwise, x=1 minimizes g.\nApplying this lemma to Equation (9) one can see that simple averaging is suboptimal depending on the\nvariance and relative magnitudes of G and G .",
+      "size": 384,
+      "sentences": 4
+    },
+    {
+      "id": 98,
+      "content": "that simple averaging is suboptimal depending on the\nvariance and relative magnitudes of G and G . In particular, the first condition in our setting is\n1 2\nd2\n0 +ηHG2 ≳η(G2+σ2)+ηHG2,\nηRH 2 1 1\nwhere ≳ indicates that the inequality holds up to constant factors of the terms on both sides. Since G ≥G ,\n2 1\nwe can simplify the above condition to d2 0 +HG2 ≳σ2. This condition essentially asks if the noise is large\nη2RH 2\nrelative to the “optimization term” d2 0 or not.",
+      "size": 468,
+      "sentences": 4
+    },
+    {
+      "id": 99,
+      "content": "tion essentially asks if the noise is large\nη2RH 2\nrelative to the “optimization term” d2 0 or not. In the latter case, choosing γ >1 is helpful, and the outer\nη2RH\noptimizer acts as a form of momentum that helps reduce the optimization term further. On the other hand,\nthe second condition yields γ <1 and requires that σ2 ≳ d2 0 +HG2. This is an especially noise-dominated\nη2RH 2\nregime, which we may expect to observe towards the end of the training process.",
+      "size": 461,
+      "sentences": 4
+    },
+    {
+      "id": 100,
+      "content": "se-dominated\nη2RH 2\nregime, which we may expect to observe towards the end of the training process. In this case, decaying the\nouter learning rate to γ ≪1 allows the algorithm to maintain convergence despite the high noise magnitude. When the optimization term and the noise term are of the same order, then γ =1 is the optimal choice.",
+      "size": 335,
+      "sentences": 3
+    },
+    {
+      "id": 101,
+      "content": "en the optimization term and the noise term are of the same order, then γ =1 is the optimal choice. 4 Experiments\nWe conduct two sets of experiments: (a) solving convex optimization problems to provide the most direct\nverification of the predictions of our theory, and (b) training transformer based language models. Due to\nlimitations of space, we present only highlights of the results here and most of the details and ablations are\nprovided in the supplementary materials (Section A).",
+      "size": 487,
+      "sentences": 3
+    },
+    {
+      "id": 102,
+      "content": "here and most of the details and ablations are\nprovided in the supplementary materials (Section A). 4.1 Convex optimization\n1.4 1.2\n1.0 0.8\n0.6 0.4\n0.2\n103 102 101 100 101\nSigma ()\n)(\nammaG\nlamitpO\n106\n104\n102\n100\n102\n100 101 102 103\nCommunication Rounds\n(a) Optimalγ vsσ.",
+      "size": 272,
+      "sentences": 2
+    },
+    {
+      "id": 103,
+      "content": "igma ()\n)(\nammaG\nlamitpO\n106\n104\n102\n100\n102\n100 101 102 103\nCommunication Rounds\n(a) Optimalγ vsσ. ssoL\nWe conduct experiments on the quadratic ob-\njective f(x) = 1∥Q(x−x )∥2, where Q = 2 ∗ A⊤A∈Rd for d=50 and the entries A are\ni,j\nall drawn from a normal distribution A ∼ i,j = 0.001 N(0,1) for i = 1,...,d and j = 1,...,d, = 0.01\n= 0.1 and x ∗ is similarly drawn from the standard = 0.5\nd-dimensional Gaussian.",
+      "size": 413,
+      "sentences": 2
+    },
+    {
+      "id": 104,
+      "content": "= 1,...,d, = 0.01\n= 0.1 and x ∗ is similarly drawn from the standard = 0.5\nd-dimensional Gaussian. We use stochastic = 1.0\n= 10.0\ngradients of the form g(x) = ∇f(x) + v,\nwhere the v’s are random vectors drawn from\n(b) Lossfordifferentσ. the Gaussian with mean 0 and variance σ2,\nv ∼ N(0,σ2).",
+      "size": 291,
+      "sentences": 3
+    },
+    {
+      "id": 105,
+      "content": "om vectors drawn from\n(b) Lossfordifferentσ. the Gaussian with mean 0 and variance σ2,\nv ∼ N(0,σ2). We evaluate the performance Figure 1: Effect of varying σ and γ for quadratic problem\n9\n[  ]\n\n===  10 ===\n28\n27 26 25\n24 23\n22\n21 20\n19\n18\n17 160 8000 16000 24000\nTraining Steps\nytixelpreP\n28\nData-Parallel: 18.07 27 Data-Parallel 4 x batch-size: 16.89 26 Average: 17.75 25 Nesterov, LR=0.7: 17.26 24\nNesterov, LR=1.0: 16.38 2 2 2 3 SF-SGD: 16.88 21\n20\n19 18\n17 16\n15\n14 13 0 8000 16000 24000\nTraining Steps\n(a) 150M\nytixelpreP\n28\nData-Parallel: 15.28 27 Data-Parallel 4 x batch-size: 13.21 2 2 5 6 Average: 14.9 24 Nesterov, LR=0.7: 13.71 23\nNesterov, LR=1.0: 30 2 2 1 2 SF-SGD: 13.95 20\n19\n18 17 16\n15 14\n13\n12 11 100 8000 16000 24000\nTraining Steps\n(b) 400M\nytixelpreP\nData-Parallel: 13.38 Data-Parallel 4 x batch-size: 11.34 Average: 13.67 Nesterov, LR=0.7: 12.51\nSF-SGD: 12.4\n(c) 1B\nFigure 2: Scaling distributed pretraining, at 150M, 400M, and 1B parameters.",
+      "size": 963,
+      "sentences": 3
+    },
+    {
+      "id": 106,
+      "content": "51\nSF-SGD: 12.4\n(c) 1B\nFigure 2: Scaling distributed pretraining, at 150M, 400M, and 1B parameters. of Algorithm 1 for various values of σ, σ ∈{10−3,10−2,10−1,0.5,1,5,10,15,25,50}. For each σ we perform\nan extensive grid search over γ ∈{0.001,0.01,0.1,0.5,0.9,1.0,1.1,1.25,1.5,2} to determine the best one in\nterms of minimum average loss over the last ten rounds. We use R=1000 rounds and H =50 local steps,\nand fix η =0.001 in all cases.",
+      "size": 439,
+      "sentences": 4
+    },
+    {
+      "id": 107,
+      "content": "ver the last ten rounds. We use R=1000 rounds and H =50 local steps,\nand fix η =0.001 in all cases. Figure 1(a) shows how the optimal value of γ varies with different noise levels σ. We observe that, as σ\nincreases, the optimal γ decreases from 1.0 to 0.1, as predicted by our analysis. Figure 1(b) also illustrates\nthe loss trajectories for different noise levels σ with the best γ.",
+      "size": 383,
+      "sentences": 5
+    },
+    {
+      "id": 108,
+      "content": "s. Figure 1(b) also illustrates\nthe loss trajectories for different noise levels σ with the best γ. 4.2 Transformer pretraining\nSetup Following the DiLoCo paper (Douillard, Feng, Rusu, Chhaparia, et al., 2023), we experiment using a\nChinchilladecodertransformer(Hoffmannetal.,2022)ontheC4dataset(Raffeletal.,2020). Thearchitecture\nhyperparameters are identical from the DiLoCo paper (Douillard, Feng, Rusu, Chhaparia, et al., 2023) and\nare given in Section A.1.1.",
+      "size": 463,
+      "sentences": 3
+    },
+    {
+      "id": 109,
+      "content": "m the DiLoCo paper (Douillard, Feng, Rusu, Chhaparia, et al., 2023) and\nare given in Section A.1.1. We fix the batch size at 512 and the sequence length at 1024. We experiment at\ndifferent scales, from 150 million to 1 billion parameters. For all experiments, the inner optimizer is AdamW\n(Loshchilov and Hutter, 2019) trained with a cosine learning rate schedule defined across the total amount of\nsteps.",
+      "size": 405,
+      "sentences": 4
+    },
+    {
+      "id": 110,
+      "content": "utter, 2019) trained with a cosine learning rate schedule defined across the total amount of\nsteps. The inner optimizer state is never shared across replicas, and is passed from one round to the other. Methods We compare three distributed methods, using different outer optimizers: SGD(lr=1) (equivalent to\nsimple averaging of local models (McMahan et al., 2017)), Nesterov (equivalent to DiLoCo (Douillard, Feng,\nRusu, Chhaparia, et al., 2023)), and ScheduleFree-SGD (SF-SGD) (Defazio et al., 2024).",
+      "size": 500,
+      "sentences": 3
+    },
+    {
+      "id": 111,
+      "content": "llard, Feng,\nRusu, Chhaparia, et al., 2023)), and ScheduleFree-SGD (SF-SGD) (Defazio et al., 2024). We use SF-SGD to\nsubstitute for outer learning rate scheduling, though it still requires tuning hyperparameters.",
+      "size": 212,
+      "sentences": 2
+    },
+    {
+      "id": 112,
+      "content": "to\nsubstitute for outer learning rate scheduling, though it still requires tuning hyperparameters. We also include\ntwo “high-communication\" data-parallel baselines: one with the global batch size as the local per-replica batch\nsize used by the distributed methods, and one with the same batch size as the global batch size (M× the\nlocal per-replica batch size) used by the distributed methods.",
+      "size": 393,
+      "sentences": 2
+    },
+    {
+      "id": 113,
+      "content": "ize as the global batch size (M× the\nlocal per-replica batch size) used by the distributed methods. The latter requires either more GPUs and more\nthus communication, or gradient accumulation and thus more time. The latter also has an equal flops budget\nas the distributed methods. We tuned all our optimizers on the pretraining setting on a separate validation\nset . We also considered using SF-Nesterov, but it was hard to tune and unstable.",
+      "size": 442,
+      "sentences": 5
+    },
+    {
+      "id": 114,
+      "content": "parate validation\nset . We also considered using SF-Nesterov, but it was hard to tune and unstable. Results Table 1 gives the optimal hyper-\nHyperparameter Selected Range considered\nparameters per scale, and Figure 2 gives\ntheperplexitycurves.",
+      "size": 243,
+      "sentences": 3
+    },
+    {
+      "id": 115,
+      "content": "erparameter Selected Range considered\nparameters per scale, and Figure 2 gives\ntheperplexitycurves. Consistentwiththe Number of inner steps H 50, 500 50 to 2000\npredictions of our theory, we found that Peak outer LR for Nesterov 0.7 0.1 to 2.0\nan outer learning rate greater than 1.0 Peak outer LR for SF-SGD 2.0 1e−4 to 10.0\nperformed best for SF-SGD and a rela- b1 for SF-SGD 0.2 0.0 to 0.99\ntively large effective outer learning rate Peak inner learning rate (150M) 4e−4 4e−4\nalso performed best for Nesterov; More- Peak inner learning rate (400M) 4e−4 4e−4\nover, acceleration consistently improved Peak inner learning rate (1B) 2e−4 2e−4\nperformance relative to the baseline Lo- Table 1: Optimizer hyperparameters for the three evaluated\ncal SGD.",
+      "size": 750,
+      "sentences": 2
+    },
+    {
+      "id": 116,
+      "content": "ce relative to the baseline Lo- Table 1: Optimizer hyperparameters for the three evaluated\ncal SGD. In the supplementary material, sizes. Allarebasedonthetransformerarchitecture,chinchilla-style\nwe report the effect of varying the num- (Hoffmann et al., 2022). ber of local steps (Section A.1.2), the number of clients/replicas and different ways of FLOPs allocation\n(Section A.1.3), and gradient variance (Section A.1.6).",
+      "size": 422,
+      "sentences": 4
+    },
+    {
+      "id": 117,
+      "content": "icas and different ways of FLOPs allocation\n(Section A.1.3), and gradient variance (Section A.1.6). 10\n===  11 ===\n5 Conclusion and Future Work\nIn this paper, we studied the impact of the outer learning rate on the convergence of Local SGD through\ntwo novel convergence theorems that characterize its role in balancing a trade-off between convergence speed\nand stochastic gradient variance.",
+      "size": 390,
+      "sentences": 2
+    },
+    {
+      "id": 118,
+      "content": "erize its role in balancing a trade-off between convergence speed\nand stochastic gradient variance. We have also studied the impact of using momentum in the presence of an\nouter learning rate, and provided a new convergence analysis for using Nesterov acceleration in the outer\noptimizer. One limitation of our results is that we only consider the i.i.d. setting; Studying the impact of\ndata heterogeneity is therefore a natural next step.",
+      "size": 439,
+      "sentences": 4
+    },
+    {
+      "id": 119,
+      "content": "der the i.i.d. setting; Studying the impact of\ndata heterogeneity is therefore a natural next step. Another avenue for future work is to investigate the role\nof adaptive outer optimizers in enhancing robustness to client failures and communication delays. References\nBauschke, Heinz H. and Patrick L. Combettes (2009). “The Baillon-Haddad Theorem Revisited”. In: arXiv\npreprint arXiv:0906.0807. url: https://arXiv.org/abs/0906.0807.",
+      "size": 432,
+      "sentences": 6
+    },
+    {
+      "id": 120,
+      "content": "addad Theorem Revisited”. In: arXiv\npreprint arXiv:0906.0807. url: https://arXiv.org/abs/0906.0807. Borzunov,Alexander,DmitryBaranchuk,TimDettmers,MaxRyabinin,YounesBelkada,ArtemChumachenko,\nPavel Samygin, and Colin Raffel (2022). “Petals: Collaborative Inference and Fine-tuning of Large Models”. In: arXiv preprint arXiv:2209.01188.",
+      "size": 334,
+      "sentences": 5
+    },
+    {
+      "id": 121,
+      "content": "als: Collaborative Inference and Fine-tuning of Large Models”. In: arXiv preprint arXiv:2209.01188. Brown, Tom B., Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared Kaplan, Prafulla Dhariwal, Arvind\nNeelakantan,PranavShyam,GirishSastry,AmandaAskell,SandhiniAgarwal,ArielHerbert-Voss,Gretchen\nKrueger, Tom Henighan, Rewon Child, Aditya Ramesh, Daniel M. Ziegler, Jeffrey Wu, Clemens Winter,\nChristopher Hesse, Mark Chen, Eric Sigler, Mateusz Litwin, Scott Gray, Benjamin Chess, Jack Clark,\nChristopher Berner, Sam McCandlish, Alec Radford, Ilya Sutskever, and Dario Amodei (2020).",
+      "size": 579,
+      "sentences": 3
+    },
+    {
+      "id": 122,
+      "content": "k Clark,\nChristopher Berner, Sam McCandlish, Alec Radford, Ilya Sutskever, and Dario Amodei (2020). “Language\nModels are Few-Shot Learners”. In: Advances in Neural Information Processing Systems 33: Annual\nConference on Neural Information Processing Systems 2020, NeurIPS 2020, December 6-12, 2020, virtual. Ed. by Hugo Larochelle, Marc’Aurelio Ranzato, Raia Hadsell, Maria-Florina Balcan, and Hsuan-Tien Lin.",
+      "size": 409,
+      "sentences": 5
+    },
+    {
+      "id": 123,
+      "content": ". by Hugo Larochelle, Marc’Aurelio Ranzato, Raia Hadsell, Maria-Florina Balcan, and Hsuan-Tien Lin. url: https://proceedings.neurips.cc/paper/2020/hash/1457c0d6bfcb4967418bfb8ac142f64a-\nAbstract.html. Charles, Zachary and Jakub Konecný (2021). “Convergence and Accuracy Trade-Offs in Federated Learning\nand Meta-Learning”. In: The 24th International Conference on Artificial Intelligence and Statistics,\nAISTATS 2021, April 13-15, 2021, Virtual Event. Ed. by Arindam Banerjee and Kenji Fukumizu. Vol.",
+      "size": 500,
+      "sentences": 9
+    },
+    {
+      "id": 124,
+      "content": "s,\nAISTATS 2021, April 13-15, 2021, Virtual Event. Ed. by Arindam Banerjee and Kenji Fukumizu. Vol. 130. Proceedings of Machine Learning Research. PMLR, pp. 2575–2583. url: http://proceedings.mlr. press/v130/charles21a.html. Charles,ZacharyandJakubKonečný(2020).“OntheOutsizedImportanceofLearningRatesinLocalUpdate\nMethods”. In: arXiv preprint arXiv:2007.00878. url: https://arXiv.org/abs/2007.00878. DeepSeek-AI, Daya Guo, et al. (2025).",
+      "size": 438,
+      "sentences": 14
+    },
+    {
+      "id": 125,
+      "content": "rint arXiv:2007.00878. url: https://arXiv.org/abs/2007.00878. DeepSeek-AI, Daya Guo, et al. (2025). DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Rein-\nforcement Learning. DeepSeek-AI, Aixin Liu, et al. (2024). “DeepSeek-V3 technical report”. In: arXiv preprint arXiv:2412.19437. Defazio, Aaron, Xingyu Alice Yang, Harsh Mehta, Konstantin Mishchenko, Ahmed Khaled, and Ashok\nCutkosky (2024). “The Road Less Scheduled”. In: arXiv preprint arXiv:2405.15682. url: https://arXiv.",
+      "size": 489,
+      "sentences": 11
+    },
+    {
+      "id": 126,
+      "content": "utkosky (2024). “The Road Less Scheduled”. In: arXiv preprint arXiv:2405.15682. url: https://arXiv. org/abs/2405.15682. Diskin, Michael, Alexey Bukhtiyarov, Max Ryabinin, Lucile Saulnier, Quentin Lhoest, Anton Sinitsin, Dmitry\nPopov, Dmitry Pyrkin, Maxim Kashirin, Alexander Borzunov, Albert Villanova del Moral, Denis Mazur,\nIlia Kobelev, Yacine Jernite, Thomas Wolf, and Gennady Pekhimenko (2021). “Distributed Deep Learning\nin Open Collaborations”.",
+      "size": 451,
+      "sentences": 6
+    },
+    {
+      "id": 127,
+      "content": "te, Thomas Wolf, and Gennady Pekhimenko (2021). “Distributed Deep Learning\nin Open Collaborations”. In: Advances in Neural Information Processing Systems (NeurIPS). Douillard, Arthur, Qixuan Feng, Andrei A. Rusu, Rachita Chhaparia, Yani Donchev, Adhiguna Kuncoro,\nMarc’Aurelio Ranzato, Arthur Szlam, and Jiajun Shen (2023). “DiLoCo: Distributed Low-Communication\nTraining of Language Models”. In: arXiv preprint arXiv:2311.08105. url: https://arXiv.org/abs/2311. 08105.",
+      "size": 469,
+      "sentences": 7
+    },
+    {
+      "id": 128,
+      "content": "g of Language Models”. In: arXiv preprint arXiv:2311.08105. url: https://arXiv.org/abs/2311. 08105. Douillard, Arthur, Qixuan Feng, Andrei A. Rusu, Adhiguna Kuncoro, Yani Donchev, Rachita Chhaparia,\nIonel Gog, Marc’Aurelio Ranzato, Jiajun Shen, and Arthur Szlam (2024). “DiPaCo: Distributed Path\nComposition”. In: arXiv preprint arXiv:2403.10616. url: https://arXiv.org/abs/2403.10616. Eichner, Hubert, Tomer Koren, Brendan McMahan, Nathan Srebro, and Kunal Talwar (2019).",
+      "size": 472,
+      "sentences": 7
+    },
+    {
+      "id": 129,
+      "content": "/2403.10616. Eichner, Hubert, Tomer Koren, Brendan McMahan, Nathan Srebro, and Kunal Talwar (2019). “Semi-cyclic\nstochastic gradient descent”. In: International Conference on Machine Learning. PMLR, pp. 1764–1773. 11\n===  12 ===\nGlasgow, Margalit R., Honglin Yuan, and Tengyu Ma (2022). “Sharp Bounds for Federated Averaging (Local\nSGD) and Continuous Perspective”. In: International Conference on Artificial Intelligence and Statistics,\nAISTATS 2022, 28-30 March 2022, Virtual Event. Ed.",
+      "size": 488,
+      "sentences": 10
+    },
+    {
+      "id": 130,
+      "content": "rence on Artificial Intelligence and Statistics,\nAISTATS 2022, 28-30 March 2022, Virtual Event. Ed. by Gustau Camps-Valls, Francisco J. R. Ruiz,\nand Isabel Valera. Vol. 151. Proceedings of Machine Learning Research. PMLR, pp. 9050–9090. url:\nhttps://proceedings.mlr.press/v151/glasgow22a.html. Gu, Xinran, Kaifeng Lyu, Sanjeev Arora, Jingzhao Zhang, and Longbo Huang (2024). “A Quadratic Synchro-\nnization Rule for Distributed Deep Learning”. In: International Conference on Learning Representations.",
+      "size": 500,
+      "sentences": 12
+    },
+    {
+      "id": 131,
+      "content": "tion Rule for Distributed Deep Learning”. In: International Conference on Learning Representations. Gu, Xinran, Kaifeng Lyu, Longbo Huang, and Sanjeev Arora (2023). “Why (and When) Does Local SGD\nGeneralize Better Than SGD?” In: arXiv preprint arXiv:2303.01215. url: https://arXiv.org/abs/2303. 01215. Haddadpour, Farzin, Mohammad Mahdi Kamani, Aryan Mokhtari, and Mehrdad Mahdavi (2021).",
+      "size": 388,
+      "sentences": 6
+    },
+    {
+      "id": 132,
+      "content": "2303. 01215. Haddadpour, Farzin, Mohammad Mahdi Kamani, Aryan Mokhtari, and Mehrdad Mahdavi (2021). “Federated\nLearningwithCompression:UnifiedAnalysisandSharpGuarantees”.In:The24thInternationalConference\non Artificial Intelligence and Statistics, AISTATS 2021, April 13-15, 2021, Virtual Event. Ed. by Arindam\nBanerjeeandKenjiFukumizu.Vol.130.ProceedingsofMachineLearningResearch.PMLR,pp.2350–2358. url: http://proceedings.mlr.press/v130/haddadpour21a.html.",
+      "size": 457,
+      "sentences": 7
+    },
+    {
+      "id": 133,
+      "content": "chineLearningResearch.PMLR,pp.2350–2358. url: http://proceedings.mlr.press/v130/haddadpour21a.html. Hanzely, Filip, Slavomír Hanzely, Samuel Horváth, and Peter Richtárik (2020). “Lower Bounds and Op-\ntimal Algorithms for Personalized Federated Learning”. In: Advances in Neural Information Process-\ning Systems 33: Annual Conference on Neural Information Processing Systems 2020, NeurIPS 2020,\nDecember 6-12, 2020, virtual. Ed.",
+      "size": 427,
+      "sentences": 6
+    },
+    {
+      "id": 134,
+      "content": "ence on Neural Information Processing Systems 2020, NeurIPS 2020,\nDecember 6-12, 2020, virtual. Ed. by Hugo Larochelle, Marc’Aurelio Ranzato, Raia Hadsell, Maria-\nFlorina Balcan, and Hsuan-Tien Lin. url: https://proceedings.neurips.cc/paper/2020/hash/\n187acf7982f3c169b3075132380986e4-Abstract.html.",
+      "size": 299,
+      "sentences": 4
+    },
+    {
+      "id": 135,
+      "content": "rl: https://proceedings.neurips.cc/paper/2020/hash/\n187acf7982f3c169b3075132380986e4-Abstract.html. Hoffmann, Jordan, Sebastian Borgeaud, Arthur Mensch, Elena Buchatskaya, Trevor Cai, Eliza Rutherford,\nDiego de Las Casas, Lisa Anne Hendricks, Johannes Welbl, Aidan Clark, Tom Hennigan, Eric Noland,\nKatieMillican,GeorgevandenDriessche,BogdanDamoc,AureliaGuy,SimonOsindero,KarenSimonyan,\nErich Elsen, Jack W. Rae, Oriol Vinyals, and Laurent Sifre (2022).",
+      "size": 453,
+      "sentences": 2
+    },
+    {
+      "id": 136,
+      "content": "Guy,SimonOsindero,KarenSimonyan,\nErich Elsen, Jack W. Rae, Oriol Vinyals, and Laurent Sifre (2022). “Training Compute-Optimal Large\nLanguage Models”. In: Advances in Neural Information Processing Systems (NeurIPS). Huang,Chao,JianweiHuang,andXinLiu(2022).Cross-SiloFederatedLearning:ChallengesandOpportunities. arXiv: 2206.12949 [cs.LG]. url: https://arxiv.org/abs/2206.12949. Iacob, Alex, Lorenzo Sani, Bill Marino, Preslav Aleksandrov, and Nicholas Donald Lane (2024).",
+      "size": 470,
+      "sentences": 7
+    },
+    {
+      "id": 137,
+      "content": "2949. Iacob, Alex, Lorenzo Sani, Bill Marino, Preslav Aleksandrov, and Nicholas Donald Lane (2024). “Worldwide\nFederated Training of Language Models”. In: arXiv preprint arXiv:2405.14446. Ivgi, Maor, Oliver Hinder, and Yair Carmon (2023). “DoG Is SGD’s Best Friend: a Parameter-Free Dynamic\nStep Size Schedule”. In: arXiv preprint arXiv:2302.12022. url: https://arXiv.org/abs/2302.12022.",
+      "size": 387,
+      "sentences": 7
+    },
+    {
+      "id": 138,
+      "content": "ic\nStep Size Schedule”. In: arXiv preprint arXiv:2302.12022. url: https://arXiv.org/abs/2302.12022. Jaghouar,Sami,JackMinOng,ManveerBasra,FaresObeid,JannikStraube,MichaelKeiblinger,ElieBakouch,\nLucas Atkins, Maziyar Panahi, Charles Goddard, et al. (2024). “INTELLECT-1 Technical Report”. In:\narXiv preprint arXiv:2412.01152. Jaghouar, Sami, Jack Min Ong, and Johannes Hagemann (2024). “OpenDiLoCo: an Open-Source Framework\nfor Globally Distributed Low-Communication Training”.",
+      "size": 476,
+      "sentences": 8
+    },
+    {
+      "id": 139,
+      "content": "(2024). “OpenDiLoCo: an Open-Source Framework\nfor Globally Distributed Low-Communication Training”. In: arXiv preprint arXiv:2407.07852. url: https:\n//arXiv.org/abs/2407.07852. Jhunjhunwala,Divyansh,ShiqiangWang,andGauriJoshi(2023).“FedExP:SpeedingUpFederatedAveraging\nvia Extrapolation”. In: url: https://openreview.net/forum?id=IPrzNbddXV.",
+      "size": 341,
+      "sentences": 5
+    },
+    {
+      "id": 140,
+      "content": "eedingUpFederatedAveraging\nvia Extrapolation”. In: url: https://openreview.net/forum?id=IPrzNbddXV. Jiang, Ziheng, Haibin Lin, Yinmin Zhong, Qi Huang, Yangrui Chen, Zhi Zhang, Yanghua Peng, Xiang Li,\nCong Xie, Shibiao Nong, Yulu Jia, Sun He, Hongmin Chen, Zhihao Bai, Qi Hou, Shipeng Yan, Ding Zhou,\nYiyao Sheng, Zhuo Jiang, Haohan Xu, Haoran Wei, Zhang Zhang, Pengfei Nie, Leqi Zou, Sida Zhao,\nLiangXiang,ZheruiLiu,ZheLi,XiaoyingJia,JianxiYe,XinJin,andXinLiu(2024).“MegaScale:Scaling\nlarge language model training to more than 10,000 GPUs”.",
+      "size": 541,
+      "sentences": 3
+    },
+    {
+      "id": 141,
+      "content": ",XinJin,andXinLiu(2024).“MegaScale:Scaling\nlarge language model training to more than 10,000 GPUs”. In: 21st USENIX Symposium on Networked\nSystems Design and Implementation (NSDI 24), pp. 745–760. Karimireddy, Sai Praneeth, Satyen Kale, Mehryar Mohri, Sashank J. Reddi, Sebastian U. Stich, and Ananda\nTheertha Suresh (2020). “SCAFFOLD: Stochastic Controlled Averaging for Federated Learning”.",
+      "size": 392,
+      "sentences": 5
+    },
+    {
+      "id": 142,
+      "content": "Ananda\nTheertha Suresh (2020). “SCAFFOLD: Stochastic Controlled Averaging for Federated Learning”. In:\nProceedings of the 37th International Conference on Machine Learning, ICML 2020, 13-18 July 2020,\nVirtual Event. Vol. 119. Proceedings of Machine Learning Research. PMLR, pp. 5132–5143. url: http:\n//proceedings.mlr.press/v119/karimireddy20a.html. Khaled, Ahmed, Konstantin Mishchenko, and Peter Richtárik (2020). “Tighter Theory for Local SGD on\nIdentical and Heterogeneous Data”.",
+      "size": 483,
+      "sentences": 11
+    },
+    {
+      "id": 143,
+      "content": "ko, and Peter Richtárik (2020). “Tighter Theory for Local SGD on\nIdentical and Heterogeneous Data”. In: The 23rd International Conference on Artificial Intelligence and\nStatistics, AISTATS 2020, 26-28 August 2020, Online [Palermo, Sicily, Italy]. Ed. by Silvia Chiappa and\n12\n===  13 ===\nRoberto Calandra. Vol. 108. Proceedings of Machine Learning Research. PMLR, pp. 4519–4529. url:\nhttp://proceedings.mlr.press/v108/bayoumi20a.html.",
+      "size": 434,
+      "sentences": 11
+    },
+    {
+      "id": 144,
+      "content": "ine Learning Research. PMLR, pp. 4519–4529. url:\nhttp://proceedings.mlr.press/v108/bayoumi20a.html. Koloskova, Anastasia, Nicolas Loizou, Sadra Boreiri, Martin Jaggi, and Sebastian U. Stich (2020). “A Unified\nTheory of Decentralized SGD with Changing Topology and Local Updates”. In: Proceedings of the 37th\nInternational Conference on Machine Learning, ICML 2020, 13-18 July 2020, Virtual Event. Vol. 119. Proceedings of Machine Learning Research. PMLR, pp. 5381–5393. url: http://proceedings.mlr.",
+      "size": 498,
+      "sentences": 13
+    },
+    {
+      "id": 145,
+      "content": "l. 119. Proceedings of Machine Learning Research. PMLR, pp. 5381–5393. url: http://proceedings.mlr. press/v119/koloskova20a.html. Konečný, Jakub, H. Brendan McMahan, Felix X. Yu, Peter Richtárik, Ananda Theertha Suresh, and Dave\nBacon (2016). “Federated Learning: Strategies for Improving Communication Efficiency”. In: NIPS Private\nMulti-Party Machine Learning Workshop. Li, Hanmin, Kirill Acharya, and Peter Richtárik (2024). “The power of extrapolation in federated learning”.",
+      "size": 479,
+      "sentences": 11
+    },
+    {
+      "id": 146,
+      "content": "in, Kirill Acharya, and Peter Richtárik (2024). “The power of extrapolation in federated learning”. In: Advances in Neural Information Processing Systems 37, pp. 124236–124291. Li, Hanmin and Peter Richtárik (2024). “On the Convergence of FedProx With Extrapolation and Inexact\nProx”. In: CoRR. arXiv: 2410.01410 [math.OC]. url: http://arxiv.org/abs/2410.01410v1.",
+      "size": 363,
+      "sentences": 9
+    },
+    {
+      "id": 147,
+      "content": "n and Inexact\nProx”. In: CoRR. arXiv: 2410.01410 [math.OC]. url: http://arxiv.org/abs/2410.01410v1. Li,Tian,AnitKumarSahu,ManzilZaheer,MaziarSanjabi,AmeetTalwalkar,andVirginiaSmith(2020).“Fed-\nerated Optimization in Heterogeneous Networks”. In: Proceedings of Machine Learning and Systems 2020,\nMLSys 2020, Austin, TX, USA, March 2-4, 2020. Ed. by Inderjit S. Dhillon, Dimitris S. Papailiopoulos,\nand Vivienne Sze. mlsys.org. url: https://proceedings.mlsys.org/book/316.pdf.",
+      "size": 474,
+      "sentences": 10
+    },
+    {
+      "id": 148,
+      "content": "is S. Papailiopoulos,\nand Vivienne Sze. mlsys.org. url: https://proceedings.mlsys.org/book/316.pdf. Liang,Feng,ZhenZhang,HaifengLu,VictorC.M.Leung,YanyiGuo,andXipingHu(2024).“Communication-\nEfficientLarge-ScaleDistributedDeepLearning:aComprehensiveSurvey”.In:arXivpreprint arXiv:2404.06114.\nurl: https://arXiv.org/abs/2404.06114. Lin, Tao, Sebastian U. Stich, Kumar Kshitij Patel, and Martin Jaggi (2020). “Don’t Use Large Mini-batches,\nUse Local SGD”.",
+      "size": 452,
+      "sentences": 6
+    },
+    {
+      "id": 149,
+      "content": "Stich, Kumar Kshitij Patel, and Martin Jaggi (2020). “Don’t Use Large Mini-batches,\nUse Local SGD”. In: 8th International Conference on Learning Representations, ICLR 2020, Addis Ababa,\nEthiopia, April 26-30, 2020. OpenReview.net. url: https://openreview.net/forum?id=B1eyO1BFPr. Liu, Bo, Rachita Chhaparia, Arthur Douillard, Satyen Kale, Andrei A. Rusu, Jiajun Shen, Arthur Szlam,\nand Marc’Aurelio Ranzato (2024). “Asynchronous Local-SGD Training for Language Modeling”.",
+      "size": 471,
+      "sentences": 7
+    },
+    {
+      "id": 150,
+      "content": "ur Szlam,\nand Marc’Aurelio Ranzato (2024). “Asynchronous Local-SGD Training for Language Modeling”. In: arXiv\npreprint arXiv:2401.09135. url: https://arXiv.org/abs/2401.09135. Loshchilov,IlyaandFrankHutter(2019).“DecoupledWeightDecayRegularization”.In:7thInternationalCon-\nference on Learning Representations, ICLR 2019, New Orleans, LA, USA, May 6-9, 2019.OpenReview.net. url: https://openreview.net/forum?id=Bkg6RiCqY7.",
+      "size": 421,
+      "sentences": 5
+    },
+    {
+      "id": 151,
+      "content": "ew Orleans, LA, USA, May 6-9, 2019.OpenReview.net. url: https://openreview.net/forum?id=Bkg6RiCqY7. Malinovsky,Grigory,KonstantinMishchenko,andPeterRichtárik(2022).“Server-SideStepsizesandSampling\nWithout Replacement Provably Help in Federated Optimization”. In: arXiv preprint arXiv:2201.11066.\nurl: https://arXiv.org/abs/2201.11066. Malinovsky, Grigory and Peter Richtárik (2022). “Federated Random Reshuffling With Compression and\nVariance Reduction”.",
+      "size": 454,
+      "sentences": 6
+    },
+    {
+      "id": 152,
+      "content": "and Peter Richtárik (2022). “Federated Random Reshuffling With Compression and\nVariance Reduction”. In: arXiv preprint arXiv:2205.03914. url: https://arXiv.org/abs/2205.03914. McMahan, H. Brendan, Eider Moore, Daniel Ramage, Seth Hampson, and Blaise Agüera y Arcas (2017). “Communication-Efficient Learning of Deep Networks from Decentralized Data”. In: Proceedings of the 20\nth International Conference on Artificial Intelligence and Statistics (AISTATS).",
+      "size": 456,
+      "sentences": 6
+    },
+    {
+      "id": 153,
+      "content": "ceedings of the 20\nth International Conference on Artificial Intelligence and Statistics (AISTATS). Mishchenko, Konstantin, Ahmed Khaled, and Peter Richtárik (2022). “Proximal and Federated Random\nReshuffling”. In: ICML. Vol. 162. Proceedings of Machine Learning Research. PMLR, pp. 15718–15749. Mitra, Aritra, Rayana Jaafar, George J. Pappas, and Hamed Hassani (2021). “Achieving Linear Convergence\nin Federated Learning Under Objective and Systems Heterogeneity”.",
+      "size": 465,
+      "sentences": 11
+    },
+    {
+      "id": 154,
+      "content": "1). “Achieving Linear Convergence\nin Federated Learning Under Objective and Systems Heterogeneity”. In: arXiv preprint arXiv:2102.07053.\nurl: https://arXiv.org/abs/2102.07053. Murata,TomoyaandTaijiSuzuki(2021).“Bias-VarianceReducedLocalSGDforLessHeterogeneousFederated\nLearning”. In: Proceedings of the 38th International Conference on Machine Learning, ICML 2021, 18-24\nJuly 2021, Virtual Event.Ed.byMarinaMeilaandTongZhang.Vol.139.ProceedingsofMachineLearning\nResearch. PMLR, pp. 7872–7881.",
+      "size": 492,
+      "sentences": 7
+    },
+    {
+      "id": 155,
+      "content": "nt.Ed.byMarinaMeilaandTongZhang.Vol.139.ProceedingsofMachineLearning\nResearch. PMLR, pp. 7872–7881. url: http://proceedings.mlr.press/v139/murata21a.html. Nesterov, Yurii (2018). Lectures on Convex Optimization. 2nd. Springer Publishing Company, Incorporated. isbn: 3319915770. Ortiz, Jose Javier Gonzalez, Jonathan Frankle, Mike Rabbat, Ari Morcos, and Nicolas Ballas (2021). “Trade-\nOffs of Local SGD At Scale: an Empirical Study”.",
+      "size": 433,
+      "sentences": 11
+    },
+    {
+      "id": 156,
+      "content": "at, Ari Morcos, and Nicolas Ballas (2021). “Trade-\nOffs of Local SGD At Scale: an Empirical Study”. In: arXiv preprint arXiv:2110.08133. url: https:\n//arXiv.org/abs/2110.08133. Patel, Kumar Kshitij, Margalit Glasgow, Lingxiao Wang, Nirmit Joshi, and Nathan Srebro (2023). “On\nthe Still Unreasonable Effectiveness of Federated Averaging for Heterogeneous Distributed Learning”. In:\n13\n===  14 ===\nFederated Learning and Analytics in Practice: Algorithms, Systems, Applications, and Opportunities.",
+      "size": 495,
+      "sentences": 6
+    },
+    {
+      "id": 157,
+      "content": "Federated Learning and Analytics in Practice: Algorithms, Systems, Applications, and Opportunities. url:\nhttps://openreview.net/forum?id=vhS68bKv7x. Patel, Kumar Kshitij, Margalit Glasgow, Ali Zindari, Lingxiao Wang, Sebastian U. Stich, Ziheng Cheng,\nNirmit Joshi, and Nathan Srebro (2024). “The Limits and Potentials of Local SGD for Distributed\nHeterogeneous Learning With Intermittent Communication”. In: arXiv preprint arXiv:2405.11667. url:\nhttps://arXiv.org/abs/2405.11667.",
+      "size": 479,
+      "sentences": 5
+    },
+    {
+      "id": 158,
+      "content": "mittent Communication”. In: arXiv preprint arXiv:2405.11667. url:\nhttps://arXiv.org/abs/2405.11667. Raffel, Colin, Noam Shazeer, Adam Roberts, Katherine Lee, Sharan Narang, Michael Matena, Yanqi Zhou,\nWei Li, and Peter J. Liu (Jan. 2020). “Exploring the limits of transfer learning with a unified text-to-text\ntransformer”. In: J. Mach. Learn. Res. 21.1. issn: 1532-4435.",
+      "size": 371,
+      "sentences": 8
+    },
+    {
+      "id": 159,
+      "content": "learning with a unified text-to-text\ntransformer”. In: J. Mach. Learn. Res. 21.1. issn: 1532-4435. Reddi, Sashank J., Zachary Charles, Manzil Zaheer, Zachary Garrett, Keith Rush, Jakub Konečný, Sanjiv\nKumar, and Hugh Brendan McMahan (2021). “Adaptive Federated Optimization”. In: 9th International\nConference on Learning Representations, ICLR 2021, Virtual Event, Austria, May 3-7, 2021. OpenRe-\nview.net. url: https://openreview.net/forum?id=LkFG3lB13U5.",
+      "size": 455,
+      "sentences": 10
+    },
+    {
+      "id": 160,
+      "content": "Event, Austria, May 3-7, 2021. OpenRe-\nview.net. url: https://openreview.net/forum?id=LkFG3lB13U5. Rush, Keith, Zachary Charles, Zachary Garrett, Sean Augenstein, and Nicole Elyse Mitchell (2024). “DrJAX:\nScalable and Differentiable MapReduce Primitives in JAX”. In: International Conference on Machine\nLearning (ICML) Workshop. Safaryan,Mher,FilipHanzely,andPeterRichtárik(2021).“SmoothnessMatricesBeatSmoothnessConstants:\nBetter Communication Compression Techniques for Distributed Optimization”.",
+      "size": 498,
+      "sentences": 7
+    },
+    {
+      "id": 161,
+      "content": "BeatSmoothnessConstants:\nBetter Communication Compression Techniques for Distributed Optimization”. In: NeurIPS, pp. 25688–\n25702. Sani, Lorenzo, Alex Iacob, Zeyu Cao, Bill Marino, Yan Gao, Tomas Paulik, Wanru Zhao, William F. Shen,\nPreslav Aleksandrov, Xinchi Qiu, and Nicholas D. Lane (2024). “The Future of Large Language Model\nPre-training is Federated”. In: arXiv preprint arXiv:2405.10853. Stich, Sebastian U. (2019). “Local SGD Converges Fast and Communicates Little”.",
+      "size": 475,
+      "sentences": 9
+    },
+    {
+      "id": 162,
+      "content": "t arXiv:2405.10853. Stich, Sebastian U. (2019). “Local SGD Converges Fast and Communicates Little”. In: 7th International Con-\nference on Learning Representations, ICLR 2019, New Orleans, LA, USA, May 6-9, 2019.OpenReview.net. url: https://openreview.net/forum?id=S1g2JnRcFX. Sun,Jianhui,XidongWu,HengHuang,andAidongZhang(2024).“Ontheroleofservermomentuminfederated\nlearning”.",
+      "size": 376,
+      "sentences": 7
+    },
+    {
+      "id": 163,
+      "content": "un,Jianhui,XidongWu,HengHuang,andAidongZhang(2024).“Ontheroleofservermomentuminfederated\nlearning”. In: Proceedings of the Thirty-Eighth AAAI Conference on Artificial Intelligence and Thirty-Sixth\nConference on Innovative Applications of Artificial Intelligence and Fourteenth Symposium on Educational\nAdvances in Artificial Intelligence. AAAI’24/IAAI’24/EAAI’24. AAAI Press. isbn: 978-1-57735-887-9. doi:\n10.1609/aaai.v38i13.29439. url: https://doi.org/10.1609/aaai.v38i13.29439.",
+      "size": 480,
+      "sentences": 6
+    },
+    {
+      "id": 164,
+      "content": "978-1-57735-887-9. doi:\n10.1609/aaai.v38i13.29439. url: https://doi.org/10.1609/aaai.v38i13.29439. Wang, Jianyu, Zachary Charles, Zheng Xu, Gauri Joshi, H. Brendan McMahan, Blaise Aguera y Arcas,\nMaruan Al-Shedivat, Galen Andrew, Salman Avestimehr, Katharine Daly, Deepesh Data, Suhas Diggavi,\nHubert Eichner, Advait Gadhikar, Zachary Garrett, Antonious M. Girgis, Filip Hanzely, Andrew Hard,\nChaoyang He, Samuel Horvath, Zhouyuan Huo, Alex Ingerman, Martin Jaggi, Tara Javidi, Peter Kairouz,\nSatyen Kale, Sai Praneeth Karimireddy, Jakub Konecny, Sanmi Koyejo, Tian Li, Luyang Liu, Mehryar\nMohri, Hang Qi, Sashank J. Reddi, Peter Richtarik, Karan Singhal, Virginia Smith, Mahdi Soltanolkotabi,\nWeikang Song, Ananda Theertha Suresh, Sebastian U. Stich, Ameet Talwalkar, Hongyi Wang, Blake\nWoodworth, Shanshan Wu, Felix X. Yu, Honglin Yuan, Manzil Zaheer, Mi Zhang, Tong Zhang, Chunxiang\nZheng,ChenZhu,andWennanZhu(2021).“AFieldGuideToFederatedOptimization”.In:arXiv preprint\narXiv:2107.06917. url: https://arXiv.org/abs/2107.06917.",
+      "size": 1030,
+      "sentences": 3
+    },
+    {
+      "id": 165,
+      "content": "ToFederatedOptimization”.In:arXiv preprint\narXiv:2107.06917. url: https://arXiv.org/abs/2107.06917. Wang, Yujia, Lu Lin, and Jinghui Chen (2022). “Communication-Efficient Adaptive Federated Learning”. In:\nICML. Vol. 162. Proceedings of Machine Learning Research. PMLR, pp. 22802–22838. Wei, Kang, Jun Li, Ming Ding, Chuan Ma, Howard H Yang, Farhad Farokhi, Shi Jin, Tony QS Quek, and\nHVincentPoor(2020).“Federatedlearningwithdifferentialprivacy:Algorithmsandperformanceanalysis”.",
+      "size": 479,
+      "sentences": 10
+    },
+    {
+      "id": 166,
+      "content": "and\nHVincentPoor(2020).“Federatedlearningwithdifferentialprivacy:Algorithmsandperformanceanalysis”. In: IEEE Transactions on Information Forensics and Security 15, pp. 3454–3469. Woodworth,BlakeE.,KumarKshitijPatel,andNatiSrebro(2020).“MinibatchvsLocalSGDforHeterogeneous\nDistributed Learning”. In: Advances in Neural Information Processing Systems 33: Annual Conference on\nNeural Information Processing Systems 2020, NeurIPS 2020, December 6-12, 2020, virtual. Ed.",
+      "size": 465,
+      "sentences": 6
+    },
+    {
+      "id": 167,
+      "content": "ence on\nNeural Information Processing Systems 2020, NeurIPS 2020, December 6-12, 2020, virtual. Ed. by Hugo\nLarochelle,Marc’AurelioRanzato,RaiaHadsell,Maria-FlorinaBalcan,andHsuan-TienLin.url:https://\nproceedings.neurips.cc/paper/2020/hash/45713f6ff2041d3fdfae927b82488db8-Abstract.html. Woodworth, Blake E., Kumar Kshitij Patel, Sebastian U. Stich, Zhen Dai, Brian Bullins, H. Brendan\nMcMahan, Ohad Shamir, and Nathan Srebro (2020).",
+      "size": 433,
+      "sentences": 4
+    },
+    {
+      "id": 168,
+      "content": "stian U. Stich, Zhen Dai, Brian Bullins, H. Brendan\nMcMahan, Ohad Shamir, and Nathan Srebro (2020). “Is Local SGD Better than Minibatch SGD?” In:\nProceedings of the 37th International Conference on Machine Learning, ICML 2020, 13-18 July 2020,\n14\n===  15 ===\nVirtual Event. Vol. 119. Proceedings of Machine Learning Research. PMLR, pp. 10334–10343. url:\nhttp://proceedings.mlr.press/v119/woodworth20a.html.",
+      "size": 406,
+      "sentences": 8
+    },
+    {
+      "id": 169,
+      "content": "Learning Research. PMLR, pp. 10334–10343. url:\nhttp://proceedings.mlr.press/v119/woodworth20a.html. Yang, Yuning, Han Yu, Chuan Sun, Tianrun Gao, Xiaohong Liu, Xiaodong Xu, Ping Zhang, and Guangyu\nWang (2025). “SPD-CFL: Stepwise Parameter Dropout for Efficient Continual Federated Learning”. In:\narXiv preprint arxiv:2405.09394. url: https://arxiv.org/abs/2405.09394. Yuan, Honglin and Tengyu Ma (2020). “Federated Accelerated Stochastic Gradient Descent”.",
+      "size": 456,
+      "sentences": 9
+    },
+    {
+      "id": 170,
+      "content": "405.09394. Yuan, Honglin and Tengyu Ma (2020). “Federated Accelerated Stochastic Gradient Descent”. In: Advances in\nNeural Information Processing Systems 33: Annual Conference on Neural Information Processing Systems\n2020, NeurIPS 2020, December 6-12, 2020, virtual. Ed. by Hugo Larochelle, Marc’Aurelio Ranzato, Raia\nHadsell, Maria-Florina Balcan, and Hsuan-Tien Lin. url: https://proceedings.neurips.cc/paper/\n2020/hash/39d0a8908fbe6c18039ea8227f827023-Abstract.html.",
+      "size": 469,
+      "sentences": 7
+    },
+    {
+      "id": 171,
+      "content": "rl: https://proceedings.neurips.cc/paper/\n2020/hash/39d0a8908fbe6c18039ea8227f827023-Abstract.html. Yun, Chulhee, Shashank Rajput, and Suvrit Sra (2022). “Minibatch vs Local SGD with Shuffling: Tight\nConvergence Bounds and Beyond”. In: International Conference on Learning Representations. url: https:\n//openreview.net/forum?id=LdlwbBP2mlq. Zhou,Pan,HanshuYan,XiaotongYuan,JiashiFeng,andShuichengYan(2021).“TowardsUnderstandingWhy\nLookahead Generalizes Better Than SGD and Beyond”.",
+      "size": 481,
+      "sentences": 6
+    },
+    {
+      "id": 172,
+      "content": "g,andShuichengYan(2021).“TowardsUnderstandingWhy\nLookahead Generalizes Better Than SGD and Beyond”. In: Advances in Neural Information Processing\nSystems. Ed. by M. Ranzato, A. Beygelzimer, Y. Dauphin, P.S. Liang, and J. Wortman Vaughan. Vol. 34. Curran Associates, Inc., pp. 27290–27304. url: https://proceedings.neurips.cc/paper_files/\npaper/2021/file/e53a0a2978c28872a4505bdb51db06dc-Paper.pdf.",
+      "size": 397,
+      "sentences": 10
+    },
+    {
+      "id": 173,
+      "content": "s://proceedings.neurips.cc/paper_files/\npaper/2021/file/e53a0a2978c28872a4505bdb51db06dc-Paper.pdf. 15\n===  16 ===\nSupplementary material\nA Supplementary experimental details\nIn this section we provide the details on the language model pretraining experiments discussed in the main\ntext. A.1 Language model pretraining\nWe study the impact of using various outer optimizers on large language model pretraining.",
+      "size": 409,
+      "sentences": 3
+    },
+    {
+      "id": 174,
+      "content": "training\nWe study the impact of using various outer optimizers on large language model pretraining. We utilized\nChinchilla-style decoder transformer architectures (Hoffmann et al., 2022) trained on the C4 dataset (Raffel\netal.,2020),consistentwithcommonpracticesinlarge-scalemodeltraining(Douillard,Feng,Rusu,Chhaparia,\netal.,2023).",
+      "size": 332,
+      "sentences": 2
+    },
+    {
+      "id": 175,
+      "content": "consistentwithcommonpracticesinlarge-scalemodeltraining(Douillard,Feng,Rusu,Chhaparia,\netal.,2023). Thefollowingsubsectionsdetailthespecifichyperparameters,variationsintrainingconfigurations\n(such as the number of inner steps and replicas/clients), and analyses of optimizer behavior, including learning\nrate scheduling and observed gradient cosine similarities. A.1.1 Hyperparameters details\nWeshowinTable1thehyperparametersconsideredandkept,andinTable2thearchitecturalhyperparameters.",
+      "size": 486,
+      "sentences": 3
+    },
+    {
+      "id": 176,
+      "content": "tails\nWeshowinTable1thehyperparametersconsideredandkept,andinTable2thearchitecturalhyperparameters. Wetunedallouroptimizersonaseparatevalidationset. WealsoconsideredusingtheSchedule-FreeOptimizer\nwith Nesterov acceleration on top but it was hard to tune and unstable. Table 2: Model Configuration for the three evaluated sizes. All are based on the transformer architecture,\nchinchilla-style (Hoffmann et al., 2022).",
+      "size": 416,
+      "sentences": 5
+    },
+    {
+      "id": 177,
+      "content": "ted sizes. All are based on the transformer architecture,\nchinchilla-style (Hoffmann et al., 2022). Hyperparameter 150M 400M 1B\nNumber of layers 12 12 24\nHidden dim 896 1536 2048\nNumber of heads 16 12 16\nK/V size 64 128 128\nVocab size 32,000\nA.1.2 Varying inner steps\nIn Figure 3, we compare the stability of different outer optimizers when varying the synchronization frequency. We experiments a different amount of inner steps, from 50, to 2000.",
+      "size": 447,
+      "sentences": 4
+    },
+    {
+      "id": 178,
+      "content": "the synchronization frequency. We experiments a different amount of inner steps, from 50, to 2000. All experiments are run in pretraining\nfrom scratch, with 150 millions (150M) parameters. We note that as the synchronization frequency decreases\n(number of inner/local steps increases), performance decreases. Notably, averaging (in orange), is relatively\nconstant w.r.t the synchronization frequency: its performance stay stable from H = 250 to H = 2000.",
+      "size": 454,
+      "sentences": 5
+    },
+    {
+      "id": 179,
+      "content": "constant w.r.t the synchronization frequency: its performance stay stable from H = 250 to H = 2000. On the other hand, using Nesterov with high outer learning rate (in light green) is particularly unstable,\nits performance decreases by 10.7%, this indicates that the learning rate should be tuned alongside the\nsynchronization frequency. On the hand, SF-SGD (in blue) has minimal degradation of performance (4.2%),\nhighlighting the schedule-free property when varying hyperparameters.",
+      "size": 484,
+      "sentences": 3
+    },
+    {
+      "id": 180,
+      "content": "dation of performance (4.2%),\nhighlighting the schedule-free property when varying hyperparameters. A.1.3 Varying replicas / flops budget\nWhen increasing the number of distributed replicas, two options are possible: (a) Keeping the local per-replica\nbatch size constant and thus increasing global batch size and flops budget, and (b) Keeping the global batch\nsize/flops budget constant and thus reducing the local per-replica batch size.",
+      "size": 437,
+      "sentences": 2
+    },
+    {
+      "id": 181,
+      "content": "ing the global batch\nsize/flops budget constant and thus reducing the local per-replica batch size. We present in Figure 4 results of the first option with x-axis the flops budget for a single model size (150M). It is worth noting that increasing the number of replicas improves the performance of Nesterov (in green) and\nSF-SGD (in blue) but the gain quickly plateau.",
+      "size": 368,
+      "sentences": 3
+    },
+    {
+      "id": 182,
+      "content": "improves the performance of Nesterov (in green) and\nSF-SGD (in blue) but the gain quickly plateau. On the other hand, increasing the batch size for data-parallel\n16\n===  17 ===\n18.5\n18.0\n17.5\n17.0\n16.5\n0 250 500 750 1000 1250 1500 1750 2000\nNumber of inner steps H\nytixelpreP\nAverage\nNesterov, LR=0.7\nNesterov, LR=1.0\nSF-SGD\nFigure 3: Varying the communication frequency, i.e. number of inner steps H, when pretraining from\nscratch at 150M parameters.",
+      "size": 451,
+      "sentences": 3
+    },
+    {
+      "id": 183,
+      "content": "nication frequency, i.e. number of inner steps H, when pretraining from\nscratch at 150M parameters. (at the cost of more communication, because more DP replicas) or the number of steps (at the cost of longer\ntraining) still rapidly improves perplexity.",
+      "size": 252,
+      "sentences": 3
+    },
+    {
+      "id": 184,
+      "content": "eplicas) or the number of steps (at the cost of longer\ntraining) still rapidly improves perplexity. Therefore, we wish to highlight here a disadvantage of federated\nlearning methods seldom mentioned: while those methods are extremely communication-efficient, and can be\nmade flops-efficient, their flops-efficiency disappear as the number of replicas increases.",
+      "size": 361,
+      "sentences": 2
+    },
+    {
+      "id": 185,
+      "content": "can be\nmade flops-efficient, their flops-efficiency disappear as the number of replicas increases. To this problem, several hypotheses could be raised, such as the decreasing cosine similarity between outer\ngradients as the number of replicas increase, even when using an i.i.d. data split across replicas. In Figure 5,\nwe report the average similarity across a whole training for different number of replicas.",
+      "size": 410,
+      "sentences": 4
+    },
+    {
+      "id": 186,
+      "content": "igure 5,\nwe report the average similarity across a whole training for different number of replicas. For momentum-based\nmethods (Nesterov, SF-SGD), the similarity decreases from 30% at M =2 replicas to 10% at M =16 replicas. Full details across training steps can be found in the appendix. Finally, note that we didn’t investigate further the second option of keeping the global batch size/flops budget\nconstant and thus reducing the local per-replica batch size.",
+      "size": 462,
+      "sentences": 4
+    },
+    {
+      "id": 187,
+      "content": "ing the global batch size/flops budget\nconstant and thus reducing the local per-replica batch size. We found that dividing the batch size by the\nnumber of replicas leads quickly to a local per-replica batch size that is critically low, and further reduces the\nflops-efficiency. More investigations should be pushed in that direction.",
+      "size": 333,
+      "sentences": 3
+    },
+    {
+      "id": 188,
+      "content": ", and further reduces the\nflops-efficiency. More investigations should be pushed in that direction. A.1.4 Schedule-free but not tuning-free\nThe schedule-free method of Defazio et al., 2024 enables not doing any learning rate scheduling, greatly\nsimplifying training configuration. However, it doesn’t mean it is hyperparameters-tuning-free.",
+      "size": 340,
+      "sentences": 4
+    },
+    {
+      "id": 189,
+      "content": "tly\nsimplifying training configuration. However, it doesn’t mean it is hyperparameters-tuning-free. Indeed, we\nfound out that we had to extensively tune the initial learning rate (to 2.0), remove learning rate warm-up\ncontrarily to what is advised, and use a particularly low b1 decay: 0.2, as illustrated in Figure 6. A.1.5 Pretraining: outer learning rate scheduling\nSchedule-free SGD enables not having to manually scheduling the outer learning rate.",
+      "size": 453,
+      "sentences": 4
+    },
+    {
+      "id": 190,
+      "content": "ate scheduling\nSchedule-free SGD enables not having to manually scheduling the outer learning rate. Therefore, we wondered\nif we could improve the SotA federated learning baseline, DiLoCo (Nesterov outer optimizer), with an outer\nlearning rate schedule. We investigate in Figure 7 three schedules: constant as in (Douillard, Feng, Rusu,\nChhaparia, et al., 2023), cosine decay, and linear after a plateau. For the latter we consider a constant plateau\nfor 10% and 25% of the total steps.",
+      "size": 486,
+      "sentences": 4
+    },
+    {
+      "id": 191,
+      "content": "after a plateau. For the latter we consider a constant plateau\nfor 10% and 25% of the total steps. For each method, we also tuned the peak outer learning rate. We don’t\nuse any warm-up in the outer optimization as we always found it to be harmful.",
+      "size": 247,
+      "sentences": 4
+    },
+    {
+      "id": 192,
+      "content": "rning rate. We don’t\nuse any warm-up in the outer optimization as we always found it to be harmful. 17\n[  ]\n\n===  18 ===\n20.0\n19.5\n19.0\n18.5\n18.0\n17.5\n17.0\n16.5\n16.0\n1012 1013\nFLOPS\nytixelpreP\nData-Parallel - vary steps\nData-Parallel - vary batch size\nAverage - vary replicas\nNesterov (lr=1.0) - vary replicas\nSF-SGD - vary replicas\nFigure 4: Pareto front of the flops vs perplexity, comparing various approach scaling the flops budget:\nincreasingthenumberofsteps, increasingthebatchsizeindata-parallel, andincreasingthenumberofreplicas\nfor federated learning.",
+      "size": 560,
+      "sentences": 3
+    },
+    {
+      "id": 193,
+      "content": "ps, increasingthebatchsizeindata-parallel, andincreasingthenumberofreplicas\nfor federated learning. We find that constant outer learning rate is the best performing schedule. It’s unclear how the other schedules\nare interacting with the inner learning rate scheduling.",
+      "size": 268,
+      "sentences": 3
+    },
+    {
+      "id": 194,
+      "content": "dule. It’s unclear how the other schedules\nare interacting with the inner learning rate scheduling. A possible solution, not investigated in this report,\nwould be to increase the number of inner steps H as the inner learning rate decreases (Gu, Lyu, Arora, et al.,\n0.35\n0.30\n0.25\n0.20\n0.15\n0.10\n0.05\n2 4 6 8 10 12 14 16\nNumber of replicas M\nstneidarg\nretuo\nneewteb\nytiralimis\nenisoC\n0.250\nAverage\nNesterov 0.225\nSF-SGD\n0.200\n0.175\n0.150\n0.125\n0.100\n0.075\n0.050\n150M 400M 1B\nModel Size\nstneidarg\nretuo\nneewteb\nytiralimis\nenisoC\nAverage\nNesterov\nSF-SGD\nFigure 5: Cosine similarity between outer gradients across different number of replicas (left) and model\nscales (right).",
+      "size": 671,
+      "sentences": 3
+    },
+    {
+      "id": 195,
+      "content": "larity between outer gradients across different number of replicas (left) and model\nscales (right). We average the similarity across the middle 50% of the training. 18\n[  ]\n\n===  19 ===\nFigure 6: Tuning b1 decay has a major impact on Figure 7: Which outer learning rate schedule to\nuse? performance, and its value must be very low. 2024).",
+      "size": 338,
+      "sentences": 5
+    },
+    {
+      "id": 196,
+      "content": "e 7: Which outer learning rate schedule to\nuse? performance, and its value must be very low. 2024). A.1.6 Cosine similarity between outer gradients\nWe display the cosine similarity between outer gradients, across scales (150M, 400M, and 1B) in Figure 8,\nand across replicas (for 150M, from 2 to 16 replicas) in Figure 9. The solid line represent the mean, and\nthe shaded area the standard deviation.",
+      "size": 399,
+      "sentences": 5
+    },
+    {
+      "id": 197,
+      "content": "plicas) in Figure 9. The solid line represent the mean, and\nthe shaded area the standard deviation. We normalize the x-axis as a percentage of the training in order to\ncompare models which have done different amount of steps (e.g. 24,000 steps for 150M vs 30,000 for 400M). (a) 150M (b) 400M (c) 1B\nFigure 8: Similarity between outer gradients across steps and scales.",
+      "size": 368,
+      "sentences": 5
+    },
+    {
+      "id": 198,
+      "content": "0M). (a) 150M (b) 400M (c) 1B\nFigure 8: Similarity between outer gradients across steps and scales. 19\n===  20 ===\n(a) M=2replicas (b) M=4replicas\n(c) M=8replicas (d) M=16replicas\nFigure 9: Cosine similarity between outer gradients across steps and number of replicas. 20\n===  21 ===\nTheory\nB Guarantees for Local SGD\nFirst, we recall our setting and define some notation. We consider the problem of minimizing a function f in\na distributed setting with M workers performing Local SGD.",
+      "size": 485,
+      "sentences": 5
+    },
+    {
+      "id": 199,
+      "content": "he problem of minimizing a function f in\na distributed setting with M workers performing Local SGD. Let x denote the global model parameters at\nr\nthe beginning of round r. Each worker m initializes its local parameters as y =x and performs H local\nm,r,0 r\nSGD steps according to\ny =y −ηg ,\nm,r,h+1 m,r,h m,r,h\nwhere g =∇f(y )+n is the stochastic gradient with noise n , and g =∇f(y ) is\nm,r,h m,r,h m,r,h m,r,h m,r,h m,r,h\nthe true gradient. By Assumption 3.2 we have E[g ] = g .",
+      "size": 479,
+      "sentences": 3
+    },
+    {
+      "id": 200,
+      "content": "y ) is\nm,r,h m,r,h m,r,h m,r,h m,r,h m,r,h\nthe true gradient. By Assumption 3.2 we have E[g ] = g . After H local steps, the global model\nm,r,h m,r,h\nupdate can be equivalently written as x =x −γη (cid:80)H−1g where g = 1 (cid:80)M g is the average\nr+1 r h=0 r,h r,h M m=1 m,r,h\ngradient across workers and y = 1 (cid:80)M y is the average model. Note that these two last sequences\nr,h M m=1 m,r,h\nare virtual sequences and not actually computed.",
+      "size": 446,
+      "sentences": 4
+    },
+    {
+      "id": 201,
+      "content": "Note that these two last sequences\nr,h M m=1 m,r,h\nare virtual sequences and not actually computed. We also define x =x −γη (cid:80)H−1g as an intermediate\nr,h r h=0 r,h\nquantity used in the analysis. B.1 Algorithm-independent results\nLemma B.1. (Karimireddy et al., 2020, Lemma 6) Let f be a convex and L-smooth function. Suppose that\nη ≤ 2, let T (x)=x−η∇f(x). Then\nL η\n∥T (x)−T (y)∥2 ≤∥x−y∥2. η η\nProof. The proof is provided for completeness only.",
+      "size": 451,
+      "sentences": 8
+    },
+    {
+      "id": 202,
+      "content": "=x−η∇f(x). Then\nL η\n∥T (x)−T (y)∥2 ≤∥x−y∥2. η η\nProof. The proof is provided for completeness only. We have\n∥T (x)−T (y)∥2 =∥x−y∥2+η2∥∇f(x)−∇f(y)∥2−2η⟨x−y,∇f(x)−∇f(y)⟩. (10)\nη η\nBy the Baillon-Haddad theorem (Bauschke and Combettes, 2009) we have\n1\n⟨x−y,∇f(x)−∇f(y)⟩≥ ∥∇f(x)−∇f(y)∥2. L\nUsing this in Equation (10) gives\n(cid:18) (cid:19)\n2\n∥T (x)−T (y)∥2 ≤∥x−y∥2−η −η ∥∇f(x)−∇f(y)∥2. η η L\nIf η ≤ 1 then 2 −η ≥0 and therefore ∥T (x)−T (y)∥2 ≤∥x−y∥2. L L η η\nLemma B.2. Let y ,...,y be real numbers.",
+      "size": 498,
+      "sentences": 10
+    },
+    {
+      "id": 203,
+      "content": "then 2 −η ≥0 and therefore ∥T (x)−T (y)∥2 ≤∥x−y∥2. L L η η\nLemma B.2. Let y ,...,y be real numbers. Then,\n1 n\n(cid:118)\nn (cid:117) n\n1 (cid:88) (cid:117)1 (cid:88)\nn\n|y\ni\n|≤(cid:116)\nn\ny\ni\n2.\nk=1 k=1\nProof. This is just the arithmetic mean-root mean square inequality and we include the proof solely for\n√\ncompleteness. Let Y be a random variable that takes the value y2 with probability 1, and let g(x) = x.\ni n\nObserve that\nn\n1 (cid:88)\n|y |=E[g(Y)].",
+      "size": 453,
+      "sentences": 6
+    },
+    {
+      "id": 204,
+      "content": "akes the value y2 with probability 1, and let g(x) = x.\ni n\nObserve that\nn\n1 (cid:88)\n|y |=E[g(Y)]. n i\nk=1\nSince g is a concave function, by Jensen’s inequality we have that E[g(Y)]≤g(E[Y]). Therefore,\n(cid:118)\nn (cid:117) n\nn 1 (cid:88) |y i |=E[g(Y)]≤g(E[Y])= (cid:117) (cid:116) n 1 (cid:88) y i 2.\nk=1 k=1\n21\n===  22 ===\nLemma B.3. (Variance of Sum of Conditionally Independent Random Variables).",
+      "size": 402,
+      "sentences": 4
+    },
+    {
+      "id": 205,
+      "content": "k=1 k=1\n21\n===  22 ===\nLemma B.3. (Variance of Sum of Conditionally Independent Random Variables). Let Z ,...,Z be random\n1 n\nvariables such that Z satisfies\ni\n(cid:104) (cid:105)\nE [Z ]=0, and, E ∥Z ∥2 =σ2,\ni−1 i i i\nwhere E [·] denotes expectation conditional on Z ,Z ,...,Z . Then,\ni 1 2 i\n(cid:13) (cid:13)(cid:88) n (cid:13) (cid:13) 2  (cid:88) n\nE  (cid:13) (cid:13) Z i (cid:13) (cid:13) = σ i 2. (cid:13) (cid:13)\ni=1 i=1\nProof.",
+      "size": 441,
+      "sentences": 5
+    },
+    {
+      "id": 206,
+      "content": " (cid:88) n\nE  (cid:13) (cid:13) Z i (cid:13) (cid:13) = σ i 2. (cid:13) (cid:13)\ni=1 i=1\nProof. (cid:13) (cid:13)(cid:88) n (cid:13) (cid:13) 2   (cid:13) (cid:13)(cid:88) n (cid:13) (cid:13) 2 \nE  (cid:13) (cid:13) Z i (cid:13) (cid:13) =E  E n−1 (cid:13) (cid:13) Z i (cid:13) (cid:13) \n(cid:13) (cid:13) (cid:13) (cid:13)\ni=1 i=1\n=E   E n−1   (cid:13) (cid:13) (cid:13) (cid:13) n (cid:88) −1 Z i (cid:13) (cid:13) (cid:13) (cid:13) 2 +∥Z n ∥2+2 (cid:42)n (cid:88) −1 Z i ,Z n (cid:43)   \n(cid:13) (cid:13)\ni=1 i=1\n (cid:13) (cid:13)2 \n(cid:13)n (cid:88) −1 (cid:13)\n=E  E n−1 (cid:13) (cid:13) Z i (cid:13) (cid:13) +σ n 2 .",
+      "size": 660,
+      "sentences": 3
+    },
+    {
+      "id": 207,
+      "content": ")2 \n(cid:13)n (cid:88) −1 (cid:13)\n=E  E n−1 (cid:13) (cid:13) Z i (cid:13) (cid:13) +σ n 2 . (cid:13) (cid:13)\ni=1\n(cid:104) (cid:68) (cid:69)(cid:105)\nThe cross-term E 2 (cid:80)n−1Z ,Z vanishes because E [Z ] = 0 and (cid:80)n−1Z is measurable with\nn−1 i=1 i n n−1 n i=1 i\nrespect to the sigma-algebra generated by Z ,...,Z .",
+      "size": 334,
+      "sentences": 2
+    },
+    {
+      "id": 208,
+      "content": "−1Z is measurable with\nn−1 i=1 i n n−1 n i=1 i\nrespect to the sigma-algebra generated by Z ,...,Z . Continuing,\n1 n−1\n(cid:13) (cid:13)(cid:88) n (cid:13) (cid:13) 2  (cid:13) (cid:13)n (cid:88) −1 (cid:13) (cid:13) 2\nE  (cid:13) (cid:13) Z i (cid:13) (cid:13) =E  (cid:13) (cid:13) Z i (cid:13) (cid:13) +σ n 2. (cid:13) (cid:13) (cid:13) (cid:13)\ni=1 i=1\nRecursing we get,\n(cid:13) (cid:13)(cid:88) n (cid:13) (cid:13) 2  (cid:88) n\nE  (cid:13) (cid:13) Z i (cid:13) (cid:13) = σ i 2.",
+      "size": 498,
+      "sentences": 3
+    },
+    {
+      "id": 209,
+      "content": "3)(cid:88) n (cid:13) (cid:13) 2  (cid:88) n\nE  (cid:13) (cid:13) Z i (cid:13) (cid:13) = σ i 2. (cid:13) (cid:13)\ni=1 i=1\nThis completes the proof. Lemma B.4. (Ivgi, Hinder, and Carmon, 2023, Lemma 7). Let S be the set of nonnegative and nondecreasing\nsequences.",
+      "size": 266,
+      "sentences": 5
+    },
+    {
+      "id": 210,
+      "content": "i, Hinder, and Carmon, 2023, Lemma 7). Let S be the set of nonnegative and nondecreasing\nsequences. Let y ,y ,... be a sequence in S. Let C ∈F for all t=1,2,...,T and let X be a martingale\n1 2 t t−1 t\ndifference sequence adapted to F such that |X | ≤ C with probability 1 for t = 1,2,...,T. Then for all\nt t t\n(cid:12) (cid:12)\nδ ∈ (0,1) and Xˆ ∈ F such that (cid:12)Xˆ (cid:12) ≤ C with probability 1, we have that with probability at least\nt t−1 (cid:12) t(cid:12) t\n1−δ−Prob(∃t≤T |C >c) that for all c>0\nt\n(cid:118)\n(cid:12) (cid:12) (cid:12) (cid:88) t y X (cid:12) (cid:12) (cid:12)≤8y (cid:117) (cid:117) (cid:116)θ (cid:88) t (X −Xˆ )2+c2θ2 ,\n(cid:12) i i(cid:12) t t,δ i i t,δ\n(cid:12) (cid:12)\ni=1 i=1\nwhere θ =log60log6t.",
+      "size": 731,
+      "sentences": 3
+    },
+    {
+      "id": 211,
+      "content": "(X −Xˆ )2+c2θ2 ,\n(cid:12) i i(cid:12) t t,δ i i t,δ\n(cid:12) (cid:12)\ni=1 i=1\nwhere θ =log60log6t. t,δ δ\nLemma B.5. Suppose we have\nr ≤(1+a)r −bδ +c\nk+1 k k\nThen,\nr eaK c\nminδ ≤ 0 + . j j bK b\n22\n===  23 ===\nProof. Let w k+1 = 1 w + k a . We have\nw r ≤(1+a)w r −bw δ +cw\nk+1 k+1 k+1 k k+1 k k+1\n=w r −bw δ +cw . k k k+1 k k+1\nTelescoping,\nK−1 K−1\n(cid:88) (cid:88)\nw r ≤w r −b w δ +c w . K K 0 0 j+1 j j+1\nj=0 j=0\nRearranging,\nK−1\n1 (cid:88) w δ ≤ w 0 r 0 + c .",
+      "size": 461,
+      "sentences": 8
+    },
+    {
+      "id": 212,
+      "content": "8)\nw r ≤w r −b w δ +c w . K K 0 0 j+1 j j+1\nj=0 j=0\nRearranging,\nK−1\n1 (cid:88) w δ ≤ w 0 r 0 + c . (cid:80)K−1w j+1 j b (cid:80)K−1w b\nj=0 j+1 j=0 j=0 j+1\nWe have w k = w 1 k + − a 1 = (1+ w a 0 )k . Therefore,\nK−1 K−1\n(cid:88) w = (cid:88) w 0\nj+1 (1+a)k+1\nj=0 j=0\nK−1\n≥ (cid:88) w 0\n(1+a)K\nj=0\nw K\n= 0 . (1+a)K\nTherefore,\n1 K (cid:88) −1 w δ ≤ r 0 (1+a)K + c . (cid:80)K−1w j+1 j bK b\nj=0 j+1 j=0\nFinally, it remains to use that 1+a≤ea.",
+      "size": 439,
+      "sentences": 6
+    },
+    {
+      "id": 213,
+      "content": "w δ ≤ r 0 (1+a)K + c . (cid:80)K−1w j+1 j bK b\nj=0 j+1 j=0\nFinally, it remains to use that 1+a≤ea. B.2 Non-adaptive guarantee without momentum\nWe begin with a lemma that establishes the regret of the local optimizer. Often the regret is measured against\nthe optimal point (like x ) but here we instead utilize it against the initial point y =x . ∗ r,0 r\nLemma B.6 (Regret against starting point).",
+      "size": 396,
+      "sentences": 5
+    },
+    {
+      "id": 214,
+      "content": "tead utilize it against the initial point y =x . ∗ r,0 r\nLemma B.6 (Regret against starting point). For any learning rate η > 0, the inner product between the\ndisplacement from the initial average iterate and the average gradient satisfies,\nH−1 H−1\n(cid:88) ⟨y −y ,g ⟩≤ η (cid:88) ∥g ∥2− 1 ∥y −y ∥2. r,h r,0 r,h 2 r,h 2η r,H r,0\nh=0 h=0\nProof. We begin by using that y =y −ηg and expanding the square as\nr,h+1 r,h r,h\n∥y −y ∥2 =∥y −ηg −y ∥2\nr,h+1 r,0 r,h r,h r,0\n=∥y −y ∥2+η2∥g ∥2−2η⟨y −y ,g ⟩.",
+      "size": 494,
+      "sentences": 5
+    },
+    {
+      "id": 215,
+      "content": "quare as\nr,h+1 r,h r,h\n∥y −y ∥2 =∥y −ηg −y ∥2\nr,h+1 r,0 r,h r,h r,0\n=∥y −y ∥2+η2∥g ∥2−2η⟨y −y ,g ⟩. r,h r,0 r,h r,h r,0 r,h\nRearranging to isolate the inner product term, we obtain\n∥y −y ∥2−∥y −y ∥2 η\n⟨y −y ,g ⟩= r,h r,0 r,h+1 r,0 + ∥g ∥2. r,h r,0 r,h 2η 2 r,h\n23\n===  24 ===\nSumming over h from 0 to H −1,\nH (cid:88) −1 ⟨y −y ,g ⟩= H (cid:88) −1(cid:32) ∥y r,h −y r,0 ∥2−∥y r,h+1 −y r,0 ∥2 + η ∥g ∥2 (cid:33)\nr,h r,0 r,h 2η 2 r,h\nh=0 h=0\nH−1 H−1\n= 1 (cid:88) (∥y −y ∥2−∥y −y ∥2)+ η (cid:88) ∥g ∥2.",
+      "size": 498,
+      "sentences": 3
+    },
+    {
+      "id": 216,
+      "content": "2 (cid:33)\nr,h r,0 r,h 2η 2 r,h\nh=0 h=0\nH−1 H−1\n= 1 (cid:88) (∥y −y ∥2−∥y −y ∥2)+ η (cid:88) ∥g ∥2. 2η r,h r,0 r,h+1 r,0 2 r,h\nh=0 h=0\nThe first sum telescopes\nH−1\n(cid:88) (∥y −y ∥2−∥y −y ∥2)=∥y −y ∥2−∥y −y ∥2\nr,h r,0 r,h+1 r,0 r,0 r,0 r,H r,0\nh=0\n=−∥y −y ∥2. r,H r,0\nTherefore,\nH (cid:88) −1 ⟨y −y ,g ⟩=− ∥y r,H −y r,0 ∥2 + η H (cid:88) −1 ∥g ∥2\nr,h r,0 r,h 2η 2 r,h\nh=0 h=0\n≤ η H (cid:88) −1 ∥g ∥2− ∥y r,H −y r,0 ∥2 . 2 r,h 2η\nh=0\nLemma B.7. (Local client drift bound).",
+      "size": 472,
+      "sentences": 5
+    },
+    {
+      "id": 217,
+      "content": "h=0\n≤ η H (cid:88) −1 ∥g ∥2− ∥y r,H −y r,0 ∥2 . 2 r,h 2η\nh=0\nLemma B.7. (Local client drift bound). Suppose that Theorems 3.1 and 3.2 hold. Then in Algorithm GEN-\nLOC-SGD for all r and h, if η ≤ 1, then\nL\n(cid:34) M (cid:35)\nE 1 (cid:88) ∥y −y ∥2 ≤2η2σ2h. M2 m,r,h s,r,h\nm,s=1\nProof. Let T˜ (y )=y −ηg where g is the stochastic gradient, and T (y )=y−ηg\nη m,r,h m,r,h m,r,h m,r,h η m,r,h m,r,h\nis the corresponding expected gradient update.",
+      "size": 440,
+      "sentences": 7
+    },
+    {
+      "id": 218,
+      "content": "T (y )=y−ηg\nη m,r,h m,r,h m,r,h m,r,h η m,r,h m,r,h\nis the corresponding expected gradient update. We have\ny −y =T˜ (y )−T˜ (y )\nm,r,h+1 s,r,h+1 η m,r,h η s,r,h\n(cid:104) (cid:105)\n=T (y )−T (y )+ T˜ (y )−T˜ (y )−(T (y )−T (y ))\nη m,r,h η s,r,h η m,r,h η s,r,h η m,r,h η s,r,h\n=T (y )−T (y )+[ξ −ξ ],\nη m,r,h η s,r,h m,r,h s,r,h\nwhereξ =T˜ (y )−T (y )=−ηn isthenoiseterm. DefineV = 1 (cid:80)M ∥y −y ∥2.",
+      "size": 403,
+      "sentences": 3
+    },
+    {
+      "id": 219,
+      "content": ",r,h η s,r,h m,r,h s,r,h\nwhereξ =T˜ (y )−T (y )=−ηn isthenoiseterm. DefineV = 1 (cid:80)M ∥y −y ∥2. m,r,h η m,r,h η m,r,h m,r,h r,h M2 m,s=1 m,r,h s,r,h\nIt follows that\nM\nV = 1 (cid:88) ∥y −y ∥2\nr,h+1 M2 m,r,h+1 s,r,h+1\nm,s=1\nM (cid:34)\n= 1 (cid:88) ∥T (y )−T (y )∥2+∥ξ −ξ ∥2\nM2 η m,r,h η s,r,h m,r,h s,r,h\nm,s=1\n(cid:35)\n+2⟨T (y )−T (y ),ξ −ξ ⟩ .",
+      "size": 347,
+      "sentences": 3
+    },
+    {
+      "id": 220,
+      "content": ") ∥T (y )−T (y )∥2+∥ξ −ξ ∥2\nM2 η m,r,h η s,r,h m,r,h s,r,h\nm,s=1\n(cid:35)\n+2⟨T (y )−T (y ),ξ −ξ ⟩ . η m,r,h η s,r,h m,r,h s,r,h\nTaking conditional expectation gives\nM (cid:34) (cid:35)\nE [V ]= 1 (cid:88) ∥T (y )−T (y )∥2+E (cid:104) ∥ξ −ξ ∥2 (cid:105) .",
+      "size": 253,
+      "sentences": 2
+    },
+    {
+      "id": 221,
+      "content": "tion gives\nM (cid:34) (cid:35)\nE [V ]= 1 (cid:88) ∥T (y )−T (y )∥2+E (cid:104) ∥ξ −ξ ∥2 (cid:105) . r,h r,h+1 M2 η m,r,h η s,r,h h m,r,h s,r,h\nm,s=1\n24\n===  25 ===\nFinally, using the fact that ∥T (x)−T (y)∥2 ≤∥x−y∥2 whenever η ≤ 2 (Lemma B.1) and Assumption 3.2,\nη η L\nwe get\nM\nE [V ]≤ 1 (cid:88) (cid:104) ∥y −y ∥2+2η2σ2 (cid:105)\nr,h r,h+1 M2 m,r,h s,r,h\nm,s=1\n=V +2η2σ2.",
+      "size": 373,
+      "sentences": 2
+    },
+    {
+      "id": 222,
+      "content": "t\nM\nE [V ]≤ 1 (cid:88) (cid:104) ∥y −y ∥2+2η2σ2 (cid:105)\nr,h r,h+1 M2 m,r,h s,r,h\nm,s=1\n=V +2η2σ2. r,h\nTherefore by taking unconditional expectation and recursing from h=0 where all local iterates are equal to\nx (so V =0), we get E[V ]≤2η2σ2h. r r,0 r,h\nProof of Theorem 3.3. W begin by analyzing how the squared distance to the optimal solution changes after\none round of communication.",
+      "size": 388,
+      "sentences": 4
+    },
+    {
+      "id": 223,
+      "content": "nalyzing how the squared distance to the optimal solution changes after\none round of communication. From the update rule, we have,\n(cid:13) (cid:13)2\n∥x −x ∥2 =∥x −x ∥2−2ηγ H (cid:88) −1 ⟨x −x ,g ⟩+η2γ2 (cid:13) (cid:13) H (cid:88) −1 g (cid:13) (cid:13) . (11)\nr+1 ∗ r ∗ r ∗ r,h (cid:13) r,h(cid:13)\n(cid:13) (cid:13)\nh=0 h=0\nWe rewrite the inner product term as\n−⟨x −x ,g ⟩=⟨x −x ,g ⟩\nr ∗ r,h ∗ r r,h\n=⟨x −y ,g ⟩+⟨y −x ,g ⟩.",
+      "size": 426,
+      "sentences": 3
+    },
+    {
+      "id": 224,
+      "content": "We rewrite the inner product term as\n−⟨x −x ,g ⟩=⟨x −x ,g ⟩\nr ∗ r,h ∗ r r,h\n=⟨x −y ,g ⟩+⟨y −x ,g ⟩. ∗ r,h r,h r,h r r,h\nSumming over all local steps we obtain\nH−1 H−1 H−1\n(cid:88) (cid:88) (cid:88)\n− ⟨x −x ,g ⟩= ⟨x −y ,g ⟩+ ⟨y −x ,g ⟩. r ∗ r,h ∗ r,h r,h r,h r r,h\nh=0 h=0 h=0\nApplying Theorem B.6 we get\n− H (cid:88) −1 ⟨x −x ,g ⟩= H (cid:88) −1 ⟨x −y ,g ⟩− ∥y r,H −y r,0 ∥2 + η H (cid:88) −1 ∥g ∥2.",
+      "size": 399,
+      "sentences": 3
+    },
+    {
+      "id": 225,
+      "content": "get\n− H (cid:88) −1 ⟨x −x ,g ⟩= H (cid:88) −1 ⟨x −y ,g ⟩− ∥y r,H −y r,0 ∥2 + η H (cid:88) −1 ∥g ∥2. (12)\nr ∗ r,h ∗ r,h r,h 2η 2 r,h\nh=0 h=0 h=0\nObserve that since y −y =−η (cid:80)H−1g , Equation (12) becomes,\nr,H r,0 h=0 r,h\n(cid:13) (cid:13)2\n− H (cid:88) −1 ⟨x −x ,g ⟩= H (cid:88) −1 ⟨x −y ,g ⟩− η(cid:13) (cid:13) H (cid:88) −1 g (cid:13) (cid:13) + η H (cid:88) −1 ∥g ∥2.",
+      "size": 376,
+      "sentences": 2
+    },
+    {
+      "id": 226,
+      "content": "id:88) −1 ⟨x −y ,g ⟩− η(cid:13) (cid:13) H (cid:88) −1 g (cid:13) (cid:13) + η H (cid:88) −1 ∥g ∥2. r ∗ r,h ∗ r,h r,h 2(cid:13) r,h(cid:13) 2 r,h\n(cid:13) (cid:13)\nh=0 h=0 h=0 h=0\nPlugging this back into Equation (11),\nH−1\n∥x −x ∥2 ≤∥x −x ∥2+2ηγ (cid:88) ⟨x −y ,g ⟩\nr+1 ∗ r ∗ ∗ r,h r,h\nh=0\n(cid:13) (cid:13)2\n+γη2 H (cid:88) −1 ∥g ∥2+η2γ(γ−1) (cid:13) (cid:13) H (cid:88) −1 g (cid:13) (cid:13) .",
+      "size": 396,
+      "sentences": 2
+    },
+    {
+      "id": 227,
+      "content": ") (cid:13)2\n+γη2 H (cid:88) −1 ∥g ∥2+η2γ(γ−1) (cid:13) (cid:13) H (cid:88) −1 g (cid:13) (cid:13) . r,h (cid:13) r,h(cid:13)\n(cid:13) (cid:13)\nh=0 h=0\nLet us take expectation conditional on x ,...,x ,\n1 r\nH−1\nE (cid:104) ∥x −x ∥2 (cid:105) ≤∥x −x ∥2+2ηγ (cid:88) E [⟨x −y ,g ⟩]\nr r+1 ∗ r ∗ r ∗ r,h r,h\nh=0\n(13)\n(cid:13) (cid:13)2\n+γη2 H (cid:88) −1 E r (cid:104) ∥g r,h ∥2 (cid:105) +η2γ(γ−1)E r (cid:13) (cid:13) (cid:13) H (cid:88) −1 g r,h (cid:13) (cid:13) (cid:13) .",
+      "size": 475,
+      "sentences": 2
+    },
+    {
+      "id": 228,
+      "content": "cid:105) +η2γ(γ−1)E r (cid:13) (cid:13) (cid:13) H (cid:88) −1 g r,h (cid:13) (cid:13) (cid:13) . (cid:13) (cid:13)\nh=0 h=0\n25\n===  26 ===\nFor the squared norm of the average gradient:\n(cid:104) (cid:105) (cid:104) (cid:104) (cid:105)(cid:105)\nE ∥g ∥2 =E E ∥g ∥2\nr r,h r r,h−1 r,h\n=E r (cid:104) E r,h−1 (cid:104)(cid:13) (cid:13)g r,h −g r,h (cid:13) (cid:13) 2 (cid:105) + (cid:13) (cid:13)g r,h (cid:13) (cid:13) 2 (cid:105)\n= M σ2 +E r (cid:104)(cid:13) (cid:13)g r,h (cid:13) (cid:13) 2 (cid:105) ,\nwhere we use E [·] to denote expectation conditional on the σ-algebra generated by all the stochastic\nr,h−1\ngradients up to and including step h−1.",
+      "size": 653,
+      "sentences": 2
+    },
+    {
+      "id": 229,
+      "content": "onal on the σ-algebra generated by all the stochastic\nr,h−1\ngradients up to and including step h−1. Substituting this into Equation (13),\nE (cid:104) ∥x −x ∥2 (cid:105) ≤∥x −x ∥2+2ηγ H (cid:88) −1 E [⟨x −y ,g ⟩]+ γη2Hσ2\nr r+1 ∗ r ∗ r ∗ r,h r,h M\nh=0\n(14)\n(cid:13) (cid:13)2\n+γη2 H (cid:88) −1 E r (cid:104)(cid:13) (cid:13)g r,h (cid:13) (cid:13) 2 (cid:105) +η2γ(γ−1)E r (cid:13) (cid:13) (cid:13) H (cid:88) −1 g r,h (cid:13) (cid:13) (cid:13) .",
+      "size": 451,
+      "sentences": 2
+    },
+    {
+      "id": 230,
+      "content": "cid:105) +η2γ(γ−1)E r (cid:13) (cid:13) (cid:13) H (cid:88) −1 g r,h (cid:13) (cid:13) (cid:13) . (cid:13) (cid:13)\nh=0 h=0\nNow we bound the inner product term:\nE [⟨x −y ,g ⟩]=E [E [⟨x −y ,g ⟩]]\nr ∗ r,h r,h r h−1 ∗ r,h r,h\n=E (cid:2)(cid:10) x −y ,g (cid:11)(cid:3)\nr ∗ r,h r,h\nM\n= 1 (cid:88) E (cid:2)(cid:10) x −y ,g (cid:11)(cid:3)\nM r ∗ r,h m,r,h\nm=1\nM\n= 1 (cid:88) E (cid:2)(cid:10) x −y +y −y ,g (cid:11)(cid:3)\nM r ∗ m,r,h m,r,h r,h m,r,h\nm=1\nM M\n= 1 (cid:88) E (cid:2)(cid:10) x −y ,g (cid:11)(cid:3) + 1 (cid:88) E (cid:2)(cid:10) y −y ,g (cid:11)(cid:3) .",
+      "size": 567,
+      "sentences": 2
+    },
+    {
+      "id": 231,
+      "content": "E (cid:2)(cid:10) x −y ,g (cid:11)(cid:3) + 1 (cid:88) E (cid:2)(cid:10) y −y ,g (cid:11)(cid:3) . M r ∗ m,r,h m,r,h M r m,r,h r,h m,r,h\nm=1 m=1\nUsing Young’s inequality for the second term,\nE [⟨x −y ,g ⟩] (15)\nr ∗ r,h r,h\n≤ M 1 (cid:88) M E r (cid:2)(cid:10) x ∗ −y m,r,h ,g m,r,h (cid:11)(cid:3) + M 1 (cid:88) M E r (cid:34) ∥y m,r,h 2 − α y r,h ∥2 + α 2 (cid:13) (cid:13)g m,r,h (cid:13) (cid:13) 2 (cid:35)\nm=1 m=1\nM M\n= M 1 (cid:88) E r (cid:2)(cid:10) x ∗ −y m,r,h ,g m,r,h (cid:11)(cid:3) + V 2 r α ,h + 2 α M (cid:88) E r (cid:104)(cid:13) (cid:13)g m,r,h (cid:13) (cid:13) 2 (cid:105) , (16)\nm=1 m=1\n(cid:104) (cid:105)\nwhere V = 1 (cid:80)M E ∥y −y ∥2 by definition.",
+      "size": 677,
+      "sentences": 2
+    },
+    {
+      "id": 232,
+      "content": ":13) 2 (cid:105) , (16)\nm=1 m=1\n(cid:104) (cid:105)\nwhere V = 1 (cid:80)M E ∥y −y ∥2 by definition. By the convexity of f,\nr,h M m=1 r m,r,h r,h\n(cid:10) (cid:11)\nx −y ,g =⟨x −y ,∇f(y )⟩\n∗ m,r,h m,r,h ∗ m,r,h m,r,h\n≤f(x )−f(y )\n∗ m,r,h\n=−(f(y )−f(x )).",
+      "size": 252,
+      "sentences": 2
+    },
+    {
+      "id": 233,
+      "content": "(cid:11)\nx −y ,g =⟨x −y ,∇f(y )⟩\n∗ m,r,h m,r,h ∗ m,r,h m,r,h\n≤f(x )−f(y )\n∗ m,r,h\n=−(f(y )−f(x )). (17)\nm,r,h ∗\n26\n===  27 ===\nFor the variance term, when η ≤ 1 we use Theorem B.7\nL\nM\nV = 1 (cid:88) E (cid:104) ∥y −y ∥2 (cid:105)\nr,h M r m,r,h r,h\nm=1\nM M\n≤ 1 (cid:88) 1 (cid:88) E (cid:104) ∥y −y ∥2 (cid:105)\nM M r m,r,h s,r,h\nm=1 s=1\nM M\n= 1 (cid:88) (cid:88) E (cid:104) ∥y −y ∥2 (cid:105)\nM2 r m,r,h s,r,h\nm=1s=1\n≤2η2σ2h≤2η2σ2H.",
+      "size": 433,
+      "sentences": 2
+    },
+    {
+      "id": 234,
+      "content": "=1\nM M\n= 1 (cid:88) (cid:88) E (cid:104) ∥y −y ∥2 (cid:105)\nM2 r m,r,h s,r,h\nm=1s=1\n≤2η2σ2h≤2η2σ2H. (18)\nBy smoothness,\n(cid:13) (cid:13)g m,r,h (cid:13) (cid:13) 2 =∥∇f(y m,r,h )∥2 ≤2L(f(y m,r,h )−f(x ∗ )). (19)\nPlugging Equations (17) to (19) back into Equation (16) we get\n−(1−αL) (cid:88) M η2σ2H\nE [⟨x −y ,g ⟩]≤ (E [f(y )]−f(x ))+ .",
+      "size": 337,
+      "sentences": 3
+    },
+    {
+      "id": 235,
+      "content": "o (19) back into Equation (16) we get\n−(1−αL) (cid:88) M η2σ2H\nE [⟨x −y ,g ⟩]≤ (E [f(y )]−f(x ))+ . (20)\nr ∗ r,h r,h M r m,r,h ∗ α\nm=1\nSubstituting (20) back into our main recursion (Equation (13)),\nE (cid:104) ∥x −x ∥2 (cid:105) ≤∥x −x ∥2− 2ηγ(1−αL) H (cid:88) −1 (cid:88) M (E [f(y )]−f(x ))+ 2η3γσ2H2\nr r+1 ∗ r ∗ M r m,r,h ∗ α\nh=0m=1\n(21)\n(cid:13) (cid:13)2\n+ γη2 M Hσ2 +γη2 H (cid:88) −1 E r (cid:104)(cid:13) (cid:13)g r,h (cid:13) (cid:13) 2 (cid:105) +η2γ(γ−1)E r (cid:13) (cid:13) (cid:13) H (cid:88) −1 g r,h (cid:13) (cid:13) (cid:13) .",
+      "size": 550,
+      "sentences": 2
+    },
+    {
+      "id": 236,
+      "content": "cid:105) +η2γ(γ−1)E r (cid:13) (cid:13) (cid:13) H (cid:88) −1 g r,h (cid:13) (cid:13) (cid:13) . (cid:13) (cid:13)\nh=0 h=0\nWe now have two cases. Case 1.",
+      "size": 156,
+      "sentences": 3
+    },
+    {
+      "id": 237,
+      "content": "88) −1 g r,h (cid:13) (cid:13) (cid:13) . (cid:13) (cid:13)\nh=0 h=0\nWe now have two cases. Case 1. If γ ≥1, then we have by Theorem B.3 and Jensen’s inequality applied to\n∥·∥2,\n(cid:13) (cid:13)2 (cid:13) (cid:13)2 (cid:13) (cid:13)2\n(cid:13)H (cid:88) −1 (cid:13) (cid:13)H (cid:88) −1 (cid:13) (cid:13)H (cid:88) −1 (cid:13)\nE r (cid:13) (cid:13) g r,h (cid:13) (cid:13) =E r (cid:13) (cid:13) (g r,h −E r [g r,h ])(cid:13) (cid:13) +(cid:13) (cid:13) (E r [g r,h ])(cid:13) (cid:13)\n(cid:13) (cid:13) (cid:13) (cid:13) (cid:13) (cid:13)\nh=0 h=0 h=0\n(cid:13) (cid:13)2 (cid:13) (cid:13)2\n(cid:13)H (cid:88) −1 (cid:13) (cid:13)H (cid:88) −1 (cid:13)\n=E r (cid:13) (cid:13) (g r,h −E r [g r,h ])(cid:13) (cid:13) +(cid:13) (cid:13) (E r [E r,h−1 [g r,h ]])(cid:13) (cid:13)\n(cid:13) (cid:13) (cid:13) (cid:13)\nh=0 h=0\n(cid:13) (cid:13)2 (cid:13) (cid:13)2\n=E r (cid:13) (cid:13) (cid:13) H (cid:88) −1 (g r,h −E r [g r,h ]) (cid:13) (cid:13) (cid:13) + (cid:13) (cid:13) (cid:13) H (cid:88) −1 E r (cid:2) g r,h (cid:3) (cid:13) (cid:13) (cid:13)\n(cid:13) (cid:13) (cid:13) (cid:13)\nh=0 h=0\n(cid:13) (cid:13)2\nσ2H (cid:13)H (cid:88) −1 (cid:13)\n≤ M +E r (cid:13) (cid:13) g r,h (cid:13) (cid:13) \n(cid:13) (cid:13)\nh=0\n≤ σ M 2H +H H (cid:88) −1 E r (cid:104)(cid:13) (cid:13)g r,h (cid:13) (cid:13) 2 (cid:105) .",
+      "size": 1334,
+      "sentences": 4
+    },
+    {
+      "id": 238,
+      "content": ")\nh=0\n≤ σ M 2H +H H (cid:88) −1 E r (cid:104)(cid:13) (cid:13)g r,h (cid:13) (cid:13) 2 (cid:105) . (22)\nh=0\n27\n===  28 ===\nUsing Jensen’s inequality and smoothness we have\n(cid:13) (cid:13)2\nE r (cid:104)(cid:13) (cid:13)g r,h (cid:13) (cid:13) 2 (cid:105) =E r (cid:13) (cid:13) (cid:13)M 1 (cid:88) M ∇f(y m,r,h ) (cid:13) (cid:13) (cid:13) \n(cid:13) (cid:13)\nm=1\nM\n≤ 1 (cid:88) E (cid:104) ∥∇f(y )∥2 (cid:105)\nM r m,r,h\nm=1\nM\n2L (cid:88)\n≤ E [f(y )−f(x )].",
+      "size": 464,
+      "sentences": 2
+    },
+    {
+      "id": 239,
+      "content": ")\nm=1\nM\n≤ 1 (cid:88) E (cid:104) ∥∇f(y )∥2 (cid:105)\nM r m,r,h\nm=1\nM\n2L (cid:88)\n≤ E [f(y )−f(x )]. (23)\nM r m,r,h ∗\nm=1\nUsing Equations (22) and (23) into Equation (21) we get\n(cid:104) (cid:105)\nE ∥x −x ∥2 ≤∥x −x ∥2\nr r+1 ∗ r ∗\n2ηγ(1−αL)−2Lγη2(1+(γ−1)H) H (cid:88) −1 (cid:88) M 2η3γσ2H2\n− (E [f(y )]−f(x ))+\nM r m,r,h ∗ α\nh=0m=1\nγ2η2Hσ2\n+ . M\nH−1 M\n=∥x −x ∥2− 2ηγ[1−αL−Lη(1+(γ−1)H)] (cid:88) (cid:88) (E [f(y )]−f(x ))\nr ∗ M r m,r,h ∗\nh=0m=1\n2η3γσ2H2 γ2η2Hσ2\n+ + .",
+      "size": 467,
+      "sentences": 3
+    },
+    {
+      "id": 240,
+      "content": "−αL−Lη(1+(γ−1)H)] (cid:88) (cid:88) (E [f(y )]−f(x ))\nr ∗ M r m,r,h ∗\nh=0m=1\n2η3γσ2H2 γ2η2Hσ2\n+ + . α M\n(cid:104) (cid:105) 2η3γσ2H2 η2γ2Hσ2\n=∥x −x ∥2−2ηγH(1−αL−Lη(1+(γ−1)H))E δˆ + + , (24)\nr ∗ r r+1 α M\nwhere in the last line we defined\nH−1 M\nδˆ = 1 (cid:88) (cid:88) (f(y )−f(x )) (25)\nr+1 MH m,r,h ∗\nh=0m=1\nCase 2.",
+      "size": 317,
+      "sentences": 2
+    },
+    {
+      "id": 241,
+      "content": "ast line we defined\nH−1 M\nδˆ = 1 (cid:88) (cid:88) (f(y )−f(x )) (25)\nr+1 MH m,r,h ∗\nh=0m=1\nCase 2. If γ ≤1, then we can simply drop the last term in Equation (21) and use Equation (19) to get\nH−1 M\nE (cid:104) ∥x −x ∥2 (cid:105) ≤∥x −x ∥2− 2ηγ(1−αL−ηL) (cid:88) (cid:88) (E [f(y )]−f(x ))\nr r+1 ∗ r ∗ M r m,r,h ∗\nh=0m=1\n2η3γσ2H2 γη2Hσ2\n+ +\nα M\n(cid:104) (cid:105) 2η3γσ2H2 γη2Hσ2\n=∥x −x ∥2−2ηγH(1−αL−ηL)E δˆ + + , (26)\nr ∗ r r+1 α M\nwhereinEquation(26)weagainusedthedefinitioninEquation(25).",
+      "size": 492,
+      "sentences": 2
+    },
+    {
+      "id": 242,
+      "content": "γH(1−αL−ηL)E δˆ + + , (26)\nr ∗ r r+1 α M\nwhereinEquation(26)weagainusedthedefinitioninEquation(25). LookingatbothEquations(24)and(26)\nand taking the maximum we get that for any γ,\n(cid:104) (cid:105) (cid:104) (cid:105)\nE ∥x −x ∥2 ≤∥x −x ∥2−2ηγH(1−αL−ηL(1+(γ−1) H))E δˆ\nr r+1 ∗ r ∗ + r r+1\n2η3γσ2H2 η2max{γ2,γ}Hσ2\n+ + ,\nα M\nwhere (x) =max(x,0) is the ReLU function.",
+      "size": 365,
+      "sentences": 2
+    },
+    {
+      "id": 243,
+      "content": "δˆ\nr r+1 ∗ r ∗ + r r+1\n2η3γσ2H2 η2max{γ2,γ}Hσ2\n+ + ,\nα M\nwhere (x) =max(x,0) is the ReLU function. Putting α= 1 we get\n+ 2L\n(cid:104) (cid:105) (cid:104) (cid:105)\nE ∥x −x ∥2 ≤∥x −x ∥2−ηγH(1−2ηL(1+(γ−1) H))E δˆ\nr r+1 ∗ r ∗ + r r+1\nη2max{γ2,γ}Hσ2\n+4Lη3γσ2H2+ . M\n28\n===  29 ===\nUnder the requirement that the stepsizes η,γ satisfy\n1\nηL(1+(γ−1) H)≤ ,\n+ 4\nwe obtain our recursion\n(cid:104) (cid:105) ηγH (cid:104) (cid:105) η2max{γ2,γ}Hσ2\nE ∥x −x ∥2 ≤∥x −x ∥2− E δˆ +4Lη3γσ2H2+ .",
+      "size": 476,
+      "sentences": 3
+    },
+    {
+      "id": 244,
+      "content": "(cid:104) (cid:105) ηγH (cid:104) (cid:105) η2max{γ2,γ}Hσ2\nE ∥x −x ∥2 ≤∥x −x ∥2− E δˆ +4Lη3γσ2H2+ . r r+1 ∗ r ∗ 2 r r+1 M\nTaking unconditional expectations and rearranging we obtain,\n(cid:104) (cid:105) 2 (cid:104) (cid:104) (cid:105) (cid:104) (cid:105)(cid:105) 2ηmax(γ,1)σ2\nE δˆ ≤ E ∥x −x ∥2 −E ∥x −x ∥2 +8Lη2σ2H + .",
+      "size": 319,
+      "sentences": 2
+    },
+    {
+      "id": 245,
+      "content": "104) (cid:105) (cid:104) (cid:105)(cid:105) 2ηmax(γ,1)σ2\nE δˆ ≤ E ∥x −x ∥2 −E ∥x −x ∥2 +8Lη2σ2H + . r+1 γηH r ∗ r+1 ∗ M\nSumming up both sides as r varies from 0 to R−1 and dividing by 1/R we get\n1 R (cid:88) −1 E (cid:104) δˆ (cid:105) ≤ 2 (cid:104) ∥x −x ∥2−E (cid:104) ∥x −x ∥2 (cid:105)(cid:105) +8Lη2σ2H + 2ηmax(γ,1)σ2 . R r+1 γηRH 0 ∗ R ∗ M\nr=0\nObservethatwecanwritemax(γ,1)=1+(γ−1) .",
+      "size": 389,
+      "sentences": 3
+    },
+    {
+      "id": 246,
+      "content": "cid:105) +8Lη2σ2H + 2ηmax(γ,1)σ2 . R r+1 γηRH 0 ∗ R ∗ M\nr=0\nObservethatwecanwritemax(γ,1)=1+(γ−1) . DroppingthenegativetermandusingJensen’sinequality\n+\ngives\n(cid:34) (cid:32) R−1H−1 M (cid:33)(cid:35) R−1\nE f 1 (cid:88) (cid:88) (cid:88) f(y ) −f(x )≤ 1 (cid:88) E (cid:104) δˆ (cid:105)\nMRH m,r,h ∗ R r+1\nr=0 h=0m=1 r=0\n2∥x −x ∥2 2ηmax(γ,1)σ2\n≤ 0 ∗ +8Lη2σ2H + ,\nγηRH M\nand this is the statement of our theorem. B.3 Non-adaptive guarantee with momentum\nProof of Theorem 3.5.",
+      "size": 475,
+      "sentences": 4
+    },
+    {
+      "id": 247,
+      "content": "his is the statement of our theorem. B.3 Non-adaptive guarantee with momentum\nProof of Theorem 3.5. We analyze the momentum variant of Local SGD:\n(cid:32)H−1 (cid:33)\n(cid:88)\nx =x −ηγ g +µ(x −x ). r+1 r r,h r r−1\nh=0\nDefine\nµ\nz =x + (x −x ). r r 1−µ r r−1\nThen\nH−1\nηγ (cid:88)\nz =z − g .",
+      "size": 288,
+      "sentences": 5
+    },
+    {
+      "id": 248,
+      "content": "(x −x ). r+1 r r,h r r−1\nh=0\nDefine\nµ\nz =x + (x −x ). r r 1−µ r r−1\nThen\nH−1\nηγ (cid:88)\nz =z − g . r+1 r 1−µ r,h\nh=0\nWe have\n(cid:13) (cid:13)2\n∥z −x ∥2 =∥z −x ∥2+ η2γ2 (cid:13) (cid:13) H (cid:88) −1 g (cid:13) (cid:13) − 2ηγ H (cid:88) −1 ⟨z −x ,g ⟩\nr+1 ∗ r ∗ (1−µ)2(cid:13) r,h(cid:13) 1−µ r ∗ r,h\n(cid:13) (cid:13)\nh=0 h=0\n(cid:13) (cid:13)2\n=∥z −x ∥2+ η2γ2 (cid:13) (cid:13) H (cid:88) −1 g (cid:13) (cid:13) − 2ηγ H (cid:88) −1 ⟨x −x ,g ⟩ (27)\nr ∗ (1−µ)2(cid:13) r,h(cid:13) 1−µ r ∗ r,h\n(cid:13) (cid:13)\nh=0 h=0\nH−1\n2ηγµ (cid:88)\n− ⟨x −x ,g ⟩.",
+      "size": 551,
+      "sentences": 4
+    },
+    {
+      "id": 249,
+      "content": "∗ (1−µ)2(cid:13) r,h(cid:13) 1−µ r ∗ r,h\n(cid:13) (cid:13)\nh=0 h=0\nH−1\n2ηγµ (cid:88)\n− ⟨x −x ,g ⟩. 1−µ r r−1 r,h\nh=0\n29\n===  30 ===\nFollowing the same proof as Theorem 3.3, we can bound (in expectation)\n(cid:13) (cid:13)2\n− 1 2 − ηγ µ H (cid:88) −1 E r [⟨x r −x ∗ ,g r,h ⟩]+ (1 η − 2γ µ 2 )2 E r (cid:13) (cid:13) (cid:13) H (cid:88) −1 g r,h (cid:13) (cid:13) (cid:13) ≤− 2( η 1 γ − H µ) E r (cid:104) δˆ r+1 (cid:105)\n(cid:13) (cid:13)\nh=0 h=0 (28)\nγ η2Hσ2 (cid:32)(cid:18) γ (cid:19)2 γ (cid:33)\n+4Lη3 σ2H2+ max , ,\n1−µ M 1−µ 1−µ\nbecause the local optimization procedure is the same– the same analysis holds line-by-line, only replacing γ\nby γ , and requiring instead that\n1−µ\n(cid:32) (cid:18) (cid:19) (cid:33)\nγ 1\nηL 1+ −1 H ≤ .",
+      "size": 738,
+      "sentences": 2
+    },
+    {
+      "id": 250,
+      "content": "cing γ\nby γ , and requiring instead that\n1−µ\n(cid:32) (cid:18) (cid:19) (cid:33)\nγ 1\nηL 1+ −1 H ≤ . (29)\n1−µ 4\n+\nUsing Equation (28) in Equation (27) (after taking expectation in the latter) we obtain\n(cid:104) (cid:105) ηγH (cid:104) (cid:105) γσ2H2\nE ∥z −x ∥2 ≤∥z −x ∥2− E δˆ +4Lη3\nr r+1 ∗ r ∗ 2(1−µ) r r+1 1−µ\n(30)\nη2Hσ2 (cid:32)(cid:18) γ (cid:19)2 γ (cid:33) 2ηγµ H (cid:88) −1 (cid:10) (cid:11)\n+ max , − x −x ,g .",
+      "size": 420,
+      "sentences": 2
+    },
+    {
+      "id": 251,
+      "content": "σ2 (cid:32)(cid:18) γ (cid:19)2 γ (cid:33) 2ηγµ H (cid:88) −1 (cid:10) (cid:11)\n+ max , − x −x ,g . M 1−µ 1−µ 1−µ r r−1 r,h\nh=0\nInthefollowing, weusetheshorthandG d = ef(cid:80)H−1g . Wenowproceedtobound(cid:80)H−1⟨x −x ,g ⟩=\nr h=0 r,h h=0 r−1 r r,h\n⟨x −x ,G ⟩ without using the bounded iterates assumption. We note that by definition:\nr−1 r r\nx −x =−ηγG +µ(x −x ). r r−1 r−1 r−1 r−2\nExpanding this out recursively, we get the following formula:\nr−1\n(cid:88)\nx −x =−ηγ µr−1−sG .",
+      "size": 478,
+      "sentences": 5
+    },
+    {
+      "id": 252,
+      "content": "r−2\nExpanding this out recursively, we get the following formula:\nr−1\n(cid:88)\nx −x =−ηγ µr−1−sG . r r−1 s\ns=0\nFor our analysis, we’ll bound the inner product\n(cid:42) r−1 (cid:43)\n(cid:88)\n⟨x −x ,G ⟩= ηγ µr−1−sG ,G\nr−1 r r s r\ns=0\nr−1\n(cid:88)\n=ηγ µr−1−s⟨G ,G ⟩\ns r\ns=0\nWe will actually bound the sum of the momentum terms over r, i.e. (cid:80) ⟨x −x ,G ⟩.",
+      "size": 357,
+      "sentences": 3
+    },
+    {
+      "id": 253,
+      "content": ",G ⟩\ns r\ns=0\nWe will actually bound the sum of the momentum terms over r, i.e. (cid:80) ⟨x −x ,G ⟩. We have\nr r−1 r r\n(cid:88) ⟨x −x ,G ⟩= ηγ (cid:88)(cid:88)(cid:10) µr−sG ,G (cid:11)\nr−1 r r µ s r\nr r s<r\n(cid:34) (cid:35)\nηγ (cid:88)(cid:88)(cid:68) (cid:69) (cid:88)\n= µ|r−s|G ,G − ∥G ∥2 . 2µ s r r\nr s r\nTo bound the first term above, let A be the R × R matrix whose (r,s)th entry equals µ|r−s|, and let\nΓ=[G |G |...|G ]. Then\n1 2 R\n(cid:88)(cid:88)(cid:68) (cid:69)\nµ|r−s|G ,G =Tr(ΓAΓ⊤).",
+      "size": 493,
+      "sentences": 5
+    },
+    {
+      "id": 254,
+      "content": "|r−s|, and let\nΓ=[G |G |...|G ]. Then\n1 2 R\n(cid:88)(cid:88)(cid:68) (cid:69)\nµ|r−s|G ,G =Tr(ΓAΓ⊤). s r\nr s\nWe now apply the Gershgorin circle theorem to bound this sum, observe that largest sum of absolute values\nof entries in a row satisfy\n(R (cid:88) −1)/2 1−µ(R−1)/2 1+µ−2µ(R+1)/2 1+µ\n1+2 µr =1+2µ = ≤ . 1−µ 1−µ 1−µ\nr=1\n30\n===  31 ===\nThen, we have\nTr(ΓAΓ⊤)≤\n1+µ\nTr(ΓΓ⊤)=\n1+µ(cid:88)\n∥G ∥2.",
+      "size": 394,
+      "sentences": 4
+    },
+    {
+      "id": 255,
+      "content": "=1+2µ = ≤ . 1−µ 1−µ 1−µ\nr=1\n30\n===  31 ===\nThen, we have\nTr(ΓAΓ⊤)≤\n1+µ\nTr(ΓΓ⊤)=\n1+µ(cid:88)\n∥G ∥2. 1−µ 1−µ r\nr\nTherefore, taking expectations we have\nR−1H−1 R−1\n2ηγµ (cid:88) (cid:88) 2ηγµ (cid:88)\n− E[⟨x −x ,g ⟩]= E[⟨x −x ,G ⟩]\n1−µ r r−1 r,h 1−µ r−1 r r\nr=0 h=0 r=0\n(cid:13) (cid:13)2\n2ηγµ ηγ R (cid:88) −1 (cid:13)H (cid:88) −1 (cid:13)\n≤ 1−µ1−µ E  (cid:13) (cid:13) g r,h (cid:13) (cid:13) .",
+      "size": 398,
+      "sentences": 3
+    },
+    {
+      "id": 256,
+      "content": "cid:88) −1 (cid:13)H (cid:88) −1 (cid:13)\n≤ 1−µ1−µ E  (cid:13) (cid:13) g r,h (cid:13) (cid:13) . (31)\n(cid:13) (cid:13)\nr=0 h=0\nUsing Theorem B.3 we have\n(cid:13) (cid:13)2 (cid:13) (cid:13)2\n(cid:13)H (cid:88) −1 (cid:13) σ2H (cid:13)H (cid:88) −1 (cid:13)\nE  (cid:13) (cid:13) g r,h (cid:13) (cid:13) ≤ M +E  (cid:13) (cid:13) g r,h (cid:13) (cid:13) \n(cid:13) (cid:13) (cid:13) (cid:13)\nh=0 h=0\n≤ σ2H +H H (cid:88) −1 E (cid:104)(cid:13) (cid:13)g (cid:13) (cid:13) 2 (cid:105)\nM r,h\nh=0\nσ2H (cid:104) (cid:105)\n≤ +2LH2E δˆ ,\nM r+1\nwhere in the last line we used Jensen’s inequality and smoothness.",
+      "size": 612,
+      "sentences": 2
+    },
+    {
+      "id": 257,
+      "content": "4) (cid:105)\n≤ +2LH2E δˆ ,\nM r+1\nwhere in the last line we used Jensen’s inequality and smoothness. Using this result in Equation (31) we get\n− 2ηγµ R (cid:88) −1H (cid:88) −1 E[⟨x −x ,g ⟩]≤ ηγ 4ηγµ (cid:34) σ2RH +2LH2 R (cid:88) −1 E (cid:104) δˆ (cid:105) (cid:35) .",
+      "size": 268,
+      "sentences": 2
+    },
+    {
+      "id": 258,
+      "content": "88) −1 E[⟨x −x ,g ⟩]≤ ηγ 4ηγµ (cid:34) σ2RH +2LH2 R (cid:88) −1 E (cid:104) δˆ (cid:105) (cid:35) . (32)\n1−µ r r−1 r,h 2(1−µ)1−µ M r+1\nr=0 h=0 r=0\nRearranging and summing up Equation (30) then using Equation (32) we have\nE (cid:104) ∥z −x ∥2 (cid:105) ≤∥z −x ∥2− ηγH (cid:20) 1− 8ηγµLH (cid:21)R (cid:88) −1 E (cid:104) δˆ (cid:105)\nR ∗ 0 ∗ 2(1−µ) 1−µ r+1\nr=0\nγσ2H2 η2Hσ2 (cid:32)(cid:18) γ (cid:19)2 γ (cid:33) ηγH 2ηγµσ2R\n+4Lη3 R+ max , R+ .",
+      "size": 443,
+      "sentences": 2
+    },
+    {
+      "id": 259,
+      "content": "−µ) 1−µ r+1\nr=0\nγσ2H2 η2Hσ2 (cid:32)(cid:18) γ (cid:19)2 γ (cid:33) ηγH 2ηγµσ2R\n+4Lη3 R+ max , R+ . 1−µ M 1−µ 1−µ 1−µ1−µ M\nObserve that under the condition\nηγµLH 1\n≤\n1−µ 16\nthe last inequality becomes\nR−1\nE (cid:104) ∥z −x ∥2 (cid:105) ≤∥z −x ∥2− ηγH (cid:88) E (cid:104) δˆ (cid:105)\nR ∗ 0 ∗ 4(1−µ) r+1\nr=0\nγσ2H2 η2Hσ2 (cid:32)(cid:18) γ (cid:19)2 γ (cid:33) ηγH 2ηγµσ2R\n+4Lη3 R+ max , R+ .",
+      "size": 391,
+      "sentences": 2
+    },
+    {
+      "id": 260,
+      "content": "4(1−µ) r+1\nr=0\nγσ2H2 η2Hσ2 (cid:32)(cid:18) γ (cid:19)2 γ (cid:33) ηγH 2ηγµσ2R\n+4Lη3 R+ max , R+ . 1−µ M 1−µ 1−µ 1−µ1−µ M\nContinuing the proof and rearranging we get\n1 R (cid:88) −1 E (cid:104) δˆ (cid:105) ≤ 4(1−µ)∥z 0 −x ∗ ∥2 +16Lη2σ2H + 4ησ2 max (cid:18) γ ,1 (cid:19) + 8ηγµ σ2 . R r+1 ηγHR M 1−µ 1−µM\nr=0\nIt remains to use Jensen’s inequality.",
+      "size": 348,
+      "sentences": 3
+    },
+    {
+      "id": 261,
+      "content": "(cid:18) γ ,1 (cid:19) + 8ηγµ σ2 . R r+1 ηγHR M 1−µ 1−µM\nr=0\nIt remains to use Jensen’s inequality. 31\n===  32 ===\nB.4 Acceleration proofs\nWe recall the algorithm under analysis as\ny =x for m=1,...,M\nm,r,0 r\ny =y −ηg for h=0,1,...,H −1\nm,r,h+1 m,r,h m,r,h\nH−1\n(cid:88)\nu =x −η g\nr+1 r r,h\nh=0\nH−1\n(cid:88)\nz =z −γ η g\nr+1 r r r,h\nh=0\nx =(1−τ )u +τ z ,\nr+1 r+1 r+1 r+1 r+1\nwhere g = 1 (cid:80)M g , γ = γ(r+1), and τ = 2 .",
+      "size": 421,
+      "sentences": 3
+    },
+    {
+      "id": 262,
+      "content": "r r r,h\nh=0\nx =(1−τ )u +τ z ,\nr+1 r+1 r+1 r+1 r+1\nwhere g = 1 (cid:80)M g , γ = γ(r+1), and τ = 2 . Note that under the above, u = y and\nr,h M m=1 m,r,h r 2 r r+2 m,r,h m,r,h\nu = 1 (cid:80)M u . We first derive two intermediate lemmas, then proceed to the main proof. r,h M m=1 m,r,h\nLemma B.8. Suppose that the local stepsize η satisfies η ≤ 1 . Then, for all h∈[H −1] and r, we have\n2L\nHf(u )≤ 1 (cid:88) (cid:34) E[f(y )]− η H (cid:88) −1 E (cid:104) ∥g¯ ∥2 (cid:105) (cid:35) + Lη2σ2H2 + η3σ2H3 .",
+      "size": 500,
+      "sentences": 6
+    },
+    {
+      "id": 263,
+      "content": "d:88) (cid:34) E[f(y )]− η H (cid:88) −1 E (cid:104) ∥g¯ ∥2 (cid:105) (cid:35) + Lη2σ2H2 + η3σ2H3 . r+1 M m,r,h 4 m,r,h 2M 2\nm,h<H h′=h\nProof. By smoothness,\nL\nf(u )≤f(u )+⟨∇f(u ),u −u ⟩+ ∥u −u ∥2\nr,h+1 r,h r,h r,h+1 r,h 2 r,h+1 r,h\nLη2\n=f(u )−η⟨∇f(u ),g ⟩+ ∥g ∥2.",
+      "size": 264,
+      "sentences": 3
+    },
+    {
+      "id": 264,
+      "content": "≤f(u )+⟨∇f(u ),u −u ⟩+ ∥u −u ∥2\nr,h+1 r,h r,h r,h+1 r,h 2 r,h+1 r,h\nLη2\n=f(u )−η⟨∇f(u ),g ⟩+ ∥g ∥2. r,h r,h r,h 2 r,h\nTaking conditional expectation we have\n(cid:13) (cid:13)2\nη (cid:88) M Lη2σ2 Lη2(cid:13) 1 (cid:88) M (cid:13)\nE [f(u )]≤f(u )− ⟨∇f(u ),∇f(u )⟩+ + (cid:13) ∇f(u )(cid:13)\nh r,h+1 r,h M r,h m,r,h 2M 2 (cid:13)M m,r,h (cid:13)\n(cid:13) (cid:13)\nm=1 m=1\n≤f(u )− η (cid:88) M (cid:104) ∥∇f(u )∥2+∥∇f(u )∥2−∥∇f(u )−∇f(u )∥2 (cid:105) + Lη2σ2\nr,h 2M r,h m,r,h r,h m,r,h 2M\nm=1\n+ Lη2 (cid:88) M ∥∇f(u )∥2\n2M m,r,h\nm=1\n=f(u )− η ∥∇f(u )∥2− η(1−Lη) (cid:88) M ∥∇f(u )∥2+ η V + Lη2σ2 ,\nr,h 2 r,h 2M m,r,h 2 r,h 2M\nm=1\nwhere V = 1 (cid:80)M ∥∇f(u )−∇f(u )∥2 ≤ L2 (cid:80)M ∥u −u ∥2.",
+      "size": 689,
+      "sentences": 2
+    },
+    {
+      "id": 265,
+      "content": "2 ,\nr,h 2 r,h 2M m,r,h 2 r,h 2M\nm=1\nwhere V = 1 (cid:80)M ∥∇f(u )−∇f(u )∥2 ≤ L2 (cid:80)M ∥u −u ∥2. Taking unconditional expec-\nr,h M m=1 r,h m,r,h M m=1 r,h m,r,h\ntation, dropping the ∥∇f(u )∥2 term and using Lemma B.7 we have\nr,h\nE[f(u )]≤E[f(u )]− η(1−Lη) (cid:88) M E (cid:104) ∥∇f(u )∥2 (cid:105) + Lη2σ2 +η3L2σ2h. r,h+1 r,h 2M m,r,h 2M\nm=1\nObservethatinthecurrentscheme, g¯ =∇f(u ).",
+      "size": 388,
+      "sentences": 3
+    },
+    {
+      "id": 266,
+      "content": "∥2 (cid:105) + Lη2σ2 +η3L2σ2h. r,h+1 r,h 2M m,r,h 2M\nm=1\nObservethatinthecurrentscheme, g¯ =∇f(u ). Supposethat1−Lη ≥ 1, usingthisandtelescoping\nm,r,h m,r,h 2\nyields\nE[f(u )]≤E[f(u )]− η (cid:88) M H (cid:88) −1 E (cid:104) ∥g¯ ∥2 (cid:105) + Lη2σ2(H −h) +η3L2σ2 H (cid:88) −1 h′.",
+      "size": 280,
+      "sentences": 3
+    },
+    {
+      "id": 267,
+      "content": ")]− η (cid:88) M H (cid:88) −1 E (cid:104) ∥g¯ ∥2 (cid:105) + Lη2σ2(H −h) +η3L2σ2 H (cid:88) −1 h′. r+1 r,h 4M m,r,h′ 2M\nm=1h′=h h′=h\n32\n===  33 ===\nUsing Jensen’s inequality on u = 1 (cid:80)M u = 1 (cid:80)M y we obtain\nr,h M m=1 m,r,h M m=1 m,r,h\nE[f(u )]≤ 1 (cid:88) M (cid:34) f(y )− η H (cid:88) −1 E (cid:104) ∥g¯ ∥2 (cid:105) (cid:35) + Lη2σ2(H −h) +L2η3σ2 H (cid:88) −1 h′.",
+      "size": 382,
+      "sentences": 2
+    },
+    {
+      "id": 268,
+      "content": "(y )− η H (cid:88) −1 E (cid:104) ∥g¯ ∥2 (cid:105) (cid:35) + Lη2σ2(H −h) +L2η3σ2 H (cid:88) −1 h′. r+1 M m,r,h 4 m,r,h 2M\nm=1 h′=h h′=h\nSumming up both sides as h varies from 0 to H −1 we get\nHf(u )≤ 1 (cid:88) (cid:34) E[f(y )]− η H (cid:88) −1 E (cid:104) ∥g¯ ∥2 (cid:105) (cid:35) + Lη2σ2H2 + η3L2σ2H3 . r+1 M m,r,h 4 m,r,h 2M 2\nm,h<H h′=h\nDefine G = (cid:80)H−1g and G¯ = (cid:80)H−1g¯ .",
+      "size": 392,
+      "sentences": 3
+    },
+    {
+      "id": 269,
+      "content": "2 + η3L2σ2H3 . r+1 M m,r,h 4 m,r,h 2M 2\nm,h<H h′=h\nDefine G = (cid:80)H−1g and G¯ = (cid:80)H−1g¯ . The following lemma characterizes the evolution of the\nr h=0 r,h r h=0 r,h\nmomentum sequence z ,z ,....\n1 2\nLemma B.9 (Momentum sequence bound). For any r ≥0, the momentum sequence satisfies:\nE r (cid:104) ∥z r+1 −x ∗ ∥2 (cid:105) =∥z r −x ∗ ∥2+γ r 2η2E r (cid:104)(cid:13) (cid:13)G¯ r (cid:13) (cid:13) 2 (cid:105) + γ r 2 M η2σ2 −γ r η (cid:10) z r −x ∗ ,E r (cid:2) G¯ r (cid:3)(cid:11) . Proof.",
+      "size": 499,
+      "sentences": 5
+    },
+    {
+      "id": 270,
+      "content": ":13) 2 (cid:105) + γ r 2 M η2σ2 −γ r η (cid:10) z r −x ∗ ,E r (cid:2) G¯ r (cid:3)(cid:11) . Proof. Expanding the square,\n∥z −x ∥2 =∥z −x ∥2+γ2η2∥G ∥2−2γ η⟨z −x ,G ⟩. r+1 ∗ r ∗ r r r r ∗ r\nTaking expectations and using Lemma B.3,\nE r (cid:104) ∥z r+1 −x ∗ ∥2 (cid:105) =∥z r −x ∗ ∥2+γ r 2η2E r (cid:104)(cid:13) (cid:13)G¯ r (cid:13) (cid:13) 2 (cid:105) + γ r 2η M 2σ2H −γ r η (cid:10) z r −x ∗ ,E r (cid:2) G¯ r (cid:3)(cid:11) . Proof of Theorem 3.6.",
+      "size": 453,
+      "sentences": 5
+    },
+    {
+      "id": 271,
+      "content": "+ γ r 2η M 2σ2H −γ r η (cid:10) z r −x ∗ ,E r (cid:2) G¯ r (cid:3)(cid:11) . Proof of Theorem 3.6. Define the potential function\n2\nΦ =r(r+1)H(f(u )−f(x ))+ ∥z −x ∥2 .",
+      "size": 166,
+      "sentences": 3
+    },
+    {
+      "id": 272,
+      "content": "cid:11) . Proof of Theorem 3.6. Define the potential function\n2\nΦ =r(r+1)H(f(u )−f(x ))+ ∥z −x ∥2 . r r ∗ γη r ∗\nUsing Lemma B.8 and Lemma B.9, we have\nE [Φ ]−Φ\nr r+1 r\n=(r+1)(r+2)H(E [f(u )]−f(x ))−r(r+1)H(f(u )−f(x ))\nr r+1 ∗ r ∗\n+ 2 (cid:2)E [∥z −x ∥2]−∥z −x ∥2(cid:3)\nγη r r+1 ∗ r ∗\n 1 (cid:88) (cid:34) η H (cid:88) −1 (cid:35) Lη2σ2H2 η3L2σ2H3 \n≤(r+1)(r+2) M (E r [f(y m,r,h )]−f(x ∗ ))− 4 E r [∥g¯ m,r,h′ ∥2] + 2M + 2 \nm,h<H h′=h\n−r(r+1)H(f(u )−f(x ))\nr ∗\nγη(r+1)2 γησ2(r+1)2H\n+ E [∥G¯ ∥2]+ −2(r+1)⟨z −x ,E [G¯ ]⟩\n2 r r 2M r ∗ r r\n1 (cid:88)\n= [2(r+1)(E [f(y )]−f(x ))+r(r+1)(E [f(y )]−f(u ))−2(r+1)⟨z −x ,E [g¯ ]⟩]\nM r m,r,h ∗ r m,r,h r r ∗ r m,r,h\nm,h<H\n(cid:124) (cid:123)(cid:122) (cid:125)\n=:A\n− (r+1)(r+2)η (cid:88) H (cid:88) −1 E [∥g¯ ∥2]+ γη(r+1)2 E [∥G¯ ∥2]\n4M r m,r,h′ 2 r r\nm,h<Hh′=h\n(cid:124) (cid:123)(cid:122) (cid:125)\n=:B\n(r+1)(r+2)Lη2σ2H2 (r+1)(r+2)η3L2σ2H3 γησ2(r+1)2H\n+ + + .",
+      "size": 906,
+      "sentences": 4
+    },
+    {
+      "id": 273,
+      "content": "(cid:124) (cid:123)(cid:122) (cid:125)\n=:B\n(r+1)(r+2)Lη2σ2H2 (r+1)(r+2)η3L2σ2H3 γησ2(r+1)2H\n+ + + . 2M 2 2M\n33\n===  34 ===\nNow, we bound the terms above separately. First, we bound A. Fix any m,h<H.",
+      "size": 198,
+      "sentences": 4
+    },
+    {
+      "id": 274,
+      "content": "2M 2 2M\n33\n===  34 ===\nNow, we bound the terms above separately. First, we bound A. Fix any m,h<H. We have, using convexity\nof f,\n2(r+1)(f(y )−f(x ))+r(r+1)(f(y )−f(u ))−2(r+1)⟨z −x ,g¯ ⟩\nm,r,h ∗ m,r,h r r ∗ m,r,h\n≤2(r+1)⟨y −x ,g¯ ⟩+r(r+1)⟨y −u ,g¯ ⟩−2(r+1)⟨z −x ,g¯ ⟩\nm,r,h ∗ m,r,h m,r,h r m,r,h r ∗ m,r,h\n=⟨(r+1)(r+2)y −r(r+1)u −2(r+1)z ,g¯ ⟩\nm,r,h r r m,r,h\n=(r+1)(r+2)⟨y −x ,g¯ ⟩\nm,r,h r m,r,h\n(cid:88)\n=−η(r+1)(r+2) ⟨g ,g¯ ⟩.",
+      "size": 430,
+      "sentences": 4
+    },
+    {
+      "id": 275,
+      "content": "2(r+1)z ,g¯ ⟩\nm,r,h r r m,r,h\n=(r+1)(r+2)⟨y −x ,g¯ ⟩\nm,r,h r m,r,h\n(cid:88)\n=−η(r+1)(r+2) ⟨g ,g¯ ⟩. m,r,h′ m,r,h\nh′<h\nHence,\n2(r+1)(E [f(y )]−f(x ))+r(r+1)(E [f(y )]−f(u ))−2(r+1)⟨z −x ,E [g¯ ]⟩\nr m,r,h ∗ r m,r,h r r ∗ r m,r,h\n(cid:88)\n≤−η(r+1)(r+2) E [⟨g¯ ,g¯ ⟩]\nr m,r,h′ m,r,h\nh′<h\nSince A equals the sum of the above over all m,h<H and dividing by M, we get:\n−η(r+1)(r+2) (cid:88) (cid:88)\nA= E [⟨g¯ ,g¯ ⟩]\nM r m,r,h′ m,r,h\nm,h<Hh′<h\n(cid:34) (cid:35)\n−η(r+1)(r+2)(cid:88) (cid:88) (cid:88)\n= E ∥ g¯ ∥2 − ∥g¯ ∥2 ,\n2M r m,r,h m,r,h\nm h<H h<H\nwhere in the last line we used the algebraic identity that for any sequence of vectors v ,...,v ,\n0 H−1\n(cid:34) (cid:35)\n(cid:88) (cid:88) 1 (cid:88) (cid:88)\n⟨v ,v ⟩= ∥ v ∥2 − ∥v ∥2 .",
+      "size": 729,
+      "sentences": 2
+    },
+    {
+      "id": 276,
+      "content": "v ,...,v ,\n0 H−1\n(cid:34) (cid:35)\n(cid:88) (cid:88) 1 (cid:88) (cid:88)\n⟨v ,v ⟩= ∥ v ∥2 − ∥v ∥2 . s h 2 h h\nh<Hs<h h<H h<H\nNext, we have\nB =− (r+1)(r+2)η (cid:88) H (cid:88) −1 E [∥g¯ ∥2]+ γη(r+1)2 E [∥G¯ ∥2]\n4M r m,r,h′ 2 r r\nm,h<Hh′=h\n(cid:34) (cid:35)\n(r+1)(r+2)η (cid:88) (cid:88) γη(r+1)2 (cid:88) (cid:88)\n≤− E [∥g¯ ∥2]+ E ∥ g¯ ∥2 .",
+      "size": 339,
+      "sentences": 2
+    },
+    {
+      "id": 277,
+      "content": "id:34) (cid:35)\n(r+1)(r+2)η (cid:88) (cid:88) γη(r+1)2 (cid:88) (cid:88)\n≤− E [∥g¯ ∥2]+ E ∥ g¯ ∥2 . 4M r m,r,h 2M r m,r,h\nm h<H m h<H\nHence, we have\n(cid:34) (cid:35)\n−η(r+1)(r+2)(cid:88) (cid:88) (cid:88)\nA+B ≤ E ∥ g¯ ∥2 − ∥g¯ ∥2\n2M r m,r,h m,r,h\nm h<H h<H\n(cid:34) (cid:35)\n(r+1)(r+2)η (cid:88) (cid:88) γη(r+1)2 (cid:88) (cid:88)\n− E [∥g¯ ∥2]+ E ∥ g¯ ∥2\n4M r m,r,h 2M r m,r,h\nm h<H m h<H\n(cid:34) (cid:35)\nη(r+1)(cid:88) (cid:88)\n= E ∥ g¯ ∥2 [γ(r+1)−(r+2)]\n2M r m,r,h\nm h<H ≤0\nη(r+1)(r+2)(cid:88) (cid:88)\n+ E [∥g¯ ∥2]\n4M r m,r,h\nm h<H\nsince γ ≤ 1 implies γ(r+1)−(r+2) = (r+1)(γ−1)−1 ≤ −1 < 0, and the second term has a positive\ncoefficient with a negative sign.",
+      "size": 665,
+      "sentences": 2
+    },
+    {
+      "id": 278,
+      "content": "(r+2) = (r+1)(γ−1)−1 ≤ −1 < 0, and the second term has a positive\ncoefficient with a negative sign. 34\n===  35 ===\nSo overall, we have\n(r+1)(r+2)Lη2σ2H2 (r+1)(r+2)η3L2σ2H3 γησ2(r+1)2H\nE [Φ ]−Φ ≤ + +\nr r+1 r 2M 2 2M\nR2Lη2σ2H2 R2η3L2σ2H3 γησ2R2H\n≤ + + . 2M 2 2M\nSumming up from r =0 to R−1, and taking expectations, we get\nR3Lη2σ2H2 R3η3L2σ2H3 γησ2R3H\nE[Φ ]−Φ ≤ + + .",
+      "size": 365,
+      "sentences": 3
+    },
+    {
+      "id": 279,
+      "content": "g up from r =0 to R−1, and taking expectations, we get\nR3Lη2σ2H2 R3η3L2σ2H3 γησ2R3H\nE[Φ ]−Φ ≤ + + . R 0 2M 2 2M\nThus,\nR2H(E[f(u )]−f(x ))\nR ∗\n2∥x −x ∥2 R3Lη2σ2H2 R3η3L2σ2H3 γησ2R3H\n≤E[Φ ]≤ 0 ∗ + + + ,\nR γη 2M 2 2M\nwhich implies that\n2∥x −x ∥2 RLη2σ2H RL2η3σ2H2 γησ2R\nE[f(u )]−f(x )≤ 0 ∗ + + + . R ∗ γηR2H 2M 2 2M\nThe proof of Theorem 3.7 is straightforward by substitution and is omitted for brevity. B.5 Data-dependent guarantees\nLemma B.10. Let f be a convex and L-smooth function.",
+      "size": 483,
+      "sentences": 5
+    },
+    {
+      "id": 280,
+      "content": "ted for brevity. B.5 Data-dependent guarantees\nLemma B.10. Let f be a convex and L-smooth function. Suppose that we run SGD on f on M parallel\nnodes as follows\ny =x ,\nm,r,0 r\ny =y −ηg ,\nm,r,h+1 m,r,h m,r,h\nwhere m=1,2,...,M, h=0,1,...,H−1, and g ,g ,...,g are i.i.d. stochastic gradient estimates\n1,r,h 2,r,h M,r,h\nsuch that E [g ]=∇f(y ), where E [·] denotes expectation conditional on all information up to\nr,h m,r,h m,r,h r,h\nand including round r and local step h, and ∥g −∇f(y )∥≤σ.",
+      "size": 487,
+      "sentences": 5
+    },
+    {
+      "id": 281,
+      "content": "ll information up to\nr,h m,r,h m,r,h r,h\nand including round r and local step h, and ∥g −∇f(y )∥≤σ. Define further y = 1 (cid:80)M y . m,r,h m,r,h r,h M m=1 m,r,h\nLet V = 1 (cid:80)M ∥y −y ∥2. Then for all η ≤ 1 we have with probability at least 1−δ that for all\nr,h M m=1 m,r,h r,h L\nh=0,1,...,H\nV ≤4104η2σ2(h+1)θ2 ,\nr,h h−1,δ\nwhere θ =log60log6h. h,δ δ\nProof. Define\nM M\nΛ = 1 (cid:88) (cid:88) ∥y −y ∥2. (33)\nr,h+1 M2 m,r,h+1 s,r,h+1\nm=1s=1\nWe will bound Λ first, and then use it to bound V later.",
+      "size": 500,
+      "sentences": 7
+    },
+    {
+      "id": 282,
+      "content": "y ∥2. (33)\nr,h+1 M2 m,r,h+1 s,r,h+1\nm=1s=1\nWe will bound Λ first, and then use it to bound V later. We have\nr,h r,h\ny −y =y −ηg −[y −ηg ]\nm,r,h+1 s,r,h+1 m,r,h m,r,h s,r,h s,r,h\n=y −η∇f(y )−η[g −∇f(y )]−[y −η∇f(y )−η[g −∇f(y )]]\nm,r,h m,r,h m,r,h m,r,h s,r,h s,r,h s,r,h s,r,h\n=[y −η∇f(y )−[y −η∇f(y )]]−η[(g −g )−[∇f(y )−∇f(y )]].",
+      "size": 331,
+      "sentences": 3
+    },
+    {
+      "id": 283,
+      "content": ",h m,r,h m,r,h m,r,h s,r,h s,r,h s,r,h s,r,h\n=[y −η∇f(y )−[y −η∇f(y )]]−η[(g −g )−[∇f(y )−∇f(y )]]. m,r,h m,r,h s,r,h s,r,h m,r,h s,r,h m,r,h s,r,h\n35\n===  36 ===\nTherefore\n∥y −y ∥2 = ∥T (y )−T (y )∥2\nm,r,h+1 s,r,h+1 η m,r,h η s,r,h\n+η2 ∥(g −g )−(∇f(y )−∇f(y ))∥2 (34)\nm,r,h s,r,h m,r,h s,r,h\n−2η⟨T (y )−T (y ),(g −g )−(∇f(y )−∇f(y ))⟩\nη m,r,h η s,r,h m,r,h s,r,h m,r,h s,r,h\nWe define ρ as the stochastic gradient noise on node m at round r, step h: ρ =g −∇f(y ).",
+      "size": 464,
+      "sentences": 2
+    },
+    {
+      "id": 284,
+      "content": ",r,h s,r,h\nWe define ρ as the stochastic gradient noise on node m at round r, step h: ρ =g −∇f(y ). m,r,h m,r,h m,r,h m,r,h\nThen we can write Equation (34) as\n∥y −y ∥2 = ∥T (y )−T (y )∥2 +η2 ∥ρ −ρ ∥2\nm,r,h+1 s,r,h+1 η m,r,h η s,r,h m,r,h s,r,h\n−2η⟨T (y )−T (y ),ρ −ρ ⟩. (35)\nη m,r,h η s,r,h m,r,h s,r,h\nWe now use the inequality ∥a+b∥2 ≤2∥a∥2+2∥b∥2 to get\n∥y −y ∥2 ≤∥T (y )−T (y )∥2 +2η2 ∥ρ ∥2 +2η2∥ρ ∥2\nm,r,h+1 s,r,h+1 η m,r,h η s,r,h m,r,h s,r,h\n−2η⟨T (y )−T (y ),ρ −ρ ⟩.",
+      "size": 473,
+      "sentences": 3
+    },
+    {
+      "id": 285,
+      "content": "T (y )∥2 +2η2 ∥ρ ∥2 +2η2∥ρ ∥2\nm,r,h+1 s,r,h+1 η m,r,h η s,r,h m,r,h s,r,h\n−2η⟨T (y )−T (y ),ρ −ρ ⟩. η m,r,h η s,r,h m,r,h s,r,h\nBy Lemma B.1, we have\n∥y −y ∥2 ≤∥y −y ∥2+2η2∥ρ ∥2+2η2∥ρ ∥2\nm,r,h+1 s,r,h+1 m,r,h s,r,h m,r,h s,r,h\n−2η⟨T (y )−T (y ),ρ −ρ ⟩.",
+      "size": 252,
+      "sentences": 2
+    },
+    {
+      "id": 286,
+      "content": "−y ∥2 ≤∥y −y ∥2+2η2∥ρ ∥2+2η2∥ρ ∥2\nm,r,h+1 s,r,h+1 m,r,h s,r,h m,r,h s,r,h\n−2η⟨T (y )−T (y ),ρ −ρ ⟩. η m,r,h η s,r,h m,r,h s,r,h\nNow, we consider the inner product term, observe\n⟨T (y )−T (y ),ρ −ρ ⟩\nη m,r,h η s,r,h m,r,h s,r,h\n=⟨T (y )−T (y )+T (y )−T (y ),ρ −ρ ⟩\nη m,r,h η r,h η r,h η s,r,h m,r,h s,r,h\n=⟨T (y )−T (y ),ρ −ρ ⟩+⟨T (y )−T (y ),ρ −ρ ⟩\nη m,r,h η r,h m,r,h s,r,h η r,h η s,r,h m,r,h s,r,h\n=⟨T (y )−T (y ),ρ −ρ ⟩+⟨−(T (y )−T (y )),−(ρ −ρ )⟩\nη m,r,h η r,h m,r,h s,r,h η s,r,h η r,h s,r,h m,r,h\n=⟨T (y )−T (y ),ρ −ρ ⟩+⟨T (y )−T (y ),ρ −ρ ⟩.",
+      "size": 549,
+      "sentences": 2
+    },
+    {
+      "id": 287,
+      "content": "⟩\nη m,r,h η r,h m,r,h s,r,h η s,r,h η r,h s,r,h m,r,h\n=⟨T (y )−T (y ),ρ −ρ ⟩+⟨T (y )−T (y ),ρ −ρ ⟩. η m,r,h η r,h m,r,h s,r,h η s,r,h η r,h s,r,h m,r,h\nAveraging with respect to s and m\nM M\n1 (cid:88) (cid:88)\n⟨T (y )−T (y )+T (y )−T (y ),ρ −ρ ⟩\nM2 η m,r,h η r,h η r,h η s,r,h m,r,h s,r,h\nm=1s=1\nM M\n1 (cid:88) (cid:88)\n= ⟨T (y )−T (y ),ρ −ρ ⟩\nM2 η m,r,h η r,h m,r,h s,r,h\nm=1s=1\nM M\n1 (cid:88) (cid:88)\n+ ⟨T (y )−T (y ),ρ −ρ ⟩\nM2 η s,r,h η r,h s,r,h m,r,h\nm=1s=1\nM M\n2 (cid:88) (cid:88)\n= ⟨T (y )−T (y ),ρ −ρ ⟩.",
+      "size": 512,
+      "sentences": 2
+    },
+    {
+      "id": 288,
+      "content": "−T (y ),ρ −ρ ⟩\nM2 η s,r,h η r,h s,r,h m,r,h\nm=1s=1\nM M\n2 (cid:88) (cid:88)\n= ⟨T (y )−T (y ),ρ −ρ ⟩. (36)\nM2 η m,r,h η r,h m,r,h s,r,h\nm=1s=1\nAveraging Equation (35) with respect to m and s and using Equation (36) we get\n1 (cid:88) M (cid:88) M ∥y −y ∥2 ≤ 1 (cid:88) M (cid:88) M ∥y −y ∥2+ 4η2 (cid:88) M ∥ρ ∥2\nM2 m,r,h+1 s,r,h+1 M2 m,r,h s,r,h M m,r,h\nm=1s=1 m=1s=1 m=1\nM M\n2η (cid:88) (cid:88)\n− ⟨T (y )−T (y ),ρ −ρ ⟩.",
+      "size": 419,
+      "sentences": 2
+    },
+    {
+      "id": 289,
+      "content": "s,r,h+1 M2 m,r,h s,r,h M m,r,h\nm=1s=1 m=1s=1 m=1\nM M\n2η (cid:88) (cid:88)\n− ⟨T (y )−T (y ),ρ −ρ ⟩. M2 η m,r,h η r,h m,r,h s,r,h\nm=1s=1\nUsing Λ as defined in Equation (33) we obtain the recursion\nr,h\nΛ ≤Λ + 4η2 (cid:88) M ∥ρ ∥2− 2η (cid:88) M (cid:88) M ⟨T (y )−T (y ),ρ −ρ ⟩. r,h+1 r,h M m,r,h M2 η m,r,h η r,h m,r,h s,r,h\nm=1 m=1s=1\n36\n===  37 ===\nNow observe that ∥ρ ∥2 ≤σ2 by assumption, therefore\nm,r,h\nM M\n2η (cid:88) (cid:88)\nΛ ≤Λ +4η2σ2− ⟨T (y )−T (y ),ρ −ρ ⟩.",
+      "size": 467,
+      "sentences": 3
+    },
+    {
+      "id": 290,
+      "content": "∥2 ≤σ2 by assumption, therefore\nm,r,h\nM M\n2η (cid:88) (cid:88)\nΛ ≤Λ +4η2σ2− ⟨T (y )−T (y ),ρ −ρ ⟩. r,h+1 r,h M2 η m,r,h η r,h m,r,h s,r,h\nm=1s=1\nRecursing the above inequality we get\nh−1 M M\n2η (cid:88) (cid:88) (cid:88)\nΛ ≤Λ +4η2σ2h− ⟨T (y )−T (y ),ρ −ρ ⟩\nr,h r,0 M2 η m,r,k η r,k m,r,k s,r,k\nk=0m=1s=1\nh−1 M M\n2η (cid:88) (cid:88) (cid:88)\n=4η2σ2h− ⟨T (y )−T (y ),ρ −ρ ⟩, (37)\nM2 η m,r,k η r,k m,r,k s,r,k\nk=0m=1s=1\nwhere we used the fact that since y =y =x for all m,s then Λ =0.",
+      "size": 482,
+      "sentences": 2
+    },
+    {
+      "id": 291,
+      "content": "m,r,k η r,k m,r,k s,r,k\nk=0m=1s=1\nwhere we used the fact that since y =y =x for all m,s then Λ =0. Define\nm,r,0 s,r,0 r r,0\nM\n1 (cid:88)\nµ = ∥y −y ∥, µ =maxµ , (38)\nr,h M m,r,h r,h r,h k≤h r,k\nm=1\nM M\n1 1 (cid:88) (cid:88)\nX = ⟨T (y )−T (y ),ρ −ρ ⟩. (39)\nr,h µ M2 η m,r,h η r,h m,r,h s,r,h\nr,h m=1s=1\nLet E [·] denote the expectation conditional on all information up to and including round r and local step h.\nr,h\nThen,\nE [X ]=0.",
+      "size": 430,
+      "sentences": 3
+    },
+    {
+      "id": 292,
+      "content": "on conditional on all information up to and including round r and local step h.\nr,h\nThen,\nE [X ]=0. r,h r,h\nFurthermore, we have by the triangle inequality, then our assumption on the noise followed by Lemma B.1\nthat almost surely\n|⟨T (y )−T (y ),ρ −ρ ⟩|≤∥T (y )−T (y )∥∥ρ −ρ ∥\nη m,r,h η r,h m,r,h s,r,h η m,r,h η r,h m,r,h s,r,h\n≤∥T (y )−T (y )∥(∥ρ ∥+∥ρ ∥)\nη m,r,h η r,h m,r,h s,r,h\n≤2σ∥T (y )−T (y )∥\nη m,r,h η r,h\n≤2σ∥y −y ∥.",
+      "size": 428,
+      "sentences": 2
+    },
+    {
+      "id": 293,
+      "content": "≤∥T (y )−T (y )∥(∥ρ ∥+∥ρ ∥)\nη m,r,h η r,h m,r,h s,r,h\n≤2σ∥T (y )−T (y )∥\nη m,r,h η r,h\n≤2σ∥y −y ∥. (40)\nm,r,h r,h\nBy the definition of X (Equation (39)), the triangle inequality, Equation (40), and the definition of µ\nr,h r,h\n(Equation (38)) we have almost surely\n(cid:12) (cid:12)\n1 (cid:12) 1 (cid:88) M (cid:88) M (cid:12)\n|X |= (cid:12) ⟨T (y )−T (y ),ρ −ρ ⟩(cid:12)\nr,h µ (cid:12)M2 η m,r,h η r,h m,r,h s,r,h (cid:12)\nr,h (cid:12) m=1s=1 (cid:12)\nM M\n1 1 (cid:88) (cid:88)\n≤ |⟨T (y )−T (y ),ρ −ρ ⟩|\nµ M2 η m,r,h η r,h m,r,h s,r,h\nr,h m=1s=1\nM M\n2σ 1 (cid:88) (cid:88)\n≤ ∥y −y ∥\nµ M2 m,r,h r,h\nr,h m=1s=1\n1 (cid:80)M ∥y −y ∥\n=2σM m=1 m,r,h r,h\nµ\nr,h\n≤2σ.",
+      "size": 658,
+      "sentences": 2
+    },
+    {
+      "id": 294,
+      "content": ":88) (cid:88)\n≤ ∥y −y ∥\nµ M2 m,r,h r,h\nr,h m=1s=1\n1 (cid:80)M ∥y −y ∥\n=2σM m=1 m,r,h r,h\nµ\nr,h\n≤2σ. Then by Theorem B.4 with y =µ we have with probability at least 1−δ\nh r,h\n(cid:118)\n(cid:12) (cid:12)h (cid:88) −1 (cid:12) (cid:12) (cid:117) (cid:117) h (cid:88) −1\n(cid:12) µ X (cid:12)≤8µ (cid:116)θ X2 +4σ2θ2\n(cid:12) r,k r,k(cid:12) r,h−1 h−1,δ r,k h,δ\n(cid:12) (cid:12)\nk=0 k=0\n(cid:113)\n≤8µ θ 4hσ2+4σ2θ2\nr,h−1 h−1,δ h,δ\n√\n≤16µ θ σ h+1.",
+      "size": 442,
+      "sentences": 2
+    },
+    {
+      "id": 295,
+      "content": "h−1,δ r,k h,δ\n(cid:12) (cid:12)\nk=0 k=0\n(cid:113)\n≤8µ θ 4hσ2+4σ2θ2\nr,h−1 h−1,δ h,δ\n√\n≤16µ θ σ h+1. (41)\nr,h−1 h−1,δ\n37\n===  38 ===\nObserve that\nh−1 h−1 M M\n(cid:88) 1 (cid:88) (cid:88) (cid:88)\nµ X = ⟨T (y )−T (y ),ρ −ρ ⟩.",
+      "size": 222,
+      "sentences": 2
+    },
+    {
+      "id": 296,
+      "content": "38 ===\nObserve that\nh−1 h−1 M M\n(cid:88) 1 (cid:88) (cid:88) (cid:88)\nµ X = ⟨T (y )−T (y ),ρ −ρ ⟩. r,k r,k M2 η m,r,k η r,k m,r,k s,r,k\nk=0 k=0m=1s=1\nUsing this and Equation (41) to upper bound the right hand side of Equation (37) we obtain\n√\nΛ ≤4η2σ2h+32ηµ θ σ h+1\nr,h r,h−1 h−1,δ\n√ µ2\n≤4η2σ2h+2α(32ηθ σ h+1)2+ r,h−1\nh−1,δ 2α\nµ2\n=η2σ2(h+1)θ2 (4+2048α)+ r,h−1, (42)\nh−1,δ 2α\nwhere we used that 2ab ≤ αa2+ 1b2 in the second step. Let Λ = max Λ .",
+      "size": 444,
+      "sentences": 3
+    },
+    {
+      "id": 297,
+      "content": "+2048α)+ r,h−1, (42)\nh−1,δ 2α\nwhere we used that 2ab ≤ αa2+ 1b2 in the second step. Let Λ = max Λ . Observe that the right\nα r,h k≤h r,k\nhand side of Equation (42) is increasing in h, therefore\nµ2\nΛ ≤η2σ2(h+1)θ2 (4+2048α)+ r,h−1.",
+      "size": 229,
+      "sentences": 3
+    },
+    {
+      "id": 298,
+      "content": "≤h r,k\nhand side of Equation (42) is increasing in h, therefore\nµ2\nΛ ≤η2σ2(h+1)θ2 (4+2048α)+ r,h−1. (43)\nr,h h−1,δ 2α\nObserve that by the triangle inequality followed by Theorem B.2\nM\n1 (cid:88)\nµ = ∥y −y ∥\nr,h M m,r,h r,h\nm=1\nM M\n1 (cid:88) (cid:88)\n≤ ∥y −y ∥\nM2 m,r,h s,r,h\nm=1s=1\n(cid:118)\n(cid:117) M M\n≤ (cid:117) (cid:116) 1 (cid:88) (cid:88) ∥y −y ∥2\nM2 m,r,h s,r,h\nm=1s=1\n(cid:112)\n= Λ . r,h\n(cid:113)\nIt follows that µ ≤ Λ .",
+      "size": 433,
+      "sentences": 3
+    },
+    {
+      "id": 299,
+      "content": "d:88) (cid:88) ∥y −y ∥2\nM2 m,r,h s,r,h\nm=1s=1\n(cid:112)\n= Λ . r,h\n(cid:113)\nIt follows that µ ≤ Λ . Using this in Equation (43) we get\nr,h r,h\nΛ\nΛ ≤η2σ2(h+1)θ2 (4+2048α)+ r,h−1\nr,h h−1,δ 2α\nΛ\n≤η2σ2(h+1)θ2 (4+2048α)+ r,h. h−1,δ 2α\nRearranging we get\n(cid:18) (cid:19)\n1\n1− Λ ≤η2σ2(h+1)θ2 (4+2048α)\n2α r,h h−1,δ\nPut α=1, then\nΛ ≤4104η2σ2(h+1)θ2 . (44)\nr,h h−1,δ\nNow that we have our bound on Λ , we can use it to bound V as follows\nr,h r,h\nM\nV = 1 (cid:88) ∥y −y ∥2.",
+      "size": 464,
+      "sentences": 5
+    },
+    {
+      "id": 300,
+      "content": "hat we have our bound on Λ , we can use it to bound V as follows\nr,h r,h\nM\nV = 1 (cid:88) ∥y −y ∥2. (45)\nr,h M m,r,h r,h\nm=1\n38\n===  39 ===\nObserve that by Jensen’s inequality\n(cid:13) (cid:13)2\n∥y −y ∥2 = (cid:13) (cid:13)y − 1 (cid:88) M y (cid:13) (cid:13)\nm,r,h r,h (cid:13) m,r,h M s,r,h(cid:13)\n(cid:13) (cid:13)\ns=1\n(cid:13) (cid:13) 1 (cid:13) (cid:13) 2\n=(cid:13)\n(cid:13)M\n(y\nm,r,h\n−y\ns,r,h\n)(cid:13)\n(cid:13)\nM\n≤ 1 (cid:88) ∥y −y ∥2.",
+      "size": 444,
+      "sentences": 2
+    },
+    {
+      "id": 301,
+      "content": "id:13) (cid:13) 2\n=(cid:13)\n(cid:13)M\n(y\nm,r,h\n−y\ns,r,h\n)(cid:13)\n(cid:13)\nM\n≤ 1 (cid:88) ∥y −y ∥2. (46)\nM m,r,h s,r,h\ns=1\nCombining Equations (45) and (46) we have\nM M\nV ≤ 1 (cid:88) (cid:88) ∥y −y ∥2 =Λ . r,h M2 m,r,h s,r,h r,h\nm=1s=1\nCombining this with Equation (44) yields the lemma’s statement. Lemma B.11. (Per-round regret).",
+      "size": 332,
+      "sentences": 5
+    },
+    {
+      "id": 302,
+      "content": "s=1\nCombining this with Equation (44) yields the lemma’s statement. Lemma B.11. (Per-round regret). In Algorithm 1, the iterates in a single communication round satisfy\nH−1 H−1\n∥x −x ∥2 ≤∥x −x ∥2+γ2η2 (cid:88) ∥g ∥2+2γη|1−γ|ζ (cid:88) ∥g ∥\nr+1 ∗ r ∗ r,h 2 r,h\nh=0 h=0\n+ γζ 3 H + αγη2 1 (cid:88) M H (cid:88) −1 ∥g ∥2− 2γη H (cid:88) −1 (cid:88) M ⟨y −x ,g ⟩,\nα 2 M m,r,h M m,r,h ∗ m,r,h\nm=1h=0 h=0m=1\nwhere α>0 is arbitrary and\nM\nζ =max∥y −y ∥, ζ =max 1 (cid:88) ∥y −y ∥2.",
+      "size": 472,
+      "sentences": 4
+    },
+    {
+      "id": 303,
+      "content": "m,r,h ∗ m,r,h\nm=1h=0 h=0m=1\nwhere α>0 is arbitrary and\nM\nζ =max∥y −y ∥, ζ =max 1 (cid:88) ∥y −y ∥2. 2 h r,h r,0 3 h M m,r,h r,h\nm=1\nProof. Define the virtual sequences\nM\n1 (cid:88)\ng = g , x =x , x =x −γηg . r,h M m,r,h r,0 r r,h+1 r,h r,h\nm=1\nWe have\n∥x −x ∥2 =∥x −x ∥2+γ2η2∥g ∥2−2γη⟨x −x ,g ⟩ (47)\nr,h+1 ∗ r,h ∗ r,h r,h ∗ r,h\nThe inner product term can be decomposed as\n−⟨x −x ,g ⟩=−⟨x −y ,g ⟩−⟨y −x ,g ⟩.",
+      "size": 407,
+      "sentences": 4
+    },
+    {
+      "id": 304,
+      "content": "r,h ∗ r,h r,h ∗ r,h\nThe inner product term can be decomposed as\n−⟨x −x ,g ⟩=−⟨x −y ,g ⟩−⟨y −x ,g ⟩. (48)\nr,h ∗ r,h r,h r,h r,h r,h ∗ r,h\nObserve that x =x −γη (cid:80)h−1g and y =x −η (cid:80)h−1g . Therefore,\nr,h r s=0 r,s r,h r s=0 r,s\n(cid:13) (cid:13)\n(cid:13) h (cid:88) −1 (cid:13)\n∥x −y ∥=(cid:13)(γ−1)η g (cid:13)\nr,h r,h (cid:13) r,s(cid:13)\n(cid:13) (cid:13)\ns=0\n=|γ−1|∥y −y ∥\nr,h r,0\n≤|γ−1|ζ ,\n2\nwhere ζ =max ∥y −y ∥.",
+      "size": 428,
+      "sentences": 3
+    },
+    {
+      "id": 305,
+      "content": "(cid:13) r,s(cid:13)\n(cid:13) (cid:13)\ns=0\n=|γ−1|∥y −y ∥\nr,h r,0\n≤|γ−1|ζ ,\n2\nwhere ζ =max ∥y −y ∥. Using this in Equation (48)\n2 h r,h r,0\n−⟨x −y ,g ⟩≤∥x −y ∥∥g ∥≤|1−γ|ζ ∥g ∥. (49)\nr,h r,h r,h r,h r,h r,h 2 r,h\n39\n===  40 ===\nPlugging Equation (49) into Equation (48) we get\n−⟨x −x ,g ⟩≤|1−γ|ζ ∥g ∥−⟨y −x ,g ⟩\nr,h ∗ r,h 2 r,h r,h ∗ r,h\nM\n1 (cid:88)\n=|1−γ|ζ ∥g ∥− ⟨y −x ,g ⟩\n2 r,h M r,h ∗ m,r,h\nm=1\nM M\n1 (cid:88) 1 (cid:88)\n=|1−γ|ζ ∥g ∥− ⟨y −y ,g ⟩− ⟨y −x ,g ⟩.",
+      "size": 461,
+      "sentences": 3
+    },
+    {
+      "id": 306,
+      "content": "⟨y −x ,g ⟩\n2 r,h M r,h ∗ m,r,h\nm=1\nM M\n1 (cid:88) 1 (cid:88)\n=|1−γ|ζ ∥g ∥− ⟨y −y ,g ⟩− ⟨y −x ,g ⟩. (50)\n2 r,h M r,h m,r,h m,r,h M m,r,h ∗ m,r,h\nm=1 m=1\nFor the second term in Equation (50) we have\nM M\n1 (cid:88) 1 (cid:88)\n− ⟨y −y ,g ⟩≤ ∥y −y ∥∥g ∥\nM r,h m,r,h m,r,h M r,h m,r,h m,r,h\nm=1 m=1\n≤ 1 (cid:88) M (cid:34) ∥y r,h −y m,r,h ∥2 + αη ∥g ∥2 (cid:35)\nM 2αη 2 m,r,h\nm=1\nM\n≤ ζ 3 + αη 1 (cid:88) ∥g ∥2.",
+      "size": 404,
+      "sentences": 2
+    },
+    {
+      "id": 307,
+      "content": "M (cid:34) ∥y r,h −y m,r,h ∥2 + αη ∥g ∥2 (cid:35)\nM 2αη 2 m,r,h\nm=1\nM\n≤ ζ 3 + αη 1 (cid:88) ∥g ∥2. (51)\n2αη 2 M m,r,h\nm=1\nPlugging Equation (51) into Equation (50) we get\nM\n−⟨x −x ,g ⟩≤|1−γ|ζ ∥g ∥+ ζ 3 + αη 1 (cid:88) ∥g ∥2\nr,h ∗ r,h 2 r,h 2αη 2 M m,r,h\nm=1 (52)\nM\n1 (cid:88)\n− ⟨y −x ,g ⟩. M m,r,h ∗ m,r,h\nm=1\nPlug Equation (52) back into Equation (47) to get\n∥x −x ∥2 ≤∥x −x ∥2+γ2η2∥g ∥2+2γη|1−γ|ζ ∥g ∥\nr,h+1 ∗ r,h ∗ r,h 2 r,h\n+ γζ 3 + αγη2 (cid:88) M ∥g ∥2− 2γη (cid:88) M ⟨y −x ,g ⟩.",
+      "size": 486,
+      "sentences": 3
+    },
+    {
+      "id": 308,
+      "content": "2+2γη|1−γ|ζ ∥g ∥\nr,h+1 ∗ r,h ∗ r,h 2 r,h\n+ γζ 3 + αγη2 (cid:88) M ∥g ∥2− 2γη (cid:88) M ⟨y −x ,g ⟩. α M m,r,h M m,r,h ∗ m,r,h\nm=1 m=1\nRecursing we get\nH−1 H−1\n∥x −x ∥2 ≤∥x −x ∥2+γ2η2 (cid:88) ∥g ∥2+2γη|1−γ|ζ (cid:88) ∥g ∥\nr+1 ∗ r ∗ r,h 2 r,h\nh=0 h=0\n+ γζ 3 H + αγη2 1 (cid:88) M H (cid:88) −1 ∥g ∥2− 2γη H (cid:88) −1 (cid:88) M ⟨y −x ,g ⟩. α 2 M m,r,h M m,r,h ∗ m,r,h\nm=1h=0 h=0m=1\nProof of Theorem 3.8.",
+      "size": 404,
+      "sentences": 3
+    },
+    {
+      "id": 309,
+      "content": "(cid:88) −1 (cid:88) M ⟨y −x ,g ⟩. α 2 M m,r,h M m,r,h ∗ m,r,h\nm=1h=0 h=0m=1\nProof of Theorem 3.8. Starting with the per-round recursion lemma, we have\nH−1 H−1\n∥x −x ∥2 ≤∥x −x ∥2+γ2η2 (cid:88) ∥g ∥2+2γη|1−γ|ζ (cid:88) ∥g ∥\nr+1 ∗ r ∗ r,h 2 r,h\nh=0 h=0\n+ γζ 3 H + αγη2 1 (cid:88) M H (cid:88) −1 ∥g ∥2− 2γη H (cid:88) −1 (cid:88) M ⟨y −x ,g ⟩.",
+      "size": 341,
+      "sentences": 3
+    },
+    {
+      "id": 310,
+      "content": "h=0 h=0\n+ γζ 3 H + αγη2 1 (cid:88) M H (cid:88) −1 ∥g ∥2− 2γη H (cid:88) −1 (cid:88) M ⟨y −x ,g ⟩. α 2 M m,r,h M m,r,h ∗ m,r,h\nm=1h=0 h=0m=1\n40\n===  41 ===\nObserve that\n(cid:13) (cid:13)\n(cid:13)h (cid:88) −1 (cid:13)\n∥y −y ∥=η(cid:13) g (cid:13)\nr,h r,0 (cid:13) r,k(cid:13)\n(cid:13) (cid:13)\nk=0\nh−1\n(cid:88)\n≤η ∥g ∥\nr,k\nk=0\nH−1\n(cid:88)\n≤η ∥g ∥. (53)\nr,k\nk=0\nSince this holds for any h, we have that ζ ≤η (cid:80)H−1 ∥g ∥, where ζ is defined in Theorem B.11.",
+      "size": 461,
+      "sentences": 3
+    },
+    {
+      "id": 311,
+      "content": "Since this holds for any h, we have that ζ ≤η (cid:80)H−1 ∥g ∥, where ζ is defined in Theorem B.11. Moreover,\n2 k=0 r,k 2\nby Theorem B.10 we have that with probability 1−δ and an application of the union bound that for all r,h\nM\n1 (cid:88)\n∥y −y ∥2≤4104ιη2σ2H, (54)\nM m,r,h r,h\nm=1\nwhere ι=2·log60log6RH and we used that H +1≤2H. Since this bound holds for all h, we have\nδ\nM\n1 (cid:88)\nζ =max ∥y −y ∥2≤4104ιη2σ2H.",
+      "size": 414,
+      "sentences": 3
+    },
+    {
+      "id": 312,
+      "content": "that H +1≤2H. Since this bound holds for all h, we have\nδ\nM\n1 (cid:88)\nζ =max ∥y −y ∥2≤4104ιη2σ2H. 3 h M m,r,h r,h\nm=1\nTherefore by Equation (53) and Theorem B.10\nH−1 (cid:32)H−1 (cid:33)2\n∥x −x ∥2 ≤∥x −x ∥2+γ2η2 (cid:88) ∥g ∥2+2γ|1−γ|η2 (cid:88) ∥g ∥\nr+1 ∗ r ∗ r,h r,h\nh=0 h=0\n+ 4104γη2σ2H2 ι+ αγη2 1 (cid:88) M H (cid:88) −1 ∥g ∥2− 2γη H (cid:88) −1 (cid:88) M ⟨y −x ,g ⟩. α 2 M m,r,h M m,r,h ∗ m,r,h\nm=1h=0 h=0m=1\nLet ξ =g −∇f(y ).",
+      "size": 434,
+      "sentences": 4
+    },
+    {
+      "id": 313,
+      "content": "γη H (cid:88) −1 (cid:88) M ⟨y −x ,g ⟩. α 2 M m,r,h M m,r,h ∗ m,r,h\nm=1h=0 h=0m=1\nLet ξ =g −∇f(y ). Then,\nm,r,h m,r,h m,r,h\n∥x −x ∥2 ≤∥x −x ∥2+γ2η2 H (cid:88) −1 ∥g ∥2+2γ|1−γ|η2 (cid:32)H (cid:88) −1 ∥g ∥ (cid:33)2 + 4104γη2σ2H2 ι\nr+1 ∗ r ∗ r,h r,h α\nh=0 h=0\n+ αγη2 1 (cid:88) M H (cid:88) −1 ∥g ∥2− 2γη H (cid:88) −1 (cid:88) M ⟨y −x ,∇f(y )⟩ (55)\n2 M m,r,h M m,r,h ∗ m,r,h\nm=1h=0 h=0m=1\nH−1 M\n2γη (cid:88) (cid:88)\n− ⟨y −x ,ξ ⟩,\nM m,r,h ∗ m,r,h\nh=0m=1\nwhere ξ =g −∇f(y ).",
+      "size": 473,
+      "sentences": 3
+    },
+    {
+      "id": 314,
+      "content": "m=1h=0 h=0m=1\nH−1 M\n2γη (cid:88) (cid:88)\n− ⟨y −x ,ξ ⟩,\nM m,r,h ∗ m,r,h\nh=0m=1\nwhere ξ =g −∇f(y ). Define\nm,r,h m,r,h m,r,h\nM\n1 (cid:88)\nν = ∥y −x ∥, ν = max ν . r,h M m,r,h ∗ r,h p≤r,s≤h p,s\nm=1\nLet\nM\n1 1 (cid:88)\nX = ⟨y −x ,ξ ⟩\nr,h ν¯ M m,r,h ∗ m,r,h\nr,h\nm=1\n41\n===  42 ===\nLet F denote the sigma algebra generated by all randomness up to and including step r,h−1.",
+      "size": 366,
+      "sentences": 3
+    },
+    {
+      "id": 315,
+      "content": "42 ===\nLet F denote the sigma algebra generated by all randomness up to and including step r,h−1. Note that\nr,h−1\nM\n1 1 (cid:88)\nE [X ]= E [⟨y −x ,ξ ⟩]\nFr,h−1 r,h ν¯ M Fr,h m,r,h ∗ m,r,h\nr,h\nm=1\nM\n= 1 1 (cid:88) (cid:10) y −x ,E [ξ ] (cid:11)\nν¯ M m,r,h ∗ Fr,h m,r,h\nr,h\nm=1\n=0,\nwhere we used that ν and y are both F -measurable and that the noise has mean zero. The edge\nr,h m,r,h r,h−1\ncases X are handled similarly.",
+      "size": 418,
+      "sentences": 3
+    },
+    {
+      "id": 316,
+      "content": "easurable and that the noise has mean zero. The edge\nr,h m,r,h r,h−1\ncases X are handled similarly. Moreover, using the assumption that ∥ξ ∥≤σ almost surely and the\nr,0 m,r,h\ndefinition of ν¯ ,\nr,h\n(cid:13) (cid:13)\n(cid:13) 1 1 (cid:88) M (cid:13)\n∥X ∥=(cid:13) ⟨y −x ,ξ ⟩(cid:13)\nr,h (cid:13)ν¯ M m,r,h ∗ m,r,h (cid:13)\n(cid:13) r,h (cid:13)\nm=1\nM\n≤ 1 (cid:88) ∥y m,r,h −x ∗ ∥∥ξ m,r,h ∥\nM ν¯\nr,h\nm=1\nM\n1 (cid:88)\n≤ (1·σ)\nM\nm=1\n=σ.",
+      "size": 432,
+      "sentences": 3
+    },
+    {
+      "id": 317,
+      "content": "h (cid:13)\nm=1\nM\n≤ 1 (cid:88) ∥y m,r,h −x ∗ ∥∥ξ m,r,h ∥\nM ν¯\nr,h\nm=1\nM\n1 (cid:88)\n≤ (1·σ)\nM\nm=1\n=σ. Applying Theorem B.4 on X with y =ν¯ , C =σ, Xˆ =0 we have\nr,h r,h r,h r,h r,h\n(cid:12) (cid:12)\n(cid:12) 1 R (cid:88) −1H (cid:88) −1 (cid:88) M (cid:12) √\n(cid:12) ⟨y −x ,ξ ⟩(cid:12)≤16ν ισ RH, (56)\n(cid:12)M m,r,h ∗ m,r,h (cid:12) R,H\n(cid:12) (cid:12)\nr=0 h=0m=1\nwhere ι is defined as before.",
+      "size": 396,
+      "sentences": 2
+    },
+    {
+      "id": 318,
+      "content": "56)\n(cid:12)M m,r,h ∗ m,r,h (cid:12) R,H\n(cid:12) (cid:12)\nr=0 h=0m=1\nwhere ι is defined as before. Using Equation (56) in Equation (55)\n2γη (cid:88) ⟨y −x ,∇f(y )⟩≤∥x −x ∥2−∥x −x ∥2+γ2η2 (cid:88) ∥g ∥2\nM m,r,h ∗ m,r,h 0 ∗ R ∗ r,h\nm,r,h r,h\nR (cid:88) −1(cid:32)H (cid:88) −1 (cid:33)2 4104γη2σ2H2\n+2γ|1−γ|η2 ∥g ∥ +R· ι (57)\nr,h α\nr=0 h=0\n+ αγη2 1 (cid:88) ∥g ∥2+2γη (cid:104) 16ν ισ √ RH (cid:105) .",
+      "size": 400,
+      "sentences": 2
+    },
+    {
+      "id": 319,
+      "content": "|1−γ|η2 ∥g ∥ +R· ι (57)\nr,h α\nr=0 h=0\n+ αγη2 1 (cid:88) ∥g ∥2+2γη (cid:104) 16ν ισ √ RH (cid:105) . 2 M m,r,h R,H\nm,r,h\nLet\nΩ=γ2η2 (cid:88) ∥g ∥2+2γ|1−γ|η2 R (cid:88) −1(cid:32)H (cid:88) −1 ∥g ∥ (cid:33)2 +R· 4104γη2σ2H2 ι\nr,h r,h α\nr,h r=0 h=0 (58)\n+ αγη2 1 (cid:88) ∥g ∥2\n2 M m,r,h\nm,r,h\nThen by convexity and Equation (57) we get\n∥x −x ∥2 ≤∥x −x ∥2+Ω+2γη (cid:104) 16ν ισ √ RH (cid:105) − 2γη (cid:88) ⟨y −x ,∇f(y )⟩\nR ∗ 0 ∗ R,H M m,r,h ∗ m,r,h\nm,r,h\n(cid:104) √ (cid:105)\n≤∥x −x ∥2+Ω+2γη 16ν ισ RH , (59)\n0 ∗ R,H\n42\n===  43 ===\nwhere in the second line we used that x is the minimizer of f and therefore ⟨y −x ,∇f(y )⟩≥0 by\n∗ m,r,h ∗ m,r,h\nconvexity.",
+      "size": 655,
+      "sentences": 2
+    },
+    {
+      "id": 320,
+      "content": "e we used that x is the minimizer of f and therefore ⟨y −x ,∇f(y )⟩≥0 by\n∗ m,r,h ∗ m,r,h\nconvexity. It is not difficult to see that this guarantee in fact applies not just on ∥x −x ∥2 but on any x . R ∗ r\nLet d =∥x −x ∥ and d =max d . Observe\nr r ∗ r r′≤r r′\nM M\n1 (cid:88) 1 (cid:88)\nν = ∥y −x ∥≤ [∥y −y ∥+∥x −x ∥]\nr,h M m,r,h ∗ M m,r,h m,r,0 r ∗\nm=1 m=1\n(cid:34) M h−1 (cid:35)\nη (cid:88) (cid:88)\n≤ ∥g ∥ +∥x −x ∥\nM m,r,k r ∗\nm=1k=0\n(cid:34) M H−1 (cid:35)\nη (cid:88) (cid:88)\n≤ ∥g ∥ +∥x −x ∥.",
+      "size": 495,
+      "sentences": 4
+    },
+    {
+      "id": 321,
+      "content": "88)\n≤ ∥g ∥ +∥x −x ∥\nM m,r,k r ∗\nm=1k=0\n(cid:34) M H−1 (cid:35)\nη (cid:88) (cid:88)\n≤ ∥g ∥ +∥x −x ∥. (60)\nM m,r,k r ∗\nm=1 k=0\nUsing Equation (60) in Equation (59) we get\n√\nd 2 ≤d2+Ω+32γηισ RHν\nR 0 R,H\n \n√ η (cid:88) √\n≤d2\n0\n+Ω+32γηισ RH\nM\n∥g\nm,r,h\n∥+32γηισ RHd\nR\nm,h\n 2\n(cid:16) √ (cid:17)2 1 (cid:88) d 2\n≤d2 0 +Ω+2 32γηισ RH +η2  M ∥g m,r,h ∥ + 2 R.\nm,h\nTherefore\n 2\nd 2 R ≤2d2 0 +2Ω+4096γ2η2ι2σ2RH +2η2  M 1 m r ax (cid:88) ∥g m,r,h ∥ .",
+      "size": 450,
+      "sentences": 2
+    },
+    {
+      "id": 322,
+      "content": "+ 2 R.\nm,h\nTherefore\n 2\nd 2 R ≤2d2 0 +2Ω+4096γ2η2ι2σ2RH +2η2  M 1 m r ax (cid:88) ∥g m,r,h ∥ . (61)\nm,h\nBy the triangle inequality applied twice and the definition of d¯ ,\nR\n∥y −x ∥≤∥y −y ∥+∥y −x ∥\nm,r,s ∗ m,r,0 m,r,s m,r,0 ∗\n(cid:13) (cid:13)\n(cid:13)(cid:88) s−1 (cid:13)\n=η(cid:13) g (cid:13)+∥y −x ∥\n(cid:13) m,r,h(cid:13) m,r,0 ∗\n(cid:13) (cid:13)\nh=0\ns−1\n(cid:88)\n≤η ∥g ∥+∥y −x ∥\nm,r,h m,r,0 ∗\nh=0\ns−1\n≤η (cid:88) ∥g ∥+d¯\nm,r,h R\nh=0\nH−1\n≤η (cid:88) ∥g ∥+d¯ .",
+      "size": 469,
+      "sentences": 2
+    },
+    {
+      "id": 323,
+      "content": "88)\n≤η ∥g ∥+∥y −x ∥\nm,r,h m,r,0 ∗\nh=0\ns−1\n≤η (cid:88) ∥g ∥+d¯\nm,r,h R\nh=0\nH−1\n≤η (cid:88) ∥g ∥+d¯ . m,r,h R\nh=0\nTherefore\nM (cid:32) M H−1 (cid:33)\n1 (cid:88) ∥y −x ∥≤η 1 (cid:88) (cid:88) ∥g ∥ +d¯\nM m,r,s ∗ M m,r,h R\nm=1 m=1h=0\n43\n===  44 ===\nWe now use the inequality (a+b)2 ≤2a2+2b2 to get\n(cid:32) M (cid:33)2\n1 (cid:88)\nν2 = ∥y −x ∥\nr,s M m,r,s ∗\nm=1\n(cid:32) (cid:32) M H−1 (cid:33)(cid:33)2\n≤2 η 1 (cid:88) (cid:88) ∥g ∥ +2d¯2\nM m,r,h R\nm=1h=0\n 2\n=2η2  M 1 (cid:88) ∥g m,r,h ∥ +2d 2 R .",
+      "size": 497,
+      "sentences": 2
+    },
+    {
+      "id": 324,
+      "content": "≤2 η 1 (cid:88) (cid:88) ∥g ∥ +2d¯2\nM m,r,h R\nm=1h=0\n 2\n=2η2  M 1 (cid:88) ∥g m,r,h ∥ +2d 2 R . m,h\nFinally, using our bound on d¯2 given by equation (61)\nR\n 2\n1 (cid:88)\nν r 2 ,s ≤4d2 0 +4Ω+8192γ2η2ι2σ2RH +6η2  M ∥g m,r,h ∥ ,\nm,h\nTherefore\nν¯2 =maxν2\nR,H r,s\nr,s\n 2\n1 (cid:88)\n≤4d2 0 +4Ω+8192γ2η2ι2σ2RH +6η2  M m r ax ∥g m,r,h ∥ .",
+      "size": 343,
+      "sentences": 2
+    },
+    {
+      "id": 325,
+      "content": "fore\nν¯2 =maxν2\nR,H r,s\nr,s\n 2\n1 (cid:88)\n≤4d2 0 +4Ω+8192γ2η2ι2σ2RH +6η2  M m r ax ∥g m,r,h ∥ . m,h\nBy Equations (57) and (58) and the last equation,\n2γη (cid:88) ⟨y −x ,∇f(y )⟩≤∥x −x ∥2−∥x −x ∥2+Ω+2γη (cid:104) 16ν ισ √ RH (cid:105)\nM m,r,h ∗ m,r,h 0 ∗ R ∗ R,H\nm,r,h\n√  2\n≤d2\n0\n−d2\nR\n+Ω+ (32γηισ\n2\nRH)2 +4 (cid:2) d2\n0\n+Ω+2048γ2η2ι2σ2RH (cid:3) +6η2R\nM\n1 m\nr\nax (cid:88) ∥g\nm,r,h\n∥\nm,h\n√  2\n=d2\n0\n−d2\nR\n+Ω+ (32γηισ\n2\nRH)2 +4 (cid:2) d2\n0\n+Ω+2048γ2η2ι2σ2RH (cid:3) +6η2R\nM\n1 m\nr\nax (cid:88) ∥g\nm,r,h\n∥\nm,h\n 2\n1 (cid:88)\n≤d2\n0\n−d2\nR\n+6Ω+8704γ2η2ι2σ2RH +4d2\n0\n+6η2R\nM\nm\nr\nax ∥g\nm,r,h\n∥ .",
+      "size": 601,
+      "sentences": 2
+    },
+    {
+      "id": 326,
+      "content": "∥g\nm,r,h\n∥\nm,h\n 2\n1 (cid:88)\n≤d2\n0\n−d2\nR\n+6Ω+8704γ2η2ι2σ2RH +4d2\n0\n+6η2R\nM\nm\nr\nax ∥g\nm,r,h\n∥ . (62)\nm,h\nDropping the −d2 term, we get\nR\n 2\n2γη (cid:88) 1 (cid:88)\nM\n⟨y\nm,r,h\n−x\n∗\n,∇f(y\nm,r,h\n)⟩≤5d2\n0\n+6Ω+8704γ2η2ι2σ2RH +6η2R\nM\nm\nr\nax ∥g\nm,r,h\n∥\nm,r,h m,h\n≤5d2+6γ2η2 (cid:88) ∥g ∥2+12γ|1−γ|η2 R (cid:88) −1(cid:32)H (cid:88) −1 ∥g ∥ (cid:33)2 +RH 24624γη2σ2Hι\n0 r,h r,h α\nr,h r=0 h=0\n 2\n+ 3α\nM\nγη2 (cid:88) ∥g\nm,r,h\n∥2+8704γ2η2ι2σ2RH +6η2R\nM\n1 m\nr\nax (cid:88) ∥g\nm,r,h\n∥ .",
+      "size": 484,
+      "sentences": 2
+    },
+    {
+      "id": 327,
+      "content": "=0 h=0\n 2\n+ 3α\nM\nγη2 (cid:88) ∥g\nm,r,h\n∥2+8704γ2η2ι2σ2RH +6η2R\nM\n1 m\nr\nax (cid:88) ∥g\nm,r,h\n∥ . m,r,h m,h\n44\n===  45 ===\nDividing both sides by 2γηRH gives\n1 (cid:88) ⟨y −x ,∇f(y )⟩≤ 5d2 0 + 3γη (cid:88) ∥g ∥2\nMRH m,r,h ∗ m,r,h 2γηRH RH r,h\nm,r,h r,h\n6|1−γ|η R (cid:88) −1(cid:32)H (cid:88) −1 (cid:33)2 24624ησ2Hι\n+ RH ∥g r,h ∥ + α (63)\nr=0 h=0\n 2\n+ M 3α R η H (cid:88) ∥g m,r,h ∥2+8704γηι2σ2+ γ 6 H η  M 1 m r ax (cid:88) ∥g m,r,h ∥ .",
+      "size": 444,
+      "sentences": 2
+    },
+    {
+      "id": 328,
+      "content": "h=0\n 2\n+ M 3α R η H (cid:88) ∥g m,r,h ∥2+8704γηι2σ2+ γ 6 H η  M 1 m r ax (cid:88) ∥g m,r,h ∥ . m,r,h m,h\nObserve that by optimizing over α we have\n(cid:118)\n(cid:117)  \n24624 α ησ2Hι + M 3α R η H (cid:88) ∥g m,r,h ∥2 ≤2 (cid:117) (cid:117) (cid:116) (24624ησ2Hι) M 3 R η H (cid:88) ∥g m,r,h ∥2 \nm,r,h m,r,h\n(cid:115)\n≤544ησι 1 (cid:88) ∥g ∥2. MR m,r,h\nm,r,h\nUsing this in Equation (63) followed by convexity completes the proof. 45",
+      "size": 439,
+      "sentences": 4
+    }
+  ]
+}

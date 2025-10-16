@@ -1,0 +1,1125 @@
+{
+  "source": "ArXiv",
+  "filename": "281_AI_ML_Optimal_Variance_and_Covariance_Estimati.pdf",
+  "domain": "AI",
+  "total_chars": 61886,
+  "total_chunks": 186,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\nOptimal Variance and Covariance Estimation under Differential\nPrivacy in the Add-Remove Model and Beyond\nShokichi Takakura Seng Pei Liew Satoshi Hasegawa\nLY Corporation LY Corporation LY Corporation\nAbstract individualsinadataset. Itprovidesaformalguarantee\nthat the output of a computation does not reveal too\nmuch information about any individual in the dataset.",
+      "size": 375,
+      "sentences": 2
+    },
+    {
+      "id": 2,
+      "content": "e output of a computation does not reveal too\nmuch information about any individual in the dataset. Inthispaper,westudytheproblemofestimat-\nIn DP, there are two common settings for defining\ning the variance and covariance of datasets\nneighboring relations between datasets: swap model\nunder differential privacy in the add-remove\nand add-remove model. Intuitively, in the swap model,\nmodel.",
+      "size": 390,
+      "sentences": 3
+    },
+    {
+      "id": 3,
+      "content": "differential privacy in the add-remove\nand add-remove model. Intuitively, in the swap model,\nmodel. While estimation in the swap model\ntwo datasets are neighboring if one can be obtained\nhas been extensively studied in the literature,\nfrom the other by changing one record, and in the\nthe add-remove model remains less explored\nadd-remove model, two datasets are neighboring if one\nandmorechallenging,asthedatasetsizemust\ncan be obtained from the other by adding or remov-\nalsobekeptprivate.",
+      "size": 491,
+      "sentences": 3
+    },
+    {
+      "id": 4,
+      "content": "llenging,asthedatasetsizemust\ncan be obtained from the other by adding or remov-\nalsobekeptprivate. Toaddressthisissue,we\ning one record. Since the add-remove model is more\ndevelop efficient mechanisms for variance and\nconservative in the sense that it protects the size of\ncovariance estimation based on the Bézier\nthe dataset, it is often preferred in practice (McSherry,\nmechanism, a novel moment-release frame-\n2009; Wilson et al., 2020; Rogers et al., 2021; Amin\nworkthatleveragesBernsteinbases.",
+      "size": 500,
+      "sentences": 3
+    },
+    {
+      "id": 5,
+      "content": "elease frame-\n2009; Wilson et al., 2020; Rogers et al., 2021; Amin\nworkthatleveragesBernsteinbases. Weprove\net al., 2022). that our proposed mechanisms are minimax\noptimal in the high-privacy regime by estab- Despite its practical importance, theoretical under-\nlishing new minimax lower bounds. More- standing of the add-remove model is less explored com-\nover, beyond worst-case scenarios, we analyze paredtotheswapmodel. Recently,Kuleszaetal.",
+      "size": 445,
+      "sentences": 5
+    },
+    {
+      "id": 6,
+      "content": "lored com-\nover, beyond worst-case scenarios, we analyze paredtotheswapmodel. Recently,Kuleszaetal. (2024)\ninstance-wiseutilityandshowthattheBézier- studied the problem of mean estimation in the add-\nbased estimator consistently achieves better remove model and provided a min-max lower bound\nutility compared to alternative mechanisms. and an optimal mechanism.",
+      "size": 362,
+      "sentences": 4
+    },
+    {
+      "id": 7,
+      "content": "rovided a min-max lower bound\nutility compared to alternative mechanisms. and an optimal mechanism. Interestingly, they showed\nFinally, we demonstrate the effectiveness of that the mean estimation in the add-remove model\nthe Bézier mechanism beyond variance and is not harder than in the swap model although the\ncovariance estimation, showcasing its applica- add-remove model treats the size of the dataset as a\nbility to other statistical tasks. sensitive information.",
+      "size": 469,
+      "sentences": 4
+    },
+    {
+      "id": 8,
+      "content": "model treats the size of the dataset as a\nbility to other statistical tasks. sensitive information. However, estimation of variance\nand covariance is more complicated since it involves\nestimating the second moment of the dataset as well\n1 Introduction as the first moment. Indeed, naive approaches suffer\nfrom large error compared to mean estimation. Variance and covariance are fundamental statistics in\nThus, we pose the following question: Is variance and\ndata analysis.",
+      "size": 473,
+      "sentences": 5
+    },
+    {
+      "id": 9,
+      "content": "are fundamental statistics in\nThus, we pose the following question: Is variance and\ndata analysis. They are widely used in various appli-\ncovariance estimation in the add-remove model harder\ncations, such as machine learning, statistics, and data\nthan in the swap model or for mean estimation? mining.",
+      "size": 301,
+      "sentences": 3
+    },
+    {
+      "id": 10,
+      "content": "ch as machine learning, statistics, and data\nthan in the swap model or for mean estimation? mining. However, releasing statistics naively can lead\nto privacy issues, as they can reveal sensitive infor- In this paper, we answer this question negatively by\nmation about individuals in the dataset, for example, developing efficient mechanisms for variance and co-\nthrough difference attacks (Dalenius, 1977).",
+      "size": 406,
+      "sentences": 3
+    },
+    {
+      "id": 11,
+      "content": ", developing efficient mechanisms for variance and co-\nthrough difference attacks (Dalenius, 1977). variance estimation which achieve the same optimal\nerror rate in the high-privacy regime as in the swap\nDifferential privacy (DP) (Dwork et al., 2014) is a\nmodel and mean estimation. Specifically, we establish\nwidely used framework for protecting the privacy of\na novel lower bound for variance and covariance es-\ntimation and propose min-max optimal mechanisms\nwhich achieve this lower bound.",
+      "size": 493,
+      "sentences": 3
+    },
+    {
+      "id": 12,
+      "content": "and covariance es-\ntimation and propose min-max optimal mechanisms\nwhich achieve this lower bound. A key ingredient of\nthese optimal mechanisms is the Bézier mechanism, a\nPreliminary work. novelandversatilemoment-releaseframeworkbasedon\n5202\npeS\n5\n]LM.tats[\n1v91940.9052:viXra\n===  2 ===\nOptimal Private Estimation of Variance and Covariance\nBernstein bases.",
+      "size": 358,
+      "sentences": 3
+    },
+    {
+      "id": 13,
+      "content": "v91940.9052:viXra\n===  2 ===\nOptimal Private Estimation of Variance and Covariance\nBernstein bases. We show that the Bézier mechanism 1.2 Notation\ncan estimate all moments up to order k > 0 simulta-\nneously, without incurring any additional privacy cost clip(,[l,u]) : R R is the clipping function de-\ncompared to estimating only the k-th moment. Fur- fined· as clip(x,[l,u → ]) = max l,min u,x .",
+      "size": 396,
+      "sentences": 3
+    },
+    {
+      "id": 14,
+      "content": "de-\ncompared to estimating only the k-th moment. Fur- fined· as clip(x,[l,u → ]) = max l,min u,x . Lap(b) is\nthermore, beyond variance and covariance estimation, the Laplace distribution wit{h scale{para}m}eter b, i.e.,\nwe show that the Bézier mechanism can be applied to the probability density function of Lap(b) is given by\nthe estimation of a wide range of statistics, which is of 1 exp( x/b). With a slight abuse of notation, we de-\nindependent interest.",
+      "size": 459,
+      "sentences": 4
+    },
+    {
+      "id": 15,
+      "content": "statistics, which is of 1 exp( x/b). With a slight abuse of notation, we de-\nindependent interest. n 2b oteLa − p( | b) | asarandomvariablefollowingtheLaplace\ndistribution with scale parameter b. Small o-notation\nOur contributions can be summarized as follows:\no(f(n)) is used to denote a function that grows slower\nthan f(n), i.e., lim o(f(n))/f(n)=0.",
+      "size": 352,
+      "sentences": 4
+    },
+    {
+      "id": 16,
+      "content": "ollows:\no(f(n)) is used to denote a function that grows slower\nthan f(n), i.e., lim o(f(n))/f(n)=0. We denote\nn→∞\n• We establish new minimax lower bounds for vari- [a ,...,a ] Rn×d for a Rn as the matrix whose\n1 d i\nance and covariance estimation under differential i-th column∈is a . ∈\ni\nprivacy in both the swap and add-remove models. In the high-privacy regime, the optimal MSE is\n2 Problem Setting\nshown to be 2 , matching the optimal MSE of\nε2n2\nmean estimation.",
+      "size": 467,
+      "sentences": 4
+    },
+    {
+      "id": 17,
+      "content": "optimal MSE is\n2 Problem Setting\nshown to be 2 , matching the optimal MSE of\nε2n2\nmean estimation. In this paper, we consider datasets containing records,\neach of which is a d-dimensional vector in a bounded\n• Weproposemin-maxoptimalmechanismsforvari-\ndomain [l,r]d (l < r).",
+      "size": 274,
+      "sentences": 2
+    },
+    {
+      "id": 18,
+      "content": "-dimensional vector in a bounded\n• Weproposemin-maxoptimalmechanismsforvari-\ndomain [l,r]d (l < r). The case where the range of\nance and covariance estimation in the add-remove\nthe records is not bounded can be transformed to the\nmodel based on the Bézier mechanism, a novel\nboundedcaseusingtheclippingtechnique(Aminetal.,\nmoment-release framework based on Bernstein\n2019b). Withoutlossofgenerality,wecanassumel=0\nbases.",
+      "size": 420,
+      "sentences": 3
+    },
+    {
+      "id": 19,
+      "content": ",\nmoment-release framework based on Bernstein\n2019b). Withoutlossofgenerality,wecanassumel=0\nbases. Moreover,forvarianceestimation,weprove\nand r =1 since any dataset can be transformed to this\nour Bézier-based estimator uniformly improves\nform by a linear transformation. Let be the set of\nthe leading constant compared to two alternative n\nalldatasetsofsizen 1, := D bethesetof\noptimal mechanisms. ≥n k≥n k\nalldatasetsofsizeat≥leastD n,and ∪ := D bethe\n∗ k≥1 k\nsetofalldatasetswithanysize.",
+      "size": 490,
+      "sentences": 5
+    },
+    {
+      "id": 20,
+      "content": "anisms. ≥n k≥n k\nalldatasetsofsizeat≥leastD n,and ∪ := D bethe\n∗ k≥1 k\nsetofalldatasetswithanysize. WDeident∪ifythDedataset\n• We show that our framework can be applied to\nhigher-order moments estimation, enabling effi- D n withthedatamatrix[x(1),...,x(d)] [0,1]n×d. In∈thDis paper, we consider the problem of e∈stimating\ncient estimation of a wide class of moment-based\nthe statistics such as variance and covariance defined\nquantities (e.g., kurtosis, skewness, and correla-\nas\ntion).",
+      "size": 485,
+      "sentences": 4
+    },
+    {
+      "id": 21,
+      "content": "uch as variance and covariance defined\nquantities (e.g., kurtosis, skewness, and correla-\nas\ntion). n (cid:32) n (cid:33)2\n1 (cid:88) 1 (cid:88)\n1.1 Other Related Work var(D)= n x2 i − n x i ,\ni=1 i=1\nCovariance Estimation Covariance estimation 1 (cid:88) n (cid:32) 1 (cid:88) n (cid:33)(cid:32) 1 (cid:88) n (cid:33)\nwith DP has been intensively studied in various set- cov(D)= x y x y ,\ni i i i\nn − n n\ntings (Amin et al., 2019a; Biswas et al., 2020; Dong i=1 i=1 i=1\net al., 2022; Kalinin et al., 2025).",
+      "size": 507,
+      "sentences": 2
+    },
+    {
+      "id": 22,
+      "content": "ngs (Amin et al., 2019a; Biswas et al., 2020; Dong i=1 i=1 i=1\net al., 2022; Kalinin et al., 2025). However, they focus\nwhere D =[x] ∗, and D =[x,y] ∗, respectively. on the swap model and studied the dependence of the We emphasize t∈haDt our focus is on ce∈ntDered covariance\nerror on the data dimension. Furthermore, they con-\nestimation, whereas most previous work (Amin et al.,\nsidered the estimation of uncentered covariance matrix.",
+      "size": 436,
+      "sentences": 4
+    },
+    {
+      "id": 23,
+      "content": "n, whereas most previous work (Amin et al.,\nsidered the estimation of uncentered covariance matrix. 2019a; Biswas et al., 2020; Dong et al., 2022; Kalinin\nIn contrast, we consider the estimation of centered co-\net al., 2025) has studied the estimation of uncentered\nvariance in the add-remove model and focus on the covariance, 1 (cid:80)n x y . constant factor in the error rate. n i=1 i i\nHere, we introduce the formal definition of differential\nprivacy.",
+      "size": 456,
+      "sentences": 4
+    },
+    {
+      "id": 24,
+      "content": "ctor in the error rate. n i=1 i i\nHere, we introduce the formal definition of differential\nprivacy. Other Statistics Estimation Estimation of other\nstatistics other than variance and covariance such as Definition 2.1 (Differential Privacy).",
+      "size": 240,
+      "sentences": 3
+    },
+    {
+      "id": 25,
+      "content": "other\nstatistics other than variance and covariance such as Definition 2.1 (Differential Privacy). A randomized\nquantile (Gillenwater et al., 2021; Imola et al., 2025), algorithm is said to be ϵ-differentially private if for\nCDF (Rameshwar et al., 2025), F statistics (Swanberg allneighboAringdatasetsD,D′ ∗ andallmeasurable\net al., 2019), and confidence interval (Karwa and Vad- sets S Range( ), it holds th∈atD\nhan, 2018) is also the field of active research.",
+      "size": 461,
+      "sentences": 2
+    },
+    {
+      "id": 26,
+      "content": "l (Karwa and Vad- sets S Range( ), it holds th∈atD\nhan, 2018) is also the field of active research. Several ⊆ A\nworks(Gillenwateretal.,2021;Imolaetal.,2025)have Pr[ (D) S] eϵPr[ (D′) S]. A ∈ ≤ A ∈\ndiscussed the estimation in the add-remove model but\nthe optimal mechanism for variance and covariance For the definition of neighboring datasets, there are\nestimation remains unexplored.",
+      "size": 384,
+      "sentences": 3
+    },
+    {
+      "id": 27,
+      "content": "and covariance For the definition of neighboring datasets, there are\nestimation remains unexplored. two common models:\n===  3 ===\nShokichi Takakura, Seng Pei Liew, Satoshi Hasegawa\n• Swap Model: The neighboring datasets are de- See Appendix B.1 for the proof. This can be shown\nfined by replacing an element in the dataset with by using a lower-bound for the sum estimation (Geng\nanother one.",
+      "size": 392,
+      "sentences": 3
+    },
+    {
+      "id": 28,
+      "content": "ing an element in the dataset with by using a lower-bound for the sum estimation (Geng\nanother one. Formally, two datasets D,D′ ∗ and Viswanath, 2014) and a novel reduction of the\nare neighboring if and only if D D′ = 1 ∈aDnd varianceandcovarianceestimationproblemtothesum\nD′ D =1. | \\ | estimation problem. In the high privacy regime, i.e.,\n| \\ | ε 0, the lower bound is asymptotically 2/ε2.",
+      "size": 392,
+      "sentences": 4
+    },
+    {
+      "id": 29,
+      "content": "ation problem. In the high privacy regime, i.e.,\n| \\ | ε 0, the lower bound is asymptotically 2/ε2. In this\n• Add-remove Model: The neighboring datasets pa→per, we focus on the high-privacy regime since it\naredefinedbyaddingorremovinganelementfrom\nis more challenging but provides meaningful privacy\nthe dataset. Formally, two datasets D,D′ ∗\nprotection.",
+      "size": 354,
+      "sentences": 4
+    },
+    {
+      "id": 30,
+      "content": "challenging but provides meaningful privacy\nthe dataset. Formally, two datasets D,D′ ∗\nprotection. As shown later, this lower bound can be\nareneighboringifandonlyif D D′ + D′ D ∈ = D 1. achieved by the Laplace mechanism in the swap model\n| \\ | | \\ |\nand by our proposed mechanism in the add-remove\nInthispaper,wefocusontheadd-removemodel,which\nmodel.",
+      "size": 350,
+      "sentences": 3
+    },
+    {
+      "id": 31,
+      "content": "nd by our proposed mechanism in the add-remove\nInthispaper,wefocusontheadd-removemodel,which\nmodel. That is, the leading term in the optimal mean\nis preferred in practice since it protects the size of the\nsquared error for variance and covariance estimation in\ndataset while the swap model does not (McSherry,\nhigh privacy regime is 2/(ε2n2) for large n, where n is\n2009; Wilson et al., 2020; Rogers et al., 2021; Amin\nthesizeofthedataset. Interestingly,thiserrorratehas\net al., 2022).",
+      "size": 485,
+      "sentences": 3
+    },
+    {
+      "id": 32,
+      "content": "2020; Rogers et al., 2021; Amin\nthesizeofthedataset. Interestingly,thiserrorratehas\net al., 2022). the same constant in the leading term as that of mean\nFor a statistics f : ∗ R, the utility of an estimator estimation (Kulesza et al., 2024). Therefore, we can\nf ˆ: ∗ R for a dData→set D ∗ is measured by the conclude that the variance and covariance estimation\nmeaDn s→quared error defined a∈s D intheadd-removemodelisnotharderthanthatinthe\nswap model and the mean estimation.",
+      "size": 476,
+      "sentences": 4
+    },
+    {
+      "id": 33,
+      "content": "rror defined a∈s D intheadd-removemodelisnotharderthanthatinthe\nswap model and the mean estimation. (cid:104) (cid:105)\nL(f ˆ ,f,D):=E (f ˆ(D) f(D))2 ,\n−\n4 Optimal Mechanism for Swap Model\nwhere the expectation is taken over the randomness\nof the estimator f ˆ.",
+      "size": 261,
+      "sentences": 2
+    },
+    {
+      "id": 34,
+      "content": "l Mechanism for Swap Model\nwhere the expectation is taken over the randomness\nof the estimator f ˆ. Since the error of differentially\nprivate estimator typically decreases in the order of Estimation of variance and covariance in the swap\n1/D 2 (Kuleszaetal.,2024),wedefinethe(worst-case) model is rather straightforward since the number of\nno|rm|alized mean squared error as records in the dataset is fixed.",
+      "size": 407,
+      "sentences": 2
+    },
+    {
+      "id": 35,
+      "content": "ightforward since the number of\nno|rm|alized mean squared error as records in the dataset is fixed. In this section, we\nbriefly review the optimal mechanism for variance and\nR(f ˆ ,f,D)= D 2 L(f ˆ ,f,D), covariance estimation in the swap model to compare\n| |\nthe result with the add-remove model. R(f ˆ ,f,n )= sup R(f ˆ ,f,D). 0\nD∈D≥n0 Here, we introduce the notion of l\n1\n-sensitivity. Our goal is to design an ϵ-DP estimator f ˆthat mini- Definition 4.1.",
+      "size": 457,
+      "sentences": 5
+    },
+    {
+      "id": 36,
+      "content": "e notion of l\n1\n-sensitivity. Our goal is to design an ϵ-DP estimator f ˆthat mini- Definition 4.1. The l -sensitivity of a function f :\n1\nmizes the above measures. ∗ Rd is defined as\nD →\n3 Lower Bound for Variance and ∆f = sup f(D) f(D′)\nD,D′∈D∗∥ − ∥1\nCovariance Estimation\ns.t. D,D′ are neighboring. Inthissection,weprovidenovelmin-maxlowerbounds\nfor variance and covariance estimation.",
+      "size": 388,
+      "sentences": 6
+    },
+    {
+      "id": 37,
+      "content": "neighboring. Inthissection,weprovidenovelmin-maxlowerbounds\nfor variance and covariance estimation. There have The following fact is well known in the literature (see,\nbeen several studies on the lower bound for covariance e.g., Aitsam (2022)). estimation (Dong et al., 2022; Portella and Harvey,\nLemma4.2. Thesensitivitiesoftheempiricalvariance\n2024) but they focused on the swap model and the un-\nvar(D) and covariance cov(D) are bounded by 1/n. centered covariance estimation.",
+      "size": 479,
+      "sentences": 6
+    },
+    {
+      "id": 38,
+      "content": "model and the un-\nvar(D) and covariance cov(D) are bounded by 1/n. centered covariance estimation. Here, we show a novel\nlower bound for the centered covariance estimation in\nWeprovidetheproofinAppendixC.1forcompleteness. both the swap and add-remove models. Considering the above fact, we can use the Laplace\nTheorem 3.1 (Lower bound).",
+      "size": 336,
+      "sentences": 5
+    },
+    {
+      "id": 39,
+      "content": "nd add-remove models. Considering the above fact, we can use the Laplace\nTheorem 3.1 (Lower bound). For ϵ > 0, any ϵ-DP mechanism to privatize the empirical variance and co-\nestimators f ˆ ,f ˆ : ∗ R in the swap or add- variance as follows:\nvar cov\nremove model satisfies D →\n1\nvˆ (D)=var(D)+ Lap(1/ε),\nR(f ˆ ,cov,n ) σ(ε)2(1 o(1)), swap n ·\ncov 0\n≥ − 1\nR(f ˆ ,var,n ) σ(ε)2(1 o(1)), cˆ (D)=cov(D)+ Lap(1/ε). var 0 swap\n≥ − n ·\nwhere σ(ε) = 2−2/3e−2ε\n(\n/\n1\n3\n−\n(1\ne\n+\n−\ne\nε\n−\n)2\nε)2/3+e−ε.",
+      "size": 489,
+      "sentences": 4
+    },
+    {
+      "id": 40,
+      "content": "=cov(D)+ Lap(1/ε). var 0 swap\n≥ − n ·\nwhere σ(ε) = 2−2/3e−2ε\n(\n/\n1\n3\n−\n(1\ne\n+\n−\ne\nε\n−\n)2\nε)2/3+e−ε. In particular, These mechanisms are ε-DP from Lemma 4.2. In addi-\nif ε 1, we have σ(ε)2 2/ε2. tion, they achieve the lower bound in Theorem 3.1. ≪ ≃\n===  4 ===\nOptimal Private Estimation of Variance and Covariance\nProposition 4.3 (Optimality in Swap Model). The SeeAppendixD.1fortheproof.",
+      "size": 388,
+      "sentences": 7
+    },
+    {
+      "id": 41,
+      "content": "Variance and Covariance\nProposition 4.3 (Optimality in Swap Model). The SeeAppendixD.1fortheproof. Thisdoesnotmatches\nLaplace mechanisms achieve the following error bound: the lower bound in Theorem 3.1 and is not optimal. 2 An improved approach utilizes the following property\nR(vˆ swap ,var,n 0 )= ε2 , of unnormalized variance and covariance:\nR(cˆ ,cov,n )= 2 . Lemma 5.2.",
+      "size": 375,
+      "sentences": 5
+    },
+    {
+      "id": 42,
+      "content": "y\nR(vˆ swap ,var,n 0 )= ε2 , of unnormalized variance and covariance:\nR(cˆ ,cov,n )= 2 . Lemma 5.2. The sensitivity of unnormalized co-\nswap 0 ε2 variance ucov([x,y]) := (cid:80)n (x 1 (cid:80)n x )(y\n1 (cid:80)n y ) and unnormaliz i e = d 1 va i r − ian n ce u j= va 1 r( j [x]) i := −\nThe results follow from the fact that the variance of n j=1 j\nLap(1/ε)is2/ε2.",
+      "size": 364,
+      "sentences": 3
+    },
+    {
+      "id": 43,
+      "content": "va 1 r( j [x]) i := −\nThe results follow from the fact that the variance of n j=1 j\nLap(1/ε)is2/ε2. Therefore, forsufficientlysmallε, we r (cid:80) em n i= o 1 v ( e x i m−ode n 1 l. (cid:80)n j=1 x j )2 is bounded by 1 in the add-\ncan conclude that the Laplace mechanism is optimal\nfor variance and covariance estimation in the swap\nSee Appendix D.3 for the proof. Let u = ucov([x,y])\nm\na l\no\ni\nd\nne\nel.",
+      "size": 404,
+      "sentences": 3
+    },
+    {
+      "id": 44,
+      "content": "iance estimation in the swap\nSee Appendix D.3 for the proof. Let u = ucov([x,y])\nm\na l\no\ni\nd\nne\nel. of\nIn\nwo\nt\nr\nh\nk\ne\no\nlo\nn\nw\nim\np\np\nri\nr\nv\no\na\nv\nc\ni\ny\nng\nre\nt\ng\nh\ni\ne\nm\nu\ne\nti\nε\nlit≫y u\n1\ns\n,\nin\nth\ng\ne\ns\nr\nt\ne\na\ne\nir\nx\nc\ni\na\ns\ns\nt\ne\ns forcovarianceestimationandu=uvar([x])forvariance\nestimation. Then, the l -sensitivity of a vector [n,u]\nmechanisms(GengandViswanath,2014;Kuleszaetal., 1\nis bounded by 2, and the Laplace mechanism with\n2025) but we do not seek in this direction.",
+      "size": 482,
+      "sentences": 4
+    },
+    {
+      "id": 45,
+      "content": "tal., 1\nis bounded by 2, and the Laplace mechanism with\n2025) but we do not seek in this direction. scale parameter 2/ε can be applied to privatize these\nquantities. That is, we can obtain n˜ =n+Lap(2/ε),\n5 Optimal Mechanism for u˜=u+Lap(2/ε).",
+      "size": 243,
+      "sentences": 3
+    },
+    {
+      "id": 46,
+      "content": "ize these\nquantities. That is, we can obtain n˜ =n+Lap(2/ε),\n5 Optimal Mechanism for u˜=u+Lap(2/ε). Then, the empirical covariance and\nAdd-Remove Model variance can be computed as\n(cid:18) (cid:19)\nThe situation in the add-remove model is more com- u˜\ncˆ(D):=clip ,[ 1/4,1/4] ,\nplicated than in the swap model since the number n˜ −\nof records in the dataset can change and should be (cid:18) u˜ (cid:19)\nvˆ(D):=clip ,[0,1/4] . protected.",
+      "size": 437,
+      "sentences": 4
+    },
+    {
+      "id": 47,
+      "content": "ords in the dataset can change and should be (cid:18) u˜ (cid:19)\nvˆ(D):=clip ,[0,1/4] . protected. We cannot apply the Laplace mechanism n˜\ndirectly to the empirical variance and covariance since\nthe sensitivity is dependent on the size of the dataset, For these improved approaches, we have the following\nwhich is not fixed in the add-remove model. utility bound:\nA naive approach for the covariance estimation in Proposition 5.3.",
+      "size": 432,
+      "sentences": 4
+    },
+    {
+      "id": 48,
+      "content": "add-remove model. utility bound:\nA naive approach for the covariance estimation in Proposition 5.3. For cˆand vˆ defined above, we have\nthe add-remove model is to use the Laplace mecha-\n17/2\nnism to privatize n, (cid:80)n i=1 x i , (cid:80)n i=1 y i , and (cid:80)n i=1 x i y i R(cˆ,cov,n 0 ) ≤ ε2 (1+o(1)),\nseparately. That is, we use the privacy budget ε/4\n17/2\nto privatize each of these quantities, and obtain R(vˆ,var,n ) (1+o(1)).",
+      "size": 436,
+      "sentences": 4
+    },
+    {
+      "id": 49,
+      "content": "he privacy budget ε/4\n17/2\nto privatize each of these quantities, and obtain R(vˆ,var,n ) (1+o(1)). n˜ = n+Lap(4/ε), s˜ = (cid:80)n x +Lap(4/ε), s˜ = 0 ≤ ε2\nx i=1 i y\n(cid:80)n y +Lap(4/ε), and s˜ = (cid:80)n x y +Lap(4/ε). i=1 i xy i=1 i i See Appendix D.2 for the proof.",
+      "size": 272,
+      "sentences": 3
+    },
+    {
+      "id": 50,
+      "content": "0)n y +Lap(4/ε), and s˜ = (cid:80)n x y +Lap(4/ε). i=1 i xy i=1 i i See Appendix D.2 for the proof. While this approach\nThen, we compute the empirical covariance as\nreducestheerrorcomparedtothenaivemethod,itstill\n(cid:18) s˜ s˜ s˜ (cid:19) suffers from large error and does not achieve the lower\ncˆ(D):=clip xy x y ,[ 1/4,1/4] . bound in Theorem 3.1.\nn˜ − n˜ · n˜ −\nHere, weapplyclippingtoimprovetheutilitysincethe\n5.1 Bézier Mechanism\ntrue empirical covariance lies in the range [ 1/4,1/4].",
+      "size": 491,
+      "sentences": 4
+    },
+    {
+      "id": 51,
+      "content": "rovetheutilitysincethe\n5.1 Bézier Mechanism\ntrue empirical covariance lies in the range [ 1/4,1/4]. Similarly, we can estimate the variance as − To develop a mechanism which achieves the lower\nbound in Theorem 3.1, in this section, we propose a\nvˆ(D):=clip\n(cid:32)\ns˜ xx\n(cid:18)\ns˜ x\n(cid:19)2\n,[0,1/4]\n(cid:33)\n, novelframeworkcalledBézier Mechanism. First,wein-\nn˜ − n˜ troducetheBernsteinbasisandBéziermatrix(Lorentz,\n2012).",
+      "size": 429,
+      "sentences": 3
+    },
+    {
+      "id": 52,
+      "content": "calledBézier Mechanism. First,wein-\nn˜ − n˜ troducetheBernsteinbasisandBéziermatrix(Lorentz,\n2012). where n˜ = n+Lap(3/ε), s˜ = (cid:80) x +Lap(3/ε), and\ns˜ = (cid:80) x2+Lap(3/ε). Fo x r these i naive approaches, Definition 5.4 (Bernstein Basis and Bézier Matrix). xx i The Bernstein basis of order k N is defined as\nwe have the following utility bound:\n∈\n(cid:18) (cid:19)\nProposition 5.1.",
+      "size": 391,
+      "sentences": 5
+    },
+    {
+      "id": 53,
+      "content": "f order k N is defined as\nwe have the following utility bound:\n∈\n(cid:18) (cid:19)\nProposition 5.1. For cˆand vˆ defined above, we have\nB (x)=\nk\nxj(1 x)k−j, 0 j k.\nj\nj − ≤ ≤\n128\nR(cˆ,cov,n ) (1+o(1)),\n0 ≤ ε2 The Bézier matrix A is defined as\n108\nR(vˆ,var,n\n0\n)\n≤ ε2\n(1+o(1))\nA =\n(cid:40)\n( −\n1)l−j(cid:0)k\nl\n(cid:1)(cid:0)\nj\nl(cid:1)\n(j ≤ l)\nj,l\n0 (j >l)\n===  5 ===\nShokichi Takakura, Seng Pei Liew, Satoshi Hasegawa\nThe Bernstein basis is widely used in computer graph- Algorithm 1 Bézier Mechanism\nicsandknowntoformabasisforpolynomialsofdegree Require: Dataset [x] ∗, privacy budget ε, degree\nat most k. In the context of DP, Aldà and Rubin- k. ∈D\nstein(2017)haveproposedBernsteinmechanismbased 1: Let b = (cid:80)|x| Bk(x ) for j =0,...,k.\nj i=1 j i\non Bernstein polynomial for private function release.",
+      "size": 806,
+      "sentences": 2
+    },
+    {
+      "id": 54,
+      "content": "(cid:80)|x| Bk(x ) for j =0,...,k.\nj i=1 j i\non Bernstein polynomial for private function release. 2: Add independent Laplace noise Z Lap(1/ε) to\ni\nThey utilize the property of Bernstein basis that it can obtain˜ b =b +Z for i=0,...,k ∼\ni i i\napproximate uniformly any continuous function. On 3: Output µˆ(D)=[µˆ ,...,µˆ ]⊤ =A−1˜ b. 0 k\nthe other hand, we utilize the following property of\nBernstein basis known as a partition of unity:\nthe transformed noise addition Kulesza et al.",
+      "size": 482,
+      "sentences": 4
+    },
+    {
+      "id": 55,
+      "content": "rty of\nBernstein basis known as a partition of unity:\nthe transformed noise addition Kulesza et al. (2024),\n• B j (x) is non-negative. which is a special case when k =1. • (cid:80)k B (x)=1 for all x [0,1]. For the utility of Algorithm 1, we have the following\nj=0 j ∈ result:\nLet µ(D) Rk+1 be the vector of (unnormalized) mo- Theorem 5.6. For 0 j k, let µ j be the j-th order\nments of t∈he dataset D = [x] up to order k, defined moment of a dataset D ≤ ≤ ∗.",
+      "size": 458,
+      "sentences": 6
+    },
+    {
+      "id": 56,
+      "content": "be the j-th order\nments of t∈he dataset D = [x] up to order k, defined moment of a dataset D ≤ ≤ ∗. Then, the mechanism\nas that outputs µˆ satisfies ∈ D\nj\nµ(D)=\n(cid:32)\n(cid:88)\nn\nx0 i , (cid:88)\nn\nx1 i ,..., (cid:88)\nn\nxk i\n(cid:33)⊤\n, L(µˆ j ,µ j ,D)= ε2 2 (cid:0)k(cid:1) (cid:88)\nk (cid:18)\nj l\n(cid:19)2\n≤ 2 ε k 2\ni=1 i=1 i=1 · j l=j\na d n efi d n b e ( d D a ) s∈ Rk+1 be the Bernstein representation of µ In particular, L(µˆ k ,µ k ,D) = ε 2 2 , which matches the\nlower bound for k-th (unnormalized) moment estima-\ntion in the high-privacy regime.",
+      "size": 555,
+      "sentences": 2
+    },
+    {
+      "id": 57,
+      "content": "ich matches the\nlower bound for k-th (unnormalized) moment estima-\ntion in the high-privacy regime. b(D)=Aµ(D)\n(cid:34) n n n (cid:35)⊤ SeeAppendixD.4fortheproof. Foranaivemechanism\n(cid:88) (cid:88) (cid:88)\n= B\n0\n(x\ni\n), B\n1\n(x\ni\n),..., B\nk\n(x\ni\n) . which applies the Laplace mechanism to µ, the error\ni=1 i=1 i=1 is 2(k+1)2 since the l -sensitivity of µ is k+1. Thus,\nε2 1\nthe Bézier mechanism achieves a better utility-privacy\nFromthepartitionofunitypropertyofBernsteinbasis,\ntrade-off.",
+      "size": 490,
+      "sentences": 5
+    },
+    {
+      "id": 58,
+      "content": "anism achieves a better utility-privacy\nFromthepartitionofunitypropertyofBernsteinbasis,\ntrade-off. In addition, the Bézier mechanism achieves\nwe have the following lemma:\noptimal error for the highest-order moment µ . Thus,\nLemma 5.5. The l 1 -sensitivity of b(D) is 1. we can estimate all moments up to order k k without\npaying additional privacy budget. Proof.",
+      "size": 363,
+      "sentences": 5
+    },
+    {
+      "id": 59,
+      "content": "is 1. we can estimate all moments up to order k k without\npaying additional privacy budget. Proof. For neighboring datasets D and D′, we have\n5.2 Extension to Multivariate Cases\nk\n(cid:88)\nb(D′) b(D) = B (x )\n∥ − ∥1 | j n+1 | For cases with two or more variables in a record, the\nj=0\nextension is natural using tensor products of Bernstein\nk\n(cid:88) basis.",
+      "size": 357,
+      "sentences": 3
+    },
+    {
+      "id": 60,
+      "content": "bles in a record, the\nj=0\nextension is natural using tensor products of Bernstein\nk\n(cid:88) basis. For d variables, the multivariate Bernstein basis\n= B (x )\nj n+1 is defined as:\nj=0\n=1,\nd\n(cid:89)\nBk(z ,...,z )= Bk (z )\nwhere the first equality follows from the non-negativity α 1 d αj j\nj=1\nof Bernstein basis and the last equality follows from\nthe partition of unity property. where z Rd and α = (α ,...,α ) is a multi-index\n1 d\nwith α ∈ 0,1,...,k .",
+      "size": 453,
+      "sentences": 3
+    },
+    {
+      "id": 61,
+      "content": "rtition of unity property. where z Rd and α = (α ,...,α ) is a multi-index\n1 d\nwith α ∈ 0,1,...,k . The corresponding Bézier ma-\nj\nThis lemma implies that˜ b(D)=b(D)+Lap(1/ε) sat- trix beco∈m{es A = A } A A (d tensor prod-\nd\nisfy ε-DP. Since the Bézier matrix A is invertible, we ucts). In a similar way⊗as i⊗n·t·h·e⊗univariate case, let\ncan compute the noisy moments µ˜(D) from ˜ b(D) as µ(D) R(k+1)d be the vector of mixed moments of the\nµ˜(D)=A−1˜ b(D).",
+      "size": 456,
+      "sentences": 5
+    },
+    {
+      "id": 62,
+      "content": "sy moments µ˜(D) from ˜ b(D) as µ(D) R(k+1)d be the vector of mixed moments of the\nµ˜(D)=A−1˜ b(D). We provide the entire procedure in datase∈t D =[x(1),...,x(d)] up to order k, defined as\nAlgorithm 1. This can be seen as a special case of the\nmatrix mechanism (Li et al., 2015) for the input is mo- n\nmentsandthematrixistheBéziermatrix.",
+      "size": 337,
+      "sentences": 3
+    },
+    {
+      "id": 63,
+      "content": "f the\nmatrix mechanism (Li et al., 2015) for the input is mo- n\nmentsandthematrixistheBéziermatrix. Inaddition, µ (D)=\n1 (cid:88)(cid:16)\nx (1)\n(cid:17)α1 (cid:16)\nx (d)\n(cid:17)αd\n,\nα n j ··· j\nBézier mechanism can be seen as a generalization of j=1\n===  6 ===\nOptimal Private Estimation of Variance and Covariance\nand b be the Bernstein representation of µ defined as Theorem 5.8 (Utility Analysis). For privacy budget\nε, Algorithm 2 achieves\nn\n(cid:88)\nb (D)= B (x ).",
+      "size": 470,
+      "sentences": 3
+    },
+    {
+      "id": 64,
+      "content": "heorem 5.8 (Utility Analysis). For privacy budget\nε, Algorithm 2 achieves\nn\n(cid:88)\nb (D)= B (x ). α α i 2\ni=1 R(cˆ,cov,n 0 ) ≤ ε2 (1+o(1)). As in the univariate case, we have the following lemma:\nLemma 5.7. The l -sensitivity of b(D) is 1. See Appendix D.6 for the proof. While the Bézier\n1\nmechanism can efficiently estimate the moments of the\nSeeAppendixD.5fortheproof.",
+      "size": 373,
+      "sentences": 7
+    },
+    {
+      "id": 65,
+      "content": "While the Bézier\n1\nmechanism can efficiently estimate the moments of the\nSeeAppendixD.5fortheproof. Thus,wecanprivatize\ndataset, it is far from trivial to evaluate the error in\nb(D)usingtheLaplacemechanismwithscaleparameter\nthe final estimator. Surprisingly, this upper bound\n1/ε. Since A d is invertible, we can recover all mixed matches the lower bound in Theorem 3.1 for small ε.\nmoments up to order k from Bernstein representation.",
+      "size": 435,
+      "sentences": 4
+    },
+    {
+      "id": 66,
+      "content": "es the lower bound in Theorem 3.1 for small ε.\nmoments up to order k from Bernstein representation. Therefore, Algorithm 2 is minimax optimal for covari-\nance estimation in the high-privacy regime. This is\n5.3 Covariance Estimation because the noise contained in each individual moment\nestimator is correlated with one another, and many of\nTo compute the covariance, it suffices to estimate\nthem eventually cancel out in the final estimator. n, (cid:80)n x , (cid:80)n y , (cid:80)n x y .",
+      "size": 488,
+      "sentences": 4
+    },
+    {
+      "id": 67,
+      "content": "e\nthem eventually cancel out in the final estimator. n, (cid:80)n x , (cid:80)n y , (cid:80)n x y . This can be done us-\ni=1 i i=1 i i=1 i i\ning the two-dimensional Bézier mechanism with degree\nk =1.",
+      "size": 199,
+      "sentences": 3
+    },
+    {
+      "id": 68,
+      "content": "This can be done us-\ni=1 i i=1 i i=1 i i\ning the two-dimensional Bézier mechanism with degree\nk =1. That is, we compute the noisy Bernstein repre- 5.4 Variance Estimation\nsentation\nThe empirical variance can be computed from the mo-\n˜ b 0,0 = (cid:88) n (1 x i )(1 y i )+Lap(1/ε), m do e n n e ts u n si , n (cid:80) g n i= th 1 e x i ( , u (cid:80) ni n i v = a 1 ri x a 2 i te u ) p B t é o z o ie r r de m r e 2 c . h T an h i i s s m ca w n i b th e\n− −\ni=1 degree k =2.",
+      "size": 474,
+      "sentences": 3
+    },
+    {
+      "id": 69,
+      "content": "te u ) p B t é o z o ie r r de m r e 2 c . h T an h i i s s m ca w n i b th e\n− −\ni=1 degree k =2. Then,\nn\n˜ b 0,1 = (cid:88) (1 − x i )y i (1 − x i )+Lap(1/ε), (cid:32) s˜ (cid:18) s˜ (cid:19)2 (cid:33)\ni=1 vˆ (D)=clip x2 x ,[0,1/4] ,\nn b n˜ − n˜\n˜ b = (cid:88) x (1 y )+Lap(1/ε),\n1,0 i i\n−\ni=1 where s˜ =˜ b , s˜ =˜ b /2+˜ b , and n˜ = (cid:80)2 ˜ b . We\nn x2 2 x 1 2 i=0 i\n˜ b = (cid:88) x y +Lap(1/ε) provide the entire procedure in Algorithm 3.",
+      "size": 449,
+      "sentences": 4
+    },
+    {
+      "id": 70,
+      "content": "b . We\nn x2 2 x 1 2 i=0 i\n˜ b = (cid:88) x y +Lap(1/ε) provide the entire procedure in Algorithm 3. 1,1 i i\ni=1\nAlgorithm 3 Optimal Variance Estimation in the\nand then, reconstruct s˜ = ˜ b , s˜ = ˜ b +˜ b , Add-Remove Model\nxy 1,1 x 1,0 1,1\ns n ˜ y ally = , w ˜ b 0 e ,1 c + om ˜ b p 1, u 1 t , e an th d e n˜ no = isy (cid:80) co 1 i v = a 0 r (cid:80) ian 1 j= ce 0 ˜ b i a , s j .",
+      "size": 384,
+      "sentences": 3
+    },
+    {
+      "id": 71,
+      "content": "1, u 1 t , e an th d e n˜ no = isy (cid:80) co 1 i v = a 0 r (cid:80) ian 1 j= ce 0 ˜ b i a , s j . cˆ F = i- R 1 e : q L u e i t re b : = Da (cid:80) ta | s x e | t ( [ 1 x] ∈ x D )2 ∗, privacy budget ε\nclip (cid:16) s˜xy (cid:0)s˜x (cid:1)(cid:16) s˜y (cid:17) ,[ 1/4,1/4] (cid:17) . Note that cˆ is ε- 2: Let b 0 = (cid:80) i |x = | 1 2x − (1 i x )\nDP by n˜ th − e p n˜ ost-p n˜ roces − sing theorem. We provide the 3: Let b 1 = (cid:80) i |x = | 1 x2 i − i\nentire procedure in Algorithm 2.",
+      "size": 493,
+      "sentences": 4
+    },
+    {
+      "id": 72,
+      "content": "theorem. We provide the 3: Let b 1 = (cid:80) i |x = | 1 x2 i − i\nentire procedure in Algorithm 2. 4: Add i 2 ndepe i n = d 1 en i t Laplace noise Z Lap(1/ε) to\ni\nobtain˜ b =b +Z for i=0,1,2 ∼\ni i i\nA Ad lg d o -R ri e t m h o m ve 2 M O o p d t e i l mal Covariance Estimation in the 5: Computen˜ = (cid:80)2 i=0 ˜ b i ,s˜ x =˜ b 1 /2+˜ b 2 ,ands˜ x2 =˜ b 2\nRequire: Dataset [x,y] ∗, privacy budget ε 6: Output clip (cid:16) s˜ x2 (cid:0)s˜x (cid:1)2 ,[0,1/4] (cid:17)\n1: Let b = (cid:80)|x| x y ∈D n˜ − n˜\n1,1 i=1 i i\n2: Let b = (cid:80)|x| x (1 y )\n3: Let b 1,0 = (cid:80) i |y = | 1 y i (1 − x i ) The utility of Algorithm 3 is evaluated as follows:\n4: Let b 0,1 = (cid:80) i |x = | 1 (1 i − x )( i 1 y ) Theorem 5.9 (Utility analysis).",
+      "size": 740,
+      "sentences": 3
+    },
+    {
+      "id": 73,
+      "content": "as follows:\n4: Let b 0,1 = (cid:80) i |x = | 1 (1 i − x )( i 1 y ) Theorem 5.9 (Utility analysis). For privacy budget\n5: Add i 0 n ,0 depend i= en 1 t L−apla i ce n−oise i Z Lap(1/ε) to ε, Algorithm 3 achieves\ni,j\nobtain˜ b =b +Z . ∼\ni,j i,j i,j 2\n6: Calculate n˜ = (cid:80)1 i=0 (cid:80)1 j=0 ˜ b i,j , s˜ x = ˜ b 1,1 +˜ b 1,0 , R(vˆ b ,n 0 ) ≤ ε2 (1+o(1)).",
+      "size": 358,
+      "sentences": 3
+    },
+    {
+      "id": 74,
+      "content": "e n˜ = (cid:80)1 i=0 (cid:80)1 j=0 ˜ b i,j , s˜ x = ˜ b 1,1 +˜ b 1,0 , R(vˆ b ,n 0 ) ≤ ε2 (1+o(1)). s˜ =˜ b +˜ b , and s˜ =˜ b\ny 0,1 0,0 xy 1,1\n7: Output cˆ=clip (cid:16) s˜xy (cid:0)s˜x (cid:1)(cid:16) s˜y (cid:17) ,[ 1/4,1/4] (cid:17) SeeAppendixD.7fortheproof. Sincethisupperbound\nn˜ − n˜ n˜ −\nmatches the lower bound in Theorem 3.1 for small ε,\nAlgorithm3isminimaxoptimalforvarianceestimation\nThe utility of Algorithm 2 is evaluated as follows: in the high privacy regime.",
+      "size": 476,
+      "sentences": 3
+    },
+    {
+      "id": 75,
+      "content": "rvarianceestimation\nThe utility of Algorithm 2 is evaluated as follows: in the high privacy regime. ===  7 ===\nShokichi Takakura, Seng Pei Liew, Satoshi Hasegawa\n5.5 Comparison of Optimal Mechanisms for Algorithm 4 Optimal Variance Estimation in the\nVariance Estimation Add-Remove Model\nRequire: Dataset [x] ∗, privacy budget ε\nIn the previous section, we proposed the optimal mech- 1: Let b = (cid:80)|x| 1 ∈ x2 D + 1 ( (cid:80)|x| x )2\nanism for variance estimation.",
+      "size": 468,
+      "sentences": 2
+    },
+    {
+      "id": 76,
+      "content": "optimal mech- 1: Let b = (cid:80)|x| 1 ∈ x2 D + 1 ( (cid:80)|x| x )2\nanism for variance estimation. In this section, we 0 i=1 − i |x| i=1 i\nprovide two alternative mechanisms which also achieve 2: Let b 1 = (cid:80)| i x = | 1 x2 i − |x 1 | ( (cid:80)| i x = | 1 x i )2\nthe lower-bound in Theorem 3.1.",
+      "size": 301,
+      "sentences": 2
+    },
+    {
+      "id": 77,
+      "content": "1 = (cid:80)| i x = | 1 x2 i − |x 1 | ( (cid:80)| i x = | 1 x i )2\nthe lower-bound in Theorem 3.1. While these mecha- 3: Add independent Laplace noise Z Lap(1/ε) to\ni\nnisms are optimal in the worst-case sense, we further obtain˜ b =b +Z for i=0,1 ∼\ni i i\nderive instance-dependent error bounds that explicitly 4: Compute n˜ = (cid:80)1 ˜ b , v˜ =˜ b . depend on the dataset’s mean and variance.",
+      "size": 394,
+      "sentences": 3
+    },
+    {
+      "id": 78,
+      "content": "hat explicitly 4: Compute n˜ = (cid:80)1 ˜ b , v˜ =˜ b . depend on the dataset’s mean and variance. This anal- 5: Output clip (cid:0)v˜x,[ i 0 = , 0 1/ i 4] (cid:1) x 1\nn˜\nysis demonstrates that Algorithm 3 always provides\nbetter utility for individual datasets.",
+      "size": 262,
+      "sentences": 3
+    },
+    {
+      "id": 79,
+      "content": ") x 1\nn˜\nysis demonstrates that Algorithm 3 always provides\nbetter utility for individual datasets. While Algorithm 2, 3, and 4 achieve the same error\nThe first alternative mechanism exploits the close re-\nrate in the worst case, they may perform differently\nlationship between variance and covariance: variance\nin practice due to their distinct mechanisms and the\nestimation is a special case of covariance estimation\nspecific characteristics of the data. Here, we compare\nwhere we set x=y.",
+      "size": 491,
+      "sentences": 3
+    },
+    {
+      "id": 80,
+      "content": "e of covariance estimation\nspecific characteristics of the data. Here, we compare\nwhere we set x=y. Accordingly, we can apply Algo-\nthe constants in the leading term of the instance-wise\nrithm 2 to variance estimation. That is, we can use\nerror R(,var,D) and prove that Algorithm 3 is more\nvˆ c ([x]) = cˆ([x,x]) as an estimator for variance. The efficient·than the other two algorithms for variance\nutility bound for vˆ c can be obtained from Theorem 5.8. estimation. Corollary 5.10.",
+      "size": 484,
+      "sentences": 6
+    },
+    {
+      "id": 81,
+      "content": "s for variance\nutility bound for vˆ c can be obtained from Theorem 5.8. estimation. Corollary 5.10. For privacy budget ε, vˆ c achieves T 1 h (cid:80) e n ore ( m x 5 r .1 )2 3 , . le F t o u r s d r efin = e n 1 (cid:80)n i=1 x i and v =\n2 n i=1 i −\nR(vˆ ,var,n ) (1+o(1)).",
+      "size": 274,
+      "sentences": 4
+    },
+    {
+      "id": 82,
+      "content": "3 , . le F t o u r s d r efin = e n 1 (cid:80)n i=1 x i and v =\n2 n i=1 i −\nR(vˆ ,var,n ) (1+o(1)). c 0 ≤ ε2 C b (r,v)=3v2 2(3r2 3r+1)v\n− −\n+3r4 6r3+7r2 4r+1,\nSince this upper bound matches the lower bound of − −\nvariance estimation in Theorem 3.1, we can conclude C c (r,v)=(1 2r+2r2)2 2v(1 2r)2+4v2,\n− − −\nthat Algorithm 2 is also minimax optimal for variance C (r,v)=v2+(1 v)2.\nu\n−\nestimation in the add-remove model.",
+      "size": 420,
+      "sentences": 3
+    },
+    {
+      "id": 83,
+      "content": "m 2 is also minimax optimal for variance C (r,v)=v2+(1 v)2.\nu\n−\nestimation in the add-remove model. Then, normalized errors R(,f,D) for Algorithm 2, 3,\nTo construct another optimal mechanism for variance and 4 satisfies ·\nestimation, we revisit the improved mechanism with\n2\nunnormalized covariance. Let u=ucov(x), and b 0 = R(vˆ b ,var,n 0 ) ≤ ε2 (C b (r,v)+o(1)),\nn u,b =u. Then, we have the following lemma:\n1 2\n−\nR(vˆ ,var,n ) (C (r,v)+o(1)),\nLemma 5.11.",
+      "size": 458,
+      "sentences": 4
+    },
+    {
+      "id": 84,
+      "content": "o(1)),\nn u,b =u. Then, we have the following lemma:\n1 2\n−\nR(vˆ ,var,n ) (C (r,v)+o(1)),\nLemma 5.11. The l 1 -sensitivity of b=[n u,u]⊤ is c 0 ≤ ε2 c\n−\n1 2\nR(vˆ ,var,n ) (C (r,v)+o(1)). u 0 ≤ ε2 u\nSee Appendix D.8 for the proof. Therefore, ˜ b := b+\nFurthermore, for any possible r and v, we have\nLap(1/ε) is ε-DP and noisy variance can be computed\na u˜ s = vˆ u ˜ b (D .",
+      "size": 370,
+      "sentences": 5
+    },
+    {
+      "id": 85,
+      "content": "ossible r and v, we have\nLap(1/ε) is ε-DP and noisy variance can be computed\na u˜ s = vˆ u ˜ b (D . S ) e : e = A c l l g ip o (cid:0) ri n u ˜ ˜ th ,[ m 0, 4 1/ f 4 o ] r (cid:1), th w e h e e n re tir n˜ e = pro ˜ b c 0 e + du ˜ b r 1 e. a A nd s C b (r,v) ≤ C c (r,v) ≤ C u (r,v). 2\nshowninthefollowingproposition,vˆ alsoachievesthe SeeAppendixD.10fortheproof. Notethatrandv are\nu\nlower bound in Theorem 3.1. not independent and should satisfy certain constraints\nProposition 5.12.",
+      "size": 484,
+      "sentences": 4
+    },
+    {
+      "id": 86,
+      "content": "ower bound in Theorem 3.1. not independent and should satisfy certain constraints\nProposition 5.12. For privacy budget ε, vˆ u achieves f fi o r r st t - h or e d e e x r i a st p e p n r c o e xi o m f a t t h io e n d o a f t t a h s e et e . rr S o i r n o ce fe ε a 2 2 c C h · a (r lg , o v r ) it i h s m a\nif we ignore the effect of clipping, we can use it to\n2\nR(vˆ u ,var,n 0 ) ≤ ε2 (1+o(1)). analyze the performance of the algorithms.",
+      "size": 444,
+      "sentences": 4
+    },
+    {
+      "id": 87,
+      "content": "ing, we can use it to\n2\nR(vˆ u ,var,n 0 ) ≤ ε2 (1+o(1)). analyze the performance of the algorithms. We see\nthat Algorithm 3 consistently outperforms the other\nalgorithms for datasets with any possible mean and\nSeeAppendixD.9fortheproof. Thismechanismcanbe\nvariance. We empirically confirm the superiority of\nseen as a generalization of transformed noise addition\nAlgorithm 3 in Section 7 with finite samples. formeanestimationinKuleszaetal. (2024)tovariance\nestimation.",
+      "size": 469,
+      "sentences": 7
+    },
+    {
+      "id": 88,
+      "content": "hm 3 in Section 7 with finite samples. formeanestimationinKuleszaetal. (2024)tovariance\nestimation. Note that this approach cannot be applied\nto covariance estimation since the sensitivity space of 6 Extension to General Statistics\nucov(D) is different from that of uvar(D), and the\nsensitivity of b = [n ucov([x,y]),ucov([x,y])] is not While our main focus is on the variance and covariance\nbounded by 1.",
+      "size": 405,
+      "sentences": 4
+    },
+    {
+      "id": 89,
+      "content": "cov([x,y]),ucov([x,y])] is not While our main focus is on the variance and covariance\nbounded by 1. − estimation, our proposed Bézier mechanism is versatile\n===  8 ===\nOptimal Private Estimation of Variance and Covariance\n101\n100\n10−1 100 PrivacyBudget(ε)\nESMdezilamroN\nCovarianceEstimationMSE\n101\nAlgorithm2(ours) 100\nNaive\nImproved\n10−1 100 PrivacyBudget(ε)\nESMdezilamroN\nVarianceEstimationMSE\nAlgorithm3(ours)\nNaive\nImproved\nFigure 1: Comparison of covariance and variance es-\ntimation.",
+      "size": 489,
+      "sentences": 2
+    },
+    {
+      "id": 90,
+      "content": "onMSE\nAlgorithm3(ours)\nNaive\nImproved\nFigure 1: Comparison of covariance and variance es-\ntimation. Bézier mechanism consistently outperforms\nbaselines for different ε.",
+      "size": 168,
+      "sentences": 2
+    },
+    {
+      "id": 91,
+      "content": "nce and variance es-\ntimation. Bézier mechanism consistently outperforms\nbaselines for different ε. 100\n0.0 0.2 0.4 0.6 0.8 1.0\nMean(r)\nESMdezilamroN\nVarianceEstimationMSE\nAlgorithm3 104\nAlgorithm2\nAlgorithm4\n103\n102\n10−1 100\nPrivacyBudget(ε)\nESMdezilamroN\nour proposed mechanism in Algorithm 2 and Algo-\nrithm 3 with baselines including 1) naive approach: ap-\nplying the Laplace mechanism to n, (cid:80)n x , (cid:80)n y ,\ni=1 i i=1 i\nand (cid:80)n x y (or n, (cid:80) x , (cid:80) x2) separately, and 2)\ni=1 i i i i improved approach: applying Laplace mechanism to\nestimate n and ucov(D) (or uvar(D)) separately.",
+      "size": 614,
+      "sentences": 3
+    },
+    {
+      "id": 92,
+      "content": "i improved approach: applying Laplace mechanism to\nestimate n and ucov(D) (or uvar(D)) separately. We\ngenerate a dataset of size n=10,000 with x ,y sam- i i\npled from uniform distribution on [0,1]. Fig. 7 shows\nthatourproposedmechanismsreducestheerrortoless\nthan about 1/10 compared to baselines.",
+      "size": 296,
+      "sentences": 4
+    },
+    {
+      "id": 93,
+      "content": "Fig. 7 shows\nthatourproposedmechanismsreducestheerrortoless\nthan about 1/10 compared to baselines. Comparison of Optimal Mechanisms for Vari-\nCorrelationEstimationMSE\nBezier(ours) ance Estimation We compare our proposed mech-\nNaive anisms for variance estimation in Algorithm 2, Algo-\nImproved\nrithm 3, and Algorithm 4 with different mean r. Note\nthat we use Algorithm 2 as a mechanism for variance\nestimation, as described in Section 5.5.",
+      "size": 439,
+      "sentences": 3
+    },
+    {
+      "id": 94,
+      "content": ". Note\nthat we use Algorithm 2 as a mechanism for variance\nestimation, as described in Section 5.5. We generate\na dataset of size n = 10,000 with x sampled from i\nbeta distribution with parameters (r/2,(1 r)/2) to\ncontrolthemeanofdatasets. Wefixthepriva−cybudget\nFigure 2: Comparison of optimal mechanisms for vari-\nanceestimation(left)andcorrelationestimation(right). ε=1 and compute the error of the three mechanisms.",
+      "size": 419,
+      "sentences": 5
+    },
+    {
+      "id": 95,
+      "content": "estimation(left)andcorrelationestimation(right). ε=1 and compute the error of the three mechanisms. While both achieve the optimal error in the worst case,\nBézier mechanism consistently outperforms baselines. Fig. 7 (left) shows that Algorithm 3, based on Bézier\nmechanism, is more efficient than the other algorithms\nand can be used to estimate other statistics beyond especially in the case r 0.5.\nvariance and covariance.",
+      "size": 424,
+      "sentences": 5
+    },
+    {
+      "id": 96,
+      "content": "be used to estimate other statistics beyond especially in the case r 0.5.\nvariance and covariance. In general, given a statis- ≃\ntic f(µ(D)) which depends on the (mixed) moments\nBézier Mechanism is Effective Beyond Variance\nµ(D) up to order k, we can use the Bézier mechanism and Covariance As an example of moment-based\nwith degree k to estimate µ(D) and compute an ε- statistics other than variance and covariance, we con-\nDP estimator f ˆ(D)=f(BézierMechanism(D;ε,k)) by sider the Pearson correlation coefficient defined as\nthepost-processingtheorem.",
+      "size": 553,
+      "sentences": 2
+    },
+    {
+      "id": 97,
+      "content": "echanism(D;ε,k)) by sider the Pearson correlation coefficient defined as\nthepost-processingtheorem. Thisformulationincludes\nhigher-ordercenteredmoments,skewness,kurtosis,and cov([x,y])\ncorrelation. We provide a detailed procedure in Algo- corr(D)= (cid:112) . var([x]) var([y])\nrithm 5. ·\nThis quantity can be computed with mixed moments\nAlgorithm 5 Bézier Mechanism for General Statistics up to the k = 2 order.",
+      "size": 412,
+      "sentences": 5
+    },
+    {
+      "id": 98,
+      "content": "puted with mixed moments\nAlgorithm 5 Bézier Mechanism for General Statistics up to the k = 2 order. Thus, we can use the two-\nRequire: Dataset D ∗, privacy budget ε, order k, dimensional Bézier mechanism with degree k = 2 to\nrange [l,u]. ∈D\nestimate the correlation. Figure 7 (right) shows the\n1: L fo e r t α b i α = (D 0 ) ,. = .. (cid:80) ,k n i .",
+      "size": 350,
+      "sentences": 5
+    },
+    {
+      "id": 99,
+      "content": "he correlation. Figure 7 (right) shows the\n1: L fo e r t α b i α = (D 0 ) ,. = .. (cid:80) ,k n i . =1 B αj (x i,1 ) ····· (cid:80)n i=1 B αj (x i,d ) r a e p s p u r l o ts ac o h f : co a m pp p l a y r i i n n g g L w a it p h la b c a e se m li e n c e h s a i n n i c s l m udi t n o g p 1 r ) iv n a a t i i v ze e\n2: Add independent Laplace noise ˜ b α (D)=b α (D)+ themomentsindependently,and2)improvedapproach:\nLap(1/ε).",
+      "size": 429,
+      "sentences": 4
+    },
+    {
+      "id": 100,
+      "content": "dependent Laplace noise ˜ b α (D)=b α (D)+ themomentsindependently,and2)improvedapproach:\nLap(1/ε). applying Algorithm 2 and 3 to privatize cov([x,y]) and\n3: Compute µ˜(D)=(A d )−1˜ b(D). var([x]), var([y]) separately. We see that Algorithm 5\n4: Output f ˆ(D):=clip(f(µ˜(D)),[l,u]) achieves a better utility-privacy trade-off with large\nmargin.",
+      "size": 344,
+      "sentences": 4
+    },
+    {
+      "id": 101,
+      "content": "Output f ˆ(D):=clip(f(µ˜(D)),[l,u]) achieves a better utility-privacy trade-off with large\nmargin. 7 Numerical Experiments 8 Conclusion\nToseetheempiricalperformanceofourproposedmech- In this paper, we study the problem of variance and\nanisms and compare it with naive approaches, we con- covariance estimation with differential privacy in the\nductnumericalexperimentsonsyntheticdatasets. The add-remove model. We propose efficient mechanisms\nresults are averaged over 10,000 independent runs.",
+      "size": 492,
+      "sentences": 4
+    },
+    {
+      "id": 102,
+      "content": "dd-remove model. We propose efficient mechanisms\nresults are averaged over 10,000 independent runs. forvarianceandcovarianceestimationbasedonanovel\nframeworkcalledtheBéziermechanism,andprovethat\nBézierMechanismOutperformsBaselinesinCo- our methods are minimax optimal in the high-privacy\nvariance and Variance Estimation We compare regime.",
+      "size": 339,
+      "sentences": 3
+    },
+    {
+      "id": 103,
+      "content": "methods are minimax optimal in the high-privacy\nvariance and Variance Estimation We compare regime. We further present two alternative optimal\n[  ]\n\n===  9 ===\nShokichi Takakura, Seng Pei Liew, Satoshi Hasegawa\nmechanisms and show that, beyond worst-case guar- Gillenwater,J.,Joseph,M.,andKulesza,A. (2021).Dif-\nantees, the Bézier-based estimator achieves uniformly ferentiallyprivatequantiles. InInternational Confer-\nsmaller leading constants for any data distribution.",
+      "size": 471,
+      "sentences": 4
+    },
+    {
+      "id": 104,
+      "content": "iallyprivatequantiles. InInternational Confer-\nsmaller leading constants for any data distribution. Fi- ence on Machine Learning, pages 3713–3722. PMLR. nally, we demonstrate that the Bézier mechanism is\nImola, J., Boninsegna, F., Keller, H., Aamand, A.,\nalso effective for the estimation of other statistics, such\nChowdhury, A. R., and Pagh, R. (2025). Differen-\nas correlation. tially private quantiles with smaller error. arXiv\npreprint arXiv:2505.13662.",
+      "size": 457,
+      "sentences": 8
+    },
+    {
+      "id": 105,
+      "content": "eren-\nas correlation. tially private quantiles with smaller error. arXiv\npreprint arXiv:2505.13662. References\nKalinin, N. P., Upadhyay, J., and Lampert, C. H.\nAitsam, M. (2022). Differential Privacy Made Easy. In (2025). Continual release moment estimation with\n2022 International Conference on Emerging Trends differentialprivacy. arXiv preprint arXiv:2502.06597.\nin Electrical, Control, and Telecommunication Engi-\nKarwa, V. and Vadhan, S. (2018). Finite Sample Dif-\nneering (ETECTE), pages 1–7.",
+      "size": 498,
+      "sentences": 9
+    },
+    {
+      "id": 106,
+      "content": "ommunication Engi-\nKarwa, V. and Vadhan, S. (2018). Finite Sample Dif-\nneering (ETECTE), pages 1–7. IEEE. ferentially Private Confidence Intervals. In 9th Inno-\nAldà, F. and Rubinstein, B. (2017). The Bernstein vations in Theoretical Computer Science Conference\nMechanism: Function Release under Differential Pri- (ITCS 2018), pages 44–1. Schloss Dagstuhl–Leibniz-\nvacy. Proceedings of the AAAI Conference on Artifi- Zentrum für Informatik. cial Intelligence, 31(1).",
+      "size": 466,
+      "sentences": 10
+    },
+    {
+      "id": 107,
+      "content": "cy. Proceedings of the AAAI Conference on Artifi- Zentrum für Informatik. cial Intelligence, 31(1). Kulesza,A.,Suresh,A.T.,andWang,Y.(2024). Mean\nAmin,K.,Dick,T.,Kulesza,A.,Munoz,A.,andVassil- Estimation in the Add-Remove Model of Differential\nvitskii, S. (2019a). Differentially Private Covariance Privacy. In Forty-first International Conference on\nEstimation. In Wallach, H., Larochelle, H., Beygelz- Machine Learning.",
+      "size": 421,
+      "sentences": 8
+    },
+    {
+      "id": 108,
+      "content": "International Conference on\nEstimation. In Wallach, H., Larochelle, H., Beygelz- Machine Learning. imer, A., d'Alché-Buc, F., Fox, E., and Garnett, R.,\nKulesza, A., Suresh, A. T., and Wang, Y. (2025). Gen-\neditors, Advances in Neural Information Processing\neral Staircase Mechanisms for Optimal Differential\nSystems, volume 32. Curran Associates, Inc.\nPrivacy.",
+      "size": 360,
+      "sentences": 6
+    },
+    {
+      "id": 109,
+      "content": "Staircase Mechanisms for Optimal Differential\nSystems, volume 32. Curran Associates, Inc.\nPrivacy. InLi,Y.,Mandt,S.,Agrawal,S.,andKhan,\nE., editors, Proceedings of The 28th International\nAmin,K.,Gillenwater,J.,Joseph,M.,Kulesza,A.,and\nConference on Artificial Intelligence and Statistics,\nVassilvitskii, S. (2022). Plume: Differential privacy\nvolume 258 of Proceedings of Machine Learning Re-\nat scale. arXiv preprint arXiv:2201.11603.\nsearch, pages 4564–4572. PMLR.",
+      "size": 466,
+      "sentences": 6
+    },
+    {
+      "id": 110,
+      "content": "s of Machine Learning Re-\nat scale. arXiv preprint arXiv:2201.11603.\nsearch, pages 4564–4572. PMLR. Amin, K., Kulesza, A., Munoz, A., and Vassilvtiskii,\nLi,C.,Miklau,G.,Hay,M.,McGregor,A.,andRastogi,\nS. (2019b). Bounding User Contributions: A Bias-\nV. (2015). The matrix mechanism: optimizing lin-\nVariance Trade-off in Differential Privacy. In Chaud-\near counting queries under differential privacy. The\nhuri, K. and Salakhutdinov, R., editors, Proceedings\nVLDB journal, 24(6):757–781.",
+      "size": 486,
+      "sentences": 8
+    },
+    {
+      "id": 111,
+      "content": "tial privacy. The\nhuri, K. and Salakhutdinov, R., editors, Proceedings\nVLDB journal, 24(6):757–781. of the 36th International Conference on Machine\nLearning,volume97ofProceedingsofMachineLearn- Lorentz, G. G. (2012). Bernstein polynomials. Ameri-\ning Research, pages 263–271. PMLR. can Mathematical Soc. Biswas, S., Dong, Y., Kamath, G., and Ullman, J. McSherry, F. D. (2009). Privacy integrated queries:\n(2020).",
+      "size": 412,
+      "sentences": 9
+    },
+    {
+      "id": 112,
+      "content": "., Dong, Y., Kamath, G., and Ullman, J. McSherry, F. D. (2009). Privacy integrated queries:\n(2020). Coinpress: Practical private mean and co- an extensible platform for privacy-preserving data\nvarianceestimation. Advances in Neural Information analysis. In Proceedings of the 2009 ACM SIGMOD\nProcessing Systems, 33:14475–14485. International Conference on Management of data,\npages 19–30. Dalenius, T. (1977). Towards a methodology for sta-\ntistical disclosure control.",
+      "size": 469,
+      "sentences": 8
+    },
+    {
+      "id": 113,
+      "content": "data,\npages 19–30. Dalenius, T. (1977). Towards a methodology for sta-\ntistical disclosure control. statistik Tidskrift, 15(429- Portella, V. S. and Harvey, N. (2024). Lower bounds\n444):2–1. for private estimation of Gaussian covariance matri-\nces under all reasonable parameter regimes. arXiv\nDong, W., Liang, Y., and Yi, K. (2022). Differentially preprint arXiv:2404.17714.\nprivate covariance revisited. Advances in Neural\nRameshwar,V.A.,Tandon,A.,andSharma,A.(2025).",
+      "size": 469,
+      "sentences": 10
+    },
+    {
+      "id": 114,
+      "content": "7714.\nprivate covariance revisited. Advances in Neural\nRameshwar,V.A.,Tandon,A.,andSharma,A.(2025). Information Processing Systems, 35:850–861. Optimal Tree-Based Mechanisms for Differentially\nDwork, C., Roth, A., et al. (2014). The algorith- Private Approximate CDFs. In 2025 17th Interna-\nmic foundations of differential privacy. Foundations tional Conference on COMmunication Systems and\nand Trends® in Theoretical Computer Science, 9(3– NETworks (COMSNETS), pages 1269–1274. 4):211–407.",
+      "size": 490,
+      "sentences": 9
+    },
+    {
+      "id": 115,
+      "content": "and Trends® in Theoretical Computer Science, 9(3– NETworks (COMSNETS), pages 1269–1274. 4):211–407. Rogers, R., Subramaniam, S., Peng, S., Durfee, D.,\nGeng, Q. and Viswanath, P. (2014). The optimal Lee, S., Kancha, S. K., Sahay, S., and Ahammad,\nmechanism in differential privacy. In 2014 IEEE in- P. (2021). Linkedin’s audience engagements API:\nternational symposium on information theory, pages A privacy preserving data analytics system at scale. 2371–2375. IEEE.",
+      "size": 466,
+      "sentences": 8
+    },
+    {
+      "id": 116,
+      "content": "on information theory, pages A privacy preserving data analytics system at scale. 2371–2375. IEEE. Journal of Privacy and Confidentiality, 11:3. ===  10 ===\nOptimal Private Estimation of Variance and Covariance\nSimsek, Y. (2013). Functional equations from generat-\ningfunctions: anovelapproachtoderivingidentities\nfortheBernsteinbasisfunctions. FixedPointTheory\nand Applications, 2013(1):80. Swanberg, M., Globus-Harris, I., Griffith, I., Ritz, A.,\nGroce, A., and Bray, A. (2019).",
+      "size": 480,
+      "sentences": 10
+    },
+    {
+      "id": 117,
+      "content": "013(1):80. Swanberg, M., Globus-Harris, I., Griffith, I., Ritz, A.,\nGroce, A., and Bray, A. (2019). Improved Differen-\ntially Private Analysis of Variance. Proceedings on\nPrivacy Enhancing Technologies. Wilson, R. J., Zhang, C. Y., Lam, W., Desfontaines,\nD., Simmons-Marengo, D., and Gipson, B. (2020). Differentially Private SQL with Bounded User Con-\ntribution. Proceedings on Privacy Enhancing Tech-\nnologies.",
+      "size": 412,
+      "sentences": 9
+    },
+    {
+      "id": 118,
+      "content": "ally Private SQL with Bounded User Con-\ntribution. Proceedings on Privacy Enhancing Tech-\nnologies. ===  11 ===\nShokichi Takakura, Seng Pei Liew, Satoshi Hasegawa\nA Auxiliary Results\nLemma A.1. For x,y [0,1]n, let c := 1 (cid:80)n (x 1 (cid:80)n x )(y 1 (cid:80)n y ) and v := 1 (cid:80)n (x\n1 (cid:80)n x )2. Then, we ha∈ve n i=1 i − n i=1 i i − n i=1 i n i=1 i −\nn i=1 i\n1/4 c 1/4,\n− ≤ ≤\n0 v 1/4. ≤ ≤\nProof. From the Cauchy-Schwarz inequality, we have\nc2 v2.",
+      "size": 460,
+      "sentences": 7
+    },
+    {
+      "id": 119,
+      "content": "i −\nn i=1 i\n1/4 c 1/4,\n− ≤ ≤\n0 v 1/4. ≤ ≤\nProof. From the Cauchy-Schwarz inequality, we have\nc2 v2. ≤\nThus, it suffices to show that 0 v 1/4. From the definition of v, we have 0 v. Let r = 1 (cid:80)n x . Since\nx2 x from x [0,1], we have≤ ≤ ≤ n i=1 i\ni ≤ i i ∈\nn\n1 (cid:88)\nx2 r\nn i ≤\ni=1\nTherefore, we obtain\nn\n1 (cid:88)\nv = x2 r2\nn i −\ni=1\nr r2 1/4\n≤ − ≤\nsince r [0,1]. ∈\nLemma A.2. Let X,Y be random variables with bounded second moments.",
+      "size": 442,
+      "sentences": 8
+    },
+    {
+      "id": 120,
+      "content": "r r2 1/4\n≤ − ≤\nsince r [0,1]. ∈\nLemma A.2. Let X,Y be random variables with bounded second moments. Then, we have\n(1\np)E(cid:2) X2(cid:3)\n+(1\n1/p)E(cid:2) Y2(cid:3) E(cid:2) (X+Y)2(cid:3) (1+p)E(cid:2) X2(cid:3) +(1+1/p)E(cid:2) Y2(cid:3)\n− − ≤ ≤\nfor any p>0. Proof. For any p>0, we have\nE(cid:2) (X+Y)2(cid:3) =E(cid:2) X2(cid:3) +2E[XY]+E(cid:2) Y2(cid:3)\nE(cid:2) X2(cid:3)\n+2\n(cid:112) E[X2]E[Y2]+E(cid:2) Y2(cid:3)\n≤\n(1+p)E(cid:2) X2(cid:3) +(1+1/p)E(cid:2) Y2(cid:3)\n.",
+      "size": 474,
+      "sentences": 6
+    },
+    {
+      "id": 121,
+      "content": ")\n+2\n(cid:112) E[X2]E[Y2]+E(cid:2) Y2(cid:3)\n≤\n(1+p)E(cid:2) X2(cid:3) +(1+1/p)E(cid:2) Y2(cid:3)\n. ≤\nThe first inequality follows from the Cauchy-Schwarz inequality, and the second inequality follows from the\nAM-GM inequality. On the other hand, we have\nE(cid:2) (X+Y)2(cid:3) =E(cid:2) X2(cid:3) +2E[XY]+E(cid:2) Y2(cid:3)\nE(cid:2) X2(cid:3)\n2\n(cid:112) E[X2]E[Y2]+E(cid:2) Y2(cid:3)\n≥ −\n(1\np)E(cid:2) X2(cid:3)\n+(1\n1/p)E(cid:2) Y2(cid:3)\n.",
+      "size": 442,
+      "sentences": 3
+    },
+    {
+      "id": 122,
+      "content": "2\n(cid:112) E[X2]E[Y2]+E(cid:2) Y2(cid:3)\n≥ −\n(1\np)E(cid:2) X2(cid:3)\n+(1\n1/p)E(cid:2) Y2(cid:3)\n. ≥ − −\nThe first inequality follows from the Cauchy-Schwarz inequality, and the second inequality follows from the\nAM-GM inequality. Lemma A.3. For x,y [0,1]n, we have\n∈\nmax(0,r +r 1) r min(r ,r ),\nx y xy x y\n− ≤ ≤\nwhere r = 1 (cid:80)n x , r = 1 (cid:80)n y , and r = 1 (cid:80)n x y . x n i=1 i y n i=1 i xy n i=1 i i\n===  12 ===\nOptimal Private Estimation of Variance and Covariance\nProof.",
+      "size": 490,
+      "sentences": 5
+    },
+    {
+      "id": 123,
+      "content": "1 i y n i=1 i xy n i=1 i i\n===  12 ===\nOptimal Private Estimation of Variance and Covariance\nProof. For the upper bound, we have\nn\n1 (cid:88)\nr = x y\nxy i i\nn\ni=1\nn\n1 (cid:88)\n= x y\ni i\nn ·\ni=1\nn\n1 (cid:88)\nx 1=r . i x\n≤ n ·\ni=1\nSimilarly, we can show that r r .",
+      "size": 262,
+      "sentences": 3
+    },
+    {
+      "id": 124,
+      "content": "n\n1 (cid:88)\n= x y\ni i\nn ·\ni=1\nn\n1 (cid:88)\nx 1=r . i x\n≤ n ·\ni=1\nSimilarly, we can show that r r . For the lower bound, we have\nxy y\n≤\nn n\n1 (cid:88) 1 (cid:88)\n(1 x )(1 y )= (1 x y +x y )\ni i i i i i\nn − − n − −\ni=1 i=1\n=1 r r +r 0,\nx y xy\n− − ≥\nwhich implies that\nr r +r 1.\nxy x y\n≥ −\nThus, we conclude that\nmax(0,r +r 1) r min(r ,r ). x y xy x y\n− ≤ ≤\nLemma A.4.",
+      "size": 366,
+      "sentences": 4
+    },
+    {
+      "id": 125,
+      "content": "r r +r 1.\nxy x y\n≥ −\nThus, we conclude that\nmax(0,r +r 1) r min(r ,r ). x y xy x y\n− ≤ ≤\nLemma A.4. For f : Rd R and A = Z n1/4 Rd, assume that f is twice continuously differ-\nentiable on Z/n Z A →and f(Z n /n), {∥ 2f ∥ (Z ∞ /n ≤ ) = O } (1 ∈ ) for Z A , and a random variable Z satisfies\nn n\n{ | ∈ } ∇(cid:104) (cid:105) ∇ ∈\nProb(Z A )=1 o(1/n2) and E Z 2 =O(1).",
+      "size": 363,
+      "sentences": 3
+    },
+    {
+      "id": 126,
+      "content": "dom variable Z satisfies\nn n\n{ | ∈ } ∇(cid:104) (cid:105) ∇ ∈\nProb(Z A )=1 o(1/n2) and E Z 2 =O(1). Then, we have\nn\n∈ − ∥ ∥\n(cid:104) (cid:105) (cid:104) (cid:105)\nn2 E clip(f (Z/n),[l,u]) f(0) 2 E ∆(Z) 2 +o(1)\nZ n Z\n· ∥ − ∥ ≤ ∥ ∥\nfor any l,u such that f(0) [l,u], where ∆(Z)= f(0),Z . ∈ ⟨∇ ⟩\nProof. From the intermediate value theorem, we have\n1\nf(Z/n) f(0)= f(0),Z/n + Z⊤ 2f(ξ)Z\n− ⟨∇ ⟩ 2n2 ∇\n= f(0),Z/n +O( Z 2 /n2)\n⟨∇ ⟩ ∥ ∥2\n=∆(Z/n)+O(n−3/2). for some ξ on the line segment between 0 and Z/n.",
+      "size": 495,
+      "sentences": 5
+    },
+    {
+      "id": 127,
+      "content": "f(0),Z/n +O( Z 2 /n2)\n⟨∇ ⟩ ∥ ∥2\n=∆(Z/n)+O(n−3/2). for some ξ on the line segment between 0 and Z/n. Therefore, we obtain\n(cid:104) (cid:105) (cid:104) (cid:105)\nn2 E clip(f(Z/n),[l,u]) f(0) 2 =n2 E clip(f(Z/n),[l,u]) f(0) 2 1\nA\n· ∥ − ∥ · ∥ − ∥ ·\n(cid:104) (cid:105)\n+n2 E clip(f(Z/n),[l,u]) f(0) 2 (1 1 ) ,\nA\n· ∥ − ∥ · −\n(cid:104) (cid:105)\nn2 E f(Z/n) f(0) 2 1 +n2 u l Prob(Z / A),\nA\n≤ · ∥ − ∥ · ·| − |· ∈\n(cid:104) (cid:105)\nn2 E f(Z/n) f(0) 2 1 + u l o(1).",
+      "size": 459,
+      "sentences": 3
+    },
+    {
+      "id": 128,
+      "content": "1 +n2 u l Prob(Z / A),\nA\n≤ · ∥ − ∥ · ·| − |· ∈\n(cid:104) (cid:105)\nn2 E f(Z/n) f(0) 2 1 + u l o(1). A\n≤ · ∥ − ∥ · | − |·\nFor the first inequality, we use The first term can be bounded as follows:\n(cid:104) (cid:105) (cid:20)(cid:16) (cid:17)2 (cid:21)\nn2 E f(Z) f(0) 2 1 =n2 E ∆(Z/n)+O(n−3/2) 1\n·\nZ∼νn\n∥ − ∥ ·\nA\n· ·\nA\n(cid:20)(cid:16) (cid:17)2 (cid:21)\nE ∆(Z)+O(n−1/2)\n≤\n(cid:104) (cid:105)\n(1+n−1/2)E ∆(Z) 2 +(1+n1/2)O(n−1)\n≤ ∥ ∥\n(cid:104) (cid:105)\nE ∆(Z) 2 +o(1).",
+      "size": 467,
+      "sentences": 2
+    },
+    {
+      "id": 129,
+      "content": ")\n≤\n(cid:104) (cid:105)\n(1+n−1/2)E ∆(Z) 2 +(1+n1/2)O(n−1)\n≤ ∥ ∥\n(cid:104) (cid:105)\nE ∆(Z) 2 +o(1). ≤ ∥ ∥\n===  13 ===\nShokichi Takakura, Seng Pei Liew, Satoshi Hasegawa\n(cid:104) (cid:105)\nThe second inequality follows from Lemma A.2 and the last inequality follows from E ∆(Z) 2 =O(1). This\n∥ ∥\ncompletes the proof. B Proofs for Section 3\nB.1 Proof of Theorem 3.1\nProof. We prove the theorem by reducing the problem to the sum estimation problem. First, we consider the variance estimation.",
+      "size": 491,
+      "sentences": 6
+    },
+    {
+      "id": 130,
+      "content": "by reducing the problem to the sum estimation problem. First, we consider the variance estimation. Given ε-DP mechanism vˆ : ∗ R, we construct the following\nmechanism sˆ : ∗ R for some k N: D →\nk\nD → ∈\nsˆ (D)=kvˆ(D ),\nk k\nwhere D =[x] and D\nk\n=[[√x\n1\n,√x\n2\n,...,√x\nm\n,0,...,0]⊤]. We show that sˆ\nk\nis an ϵ-DP estimator of the sum of\n(cid:124) (cid:123)(cid:122) (cid:125)\nk\nthe dataset x.",
+      "size": 388,
+      "sentences": 4
+    },
+    {
+      "id": 131,
+      "content": "hat sˆ\nk\nis an ϵ-DP estimator of the sum of\n(cid:124) (cid:123)(cid:122) (cid:125)\nk\nthe dataset x. For neighboring datasets D,D′ ∗ and S R, we have\n∈D ⊂\nProb(sˆ (D) S)=Prob(kvˆ(D ) S)\nk k\n∈ ∈\n=Prob(vˆ(D ) s/k s S )\nk\n∈{ | ∈ }\neϵProb(vˆ(D′) s/k s S )\n≤ k ∈{ | ∈ }\n=eϵProb(kvˆ(D′) S)\nk ∈\n=eϵProb(sˆ (D′) S),\nk\n∈\nwheretheinequalityfollowsfromthedefinitionofdifferentialprivacyandthefactthatD andD′ areneighboring\nk k\ndatasets if D and D′ are neighboring datasets. From Lemma 5.1 in Kulesza et al.",
+      "size": 494,
+      "sentences": 3
+    },
+    {
+      "id": 132,
+      "content": "areneighboring\nk k\ndatasets if D and D′ are neighboring datasets. From Lemma 5.1 in Kulesza et al. (2024), we have\nsup E(cid:2) (sˆ (D) sum(D))2(cid:3) σ(ε)2(1 o(1)),\nk\nD∈D∗ − ≥ −\nwhere sum(D) is the true sum of dataset D. Thus, there exists D ∗ such that\n∈D\nE(cid:2) (sˆ (D) sum(D))2(cid:3) σ(ε)2(1 o(1)).",
+      "size": 306,
+      "sentences": 3
+    },
+    {
+      "id": 133,
+      "content": "m of dataset D. Thus, there exists D ∗ such that\n∈D\nE(cid:2) (sˆ (D) sum(D))2(cid:3) σ(ε)2(1 o(1)). (1)\nk\n− ≥ −\nThe error k var(D ) sum(D) can be evaluated as follows:\nk\n| · − |\n(cid:12) (cid:12)\n(cid:12) |D|  |D| 2 |D| (cid:12)\n(cid:12) k (cid:88) k (cid:88) (cid:88) (cid:12)\n| k · var(D k ) − sum(D) | =(cid:12) (cid:12) (cid:12) D +k x i − (D +k)2  √x i − x i (cid:12) (cid:12) (cid:12)\n(cid:12)| | i=1 | | i=1 i=1 (cid:12)\n 2 (cid:12) (cid:12)\n|D| (cid:12) |D| (cid:12)\n1 (cid:88) (cid:12) D (cid:88) (cid:12)\n≤ k\n √x i +(cid:12)\n(cid:12) D\n|\n+\n|\nk\nx i(cid:12)\n(cid:12)\ni=1 (cid:12)| | i=1 (cid:12)\n2D 2\n| |\n≤ k\nTherefore, we obtain\nE (cid:104) D 2(vˆ(D ) var(D ))2 (cid:105) E(cid:2) k2(vˆ(D ) var(D ))2(cid:3)\nk k k k k\n| | − ≥ −\n=E(cid:2)\n(sˆ (D) sum(D)+sum(D) kvar(D\n))2(cid:3)\nk k\n− −\n(1\np)E(cid:2)\n(sˆ (D)\nsum(D))2(cid:3)\n+(1\n1/p)E(cid:2)\n(sum(D) kvar(D\n))2(cid:3)\nk k\n≥ − − − −\n(1\np)E(cid:2)\n(sˆ (D)\nsum(D))2(cid:3) 4(1\n−\n1/p)\n|\nD\n|\n4\n≥ − k − − k2\n4(1 1/p)D 4\n(1 p)σ(ε)2(1 o(1)) − | |\n≥ − − − k2\n===  14 ===\nOptimal Private Estimation of Variance and Covariance\nfor any p>0.",
+      "size": 1094,
+      "sentences": 2
+    },
+    {
+      "id": 134,
+      "content": "1)) − | |\n≥ − − − k2\n===  14 ===\nOptimal Private Estimation of Variance and Covariance\nfor any p>0. The second inequality follows from Lemma A.2 and the last inequality follows from Eq. (1). By\nsetting k =Ω(D 4), p=1/k, and n =k, we have\n0\n| |\n(cid:104) (cid:105)\nR(vˆ,n ) E D 2(vˆ(D ) var(D ))2 σ(ε)2(1 o(1)). 0 k k k\n≥ | | − ≥ −\nSince variance estimation is a special case of covariance estimation where D = [x,x], we can use the same\nargument to show the lower bound for covariance estimation.",
+      "size": 496,
+      "sentences": 5
+    },
+    {
+      "id": 135,
+      "content": "on where D = [x,x], we can use the same\nargument to show the lower bound for covariance estimation. This completes the proof. C Proofs for Section 4\nC.1 Proof for Lemma 4.2\nC.1.1 Variance Case\nProof. Let [x],[y] be neighboring datasets, i.e., x =y for all i=j and x =y . Without loss of generality, we\ni i j j\nassume j =n and x y . To simplify the notation, we denote ̸ r = 1 (cid:80)n− ̸ 1 x .",
+      "size": 394,
+      "sentences": 6
+    },
+    {
+      "id": 136,
+      "content": "ty, we\ni i j j\nassume j =n and x y . To simplify the notation, we denote ̸ r = 1 (cid:80)n− ̸ 1 x . Then, we have\nn ≥ n n i=1 i\nn (cid:32) n (cid:33)2  n (cid:32) n (cid:33)2 \n1 (cid:88) 1 (cid:88) 1 (cid:88) 1 (cid:88)\nvar(x) − var(y)= n x2 i − n x i −  n y i 2 − n y i \ni=1 i=1 i=1 i=1\n= 1 (x2 y2) (cid:0) (r+x /n)2 (r+y /n)2(cid:1)\nn n− n − n − n\n1\n= (x2 y2) (2rx /n+x2/n2 2ry /n y2/n2)\nn n− n − n n − n − n\n(cid:18) (cid:19)\n1 1 2r\n= (x2 y2) (x y ).",
+      "size": 457,
+      "sentences": 3
+    },
+    {
+      "id": 137,
+      "content": "(x2 y2) (2rx /n+x2/n2 2ry /n y2/n2)\nn n− n − n n − n − n\n(cid:18) (cid:19)\n1 1 2r\n= (x2 y2) (x y ). n − n2 n− n − n n − n\nSince r [0,(n 1)/n] and x y , we obtain\nn n\n∈ − ≥\nn 1\n1/n −\n− ≤− n2\nn − 1(cid:0) (x 1)2 (y 1)2(cid:1)\n≤ n2 n − − n −\n(cid:18) (cid:19)\n1 1 2(n 1)\n= (x2 y2) − (x y )\nn − n2 n− n − n2 n − n\nvar(x) var(y)\n≤ −\n(cid:18) (cid:19)\n1 1\n≤ n − n2\n1\n. ≤ n\nThis completes the proof. C.1.2 Covariance Case\nProof.",
+      "size": 421,
+      "sentences": 4
+    },
+    {
+      "id": 138,
+      "content": ")\n≤ −\n(cid:18) (cid:19)\n1 1\n≤ n − n2\n1\n. ≤ n\nThis completes the proof. C.1.2 Covariance Case\nProof. Let[x,y],[z,w]beneighboringdatasets,i.e.,(x ,y )=(z ,w )foralli=j and(x ,y )=(z ,w ). Without\ni i i i j j j j\nloss of generality, we assume j = n and x z . To simplify the notatio ̸ n, we denote r ̸ = 1 (cid:80)n−1 x and\nn ≥ n x n i=1 i\n===  15 ===\nShokichi Takakura, Seng Pei Liew, Satoshi Hasegawa\nr = 1 (cid:80)n−1 y .",
+      "size": 421,
+      "sentences": 6
+    },
+    {
+      "id": 139,
+      "content": "≥ n x n i=1 i\n===  15 ===\nShokichi Takakura, Seng Pei Liew, Satoshi Hasegawa\nr = 1 (cid:80)n−1 y . Then, we have\ny n i=1 i\nn (cid:32) n (cid:33)(cid:32) n (cid:33) (cid:32) n (cid:32) n (cid:33)(cid:32) n (cid:33)(cid:33)\n1 (cid:88) 1 (cid:88) 1 (cid:88) 1 (cid:88) 1 (cid:88) 1 (cid:88)\ncov(x,y) cov(z,w)= x y x y z w z w\ni i i i i i i i\n− n − n n − n − n n\ni=1 i=1 i=1 i=1 i=1 i=1\n1\n= (x y z w ) ((r +x /n)(r +y /n) (r +z /n)(r +w /n))\nn n n n x n y n x n y n\nn − − −\n1\n= (x y z w ) (r y /n+r x /n+x y /n2 r w /n r z /n z w /n2)\nn n n n x n y n n n x n y n n n\nn − − − − −\n(cid:18) (cid:19)\n1 1 1\n= (x y z w ) (r (y w )+r (x z )).",
+      "size": 632,
+      "sentences": 2
+    },
+    {
+      "id": 140,
+      "content": "n n n x n y n n n x n y n n n\nn − − − − −\n(cid:18) (cid:19)\n1 1 1\n= (x y z w ) (r (y w )+r (x z )). n − n2 n n − n n − n x n − n y n − n\nIf y w , we have\nn n\n≥\nn 1\n1/n −\n− ≤− n2\nn 1\n− ((x 1)(y 1) (z 1)(w 1))\n≤ n2 n − n − − n − n −\ncov(x,y) cov(z,w)\n≤ −\n(cid:18) (cid:19)\n1 1\n(x y z w )\n≤ n − n2 n n − n n\n(cid:18) (cid:19)\n1 1\n≤ n − n2\n1\n.",
+      "size": 339,
+      "sentences": 2
+    },
+    {
+      "id": 141,
+      "content": "cov(z,w)\n≤ −\n(cid:18) (cid:19)\n1 1\n(x y z w )\n≤ n − n2 n n − n n\n(cid:18) (cid:19)\n1 1\n≤ n − n2\n1\n. ≤ n\nOn the other hand, if y <w , we have\nn n\nn 1\n1/n −\n− ≤− n2\nn 1\n− (x (y 1) z (w 1))\n≤ n2 n n − − n n −\ncov(x,y) cov(z,w)\n≤ −\n(cid:18) (cid:19)\n1 1\n((x 1)y (z 1)w )\n≤ n − n2 n − n − n − n\n(cid:18) (cid:19)\n1 1\n≤ n − n2\n1\n. ≤ n\nCombining both cases, we obtain the result. D Proofs for Section 5\nD.1 Proof for Proposition 5.1\nD.1.1 Covariance Case\nProof.",
+      "size": 454,
+      "sentences": 4
+    },
+    {
+      "id": 142,
+      "content": "btain the result. D Proofs for Section 5\nD.1 Proof for Proposition 5.1\nD.1.1 Covariance Case\nProof. LetZ =[Z ,Z ,Z ,Z ]andf(Z/n)= rxy+Zxy/n rx+Zx/nry+Zy/n. Notethatf(0)isthetruecovariance\nandcˆ(D)=clip(f( n Z/n x ),[ y 1/ x 4 y ,1/4]),whereZ 1 L + a Z p n ( / 4 n /ε) − . I 1 t + i Z s n e / a n sy 1 t + o Z s n e / e n that f(Z/n) , (cid:13) (cid:13) 2f(Z/n) (cid:13) (cid:13)=O(1)\n− ∼ ∥∇ ∥ ∇(cid:104) (cid:105)\nfor Z A .",
+      "size": 423,
+      "sentences": 5
+    },
+    {
+      "id": 143,
+      "content": "t f(Z/n) , (cid:13) (cid:13) 2f(Z/n) (cid:13) (cid:13)=O(1)\n− ∼ ∥∇ ∥ ∇(cid:104) (cid:105)\nfor Z A . Then, from Lemma A.4, it suffices to show 1) Prob(Z A )=1 o(1/n2), 2) E ∆(Z) 2 128. ∈ n ∈ n − ∥ ∥ ≤ ε2\nWe prove these three conditions in the following lemmas:\nLemma D.1. We have Prob(Z A )=1 o(1/n2). n\n∈ −\n===  16 ===\nOptimal Private Estimation of Variance and Covariance\nProof.",
+      "size": 379,
+      "sentences": 5
+    },
+    {
+      "id": 144,
+      "content": "rob(Z A )=1 o(1/n2). n\n∈ −\n===  16 ===\nOptimal Private Estimation of Variance and Covariance\nProof. Since Z ,Z ,Z ,Z Lap(1/ε), we have\nn x y xy\n∼\n(cid:16) (cid:17) (cid:16) (cid:17) (cid:16) (cid:17) (cid:16) (cid:17)\nProb(Z / A ) Prob Z >n1/4 +Prob Z >n1/4 +Prob Z >n1/4 +Prob Z >n1/4\nn n x y xy\n∈ ≤ | | | | | | | |\n=O(exp( εn1/4))=o(1/n2). −\nThis completes the proof. Lemma D.2. We have\n(cid:104) (cid:105) 128\nE ∆(Z) 2 . ∥ ∥ ≤ ε2\nProof.",
+      "size": 439,
+      "sentences": 7
+    },
+    {
+      "id": 145,
+      "content": ". −\nThis completes the proof. Lemma D.2. We have\n(cid:104) (cid:105) 128\nE ∆(Z) 2 . ∥ ∥ ≤ ε2\nProof. From simple calculation, we have\n∆(Z)=( r +2r r )Z r Z r Z +Z .",
+      "size": 163,
+      "sentences": 6
+    },
+    {
+      "id": 146,
+      "content": "105) 128\nE ∆(Z) 2 . ∥ ∥ ≤ ε2\nProof. From simple calculation, we have\n∆(Z)=( r +2r r )Z r Z r Z +Z . xy x y n y x x y xy\n− − −\nFrom Lemma A.3, we have\n2r r r 2r r max(0,r +r 1)\nx y xy x y x y\n− ≤ − −\n=r r +min(r r ,(1 r )(1 r ))\nx y x y x y\n− −\nr r +(1 r )(1 r )\nx y x y\n≤ − −\n1,\n≤\n2r r r 2r r min(r ,r ) 1.\nx y xy x y x y\n− ≥ − ≥−\nSince Z Lap(4/ε), we obtain\n∼\nE (cid:104) ∆(Z) 2 (cid:105) =32/ε2(cid:0) ( r +2r r )2+r2+r2+1 (cid:1)\n∥ ∥ − xy x y y x\n128/ε2. ≤\nThe equality holds when r =r =r =1.",
+      "size": 495,
+      "sentences": 5
+    },
+    {
+      "id": 147,
+      "content": "(cid:0) ( r +2r r )2+r2+r2+1 (cid:1)\n∥ ∥ − xy x y y x\n128/ε2. ≤\nThe equality holds when r =r =r =1. x y xy\nD.1.2 Variance Case\n(cid:16) (cid:17)2\nLet Z =[Z ,Z ,Z ] and f(Z/n)= rxx+Zxx/n rx+Zx/n . As in the case of covariance, it suffices to show 1)\nn x xx 1+Zn/n − 1+Zn/n\n(cid:104) (cid:105)\nProb(Z A )=1 o(1/n2), 2) E ∆(Z) 2 = 108. The proof of 1) is the same as Lemma D.1. Thus, we prove\n∈ n − ∥ ∥ ε2\n2) in the following lemma:\nLemma D.3. We have\n(cid:104) (cid:105) 108\nE ∆(Z) 2 . ∥ ∥ ≤ ε2\nProof.",
+      "size": 499,
+      "sentences": 8
+    },
+    {
+      "id": 148,
+      "content": "ε2\n2) in the following lemma:\nLemma D.3. We have\n(cid:104) (cid:105) 108\nE ∆(Z) 2 . ∥ ∥ ≤ ε2\nProof. From simple algebra, we have\n∆(Z)=( r +2r2)Z 2r Z +Z . − xx x n − x x xx\nSince Z Lap(3/ε), we obtain\n∼\nE (cid:104) ∆(Z) 2 (cid:105) =18/ε2(cid:0) ( r +2r2)2+4r2+1 (cid:1)\n∥ ∥ − xx x x\n108/ε2. ≤\nHere, the equality holds when r =r =1. x xx\n===  17 ===\nShokichi Takakura, Seng Pei Liew, Satoshi Hasegawa\nD.2 Proof for Proposition 5.3\nLet f (cid:104) ([Z n ,Z u ]/ (cid:105) n)= n u+ + Z Z u n .",
+      "size": 491,
+      "sentences": 7
+    },
+    {
+      "id": 149,
+      "content": "Hasegawa\nD.2 Proof for Proposition 5.3\nLet f (cid:104) ([Z n ,Z u ]/ (cid:105) n)= n u+ + Z Z u n . As in the proof of Proposition 5.1, it suffices to show 1) Prob(Z ∈ / A)=o(1/n2), and\n2) E ∆(Z) 2 = 17/2. The proof of 1) can be done in a similar way as Lemma D.1. Thus, we prove 2) in the\n∥ ∥ ε2\nfollowing lemma:\nLemma D.4. We have\n(cid:104) (cid:105) 17/2\nE ∆(Z) 2 . ∥ ∥ ≤ ε2\nProof.",
+      "size": 384,
+      "sentences": 6
+    },
+    {
+      "id": 150,
+      "content": "the\n∥ ∥ ε2\nfollowing lemma:\nLemma D.4. We have\n(cid:104) (cid:105) 17/2\nE ∆(Z) 2 . ∥ ∥ ≤ ε2\nProof. From simple algebra, we have\n∆(Z)= u Z +Z\nn u\n− ·\nSince Z Lap(2/ε), we obtain\n∼\nE (cid:104) ∆(Z) 2 (cid:105) =8/ε2(cid:0) u2+1 (cid:1)\n∥ ∥\n17/2\n≤ ε2\nHere, the equality holds when u=1/4. D.3 Proof of Lemma 5.2\nD.3.1 Variance Case\nProof. Let a Rn,a′ Rn+1 be neighboring datasets, i.e., a =a′ for all i n and a′ =x.",
+      "size": 411,
+      "sentences": 6
+    },
+    {
+      "id": 151,
+      "content": "1 Variance Case\nProof. Let a Rn,a′ Rn+1 be neighboring datasets, i.e., a =a′ for all i n and a′ =x. To simplify the\nnotation, we d∈enote r ∈ = 1 (cid:80)n a Then, we have i i ≤ n+1\nn i=1 i\nn+1 (cid:32)n+1 (cid:33)2 n (cid:32) n (cid:33)2\n(cid:88) 1 (cid:88) (cid:88) 1 (cid:88)\nuvar(a′) uvar(a)= a′ a′ a + a\n− i− n+1 i − i n i\ni=1 i=1 i=1 i=1\n1 1\n=x2 (nr+x)2+ (nr)2\n− n+1 n\n1 1\n=x2 (nr+x)2+ n(n+1)r2\n− n+1 n+1\n1\n=x2+ [n(n+1)r2 (nr+x)2]\nn+1 −\n1\n=x2+ [n(n+1)r2 n2r2 2nrx x2]\nn+1 − − −\n1\n= [nr2 2nrx+nx2]\nn+1 −\nn\n= (r x)2.\nn+1 −\nThus, we have\n0 uvar(a′) uvar(a) 1,\n≤ − ≤\nwhich completes the proof.",
+      "size": 594,
+      "sentences": 3
+    },
+    {
+      "id": 152,
+      "content": "x+nx2]\nn+1 −\nn\n= (r x)2.\nn+1 −\nThus, we have\n0 uvar(a′) uvar(a) 1,\n≤ − ≤\nwhich completes the proof. D.3.2 Covariance Case\nProof. Let (a,b) Rn Rn,(a′,b′) (Rn+1 Rn+1) be neighboring datasets, i.e., a =a′ for all i n,a′ =x\nandb =b′ forall∈ i n × ,b′ =y. T∈osimplif×ythenotation, wedenoter = 1 (cid:80)n a i and i r = 1 (cid:80)≤n b n .",
+      "size": 332,
+      "sentences": 4
+    },
+    {
+      "id": 153,
+      "content": "ll∈ i n × ,b′ =y. T∈osimplif×ythenotation, wedenoter = 1 (cid:80)n a i and i r = 1 (cid:80)≤n b n . + T 1 hen,\ni i ≤ n+1 a n i=1 i b n i=1 i\n===  18 ===\nOptimal Private Estimation of Variance and Covariance\nwe have\nn+1 (cid:32)n+1 (cid:33)(cid:32)n+1 (cid:33) n (cid:32) n (cid:33)(cid:32) n (cid:33)\n(cid:88) 1 (cid:88) (cid:88) (cid:88) 1 (cid:88) (cid:88)\nucov(a′,b′) ucov(a,b)= a′b′ a′ b′ a b + a b\n− i i− n+1 i i − i i n i i\ni=1 i=1 i=1 i=1 i=1 i=1\n1 1\n=xy (nr +x)(nr +y)+ (nr )(nr )\n− n+1 a b n a b\n=xy 1 (cid:0) n2r r +nr y+nr x+xy (cid:1) + 1 n(n+1)r r\n− n+1 a b a b n+1 a b\n1\n= ( nr r +nr y+nr x nxy)\n−n+1 − a b a b −\nn\n= (r x)(r y)\nn+1 a − b −\nThus, we have\n1 ucov(a′,b′) ucov(a,b) 1,\n− ≤ − ≤\nwhich completes the proof.",
+      "size": 729,
+      "sentences": 3
+    },
+    {
+      "id": 154,
+      "content": "(r x)(r y)\nn+1 a − b −\nThus, we have\n1 ucov(a′,b′) ucov(a,b) 1,\n− ≤ − ≤\nwhich completes the proof. D.4 Proof of Theorem 5.6\nFrom the definition of µˆ , we have\nj\nµˆ =[A−1(Aµ+ξ)]\nj j\n=µ +[A−1ξ] . j j\nSince ξ Lap(1/ε), we arrive at\nj\n∼\nk\n2 (cid:88)\nE[(µˆ µ )2]= (A−1)2\nj − j ε2 jl\nl=0\nk\n(cid:32)(cid:0)l(cid:1)(cid:33)2\n= 2 (cid:88) j ,\nε2 (cid:0)k(cid:1)\nl=j j\n(l)\nwhere, we used the fact that A−1 = j (Simsek, 2013). For j =k, we have\njl (k)\nj\n2\nE[(µˆ µ )2]= .",
+      "size": 460,
+      "sentences": 4
+    },
+    {
+      "id": 155,
+      "content": "l)\nwhere, we used the fact that A−1 = j (Simsek, 2013). For j =k, we have\njl (k)\nj\n2\nE[(µˆ µ )2]= . (2)\nk − k ε2\nFor any ε-DP estimator µ˜ , we can construct an ε-DP estimator sˆof µ as follows:\nk 1\nsˆ(D)=µ˜ (D ˜),\nk\nwhere D =[x] and D ˜ =[[x 1/k ,...,x 1/k]⊤]. Note that µ (D)=µ (D ˜). The utility of sˆcan be evaluated as\n1 n 1 k\nE[(sˆ(D) µ (D))2]=E[(µ˜ (D ˜) µ (D ˜))2] σ(ε)2(1 o(1))\n1 k k\n− − ≥ −\nfrom Lemma 6 in Kulesza et al. (2024).",
+      "size": 439,
+      "sentences": 6
+    },
+    {
+      "id": 156,
+      "content": "µ (D))2]=E[(µ˜ (D ˜) µ (D ˜))2] σ(ε)2(1 o(1))\n1 k k\n− − ≥ −\nfrom Lemma 6 in Kulesza et al. (2024). In the high-privacy regime, the lower bound becomes 2/ε2(1 o(1)). Thus, Eq. 2 is asymptotically optimal for estimation of µ . −\nk\n===  19 ===\nShokichi Takakura, Seng Pei Liew, Satoshi Hasegawa\nD.5 Proof of Lemma 5.7\nProof.",
+      "size": 321,
+      "sentences": 6
+    },
+    {
+      "id": 157,
+      "content": ". −\nk\n===  19 ===\nShokichi Takakura, Seng Pei Liew, Satoshi Hasegawa\nD.5 Proof of Lemma 5.7\nProof. For neighboring datasets D and D′, we have\nb(D′) b(D) = (cid:88) (cid:12) (cid:12)Bk (x (1) ) Bk (x (d) ) (cid:12) (cid:12)\n∥ − ∥1 (cid:12) α1 n+1 ··· αd n+1 (cid:12)\nα∈{0,...,k}d\n= (cid:88) Bk (x (1) ) Bk (x (d) )\nα1 n+1 ··· αd n+1\nα∈{0,...,k}d\n(cid:32) k (cid:33) (cid:32) k (cid:33)\n= (cid:88) Bk (x (1) ) (cid:88) Bk (x (d) )\nα1 n+1 ··· αd n+1\nα1=0 αd=0\n=1,\nwhere the first equality follows from the non-negativity of Bernstein basis and the last equality follows from the\npartition of unity property.",
+      "size": 604,
+      "sentences": 3
+    },
+    {
+      "id": 158,
+      "content": "n-negativity of Bernstein basis and the last equality follows from the\npartition of unity property. D.6 Proof of Theorem 5.8\nLet Z =[Z ,Z ,Z ,Z ] and f(Z/n)= rxy+Zxy/n (rx+Zx/n)(ry+Zy/n). Note that f(0) is the true covariance\nand cˆ=clip\nn\n(f(\nx\nZ/n\ny\n),[\nxy\n1/4,1/4]), where Z\n1+\n=\nZn(cid:80) /n\nZ\n−\n,Z\n1+\n=\nZn\nZ\n/n\n+Z\n1+\n,\nZ\nZ\nn/n\n=Z +Z ,Z =Z and Z Lap(1/ε). From simple calculati−on, we have f(Z/n n ), 2f i (Z i /n) x =O( 1 1) for 3 Z y A .",
+      "size": 444,
+      "sentences": 4
+    },
+    {
+      "id": 159,
+      "content": "and Z Lap(1/ε). From simple calculati−on, we have f(Z/n n ), 2f i (Z i /n) x =O( 1 1) for 3 Z y A . 2 Thu 3 s, fr x o y m Le 3 mma A i .4∼, it suffices\nn\n∇ ∇ (cid:104) (cid:105) ∈\nto show 1) Prob(A ) = 1 o(1/n2), and 2) E ∆(Z) 2 2/ε2. We prove these conditions in the following\nn\n− ∥ ∥ ≤\nlemmas:\nLemma D.5. We have\nProb(Z A )=1 O(exp( n1/4/(4b)))=1 o(1/n2). n\n∈ − − −\nProof.",
+      "size": 374,
+      "sentences": 6
+    },
+    {
+      "id": 160,
+      "content": "ng\nn\n− ∥ ∥ ≤\nlemmas:\nLemma D.5. We have\nProb(Z A )=1 O(exp( n1/4/(4b)))=1 o(1/n2). n\n∈ − − −\nProof. Since Z 1/4n1/4 foralliissufficientfortheeventA tohold, wecanboundtheprobabilityofZ A\ni n n\nas follows: | |≤ ∈\n4\n(cid:88) (cid:16) (cid:17)\nProb(Z A ) 1 Prob Z >1/4n1/4\nn i\n∈ ≤ − | |\ni=1\n(cid:18) n1/4(cid:19)\n1 4exp\n≤ − − 4b\nThis completes the proof. Lemma D.6. Let r = 1 (cid:80)n x , r = 1 (cid:80)n y , and c= 1 (cid:80)n (x r )(y r ).",
+      "size": 438,
+      "sentences": 6
+    },
+    {
+      "id": 161,
+      "content": "the proof. Lemma D.6. Let r = 1 (cid:80)n x , r = 1 (cid:80)n y , and c= 1 (cid:80)n (x r )(y r ). Then, we have\nx n i=1 i y n i=1 i n i=1 i − x i − y\nE(cid:2) ∆(Z)2(cid:3)\n=\n2\nC(r ,r ,c)\n2\n,\nε2 x y ≤ ε2\nwhere C(r ,r ,c):=(1 2r +2r2)(1 2r +2r2) 2c(1 2r )(1 2r )+4c2. x y − x x − y y − − x − y\nProof. Let r = 1 (cid:80)n x y .",
+      "size": 325,
+      "sentences": 6
+    },
+    {
+      "id": 162,
+      "content": "r +2r2)(1 2r +2r2) 2c(1 2r )(1 2r )+4c2. x y − x x − y y − − x − y\nProof. Let r = 1 (cid:80)n x y . From simple calculation, we have\nxy n i=1 i i\n∆(Z)=Z r Z +2r r Z r Z r Z\nxy xy n x y n y x x y\n− − −\nTo simplify the expression, we rewrite ∆(Z) as follows:\n∆(Z)=(Z r Z r Z +r r Z ) cZ .",
+      "size": 286,
+      "sentences": 4
+    },
+    {
+      "id": 163,
+      "content": "y x x y\n− − −\nTo simplify the expression, we rewrite ∆(Z) as follows:\n∆(Z)=(Z r Z r Z +r r Z ) cZ . xy y x x y x y n n\n− − −\n(cid:124) (cid:123)(cid:122) (cid:125)\n=:X\n===  20 ===\nOptimal Private Estimation of Variance and Covariance\nSubstituting the definition of Z ,Z and Z into the expression for X, we have X = (cid:80)4 x Z , where\nx y xy i=1 i i\nx =(1 r )(1 r )\n1 x y\n− −\nx = r (1 r )\n2 y x\n− −\nx = r (1 r )\n3 x y\n− −\nx =r r .",
+      "size": 432,
+      "sentences": 2
+    },
+    {
+      "id": 164,
+      "content": "ere\nx y xy i=1 i i\nx =(1 r )(1 r )\n1 x y\n− −\nx = r (1 r )\n2 y x\n− −\nx = r (1 r )\n3 x y\n− −\nx =r r . 4 x y\nIn addition, Y can be expressed as Y = (cid:80)4 (x c)Z since Z =Z +Z +Z +Z . Thus, we have\ni=1 i − i n 1 2 3 4\nE(cid:2) Y2(cid:3)\n(cid:88)\n4\n(cid:88)\n4\n(cid:88)\n4\n= (x c)2 = x2 2c x +4c2.",
+      "size": 294,
+      "sentences": 3
+    },
+    {
+      "id": 165,
+      "content": "ve\ni=1 i − i n 1 2 3 4\nE(cid:2) Y2(cid:3)\n(cid:88)\n4\n(cid:88)\n4\n(cid:88)\n4\n= (x c)2 = x2 2c x +4c2. 2/ε2 i − i − i\ni=1 i=1 i=1\nHere, (cid:80)4 x2 and (cid:80)4 x can be computed as follows:\ni=1 i i=1 i\n4\n(cid:88)\nx2 =(1 r )2(1 r )2+r2(1 r )2+r2(1 r )2+r2r2\ni − x − y y − x x − y x y\ni=1\n=\n(cid:0)\n(1 r\n)2+r2(cid:1)(cid:0)\n(1 r\n)2+r2(cid:1)\n− x x − y y\n=(1 2r +2r2)(1 2r +2r2)\n− x x − y y\n4\n(cid:88)\nx =(1 r )(1 r ) r (1 r ) r (1 r )+r r\ni x y y x x y x y\n− − − − − −\ni=1\n=(1 2r )(1 2r ).",
+      "size": 487,
+      "sentences": 2
+    },
+    {
+      "id": 166,
+      "content": "4\n(cid:88)\nx =(1 r )(1 r ) r (1 r ) r (1 r )+r r\ni x y y x x y x y\n− − − − − −\ni=1\n=(1 2r )(1 2r ). x y\n− −\nTherefore, it suffices to show that\nE(cid:2) Y2(cid:3)\nf(c):=C (r ,r ,c):=\n1 x y 2/ε2\n=(1 2r +2r2)(1 2r +2r2) 2c(1 2r )(1 2r )+4c2 1\n− x x − y y − − x − y ≤\nNote that f(c) is a convex quadratic function of c. The maximum value of a convex function on a closed interval\nis achieved at one of the endpoints of the interval.",
+      "size": 429,
+      "sentences": 2
+    },
+    {
+      "id": 167,
+      "content": "alue of a convex function on a closed interval\nis achieved at one of the endpoints of the interval. Therefore, it suffices to show that f(c) 1 at the endpoints of\nthe interval of c. As shown in Lemma A.3, the domain of r is given by max(0,r +r ≤ 1) r min(r ,r ),\nxy x y xy x y\nwhich defines the interval for c=r r r . − ≤ ≤\nxy x y\n−\nCase 1: r = min(r ,r ). Without loss of generality, assume r r , which implies r = r . Then,\nxy x y x y xy x\nc=r r r =r (1 r ).",
+      "size": 460,
+      "sentences": 5
+    },
+    {
+      "id": 168,
+      "content": "out loss of generality, assume r r , which implies r = r . Then,\nxy x y x y xy x\nc=r r r =r (1 r ). Substituting this into f(c) yields ≤\nx x y x y\n− −\ng(r ,r ):=f(r r r ) 1=16r2r2 24r2r +10r2 8r y2+10r y 4r +2r2 2r\nx y x − x y − x y− x y x− x x − x y− y\n=(16r2 8r +2)r2+( 24r2+10r 2)r +(10r2 4r )\nx− x y − x x − y x− x\nThe function g(r ,r ) is a convex quadratic function in r since (16r2 8r +2) 0 for any r . Thus, the\nmaximum value o x f g( y r ,r ) occurs at one of the endpoints y r =r or 1 x .",
+      "size": 498,
+      "sentences": 4
+    },
+    {
+      "id": 169,
+      "content": "or any r . Thus, the\nmaximum value o x f g( y r ,r ) occurs at one of the endpoints y r =r or 1 x . −For r x =r ,≥we have x\nx y y x y x\ng(r ,r )=16r4 24r3+10r2 8r3+10r2 4r +2r2 2r\nx x x− x x− x x− x x− x\n=16r4 32r3+22r2 6r\nx− x x− x\n=2r (8r3 16r2+11r 3)\nx x− x x −\n=2r (r 1)(8r2 8r +3)\nx x − x− x\n0\n≤\nsince (8r2 8r +3)>0, r 0, and (1 r ) 0.",
+      "size": 340,
+      "sentences": 3
+    },
+    {
+      "id": 170,
+      "content": "16r2+11r 3)\nx x− x x −\n=2r (r 1)(8r2 8r +3)\nx x − x− x\n0\n≤\nsince (8r2 8r +3)>0, r 0, and (1 r ) 0. For r =1, we have\nx− x x ≥ − x ≤ y\ng(r ,1)=(16r2 8r +2) (24r2 10r +2)+(10r2 4r )\nx x− x − x− x x− x\n=(16 24+10)r2+( 8+10 4)r +(2 2)\n− x − − x −\n=2r2 2r\nx− x\n=2r (r 1)\nx x\n−\n0. ≤\n===  21 ===\nShokichi Takakura, Seng Pei Liew, Satoshi Hasegawa\nCase 2: r =max(0,r +r 1). Assuming r +r 1, we have c= r r .",
+      "size": 399,
+      "sentences": 4
+    },
+    {
+      "id": 171,
+      "content": "kakura, Seng Pei Liew, Satoshi Hasegawa\nCase 2: r =max(0,r +r 1). Assuming r +r 1, we have c= r r . Then, f(c) can be expressed as\nxy x y x y x y\nfollows: − ≤ −\ng(r ,r ):=f( r r ) 1\nx y x y\n− −\n= 2r 2r +2r2+2r2+6r r 8r2r 8r r2+16r2r2. − x − y x y x y − x y − x y x y\nHere, g(r ,r ) is a convex quadratic function in r since the coefficient of r2 is 16r2 8r +2 0 for any\nr [0,1] x . Si y nce r [0,1 r ], the maximum valu x e occurs at one of the endp x oints r y = − 0 o y r r = ≥ 1 r .",
+      "size": 485,
+      "sentences": 5
+    },
+    {
+      "id": 172,
+      "content": "nce r [0,1 r ], the maximum valu x e occurs at one of the endp x oints r y = − 0 o y r r = ≥ 1 r . For\ny x y x x y\nr ∈ =0, we have ∈ − −\nx\ng(0,r )= 2r +2r2\ny − y y\n=2r (r 1)\ny y\n−\n0. ≤\nFor r =1 r , let p=r r . Then, we have\nx y x y\n−\ng(1 r ,r )= 2+2+2p 8p+16p2\ny y\n− − −\n=16p2 6p\n−\n=16(p 3/16)2 9/16\n− −\n0\n≤\nsince p=r (1 r ) [0,1/4]. x x\n− ∈\nAssuming r +r 1, we have c=r +r 1 r r = (1 r )(1 r ).",
+      "size": 395,
+      "sentences": 5
+    },
+    {
+      "id": 173,
+      "content": "/16\n− −\n0\n≤\nsince p=r (1 r ) [0,1/4]. x x\n− ∈\nAssuming r +r 1, we have c=r +r 1 r r = (1 r )(1 r ). Then, we can express f(c) as follows:\nx y x y x y x y\n≥ − − − − −\ng(r ,r ):=f( (1 r )(1 r )) 1\nx y x y\n− − − −\n=16r2r2 24r2r +10r2 24r r2+38r r 16r +10r2 16r +6. x y− x y x− x y x y − x y− y\nHere, g(r ,r ) is a convex quadratic function in r since the coefficient of r2 is 16r2 24r +10 0 for any\nr [0,1] x .",
+      "size": 407,
+      "sentences": 4
+    },
+    {
+      "id": 174,
+      "content": "a convex quadratic function in r since the coefficient of r2 is 16r2 24r +10 0 for any\nr [0,1] x . Si y nce r [1 r ,1], the maximum valu x e of g(r ,r ) occurs at one x of the e y n−dpoin y ts r = ≥ 1 r or 1.\ny x y x y x y\nFor∈ r =1, we have∈ − −\nx\ng(1,r )=16r2 24r +10 24r2+38r 16+10r2 16r +6\ny y− y − y y − y− y\n=2r2 2r 0.\ny− y ≤\nFor r =1 r , let p=r r . Then, we have\nx y x y\n−\ng(1 r ,r )=16p2 24p+10+18p 10\ny y\n− − −\n=16p2 6p\n−\n=16(p 3/16)2 9/16\n− −\n0.",
+      "size": 456,
+      "sentences": 3
+    },
+    {
+      "id": 175,
+      "content": "Then, we have\nx y x y\n−\ng(1 r ,r )=16p2 24p+10+18p 10\ny y\n− − −\n=16p2 6p\n−\n=16(p 3/16)2 9/16\n− −\n0. ≤\nFor the last inequality, we use the fact that p=r r (1 r )r [0,1/4]. x y y y\n≤ − ∈\nCombining Case 1 and Case 2, we obtain the result. D.7 Proof of Theorem 5.9\nThe proof follows the same structure as the proof of Theorem 5.8. Let Z = [Z ,Z ,Z ] and f(Z/n) =\nn x xx\nrxx+Zxx/n (rx+Zx/n)2.",
+      "size": 387,
+      "sentences": 5
+    },
+    {
+      "id": 176,
+      "content": "structure as the proof of Theorem 5.8. Let Z = [Z ,Z ,Z ] and f(Z/n) =\nn x xx\nrxx+Zxx/n (rx+Zx/n)2. Notethatf(0)isthetruevarianceandvˆ=clip(f(Z/n),[0,1/4]),whereZ =Z +Z +Z ,\n1+Zn/n − 1+Zn/n n 0 1 2\nZ =Z /2+Z ,andZ =Z forZ Lap(1/ε). FromLemmaA.4,itsufficestoshow1)Prob(A )=1 o(1/n2),\nx 1 2 xx 2 i n\n(cid:104) (cid:105) ∼ −\nand 2) E ∆(Z) 2 2/ε2. ∥ ∥ ≤\nLemma D.7. The probability of the event A is bounded as follows:\nn\nProb(Z A )=1 O(exp( n1/4/(4b))).",
+      "size": 449,
+      "sentences": 6
+    },
+    {
+      "id": 177,
+      "content": "Lemma D.7. The probability of the event A is bounded as follows:\nn\nProb(Z A )=1 O(exp( n1/4/(4b))). n\n∈ − −\n===  22 ===\nOptimal Private Estimation of Variance and Covariance\nProof. Since Z 1/4n1/4 for all i is sufficient for the event A to hold, we can bound the probability of A as\ni n n\nfollows: | |≤\n3\n(cid:88) (cid:16) (cid:17)\nProb(Z A ) 1 Prob Z >1/4n1/4\nn i\n∈ ≤ − | |\ni=1\n(cid:18) n1/4(cid:19)\n1 4exp =1 o(1/n2). ≤ − − 4b −\nThis completes the proof. Lemma D.8.",
+      "size": 467,
+      "sentences": 6
+    },
+    {
+      "id": 178,
+      "content": "− | |\ni=1\n(cid:18) n1/4(cid:19)\n1 4exp =1 o(1/n2). ≤ − − 4b −\nThis completes the proof. Lemma D.8. Let r = 1 (cid:80)n x and v = 1 (cid:80)n (x r)2. Then, we have\nn i=1 i n i=1 i −\nE(cid:2) ∆(Z)2(cid:3)\n=\n2\nC (r,v)\n2\n,\nε2 b ≤ ε2\nwhere C (r,v):=3v2 2(3r2 3r+1)v+3r4 6r3+7r2 4r+1. b\n− − − −\nProof. Let s= 1 (cid:80)n x2. From simple calculation, we have\nn i=1 i\n∆(Z)=Z sZ +2r2Z 2rZ . xx n n x\n− −\nLet Y =Z sZ +2r2Z 2rZ . Then, we have\nxx n n x\n− −\nY =(2r2 s)Z +(2r2 r s)Z +(1 2r+2r2 s)Z .",
+      "size": 486,
+      "sentences": 10
+    },
+    {
+      "id": 179,
+      "content": "n x\n− −\nLet Y =Z sZ +2r2Z 2rZ . Then, we have\nxx n n x\n− −\nY =(2r2 s)Z +(2r2 r s)Z +(1 2r+2r2 s)Z . 1 2 3\n− − − − −\nSince the Z are independent and have variance 2/ε2, E(cid:2) Y2/(2/ε2) (cid:3) is given by:\ni\nE(cid:2) Y2/(2/ε2) (cid:3) =(2r2 s)2+(2r2 r s)2+(1 2r+2r2 s)2\n− − − − −\n=(r2 v)2+(r2 r v)2+((1 r)2 v)2\n− − − − −\n=3v2 2(3r2 3r+1)v+3r4 6r3+7r2 4r+1\n− − − −\n=:C (r,v). 3\nWe compare C with C (r,r,v) in the proof of Theorem 5.8.",
+      "size": 435,
+      "sentences": 4
+    },
+    {
+      "id": 180,
+      "content": "+1)v+3r4 6r3+7r2 4r+1\n− − − −\n=:C (r,v). 3\nWe compare C with C (r,r,v) in the proof of Theorem 5.8. We have\n3 1\nC (r,r,v) C (r,v)=v2 2(r2 r)v+r2(r 1)2 =(v (r2 r))2 0. 1 3\n− − − − − − ≥\nThus, we have\nC (r,v) C (r,r,v) 1. 3 1\n≤ ≤\nThis completes the proof. D.8 Proof of Lemma 5.11\nProof. Let D =[x] and D′ =[x′] be neighboring datasets, i.e., x =x′ for all i n and x′ =a. Then, we have\ni i ≤ n+1\nb(D′) b(D) = 1 (uvar(x′) uvar(x)) + uvar(x′) uvar(x) 1.",
+      "size": 448,
+      "sentences": 8
+    },
+    {
+      "id": 181,
+      "content": "all i n and x′ =a. Then, we have\ni i ≤ n+1\nb(D′) b(D) = 1 (uvar(x′) uvar(x)) + uvar(x′) uvar(x) 1. ∥ − ∥1 | − − | | − |≤\nHere, we used the fact 0 ucov(x′) ucov(x) 1 from Lemma 5.2. ≤ − ≤\nD.9 Proof of Proposition 5.12\nTheproofcanbedoneinasimilarwaytotheproofofTheorem5.8. Thus,itsufficestoshowLemmascorresponding\nto Lemma D.5, and D.6. Lemma D.9. The probability of the event A defined above is given by\nProb(A)=1 O(exp( n1/4/(4b))).",
+      "size": 432,
+      "sentences": 7
+    },
+    {
+      "id": 182,
+      "content": ". Lemma D.9. The probability of the event A defined above is given by\nProb(A)=1 O(exp( n1/4/(4b))). − −\n===  23 ===\nShokichi Takakura, Seng Pei Liew, Satoshi Hasegawa\nProof. Since Z 1/4n1/4 for all i is sufficient for the event A to hold, we can bound the probability of A as\ni\nfollows: | |≤\n4\n(cid:88) (cid:16) (cid:17)\nProb(A) 1 Prob Z >1/4n1/4\ni\n≤ − | |\ni=1\n(cid:18) n1/4(cid:19)\n1 4exp\n≤ − − 4b\nThis completes the proof. Lemma D.10. Let r = 1 (cid:80)n x and v = 1 (cid:80)n (x r)2.",
+      "size": 486,
+      "sentences": 7
+    },
+    {
+      "id": 183,
+      "content": "xp\n≤ − − 4b\nThis completes the proof. Lemma D.10. Let r = 1 (cid:80)n x and v = 1 (cid:80)n (x r)2. Then, we have\nn i=1 i n i=1 i −\nE(cid:2) ∆(Z)2(cid:3)\n=\n2\nC (r,v)\n2\n,\nε2 u ≤ ε2\nwhere C (r,v)=v2+(1 v)2.\nu\n−\nProof. From simple calculation, we have\n∆(Z)=Z vZ = vZ +(1 v)Z . u n 1 2\n− − −\nSince the Z are independent and have variance 2/ε2, we obtain\ni\nE(cid:2) ∆(Z)2/(2/ε2) (cid:3) =C (r,v) 1\nu\n≤\nsince v [0,1/4]. This completes the proof.",
+      "size": 439,
+      "sentences": 7
+    },
+    {
+      "id": 184,
+      "content": "we obtain\ni\nE(cid:2) ∆(Z)2/(2/ε2) (cid:3) =C (r,v) 1\nu\n≤\nsince v [0,1/4]. This completes the proof. ∈\nD.10 Proof of Theorem 5.13\nThe upper bound on R(,var,D) is already obtained in the proof of Theorem 5.8, 5.9, and Proposition 5.12. In\naddition, we have alread·y show that C (r,v) C (r,v)=C(r,r,v) in the proof of Lemma D.8. Thus, it suffices\nb c\nto show C (r,v) C (r,v). Let f(r,v)=(C ≤ (r,v) C (r,v))/2. Then, we have\nc u c u\n≤ −\nf(r,v)=v2 (4r2 4r)v+(2r4 4r3+4r2 2r).",
+      "size": 470,
+      "sentences": 7
+    },
+    {
+      "id": 185,
+      "content": ". Let f(r,v)=(C ≤ (r,v) C (r,v))/2. Then, we have\nc u c u\n≤ −\nf(r,v)=v2 (4r2 4r)v+(2r4 4r3+4r2 2r). − − − −\nThis is a convex quadratic function in v. Thus, the maximum value of f(r,v) occurs at one of the endpoints\nv =0 or r r2. For v =0, we have\n−\nf(r,0)=2r4 4r3+4r2 2r\n− −\n=2r(r3 2r2+2r 1)\n− −\n=2r(r 1)(r2 r+1) 0\n− − ≤\nfor any r [0,1].",
+      "size": 337,
+      "sentences": 5
+    },
+    {
+      "id": 186,
+      "content": "we have\n−\nf(r,0)=2r4 4r3+4r2 2r\n− −\n=2r(r3 2r2+2r 1)\n− −\n=2r(r 1)(r2 r+1) 0\n− − ≤\nfor any r [0,1]. For v =r r2, we have\n∈ −\nf(r,r r2)=(r r2)2 (4r2 4r)(r r2)+(2r4 4r3+4r2 2r)\n− − − − − − −\n=5(r r2)2+(r r2)( 2+2r 2r2)\n− − − −\n=(r r2)( 7r2+7r 2)\n− − −\n= r(1 r)(7(r 1/2)2+1/4) 0. − − − ≤\nCombining the above two cases, we have f(r,v) 0 for any r [0,1] and v [0,r r2]. Thus, we obtain the\nresult. ≤ ∈ ∈ −",
+      "size": 399,
+      "sentences": 5
+    }
+  ]
+}

@@ -1,0 +1,1311 @@
+{
+  "source": "ArXiv",
+  "filename": "276_AI_ML_A_Modular_Algorithm_for_Non-Stationary_O.pdf",
+  "domain": "AI",
+  "total_chars": 79632,
+  "total_chunks": 217,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\nA Modular Algorithm for Non-Stationary Online\nConvex-Concave Optimization\nQing-xin Meng qingxin6174@gmail.com\nCollege of Artificial Intelligence\nChina University of Petroleum, Beijing\nBeijing, 102249, China\nXia Lei leixia@cuc.edu.cn\nState Key Laboratory of Media Convergence and Communication\nCommunication University of China\nBeijing, 100024, China\nJian-wei Liu liujw@cup.edu.cn\nCollege of Artificial Intelligence\nChina University of Petroleum, Beijing\nBeijing, 102249, China\nAbstract\nThis paper investigates the problem of Online Convex-Concave Optimization, which ex-\ntends Online Convex Optimization to two-player time-varying convex-concave games.",
+      "size": 663,
+      "sentences": 1
+    },
+    {
+      "id": 2,
+      "content": "zation, which ex-\ntends Online Convex Optimization to two-player time-varying convex-concave games. The\ngoalistominimizethedynamicdualitygap(D-DGap),acriticalperformancemeasurethat\nevaluates players’ strategies against arbitrary comparator sequences. Existing algorithms\nfail to deliver optimal performance, particularly in stationary or predictable environments.",
+      "size": 363,
+      "sentences": 3
+    },
+    {
+      "id": 3,
+      "content": "rithms\nfail to deliver optimal performance, particularly in stationary or predictable environments. To address this, we propose a novel modular algorithm with three core components: an\nAdaptive Module that dynamically adjusts to varying levels of non-stationarity, a Multi-\nPredictor Aggregator that identifies the best predictor among multiple candidates, and an\nIntegration Module that effectively combines their strengths.",
+      "size": 425,
+      "sentences": 2
+    },
+    {
+      "id": 4,
+      "content": "tor among multiple candidates, and an\nIntegration Module that effectively combines their strengths. Our algorithm achieves a\nminimax optimal D-DGap upper bound, up to a logarithmic factor, while also ensuring\nprediction error-driven D-DGap bounds. The modular design allows for the seamless re-\nplacement of components that regulate adaptability to dynamic environments, as well as\nthe incorporation of components that integrate “side knowledge” from multiple predictors.",
+      "size": 471,
+      "sentences": 3
+    },
+    {
+      "id": 5,
+      "content": "s well as\nthe incorporation of components that integrate “side knowledge” from multiple predictors. Empirical results further demonstrate the effectiveness and adaptability of the proposed\nmethod.",
+      "size": 196,
+      "sentences": 2
+    },
+    {
+      "id": 6,
+      "content": "s. Empirical results further demonstrate the effectiveness and adaptability of the proposed\nmethod. Keywords: non-stationaryonlinelearning,onlineconvex-concaveoptimization,dynamic\nduality gap, modular algorithm, interdependent update\n1 Introduction\nOnline Convex Optimization (OCO, Zinkevich, 2003) provides a powerful framework for\naddressing dynamic challenges across a variety of real-world applications, including online\nlearning (Shalev-Shwartz, 2012), resource allocation (Chen et al., 2017), computational\nfinance (Guo et al., 2021), and online ranking (Chaudhuri and Tewari, 2017).",
+      "size": 589,
+      "sentences": 2
+    },
+    {
+      "id": 7,
+      "content": ", 2017), computational\nfinance (Guo et al., 2021), and online ranking (Chaudhuri and Tewari, 2017). It models\nrepeated interactions between a player and the environment, where at each round t, the\nplayer selects x from a convex set X, and the environment subsequently reveals a convex\nt\nloss function ℓ . The goal is to minimize dynamic regret, defined as the difference between\nt\n©2025Qing-xinMeng,XiaLeiandJian-weiLiu. License: CC-BY4.0,seehttps://creativecommons.org/licenses/by/4.0/.",
+      "size": 487,
+      "sentences": 4
+    },
+    {
+      "id": 8,
+      "content": "ng-xinMeng,XiaLeiandJian-weiLiu. License: CC-BY4.0,seehttps://creativecommons.org/licenses/by/4.0/. 5202\npeS\n9\n]GL.sc[\n1v10970.9052:viXra\n===  2 ===\nMeng, Lei and Liu\nthe cumulative loss incurred by the player and that of an arbitrary comparator sequence:\nT T\n(cid:88) (cid:88)\nD-Reg(u ) := ℓ (x )− ℓ (u ), ∀u ∈ X.",
+      "size": 314,
+      "sentences": 3
+    },
+    {
+      "id": 9,
+      "content": "hat of an arbitrary comparator sequence:\nT T\n(cid:88) (cid:88)\nD-Reg(u ) := ℓ (x )− ℓ (u ), ∀u ∈ X. 1:T t t t t t\nt=1 t=1\n(cid:112)\nThe minimax optimal D-Reg bound for OCO is known to be O( (1+P )T), where P\nT T\nrepresents the path length of the comparator sequence (Zhang et al., 2018).",
+      "size": 287,
+      "sentences": 2
+    },
+    {
+      "id": 10,
+      "content": "( (1+P )T), where P\nT T\nrepresents the path length of the comparator sequence (Zhang et al., 2018). Achieving this\nbound typically relies on the meta-expert framework, which consists of a two-layer struc-\nture: the inner layer incorporates multiple experts, each operating a base algorithm with\ndistinct learning rates, while the outer layer aggregates the experts’ advice via weighted\ndecision-making. Zhang et al.",
+      "size": 415,
+      "sentences": 3
+    },
+    {
+      "id": 11,
+      "content": "es, while the outer layer aggregates the experts’ advice via weighted\ndecision-making. Zhang et al. (2018) introduced the ADER algorithm within this frame-\nwork, which achieves the minimax optimal bound up to logarithmic factors.",
+      "size": 229,
+      "sentences": 3
+    },
+    {
+      "id": 12,
+      "content": "orithm within this frame-\nwork, which achieves the minimax optimal bound up to logarithmic factors. Moreover,\ncertain ADER-like algorithms, incorporating implicit updates (Campolongo and Orabona,\n2021) or optimistic strategies (Scroccaro et al., 2023), can further reduce the D-Reg bound\nto O(1) in stationary environments or in non-stationary environments with perfect pre-\ndictability.",
+      "size": 387,
+      "sentences": 2
+    },
+    {
+      "id": 13,
+      "content": "to O(1) in stationary environments or in non-stationary environments with perfect pre-\ndictability. OnlineConvex-ConcaveOptimization(OCCO)extendsOCObyintroducingtwoplayers\ninteractinginasequenceoftime-varyingconvex-concavegames. Atroundt, thetwoplayers\njointly select a strategy pair (x ,y ) from a convex feasible set X ×Y, with the x-player\nt t\nminimizing and the y-player maximizing their respective payoffs, followed by the environ-\nment revealing a continuous convex-concave payoff function f .",
+      "size": 499,
+      "sentences": 3
+    },
+    {
+      "id": 14,
+      "content": "ve payoffs, followed by the environ-\nment revealing a continuous convex-concave payoff function f . Both players act without\nt\nprior knowledge of the current or future payoff functions. Targeting a broad spectrum\nof non-stationary levels, we introduce the dynamic duality gap (D-DGap) as the perfor-\nmance metric, comparing the players’ strategies with an arbitrary comparator sequence in\nhindsight:\nT\n(cid:88)(cid:16) (cid:17)\nD-DGap(u ,v ) := f (x ,v )−f (u ,y ) , ∀(u ,v ) ∈ X ×Y.",
+      "size": 483,
+      "sentences": 3
+    },
+    {
+      "id": 15,
+      "content": "e in\nhindsight:\nT\n(cid:88)(cid:16) (cid:17)\nD-DGap(u ,v ) := f (x ,v )−f (u ,y ) , ∀(u ,v ) ∈ X ×Y. (1)\n1:T 1:T t t t t t t t t\nt=1\nHere, the D-DGap not only generalizes D-Reg from the OCO setting but also extends\nthe classical duality gap from static convex-concave games by benchmarking performance\nagainstarbitrarycomparatorsequences{(u ,v )}T insteadoffixedworst-casecomparators\nt t t=1\nat each round.",
+      "size": 405,
+      "sentences": 2
+    },
+    {
+      "id": 16,
+      "content": "starbitrarycomparatorsequences{(u ,v )}T insteadoffixedworst-casecomparators\nt t t=1\nat each round. This flexibility allows D-DGap to capture various levels of non-stationarity\nmetrics, from static individual regret to classical duality gap. The primary challenge of OCCO lies in maintaining a low D-DGap while adapting to\ndynamicenvironmentalchanges.",
+      "size": 351,
+      "sentences": 3
+    },
+    {
+      "id": 17,
+      "content": "y challenge of OCCO lies in maintaining a low D-DGap while adapting to\ndynamicenvironmentalchanges. Toaddressthis,weproposeamodularalgorithmcomposed\nof three key components: the Adaptive Module, the Multi-Predictor Aggregator, and the\nIntegration Module. Each module plays a distinct role:\n• Adaptive Module: Designed to handle varying levels of non-stationarity, this module\n(cid:112)\nensuresaminimaxoptimalD-DGapupperboundofO(cid:101)( (1+P\nT\n)T).",
+      "size": 449,
+      "sentences": 3
+    },
+    {
+      "id": 18,
+      "content": "stationarity, this module\n(cid:112)\nensuresaminimaxoptimalD-DGapupperboundofO(cid:101)( (1+P\nT\n)T). Itaccomplishes\nthis by running a pair of ADER or ADER-like algorithms, which approximate the\nminimax optimal D-Reg. • Multi-Predictor Aggregator: This module improves decision-making by dynamically\nselecting the most accurate predictor.",
+      "size": 336,
+      "sentences": 3
+    },
+    {
+      "id": 19,
+      "content": "regator: This module improves decision-making by dynamically\nselecting the most accurate predictor. In stationary environments or non-stationary\n2\n===  3 ===\nA Modular Algorithm for Non-Stationary OCCO\nAdaptiveModule:\nrunapairofADERor (x,y )\nt t\nADER-likealgorithms\n(x,y) x =[x,x]w\nPrediction-ErrorExpert (cid:98)t (cid:98)t (cid:80) t (cid:98)t t t Output\ny =[y,y ]ω\nIntegration (w ,ω ) t (cid:98)t t t\nt t\nModule: interdependent\nupdate Meta-Algorithm\nweightedaveragepredictorh\nt\nMulti-PredictorAggregator Predictors{h1,h2,···,hd}\nt t t\nFigure 1: Structural Diagram of Our Modular Algorithm.",
+      "size": 592,
+      "sentences": 2
+    },
+    {
+      "id": 20,
+      "content": "torAggregator Predictors{h1,h2,···,hd}\nt t t\nFigure 1: Structural Diagram of Our Modular Algorithm. settings with perfect predictions, it guarantees a sharp O(cid:101)(1) D-DGap upper bound. This is achieved via the clipped Hedge algorithm. • IntegrationModule: ThismoduleunifiestheAdaptiveModuleandtheMulti-Predictor\nAggregator, allowing the final strategy to adapt to a broad range of non-stationary\nlevelswhileeffectivelytrackingthebestpredictor.",
+      "size": 449,
+      "sentences": 4
+    },
+    {
+      "id": 21,
+      "content": "trategy to adapt to a broad range of non-stationary\nlevelswhileeffectivelytrackingthebestpredictor. Adistinctivefeatureofthismodule\nis its interdependent update mechanism, where the prediction-error expert and the\nmeta-algorithm are coupled. Our modular design enables the interchangeable use of components that adjust to dynamic\nenvironments and the integration of modules that incorporate “side knowledge” from mul-\ntiple predictors. Figure 1 illustrates this architecture.",
+      "size": 475,
+      "sentences": 4
+    },
+    {
+      "id": 22,
+      "content": "at incorporate “side knowledge” from mul-\ntiple predictors. Figure 1 illustrates this architecture. Given d available predictors, our\nalgorithm guarantees:\n(cid:16) (cid:110) (cid:112) (cid:112) (cid:111)(cid:17)\nD-DGap(u\n1:T\n,v\n1:T\n) ≤ O(cid:101) min V\nT\n1, ··· , V\nT\nd, (1+P\nT\n)T, (1+C\nT\n)T ,\nwhere Vk quantifies the prediction error of the k-th predictor, C provides an upper bound\nT T\nfor P .",
+      "size": 396,
+      "sentences": 3
+    },
+    {
+      "id": 23,
+      "content": "ere Vk quantifies the prediction error of the k-th predictor, C provides an upper bound\nT T\nfor P . This result not only approximates the minimax optimal D-DGap upper bound but\nT\nalsoachievesboundsbasedonpredictionerror,withanypotentialimprovementsconstrained\nto at most a logarithmic factor. Section 4 provides experimental validation of our algorithm’s effectiveness.",
+      "size": 369,
+      "sentences": 3
+    },
+    {
+      "id": 24,
+      "content": "a logarithmic factor. Section 4 provides experimental validation of our algorithm’s effectiveness. (cid:0)(cid:112) (cid:1)\nTechnicalChallengesTheminimaxoptimalD-DGapboundisO (1+P )T ,where\nT\nP =\n(cid:80)T\n(∥u −u ∥+∥v −v ∥) isthe pathlength of the comparator sequence(refer\nT t=1 t t−1 t t−1\nto Proposition 3). Approximating this bound requires each player to apply an ADER or\nADER-like algorithm, which naturally ensures minimax optimality.",
+      "size": 441,
+      "sentences": 4
+    },
+    {
+      "id": 25,
+      "content": "es each player to apply an ADER or\nADER-like algorithm, which naturally ensures minimax optimality. However, in favorable\nscenarios such as stationary or predictable environments, we aim to further tighten the D-\nDGap beyond this minimax bound. Applying implicit or optimistic methods to achieve this\ngoal introduces structural challenges.",
+      "size": 339,
+      "sentences": 3
+    },
+    {
+      "id": 26,
+      "content": "und. Applying implicit or optimistic methods to achieve this\ngoal introduces structural challenges. For instance, implementing ADER-like algorithms\nwith optimistic implicit online mirror descent as the base algorithm requires using predic-\ntors h (·,y ) for the x-player and −h (x , ·) for the y-player. This creates a contradiction,\nt t t t\nas (x ,y ) is computed based on the predictor h .",
+      "size": 391,
+      "sentences": 4
+    },
+    {
+      "id": 27,
+      "content": "e y-player. This creates a contradiction,\nt t t t\nas (x ,y ) is computed based on the predictor h . t t t\n3\n===  4 ===\nMeng, Lei and Liu\nTo address this, we encapsulate the ADER pair into an Adaptive Module, treating it\nas one expert within the Integration Module, specifically designed to ensure adaptability\nto arbitrary comparator sequences. Additionally, we design another expert dedicated to\ngenerating a prediction error-based D-DGap.",
+      "size": 440,
+      "sentences": 4
+    },
+    {
+      "id": 28,
+      "content": "es. Additionally, we design another expert dedicated to\ngenerating a prediction error-based D-DGap. A meta-algorithm is then used to combine\nthe strengths of both experts. Unlike traditional meta-expert frameworks, the integration\nmodule introduces an interdependent update mechanism to ensure coordinated updates\nbetween the prediction-error expert and the meta-algorithm.",
+      "size": 373,
+      "sentences": 4
+    },
+    {
+      "id": 29,
+      "content": "mechanism to ensure coordinated updates\nbetween the prediction-error expert and the meta-algorithm. Related Work D-Reg was first introduced by Zinkevich (2003), who demonstrated\n√\n(cid:0) (cid:1)\nthat greedy projection achieves a D-Reg upper bound of O (1+P ) T . To approximate\nT\n(cid:0)(cid:112) (cid:1)\nthe minimax optimal D-Reg of O (1+P )T , Zhang et al.",
+      "size": 359,
+      "sentences": 3
+    },
+    {
+      "id": 30,
+      "content": "T . To approximate\nT\n(cid:0)(cid:112) (cid:1)\nthe minimax optimal D-Reg of O (1+P )T , Zhang et al. (2018) developed the ADER\nT\nalgorithm, which utilizes the meta-expert framework — a two-layer structure employing\nmultiple learning rates, as illustrated in MetaGrad (van Erven and Koolen, 2016).",
+      "size": 295,
+      "sentences": 3
+    },
+    {
+      "id": 31,
+      "content": "ructure employing\nmultiple learning rates, as illustrated in MetaGrad (van Erven and Koolen, 2016). Since\nthe introduction of ADER, the meta-expert framework has effectively addressed various\nlevels of non-stationarity (Lu and Zhang, 2019; Zhao et al., 2020; Zhang, 2020; Zhang et al.,\n2021; Zhao et al., 2021; Zhang et al., 2022a; Zhao et al., 2022; Lu et al., 2023).",
+      "size": 368,
+      "sentences": 2
+    },
+    {
+      "id": 32,
+      "content": "0; Zhang et al.,\n2021; Zhao et al., 2021; Zhang et al., 2022a; Zhao et al., 2022; Lu et al., 2023). To further\nreduce D-Reg, Campolongo and Orabona (2021) implemented implicit updates, resulting\nin a D-Reg upper bound driven by the temporal variability of loss functions. Subsequently,\nScroccaro et al. (2023) refined this approach by establishing a predictor error-based D-Reg\nbound using optimistic implicit updates.",
+      "size": 418,
+      "sentences": 4
+    },
+    {
+      "id": 33,
+      "content": "his approach by establishing a predictor error-based D-Reg\nbound using optimistic implicit updates. OCCO represents a time-varying extension of the minimax problem, which was first\nintroduced by von Neumann (1928). The seminal work of Freund and Schapire (1999)\nconnectedtheminimaxproblemtoonlinelearning,sparkinginterestinno-regretalgorithms\nforstaticenvironmentsAnagnostidesetal.(2022);Daskalakisetal. (2015,2021);Ho-Nguyen\nandKılın¸c-Karzan(2019);Syrgkanisetal.(2015).",
+      "size": 471,
+      "sentences": 5
+    },
+    {
+      "id": 34,
+      "content": "idesetal.(2022);Daskalakisetal. (2015,2021);Ho-Nguyen\nandKılın¸c-Karzan(2019);Syrgkanisetal.(2015). Recentresearchhasbroadenedthisfocus\nto time-varying games Anagnostides et al. (2023); Fiez et al. (2021); Roy et al. (2019), with\nCardoso et al. (2018) being the first to explicitly investigate OCCO and introduce the\nconcept of saddle-point regret, later redefined as Nash equilibrium regret Cardoso et al. (2019). Zhang et al.",
+      "size": 427,
+      "sentences": 9
+    },
+    {
+      "id": 35,
+      "content": "saddle-point regret, later redefined as Nash equilibrium regret Cardoso et al. (2019). Zhang et al. (2022b) further refined the concept of dynamic Nash equilibrium\nregret and proposed a parameter-free algorithm that guarantees upper bounds for three\nmetrics: static individual regret, duality gap, and dynamic Nash equilibrium regret. More\nrecently, Meng and Liu (2025) highlighted potential limitations in relying on dynamic Nash\nequilibrium regret as a performance metric.",
+      "size": 474,
+      "sentences": 5
+    },
+    {
+      "id": 36,
+      "content": "ighted potential limitations in relying on dynamic Nash\nequilibrium regret as a performance metric. Thispaperextendsimplicitupdates,optimistictechniques,andmeta-expertframeworks\n— primarily applied in OCO — to OCCO. Our algorithm introduces a modular design with\nan interdependent update mechanism. In contrast to Zhang et al. (2022b), which optimizes\nseparatemetricswithoutensuringtheirtightness,ourapproachunifiesthesemeasuresunder\nD-DGap and provides a rigorous tightness guarantee.",
+      "size": 485,
+      "sentences": 5
+    },
+    {
+      "id": 37,
+      "content": "rtightness,ourapproachunifiesthesemeasuresunder\nD-DGap and provides a rigorous tightness guarantee. 2 Preliminaries\nLetX andY befinite-dimensionalEuclideanspaces. TheFenchelcoupling(Mertikopoulos\nand Sandholm, 2016; Mertikopoulos and Zhou, 2016) induced by a proper function φ is\ndefined as B (x,z) := φ(x)+φ⋆(z)−⟨z,x⟩, ∀(x,z) ∈ X ×X∗, where φ⋆ represents the\nφ\nconvex conjugate of φ, given by φ⋆(z) := sup {⟨z,x⟩−φ(x)}, and the bilinear map\nx∈X\n⟨·,·⟩: X∗×X → R denotes the canonical dual pairing.",
+      "size": 497,
+      "sentences": 3
+    },
+    {
+      "id": 38,
+      "content": ") := sup {⟨z,x⟩−φ(x)}, and the bilinear map\nx∈X\n⟨·,·⟩: X∗×X → R denotes the canonical dual pairing. Here, X∗ is the dual space of X. 4\n===  5 ===\nA Modular Algorithm for Non-Stationary OCCO\nFenchel coupling extends the concept of Bregman divergence to more complex primal-dual\nsettings. According to the Fenchel-Young inequality, we have B (x,z) ≥ 0, with equality\nφ\nholding if and only if z is a subgradient of φ at x. To simplify notation, we use xφ to denote\none such subgradient of φ at x.",
+      "size": 493,
+      "sentences": 5
+    },
+    {
+      "id": 39,
+      "content": "a subgradient of φ at x. To simplify notation, we use xφ to denote\none such subgradient of φ at x. By directly applying the definition of Fenchel coupling, we\nobtain B (x,yφ)+B (y,z)−B (x,z) = ⟨z−yφ,x−y⟩. A function φ is called µ-strongly\nφ φ φ\nconvex if B (x,yφ) ≥ µ ∥x−y∥2, ∀x,y ∈ X.\nφ 2\nThe standard simplex refers to the set of all non-negative vectors that sum to 1, defined\nas △ := {w ∈ Rd | ∥w∥ = 1}.",
+      "size": 407,
+      "sentences": 4
+    },
+    {
+      "id": 40,
+      "content": "ex refers to the set of all non-negative vectors that sum to 1, defined\nas △ := {w ∈ Rd | ∥w∥ = 1}. The clipped version modifies this by restricting the\nd + 1\nelements of w to lie within a predefined range, resulting in △α := {w ∈ Rd | ∥w∥ =\nd + 1\n1, wi ≥ α/d, ∀i = 1,2,··· ,d}, where α represents the clipping coefficient. The Kullback-\nLeibler (KL) divergence can be viewed as a specific case of Fenchel coupling, induced by\nthe negative entropy, a 1-strongly convex function.",
+      "size": 478,
+      "sentences": 3
+    },
+    {
+      "id": 41,
+      "content": "a specific case of Fenchel coupling, induced by\nthe negative entropy, a 1-strongly convex function. As a result, we have the inequality\nKL(w,u) ≥ 1 ∥w−u∥2, ∀w,u ∈ △ . 2 1 d\nWe use big O notation for asymptotic upper bounds and O(cid:101) to omit polylogarithmic\nterms. 3 Main Results\nIn this section, we first formalize the OCCO framework and outline assumptions. Subse-\nquently, we analyze the Adaptive Module, the Integration Module, and the Multi-Predictor\nAggregator in detail.",
+      "size": 481,
+      "sentences": 5
+    },
+    {
+      "id": 42,
+      "content": "analyze the Adaptive Module, the Integration Module, and the Multi-Predictor\nAggregator in detail. Finally, we elucidate the logical structure of our algorithm and high-\nlight its performance advantages. 3.1 Problem Formalization\nOCCO can be formalized as follows: At round t,\n• Actions: x-player chooses x ∈ X and y-player chooses y ∈ Y, where the feasible sets\nt t\n0 ∈ X ⊂ X and 0 ∈ Y ⊂ Y are both compact and convex.",
+      "size": 419,
+      "sentences": 3
+    },
+    {
+      "id": 43,
+      "content": "yer chooses y ∈ Y, where the feasible sets\nt t\n0 ∈ X ⊂ X and 0 ∈ Y ⊂ Y are both compact and convex. • Feedback: The environment feeds back f : X ×Y → R, where f is continuous and\nt t\nf (·,y) is convex in X for every y ∈ Y and f (x, ·) is concave in Y for every x ∈ X.\nt t\nThegoalistominimizeD-DGap. Similartopreviousstudiesinonlinelearning,weintroduce\nthe following standard assumptions. Assumption 1.",
+      "size": 401,
+      "sentences": 4
+    },
+    {
+      "id": 44,
+      "content": "ilartopreviousstudiesinonlinelearning,weintroduce\nthe following standard assumptions. Assumption 1. The diameter of X is denoted as D , and the diameter of Y is denoted\nX\nas D , that is, ∀x,x′ ∈ X, ∀y,y′ ∈ Y, the following inequalities hold:\nY\n∥x−x′∥ ≤ D , ∥y−y′∥ ≤ D . X Y\nAssumption 2. All payoff functions are bounded, and their subgradients are also bounded.",
+      "size": 362,
+      "sentences": 5
+    },
+    {
+      "id": 45,
+      "content": "≤ D . X Y\nAssumption 2. All payoff functions are bounded, and their subgradients are also bounded. Specifically, ∃M, G and G , such that ∀x ∈ X, ∀y ∈ Y and ∀t, the following inequalities\nX Y\nhold:\n|f (x,y)| ≤ M, ∥∇ f (x,y)∥ ≤ G , ∥∇ (−f )(x,y)∥ ≤ G . t x t X y t Y\n3.2 Adaptive Module\nBeforeintroducingtheAdaptiveModule,weestablishalowerboundforD-DGap,supported\nby the following proposition. 5\n===  6 ===\nMeng, Lei and Liu\nProposition 3 (D-DGap Lower Bound).",
+      "size": 458,
+      "sentences": 6
+    },
+    {
+      "id": 46,
+      "content": "ed\nby the following proposition. 5\n===  6 ===\nMeng, Lei and Liu\nProposition 3 (D-DGap Lower Bound). For any strategies adopted by the players, there\nexists a sequence of convex-concave payoff functions satisfying Assumption 2, along with a\ncomparator sequence whose path length is given by P =\n(cid:80)T (cid:0)\n∥u −u ∥+∥v −v ∥\n(cid:1)\n,\nT t=1 t t−1 t t−1\nsuch that P ≤ P. Under these conditions, the resulting D-DGap is guaranteed to be at\nT\n(cid:0)(cid:112) (cid:1)\nleast Ω (1+P)T .",
+      "size": 484,
+      "sentences": 3
+    },
+    {
+      "id": 47,
+      "content": "conditions, the resulting D-DGap is guaranteed to be at\nT\n(cid:0)(cid:112) (cid:1)\nleast Ω (1+P)T . Proof (Proof Sketch of Proposition 3) The D-DGap is composed of the sum of two in-\ndividual D-Regs. According to Theorem 2 of Zhang et al. (2018), in adversarial environ-\n(cid:0)(cid:112) (cid:1)\nments, no online algorithm can bound the individual D-Regs below Ω (1+Pu)T and\nΩ (cid:0)(cid:112) (1+Pv)T (cid:1) , respectively, where Pu ≥ (cid:80)T ∥u −u ∥ and Pv ≥ (cid:80)T ∥v −v ∥.",
+      "size": 482,
+      "sentences": 4
+    },
+    {
+      "id": 48,
+      "content": ")(cid:112) (1+Pv)T (cid:1) , respectively, where Pu ≥ (cid:80)T ∥u −u ∥ and Pv ≥ (cid:80)T ∥v −v ∥. t=1 t t−1 t=1 t t−1\nThisimpliesthattheD-DGaplowerboundcannotbelessthanthesumofthesetwobounds.",
+      "size": 193,
+      "sentences": 2
+    },
+    {
+      "id": 49,
+      "content": "−v ∥. t=1 t t−1 t=1 t t−1\nThisimpliesthattheD-DGaplowerboundcannotbelessthanthesumofthesetwobounds. To adapt to varying levels of non-stationarity and approach the D-DGap lower bound,\none can utilize a pair of ADER algorithms (Zhang et al., 2018) or ADER-like algorithms\nthat replace the base algorithm with implicit updates (Campolongo and Orabona, 2021)\nor incorporate optimistic strategies (Scroccaro et al., 2023). These methods align with the\nmeta-expert framework.",
+      "size": 470,
+      "sentences": 4
+    },
+    {
+      "id": 50,
+      "content": "optimistic strategies (Scroccaro et al., 2023). These methods align with the\nmeta-expert framework. The following proposition demonstrates the performance guar-\nantee when decomposing the OCCO problem into two OCO problems and running two\nindependent ADER or ADER-like algorithms. Proposition 4 (PerformancefortheAdaptiveModule). Consider running two independent\nADER or ADER-like algorithms, each designed to approximate the minimax optimal D-Reg.",
+      "size": 448,
+      "sentences": 5
+    },
+    {
+      "id": 51,
+      "content": "o independent\nADER or ADER-like algorithms, each designed to approximate the minimax optimal D-Reg. In round t, one algorithm outputs x and receives a convex loss function f (·,y ), while\nt t t\nthe other produces y and receives −f (x , ·).",
+      "size": 239,
+      "sentences": 2
+    },
+    {
+      "id": 52,
+      "content": "receives a convex loss function f (·,y ), while\nt t t\nthe other produces y and receives −f (x , ·). Under Assumptions 1 and 2, we have that\nt t t\n∀(u ,v ) ∈ X ×Y:\nt t\nT T\n(cid:88)(cid:16) (cid:17) (cid:88)(cid:16) (cid:17) (cid:0)(cid:112) (cid:1)\nf\nt\n(x\nt\n,v\nt\n)−f\nt\n(x\nt\n,y\nt\n) + f\nt\n(x\nt\n,y\nt\n)−f\nt\n(u\nt\n,y\nt\n) ≤ O(cid:101) (1+min{P\nT\n,C\nT\n})T ,\nt=1 t=1\nwhere C T = (cid:80)T t=1 (cid:0)(cid:13) (cid:13)x′ t −x′ t−1 (cid:13) (cid:13) + (cid:13) (cid:13)y t ′ −y t ′ −1 (cid:13) (cid:13) (cid:1) serves as the effective upper threshold of\nP , x′ = argmin f (x,y ), and y′ = argmax f (x ,y).",
+      "size": 593,
+      "sentences": 2
+    },
+    {
+      "id": 53,
+      "content": "d:1) serves as the effective upper threshold of\nP , x′ = argmin f (x,y ), and y′ = argmax f (x ,y). T t x∈X t t t y∈Y t t\nP represents the path length of the comparator sequence, reflecting the assumed level\nT\nof environmental non-stationarity. It ranges from 0 to linear growth, allowing for various\nscenarios. In contrast, C is a data-dependent measure that reflects the worst-case non-\nT\nstationarity observed during the interactions between the players and the environment.",
+      "size": 477,
+      "sentences": 4
+    },
+    {
+      "id": 54,
+      "content": "-case non-\nT\nstationarity observed during the interactions between the players and the environment. It serves as an effective upper threshold for P , as shown by the inequality f (x ,v ) −\nT t t t\nf (u ,y ) ≤ f (x ,y′) − f (x′,y ). After T rounds of the game, only those comparator\nt t t t t t t t t\nsequences with path lengths satisfying P ≤ C are considered meaningful.",
+      "size": 371,
+      "sentences": 3
+    },
+    {
+      "id": 55,
+      "content": "omparator\nt t t t t t t t t\nsequences with path lengths satisfying P ≤ C are considered meaningful. Unlike single-\nT T\nplayer setups, where C = (cid:80)T ∥x∗ − x∗ ∥ (with x∗ = argmin ℓ (x)), which depends\nT t=1 t t−1 t x t\nsolely on the environment, in two-player settings, C becomes algorithm-dependent. It\nT\ncaptures the mutual influence of the strategies adopted by both players.",
+      "size": 382,
+      "sentences": 3
+    },
+    {
+      "id": 56,
+      "content": "algorithm-dependent. It\nT\ncaptures the mutual influence of the strategies adopted by both players. The two ADER or ADER-like algorithms outlined in Proposition 4 operate indepen-\ndently, with each player’s output influencing the other’s loss function. This mutual depen-\ndence complicates further tightening of the D-DGap upper bound, particularly in favorable\n6\n===  7 ===\nA Modular Algorithm for Non-Stationary OCCO\nscenarios such as stationary or predictable environments.",
+      "size": 475,
+      "sentences": 4
+    },
+    {
+      "id": 57,
+      "content": "Modular Algorithm for Non-Stationary OCCO\nscenarios such as stationary or predictable environments. In the OCCO setting, two players\ncan coordinate strategies to better adapt to environmental dynamics. Consequently, the\noutputsx andy fromProposition4arenotdirectlyusedasthefinalstrategies. Instead,the\nt t\nmethod serves as an Adaptive Module, capable of handling diverse levels of non-stationarity.",
+      "size": 398,
+      "sentences": 4
+    },
+    {
+      "id": 58,
+      "content": "he\nt t\nmethod serves as an Adaptive Module, capable of handling diverse levels of non-stationarity. In the next section, we explore how the two players can further collaborate to refine their\nstrategies. 3.3 Integration Module\nTheobjectiveofthissectionistodesignanalgorithmthatnotonly1)automaticallyadapts\nto arbitrary comparator sequences but also 2) guarantees a D-DGap upper bound based\non prediction error.",
+      "size": 410,
+      "sentences": 3
+    },
+    {
+      "id": 59,
+      "content": "bitrary comparator sequences but also 2) guarantees a D-DGap upper bound based\non prediction error. To begin with, we first consider a simplified problem: how to achieve\nthese two objectives separately. For the first objective, simply running a pair of ADER\nor ADER-like algorithms is sufficient.",
+      "size": 296,
+      "sentences": 3
+    },
+    {
+      "id": 60,
+      "content": "tely. For the first objective, simply running a pair of ADER\nor ADER-like algorithms is sufficient. For the second objective, we need to explore the\nfollowing updates:\n(x ,y ) = argmin max η γ h (x,y)+γ B\n(cid:0) x,xϕ(cid:1)\n−η B\n(cid:0) y,yψ(cid:1)\n,\nt t x∈X y∈Y t t t t ϕ (cid:101)t t ψ (cid:101)t\nx = argmin η f (x,y )+B\n(cid:0) x,xϕ(cid:1)\n, (2)\n(cid:101)t+1 x∈X t t t ϕ (cid:101)t\ny = argmax γ f (x ,y)−B\n(cid:0) y,yψ(cid:1)\n,\n(cid:101)t+1 y∈Y t t t ψ (cid:101)t\nwhere h is an arbitrary convex-concave predictor, η > 0 and γ > 0 are learning rates.",
+      "size": 553,
+      "sentences": 3
+    },
+    {
+      "id": 61,
+      "content": "ψ (cid:101)t\nwhere h is an arbitrary convex-concave predictor, η > 0 and γ > 0 are learning rates. To\nt t t\nfacilitate our analysis, we assume that the regularizers ϕ and ψ are both 1-strongly con-\nvex and have Lipschitz-continuous gradients, and their Fenchel couplings satisfy Lipschitz\ncontinuity with respect to the first variable, i.e., ∃L ,L ,L ,L < +∞, ∀α,x,x′ ∈ X,\nϕ ψ B ϕ B ψ\n∀β,y,y′ ∈ Y:\n(cid:12) (cid:12)\n(cid:13) (cid:13)∇ϕ(x)−∇ϕ(x′) (cid:13) (cid:13) ≤ L ϕ (cid:13) (cid:13)x−x′(cid:13) (cid:13), (cid:12) (cid:12) B ϕ (x,αϕ)−B ϕ (x′,αϕ)(cid:12) (cid:12) ≤ L B ϕ (cid:13) (cid:13)x−x′(cid:13) (cid:13),\n(cid:12) (cid:12)\n(cid:13) (cid:13)∇ψ(y)−∇ψ(y′) (cid:13) (cid:13) ≤ L ψ (cid:13) (cid:13)y−y′(cid:13) (cid:13), (cid:12) (cid:12) B ψ (y,βψ)−B ψ (y′,βψ)(cid:12) (cid:12) ≤ L B ψ (cid:13) (cid:13)y−y′(cid:13) (cid:13).",
+      "size": 833,
+      "sentences": 2
+    },
+    {
+      "id": 62,
+      "content": "2) (cid:12) B ψ (y,βψ)−B ψ (y′,βψ)(cid:12) (cid:12) ≤ L B ψ (cid:13) (cid:13)y−y′(cid:13) (cid:13). Theseassumptionsareconsistentwithpreviousliterature(CampolongoandOrabona,2021;\nZhang et al., 2022b). Equation (2) can be seen as an optimistic variant of the proximal point method or as\nthe two-player optimistic counterpart of Campolongo and Orabona (2021). The following\nlemma establishes its performance guarantee. Lemma 5.",
+      "size": 425,
+      "sentences": 5
+    },
+    {
+      "id": 63,
+      "content": "Campolongo and Orabona (2021). The following\nlemma establishes its performance guarantee. Lemma 5. Under Assumptions 1 and 2, and let the predictor h satisfy Assumption 2.\nt\nSuppose there exists λ and µ, such that λ ≥\n(cid:80)T\n∥u −u ∥ and µ ≥\n(cid:80)T\n∥v −v ∥,\nt=1 t t−1 t=1 t t−1\nthen we may set learning rates as follows:\nη = L (D +λ)\n(cid:14)(cid:0)\nϵ+\n(cid:80)t−1 νx(cid:1)\n, γ = L (D +µ)\n(cid:14)(cid:0)\nϵ+\n(cid:80)t−1 νy(cid:1)\n,\nt B ϕ X τ=1 τ t B ψ Y τ=1 τ\n0 ≤ νx = f (x ,y )−h (x ,y )+h (x ,y )−f (x ,y )−B (cid:0) x ,xϕ(cid:1) /η ,\nt t t t t t t t (cid:101)t+1 t t (cid:101)t+1 t ϕ (cid:101)t+1 t t\n0 ≤ νy = f (x ,y )−h (x ,y )+h (x ,y )−f (x ,y )−B (cid:0) y ,yψ(cid:1) /γ ,\nt t t (cid:101)t+1 t t (cid:101)t+1 t t t t t t ψ (cid:101)t+1 t t\nwhere ϵ > 0 prevents initial learning rates from being infinite.",
+      "size": 818,
+      "sentences": 4
+    },
+    {
+      "id": 64,
+      "content": "t+1 t t t t t t ψ (cid:101)t+1 t t\nwhere ϵ > 0 prevents initial learning rates from being infinite. As a result, Equation (2)\nachieves\n(cid:32) (cid:40) T (cid:41)(cid:33)\n(cid:88) (cid:112)\nD-DGap(u ,v ) ≤ O min ρ(f ,h ), (1+λ+µ)T ,\n1:T 1:T t t\nt=1\n7\n===  8 ===\nMeng, Lei and Liu\nwhere ρ(f ,h ) = max |f (x,y)−h (x,y)| measures the distance between f and h ,\nt t x∈X,y∈Y t t t t\nmodeling the prediction error in round t.\nThe simplified problem outlined at the beginning of this section has now been effec-\ntively addressed.",
+      "size": 524,
+      "sentences": 2
+    },
+    {
+      "id": 65,
+      "content": "simplified problem outlined at the beginning of this section has now been effec-\ntively addressed. Specifically, deploying a pair of ADER or ADER-like algorithms enables\nautomatic adaptation to arbitrary comparator sequences while approximating the minimax\noptimal D-DGap. Additionally, leveraging Equation (2) ensures a prediction error-based\nD-DGap upper bound.",
+      "size": 363,
+      "sentences": 3
+    },
+    {
+      "id": 66,
+      "content": "D-DGap. Additionally, leveraging Equation (2) ensures a prediction error-based\nD-DGap upper bound. WenowfocusondesigningtheIntegrationModule,whichaimstocombinethestrengths\nof both worlds: harnessing the adaptive capabilities of ADER or ADER-like algorithms\nwhile simultaneously ensuring a prediction error-driven D-DGap upper bound. Achieving\nthis dual objective requires effectively integrating the strengths of both approaches into a\nunified framework.",
+      "size": 454,
+      "sentences": 4
+    },
+    {
+      "id": 67,
+      "content": "jective requires effectively integrating the strengths of both approaches into a\nunified framework. To address this challenge, we introduce a tailored variant of the meta-expert framework. Its components and design criteria are as follows:\n• Expert-Layer: Comprising two experts:\n– Adaptive Module: This expert generates the strategy pair (x ,y ) and is detailed\nt t\nin Proposition 4.",
+      "size": 384,
+      "sentences": 3
+    },
+    {
+      "id": 68,
+      "content": "ptive Module: This expert generates the strategy pair (x ,y ) and is detailed\nt t\nin Proposition 4. – Prediction-Error Expert: This expert produces the strategy pair (x ,y ) to guar-\n(cid:98)t (cid:98)t\nantee a prediction error-based D-DGap upper bound. Its update is referred to\nas the expert update.",
+      "size": 301,
+      "sentences": 3
+    },
+    {
+      "id": 69,
+      "content": "antee a prediction error-based D-DGap upper bound. Its update is referred to\nas the expert update. • Meta-Layer: The meta-layer produces weight parameters w = [w ,1 − w ]T and\nt t t\nω = [ω ,1−ω ]T, which balance the experts’ strategies, resulting in the outputs x =\nt t t t\n[x ,x ]w andy = [y ,y ]ω .",
+      "size": 300,
+      "sentences": 3
+    },
+    {
+      "id": 70,
+      "content": "ch balance the experts’ strategies, resulting in the outputs x =\nt t t t\n[x ,x ]w andy = [y ,y ]ω . Themeta-layerupdate(refertoasthemetaupdate)must\n(cid:98)t t t t (cid:98)t t t\nensurecompatibilitywithbothexpertswhilesimultaneouslyguaranteeingaprediction\nerror-driven static duality gap upper bound and maintaining minimax optimality. To fulfill the above requirements, we design both the expert update and meta update\nby modifying Equation (2).",
+      "size": 445,
+      "sentences": 3
+    },
+    {
+      "id": 71,
+      "content": "the above requirements, we design both the expert update and meta update\nby modifying Equation (2). Specifically: let the convex-concave predictor h serve as a hint\nt\nfor both players, define\n(cid:20) (cid:21) (cid:20) (cid:21)\nf (x,y), f (x,y ) h (x,y), h (x,y )\nA (x,y) = t t t , Λ (x,y) = t t t ,\nt f (x ,y), f (x ,y ) t h (x ,y), h (x ,y )\nt t t t t t t t t t\nand let w = [w,1−w]T, ω = [ω,1−ω]T, A = A (x ,y ), Λ = Λ (x ,y ).",
+      "size": 429,
+      "sentences": 2
+    },
+    {
+      "id": 72,
+      "content": "y), h (x ,y )\nt t t t t t t t t t\nand let w = [w,1−w]T, ω = [ω,1−ω]T, A = A (x ,y ), Λ = Λ (x ,y ). For the expert\nt t (cid:98)t (cid:98)t t t (cid:98)t (cid:98)t\nupdate:\nH (x,y;w,ω) = η γ wTΛ (x,y)ω+wγ B (cid:0) x,xϕ(cid:1) −ωη B (cid:0) y,yψ(cid:1) , (3a)\nt t t t t ϕ (cid:101)t t ψ (cid:101)t\n(x ,y ) = argmin max H (x,y;w ,ω ), (3b)\n(cid:98)t (cid:98)t x∈X y∈Y t t t\nx = argmin η A1,:(x,y )ω +B (cid:0) x,xϕ(cid:1) , (3c)\n(cid:101)t+1 x∈X t t (cid:98)t t ϕ (cid:101)t\ny = argmax γ wTA:,1(x ,y)−B (cid:0) y,yψ(cid:1) , (3d)\n(cid:101)t+1 y∈Y t t t (cid:98)t ψ (cid:101)t\n8\n===  9 ===\nA Modular Algorithm for Non-Stationary OCCO\nand for the meta update:\nW (w,ω;x,y) = θ ϑ wTΛ (x,y)ω+ϑ KL(w,w )−θ KL(ω,ω ), (4a)\nt t t t t (cid:101)t t (cid:101)t\n(w ,ω ) = argmin max W (w,ω;x ,y ), (4b)\nt t w∈△α ω∈△α t (cid:98)t (cid:98)t\n2 2\nw = argmin θ wTA ω +KL(w,w ), (4c)\n(cid:101)t+1 w∈△α t t t (cid:101)t\n2\nω = argmax ϑ wTA ω−KL(ω,ω ), (4d)\n(cid:101)t+1 ω∈△α t t t (cid:101)t\n2\nwhere η > 0, γ > 0, θ > 0 and ϑ > 0 are learning rates, and α = 2/T.",
+      "size": 1038,
+      "sentences": 2
+    },
+    {
+      "id": 73,
+      "content": "01)t+1 ω∈△α t t t (cid:101)t\n2\nwhere η > 0, γ > 0, θ > 0 and ϑ > 0 are learning rates, and α = 2/T. t t t t\nWe designate the aforementioned updates as the Integration Module. Crucially, the\nexpert advice (Equation 3b) and the meta-layer weights (Equation 4b) must be updated in\na coordinated manner. Specifically, the expert update requires access to the meta-layer’s\nweights to refine its recommendations, while the meta-layer update relies on the experts’\nadvicetoadjustitsweights.",
+      "size": 483,
+      "sentences": 4
+    },
+    {
+      "id": 74,
+      "content": "e its recommendations, while the meta-layer update relies on the experts’\nadvicetoadjustitsweights. Thisinterdependentupdatemechanismrepresentsasignificant\ndeparture from conventional meta-expert frameworks. We defer the discussion of the coordinated update methodology and focus first on how\nthese updates implement the functionality of the Integration Module. Specifically, Theo-\nrem6establishesthattheexpertupdateensuresapredictionerror-basedbound.",
+      "size": 451,
+      "sentences": 4
+    },
+    {
+      "id": 75,
+      "content": "n Module. Specifically, Theo-\nrem6establishesthattheexpertupdateensuresapredictionerror-basedbound. Theorem7\ndemonstratesthatthemeta-layerguaranteesapredictionerror-drivenstaticdualitygapup-\nper bound while maintaining minimax optimality. Finally, Theorem 8 and its proof confirm\nthat the meta-layer is compatible with both experts, simultaneously achieving a prediction\nerror-driven D-DGap upper bound and maintaining minimax optimality. Theorem 6 (Performance for the Expert Update).",
+      "size": 485,
+      "sentences": 5
+    },
+    {
+      "id": 76,
+      "content": "DGap upper bound and maintaining minimax optimality. Theorem 6 (Performance for the Expert Update). Under Assumptions 1 and 2, and let\nthe predictor h satisfy Assumption 2.",
+      "size": 172,
+      "sentences": 3
+    },
+    {
+      "id": 77,
+      "content": "ce for the Expert Update). Under Assumptions 1 and 2, and let\nthe predictor h satisfy Assumption 2. If the learning rates satisfy the following equations:\nt\nη = L D (T +1)\n(cid:14)(cid:0)\nϵ+\n(cid:80)t−1 δx(cid:1)\n, γ = L D (T +1)\n(cid:14)(cid:0)\nϵ+\n(cid:80)t−1 δy(cid:1)\n,\nt B ϕ X τ=1 τ t B ψ Y τ=1 τ\n0 ≤ δx = (cid:2) f (x ,y ), f (x ,y ) (cid:3) ω − (cid:2) h (x ,y ), h (x ,y ) (cid:3) ω\nt t (cid:98)t (cid:98)t t (cid:98)t t t t (cid:98)t (cid:98)t t (cid:98)t t t\n(cid:2) (cid:3) (cid:2) (cid:3)\n+ h (x ,y ), h (x ,y ) ω − f (x ,y ), f (x ,y ) ω ,\nt (cid:101)t+1 (cid:98)t t (cid:101)t+1 t t t (cid:101)t+1 (cid:98)t t (cid:101)t+1 t t\n0 ≤ δy = (cid:2) h (x ,y ), h (x ,y ) (cid:3) w − (cid:2) f (x ,y ), f (x ,y ) (cid:3) w\nt t (cid:98)t (cid:98)t t t (cid:98)t t t (cid:98)t (cid:98)t t t (cid:98)t t\n(cid:2) (cid:3) (cid:2) (cid:3)\n+ f (x ,y ), f (x ,y ) w − h (x ,y ), h (x ,y ) w ,\nt (cid:98)t (cid:101)t+1 t t (cid:101)t+1 t t (cid:98)t (cid:101)t+1 t t (cid:101)t+1 t\nwhere ϵ > 0 prevents initial learning rates from being infinite.",
+      "size": 1043,
+      "sentences": 3
+    },
+    {
+      "id": 78,
+      "content": ")t (cid:101)t+1 t t (cid:101)t+1 t\nwhere ϵ > 0 prevents initial learning rates from being infinite. Then the following inequality\nholds:\nT T (cid:32) T (cid:33)\n(cid:88)(cid:16) f (x ,v )−wTA:,1 (cid:17) + (cid:88)(cid:16) A1,:ω −f (u ,y ) (cid:17) ≤ O (cid:88) ρ(f ,h ) . t t t t t t t t t t t t\nt=1 t=1 t=1\nTheorem 7 (Performance for the Meta Update). Under Assumption 2, let the predictor\nh satisfy Assumption 2, and assume that T ≥ 2.",
+      "size": 438,
+      "sentences": 4
+    },
+    {
+      "id": 79,
+      "content": "Meta Update). Under Assumption 2, let the predictor\nh satisfy Assumption 2, and assume that T ≥ 2. If the learning rates satisfy the following\nt\ninequalities:\nθ = (lnT) (cid:14)(cid:0) ϵ+ (cid:80)t−1 ∆x(cid:1) , 0 ≤ ∆x = (w −w )T(A −Λ )ω −KL(w ,w )/θ ,\nt τ=1 τ t t (cid:101)t+1 t t t (cid:101)t+1 t t\nϑ = (lnT) (cid:14)(cid:0) ϵ+ (cid:80)t−1 ∆y(cid:1) , 0 ≤ ∆y = −wT(A −Λ )(ω −ω )−KL(ω ,ω )/ϑ ,\nt τ=1 τ t t t t t (cid:101)t+1 (cid:101)t+1 t t\n9\n===  10 ===\nMeng, Lei and Liu\nwhere ϵ > 0 prevents initial learning rates from being infinite.",
+      "size": 539,
+      "sentences": 3
+    },
+    {
+      "id": 80,
+      "content": "t\n9\n===  10 ===\nMeng, Lei and Liu\nwhere ϵ > 0 prevents initial learning rates from being infinite. Then the meta layer of the\nIntegration Module enjoys the following inequality:\nT (cid:32) (cid:40) T (cid:41)(cid:33)\n(cid:88)(cid:16) (cid:17) (cid:88) (cid:112)\nwTA v−uTA ω ≤ O min ρ(f ,h ), (1+lnT)T , ∀u,v ∈ △ . t t t t t t 2\nt=1 t=1\nWe stress that the proofs of Theorems 6 and 7 does not follow directly from an appli-\ncation of Lemma 5, although they are similar in form.",
+      "size": 475,
+      "sentences": 3
+    },
+    {
+      "id": 81,
+      "content": "and 7 does not follow directly from an appli-\ncation of Lemma 5, although they are similar in form. Proofs are reported in Appendix A. Regarding learning rates configurations: Since the expert update primarily focuses on the\nprediction error-type upper bound, we establish a preset upper bound of the path length of\ncomparatorsequencesproportionaltotimehorizonT todeterminethelearningratesη and\nt\nγ .",
+      "size": 400,
+      "sentences": 3
+    },
+    {
+      "id": 82,
+      "content": "path length of\ncomparatorsequencesproportionaltotimehorizonT todeterminethelearningratesη and\nt\nγ . As the meta update specifically addresses the static duality gap, we set time-invariant\nt\ncomparator sequences (with its path length being 0) when deriving the learning rates θ\nt\nand ϑ . t\nTheorem 8 (D-DGapfortheIntegrationModule).",
+      "size": 331,
+      "sentences": 3
+    },
+    {
+      "id": 83,
+      "content": "being 0) when deriving the learning rates θ\nt\nand ϑ . t\nTheorem 8 (D-DGapfortheIntegrationModule). Under the settings of Proposition 4 and\nTheorems 6 and 7, the Integration Module achieves the following D-DGap:\n(cid:32) (cid:40) (cid:88) T (cid:113) (cid:0) (cid:1) (cid:41)(cid:33)\nD-DGap(u\n1:T\n,v\n1:T\n) ≤ O(cid:101) min ρ(f\nt\n,h\nt\n), 1+min{P\nT\n,C\nT\n} T .",
+      "size": 356,
+      "sentences": 3
+    },
+    {
+      "id": 84,
+      "content": "(cid:1) (cid:41)(cid:33)\nD-DGap(u\n1:T\n,v\n1:T\n) ≤ O(cid:101) min ρ(f\nt\n,h\nt\n), 1+min{P\nT\n,C\nT\n} T . t=1\nProof By employing the prediction-error expert, the D-DGap can be equivalently written\nas:\nD-DGap(u ,v )\n1:T 1:T\nT (cid:18) (cid:18) (cid:20) (cid:21) (cid:19) (cid:19)\n= (cid:88) (cid:16) f (x ,v )−wTA:,1 (cid:17) + wTA 1 −[1,0]A ω + (cid:16) A1,:ω −f (u ,y ) (cid:17) . t t t t t t t 0 t t t t t t t\nt=1\nInvoking Theorems 6 and 7 then yields\n(cid:32) T (cid:33)\n(cid:88)\nD-DGap ≤ O ρ(f ,h ) .",
+      "size": 497,
+      "sentences": 3
+    },
+    {
+      "id": 85,
+      "content": "t t t\nt=1\nInvoking Theorems 6 and 7 then yields\n(cid:32) T (cid:33)\n(cid:88)\nD-DGap ≤ O ρ(f ,h ) . (5)\nT t t\nt=1\nMoreover, by leveraging the adaptive module we obtain the following upper bound:\nD-DGap(u ,v )\n1:T 1:T\nT (cid:18) (cid:18) (cid:20) (cid:21) (cid:19) (cid:19)\n(cid:88) (cid:16) (cid:17) 0 (cid:16) (cid:17)\n≤ f (x ,v )−f (x ,y ) + wTA −[0,1]A ω + f (x ,y )−f (u ,y ) .",
+      "size": 380,
+      "sentences": 2
+    },
+    {
+      "id": 86,
+      "content": "(cid:16) (cid:17) 0 (cid:16) (cid:17)\n≤ f (x ,v )−f (x ,y ) + wTA −[0,1]A ω + f (x ,y )−f (u ,y ) . t t t t t t t t 1 t t t t t t t t\nt=1\nApplying Proposition 4 together with Theorem 7 gives\n(cid:16)(cid:112) (cid:17)\nD-DGap\nT\n≤ O(cid:101) (1+min{P\nT\n,C\nT\n})T . (6)\nCombining Equations (5) and (6) yields the claimed result. Having analyzed the Integration Module’s functionality, we now introduce our joint\nsolution method for Equations (3b) and (4b).",
+      "size": 452,
+      "sentences": 4
+    },
+    {
+      "id": 87,
+      "content": "ion Module’s functionality, we now introduce our joint\nsolution method for Equations (3b) and (4b). The following theorem guarantees that this\ncoupled system admits a unique solution. 10\n===  11 ===\nA Modular Algorithm for Non-Stationary OCCO\nTheorem 9. There exists a unique solution to the coupled system given by Equations (3b)\nand (4b).",
+      "size": 340,
+      "sentences": 4
+    },
+    {
+      "id": 88,
+      "content": "O\nTheorem 9. There exists a unique solution to the coupled system given by Equations (3b)\nand (4b). Proof We first observe that the updates in Equations (3b) and (4b) can be written as a\nfour-player “best-response” game:\nx = argmin η wTΛ (x,y )ω +w B (cid:0) x,xϕ(cid:1) ,\n(cid:98)t x∈X t t t (cid:98)t t t ϕ (cid:101)t\ny = argmin −γ wTΛ (x ,y)ω +ω B (cid:0) y,yψ(cid:1) ,\n(cid:98)t y∈Y t t t (cid:98)t t t ψ (cid:101)t\nw = argmin θ wTΛ ω +KL(w,w ),\nt w∈[T−1,1−T−1],w=[w,1−w]⊤ t t t (cid:101)t\nω = argmin −ϑ wTΛ ω+KL(ω,ω ),\nt ω∈[T−1,1−T−1],ω=[ω,1−ω]⊤ t t t (cid:101)t\nwhere w = [w ,1−w ]T, ω = [ω ,1−ω ]T. Next, define the joint decision vector x =\nt t t t t t\n[x,y,w,ω]⊤ ∈ K, where K = X ×Y ×[T−1,1−T−1]×[T−1,1−T−1] is compact convex,\nand define the operator\n  ℓ (x) = η wTΛ (x,y)ω/w+B (cid:0) x,xϕ(cid:1) ,\n∇\nx\nℓ\n1\n(x) 1 t t ϕ (cid:101)t\n∇ ℓ (x) ℓ (x) = −γ wTΛ (x,y)ω/ω+B (cid:0) y,yψ(cid:1) ,\nG(x) =  y 2 , where 2 t t ψ (cid:101)t (7)\n  ∇ w ℓ 3 (x)  ℓ 3 (x) = θ t wTΛ t (x,y)ω+KL(w,w (cid:101)t ),\n∇ ω ℓ 4 (x) ℓ (x) = −ϑ wTΛ (x,y)ω+KL(ω,ω ),\n4 t t (cid:101)t\nwith w = [w,1−w]T and ω = [ω,1−ω]T. By construction, each ℓ is 1-strongly convex\ni\nin its own coordinate, so G is 1-strongly monotone with respect to the norm ∥x∥2 =\n∥x∥2 + ∥y∥2 + w2 + ω2.",
+      "size": 1261,
+      "sentences": 3
+    },
+    {
+      "id": 89,
+      "content": "own coordinate, so G is 1-strongly monotone with respect to the norm ∥x∥2 =\n∥x∥2 + ∥y∥2 + w2 + ω2. Hence, the Browder-Minty theorem (Brezis, 2011) guarantees a\nunique point x∗ ∈ K satisfying the variational inequality (VI):\n⟨G(x∗), x−x∗⟩ ≥ 0, ∀x ∈ K.\nBy the block-structure of G, this x∗ = [x ,y ,w ,ω ]⊤ coincides with the unique Nash equi-\n(cid:98)t (cid:98)t t t\nlibrium of the “best-response” game, and thus solves Equations (3b) and (4b). Remark 10.",
+      "size": 454,
+      "sentences": 3
+    },
+    {
+      "id": 90,
+      "content": "d:98)t t t\nlibrium of the “best-response” game, and thus solves Equations (3b) and (4b). Remark 10. Browder-Minty Theorem (Brezis, 2011) : Let K be a nonempty compact\nconvex set, and let G be continuous and µ-strongly monotone defined on K, i.e.,\n(cid:10) G(x)−G(x′), x−x′(cid:11) ≥ µ (cid:13) (cid:13)x−x′(cid:13) (cid:13) 2 , ∀x,x′ ∈ K,\nforsomeµ > 0.",
+      "size": 352,
+      "sentences": 3
+    },
+    {
+      "id": 91,
+      "content": "0) G(x)−G(x′), x−x′(cid:11) ≥ µ (cid:13) (cid:13)x−x′(cid:13) (cid:13) 2 , ∀x,x′ ∈ K,\nforsomeµ > 0. Thenthereexistsa uniquepointx∗ ∈ K satisfyingthevariationalinequality\n⟨G(x∗), x−x∗⟩ ≥ 0, ∀x ∈ K.\nNow finding the solution to Equations (3b) and (4b) reduces to identifying a point\nx∗ that satisfies the corresponding VI.",
+      "size": 319,
+      "sentences": 2
+    },
+    {
+      "id": 92,
+      "content": "n to Equations (3b) and (4b) reduces to identifying a point\nx∗ that satisfies the corresponding VI. Since the predictor h is under our control, we\nt\nassume it has a Lipschitz-continuous gradient (see Assumption 11), which in turn ensures\nthat the operator G is Lipschitz continuous (see Proposition 12). Under Assumption 11,\nwe can invoke Algorithm 1 — originally proposed by Nesterov and Scrimali (2006) —\nto approximate x∗.",
+      "size": 425,
+      "sentences": 3
+    },
+    {
+      "id": 93,
+      "content": "e can invoke Algorithm 1 — originally proposed by Nesterov and Scrimali (2006) —\nto approximate x∗. This method guarantees a global linear convergence rate (refer to\nProposition 13). 11\n===  12 ===\nMeng, Lei and Liu\nAlgorithm 1 Solving Equations (3b) and (4b)\n1: Require: X and Y satisfy Assumption 1.",
+      "size": 301,
+      "sentences": 3
+    },
+    {
+      "id": 94,
+      "content": ", Lei and Liu\nAlgorithm 1 Solving Equations (3b) and (4b)\n1: Require: X and Y satisfy Assumption 1. Predictor h t satisfies Assumption 11\n2: Initialize: y 0 ∈ K = X ×Y ×[T−1,1−T−1]×[T−1,1−T−1], λ 0 = 1, k = 0\n3: Calculate G(x) using Equation (7) or Equation (25), and set L via Equation (8)\n4: repeat\n5: Update x k = argmin x∈K (cid:80)k i=0 λ i (cid:0) ⟨G(y i ),x⟩+∥y i −x∥2/2 (cid:1)\n6: Update y k+1 = argmin x∈K ⟨G(x k ),x⟩+L∥x−x k ∥2/2\n7: Update λ k+1 = L 1 (cid:80)k i=0 λ i\n8: k ← k+1\n9: until (cid:0) L (cid:1)k/2 ↓ 0\nL+1\n10: Output: [x (cid:98)t ,y (cid:98)t ,w t ,ω t ]⊤ ← (cid:0)(cid:80)k i=0 λ i (cid:1)−1(cid:80)k i=0 λ i y i\nAssumption 11.",
+      "size": 652,
+      "sentences": 2
+    },
+    {
+      "id": 95,
+      "content": ",y (cid:98)t ,w t ,ω t ]⊤ ← (cid:0)(cid:80)k i=0 λ i (cid:1)−1(cid:80)k i=0 λ i y i\nAssumption 11. All predictors have Lipschitz-continuous gradients.",
+      "size": 150,
+      "sentences": 2
+    },
+    {
+      "id": 96,
+      "content": "i (cid:1)−1(cid:80)k i=0 λ i y i\nAssumption 11. All predictors have Lipschitz-continuous gradients. Specifically, there\nexist finite constants L , L , L , and L , such that ∀x,x′ ∈ X, ∀y,y′ ∈ Y, and ∀t:\nxx xy yx yy\n∥∇\nx\nh\nt\n(x,y)−∇\nx\nh\nt\n(x′,y′)∥ ≤ L\nxx\n(cid:13) (cid:13)x−x′(cid:13) (cid:13)+L\nxy\n(cid:13) (cid:13)y−y′(cid:13) (cid:13),\n∥∇\ny\n(−h\nt\n)(x,y)−∇\ny\n(−h\nt\n)(x′,y′)∥ ≤ L\nyx\n(cid:13) (cid:13)x−x′(cid:13) (cid:13)+L\nyy\n(cid:13) (cid:13)y−y′(cid:13) (cid:13). Proposition 12.",
+      "size": 482,
+      "sentences": 4
+    },
+    {
+      "id": 97,
+      "content": "(cid:13) (cid:13)x−x′(cid:13) (cid:13)+L\nyy\n(cid:13) (cid:13)y−y′(cid:13) (cid:13). Proposition 12. Under Assumption 11, G is Lipschitz continuous, that is,\n(cid:13) (cid:13)G(x)−G(x′) (cid:13) (cid:13) ≤ L (cid:13) (cid:13)x−x′(cid:13) (cid:13), ∀x,x′ ∈ K,\nwhere the Lipschitz constant L is given by\n(cid:113)\nL = max{C ,C ,C ,C }, (8)\nx y w ω\nwith C = 4 (cid:0) (η L +L )2+γ2L2 +(θ2+4ϑ2)G2 (cid:1) , C = 4 (cid:0) (γ L +L )2+θ2L2 +(ϑ2+\nx t xx ϕ t yx t t X y t yy ψ t xy t\n4θ2)G2 (cid:1) , C = 2γ2L2 D2 +4ϑ2C, C = 2η2L2 D2 +4θ2C, and C = min (cid:8) D2 (L D +\nt Y w t yx X t ω t xy Y t X xx X\nL D )2, D2(L D +L D )2(cid:9) +T2.",
+      "size": 628,
+      "sentences": 3
+    },
+    {
+      "id": 98,
+      "content": ", and C = min (cid:8) D2 (L D +\nt Y w t yx X t ω t xy Y t X xx X\nL D )2, D2(L D +L D )2(cid:9) +T2. xy Y Y yx X yy Y\nProposition 13. Let x∗ = [x ,y ,w ,ω ]⊤ be the solution to Equations (3b) and (4b). (cid:98)t (cid:98)t t t\nSuppose Algorithm 1 has performed k rounds of iterations. Then its output satisfies\n(cid:13) (cid:13)\n(cid:13) (cid:18) (cid:88)k (cid:19)−1 (cid:88) k (cid:13) (cid:18) L (cid:19)k/2\n(cid:13)x∗− λ λ y (cid:13) ≤ ∥G(y )∥ .",
+      "size": 447,
+      "sentences": 5
+    },
+    {
+      "id": 99,
+      "content": "d:88)k (cid:19)−1 (cid:88) k (cid:13) (cid:18) L (cid:19)k/2\n(cid:13)x∗− λ λ y (cid:13) ≤ ∥G(y )∥ . (cid:13) (cid:13) i=0 i i i(cid:13) (cid:13) 0 L+1\ni=0\nThe proof of Proposition 12 is provided in Appendix A. Proposition 13 follows directly\nfrom Nesterov and Scrimali (2006) by setting the strong-monotonicity constant µ = 1. 3.4 Multi-Predictor Aggregator\nTheoutputoftheintegratedmoduleachievesminimaxoptimalityandeffectivelyreducesthe\nD-DGap when using an accurate predictor sequence.",
+      "size": 487,
+      "sentences": 4
+    },
+    {
+      "id": 100,
+      "content": "achievesminimaxoptimalityandeffectivelyreducesthe\nD-DGap when using an accurate predictor sequence. However, relying on a single predictor\nsequence limits the algorithm’s adaptability to different environments. To address this,\nwe consider having d available predictor sequences, each potentially derived from distinct\nmodels of the underlying environment.",
+      "size": 356,
+      "sentences": 3
+    },
+    {
+      "id": 101,
+      "content": "e predictor sequences, each potentially derived from distinct\nmodels of the underlying environment. Our goal is to enhance the Integration Module by\n12\n===  13 ===\nA Modular Algorithm for Non-Stationary OCCO\nsupporting multiple predictors, enabling it to retain minimax optimality while dynamically\nadapting to the most effective predictor sequence across these models.",
+      "size": 369,
+      "sentences": 2
+    },
+    {
+      "id": 102,
+      "content": "optimality while dynamically\nadapting to the most effective predictor sequence across these models. The Hedge algorithm is a well-established no-regret algorithm, known for its ability to\nperform consistently close to the best expert’s strategy over time. This property makes it\nparticularlyeffectiveinscenariosinvolvingmultiplepredictors. Buildingonthisfoundation,\nwe designed the Multi-Predictor Aggregator using the Hedge algorithm.",
+      "size": 435,
+      "sentences": 4
+    },
+    {
+      "id": 103,
+      "content": "rs. Buildingonthisfoundation,\nwe designed the Multi-Predictor Aggregator using the Hedge algorithm. Ateachroundt, theaggregatortakesdavailablepredictors, denotedas{h1,h2,··· ,hd},\nt t t\nand outputs a combined predictor h = (cid:80)d ξkhk to the Integration Module. Here, the\nt k=1 t t\nweight vector ξ = [ξ1,ξ2,··· ,ξd]T is computed using the clipped Hedge algorithm.",
+      "size": 366,
+      "sentences": 4
+    },
+    {
+      "id": 104,
+      "content": "re, the\nt k=1 t t\nweight vector ξ = [ξ1,ξ2,··· ,ξd]T is computed using the clipped Hedge algorithm. Specif-\nt t t t\nically, the weights are updated by solving the following optimization problem:\nξ = arg min ζ ⟨L ,ξ⟩+KL(ξ,ξ ),\nt+1 t t t (9)\nξ∈△a\nd\nwhere a = d/T, ζ is the learning rate, and L denotes the loss vector:\nt t\n(cid:12) (cid:12)\nL = [L1,L2,··· ,Ld]T, Lk = max (cid:12)f (x,y)−hk(x,y)(cid:12).",
+      "size": 402,
+      "sentences": 2
+    },
+    {
+      "id": 105,
+      "content": "loss vector:\nt t\n(cid:12) (cid:12)\nL = [L1,L2,··· ,Ld]T, Lk = max (cid:12)f (x,y)−hk(x,y)(cid:12). t t t t t (cid:12) t t (cid:12)\nx∈{x (cid:98)t,xt,x (cid:101)t+1},y∈{y (cid:98)t,y\nt\n,y (cid:101)t+1}\nThe following theorem states that the Multi-Predictor Aggregator effectively provides\nmultiple predictor support for the Integration Module. Theorem 14 (D-DGap for the Integration Module with a Multi-Predictor Aggregator).",
+      "size": 423,
+      "sentences": 3
+    },
+    {
+      "id": 106,
+      "content": "tegration Module. Theorem 14 (D-DGap for the Integration Module with a Multi-Predictor Aggregator). Assume the payoff function f and all predictors {h1,h2,··· ,hd} satisfy Assumption 2. Let\nt t t t\nT ≥ d. If the Multi-Predictor Aggregator updates its learning rate according to the following\nequations:\nζ = (lnT)\n(cid:14)(cid:0)\nϵ+\n(cid:80)t−1\n∆\n(cid:1)\n, ϵ > 0, 0 ≤ ∆ =\n(cid:10)\nL ,ξ −ξ\n(cid:11)\n−KL(ξ ,ξ )/ζ .",
+      "size": 411,
+      "sentences": 4
+    },
+    {
+      "id": 107,
+      "content": "(cid:14)(cid:0)\nϵ+\n(cid:80)t−1\n∆\n(cid:1)\n, ϵ > 0, 0 ≤ ∆ =\n(cid:10)\nL ,ξ −ξ\n(cid:11)\n−KL(ξ ,ξ )/ζ . t τ=1 τ t t t t+1 t+1 t t\nThen, the D-DGap upper bound for the Integration Module can be enhanced as follows:\n(cid:32) (cid:40) T (cid:41)(cid:33)\n(cid:88) (cid:112)\nD-DGap(u\n1:T\n,v\n1:T\n) ≤ O(cid:101) min min ρ(f\nt\n,hk\nt\n), (1+min{P\nT\n,C\nT\n})T .",
+      "size": 344,
+      "sentences": 2
+    },
+    {
+      "id": 108,
+      "content": "(cid:88) (cid:112)\nD-DGap(u\n1:T\n,v\n1:T\n) ≤ O(cid:101) min min ρ(f\nt\n,hk\nt\n), (1+min{P\nT\n,C\nT\n})T . k∈{1,2,···,d}\nt=1\nThe clipped Hedge equivalent to the following update:\n(cid:28) (cid:29)\nξ\nξ = arg min ln , ξ ,\nt+1 ξ∈△a d ξ t ·exp(−ζ t L t )\nThus, an efficient solution is attainable by minor adjustments to the algorithm depicted in\nFigure 3 of Herbster and Warmuth (2001).",
+      "size": 375,
+      "sentences": 2
+    },
+    {
+      "id": 109,
+      "content": "tainable by minor adjustments to the algorithm depicted in\nFigure 3 of Herbster and Warmuth (2001). 3.5 Structure and Advantages\nIn the previous sections, we analyzed the Adaptive Module, Integration Module, and Multi-\nPredictor Aggregator individually. To clarify how these modules work together to form the\noverall algorithm, we present a structural detail (see Figure 2) and accompanying pseu-\ndocode (see Algorithm 2).",
+      "size": 422,
+      "sentences": 3
+    },
+    {
+      "id": 110,
+      "content": "thm, we present a structural detail (see Figure 2) and accompanying pseu-\ndocode (see Algorithm 2). 13\n===  14 ===\nMeng, Lei and Liu\n(cid:40)\nft(·,yt) −ft(xt,·) Feedback\nAdaptive\nADERorADER-likealgorithm ADERorADER-likealgorithm\nModule\nIntegration (cid:40)\nx\nE\nt\nquations(3b)to(3d)a\n(x\nnd\nt,y\n(4 t\n)\nb)to(4d),wit\ny\nh\nt\n(x(cid:98)t,y(cid:98)t),(xt,y t ) (cid:80) xt=[x(cid:98)t,xt]wt Environment\nModule\n(cid:40)\nft Equations(3b)and(4b)\nh\nso\nt\nl\n=\nve\n(cid:80)\ndv\nd k\ni\n=\na\n1\nA\nξ t k\nlg\nh\no\nk t\nrithm1\n(wt,ωt)\nyt=[y(cid:98)t,y\nt\n]ωt\nMulti-Predictor\nEquation(9) Predictors{h1,h2,···,hd}\nAggregator t t t\nLt Feedback\nFigure 2: Structural Detail of Our Modular Algorithm.",
+      "size": 665,
+      "sentences": 2
+    },
+    {
+      "id": 111,
+      "content": "rs{h1,h2,···,hd}\nAggregator t t t\nLt Feedback\nFigure 2: Structural Detail of Our Modular Algorithm. Algorithm 2 Pseudocode for Our Modular Algorithm\n1: Require: X and Y satisfy Assumption 1. All payoff functions satisfy Assumption 2.",
+      "size": 233,
+      "sentences": 3
+    },
+    {
+      "id": 112,
+      "content": "ular Algorithm\n1: Require: X and Y satisfy Assumption 1. All payoff functions satisfy Assumption 2. All predictors satisfy Assumptions 2 and 11\n2: Initialize: x (cid:101)1 , y (cid:101)1 , w (cid:101)1 , ω (cid:101)1 , ξ 1 and (x 1 ,y 1 )\n3: for t ← 1 to T do\n4: Receive d predictors h1 t ,h2 t ,··· ,hd t and compute h t = (cid:80)d k=1 ξ t khk t\n5: Obtain (x (cid:98)t ,y (cid:98)t ) and (w t ,ω t ) via Algorithm 1\n6: Output x t = [x (cid:98)t ,x t ]w t , y t = [y (cid:98)t ,y t ]ω t , and then observe f t\n7: Update x (cid:101)t+1 , y (cid:101)t+1 , w (cid:101)t+1 and ω (cid:101)t+1 using Equations (3c), (3d), (4c) and (4d)\n8: Update ξ according to Equation (9)\nt+1\n9: Update (x t+1 ,y t+1 ) by running two ADER or ADER-like algorithms\n10: end for\nTheorem14providestheD-DGapupperboundguaranteefortheentirealgorithm,which\ncan be rearranged as follows:\nD-DGap(u\n1:T\n,v\n1:T\n) ≤ O(cid:101) (cid:16) min (cid:110) min (cid:8) V\nT\n1, ··· , V\nT\nd(cid:9) , (cid:112) (1+min{P\nT\n,C\nT\n})T (cid:111)(cid:17) ,\n(10)\n(cid:124) (cid:123)(cid:122) (cid:125) (cid:124) (cid:123)(cid:122) (cid:125)\n(10a) (10b)\nwhere Vk = (cid:80)T ρ(f ,hk) represents the cumulative prediction error of the k-th predictor.",
+      "size": 1196,
+      "sentences": 3
+    },
+    {
+      "id": 113,
+      "content": "0b)\nwhere Vk = (cid:80)T ρ(f ,hk) represents the cumulative prediction error of the k-th predictor. T t=1 t t\nThe Adaptive Module ensures a minimax-optimal bound, as given by Equation (10b),\nallowing the algorithm to adapt to varying levels of non-stationarity. The Multi-Predictor\nAggregator provides the bound in Equation (10a), ensuring that if any one predictor mod-\nels the environment well, the algorithm achieves a sharp O(cid:101)(1) D-DGap.",
+      "size": 449,
+      "sentences": 3
+    },
+    {
+      "id": 114,
+      "content": "y one predictor mod-\nels the environment well, the algorithm achieves a sharp O(cid:101)(1) D-DGap. This acts as an\nautomatic selection mechanism for the best predictor. The Integration Module combines both components, ensuring adaptability to dynamic\nenvironments while effectively tracking the best predictor. It guarantees near-optimal per-\nformance across different settings, with any further improvement limited to at most a loga-\nrithmicfactor.",
+      "size": 450,
+      "sentences": 4
+    },
+    {
+      "id": 115,
+      "content": "e across different settings, with any further improvement limited to at most a loga-\nrithmicfactor. Themodulardesignallowsforeasyreplacementofcomponentsthatregulate\nadaptivity and the integration of “side knowledge” from other predictors.",
+      "size": 238,
+      "sentences": 2
+    },
+    {
+      "id": 116,
+      "content": "tofcomponentsthatregulate\nadaptivity and the integration of “side knowledge” from other predictors. Unlike the Multi-Predictor Aggregator, which applies to both OCCO and OCO, the\nIntegrationModule’sinterdependentupdatemechanismisspecifictoOCCO.Thisisbecause\ndecomposing the D-DGap in OCCO requires a more intricate approach, as demonstrated in\nthe proof of Theorem 8.",
+      "size": 367,
+      "sentences": 2
+    },
+    {
+      "id": 117,
+      "content": "g the D-DGap in OCCO requires a more intricate approach, as demonstrated in\nthe proof of Theorem 8. In contrast, in OCO, D-Reg can be directly decomposed into the\n14\n===  15 ===\nA Modular Algorithm for Non-Stationary OCCO\nTable 1: Four Environment Settings. In this table, the saddle point (x∗,y∗) is expressed in\nt t\nthe complex form p∗ = x∗+iy∗, where i is the imaginary unit, satisfying i2 = −1. t t t\nz (t) = ln(1+t), z (t) = lnln(e+t).",
+      "size": 440,
+      "sentences": 4
+    },
+    {
+      "id": 118,
+      "content": "∗+iy∗, where i is the imaginary unit, satisfying i2 = −1. t t t\nz (t) = ln(1+t), z (t) = lnln(e+t). As t increases, the growth rates of both z\n1 2 1\nand z gradually decelerate. ε ∼ U(0,1) is random variable that follows a uniform\n2\ndistribution on the interval [0,1], and φ ∼ N(π,1) is a random angle that follows\na Gaussian distribution with mean π.",
+      "size": 350,
+      "sentences": 4
+    },
+    {
+      "id": 119,
+      "content": "interval [0,1], and φ ∼ N(π,1) is a random angle that follows\na Gaussian distribution with mean π. Case I II III IV\nx∗ t +iy t ∗ 1 3 z 2 (t)eiz1(t) 3 1z 2 (t)ei2 3 πt+iz2(t) 1 2 e 1 7 (ε+i2πt) 1 2 ei(φ+arg(xt+iyt))\n0.5 𝑌 0.5 𝑌 0.5 𝑌 0.5 𝑌 (𝑥𝑡,𝑦𝑡)\nTrajectories 𝑋 𝑋 𝑋 𝜑 𝑋\n−0.5 0.5 1 −0.5 0.5 1 −0.5 0.5 −0.5 0.5\n−0.5 −0.5 −0.5 (𝑥∗ 𝑡,𝑦∗ 𝑡 − ) 0.5\nProperty ρ(f t ,f t−1 ) → 0 ρ(f t ,f t−3 ) → 0 (cid:12) (cid:12)p∗ t −p∗ t−7 (cid:12) (cid:12) ≤ 1− 2 e1/7 Adversarial\nmeta-layer regret and the individual regret of any expert.",
+      "size": 521,
+      "sentences": 2
+    },
+    {
+      "id": 120,
+      "content": "cid:12) (cid:12) ≤ 1− 2 e1/7 Adversarial\nmeta-layer regret and the individual regret of any expert. Thus, for OCO, it suffices to add\nan extra expert in ADER to obtain a prediction error-based upper bound while replacing\nthe meta-layer algorithm with optimistic clipped Hedge. 4 Experiments\nThissectionexperimentallyvalidatestheeffectivenessofouralgorithm,comparingitagainst\nthe algorithm proposed by Zhang et al. (2022b) and a pair of ADERs as benchmarks.",
+      "size": 456,
+      "sentences": 4
+    },
+    {
+      "id": 121,
+      "content": "omparingitagainst\nthe algorithm proposed by Zhang et al. (2022b) and a pair of ADERs as benchmarks. We consider a specific instance of the OCCO problem, where the feasible domain is\ndefined as X ×Y = [−1,1]2, and the environment provides the following convex-concave\npayoff function at round t:\n1 1\nf (x,y) = (x−x∗)2− (y−y∗)2+(x−x∗)(y−y∗), (11)\nt 2 t 2 t t t\nwhere (x∗,y∗) ∈ X ×Y denotes the saddle point of f . This setup satisfies Assumptions 1\nt t t\nand 2.",
+      "size": 459,
+      "sentences": 4
+    },
+    {
+      "id": 122,
+      "content": "here (x∗,y∗) ∈ X ×Y denotes the saddle point of f . This setup satisfies Assumptions 1\nt t t\nand 2. The evolution of the saddle point (x∗,y∗) reflects specific environmental character-\nt t\nistics. We identify four distinct cases, as outlined in Table 1:\n• Case I indicates a gradually stationary environment, with the movement of the saddle\npoint diminishing over time. • Case II and III represent approximate periodic environments.",
+      "size": 432,
+      "sentences": 5
+    },
+    {
+      "id": 123,
+      "content": "saddle\npoint diminishing over time. • Case II and III represent approximate periodic environments. In Case II, the saddle\npoint cycles among three branches, while in Case III, it cycles among seven, with its\nposition in each branch chosen randomly. • Case IV depicts an adversarial environment where the saddle point cannot be effec-\ntively approximated.",
+      "size": 354,
+      "sentences": 4
+    },
+    {
+      "id": 124,
+      "content": "IV depicts an adversarial environment where the saddle point cannot be effec-\ntively approximated. In this case, upon selecting a strategy pair (x ,y ), the environ-\nt t\nment generates the saddle point (x∗,y∗) by rotating the strategy pair by a random\nt t\nangle φ ∼ N(π,1) and then projecting it onto the circle of radius 1/2. 15\n===  16 ===\nMeng, Lei and Liu\nTable 2: Three Levels on Comparator Sequence Non-Stationarity. In this table, x′ =\nt\nargmin f (x,y ), and y′ = argmax f (x ,y).",
+      "size": 487,
+      "sentences": 4
+    },
+    {
+      "id": 125,
+      "content": "parator Sequence Non-Stationarity. In this table, x′ =\nt\nargmin f (x,y ), and y′ = argmax f (x ,y). x∈X t t t y∈Y t t\nLevel i ii iii\nComparator (u ,v ) ≡ (0,0) (u ,v ) = (x∗,y∗)/ln(1+t) (u ,v ) = (x′,y′)\nt t t t t t t t t t\nTo capture a range of non-stationarity levels, we select three comparator sequences\nrepresenting different dynamics, from fully stationary to highly non-stationary settings, as\ndetailed in Table 2. Weinstantiateouralgorithmasfollows: Letϕ(x) = x2/2andψ(y) = y2/2.",
+      "size": 487,
+      "sentences": 4
+    },
+    {
+      "id": 126,
+      "content": "settings, as\ndetailed in Table 2. Weinstantiateouralgorithmasfollows: Letϕ(x) = x2/2andψ(y) = y2/2. BothB and\nϕ\nB are bounded, 1-strongly convex, and exhibit Lipschitz continuity with respect to their\nψ\nfirst variables. For the Multi-Predictor Aggregator, we configure four predictors: h1 = f ,\nt t−1\nh2 = f , h3 = f , and h4 = f , all of which satisfy Assumption 11.",
+      "size": 367,
+      "sentences": 4
+    },
+    {
+      "id": 127,
+      "content": "four predictors: h1 = f ,\nt t−1\nh2 = f , h3 = f , and h4 = f , all of which satisfy Assumption 11. This setup enables\nt t−3 t t−7 t t−8\nour algorithm to achieve a sharp D-DGap bound of O(cid:101)(1) in stationary environments or\nperiodic scenarios with cycles of 2, 3, 4, 7, or 8. In the Integration Module, we employ\nSuccessive Reduction of Search Space for joint updates, maintaining computational costs\nwithinacceptablelimits. WealsoapplythedoublingtrickSchapireetal.",
+      "size": 470,
+      "sentences": 4
+    },
+    {
+      "id": 128,
+      "content": "s, maintaining computational costs\nwithinacceptablelimits. WealsoapplythedoublingtrickSchapireetal. (1995)toeliminate\nthe algorithms’ dependence on the time horizon T.\nWeconduct106 roundsforeachcaseandrecordthetime-averagedD-DGap. Theresults\nin Figure 3 align with theoretical expectations.",
+      "size": 290,
+      "sentences": 4
+    },
+    {
+      "id": 129,
+      "content": "achcaseandrecordthetime-averagedD-DGap. Theresults\nin Figure 3 align with theoretical expectations. In Case I Level iii (refer to Figure 2c), our\nalgorithm demonstrates better performance, as it pro\n√\ngressively approaches O(cid:101)(1) D-DGap,\nwhile the other two algorithms converge towards O(cid:101)( T) D-DGaps. In Cases II and III,\nour algorithm consistently outperforms both Zhang et al. (2022b) and ADER algorithms.",
+      "size": 423,
+      "sentences": 5
+    },
+    {
+      "id": 130,
+      "content": "s II and III,\nour algorithm consistently outperforms both Zhang et al. (2022b) and ADER algorithms. Notably, in Figure 2f, our algorithm successfully converges, whereas the other two fail to\ndo so. In Case IV, all algorithms perform comparably. Both our algorithm and ADERs\nguarantee minimax optimality, while the algorithm in Zhang et al. (2022b), despite lacking\ntight bounds, shows empirical success due to the meta-expert framework.",
+      "size": 436,
+      "sentences": 6
+    },
+    {
+      "id": 131,
+      "content": "l. (2022b), despite lacking\ntight bounds, shows empirical success due to the meta-expert framework. 5 Conclusion\nThis paper is the first to study the dynamic duality gap (D-DGap) in Online Convex-\nConcave Optimization (OCCO). Our modular algorithmic structure adapts seamlessly to\nvarying levels of non-stationarity and leverages the most accurate predictors, while the\nIntegration Module, inspired by the meta-expert framework, ensures optimal performance\nacross diverse environments.",
+      "size": 485,
+      "sentences": 3
+    },
+    {
+      "id": 132,
+      "content": "le, inspired by the meta-expert framework, ensures optimal performance\nacross diverse environments. A natural next step is to tackle the two-player, time-varying game, where the x–player\nobservesonlyf (·,y )andthey–playeronlysees−f (x , ·). Thispartial-observationmodel\nt t t t\nis weaker than our full-information setting, in which both players have access to the entire\npayofffunctionf .",
+      "size": 388,
+      "sentences": 3
+    },
+    {
+      "id": 133,
+      "content": "han our full-information setting, in which both players have access to the entire\npayofffunctionf . Itraisestwokeychallenges: (1)preservingourminimax-optimalD-DGap\nt\nguarantee under one-sided feedback, and (2) Further tightening the D-DGap through more\naggressive adaptation to each player’s history. We plan to develop new algorithms that\naddress these challenges while maintaining strong theoretical guarantees.",
+      "size": 413,
+      "sentences": 3
+    },
+    {
+      "id": 134,
+      "content": "velop new algorithms that\naddress these challenges while maintaining strong theoretical guarantees. 16\n===  17 ===\nA Modular Algorithm for Non-Stationary OCCO\n(a)CaseILeveli (b)CaseILevelii (c)CaseILeveliii\n10−0.1 10−0.1 100\n− 10 1 1 − 0 0 0 − − . 0 1 5 1 − 10 1 1 − 0 0 0 − − .",
+      "size": 278,
+      "sentences": 3
+    },
+    {
+      "id": 135,
+      "content": "seILevelii (c)CaseILeveliii\n10−0.1 10−0.1 100\n− 10 1 1 − 0 0 0 − − . 0 1 5 1 − 10 1 1 − 0 0 0 − − . 0 1 5 1 1 1 1 1 1 0 0 0 0 0 − − − − − 5 4 3 2 1\n−10−0.5 −10−0.5 10−6\n100 101 102 103 104 105 106 100 101 102 103 104 105 106 100 101 102 103 104 105 106\n𝑇 𝑇 𝑇\n(d)CaseIILeveli (e)CaseIILevelii (f)CaseIILeveliii\n10−0.1 10−0.1 100\n10−0.5 10−0.5 10−1\n− − 10 1 1 − 0 0 0 − − . 0 1 5 1 − − 10 1 1 − 0 0 0 − − .",
+      "size": 404,
+      "sentences": 4
+    },
+    {
+      "id": 136,
+      "content": "liii\n10−0.1 10−0.1 100\n10−0.5 10−0.5 10−1\n− − 10 1 1 − 0 0 0 − − . 0 1 5 1 − − 10 1 1 − 0 0 0 − − . 0 1 5 1 1 1 1 1 1 0 0 0 0 0 − − − − − 6 5 4 3 2\n100 101 102 103 104 105 106 100 101 102 103 104 105 106 100 101 102 103 104 105 106\n𝑇 𝑇 𝑇\n(g)CaseIIILeveli (h)CaseIIILevelii (i)CaseIIILeveliii\n10−1\n10−0.5 100\n0\n10−1 10−1\n−10−1 0 10−2\n−10−0.5\n−10−1\n10−3\n100 101 102 103 104 105 106 100 101 102 103 104 105 106\n100 101 102 103 104 105 106\n𝑇 𝑇\n𝑇\n(j)CaseIVLeveli (k)CaseIVLevelii (l)CaseIVLeveliii\n100 100 100.6\n10−1 100.4\n10−2 100.2\n1 1 1 0 0 0 − − − 5 4 3 100 101 102 103 104 105 106 10−1 100 101 102 103 104 105 106 1 1 1 0 0 0 − − − 1 0 0 0 0 .",
+      "size": 643,
+      "sentences": 3
+    },
+    {
+      "id": 137,
+      "content": "− 5 4 3 100 101 102 103 104 105 106 10−1 100 101 102 103 104 105 106 1 1 1 0 0 0 − − − 1 0 0 0 0 . . . 6 4 2 0\n𝑇 𝑇\n100 101 102 103 104 105 106\n𝑇\nOurAlgorithm TheAlgorithmDelineatedbyZhangetal. (2022b) APairofADERs\nFigure 3: Time-Averaged D-DGaps of Algorithms\nAcknowledgments and Disclosure of Funding\nThis work was supported by the National Natural Science Foundation of China (Grant No. 62406299).",
+      "size": 399,
+      "sentences": 6
+    },
+    {
+      "id": 138,
+      "content": "g\nThis work was supported by the National Natural Science Foundation of China (Grant No. 62406299). CRediT author statement\n• Qing-xin Meng: Conceptualization; Methodology; Software; Formal analysis; Investi-\ngation; Writing – Original Draft; Visualization. • XiaLei: Conceptualization;Validation;Writing–Review&Editing;Resources;Fund-\ning acquisition. • Jian-wei Liu: Supervision; Project administration. 17\n===  18 ===\nMeng, Lei and Liu\nAppendix A.",
+      "size": 450,
+      "sentences": 6
+    },
+    {
+      "id": 139,
+      "content": ". • Jian-wei Liu: Supervision; Project administration. 17\n===  18 ===\nMeng, Lei and Liu\nAppendix A. Supplementary Proofs\nA.1 Proof of Proposition 3\nProofLetF denoteallconvex-concavefunctionssatisfyingAssumption2,andletL (G) =\nX\n(cid:8) (cid:12) (cid:9)\nℓ is convex (cid:12) sup ∥∂ℓ(x)∥ ≤ G .",
+      "size": 291,
+      "sentences": 4
+    },
+    {
+      "id": 140,
+      "content": "tisfyingAssumption2,andletL (G) =\nX\n(cid:8) (cid:12) (cid:9)\nℓ is convex (cid:12) sup ∥∂ℓ(x)∥ ≤ G . The key to the proof is to convert OCCO into a pair\nx∈X\nof OCO problems:\n(cid:32) (cid:33)\n(cid:16) (cid:17)\nsup sup f (x ,v )−f (u ,y )\nt t t t t t\nf1,···,fT∈F PT≤P\n(cid:32) T (cid:33)\n(cid:88)(cid:16) (cid:17)\n≥ sup max f (x ,v )−f (u ,y )\nt t t t t t\nft(x,y)=αt(x)−βt(y)∈F,t∈{1,···,T} P\nT\nu≤p,P\nT\nv≤P−p\nt=1\n(cid:32) T (cid:33)\n(cid:88)(cid:16) (cid:17)\n= sup max α (x )−α (u )\nt t t t\nα1,···,αT∈L X(GX) P T u≤p t=1\n(cid:32) T (cid:33)\n(cid:88)(cid:16) (cid:17)\n+ sup max β (y )−β (v )\nt t t t\nβ1,···,βT∈L Y(GY) P T v≤P−p t=1\n(cid:16)(cid:112) (cid:17) (cid:16)(cid:112) (cid:17)\n≥ Ω (1+p)T +Ω (1+P −p)T , ∀0 ≤ p ≤ P,\nwherethefirst“≥”followsfromthespecificstructureoff ,givenbyf (x,y) = α (x)−β (y).",
+      "size": 801,
+      "sentences": 2
+    },
+    {
+      "id": 141,
+      "content": "p)T , ∀0 ≤ p ≤ P,\nwherethefirst“≥”followsfromthespecificstructureoff ,givenbyf (x,y) = α (x)−β (y). t t t t\nHere,bothα andβ areconvexfunctions,Pu = (cid:80)T ∥u −u ∥andPv = (cid:80)T ∥v −v ∥. t t T t=1 t t−1 T t=1 t t−1\nThe second “≥” is derived from Theorem 2 in Zhang et al. (2018), which establishes a lower\nbound on regret for OCO. Combining these two lower bounds yields the desired result.",
+      "size": 395,
+      "sentences": 5
+    },
+    {
+      "id": 142,
+      "content": "lishes a lower\nbound on regret for OCO. Combining these two lower bounds yields the desired result. A.2 Proof of Proposition 4\nProof IndependentlyapplyingtwoADERorADER-likealgorithmsresultsinthefollowing\nbounds:\n(cid:88)\nT\n(cid:16) (cid:17)\n(cid:18)(cid:113)\n(cid:0) (cid:1)\n(cid:19)\nf\nt\n(x\nt\n,y\nt\n)−f\nt\n(u\nt\n,y\nt\n) ≤ O(cid:101) 1+P\nT\nu T ,\nt=1\n(cid:88)\nT\n(cid:16) (cid:17)\n(cid:18)(cid:113)\n(cid:0) (cid:1)\n(cid:19)\nf\nt\n(x\nt\n,v\nt\n)−f\nt\n(x\nt\n,y\nt\n) ≤ O(cid:101) 1+P\nT\nv T ,\nt=1\nwhere Pu = (cid:80)T ∥u −u ∥ and Pv = (cid:80)T ∥v −v ∥.",
+      "size": 534,
+      "sentences": 3
+    },
+    {
+      "id": 143,
+      "content": "t\n(x\nt\n,y\nt\n) ≤ O(cid:101) 1+P\nT\nv T ,\nt=1\nwhere Pu = (cid:80)T ∥u −u ∥ and Pv = (cid:80)T ∥v −v ∥. For specially chosen comparators\nT t=1 t t−1 T t=1 t t−1\nx′ = argmin f (x,y ) and y′ = argmax f (x ,y), we also have:\nt x∈X t t t y∈Y t t\n(cid:88)\nT\n(cid:16) f\nt\n(x\nt\n,y\nt\n)−f\nt\n(u\nt\n,y\nt\n) (cid:17) ≤ (cid:88)\nT\n(cid:16) f\nt\n(x\nt\n,y\nt\n)−f\nt\n(x′\nt\n,y\nt\n) (cid:17) ≤ O(cid:101)\n(cid:18)(cid:113)\n(cid:0) 1+C\nT\nx (cid:1) T\n(cid:19)\n,\nt=1 t=1\n(cid:88)\nT\n(cid:16) f\nt\n(x\nt\n,v\nt\n)−f\nt\n(x\nt\n,y\nt\n) (cid:17) ≤ (cid:88)\nT\n(cid:16) f\nt\n(x\nt\n,y\nt\n′)−f\nt\n(x\nt\n,y\nt\n) (cid:17) ≤ O(cid:101)\n(cid:18)(cid:113)\n(cid:0) 1+C\nT\ny(cid:1) T\n(cid:19)\n,\nt=1 t=1\nwhere Cx = (cid:80)T ∥x′ −x′ ∥ and Cy = (cid:80)T ∥y′ −y′ ∥.",
+      "size": 699,
+      "sentences": 2
+    },
+    {
+      "id": 144,
+      "content": "0) 1+C\nT\ny(cid:1) T\n(cid:19)\n,\nt=1 t=1\nwhere Cx = (cid:80)T ∥x′ −x′ ∥ and Cy = (cid:80)T ∥y′ −y′ ∥. T t=1 t t−1 T t=1 t t−1\nThe desired result follows by combining these inequalities.",
+      "size": 183,
+      "sentences": 2
+    },
+    {
+      "id": 145,
+      "content": "80)T ∥y′ −y′ ∥. T t=1 t t−1 T t=1 t t−1\nThe desired result follows by combining these inequalities. 18\n===  19 ===\nA Modular Algorithm for Non-Stationary OCCO\nA.3 Proof of Lemma 5\nProof The first-order optimality condition of Equation (2) implies that\n∃∇ h (cid:0) x ,y (cid:1) , ∀x′ ∈ X, (cid:10) η ∇ h (cid:0) x ,y (cid:1) +xϕ−xϕ,x −x′(cid:11) ≤ 0,\nx t t t t x t t t t (cid:101)t t\n∃∇ (−h ) (cid:0) x ,y (cid:1) , ∀y′ ∈ Y, (cid:10) γ ∇ (−h ) (cid:0) x ,y (cid:1) +yψ −yψ,y −y′(cid:11) ≤ 0,\ny t t t t y t t t t (cid:101)t t\n∃∇ f (x ,y ), ∀x′ ∈ X, (cid:10) η ∇ f (x ,y )+xϕ −xϕ,x −x′(cid:11) ≤ 0,\nx t (cid:101)t+1 t t x t (cid:101)t+1 t (cid:101)t+1 (cid:101)t (cid:101)t+1\n∃∇ (−f )(x ,y ), ∀y′ ∈ Y, (cid:10) γ ∇ (−f )(x ,y )+yψ −yψ,y −y′(cid:11) ≤ 0.\ny t t (cid:101)t+1 t y t t (cid:101)t+1 (cid:101)t+1 (cid:101)t (cid:101)t+1\nThe D-DGap is composed of the sum of two individual D-Regs:\nT\n(cid:88)(cid:16) (cid:17)\nD-DGap(u ,v ) = f (x ,v )−f (u ,y )\n1:T 1:T t t t t t t\nt=1\nT T\n(cid:88)(cid:16) (cid:17) (cid:88)(cid:16) (cid:17)\n= f (x ,v )−f (x ,y ) + f (x ,y )−f (u ,y )\nt t t t t t t t t t t t\nt=1 t=1\n= D-Reg(v )+D-Reg(u ).",
+      "size": 1131,
+      "sentences": 3
+    },
+    {
+      "id": 146,
+      "content": "= f (x ,v )−f (x ,y ) + f (x ,y )−f (u ,y )\nt t t t t t t t t t t t\nt=1 t=1\n= D-Reg(v )+D-Reg(u ). 1:T 1:T\nLet’s take the x-player as an example. We first perform identity transformation on the\ninstantaneous individual regret:\nf (x ,y )−f (u ,y ) = f (x ,y )−h (x ,y )+h (x ,y )−f (x ,y )\nt t t t t t t t t t t t t (cid:101)t+1 t t (cid:101)t+1 t\n(cid:124) (cid:123)(cid:122) (cid:125)\n(12a)\n(12)\n+h (x ,y )−h (x ,y )+f (x ,y )−f (u ,y ).",
+      "size": 438,
+      "sentences": 3
+    },
+    {
+      "id": 147,
+      "content": "1)t+1 t\n(cid:124) (cid:123)(cid:122) (cid:125)\n(12a)\n(12)\n+h (x ,y )−h (x ,y )+f (x ,y )−f (u ,y ). t t t t (cid:101)t+1 t t (cid:101)t+1 t t t t\n(cid:124) (cid:123)(cid:122) (cid:125)\n(12b)\nBy using convexity and first-order optimality conditions, we get\n(cid:10) (cid:0) (cid:1) (cid:11) (cid:10) (cid:11)\nEquation (12b) ≤ ∇ h x ,y ,x −x + ∇ f (x ,y ),x −u\nx t t t t (cid:101)t+1 x t (cid:101)t+1 t (cid:101)t+1 t\n≤ (cid:10) xϕ−xϕ,x −x (cid:11) /η + (cid:10) xϕ−xϕ ,x −u (cid:11) /η\n(cid:101)t t t (cid:101)t+1 t (cid:101)t (cid:101)t+1 (cid:101)t+1 t t\n=\n(cid:2)\nB\n(cid:0)\nx\n,xϕ(cid:1)\n−B\n(cid:0)\nx\n,xϕ(cid:1)\n−B\n(cid:0)\nx\n,xϕ(cid:1)(cid:3)\n/η (13)\nϕ (cid:101)t+1 (cid:101)t ϕ (cid:101)t+1 t ϕ t (cid:101)t t\n+ (cid:2) B (cid:0) u ,xϕ(cid:1) −B (cid:0) u ,xϕ (cid:1)(cid:3) /η −B (cid:0) x ,xϕ(cid:1) /η .",
+      "size": 808,
+      "sentences": 2
+    },
+    {
+      "id": 148,
+      "content": "t\n+ (cid:2) B (cid:0) u ,xϕ(cid:1) −B (cid:0) u ,xϕ (cid:1)(cid:3) /η −B (cid:0) x ,xϕ(cid:1) /η . ϕ t (cid:101)t ϕ t (cid:101)t+1 t ϕ (cid:101)t+1 (cid:101)t t\n(cid:124) (cid:123)(cid:122) (cid:125)\n=:Φt\nLet νx = Equation (12a) − B (cid:0) x ,xϕ(cid:1) /η , so we have that νx ≥ 0.",
+      "size": 282,
+      "sentences": 2
+    },
+    {
+      "id": 149,
+      "content": "d:122) (cid:125)\n=:Φt\nLet νx = Equation (12a) − B (cid:0) x ,xϕ(cid:1) /η , so we have that νx ≥ 0. To verify this, it\nt ϕ (cid:101)t+1 t t t\nsuffices to combine the following two inequalities:\nf (x ,y )+B\n(cid:0)\nx\n,xϕ(cid:1)\n/η ≥ f (x ,y )+B\n(cid:0)\nx\n,xϕ(cid:1)\n/η ,\nt t t ϕ t (cid:101)t t t (cid:101)t+1 t ϕ (cid:101)t+1 (cid:101)t t\n−h (x ,y )+h (x ,y ) ≥ −\n(cid:2)\nB\n(cid:0)\nx\n,xϕ(cid:1)\n−B\n(cid:0)\nx\n,xϕ(cid:1)\n−B\n(cid:0)\nx\n,xϕ(cid:1)(cid:3)\n/η .",
+      "size": 453,
+      "sentences": 2
+    },
+    {
+      "id": 150,
+      "content": ",y ) ≥ −\n(cid:2)\nB\n(cid:0)\nx\n,xϕ(cid:1)\n−B\n(cid:0)\nx\n,xϕ(cid:1)\n−B\n(cid:0)\nx\n,xϕ(cid:1)(cid:3)\n/η . t t t t (cid:101)t+1 t ϕ (cid:101)t+1 (cid:101)t ϕ (cid:101)t+1 t ϕ t (cid:101)t t\nThefirstinequalitytakesadvantageoftheoptimalitycondition,andthesecondinequalityis\npartofEquation(13). Nowweknowthatη isnon-increasingovertime,B isL -Lipschitz\nt ϕ B ϕ\n19\n===  20 ===\nMeng, Lei and Liu\nw.r.t. the first variable, and L D is the supremum of B .",
+      "size": 440,
+      "sentences": 4
+    },
+    {
+      "id": 151,
+      "content": "t ϕ B ϕ\n19\n===  20 ===\nMeng, Lei and Liu\nw.r.t. the first variable, and L D is the supremum of B . Thus,\nB ϕ X ϕ\n(cid:88) T Φ ≤ B ϕ (cid:0) u 0 ,x (cid:101) ϕ 1 (cid:1) + (cid:88) T 1 (cid:16) B (cid:0) u ,xϕ(cid:1) −B (cid:0) u ,xϕ(cid:1) (cid:17) + (cid:88) T (cid:18) 1 − 1 (cid:19) B (cid:0) u ,xϕ(cid:1)\nt\nη η\nϕ t (cid:101)t ϕ t−1 (cid:101)t\nη η\nϕ t−1 (cid:101)t\n0 t t t−1\nt=1 t=1 t=1\nL B D X (cid:88) T L B\n≤ ϕ + ϕ ∥u −u ∥,\nt t−1\nη η\nT t\nt=1\nNote that Equation (13) can be relaxed as f (x ,y )−f (u ,y ) ≤ Φ +νx, summing over\nt t t t t t t t\ntime yields\nD-Reg(u ) ≤ L B ϕ D X + (cid:88) T L B ϕ ∥u −u ∥+ (cid:88) T νx.",
+      "size": 624,
+      "sentences": 3
+    },
+    {
+      "id": 152,
+      "content": "g over\nt t t t t t t t\ntime yields\nD-Reg(u ) ≤ L B ϕ D X + (cid:88) T L B ϕ ∥u −u ∥+ (cid:88) T νx. 1:T η η t t−1 t\nT t\nt=1 t=1\nLikewise,\nD-Reg(v ) ≤ L B ψ D Y + (cid:88) T L B ψ ∥v −v ∥+ (cid:88) T νy. 1:T γ γ t t−1 t\nT t\nt=1 t=1\nwhere νy = f (x ,y )−h (x ,y )+h (x ,y )−f (x ,y )−B (cid:0) y ,yψ(cid:1) /γ ≥ 0.\nt t t (cid:101)t+1 t t (cid:101)t+1 t t t t t t ψ (cid:101)t+1 t t\nLet’s go back to the focus on the x-player. The prescribed learning rate guarantees that\nT\n(cid:88)\nD-Reg(u ) ≤ ϵ+2 νx.",
+      "size": 499,
+      "sentences": 4
+    },
+    {
+      "id": 153,
+      "content": "focus on the x-player. The prescribed learning rate guarantees that\nT\n(cid:88)\nD-Reg(u ) ≤ ϵ+2 νx. 1:T t\nt=1\nOn the one hand, νx ≤ 2ρ(f ,h ) causes\nt t t\nT\n(cid:88)\nD-Reg(u ) ≤ ϵ+4 ρ(f ,h ).",
+      "size": 190,
+      "sentences": 3
+    },
+    {
+      "id": 154,
+      "content": "ϵ+2 νx. 1:T t\nt=1\nOn the one hand, νx ≤ 2ρ(f ,h ) causes\nt t t\nT\n(cid:88)\nD-Reg(u ) ≤ ϵ+4 ρ(f ,h ). (14)\n1:T t t\nt=1\nOn the other hand, notice that\nνx ≤ (cid:10) ∇ f (x ,y )−∇ h (x ,y ),x −x (cid:11) −B (cid:0) x ,xϕ(cid:1) /η\nt x t t t x t (cid:101)t+1 t t (cid:101)t+1 ϕ (cid:101)t+1 t t\n≤ 2G ∥x −x ∥−B (cid:0) x ,xϕ(cid:1) /η ≤ min (cid:8) 2D G ,2η G2 (cid:9) ,\nX t (cid:101)t+1 ϕ (cid:101)t+1 t t X X t X\nwhich implies that\n(cid:32) (cid:88) T νx (cid:33)2 = (cid:88) T (νx)2+2 (cid:88) T νx (cid:88) t−1 νx = (cid:88) T (νx)2+2 (cid:88) T νx (cid:18)L B ϕ (D X +λ) −ϵ (cid:19)\nt t t τ t t η\nt\nt=1 t=1 t=1 τ=1 t=1 t=1\nT T\n(cid:88) (cid:88)\n≤ 4G2 D2 + 4G2 L (D +λ).",
+      "size": 668,
+      "sentences": 3
+    },
+    {
+      "id": 155,
+      "content": "−ϵ (cid:19)\nt t t τ t t η\nt\nt=1 t=1 t=1 τ=1 t=1 t=1\nT T\n(cid:88) (cid:88)\n≤ 4G2 D2 + 4G2 L (D +λ). X X X B ϕ X\nt=1 t=1\nThis results in the following regret bound:\n(cid:113)\n(cid:0) (cid:1)\nD-Reg(u ) ≤ ϵ+4G D2 +L D +L λ T. (15)\n1:T X X B ϕ X B ϕ\n20\n===  21 ===\nA Modular Algorithm for Non-Stationary OCCO\nCombining Equations (14) and (15) yields\n(cid:40) (cid:88) T (cid:113) (cid:0) (cid:1) (cid:41)\nD-Reg(u ) ≤ ϵ+4min ρ(f ,h ),G D2 +L D +L λ T .",
+      "size": 446,
+      "sentences": 2
+    },
+    {
+      "id": 156,
+      "content": "id:40) (cid:88) T (cid:113) (cid:0) (cid:1) (cid:41)\nD-Reg(u ) ≤ ϵ+4min ρ(f ,h ),G D2 +L D +L λ T . 1:T t t X X B ϕ X B ϕ\nt=1\nLikewise, the individual regret of Player 2 satisfies\n(cid:40) (cid:88) T (cid:113) (cid:0) (cid:1) (cid:41)\nD-Reg(v ) ≤ ϵ+4min ρ(f ,h ),G D2 +L D +L µ T . 1:T t t Y Y B ψ Y B ψ\nt=1\nIntegrating the two individual regrets into D-DGap yields the desired result.",
+      "size": 385,
+      "sentences": 3
+    },
+    {
+      "id": 157,
+      "content": "t t Y Y B ψ Y B ψ\nt=1\nIntegrating the two individual regrets into D-DGap yields the desired result. A.4 Proof of Theorem 6\nProof The expert update can be rearranged as follows:\n(cid:20) (cid:21)\n(x ,y ) = argminmaxwT h t (x,y), h t (x,y t ) ω + w t B (cid:0) x,xϕ(cid:1) − ω t B (cid:0) y,yψ(cid:1) ,\n(cid:98)t (cid:98)t x∈X y∈Y t h t (x t ,y), h t (x t ,y t ) t η t ϕ (cid:101)t γ t ψ (cid:101)t\nx = argmin η\n(cid:2)\nf (x,y ), f (x,y )\n(cid:3)\nω +B\n(cid:0) x,xϕ(cid:1)\n,\n(16)\n(cid:101)t+1 x∈X t t (cid:98)t t t t ϕ (cid:101)t\ny = argmax γ\n(cid:2)\nf (x ,y), f (x ,y)\n(cid:3)\nw −B\n(cid:0) y,yψ(cid:1)\n.",
+      "size": 601,
+      "sentences": 2
+    },
+    {
+      "id": 158,
+      "content": ":98)t t t t ϕ (cid:101)t\ny = argmax γ\n(cid:2)\nf (x ,y), f (x ,y)\n(cid:3)\nw −B\n(cid:0) y,yψ(cid:1)\n. (cid:101)t+1 y∈Y t t (cid:98)t t t t ψ (cid:101)t\nThe first-order optimality condition of Equation (16) implies that\n(cid:10) η (cid:2) ∇ h (x ,y ), ∇ h (x ,y ) (cid:3) ω +xϕ−xϕ, x −x′(cid:11) ≤ 0, ∀x′ ∈ X,\nt x t (cid:98)t (cid:98)t x t (cid:98)t t t (cid:98)t (cid:101)t (cid:98)t\n(cid:10) γ (cid:2) ∇ (−h )(x ,y ), ∇ (−h )(x ,y ) (cid:3) w +yψ −yψ, y −y′(cid:11) ≤ 0, ∀y′ ∈ Y,\nt y t (cid:98)t (cid:98)t y t t (cid:98)t t (cid:98)t (cid:101)t (cid:98)t\n(cid:10) η (cid:2) ∇ f (x ,y ), ∇ f (x ,y ) (cid:3) ω +xϕ −xϕ, x −x′(cid:11) ≤ 0, ∀x′ ∈ X,\nt x t (cid:101)t+1 (cid:98)t x t (cid:101)t+1 t t (cid:101)t+1 (cid:101)t (cid:101)t+1\n(cid:10) γ (cid:2) ∇ (−f )(x ,y ), ∇ f (x ,y ) (cid:3) w +yψ −yψ, y −y′(cid:11) ≤ 0, ∀y′ ∈ Y.\nt y t (cid:98)t (cid:101)t+1 y t t (cid:101)t+1 t (cid:101)t+1 (cid:101)t (cid:101)t+1\nThe proof of this theorem can be established by suitably adapting the proof of Lemma 5,\nincorporating the following substitutions while accounting for the predefined upper bound\nonthecomparatorsequencepathlength,whichscaleslinearlywithtimeT.",
+      "size": 1154,
+      "sentences": 2
+    },
+    {
+      "id": 159,
+      "content": "ting for the predefined upper bound\nonthecomparatorsequencepathlength,whichscaleslinearlywithtimeT. Thesubstitution\nrules are as follows:\nVariables in Proof of Lemma 5 Variables in This Proof\n(x ,y ) −→ (x ,y )\nt t (cid:98)t (cid:98)t\n(cid:2) (cid:3) (cid:2) (cid:3)\nf (·,y ) and f (x , ·) −→ f (·,y ), f (·,y ) ω and f (x , ·), f (x , ·) w\nt t t t t (cid:98)t t t t t (cid:98)t t t t\n(cid:2) (cid:3) (cid:2) (cid:3)\nh (·,y ) and h (x , ·) −→ h (·,y ), h (·,y ) ω and h (x , ·), h (x , ·) w\nt t t t t (cid:98)t t t t t (cid:98)t t t t\nFor completeness, we provide a detailed proof below.",
+      "size": 587,
+      "sentences": 2
+    },
+    {
+      "id": 160,
+      "content": "w\nt t t t t (cid:98)t t t t t (cid:98)t t t t\nFor completeness, we provide a detailed proof below. Let’s derive the upper bound for the right-hand side of the metric.",
+      "size": 166,
+      "sentences": 2
+    },
+    {
+      "id": 161,
+      "content": "provide a detailed proof below. Let’s derive the upper bound for the right-hand side of the metric. Note that\nA1,:ω −f (u ,y ) ≤ (cid:2) f (x ,y ), f (x ,y ) (cid:3) ω − (cid:2) h (x ,y ), h (x ,y ) (cid:3) ω\nt t t t t t (cid:98)t (cid:98)t t (cid:98)t t t t (cid:98)t (cid:98)t t (cid:98)t t t\n(cid:2) (cid:3) (cid:2) (cid:3)\n+ h (x ,y ), h (x ,y ) ω − h (x ,y ), h (x ,y ) ω\nt (cid:98)t (cid:98)t t (cid:98)t t t t (cid:101)t+1 (cid:98)t t (cid:101)t+1 t t\n(cid:2) (cid:3) (cid:2) (cid:3)\n+ h (x ,y ), h (x ,y ) ω − f (x ,y ), f (x ,y ) ω\nt (cid:101)t+1 (cid:98)t t (cid:101)t+1 t t t (cid:101)t+1 (cid:98)t t (cid:101)t+1 t t\n(cid:2) (cid:3) (cid:2) (cid:3)\n+ f (x ,y ), f (x ,y ) ω − f (u ,y ), f (u ,y ) ω .",
+      "size": 712,
+      "sentences": 3
+    },
+    {
+      "id": 162,
+      "content": "cid:101)t+1 t t\n(cid:2) (cid:3) (cid:2) (cid:3)\n+ f (x ,y ), f (x ,y ) ω − f (u ,y ), f (u ,y ) ω . t (cid:101)t+1 (cid:98)t t (cid:101)t+1 t t t t (cid:98)t t t t t\n21\n===  22 ===\nMeng, Lei and Liu\nBy using convexity and first-order optimality conditions, we obtain\n(cid:2) (cid:3) (cid:2) (cid:3)\nh (x ,y ), h (x ,y ) ω − h (x ,y ), h (x ,y ) ω\nt (cid:98)t (cid:98)t t (cid:98)t t t t (cid:101)t+1 (cid:98)t t (cid:101)t+1 t t\n(cid:10)(cid:2) (cid:3) (cid:11)\n≤ ∇ h (x ,y ), ∇ h (x ,y ) ω , x −x\nx t (cid:98)t (cid:98)t x t (cid:98)t t t (cid:98)t (cid:101)t+1\n(17a)\n≤ (cid:10) xϕ−xϕ, x −x (cid:11) /η\n(cid:101)t (cid:98)t (cid:98)t (cid:101)t+1 t\n=\n(cid:0)\nB\n(cid:0)\nx\n,xϕ(cid:1)\n−B\n(cid:0)\nx\n,xϕ(cid:1)\n−B\n(cid:0) x,xϕ(cid:1)(cid:1)\n/η ,\nϕ (cid:101)t+1 (cid:101)t ϕ (cid:101)t+1 (cid:98)t ϕ (cid:98) (cid:101)t t\n(cid:2) (cid:3) (cid:2) (cid:3)\nf (x ,y ), f (x ,y ) ω − f (u ,y ), f (u ,y ) ω\nt (cid:101)t+1 (cid:98)t t (cid:101)t+1 t t t t (cid:98)t t t t t\n(cid:10)(cid:2) (cid:3) (cid:11)\n≤ ∇ f (x ,y ), ∇ f (x ,y ) ω , x −u\nx t (cid:101)t+1 (cid:98)t x t (cid:101)t+1 t t (cid:101)t+1 t\n(17b)\n≤ (cid:10) xϕ−xϕ , x −u (cid:11) /η\n(cid:101)t (cid:101)t+1 (cid:101)t+1 t t\n= (cid:0) B (cid:0) u ,xϕ(cid:1) −B (cid:0) u ,xϕ (cid:1) −B (cid:0) x ,xϕ(cid:1)(cid:1) /η .",
+      "size": 1271,
+      "sentences": 2
+    },
+    {
+      "id": 163,
+      "content": "1 t t\n= (cid:0) B (cid:0) u ,xϕ(cid:1) −B (cid:0) u ,xϕ (cid:1) −B (cid:0) x ,xϕ(cid:1)(cid:1) /η . ϕ t (cid:101)t ϕ t (cid:101)t+1 ϕ (cid:101)t+1 (cid:101)t t\nNow we have that\nA1,:ω −f (u ,y ) ≤ (cid:2) f (x ,y ), f (x ,y ) (cid:3) ω − (cid:2) h (x ,y ), h (x ,y ) (cid:3) ω\nt t t t t t (cid:98)t (cid:98)t t (cid:98)t t t t (cid:98)t (cid:98)t t (cid:98)t t t\n(cid:2) (cid:3) (cid:2) (cid:3)\n+ h (x ,y ), h (x ,y ) ω − f (x ,y ), f (x ,y ) ω\nt (cid:101)t+1 (cid:98)t t (cid:101)t+1 t t t (cid:101)t+1 (cid:98)t t (cid:101)t+1 t t\n(18)\n+ (cid:0) B (cid:0) u ,xϕ(cid:1) −B (cid:0) u ,xϕ (cid:1)(cid:1) /η\nϕ t (cid:101)t ϕ t (cid:101)t+1 t\n= (cid:0) B (cid:0) u ,xϕ(cid:1) −B (cid:0) u ,xϕ (cid:1)(cid:1) /η +δx,\nϕ t (cid:101)t ϕ t (cid:101)t+1 t t\nwhere δx ≥ 0.",
+      "size": 761,
+      "sentences": 2
+    },
+    {
+      "id": 164,
+      "content": "xϕ(cid:1) −B (cid:0) u ,xϕ (cid:1)(cid:1) /η +δx,\nϕ t (cid:101)t ϕ t (cid:101)t+1 t t\nwhere δx ≥ 0. This can be obtained by adding Equation (17a) and the following inequality:\nt\n(cid:2)\nf (x ,y ), f (x ,y )\n(cid:3)\nω +B\n(cid:0)\nx\n,xϕ(cid:1)\n/η ≥\n(cid:2)\nf (x ,y ), f (x ,y )\n(cid:3)\nω +B\n(cid:0)\nx\n,xϕ(cid:1)\n/η ,\nt (cid:98)t (cid:98)t t (cid:98)t t t ϕ (cid:98)t (cid:101)t t t (cid:101)t+1 (cid:98)t t (cid:101)t+1 t t ϕ (cid:101)t+1 (cid:101)t t\nwhich corresponds to the optimality of x .",
+      "size": 491,
+      "sentences": 2
+    },
+    {
+      "id": 165,
+      "content": "(cid:98)t t (cid:101)t+1 t t ϕ (cid:101)t+1 (cid:101)t t\nwhich corresponds to the optimality of x . Summing Equation (18) over time yields\n(cid:101)t+1\nT T T\n(cid:88)(cid:16) A1,:ω −f (u ,y ) (cid:17) ≤ (cid:88) 1(cid:16) B (cid:0) u ,xϕ(cid:1) −B (cid:0) u ,xϕ (cid:1) (cid:17) + (cid:88) δx,\nt t t t t η ϕ t (cid:101)t ϕ t (cid:101)t+1 t\nt\nt=1 t=1 t=1\nDue to the non-increasing nature of the learning rate η , B is upper bounded by L D\nt ϕ B ϕ X\nand is L -Lipschitz with respect to its first variable.",
+      "size": 503,
+      "sentences": 2
+    },
+    {
+      "id": 166,
+      "content": "ate η , B is upper bounded by L D\nt ϕ B ϕ X\nand is L -Lipschitz with respect to its first variable. Therefore, we have that\nB\nϕ\nT\n(cid:88) 1(cid:16) B (cid:0) u ,xϕ(cid:1) −B (cid:0) u ,xϕ (cid:1) (cid:17)\nη\nϕ t (cid:101)t ϕ t (cid:101)t+1\nt\nt=1\n≤ (cid:88) T 1 (cid:16) B (cid:0) u ,xϕ(cid:1) −B (cid:0) u ,xϕ(cid:1) (cid:17) + B ϕ (cid:0) u 0 ,x (cid:101) ϕ 1 (cid:1) + (cid:88) T (cid:18) 1 − 1 (cid:19) B (cid:0) u ,xϕ(cid:1)\nη\nϕ t (cid:101)t ϕ t−1 (cid:101)t\nη η η\nϕ t−1 (cid:101)t\nt 1 t t−1\nt=1 t=2\nL B D X (cid:88) T L B\n≤ ϕ + ϕ ∥u −u ∥.",
+      "size": 543,
+      "sentences": 2
+    },
+    {
+      "id": 167,
+      "content": "t ϕ t−1 (cid:101)t\nη η η\nϕ t−1 (cid:101)t\nt 1 t t−1\nt=1 t=2\nL B D X (cid:88) T L B\n≤ ϕ + ϕ ∥u −u ∥. t t−1\nη η\nT t\nt=1\nApplying the prescribed learning rate yields\n(cid:88) T (cid:16) A1,:ω −f (u ,y ) (cid:17) ≤ L B ϕ (D +Pu)+ (cid:88) T δx ≤ ϵ+2 (cid:88) T δx,\nt t t t t η X T t t\nT\nt=1 t=1 t=1\n22\n===  23 ===\nA Modular Algorithm for Non-Stationary OCCO\nwhere Pu = (cid:80)T ∥u −u ∥ ≤ D T. Note that\nT t=1 t t−1 X\nδx = (cid:2) f (x ,y ), f (x ,y ) (cid:3) ω − (cid:2) h (x ,y ), h (x ,y ) (cid:3) ω\nt t (cid:98)t (cid:98)t t (cid:98)t t t t (cid:98)t (cid:98)t t (cid:98)t t t\n(cid:2) (cid:3) (cid:2) (cid:3)\n+ h (x ,y ), h (x ,y ) ω − f (x ,y ), f (x ,y ) ω\nt (cid:101)t+1 (cid:98)t t (cid:101)t+1 t t t (cid:101)t+1 (cid:98)t t (cid:101)t+1 t t\n(19)\n≤ 2 max |f (x,y)−h (x,y)|\nt t\nx∈{x (cid:98)t,xt,x (cid:101)t+1},y∈{y (cid:98)t,y\nt\n}\n≤ 2ρ(f ,h ),\nt t\nSo we have that\nT T\n(cid:88)(cid:16) A1,:ω −f (u ,y ) (cid:17) ≤ ϵ+4 (cid:88) ρ(f ,h ).",
+      "size": 941,
+      "sentences": 2
+    },
+    {
+      "id": 168,
+      "content": "f ,h ),\nt t\nSo we have that\nT T\n(cid:88)(cid:16) A1,:ω −f (u ,y ) (cid:17) ≤ ϵ+4 (cid:88) ρ(f ,h ). t t t t t t t\nt=1 t=1\nLikewise, the upper bound for the left-hand side of the metric is as follows:\nT T\n(cid:88)(cid:16) f (x ,v )−wTA:,1 (cid:17) ≤ ϵ+4 (cid:88) ρ(f ,h ). t t t t t t t\nt=1 t=1\nAdding the above two inequalities yields the desired conclusion.",
+      "size": 358,
+      "sentences": 3
+    },
+    {
+      "id": 169,
+      "content": "8) ρ(f ,h ). t t t t t t t\nt=1 t=1\nAdding the above two inequalities yields the desired conclusion. A.5 Proof of Theorem 7\nProof The meta update can be reformulated as follows:\n(w ,ω ) = argmin max wTΛ ω+KL(w,w )/θ −KL(ω,ω )/ϑ ,\nt t w∈△α ω∈△α t (cid:101)t t (cid:101)t t\n2 2\nw = argmin ⟨θ A ω ,w⟩+KL(w,w ), (20)\n(cid:101)t+1 w∈△α t t t (cid:101)t\n2\nω = argmax ⟨ϑ ATw ,ω⟩−KL(ω,ω ),\n(cid:101)t+1 ω∈△α t t t (cid:101)t\n2\nwhere α = 2/T. Equation (20) corresponds to a bilinear instance of Equation (2).",
+      "size": 498,
+      "sentences": 4
+    },
+    {
+      "id": 170,
+      "content": "t t t (cid:101)t\n2\nwhere α = 2/T. Equation (20) corresponds to a bilinear instance of Equation (2). To\nleverage Lemma 5, it is necessary to decompose the static duality gap.",
+      "size": 173,
+      "sentences": 3
+    },
+    {
+      "id": 171,
+      "content": "instance of Equation (2). To\nleverage Lemma 5, it is necessary to decompose the static duality gap. Let 1 = [1,1]T. By\ninsertingauxiliaryrepresentationsw = α1/2+(1−α)u ∈ △αandω = α1/2+(1−α)v ∈ △α,\n2 2\nwe obtain\nT T\n(cid:88)(cid:0) wTA v−uTA ω (cid:1) = (cid:88)(cid:0) wTA ω−wTA ω (cid:1)\nt t t t t t t t\nt=1 t=1\n(21)\nT T\n(cid:88) (cid:88)\n+ wTA (v−ω)+ (w−u)TA ω ,\nt t t t\nt=1 t=1\nwhere\nT\n(cid:88) (cid:13) α (cid:13)\nwTA (v−ω) ≤ T ∥A ∥ (cid:13)αv− 1(cid:13) ≤ 2αTM = 4M,\nt t t ∞(cid:13) 2 (cid:13) 1\nt=1\n(22)\nT\n(cid:88) (cid:13)α (cid:13)\n(w−u)TA ω ≤ T (cid:13) 1−αu(cid:13) ∥A ∥ ≤ 2αTM = 4M,\nt t (cid:13)2 (cid:13)\n1\nt ∞\nt=1\n23\n===  24 ===\nMeng, Lei and Liu\nand according to Lemma 5,\nT (cid:32) (cid:40) T (cid:41)(cid:33)\n(cid:88)(cid:0) wTA ω−wTA ω (cid:1) ≤ O min (cid:88) ∥A −Λ ∥ , (cid:112) (1+lnT)T .",
+      "size": 808,
+      "sentences": 3
+    },
+    {
+      "id": 172,
+      "content": "cid:41)(cid:33)\n(cid:88)(cid:0) wTA ω−wTA ω (cid:1) ≤ O min (cid:88) ∥A −Λ ∥ , (cid:112) (1+lnT)T . (23)\nt t t t t t ∞\nt=1 t=1\nIn applying Lemma 5, we consider only the static duality gap, implying that the path\nlengthsofcomparatorsequencesareconstrainedtozero. Additionally, inLemma5, Fenchel\ncouplings are bounded by constants, specifically B ≤ L D and B ≤ L D , allowing\nϕ B ϕ X ψ B ψ Y\nus to omit the constant terms L D and L D in the D-DGap upper bound.",
+      "size": 458,
+      "sentences": 3
+    },
+    {
+      "id": 173,
+      "content": "L D , allowing\nϕ B ϕ X ψ B ψ Y\nus to omit the constant terms L D and L D in the D-DGap upper bound. However,\nB X B Y\nϕ ψ\nin this proof, the KL divergence is bounded by lnT, as demonstrated by the following:\na a (cid:13)a(cid:13)\n0 ≤ KL(a,b) = aTln ≤ lnaT ≤ ln(cid:13) (cid:13) ≤ lnT, ∀a,b ∈ △α. b b (cid:13)b(cid:13) ∞ 2\nConsequently, the term lnT cannot be omitted from the upper bound of the static duality\ngap.",
+      "size": 413,
+      "sentences": 3
+    },
+    {
+      "id": 174,
+      "content": "3) ∞ 2\nConsequently, the term lnT cannot be omitted from the upper bound of the static duality\ngap. To obtain the conclusion of this proof, we can further relax the prediction error term in\nEquation (23):\n∥A −Λ ∥ = max |f (x,y)−h (x,y)| ≤ ρ(f ,h ). t t ∞ t t t t (24)\nx∈{x (cid:98)t,xt},y∈{y (cid:98)t,y\nt\n}\nNow combining Equations (21) to (24) completes the proof.",
+      "size": 365,
+      "sentences": 3
+    },
+    {
+      "id": 175,
+      "content": ")\nx∈{x (cid:98)t,xt},y∈{y (cid:98)t,y\nt\n}\nNow combining Equations (21) to (24) completes the proof. A.6 Proof of Proposition 12\nProof According to Equation (7), we show that\n \nη ω∇ h (x,y)+η (1−ω)∇ h (x,y )+∇ϕ(x)−∇ϕ(x )\nt x t t x t t (cid:101)t\n γ w∇ (−h )(x,y)+γ (1−w)∇ (−h )(x ,y)+∇ψ(y)−∇ψ(y ) \n t y t t y t t (cid:101)t \nG(x) =  .",
+      "size": 341,
+      "sentences": 2
+    },
+    {
+      "id": 176,
+      "content": "01)t\n γ w∇ (−h )(x,y)+γ (1−w)∇ (−h )(x ,y)+∇ψ(y)−∇ψ(y ) \n t y t t y t t (cid:101)t \nG(x) =  . (25)\nθ ω(h (x,y)−h (x ,y))+θ (1−ω)(h (x,y )−h (x ,y ))+ln\nw(1−w (cid:101)t)\n\n t t t t t t t t t t w (cid:101)t(1−w)\nϑ w(h (x,y )−h (x,y))+ϑ (1−w)(h (x ,y )−h (x ,y))+ln\nω(1−ω (cid:101)t)\nt t t t t t t t t t ω (cid:101)t(1−ω)\nTo establish the Lipschitz continuity of G, we split the difference into two parts:\n(cid:13) (cid:13)G(x)−G(x′) (cid:13) (cid:13) ≤ (cid:13) (cid:13)G(x,y,w,ω)−G(x′,y′,w,ω) (cid:13) (cid:13)+ (cid:13) (cid:13)G(x′,y′,w,ω)−G(x′,y′,w′,ω′) (cid:13) (cid:13).",
+      "size": 584,
+      "sentences": 2
+    },
+    {
+      "id": 177,
+      "content": ",ω)−G(x′,y′,w,ω) (cid:13) (cid:13)+ (cid:13) (cid:13)G(x′,y′,w,ω)−G(x′,y′,w′,ω′) (cid:13) (cid:13). We first bound the (x,y)-difference. Note that G(x,y,w,ω)−G(x′,y′,w,ω) has four block-\ncoordinatesinvolvedifferencesofgradientsandfunctionvalues.",
+      "size": 245,
+      "sentences": 3
+    },
+    {
+      "id": 178,
+      "content": "G(x,y,w,ω)−G(x′,y′,w,ω) has four block-\ncoordinatesinvolvedifferencesofgradientsandfunctionvalues. Forexample, thefirstblock\nis\n(cid:13) (cid:13)η t ω(∇ x h t (x,y)−∇ x h t (x′,y′))+η t (1−ω)(∇ x h t (x,y t )−∇ x h t (x′,y t ))+∇ϕ(x)−∇ϕ(x′) (cid:13) (cid:13)\n≤ η\nt\nω(L\nxx\n(cid:13) (cid:13)x−x′(cid:13)\n(cid:13)+L\nxy\n(cid:13) (cid:13)y−y′(cid:13)\n(cid:13))+η\nt\n(1−ω)L\nxx\n(cid:13) (cid:13)x−x′(cid:13)\n(cid:13)+L\nϕ\n(cid:13) (cid:13)x−x′(cid:13)\n(cid:13).",
+      "size": 452,
+      "sentences": 2
+    },
+    {
+      "id": 179,
+      "content": "))+η\nt\n(1−ω)L\nxx\n(cid:13) (cid:13)x−x′(cid:13)\n(cid:13)+L\nϕ\n(cid:13) (cid:13)x−x′(cid:13)\n(cid:13). Squaring and summing the four analogous estimates for the other blocks gives\n2 (cid:13) (cid:13)G(x,y,w,ω)−G(x′,y′,w,ω) (cid:13) (cid:13) 2 ≤ C x (cid:13) (cid:13)x−x′(cid:13) (cid:13) 2 +C y (cid:13) (cid:13)y−y′(cid:13) (cid:13) 2 ,\n24\n===  25 ===\nA Modular Algorithm for Non-Stationary OCCO\nwhere C = 4 (cid:0) (η L + L )2 + γ2L2 + (θ2 + 4ϑ2)G2 (cid:1) , and C = 4 (cid:0) (γ L + L )2 +\nx t xx ϕ t yx t t X y t yy ψ\nθ2L2 +(ϑ2+4θ2)G2 (cid:1) .",
+      "size": 545,
+      "sentences": 2
+    },
+    {
+      "id": 180,
+      "content": "2 (cid:1) , and C = 4 (cid:0) (γ L + L )2 +\nx t xx ϕ t yx t t X y t yy ψ\nθ2L2 +(ϑ2+4θ2)G2 (cid:1) . Next, we bound the (w,ω)-difference. With (x′,y′) fixed, consider\nt xy t t Y\nG(x′,y′,w,ω) − G(x′,y′,w′,ω′).",
+      "size": 207,
+      "sentences": 3
+    },
+    {
+      "id": 181,
+      "content": "bound the (w,ω)-difference. With (x′,y′) fixed, consider\nt xy t t Y\nG(x′,y′,w,ω) − G(x′,y′,w′,ω′). Again bounding each of the four components via the\nLipschitz continuity of h t and the derivative bound (cid:12) (cid:12) d d u ln 1− u u (cid:12) (cid:12) ≤ T, we obtain\n2 (cid:13) (cid:13)G(x′,y′,w,ω)−G(x′,y′,w′,ω′) (cid:13) (cid:13) 2 ≤ C w (cid:12) (cid:12)w−w′(cid:12) (cid:12) 2 +C ω (cid:12) (cid:12)ω−ω′(cid:12) (cid:12) 2 ,\nwhere C = 2γ2L2 D2 +4ϑ2C, C = 2η2L2 D2 +4θ2C, and C = min (cid:8) D2 (L D +\nw t yx X t ω t xy Y t X xx X\nL D )2, D2(L D +L D )2(cid:9) +T2.",
+      "size": 571,
+      "sentences": 3
+    },
+    {
+      "id": 182,
+      "content": "4θ2C, and C = min (cid:8) D2 (L D +\nw t yx X t ω t xy Y t X xx X\nL D )2, D2(L D +L D )2(cid:9) +T2. Combining both parts gives\nxy Y Y yx X yy Y\n(cid:13) (cid:13)G(x)−G(x′) (cid:13)\n(cid:13)\n2\n≤ (cid:0)(cid:13) (cid:13)G(x,y,w,ω)−G(x′,y′,w,ω) (cid:13) (cid:13)+ (cid:13) (cid:13)G(x′,y′,w,ω)−G(x′,y′,w′,ω′) (cid:13) (cid:13) (cid:1)2\n≤ 2 (cid:13) (cid:13)G(x,y,w,ω)−G(x′,y′,w,ω) (cid:13) (cid:13) 2 +2 (cid:13) (cid:13)G(x′,y′,w,ω)−G(x′,y′,w′,ω′) (cid:13) (cid:13) 2\n≤ C x\n(cid:13) (cid:13)x−x′(cid:13)\n(cid:13)\n2\n+C y\n(cid:13) (cid:13)y−y′(cid:13)\n(cid:13)\n2\n+C w\n(cid:12) (cid:12)w−w′(cid:12)\n(cid:12)\n2\n+C ω\n(cid:12) (cid:12)ω−ω′(cid:12)\n(cid:12)\n2\n≤\nL2(cid:0)(cid:13) (cid:13)x−x′(cid:13)\n(cid:13)\n2\n+\n(cid:13) (cid:13)y−y′(cid:13)\n(cid:13)\n2\n+\n(cid:12) (cid:12)w−w′(cid:12)\n(cid:12)\n2\n+\n(cid:12) (cid:12)ω−ω′(cid:12)\n(cid:12)\n2(cid:1)\n,\nwhich implies that ∥G(x)−G(x′)∥ ≤ L∥x−x′∥.",
+      "size": 883,
+      "sentences": 2
+    },
+    {
+      "id": 183,
+      "content": "2)\n2\n+\n(cid:12) (cid:12)ω−ω′(cid:12)\n(cid:12)\n2(cid:1)\n,\nwhich implies that ∥G(x)−G(x′)∥ ≤ L∥x−x′∥. A.7 Proof of Theorem 14\nProof In the proofs of Theorems 6 and 7, the relaxed inequalities δx,δy ≤ 2ρ(f ,h )\nt t t t\nand ∥A −Λ ∥ ≤ ρ(f ,h ) are utilized (refer to Equations (19) and (24)). However, by\nt t ∞ t t\nappropriately setting the loss vector L , these upper bounds can be tightened further, as\nt\nfollows:\nδx, δy, 2∥A −Λ ∥ ≤ 2⟨L ,ξ ⟩.",
+      "size": 439,
+      "sentences": 3
+    },
+    {
+      "id": 184,
+      "content": "vector L , these upper bounds can be tightened further, as\nt\nfollows:\nδx, δy, 2∥A −Λ ∥ ≤ 2⟨L ,ξ ⟩. t t t t ∞ t t\nApplying Lemma 15, we derive:\nT T (cid:114)\n(cid:88) (cid:88) (cid:88)T\n⟨L ,ξ ⟩ ≤ ⟨L ,1 ⟩+2 2M (1+lnT) ⟨L ,1 ⟩+O(lnT)\nt t t k t k\nt=1\nt=1 t=1\n(cid:88) T (cid:16)√ (cid:17) (cid:114) (cid:88)T\n= ⟨L ,1 ⟩+O lnT ⟨L ,1 ⟩+O(lnT)\nt k t k\nt=1\nt=1\nT T\n(cid:88) (cid:88) (cid:16) (cid:17)\n≤ 2 ⟨L ,1 ⟩+O(lnT) ≤ 2 ρ f ,hk +O(lnT), ∀k = 1,2,··· ,d,\nt k t t\nt=1 t=1\nwhere 1 is a d-dimensional one-hot vector with the k-th element being 1.",
+      "size": 537,
+      "sentences": 2
+    },
+    {
+      "id": 185,
+      "content": ",2,··· ,d,\nt k t t\nt=1 t=1\nwhere 1 is a d-dimensional one-hot vector with the k-th element being 1. Given the\nk\narbitrariness of k, it follows that:\nT T\n(cid:88) (cid:88) (cid:16) (cid:17)\n⟨L ,ξ ⟩ ≤ 2 min ρ f ,hk +O(lnT).",
+      "size": 221,
+      "sentences": 2
+    },
+    {
+      "id": 186,
+      "content": "ess of k, it follows that:\nT T\n(cid:88) (cid:88) (cid:16) (cid:17)\n⟨L ,ξ ⟩ ≤ 2 min ρ f ,hk +O(lnT). t t t t\nk∈{1,2,···,d}\nt=1 t=1\n25\n===  26 ===\nMeng, Lei and Liu\nTherefore, the term\n(cid:80)T\nρ(f ,h ) in the performance bounds of both the meta layer and\nt=1 t t\nexpert layer can be replaced with\n(cid:32) T (cid:33)\n(cid:88)\nO(cid:101) min ρ(f\nt\n,hk\nt\n) ,\nk∈{1,2,···,d}\nt=1\nresulting in the following D-DGap upper bound:\n(cid:32) (cid:40) T (cid:41)(cid:33)\n(cid:88) (cid:112)\nD-DGap(u\n1:T\n,v\n1:T\n) ≤ O(cid:101) min min ρ(f\nt\n,hk\nt\n), (1+min{P\nT\n,C\nT\n})T ,\nk∈{1,2,···,d}\nt=1\nwhich completes the proof.",
+      "size": 602,
+      "sentences": 2
+    },
+    {
+      "id": 187,
+      "content": "(cid:101) min min ρ(f\nt\n,hk\nt\n), (1+min{P\nT\n,C\nT\n})T ,\nk∈{1,2,···,d}\nt=1\nwhich completes the proof. The following lemma can be referred to as the static version of Corollary B.0.1 in Cam-\npolongo and Orabona (2021). Lemma 15 (Static Regret for Clipped Hedge). Let △α be a d-dimensional α-clipped sim-\nd\nplex, T ≥ d and α = d/T. Assume that all bounded linear losses satisfy L ≥ 0 and\nt\nmax ∥L ∥ = L .",
+      "size": 400,
+      "sentences": 5
+    },
+    {
+      "id": 188,
+      "content": "d\nplex, T ≥ d and α = d/T. Assume that all bounded linear losses satisfy L ≥ 0 and\nt\nmax ∥L ∥ = L . If ξ follows the clipped Hedge:\nt∈1:T t ∞ ∞ t\nξ = arg min ζ ⟨L ,ξ⟩+KL(ξ,ξ ),\nt+1 t t t\nξ∈△a\nd\nwhere the learning rate ζ is determined by the following equations:\nt\nζ = (lnT)\n(cid:14)(cid:0)\nϵ+\n(cid:80)t−1\n∆\n(cid:1)\n, ϵ > 0, ∆ =\n(cid:10)\nL ,ξ −ξ\n(cid:11)\n−KL(ξ ,ξ )/ζ > 0.\nt τ=1 τ t t t t+1 t+1 t t\nThen we have that\nT (cid:114)\n(cid:88)(cid:10) (cid:11) (cid:88)T (cid:10) (cid:11)\nL ,ξ −u ≤ 2 (1+lnT)L L ,u +O(lnT), ∀u ∈ △ .",
+      "size": 525,
+      "sentences": 3
+    },
+    {
+      "id": 189,
+      "content": ")\n(cid:88)(cid:10) (cid:11) (cid:88)T (cid:10) (cid:11)\nL ,ξ −u ≤ 2 (1+lnT)L L ,u +O(lnT), ∀u ∈ △ . t t ∞ t d\nt=1\nt=1\nReferences\nIoannis Anagnostides, Constantinos Daskalakis, Gabriele Farina, Maxwell Fishelson, Noah\nGolowich, and Tuomas Sandholm. Near-optimal no-regret learning for correlated equi-\nlibria in multi-player general-sum games. In Proceedings of the 54th Annual ACM\nSIGACT Symposium on Theory of Computing, STOC 2022, pages 736–749, New York,\nNY, USA, 2022.",
+      "size": 472,
+      "sentences": 4
+    },
+    {
+      "id": 190,
+      "content": "ual ACM\nSIGACT Symposium on Theory of Computing, STOC 2022, pages 736–749, New York,\nNY, USA, 2022. Association for Computing Machinery. ISBN 9781450392648. doi:\n10.1145/3519935.3520031. Ioannis Anagnostides, Ioannis Panageas, Gabriele Farina, and Tuomas Sandholm. On the\nconvergence of no-regret learning dynamics in time-varying games. In Thirty-seventh\nConference on Neural Information Processing Systems, 2023. Ha¨ım Brezis. Functional Analysis, Sobolev Spaces and Partial Differential Equations.",
+      "size": 500,
+      "sentences": 8
+    },
+    {
+      "id": 191,
+      "content": "ystems, 2023. Ha¨ım Brezis. Functional Analysis, Sobolev Spaces and Partial Differential Equations. Universitext. Springer-Verlag New York, 2011. ISBN 9780387709130. doi: 10.1007/\n978-0-387-70914-7. 26\n===  27 ===\nA Modular Algorithm for Non-Stationary OCCO\nNicol`o Campolongo and Francesco Orabona. A Closer Look at Temporal Variability in\nDynamic Online Learning. arXiv e-prints, art. arXiv:2102.07666, February 2021. doi:\n10.48550/arXiv.2102.07666. Adrian Rivera Cardoso, He Wang, and Huan Xu.",
+      "size": 496,
+      "sentences": 11
+    },
+    {
+      "id": 192,
+      "content": ".07666, February 2021. doi:\n10.48550/arXiv.2102.07666. Adrian Rivera Cardoso, He Wang, and Huan Xu. The Online Saddle Point Problem and\nOnline Convex Optimization with Knapsacks. arXiv e-prints, June 2018. doi: 10.48550/\narXiv.1806.08301. AdrianRiveraCardoso,JacobAbernethy,HeWang,andHuanXu. Competingagainstnash\nequilibria in adversarially changing zero-sum games.",
+      "size": 365,
+      "sentences": 6
+    },
+    {
+      "id": 193,
+      "content": "ernethy,HeWang,andHuanXu. Competingagainstnash\nequilibria in adversarially changing zero-sum games. In Kamalika Chaudhuri and Ruslan\nSalakhutdinov, editors, Proceedings of the 36th International Conference on Machine\nLearning,volume97ofProceedingsofMachineLearningResearch,pages921–930.PMLR,\n09–15 Jun 2019. URL https://proceedings.mlr.press/v97/cardoso19a.html.",
+      "size": 362,
+      "sentences": 4
+    },
+    {
+      "id": 194,
+      "content": "gResearch,pages921–930.PMLR,\n09–15 Jun 2019. URL https://proceedings.mlr.press/v97/cardoso19a.html. SougataChaudhuriandAmbujTewari.Onlinelearningtorankwithtop-kfeedback.Journal\nofMachineLearningResearch,18(103):1–50,2017.URLhttp://jmlr.org/papers/v18/\n16-285.html. Tianyi Chen, Qing Ling, and Georgios B. Giannakis. An online convex optimization ap-\nproachtoproactivenetworkresourceallocation. IEEE Transactions on Signal Processing,\n65(24):6350–6364, 2017. doi: 10.1109/TSP.2017.2750109.",
+      "size": 488,
+      "sentences": 6
+    },
+    {
+      "id": 195,
+      "content": "ion. IEEE Transactions on Signal Processing,\n65(24):6350–6364, 2017. doi: 10.1109/TSP.2017.2750109. Constantinos Daskalakis, Alan Deckelbaum, and Anthony Kim. Near-optimal no-regret\nalgorithms for zero-sum games. Games and Economic Behavior, 92:327–348, 2015. ISSN\n0899-8256. doi: 10.1016/j.geb.2014.01.003. Constantinos Costis Daskalakis, Maxwell Fishelson, and Noah Golowich. Near-optimal\nno-regret learning in general games.",
+      "size": 427,
+      "sentences": 8
+    },
+    {
+      "id": 196,
+      "content": "Daskalakis, Maxwell Fishelson, and Noah Golowich. Near-optimal\nno-regret learning in general games. In A. Beygelzimer, Y. Dauphin, P. Liang, and\nJ.WortmanVaughan, editors, Advances in Neural Information Processing Systems, 2021. Tanner Fiez, Ryann Sim, EFSTRATIOS PANTELEIMON SKOULAKIS, Georgios Pil-\niouras, and Lillian J Ratliff. Online learning in periodic zero-sum games.",
+      "size": 375,
+      "sentences": 5
+    },
+    {
+      "id": 197,
+      "content": "SKOULAKIS, Georgios Pil-\niouras, and Lillian J Ratliff. Online learning in periodic zero-sum games. In A. Beygelz-\nimer, Y. Dauphin, P. Liang, and J. Wortman Vaughan, editors, Advances in Neural\nInformation Processing Systems, 2021. Yoav Freund and Robert E. Schapire. Adaptive game playing using multiplicative weights. Games and Economic Behavior, 29(1):79–103, 1999. ISSN0899-8256. doi: 10.1006/game. 1999.0738. Sini Guo, Jia-Wen Gu, and Wai-Ki Ching.",
+      "size": 454,
+      "sentences": 10
+    },
+    {
+      "id": 198,
+      "content": ":79–103, 1999. ISSN0899-8256. doi: 10.1006/game. 1999.0738. Sini Guo, Jia-Wen Gu, and Wai-Ki Ching. Adaptive online portfolio selection with trans-\naction costs. European Journal of Operational Research, 295(3):1074–1086, 2021. ISSN\n0377-2217. doi: 10.1016/j.ejor.2021.03.023. URL https://www.sciencedirect.com/\nscience/article/pii/S0377221721002496. Mark Herbster and Manfred K Warmuth. Tracking the best linear predictor. Journal of\nMachine Learning Research, 1:281–309, 2001.",
+      "size": 478,
+      "sentences": 12
+    },
+    {
+      "id": 199,
+      "content": "Warmuth. Tracking the best linear predictor. Journal of\nMachine Learning Research, 1:281–309, 2001. Nam Ho-Nguyen and Fatma Kılınc¸-Karzan. Exploiting problem structure in optimization\nunder uncertainty via online convex optimization. Mathematical Programming, 177(1):\n113–147, Sep 2019. ISSN 1436-4646. doi: 10.1007/s10107-018-1262-8. 27\n===  28 ===\nMeng, Lei and Liu\nShiyinLuandLijunZhang. AdaptiveandEfficientAlgorithmsforTrackingtheBestExpert.",
+      "size": 447,
+      "sentences": 9
+    },
+    {
+      "id": 200,
+      "content": "==\nMeng, Lei and Liu\nShiyinLuandLijunZhang. AdaptiveandEfficientAlgorithmsforTrackingtheBestExpert. arXiv e-prints, September 2019. doi: 10.48550/arXiv.1909.02187. Shiyin Lu, Yuan Miao, Ping Yang, Yao Hu, and Lijun Zhang. Non-stationary duel-\ning bandits for online learning to rank. In Bohan Li, Lin Yue, Chuanqi Tao, Xum-\ning Han, Diego Calvanese, and Toshiyuki Amagasa, editors, Web and Big Data, pages\n166–174, Cham, 2023. Springer Nature Switzerland.",
+      "size": 455,
+      "sentences": 7
+    },
+    {
+      "id": 201,
+      "content": "shiyuki Amagasa, editors, Web and Big Data, pages\n166–174, Cham, 2023. Springer Nature Switzerland. ISBN 978-3-031-25198-6. doi:\n10.1007/978-3-031-25198-6 13. Qing-xin Meng and Jian-wei Liu. Proximal point method for online saddle point prob-\nlem. In Mufti Mahmud, Maryam Doborjeh, Kevin Wong, Andrew Chi Sing Le-\nung, Zohreh Doborjeh, and M. Tanveer, editors, Neural Information Processing, pages\n399–414, Singapore, 2025. Springer Nature Singapore.",
+      "size": 450,
+      "sentences": 7
+    },
+    {
+      "id": 202,
+      "content": "editors, Neural Information Processing, pages\n399–414, Singapore, 2025. Springer Nature Singapore. ISBN 978-981-96-6579-2. doi:\n10.1007/978-981-96-6579-2 27. Panayotis Mertikopoulos and William H. Sandholm. Learning in games via reinforcement\nand regularization. Mathematics of Operations Research, 41(4):1297–1324, 2016. doi:\n10.1287/moor.2016.0778. Panayotis Mertikopoulos and Zhengyuan Zhou. Learning in games with continuous action\nsets and unknown payoff functions. arXiv e-prints, art.",
+      "size": 491,
+      "sentences": 9
+    },
+    {
+      "id": 203,
+      "content": "u. Learning in games with continuous action\nsets and unknown payoff functions. arXiv e-prints, art. arXiv:1608.07310, August 2016.\ndoi: 10.48550/arXiv.1608.07310. Yurii Nesterov and Laura Scrimali. Solving strongly monotone variational and quasi-\nvariational inequalities. CORE Discussion Paper, 2006/107, 2006. doi: 10.2139/ssrn. 970903. Abhishek Roy, Yifang Chen, Krishnakumar Balasubramanian, and Prasant Mohapatra.",
+      "size": 418,
+      "sentences": 9
+    },
+    {
+      "id": 204,
+      "content": ".2139/ssrn. 970903. Abhishek Roy, Yifang Chen, Krishnakumar Balasubramanian, and Prasant Mohapatra. Online and Bandit Algorithms for Nonstationary Stochastic Saddle-Point Optimization. arXiv e-prints, December 2019. doi: 10.48550/arXiv.1912.01698. R. Schapire, N. Cesa-Bianchi, P. Auer, and Y. Freund. Gambling in a rigged casino: The\nadversarial multi-armed bandit problem. In 2013 IEEE 54th Annual Symposium on\nFoundations of Computer Science, page 322, Los Alamitos, CA, USA, October 1995.",
+      "size": 492,
+      "sentences": 8
+    },
+    {
+      "id": 205,
+      "content": "Annual Symposium on\nFoundations of Computer Science, page 322, Los Alamitos, CA, USA, October 1995. IEEE Computer Society. doi: 10.1109/SFCS.1995.492488. PedroZattoniScroccaro,ArmanSharifiKolarijani,andPeymanMohajerinEsfahani. Adap-\ntive composite online optimization: Predictions in static and dynamic environments. IEEE Transactions on Automatic Control, 68(5):2906–2921, 2023. doi: 10.1109/TAC. 2023.3237486. Shai Shalev-Shwartz. Online learning and online convex optimization.",
+      "size": 480,
+      "sentences": 9
+    },
+    {
+      "id": 206,
+      "content": "oi: 10.1109/TAC. 2023.3237486. Shai Shalev-Shwartz. Online learning and online convex optimization. Foundations and\nTrends® in Machine Learning, 4(2):107–194, 2012. ISSN 1935-8237. doi: 10.1561/\n2200000018. Vasilis Syrgkanis, Alekh Agarwal, Haipeng Luo, and Robert E. Schapire. Fast convergence\nof regularized learning in games. In Proceedings of the 28th International Conference\non Neural Information Processing Systems - Volume 2, NIPS’15, pages 2989–2997, Cam-\nbridge, MA, USA, 2015. MIT Press.",
+      "size": 498,
+      "sentences": 10
+    },
+    {
+      "id": 207,
+      "content": "ion Processing Systems - Volume 2, NIPS’15, pages 2989–2997, Cam-\nbridge, MA, USA, 2015. MIT Press. doi: 10.5555/2969442.2969573. 28\n===  29 ===\nA Modular Algorithm for Non-Stationary OCCO\nTim van Erven and Wouter M Koolen. Metagrad: Multiple learning rates in on-\nline learning. In D. Lee, M. Sugiyama, U. Luxburg, I. Guyon, and R. Gar-\nnett, editors, Advances in Neural Information Processing Systems, volume 29. Curran\nAssociates, Inc., 2016.",
+      "size": 445,
+      "sentences": 7
+    },
+    {
+      "id": 208,
+      "content": "itors, Advances in Neural Information Processing Systems, volume 29. Curran\nAssociates, Inc., 2016. URL https://proceedings.neurips.cc/paper/2016/file/\n14cfdb59b5bda1fc245aadae15b1984a-Paper.pdf. John von Neumann. Zur theorie der gesellschaftsspiele. Mathematische Annalen, 100(1):\n295–320, Dec 1928. ISSN 1432-1807. doi: 10.1007/BF01448847. Lijun Zhang. Online learning in changing environments.",
+      "size": 396,
+      "sentences": 9
+    },
+    {
+      "id": 209,
+      "content": "28. ISSN 1432-1807. doi: 10.1007/BF01448847. Lijun Zhang. Online learning in changing environments. In Christian Bessiere, editor, Pro-\nceedings of the Twenty-Ninth International Joint Conference on Artificial Intelligence,\nIJCAI-20, pages 5178–5182. International Joint Conferences on Artificial Intelligence Or-\nganization, 7 2020. doi: 10.24963/ijcai.2020/731. Early Career. Lijun Zhang, Shiyin Lu, and Zhi-Hua Zhou. Adaptive online learning in dynamic envi-\nronments.",
+      "size": 471,
+      "sentences": 9
+    },
+    {
+      "id": 210,
+      "content": "reer. Lijun Zhang, Shiyin Lu, and Zhi-Hua Zhou. Adaptive online learning in dynamic envi-\nronments. In S. Bengio, H. Wallach, H. Larochelle, K. Grauman, N. Cesa-Bianchi, and\nR. Garnett, editors, Advances in Neural Information Processing Systems, volume 31,\npages 1323–1333. Curran Associates, Inc., 2018. URL https://proceedings.neurips. cc/paper/2018/file/10a5ab2db37feedfdeaab192ead4ac0e-Paper.pdf. LijunZhang,WeiJiang,ShiyinLu,andTianbaoYang. Revisitingsmoothedonlinelearning.",
+      "size": 479,
+      "sentences": 9
+    },
+    {
+      "id": 211,
+      "content": "2ead4ac0e-Paper.pdf. LijunZhang,WeiJiang,ShiyinLu,andTianbaoYang. Revisitingsmoothedonlinelearning. In M. Ranzato, A. Beygelzimer, Y. Dauphin, P.S. Liang, and J. Wortman Vaughan,\neditors, Advances in Neural Information Processing Systems, volume 34, pages 13599–\n13612. Curran Associates, Inc., 2021. URL https://proceedings.neurips.cc/paper/\n2021/file/70fc5f043205720a49d973d280eb83e7-Paper.pdf. Lijun Zhang, Guanghui Wang, Jinfeng Yi, and Tianbao Yang.",
+      "size": 454,
+      "sentences": 8
+    },
+    {
+      "id": 212,
+      "content": "fc5f043205720a49d973d280eb83e7-Paper.pdf. Lijun Zhang, Guanghui Wang, Jinfeng Yi, and Tianbao Yang. A simple yet univer-\nsal strategy for online convex optimization. In Kamalika Chaudhuri, Stefanie Jegelka,\nLe Song, Csaba Szepesvari, Gang Niu, and Sivan Sabato, editors, Proceedings of the\n39th International Conference on Machine Learning, volume 162 of Proceedings of Ma-\nchine Learning Research, pages 26605–26623. PMLR, 17–23 Jul 2022a. URL https:\n//proceedings.mlr.press/v162/zhang22af.html.",
+      "size": 496,
+      "sentences": 6
+    },
+    {
+      "id": 213,
+      "content": ", pages 26605–26623. PMLR, 17–23 Jul 2022a. URL https:\n//proceedings.mlr.press/v162/zhang22af.html. Mengxiao Zhang, Peng Zhao, Haipeng Luo, and Zhi-Hua Zhou. No-regret learning in\ntime-varying zero-sum games. In Kamalika Chaudhuri, Stefanie Jegelka, Le Song, Csaba\nSzepesvari, Gang Niu, and Sivan Sabato, editors, Proceedings of the 39th International\nConference on Machine Learning, volume 162 of Proceedings of Machine Learning Re-\nsearch, pages 26772–26808. PMLR, 17–23 Jul 2022b.",
+      "size": 483,
+      "sentences": 7
+    },
+    {
+      "id": 214,
+      "content": "volume 162 of Proceedings of Machine Learning Re-\nsearch, pages 26772–26808. PMLR, 17–23 Jul 2022b. URL https://proceedings.mlr. press/v162/zhang22an.html. Peng Zhao, Yu-Jie Zhang, Lijun Zhang, and Zhi-Hua Zhou. Dynamic regret of convex and\nsmooth functions. In H. Larochelle, M. Ranzato, R. Hadsell, M. F. Balcan, and H. Lin,\neditors, Advances in Neural Information Processing Systems, volume 33, pages 12510–\n12520. Curran Associates, Inc., 2020.",
+      "size": 448,
+      "sentences": 8
+    },
+    {
+      "id": 215,
+      "content": "eural Information Processing Systems, volume 33, pages 12510–\n12520. Curran Associates, Inc., 2020. URL https://proceedings.neurips.cc/paper/\n2020/file/939314105ce8701e67489642ef4d49e8-Paper.pdf. Peng Zhao, Yu-Jie Zhang, Lijun Zhang, and Zhi-Hua Zhou. Adaptivity and Non-\nstationarity: Problem-dependentDynamicRegretforOnlineConvexOptimization. arXiv\ne-prints, December 2021. doi: 10.48550/arXiv.2112.14368. 29\n===  30 ===\nMeng, Lei and Liu\nPeng Zhao, Yan-Feng Xie, Lijun Zhang, and Zhi-Hua Zhou.",
+      "size": 496,
+      "sentences": 7
+    },
+    {
+      "id": 216,
+      "content": "112.14368. 29\n===  30 ===\nMeng, Lei and Liu\nPeng Zhao, Yan-Feng Xie, Lijun Zhang, and Zhi-Hua Zhou. Efficient meth-\nods for non-stationary online learning. In S. Koyejo, S. Mohamed, A. Agar-\nwal, D. Belgrave, K. Cho, and A. Oh, editors, Advances in Neural Infor-\nmation Processing Systems, volume 35, pages 11573–11585. Curran Associates,\nInc., 2022. URL https://proceedings.neurips.cc/paper_files/paper/2022/hash/\n4b70484ebef62484e0c8cdd269e482fd-Abstract.html.",
+      "size": 462,
+      "sentences": 6
+    },
+    {
+      "id": 217,
+      "content": "proceedings.neurips.cc/paper_files/paper/2022/hash/\n4b70484ebef62484e0c8cdd269e482fd-Abstract.html. MartinZinkevich.Onlineconvexprogrammingandgeneralizedinfinitesimalgradientascent. In Tom Fawcett and Nina Mishra, editors, Proceedings of the Twentieth International\nConference on Machine Learning, ICML’03, page 928–935. AAAI Press, 2003. ISBN\n1577351894. 30",
+      "size": 358,
+      "sentences": 6
+    }
+  ]
+}

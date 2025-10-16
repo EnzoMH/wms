@@ -1,0 +1,963 @@
+{
+  "source": "ArXiv",
+  "filename": "262_AI_ML_LiMuon__Light_and_Fast_Muon_Optimizer_fo.pdf",
+  "domain": "AI",
+  "total_chars": 55687,
+  "total_chunks": 159,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\nLiMuon: Light and Fast Muon Optimizer for Large Models\nFeihu Huang∗, Yuning Luo†, Songcan Chen‡\nAbstract\nLarge models recently are widely applied in artificial intelligence, so efficient training of\nlarge models has received widespread attention. More recently, a useful Muon optimizer is\nspecifically designed for matrix-structured parameters of large models.",
+      "size": 371,
+      "sentences": 2
+    },
+    {
+      "id": 2,
+      "content": "a useful Muon optimizer is\nspecifically designed for matrix-structured parameters of large models. Although some works\nhavebeguntostudyingMuonoptimizer,theexistingMuonanditsvariantsstillsufferfromhigh\nsample complexity or high memory for large models.",
+      "size": 251,
+      "sentences": 2
+    },
+    {
+      "id": 3,
+      "content": "theexistingMuonanditsvariantsstillsufferfromhigh\nsample complexity or high memory for large models. To fill this gap, we propose a light and\nfastMuon(LiMuon)optimizerfortraininglargemodels,whichbuildsonthemomentum-based\nvariancereducedtechniqueandrandomizedSingularValueDecomposition(SVD).OurLiMuon\noptimizerhasalowermemorythanthecurrentMuonanditsvariants.",
+      "size": 356,
+      "sentences": 2
+    },
+    {
+      "id": 4,
+      "content": "SingularValueDecomposition(SVD).OurLiMuon\noptimizerhasalowermemorythanthecurrentMuonanditsvariants. Moreover,weprovethat\nourLiMuonhasalowersamplecomplexityofO(ϵ−3)forfindinganϵ-stationarysolutionofnon-\nconvexstochasticoptimizationunderthesmoothcondition. Recently,theexistingconvergence\nanalysisofMuonoptimizermainlyreliesonthestrictLipschitzsmoothassumption,whilesome\nartificial intelligence tasks such as training large language models (LLMs) do not satisfy this\ncondition.",
+      "size": 475,
+      "sentences": 3
+    },
+    {
+      "id": 5,
+      "content": "ial intelligence tasks such as training large language models (LLMs) do not satisfy this\ncondition. WealsoprovedthatourLiMuonoptimizerhasasamplecomplexityofO(ϵ−3)under\nthegeneralizedsmoothcondition. NumericalexperimentalresultsontrainingDistilGPT2and\nViT models verify efficiency of our LiMuon optimizer.",
+      "size": 304,
+      "sentences": 3
+    },
+    {
+      "id": 6,
+      "content": "calexperimentalresultsontrainingDistilGPT2and\nViT models verify efficiency of our LiMuon optimizer. 1 Introduction\nLarge models are widely used in many artificial intelligence tasks such as language understanding\nand generation [Achiam et al., 2023, Liu et al., 2024], which consists of a massive amount of\nparameters. Since training large models requires significant computational resources, designing\noptimizers that can efficiently train such models has received widespread attention.",
+      "size": 487,
+      "sentences": 3
+    },
+    {
+      "id": 7,
+      "content": "ces, designing\noptimizers that can efficiently train such models has received widespread attention. Recently,\nadaptive gradient methods such as Adam [Kingma and Ba, 2014] and AdamW [Loshchilov and\nHutter, 2017] have become standard choice for training large-scale models, which use their ability\nto dynamically adjust learning rates based on the first-order and second-order moment estimates.",
+      "size": 392,
+      "sentences": 2
+    },
+    {
+      "id": 8,
+      "content": "ty\nto dynamically adjust learning rates based on the first-order and second-order moment estimates. Recent some optimization algorithms [Jordan et al., 2024, An et al., 2025, Tuddenham et al.,\n2022, Gupta et al., 2018] have made significant progress by taking advantage of structures in large\nmodels, which have shown promising potential to outperform these standard adaptive gradient\n∗FeihuHuangiswithCollegeofComputerScienceandTechnology,NanjingUniversityofAeronauticsandAstro-\nnautics,Nanjing,China;andalsowithMIITKeyLaboratoryofPatternAnalysisandMachineIntelligence,Nanjing,\nChina.",
+      "size": 585,
+      "sentences": 2
+    },
+    {
+      "id": 9,
+      "content": "s,Nanjing,China;andalsowithMIITKeyLaboratoryofPatternAnalysisandMachineIntelligence,Nanjing,\nChina. Email: huangfeihu2018@gmail.com\n†Yuning Luo is with College of Computer Science and Technology, Nanjing University of Aeronautics and As-\ntronautics, Nanjing, China, and also with College of Design and Engineering, National University of Singapore,\nSingapore.",
+      "size": 359,
+      "sentences": 2
+    },
+    {
+      "id": 10,
+      "content": "hina, and also with College of Design and Engineering, National University of Singapore,\nSingapore. ‡Songcan Chen is with College of Computer Science and Technology, Nanjing University of Aeronautics and\nAstronautics, Nanjing, China; and also with MIIT Key Laboratory of Pattern Analysis and Machine Intelligence,\nNanjing,China.",
+      "size": 328,
+      "sentences": 2
+    },
+    {
+      "id": 11,
+      "content": "ina; and also with MIIT Key Laboratory of Pattern Analysis and Machine Intelligence,\nNanjing,China. 1\n5202\npeS\n91\n]GL.sc[\n2v26541.9052:viXra\n===  2 ===\nTable 1: Comparison of the Muon optimizer and its variants for nonconvex stochastic optimization\nfor finding an ϵ-stationary point (E∥∇f(W)∥ ≤ ϵ). Here rˆ ≪ min(m,n).",
+      "size": 318,
+      "sentences": 3
+    },
+    {
+      "id": 12,
+      "content": "onvex stochastic optimization\nfor finding an ϵ-stationary point (E∥∇f(W)∥ ≤ ϵ). Here rˆ ≪ min(m,n). Note that although\nF\nMuon++ also obtain a lower SFO (sample or gradient) complexity of O(ϵ−3), it requires a large\nbatch size b =ϵ−1, while our LiMuon only requires b =1 for all t≥1 at each iteration. 1 t\nAlgorithm Reference SFOComplexity StateMemory GeneralizedSmooth\nMuon Shenetal. [2025],LiandHong[2025] O(ϵ−4) mn\nMuon++ SfyrakiandWang[2025] O(ϵ−3) mn\nSCG Pethicketal.",
+      "size": 471,
+      "sentences": 5
+    },
+    {
+      "id": 13,
+      "content": "n Shenetal. [2025],LiandHong[2025] O(ϵ−4) mn\nMuon++ SfyrakiandWang[2025] O(ϵ−3) mn\nSCG Pethicketal. [2025a] O(ϵ−4) mn\n√\nGGNC Pethicketal. [2025b] O(ϵ−4) mn\nSUMO Refaeletal. [2025] O(ϵ−4) (m+n)rˆ\n√\nLiMuon Ours O(ϵ−3) (m+n)rˆ\nmethods. In fact, most of the parameters in neural networks are naturally represented as matrices\nor tensors.",
+      "size": 333,
+      "sentences": 6
+    },
+    {
+      "id": 14,
+      "content": "n fact, most of the parameters in neural networks are naturally represented as matrices\nor tensors. For example, the matrix-structured parameters appear in the query, key, and value\nmatrices in attention mechanisms [Vaswani et al., 2017], and tensor-structured parameters appear\nin nuclear tensor of convolutional neural networks [Krizhevsky et al., 2017].",
+      "size": 356,
+      "sentences": 2
+    },
+    {
+      "id": 15,
+      "content": "red parameters appear\nin nuclear tensor of convolutional neural networks [Krizhevsky et al., 2017]. A typical noteworthy\noptimization algorithm is the Muon optimizer [Jordan et al., 2024], which updates matrix parame-\nters with orthogonalized gradient momentum using Newton-Schulz iteration. It has demonstrated\ncompetitive empirical performance across diverse large language models (LLMs) [Liu et al., 2025].",
+      "size": 409,
+      "sentences": 3
+    },
+    {
+      "id": 16,
+      "content": "d\ncompetitive empirical performance across diverse large language models (LLMs) [Liu et al., 2025]. More recently, some works have begun to studying the convergence properties of the Muon\noptimizer. Forexample, Shenetal. [2025],LiandHong[2025]provedthattheMuonoptimizerhas\naStochasticFirst-orderOracle(SFO)complexityofO(ϵ−4)forfindinganϵ-nuclear-normstationary\npointofnonconvexstochasticoptimization. Pethicketal.",
+      "size": 413,
+      "sentences": 5
+    },
+    {
+      "id": 17,
+      "content": "tyofO(ϵ−4)forfindinganϵ-nuclear-normstationary\npointofnonconvexstochasticoptimization. Pethicketal. [2025a]studiedthestochasticconditional\ngradient (a.k.a., stochastic Frank-Wolfe) [Hazan and Luo, 2016] methods by leveraging the linear\nminimization oracle (LMO) over a norm-ball, which includes the Muon optimizer, and proved that\nit also has a SFO complexity of O(ϵ−4) for finding an ϵ-nuclear-norm stationary point.",
+      "size": 417,
+      "sentences": 3
+    },
+    {
+      "id": 18,
+      "content": "proved that\nit also has a SFO complexity of O(ϵ−4) for finding an ϵ-nuclear-norm stationary point. Further,\nSfyrakiandWang[2025]showedthattheMuonwithweightdecaycanbeviewedasspecialinstances\nof a stochastic Frank-Wolfe algorithm, and established its convergence guarantees in terms of the\nFrank-Wolfe gap, which implies convergence to a KKT point of the Muon under a norm constraint\nfor non-convex stochastic optimization. Chen et al.",
+      "size": 433,
+      "sentences": 3
+    },
+    {
+      "id": 19,
+      "content": "a KKT point of the Muon under a norm constraint\nfor non-convex stochastic optimization. Chen et al. [2025] provided the theoretical results of Lion-\nK to show that the Muon with decoupled weight decay implicitly solves an optimization problem\nthat enforces a constraint on the spectral norm of weight matrices. Meanwhile, Kovalev [2025]\nstudied the convergence properties of the stochastic non-Euclidean trust-region gradient method\nwith momentum, which recovers the Muon optimizer as a special case.",
+      "size": 500,
+      "sentences": 4
+    },
+    {
+      "id": 20,
+      "content": "an trust-region gradient method\nwith momentum, which recovers the Muon optimizer as a special case. Lau et al. [2025] showed\nthattheMuonisaclassofmatrix-gradientoptimizersfromaunifyingpreconditioningperspective. More recently, Pethick et al. [2025b] studied the convergence properties of the generalized\ngradient norm clipping methods under the (L ,L )-smoothness [Zhang et al., 2019]. To accel-\n0 1\nerate memory-efficient LLM training, Refael et al.",
+      "size": 450,
+      "sentences": 6
+    },
+    {
+      "id": 21,
+      "content": ")-smoothness [Zhang et al., 2019]. To accel-\n0 1\nerate memory-efficient LLM training, Refael et al. [2025] proposed a subspace-aware moment-\northogonalization (SUMO) optimizer. Although these works have begun to studying Muon op-\ntimizer, the existing Muon and its variants suffer from high gradient complexity or high memory\nin training large models.",
+      "size": 351,
+      "sentences": 4
+    },
+    {
+      "id": 22,
+      "content": "Muon and its variants suffer from high gradient complexity or high memory\nin training large models. Meanwhile, the existing convergence analysis of the Muon mainly relies\non the strict Lipschitz smooth assumption, while some artificial intelligence tasks such as training\nLLMs do not satisfy this condition.",
+      "size": 307,
+      "sentences": 2
+    },
+    {
+      "id": 23,
+      "content": "tion, while some artificial intelligence tasks such as training\nLLMs do not satisfy this condition. To fill this gap, we propose a light and fast Muon (LiMuon)\noptimizer for training large models, which builds on the momentum-based variance reduced tech-\nnique [Cutkosky and Orabona, 2019, Tran-Dinh et al., 2022] and randomized Singular Value De-\ncomposition (SVD) [Halko et al., 2011].",
+      "size": 387,
+      "sentences": 2
+    },
+    {
+      "id": 24,
+      "content": ", Tran-Dinh et al., 2022] and randomized Singular Value De-\ncomposition (SVD) [Halko et al., 2011]. In summary, our main contributions are as follows:\n2\n[  ]\n\n===  3 ===\n1) We propose a light and fast Muon (i.e., LiMuon) optimizer for the matrix-structured param-\neters of large models, which has a lower state memory than the standard Muon optimizer\n(Please see Table 1).",
+      "size": 372,
+      "sentences": 2
+    },
+    {
+      "id": 25,
+      "content": "large models, which has a lower state memory than the standard Muon optimizer\n(Please see Table 1). 2) WeprovideasolidconvergenceanalysisforourLiMuonoptimizer,andprovethatourLiMuon\nobtains a lower SFO complexity of O(ϵ−3) for finding an ϵ-nuclear-norm stationary point of\nnonconvex stochastic optimization under the generalized smooth condition. 3) We conduct some numerical experiments on training DistilGPT2 and ViT models to verify\nefficiency of our LiMuon optimizer.",
+      "size": 470,
+      "sentences": 3
+    },
+    {
+      "id": 26,
+      "content": "cal experiments on training DistilGPT2 and ViT models to verify\nefficiency of our LiMuon optimizer. From Table 1, our LiMuon optimizer can simultaneously obtain a lower SFO complexity and a\nlower state memory under the generalized smooth condition. In fact, our LiMuon optimizer uses a\nnew convergence analysis framework, which is totally different from the other methods in Table 1.",
+      "size": 383,
+      "sentences": 3
+    },
+    {
+      "id": 27,
+      "content": "a\nnew convergence analysis framework, which is totally different from the other methods in Table 1. For example, the Muon++ [Sfyraki and Wang, 2025] and GGNC [Pethick et al., 2025b] optimizers\nrely on the condition gradient descent (Frank-Wolfe) algorithmic framework to obtain a lower SFO\ncomplexity of O(ϵ−3) or relax the smoothness condition, while our LiMuon optimizer still use the\nstandard Muon iteration.",
+      "size": 411,
+      "sentences": 2
+    },
+    {
+      "id": 28,
+      "content": "r relax the smoothness condition, while our LiMuon optimizer still use the\nstandard Muon iteration. Although the SUMO optimizer [Refael et al., 2025] also obtain a lower\nstatememory,itreliesonastrictconditionthattheobjectivefunctionisboundedbysomepositive\nconstants. Notation\nFor all matrices A,B ∈ Rm×n, the Frobenius inner product defined as ⟨A,B⟩ = tr(A⊤B) and the\n(cid:112)\nFrobenius norm defined as ∥A∥ = tr(A⊤A), where tr(·) denotes the trace of a square matrix.",
+      "size": 468,
+      "sentences": 3
+    },
+    {
+      "id": 29,
+      "content": "cid:112)\nFrobenius norm defined as ∥A∥ = tr(A⊤A), where tr(·) denotes the trace of a square matrix. F\nFor a matrix A∈Rm×n, ∥A∥ denotes its nuclear norm. A⊤ denotes the transpose of matrix A. I\n∗\ndenote an identity matrix. x =O(y ) denotes that x ≤cy for some constant c>0.",
+      "size": 272,
+      "sentences": 4
+    },
+    {
+      "id": 30,
+      "content": "pose of matrix A. I\n∗\ndenote an identity matrix. x =O(y ) denotes that x ≤cy for some constant c>0. t t t t\n2 Preliminaries\nInthepaper,westudytheMuonoptimizertosolvethefollowingnonconvexstochasticoptimization\nproblem:\nmin E [f(W;ξ)], (1)\nξ\nW∈Rm×n\nwhere f(W) = E [f(W;ξ)] : Rm×n → R denotes a loss function of training large models such as\nξ\ndeep neural networks, which generally is nonconvex.",
+      "size": 392,
+      "sentences": 3
+    },
+    {
+      "id": 31,
+      "content": "oss function of training large models such as\nξ\ndeep neural networks, which generally is nonconvex. Here W ∈ Rm×n denotes parameter matrix,\nand ξ is a random variable drawn some fixed but unknown distribution D.\nMuon [Jordan et al., 2024] optimizer can be written as: for all t≥1\nG =∇f(W ;ξ ), (2)\nt t t\nB =µB +G , (3)\nt t−1 t\nO =argmin{∥O−B ∥ :O⊤O =I, or OO⊤ =I}, (4)\nt t F\nW =W −η O , (5)\nt+1 t t t\n3\n===  4 ===\nwhere momentum parameter µ>0 and learning rate η >0.",
+      "size": 466,
+      "sentences": 2
+    },
+    {
+      "id": 32,
+      "content": ")\nt t F\nW =W −η O , (5)\nt+1 t t t\n3\n===  4 ===\nwhere momentum parameter µ>0 and learning rate η >0. Here (4) can be equivalently written\nt\nas O = UV⊤, where B = UΣV⊤ is the singular value decomposition. Since computing SVD is\nt t\nusually expensive in practice, especially when the dimensions are large, a popular implementation\nof Muon uses the Newton-Schulz iterations [Jordan et al., 2024, Bernstein and Newhouse, 2024] to\napproximate the orthogonalization process.",
+      "size": 467,
+      "sentences": 3
+    },
+    {
+      "id": 33,
+      "content": "s [Jordan et al., 2024, Bernstein and Newhouse, 2024] to\napproximate the orthogonalization process. Algorithm 1 LiMuon Optimizer\n1: Input: η t >0, β t ∈[0,1), 0<rˆ<r =min(m,n) and s>0;\n2: Initialize: W 0 ∈Rm×n, ξ 0 ∼D and M 0 =∇f(W 0 ;ξ 0 );\n3: for t=0,1,...,T −1 do\n4: (U t ,Σ t ,V t )=SVD(M t ) ;\n5: W t+1 =W t −η t U t V t ⊤;\n6: Draw a sample ξ t+1 ∼D;\n7: M t+1 =∇f(W t+1 ;ξ t+1 )+(1−β t+1 )(M t −∇f(W t ;ξ t+1 )) (Option #1);\n8: (Uˆ t ,Sˆ t ,Vˆ t )=RSVD(M t ,rˆ,s) (from Algorithm 2), and Mˆ t =Uˆ t Sˆ t Vˆ t T;\n9: M t+1 =∇f(W t+1 ;ξ t+1 )+(1−β t+1 )(Mˆ t −∇f(W t ;ξ t+1 )) (Option #2).",
+      "size": 591,
+      "sentences": 2
+    },
+    {
+      "id": 34,
+      "content": "Mˆ t =Uˆ t Sˆ t Vˆ t T;\n9: M t+1 =∇f(W t+1 ;ξ t+1 )+(1−β t+1 )(Mˆ t −∇f(W t ;ξ t+1 )) (Option #2). 10: end for\n11: Output: W T . Algorithm 2 RSVD(A,rˆ,s)\n1: Input: Matrix A∈Rm×n, target rank rˆ>0, oversampling parameter s>0;\n2: Output: U,Σ,V;\n3: l=rˆ+s, and generate a random Gaussian matrix Ω∈Rn×l;\n4: Y =AΩ∈Rm×l, and compute the QR decomposition Y =QR;\n5: B =Q⊤A∈Rl×n, and compute SVD of the small matrix: (U˜,Σ,V)=SVD(B), and U =QU˜.",
+      "size": 436,
+      "sentences": 3
+    },
+    {
+      "id": 35,
+      "content": "omposition Y =QR;\n5: B =Q⊤A∈Rl×n, and compute SVD of the small matrix: (U˜,Σ,V)=SVD(B), and U =QU˜. 3 Our LiMuon Algorithm\nInthesection,weproposealightandfastMuon(LiMuon)optimizer,whichbuildsonthemomentum-\nbased variance reduced technique of STORM [Cutkosky and Orabona, 2019] and randomized\nSVD [Halko et al., 2011]. Algorithm 1 provides an algorithmic framework of our LiMuon opti-\nmizer.",
+      "size": 390,
+      "sentences": 3
+    },
+    {
+      "id": 36,
+      "content": "SVD [Halko et al., 2011]. Algorithm 1 provides an algorithmic framework of our LiMuon opti-\nmizer. At the line 4 of Algorithm 1, we use the SVD to obtain the orthogonalization of stochastic\ngradient estimate M . Here we can also use the Newton-Schulz iterations to approximate the\nt\northogonalization process.",
+      "size": 309,
+      "sentences": 4
+    },
+    {
+      "id": 37,
+      "content": ". Here we can also use the Newton-Schulz iterations to approximate the\nt\northogonalization process. At the line 7 of Algorithm 1, we use the momentum-based variance\nreduced technique of STORM to obtain stochastic gradient estimate\nM =∇f(W ;ξ )+(1−β )(M −∇f(W ;ξ )),\nt+1 t+1 t+1 t+1 t t t+1\nwhere we still store gradient estimate M ∈ Rm×n. Here our LiMuon algorithm with Option #1\nt\ncan not reduce state memory.",
+      "size": 410,
+      "sentences": 4
+    },
+    {
+      "id": 38,
+      "content": "gradient estimate M ∈ Rm×n. Here our LiMuon algorithm with Option #1\nt\ncan not reduce state memory. At the line 8 of Algorithm 1, we use randomized SVD to obtain an approximated estimate\nMˆ = Uˆ SˆVˆ⊤, where Uˆ ∈ Rm×rˆ, Sˆ ∈ Rrˆ×rˆ and Vˆ ∈ Rn×rˆ. The randomized SVD (RSVD)\nt t t t t t t\n4\n===  5 ===\nFigure 1: Low Rank Compression of Momentum M . t\nalgorithm is shown in Agorithm 2.",
+      "size": 383,
+      "sentences": 5
+    },
+    {
+      "id": 39,
+      "content": "t t\n4\n===  5 ===\nFigure 1: Low Rank Compression of Momentum M . t\nalgorithm is shown in Agorithm 2. Note that: we store the matrices Uˆ ∈ Rm×rˆ, Sˆ ∈ Rrˆ×rˆ\nt t\nand Vˆ ∈ Rn×rˆ instead of the matrix M ∈ Rm×n (Please see Figure 1). Since rˆ ≪ min(m,n),\nt t\nwe have mrˆ+ nrˆ+ rˆ2 ≪ mn. Thus, our LiMuon algorithm with Option #2 requires lower\nstate memory than that of LiMuon algorithm with Option #1. Although this RSVD introduces\nadditional computational cost, it significantly reduces state memory.",
+      "size": 498,
+      "sentences": 6
+    },
+    {
+      "id": 40,
+      "content": "Although this RSVD introduces\nadditional computational cost, it significantly reduces state memory. At the line 9 of Algorithm 1, we use the STORM-like gradient estimate:\nM =∇f(W ;ξ )+(1−β )(Mˆ −∇f(W ;ξ ))\nt+1 t+1 t+1 t+1 t t t+1\nwhere Mˆ =Uˆ SˆVˆ⊤ is a low-rank approximated estimate of momentum M . t t t t t\n4 Convergence Analysis\nIn this section, we provide the convergence analysis for our LiMuon algorithm with Option #1\nand #2, respectively. We first give some mild assumptions.",
+      "size": 485,
+      "sentences": 4
+    },
+    {
+      "id": 41,
+      "content": "for our LiMuon algorithm with Option #1\nand #2, respectively. We first give some mild assumptions. Assumption 1 (Lipschitz Smooth). Functions f(W) and f(W;ξ) for all ξ ∼D are L-Frobenius\nnorm Lipschitz smooth, if for any W,W′ ∈Rm×n, we have\n∥∇f(W)−∇f(W′)∥2 ≤L2∥W −W′∥2, (6)\nF F\n∥∇f(W;ξ)−∇f(W′;ξ)∥2 ≤L2∥W −W′∥2. (7)\nF F\nAssumption 2 (Generalized Smooth).",
+      "size": 353,
+      "sentences": 5
+    },
+    {
+      "id": 42,
+      "content": "∥2 ≤L2∥W −W′∥2, (6)\nF F\n∥∇f(W;ξ)−∇f(W′;ξ)∥2 ≤L2∥W −W′∥2. (7)\nF F\nAssumption 2 (Generalized Smooth). Functionsf(W)andf(W;ξ)forallξ ∼D are(L ,L )-\n0 1\nFrobenius norm Lipschitz smooth, if for any W,W′ ∈Rm×n, we have\n∥∇f(W)−∇f(W′)∥2 ≤(L2+L2∥∇f(W)∥2)∥W −W′∥2, (8)\nF 0 1 F F\nE∥∇f(W;ξ)−∇f(W′;ξ)∥2 ≤(L2+L2(E∥∇f(W)∥ )2)∥W −W′∥2.",
+      "size": 319,
+      "sentences": 3
+    },
+    {
+      "id": 43,
+      "content": "∇f(W′)∥2 ≤(L2+L2∥∇f(W)∥2)∥W −W′∥2, (8)\nF 0 1 F F\nE∥∇f(W;ξ)−∇f(W′;ξ)∥2 ≤(L2+L2(E∥∇f(W)∥ )2)∥W −W′∥2. (9)\nF 0 1 F F\nAssumption 1 is the standard Frobenius norm smoothness, which is a natural extension of\ntheconventionall -normsmoothnessforfunctionswithvectorparameterstofunctionswithmatrix\n2\nparameters[Beck,2017].",
+      "size": 312,
+      "sentences": 2
+    },
+    {
+      "id": 44,
+      "content": "onall -normsmoothnessforfunctionswithvectorparameterstofunctionswithmatrix\n2\nparameters[Beck,2017]. Assumption2isaFrobeniusnorm(L ,L )-smoothness,whichcanbeseen\n0 1\nas a natural extension of the conventional l -norm (L ,L )-smoothness for functions with vector\n2 0 1\nparameterstofunctionswithmatrixparameters[Zhangetal.,2019]. Inthiswork, weestablishthe\nconvergence of Muon under the above both assumptions. For a stochastic setting, we also use the following standard bounded variance assumption.",
+      "size": 497,
+      "sentences": 4
+    },
+    {
+      "id": 45,
+      "content": "umptions. For a stochastic setting, we also use the following standard bounded variance assumption. 5\n===  6 ===\nAssumption 3 (Bounded Variance). ∇f(W;ξ) is an unbiased stochastic estimator of the true\ngradient ∇f(W) and has a bounded variance, i.e., E[∇f(W;ξ)]=∇f(W) and\nE∥∇f(W;ξ)−∇f(W)∥2]≤σ2. F\nAssumption 4. The objective function f(W) is lower bounded, i.e., f∗ =inf W∈Rm×n f(W).",
+      "size": 383,
+      "sentences": 6
+    },
+    {
+      "id": 46,
+      "content": "(W)∥2]≤σ2. F\nAssumption 4. The objective function f(W) is lower bounded, i.e., f∗ =inf W∈Rm×n f(W). Assumption3isthestandardboundedvarianceconditionofunbiasedstochasticgradient,which\nis a natural extension of the conventional l -norm smoothness for functions with vector parameters\n2\ntofunctionswithmatrixparameters[Shenetal.,2025,LiandHong,2025]. Assumption4guarantees\nfeasibility of Problem (1). Next, we give a definition of ϵ-Frobenius norm stationary point as in\n[Shen et al., 2025].",
+      "size": 488,
+      "sentences": 6
+    },
+    {
+      "id": 47,
+      "content": "lem (1). Next, we give a definition of ϵ-Frobenius norm stationary point as in\n[Shen et al., 2025]. Definition 1. If W∗ be an ϵ-Frobenius norm stationary point of f(W) such as\n∥∇f(W∗)∥ ≤ϵ,\nF\nwhere ϵ>0. 4.1 Convergence Analysis of LiMuon Algorithm with Option #1 under\nLipschitz Smooth Assumption\nWithout loss of generality, let ∇f(W )=0. −1\nLemma 1. AssumethestochasticgradientestimateM begeneratedfromAlgorithm1underunder\nt\nOption #1.",
+      "size": 435,
+      "sentences": 7
+    },
+    {
+      "id": 48,
+      "content": ". −1\nLemma 1. AssumethestochasticgradientestimateM begeneratedfromAlgorithm1underunder\nt\nOption #1. Letζ =M −∇f(W ),η =η andβ =β forallt≥0,undertheaboveAssumption1,\nt t t t t\nwe have\n(cid:115) (cid:115)\nβ (1−β)2\nE∥ζ ∥ ≤(1−β)tσ+ σ+ Lηr. t F 2−β (2−β)β\nTheorem 1. Under the Assumptions 1, 3, 4, the sequence {W }T be generated from Algorithm\nt t=0\n1 with Option #1.",
+      "size": 363,
+      "sentences": 6
+    },
+    {
+      "id": 49,
+      "content": "der the Assumptions 1, 3, 4, the sequence {W }T be generated from Algorithm\nt t=0\n1 with Option #1. Let β =β ∈(0,1) and η =η for all t≥0, we have\nt t\n(cid:115) (cid:115)\n1 (cid:88) T E∥∇f(W )∥ ≤ f(W 0 )−f∗ + rLη +2 √ r (cid:0) σ + β σ+ (1−β)2 Lηr (cid:1) ,\nT +1 t ∗ Tη 2 Tβ 2−β (2−β)β\nt=0\nwhere r =min(m,n). Remark 1.",
+      "size": 317,
+      "sentences": 3
+    },
+    {
+      "id": 50,
+      "content": "(cid:0) σ + β σ+ (1−β)2 Lηr (cid:1) ,\nT +1 t ∗ Tη 2 Tβ 2−β (2−β)β\nt=0\nwhere r =min(m,n). Remark 1. From the above Theorem 1, let η =O( 1 ) and β =O( 1 ), we have\nT2/3 T2/3\nT\n1 (cid:88)\nmin E∥∇f(W )∥ ≤ E∥∇f(W )∥\n0≤t≤T t ∗ T +1 t ∗\nt=0\n(cid:115) (cid:115)\n≤ f(W 0 )−f∗ + rLη +2 √ r (cid:0) σ + β σ+ (1−β)2 Lηr (cid:1)\nTη 2 Tβ 2−β (2−β)β\n(cid:0) 1 1 1 1 1 (cid:1) (cid:0) 1 (cid:1)\n=O + + + + =O ≤ϵ.",
+      "size": 396,
+      "sentences": 3
+    },
+    {
+      "id": 51,
+      "content": "(1−β)2 Lηr (cid:1)\nTη 2 Tβ 2−β (2−β)β\n(cid:0) 1 1 1 1 1 (cid:1) (cid:0) 1 (cid:1)\n=O + + + + =O ≤ϵ. T1/3 T2/3 T1/3 T1/3 T1/3 T1/3\n6\n===  7 ===\nSince our LiMuon algorithm only requires one sample at each iteration, i.e., batch size b=1, so it\nhas a lower sample (or SFO) complexity of bT = O(ϵ−3) for finding an ϵ-nuclear-norm stationary\npoint of the problem (1).",
+      "size": 362,
+      "sentences": 2
+    },
+    {
+      "id": 52,
+      "content": "r SFO) complexity of bT = O(ϵ−3) for finding an ϵ-nuclear-norm stationary\npoint of the problem (1). Since ∥∇f(W )∥ ≤ ∥∇f(W )∥ for all W , our LiMuon algorithm also\nt F t ∗ t\nhas a lower SFO complexity of O(ϵ−3) for finding an ϵ-Frobenius-norm stationary point of the\nproblem (1). 4.2 Convergence Analysis of LiMuon Algorithm with Option #1 under\nGeneralized Smooth Assumption\nLemma 2. AssumethestochasticgradientestimateM begeneratedfromAlgorithm1underunder\nt\nOption #1.",
+      "size": 470,
+      "sentences": 4
+    },
+    {
+      "id": 53,
+      "content": "tion\nLemma 2. AssumethestochasticgradientestimateM begeneratedfromAlgorithm1underunder\nt\nOption #1. Let ζ =M −∇f(W ), η =η and β =β for all t≥0, under the assumption 2, we\nt t t t t\nhave\n(cid:115) (cid:115)\nβ (1−β)2 (cid:88) t\nE∥ζ ∥ ≤(1−β)tσ+ σ+ L ηr+L (1−β)ηr (1−β)(t−s)E∥∇f(W )∥ . t F 2−β (2−β)β 0 1 s−1 F\ns=1\nTheorem 2. Under the Assumptions 2, 3, 4, the sequence {W }T be generated from Algorithm 1\nt t=0\nwith Option #1.",
+      "size": 424,
+      "sentences": 5
+    },
+    {
+      "id": 54,
+      "content": "der the Assumptions 2, 3, 4, the sequence {W }T be generated from Algorithm 1\nt t=0\nwith Option #1. Let β =β ∈(0,1) and η =η ≤min (cid:0) 1 , β (cid:1) for all t≥0, we have\nt t 2L1r 8L1r3/2(1−β)\n√ (cid:115) (cid:115)\n1 (cid:88) T E∥∇f(W )∥ ≤ 2(f(W 0 )−f∗) +rL η+ 4 rσ +4 √ r β σ+4L ηr3/2 (1−β)2 ,\nT +1 t ∗ Tη 0 Tβ 2−β 0 (2−β)β\nt=0\nwhere r =min(m,n). Remark 2.",
+      "size": 359,
+      "sentences": 3
+    },
+    {
+      "id": 55,
+      "content": "η+ 4 rσ +4 √ r β σ+4L ηr3/2 (1−β)2 ,\nT +1 t ∗ Tη 0 Tβ 2−β 0 (2−β)β\nt=0\nwhere r =min(m,n). Remark 2. From the above Theorem 2, let η =O( 1 ) and β =O( 1 ), we have\nT2/3 T2/3\n√ (cid:115) (cid:115)\n1 (cid:88) T E∥∇f(W )∥ ≤ 2(f(W 0 )−f∗) +rL η+ 4 rσ +4 √ r β σ+4L ηr3/2 (1−β)2\nT +1 t ∗ Tη 0 Tβ 2−β 0 (2−β)β\nt=0\n(cid:0) 1 1 1 1 1 (cid:1) (cid:0) 1 (cid:1)\n=O + + + + =O ≤ϵ.",
+      "size": 368,
+      "sentences": 3
+    },
+    {
+      "id": 56,
+      "content": "β)2\nT +1 t ∗ Tη 0 Tβ 2−β 0 (2−β)β\nt=0\n(cid:0) 1 1 1 1 1 (cid:1) (cid:0) 1 (cid:1)\n=O + + + + =O ≤ϵ. T1/3 T2/3 T1/3 T1/3 T1/3 T1/3\nSince our LiMuon algorithm only requires a simple at each iteration, i.e., batch size b=1, so it has\na lower sample (or gradient) complexity of bT = O(ϵ−3) for finding an ϵ-nuclear-norm stationary\nsolution of the problem (1) under generalized smooth condition. 4.3 Convergence Analysis of LiMuon Algorithm with Option #2 under\nLipschitz Smooth Assumption\nAssumption 5.",
+      "size": 498,
+      "sentences": 3
+    },
+    {
+      "id": 57,
+      "content": "ergence Analysis of LiMuon Algorithm with Option #2 under\nLipschitz Smooth Assumption\nAssumption 5. For any matrix M generalized from Algorithm 1 with Option #2, it has singular\nt\nvalues νt ≥νt ≥···, we assume\n1 2\n(cid:0)(cid:88) (νt) (cid:1)1 2 ≤ρ∥∇f(W )∥ , ∀t≥0 (10)\nj t F\nj>rˆ\nwhere ρ≥0 and 0<rˆ<r =min(m,n). 7\n===  8 ===\nLemma 3. AssumethestochasticgradientestimateM begeneratedfromAlgorithm1underunder\nt\nOption #2.",
+      "size": 419,
+      "sentences": 4
+    },
+    {
+      "id": 58,
+      "content": "===\nLemma 3. AssumethestochasticgradientestimateM begeneratedfromAlgorithm1underunder\nt\nOption #2. Let ζ =M −∇f(W ), η =η and β =β under the assumption 1, we have\nt t t t t\n(cid:115) (cid:115)\n(cid:88) T σ β (1−β)2 γ(1−β)(cid:88) T\nE∥ζ ∥ ≤ +(T +1) σ+(T +1) Lηr+ E∥∇f(W )∥ ,\nt F β 2−β (2−β)β β t F\nt=0 t=0\n(cid:16) (cid:17)1\nwhere γ =ρ 1+ rˆ 2.\ns−1\nTheorem 3. Under the Assumptions 1, 3, 4, 5, the sequence {W }T be generated from Algorithm\nt t=0\n1 with Option #2.",
+      "size": 463,
+      "sentences": 4
+    },
+    {
+      "id": 59,
+      "content": "the Assumptions 1, 3, 4, 5, the sequence {W }T be generated from Algorithm\nt t=0\n1 with Option #2. Let β t =β ∈(0,1), η t =η for all t≥0 and γ ≤ 4 √ r( β 1−β) , we have\n(cid:115) (cid:115)\n1 (cid:88) T E∥∇f(W )∥ ≤ 2(f(W 0 )−f∗) +rLη+4 √ r (cid:0) σ + β σ+ (1−β)2 Lηr (cid:1) ,\nT +1 t ∗ Tη Tβ 2−β (2−β)β\nt=0\n(cid:16) (cid:17)1\nwhere r =min(m,n) and γ =ρ 1+ rˆ 2.\ns−1\nRemark 3.",
+      "size": 375,
+      "sentences": 2
+    },
+    {
+      "id": 60,
+      "content": "T +1 t ∗ Tη Tβ 2−β (2−β)β\nt=0\n(cid:16) (cid:17)1\nwhere r =min(m,n) and γ =ρ 1+ rˆ 2.\ns−1\nRemark 3. From the above Theorem 3, let η =O( 1 ) and β =O( 1 ), we have\nT2/3 T2/3\n(cid:115) (cid:115)\n1 (cid:88) T E∥∇f(W )∥ ≤ 2(f(W 0 )−f∗) +rLη+4 √ r (cid:0) σ + β σ+ (1−β)2 Lηr (cid:1)\nT +1 t ∗ Tη Tβ 2−β (2−β)β\nt=0\n(cid:0) 1 1 1 1 1 (cid:1) (cid:0) 1 (cid:1)\n=O + + + + =O ≤ϵ.",
+      "size": 369,
+      "sentences": 2
+    },
+    {
+      "id": 61,
+      "content": "(cid:1)\nT +1 t ∗ Tη Tβ 2−β (2−β)β\nt=0\n(cid:0) 1 1 1 1 1 (cid:1) (cid:0) 1 (cid:1)\n=O + + + + =O ≤ϵ. T1/3 T2/3 T1/3 T1/3 T1/3 T1/3\nSince our LiMuon algorithm only requires a simple at each iteration, i.e., batch size b=1, so it has\na lower sample (or gradient) complexity of bT = O(ϵ−3) for finding an ϵ-nuclear-norm stationary\nsolution of the problem (1). From this result, our LiMuon algorithm with lower memory cost still\nobtains a lower sample complexity of O(ϵ−3).",
+      "size": 468,
+      "sentences": 3
+    },
+    {
+      "id": 62,
+      "content": "ult, our LiMuon algorithm with lower memory cost still\nobtains a lower sample complexity of O(ϵ−3). 4.4 Convergence Analysis of LiMuon Algorithm with Option #2 under\nGeneralized Smooth Assumption\nLemma 4. AssumethestochasticgradientestimateM begeneratedfromAlgorithm1underunder\nt\nOption #2.",
+      "size": 290,
+      "sentences": 3
+    },
+    {
+      "id": 63,
+      "content": "tion\nLemma 4. AssumethestochasticgradientestimateM begeneratedfromAlgorithm1underunder\nt\nOption #2. Let ζ =M −∇f(W ), η =η and β =β under the assumption 2, we have\nt t t t t\n(cid:115) (cid:115)\nβ (1−β)2 (cid:88) t\nE∥ζ ∥ ≤(1−β)tσ+ σ+L ηr +(L ηr+γ)(1−β) (1−β)(t−s)∥∇f(W )∥ ,\nt F 2−β 0 (2−β)β 1 s−1 F\ns=1\n(cid:16) (cid:17)1\nwhere γ =ρ 1+ rˆ 2.\ns−1\nTheorem 4. Under the Assumptions 2, 3, 4, 5, the sequence {W }T be generated from Algorithm\nt t=0\n1 with Option #2.",
+      "size": 460,
+      "sentences": 4
+    },
+    {
+      "id": 64,
+      "content": "the Assumptions 2, 3, 4, 5, the sequence {W }T be generated from Algorithm\nt t=0\n1 with Option #2. Let β = β ∈ (0,1), η = η ≤ min (cid:0) 1 , β (cid:1) for all t ≥ 0 and\nt t 2L1r 16L1r3/2(1−β)\nγ ≤ √ β , we have\n16 r(1−β)\n√ (cid:115) (cid:115)\n1 (cid:88) T E∥∇f(W )∥ ≤ 2(f(W 0 )−f∗) +rL η+ 4 rσ +4 √ r β σ+4L ηr3/2 (1−β)2 ,\nT +1 t ∗ Tη 0 Tβ 2−β 0 (2−β)β\nt=0\n8\n===  9 ===\n(cid:16) (cid:17)1\nwhere r =min(m,n) and γ =ρ 1+ rˆ 2.\ns−1\nRemark 4.",
+      "size": 438,
+      "sentences": 2
+    },
+    {
+      "id": 65,
+      "content": "2−β 0 (2−β)β\nt=0\n8\n===  9 ===\n(cid:16) (cid:17)1\nwhere r =min(m,n) and γ =ρ 1+ rˆ 2.\ns−1\nRemark 4. From the above Theorem 4, let η =O( 1 ) and β =O( 1 ), we have\nT2/3 T2/3\n√ (cid:115) (cid:115)\n1 (cid:88) T E∥∇f(W )∥ ≤ 2(f(W 0 )−f∗) +rL η+ 4 rσ +4 √ r β σ+4L ηr3/2 (1−β)2\nT +1 t ∗ Tη 0 Tβ 2−β 0 (2−β)β\nt=0\n(cid:0) 1 1 1 1 1 (cid:1) (cid:0) 1 (cid:1)\n=O + + + + =O ≤ϵ.",
+      "size": 367,
+      "sentences": 2
+    },
+    {
+      "id": 66,
+      "content": "β)2\nT +1 t ∗ Tη 0 Tβ 2−β 0 (2−β)β\nt=0\n(cid:0) 1 1 1 1 1 (cid:1) (cid:0) 1 (cid:1)\n=O + + + + =O ≤ϵ. T1/3 T2/3 T1/3 T1/3 T1/3 T1/3\nOur LiMuon algorithm with lower memory cost still obtains a lower sample complexity of O(ϵ−3)\nunder generalized smooth condition. 5 Numerical Experiments\nIn the section, we conduct some numerical experiments to demonstrate efficiency of our Limuon\noptimizer in training DistilGPT2 [Sanh et al., 2019] and ViT [Dosovitskiy et al., 2020] models.",
+      "size": 473,
+      "sentences": 3
+    },
+    {
+      "id": 67,
+      "content": "uon\noptimizer in training DistilGPT2 [Sanh et al., 2019] and ViT [Dosovitskiy et al., 2020] models. Specifically,wetraintheDistilGPT2onthewikitext-103dataset[Merityetal.,2016],andtrainthe\nViTonthetiny-ImageNetdataset[LeandYang,2015]. Intheexperiments,wecompareourLiMuon\noptimizerwithsometypicaloptimizersincludingAdam[KingmaandBa,2014],AdamW[Loshchilov\nandHutter,2017],Lion[Chenetal.,2023],Muon[Jordanetal.,2024],Muon++ [SfyrakiandWang,\n2025] and SUMO [Refael et al., 2025].",
+      "size": 474,
+      "sentences": 3
+    },
+    {
+      "id": 68,
+      "content": "henetal.,2023],Muon[Jordanetal.,2024],Muon++ [SfyrakiandWang,\n2025] and SUMO [Refael et al., 2025]. Since the SCG [Pethick et al., 2025a] and GGNC [Pethick\net al., 2025b] in Table 1 mainly focus on the convergence analysis of the Muon optimizer, these\nalgorithms basically follow the Muon optimizer. Thus, we only use the standard Muon optimizer\ninstead of the SCG and GGNC optimizer as a comparison. All experiments are conducted on a\nNVIDIA 5090 GPU.",
+      "size": 452,
+      "sentences": 4
+    },
+    {
+      "id": 69,
+      "content": "of the SCG and GGNC optimizer as a comparison. All experiments are conducted on a\nNVIDIA 5090 GPU. Figure 2: Performance comparison of training the DistilGPT-2 model on WikiText-103 dataset. 5.1 Training DistilGPT2 Model\nInthissubsection,weuseourLiMuonoptimizerandothercomparisonstotraintheDistilGPT2[Sanh\net al., 2019] model, which has 82 million parameters and is a knowledge distillation version of Gen-\nerative Pre-trained Transformer 2 (GPT-2).",
+      "size": 449,
+      "sentences": 4
+    },
+    {
+      "id": 70,
+      "content": "rameters and is a knowledge distillation version of Gen-\nerative Pre-trained Transformer 2 (GPT-2). In fact, DistilGPT2 is an English-language model\n9\n===  10 ===\nTable2: PerformancecomparisonoftrainingtheDistilGPT-2modelonWikiText-103datasetunder\nthe identical training configuration.",
+      "size": 285,
+      "sentences": 2
+    },
+    {
+      "id": 71,
+      "content": "arisonoftrainingtheDistilGPT-2modelonWikiText-103datasetunder\nthe identical training configuration. Algorithm Memory (GB) Training Perplexity (PPL) Validation Perplexity (PPL)\nAdamW 7.34 717.22 998.83\nLion 7.30 315.29 491.07\nSUMO 6.20 333.14 426.23\nMuon 7.20 267.61 367.89\nMuon++ 7.35 187.47 245.40\nLiMuon(#1) 6.30 142.85 170.34\nLiMuon(#2) 6.05 249.79 346.41\npre-trained with the supervision of GPT-2, and can be used to generate text as GPT-2.",
+      "size": 444,
+      "sentences": 2
+    },
+    {
+      "id": 72,
+      "content": "249.79 346.41\npre-trained with the supervision of GPT-2, and can be used to generate text as GPT-2. In the\nexperiment,wetraintheDistilGPT2modelontheWikitext-103dataset[Merityetal.,2016],which\nincludes more than 100 million tokens. Intheexperiment,trainingDistilGPT2isconductedfor5000iterationswithaglobalbatchsize\nof8andsequencelengthof512. Thelearningrateforallexperimentsissetto0.001. InourLiMuon\noptimizer, we set β = 0.05, rˆ= 10, and s = 8.",
+      "size": 445,
+      "sentences": 5
+    },
+    {
+      "id": 73,
+      "content": "arningrateforallexperimentsissetto0.001. InourLiMuon\noptimizer, we set β = 0.05, rˆ= 10, and s = 8. All optimizers are individually tuned for relative\nt\noptimal performance. For example, in the AdamW optimizer, we set λ = 0.01, and set β = 0.9,\n1\nβ =0.99 and λ=0.01 in the Lion optimizer. In the SUMO algorithm, we set rank is 8. 2\nAs detailed in Figure 2 and Table 2, our LiMuon optimizer demonstrates a clear advantage in\nthe language modeling task.",
+      "size": 451,
+      "sentences": 6
+    },
+    {
+      "id": 74,
+      "content": "e 2 and Table 2, our LiMuon optimizer demonstrates a clear advantage in\nthe language modeling task. Our LiMuon(#1) optimizer achieves a substantially lower perplexity\nscorethanallcompetingmethods,andourLiMuon(#2)optimizeralsoachievesagoodperformance\nand demonstrating higher memory efficiency. The simultaneous improvement in both performance\nandmemoryefficiencyhighlightstherobustnessandscalabilityofourLiMuonoptimizerintraining\nLLMs.",
+      "size": 435,
+      "sentences": 3
+    },
+    {
+      "id": 75,
+      "content": "rmance\nandmemoryefficiencyhighlightstherobustnessandscalabilityofourLiMuonoptimizerintraining\nLLMs. Note that our optimizer and the other comparison methods only performed a relatively\nsmall number of iterations due to computational resource limitations. In fact, these algorithms\nalsocanobtainbetterresultswithmoreiterations, asDistill-GPT2couldreach18.25perplexityon\nWiki-103 reported in [Alon et al., 2022]. Figure 3: Performance comparison of training the ViT model on the Tiny ImageNet dataset.",
+      "size": 499,
+      "sentences": 4
+    },
+    {
+      "id": 76,
+      "content": "l., 2022]. Figure 3: Performance comparison of training the ViT model on the Tiny ImageNet dataset. 10\n[  ]\n\n===  11 ===\nFigure 4: Performance comparison of training the ViT model on the Tiny ImageNet dataset. Table 3: Performance comparison of training the ViT model on the Tiny ImageNet dataset under\nthe identical training configurations.",
+      "size": 341,
+      "sentences": 4
+    },
+    {
+      "id": 77,
+      "content": "of training the ViT model on the Tiny ImageNet dataset under\nthe identical training configurations. Algorithm Memory (GB) Training Accuracy(Acc %) Testing Accuracy(Acc %)\nAdamW 4.40 20.31 17.23\nLion 4.40 23.44 20.06\nSUMO 4.05 25.00 19.89\nMuon 4.13 29.69 25.86\nMuon++ 4.39 21.88 22.45\nLiMuon(#1) 4.09 28.02 26.59\nLiMuon(#2) 3.85 26.56 23.61\n5.2 Training ViT Model\nInthissubsection,weuseourLiMuonoptimizerandothercomparisonstotraintheViT[Dosovitskiy\netal.,2020]model,whichincludes22millionparameters.",
+      "size": 498,
+      "sentences": 2
+    },
+    {
+      "id": 78,
+      "content": "izerandothercomparisonstotraintheViT[Dosovitskiy\netal.,2020]model,whichincludes22millionparameters. Intheexperiment,wetraintheViTmodel\nonthetiny-imagenetdataset[LeandYang,2015],whichcontains100000imagesof200classes(500\nforeachclass)downsizedto64×64coloredimages. Specifically,theViTmodelprocesses224×224\nimagesbydividingtheminto16×16patches,whichareprojectedintoa384-dimensionalembedding\nspace.",
+      "size": 394,
+      "sentences": 3
+    },
+    {
+      "id": 79,
+      "content": "s224×224\nimagesbydividingtheminto16×16patches,whichareprojectedintoa384-dimensionalembedding\nspace. The ViT model’s Transformer encoder features 12 layers, each containing 6 attention heads\nand an MLP dimension of 1536. We train the ViT model from scratch on the 200-class Tiny-\nImageNet dataset. In the experiment, we set the initial learning rate for all methods to 0.001, and the batch size\nto 64. In our LiMuon algorithm, we set β = 0.1, rˆ = 8 and s = 5.",
+      "size": 459,
+      "sentences": 5
+    },
+    {
+      "id": 80,
+      "content": "hods to 0.001, and the batch size\nto 64. In our LiMuon algorithm, we set β = 0.1, rˆ = 8 and s = 5. For all methods, we use a\nt\nsame cosine annealing learning rate scheduler and perform a dedicated hyperparameter search for\neach optimizer to ensure a fair comparison. The primary evaluation metrics are accuracy and peak\nmemory usage during training.",
+      "size": 350,
+      "sentences": 4
+    },
+    {
+      "id": 81,
+      "content": "fair comparison. The primary evaluation metrics are accuracy and peak\nmemory usage during training. As shown in Figures 3-4 and Table 3, the training metrics indicate that our LiMuon optimizer\nhas a faster convergence speed and a lower final validation loss. Among them, our LiMuon(#1) is\nparticularlyoutstandinginacceleratingconvergence,whileourLiMuon(#2)hasbetterperformance\nin terms of memory usage. This highlights its higher efficiency and effectiveness.",
+      "size": 459,
+      "sentences": 5
+    },
+    {
+      "id": 82,
+      "content": "etterperformance\nin terms of memory usage. This highlights its higher efficiency and effectiveness. 11\n[  ]\n\n===  12 ===\n6 Conclusion\nIn the paper, we studied the Muon optimizer for training the large-scale models, and proposed a\nlight and fast Muon (LiMuon) optimizer by using lower rank matrices to approximate momentum\nparameter matrix and momentum-based variance reduced technique.",
+      "size": 385,
+      "sentences": 3
+    },
+    {
+      "id": 83,
+      "content": "nk matrices to approximate momentum\nparameter matrix and momentum-based variance reduced technique. Moreover, we studied the\nconvergencepropertiesofourLiMuonoptimizerforsolvingnonconvexstochasticoptimizationunder\nthe generalized smooth condition. Some numerical experimental results on training large models\nto demonstrate efficiency of our LiMuon optimizer.",
+      "size": 358,
+      "sentences": 3
+    },
+    {
+      "id": 84,
+      "content": "al experimental results on training large models\nto demonstrate efficiency of our LiMuon optimizer. References\nJoshAchiam,StevenAdler,SandhiniAgarwal,LamaAhmad,IlgeAkkaya,FlorenciaLeoniAleman,Diogo\nAlmeida, Janko Altenschmidt, Sam Altman, Shyamal Anadkat, et al. Gpt-4 technical report. arXiv\npreprint arXiv:2303.08774, 2023. UriAlon, FrankXu,JunxianHe,SudiptaSengupta,DanRoth,andGrahamNeubig. Neuro-symboliclan-\nguagemodelingwithautomaton-augmentedretrieval.",
+      "size": 459,
+      "sentences": 6
+    },
+    {
+      "id": 85,
+      "content": "Sengupta,DanRoth,andGrahamNeubig. Neuro-symboliclan-\nguagemodelingwithautomaton-augmentedretrieval. InInternationalConferenceonMachineLearning,\npages 468–485. PMLR, 2022. Kang An, Yuxing Liu, Rui Pan, Yi Ren, Shiqian Ma, Donald Goldfarb, and Tong Zhang. Asgo: Adaptive\nstructured gradient optimization. arXiv preprint arXiv:2503.20762, 2025. Amir Beck. First-order methods in optimization. SIAM, 2017. Jeremy Bernstein and Laker Newhouse. Old optimizer, new norm: An anthology.",
+      "size": 477,
+      "sentences": 12
+    },
+    {
+      "id": 86,
+      "content": "timization. SIAM, 2017. Jeremy Bernstein and Laker Newhouse. Old optimizer, new norm: An anthology. arXiv preprint\narXiv:2409.20325, 2024. Lizhang Chen, Jonathan Li, and Qiang Liu. Muon optimizes under spectral norm constraints. arXiv\npreprint arXiv:2506.15054, 2025. XiangningChen,ChenLiang,DaHuang,EstebanReal,KaiyuanWang,HieuPham,XuanyiDong,Thang\nLuong,Cho-JuiHsieh,YifengLu,etal. Symbolicdiscoveryofoptimizationalgorithms.",
+      "size": 426,
+      "sentences": 10
+    },
+    {
+      "id": 87,
+      "content": "uPham,XuanyiDong,Thang\nLuong,Cho-JuiHsieh,YifengLu,etal. Symbolicdiscoveryofoptimizationalgorithms. InProceedingsof\nthe 37th International Conference on Neural Information Processing Systems, pages 49205–49233, 2023. AshokCutkoskyandFrancescoOrabona.Momentum-basedvariancereductioninnon-convexsgd.Advances\nin neural information processing systems, 32, 2019.",
+      "size": 357,
+      "sentences": 4
+    },
+    {
+      "id": 88,
+      "content": "-basedvariancereductioninnon-convexsgd.Advances\nin neural information processing systems, 32, 2019. Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn, Xiaohua Zhai, Thomas Un-\nterthiner,MostafaDehghani,MatthiasMinderer,GeorgHeigold,SylvainGelly,etal. Animageisworth\n16x16 words: Transformers for image recognition at scale. arXiv preprint arXiv:2010.11929, 2020. VineetGupta,TomerKoren,andYoramSinger. Shampoo: Preconditionedstochastictensoroptimization.",
+      "size": 476,
+      "sentences": 6
+    },
+    {
+      "id": 89,
+      "content": ", 2020. VineetGupta,TomerKoren,andYoramSinger. Shampoo: Preconditionedstochastictensoroptimization. In International Conference on Machine Learning, pages 1842–1850. PMLR, 2018. Nathan Halko, Per-Gunnar Martinsson, and Joel A Tropp. Finding structure with randomness: Proba-\nbilistic algorithms for constructing approximate matrix decompositions. SIAM review, 53(2):217–288,\n2011. Elad Hazan and Haipeng Luo. Variance-reduced and projection-free stochastic optimization.",
+      "size": 470,
+      "sentences": 10
+    },
+    {
+      "id": 90,
+      "content": "88,\n2011. Elad Hazan and Haipeng Luo. Variance-reduced and projection-free stochastic optimization. In Interna-\ntional Conference on Machine Learning, pages 1263–1271. PMLR, 2016. K Jordan, Y Jin, V Boza, Y Jiacheng, F Cesista, L Newhouse, and J Bernstein. Muon: An optimizer for\nhidden layers in neural networks. URL https://kellerjordan. github. io/posts/muon, 2024. 12\n===  13 ===\nDiederik P Kingma and Jimmy Ba. Adam: A method for stochastic optimization. arXiv preprint\narXiv:1412.6980, 2014.",
+      "size": 497,
+      "sentences": 13
+    },
+    {
+      "id": 91,
+      "content": "gma and Jimmy Ba. Adam: A method for stochastic optimization. arXiv preprint\narXiv:1412.6980, 2014. DmitryKovalev. Understandinggradientorthogonalizationfordeeplearningvianon-euclideantrust-region\noptimization. arXiv preprint arXiv:2503.12645, 2025. Alex Krizhevsky, Ilya Sutskever, and Geoffrey E Hinton. Imagenet classification with deep convolutional\nneural networks. Communications of the ACM, 60(6):84–90, 2017. TimTsz-KitLau,QiLong,andWeijieSu.",
+      "size": 450,
+      "sentences": 10
+    },
+    {
+      "id": 92,
+      "content": "al\nneural networks. Communications of the ACM, 60(6):84–90, 2017. TimTsz-KitLau,QiLong,andWeijieSu. Polargrad: Aclassofmatrix-gradientoptimizersfromaunifying\npreconditioning perspective. arXiv preprint arXiv:2505.21799, 2025. Yann Le and Xuan Yang. Tiny imagenet visual recognition challenge. CS 231N, 7(7):3, 2015. Jiaxiang Li and Mingyi Hong. A note on the convergence of muon and further. arXiv preprint\narXiv:2502.02900, 2025.",
+      "size": 430,
+      "sentences": 11
+    },
+    {
+      "id": 93,
+      "content": "Mingyi Hong. A note on the convergence of muon and further. arXiv preprint\narXiv:2502.02900, 2025. AixinLiu,BeiFeng,BingXue,BingxuanWang,BochaoWu,ChengdaLu,ChenggangZhao,ChengqiDeng,\nChenyuZhang,ChongRuan,etal. Deepseek-v3technicalreport. arXivpreprintarXiv:2412.19437,2024. Jingyuan Liu, Jianlin Su, Xingcheng Yao, Zhejun Jiang, Guokun Lai, Yulun Du, Yidao Qin, Weixin Xu,\nEnzhe Lu, Junjie Yan, et al. Muon is scalable for llm training. arXiv preprint arXiv:2502.16982, 2025.",
+      "size": 476,
+      "sentences": 9
+    },
+    {
+      "id": 94,
+      "content": "he Lu, Junjie Yan, et al. Muon is scalable for llm training. arXiv preprint arXiv:2502.16982, 2025. IlyaLoshchilovandFrankHutter.Decoupledweightdecayregularization.arXivpreprintarXiv:1711.05101,\n2017. Stephen Merity, Caiming Xiong, James Bradbury, and Richard Socher. Pointer sentinel mixture models. arXiv preprint arXiv:1609.07843, 2016. Thomas Pethick, Wanyun Xie, Kimon Antonakopoulos, Zhenyu Zhu, Antonio Silveti-Falls, and Volkan\nCevher.",
+      "size": 443,
+      "sentences": 8
+    },
+    {
+      "id": 95,
+      "content": "as Pethick, Wanyun Xie, Kimon Antonakopoulos, Zhenyu Zhu, Antonio Silveti-Falls, and Volkan\nCevher. Training deep learning models with norm-constrained lmos. arXiv preprint arXiv:2502.07529,\n2025a. Thomas Pethick, Wanyun Xie, Mete Erdogan, Kimon Antonakopoulos, Tony Silveti-Falls, and Volkan\nCevher. Generalized gradient norm clipping & non-euclidean (l_0,l_1)-smoothness. arXiv preprint\narXiv:2506.01913, 2025b. YehonathanRefael,GuySmorodinsky,TomTirer,andOfirLindenbaum.",
+      "size": 473,
+      "sentences": 7
+    },
+    {
+      "id": 96,
+      "content": "arXiv preprint\narXiv:2506.01913, 2025b. YehonathanRefael,GuySmorodinsky,TomTirer,andOfirLindenbaum. Sumo: Subspace-awaremoment-\northogonalizationforacceleratingmemory-efficientllmtraining. arXiv preprint arXiv:2505.24749,2025. Victor Sanh, Lysandre Debut, Julien Chaumond, and Thomas Wolf. Distilbert, a distilled version of bert:\nsmaller, faster, cheaper and lighter. arXiv preprint arXiv:1910.01108, 2019. Maria-EleniSfyrakiandJun-KunWang. Lionsandmuons: Optimizationviastochasticfrank-wolfe.",
+      "size": 494,
+      "sentences": 9
+    },
+    {
+      "id": 97,
+      "content": "01108, 2019. Maria-EleniSfyrakiandJun-KunWang. Lionsandmuons: Optimizationviastochasticfrank-wolfe. arXiv\npreprint arXiv:2506.04192, 2025. WeiShen,RuichuanHuang,MinhuiHuang,CongShen,andJiaweiZhang. Ontheconvergenceanalysisof\nmuon. arXiv preprint arXiv:2505.23737, 2025. Quoc Tran-Dinh, Nhan H Pham, Dzung T Phan, and Lam M Nguyen. A hybrid stochastic optimization\nframework for composite nonconvex optimization. Mathematical Programming, 191(2):1005–1071, 2022.",
+      "size": 461,
+      "sentences": 10
+    },
+    {
+      "id": 98,
+      "content": "n\nframework for composite nonconvex optimization. Mathematical Programming, 191(2):1005–1071, 2022. MarkTuddenham,AdamPrügel-Bennett,andJonathanHare.Orthogonalisinggradientstospeedupneural\nnetwork optimisation. arXiv preprint arXiv:2202.07052, 2022. 13\n===  14 ===\nAshishVaswani,NoamShazeer,NikiParmar,JakobUszkoreit,LlionJones,AidanNGomez,ŁukaszKaiser,\nand Illia Polosukhin. Attention is all you need. Advances in neural information processing systems, 30,\n2017.",
+      "size": 463,
+      "sentences": 7
+    },
+    {
+      "id": 99,
+      "content": "Polosukhin. Attention is all you need. Advances in neural information processing systems, 30,\n2017. Jingzhao Zhang, Tianxing He, Suvrit Sra, and Ali Jadbabaie. Why gradient clipping accelerates training:\nA theoretical justification for adaptivity. arXiv preprint arXiv:1905.11881, 2019. 14\n===  15 ===\nA Appendix\nIn thesection, weprovide theconvergence analysisfor ourLiMuon algorithmunder somemild conditions. We first give some useful lemmas. Lemma 5.",
+      "size": 453,
+      "sentences": 9
+    },
+    {
+      "id": 100,
+      "content": "nalysisfor ourLiMuon algorithmunder somemild conditions. We first give some useful lemmas. Lemma 5. For random variables ξ ,··· ,ξ are independent and its mean is zero, we have\n1 N\nE[∥ξ +···+ξ ∥2]=E[∥ξ ∥2+···+∥ξ ∥2]. (11)\n1 N 1 N\nLemma 6. For a random variable ξ, we have\nE∥ξ−E[ξ]∥2 =E∥ξ∥2−(E[ξ])2 ≤E∥ξ∥2. (12)\nLemma 7 (ApproximationerrorboundofRSVD[Halkoetal.,2011]). LetA∈Rm×n havesingularvalues\nν ≥ ν ≥ ···. For a target rank rˆand oversampling parameter s, define l = rˆ+s.",
+      "size": 477,
+      "sentences": 9
+    },
+    {
+      "id": 101,
+      "content": "havesingularvalues\nν ≥ ν ≥ ···. For a target rank rˆand oversampling parameter s, define l = rˆ+s. Then the randomized\n1 2\nSVD algorithm 2 produces an approximation Aˆ such that\n(cid:18) (cid:19)1\nE∥A−Aˆ∥\nF\n≤ 1+\ns−\nrˆ\n1\n2 ( (cid:88) ν\nj\n2) 1 2. (13)\nj>rˆ\nLemma 8. Under Assumption 5, the matrices M and Mˆ generalized from Algorithm 1, we have\nt t\n∥Mˆ −M ∥ ≤γ∥∇f(W )∥ , ∀t≥0\nt t F t F\n(cid:16) (cid:17)1\nwhere γ =ρ 1+ rˆ 2.\ns−1\nProof. Suppose matrix M has singular values {σt}.",
+      "size": 477,
+      "sentences": 6
+    },
+    {
+      "id": 102,
+      "content": "F t F\n(cid:16) (cid:17)1\nwhere γ =ρ 1+ rˆ 2.\ns−1\nProof. Suppose matrix M has singular values {σt}. According to Assumption 5 and Lemma 7, we have\nt j\n(cid:18) (cid:19)1\n∥Mˆ t −M t ∥ F ≤ 1+ s− rˆ 1 2 ( (cid:88) (ν j t)2) 1 2 ≤γ∥∇f(W t )∥ F ,\nj>rˆ\n(cid:16) (cid:17)1\nwhere γ =ρ 1+ rˆ 2.\ns−1\nLemma 9. Under the Assumption 2, we have for any W,W′ ∈Rm×n\nL +L ∥∇f(W)∥\nf(W′)≤f(W)+⟨∇f(W),W′−W⟩+ 0 1 F∥W′−W∥2. 2 F\nProof.",
+      "size": 411,
+      "sentences": 5
+    },
+    {
+      "id": 103,
+      "content": "mption 2, we have for any W,W′ ∈Rm×n\nL +L ∥∇f(W)∥\nf(W′)≤f(W)+⟨∇f(W),W′−W⟩+ 0 1 F∥W′−W∥2. 2 F\nProof. By using Assumption 2, we have\n(cid:113)\n∥∇f(W)−∇f(W′)∥ ≤ (L2+L2∥∇f(W)∥2)∥W −W′∥2\nF 0 1 F F\n≤(L +L ∥∇f(W)∥ )∥W −W′∥ .",
+      "size": 217,
+      "sentences": 3
+    },
+    {
+      "id": 104,
+      "content": "n 2, we have\n(cid:113)\n∥∇f(W)−∇f(W′)∥ ≤ (L2+L2∥∇f(W)∥2)∥W −W′∥2\nF 0 1 F F\n≤(L +L ∥∇f(W)∥ )∥W −W′∥ . (14)\n0 1 F F\nSincef(W)isdifferentiable,byapplyingthefundamentaltheoremofcalculustoG(t)=f(W+t(W′−W)),\nwe have\n(cid:90) 1\nf(W′)=f(W)+ ⟨∇f(W +t(W′−W)),W′−W⟩dt\n0\n(cid:90) 1\n=f(W)+⟨∇f(W),W′−W⟩+ ⟨∇f(W +t(W′−W))−∇f(W),W′−W⟩dt\n0\n(i) (cid:90) 1\n≤ f(W)+⟨∇f(W),W′−W⟩+ ∥∇f(W +t(W′−W))−∇f(W)∥ ∥W′−W∥ dt\nF F\n0\n(ii) (cid:90) 1\n≤ f(W)+⟨∇f(W),W′−W⟩+ (L +L ∥∇f(W)∥ )∥W′−W∥2tdt\n0 1 F F\n0\nL +L ∥∇f(W)∥\n=f(W)+⟨∇f(W),W′−W⟩+ 0 1 F∥W′−W∥2, (15)\n2 F\n15\n===  16 ===\nwhere the above inequality (i) is by Cauchy-Schwarz inequality and the inequality (ii) is due to the above\ninequality (14).",
+      "size": 663,
+      "sentences": 2
+    },
+    {
+      "id": 105,
+      "content": "ty (i) is by Cauchy-Schwarz inequality and the inequality (ii) is due to the above\ninequality (14). (cid:0) (cid:1)\nFornotationalsimplicity,letζ =M −∇f(W ),Z =∇f(W )−∇f(W )− ∇f(W ;ξ )−∇f(W ;ξ )\nt t t t t t−1 t t t−1 t\nand δ =∇f(W )−∇f(W ;ξ ) for all t≥1. t t t t\nA.1 Convergence Analysis of LiMuon Algorithm with Option #1 under\nLipschitz Smooth Assumption\nInthis subsection, we provide theconvergenceanalysisof LiMuonalgorithm withOption#1 underLips-\nchitz smooth assumption. Lemma 10.",
+      "size": 486,
+      "sentences": 4
+    },
+    {
+      "id": 106,
+      "content": "theconvergenceanalysisof LiMuonalgorithm withOption#1 underLips-\nchitz smooth assumption. Lemma 10. Assume the stochastic gradient estimate M be generated from Algorithm 1 under under\nt\nOption #1. Let ζ =M −∇f(W ), η =η and β =β for all t≥0, under the above Assumption 1, we\nt t t t t\nhave\n(cid:115) (cid:115)\nβ (1−β)2\nE∥ζ ∥ ≤(1−β)tσ+ σ+ Lηr. (16)\nt F 2−β (2−β)β\nProof.",
+      "size": 369,
+      "sentences": 5
+    },
+    {
+      "id": 107,
+      "content": ", we\nt t t t t\nhave\n(cid:115) (cid:115)\nβ (1−β)2\nE∥ζ ∥ ≤(1−β)tσ+ σ+ Lηr. (16)\nt F 2−β (2−β)β\nProof. By the definition of M in Algorithm 1 under Option #1, we have\nt\n(cid:0) (cid:1)\nM −M =−β M +β ∇f(W ;ξ )+(1−β ) ∇f(W ;ξ )−∇f(W ;ξ ) .",
+      "size": 233,
+      "sentences": 3
+    },
+    {
+      "id": 108,
+      "content": "m 1 under Option #1, we have\nt\n(cid:0) (cid:1)\nM −M =−β M +β ∇f(W ;ξ )+(1−β ) ∇f(W ;ξ )−∇f(W ;ξ ) . (17)\nt t−1 t t−1 t t t t t t t−1 t\nLet Z =∇f(W ;ξ )−∇f(W ;ξ )−(∇f(W )−∇f(W )), δ =∇f(W )−∇f(W ;ξ ), and β =β, we\nt t t t−1 t t t−1 t t t t t\nhave\nζ =∇f(W )−M\nt t t\n=∇f(W )−M +∇f(W )−∇f(W )−(M −M )\nt−1 t−1 t t−1 t t−1\n=(1−β)(∇f(W )−M )+β(∇f(W )−∇f(W ;ξ ))\nt−1 t−1 t t t\n(cid:0) (cid:1)\n−(1−β) ∇f(W ;ξ )−∇f(W ;ξ )−(∇f(W )−∇f(W ))\nt t t−1 t t t−1\n=(1−β)ζ +βδ +(1−β)Z (18)\nt−1 t t\nBy expanding the recursion, then we can obtain\nt t\nζ =(1−β)tζ +β (cid:88) (1−β)t−sδ +(1−β) (cid:88) (1−β)t−sZ .",
+      "size": 588,
+      "sentences": 2
+    },
+    {
+      "id": 109,
+      "content": "the recursion, then we can obtain\nt t\nζ =(1−β)tζ +β (cid:88) (1−β)t−sδ +(1−β) (cid:88) (1−β)t−sZ . (19)\nt 0 s s\ns=1 s=1\nSince M =∇f(W ;ξ ), we have\n0 0 0\n(cid:113)\nE∥ζ ∥ =E∥∇f(W ;ξ )−∇f(W )∥ = (cid:0)E∥∇f(W ;ξ )−∇f(W )∥ (cid:1)2\n0 F 0 0 0 F 0 0 0 F\n(i)(cid:113) (ii)√\n≤ E∥∇f(W ;ξ )−∇f(W )∥2 ≤ σ2 =σ, (20)\n0 0 0 F\nwhere the above inequality (i) is due to Jensen inequality, and the above inequality (ii) holds by Assump-\ntion 3.",
+      "size": 427,
+      "sentences": 2
+    },
+    {
+      "id": 110,
+      "content": "inequality (i) is due to Jensen inequality, and the above inequality (ii) holds by Assump-\ntion 3. 16\n===  17 ===\nMeanwhile, we have\n(cid:118)\nt (cid:117) t\nβE∥ (cid:88) (1−β)t−sδ s ∥ F = (cid:117) (cid:116)β2 (cid:0)E(cid:13) (cid:13) (cid:88) (1−β)t−sδ s (cid:13) (cid:13) F (cid:1)2\ns=1 s=1\n(cid:118)\n(cid:117) t\n≤ (cid:117) (cid:116)β2E(cid:13) (cid:13) (cid:88) (1−β)t−sδ s (cid:13) (cid:13) 2 F\ns=1\n(cid:118)\n(cid:117) t\n( = i)(cid:117) (cid:116)β2 (cid:88) (1−β)2(t−s)E(cid:13) (cid:13)∇f(W s )−∇f(W s ;ξ s ) (cid:13) (cid:13) 2 F\ns=1\n(cid:118) (cid:117) (cid:117) (cid:88) t (cid:115) β2 (cid:115) β\n≤(cid:116)β2 (1−β)2(t−s)σ2 ≤ σ2 = σ, (21)\n1−(1−β)2 2−β\ns=1\nwhere the above equality (i) holds by the above Lemma 5 on the fact that {ξ ,··· ,ξ } are independent\n1 t\nrandom variables and E [∇f(W )−∇f(W ;ξ )]=0 for all 1≤s≤t.",
+      "size": 831,
+      "sentences": 2
+    },
+    {
+      "id": 111,
+      "content": "ct that {ξ ,··· ,ξ } are independent\n1 t\nrandom variables and E [∇f(W )−∇f(W ;ξ )]=0 for all 1≤s≤t. ξs s s s\nWe also can obtain\n(cid:118)\nt (cid:117) t\n(1−β)E∥ (cid:88) (1−β)t−sZ\ns\n∥\nF\n= (cid:117) (cid:116)(1−β)2 (cid:0)E∥ (cid:88) (1−β)t−sZ\ns\n∥\nF\n(cid:1)2\ns=1 s=1\n(cid:118)\n(cid:117) t\n(cid:117) (cid:88)\n≤(cid:116)(1−β)2E∥ (1−β)t−sZ\ns\n∥2\nF\ns=1\n(cid:118)\n(cid:117) t\n( = i)(cid:117) (cid:116)(1−β)2 (cid:88) (1−β)2(t−s)E∥∇f(W\ns\n;ξ\ns\n)−∇f(W\ns−1\n;ξ\ns\n)−(∇f(W\ns\n)−∇f(W\ns−1\n))∥2\nF\ns=1\n(cid:118)\n(ii) (cid:117) (cid:117) (cid:88) t\n≤ (cid:116)(1−β)2 (1−β)2(t−s)E∥∇f(W\ns\n;ξ\ns\n)−∇f(W\ns−1\n;ξ\ns\n)∥2\nF\ns=1\n(cid:118)\n(iii) (cid:117) (cid:117) (cid:88) t\n≤ (cid:116)(1−β)2 (1−β)2(t−s)L2E∥W\ns\n−W\ns−1\n∥2\nF\ns=1\n(cid:118)\n(cid:117) t\n(cid:117) (cid:88)\n≤(cid:116)(1−β)2 (1−β)2(t−s)L2E∥ηU\nt−1\nV\nt\n⊤\n−1\n∥2\nF\ns=1\n(cid:118)\n(cid:117) t\n(cid:117) (cid:88)\n≤(cid:116)(1−β)2 (1−β)2(t−s)L2η2r2\ns=1\n(cid:115) (cid:115)\n1 (1−β)2\n≤ (1−β)2 L2η2r2 = Lηr, (22)\n1−(1−β)2 (2−β)β\nwhere the above equality (i) holds by the above Lemma 5 on the fact that{ξ ,··· ,ξ } are independent\n1 t\nrandom variables and E [∇f(W ;ξ )−∇f(W ;ξ )−(∇f(W )−∇f(W ))]=0 for all 1≤s≤t; the\nξs s s s−1 s s s−1\nabove inequality (ii) holds by the above lemma 6, and the above inequality (iii) is due to Assumption 1.",
+      "size": 1258,
+      "sentences": 2
+    },
+    {
+      "id": 112,
+      "content": "inequality (ii) holds by the above lemma 6, and the above inequality (iii) is due to Assumption 1. 17\n===  18 ===\nBy using the above inequalities (20), (21) and (22), we have\nt t\nE∥ζ ∥ =E∥(1−β)tζ +β (cid:88) (1−β)t−sδ −(1−β) (cid:88) (1−β)t−sZ ∥\nt F 0 s s F\ns=1 s=1\nt t\n≤(1−β)tE∥ζ ∥ +βE∥ (cid:88) (1−β)t−sδ ∥ +(1−β)E∥ (cid:88) (1−β)t−sZ ∥\n0 F s F s F\ns=1 s=1\n(cid:115) (cid:115)\nβ (1−β)2\n≤(1−β)tσ+ σ+ Lηr. (23)\n2−β (2−β)β\nTheorem 5.",
+      "size": 432,
+      "sentences": 3
+    },
+    {
+      "id": 113,
+      "content": "−sZ ∥\n0 F s F s F\ns=1 s=1\n(cid:115) (cid:115)\nβ (1−β)2\n≤(1−β)tσ+ σ+ Lηr. (23)\n2−β (2−β)β\nTheorem 5. Under the above Assumptions 1, 3, 4, the sequence {W }T be generated from Algorithm 1\nt t=0\nwith Option #1. Let β =β ∈(0,1) and η =η for all t≥0, we have\nt t\n(cid:115) (cid:115)\n1 (cid:88) T E∥∇f(W )∥ ≤ f(W 0 )−f∗ + rLη +2 √ r (cid:0) σ + β σ+ (1−β)2 Lηr (cid:1) , (24)\nT +1 t ∗ Tη 2 Tβ 2−β (2−β)β\nt=0\nwhere r=min(m,n). Proof.",
+      "size": 426,
+      "sentences": 5
+    },
+    {
+      "id": 114,
+      "content": "(cid:0) σ + β σ+ (1−β)2 Lηr (cid:1) , (24)\nT +1 t ∗ Tη 2 Tβ 2−β (2−β)β\nt=0\nwhere r=min(m,n). Proof. Since M =U Σ V⊤, we have\nt t t t\n⟨M ,U V⊤⟩=⟨U Σ V⊤,U V⊤⟩=tr (cid:0) (U Σ V⊤)⊤U V⊤(cid:1) =tr (cid:0) V Σ U⊤U V⊤(cid:1)\nt t t t t t t t t t t t t t t t t t\n=tr (cid:0) V Σ V⊤(cid:1) =tr (cid:0) V⊤V Σ (cid:1) =tr (cid:0) Σ (cid:1) =∥M ∥ .",
+      "size": 336,
+      "sentences": 3
+    },
+    {
+      "id": 115,
+      "content": "t t t t t t t t t\n=tr (cid:0) V Σ V⊤(cid:1) =tr (cid:0) V⊤V Σ (cid:1) =tr (cid:0) Σ (cid:1) =∥M ∥ . (25)\nt t t t t t t t ∗\nBy using Assumption 1, i.e., f is L Frobenius norm Lipschitz smooth, we have\nL\nf(W )≤f(W )+⟨∇f(W ),W −W ⟩+ ∥W −W ∥2\nt+1 t t t+1 t 2 t+1 t F\nL\n≤f(W )−η ⟨∇f(W ),U V⊤⟩+ η2∥U V⊤∥2\nt t t t t 2 t t t F\nrL\n≤f(W )−η ⟨M ,U V⊤⟩+ η2−η ⟨∇f(W )−M ,U V⊤⟩\nt t t t t 2 t t t t t t\nrL\n≤f(W )−η ⟨M ,U V⊤⟩+ η2+η ∥∇f(W )−M ∥ ∥U V⊤∥ ]\nt t t t t 2 t t t t F t t F\n(i) rL √\n≤f(W )−η ∥M ∥ + η2+η r∥∇f(W )−M ∥\nt t t ∗ 2 t t t t F\nrL √\n≤f(W )−η ∥∇f(W )∥ + η2+2η r∥∇f(W )−M ∥ , (26)\nt t t ∗ 2 t t t t F\n√\nwhere the above inequality (i) is due to ⟨M ,U V⊤⟩=∥M ∥ and ∥U V⊤∥ ≤ r, and the last inequality\nt t t t ∗ t√t F\nholds by ∥M ∥ ≥ ∥∇f(W )∥ −∥∇f(W )−M ∥ ≥ ∥∇f(W )∥ − r∥∇f(W )−M ∥ and ∥M ∥ ≤\n√ t ∗ t ∗ t t ∗ t ∗ t t F t F\n∥M ∥ ≤ r∥M ∥ .",
+      "size": 832,
+      "sentences": 2
+    },
+    {
+      "id": 116,
+      "content": "W )∥ −∥∇f(W )−M ∥ ≥ ∥∇f(W )∥ − r∥∇f(W )−M ∥ and ∥M ∥ ≤\n√ t ∗ t ∗ t t ∗ t ∗ t t F t F\n∥M ∥ ≤ r∥M ∥ . t ∗ t F\nLet η =η, then we have\nt\nE∥∇f(W )∥ ≤E(cid:2)f(W t )−f(W t+1 ) + rLη +2 √ r∥ζ ∥ (cid:3) .",
+      "size": 196,
+      "sentences": 2
+    },
+    {
+      "id": 117,
+      "content": ". t ∗ t F\nLet η =η, then we have\nt\nE∥∇f(W )∥ ≤E(cid:2)f(W t )−f(W t+1 ) + rLη +2 √ r∥ζ ∥ (cid:3) . (27)\nt ∗ η 2 t F\n18\n===  19 ===\nThus we can obtain\n1 (cid:88) T E∥∇f(W )∥ ≤E(cid:2) 1 (cid:88) T f(W t )−f(W t+1 ) + 1 (cid:88) T rLη + 1 (cid:88) T 2 √ r∥ζ ∥ (cid:3)\nT +1 t ∗ T +1 η T +1 2 T +1 t F\nt=0 t=0 t=0 t=0\n( ≤ i)f(W 0 )−f∗ + rLη + 1 (cid:88) T 2 √ rE∥ζ ∥\n(T +1)η 2 T +1 t F\nt=0\n√ (cid:115) (cid:115)\n( ≤ ii)f(W 0 )−f∗ + rLη + 2 r (cid:88) T (cid:0) (1−β)tσ+ β σ+ (1−β)2 Lηr (cid:1)\n(T +1)η 2 T +1 2−β (2−β)β\nt=0\n(cid:115) (cid:115)\n≤ f(W 0 )−f∗ + rLη +2 √ r (cid:0) σ + β σ+ (1−β)2 Lηr (cid:1) , (28)\nTη 2 Tβ 2−β (2−β)β\nwhere the above inequality (i) is due to Assumption 4, and the above inequality (ii) holds by the above\nlemma 10.",
+      "size": 741,
+      "sentences": 3
+    },
+    {
+      "id": 118,
+      "content": "e inequality (i) is due to Assumption 4, and the above inequality (ii) holds by the above\nlemma 10. Let η=O( 1 ) and β =O( 1 ), we have\nT2/3 T2/3\n(cid:115) (cid:115)\n1 (cid:88) T E∥∇f(W )∥ ≤ f(W 0 )−f∗ + rLη +2 √ r (cid:0) σ + β σ+ (1−β)2 Lηr (cid:1)\nT +1 t ∗ Tη 2 Tβ 2−β (2−β)β\nt=0\n(cid:0) 1 1 1 1 1 (cid:1) (cid:0) 1 (cid:1)\n=O + + + + =O (29)\nT1/3 T2/3 T1/3 T1/3 T1/3 T1/3\nA.2 Convergence Analysis of LiMuon Algorithm with Option #1 under\nGeneralized Smooth Assumption\nIn this subsection, we provide the convergence analysis of LiMuon algorithm with Option #1 under gen-\neralized smooth assumption.",
+      "size": 601,
+      "sentences": 2
+    },
+    {
+      "id": 119,
+      "content": "the convergence analysis of LiMuon algorithm with Option #1 under gen-\neralized smooth assumption. Lemma 11. Assume the stochastic gradient estimate M be generated from Algorithm 1 under under\nt\nOption #1. Let ζ =M −∇f(W ), η =η and β =β for all t≥0, under the assumption 2, we have\nt t t t t\n(cid:115) (cid:115)\nE∥ζ ∥ ≤(1−β)tσ+ β σ+ (1−β)2 L ηr+L (1−β)ηr (cid:88) t (1−β)(t−s)E∥∇f(W )∥ . (30)\nt F 2−β (2−β)β 0 1 s−1 F\ns=1\n19\n===  20 ===\nProof.",
+      "size": 444,
+      "sentences": 5
+    },
+    {
+      "id": 120,
+      "content": "+L (1−β)ηr (cid:88) t (1−β)(t−s)E∥∇f(W )∥ . (30)\nt F 2−β (2−β)β 0 1 s−1 F\ns=1\n19\n===  20 ===\nProof. By using Assumption 2, we have\nt\n(1−β)E∥ (cid:88) (1−β)t−sZ ∥\ns F\ns=1\n(cid:118)\n(cid:117) t\n=\n(cid:117)\n(cid:116)(1−β)2\n(cid:0)E∥ (cid:88)\n(1−β)t−sZ\ns\n∥\nF\n(cid:1)2\ns=1\n(cid:118)\n(i) (cid:117) (cid:117) (cid:88) t\n≤(cid:116)(1−β)2E∥ (1−β)t−sZ\ns\n∥2\nF\ns=1\n(cid:118)\n(cid:117) t\n( = ii)(cid:117) (cid:116)(1−β)2 (cid:88) (1−β)2(t−s)E∥∇f(W\ns\n;ξ\ns\n)−∇f(W\ns−1\n;ξ\ns\n)−(∇f(W\ns\n)−∇f(W\ns−1\n))∥2\nF\ns=1\n(cid:118)\n(cid:117) t\n(cid:117) (cid:88)\n≤(cid:116)(1−β)2 (1−β)2(t−s)E∥∇f(W\ns\n;ξ\ns\n)−∇f(W\ns−1\n;ξ\ns\n)∥2\nF\ns=1\n(cid:118)\n(iii) (cid:117) (cid:117) (cid:88) t\n≤ (cid:116)(1−β)2 (1−β)2(t−s)(L2\n0\n+L2\n1\n(E∥∇f(W\ns−1\n)∥\nF\n)2)∥W\ns\n−W\ns−1\n∥2\nF\ns=1\n(cid:118)\n(cid:117) t\n(cid:117) (cid:88)\n≤(cid:116)(1−β)2 (1−β)2(t−s)(L2\n0\n+L2\n1\n(E∥∇f(W\ns−1\n)∥\nF\n)2)∥ηU\nt−1\nV\nt\n⊤\n−1\n∥2\nF\ns=1\n(cid:118)\n(cid:117) t\n(cid:117) (cid:88)\n≤(cid:116)(1−β)2 (1−β)2(t−s)(L2\n0\n+L2\n1\n(E∥∇f(W\ns−1\n)∥\nF\n)2)η2r2, (31)\ns=1\nwhere the above inequality (i) is due to Jensen inequality, and the above equality (ii) holds by the\nabove Lemma 5 on the fact that{ξ ,··· ,ξ } are independent random variables and E [∇f(W ;ξ ) −\n1 t ξs s s\n∇f(W ;ξ )−(∇f(W )−∇f(W ))] = 0 for all 1 ≤ s ≤ t, and the above inequality (iii) is due to\ns−1 s s s−1\nAssumption 2.",
+      "size": 1294,
+      "sentences": 3
+    },
+    {
+      "id": 121,
+      "content": "−∇f(W ))] = 0 for all 1 ≤ s ≤ t, and the above inequality (iii) is due to\ns−1 s s s−1\nAssumption 2. √ √ √\nBy using the inequality a+b≤ a+ b for all a,b≥0, we have\n(cid:118)\n(cid:117) t\n(cid:117) (cid:88)\n(cid:116)(1−β)2 (1−β)2(t−s)(L2\n0\n+L2\n1\n(E∥∇f(W\ns−1\n)∥\nF\n)2)η2r2\ns=1\n(cid:118) (cid:118)\n(cid:117) t (cid:117) t\n(cid:117) (cid:88) (cid:117) (cid:88)\n≤(cid:116)(1−β)2 (1−β)2(t−s)L2\n0\nη2r2+(cid:116)(1−β)2 (1−β)2(t−s)L2\n1\n(E∥∇f(W\ns−1\n)∥\nF\n)2η2r2\ns=1 s=1\n(cid:118)\n(cid:115) (cid:117) t\n1 (cid:117) (cid:88)\n≤ (1−β)2\n1−(1−β)2\nL2\n0\nη2r2+(cid:116)(1−β)2 (1−β)2(t−s)L2\n1\n(E∥∇f(W\ns−1\n)∥\nF\n)2η2r2\ns=1\n(cid:115) (1−β)2 (cid:118) (cid:117) (cid:117) (cid:88) t\n=\n(2−β)β\nL\n0\nηr+(cid:116)(1−β)2 (1−β)2(t−s)L2\n1\n(E∥∇f(W\ns−1\n)∥\nF\n)2η2r2\ns=1\n(cid:115)\n≤ (1−β)2 L ηr+L (1−β)ηr (cid:88) t (1−β)(t−s)E∥∇f(W )∥ .",
+      "size": 797,
+      "sentences": 2
+    },
+    {
+      "id": 122,
+      "content": "L2\n1\n(E∥∇f(W\ns−1\n)∥\nF\n)2η2r2\ns=1\n(cid:115)\n≤ (1−β)2 L ηr+L (1−β)ηr (cid:88) t (1−β)(t−s)E∥∇f(W )∥ . (32)\n(2−β)β 0 1 s−1 F\ns=1\n20\n===  21 ===\nBy using the above inequalities (31) and (32), we have\n(cid:118)\nt (cid:117) t\n(1−β)E∥ (cid:88) (1−β)t−sZ\ns\n∥\nF\n≤ (cid:117) (cid:116)(1−β)2 (cid:88) (1−β)2(t−s)(L\n0\n+L\n1\nE∥∇f(W\ns\n)∥\nF\n)2η2r2\ns=1 s=1\n(cid:115)\n≤ (1−β)2 L ηr+L (1−β)ηr (cid:88) t (1−β)(t−s)E∥∇f(W )∥ . (33)\n(2−β)β 0 1 s−1 F\ns=1\nFrom the above lemma 10, we have\nE∥ζ ∥ ≤σ.",
+      "size": 475,
+      "sentences": 3
+    },
+    {
+      "id": 123,
+      "content": "id:88) t (1−β)(t−s)E∥∇f(W )∥ . (33)\n(2−β)β 0 1 s−1 F\ns=1\nFrom the above lemma 10, we have\nE∥ζ ∥ ≤σ. (34)\n0 F\nWe also have\n(cid:115)\nt\nβE∥ (cid:88) (1−β)t−sδ ∥ ≤ β σ.",
+      "size": 165,
+      "sentences": 3
+    },
+    {
+      "id": 124,
+      "content": "above lemma 10, we have\nE∥ζ ∥ ≤σ. (34)\n0 F\nWe also have\n(cid:115)\nt\nβE∥ (cid:88) (1−β)t−sδ ∥ ≤ β σ. (35)\ns F 2−β\ns=1\nBy using the above inequalities (33), (34) and (35), we can obtain\nt t\nE∥ζ ∥ =E∥(1−β)tζ +β (cid:88) (1−β)t−sδ −(1−β) (cid:88) (1−β)t−sZ ∥\nt F 0 s s F\ns=1 s=1\nt t\n≤(1−β)tE∥ζ ∥ +βE∥ (cid:88) (1−β)t−sδ ∥ +(1−β)E∥ (cid:88) (1−β)t−sZ ∥\n0 F s F s F\ns=1 s=1\n(cid:115) (cid:115)\n≤(1−β)tσ+ β σ+ (1−β)2 L ηr+L (1−β)ηr (cid:88) t (1−β)(t−s)E∥∇f(W )∥ . (36)\n2−β (2−β)β 0 1 s−1 F\ns=1\nTheorem 6.",
+      "size": 498,
+      "sentences": 4
+    },
+    {
+      "id": 125,
+      "content": "σ+ (1−β)2 L ηr+L (1−β)ηr (cid:88) t (1−β)(t−s)E∥∇f(W )∥ . (36)\n2−β (2−β)β 0 1 s−1 F\ns=1\nTheorem 6. Under the Assumptions 2, 3, 4, the sequence {W }T be generated from Algorithm 1 with\nt t=0\nOption #1. Let β =β ∈(0,1) and η =η≤min (cid:0) 1 , β (cid:1) for all t≥0, we have\nt t 2L1r 8L1r3/2(1−β)\n√ (cid:115) (cid:115)\n1 (cid:88) T E∥∇f(W )∥ ≤ 2(f(W 0 )−f∗) +rL η+ 4 rσ +4 √ r β σ+4L ηr3/2 (1−β)2 , (37)\nT +1 t ∗ Tη 0 Tβ 2−β 0 (2−β)β\nt=0\nwhere r=min(m,n). Proof.",
+      "size": 460,
+      "sentences": 5
+    },
+    {
+      "id": 126,
+      "content": "+ 4 rσ +4 √ r β σ+4L ηr3/2 (1−β)2 , (37)\nT +1 t ∗ Tη 0 Tβ 2−β 0 (2−β)β\nt=0\nwhere r=min(m,n). Proof. By using Assumption 2 and the above Lemma 9, we have\nL +L ∥∇f(W )∥\nf(W )≤f(W )+⟨∇f(W ),W −W ⟩+ 0 1 t F∥W −W ∥2\nt+1 t t t+1 t 2 t+1 t F\nL +L ∥∇f(W )∥\n≤f(W )−η ⟨∇f(W ),U V⊤⟩+ 0 1 t Fη2∥U V⊤∥2\nt t t t t 2 t t t F\nL +L ∥∇f(W )∥\n≤f(W )−η ⟨M ,U V⊤⟩+ 0 1 t Fη2r−η ⟨∇f(W )−M ,U V⊤⟩\nt t t t t 2 t t t t t t\nL +L ∥∇f(W )∥\n≤f(W )−η ⟨M ,U V⊤⟩+ 0 1 t Fη2r+η ∥∇f(W )−M ∥ ∥U V⊤∥ ]\nt t t t t 2 t t t t F t t F\n(i) L +L ∥∇f(W )∥ √\n≤f(W )−η ∥M ∥ + 0 1 t Fη2r+η r∥∇f(W )−M ∥\nt t t ∗ 2 t t t t F\nL +L ∥∇f(W )∥ √\n≤f(W )−η ∥∇f(W )∥ + 0 1 t Fη2r+2η r∥∇f(W )−M ∥ , (38)\nt t t ∗ 2 t t t t F\n21\n===  22 ===\n√\nwhere the above inequality (i) holds by ⟨M ,U V⊤⟩=∥M ∥ and ∥U V⊤∥ ≤ r, and the last inequality\nt t t t ∗ √t t F\nis due to ∥M ∥ ≥∥∇f(W )∥ −∥∇f(W )−M ∥ ≥∥∇f(W )∥ − r∥∇f(W )−M ∥ .",
+      "size": 859,
+      "sentences": 3
+    },
+    {
+      "id": 127,
+      "content": "e last inequality\nt t t t ∗ √t t F\nis due to ∥M ∥ ≥∥∇f(W )∥ −∥∇f(W )−M ∥ ≥∥∇f(W )∥ − r∥∇f(W )−M ∥ . t ∗ t ∗ t t ∗ t ∗ t t F\nLet η =η, we have\nt\nE∥∇f(W )∥ ≤E(cid:2)f(W t )−f(W t+1 ) + rL 0 η + L 1 ηr ∥∇f(W )∥ +2 √ r∥ζ ∥ (cid:3)\nt ∗ η 2 2 t F t F\n(cid:115)\nf(W )−f(W ) rL η L ηr √ √ β\n≤E[ t t+1 ]+ 0 + 1 E∥∇f(W )∥ +2 r(1−β)tσ+2 r σ\nη 2 2 t F 2−β\n(cid:115)\n+ (1−β)2 2L ηr3/2+2L (1−β)ηr3/2(cid:88) t (1−β)(t−s)E∥∇f(W )∥ , (39)\n(2−β)β 0 1 s F\ns=1\nwhere the last inequality holds by the above lemma 11.",
+      "size": 496,
+      "sentences": 2
+    },
+    {
+      "id": 128,
+      "content": "1−β)(t−s)E∥∇f(W )∥ , (39)\n(2−β)β 0 1 s F\ns=1\nwhere the last inequality holds by the above lemma 11. Let ∇f(W )=0, then we have\n−1\n√ (cid:115)\n1 (cid:88) T E∥∇f(W )∥ ≤ f(W 0 )−f∗ + rL 0 η + L 1 ηr 1 (cid:88) T E∥∇f(W )∥ + 2 rσ (cid:88) T (1−β)t+2 √ r β σ\nT +1 t ∗ (T +1)η 2 2 T +1 t F T +1 2−β\nt=0 t=0 t=0\n(cid:115)\n+ (1−β)2 2L ηr3/2+ 2L 1 (1−β)ηr3/2 (cid:88) T (cid:88) t (1−β)(t−s)E∥∇f(W )∥\n(2−β)β 0 T +1 s−1 F\nt=0s=1\n√ (cid:115)\n≤ f(W 0 )−f∗ + rL 0 η + L 1 ηr 1 (cid:88) T E∥∇f(W )∥ + 2 rσ +2 √ r β σ\n(T +1)η 2 2 T +1 t F (T +1)β 2−β\nt=0\n(cid:115)\n+ (1−β)2 2L ηr3/2+ 2L 1 (1−β)ηr3/2 (cid:88) T (cid:88) T (1−β)(t−s)E∥∇f(W )∥\n(2−β)β 0 T +1 s−1 F\ns=0t=s\n√ (cid:115)\n≤ f(W 0 )−f∗ + rL 0 η + L 1 ηr 1 (cid:88) T E∥∇f(W )∥ + 2 rσ +2 √ r β σ\n(T +1)η 2 2 T +1 t F (T +1)β 2−β\nt=0\n(cid:115)\n+ (1−β)2 2L ηr3/2+ 2L 1 (1−β)ηr3/2 1 (cid:88) T E∥∇f(W )∥ .",
+      "size": 844,
+      "sentences": 2
+    },
+    {
+      "id": 129,
+      "content": "2 2 T +1 t F (T +1)β 2−β\nt=0\n(cid:115)\n+ (1−β)2 2L ηr3/2+ 2L 1 (1−β)ηr3/2 1 (cid:88) T E∥∇f(W )∥ . (40)\n(2−β)β 0 β T +1 t F\nt=0\nLet 0<η≤min (cid:0) 1 , β (cid:1) , we have\n2L1r 8L1r3/2(1−β)\nL ηr 1 2L (1−β)ηr3/2 1\n1 ≤ , 1 ≤ .",
+      "size": 224,
+      "sentences": 2
+    },
+    {
+      "id": 130,
+      "content": "=0\nLet 0<η≤min (cid:0) 1 , β (cid:1) , we have\n2L1r 8L1r3/2(1−β)\nL ηr 1 2L (1−β)ηr3/2 1\n1 ≤ , 1 ≤ . (41)\n2 4 β 4\nThen we have\n√ (cid:115)\n1 (cid:88) T E∥∇f(W )∥ ≤ f(W 0 )−f∗ + rL 0 η + 2 rσ +2 √ r β σ\nT +1 t ∗ (T +1)η 2 (T +1)β 2−β\nt=0\n(cid:115)\n+ (1−β)2 2L ηr3/2+ 1 (cid:88) T E∥∇f(W )∥\n(2−β)β 0 2(T +1) t F\nt=0\n√ (cid:115)\nf(W )−f∗ rL η 2 rσ √ β\n≤ 0 + 0 + +2 r σ\nTη 2 Tβ 2−β\n(cid:115)\n+ (1−β)2 2L ηr3/2+ 1 (cid:88) T E∥∇f(W )∥ , (42)\n(2−β)β 0 2(T +1) t ∗\nt=0\n22\n===  23 ===\n√\nwhere the last inequality holds by ∥M ∥ ≤∥M ∥ ≤ r∥M ∥ .",
+      "size": 533,
+      "sentences": 2
+    },
+    {
+      "id": 131,
+      "content": ")\n(2−β)β 0 2(T +1) t ∗\nt=0\n22\n===  23 ===\n√\nwhere the last inequality holds by ∥M ∥ ≤∥M ∥ ≤ r∥M ∥ . t F t ∗ t F\nThen we can obtain\n√ (cid:115) (cid:115)\n1 (cid:88) T E∥∇f(W )∥ ≤ 2(f(W 0 )−f∗) +rL η+ 4 rσ +4 √ r β σ+4L ηr3/2 (1−β)2 .",
+      "size": 232,
+      "sentences": 2
+    },
+    {
+      "id": 132,
+      "content": "(cid:115) (cid:115)\n1 (cid:88) T E∥∇f(W )∥ ≤ 2(f(W 0 )−f∗) +rL η+ 4 rσ +4 √ r β σ+4L ηr3/2 (1−β)2 . (43)\nT +1 t ∗ Tη 0 Tβ 2−β 0 (2−β)β\nt=0\nLet η=O( 1 ) and β =O( 1 ), we have\nT2/3 T2/3\n√ (cid:115) (cid:115)\n1 (cid:88) T E∥∇f(W )∥ ≤ 2(f(W 0 )−f∗) +rL η+ 4 rσ +4 √ r β σ+4L ηr3/2 (1−β)2\nT +1 t ∗ Tη 0 Tβ 2−β 0 (2−β)β\nt=0\n(cid:0) 1 1 1 1 1 (cid:1) (cid:0) 1 (cid:1)\n=O + + + + =O .",
+      "size": 378,
+      "sentences": 2
+    },
+    {
+      "id": 133,
+      "content": "1−β)2\nT +1 t ∗ Tη 0 Tβ 2−β 0 (2−β)β\nt=0\n(cid:0) 1 1 1 1 1 (cid:1) (cid:0) 1 (cid:1)\n=O + + + + =O . (44)\nT1/3 T2/3 T1/3 T1/3 T1/3 T1/3\nA.3 Convergence Analysis of LiMuon Algorithm with Option #2 under\nLipschitz Smooth Assumption\nIn this subsection, we provide the convergence analysis of LiMuon algorithm with Option #2 under Lip-\nschitz smooth assumption. For notational simplicity, let Z = ∇f(W ;ξ )−∇f(W ;ξ )−(∇f(W )−\nt t t t−1 t t\n∇f(W )), δ =∇f(W )−∇f(W ;ξ ) and θ =M −Mˆ for all t≥1.",
+      "size": 489,
+      "sentences": 3
+    },
+    {
+      "id": 134,
+      "content": "= ∇f(W ;ξ )−∇f(W ;ξ )−(∇f(W )−\nt t t t−1 t t\n∇f(W )), δ =∇f(W )−∇f(W ;ξ ) and θ =M −Mˆ for all t≥1. t−1 t t t t t t t\nLemma 12. Assume the stochastic gradient estimate M be generated from Algorithm 1 under under\nt\nOption #2. Let ζ =M −∇f(W ), η =η and β =β under the assumption 1, we have\nt t t t t\n(cid:115) (cid:115)\n(cid:88) T σ β (1−β)2 γ(1−β)(cid:88) T\nE∥ζ ∥ ≤ +(T +1) σ+(T +1) Lηr+ E∥∇f(W )∥ , (45)\nt F β 2−β (2−β)β β t F\nt=0 t=0\n(cid:16) (cid:17)1\nwhere γ =ρ 1+ rˆ 2.\ns−1\nProof.",
+      "size": 485,
+      "sentences": 4
+    },
+    {
+      "id": 135,
+      "content": "+ E∥∇f(W )∥ , (45)\nt F β 2−β (2−β)β β t F\nt=0 t=0\n(cid:16) (cid:17)1\nwhere γ =ρ 1+ rˆ 2.\ns−1\nProof. By the definition of M in Algorithm 1 with Option #2, we have\nt\nM −Mˆ =−β Mˆ +β ∇f(W ;ξ )+(1−β ) (cid:0) ∇f(W ;ξ )−∇f(W ;ξ ) (cid:1) .",
+      "size": 234,
+      "sentences": 2
+    },
+    {
+      "id": 136,
+      "content": "1 with Option #2, we have\nt\nM −Mˆ =−β Mˆ +β ∇f(W ;ξ )+(1−β ) (cid:0) ∇f(W ;ξ )−∇f(W ;ξ ) (cid:1) . (46)\nt t−1 t t−1 t t t t t t t−1 t\nLet β =β, we have\nt\nζ =∇f(W )−M\nt t t\n=∇f(W )−Mˆ +∇f(W )−∇f(W )−(M −Mˆ )\nt−1 t−1 t t−1 t t−1\n=(1−β)(∇f(W )−Mˆ )+β(∇f(W )−∇f(W ;ξ ))\nt−1 t−1 t t t\n(cid:0) (cid:1)\n−(1−β) ∇f(W ;ξ )−∇f(W ;ξ )−(∇f(W )−∇f(W ))\nt t t−1 t t t−1\n=(1−β)(∇f(W )−Mˆ )+βδ −(1−β)Z\nt−1 t−1 t t\n=(1−β)(∇f(W )−M +M −Mˆ )+βδ −(1−β)Z\nt−1 t−1 t−1 t−1 t t\n=(1−β)(∇f(W )−M )+(1−β)θ +βδ −(1−β)Z .",
+      "size": 491,
+      "sentences": 2
+    },
+    {
+      "id": 137,
+      "content": "t t\n=(1−β)(∇f(W )−M +M −Mˆ )+βδ −(1−β)Z\nt−1 t−1 t−1 t−1 t t\n=(1−β)(∇f(W )−M )+(1−β)θ +βδ −(1−β)Z . (47)\nt−1 t−1 t−1 t t\nBy expanding the recursion, then we can obtain\nt t t\nζ =(1−β)tζ +(1−β) (cid:88) (1−β)t−sθ +β (cid:88) (1−β)t−sδ −(1−β) (cid:88) (1−β)t−sZ . (48)\nt 0 s−1 s s\ns=1 s=1 s=1\n23\n===  24 ===\nBy using the above lemma 8, we have\nt t\n(1−β)E∥ (cid:88) (1−β)t−sθ ∥ ≤(1−β) (cid:88) (1−β)t−sE∥θ ∥\ns−1 F s−1 F\ns=1 s=1\nt\n≤γ(1−β) (cid:88) (1−β)t−sE∥∇f(W )∥ .",
+      "size": 461,
+      "sentences": 3
+    },
+    {
+      "id": 138,
+      "content": "1−β)t−sθ ∥ ≤(1−β) (cid:88) (1−β)t−sE∥θ ∥\ns−1 F s−1 F\ns=1 s=1\nt\n≤γ(1−β) (cid:88) (1−β)t−sE∥∇f(W )∥ . (49)\ns−1 F\ns=1\nBy using the proof of the above lemma 5, we have\nE∥ζ ∥ ≤σ. (50)\n0 F\nMeanwhile, we have\n(cid:115)\nt\nβE∥ (cid:88) (1−β)t−sδ ∥ ≤ β σ. (51)\ns F 2−β\ns=1\nWe also have\n(cid:115)\n(1−β)E∥ (cid:88) t (1−β)t−sZ ∥ ≤ (1−β)2 Lηr.",
+      "size": 330,
+      "sentences": 4
+    },
+    {
+      "id": 139,
+      "content": ")t−sδ ∥ ≤ β σ. (51)\ns F 2−β\ns=1\nWe also have\n(cid:115)\n(1−β)E∥ (cid:88) t (1−β)t−sZ ∥ ≤ (1−β)2 Lηr. (52)\ns F (2−β)β\ns=1\nBy using the above inequalities (49), (50), (51) and (52), we have\nt t t\nE∥ζ ∥ =E∥(1−β)tζ +(1−β) (cid:88) (1−β)t−sθ +β (cid:88) (1−β)t−sδ −(1−β) (cid:88) (1−β)t−sZ ∥\nt F 0 s−1 s s F\ns=1 s=1 s=1\nt t t\n≤E∥(1−β)tζ ∥ +(1−β)E∥ (cid:88) (1−β)t−sθ ∥ +βE∥ (cid:88) (1−β)t−sδ ∥ +(1−β)E∥ (cid:88) (1−β)t−sZ ∥\n0 F s−1 F s F s F\ns=1 s=1 s=1\n(cid:115) (cid:115)\n≤(1−β)tσ+ β σ+ (1−β)2 Lηr+γ(1−β) (cid:88) t (1−β)t−sE∥∇f(W )∥ ).",
+      "size": 533,
+      "sentences": 3
+    },
+    {
+      "id": 140,
+      "content": "F\ns=1 s=1 s=1\n(cid:115) (cid:115)\n≤(1−β)tσ+ β σ+ (1−β)2 Lηr+γ(1−β) (cid:88) t (1−β)t−sE∥∇f(W )∥ ). (53)\n2−β (2−β)β s−1 F\ns=1\nLet ∇f(W )=0, then we have\n−1\n(cid:115) (cid:115)\n(cid:88) T E∥ζ ∥ ≤ (cid:88) T (cid:16) (1−β)tσ+ β σ+ (1−β)2 Lηr+γ(1−β) (cid:88) t (1−β)t−sE∥∇f(W )∥ (cid:17)\nt F 2−β (2−β)β s−1 F\nt=0 t=0 s=1\n(cid:115) (cid:115)\n≤ σ +(T +1) β σ+(T +1) (1−β)2 Lηr+γ(1−β) (cid:88) T (cid:88) T (1−β)t−sE∥∇f(W )∥\nβ 2−β (2−β)β s−1 F\ns=0t=s\n(cid:115) (cid:115)\nσ β (1−β)2 γ(1−β)(cid:88) T\n≤ +(T +1) σ+(T +1) Lηr+ E∥∇f(W )∥ .",
+      "size": 527,
+      "sentences": 2
+    },
+    {
+      "id": 141,
+      "content": ")β s−1 F\ns=0t=s\n(cid:115) (cid:115)\nσ β (1−β)2 γ(1−β)(cid:88) T\n≤ +(T +1) σ+(T +1) Lηr+ E∥∇f(W )∥ . (54)\nβ 2−β (2−β)β β t F\nt=0\nTheorem 7. Under the Assumptions 1, 3, 4, 5, the sequence {W }T be generated from Algorithm 1 with\nt t=0\nOption #2.",
+      "size": 243,
+      "sentences": 3
+    },
+    {
+      "id": 142,
+      "content": "the Assumptions 1, 3, 4, 5, the sequence {W }T be generated from Algorithm 1 with\nt t=0\nOption #2. Let β t =β ∈(0,1), η t =η for all t≥0 and γ ≤ 4 √ r( β 1−β) , we have\n(cid:115) (cid:115)\n1 (cid:88) T E∥∇f(W )∥ ≤ 2(f(W 0 )−f∗) +rLη+4 √ r (cid:0) σ + β σ+ (1−β)2 Lηr (cid:1) , (55)\nT +1 t ∗ Tη Tβ 2−β (2−β)β\nt=0\n(cid:16) (cid:17)1\nwhere r=min(m,n) and γ =ρ 1+ rˆ 2.\ns−1\n24\n===  25 ===\nProof.",
+      "size": 391,
+      "sentences": 2
+    },
+    {
+      "id": 143,
+      "content": "η Tβ 2−β (2−β)β\nt=0\n(cid:16) (cid:17)1\nwhere r=min(m,n) and γ =ρ 1+ rˆ 2.\ns−1\n24\n===  25 ===\nProof. By using Assumption 1, i.e., f is L Frobenius norm Lipschitz smooth, we have\nL\nf(W )≤f(W )+⟨∇f(W ),W −W ⟩+ ∥W −W ∥2\nt+1 t t t+1 t 2 t+1 t F\nL\n≤f(W )−η ⟨∇f(W ),U V⊤⟩+ η2∥U V⊤∥2\nt t t t t 2 t t t F\nrL\n≤f(W )−η ⟨M ,U V⊤⟩+ η2−η ⟨∇f(W )−M ,U V⊤⟩\nt t t t t 2 t t t t t t\nrL\n≤f(W )−η ⟨M ,U V⊤⟩+ η2+η ∥∇f(W )−M ∥ ∥U V⊤∥ ]\nt t t t t 2 t t t t F t t F\n(i) rL √\n≤f(W )−η ∥M ∥ + η2+η r∥∇f(W )−M ∥\nt t t ∗ 2 t t t t F\nrL √\n≤f(W )−η ∥∇f(W )∥ + η2+2η r∥∇f(W )−M ∥ , (56)\nt t t ∗ 2 t t t t F\n√\nwhere the above inequality (i) is due to ⟨M ,U V⊤⟩=∥M ∥ and ∥U V⊤∥ ≤ r, and the last inequality\nt t t t ∗ t√t F\nholds by ∥M ∥ ≥ ∥∇f(W )∥ −∥∇f(W )−M ∥ ≥ ∥∇f(W )∥ − r∥∇f(W )−M ∥ and ∥M ∥ ≤\n√ t ∗ t ∗ t t ∗ t ∗ t t F t F\n∥M ∥ ≤ r∥M ∥ .",
+      "size": 809,
+      "sentences": 2
+    },
+    {
+      "id": 144,
+      "content": "W )∥ −∥∇f(W )−M ∥ ≥ ∥∇f(W )∥ − r∥∇f(W )−M ∥ and ∥M ∥ ≤\n√ t ∗ t ∗ t t ∗ t ∗ t t F t F\n∥M ∥ ≤ r∥M ∥ . t ∗ t F\nSince η =η, we have\nt\nE∥∇f(W )∥ ≤E(cid:2)f(W t )−f(W t+1 ) + rLη +2 √ r∥ζ ∥ (cid:3) .",
+      "size": 193,
+      "sentences": 2
+    },
+    {
+      "id": 145,
+      "content": "M ∥ . t ∗ t F\nSince η =η, we have\nt\nE∥∇f(W )∥ ≤E(cid:2)f(W t )−f(W t+1 ) + rLη +2 √ r∥ζ ∥ (cid:3) . (57)\nt ∗ η 2 t F\nThen we have\nT\n1 (cid:88)\nE∥∇f(W )∥\nT +1 t ∗\nt=0\n≤E[ 1 (cid:88) T f(W t )−f(W t+1 ) ]+ 1 (cid:88) T rLη + 1 (cid:88) T 2 √ rE∥ζ ∥\nT +1 η T +1 2 T +1 t F\nt=0 t=0 t=0\n≤ f(W 0 )−f∗ + rLη + 1 (cid:88) T 2 √ rE∥ζ ∥\n(T +1)η 2 T +1 t F\nt=0\n√ (cid:115) (cid:115)\n≤ f(W 0 )−f∗ + rLη + 2 r (cid:0)σ +(T +1) β σ+(T +1) (1−β)2 Lηr+ γ(1−β)(cid:88) T E∥∇f(W )∥ (cid:1)\n(T +1)η 2 T +1 β 2−β (2−β)β β t F\nt=0\n(cid:115) (cid:115) √\n≤ f(W 0 )−f∗ + rLη +2 √ r (cid:0) σ + β σ+ (1−β)2 Lηr (cid:1) + 2 rγ(1−β) 1 (cid:88) T E∥∇f(W )∥ .",
+      "size": 630,
+      "sentences": 3
+    },
+    {
+      "id": 146,
+      "content": "≤ f(W 0 )−f∗ + rLη +2 √ r (cid:0) σ + β σ+ (1−β)2 Lηr (cid:1) + 2 rγ(1−β) 1 (cid:88) T E∥∇f(W )∥ . Tη 2 Tβ 2−β (2−β)β β T +1 t ∗\nt=0\n(58)\nLet γ ≤ √ β , we have\n4 r(1−β)\n(cid:115) (cid:115)\n1 (cid:88) T E∥∇f(W )∥ ≤ 2(f(W 0 )−f∗) +rLη+4 √ r (cid:0) σ + β σ+ (1−β)2 Lηr (cid:1) .",
+      "size": 276,
+      "sentences": 2
+    },
+    {
+      "id": 147,
+      "content": ") (cid:115)\n1 (cid:88) T E∥∇f(W )∥ ≤ 2(f(W 0 )−f∗) +rLη+4 √ r (cid:0) σ + β σ+ (1−β)2 Lηr (cid:1) . (59)\nT +1 t ∗ Tη Tβ 2−β (2−β)β\nt=0\nLet η=O( 1 ) and β =O( 1 ), we have\nT2/3 T2/3\n(cid:115) (cid:115)\n1 (cid:88) T E∥∇f(W )∥ ≤ 2(f(W 0 )−f∗) +rLη+4 √ r (cid:0) σ + β σ+ (1−β)2 Lηr (cid:1)\nT +1 t ∗ Tη Tβ 2−β (2−β)β\nt=0\n(cid:0) 1 1 1 1 1 (cid:1) (cid:0) 1 (cid:1)\n=O + + + + =O .",
+      "size": 376,
+      "sentences": 2
+    },
+    {
+      "id": 148,
+      "content": "r (cid:1)\nT +1 t ∗ Tη Tβ 2−β (2−β)β\nt=0\n(cid:0) 1 1 1 1 1 (cid:1) (cid:0) 1 (cid:1)\n=O + + + + =O . (60)\nT1/3 T2/3 T1/3 T1/3 T1/3 T1/3\n25\n===  26 ===\nA.4 Convergence Analysis of LiMuon Algorithm with Option #2 under\nGeneralized Smooth Assumption\nIn this subsection, we provide the convergence analysis of LiMuon algorithm with Option #2 under gen-\neralized smooth assumption. Lemma 13. Assume the stochastic gradient estimate M be generated from Algorithm 1 under under\nt\nOption #2.",
+      "size": 482,
+      "sentences": 4
+    },
+    {
+      "id": 149,
+      "content": "3. Assume the stochastic gradient estimate M be generated from Algorithm 1 under under\nt\nOption #2. Let ζ =M −∇f(W ), η =η and β =β under the assumption 2, we have\nt t t t t\n(cid:115) (cid:115)\nE∥ζ ∥ ≤(1−β)tσ+ β σ+L ηr (1−β)2 +(L ηr+γ)(1−β) (cid:88) t (1−β)(t−s)∥∇f(W )∥ ,\nt F 2−β 0 (2−β)β 1 s−1 F\ns=1\n(61)\n(cid:16) (cid:17)1\nwhere γ =ρ 1+ rˆ 2.\ns−1\nProof. From the above lemma 12, we have\nt t t\nζ =(1−β)tζ +(1−β) (cid:88) (1−β)t−sθ +β (cid:88) (1−β)t−sδ −(1−β) (cid:88) (1−β)t−sZ .",
+      "size": 482,
+      "sentences": 4
+    },
+    {
+      "id": 150,
+      "content": "e have\nt t t\nζ =(1−β)tζ +(1−β) (cid:88) (1−β)t−sθ +β (cid:88) (1−β)t−sδ −(1−β) (cid:88) (1−β)t−sZ . (62)\nt 0 s−1 s s\ns=1 s=1 s=1\nThen from both lemmas 11 and 12, we have\nt t t\nE∥ζ ∥ =E∥(1−β)tζ +(1−β) (cid:88) (1−β)t−sθ +β (cid:88) (1−β)t−sδ −(1−β) (cid:88) (1−β)t−sZ ∥\nt F 0 s−1 s s F\ns=1 s=1 s=1\nt t t\n≤E∥(1−β)tζ ∥ +(1−β)E∥ (cid:88) (1−β)t−sθ ∥ +βE∥ (cid:88) (1−β)t−sδ ∥ +(1−β)E∥ (cid:88) (1−β)t−sZ ∥\n0 F s−1 F s F s F\ns=1 s=1 s=1\n(cid:115) (cid:115)\n≤(1−β)tσ+ β σ+L ηr (1−β)2 +L ηr(1−β) (cid:88) t (1−β)(t−s)∥∇f(W )∥\n2−β 0 (2−β)β 1 s−1 F\ns=1\nt\n+γ(1−β) (cid:88) (1−β)t−sE∥∇f(W )∥ .",
+      "size": 582,
+      "sentences": 2
+    },
+    {
+      "id": 151,
+      "content": "(1−β) (cid:88) t (1−β)(t−s)∥∇f(W )∥\n2−β 0 (2−β)β 1 s−1 F\ns=1\nt\n+γ(1−β) (cid:88) (1−β)t−sE∥∇f(W )∥ . (63)\ns−1 F\ns=1\nTheorem 8. Under the Assumptions 2, 3, 4, 5, the sequence {W }T be generated from Algorithm 1 with\nt t=0\nOption #2.",
+      "size": 230,
+      "sentences": 3
+    },
+    {
+      "id": 152,
+      "content": "the Assumptions 2, 3, 4, 5, the sequence {W }T be generated from Algorithm 1 with\nt t=0\nOption #2. Let β t = β ∈ (0,1) and η t = η ≤ min (cid:0) 2L 1 1r , 16L1r3 β /2(1−β) (cid:1) for all t ≥ 0 and γ ≤ 16 √ r β (1−β) ,\nwe have\n√ (cid:115) (cid:115)\n1 (cid:88) T E∥∇f(W )∥ ≤ 2(f(W 0 )−f∗) +rL η+ 4 rσ +4 √ r β σ+4L ηr3/2 (1−β)2 , (64)\nT +1 t ∗ Tη 0 Tβ 2−β 0 (2−β)β\nt=0\n(cid:16) (cid:17)1\nwhere r=min(m,n) and γ =ρ 1+ rˆ 2.\ns−1\nProof. ThisproofbasicallyfollowstheproofofTheorem6.",
+      "size": 477,
+      "sentences": 3
+    },
+    {
+      "id": 153,
+      "content": "cid:17)1\nwhere r=min(m,n) and γ =ρ 1+ rˆ 2.\ns−1\nProof. ThisproofbasicallyfollowstheproofofTheorem6. ByusingAssumption2andtheaboveLemma9,\n26\n===  27 ===\nwe have\nL +L ∥∇f(W )∥\nf(W )≤f(W )+⟨∇f(W ),W −W ⟩+ 0 1 t F∥W −W ∥2\nt+1 t t t+1 t 2 t+1 t F\nL +L ∥∇f(W )∥\n≤f(W )−η ⟨∇f(W ),U V⊤⟩+ 0 1 t Fη2∥U V⊤∥2\nt t t t t 2 t t t F\nL +L ∥∇f(W )∥\n≤f(W )−η ⟨M ,U V⊤⟩+ 0 1 t Fη2r−η ⟨∇f(W )−M ,U V⊤⟩\nt t t t t 2 t t t t t t\nL +L ∥∇f(W )∥\n≤f(W )−η ⟨M ,U V⊤⟩+ 0 1 t Fη2r+η ∥∇f(W )−M ∥ ∥U V⊤∥ ]\nt t t t t 2 t t t t F t t F\n(i) L +L ∥∇f(W )∥ √\n≤f(W )−η ∥M ∥ + 0 1 t Fη2r+η r∥∇f(W )−M ∥\nt t t ∗ 2 t t t t F\nL +L ∥∇f(W )∥ √\n≤f(W )−η ∥∇f(W )∥ + 0 1 t Fη2r+2η r∥∇f(W )−M ∥ , (65)\nt t t ∗ 2 t t t t F\n√\nwhere the above inequality (i) holds by ⟨M ,U V⊤⟩=∥M ∥ and ∥U V⊤∥ ≤ r, and the last inequality\nt t t t ∗ √t t F\nis due to ∥M ∥ ≥∥∇f(W )∥ −∥∇f(W )−M ∥ ≥∥∇f(W )∥ − r∥∇f(W )−M ∥ .",
+      "size": 851,
+      "sentences": 3
+    },
+    {
+      "id": 154,
+      "content": "e last inequality\nt t t t ∗ √t t F\nis due to ∥M ∥ ≥∥∇f(W )∥ −∥∇f(W )−M ∥ ≥∥∇f(W )∥ − r∥∇f(W )−M ∥ . t ∗ t ∗ t t ∗ t ∗ t t F\nLet η =η, we have\nt\nE∥∇f(W )∥ ≤E(cid:2)f(W t )−f(W t+1 ) + rL 0 η + L 1 ηr ∥∇f(W )∥ +2 √ r∥ζ ∥ (cid:3)\nt ∗ η 2 2 t F t F\n(cid:115)\nf(W )−f(W ) rL η L ηr √ √ β\n≤E[ t t+1 ]+ 0 + 1 E∥∇f(W )∥ +2 r(1−β)tσ+2 r σ\nη 2 2 t F 2−β\n(cid:115)\n+2L ηr3/2 (1−β)2 +(2L ηr3/2+2 √ rγ)(1−β) (cid:88) t (1−β)(t−s)E∥∇f(W )∥ , (66)\n0 (2−β)β 1 s−1 F\ns=1\nwhere the last inequality holds by the above lemma 11.",
+      "size": 508,
+      "sentences": 2
+    },
+    {
+      "id": 155,
+      "content": "β)(t−s)E∥∇f(W )∥ , (66)\n0 (2−β)β 1 s−1 F\ns=1\nwhere the last inequality holds by the above lemma 11. Since ∇f(W )=0, then we have\n−1\nT\n1 (cid:88)\nE∥∇f(W )∥\nT +1 t ∗\nt=0\n√ (cid:115)\n≤ f(W 0 )−f∗ + rL 0 η + L 1 ηr 1 (cid:88) T E∥∇f(W )∥ + 2 rσ (cid:88) T (1−β)t+2 √ r β σ\n(T +1)η 2 2 T +1 t F T +1 2−β\nt=0 t=0\n(cid:115) √\n+2L ηr3/2 (1−β)2 + (2L 1 ηr3/2+2 rγ)(1−β)(cid:88) T (cid:88) t (1−β)(t−s)E∥∇f(W )∥\n0 (2−β)β T +1 s−1 F\nt=0s=1\n√ (cid:115)\n≤ f(W 0 )−f∗ + rL 0 η + L 1 ηr 1 (cid:88) T E∥∇f(W )∥ + 2 rσ +2 √ r β σ\n(T +1)η 2 2 T +1 t F (T +1)β 2−β\nt=0\n(cid:115) √\n+2L ηr3/2 (1−β)2 + (2L 1 ηr3/2+2 rγ)(1−β)(cid:88) T (cid:88) T (1−β)(t−s)E∥∇f(W )∥\n0 (2−β)β T +1 s−1 F\ns=0t=s\n√ (cid:115)\n≤ f(W 0 )−f∗ + rL 0 η + L 1 ηr 1 (cid:88) T E∥∇f(W )∥ + 2 rσ +2 √ r β σ\n(T +1)η 2 2 T +1 t F (T +1)β 2−β\nt=0\n(cid:115) √\n+2L ηr3/2 (1−β)2 + (2L 1 ηr3/2+2 rγ)(1−β) 1 (cid:88) T E∥∇f(W )∥ .",
+      "size": 871,
+      "sentences": 2
+    },
+    {
+      "id": 156,
+      "content": "t F (T +1)β 2−β\nt=0\n(cid:115) √\n+2L ηr3/2 (1−β)2 + (2L 1 ηr3/2+2 rγ)(1−β) 1 (cid:88) T E∥∇f(W )∥ . (67)\n0 (2−β)β β T +1 t F\nt=0\n27\n===  28 ===\nLet 0<η≤min (cid:0) 1 , β (cid:1) and γ ≤ √β , we have\n2L1r 16L1r3/2(1−β) 16 r(1−β)\n√\nL ηr 1 2L ηr3/2(1−β) 1 2 rγ(1−β) 1\n1 ≤ , 1 ≤ , ≤ .",
+      "size": 279,
+      "sentences": 2
+    },
+    {
+      "id": 157,
+      "content": "γ ≤ √β , we have\n2L1r 16L1r3/2(1−β) 16 r(1−β)\n√\nL ηr 1 2L ηr3/2(1−β) 1 2 rγ(1−β) 1\n1 ≤ , 1 ≤ , ≤ . (68)\n2 4 β 8 β 8\nThen we have\n√ (cid:115)\n1 (cid:88) T E∥∇f(W )∥ ≤ f(W 0 )−f∗ + rL 0 η + 2 rσ +2 √ r β σ\nT +1 t ∗ (T +1)η 2 (T +1)β 2−β\nt=0\n(cid:115)\n+2L ηr3/2 (1−β)2 + 1 (cid:88) T E∥∇f(W )∥\n0 (2−β)β 2(T +1) t F\nt=0\n√ (cid:115)\nf(W )−f∗ rL η 2 rσ √ β\n≤ 0 + 0 + +2 r σ\nTη 2 Tβ 2−β\n(cid:115)\n+2L ηr3/2 (1−β)2 + 1 (cid:88) T E∥∇f(W )∥ , (69)\n0 (2−β)β 2(T +1) t ∗\nt=0\n√\nwhere the last inequality holds by ∥M ∥ ≤∥M ∥ ≤ r∥M ∥ .",
+      "size": 521,
+      "sentences": 2
+    },
+    {
+      "id": 158,
+      "content": "E∥∇f(W )∥ , (69)\n0 (2−β)β 2(T +1) t ∗\nt=0\n√\nwhere the last inequality holds by ∥M ∥ ≤∥M ∥ ≤ r∥M ∥ . t F t ∗ t F\nThen we can obtain\n√ (cid:115) (cid:115)\n1 (cid:88) T E∥∇f(W )∥ ≤ 2(f(W 0 )−f∗) +rL η+ 4 rσ +4 √ r β σ+4L ηr3/2 (1−β)2 .",
+      "size": 232,
+      "sentences": 2
+    },
+    {
+      "id": 159,
+      "content": "(cid:115) (cid:115)\n1 (cid:88) T E∥∇f(W )∥ ≤ 2(f(W 0 )−f∗) +rL η+ 4 rσ +4 √ r β σ+4L ηr3/2 (1−β)2 . (70)\nT +1 t ∗ Tη 0 Tβ 2−β 0 (2−β)β\nt=0\nLet η=O( 1 ) and β =O( 1 ), we have\nT2/3 T2/3\n√ (cid:115) (cid:115)\n1 (cid:88) T E∥∇f(W )∥ ≤ 2(f(W 0 )−f∗) +rL η+ 4 rσ +4 √ r β σ+4L ηr3/2 (1−β)2\nT +1 t ∗ Tη 0 Tβ 2−β 0 (2−β)β\nt=0\n(cid:0) 1 1 1 1 1 (cid:1) (cid:0) 1 (cid:1)\n=O + + + + =O . (71)\nT1/3 T2/3 T1/3 T1/3 T1/3 T1/3\n28",
+      "size": 416,
+      "sentences": 3
+    }
+  ]
+}

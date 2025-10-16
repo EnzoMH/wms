@@ -1,0 +1,1593 @@
+{
+  "source": "ArXiv",
+  "filename": "124_AI_ML_Flatness-Aware_Stochastic_Gradient_Lange.pdf",
+  "domain": "AI",
+  "total_chars": 89709,
+  "total_chunks": 264,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\nFlatness-Aware Stochastic Gradient Langevin Dynamics\nStefano Bruno∗1,2, Youngsik Hwang∗2, Jaehyeon An∗3, Sotirios Sabanis1,3,4, and\nDong-Young Lim†2\n1University of Edinburgh, United Kingdom\n2Ulsan National Institute of Science and Technology, Republic of Korea\n3National Technical University of Athens, Greece\n4Archimedes/Athena Research Centre, Greece\nAbstract\nGeneralization in deep learning is closely tied to the pursuit of flat minima in the loss land-\nscape, yet classical Stochastic Gradient Langevin Dynamics (SGLD) offers no mechanism\nto bias its dynamics toward such low-curvature solutions.",
+      "size": 612,
+      "sentences": 1
+    },
+    {
+      "id": 2,
+      "content": "gevin Dynamics (SGLD) offers no mechanism\nto bias its dynamics toward such low-curvature solutions. This work introduces Flatness-\nAwareStochasticGradientLangevinDynamics(fSGLD),designedtoefficientlyandprovably\nseek flat minima in high-dimensional nonconvex optimization problems.",
+      "size": 280,
+      "sentences": 2
+    },
+    {
+      "id": 3,
+      "content": "ignedtoefficientlyandprovably\nseek flat minima in high-dimensional nonconvex optimization problems. At each iteration,\nfSGLD uses the stochastic gradient evaluated at parameters perturbed by isotropic Gaussian\nnoise, commonly referred to as Random Weight Perturbation (RWP), thereby optimizing a\nrandomized-smoothing objective that implicitly captures curvature information.",
+      "size": 374,
+      "sentences": 2
+    },
+    {
+      "id": 4,
+      "content": "thereby optimizing a\nrandomized-smoothing objective that implicitly captures curvature information. Leveraging\nthese properties, we prove that the invariant measure of fSGLD stays close to a stationary\nmeasure concentrated on the global minimizers of a loss function regularized by the Hessian\ntracewhenevertheinversetemperatureandthescaleofrandomweightperturbationareprop-\nerlycoupled. Thisresultprovidesarigoroustheoreticalexplanationforthebenefitsofrandom\nweight perturbation.",
+      "size": 479,
+      "sentences": 3
+    },
+    {
+      "id": 5,
+      "content": "upled. Thisresultprovidesarigoroustheoreticalexplanationforthebenefitsofrandom\nweight perturbation. In particular, we establish non-asymptotic convergence guarantees in\nWassersteindistancewiththebestknownrateandderiveanexcess-riskboundfortheHessian-\ntraceregularizedobjective.",
+      "size": 276,
+      "sentences": 3
+    },
+    {
+      "id": 6,
+      "content": "eindistancewiththebestknownrateandderiveanexcess-riskboundfortheHessian-\ntraceregularizedobjective. Extensiveexperimentsonnoisy-labelandlarge-scalevisiontasks,\nin both training-from-scratch and fine-tuning settings, demonstrate that fSGLD achieves su-\nperior or comparable generalization and robustness to baseline algorithms while maintaining\nthe computational cost of SGD, about half that of SAM. Hessian-spectrum analysis further\nconfirmsthatfSGLDconvergestosignificantlyflatterminima.",
+      "size": 488,
+      "sentences": 3
+    },
+    {
+      "id": 7,
+      "content": "t of SAM. Hessian-spectrum analysis further\nconfirmsthatfSGLDconvergestosignificantlyflatterminima. 1 Introduction\nConsider the overdamped Langevin dynamics governed by the stochastic differential equation\n(SDE)\n(cid:112)\ndZ = −∇u(Z )dt+ 2β−1dB ,\nt t t\n*Equalcontribution.",
+      "size": 272,
+      "sentences": 3
+    },
+    {
+      "id": 8,
+      "content": "stochastic differential equation\n(SDE)\n(cid:112)\ndZ = −∇u(Z )dt+ 2β−1dB ,\nt t t\n*Equalcontribution. †Correspondingauthor: dlim@unist.ac.kr\n1\n5202\ntcO\n2\n]GL.sc[\n1v47120.0152:viXra\n===  2 ===\nwhichadmitsauniqueinvariant(Gibbs)measureπ (θ)proportionaltoexp(−βu(θ)),whereβ > 0\nβ\nis the inverse temperature and (B ) is a d-dimensional Brownian motion.",
+      "size": 346,
+      "sentences": 2
+    },
+    {
+      "id": 9,
+      "content": "ltoexp(−βu(θ)),whereβ > 0\nβ\nis the inverse temperature and (B ) is a d-dimensional Brownian motion. As β increases,\nt t≥0\nthis Gibbs measure concentrates on the global minimizers of u, establishing a direct link be-\ntweenLangevindynamicsandglobaloptimization.",
+      "size": 259,
+      "sentences": 2
+    },
+    {
+      "id": 10,
+      "content": "global minimizers of u, establishing a direct link be-\ntweenLangevindynamicsandglobaloptimization. Buildingonthisproperty,StochasticGradient\nLangevin Dynamics (SGLD) (Welling & Teh, 2011; Raginsky et al., 2017) was proposed as the\nEuler-Maruyama discretization of the Langevin SDE in which the exact gradient ∇u is replaced\nby a stochastic gradient.",
+      "size": 349,
+      "sentences": 2
+    },
+    {
+      "id": 11,
+      "content": "retization of the Langevin SDE in which the exact gradient ∇u is replaced\nby a stochastic gradient. SGLD has attracted considerable attention as a prominent optimization\nalgorithm for nonconvex problems, and under mild regularity conditions a series of works has es-\ntablished non-asymptotic global convergence guarantees (Raginsky et al., 2017; Xu et al., 2018;\nMajkaetal.,2020;Chauetal.,2021;Zhangetal.,2023).",
+      "size": 411,
+      "sentences": 2
+    },
+    {
+      "id": 12,
+      "content": "uarantees (Raginsky et al., 2017; Xu et al., 2018;\nMajkaetal.,2020;Chauetal.,2021;Zhangetal.,2023). Despitetheseeleganttheoreticalresults,\nSGLD has not become a widely used optimizer in deep learning practice, largely because it lacks\nanintrinsicmechanismtofavorflatminima,whicharecloselyassociatedtostronggeneralization.",
+      "size": 321,
+      "sentences": 2
+    },
+    {
+      "id": 13,
+      "content": "use it lacks\nanintrinsicmechanismtofavorflatminima,whicharecloselyassociatedtostronggeneralization. Alongside advances in SGLD, a separate line of work in deep learning has explored flatter solu-\ntions to improve generalization, inspired by the flat minima hypothesis (Hochreiter & Schmidhu-\nber, 1997).",
+      "size": 303,
+      "sentences": 2
+    },
+    {
+      "id": 14,
+      "content": "improve generalization, inspired by the flat minima hypothesis (Hochreiter & Schmidhu-\nber, 1997). As a result, numerous flatness-aware optimization algorithms have been developed,\nincluding Random Weight Perturbation (RWP) (Bisla et al., 2022; Li et al., 2024a), Entropy-SGD\n(Chaudharietal.,2017),Sharpness-AwareMinimization(SAM)(Foretetal.,2021)andtheirvari-\nants (Xie et al., 2024; Li et al., 2024b; Tahmasebi et al., 2024; Luo et al., 2024; Chen et al., 2024;\nKang et al., 2025; Wei et al., 2025; Liu et al., 2022a,b; Du et al., 2022b; Li et al., 2025).",
+      "size": 557,
+      "sentences": 2
+    },
+    {
+      "id": 15,
+      "content": "2024;\nKang et al., 2025; Wei et al., 2025; Liu et al., 2022a,b; Du et al., 2022b; Li et al., 2025). In prin-\nciple, flatness-aware optimization promotes exploration of flat regions by replacing the standard\nstochastic gradient with a perturbed gradient.",
+      "size": 253,
+      "sentences": 2
+    },
+    {
+      "id": 16,
+      "content": "xploration of flat regions by replacing the standard\nstochastic gradient with a perturbed gradient. For example, SAM applies a worst-case adversarial\nperturbationwithinalocalneighborhood,whereasRWPusessymmetricrandomnoisetogenerate\nthegradientperturbationandcanbeviewedascomputingthestochasticgradientofarandomized-\nsmoothing objective (Duchi et al., 2012).",
+      "size": 357,
+      "sentences": 2
+    },
+    {
+      "id": 17,
+      "content": "canbeviewedascomputingthestochasticgradientofarandomized-\nsmoothing objective (Duchi et al., 2012). However, SAM’s min–max formulation requires double\ngradientevaluations,leadingtoroughlytwicethecomputationalcostofstandardSGD.Onthethe-\noretical side, recent studies have produced important advances in the analysis of SAM and related\nflatness-aware optimization methods, yielding valuable insights on generalization bounds, stabil-\nity, and (local) convergence properties; e.g., see Andriushchenko & Flammarion (2022); Bartlett\netal.(2023);Si&Yun(2023);Yuetal.(2024);Khanhetal.",
+      "size": 577,
+      "sentences": 3
+    },
+    {
+      "id": 18,
+      "content": "see Andriushchenko & Flammarion (2022); Bartlett\netal.(2023);Si&Yun(2023);Yuetal.(2024);Khanhetal. (2024);Oikonomou&Loizou(2025);\nZhang et al. (2024); Li et al. (2024a). However, with a few notable exceptions (Ahn et al., 2024;\nGatmiryetal.,2024),theglobalconvergencepropertiesofflatness-awareoptimizationinnoncon-\nvex settings, as well as a rigorous theoretical understanding of the role of RWP, remain relatively\nunexplored.",
+      "size": 426,
+      "sentences": 5
+    },
+    {
+      "id": 19,
+      "content": ", as well as a rigorous theoretical understanding of the role of RWP, remain relatively\nunexplored. Toaddressthesechallenges,weintroduceFlatness-AwareStochasticGradientLangevinDynamics\n(fSGLD), a principled synthesis of randomized smoothing and Langevin dynamics that efficiently\nexplores flat minima.",
+      "size": 301,
+      "sentences": 2
+    },
+    {
+      "id": 20,
+      "content": "pled synthesis of randomized smoothing and Langevin dynamics that efficiently\nexplores flat minima. While randomized-smoothing surrogates are known to encode second-order\ninformationsuchastheHessiantrace,theyalsocontainhigher-orderremaindertermsofwhichef-\nfectsarenotnegligibleinhigh-dimensionalnonconvexproblems,weakeningtheintendedflatness-\naware regularization effect.",
+      "size": 371,
+      "sentences": 2
+    },
+    {
+      "id": 21,
+      "content": "gibleinhigh-dimensionalnonconvexproblems,weakeningtheintendedflatness-\naware regularization effect. Our key theoretical contribution is to show that when the two key hy-\nperparameters,theinversetemperatureparameterβ andtheperturbationscaleσ,areproperlybal-\nanced,theinvariantmeasureoffSGLDconcentratesontheglobalminimizersofthetrueHessian-\ntraceregularizedobjective,therebyisolatingthegenuineflatness-awareregularizationeffect.",
+      "size": 427,
+      "sentences": 2
+    },
+    {
+      "id": 22,
+      "content": "rueHessian-\ntraceregularizedobjective,therebyisolatingthegenuineflatness-awareregularizationeffect. This\nprincipledcouplingiscrucial,asitensuresthattheglobalexplorationdrivenbyLangevindynamics\nis effectively guided across a landscape smoothed by the perturbation noise, steering the process\ntoward genuinely flat regions.",
+      "size": 321,
+      "sentences": 2
+    },
+    {
+      "id": 23,
+      "content": "a landscape smoothed by the perturbation noise, steering the process\ntoward genuinely flat regions. In particular, we establish non-asymptotic convergence guaran-\n2\n===  3 ===\ntees in Wasserstein distance and an explicit excess-risk bound for the Hessian-trace-regularized\nobjective, providing the rigorous evidence of the benefits of RWP in nonconvex settings.",
+      "size": 361,
+      "sentences": 2
+    },
+    {
+      "id": 24,
+      "content": "egularized\nobjective, providing the rigorous evidence of the benefits of RWP in nonconvex settings. Our\nframeworkbridgesandadvancesthetheoryandpracticeofflatness-awarestochasticoptimization,\nopening new avenues to incorporate geometric smoothing into Langevin sampling and paving the\nway for more effective and principled flatness-regularized learning. To validate these results, we\nevaluate fSGLD on noisy-label datasets (CIFAR-10N/100N, WebVision) and large-scale vision\nfine-tuning (ViT-B/16).",
+      "size": 496,
+      "sentences": 3
+    },
+    {
+      "id": 25,
+      "content": "on noisy-label datasets (CIFAR-10N/100N, WebVision) and large-scale vision\nfine-tuning (ViT-B/16). Extensive experiments demonstrate that fSGLD consistently matches or\noutperforms baselines including SGD, AdamW, SGLD, and SAM in generalization and robust-\nness while maintaining the computational cost of standard SGD. Notably, using the theoretically\nprescribed coupling between β and σ yields substantially better performance than simply fixing\na large β, which is the common SGLD practice.",
+      "size": 492,
+      "sentences": 3
+    },
+    {
+      "id": 26,
+      "content": "s substantially better performance than simply fixing\na large β, which is the common SGLD practice. In summary, fSGLD is the first to combine the\nSGLD framework with the concept of flatness and to provide a global convergence analysis for\nflatness-aware optimization, thereby advancing the theoretical and practical foundations of both\nareas. 2 Problem Setting and FSGLD Algorithm\nNotation. Let(Ω,F,P)beafixedprobabilityspace. Wedenotetheprobabilitylawofarandom\nvariable Y by L(Y).",
+      "size": 481,
+      "sentences": 5
+    },
+    {
+      "id": 27,
+      "content": "otation. Let(Ω,F,P)beafixedprobabilityspace. Wedenotetheprobabilitylawofarandom\nvariable Y by L(Y). Fix integers d,m ≥ 1. Let I be the identity matrix of dimension d. The\nd\nEuclidean scalar product is denoted by ⟨·,·⟩, with | · | standing for the corresponding norm. Let\nf : Rd → R be a continuously differentiable function, and we denote its gradient by ∇f. For\nany integer q ≥ 1, let P(Rq) be the set of probability measures on B(Rq).",
+      "size": 436,
+      "sentences": 7
+    },
+    {
+      "id": 28,
+      "content": "e its gradient by ∇f. For\nany integer q ≥ 1, let P(Rq) be the set of probability measures on B(Rq). For µ, ν ∈ P(Rd), let\nC(µ,ν) denote the set of probability measures Γ on B(R2d) such that its respective marginals are\nµandν. Foranyµandν ∈ P(Rd),theWassersteindistanceoforderp ≥ 1isdefinedas\n(cid:18) (cid:90) (cid:90) (cid:19)1\np\nW (µ,ν) = inf |x−y|p dΓ(x,y) .",
+      "size": 361,
+      "sentences": 4
+    },
+    {
+      "id": 29,
+      "content": "stanceoforderp ≥ 1isdefinedas\n(cid:18) (cid:90) (cid:90) (cid:19)1\np\nW (µ,ν) = inf |x−y|p dΓ(x,y) . (1)\np\nΓ∈C(µ,ν) Rd Rd\nFor any µ and ν ∈ P(Rd), then Kullbak-Leibler divergence (or relative entropy) between µ and ν\nisdefinedas\n(cid:40)(cid:82)\nlog\n(cid:0)dµ(cid:1)\ndµ, ifµ ≪ ν,\nKL(µ||ν) = Rd dν (2)\n∞, otherwise.",
+      "size": 313,
+      "sentences": 2
+    },
+    {
+      "id": 30,
+      "content": "ν\nisdefinedas\n(cid:40)(cid:82)\nlog\n(cid:0)dµ(cid:1)\ndµ, ifµ ≪ ν,\nKL(µ||ν) = Rd dν (2)\n∞, otherwise. 2.1 Intractable Hessian-based Regularization\nWeconsiderthefollowingnonconvexstochasticoptimizationproblem:\nminu(θ) :=\nminE(cid:2)\nU(θ,X)\n(cid:3)\n, (3)\nθ∈Rd θ∈Rd\nwhere u : Rd → R is a four-times continuously differentiable function with gradient h := ∇u,\nU : Rd ×Rm → RisameasurablefunctionsatisfyingE[|U(θ,X)|] < ∞forallθ ∈ Rd,andX is\na random variable with probability law L(X).",
+      "size": 479,
+      "sentences": 2
+    },
+    {
+      "id": 31,
+      "content": "efunctionsatisfyingE[|U(θ,X)|] < ∞forallθ ∈ Rd,andX is\na random variable with probability law L(X). In practice, the gradient h of u is usually unknown\nandoneonlyhasaccesstoitsunbiasedestimate,i.e. h(θ) = E[∇ U(θ,X)]. θ\n3\n===  4 ===\nTo improve generalization, we incorporate an inductive bias for flatness through a flatness-aware\nobjective.",
+      "size": 341,
+      "sentences": 4
+    },
+    {
+      "id": 32,
+      "content": "e generalization, we incorporate an inductive bias for flatness through a flatness-aware\nobjective. More specifically, instead of optimizing the original objective u, we aim to solve the\nfollowingHessian-traceregularizedobjective:\nσ2\nv(θ) := u(θ)+ tr(H(θ)), (4)\n2\nwheretr(H(θ))isthetraceoftheHessianofuevaluatedatθandσ > 0controlsthestrengthofthe\nsharpness regularization.",
+      "size": 372,
+      "sentences": 2
+    },
+    {
+      "id": 33,
+      "content": "(θ))isthetraceoftheHessianofuevaluatedatθandσ > 0controlsthestrengthofthe\nsharpness regularization. The global minimizers of this regularized objective v represent a trade-\noff between low loss from the original objective u and low curvature. For brevity, we will refer\nto these points as the global flat minima (i.e., argmin v(θ)). However, computing tr(H(θ)) is\nθ∈Rd\nexpensiveinhighdimension.",
+      "size": 394,
+      "sentences": 4
+    },
+    {
+      "id": 34,
+      "content": "obal flat minima (i.e., argmin v(θ)). However, computing tr(H(θ)) is\nθ∈Rd\nexpensiveinhighdimension. 2.2 Randomized Smoothing as a Tractable Surrogate\nTo obtain a tractable alternative to the Hessian-trace regularized objective in 4, we introduce\na Gaussian perturbation ϵ ∼ N(0,σ2I ) with σ ∈ (0,1), independent of X, and define the\nd\nrandomized-smoothingsurrogateobjective:\ng (θ) :=\nE(cid:2)\nu(θ+ϵ)\n(cid:3)\n=\nE(cid:2)E (cid:2)\nU(θ+ϵ,X)\n(cid:3)(cid:3)\n.",
+      "size": 453,
+      "sentences": 3
+    },
+    {
+      "id": 35,
+      "content": "gsurrogateobjective:\ng (θ) :=\nE(cid:2)\nu(θ+ϵ)\n(cid:3)\n=\nE(cid:2)E (cid:2)\nU(θ+ϵ,X)\n(cid:3)(cid:3)\n. (5)\nϵ X\nwhere the outer expectation is taken with respect to the noise ϵ and E [·] denotes the conditional\nX\nexpectation given ϵ. This simple surrogate allows us to access curvature information. By Taylor’s\ntheorem,wehave\nu(θ+ϵ) = u(θ)+∇u(θ)⊤ϵ+ 1ϵ⊤H(θ)ϵ+R(θ,ϵ),\n2\nwhere R(θ,ϵ) is the remainder term.",
+      "size": 399,
+      "sentences": 4
+    },
+    {
+      "id": 36,
+      "content": "ylor’s\ntheorem,wehave\nu(θ+ϵ) = u(θ)+∇u(θ)⊤ϵ+ 1ϵ⊤H(θ)ϵ+R(θ,ϵ),\n2\nwhere R(θ,ϵ) is the remainder term. Taking the expectation over ϵ ∼ N(0,σ2I ) yields the key\nd\nconnection:\ng (θ) = u(θ)+ σ2tr(H(θ))+E[R(θ,ϵ)]\nϵ 2\n= v(θ)+E[R(θ,ϵ)]. (6)\nThus,optimizingthetractablesurrogateg introducesthedesiredinductivebiastowardflatminima\nϵ\nby implicitly minimizing the Hessian–trace regularized objective v, provided that the remainder\ntermE[R(θ,ϵ)]isnegligible.",
+      "size": 444,
+      "sentences": 3
+    },
+    {
+      "id": 37,
+      "content": "g the Hessian–trace regularized objective v, provided that the remainder\ntermE[R(θ,ϵ)]isnegligible. 2.3 FSGLD Algorithm\nTo optimize the surrogate objective g in 5, we propose the Flatness-Aware Stochastic Gradient\nϵ\nLangevin Dynamics (fSGLD) algorithm.",
+      "size": 252,
+      "sentences": 2
+    },
+    {
+      "id": 38,
+      "content": "ve g in 5, we propose the Flatness-Aware Stochastic Gradient\nϵ\nLangevin Dynamics (fSGLD) algorithm. Formally, let θ be an Rd-valued random variable repre-\n0\nsentingtheinitialvalue,(X ) beani.i.dsequenceofdata,(ϵ ) bei.i.dcopiesoftheGaussian\nk k∈N k k∈N\nperturbation ϵ ∼ N(0,σ2I ), and (ξ ) be an independent sequence of standard d-dimensional\nd k k∈N\nGaussianrandomvariables. Weassumethatθ ,(ϵ ) ,and(ξ ) areallmutuallyindependent.",
+      "size": 431,
+      "sentences": 3
+    },
+    {
+      "id": 39,
+      "content": "imensional\nd k k∈N\nGaussianrandomvariables. Weassumethatθ ,(ϵ ) ,and(ξ ) areallmutuallyindependent. 0 k k∈N k k∈N\nThen,thefSGLDalgorithmisgivenby\n(cid:40)\nθfSGLD := θ ,\n0 0 (7)\n(cid:112)\nθfSGLD = θfSGLD −λ∇ U(θfSGLD +ϵ ,X )+ 2λβ−1ξ , k ∈ N\nk+1 k θ k k+1 k+1 k+1\n4\n===  5 ===\nOriginal objective Randomized-smoothing surrogate Hessian-trace regularization\nTheorem 3.5\nRandomized Discretization c\n&\nSmoothing\nStochasticGradient\nTheorem 3.2\nProposition 3.1\nFigure 1: A schematic overview of the theoretical framework of fSGLD.",
+      "size": 522,
+      "sentences": 3
+    },
+    {
+      "id": 40,
+      "content": "t\nTheorem 3.2\nProposition 3.1\nFigure 1: A schematic overview of the theoretical framework of fSGLD. The process begins with\nthe original objective u(θ) and its associated Gibbs measure πSGLD (left). Randomized smooth-\nβ\ning transforms this into a tractable surrogate objective, g (θ), which is the basis for the fSGLD\nϵ\nalgorithm and its invariant measure, πfSGLD (center).",
+      "size": 373,
+      "sentences": 3
+    },
+    {
+      "id": 41,
+      "content": "ve, g (θ), which is the basis for the fSGLD\nϵ\nalgorithm and its invariant measure, πfSGLD (center). This highlights a key distinction: while the\nβ\nGibbs measure of standard SGLD, πSGLD, is indifferent to the flatness of the minima, the fSGLD\nβ\nframeworkisdesignedsuchthatitsinvariantmeasure,πfSGLD,targetsthedistributionovertheflat-\nβ\ntest minima.",
+      "size": 347,
+      "sentences": 2
+    },
+    {
+      "id": 42,
+      "content": "eworkisdesignedsuchthatitsinvariantmeasure,πfSGLD,targetsthedistributionovertheflat-\nβ\ntest minima. Our ultimate goal is to target the Hessian-trace regularized objective v(θ) and its\ncorrespondingmeasureπ⋆ ,whichconcentratesonthedesiredglobalflatminima(right). β,σ\nwhere λ > 0 is the stepsize, β > 0 is the inverse temperature. We make three important remarks\nabout this update rule.",
+      "size": 384,
+      "sentences": 4
+    },
+    {
+      "id": 43,
+      "content": "stepsize, β > 0 is the inverse temperature. We make three important remarks\nabout this update rule. First, the gradient term in 7 is a unbiased stochastic gradient of g , as its\nϵ\nexpectationoverboththedataX andtheperturbationϵrecoversthetruegradient∇g :\nϵ\n∇g (θ) = E[E [∇ U(θ+ϵ,X)]]. (8)\nϵ X θ\nSecond,thefSGLDcanbeinterpretedasthestandardSGLDfortheoriginalobjectiveucombined\nwith RWP.",
+      "size": 385,
+      "sentences": 4
+    },
+    {
+      "id": 44,
+      "content": "8)\nϵ X θ\nSecond,thefSGLDcanbeinterpretedasthestandardSGLDfortheoriginalobjectiveucombined\nwith RWP. Third, under appropriate conditions, which will be introduced in the next section, the\nfSGLD algorithm generates a Markov chain that converges to a unique invariant (Gibbs) mea-\nsure. This measure, denoted by πfSGLD, is associated with the randomized-smoothing surrogate\nβ\nobjective g , i.e., πfSGLD(θ) ∝ exp(−βg (θ)). The formal convergence guarantees are provided in\nϵ β ϵ\nAppendixC.2.",
+      "size": 487,
+      "sentences": 4
+    },
+    {
+      "id": 45,
+      "content": ".e., πfSGLD(θ) ∝ exp(−βg (θ)). The formal convergence guarantees are provided in\nϵ β ϵ\nAppendixC.2. 3 Theoretical Results\nIn this section, we present the main theoretical results that rigorously validate the fSGLD algo-\nrithm. We begin by stating the formal assumptions for our analysis. We then prove that the\ninvariant measure of fSGLD converges to an ideal target distribution over flat minima when its\nkey hyperparameters β and σ are properly coupled.",
+      "size": 455,
+      "sentences": 5
+    },
+    {
+      "id": 46,
+      "content": "eal target distribution over flat minima when its\nkey hyperparameters β and σ are properly coupled. Building on this, we derive non-asymptotic\nconvergence guarantees for the fSGLD iterates in both Wasserstein distance and for the excess\nrisk. The logical flow of our theoretical framework is summarized in the schematic illustration in\nFigure1. 5\n===  6 ===\n3.1 Assumptions\nWefirststatetheformalassumptionsforourmaintheoreticalresults.",
+      "size": 435,
+      "sentences": 4
+    },
+    {
+      "id": 47,
+      "content": "Figure1. 5\n===  6 ===\n3.1 Assumptions\nWefirststatetheformalassumptionsforourmaintheoreticalresults. Specifically,ourassumptions\nimpose standard conditions on: (i) moments of the initial parameters, stochastic gradient, and\nthe noise processes; (ii) a Lipschitz condition on the stochastic gradient; and (iii) a dissipativity\nconditiontoensurethestabilityoftheLangevindynamics. Assumption 1 (Moments of the initial parameter, stochastic gradient, and independence of the\ndata and noise perturbation).",
+      "size": 499,
+      "sentences": 4
+    },
+    {
+      "id": 48,
+      "content": "f the initial parameter, stochastic gradient, and independence of the\ndata and noise perturbation). We assume the initial parameter θ has a finite fourth moment,\n0\nE[|θ |4] < ∞, and that we have access to an unbiased stochastic gradient for the original ob-\n0\njective u, E[∇ U(θ,X)] = h(θ), where the data sequence (X ) is is i.i.d. Furthermore, the\nθ k k∈N\nperturbation noise(ϵ ) ∼ N(0,σ2I ) withσ ∈ (0,1), (X ) , (ξ ) ∼ N(0,I ), andθ are\nk k∈N d k k∈N k k∈N d 0\nmutuallyindependent.",
+      "size": 484,
+      "sentences": 3
+    },
+    {
+      "id": 49,
+      "content": "0,σ2I ) withσ ∈ (0,1), (X ) , (ξ ) ∼ N(0,I ), andθ are\nk k∈N d k k∈N k k∈N d 0\nmutuallyindependent. Assumption 2 (Lipschitzness). There exists φ : Rm → [1,∞) with E[|(1+|X |)φ(X )|4] < ∞,\n0 0\nandconstantsL ,L > 0suchthat,forallx,x′ ∈ Rm andθ,θ′ ∈ Rd,\n1 2\n|∇ U(θ,x)−∇ U(θ′,x)| ≤ L φ(x)|θ−θ′|,\nθ θ′ 1\n|∇ U(θ,x)−∇ U(θ,x′)| ≤ L (φ(x)+φ(x′))(1+|θ|)|x−x′|,\nθ θ 2\nAssumption3(Dissipativity).",
+      "size": 384,
+      "sentences": 3
+    },
+    {
+      "id": 50,
+      "content": "θ−θ′|,\nθ θ′ 1\n|∇ U(θ,x)−∇ U(θ,x′)| ≤ L (φ(x)+φ(x′))(1+|θ|)|x−x′|,\nθ θ 2\nAssumption3(Dissipativity). Thereexistameasurablefunction(symmetricmatrix-valued)func-\ntion A : Rm → Rd×d and a measurable function ˆ b : Rm → R such that for any x ∈ Rm, y ∈ Rd,\n⟨y,A(x)y⟩ ≥ 0andforallθ ∈ Rd andx ∈ Rm,\nˆ\n⟨∇ U(θ,x),θ⟩ ≥ ⟨θ,A(x)θ⟩−b(x). θ\nThesmallesteigenvalueofE[A(X )]isapositiverealnumbera¯ > 0andE[ ˆ b(X ))] = ¯ b > 0.",
+      "size": 410,
+      "sentences": 3
+    },
+    {
+      "id": 51,
+      "content": "A(x)θ⟩−b(x). θ\nThesmallesteigenvalueofE[A(X )]isapositiverealnumbera¯ > 0andE[ ˆ b(X ))] = ¯ b > 0. 0 0\nNote that this dissipativity condition is a standard requirement for analysis of SGLD in the liter-\nature; e.g., see Raginsky et al. (2017); Xu et al. (2018); Deng et al. (2020a,b, 2022); Futami &\nFujisawa (2023). In particular, our version in Assumption 3 follows the more general formula-\ntion of Zhang et al. (2023), which allows for dependency on the data X.",
+      "size": 466,
+      "sentences": 8
+    },
+    {
+      "id": 52,
+      "content": "s the more general formula-\ntion of Zhang et al. (2023), which allows for dependency on the data X. Moreover, several direct\nconsequences of these assumptions, which are useful for our subsequent analysis, are detailed in\nAppendixB. 3.2 Target Gibbs Measure for Global Flat Minima\nOur analysis begins by defining the ideal target distribution which concentrates on the global flat\nminima. ThenaturalchoiceistheGibbsmeasureassociatedwithv,whichwedefineasπ⋆ :\nβ,σ\nπ⋆ (dθ) ∝ exp(−βv(θ))dθ.",
+      "size": 486,
+      "sentences": 5
+    },
+    {
+      "id": 53,
+      "content": ". ThenaturalchoiceistheGibbsmeasureassociatedwithv,whichwedefineasπ⋆ :\nβ,σ\nπ⋆ (dθ) ∝ exp(−βv(θ))dθ. (9)\nβ,σ\nBy construction, as the inverse temperature β → ∞, this measure concentrates on the global flat\nminima. The central question is whether the invariant measure of fSGLD, πfSGLD, converges to this ideal\nβ\nGibbs measure π⋆ . For these two Gibbs measures to align, the remainder term E[R(θ,ϵ)] in 6\nβ,σ\nmust be negligible.",
+      "size": 425,
+      "sentences": 5
+    },
+    {
+      "id": 54,
+      "content": ". For these two Gibbs measures to align, the remainder term E[R(θ,ϵ)] in 6\nβ,σ\nmust be negligible. In high-dimensional nonconvex problems, this is a non-trivial condition, as\n6\n===  7 ===\nhigher-order terms can be substantial and unpredictable, potentially corrupting the intended reg-\nularization effect. For this reason, in the low-temperature limit (β → ∞), a careful interplay\nbetween the inverse temperature β and the noise scale σ becomes essential.",
+      "size": 455,
+      "sentences": 4
+    },
+    {
+      "id": 55,
+      "content": "∞), a careful interplay\nbetween the inverse temperature β and the noise scale σ becomes essential. Please refer to Ap-\npendixAfortheformalrelationshipbetweentwoGibbsmeasuresπfSGLD andπ⋆ . β β,σ\nThefollowingpropositionshowsthatwhentheperturbationscaleσ andinversetemperatureβ are\nproperly coupled, the invariant measure of fSGLD converges to the ideal target measure in the\nWassersteindistanceofordertwoandinKLdivergence. Proposition3.1. LetAssumptions2,and3hold,andletσ =\nβ−1+η\nforη > 0.",
+      "size": 487,
+      "sentences": 5
+    },
+    {
+      "id": 56,
+      "content": "anceofordertwoandinKLdivergence. Proposition3.1. LetAssumptions2,and3hold,andletσ =\nβ−1+η\nforη > 0. Then\n4\nlim KL(π β fSGLD||π β ⋆ ,σ ) = 0, and lim W 2 (π β fSGLD,π β ⋆ ,σ ) = 0. (10)\nβ→∞ β→∞\nTheproofofProposition3.1ispostponedtoAppendixC.2. Thispropositionrigorouslyshowshow\nRWP induces the desired Hessian-trace regularization effect through a theoretically-prescribed\ncoupling of the two key hyperparameters, σ and β.",
+      "size": 421,
+      "sentences": 6
+    },
+    {
+      "id": 57,
+      "content": "ization effect through a theoretically-prescribed\ncoupling of the two key hyperparameters, σ and β. As demonstrated in our experiments, this\ncouplingyieldsmeaningfulimprovementsingeneralization.",
+      "size": 194,
+      "sentences": 2
+    },
+    {
+      "id": 58,
+      "content": "d β. As demonstrated in our experiments, this\ncouplingyieldsmeaningfulimprovementsingeneralization. 3.3 Convergence Guarantees for fSGLD\nHaving established that fSGLD correctly targets the ideal distribution for flat minima, our first\nmain result provides non-asymptotic error bounds on the Wasserstein-1 and -2 distances between\nthe law of the k-th fSGLD iterate L(θfSGLD) and the target Gibbs measure π⋆ . All proofs for the\nk β,σ\nresultsinthissectionareprovidedinAppendixC.2. Theorem 3.2.",
+      "size": 491,
+      "sentences": 5
+    },
+    {
+      "id": 59,
+      "content": "bs measure π⋆ . All proofs for the\nk β,σ\nresultsinthissectionareprovidedinAppendixC.2. Theorem 3.2. Let Assumptions 1, 2, and 3 hold, and let σ =\nβ−1+η\nfor η > 0. Then, there exist\n4\nconstantsc˙,D ,D ,D ,D > 0suchthat,foreveryβ > 0,for0 < λ ≤ λ ,andk ∈ N,\n1 2 3 max\n√\nW (L(θfSGLD),π⋆ ) ≤ D e−c˙λk/2(1+E[|θ |4])+(D +D ) λ+D, (11)\n1 k β,σ 1 0 2 3\nwherec˙,D ,D ,D aregivenexplicitlyintheAppendixC.2,λ isgivenin23,andD = O(β−η)\n1 2 3 max\nwhoseexpressionisexplicitlygivenintheAppendixC.2. Corollary 3.3.",
+      "size": 498,
+      "sentences": 6
+    },
+    {
+      "id": 60,
+      "content": "sgivenin23,andD = O(β−η)\n1 2 3 max\nwhoseexpressionisexplicitlygivenintheAppendixC.2. Corollary 3.3. Let Assumption 1, 2 and 3 hold, and let σ =\nβ−1+η\nfor η > 0. Then, there exists\n4\nconstantsc˙,D ,D ,D ,D > 0suchthat,foreveryβ > 0,0 < λ ≤ λ ,andk ∈ N,\n4 5 6 max\nW (L(θfSGLD),π⋆ ) ≤ D e−c˙λk/4(E[|θ |4]+1)+(D +D )λ1/4 +D, (12)\n2 k β,σ 4 0 5 6\nwhere D , D , D are given explicitly in the Appendix C.2, λ is given in 23, and c˙, D are the\n4 5 6 max\nsameasinTheorem3.2. Remark 3.4.",
+      "size": 477,
+      "sentences": 5
+    },
+    {
+      "id": 61,
+      "content": "in the Appendix C.2, λ is given in 23, and c˙, D are the\n4 5 6 max\nsameasinTheorem3.2. Remark 3.4. The constant D on the right-hand side of 11 and 12 vanishes as β → ∞. Moreover,\ntheremaindertermsontheright-handsideof11and12canbemadearbitrarilysmallbychoosing\nλ sufficiently small. We emphasize that Theorem 3.2 and Corollary 3.3 recover the best known\nconvergence results for SGLD under comparable assumptions, see e.g. Zhang et al. (2023).",
+      "size": 441,
+      "sentences": 7
+    },
+    {
+      "id": 62,
+      "content": "best known\nconvergence results for SGLD under comparable assumptions, see e.g. Zhang et al. (2023). A\ndetailedcomplexityanalysisoftheseboundsisprovidedinAppendixC.2. 7\n===  8 ===\nWhile the previous results guarantee convergence from a sampling perspective, our final result\nanalyzes fSGLD as an optimizer. The following theorem provides a non-asymptotic bound on the\nexpectedexcessriskwithrespecttotheHessian-traceregularizedobjectivev. Theorem 3.5.",
+      "size": 449,
+      "sentences": 7
+    },
+    {
+      "id": 63,
+      "content": "tic bound on the\nexpectedexcessriskwithrespecttotheHessian-traceregularizedobjectivev. Theorem 3.5. Let Assumption 1, 2 and 3 hold, and let σ =\nβ−1+η\nfor η > 0. Then, there exist\n4\nconstantsc˙,D#,D#,D# > 0suchthat,foreveryβ > 0,0 < λ ≤ λ ,k ∈ N,\n1 2 3 max\nE[g (θfSGLD)]− inf v(θ) ≤ D#e−c˙λk/4 +D#λ1/4 +D#, (13)\nϵ k 1 2 3\nθ∈Rd\nwhereD#,D#,andD# aregivenexplicitlyintheAppendixC.2,andc˙ isthesameasinTheorem\n1 2 3\n3.2.",
+      "size": 415,
+      "sentences": 4
+    },
+    {
+      "id": 64,
+      "content": "2 3\nθ∈Rd\nwhereD#,D#,andD# aregivenexplicitlyintheAppendixC.2,andc˙ isthesameasinTheorem\n1 2 3\n3.2. ThisresultprovidesarigorousguaranteethatfSGLDfindsglobalflatminimabyeffectivelysolving\ntheHessian-traceregularizedobjective. Remark 3.6. The constant D# = O (cid:0) (d/β)log((β/d+1))+β−(1+η) (cid:1) vanishes as β → ∞. 3\nFurthermore, the remainder terms on the right-hand side of 13 can be made arbitrarily small by\nchoosing λ sufficiently small.",
+      "size": 444,
+      "sentences": 5
+    },
+    {
+      "id": 65,
+      "content": "terms on the right-hand side of 13 can be made arbitrarily small by\nchoosing λ sufficiently small. A detailed complexity analysis for the bound in 13 is provided in\nAppendixC.2. 4 Numerical Experiments\nThe code for all the experiments is available at https://github.com/youngsikhwang/\nFlatness-aware-SGLD\n4.1 Experimental Setup\nDatasets. We evaluate our method on three challenging noisy label datasets including CIFAR-\n10N and CIFAR-100N (Wei et al., 2022), and WebVision (Li et al., 2017).",
+      "size": 491,
+      "sentences": 4
+    },
+    {
+      "id": 66,
+      "content": "l datasets including CIFAR-\n10N and CIFAR-100N (Wei et al., 2022), and WebVision (Li et al., 2017). CIFAR-10N and\nCIFAR-100N include real-world annotation errors introduced by human annotators, offering re-\nalistic yet standardized benchmarks for noisy label learning. For CIFAR-10N, we use the aggre-\ngate noise setting.",
+      "size": 321,
+      "sentences": 3
+    },
+    {
+      "id": 67,
+      "content": "ndardized benchmarks for noisy label learning. For CIFAR-10N, we use the aggre-\ngate noise setting. WebVision is a large-scale, in-the-wild benchmark, consisting of more than\n2.4 million images with labels automatically collected from Google and Flickr based on the 1,000\nImageNet ILSVRC2012 categories. Following standard protocol Li et al. (2020); Ortego et al. (2021); Li et al.",
+      "size": 381,
+      "sentences": 6
+    },
+    {
+      "id": 68,
+      "content": "LSVRC2012 categories. Following standard protocol Li et al. (2020); Ortego et al. (2021); Li et al. (2022), we use the first 50 classes from its Google image subset and report Top-1\n(WV-1)andTop-5(WV-5)accuracyontheofficialvalidationset. Models. We use ResNet-34 and ResNet-50 for training from scratch.",
+      "size": 303,
+      "sentences": 7
+    },
+    {
+      "id": 69,
+      "content": "curacyontheofficialvalidationset. Models. We use ResNet-34 and ResNet-50 for training from scratch. For fine-tuning experi-\nments, we use the pre-trained ViT-B/16 (Dosovitskiy et al., 2021) architecture, which has been\ntrained on the ImageNet-1K (Deng et al., 2009) dataset as the backbone on CIFAR-10N and\nCIFAR-100N. 8\n===  9 ===\nBaselines and Implementation Details.",
+      "size": 369,
+      "sentences": 5
+    },
+    {
+      "id": 70,
+      "content": "set as the backbone on CIFAR-10N and\nCIFAR-100N. 8\n===  9 ===\nBaselines and Implementation Details. We compare fSGLD against four baselines: SGD with\nmomentum,AdamW(Loshchilov&Hutter,2019),SGLD(Welling&Teh,2011),andSAM(Foret\net al., 2021). To ensure a fair comparison, all optimizer hyperparameters are tuned using Op-\ntuna (Akiba et al., 2019) with 20 trials of Bayesian optimization.",
+      "size": 385,
+      "sentences": 4
+    },
+    {
+      "id": 71,
+      "content": "erparameters are tuned using Op-\ntuna (Akiba et al., 2019) with 20 trials of Bayesian optimization. For each optimizer, the search\nspaceswerecarefullychosentoincludepreviouslyreportedoptimalhyperparametersfromthelit-\nerature,ensuringthatallbaselinesarestronglytuned. ForfSGLD,wesearchfortheoptimalnoise\nscale σ, while the inverse temperature β is determined by our theoretically-prescribed coupling,\nβ = σ−4/(1+η) with η = 0.01.",
+      "size": 428,
+      "sentences": 3
+    },
+    {
+      "id": 72,
+      "content": "temperature β is determined by our theoretically-prescribed coupling,\nβ = σ−4/(1+η) with η = 0.01. For experiments with training from scratch, all experiments are\ntrained for 150 epochs with a batch size of 128. The learning rate decays by a factor of 0.1 in the\n50th and 100th epochs. For fine tuning, models are trained for 75 epochs with a batch size of 128,\ndecaying the rate by a factor of 0.1 at the 50th epoch.",
+      "size": 417,
+      "sentences": 4
+    },
+    {
+      "id": 73,
+      "content": "ned for 75 epochs with a batch size of 128,\ndecaying the rate by a factor of 0.1 at the 50th epoch. The detailed hyperparameter search spaces\nforeachoptimizerandexperimentalsettingsareprovidedinAppendixD.1. 4.2 Empirical performance on real-world noisy label datasets\nTable1: PerformancecomparisononResNet-34andResNet-50. Resultsarereportedasmean±std\nover five different random seeds. Within each model block, the best result is bold and the second-\nbestisunderlined.",
+      "size": 467,
+      "sentences": 5
+    },
+    {
+      "id": 74,
+      "content": "nt random seeds. Within each model block, the best result is bold and the second-\nbestisunderlined. WV-1/WV-5denoteTop-1/Top-5accuracyonWebVision. Thewall-clocktime\nperiteration(s/iter)measuredonCIFAR-10Nforeachmodelarchitecture.",
+      "size": 229,
+      "sentences": 4
+    },
+    {
+      "id": 75,
+      "content": "racyonWebVision. Thewall-clocktime\nperiteration(s/iter)measuredonCIFAR-10Nforeachmodelarchitecture. Model Optimizer CIFAR-10N CIFAR-100N WV-1 WV-5 (s/iter)\nSGD 89.31 58.47 71.87 89.33 22.0\n±0.84 ±0.20 ±0.44 ±0.30\nAdamW 89.25 56.77 68.69 87.01 22.5\n±0.66 ±0.47 ±0.32 ±0.24\nResNet-34 SAM 91.53 59.18 73.49 90.32 41.3\n±0.22 ±0.33 ±0.36 ±0.31\nSGLD 88.77 57.33 70.87 88.06 22.2\n±0.51 ±0.36 ±0.67 ±0.30\nfSGLD(β-σ coupled) 91.72 62.02 73.55 89.86 23.7\n±0.20 ±0.29 ±0.27 ±0.12\nfSGLD(β fixed) 91.56 61.55 73.23 90.63 23.7\n±0.19 ±0.45 ±0.34 ±0.38\nSGD 89.41 57.52 71.11 88.31 31.9\n±0.26 ±0.17 ±0.59 ±0.40\nAdamW 89.26 57.28 69.92 87.97 32.3\n±0.31 ±0.90 ±0.67 ±0.34\nResNet-50 SAM 90.88 59.01 72.52 89.53 60.7\n±0.49 ±0.60 ±0.46 ±0.44\nSGLD 88.89 56.90 69.43 87.17 32.1\n±0.40 ±0.65 ±0.40 ±0.22\nfSGLD(β-σ coupled) 91.26 62.08 73.31 90.07 34.1\n±0.08 ±0.45 ±0.50 ±0.20\nfSGLD(β fixed) 90.72 61.56 72.87 89.59 34.1\n±0.29 ±1.08 ±0.64 ±0.41\nTrainingfromscratch.",
+      "size": 938,
+      "sentences": 3
+    },
+    {
+      "id": 76,
+      "content": "0.50 ±0.20\nfSGLD(β fixed) 90.72 61.56 72.87 89.59 34.1\n±0.29 ±1.08 ±0.64 ±0.41\nTrainingfromscratch. WefirstevaluatetheperformanceofalloptimizerswhentrainingResNet\nmodelsfromscratch. Table1presentstheresultsacrossalldataset-architecturecombinations. Our\nproposed method, fSGLD (β-σ coupled), consistently achieves the best or second-best perfor-\nmanceoneverybenchmark.",
+      "size": 367,
+      "sentences": 4
+    },
+    {
+      "id": 77,
+      "content": ", fSGLD (β-σ coupled), consistently achieves the best or second-best perfor-\nmanceoneverybenchmark. Notably,ontheCIFAR-100Ndatasetwhichpresentssignificantchal-\nlengesduetoitshighernoiseratioandlargernumberofclasses,fSGLDsignificantlyoutperforms\nallbaselines. In terms of computational cost, the wall-clock time per iteration (s/iter) shows that fSGLD has\na training speed comparable to standard optimizers like SGD, AdamW, and SGLD.",
+      "size": 432,
+      "sentences": 3
+    },
+    {
+      "id": 78,
+      "content": "shows that fSGLD has\na training speed comparable to standard optimizers like SGD, AdamW, and SGLD. In contrast,\n9\n===  10 ===\nSAM incurs nearly double the computational overhead due to its min-max formulation requiring\ntwogradientevaluationsperstep. Thishighlightsakeyadvantageofourmethod: fSGLDmatches\norsurpassesSAM’sstrongperformancewithacomputationalbudgetsimilartostandardSGD. Fine-tuning.",
+      "size": 394,
+      "sentences": 4
+    },
+    {
+      "id": 79,
+      "content": "matches\norsurpassesSAM’sstrongperformancewithacomputationalbudgetsimilartostandardSGD. Fine-tuning. We also evaluate performance in the fine-tuning setting, using a pre-trained ViT-\nB/16 model on CIFAR-10N and CIFAR-100N. The results are presented in Table 2. Our method,\nfSGLD (β-σ coupled), consistently outperforms standard optimizers like SGD and SGLD, and\nachievesperformancecompetitivewithorsuperiortoSAMatroughlyhalfthecomputationalover-\nhead.",
+      "size": 450,
+      "sentences": 5
+    },
+    {
+      "id": 80,
+      "content": "SGLD, and\nachievesperformancecompetitivewithorsuperiortoSAMatroughlyhalfthecomputationalover-\nhead. 4.3 Ablation Study: The effect of the β-σ coupling\nTo empirically validate our the-\noretical claim, we examine Table2: Fine-tuningperformancecomparisononViT-B/16. the effect of the theoretically-\nprescribed β-σ coupling.",
+      "size": 320,
+      "sentences": 3
+    },
+    {
+      "id": 81,
+      "content": "ne-tuningperformancecomparisononViT-B/16. the effect of the theoretically-\nprescribed β-σ coupling. We Model ViT-B/16\ncompare fSGLD (β-σ coupled)\nDataset CIFAR-10N CIFAR-100N (s/epoch)\nagainst fSGLD (β fixed) which\nreflects a common heuristic of SGD 94.64 71.80 343.2\nsetting a large, fixed β for op- AdamW 95.57 72.30 344.5\nSAM 96.75 74.66 656.7\ntimization.",
+      "size": 358,
+      "sentences": 3
+    },
+    {
+      "id": 82,
+      "content": "80 343.2\nsetting a large, fixed β for op- AdamW 95.57 72.30 344.5\nSAM 96.75 74.66 656.7\ntimization. The results, sum-\nSGLD 94.13 71.36 344.8\nmarized in Table 1 and Ta-\nble2,showthatthecoupledver- fSGLD(β fixed) 96.70 75.16 345.8\nsion consistently outperforms fSGLD(β-σ coupled) 96.72 75.18 345.8\nthe fixed version in all settings,\nwith the single exception of the WV-5 metric on ResNet-34.",
+      "size": 389,
+      "sentences": 2
+    },
+    {
+      "id": 83,
+      "content": "345.8\nthe fixed version in all settings,\nwith the single exception of the WV-5 metric on ResNet-34. This provides strong empirical evi-\ndencethatourtheoretically-prescribedcouplingiscrucialforimprovingperformance. 4.4 Sensitivity analysis\nTable 3: Performance with respect to the number of\nrandomperturbationsnusedinfSGLD.",
+      "size": 322,
+      "sentences": 3
+    },
+    {
+      "id": 84,
+      "content": "tivity analysis\nTable 3: Performance with respect to the number of\nrandomperturbationsnusedinfSGLD. CIFAR-10N (s/epoch)\nn = 1 91.72 23.7\n±0.18\nn = 2 91.57 41.8\n±0.18\nn = 3 91.79 ±0.17 60.4 Figure 2: Sensitive analysis of noise stan-\nn = 4 92.04 78.5\n±0.13 dard deviation σ on CIFAR-10N with\nn = 5 91.83 97.0\n±0.19 ResNet-34.",
+      "size": 324,
+      "sentences": 2
+    },
+    {
+      "id": 85,
+      "content": "e stan-\nn = 4 92.04 78.5\n±0.13 dard deviation σ on CIFAR-10N with\nn = 5 91.83 97.0\n±0.19 ResNet-34. While our fSGLD algorithm uses a single perturbation per iteration (n = 1), we examine how\nperformance is affected by using multiple perturbations, which can provide a more accurate es-\ntimation of the Hessian trace. As shown in Table 3, increasing n can improve accuracy, but this\n10\n===  11 ===\ncomes at a nearly linear increase in computational cost.",
+      "size": 453,
+      "sentences": 3
+    },
+    {
+      "id": 86,
+      "content": "improve accuracy, but this\n10\n===  11 ===\ncomes at a nearly linear increase in computational cost. Remarkably, fSGLD already achieves\nstrongperformancewithjustasingleperturbation,makingn = 1apracticalandefficientchoice. Next, we analyze the effect of the perturbation scale σ, as illustrated in Figure 2. The perfor-\nmance on CIFAR-10N remains stable and robust across a wide range of small to moderate values\nof σ.",
+      "size": 415,
+      "sentences": 4
+    },
+    {
+      "id": 87,
+      "content": "mance on CIFAR-10N remains stable and robust across a wide range of small to moderate values\nof σ. However, performance degrades sharply when σ becomes excessively large, as the strong\nperturbationsbegintodestabilizethetrainingprocess. 4.5 Hessian spectrum\n(a)SGD (b)SAM (c)fSGLD\nFigure 3: The distribution of the leading eigenvalues and Hessian trace of ResNet-34 trained on\nCIFAR-10NwithSGD,SAM,andfSGLD.",
+      "size": 406,
+      "sentences": 3
+    },
+    {
+      "id": 88,
+      "content": "of the leading eigenvalues and Hessian trace of ResNet-34 trained on\nCIFAR-10NwithSGD,SAM,andfSGLD. ToempiricallyverifyourtheoreticalinsightthatfSGLDfindsflatminimabyimplicitlyregularizing\nthe Hessian trace, we analyze the curvature of the loss landscape at the solutions found by SGD,\nSAM,fSGLD.Notethatweusethebesthyperparameterconfigurationforeachoptimizer.",
+      "size": 360,
+      "sentences": 2
+    },
+    {
+      "id": 89,
+      "content": "solutions found by SGD,\nSAM,fSGLD.Notethatweusethebesthyperparameterconfigurationforeachoptimizer. We compute two standard measures of sharpness for a ResNet-34 trained on CIFAR-10N: the\nmaximum eigenvalue (λ ) of the Hessian and its trace (tr(H(θ))). Since exact computation\nmax\nis intractable, we estimate the top 50 eigenvalues using the Lanczos algorithm (Lin et al., 2016;\nGhorbani et al., 2019) and approximate the trace with Hutchinson’s method (Avron & Toledo,\n2011;Ubaruetal.,2017).",
+      "size": 491,
+      "sentences": 3
+    },
+    {
+      "id": 90,
+      "content": "., 2019) and approximate the trace with Hutchinson’s method (Avron & Toledo,\n2011;Ubaruetal.,2017). DetailedsettingsaredescribedinAppendixD.2. The results, presented in Figure 3, confirm our hypothesis. fSGLD converges to solutions with a\nsignificantlysmallermaximumeigenvalueandHessiantracecomparedtostandardSGD.Remark-\nably, the degree of flatness achieved by fSGLD is comparable to SAM in terms of λ and even\nmax\nlower in terms of tr(H).",
+      "size": 440,
+      "sentences": 4
+    },
+    {
+      "id": 91,
+      "content": "flatness achieved by fSGLD is comparable to SAM in terms of λ and even\nmax\nlower in terms of tr(H). This result is achieved at roughly half the computational cost of SAM. These results empiricallyvalidate our theoretical analysis, confirming that theproposed algorithm\neffectivelypromotesconvergencetoflatterminima. 5 Related Work and Discussions\nWereviewthemostrelevantliteratureonSAM,RWP,Hessian-basedoptimization,andSGLD. Flat Minima and Generalization.",
+      "size": 456,
+      "sentences": 5
+    },
+    {
+      "id": 92,
+      "content": "emostrelevantliteratureonSAM,RWP,Hessian-basedoptimization,andSGLD. Flat Minima and Generalization. Empirical studies (Keskar et al., 2017; Jastrzkebski et al.,\n2017;Jiangetal.,2020)andtheoreticalanalyses(Dziugaite&Roy,2017;Neyshaburetal.,2017)\nconsistently show that flatter minima are strongly correlated with better generalization in deep\n11\n===  12 ===\nneural networks.",
+      "size": 373,
+      "sentences": 3
+    },
+    {
+      "id": 93,
+      "content": "r minima are strongly correlated with better generalization in deep\n11\n===  12 ===\nneural networks. However, elucidating precise notions of sharpness and their relationship to gen-\neralization remains an open and active area of research (Andriushchenko & Flammarion, 2022;\nDingetal.,2024;Wenetal.,2023;Tahmasebietal.,2024). SAM and RWP. The success of SAM (Foret et al., 2021) has produced a wide range of follow-\nup work to improve its efficiency, effectiveness, and applicability.",
+      "size": 482,
+      "sentences": 4
+    },
+    {
+      "id": 94,
+      "content": "oduced a wide range of follow-\nup work to improve its efficiency, effectiveness, and applicability. Extensions include algorithmic\nimprovementstoapproximatetheinnermaximizationmoreefficiently(Liuetal.,2022a;Duetal.,\n2022a; Kwon et al., 2021; Xie et al., 2024; Li et al., 2024b; Chen et al., 2024; Kang et al., 2025). Beyond these, several Hessian-based regularization approaches have explored flatness from a dif-\nferent angle. For example, Zhang et al.",
+      "size": 453,
+      "sentences": 4
+    },
+    {
+      "id": 95,
+      "content": "egularization approaches have explored flatness from a dif-\nferent angle. For example, Zhang et al. (2024) propose Noise-Stability Optimization, and Li et al. (2024a) studies random weight perturbation with explicit Hessian penalties. Both works focus on\nPAC-Bayesgeneralizationboundsandlocalconvergencetostationarypoints,providingalgorithm-\nagnostic guarantees about the perturbed loss rather than the training dynamics of a specific opti-\nmizer.",
+      "size": 447,
+      "sentences": 5
+    },
+    {
+      "id": 96,
+      "content": "ic guarantees about the perturbed loss rather than the training dynamics of a specific opti-\nmizer. By contrast, we show that the invariant measure of fSGLD yields global, non-asymptotic\nconvergence guarantees and an explicit link between random weight perturbation and Hessian-\ntrace regularization.",
+      "size": 300,
+      "sentences": 2
+    },
+    {
+      "id": 97,
+      "content": "arantees and an explicit link between random weight perturbation and Hessian-\ntrace regularization. Lastly, the concept of using noise for regularization was formalized through\ntheframeworkofrandomizedsmoothing(Duchietal.,2012),andourworkmakesthisconnection\nexplicit for Langevin dynamics, differing fundamentally from explicit Hessian-penalty methods\nthatrelyoncostlyapproximations(Sankaretal.,2021). SGLD and its Convergence Rate.",
+      "size": 432,
+      "sentences": 3
+    },
+    {
+      "id": 98,
+      "content": "an-penalty methods\nthatrelyoncostlyapproximations(Sankaretal.,2021). SGLD and its Convergence Rate. Following the seminal works of Welling & Teh (2011); Ra-\nginskyetal. (2017),numerousvariantsofSGLDhavebeendevelopedtoimproveitspracticalper-\nformance, such as variance reduction techniques (Kinoshita & Suzuki, 2022; Dubey et al., 2016;\nHuang & Becker, 2021), preconditioned SGLD (Li et al., 2016), replica exchange SGLD (Dong\n& Tong, 2021; Deng et al., 2020a).",
+      "size": 460,
+      "sentences": 4
+    },
+    {
+      "id": 99,
+      "content": "econditioned SGLD (Li et al., 2016), replica exchange SGLD (Dong\n& Tong, 2021; Deng et al., 2020a). A parallel line of research has focused on its theoretical prop-\nerties, particularly its non-asymptotic convergence rate. Early results (Raginsky et al., 2017; Xu\net al., 2018) showed convergence in the Wasserstein-2 distance at a rate dependent on the number\nof iterations.",
+      "size": 375,
+      "sentences": 3
+    },
+    {
+      "id": 100,
+      "content": ") showed convergence in the Wasserstein-2 distance at a rate dependent on the number\nof iterations. More recently, the state-of-the art analyses have established convergence rates of\nO(λ1/2) in Wasserstein-1 and O(λ1/4) in Wasserstein-2 distance (Zhang et al., 2023). Our conver-\ngenceratesareconsistentwiththesebest-knownresults. However,acrucialdistinctionisthatprior\nworkprovesconvergencetotheminimizersoftheoriginalobjectiveu,whereasourguaranteesare\nforconvergencetoglobalflatminima.",
+      "size": 487,
+      "sentences": 4
+    },
+    {
+      "id": 101,
+      "content": "ncetotheminimizersoftheoriginalobjectiveu,whereasourguaranteesare\nforconvergencetoglobalflatminima. 6 Conclusion and Limitations\nIn this work, we introduced Flatness-Aware Stochastic Gradient Langevin Dynamics (fSGLD),\na novel algorithm that synthesizes randomized smoothing with Langevin dynamics to efficiently\ntarget flat minima.",
+      "size": 332,
+      "sentences": 2
+    },
+    {
+      "id": 102,
+      "content": "thm that synthesizes randomized smoothing with Langevin dynamics to efficiently\ntarget flat minima. By evaluating the gradient at parameters perturbed by Gaussian noise, a tech-\nnique known as Random Weight Perturbation (RWP), fSGLD optimizes a surrogate objective that\nprovablyincorporatesHessiantraceinformationwithoutexplicitcomputation. Our main theoretical contribution is a rigorous non-asymptotic analysis of this process.",
+      "size": 429,
+      "sentences": 3
+    },
+    {
+      "id": 103,
+      "content": "mputation. Our main theoretical contribution is a rigorous non-asymptotic analysis of this process. We estab-\nlishconvergenceguaranteesinWassersteindistanceandprovidetheexplicitexcessriskboundfor\nthis class of flatness-aware optimizers. Crucially, our theory shows that the desired regularization\neffectemergesfromaprecisecouplingofthenoisescaleσ andtheinversetemperatureβ.",
+      "size": 373,
+      "sentences": 4
+    },
+    {
+      "id": 104,
+      "content": "desired regularization\neffectemergesfromaprecisecouplingofthenoisescaleσ andtheinversetemperatureβ. 12\n===  13 ===\nEmpirically, fSGLD demonstrates superior or competitive performance against strong baselines,\nincludingSAM,onchallengingnoisy-labelandfine-tuningbenchmarks. Thesegainsareachieved\nat a computational cost comparable to standard SGD, roughly half that of SAM.",
+      "size": 371,
+      "sentences": 3
+    },
+    {
+      "id": 105,
+      "content": "Thesegainsareachieved\nat a computational cost comparable to standard SGD, roughly half that of SAM. Our analysis\nof the Hessian spectrum further confirms that fSGLD converges to significantly flatter minima,\nproviding a direct validation of its mechanism. Ultimately, our work provides one of the provable\nlinksbetweenanefficientalgorithmicdesign(RWPwithinSGLD)andquantifiablegeneralization\nbenefits, bridging the gap between heuristic flatness-seeking methods and rigorous convergence\ntheory.",
+      "size": 493,
+      "sentences": 3
+    },
+    {
+      "id": 106,
+      "content": "efits, bridging the gap between heuristic flatness-seeking methods and rigorous convergence\ntheory. 6.1 Limitations and Future Directions. ApplyingfSGLDtodiffusion-basedgenerativemodelsisaparticularlypromisingdirection;inves-\ntigating whether its bias towards flatter regions of the loss landscape can lead to more diverse or\nhigher-quality samples is a compelling open question.",
+      "size": 379,
+      "sentences": 3
+    },
+    {
+      "id": 107,
+      "content": "he loss landscape can lead to more diverse or\nhigher-quality samples is a compelling open question. On the theoretical side, we leave for future\nworktheextensionofouranalysistothecasewhereuissemiconvex(i.e.,itsgradientisone-sided\nLipschitz),ratherthansatisfyingAssumption2. Acknowledgments.",
+      "size": 290,
+      "sentences": 3
+    },
+    {
+      "id": 108,
+      "content": "semiconvex(i.e.,itsgradientisone-sided\nLipschitz),ratherthansatisfyingAssumption2. Acknowledgments. This work has received funding from the Ministry of Trade, Industry and\nEnergy (MOTIE) and Korea Institute for Advancement of Technology (KIAT) through the Inter-\nnational Cooperative R&D program (No.P0025828). This work has been partially supported by\nproject MIS 5154714 of the National Recovery and Resilience Plan Greece 2.0 funded by the\nEuropeanUnionundertheNextGenerationEUProgram.",
+      "size": 488,
+      "sentences": 4
+    },
+    {
+      "id": 109,
+      "content": "Recovery and Resilience Plan Greece 2.0 funded by the\nEuropeanUnionundertheNextGenerationEUProgram. References\nKwangjun Ahn, Ali Jadbabaie, and Suvrit Sra. How to escape sharp minima with random pertur-\nbations. InProceedingsofthe41stInternationalConferenceonMachineLearning,2024. Takuya Akiba, Shotaro Sano, Toshihiko Yanase, Takeru Ohta, and Masanori Koyama. Optuna:\nA next-generation hyperparameter optimization framework.",
+      "size": 425,
+      "sentences": 6
+    },
+    {
+      "id": 110,
+      "content": "Takeru Ohta, and Masanori Koyama. Optuna:\nA next-generation hyperparameter optimization framework. In Proceedings of the 25th ACM\nSIGKDD international conference on knowledge discovery & data mining, pp. 2623–2631,\n2019. MaksymAndriushchenkoandNicolasFlammarion. Towardsunderstandingsharpness-awaremin-\nimization. InInternationalconferenceonmachinelearning,pp.639–668.PMLR,2022. Haim Avron and Sivan Toledo.",
+      "size": 407,
+      "sentences": 8
+    },
+    {
+      "id": 111,
+      "content": "tion. InInternationalconferenceonmachinelearning,pp.639–668.PMLR,2022. Haim Avron and Sivan Toledo. Randomized algorithms for estimating the trace of an implicit\nsymmetricpositivesemi-definitematrix. JournaloftheACM(JACM),58(2):1–34,2011. Peter L. Bartlett, Philip M. Long, and Olivier Bousquet. The dynamics of sharpness-aware mini-\nmization: bouncing across ravines and drifting towards wide minima. J. Mach. Learn. Res., 24\n(1),2023. ISSN1532-4435. Devansh Bisla, Jing Wang, and Anna Choromanska.",
+      "size": 499,
+      "sentences": 12
+    },
+    {
+      "id": 112,
+      "content": ". J. Mach. Learn. Res., 24\n(1),2023. ISSN1532-4435. Devansh Bisla, Jing Wang, and Anna Choromanska. Low-pass filtering sgd for recovering flat\noptima in the deep learning optimization landscape. In International Conference on Artificial\nIntelligenceandStatistics,pp.8299–8339.PMLR,2022. 13\n===  14 ===\nFrançois Bolley and Cédric Villani. Weighted csiszár-kullback-pinsker inequalities and applica-\ntions to transportation inequalities.",
+      "size": 435,
+      "sentences": 10
+    },
+    {
+      "id": 113,
+      "content": ". Weighted csiszár-kullback-pinsker inequalities and applica-\ntions to transportation inequalities. In Annales de la Faculté des sciences de Toulouse: Mathé-\nmatiques,volume14,pp.331–352,2005. Huy N Chau, Chaman Kumar, Miklós Rásonyi, and Sotirios Sabanis. On fixed gain recursive\nestimators with discontinuity in the parameters. ESAIM: Probability and Statistics, 23:217–\n244,2019. NgocHuyChau,ÉricMoulines,MiklosRásonyi,SotiriosSabanis,andYingZhang.",
+      "size": 451,
+      "sentences": 7
+    },
+    {
+      "id": 114,
+      "content": "Statistics, 23:217–\n244,2019. NgocHuyChau,ÉricMoulines,MiklosRásonyi,SotiriosSabanis,andYingZhang. Onstochastic\ngradient langevin dynamics with dependent data streams: The fully nonconvex case. SIAM\nJournalonMathematicsofDataScience,3(3):959–986,2021. Pratik Chaudhari, Anna Choromanska, Stefano Soatto, Yann LeCun, Carlo Baldassi, Christian\nBorgs,JenniferChayes,LeventSagun,andRiccardoZecchina. Entropy-SGD:Biasinggradient\ndescentintowidevalleys.",
+      "size": 447,
+      "sentences": 6
+    },
+    {
+      "id": 115,
+      "content": "JenniferChayes,LeventSagun,andRiccardoZecchina. Entropy-SGD:Biasinggradient\ndescentintowidevalleys. InInternationalConferenceonLearningRepresentations,2017. Simiao Chen, Xiaoge Deng, Dongpo Xu, Tao Sun, and Dongsheng Li. Decentralized stochastic\nsharpness-aware minimization algorithm. Neural Networks, 176:106325, 2024. ISSN 0893-\n6080. Jia Deng, Wei Dong, Richard Socher, Li-Jia Li, Kai Li, and Li Fei-Fei. Imagenet: A large-\nscale hierarchical image database.",
+      "size": 462,
+      "sentences": 9
+    },
+    {
+      "id": 116,
+      "content": "rd Socher, Li-Jia Li, Kai Li, and Li Fei-Fei. Imagenet: A large-\nscale hierarchical image database. In 2009 IEEE conference on computer vision and pattern\nrecognition,pp.248–255.Ieee,2009. Wei Deng, Qi Feng, Liyao Gao, Faming Liang, and Guang Lin. Non-convex learning via replica\nexchange stochastic gradient mcmc. In International Conference on Machine Learning, pp. 2474–2483.PMLR,2020a. WeiDeng,GuangLin,andFamingLiang.",
+      "size": 422,
+      "sentences": 8
+    },
+    {
+      "id": 117,
+      "content": "national Conference on Machine Learning, pp. 2474–2483.PMLR,2020a. WeiDeng,GuangLin,andFamingLiang. AcontourstochasticgradientLangevindynamicsalgo-\nrithm for simulations of multi-modal distributions. Advances in neural information processing\nsystems,33:15725–15736,2020b. Wei Deng, Siqi Liang, Botao Hao, Guang Lin, and Faming Liang. Interacting contour stochastic\ngradientLangevindynamics. InInternationalConferenceonLearningRepresentations,2022.",
+      "size": 447,
+      "sentences": 8
+    },
+    {
+      "id": 118,
+      "content": "ntour stochastic\ngradientLangevindynamics. InInternationalConferenceonLearningRepresentations,2022. Lijun Ding, Dmitriy Drusvyatskiy, Maryam Fazel, and Zaid Harchaoui. Flat minima generalize\nforlow-rankmatrixrecovery. InformationandInference: AJournaloftheIMA,13(2),2024. Jing Dong and Xin T Tong. Replica exchange for non-convex optimization. Journal of Machine\nLearningResearch,22(173):1–59,2021.",
+      "size": 398,
+      "sentences": 8
+    },
+    {
+      "id": 119,
+      "content": "eplica exchange for non-convex optimization. Journal of Machine\nLearningResearch,22(173):1–59,2021. Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn, Xiaohua Zhai,\nThomas Unterthiner, Mostafa Dehghani, Matthias Minderer, Georg Heigold, Sylvain Gelly,\nJakob Uszkoreit, and Neil Houlsby. An image is worth 16x16 words: Transformers for im-\nagerecognitionatscale. InInternationalConferenceonLearningRepresentations,2021.",
+      "size": 440,
+      "sentences": 5
+    },
+    {
+      "id": 120,
+      "content": "ransformers for im-\nagerecognitionatscale. InInternationalConferenceonLearningRepresentations,2021. Jiawei Du, Hanshu Yan, Jiashi Feng, Joey Tianyi Zhou, Liangli Zhen, Rick Siow Mong Goh, and\nVincent Tan. Efficient sharpness-aware minimization for improved training of neural networks. InInternationalConferenceonLearningRepresentations,2022a. 14\n===  15 ===\nJiawei Du, Daquan Zhou, Jiashi Feng, Vincent Tan, and Joey Tianyi Zhou. Sharpness-aware\ntrainingforfree.",
+      "size": 463,
+      "sentences": 7
+    },
+    {
+      "id": 121,
+      "content": "i Du, Daquan Zhou, Jiashi Feng, Vincent Tan, and Joey Tianyi Zhou. Sharpness-aware\ntrainingforfree. InAdvancesinNeuralInformationProcessingSystems,volume35,pp.23439–\n23451,2022b. Kumar Avinava Dubey, Sashank J. Reddi, Sinead A Williamson, Barnabas Poczos, Alexander J\nSmola, and Eric P Xing. Variance reduction in stochastic gradient langevin dynamics. In Ad-\nvancesinNeuralInformationProcessingSystems,volume29,2016. John C Duchi, Peter L Bartlett, and Martin J Wainwright.",
+      "size": 474,
+      "sentences": 7
+    },
+    {
+      "id": 122,
+      "content": "nformationProcessingSystems,volume29,2016. John C Duchi, Peter L Bartlett, and Martin J Wainwright. Randomized smoothing for stochastic\noptimization. SIAMJournalonOptimization,22(2):674–701,2012. GintareKarolinaDziugaiteandDanielM.Roy. Computingnonvacuousgeneralizationboundsfor\ndeep(stochastic)neuralnetworkswithmanymoreparametersthantrainingdata. InProceedings\nof the Thirty-Third Conference on Uncertainty in Artificial Intelligence (UAI), pp. 884–893,\n2017.",
+      "size": 461,
+      "sentences": 8
+    },
+    {
+      "id": 123,
+      "content": "of the Thirty-Third Conference on Uncertainty in Artificial Intelligence (UAI), pp. 884–893,\n2017. PierreForet,ArielKleiner,HosseinMobahi,andBehnamNeyshabur. Sharpness-awareminimiza-\ntion for efficiently improving generalization. In International Conference on Learning Repre-\nsentations,2021. Futoshi Futami and Masahiro Fujisawa. Time-independent information-theoretic generalization\nboundsforsgld. AdvancesinNeuralInformationProcessingSystems,36:8173–8185,2023.",
+      "size": 464,
+      "sentences": 8
+    },
+    {
+      "id": 124,
+      "content": "retic generalization\nboundsforsgld. AdvancesinNeuralInformationProcessingSystems,36:8173–8185,2023. KhashayarGatmiry,ZhiyuanLi,SashankJ.Reddi,andStefanieJegelka. Simplicitybiasviaglobal\nconvergence of sharpness minimization. In Forty-first International Conference on Machine\nLearning,2024. Behrooz Ghorbani, Shankar Krishnan, and Ying Xiao. An investigation into neural net optimiza-\ntion via hessian eigenvalue density. In International Conference on Machine Learning, pp. 2232–2241.PMLR,2019.",
+      "size": 495,
+      "sentences": 9
+    },
+    {
+      "id": 125,
+      "content": "ssian eigenvalue density. In International Conference on Machine Learning, pp. 2232–2241.PMLR,2019. SeppHochreiterandJürgenSchmidhuber. Flatminima. Neuralcomputation,9(1):1–42,1997. Zhishen Huang and Stephen Becker. Stochastic gradient langevin dynamics with variance reduc-\ntion. In2021InternationalJointConferenceonNeuralNetworks(IJCNN),pp.1–8.IEEE,2021. Stanisław Jastrzkebski, Zachary Kenton, Devansh Arpit, Nicolas Ballas, Asja Fischer, Yoshua\nBengio, and Amos Storkey.",
+      "size": 474,
+      "sentences": 10
+    },
+    {
+      "id": 126,
+      "content": "bski, Zachary Kenton, Devansh Arpit, Nicolas Ballas, Asja Fischer, Yoshua\nBengio, and Amos Storkey. Three factors influencing minima in sgd. arXiv preprint\narXiv:1711.04623,2017. Yiding Jiang, Behnam Neyshabur, Hossein Mobahi, Dilip Krishnan, and Samy Bengio. Fantas-\ntic generalization measures and where to find them. In International Conference on Learning\nRepresentations,2020. Helei Kang, Yiming Jiang, Jinlan Liu, and Dongpo Xu.",
+      "size": 434,
+      "sentences": 7
+    },
+    {
+      "id": 127,
+      "content": "l Conference on Learning\nRepresentations,2020. Helei Kang, Yiming Jiang, Jinlan Liu, and Dongpo Xu. Sharpness-aware minimization method\nwithmomentumaccelerationfordeepneuralnetworks.Knowledge-BasedSystems,326:113967,\n2025. ISSN0950-7051. 15\n===  16 ===\nNitish Shirish Keskar, Dheevatsa Mudigere, Jorge Nocedal, Mikhail Smelyanskiy, and Ping\nTakPeterTang.Onlarge-batchtrainingfordeeplearning: Generalizationgapandsharpminima. InInternationalConferenceonLearningRepresentations,2017.",
+      "size": 481,
+      "sentences": 6
+    },
+    {
+      "id": 128,
+      "content": "learning: Generalizationgapandsharpminima. InInternationalConferenceonLearningRepresentations,2017. Pham Duy Khanh, Hoang-Chau Luong, Boris S. Mordukhovich, and Dat Ba Tran. Fundamental\nconvergence analysis of sharpness-aware minimization. In Advances in Neural Information\nProcessingSystems,volume37,pp.13149–13182,2024. Yuri Kinoshita and Taiji Suzuki. Improved convergence rate of stochastic gradient langevin dy-\nnamics with variance reduction and its application to optimization.",
+      "size": 484,
+      "sentences": 7
+    },
+    {
+      "id": 129,
+      "content": "tochastic gradient langevin dy-\nnamics with variance reduction and its application to optimization. In Advances in Neural In-\nformationProcessingSystems,2022. Sangamesh Kodge. MiniWebVision, February 2024. URL https://github.com/\nsangamesh-kodge/Mini-WebVision. Jungmin Kwon, Jeongseop Kim, Hyunseo Park, and In Kwon Choi. Asam: Adaptive sharpness-\naware minimization for scale-invariant learning of deep neural networks. In International con-\nferenceonmachinelearning,pp.5905–5914,2021.",
+      "size": 487,
+      "sentences": 8
+    },
+    {
+      "id": 130,
+      "content": "learning of deep neural networks. In International con-\nferenceonmachinelearning,pp.5905–5914,2021. Chunyuan Li, Changyou Chen, David Carlson, and Lawrence Carin. Preconditioned stochastic\ngradient langevin dynamics for deep neural networks. In Proceedings of the AAAI conference\nonartificialintelligence,volume30,2016. JunnanLi,RichardSocher,andStevenC.H. Hoi. DivideMix: Learningwithnoisylabelsassemi-\nsupervisedlearning. InInternationalConferenceonLearningRepresentations,2020.",
+      "size": 480,
+      "sentences": 9
+    },
+    {
+      "id": 131,
+      "content": "withnoisylabelsassemi-\nsupervisedlearning. InInternationalConferenceonLearningRepresentations,2020. ShikunLi,XiaoboXia,ShimingGe,andTongliangLiu. Selective-supervisedcontrastivelearning\nwithnoisylabels. InProceedingsoftheIEEE/CVFConferenceonComputerVisionandPattern\nRecognition(CVPR),pp.316–325,June2022. Tao Li, Qinghua Tao, Weihao Yan, Yingwen Wu, Zehao Lei, Kun Fang, Mingzhen He, and Xi-\naolin Huang. Revisiting random weight perturbation for efficiently improving generalization.",
+      "size": 484,
+      "sentences": 7
+    },
+    {
+      "id": 132,
+      "content": "nd Xi-\naolin Huang. Revisiting random weight perturbation for efficiently improving generalization. TransactionsonMachineLearningResearch,2024a. ISSN2835-8856. Tao Li, Pan Zhou, Zhengbao He, Xinwen Cheng, and Xiaolin Huang. Friendly sharpness-aware\nminimization. In Proceedings of the IEEE/CVF conference on computer vision and pattern\nrecognition,pp.5631–5640,2024b. Tian Li, Tianyi Zhou, and Jeff Bilmes. Tilted sharpness-aware minimization.",
+      "size": 443,
+      "sentences": 9
+    },
+    {
+      "id": 133,
+      "content": "ion,pp.5631–5640,2024b. Tian Li, Tianyi Zhou, and Jeff Bilmes. Tilted sharpness-aware minimization. In Forty-second\nInternationalConferenceonMachineLearning,2025. WenLi,LiminWang,WeiLi,EirikurAgustsson,JesseBerent,AbhinavGupta,RahulSukthankar,\nand Luc Van Gool. Webvision challenge: Visual learning and understanding with web data. In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR)\nWorkshops,pp.2243–2251,2017. Lin Lin, Yousef Saad, and Chao Yang.",
+      "size": 485,
+      "sentences": 8
+    },
+    {
+      "id": 134,
+      "content": "on and Pattern Recognition (CVPR)\nWorkshops,pp.2243–2251,2017. Lin Lin, Yousef Saad, and Chao Yang. Approximating spectral densities of large matrices. SIAM\nreview,58(1):34–65,2016. 16\n===  17 ===\nYong Liu, Siqi Mai, Xiangning Chen, Cho-Jui Hsieh, and Yang You. Towards efficient and scal-\nable sharpness-aware minimization. In Proceedings of the IEEE/CVF Conferenceon Computer\nVisionandPatternRecognition(CVPR),pp.12360–12370,2022a.",
+      "size": 433,
+      "sentences": 7
+    },
+    {
+      "id": 135,
+      "content": "dings of the IEEE/CVF Conferenceon Computer\nVisionandPatternRecognition(CVPR),pp.12360–12370,2022a. Yong Liu, Siqi Mai, Minhao Cheng, Xiangning Chen, Cho-Jui Hsieh, and Yang You. Random\nsharpness-aware minimization. In Advances in Neural Information Processing Systems, vol-\nume35,pp.24543–24556,2022b. Ilya Loshchilov and Frank Hutter. Decoupled weight decay regularization. In International Con-\nferenceonLearningRepresentations,2019.",
+      "size": 436,
+      "sentences": 7
+    },
+    {
+      "id": 136,
+      "content": "Decoupled weight decay regularization. In International Con-\nferenceonLearningRepresentations,2019. Haocheng Luo, Tuan Truong, Tung Pham, Mehrtash Harandi, Dinh Phung, and Trung Le. Ex-\nplicit eigenvalue regularization improves sharpness-aware minimization. Advances in Neural\nInformationProcessingSystems,37:4424–4453,2024. Mateusz B. Majka, Aleksandar Mijatovic´, and Łukasz Szpruch. Nonasymptotic bounds for sam-\nplingalgorithmswithoutlog-concavity.",
+      "size": 452,
+      "sentences": 7
+    },
+    {
+      "id": 137,
+      "content": "Mijatovic´, and Łukasz Szpruch. Nonasymptotic bounds for sam-\nplingalgorithmswithoutlog-concavity. AnnalsofAppliedProbability,30(4):1534–1581,2020. Behnam Neyshabur, Srinadh Bhojanapalli, David McAllester, and Nati Srebro. Exploring gener-\nalizationindeeplearning. Advancesinneuralinformationprocessingsystems,30,2017. Dimitris Oikonomou and Nicolas Loizou. Sharpness-aware minimization: General analysis and\nimprovedrates. InTheThirteenthInternationalConferenceonLearningRepresentations,2025.",
+      "size": 493,
+      "sentences": 9
+    },
+    {
+      "id": 138,
+      "content": "l analysis and\nimprovedrates. InTheThirteenthInternationalConferenceonLearningRepresentations,2025. DiegoOrtego,EricArazo,PaulAlbert,NoelEO’Connor,andKevinMcGuinness. Multi-objective\ninterpolationtrainingforrobustnesstolabelnoise. InProceedingsoftheIEEE/CVFconference\noncomputervisionandpatternrecognition,pp.6606–6615,2021. Maxim Raginsky, Alexander Rakhlin, and Matus Telgarsky. Non-convex learning via stochastic\ngradient langevin dynamics: a nonasymptotic analysis.",
+      "size": 469,
+      "sentences": 7
+    },
+    {
+      "id": 139,
+      "content": "Telgarsky. Non-convex learning via stochastic\ngradient langevin dynamics: a nonasymptotic analysis. In Proceedings of the 2017 Conference\nonLearningTheory,volume65,pp.1674–1703.PMLR,2017. Adepu Ravi Sankar, Yash Khasbage, Rahul Vigneswaran, and Vineeth N Balasubramanian. A\ndeeper look at the hessian eigenspectrum of deep neural networks and its applications to reg-\nularization. In Proceedings of the AAAI Conference on Artificial Intelligence, volume 35, pp. 9481–9488,2021.",
+      "size": 477,
+      "sentences": 7
+    },
+    {
+      "id": 140,
+      "content": "n. In Proceedings of the AAAI Conference on Artificial Intelligence, volume 35, pp. 9481–9488,2021. Dongkuk Si and Chulhee Yun. Practical sharpness-aware minimization cannot converge all the\nway to optima. In Advances in Neural Information Processing Systems, volume 36, pp. 26190–\n26228,2023. Behrooz Tahmasebi, Ashkan Soleymani, Dara Bahri, Stefanie Jegelka, and Patrick Jaillet. A uni-\nversal class of sharpness-aware minimization algorithms.",
+      "size": 445,
+      "sentences": 8
+    },
+    {
+      "id": 141,
+      "content": "fanie Jegelka, and Patrick Jaillet. A uni-\nversal class of sharpness-aware minimization algorithms. In Proceedings of the 41st Interna-\ntionalConferenceonMachineLearning,volume235,2024. Shashanka Ubaru, Jie Chen, and Yousef Saad. Fast estimation of tr(f(a)) via stochastic lanczos\nquadrature. SIAMJournalonMatrixAnalysisandApplications,38(4):1075–1099,2017. 17\n===  18 ===\nJiaheng Wei, Zhaowei Zhu, Hao Cheng, Tongliang Liu, Gang Niu, and Yang Liu.",
+      "size": 448,
+      "sentences": 7
+    },
+    {
+      "id": 142,
+      "content": "99,2017. 17\n===  18 ===\nJiaheng Wei, Zhaowei Zhu, Hao Cheng, Tongliang Liu, Gang Niu, and Yang Liu. Learning with\nnoisylabelsrevisited: Astudyusingreal-worldhumanannotations. InInternationalConference\nonLearningRepresentations,2022. Zheng Wei, Xingjun Zhang, and Zhendong Tan. Unifying and revisiting sharpness-aware min-\nimization with noise-injected micro-batch scheduler for efficiency improvement. Neural Net-\nworks,185:107205,2025. ISSN0893-6080. Max Welling and Yee W Teh.",
+      "size": 478,
+      "sentences": 9
+    },
+    {
+      "id": 143,
+      "content": "fficiency improvement. Neural Net-\nworks,185:107205,2025. ISSN0893-6080. Max Welling and Yee W Teh. Bayesian learning via stochastic gradient langevin dynamics. In\nProceedingsofthe28thinternationalconferenceonmachinelearning,pp.681–688,2011. Kaiyue Wen, Zhiyuan Li, and Tengyu Ma. Sharpness minimization algorithms do not only mini-\nmize sharpness to achieve better generalization. In Thirty-seventh Conference on Neural Infor-\nmationProcessingSystems,2023.",
+      "size": 457,
+      "sentences": 9
+    },
+    {
+      "id": 144,
+      "content": "better generalization. In Thirty-seventh Conference on Neural Infor-\nmationProcessingSystems,2023. Wanyun Xie, Fabian Latorre, Kimon Antonakopoulos, Thomas Pethick, and Volkan Cevher. Im-\nprovingSAMrequiresrethinkingitsoptimizationformulation. InForty-firstInternationalCon-\nferenceonMachineLearning,2024. Pan Xu, Jinghui Chen, Difan Zou, and Quanquan Gu. Global convergence of langevin dynamics\nbased algorithms for nonconvex optimization.",
+      "size": 440,
+      "sentences": 7
+    },
+    {
+      "id": 145,
+      "content": "d Quanquan Gu. Global convergence of langevin dynamics\nbased algorithms for nonconvex optimization. In Advances in Neural Information Processing\nSystems,volume31,2018. Runsheng Yu, Youzhi Zhang, and James Kwok. Improving sharpness-aware minimization by\nlookahead. In Proceedings of the 41st International Conference on Machine Learning, volume\n235,2024. Hongyang R. Zhang, Dongyue Li, and Haotian Ju.",
+      "size": 400,
+      "sentences": 7
+    },
+    {
+      "id": 146,
+      "content": "nal Conference on Machine Learning, volume\n235,2024. Hongyang R. Zhang, Dongyue Li, and Haotian Ju. Noise stability optimization for finding flat\nminima: Ahessian-basedregularizationapproach.TransactionsonMachineLearningResearch,\n2024. ISSN2835-8856. Ying Zhang, Ömer Deniz Akyildiz, Theodoros Damoulas, and Sotirios Sabanis. Nonasymptotic\nestimates for stochastic gradient langevin dynamics under local conditions in nonconvex opti-\nmization. AppliedMathematics&Optimization,87(2):25,2023.",
+      "size": 490,
+      "sentences": 7
+    },
+    {
+      "id": 147,
+      "content": "under local conditions in nonconvex opti-\nmization. AppliedMathematics&Optimization,87(2):25,2023. Appendix A Relationship between π⋆ and πfSGLD\nβ,σ β\nWederivetherelationshipbetweenthetargetmeasureπ⋆ andtheinvariantmeasureπfSGLD ofthe\nβ,σ β\nfSGLD algorithm, which will be used to prove Proposition 3.1, Theorem 3.2, and Corollary 3.3. ByTaylor’stheorem,weobtain\n1\nu(θ+ϵ) = u(θ)+∇u(θ)Tϵ+ ϵTH(θ)ϵ+R(θ,ϵ), (14)\n2\n18\n===  19 ===\nwhere R(ϵ) denotes the remainder term.",
+      "size": 463,
+      "sentences": 4
+    },
+    {
+      "id": 148,
+      "content": "u(θ+ϵ) = u(θ)+∇u(θ)Tϵ+ ϵTH(θ)ϵ+R(θ,ϵ), (14)\n2\n18\n===  19 ===\nwhere R(ϵ) denotes the remainder term. Taking the expectation over ϵ ∼ N(0,σ2I ) in 14, we\nd\nhave\n1\ng (θ) = u(θ)+ E[ϵTH (θ)ϵ]+E[R(θ,ϵ)]\nϵ u\n2\n= u(θ)+ 1 tr (cid:0) H (θ)·E[ϵTϵ] (cid:1) +E[R(θ,ϵ)] (15)\nu\n2\n= v(θ)+E[R(θ,ϵ)],\nwhere\nσ2\nv(θ) = u(θ)+ tr(H (θ)),\nu\n2\nand\n1 (cid:88) d ∂3u 1 (cid:88) d ∂4u\nE[R(θ,ϵ)] = (θ)E[ϵ ϵ ϵ ]+ (θ)E[ϵ ϵ ϵ ϵ ]\ni j k i j k l\n6 ∂θ ∂θ ∂θ 24 ∂θ ∂θ ∂θ ∂θ\ni j k i j k l\ni,j,k=1 i,j,k,l=1\n(16)\n1 (cid:88) d ∂4u\n= (θ)σ4(δ δ +δ δ +δ δ ),\nij kl ik jl il jk\n24 ∂θ ∂θ ∂θ ∂θ\ni j k l\ni,j,k,l=1\nwhereδ denotestheKroneckerdelta.",
+      "size": 601,
+      "sentences": 2
+    },
+    {
+      "id": 149,
+      "content": "δ +δ δ +δ δ ),\nij kl ik jl il jk\n24 ∂θ ∂θ ∂θ ∂θ\ni j k l\ni,j,k,l=1\nwhereδ denotestheKroneckerdelta. LetthenormalizationconstantofπfSGLD begivenby\nij β\n(cid:90)\nZ := e−βgϵ(θ) dθ, (17)\nβ\nRd\nandletthenormalizationconstantofπ⋆ begivenby\nβ,σ\n(cid:90)\nZ := e−βv(θ) dθ. (18)\nβ,σ\nRd\nUsing15,17,and18,weobtain\nπfSGLD(dθ) = Z−1exp(−βg (θ))dθ\nβ β ϵ\n(19)\n= Z−1Z exp(−β E[R(θ,ϵ)])π⋆ (dθ).",
+      "size": 374,
+      "sentences": 3
+    },
+    {
+      "id": 150,
+      "content": "sing15,17,and18,weobtain\nπfSGLD(dθ) = Z−1exp(−βg (θ))dθ\nβ β ϵ\n(19)\n= Z−1Z exp(−β E[R(θ,ϵ)])π⋆ (dθ). β β,σ β,σ\nAppendix B Additional results for Section 3.1\nThis section collects several technical remarks and direct consequences of the assumptions pre-\nsentedinSection3.1. Remark B.1. By Assumption 1 and 2, the gradient h(θ) = E[∇ U(θ,X)] for all θ ∈ Rd, is\nθ\nwell-defined. Inaddition,oneobtainsforallθ,θ′ ∈ Rd,\n|h(θ)−h(θ′)| ≤ L E[φ(X )]|θ−θ′|.",
+      "size": 444,
+      "sentences": 5
+    },
+    {
+      "id": 151,
+      "content": "l θ ∈ Rd, is\nθ\nwell-defined. Inaddition,oneobtainsforallθ,θ′ ∈ Rd,\n|h(θ)−h(θ′)| ≤ L E[φ(X )]|θ−θ′|. 1 0\nAsaconsequenceofAssumption2,oneobtains,forfixedϵ ∈ Rd,\n(cid:101)\n|∇ U(θ+ϵ,x)−∇ U(θ′ +ϵ,x)| ≤ L φ(x)|θ−θ′|,\nθ (cid:101) θ′ (cid:101) 1\n|∇ U(θ+ϵ,x)−∇ U(θ+ϵ,x′)| ≤ L (φ(x)+φ(x′))(1+|θ+ϵ|)|x−x′|.",
+      "size": 295,
+      "sentences": 3
+    },
+    {
+      "id": 152,
+      "content": "L φ(x)|θ−θ′|,\nθ (cid:101) θ′ (cid:101) 1\n|∇ U(θ+ϵ,x)−∇ U(θ+ϵ,x′)| ≤ L (φ(x)+φ(x′))(1+|θ+ϵ|)|x−x′|. θ (cid:101) θ (cid:101) 2 (cid:101)\n19\n===  20 ===\nAlso,Assumption2implies\n|∇ U(θ+ϵ,x)| ≤ L φ(x)|θ|+L φ¯(x)(1+|ϵ|)+G(cid:101)(ϵ),\nθ (cid:101) 1 2 (cid:101) (cid:101)\nwhereφ¯(x) := (φ(x)+φ(0))|x|,andG(cid:101)(\n(cid:101)\nϵ) := |∇\nθ′\nU(\n(cid:101)\nϵ,0)|. Remark B.2.",
+      "size": 362,
+      "sentences": 3
+    },
+    {
+      "id": 153,
+      "content": ")\nwhereφ¯(x) := (φ(x)+φ(0))|x|,andG(cid:101)(\n(cid:101)\nϵ) := |∇\nθ′\nU(\n(cid:101)\nϵ,0)|. Remark B.2. By Assumption 1 and 3, one obtains a dissipativity condition of h, i.e., for any θ ∈\nRd,⟨∇h(θ),θ⟩ ≥ a¯|θ|2− ¯ b. Letζ ∈ (0,a¯L−2(E[φ2(X )])−1). AsaconsequenceofAssumptions2\n1 0\nand3,oneobtains,foranyθ ∈ Rd\n⟨∇g (θ),θ⟩ ≥ a|θ|2 −b, (20)\nϵ\nwhere\na := a¯−ζL2E[φ2(X )] > 0,\n1 0\n(21)\nb := (2ζ)−1σ2d+4ζL2E[φ¯2(X )](1+σ2d)+2ζE[G(cid:101) 2(ϵ)]+ ¯ b > 0,\n2 0\nandG(cid:101) andφ¯aregiveninRemarkB.1.",
+      "size": 488,
+      "sentences": 4
+    },
+    {
+      "id": 154,
+      "content": "2d+4ζL2E[φ¯2(X )](1+σ2d)+2ζE[G(cid:101) 2(ϵ)]+ ¯ b > 0,\n2 0\nandG(cid:101) andφ¯aregiveninRemarkB.1. ProofofRemarkB.2.",
+      "size": 117,
+      "sentences": 2
+    },
+    {
+      "id": 155,
+      "content": "1+σ2d)+2ζE[G(cid:101) 2(ϵ)]+ ¯ b > 0,\n2 0\nandG(cid:101) andφ¯aregiveninRemarkB.1. ProofofRemarkB.2. Using Assumption 3 and Remark B.1, and Young’s inequality, one obtains,\nforfixedϵ ∈ Rd\n(cid:101)\n⟨∇ U(θ+ϵ,x),θ⟩ = ⟨∇ U(θ+ϵ,x),θ+ϵ⟩−⟨∇ U(θ+ϵ,x),ϵ⟩\nθ (cid:101) θ (cid:101) (cid:101) θ (cid:101) (cid:101)\n≥ ⟨θ+ϵ,A(x)θ+ϵ⟩− ˆ b(x)−ζ2−1|∇ U(θ+ϵ,x)|2 −(2ζ)−1|ϵ|2\n(cid:101) (cid:101) θ (cid:101) (cid:101)\n(22)\n≥ ⟨θ,(A(x)−ζL2φ2(x))θ⟩+⟨θ,A(x)ϵ⟩+⟨ϵ,A(x)θ⟩+⟨ϵ,A(x)ϵ⟩\n1 (cid:101) (cid:101) (cid:101) (cid:101)\n−4ζL2φ¯2(x)(1+|ϵ|2)−2ζG(cid:101) 2(ϵ)− ˆ b(x)−(2ζ)−1|ϵ|2.",
+      "size": 555,
+      "sentences": 3
+    },
+    {
+      "id": 156,
+      "content": "1 (cid:101) (cid:101) (cid:101) (cid:101)\n−4ζL2φ¯2(x)(1+|ϵ|2)−2ζG(cid:101) 2(ϵ)− ˆ b(x)−(2ζ)−1|ϵ|2. 2 (cid:101) (cid:101) (cid:101)\nTherefore,\n∇g (θ) = E[E [∇ U(θ+ϵ,X)]]\nϵ X θ\n≥ (a¯−ζL2E[φ2(X )])|θ|2 +(a¯−(2ζ)−1)σ2d−4ζL2E[φ¯2(X )](1+σ2d)\n1 0 2 0\n−2ζE[G(cid:101) 2(ϵ)]− ¯ b\n≥ a|θ|2 −b,\nwhereaandbaredefinedin21. Remark B.3.",
+      "size": 322,
+      "sentences": 3
+    },
+    {
+      "id": 157,
+      "content": "¯2(X )](1+σ2d)\n1 0 2 0\n−2ζE[G(cid:101) 2(ϵ)]− ¯ b\n≥ a|θ|2 −b,\nwhereaandbaredefinedin21. Remark B.3. Controlling the remainder term E[R(θ,ϵ)] could in principle require very strong\nsmoothnessassumptionssuchasgloballyboundedfourth-orderderivativestoensureuniformcon-\ntrol of higher-order terms.",
+      "size": 292,
+      "sentences": 3
+    },
+    {
+      "id": 158,
+      "content": "umptionssuchasgloballyboundedfourth-orderderivativestoensureuniformcon-\ntrol of higher-order terms. These are not standard in SGLD analyses, and our approach does\nnot impose any such extra conditions, Instead, by leveraging only the dissipativity conditon (As-\nsumption 3) together with local Lipschitz continuity (Assumption 2), we establish all convergence\nresults without any global C4 boundedness or similar strong regularity.",
+      "size": 430,
+      "sentences": 2
+    },
+    {
+      "id": 159,
+      "content": "e establish all convergence\nresults without any global C4 boundedness or similar strong regularity. This distinction high-\nlights a key theoretical contribution of our work: rigorous non-asymptotic analysis for nonconvex\nhigh-dimensionalobjectivesundersignificantlyweakerandmorerealisticassumptions. LemmaB.4. LetAssumption2and3hold. Thenπ⋆ hasfinitesecondmoments. β,σ\n20\n===  21 ===\nProofofLemmaB.4. As a consequence of Assumption 2, ∇v(θ) is Lipschitz continuous. Let\nζ ¯ ∈ (0,4a¯σ−2).",
+      "size": 487,
+      "sentences": 8
+    },
+    {
+      "id": 160,
+      "content": "fofLemmaB.4. As a consequence of Assumption 2, ∇v(θ) is Lipschitz continuous. Let\nζ ¯ ∈ (0,4a¯σ−2). UsingAssumption2,Assumption3,andYoung’sinequality,oneobtains\nσ2\n⟨∇v(θ),θ⟩ = ⟨∇u(θ),θ⟩+ ⟨∇(tr(H (θ))),θ⟩\nu\n2\n(cid:18) ζ ¯ σ2(cid:19) σ2\n≥ a¯− |θ|2 − ¯ b− |∇(tr(H (θ)))|2,\n4 4ζ ¯ u\nwhichimpliesthat∇v(θ)isdissipative. Therefore,π⋆ hasfinitesecondmoment.",
+      "size": 350,
+      "sentences": 5
+    },
+    {
+      "id": 161,
+      "content": "− |∇(tr(H (θ)))|2,\n4 4ζ ¯ u\nwhichimpliesthat∇v(θ)isdissipative. Therefore,π⋆ hasfinitesecondmoment. β,σ\nAppendix C Overview of the non-asymptotic Wasserstein anal-\nysis and error bound for the expected excess risk\nIn this section, we derive the results introduced in Sections 3.2 and 3.3. We begin by presenting\ntheframeworkbehindthesetwosections.",
+      "size": 347,
+      "sentences": 4
+    },
+    {
+      "id": 162,
+      "content": "ults introduced in Sections 3.2 and 3.3. We begin by presenting\ntheframeworkbehindthesetwosections. The ‘data’ process (X ) in 7 is adapted to a given filtration (X ) representing the flow of\nk k∈N k k∈N\npast information, and we denote the sigma-algebra of ∪ X by X . In addition, we assume\nk∈N k ∞\nthatθ ,X ,(ϵ ) ,and(ξ ) areallindependentamongthemselves.",
+      "size": 356,
+      "sentences": 4
+    },
+    {
+      "id": 163,
+      "content": "∪ X by X . In addition, we assume\nk∈N k ∞\nthatθ ,X ,(ϵ ) ,and(ξ ) areallindependentamongthemselves. 0 ∞ k k∈N k k∈N\nWedefine\n(cid:40) (cid:41)\nmin{a,a1} 1\n3\nλ := min , , (23)\nmax 16(1+L )2(E[(1+φ(X ))4])1/2 a\n1 0\nwhereL ,φandaaredefinedinAssumptions2andRemarkB.2,respectively.",
+      "size": 276,
+      "sentences": 3
+    },
+    {
+      "id": 164,
+      "content": "x 16(1+L )2(E[(1+φ(X ))4])1/2 a\n1 0\nwhereL ,φandaaredefinedinAssumptions2andRemarkB.2,respectively. 1\nC.1 Auxiliary processes\nWestartbydefiningtheprocess(ZfSGLD) asthesolutionoftheflatnessLangevinSDE\nt t∈R +\nZfSGLD := θ ∈ Rd,\n0 0\n(24)\n(cid:112)\ndZfSGLD := −∇g (ZfSGLD)dt+ 2β−1 dB ,\nt ϵ t t\nwhereB isastandardd-dimensionalBrownianmotion.",
+      "size": 336,
+      "sentences": 2
+    },
+    {
+      "id": 165,
+      "content": "id:112)\ndZfSGLD := −∇g (ZfSGLD)dt+ 2β−1 dB ,\nt ϵ t t\nwhereB isastandardd-dimensionalBrownianmotion. Denoteby(F) thenaturalfiltrationof\nt t t≥0\n(B ) and by Σ the sigma-algebra generated by θ , and we assume that (F) is independent\nt t≥0 θ0 0\n(cid:83)\nt t≥0\nofX ∨Σ . Furthermore,denotebyF thesigma-algebraof F.\n∞ θ0 ∞ t≥0 t\nRemarkC.1. ByRemarkB.1,SDE24hasauniquesolutionadaptedto(F) . t t∈R +\nTo facilitate the convergence analysis, we introduce another process.",
+      "size": 460,
+      "sentences": 5
+    },
+    {
+      "id": 166,
+      "content": "olutionadaptedto(F) . t t∈R +\nTo facilitate the convergence analysis, we introduce another process. For each λ > 0, Zλ,fSGLD :=\n√ t\nZfSGLD,t ∈ R ,andletB(cid:101)λ := B / λ,t ≥ 0. Weobservethat(B(cid:101) ) isaBrownianmotionand\nλt + t λt t t≥0\nZλ,fSGLD := θ\n0 0\n(cid:112)\ndZλ,fSGLD = −λ∇g (Zλ,fSGLD)dt+ 2λβ−1 dB(cid:101) λ.\nt ϵ t t\n21\n===  22 ===\nThenaturalfiltrationof(B(cid:101) ) isdenotedby(Fλ) withFλ := F ,t ∈ R . Forapositivereal\nt t≥0 t t≥0 t λt +\nnumber a, we denote its integer part by ⌊a⌋.",
+      "size": 500,
+      "sentences": 5
+    },
+    {
+      "id": 167,
+      "content": "thFλ := F ,t ∈ R . Forapositivereal\nt t≥0 t t≥0 t λt +\nnumber a, we denote its integer part by ⌊a⌋. Then, we define (θ\n¯fSGLD)\n, the continuous-time\nt t∈R +\ninterpolationoffSGLD7,as\nθ\n¯fSGLD\n:= θ ,\n0 0\n(25)\ndθ ¯fSGLD = −λ∇ U(θ ¯fSGLD +ϵ ,X )dt+ (cid:112) 2λβ−1dB(cid:101) . t θ ⌊t⌋ ⌈t⌉ ⌈t⌉ t\nAtgrid-points,wenotethatthelawoftheinterpolatedprocessisthesameasthelawofthefSGLD\nalgorithm 7, i.e.",
+      "size": 391,
+      "sentences": 4
+    },
+    {
+      "id": 168,
+      "content": "Atgrid-points,wenotethatthelawoftheinterpolatedprocessisthesameasthelawofthefSGLD\nalgorithm 7, i.e. L(θ ¯fSGLD) = L(θfSGLD), for each k ∈ N. Moreover, we introduce the following\nk k\ncontinuous-time process (Φs,u,λ,fSGLD) , which is beneficial for our analysis, and define it as the\nt t≥s\nsolutionofthefollowingSDE\nΦs,u,λ,fSGLD := v ∈ Rd\ns\n(cid:112)\ndΦs,u,λ,fSGLD := −λ∇g (Φs,u,λ,fSGLD)dt+ 2λβ−1 dB(cid:101) λ.\nt ϵ t t\nDefinition C.2.",
+      "size": 433,
+      "sentences": 2
+    },
+    {
+      "id": 169,
+      "content": "Rd\ns\n(cid:112)\ndΦs,u,λ,fSGLD := −λ∇g (Φs,u,λ,fSGLD)dt+ 2λβ−1 dB(cid:101) λ.\nt ϵ t t\nDefinition C.2. Fix k ∈ N. For any t ≥ kT, define Φ ¯λ,k,fSGLD := Φ kT,θ¯ k fS T GLD,λ,fSGLD , where T :=\nt t\n⌊1/λ⌋. In other words, Φ\n¯λ,k,fSGLD\nin Definition C.2 is a process started from the value of the continuous-\nt\ntime interpolation fSGLD process 25 at time kT and run until time t ≥ kT with the continuous-\ntimeflatnessLangevindynamics.",
+      "size": 428,
+      "sentences": 3
+    },
+    {
+      "id": 170,
+      "content": "process 25 at time kT and run until time t ≥ kT with the continuous-\ntimeflatnessLangevindynamics. C.2 Proofs of the results in Sections 3.2 and 3.3\nTo prove Proposition 3.1, Theorem 3.2, and Corollary 3.3, we will use the following results in\nCorollaryC.3andLemmaC.4below. CorollaryC.3.",
+      "size": 287,
+      "sentences": 3
+    },
+    {
+      "id": 171,
+      "content": "and Corollary 3.3, we will use the following results in\nCorollaryC.3andLemmaC.4below. CorollaryC.3. (Bolley&Villani,2005,Corollary2.3) ForanytwoBorelprobabilitymeasuresµ\nandν withfinitesecondmoments,oneobtains\n(cid:34) (cid:35)\n(cid:112)\n(cid:18)\nKL(µ||ν)\n(cid:19)1/4\nW (µ,ν) ≤ C KL(µ||ν)+ ,\n2 ν\n2\nwhere\n(cid:18)\n1\n(cid:18)\n3\n(cid:90) (cid:19)(cid:19)1/2\nC := 2inf +log eκ (cid:101) |θ|2 ν(dθ) . (26)\nν\nκ (cid:101) >0 κ (cid:101) 2 Rd\nLemmaC.4. LetAssumption3hold.",
+      "size": 464,
+      "sentences": 5
+    },
+    {
+      "id": 172,
+      "content": "+log eκ (cid:101) |θ|2 ν(dθ) . (26)\nν\nκ (cid:101) >0 κ (cid:101) 2 Rd\nLemmaC.4. LetAssumption3hold. Then,thefollowingset\n(cid:40) (cid:114) (cid:41)\nb\nA := θ ∈ Rd : |θ| ≤ , (27)\na\ncontainsalltheminimizersofu(θ),v(θ),andg (θ),whereaandbaregivenin21. ϵ\n22\n===  23 ===\nProofofLemmaC.4. Let θ⋆ , θ⋆, θ⋆ be a minimizer of g (θ), u(θ), and v(θ), respectively.",
+      "size": 353,
+      "sentences": 6
+    },
+    {
+      "id": 173,
+      "content": "===  23 ===\nProofofLemmaC.4. Let θ⋆ , θ⋆, θ⋆ be a minimizer of g (θ), u(θ), and v(θ), respectively. By\ngϵ u v ϵ\nAssumption3,wehave\n0 = ⟨∇v(θ∗),θ⋆⟩ = ⟨∇v(θ∗),θ⋆⟩ = ⟨∇u(θ⋆),θ⋆⟩ ≥ a|θ⋆|2 −b, (28)\nv v u u u u u\nwhichimplies\n(cid:115)\n(cid:114)\nb b\n|θ⋆| = |θ⋆| ≤ ≤ . u v a a\nDuetoRemarkB.2,wehave\n0 = ⟨∇g (θ⋆ ),θ⋆ ⟩ ≥ a|θ⋆ |2 −b, (29)\nϵ gϵ gϵ gϵ\nwhichimplies\n(cid:114)\nb\n|θ⋆ | ≤ . gϵ a\nProofofProposition3.1.",
+      "size": 403,
+      "sentences": 5
+    },
+    {
+      "id": 174,
+      "content": "),θ⋆ ⟩ ≥ a|θ⋆ |2 −b, (29)\nϵ gϵ gϵ gϵ\nwhichimplies\n(cid:114)\nb\n|θ⋆ | ≤ . gϵ a\nProofofProposition3.1. Using19with16,wehave\n(cid:32) (cid:33)\n(cid:90) πfSGLD(dθ)\nKL(πfSGLD||π⋆ ) = log β πfSGLD(dθ)\nβ β,σ π⋆ (dθ) β\nRd β,σ\n(cid:90)\n= log (cid:0) Z−1Z exp(−β E[R(θ,ϵ)]) (cid:1) πfSGLD(dθ) (30)\nβ β,σ β\nRd\n(cid:18) (cid:19) (cid:90)\nZ\n= log β,σ −β E[R(θ,ϵ)]πfSGLD(dθ). Z β\nβ Rd\nWe focus on the first term on the right-hand side of 30. We denote the complementary set of A in\nLemmaC.4byAc.",
+      "size": 480,
+      "sentences": 5
+    },
+    {
+      "id": 175,
+      "content": "the first term on the right-hand side of 30. We denote the complementary set of A in\nLemmaC.4byAc. Using17and18,oneobtains\n(cid:18) Z (cid:19) (cid:32) (cid:82) e−βv(θ)dθ+ (cid:82) e−βv(θ)dθ (cid:33)\nlog β,σ = log A Ac\n(cid:82) (cid:82)\nZ\nβ A\ne−βgϵ(θ)dθ+\nAc\ne−βgϵ(θ)dθ\n (cid:82)\nA\ne−βv(θ)dθ\n+\n(cid:82) Ace−βv(θ)dθ  (31)\n(cid:82) e−βgϵ(θ)dθ (cid:82) e−βgϵ(θ)dθ\n= log A A .",
+      "size": 375,
+      "sentences": 3
+    },
+    {
+      "id": 176,
+      "content": "82)\nA\ne−βv(θ)dθ\n+\n(cid:82) Ace−βv(θ)dθ  (31)\n(cid:82) e−βgϵ(θ)dθ (cid:82) e−βgϵ(θ)dθ\n= log A A . 1+\n(cid:82) Ace−βgϵ(θ)dθ\n(cid:82) e−βgϵ(θ)dθ\nA\n(cid:82) e−βv(θ)dθ\nWe provide a bound on the first term of the numerator in 31, i.e., A . By the extreme\n(cid:82) e−βgϵ(θ))dθ\nA\nvaluetheorem,thereexistsaconstantC > 0:\nA\n|g (θ)−v(θ)| ≤ C σ4, ∀θ ∈ A, (32)\nϵ A\nwhereC istheboundofE[R(θ,ϵ)]overθ ∈ Ain16.",
+      "size": 397,
+      "sentences": 3
+    },
+    {
+      "id": 177,
+      "content": "saconstantC > 0:\nA\n|g (θ)−v(θ)| ≤ C σ4, ∀θ ∈ A, (32)\nϵ A\nwhereC istheboundofE[R(θ,ϵ)]overθ ∈ Ain16. Thisleadsto\nA\n(cid:90) (cid:90) (cid:90)\ne−CAβσ4 e−βgϵ(θ)dθ ≤ e−βv(θ)dθ ≤ eCAβσ4 e−βgϵ(θ)dθ,\nA A A\n23\n===  24 ===\nwhichimplies\n(cid:82)\ne−βv(θ)dθ\ne−CAβσ4 ≤\n(cid:82)\nA ≤ eCAβσ4. (33)\ne−βgϵ(θ)dθ\nA\nWe provide a bound on the second term of the numerator on the right-hand side of 31, i.e.,\n(cid:82) Ace−βv(θ)dθ\n.",
+      "size": 408,
+      "sentences": 3
+    },
+    {
+      "id": 178,
+      "content": "ound on the second term of the numerator on the right-hand side of 31, i.e.,\n(cid:82) Ace−βv(θ)dθ\n. Wenotethat,foranyθ ∈ Ac,thereexistsδ > 0suchthat\n(cid:82) e−βgϵ(θ)dθ K\nA\nv(θ) > v(θ∗)+δ , forθ ∈ Ac. v v\nFor0 < β < β,wehave\n0\n−(β −β )v(θ) < −(β −β )(v(θ∗)+δ ),\n0 0 v v\nwhichimplies\n(cid:90) (cid:90)\ne−βv(θ)dθ ≤ e−(β−β0)(v(θ v ∗)+δv) e−β0v(θ)dθ.",
+      "size": 346,
+      "sentences": 3
+    },
+    {
+      "id": 179,
+      "content": "β )(v(θ∗)+δ ),\n0 0 v v\nwhichimplies\n(cid:90) (cid:90)\ne−βv(θ)dθ ≤ e−(β−β0)(v(θ v ∗)+δv) e−β0v(θ)dθ. (34)\nAc Ac\nBy16andtheextremevaluetheorem,weobtain\n(cid:32) (cid:33)\nβ (cid:88) d ∂4u\nexp(−β E[R(θ,ϵ)]) = exp − (θ)σ4(δ δ +δ δ +δ δ )\nij kl ik jl il jk\n24 ∂θ ∂θ ∂θ ∂θ\ni j k l\ni,j,k,l=1 (35)\n≥ exp(−βc˜ σ4)\nA\n:= exp(−β E[R (ϵ)]),\nA\nwhere c˜ in the inequality denotes the bound of the fourth derivative of u over θ ∈ A, and\nA\nE[R (ϵ)]) = O(σ4).",
+      "size": 440,
+      "sentences": 2
+    },
+    {
+      "id": 180,
+      "content": "the inequality denotes the bound of the fourth derivative of u over θ ∈ A, and\nA\nE[R (ϵ)]) = O(σ4). Using35,wehave\nA\n(cid:90) (cid:90)\ne−βgϵ(θ)dθ ≥ exp(−β E[R (ϵ)]) e−βv(θ) dθ\nA\nA A\n(cid:32) (cid:33)\n(cid:90) (cid:88) ∞ (−βv(θ))i\n= exp(−β E[R (ϵ)]) |vol(A)|+ dθ\nA (36)\ni! A\ni=1\n(cid:32) (cid:33)\n(cid:90) (cid:88) n (−βv(θ))i\n≥ exp(−β E[R (ϵ)]) |vol(A)|+ dθ . A\ni! A\ni=1\nCombining34and36,weobtain\n(cid:82) e−βv(θ)dθ exp(β E[R (ϵ)]) (cid:82) e−β0v(θ)dθ\nAc ≤ A Ac .",
+      "size": 463,
+      "sentences": 5
+    },
+    {
+      "id": 181,
+      "content": "A\ni=1\nCombining34and36,weobtain\n(cid:82) e−βv(θ)dθ exp(β E[R (ϵ)]) (cid:82) e−β0v(θ)dθ\nAc ≤ A Ac . (cid:82) (cid:16) (cid:17) (37)\nA\ne−βgϵ(θ)dθ e(β−β0)(v(θ\nv\n∗)+δv) |vol(A)|+ (cid:82) (cid:80)n (−βv(θ))i dθ\nA i=1 i! We provide a bound on the ratio in the denominator on the right-hand side of 31. By Taylor’s\ntheorem,\n1\ng (θ) = g (θ⋆ )+ (θ−θ⋆ )T∇2g (θ⋆ )(θ−θ⋆ )+R (θ), (38)\nϵ ϵ gϵ 2 gϵ ϵ gϵ gϵ 2\n24\n===  25 ===\nwhere R (θ) is the remainder term accounting for the residual error above second order.",
+      "size": 498,
+      "sentences": 4
+    },
+    {
+      "id": 182,
+      "content": "===  25 ===\nwhere R (θ) is the remainder term accounting for the residual error above second order. By the\n2\nextremevaluetheorem,thereexistsm,M > 0suchthat\nm ≤ e−βR2(θ) ≤ M, ∀θ ∈ A. (39)\nUsing38and39,oneobtains\n(cid:90) (cid:90)\ne−βgϵ(θ)dθ = e−βgϵ(θ g ⋆ ϵ ) e−β 2 (θ−θ g ⋆ ϵ )T∇2gϵ(θ g ⋆ ϵ )(θ−θ g ⋆ ϵ )−βR2(θ)dθ\nA A\n(cid:18)\n2π\n(cid:19)d/2\n1\n(40)\n≤ Me−βgϵ(θ g ⋆ ϵ ) (cid:113) . β\ndet∇2g (θ⋆ )\nϵ gϵ\nUsing40,itfollows\n(cid:82) (cid:82)\ne−βgϵ(θ)dθ e−βgϵ(θ)dθ\n1+ Ac ≥ 1+ Ac ≥ 1.",
+      "size": 475,
+      "sentences": 4
+    },
+    {
+      "id": 183,
+      "content": ". β\ndet∇2g (θ⋆ )\nϵ gϵ\nUsing40,itfollows\n(cid:82) (cid:82)\ne−βgϵ(θ)dθ e−βgϵ(θ)dθ\n1+ Ac ≥ 1+ Ac ≥ 1. (cid:82)\ne−βgϵ(θ)dθ Me−βgϵ(θ\ng\n⋆\nϵ\n)√ 1\nA det∇2gϵ(θ\ng\n⋆\nϵ\n)\nThus,\n1 1\n≤ ≤ 1. 1+ (cid:82) Ace−βgϵ(θ)dθ 1+ (cid:82) Ace−βgϵ(θ))dθ (41)\n(cid:82) Rd (cid:82) A e−βgϵ(θ)dθ Me−βgϵ(θg ⋆ ϵ)√ 1\ndet∇2gϵ(θg ⋆ ϵ)\nUsing41,37,and33in31yields\n \n(cid:18) Z (cid:19) exp(β E[R (ϵ)]) (cid:82) e−β0v(θ)dθ\nlog β,σ ≤ logeCAβσ4 + (cid:16) A Ac (cid:17).",
+      "size": 434,
+      "sentences": 4
+    },
+    {
+      "id": 184,
+      "content": ":18) Z (cid:19) exp(β E[R (ϵ)]) (cid:82) e−β0v(θ)dθ\nlog β,σ ≤ logeCAβσ4 + (cid:16) A Ac (cid:17). (42)\nZ β e(β−β0)(v(θ v ∗)+δv) |vol(A)|+ (cid:82) (cid:80)n (−βv(θ))i dθ\nA i=1 i! Wecanbound30using42,sothat\n \nexp(β E[R (ϵ)]) (cid:82) e−β0v(θ)dθ\nKL(π β fSGLD||π β ⋆ ,σ ) ≤ logeCAβσ4 + e(β−β0)(v(θ\nv\n∗)+δv) (cid:16) |vo A l(A)|+ A (cid:82) c\nA\n(cid:80)n\ni=1\n(−βv\ni! (θ))i dθ (cid:17)\n(43)\n(cid:90)\n−β E[R(θ,ϵ)]πfSGLD(dθ).",
+      "size": 424,
+      "sentences": 4
+    },
+    {
+      "id": 185,
+      "content": "(A)|+ A (cid:82) c\nA\n(cid:80)n\ni=1\n(−βv\ni! (θ))i dθ (cid:17)\n(43)\n(cid:90)\n−β E[R(θ,ϵ)]πfSGLD(dθ). β\nRd\nSinceE[R(θ,ϵ)] = O(σ4),E[R (ϵ)]) = O(σ4),andσ4 = β−(1+η),oneobtains\nA\nlim KL(πfSGLD||π⋆ ) = 0. (44)\nβ β,σ\nβ→∞\nWe apply Corollary C.3 with κ = 1, to prove the asymptotic convergence in Wasserstein distance\n(cid:101)\nofordertwobetweenπfSGLD andπ⋆ .",
+      "size": 351,
+      "sentences": 4
+    },
+    {
+      "id": 186,
+      "content": "prove the asymptotic convergence in Wasserstein distance\n(cid:101)\nofordertwobetweenπfSGLD andπ⋆ . First,weprovideaboundontheconstantC inCorollary\nβ β,σ π⋆\nβ,σ\nC.3using−logx ≤ x+1forallx > 0,\n(cid:18)(cid:90) (cid:19)\nC2 = 6−4log(Z )+log e|θ|2−βv(θ) dθ\nπ⋆ β,σ\nβ,σ Rd\n(45)\n(cid:90)\n≤ 10+4Z + e|θ|2−βv(θ) dθ. β,σ\nRd\n25\n===  26 ===\nBy Assumption 2, the Hessian H(θ) contained in v(θ) is bounded.",
+      "size": 392,
+      "sentences": 3
+    },
+    {
+      "id": 187,
+      "content": "θ|2−βv(θ) dθ. β,σ\nRd\n25\n===  26 ===\nBy Assumption 2, the Hessian H(θ) contained in v(θ) is bounded. For θ ∈ A, we can control the\nlastintegralontheright-handsideof45using33,RemarkC.4,and39,i.e.,\n(cid:90)\ne|θ|2−βv(θ) dθ ≤ e a b−βσ 2 2 tr(H(θ))|vol(A)|.",
+      "size": 251,
+      "sentences": 3
+    },
+    {
+      "id": 188,
+      "content": "-handsideof45using33,RemarkC.4,and39,i.e.,\n(cid:90)\ne|θ|2−βv(θ) dθ ≤ e a b−βσ 2 2 tr(H(θ))|vol(A)|. (46)\nA\nForθ ∈ Ac andc ∈ (0,1),wehave,byAssumption3,\n(cid:101)\n(cid:90) 1\nu(θ) = u(cθ)+ ⟨θ,∇u(tθ)⟩dt\n(cid:101)\nc\n(cid:101)\n(cid:90) 1\n≥ u(θ⋆)+ t−1⟨tθ,∇u(tθ)⟩dt\nu\nc\n(cid:101)\n(cid:90) 1 (47)\n≥ u(θ⋆)+ t−1(a¯|tθ|2 − ¯ b)dt\nu\nc\n(cid:101)\na¯(1−c2)\n≥ (cid:101) |θ|2 + ¯ blogc+u(θ⋆)\n2 (cid:101) u\n= c¯|θ|2 +p¯,\nwherec¯:= a¯(1− (cid:101) c2) > 0,andp¯:= ¯ blogc+u(θ⋆).",
+      "size": 459,
+      "sentences": 2
+    },
+    {
+      "id": 189,
+      "content": "¯ blogc+u(θ⋆)\n2 (cid:101) u\n= c¯|θ|2 +p¯,\nwherec¯:= a¯(1− (cid:101) c2) > 0,andp¯:= ¯ blogc+u(θ⋆). Foranyθ ∈ Ac,thereexistsδ > 0suchthat\n2 (cid:101) u u\nu(θ) > u(θ∗)+δ , for θ ∈ Ac. u u\nForanyβ ∈ (1,β) = ( 2 ,β),wehave\n0 c¯ a¯(1−c2)\n(cid:101)\n−(β −β )u(θ) < −(β −β )(u(θ∗)+δ ), for θ ∈ Ac.",
+      "size": 289,
+      "sentences": 3
+    },
+    {
+      "id": 190,
+      "content": "nyβ ∈ (1,β) = ( 2 ,β),wehave\n0 c¯ a¯(1−c2)\n(cid:101)\n−(β −β )u(θ) < −(β −β )(u(θ∗)+δ ), for θ ∈ Ac. (48)\n0 0 u u\nUsing47,48,andβ > 1,oneobtains\n0 c¯\n(cid:90) (cid:90)\ne|θ|2−βu(θ)dθ ≤ e−(β−β0)(u(θ u ∗)+δu) e|θ|2−β0u(θ)dθ\nAc Ac\n(cid:90)\n≤ e−(β−β0)(u(θ u ∗)+δu)+β0p¯ e(1−β0c¯)|θ|2dθ (49)\nAc\n(cid:18) (cid:19)d\nπ 2\n≤ e−(β−β0)(u(θ u ∗)+δu)+β0p¯ .",
+      "size": 341,
+      "sentences": 2
+    },
+    {
+      "id": 191,
+      "content": "β0)(u(θ u ∗)+δu)+β0p¯ e(1−β0c¯)|θ|2dθ (49)\nAc\n(cid:18) (cid:19)d\nπ 2\n≤ e−(β−β0)(u(θ u ∗)+δu)+β0p¯ . β c¯−1\n0\nPlugging46and49in45yields\nC2 ≤ 10+4Z\nπ⋆ β,σ\nβ,σ\n+e−βσ 2 2 tr(H(θ)) (cid:32) e a b |vol(A)|+e−(β−β0)(u(θ u ∗)+δu)+β0p¯ (cid:18) π (cid:19)d 2 (cid:33) . (50)\nβ c¯−1\n0\nTherefore,applyingCorollaryC.3with50andtakingthelimitforβ → ∞asin44,wearriveat\nlim W (πfSGLD,π⋆ ) = 0.",
+      "size": 377,
+      "sentences": 3
+    },
+    {
+      "id": 192,
+      "content": "refore,applyingCorollaryC.3with50andtakingthelimitforβ → ∞asin44,wearriveat\nlim W (πfSGLD,π⋆ ) = 0. (51)\n2 β β,σ\nβ→∞\n26\n===  27 ===\nWeusethefollowingtriangleinequalitytoestablishanon-asymptoticboundforW (L(θfSGLD),π⋆ ):\n1 k β,σ\nW (L(θfSGLD),π⋆ ) ≤ W (L(θ ¯fSGLD),L(Φ ¯λ,k,fSGLD))+W (L(Φ ¯λ,k,fSGLD),L(Zλ,fSGLD))\n1 k β,σ 1 t t 1 t t\n(52)\n+W (L(Zλ,fSGLD),πfSGLD)+W (πfSGLD,π⋆ ). 1 t β 1 β β,σ\nWe control the four terms on the right-hand side of 52 separately.",
+      "size": 457,
+      "sentences": 3
+    },
+    {
+      "id": 193,
+      "content": "D)+W (πfSGLD,π⋆ ). 1 t β 1 β β,σ\nWe control the four terms on the right-hand side of 52 separately. The bounds for the first three\nterms follow directly from Zhang et al. (2023), with Zhang et al. (2023, Assumptions 1–3) re-\nplacedbyAssumptions1,2,and3. Forcompleteness,wereproducetheseproofsheretomakethe\nconvergenceanalysisoffSGLDself-contained.",
+      "size": 347,
+      "sentences": 6
+    },
+    {
+      "id": 194,
+      "content": "and3. Forcompleteness,wereproducetheseproofsheretomakethe\nconvergenceanalysisoffSGLDself-contained. We define, for each p ≥ 1, the Lyapunov function V(cid:101) by V(cid:101) (θ) := (1 + |θ|2)p/2, θ ∈ Rd, and\np p\nsimilarly v (ω) := (1 + ω2)p/2, for any real ω ≥ 0. These functions are twice continuously\n(cid:101)p\ndifferentiableand\nsup(|∇V(cid:101) (θ)|/V(cid:101) (θ)) < ∞, lim (|∇V(cid:101) (θ)|/V(cid:101) (θ)) = 0.",
+      "size": 418,
+      "sentences": 4
+    },
+    {
+      "id": 195,
+      "content": "rentiableand\nsup(|∇V(cid:101) (θ)|/V(cid:101) (θ)) < ∞, lim (|∇V(cid:101) (θ)|/V(cid:101) (θ)) = 0. (53)\np p p p\nθ |θ|→∞\nLetP denotethesetofµ ∈ P(Rd)satisfying (cid:82) V(cid:101) (θ)µ(dθ) < ∞. Then,wedefineafunctional\nV(cid:101)p Rd p\nthat plays a central role in establishing the convergence rate in the Wasserstein-1 distance. For\nµ,ν ∈ P ,let\nV(cid:101)2\n(cid:90) (cid:90)\nw (µ,ν) := inf [1∧|θ−θ′|](1+V(cid:101) (θ)+V(cid:101) (θ′))Γ(dθ,dθ′).",
+      "size": 446,
+      "sentences": 4
+    },
+    {
+      "id": 196,
+      "content": "V(cid:101)2\n(cid:90) (cid:90)\nw (µ,ν) := inf [1∧|θ−θ′|](1+V(cid:101) (θ)+V(cid:101) (θ′))Γ(dθ,dθ′). (54)\n1,2 2 2\nΓ∈C(µ,ν) Rd Rd\nMoreover,itholdsthatW (µ,ν) ≤ w (µ,ν). 1 1,2\nProposition C.5. Let Assumptions 1, 2, and 3 hold. Let (Z\n˜fSGLD)\nbe the solution of 24 with\nt t∈R +\ninitialconditionZ ˜fSGLD = θ ˜ whichisindependentofF andsatisfiesE[|θ ˜ |2] < ∞. Then,\n0 0 ∞ 0\nw (L(ZfSGLD),L(Z ˜fSGLD)) ≤ cˆe−c˙tw (L(θ ),L(θ ˜ )),\n1,2 t t 1,2 0 0\nwheretheconstantsc˙ andcˆaregiveninLemmaC.6. Proof.",
+      "size": 490,
+      "sentences": 7
+    },
+    {
+      "id": 197,
+      "content": "D)) ≤ cˆe−c˙tw (L(θ ),L(θ ˜ )),\n1,2 t t 1,2 0 0\nwheretheconstantsc˙ andcˆaregiveninLemmaC.6. Proof. FromRemarkB.1,onecandeduce\n|∇ g (θ)−∇ g (θ′)| ≤ E[|∇ u(θ+ϵ)−∇ u(θ′ +ϵ)]\nθ ϵ θ′ ϵ θ θ′\n(55)\n≤ L E[φ(X )]|θ−θ′|. 1 0\nThe rest of the proof follows using Assumption 1, 2, and 3, 55, Lemma C.14, and 53 in Zhang\netal.(2023,ProofofProposition4.6). Theconstantsc˙ andcˆfromPropositionC.5aregiveninanexplicitform. LemmaC.6.",
+      "size": 415,
+      "sentences": 6
+    },
+    {
+      "id": 198,
+      "content": "3,ProofofProposition4.6). Theconstantsc˙ andcˆfromPropositionC.5aregiveninanexplicitform. LemmaC.6. Thecontractionconstantc˙ > 0inPropositionC.5isgivenby\n(cid:8)¯ (cid:9)\nc˙ := min ϕ,c¯(2),4c˜(2)εc¯(2)/2 /2 (56)\n¯ ¯ ¯\nwherec¯(2) = a/2,c˜(2) = (3/2)av (M )withM giveninLemmaC.14,ϕisgivenby\n2 2 2\nϕ ¯ :=\n(cid:18)\nr¯ (cid:112) 8π/(βL E[φ(X )])exp\n(cid:18)\n(cid:16) r¯ (cid:112) βL E[φ(X )]/8+ (cid:112) 8/(βL E[φ(X )]) (cid:17)2\n(cid:19)(cid:19)−1\n,\n1 0 1 0 1 0\n(57)\n27\n===  28 ===\nandmoreover,ε > 0canbechosensuchthatthefollowinginequalityissatisfied\n(cid:18) (cid:112) (cid:90) r˜ (cid:16) (cid:112) (cid:112) (cid:17)2 (cid:19)−1\nε ≤ 1∧ 4c˜(2) 2βπ/(L E[φ(X )]) exp s βL E[φ(X )]/8+ 8/(βL E[φ(X )]) ds ,\n1 0 1 0 1 0\n0\n(58)\n(cid:112) (cid:112)\nwhere r˜ := 2 2c˜(2)/c¯(2)−1 and r¯ := 2 4c˜(2)(1+c¯(2))/c¯(2)−1.",
+      "size": 807,
+      "sentences": 4
+    },
+    {
+      "id": 199,
+      "content": "0 1 0\n0\n(58)\n(cid:112) (cid:112)\nwhere r˜ := 2 2c˜(2)/c¯(2)−1 and r¯ := 2 4c˜(2)(1+c¯(2))/c¯(2)−1. The constant cˆ > 0 is\ngivenbycˆ:= 2(1+r¯)exp(βL E[φ(X )]r¯2/8+2r¯)/ε. 1 0\nProof. ThisfollowsbyadaptingtheargumentsofZhangetal. (2023,ProofofLemma4.11)tothe\nflatnessLangevinSDE24,using55togetherwithLemmaC.14. From the definition of λ given in 23, it follows that 0 < λ ≤ λ ≤ 1, and hence 1/2 < λT ≤\nmax max\n1. Wenowproceedtoboundthefirsttermin52. Lemma C.7. Let Assumptions 1, 2, and 3 hold.",
+      "size": 490,
+      "sentences": 9
+    },
+    {
+      "id": 200,
+      "content": "< λT ≤\nmax max\n1. Wenowproceedtoboundthefirsttermin52. Lemma C.7. Let Assumptions 1, 2, and 3 hold. For any 0 < λ < λ given in 23, t ∈ (kT,(k +\nmax\n1)T],\n√ (cid:16) (cid:17)1/2\nW (L(θ ¯fSGLD),L(Φ ¯λ,k,fSGLD)) ≤ λ e−ak/4D ¯ E[V(cid:101) (θ )]+D ¯ ,\n2 t t 2,1 2 0 2,2\nwhere\nD ¯ 2,1 := 4e4L2 1 E[φ2(X0)](L2 1 E[φ2(X 0 )]ψ ¯ Y +ψ ¯ Z ),\n(59)\nD ¯ 2,2 := 4e4L2 1 E[φ2(X0)](L2 1 E[φ2(X 0 )]ψ(cid:101) Y +ψ(cid:101) Z ),\n¯ ¯\nwithψ ,ψ(cid:101) givenin81,andψ ,ψ(cid:101) givenin82. Y Y Z Z\nProof.",
+      "size": 487,
+      "sentences": 6
+    },
+    {
+      "id": 201,
+      "content": ":101) Y +ψ(cid:101) Z ),\n¯ ¯\nwithψ ,ψ(cid:101) givenin81,andψ ,ψ(cid:101) givenin82. Y Y Z Z\nProof. This follows by applying Lemma C.16 together with the argument used in Zhang et al. (2023, Proof of Lemma 4.7). We summarize the main steps in the following.",
+      "size": 257,
+      "sentences": 5
+    },
+    {
+      "id": 202,
+      "content": "ment used in Zhang et al. (2023, Proof of Lemma 4.7). We summarize the main steps in the following. Using synchronous\ncoupling together with 25, Definition C.2, Remark B.1, and it follows that for any t ∈ (kT,(k +\n1)T],\n(cid:12) (cid:12) (cid:12)(cid:90) t (cid:12)\n(cid:12)Φ ¯λ,k,fSGLD −θ ¯fSGLD(cid:12) ≤ λ (cid:12) (cid:12) (cid:2) ∇ U(θ ¯fSGLD +ϵ ,X )−∇g (Φ ¯λ,k,fSGLD) (cid:3) ds (cid:12) (cid:12)\n(cid:12) t t (cid:12) (cid:12) θ ⌊s⌋ ⌈s⌉ ⌈s⌉ ϵ s (cid:12)\nkT\n(cid:12)(cid:90) t (cid:12)\n≤ λ\n(cid:12)\n(cid:12)\n(cid:2)\n∇ U(θ\n¯fSGLD\n+ϵ ,X )−∇ U(Φ\n¯λ,k,fSGLD\n+ϵ ,X )\n(cid:3)\nds\n(cid:12)\n(cid:12)\n(cid:12) θ ⌊s⌋ ⌈s⌉ ⌈s⌉ θ s ⌈s⌉ ⌈s⌉ (cid:12)\nkT\n(cid:12)(cid:90) t (cid:12)\n+λ\n(cid:12)\n(cid:12)\n(cid:2)\n∇g (Φ\n¯λ,k,fSGLD)−∇\nU(Φ\n¯λ,k,fSGLD\n+ϵ ,X )\n(cid:3)\nds\n(cid:12)\n(cid:12)\n(cid:12) ϵ s θ s ⌈s⌉ ⌈s⌉ (cid:12)\nkT\n(cid:90) t\n≤ λL φ(X )\n(cid:12)\n(cid:12)θ\n¯fSGLD\n−Φ\n¯λ,k,fSGLD (cid:12)\n(cid:12)ds\n1 ⌈s⌉ ⌊s⌋ s\nkT\n(cid:12)(cid:90) t (cid:12)\n+λ\n(cid:12)\n(cid:12)\n(cid:2)\n∇g (Φ\n¯λ,k,fSGLD)−∇\nU(Φ\n¯λ,k,fSGLD\n+ϵ ,X )\n(cid:3)\nds\n(cid:12)\n(cid:12).",
+      "size": 1036,
+      "sentences": 4
+    },
+    {
+      "id": 203,
+      "content": "(cid:12)\n(cid:12)\n(cid:2)\n∇g (Φ\n¯λ,k,fSGLD)−∇\nU(Φ\n¯λ,k,fSGLD\n+ϵ ,X )\n(cid:3)\nds\n(cid:12)\n(cid:12). (cid:12) ϵ s θ s ⌈s⌉ ⌈s⌉ (cid:12)\nkT\n(60)\nSquaringbothsidesof60andtakingexpectations,weobtainusingAssumption1\nE (cid:20) (cid:12) (cid:12)Φ ¯λ,k,fSGLD −θ ¯fSGLD (cid:12) (cid:12) 2 (cid:21) ≤ 2λL2 (cid:90) t E(cid:2) φ2(X ) (cid:3)E (cid:104) (cid:12) (cid:12)θ ¯fSGLD −Φ ¯λ,k,fSGLD (cid:12) (cid:12) 2 (cid:105) ds\n(cid:12) t t (cid:12) 1 0 ⌊s⌋ s\nkT\n(cid:34) (cid:35)\n(cid:12)(cid:90) t (cid:12)2\n+2λ2E (cid:12) (cid:12) (cid:2) ∇g (Φ ¯λ,k,fSGLD)−∇ U(Φ ¯λ,k,fSGLD +ϵ ,X ) (cid:3) ds (cid:12) (cid:12) .",
+      "size": 602,
+      "sentences": 2
+    },
+    {
+      "id": 204,
+      "content": "(cid:12) (cid:12) (cid:2) ∇g (Φ ¯λ,k,fSGLD)−∇ U(Φ ¯λ,k,fSGLD +ϵ ,X ) (cid:3) ds (cid:12) (cid:12) . (cid:12) ϵ s θ s ⌈s⌉ ⌈s⌉ (cid:12)\nkT\n28\n===  29 ===\nFromλT ≤ 1andLemmaC.16,weget\n(cid:20) (cid:21)\n(cid:12) (cid:12)2\nE (cid:12)Φ ¯λ,k,fSGLD −θ ¯fSGLD(cid:12)\n(cid:12) t t (cid:12)\n(cid:90) t (cid:104) (cid:105)\n≤ 4λL2E(cid:2) φ2(X ) (cid:3) E (cid:12) (cid:12)θ ¯fSGLD −θ ¯fSGLD (cid:12) (cid:12) 2 ds\n1 0 ⌊s⌋ s\nkT\n(cid:90) t (cid:104) (cid:105)\n+4λL2E(cid:2) φ2(X ) (cid:3) E (cid:12) (cid:12)θ ¯fSGLD −Φ ¯λ,k,fSGLD (cid:12) (cid:12) 2 ds\n1 0 s s\nkT\n(cid:34) (cid:35)\n(cid:12)(cid:90) t (cid:12)2\n+2λ2E (cid:12) (cid:12) (cid:2) ∇g (Φ ¯λ,k,fSGLD)−∇ U(Φ ¯λ,k,fSGLD +ϵ ,X ) (cid:3) ds (cid:12) (cid:12) (61)\n(cid:12) ϵ s θ s ⌈s⌉ ⌈s⌉ (cid:12)\nkT\n≤ 4λL2E(cid:2) φ2(X ) (cid:3) (e−λakTψ ¯ E[V(cid:101) (θ )]+ψ(cid:101) )\n1 0 Y 2 0 Y\n(cid:90) t (cid:104) (cid:105)\n+4λL2E(cid:2) φ2(X ) (cid:3) E (cid:12) (cid:12)θ ¯fSGLD −Φ ¯λ,k,fSGLD (cid:12) (cid:12) 2 ds\n1 0 s s\nkT\n(cid:34) (cid:35)\n(cid:12)(cid:90) t (cid:12)2\n+2λ2E (cid:12) (cid:12) (cid:2) ∇g (Φ ¯λ,k,fSGLD)−∇ U(Φ ¯λ,k,fSGLD +ϵ ,X ) (cid:3) ds (cid:12) (cid:12) .",
+      "size": 1118,
+      "sentences": 2
+    },
+    {
+      "id": 205,
+      "content": "(cid:12) (cid:12) (cid:2) ∇g (Φ ¯λ,k,fSGLD)−∇ U(Φ ¯λ,k,fSGLD +ϵ ,X ) (cid:3) ds (cid:12) (cid:12) . (cid:12) ϵ s θ s ⌈s⌉ ⌈s⌉ (cid:12)\nkT\nWe now bound the last term in 61 by splitting the final integral.",
+      "size": 202,
+      "sentences": 2
+    },
+    {
+      "id": 206,
+      "content": "d:12) ϵ s θ s ⌈s⌉ ⌈s⌉ (cid:12)\nkT\nWe now bound the last term in 61 by splitting the final integral. Let kT +N < t ≤ kT +N +1\nwithN +1 ≤ T,N ∈ N. Itfollowsthat\n(cid:12) (cid:12)\n(cid:12) (cid:12) (cid:12) (cid:90) t (cid:2) ∇g (Φ ¯λ,k,fSGLD)−∇ U(Φ ¯λ,k,fSGLD +ϵ ,X ) (cid:3) ds (cid:12) (cid:12) (cid:12) = (cid:12) (cid:12) (cid:88) N I +R (cid:12) (cid:12),\n(cid:12) ϵ s θ s ⌈s⌉ ⌈s⌉ (cid:12) (cid:12) n N(cid:12)\nkT (cid:12) n=1 (cid:12)\nwhereI :=\n(cid:82)kT+n\n[∇g (Φ\n¯λ,k,fSGLD)−∇\nU(Φ\n¯λ,k,fSGLD\n+ϵ ,X )]ds,and\nn kT+(n−1) ϵ s θ s kT+n kT+n\nR :=\n(cid:82)t\n[∇g (Φ\n¯λ,k,fSGLD)−∇\nU(Φ\n¯λ,k,fSGLD\n+ϵ ,X )]ds.",
+      "size": 604,
+      "sentences": 2
+    },
+    {
+      "id": 207,
+      "content": "]ds,and\nn kT+(n−1) ϵ s θ s kT+n kT+n\nR :=\n(cid:82)t\n[∇g (Φ\n¯λ,k,fSGLD)−∇\nU(Φ\n¯λ,k,fSGLD\n+ϵ ,X )]ds. Squaring both sides,\nN kT+N ϵ s θ s kT+N+1 kT+N+1\nweobtain\n(cid:12) (cid:12)2\n(cid:12)(cid:88) N (cid:12) (cid:88) N (cid:88) N (cid:88) n−1 (cid:88) N\n(cid:12) I +R (cid:12) = |I |2 +2 ⟨I ,I ⟩+2 ⟨I ,R ⟩+|R |2. (cid:12) n N(cid:12) n n j n N N\n(cid:12) (cid:12)\nn=1 n=1 n=2 j=1 n=1\nLet H denote the sigma-algebra generated by ϵ.",
+      "size": 428,
+      "sentences": 3
+    },
+    {
+      "id": 208,
+      "content": "2) n n j n N N\n(cid:12) (cid:12)\nn=1 n=1 n=2 j=1 n=1\nLet H denote the sigma-algebra generated by ϵ. We define the filtration J = Fλ ∨X ∨H\nϵ t ∞ ⌊t⌋ ⌊ϵ⌋\nandwetakeexpectationsofbothsides.",
+      "size": 185,
+      "sentences": 2
+    },
+    {
+      "id": 209,
+      "content": "nerated by ϵ. We define the filtration J = Fλ ∨X ∨H\nϵ t ∞ ⌊t⌋ ⌊ϵ⌋\nandwetakeexpectationsofbothsides. Observethatforanyn = 2,...,N,j = 1,...,n−1,\nE[⟨I ,I ⟩]\nn j\n= E[E[⟨I ,I ⟩|J ]]\nn j kT+j\n(cid:20) (cid:20)(cid:28)(cid:90) kT+n\n= E E [∇g (Φ ¯λ,k,fSGLD)−∇ U(Φ ¯λ,k,fSGLD +ϵ ,X )]ds,\nϵ s θ s kT+n kT+n\nkT+(n−1)\n(cid:90) kT+j (cid:29)(cid:12) (cid:21)(cid:21)\n[∇g (Φ\n¯λ,k,fSGLD)−∇\nU(Φ\n¯λ,k,fSGLD\n+ϵ ,X )]ds\n(cid:12)\n(cid:12)J\nϵ s θ s kT+j kT+j (cid:12) kT+j\nkT+(j−1)\n(cid:20)(cid:28)(cid:90) kT+n\n= E E(cid:2) ∇g (Φ ¯λ,k,fSGLD)−∇ U(Φ ¯λ,k,fSGLD +ϵ ,X ) (cid:12) (cid:12)J (cid:3) ds,\nϵ s θ s kT+n kT+n kT+j\nkT+(n−1)\n(cid:90) kT+j (cid:29)(cid:21)\n[∇g (Φ\n¯λ,k,fSGLD)−∇\nU(Φ\n¯λ,k,fSGLD\n+ϵ ,X )]ds = 0.\nϵ s θ s kT+j kT+j\nkT+(j−1)\n29\n===  30 ===\nBythesamereasoning,E⟨I ,R ⟩ = 0forall1 ≤ n ≤ N. Combiningtheseresults,wecanbound\nn N\nthelasttermontheright-handsideof61usingLemmaC.17\n(cid:34) (cid:35)\n(cid:12)(cid:90) t (cid:12)2\n2λ2E (cid:12) (cid:12) (cid:2) ∇g (Φ ¯λ,k,fSGLD)−∇ U(Φ ¯λ,k,fSGLD +ϵ ,X ) (cid:3) ds (cid:12) (cid:12)\n(cid:12) ϵ s θ s ⌈s⌉ ⌈s⌉ (cid:12)\nkT\nN\n= 2λ2\n(cid:88) E(cid:2)\n|I |2\n(cid:3) +2λ2E(cid:2)\n|R |2\n(cid:3)\nn N\nn=1\n≤ 4e−aλkT/2λ(ψ ¯ E[V(cid:101) (θ )]+ψ(cid:101) ).",
+      "size": 1181,
+      "sentences": 3
+    },
+    {
+      "id": 210,
+      "content": "|I |2\n(cid:3) +2λ2E(cid:2)\n|R |2\n(cid:3)\nn N\nn=1\n≤ 4e−aλkT/2λ(ψ ¯ E[V(cid:101) (θ )]+ψ(cid:101) ). Z 2 0 Z\nConsequently,61isboundedasfollows\nE (cid:20) (cid:12) (cid:12)Φ ¯λ,k,fSGLD −θ ¯fSGLD (cid:12) (cid:12) 2 (cid:21) ≤ 4λL2E(cid:2) φ2(X ) (cid:3) (cid:90) t E (cid:104) (cid:12) (cid:12)θ ¯fSGLD −Φ ¯λ,k,fSGLD (cid:12) (cid:12) 2 (cid:105) ds\n(cid:12) t t (cid:12) 1 0 s s\nkT\n+4e−aλkT/2λ(L2E(cid:2) φ2(X ) (cid:3) ψ ¯ +ψ ¯ )E[V(cid:101) (θ )]\n1 0 Y Z 2 0\n+4λ(L2E(cid:2)\nφ2(X )\n(cid:3)\nψ(cid:101) +ψ(cid:101) ).",
+      "size": 514,
+      "sentences": 2
+    },
+    {
+      "id": 211,
+      "content": "3) ψ ¯ +ψ ¯ )E[V(cid:101) (θ )]\n1 0 Y Z 2 0\n+4λ(L2E(cid:2)\nφ2(X )\n(cid:3)\nψ(cid:101) +ψ(cid:101) ). 1 0 Y Z\nApplyingGrönwall’sinequalityyields\n(cid:20) (cid:21)\nE (cid:12) (cid:12) (cid:12) Φ ¯λ t ,k,fSGLD −θ ¯ t fSGLD (cid:12) (cid:12) (cid:12) 2 ≤ λe4L2 1 E[φ2(X0)] (cid:104) 4e−aλkT/2(L2 1 E(cid:2) φ2(X 0 ) (cid:3) ψ ¯ Y +ψ ¯ Z )E[V(cid:101) 2 (θ 0 )]\n(cid:105)\n+4(L2E(cid:2)\nφ2(X )\n(cid:3)\nψ(cid:101) +ψ(cid:101) ) .",
+      "size": 421,
+      "sentences": 2
+    },
+    {
+      "id": 212,
+      "content": "Y +ψ ¯ Z )E[V(cid:101) 2 (θ 0 )]\n(cid:105)\n+4(L2E(cid:2)\nφ2(X )\n(cid:3)\nψ(cid:101) +ψ(cid:101) ) . 1 0 Y Z\nFinally,weobtainusingλT ≥ 1/2,\n(cid:12) (cid:12)2\nW2(L(θ ¯fSGLD),L(Φ ¯λ,k,fSGLD)) ≤ E(cid:12)Φ ¯λ,k,fSGLD −θ ¯fSGLD(cid:12)\n2 t t (cid:12) t t (cid:12)\n(62)\n≤ λ(e−an/4C ¯ E[V(cid:101) (θ )]+C ¯ ),\n2,1 2 0 2,2\nwhere\nD ¯ 2,1 := 4e4L2 1 E[φ2(X0)] (L2 1 E(cid:2) φ2(X 0 ) (cid:3) ψ ¯ Y +ψ ¯ Z ),\nD ¯ 2,2 := 4e4L2 1 E[φ2(X0)] (L2 1 E(cid:2) φ2(X 0 ) (cid:3) ψ(cid:101) Y +ψ(cid:101) Z ).",
+      "size": 489,
+      "sentences": 2
+    },
+    {
+      "id": 213,
+      "content": "ψ ¯ Z ),\nD ¯ 2,2 := 4e4L2 1 E[φ2(X0)] (L2 1 E(cid:2) φ2(X 0 ) (cid:3) ψ(cid:101) Y +ψ(cid:101) Z ). Theboundforthesecondtermontheright-handsideof52isestablishedinthefollowinglemma. Lemma C.8. Let Assumptions 1, 2, and 3 hold.",
+      "size": 225,
+      "sentences": 4
+    },
+    {
+      "id": 214,
+      "content": "theright-handsideof52isestablishedinthefollowinglemma. Lemma C.8. Let Assumptions 1, 2, and 3 hold. For any 0 < λ < λ given in 23, t ∈ (kT,(k +\nmax\n1)T],\n√\nW (L(Φ ¯λ,k,fSGLD),L(Zλ,fSGLD)) ≤ λ(e−c˙k/2D ¯ E[V(cid:101) (θ )]+D ¯ ),\n1 t t 2,3 4 0 2,4\nwhere\n(cid:18) (cid:19)\n2\nD ¯ = cˆ 1+ (ea/2D ¯ +12),\n2,3 2,1\nc˙\n(63)\ncˆ\nD ¯ = (D ¯ +12c (λ +a−1)+9v (M ¯ )+15),\n2,4 2,2 3 max (cid:101)4 4\n1−exp(−c˙)\n¯ ¯ ¯\nwithD ,D givenin59,cˆ,c˙ giveninLemmaC.6,c givenin80,andM giveninLemmaC.14.",
+      "size": 478,
+      "sentences": 4
+    },
+    {
+      "id": 215,
+      "content": "01)4 4\n1−exp(−c˙)\n¯ ¯ ¯\nwithD ,D givenin59,cˆ,c˙ giveninLemmaC.6,c givenin80,andM giveninLemmaC.14. 2,1 2,2 3 4\n30\n===  31 ===\nProof. This follows by applying Proposition C.5, Lemma C.7, Corollary C.13, and Lemma C.15\ntogetherwiththeargumentsinZhangetal.(2023,ProofofLemma4.8). AdaptingthereasoningofLemmaC.8,weestablishanon-asymptoticW boundbetweenL(Φ\n¯λ,k,fSGLD)\n2 t\nandL(Zλ,fSGLD),presentedinthenextcorollary. t\nCorollary C.9. Let Assumptions 1, 2, and 3 hold.",
+      "size": 463,
+      "sentences": 6
+    },
+    {
+      "id": 216,
+      "content": "2 t\nandL(Zλ,fSGLD),presentedinthenextcorollary. t\nCorollary C.9. Let Assumptions 1, 2, and 3 hold. For any 0 < λ < λ given in 23, t ∈\nmax\n(kT,(k +1)T],\nW (L(Φ ¯λ,k,fSGLD),L(Zλ,fSGLD)) ≤ λ1/4(e−c˙/4D ¯⋆ (E[V(cid:101) (θ )])1/2 +D ¯⋆ ),\n2 t t 2,3 4 0 2,4\nwhere\n√ √\nD ¯⋆ := 2cˆ(1+4/c˙)(ea/8D ¯1/2 +2 2),\n2,3 2,1\n√\n2cˆ √ √ √ (64)\nD ¯⋆ := (D ¯1/2 +2 2c (λ +a−1)1/2 + 3v1/2(M ¯ )+ 15),\n2,4 1−exp(−c˙/2) 2,2 3 max (cid:101)4 4\n¯ ¯ ¯\nwithD ,D givenin59,cˆ,c˙ giveninLemmaC.6,c givenin80,andM giveninLemmaC.14.",
+      "size": 501,
+      "sentences": 4
+    },
+    {
+      "id": 217,
+      "content": "max (cid:101)4 4\n¯ ¯ ¯\nwithD ,D givenin59,cˆ,c˙ giveninLemmaC.6,c givenin80,andM giveninLemmaC.14. 2,1 2,2 3 4\nProof. This follows using Proposition C.5, Lemma C.7, Corollary C.13, and Lemma C.15 in\nZhangetal.(2023,ProofofCorollary4.9). Wecannowderiveanon-asymptoticboundforthefirstthreetermsontheright-handsideof52in\nW distance. 1\nTheorem C.10. Let Assumptions 1, 2, and 3 hold.",
+      "size": 379,
+      "sentences": 6
+    },
+    {
+      "id": 218,
+      "content": "stthreetermsontheright-handsideof52in\nW distance. 1\nTheorem C.10. Let Assumptions 1, 2, and 3 hold. Then, there exist constants c˙,D ,D ,D > 0\n1 2 3\nsuchthat,foreveryβ > 0,for0 < λ < λ ,anyt ∈ (kT,(k +1)T],andk ∈ N,\nmax\nW (L(θ ¯fSGLD),L(Φ ¯λ,k,fSGLD))+W (L(Φ ¯λ,k,fSGLD),L(Zλ,fSGLD))+W (L(Zλ,fSGLD),πfSGLD)\n1 t t 1 t t 1 t β\n√\n≤ D e−c˙λk/2(1+E[|θ |4])+(D +D ) λ,\n1 0 2 3\nwhere\n(cid:20) (cid:18) (cid:90) (cid:19)(cid:21)\nD := 2ec˙/2 (λ1/2(D ¯1/2 +D ¯1/2 +D ¯ +D ¯ )+cˆ)+cˆ 1+ V(cid:101) (θ)π (dθ)\n1 max 2,1 2,2 2,3 2,4 2 β,σ\nRd\n(cid:18) (cid:18) (cid:19)(cid:19)\n1\n= O eD⋆(1+d/β)(1+β) 1+ ,\n1−e−c˙\n(cid:32) (cid:115) (cid:33) (65)\nd\nD := D\n¯1/2\n+D\n¯1/2\n= O 1+ ,\n2 2,1 2,2 β\n(cid:18) (cid:18) (cid:19)(cid:19)\n1\nD := D ¯ +D ¯ = O eD⋆(1+d/β)(1+β) 1+ ,\n3 2,3 2,4 1−e−c˙\n¯ ¯ ¯ ¯\nwith cˆ, c˙ given in Lemma C.6, D , D given in 59 (Lemma C.7), D , D given in 63 (Lemma\n2,1 2,2 2,3 2,4\nC.8),D > 0isindependentofd,β,k.",
+      "size": 909,
+      "sentences": 4
+    },
+    {
+      "id": 219,
+      "content": "D given in 59 (Lemma C.7), D , D given in 63 (Lemma\n2,1 2,2 2,3 2,4\nC.8),D > 0isindependentofd,β,k. ⋆\n31\n===  32 ===\nProof. UsingLemmaC.7,andLemmaC.8inZhangetal. (2023,ProofofLemma4.10),weobtain\nfort ∈ (kT,(k +1)T],\nW (L(θ\n¯fSGLD),L(Φ ¯λ,k,fSGLD))+W\n(L(Φ\n¯λ,k,fSGLD),L(Zλ,fSGLD))\n1 t t 1 t t\n√ (66)\n≤ (D ¯1/2 ++D ¯1/2 +D ¯ +D ¯ ) λ[(e−c˙k/2E[V(cid:101) (θ )]+1)],\n2,1 2,2 2,3 2,4 4 0\n¯ ¯ ¯ ¯\nwhere D , D are given in 59 (Lemma C.7), and D , D are given in 63 (Lemma C.8).",
+      "size": 471,
+      "sentences": 4
+    },
+    {
+      "id": 220,
+      "content": "2,3 2,4 4 0\n¯ ¯ ¯ ¯\nwhere D , D are given in 59 (Lemma C.7), and D , D are given in 63 (Lemma C.8). The\n2,1 2,2 2,3 2,4\nremainderof theproof followsby applying66 andProposition C.5in Zhanget al. (2023, Proofof\nTheorem2.4). An analogous result to Theorem C.10 holds in Wasserstein-2 distance, as stated in the next corol-\nlary. Corollary C.11. Let Assumption 1, 2 and 3 hold.",
+      "size": 374,
+      "sentences": 6
+    },
+    {
+      "id": 221,
+      "content": "tein-2 distance, as stated in the next corol-\nlary. Corollary C.11. Let Assumption 1, 2 and 3 hold. Then, there exists constants c˙,D ,D ,D > 0\n4 5 6\nsuchthat,foreveryβ > 0,0 < λ ≤ λ ,anyt ∈ (kT,(k +1)T],andk ∈ N,\nmax\nW (L(θ ¯fSGLD),L(Φ ¯λ,k,fSGLD))+W (L(Φ ¯λ,k,fSGLD),L(Zλ,fSGLD))+W (L(Zλ,fSGLD),πfSGLD)\n2 t t 2 t t 2 t β\n≤ D e−c˙λk/4(E[|θ |4]+1)+(D +D )λ1/4,\n4 0 5 6\nwhere\n√\nD := 2(λ1/2(D ¯1/2 +D ¯1/2)+λ1/4(D ¯⋆ +D ¯⋆ )+ 2cˆ1/2)\n4 max 2,1 2,2 max 2,3 2,4\n√ (cid:18) (cid:90) (cid:19)\n+ 2cˆ1/2 1+ V(cid:101) (θ)πfSGLD(dθ)\n2 β\nRd\n(cid:18) (cid:18) (cid:19)(cid:19)\n1\n= O eD⋆(1+d/β)(1+β) 1+\n1−e−c˙/2 (67)\n(cid:32) (cid:115) (cid:33)\nd\nD := λ1/4D ¯1/2 +λ1/4D ¯1/2 = O 1+\n5 max 2,1 max 2,2 β\n(cid:18) (cid:18) (cid:19)(cid:19)\n1\nD := D ¯⋆ +D ¯⋆ = O eD⋆(1+d/β)(1+β) 1+ ,\n6 2,3 2,4 1−e−c˙/2\nwhere cˆ, c˙ given in Lemma C.6, D\n¯\n, D\n¯\ngiven in 59 (Lemma C.7), D\n¯⋆\n, D\n¯⋆\ngiven in 64\n2,1 2,2 2,3 2,4\n(CorollaryC.9),D > 0isindependentofd,β,k.",
+      "size": 936,
+      "sentences": 4
+    },
+    {
+      "id": 222,
+      "content": "n 59 (Lemma C.7), D\n¯⋆\n, D\n¯⋆\ngiven in 64\n2,1 2,2 2,3 2,4\n(CorollaryC.9),D > 0isindependentofd,β,k. ⋆\nProof. This follows by applying Lemma C.7, Corollary C.9, and Proposition C.5 in Zhang et al. (2023,ProofofCorollary2.5). ProofofTheorem3.2. Using52andTheoremC.10,weget\nW (L(θfSGLD),π⋆ )\n1 k β,σ\n√ (68)\n≤ D e−c˙λk/2(1+E[|θ |4])+(D +D ) λ+W (πfSGLD,π⋆ ).",
+      "size": 354,
+      "sentences": 6
+    },
+    {
+      "id": 223,
+      "content": "eoremC.10,weget\nW (L(θfSGLD),π⋆ )\n1 k β,σ\n√ (68)\n≤ D e−c˙λk/2(1+E[|θ |4])+(D +D ) λ+W (πfSGLD,π⋆ ). 1 0 2 3 2 β β,σ\n32\n===  33 ===\nThelasttermontheright-handsideof68canbecontrolledasdoneintheproofofProposition3.1\nusingthebounds43and50inCorollaryC.3,andσ4 = β−(1+η) forη > 0,arrivingat\nW2(πfSGLD,π⋆ )\n2 β β,σ\n(cid:34) (cid:32)\n(cid:18)\n(cid:19)d(cid:33)(cid:35)\n≤ 20+8Z β,σ +2e − 2β tr ( ( 1 H + ( η θ ) ) / ) 2 e a b |vol(A)|+e−(β−β0)(u(θ u ∗)+δu)+β0p¯ π 2\nβ c¯−1\n0\n \n(cid:34) exp(β E[R (ϵ)]) (cid:82) e−β0v(θ)dθ\n× logeCAβ−η + (cid:16) A Ac (cid:17)\ne(β−β0)(v(θ\nv\n∗)+δv) |vol(A)|+ (cid:82) (cid:80)n (−βv(θ))i dθ\nA i=1 i!",
+      "size": 625,
+      "sentences": 2
+    },
+    {
+      "id": 224,
+      "content": "η + (cid:16) A Ac (cid:17)\ne(β−β0)(v(θ\nv\n∗)+δv) |vol(A)|+ (cid:82) (cid:80)n (−βv(θ))i dθ\nA i=1 i! (cid:90)\n(69)\n−β E[R(θ,ϵ)]πfSGLD(θ)dθ\nβ\nRd\n \n1 (cid:32) exp(β E[R (ϵ)]) (cid:82) e−β0v(θ)dθ\n+ √ logeCAβ−η + (cid:16) A Ac (cid:17)\n2 e(β−β0)(v(θ\nv\n∗)+δv) |vol(A)|+ (cid:82) (cid:80)n (−βv(θ))i dθ\nA i=1 i! (cid:33)1/2(cid:35)\n(cid:90)\n−β E[R(θ,ϵ)]πfSGLD(θ)dθ . β\nRd\nSince E[R(θ,ϵ)] = O(σ4) and E[R (ϵ)]) = O(σ4), the square root of the right-hand side of 69,\nA\nwhich we denote by D, is O(β−η).",
+      "size": 496,
+      "sentences": 4
+    },
+    {
+      "id": 225,
+      "content": "E[R (ϵ)]) = O(σ4), the square root of the right-hand side of 69,\nA\nwhich we denote by D, is O(β−η). The bound 11 follows by using 69 in 68. In addition, for any\n¯\nδ > 0,ifwechooseλ,k andβ suchthatλ ≤ λ ,and\nmax\nδ ¯ √ δ ¯ δ ¯\nD e−c˙λk/2(1+E[|θ |4]) ≤ , (D +D ) λ ≤ , D ≤ ,\n1 0 2 3\n3 3 3\nthen W (L(θfSGLD),π⋆ ) ≤ δ ¯ .",
+      "size": 316,
+      "sentences": 3
+    },
+    {
+      "id": 226,
+      "content": "δ ¯ δ ¯\nD e−c˙λk/2(1+E[|θ |4]) ≤ , (D +D ) λ ≤ , D ≤ ,\n1 0 2 3\n3 3 3\nthen W (L(θfSGLD),π⋆ ) ≤ δ ¯ . This yields β ≥ (cid:0) 3D0/δ ¯(cid:1) η 1 where D0 contains the remain-\n1 k β,σ\ning terms on the right-hand side of the bound in W in 69, λ ≤\nδ¯2\n∧ λ , and λk ≥\n(cid:16) (cid:17)\n2 9(D2+D3)2 max\n2 ln 3D1(1+E[|θ0|4]) . From65,itfollowsthat\nc˙ δ¯\nD eD⋆(1+d/β)(1+β) (cid:18) 1 (cid:19) (cid:18) D eD⋆(1+d/β)(1+β) (cid:18) 1 (cid:19)(cid:19)\n⋆ ⋆\nk ≥ 1+ ln 1+ .",
+      "size": 457,
+      "sentences": 3
+    },
+    {
+      "id": 227,
+      "content": "(1+β) (cid:18) 1 (cid:19) (cid:18) D eD⋆(1+d/β)(1+β) (cid:18) 1 (cid:19)(cid:19)\n⋆ ⋆\nk ≥ 1+ ln 1+ . δ ¯2c˙ (1−e−c˙)2 δ ¯ 1−e−c˙\nProofofCorollary3.3. UsingtriangleinequalityandCorollaryC.11,weget,foranyt ∈ (kT,(k+\n1)T],andk ∈ N,\nW (L(θfSGLD),π⋆ ) ≤ W (L(θ ¯fSGLD),L(Φ ¯λ,k,fSGLD))+W (L(Φ ¯λ,k,fSGLD),L(Zλ,fSGLD))\n2 k β,σ 2 t t 2 t t\n+W (L(Zλ,fSGLD),πfSGLD)+W (πfSGLD,π⋆ ) (70)\n2 t β 2 β β,σ\n≤ D e−c˙λk/4(E[|θ |4]+1)+(D +D )λ1/4 +W (πfSGLD,π⋆ ).",
+      "size": 443,
+      "sentences": 3
+    },
+    {
+      "id": 228,
+      "content": "LD),πfSGLD)+W (πfSGLD,π⋆ ) (70)\n2 t β 2 β β,σ\n≤ D e−c˙λk/4(E[|θ |4]+1)+(D +D )λ1/4 +W (πfSGLD,π⋆ ). 4 0 5 6 2 β β,σ\nSimilarly as done in the proof of Theorem 3.2, we can use 69 to control the last term in 70. This\n¯\nleadsto12. Inaddition,foranyδ > 0,λ,k andβ suchthatλ ≤ λ ,and\nmax\n¯ ¯ ¯\nδ δ δ\nD e−c˙λk/4(E[|θ |4]+1) ≤ , (D +D )λ1/4 ≤ , D ≤ ,\n4 0 5 6\n3 3 3\n33\n===  34 ===\nthen W (L(θfSGLD),π⋆ ) ≤ δ ¯ .",
+      "size": 402,
+      "sentences": 4
+    },
+    {
+      "id": 229,
+      "content": "4(E[|θ |4]+1) ≤ , (D +D )λ1/4 ≤ , D ≤ ,\n4 0 5 6\n3 3 3\n33\n===  34 ===\nthen W (L(θfSGLD),π⋆ ) ≤ δ ¯ . This yields β ≥ (cid:0) 3D0/δ ¯(cid:1) η 1 where D0 is the same as in the proof\n2 k β,σ\n(cid:16) (cid:17)\nofTheorem3.2,λ ≤ δ¯4 ∧λ ,andλk ≥ 4 ln 3D4(1+E[|θ0|4]) . From67,itfollowsthat\n81(D5+D6)4 max c˙ δ¯\nD eD⋆(1+d/β)(1+β) (cid:18) 1 (cid:19) (cid:18) D eD⋆(1+d/β)(1+β) (cid:18) 1 (cid:19)(cid:19)\n⋆ ⋆\nk ≥ 1+ ln 1+ . δ ¯4c˙ (1−e−c˙/2)4 δ ¯ 1−e−c˙/2\nProofofTheorem3.5.",
+      "size": 466,
+      "sentences": 4
+    },
+    {
+      "id": 230,
+      "content": ") (cid:18) 1 (cid:19)(cid:19)\n⋆ ⋆\nk ≥ 1+ ln 1+ . δ ¯4c˙ (1−e−c˙/2)4 δ ¯ 1−e−c˙/2\nProofofTheorem3.5. We begin by decomposing the expected excess risk using the random vari-\nableZfSGLD ,forwhichL(ZfSGLD) = πfSGLD,andobtain\n∞ ∞ β\nE[g (θfSGLD)]− inf g (θ)\nϵ k ϵ\nθ∈Rd\n(71)\n= (E[g (θfSGLD)]−E[g (Z )])+(E[g (Z )]− inf g (θ)). ϵ k ϵ ∞ ϵ ∞ ϵ\nθ∈Rd\nWeproceedbycontrollingthetwotermsontheright-handsideof71separately. ByusingRaginsky\net al.",
+      "size": 429,
+      "sentences": 5
+    },
+    {
+      "id": 231,
+      "content": "∞ ϵ\nθ∈Rd\nWeproceedbycontrollingthetwotermsontheright-handsideof71separately. ByusingRaginsky\net al. (2017, Lemma 3.5), Remark B.1 with σ2 = β−1+η for η > 0, Lemma C.12, and Corollary\n2\nC.11,thefirsttermontheRHSof71canbeboundedby\nE[g (θfSGLD)]−E[g (Z )] ≤ D#e−c˙λk/4 +D#λ1/4, (72)\nϵ k ϵ ∞ 1 2\nwhere\nD# := D (L E[φ(X )](E[|θ |2]+c (λ +a−1))+L E[φ¯(X )](1+dβ−(1+η)/2)+E[G(cid:101)(ϵ)])\n1 4 1 0 0 1 max 2 0\n×(E[|θ |4]+1),\n0\nD# := (D +CD )\n2 5 6\n×(L E[φ(X )](E[|θ |2]+c (λ +a−1))+L E[φ¯(X )](1+dβ−(1+η)/2)+E[G(cid:101)(ϵ)]),\n1 0 0 1 max 2 0\n(73)\nwithc˙ givenin56,D ,D ,D givenin67,andc givenin79.",
+      "size": 591,
+      "sentences": 3
+    },
+    {
+      "id": 232,
+      "content": "(1+η)/2)+E[G(cid:101)(ϵ)]),\n1 0 0 1 max 2 0\n(73)\nwithc˙ givenin56,D ,D ,D givenin67,andc givenin79. ThesecondtermontheRHSof71\n4 5 6 1\ncanbecontrolledviaRaginskyetal. (2017,Proposition3.4),whichleadsto\nE[g (Z )]− inf g (θ) ≤ D#, (74)\nϵ ∞ ϵ ⋄\nθ∈Rd\nwhere\nd (cid:18) eL E[φ(X )] (cid:18) bβ (cid:19)(cid:19)\nD# := log 1 0 +1 . (75)\n⋄ 2β a d\nUsingtheestimatesfrom72and74in71,weobtain\nE[g (θfSGLD)]− inf g (θ) ≤ D#e−c˙λk/4 +D#λ1/4 +D#.",
+      "size": 429,
+      "sentences": 4
+    },
+    {
+      "id": 233,
+      "content": "2β a d\nUsingtheestimatesfrom72and74in71,weobtain\nE[g (θfSGLD)]− inf g (θ) ≤ D#e−c˙λk/4 +D#λ1/4 +D#. (76)\nϵ k ϵ 1 2 ⋄\nθ∈Rd\nApplying15ontheLHSof76,alongwith16,andchoosingσ4 = β−(1+η),itfollowsthat\nE[g ϵ (θ k fSGLD)]− inf v(θ) ≤ D 1 #e−c˙λk/4 +D 2 #λ1/4 +D 3 #, (77)\nθ∈Rd\n34\n===  35 ===\nwhere\n(cid:18) (cid:18) (cid:19) (cid:19)\n1\nD# = O eD⋆(1+d/β)(1+β) 1+ (1+dβ−(1+η)/2) ,\n1 1−e−c˙/2\n(cid:18) (cid:18) (cid:19) (cid:19)\n1\nD# = O eD⋆(1+d/β)(1+β) 1+ (1+dβ−(1+η)/2) ,\n2 1−e−c˙/2\n(78)\nβ−(1+η) (cid:88) d ∂4u\nD# := D# + inf (θ)(δ δ +δ δ +δ δ )\n3 ⋄ 24 θ∈Rd ∂θ\ni\n∂θ\nj\n∂θ\nk\n∂θ\nl\nij kl ik jl il jk\ni,j,k,l=1\n(cid:0) (cid:1)\n= O (d/β)log(D (β/d+1))+β−(1+η) ,\n⋆\n¯\nwith D > 0 a constant independent of d, β, k. In addition, for δ > 0, if we choose β such\n⋆\nthat D# ≤ δ ¯ /3, then choose λ such that λ ≤ λ and D#λ1/4 ≤ δ ¯ /3, and choose k such that\n3 max 2\nD♯e−c˙λk/4 ≤ δ ¯ /3,weobtain\n1\nE[g (θfSGLD)]− inf v(θ) ≤ δ ¯ .",
+      "size": 905,
+      "sentences": 2
+    },
+    {
+      "id": 234,
+      "content": "¯ /3, and choose k such that\n3 max 2\nD♯e−c˙λk/4 ≤ δ ¯ /3,weobtain\n1\nE[g (θfSGLD)]− inf v(θ) ≤ δ ¯ . ϵ k\nθ∈Rd\nThisyields\n9d (cid:18) eL E[φ(X )] (cid:19)\n1 0\nβ ≥ β ∨ log (b+1)(d+1)\nδ¯ 2δ ¯ ad\n(cid:34) (cid:35) 1\n3 (cid:88) d ∂4u 1+η\n∨ inf (θ)(δ δ +δ δ +δ δ ) ,\n8δ ¯ θ∈Rd ∂θ\ni\n∂θ\nj\n∂θ\nk\n∂θ\nl\nij kl ik jl il jk\ni,j,k,l=1\nwhereβ istherootofthefunctionf♯(β) = log(β+1) − 2δ¯ ,withβ > 0.",
+      "size": 381,
+      "sentences": 2
+    },
+    {
+      "id": 235,
+      "content": "k\n∂θ\nl\nij kl ik jl il jk\ni,j,k,l=1\nwhereβ istherootofthefunctionf♯(β) = log(β+1) − 2δ¯ ,withβ > 0. Since\nδ¯\nβ 9d\nd (cid:18) eL E[φ(X )] (cid:19)\nD♯ ≤ log 1 0 (b+1)(d+1)(β +1)\n3 2β ad\nβ−(1+η) (cid:88) d ∂4u\n+ inf (θ)(δ δ +δ δ +δ δ ),\nij kl ik jl il jk\n24 θ∈Rd ∂θ\ni\n∂θ\nj\n∂θ\nk\n∂θ\nl\ni,j,k,l=1\nwecanensureD♯ ≤ δ ¯ /3byimposing\n3\nd (cid:18) eL E[φ(X )] (cid:19) δ ¯ d δ ¯\n1 0\nlog (b+1)(d+1) ≤ , log(β +1) ≤ ,\n2β ad 9 2β 9\nβ−(1+η) (cid:88) d ∂4u δ ¯\ninf (θ)(δ δ +δ δ +δ δ ) ≤ .",
+      "size": 470,
+      "sentences": 2
+    },
+    {
+      "id": 236,
+      "content": "og (b+1)(d+1) ≤ , log(β +1) ≤ ,\n2β ad 9 2β 9\nβ−(1+η) (cid:88) d ∂4u δ ¯\ninf (θ)(δ δ +δ δ +δ δ ) ≤ . ij kl ik jl il jk\n24 θ∈Rd ∂θ\ni\n∂θ\nj\n∂θ\nk\n∂θ\nl\n9\ni,j,k,l=1\nMoreover, one can verify that λ ≤ δ¯4 ∧λ , and λk ≥ 4 ln 3D 1 ♯ , where c˙ is given explicitly\n81(D♯)4 max c˙ δ¯\n2\ninLemmaC.6. Thisleadsto\nk ≥\nD\n⋆\neD⋆(1+d/β)(1+β) (cid:18)\n1+\n1 (cid:19)\n(cid:0) 1+dβ−(1+η)/2 (cid:1)4\nδ ¯4c˙ (1−e−c˙/2)4\n×ln\n(cid:18) D\n⋆\neD⋆(1+d/β)(1+β) (cid:18)\n1+\n1 (cid:19)\n(cid:0) 1+dβ−(1+η)/2 (cid:1)\n(cid:19)\n.",
+      "size": 488,
+      "sentences": 3
+    },
+    {
+      "id": 237,
+      "content": "2)4\n×ln\n(cid:18) D\n⋆\neD⋆(1+d/β)(1+β) (cid:18)\n1+\n1 (cid:19)\n(cid:0) 1+dβ−(1+η)/2 (cid:1)\n(cid:19)\n. δ ¯ 1−e−c˙/2\n35\n===  36 ===\nC.3 Auxiliary Results\nWe present auxiliary results required for the convergence analysis in Appendix C.2. Their proofs\nfollowthesamelinesasZhangetal.(2023),withZhangetal. (2023,Assumptions1–3)replacedby\nAssumptions 1, 2, and 3. For completeness, we include their statements to make the convergence\nanalysisoffSGLDself-contained. Lemma C.12 (Moment bounds of 25).",
+      "size": 490,
+      "sentences": 6
+    },
+    {
+      "id": 238,
+      "content": "statements to make the convergence\nanalysisoffSGLDself-contained. Lemma C.12 (Moment bounds of 25). Let Assumption 1, 2 and 3 hold. For any 0 < λ ≤ λ\nmax\ngivenin23,k ∈ N,t ∈ (k,k +1],\n(cid:104) (cid:105)\nE |θ ¯fSGLD|2 ≤ (1−aλ(t−k))(1−aλ)k E[|θ |2]+c (λ +a−1),\nt 0 1 max\nwhereaandbaregiveninRemarkB.2,and\nc := c +2dβ−1, c := 2b+8λ L2E(cid:2) φ¯2(X ) (cid:3) (1+σ2d)+4λ E[G(cid:101) 2(ϵ)]. (79)\n1 0 0 max 2 0 max\nMoreover, sup E[|θ ¯fSGLD|2] ≤ E[|θ |2] + c (λ + a−1) < ∞.",
+      "size": 469,
+      "sentences": 5
+    },
+    {
+      "id": 239,
+      "content": "G(cid:101) 2(ϵ)]. (79)\n1 0 0 max 2 0 max\nMoreover, sup E[|θ ¯fSGLD|2] ≤ E[|θ |2] + c (λ + a−1) < ∞. By a similar argument, one\nt>0 t 0 1 max\nobtains\n(cid:104) (cid:105)\nE |θ ¯fSGLD|4 ≤ (1−aλ(t−k))(1−aλ)k E[|θ ¯fSGLD|4 +c (λ +a−1),\nt 0 3 max\nwhere\nM := max{(8ba−1 +48a−1λ (L2E(cid:2) φ¯2(X ) (cid:3) (1+σ2d)+E[G(cid:101) 2(ϵ)]))1/2,\nmax 2 0\n(128a−1λ2\n(L3E(cid:2)\nφ¯3(X )\n(cid:3)E[(1+|ϵ|)3]+E[G(cid:101)\n3(ϵ)]))1/3},\nmax 2 0\nc 2 := 4bM2 +152(1+λ max )3 (80)\n(cid:16) (cid:17)\n× (1+L\n)4E(cid:2)\n(1+φ¯(X ))4\n(cid:3)E[(1+|ϵ|)4]+E[(1+G(cid:101)(ϵ))4]\n(1+M)2,\n2 0\nc := (1+aλ )c +12d2β−2(λ +9a−1).",
+      "size": 589,
+      "sentences": 3
+    },
+    {
+      "id": 240,
+      "content": ")\n(1+φ¯(X ))4\n(cid:3)E[(1+|ϵ|)4]+E[(1+G(cid:101)(ϵ))4]\n(1+M)2,\n2 0\nc := (1+aλ )c +12d2β−2(λ +9a−1). 3 max 2 max\nMoreover,thisimpliessup E[|θ ¯fSGLD|4] < ∞. t>0 t\nProof. This follows along the same lines as Zhang et al. (2023, Lemma 4.2) under our own As-\nsumptions1,2,and3,andusingtheestimatesinRemarkB.1andB.2. Lemma C.12 provides a uniform fourth-moment bound for the process (θ\n¯fSGLD)\nwhich in turn\nt t≥0\nyieldsauniformboundforV(cid:101) (θ\n¯fSGLD),asgiveninthenextcorollary. 4 t\nCorollaryC.13.",
+      "size": 498,
+      "sentences": 7
+    },
+    {
+      "id": 241,
+      "content": "urn\nt t≥0\nyieldsauniformboundforV(cid:101) (θ\n¯fSGLD),asgiveninthenextcorollary. 4 t\nCorollaryC.13. LetAssumption1,2and3hold. Forany0 < λ < λ ,k ∈ N,t ∈ (k,k +1],\nmax\nE[V(cid:101) (θ ¯fSGLD)] ≤ 2(1−aλ)⌊t⌋E[V(cid:101) (θ ¯fSGLD)]+2c (λ +a−1)+2,\n4 t 4 0 3 max\nwherec isgiveninLemmaC.12. 3\nProof. This follows from the definition of the Lyapunov function V(cid:101) together with Lemma C.12.",
+      "size": 388,
+      "sentences": 6
+    },
+    {
+      "id": 242,
+      "content": "oof. This follows from the definition of the Lyapunov function V(cid:101) together with Lemma C.12. 4\nWe establish a drift condition for the flatness Langevin SDE 24, which will be instrumental in\nderivingmomentboundsforthecontinuous-timeprocesΦ\n¯λ,k,fSGLD\ninLemmaC.15. t\n36\n===  37 ===\nLemmaC.14. (Chauetal.,2021,Lemma3.5) LetAssumption1and3hold.",
+      "size": 347,
+      "sentences": 5
+    },
+    {
+      "id": 243,
+      "content": ",k,fSGLD\ninLemmaC.15. t\n36\n===  37 ===\nLemmaC.14. (Chauetal.,2021,Lemma3.5) LetAssumption1and3hold. Then,foreachp ≥ 2,\nθ ∈ Rd,\n∆V(cid:101) (θ)β−1 −⟨∇g (θ),∇V(cid:101) (θ)⟩ ≤ −c¯(p)V(cid:101) (θ)+c˜(p),\np ϵ p p\n¯ ¯\nwherec¯(p) := ap/4andc˜(p) := (3/4)apv (M )withM := (1/3+4b/(3a)+4d/(3aβ)+4(p−\n(cid:101)p p p\n2)/(3aβ))1/2. Lemma C.15. Let Assumption 1, 2 and 3 hold.",
+      "size": 365,
+      "sentences": 6
+    },
+    {
+      "id": 244,
+      "content": "(1/3+4b/(3a)+4d/(3aβ)+4(p−\n(cid:101)p p p\n2)/(3aβ))1/2. Lemma C.15. Let Assumption 1, 2 and 3 hold. For any 0 < λ < λ , t ≥ kT, with k ∈ N, the\nmax\nfollowinginequalityholds\nE[V(cid:101) (Φ ¯λ,k,fSGLD)] ≤ e−λta/2E[V(cid:101) (θ )]+c (λ +a−1)+3v (M ¯ )+1,\n2 t 2 0 1 max (cid:101)2 2\nwherec isgiveninLemmaC.12.",
+      "size": 307,
+      "sentences": 4
+    },
+    {
+      "id": 245,
+      "content": "a/2E[V(cid:101) (θ )]+c (λ +a−1)+3v (M ¯ )+1,\n2 t 2 0 1 max (cid:101)2 2\nwherec isgiveninLemmaC.12. Inaddition,thefollowinginequalityholds\n1\nE[V(cid:101) (Φ ¯λ,k,fSGLD)] ≤ 2e−aλtE[V(cid:101) (θ ¯fSGLD)]+3v (M ¯ )+2c (λ +a−1)+2,\n4 t 4 0 (cid:101)4 4 3 max\n¯ ¯\nwhereM andM aregiveninLemmaC.14,andc isgiveninLemmaC.12. 2 4 3\nProof. This follows by applying Lemma C.12, Corollary C.13, and Lemma C.14 in Zhang et al. (2023,ProofofLemma4.5). LemmaC.16. LetAssumption1,2and3hold,andletλ begivenin23.",
+      "size": 493,
+      "sentences": 7
+    },
+    {
+      "id": 246,
+      "content": "14 in Zhang et al. (2023,ProofofLemma4.5). LemmaC.16. LetAssumption1,2and3hold,andletλ begivenin23. Then,foranyt > 0,\nmax\n(cid:104) (cid:105) (cid:104) (cid:105)\nE |θ ¯fSGLD −θ ¯fSGLD|2 ≤ λ e−λa⌊t⌋ψ ¯ E[V(cid:101) (θ )]+ψ(cid:101) ,\n⌊t⌋ t Y 2 0 Y\nwhere\nψ ¯ := 2λ L2E[φ2(X )],\nY max 1 0\n(81)\nψ(cid:101) := 2c L2λ E[φ2(X )](λ +a−1)+4λ L2E[φ¯2(X )]+4λ E[G(cid:101) 2(ϵ)]+2dβ−1,\nY 1 1 max 0 max max 2 0 max\nwithc giveninLemmaC.12. 1\nProof.",
+      "size": 435,
+      "sentences": 6
+    },
+    {
+      "id": 247,
+      "content": "[φ¯2(X )]+4λ E[G(cid:101) 2(ϵ)]+2dβ−1,\nY 1 1 max 0 max max 2 0 max\nwithc giveninLemmaC.12. 1\nProof. This follows by applying Remark B.1 and Lemma C.12 in Zhang et al. (2023, Proof of\nLemmaA.2). Lemma C.17. Let Assumption 1, 2 and 3 hold.",
+      "size": 237,
+      "sentences": 6
+    },
+    {
+      "id": 248,
+      "content": "d Lemma C.12 in Zhang et al. (2023, Proof of\nLemmaA.2). Lemma C.17. Let Assumption 1, 2 and 3 hold. For any t ∈ (kT,(k + 1)T], with k,N ∈ N and\nn = 1,...,N +1,whereN +1 ≤ T,oneobtains\nE[|∇g (Φ ¯λ,k,fSGLD)−∇ U(Φ ¯λ,k,fSGLD +ϵ ,X )|2] ≤ e−aλt/2ψ ¯ E[V(cid:101) (θ )]+ψ(cid:101) ,\nϵ t θ t kT+n kT+n Z 2 0 Z\nwhere\nψ ¯ = 8L2E[(φ(X )+φ(E[X ]))2|X −E[X ]|2],\nZ 2 0 0 0 0\n(82)\nψ(cid:101) = 8L2E[(φ(X )+φ(E[X ]))2|X −E[X ]|2](3v (M ¯ )+c (λ +a−1)+1+σ2d),\nZ 2 0 0 0 0 (cid:101)2 2 1 max\n¯\nwithM andc giveninLemmaC.14andLemmaC.12,respectively.",
+      "size": 532,
+      "sentences": 5
+    },
+    {
+      "id": 249,
+      "content": "a−1)+1+σ2d),\nZ 2 0 0 0 0 (cid:101)2 2 1 max\n¯\nwithM andc giveninLemmaC.14andLemmaC.12,respectively. 2 1\n37\n===  38 ===\nProof. We adapt the Zhang et al. (2023, Proof of Lemma A.1). First, we define the filtration\nJ = Fλ ∨X ∨H .",
+      "size": 226,
+      "sentences": 5
+    },
+    {
+      "id": 250,
+      "content": "e adapt the Zhang et al. (2023, Proof of Lemma A.1). First, we define the filtration\nJ = Fλ ∨X ∨H . Then, the result follows by an application of Lemma C.18, Remark B.1,\nt ∞ ⌊t⌋ ⌊ϵ⌋\nandLemmaC.15\n(cid:20) (cid:21)\n(cid:12) (cid:12)2\nE (cid:12)∇g (Φ ¯λ,k,fSGLD)−∇ U(Φ ¯λ,k,fSGLD +ϵ ,X )(cid:12)\n(cid:12) ϵ t θ t kT+n kT+n (cid:12)\n(cid:20) (cid:20) (cid:12) (cid:21)(cid:21)\n= E E\n(cid:12)\n(cid:12)∇g (Φ ¯λ,k,fSGLD)−∇ U(Φ ¯λ,k,fSGLD +ϵ ,X )\n(cid:12)\n(cid:12)\n2(cid:12)\n(cid:12)J\n(cid:12) ϵ t θ t kT+n kT+n (cid:12) kT\n(cid:12)\n(cid:34) (cid:34)(cid:12) (cid:34) (cid:12) (cid:35)\n(cid:12) (cid:12)\n= E E (cid:12)E ∇ U(Φ ¯λ,k,fSGLD +ϵ ,X )(cid:12)J\n(cid:12) θ t kT+n kT+n (cid:12) kT\n(cid:12) (cid:12)\n(cid:12)2(cid:12) (cid:35)(cid:35)\n(cid:12) (cid:12)\n−∇ U(Φ ¯λ,k,fSGLD +ϵ ,X )(cid:12) (cid:12)J\nθ t kT+n kT+n (cid:12) (cid:12) kT\n(cid:12) (cid:12)\n(cid:34) (cid:34)(cid:12)\n(cid:12)\n≤ 4E E (cid:12)∇ U(Φ ¯λ,k,fSGLD +ϵ ,X )\n(cid:12) θ t kT+n kT+n\n(cid:12)\n(cid:12)2(cid:12) (cid:35)(cid:35)\n(cid:12) (cid:12)\n−∇ U(Φ ¯λ,k,fSGLD +ϵ ,E[X |J ])(cid:12) (cid:12)J\nθ t kT+n kT+n kT (cid:12) (cid:12) kT\n(cid:12) (cid:12)\n(cid:18) (cid:20)(cid:18) (cid:19)(cid:21)(cid:19)\n≤ 8L2E(cid:2) (φ(X )+φ(E[X ]))2|X −E[X ]|2 (cid:3) σ2d+E 1+ (cid:12) (cid:12)Φ ¯λ,k,fSGLD (cid:12) (cid:12) 2\n2 0 0 0 0 (cid:12) t (cid:12)\n≤ 8L2E(cid:2) (φ(X )+φ(E[X ]))2|X −E[X ]|2 (cid:3)\n2 0 0 0 0\n× (cid:0) e−λta/2E[V (θ )]+c (λ +a−1)+3v (M ¯ )+1+σ2d (cid:1) .",
+      "size": 1430,
+      "sentences": 4
+    },
+    {
+      "id": 251,
+      "content": "X ]))2|X −E[X ]|2 (cid:3)\n2 0 0 0 0\n× (cid:0) e−λta/2E[V (θ )]+c (λ +a−1)+3v (M ¯ )+1+σ2d (cid:1) . 2 0 1 max (cid:101)2 2\nInthenextlemma,Lp denotestheusualspaceofp-integrablereal-valuedrandomvariablesfor\n1 ≤ p < ∞. Lemma C.18. Let F,X,H ⊂ M be sigma-algebras. Let X,Y be Rd-valued random vectors in\nLp foranyp ≥ 1suchthatY ismeasurablewithrespecttoF∨X ∨H. Then,\nE1/p[|X −E[X|F∨X ∨H]|p|X ∨H] ≤ 2E1/p[|X −Y|p|X ∨H]. Proof. ThisfollowsbyapplyingChauetal.",
+      "size": 452,
+      "sentences": 8
+    },
+    {
+      "id": 252,
+      "content": "∨H. Then,\nE1/p[|X −E[X|F∨X ∨H]|p|X ∨H] ≤ 2E1/p[|X −Y|p|X ∨H]. Proof. ThisfollowsbyapplyingChauetal. (2019,Lemma6.1)toF∨N,wherethesigma-algebra\nN := X ∨H. Appendix D Experimental details\nD.1 Details for Section 4.2\nD.1.1 Softwareandhardwareenvironments\nWe conduct all experiments with PYTHON 3.10.9 and PYTORCH 1.13.1, CUDA 11.6.2, NVIDIA\nDriver510.10onUbuntu22.04.1LTSserverwhichequippedwithAMDRyzenThreadripperPRO\n5975WX,NVIDIAA100GPUs.",
+      "size": 437,
+      "sentences": 6
+    },
+    {
+      "id": 253,
+      "content": "Driver510.10onUbuntu22.04.1LTSserverwhichequippedwithAMDRyzenThreadripperPRO\n5975WX,NVIDIAA100GPUs. 38\n===  39 ===\nD.1.2 Implementationdetails\nWe follow standard data preprocessing and augmentation strategies as adopted in prior work (Li\net al., 2017; Wei et al., 2022) on noisy-label benchmarks. For CIFAR-10N and CIFAR-100N, we\napplyrandomcroppingwithpadding,randomhorizontalflipping,andnormalizationusingdataset-\nspecificstatistics. ForWebVision,wefollowthepreprocessingprotocolofKodge(2024).",
+      "size": 495,
+      "sentences": 4
+    },
+    {
+      "id": 254,
+      "content": "zationusingdataset-\nspecificstatistics. ForWebVision,wefollowthepreprocessingprotocolofKodge(2024). Regardingmodelarchitectures,weemploytheCIFAR-specificvariantsofResNet-34andResNet-\n50 when training on CIFAR-10N and CIFAR-100N, where the first convolution layer is replaced\nby a 3×3 kernel with stride 1 (instead of the 7×7 stride-2 convolution and max pooling used in\nImageNet models) to accommodate the smaller 32×32 resolution.",
+      "size": 431,
+      "sentences": 3
+    },
+    {
+      "id": 255,
+      "content": "2 convolution and max pooling used in\nImageNet models) to accommodate the smaller 32×32 resolution. For WebVision, we adopt the\nstandardResNetimplementationsasprovidedforImageNet-scaledata. For both training-from-scratch and fine-tuning experiments, we use the same hyperparameter\nsearch spaces. Table 4 summarizes the ranges considered for each optimizer.",
+      "size": 356,
+      "sentences": 4
+    },
+    {
+      "id": 256,
+      "content": "the same hyperparameter\nsearch spaces. Table 4 summarizes the ranges considered for each optimizer. We do not employ\nany early stopping or pruning strategy during the Optuna-based hyperparameter tuning, ensuring\nthat each trial is fully evaluated to its final epoch. We performed the same number of hyper-\nparameter trials for all methods so that the search-space exploration budget (number of trials) was\nidentical.",
+      "size": 416,
+      "sentences": 4
+    },
+    {
+      "id": 257,
+      "content": "rials for all methods so that the search-space exploration budget (number of trials) was\nidentical. Because each SAM update requires two gradient evaluations, this design implies that,\nfor the same number of trials and training epochs, SAM consumed roughly twice the wall-clock\ncompute time of the other baselines. Thus our tuning protocol is at least as favorable to SAM as\nto the proposed fSGLD, ensuring that our reported improvements are not due to weaker tuning of\nSAM.",
+      "size": 474,
+      "sentences": 3
+    },
+    {
+      "id": 258,
+      "content": "to the proposed fSGLD, ensuring that our reported improvements are not due to weaker tuning of\nSAM. For SGLD and fSGLD (β fixed), we set a large inverse temperature β = 1014. This follows\nthe common heuristic of using a near-zero temperature to minimize exploration when employing\nLangevin Dynamics as a optimizer for a given objective. For fSGLD (β-σ coupled), we leverage\nour theoretical analysis as a practical tuning strategy.",
+      "size": 430,
+      "sentences": 4
+    },
+    {
+      "id": 259,
+      "content": "tive. For fSGLD (β-σ coupled), we leverage\nour theoretical analysis as a practical tuning strategy. We only search for the optimal perturbation\nscale σ and then deterministically set β via our theoretically-derived relationship, β = σ−4/(1+η)\nwith η = 0.01. This is a practical choice, as a larger η would cause β to become too small,\nallowing the Langevin noise term to overwhelm the gradient term and turning the dynamics into\na near-random exploration. A small η thus ensures stable optimization.",
+      "size": 499,
+      "sentences": 5
+    },
+    {
+      "id": 260,
+      "content": "nd turning the dynamics into\na near-random exploration. A small η thus ensures stable optimization. This principled approach\nsignificantlysimplifiesthesearchspace. Table4: Hyperparametersearchspacesfordifferentoptimizers.",
+      "size": 221,
+      "sentences": 4
+    },
+    {
+      "id": 261,
+      "content": "ch\nsignificantlysimplifiesthesearchspace. Table4: Hyperparametersearchspacesfordifferentoptimizers. Optimizer Learningrate Momentum Weightdecay Otherhyperparameters\nSGD 10[−2,0] {0.1,0.9} 5×10−4 –\nAdamW 10[−4,−2] – 10−2 [β ,β ] ∈ {[0.8,0.95],[0.99,0.999]}\n1 2\nSGLD 10[−2,0] – 5×10−4 β = 1014\nSAM 10[−2,0] {0.1,0.9} 5×10−4 ρ ∈ 10[−3,−1]\nfSGLD(β fixed) 10[−2,0] – 5×10−4 β = 1014, σ ∈ 10[−3,−2]\nfSGLD(β-σ coupled) 10[−2,0] – 5×10−4 β = σ−4/1.01, σ ∈ 10[−3,−2]\n39\n===  40 ===\nD.2 Details for Section 4.5\nFortheHessianspectrumanalysis,weusethebest-performingResNet-34modeltrainedonCIFAR-\n10N under each optimizer setting.",
+      "size": 617,
+      "sentences": 3
+    },
+    {
+      "id": 262,
+      "content": "trumanalysis,weusethebest-performingResNet-34modeltrainedonCIFAR-\n10N under each optimizer setting. Given a trained network f and loss function L, we compute\nθ\nHessian-vectorproducts(HVPs)byapplyingautomaticdifferentiationtothescalarproduct∇ L⊤v\nθ\nfor a random vector v. For eigenvalue computation, we adopt the Lanczos algorithm (Lin et al.,\n2016) as implemented in scipy.sparse.linalg.eigsh, which allows us to approximate\nthe top-k eigenvalues without explicitly forming the Hessian.",
+      "size": 486,
+      "sentences": 2
+    },
+    {
+      "id": 263,
+      "content": "eigsh, which allows us to approximate\nthe top-k eigenvalues without explicitly forming the Hessian. In all reported results, we compute\nup to the top 50 eigenvalues. As a complementary measure of curvature, we estimate the trace\nof the Hessian using Hutchinson’s stochastic estimator (Avron & Toledo, 2011) with Rademacher\nrandomvectors:\nm\n1 (cid:88)\ntr(H(θ)) ≈ z⊤H(θ)z , z ∼ Unif{±1}d,\nm i i i\ni=1\nwherem = 1000inourexperimentsandddenotethenumberofmodelparameters.",
+      "size": 465,
+      "sentences": 3
+    },
+    {
+      "id": 264,
+      "content": "θ)z , z ∼ Unif{±1}d,\nm i i i\ni=1\nwherem = 1000inourexperimentsandddenotethenumberofmodelparameters. TheanalysisisconductedontheCIFAR-10N,wherewerandomlysubsampleatmost1,000exam-\nples to reduce computational overhead. Eigenvalue computations are performed with a tolerance\nof10−4 andamaximumof500iterationsfortheLanczossolver. 40",
+      "size": 328,
+      "sentences": 4
+    }
+  ]
+}

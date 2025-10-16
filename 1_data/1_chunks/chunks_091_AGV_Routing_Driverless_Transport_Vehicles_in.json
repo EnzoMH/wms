@@ -1,0 +1,831 @@
+{
+  "source": "ArXiv",
+  "filename": "091_AGV_Routing_Driverless_Transport_Vehicles_in.pdf",
+  "domain": "AGV",
+  "total_chars": 45893,
+  "total_chunks": 137,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\nUnder consideration for publication in Theory and Practice of Logic Programming 1\nRouting Driverless Transport Vehicles in Car\nAssembly with Answer Set Programming\nMartin Gebser, Philipp Obermeier, Torsten Schaub\nUniversity of Potsdam, Germany\nMichel Ratsch-Heitmann, Mario Runge\nMercedes-Benz Ludwigsfelde GmbH, Germany\nsubmitted [n/a]; revised [n/a]; accepted [n/a]\nAbstract\nAutomated storage and retrieval systems are principal components of modern production and\nwarehousefacilities.Inparticular,automatedguidedvehiclesnowadayssubstitutehuman-operated\npallettrucksintransportingproductionmaterialsbetweenstoragelocationsandassemblystations.",
+      "size": 655,
+      "sentences": 1
+    },
+    {
+      "id": 2,
+      "content": "n-operated\npallettrucksintransportingproductionmaterialsbetweenstoragelocationsandassemblystations. Whilelow-levelcontrolsystemstakecareofnavigatingsuchdriverlessvehiclesalongprogrammed\nroutes and avoid collisions even under unforeseen circumstances, in the common case of multiple\nvehicles sharing the same operation area, the problem remains how to set up routes such that a\ncollection of transport tasks is accomplished most effectively.",
+      "size": 440,
+      "sentences": 2
+    },
+    {
+      "id": 3,
+      "content": "ns how to set up routes such that a\ncollection of transport tasks is accomplished most effectively. We address this prevalent problem\nin the context of car assembly at Mercedes-Benz Ludwigsfelde GmbH, a large-scale producer\nof commercial vehicles, where routes for automated guided vehicles used in the production\nprocess have traditionally been hand-coded by human engineers.",
+      "size": 376,
+      "sentences": 2
+    },
+    {
+      "id": 4,
+      "content": "ided vehicles used in the production\nprocess have traditionally been hand-coded by human engineers. Such ad-hoc methods may\nsuffice as long as a running production process remains in place, while any change in the factory\nlayout or production targets necessitates tedious manual reconfiguration, not to mention the\nmissing portability between different production plants.",
+      "size": 371,
+      "sentences": 2
+    },
+    {
+      "id": 5,
+      "content": "manual reconfiguration, not to mention the\nmissing portability between different production plants. Unlike this, we propose a declarative\napproach based on Answer Set Programming to optimize the routes taken by automated guided\nvehicles for accomplishing transport tasks. The advantages include a transparent and executable\nproblem formalization, provable optimality of routes relative to objective criteria, as well as\nelaboration tolerance towards particular factory layouts and production targets.",
+      "size": 500,
+      "sentences": 3
+    },
+    {
+      "id": 6,
+      "content": "iteria, as well as\nelaboration tolerance towards particular factory layouts and production targets. Moreover, we\ndemonstrate that our approach is efficient enough to deal with the transport tasks evolving in\nrealistic production processes at the car factory of Mercedes-Benz Ludwigsfelde GmbH.",
+      "size": 293,
+      "sentences": 2
+    },
+    {
+      "id": 7,
+      "content": "s evolving in\nrealistic production processes at the car factory of Mercedes-Benz Ludwigsfelde GmbH. Under consideration for publication in Theory and Practice of Logic Programming (TPLP)\nKEYWORDS:automatedguidedvehiclerouting,carassemblyoperations,answersetprogramming\n1 Introduction\nAutomated guided vehicles play a key role in modern industries, let it be in warehouses,\nmines, or as in our case production facilities.",
+      "size": 420,
+      "sentences": 2
+    },
+    {
+      "id": 8,
+      "content": "role in modern industries, let it be in warehouses,\nmines, or as in our case production facilities. Most of the time, however, these vehicles\nare programmed by human engineers to execute specific tasks. This makes it impossible\nto quickly reassign tasks in case of breakdowns or to easily react to changing produc-\ntion requirements, not to mention the missing portability between different production\nplants and factory layouts.",
+      "size": 429,
+      "sentences": 3
+    },
+    {
+      "id": 9,
+      "content": "ts, not to mention the missing portability between different production\nplants and factory layouts. The lack of elaboration tolerance does not only lead to high\nexpenditures, but the resulting rigid control also rules out any flexible fleet management. 8102\nrpA\n72\n]IA.sc[\n1v73401.4081:viXra\n===  2 ===\n2 M. Gebser, P. Obermeier, M. Ratsch-Heitmann, M. Runge, T. Schaub\nFig. 1.",
+      "size": 377,
+      "sentences": 4
+    },
+    {
+      "id": 10,
+      "content": "01.4081:viXra\n===  2 ===\n2 M. Gebser, P. Obermeier, M. Ratsch-Heitmann, M. Runge, T. Schaub\nFig. 1. Real-world factory layout with transport corridors and directions indicated by\narrows\nIn particular, no conclusions can be drawn about the effectiveness or even optimality of\npre-programmed vehicle routes.",
+      "size": 305,
+      "sentences": 3
+    },
+    {
+      "id": 11,
+      "content": "nclusions can be drawn about the effectiveness or even optimality of\npre-programmed vehicle routes. In view of these common circumstances, we address the challenge of devising a new\ncontrol system for automated guided vehicles supplying the assembly lines at the car\nfactory of Mercedes-Benz Ludwigsfelde GmbH, which is expected to be flexible enough\nto adapt to malfunctions and emerging requirements, and whose quality of operation\ncan be measured and optimized relative to given objectives.",
+      "size": 493,
+      "sentences": 2
+    },
+    {
+      "id": 12,
+      "content": "rements, and whose quality of operation\ncan be measured and optimized relative to given objectives. To make our specific task\nmore precise, consider the retouched layout of an assembly hall at the production plant of\nMercedes-Benz Ludwigsfelde GmbH in Figure 1. The overall goal is to guarantee that all\ncar components are at their designated place next to the assembly line when they are due\nfor installation.",
+      "size": 410,
+      "sentences": 3
+    },
+    {
+      "id": 13,
+      "content": "ponents are at their designated place next to the assembly line when they are due\nfor installation. The corresponding transport tasks are accomplished by a heterogeneous\nfleet of automated guided vehicles that fetch the necessary components from several\nstorage areas. For instance, a vehicle may first halt at some storage location to load\nproduction material, then move on to an assembly station in need of the material, and\nfrom there cart off leftover material to a recycling facility.",
+      "size": 489,
+      "sentences": 3
+    },
+    {
+      "id": 14,
+      "content": "station in need of the material, and\nfrom there cart off leftover material to a recycling facility. The sketched task thus involves\nstopovers at three distinct locations, between which the vehicle must pick a route without\ngetting blocked by others, where dedicated parking spaces are included in the layout to\nlet vehicles make room. Notably, the regular production process runs periodically, so that\nthe given transport tasks have to be repeatedly executed in fixed intervals.",
+      "size": 478,
+      "sentences": 3
+    },
+    {
+      "id": 15,
+      "content": "periodically, so that\nthe given transport tasks have to be repeatedly executed in fixed intervals. To make the execution of transport tasks more effective, we propose to perform task as-\nsignmentandvehicleroutingbymeansofAnswerSetProgramming(ASP;Lifschitz1999),\ngiven its declarative and elaboration tolerant approach to combinatorial multi-objective\nproblem solving.",
+      "size": 367,
+      "sentences": 2
+    },
+    {
+      "id": 16,
+      "content": "its declarative and elaboration tolerant approach to combinatorial multi-objective\nproblem solving. This results in a transparent and easily adjustable problem description\nalong with optimal solutions relative to objective criteria. Regarding performance, it also\nturns out that our approach is efficient enough to meet the industrial-scale requirements\nof production processes at the car factory of Mercedes-Benz Ludwigsfelde GmbH.",
+      "size": 432,
+      "sentences": 3
+    },
+    {
+      "id": 17,
+      "content": "l-scale requirements\nof production processes at the car factory of Mercedes-Benz Ludwigsfelde GmbH. Thepaperisstructuredasfollows.Inthenextsection,westartbyformalizingautomated\nguided vehicle routing for transport tasks evolving in production processes at the car\nfactory of Mercedes-Benz Ludwigsfelde GmbH. Once this is accomplished, we provide in\nSection 3 a corresponding ASP encoding, incorporating the hard and soft constraints on\nsolutions.",
+      "size": 446,
+      "sentences": 3
+    },
+    {
+      "id": 18,
+      "content": "n\nSection 3 a corresponding ASP encoding, incorporating the hard and soft constraints on\nsolutions. In Section 4, we empirically evaluate our approach on use cases designed to\ntest the practical applicability of control systems for automated guided vehicles. Finally,\nwe conclude the paper with a brief discussion of related work and the achieved results.",
+      "size": 355,
+      "sentences": 3
+    },
+    {
+      "id": 19,
+      "content": "s. Finally,\nwe conclude the paper with a brief discussion of related work and the achieved results. ===  3 ===\nRouting Driverless Transport Vehicles in Car Assembly with ASP 3\n2 Problem Formalization\nIn what follows, we formally describe the automated guided vehicle routing scenarios\nfaced in production processes at the car factory of Mercedes-Benz Ludwigsfelde GmbH,\nthe conditions on their solutions, as well as objective criteria concerning solution quality\ndevised together with production engineers at Mercedes-Benz Ludwigsfelde GmbH.",
+      "size": 541,
+      "sentences": 2
+    },
+    {
+      "id": 20,
+      "content": "ing solution quality\ndevised together with production engineers at Mercedes-Benz Ludwigsfelde GmbH. An automated guided vehicle routing scenario is specified in terms of a directed graph\n(V,E), where the nodes V stand for locations of interest and the edges E⊆V ×V provide\nconnections between them, along with a set T of transport tasks. Among the nodes in V,\nwe distinguish particular halt and park nodes, given by h(V)⊆V and p(V)⊆V such that\nh(V)∩p(V)=∅ holds.",
+      "size": 462,
+      "sentences": 3
+    },
+    {
+      "id": 21,
+      "content": "distinguish particular halt and park nodes, given by h(V)⊆V and p(V)⊆V such that\nh(V)∩p(V)=∅ holds. Moreover, each task t∈T has an associated non-empty sequence\nhs ,...,s i of subtasks, whose elements are halt nodes, i.e., {s ,...,s }⊆h(V), and we\n1 m 1 m\nwrites(t)=mandt[i]=s ,for1≤i≤m,torefertothenumberoforindividualsubtasks,\ni\nrespectively, associated with t. In addition, every edge, halt or park node, and task is\ncharacterizedbysomepositiveinteger,denotedbyd(x)forx∈E∪h(V)∪p(V)∪T,where\nd(e) expresses the move duration for a connection e∈E, d(v) provides the halt or park\nduration for a location v∈h(V)∪p(V), and d(t) constitutes the deadline for completing\na task t∈T.",
+      "size": 676,
+      "sentences": 2
+    },
+    {
+      "id": 22,
+      "content": "k\nduration for a location v∈h(V)∪p(V), and d(t) constitutes the deadline for completing\na task t∈T. Finally, a set C of vehicles usable for transport tasks is given together with,\nfor each c∈C, an initial location l(c)∈V such that l(c)6=l(c0) when c0∈C\\{c}.",
+      "size": 257,
+      "sentences": 2
+    },
+    {
+      "id": 23,
+      "content": "given together with,\nfor each c∈C, an initial location l(c)∈V such that l(c)6=l(c0) when c0∈C\\{c}. The\nvehiclescanaccomplishtransporttasksbytakingconnectionsandhaltingatthelocations\nofrespectivesubtasks,whosehaltdurationsreflecttimespenttooperatecarriedmaterials\n(e.g., loading or unloading), while further stops are admitted at park nodes only, included\nforallowingavehicletowaitincaseitssubsequentrouteistemporarilyblockedbyothers.",
+      "size": 433,
+      "sentences": 2
+    },
+    {
+      "id": 24,
+      "content": "nodes only, included\nforallowingavehicletowaitincaseitssubsequentrouteistemporarilyblockedbyothers. Example 1\nThe scenario depicted (in black) in Figure 2 consists of the nodes V ={1,...,7} and\nedges E={(1,2),(1,7),(2,3),(3,4),(4,5),(4,7),(5,6),(6,1),(7,1),(7,4)}.",
+      "size": 264,
+      "sentences": 2
+    },
+    {
+      "id": 25,
+      "content": "f the nodes V ={1,...,7} and\nedges E={(1,2),(1,7),(2,3),(3,4),(4,5),(4,7),(5,6),(6,1),(7,1),(7,4)}. The halt nodes\nh(V)={2,4,5,6}areindicatedbydiamondsinFigure2,andtheparknodeinp(V)={7}\nismarkedbyasquare.ThetwotasksinT ={t ,t }includethreesubtaskseach,wherethe\n1 2\nrespective sequences of halt nodes, ht [1]=5,t [2]=4,t [3]=2i and ht [1]=6,t [2]=4,\n1 1 1 2 2\nt [3]=2i, are listed within red or blue labels, respectively, near the subtasks.",
+      "size": 439,
+      "sentences": 2
+    },
+    {
+      "id": 26,
+      "content": "t [2]=4,\n1 1 1 2 2\nt [3]=2i, are listed within red or blue labels, respectively, near the subtasks. Similarly,\n2\nthe initial locations l(c )=1 and l(c )=2 of the vehicles in C={c ,c } are indicated\n1 2 1 2\nby corresponding labels. While Figure 2 does not display the durations, we assume a\nuniform move duration d(e)=4 per connection e∈E, a halt duration d(v)=3 at each\nof the four halt nodes v∈{2,4,5,6}, and a park duration d(7)=2 at the park node 7.",
+      "size": 452,
+      "sentences": 3
+    },
+    {
+      "id": 27,
+      "content": "n d(v)=3 at each\nof the four halt nodes v∈{2,4,5,6}, and a park duration d(7)=2 at the park node 7. Moreover, the deadline for both tasks, t and t , is given by d(t )=d(t )=60 and also\n1 2 1 2\nomitted in Figure 2 for better clarity. (cid:4)\nA solution to a guided vehicle routing scenario comprises a task assignment α:T →C\nalong with a strict partial order ≺ on T such that either t≺t0 or t0 ≺t holds when\nα(t)=α(t0) for tasks t6=t0.",
+      "size": 434,
+      "sentences": 3
+    },
+    {
+      "id": 28,
+      "content": "a strict partial order ≺ on T such that either t≺t0 or t0 ≺t holds when\nα(t)=α(t0) for tasks t6=t0. In addition, for each vehicle c∈C, it contains a route π(c)=\nhr ,...,r i, where {r ,...,r }⊆E∪h(V)∪p(V), subject to the following conditions:\n1 k 1 k\n1. If r =(v,v0), for (v,v0)∈E, or r =v, for v∈h(V)∪p(V), holds for some 1≤i≤k,\ni i\nthen we require that r =(v00,v) or r =v, where we let r =l(c). i−1 i−1 0\n2.",
+      "size": 408,
+      "sentences": 4
+    },
+    {
+      "id": 29,
+      "content": "lds for some 1≤i≤k,\ni i\nthen we require that r =(v00,v) or r =v, where we let r =l(c). i−1 i−1 0\n2. For any subtask t[j] of a task t∈T with α(t)=c, we define its completion index by\ng(t[j])=min{i|1≤i≤k,r =t[j],max({g(t[j−1])|1<j}∪{g(t0[s(t0)])|t0≺t})<i}\ni\nP\nand require that g(t[j])≤ d(r )≤d(t).",
+      "size": 295,
+      "sentences": 3
+    },
+    {
+      "id": 30,
+      "content": "1≤i≤k,r =t[j],max({g(t[j−1])|1<j}∪{g(t0[s(t0)])|t0≺t})<i}\ni\nP\nand require that g(t[j])≤ d(r )≤d(t). In words, the subtasks of all\n1≤i≤g(t[j]) i\n===  4 ===\n4 M. Gebser, P. Obermeier, M. Ratsch-Heitmann, M. Runge, T. Schaub\n8 t 1 [2]:40 t 2 [2]:3412\n3 4 5 t 1 [1]:17\n37 14\n38 4410 31\n4 33 7 6 21 16\n42 48 4 27\n52\nt [3]:55 29 25\nt 1 [3]:49 2 1 6 t 2 [1]:19\n2\nc :0 46 c :0 23\n2 1\nFig. 2.",
+      "size": 383,
+      "sentences": 3
+    },
+    {
+      "id": 31,
+      "content": "33 7 6 21 16\n42 48 4 27\n52\nt [3]:55 29 25\nt 1 [3]:49 2 1 6 t 2 [1]:19\n2\nc :0 46 c :0 23\n2 1\nFig. 2. Optimal routes to accomplish two transport tasks with three subtasks each by\ntwo vehicles\ntasks assigned to a vehicle c have to be completed in the order given by ≺ (as\nwell as sequences of subtasks) within their respective deadlines, where a subtask is\ncompleted once the route π(c) includes a halt at its location such that all preceding\nsubtasks have been completed before. 3.",
+      "size": 479,
+      "sentences": 4
+    },
+    {
+      "id": 32,
+      "content": "(c) includes a halt at its location such that all preceding\nsubtasks have been completed before. 3. If r =v for a halt node v∈h(V) and 1≤i≤k, then we require that g(t[j])=i for\ni\nsome subtask t[j] of a task t∈T with α(t)=c. That is, halts may be included in\nthe route of a vehicle c exclusively for completing subtasks of tasks assigned to c.\n4.",
+      "size": 345,
+      "sentences": 4
+    },
+    {
+      "id": 33,
+      "content": "included in\nthe route of a vehicle c exclusively for completing subtasks of tasks assigned to c.\n4. With each x∈E∪V, we associate a set of occupation times defined as u(c,x)=\nP P\n{d+ d(r )|1≤i≤k,r =x,1≤d≤d(x)}∪{ d(r )|1≤i≤k,r ∈E,\n1≤j<i j i 1≤j≤i j i\nr =(v,x)}.",
+      "size": 260,
+      "sentences": 2
+    },
+    {
+      "id": 34,
+      "content": "ed as u(c,x)=\nP P\n{d+ d(r )|1≤i≤k,r =x,1≤d≤d(x)}∪{ d(r )|1≤i≤k,r ∈E,\n1≤j<i j i 1≤j≤i j i\nr =(v,x)}. For any vehicle c0∈C\\{c}, the following requirements check that the\ni\nroutes of c and c0 do not both lead to a joint location at the same time, and that c\nand c0 do not meet in between nodes by taking connections in opposite directions:\nfor each location v∈V, we require that u(c,v)∩u(c0,v)=∅, while u(c,(v,v0))∩\nu(c0,(v0,v))=∅mustholdforeachbidirectionalconnectionpair{(v,v0),(v0,v)}⊆E.",
+      "size": 487,
+      "sentences": 2
+    },
+    {
+      "id": 35,
+      "content": "v)=∅, while u(c,(v,v0))∩\nu(c0,(v0,v))=∅mustholdforeachbidirectionalconnectionpair{(v,v0),(v0,v)}⊆E. Example 2\nThe red and blue arrows and labels in Figure 2 indicate the routes of a solution to the\nautomated guided vehicle routing scenario from Example 1, where the task assignment\nis given by α(t )=c and α(t )=c .",
+      "size": 315,
+      "sentences": 2
+    },
+    {
+      "id": 36,
+      "content": "ehicle routing scenario from Example 1, where the task assignment\nis given by α(t )=c and α(t )=c . As no distinct tasks are assigned to the same\n1 1 2 2\nvehicle, we have that the order relation ≺ is empty, while c and c have to complete\n1 2\nthe subtasks of t or t , respectively, in order.",
+      "size": 290,
+      "sentences": 2
+    },
+    {
+      "id": 37,
+      "content": "ion ≺ is empty, while c and c have to complete\n1 2\nthe subtasks of t or t , respectively, in order. The routes taken by c and c can be\n1 2 1 2\ntraced by considering the times of completing route elements, included in labels along\nnodes and edges, in increasing order, starting from c :0 and c :0 at the initial locations\n1 2\nl(c )=1 and l(c )=2.",
+      "size": 345,
+      "sentences": 2
+    },
+    {
+      "id": 38,
+      "content": "in increasing order, starting from c :0 and c :0 at the initial locations\n1 2\nl(c )=1 and l(c )=2. For vehicle c , this yields the route π(c )=h(1,7),7,(7,4),(4,5),5,\n1 2 1 1\n(5,6),(6,1),(1,2),(2,3),(3,4),4,(4,7),(7,1),(1,2),2i, where the four stops at halt or park\nnodes in h(V)∪p(V)={2,4,5,6,7} are of particular interest.",
+      "size": 324,
+      "sentences": 2
+    },
+    {
+      "id": 39,
+      "content": "2i, where the four stops at halt or park\nnodes in h(V)∪p(V)={2,4,5,6,7} are of particular interest. In fact, the inclusion of\nthe park node 7 at the second position of π(c ) delays the subsequent move (7,4) by\n1\nthe park duration d(7)=2 in order to avoid arriving at node 4 at the same time as the\nother vehicle c . Unlike that, the later stops at the halt nodes 5, 4, and 2 are made to\n2\ncomplete the sequence ht [1]=5,t [2]=4,t [3]=2i of subtasks.",
+      "size": 449,
+      "sentences": 3
+    },
+    {
+      "id": 40,
+      "content": "e halt nodes 5, 4, and 2 are made to\n2\ncomplete the sequence ht [1]=5,t [2]=4,t [3]=2i of subtasks. While π(c ) makes c\n1 1 1 1 1\nrevisit the halt nodes t [2]=4 and t [3]=2, a halt would not be admitted on the first\n1 1\narrival because the preceding subtask t [1]=5 or t [2]=4, respectively, has not yet been\n1 1\n===  5 ===\nRouting Driverless Transport Vehicles in Car Assembly with ASP 5\ncompleted.",
+      "size": 399,
+      "sentences": 2
+    },
+    {
+      "id": 41,
+      "content": "yet been\n1 1\n===  5 ===\nRouting Driverless Transport Vehicles in Car Assembly with ASP 5\ncompleted. Hence, the halt at 5 comes before returning to and halting at 4, and then in\nturn at 2 at the very end of the route π(c ). As one can check, the sum of durations over\n1\nconnections as well as halt and park nodes in π(c ) is 55, which means that the task t\n1 1\ngets completed within its deadline d(t )=60.",
+      "size": 404,
+      "sentences": 3
+    },
+    {
+      "id": 42,
+      "content": "nodes in π(c ) is 55, which means that the task t\n1 1\ngets completed within its deadline d(t )=60. Regarding the other vehicle c , tracing\n1 2\nthe blue labels in Figure 2 yields the route π(c )=h(2,3),(3,4),(4,5),(5,6),6,(6,1),(1,7),\n2\n(7,4),4,(4,7),(7,1),(1,2),2i for completing the sequence ht [1]=6,t [2]=4,t [3]=2i of\n2 2 2\nsubtasks.",
+      "size": 337,
+      "sentences": 2
+    },
+    {
+      "id": 43,
+      "content": ",4),4,(4,7),(7,1),(1,2),2i for completing the sequence ht [1]=6,t [2]=4,t [3]=2i of\n2 2 2\nsubtasks. Along this route, c visits the halt nodes t [2]=4 and t [3]=l(c )=2 twice,\n2 2 2 2\nwhere halts are in both cases made on the second arrival for completing the subtasks\nof t in order.",
+      "size": 282,
+      "sentences": 2
+    },
+    {
+      "id": 44,
+      "content": "where halts are in both cases made on the second arrival for completing the subtasks\nof t in order. Moreover, no stop at the park node 7 is needed to avoid meeting the other\n2\nvehicle c , and the durations of connections and halt nodes in π(c ) sum up to 49, so that\n1 2\nalso the task t gets completed within its deadline d(t )=60.",
+      "size": 331,
+      "sentences": 2
+    },
+    {
+      "id": 45,
+      "content": "des in π(c ) sum up to 49, so that\n1 2\nalso the task t gets completed within its deadline d(t )=60. (cid:4)\n2 2\nWhile an automated guided vehicle routing scenario may have plenty feasible solutions,\nwe apply the following objective criteria, below ordered by significance, to distinguish\npreferred collections of routes π(c )=hr ,...,r i for the vehicles c ∈C:\ni 1i ki i\n1.",
+      "size": 373,
+      "sentences": 2
+    },
+    {
+      "id": 46,
+      "content": "o distinguish\npreferred collections of routes π(c )=hr ,...,r i for the vehicles c ∈C:\ni 1i ki i\n1. The makespan ms of a solution is the maximum sum of durations over the route\nelements of some vehicle, i.e.,\nP\nms=max{ d(r )|c ∈C}. 1≤ji≤ki ji i\n2. The route length rl of a solution is the sum of durations over elements in the routes\nof all vehicles, i.e.,\nP\nrl = d(r ). ci∈C,1≤ji≤ki ji\n3.",
+      "size": 389,
+      "sentences": 5
+    },
+    {
+      "id": 47,
+      "content": "um of durations over elements in the routes\nof all vehicles, i.e.,\nP\nrl = d(r ). ci∈C,1≤ji≤ki ji\n3. The crossing number cn is the number of pairs ({c ,c },v) such that c ∈ C,\ni i0 i\nc ∈C\\{c }, and we have that r =(v0,v) and r =(v00,v) for some connections\ni0 i ji j i0\n{(v0,v),(v00,v)}⊆E with v06=v00, 1≤j ≤k , and 1≤j ≤k , i.e.,\ni i i0 i0\ncn=|{({c ,c },v)|c ∈C,c ∈C\\{c },1≤j ≤k ,1≤j ≤k ,\ni i0 i i0 i i i i0 i0\n{r ,r }⊆E,r =(v0,v),r =(v00,v),v06=v00}|.",
+      "size": 452,
+      "sentences": 3
+    },
+    {
+      "id": 48,
+      "content": ",v)|c ∈C,c ∈C\\{c },1≤j ≤k ,1≤j ≤k ,\ni i0 i i0 i i i i0 i0\n{r ,r }⊆E,r =(v0,v),r =(v00,v),v06=v00}|. ji j i0 ji j i0\nIn words, the crossing number estimates how often the routes of distinct vehicles\ncome together at a joint location (at different times). Although solutions are such\nthat vehicles do not share any location at the same time, it is desirable to make\nroutes as disjoint as possible to keep knock-on effects in case of a disruption short. 4.",
+      "size": 453,
+      "sentences": 4
+    },
+    {
+      "id": 49,
+      "content": "e to make\nroutes as disjoint as possible to keep knock-on effects in case of a disruption short. 4. The overlap number on is the number of triples ({c ,c },r ,r ) such that c ∈C,\ni i0 ji j i0 i\nc ∈C\\{c }, and we have that r =(v,v0) and r =(v,v0) (or r =(v0,v)) for\ni0 i ji j i0 j i0\nsome connection (v,v0)∈E (or connections {(v,v0),(v0,v)}⊆E), 1≤j ≤k , and\ni i\n1≤j ≤k , i.e.,\ni0 i0\non=|{({c ,c },r ,r )|c ∈C,c ∈C\\{c },1≤j ≤k ,1≤j ≤k ,\ni i0 ji j i0 i i0 i i i i0 i0\n{r ,r }⊆E,r =(v,v0),r ∈{(v,v0),(v0,v)}}|.",
+      "size": 506,
+      "sentences": 3
+    },
+    {
+      "id": 50,
+      "content": ",c ∈C\\{c },1≤j ≤k ,1≤j ≤k ,\ni i0 ji j i0 i i0 i i i i0 i0\n{r ,r }⊆E,r =(v,v0),r ∈{(v,v0),(v0,v)}}|. ji j i0 ji j i0\nThemotivationforaimingatasmalloverlapnumberisthesameaswiththecrossing\nnumber, while connections taken by distinct vehicles are considered instead of\ncrossinglocations.Notethat,forabidirectionalconnectionpair{(v,v0),(v0,v)}⊆E,\ntwovehiclesc andc thatmovebetweenv andv0 ineitherdirectioncancontribute\ni i0\none, two, or four triples ({c ,c },r ,r ), depending on whether neither, one, or\ni i0 ji j i0\nboth include (v,v0) as well as (v0,v) in their routes.",
+      "size": 567,
+      "sentences": 2
+    },
+    {
+      "id": 51,
+      "content": "ing on whether neither, one, or\ni i0 ji j i0\nboth include (v,v0) as well as (v0,v) in their routes. Unlike that, only the triple\n({c ,c },(v,v0),(v,v0)) is obtained when (v,v0)∈E but (v0,v)∈/E.",
+      "size": 193,
+      "sentences": 2
+    },
+    {
+      "id": 52,
+      "content": "utes. Unlike that, only the triple\n({c ,c },(v,v0),(v,v0)) is obtained when (v,v0)∈E but (v0,v)∈/E. i i0\n===  6 ===\n6 M. Gebser, P. Obermeier, M. Ratsch-Heitmann, M. Runge, T. Schaub\nFact Meaning\nnode(v) v∈V\nhalt(v,d(v)) v∈h(V) with halt duration d(v)\npark(v,d(v)) v∈p(V) with park duration d(v)\nstay(v,d(v)) v∈h(V)∪p(V) with halt or park duration d(v)>1\nedge(v,v0,d(v,v0)) (v,v0)∈E with move duration d((v,v0))\nless(v0,v00,v) {(v0,v),(v00,v)}⊆E for lexicographically consecutive locations v0<v00\ntime(n) 0≤n≤max{d(t)|t∈T}\ntask(t) t∈T\ntask(t,d(t)) t∈T with deadline d(t)\ntasks(t,t0) t∈T and t0∈T\\{t}\nsubtask(t,s(i)) t∈T with 1≤i≤s(t)\nsubtask(t,s(i),v) t∈T, 1≤i≤s(t), and t[i]=v with v∈h(V)\nvehicle(c) c∈C\nvehicle(c,v) c∈C with initial location l(c)=v\nTable 1.",
+      "size": 759,
+      "sentences": 3
+    },
+    {
+      "id": 53,
+      "content": "≤s(t), and t[i]=v with v∈h(V)\nvehicle(c) c∈C\nvehicle(c,v) c∈C with initial location l(c)=v\nTable 1. Fact format for specifying automated guided vehicle routing scenarios in ASP\nFor each of the four objective criteria specified above, a smaller value is preferred to\ngreater ones.",
+      "size": 279,
+      "sentences": 2
+    },
+    {
+      "id": 54,
+      "content": "each of the four objective criteria specified above, a smaller value is preferred to\ngreater ones. The order of significance is chosen such that the completion of all transport\ntasksinaslittletimeaspossiblehasthehighestpriority,minimizingtheoverallutilization\nofvehiclescomessecond,keepingroutesdisjointisthird,andtheavoidanceofoverlapping\nconnections takes the lowest priority.",
+      "size": 378,
+      "sentences": 2
+    },
+    {
+      "id": 55,
+      "content": "nd,keepingroutesdisjointisthird,andtheavoidanceofoverlapping\nconnections takes the lowest priority. Example 3\nThe solution to the automated guided vehicle routing scenario from Example 1 indicated\nin Figure 2 and described further in Example 2 happens to be optimal relative to the\nappliedobjectivecriteria.Giventhatthesums55and49areobtainedforthedurationsof\nelementsoftherouteπ(c )orπ(c ),respectively,themakespanms matchesthemaximum\n1 2\n55, and the route length rl amounts to 55+49=104.",
+      "size": 488,
+      "sentences": 2
+    },
+    {
+      "id": 56,
+      "content": ",respectively,themakespanms matchesthemaximum\n1 2\n55, and the route length rl amounts to 55+49=104. Regarding the crossing number cn,\nπ(c ) and π(c ) visit three locations, 1, 4, and 7, via different connections, as witnessed\n1 2\nby occurrences of (6,1) and (7,1), (3,4) and (7,4), as well as (1,7) and (4,7) in π(c )\n1\nor π(c ), respectively.",
+      "size": 343,
+      "sentences": 2
+    },
+    {
+      "id": 57,
+      "content": "of (6,1) and (7,1), (3,4) and (7,4), as well as (1,7) and (4,7) in π(c )\n1\nor π(c ), respectively. Moreover, the overlap number on=14 is obtained in view of the\n2\ninclusion of the connections (1,2), (2,3), (3,4), (4,5), (5,6), and (6,1) in both π(c ) and\n1\nπ(c ) along with moves between the nodes 1 and 4 as well as 4 and 7 in either direction,\n2\neachofthelattercontributingfourtriplescountedtogetherbyon.Whilethegapbetween\nthe makespan ms=55 and the deadline d(t )=d(t )=60 for t and t may seem small,\n1 2 1 2\nlet us mention that 561 solutions are feasible and that only one of them is optimal.",
+      "size": 596,
+      "sentences": 2
+    },
+    {
+      "id": 58,
+      "content": "small,\n1 2 1 2\nlet us mention that 561 solutions are feasible and that only one of them is optimal. Such\ndiscrepancy clearly indicates that human engineers will hardly be able to perform an\nexhaustive optimization of routes in realistic scenarios of greater size only by hand.",
+      "size": 276,
+      "sentences": 2
+    },
+    {
+      "id": 59,
+      "content": "o perform an\nexhaustive optimization of routes in realistic scenarios of greater size only by hand. (cid:4)\n3 Problem Encoding\nFollowing the common modeling methodology of ASP, we represent (optimal) solutions\nto automated guided vehicle routing scenarios by facts specifying an instance along\nwith a uniform problem encoding. To begin with, Table 1 surveys the format of facts\ndescribing the locations, connections, tasks, and vehicles belonging to an automated\nguided vehicle routing scenario.",
+      "size": 495,
+      "sentences": 3
+    },
+    {
+      "id": 60,
+      "content": "ations, connections, tasks, and vehicles belonging to an automated\nguided vehicle routing scenario. The respective fact representation of the scenario from\nExample 1 is given in Listing 1, using the shorthands ‘..’ and ‘;’ of clingo (Gebser et al. [  ]\n\n===  7 ===\nRouting Driverless Transport Vehicles in Car Assembly with ASP 7\nListing 1. Instance of automated guided vehicle routing with two tasks and two vehicles\nnode(v(1..7)). halt(v(2),3). stay(v(2),3). halt(v(4),3). stay(v(4),3).",
+      "size": 488,
+      "sentences": 8
+    },
+    {
+      "id": 61,
+      "content": "h two tasks and two vehicles\nnode(v(1..7)). halt(v(2),3). stay(v(2),3). halt(v(4),3). stay(v(4),3). halt(v(5),3). stay(v(5),3). halt(v(6),3). stay(v(6),3). park(v(7),2). stay(v(7),2). edge(v(6;7),v(1),4). less(v(6),v(7),v(1)). edge(v(1),v(2),4). edge(v(2),v(3),4). edge(v(3;7),v(4),4). less(v(3),v(7),v(4)). edge(v(4),v(5),4). edge(v(5),v(6),4). edge(v(1;4),v(7),4). less(v(1),v(4),v(7)). time(0..60). task(t(1)). task(t(1),60). tasks(t(1),t(2)). task(t(2)). task(t(2),60). tasks(t(2),t(1)).",
+      "size": 491,
+      "sentences": 28
+    },
+    {
+      "id": 62,
+      "content": "e(0..60). task(t(1)). task(t(1),60). tasks(t(1),t(2)). task(t(2)). task(t(2),60). tasks(t(2),t(1)). subtask(t(1),s(1)). subtask(t(1),s(1),v(5)). subtask(t(1),s(2)). subtask(t(1),s(2),v(4)). subtask(t(1),s(3)). subtask(t(1),s(3),v(2)). subtask(t(2),s(1)). subtask(t(2),s(1),v(6)). subtask(t(2),s(2)). subtask(t(2),s(2),v(4)). subtask(t(2),s(3)). subtask(t(2),s(3),v(2)). vehicle(c(1)). vehicle(c(1),v(1)). vehicle(c(2)). vehicle(c(2),v(2)).",
+      "size": 439,
+      "sentences": 23
+    },
+    {
+      "id": 63,
+      "content": "3)). subtask(t(2),s(3),v(2)). vehicle(c(1)). vehicle(c(1),v(1)). vehicle(c(2)). vehicle(c(2),v(2)). 2015) to abbreviate facts for a range or collection of arguments, respectively. Note that\nfacts of the form stay(v,d(v)) combine halt and park nodes v ∈h(V)∪p(V) whose\nassociated duration d(v) is greater than one, as such non-atomic durations are subject\nto dedicated conditions in our problem encoding below.",
+      "size": 409,
+      "sentences": 8
+    },
+    {
+      "id": 64,
+      "content": "ne, as such non-atomic durations are subject\nto dedicated conditions in our problem encoding below. For locations v∈V that have\nseveral incoming connections, facts of the form less(v0,v00,v) provide lexicographically\nconsecutive locations v0<v00 such that {(v0,v),(v00,v)}⊆E, based on the standard term\norderoftheASP-Core-2language(Calimerietal.2012).Ourencodingbelowmakesuseof\nthe lexicographical order of predecessor locations for a compact formulation of conditions\nto detect crossings.",
+      "size": 489,
+      "sentences": 2
+    },
+    {
+      "id": 65,
+      "content": "aphical order of predecessor locations for a compact formulation of conditions\nto detect crossings. Moreover, facts time(n) give time points of interest, ranging from\nzero to the latest deadline of any transport task, and tasks(t,t0) holds for distinct tasks\nt∈T and t0∈T\\{t}, which have to be ordered by ≺ when α(t)=α(t0).",
+      "size": 323,
+      "sentences": 2
+    },
+    {
+      "id": 66,
+      "content": "sks(t,t0) holds for distinct tasks\nt∈T and t0∈T\\{t}, which have to be ordered by ≺ when α(t)=α(t0). Facts of the\nremaining predicates list further properties of automated guided vehicle routing scenarios\nin a straightforward way, and their respective meanings are summarized in Table 1.",
+      "size": 286,
+      "sentences": 2
+    },
+    {
+      "id": 67,
+      "content": "outing scenarios\nin a straightforward way, and their respective meanings are summarized in Table 1. Our uniform problem encoding, given in Listings 2 and 3, can be understood as a\nmerger of four logical parts, addressing task assignment and ordering, task completion,\nvehicle routing, as well as objective criteria (the latter part shown separately in Listing 3).",
+      "size": 363,
+      "sentences": 2
+    },
+    {
+      "id": 68,
+      "content": "on,\nvehicle routing, as well as objective criteria (the latter part shown separately in Listing 3). Table 2 follows this logical structure in providing the meanings of predicates defined in\neach of the four parts, where a condition written in the right column applies if and only\nif a corresponding atom of the form given in the left column belongs to a stable model.",
+      "size": 367,
+      "sentences": 2
+    },
+    {
+      "id": 69,
+      "content": "if and only\nif a corresponding atom of the form given in the left column belongs to a stable model. ===  8 ===\n8 M. Gebser, P. Obermeier, M. Ratsch-Heitmann, M. Runge, T. Schaub\nAtom Meaning\nassign(c,t) α(t)=c for t∈T and c∈C\nshare(t,t0) α(t)=α(t0) for {t,t0}⊆T such that t<t0 lexicographically\norder(t,t0) t≺t0 for t∈T and t0∈T\\{t} such that α(t)=α(t0)\ncheck(t) t∈T is topological in (T,{(t0,t00)| order(t0,t00) holds})\ncheck(t,t0) t⊀t0 or check(t) holds for t∈T and t0∈T\\{t}\npass(c,t,s(i),v,d(v),n) α(t)=c, 1≤i≤s(t), t[i]=v, and n∈u(c,v)∪{0|l(c)=v}\nfor t∈T and c∈C with π(c)=hr ,...,r i such that\n1 k\nP\nm≤ d(r )≤n<d(t),\n1≤j≤m j\nwhere m=max({g(t[i−1])|1<i}∪{g(t0[s(t0)])|t0≺t})\ndone(t,s(i),n) t∈T, 1≤i≤s(t), and 1≤n≤d(t) such that g(t[i])≤\nP\nd(r )≤n for α(t)=c with π(c)=hr ,...,r i\n1≤j≤g(t[i]) j 1 k\nwait(t,n) t0≺t and 0≤n<min{d(t),d(t0)} for t∈T and t0∈T\\{t}\nsuch that n<max{g(t0[s(t0)]), P d(r )},\n1≤j≤g(t0[s(t0)]) j\nwhere α(t)=α(t0)=c with π(c)=hr ,...,r i\n1 k\nat(c,v,n) n∈u(c,v)∪{0|l(c)=v} for c∈C and v∈V with\nn≤max{d(t)|t∈T}\nmove(c,v,v0,n) π(c)=hr\n1\n,...,r\ni\n,...,r\nk\ni for c∈C, r\ni\n∈E, r\ni\n=(v,v0),\nP\nand n= d(r ) with n+d(r )≤max{d(t)|t∈T}\n1≤j<i j i\nmove(c,n) move(c,v,v0,n) holds for some connection (v,v0)∈E\nmoving(c,v,v0,n) π(c)=hr\n1\n,...,r\ni\n,...,r\nk\ni for c∈C, r\ni\n∈E, r\ni\n=(v,v0),\nP P\nand d(r )<n≤ d(r )≤max{d(t)|t∈T}\n1≤j<i j 1≤j≤i j\nmoving(v,v0,n) moving(c,v,v0,n) holds for some vehicle c∈C\nfree(c,d(v),n) c∈C, v∈h(V)∪p(V), and 0≤n≤max{d(t)|t∈T}\nwith d(v)>1 and n0∈u(c,v)∪{0|l(c)=v} such that\n(n0−1)∈/u(c,v)∪{0|l(c)=v}, n=n0+i∗d(v) for some\ni≥0, and {n00∈u(c,e)|e∈E,n0<n00<n,\nn00+d(e)−1≤max{d(t)|t∈T}}=∅\nfree(c,n) c∈C and 0≤n≤max{d(t)|t∈T} such that\nS\nn∈/ u(c,v) or free(c,d,n) holds,\nv∈h(V)∪p(V),d(v)>1\nwhere d=d(v)>1 for some v∈h(V)∪p(V)\nS\nused(c,n) c∈C and 0≤n≤max({0}∪ u(c,v)) with\nv∈V\nn≤max{d(t)|t∈T}\nmove(c,v,v0) move(c,v,v0,n) holds for some 0≤n≤max{d(t)|t∈T}\nmark(c,v0,v) move(c,v00,v) holds for some connections\n{(v0,v),(v00,v)}⊆E such that v0<v00 lexicographically\nsame(c,c0,v,v0) move(c,v,v0) and move(c0,v,v0) hold for {c,c0}⊆C\nsuch that c<c0 lexicographically\nTable 2.",
+      "size": 2099,
+      "sentences": 2
+    },
+    {
+      "id": 70,
+      "content": "c0,v,v0) move(c,v,v0) and move(c0,v,v0) hold for {c,c0}⊆C\nsuch that c<c0 lexicographically\nTable 2. Atoms characterizing solutions to automated guided vehicle routing scenarios\nIn more detail, the encoding part addressing task assignment and ordering is shown in\nLines 3–12 of Listing 2. The choice rule in Line 3 makes sure that exactly one atom of the\nform assign(c,t) holds per task t∈T, providing the vehicle c∈C such that α(t)=c.",
+      "size": 434,
+      "sentences": 3
+    },
+    {
+      "id": 71,
+      "content": "ly one atom of the\nform assign(c,t) holds per task t∈T, providing the vehicle c∈C such that α(t)=c. Further rules deal with the order ≺ among tasks assigned to a common vehicle, where\nshare(t,t0) isderivedbytheruleinLine5ifα(t)=α(t0)fortaskst<t0.Thechoicerule\nin Line 6 then either picks order(t,t0), expressing that t≺t0, or the rule in Line 7 yields\norder(t0,t), standing for t0≺t, otherwise.",
+      "size": 394,
+      "sentences": 2
+    },
+    {
+      "id": 72,
+      "content": ",t0), expressing that t≺t0, or the rule in Line 7 yields\norder(t0,t), standing for t0≺t, otherwise. The remaining rules in Lines 9–12 check that\nthe order relation ≺ is acyclic, utilizing modeling methods detailed in (Gebser et al.). The second encoding part in Lines 16–27 deals with the completion of transport tasks.",
+      "size": 319,
+      "sentences": 3
+    },
+    {
+      "id": 73,
+      "content": "bser et al.). The second encoding part in Lines 16–27 deals with the completion of transport tasks. Tothisend,thetworulesinLines16–19indicatetimepointsnsuchthatthevehiclec∈C\n[  ]\n\n===  9 ===\nRouting Driverless Transport Vehicles in Car Assembly with ASP 9\nListing2.Encodingoftaskassignment,completion,andautomatedguidedvehiclerouting\n1 % task assignment\n3 {assign(C,T) : vehicle(C)} = 1 :- task(T). 5 share(T1,T2) :- assign(C,T1), assign(C,T2), T1 < T2. 6 {order(T1,T2)} :- share(T1,T2).",
+      "size": 487,
+      "sentences": 5
+    },
+    {
+      "id": 74,
+      "content": "- task(T). 5 share(T1,T2) :- assign(C,T1), assign(C,T2), T1 < T2. 6 {order(T1,T2)} :- share(T1,T2). 7 order(T2,T1) :- share(T1,T2), not order(T1,T2). 9 check(T1,T2) :- tasks(T1,T2), not order(T1,T2). 10 check(T1,T2) :- tasks(T1,T2), check(T1). 11 check(T2) :- task(T2), check(T1,T2) : tasks(T1,T2). 12 :- task(T2), not check(T2).",
+      "size": 329,
+      "sentences": 8
+    },
+    {
+      "id": 75,
+      "content": "), check(T1). 11 check(T2) :- task(T2), check(T1,T2) : tasks(T1,T2). 12 :- task(T2), not check(T2). 14 % task completion\n16 pass(C,T,s(1),V,D,N) :- assign(C,T), at(C,V,N), halt(V,D), task(T,M),\n17 subtask(T,s(1),V), not wait(T,N), N < M.\n18 pass(C,T,s(I),V,D,N) :- assign(C,T), at(C,V,N), halt(V,D), task(T,M),\n19 subtask(T,s(I),V), done(T,s(I-1),N), N < M.\n21 done(T,S,N+D) :- pass(C,T,S,V,D,N), task(T,M), not move(C,N), N+D <= M.\n22 done(T,S,N+1) :- done(T,S,N), not task(T,N).",
+      "size": 480,
+      "sentences": 4
+    },
+    {
+      "id": 76,
+      "content": "s(C,T,S,V,D,N), task(T,M), not move(C,N), N+D <= M.\n22 done(T,S,N+1) :- done(T,S,N), not task(T,N). 23 :- task(T,M), subtask(T,S), not done(T,S,M). 25 wait(T2,N) :- order(T1,T2), task(T1,M1), task(T2,M2), time(N),\n26 subtask(T1,s(I)), not subtask(T1,s(I+1)),\n27 not done(T1,s(I),N), N < M1, N < M2. 29 % vehicle routing\n31 at(C,V,0) :- vehicle(C,V), time(0). 32 at(C,V2,N+D) :- move(C,V1,V2,N), edge(V1,V2,D). 33 at(C,V,N+1) :- at(C,V,N), park(V,D), time(N+1), not move(C,N).",
+      "size": 475,
+      "sentences": 6
+    },
+    {
+      "id": 77,
+      "content": "- move(C,V1,V2,N), edge(V1,V2,D). 33 at(C,V,N+1) :- at(C,V,N), park(V,D), time(N+1), not move(C,N). 34 at(C,V,N+1) :- pass(C,T,S,V,D,N), not done(T,S,N), not move(C,N). 35 :- node(V), time(N), #count{C : at(C,V,N)} > 1. 36 :- vehicle(C), time(N), #count{V : at(C,V,N)} > 1. 38 {move(C,V1,V2,N) : edge(V1,V2,D), time(N+D)} < 2 :- vehicle(C), time(N). 39 move(C,N) :- move(C,V1,V2,N). 40 :- move(C,V1,V2,N), not at(C,V1,N). 42 moving(C,V1,V2,N+1) :- move(C,V1,V2,N).",
+      "size": 464,
+      "sentences": 9
+    },
+    {
+      "id": 78,
+      "content": "move(C,V1,V2,N). 40 :- move(C,V1,V2,N), not at(C,V1,N). 42 moving(C,V1,V2,N+1) :- move(C,V1,V2,N). 43 moving(C,V1,V2,N+1) :- moving(C,V1,V2,N), time(N+1), not at(C,V2,N). 44 moving(V1,V2,N) :- moving(C,V1,V2,N). 45 :- moving(V1,V2,N), moving(V2,V1,N). 47 free(C,D,N) :- at(C,V,N), stay(V,D), not at(C,V,N-1). 48 free(C,D,N+D) :- free(C,D,N), time(N+D), not move(C,N). 49 free(C,N) :- free(C,D,N). 50 free(C,N) :- vehicle(C), time(N), not at(C,V,N) : stay(V,D). 51 :- move(C,N), not free(C,N).",
+      "size": 492,
+      "sentences": 11
+    },
+    {
+      "id": 79,
+      "content": "N). 50 free(C,N) :- vehicle(C), time(N), not at(C,V,N) : stay(V,D). 51 :- move(C,N), not free(C,N). ===  10 ===\n10 M. Gebser, P. Obermeier, M. Ratsch-Heitmann, M. Runge, T. Schaub\nwith α(t)=c visits the halt node given by a subtask t[i], while any preceding subtasks\naccording to ≺ as well as the sequence of subtasks of t are already completed at time n.\nIn case i=1, the latter condition is in Line 17 checked by the absence of yet incomplete\ntasks t0 such that t0≺t, and otherwise the completion of t[i−1] up to time n is required\nby preconditions in Line 19.",
+      "size": 562,
+      "sentences": 4
+    },
+    {
+      "id": 80,
+      "content": "t0≺t, and otherwise the completion of t[i−1] up to time n is required\nby preconditions in Line 19. The rule in Line 21 then derives done(t,s(i),n+d(t[i])),\nsignaling the completion of t[i], provided that n+d(t[i]) does not exceed the deadline d(t)\nfortandthevehiclectowhichtisassignedhaltsattimen.Notethattheoccurrenceofa\nhalt in the route of c is determined by the absence of move(c,n) from a stable model, an\natomthatwouldotherwiseindicatethatctakessomeconnectionattimen.Thecondition\nthat all transport tasks have to be completed within their respective deadlines is further\ntaken care of by the rule in Line 22, which successively propagates the completion of a\nsubtask t[i] on to the deadline d(t), along with requiring the completion of any subtask\nat d(t) by means of the integrity constraint in Line 23.",
+      "size": 810,
+      "sentences": 2
+    },
+    {
+      "id": 81,
+      "content": "th requiring the completion of any subtask\nat d(t) by means of the integrity constraint in Line 23. Finally, the rule in Lines 25–27\nderives wait(t,n), an atom inspected in Line 17, in view of a yet incomplete subtask\nt0[s(t0)]ofsometaskt0 suchthatt0≺tattimen<d(t),whereconsideringthelastsubtask\nt0[s(t0)] of t0 only is sufficient because the subtasks of t0 must be completed in order. The actual routes of vehicles are tracked by the third encoding part in Lines 31–51.",
+      "size": 470,
+      "sentences": 3
+    },
+    {
+      "id": 82,
+      "content": "eted in order. The actual routes of vehicles are tracked by the third encoding part in Lines 31–51. To\nbegin with, the rule in Line 31 derives at(c,l(c),0), expressing that any vehicle c∈C\nstartsfromitsinitiallocationl(c)attime0.Thenewlocationv0∈V resultingfromamove\n(v,v0)∈E at time n is reflected by the rule in Line 32 yielding at(c,v0,n+d((v,v0))).",
+      "size": 352,
+      "sentences": 3
+    },
+    {
+      "id": 83,
+      "content": "tingfromamove\n(v,v0)∈E at time n is reflected by the rule in Line 32 yielding at(c,v0,n+d((v,v0))). A\nstopatsomeparknodev∈p(V)isaddressedbytheruleinLine33,deriving at(c,v,n+1)\nfrom at(c,v,n) in the absence of any move made by c at time n. Moreover, the rule in\nLine 34 takes care of a halt to complete some subtask t[i] by deriving at(c,t[i],n+1) in\ncase no subtask preceding t[i] is yet incomplete and t[i] itself is not already completed\nat time n, provided that the vehicle c with α(t)=c does not make any move at n. As a\nconsequence, atoms of the form at(c,v,n) in a stable model match times n∈u(c,v)∪\n{0|l(c)=v} for vehicles c∈C and locations v ∈V, where halts can only be made\nfor completing assigned subtasks.",
+      "size": 716,
+      "sentences": 2
+    },
+    {
+      "id": 84,
+      "content": "for vehicles c∈C and locations v ∈V, where halts can only be made\nfor completing assigned subtasks. Given this, the integrity constraint in Line 35 makes\nsure that u(c,v)∩u(c0,v)=∅ for any c0∈C\\{c}, and the one in Line 36 asserts that\nu(c,v)∩u(c,v0)=∅ for any v0 ∈V \\{v}, thus constituting a redundant/entailed state\nconstraint that may still be helpful regarding solving performance (Gebser et al. 2012).",
+      "size": 405,
+      "sentences": 3
+    },
+    {
+      "id": 85,
+      "content": "iled state\nconstraint that may still be helpful regarding solving performance (Gebser et al. 2012). Unlike stops at halt or park nodes, a move (v,v0)∈E by some vehicle c∈C at time n\nsuch that n+d((v,v0)) is still of interest is signaled by an atom move(c,v,v0,n), picked\nby means of the choice rule in Line 38.",
+      "size": 310,
+      "sentences": 3
+    },
+    {
+      "id": 86,
+      "content": "l of interest is signaled by an atom move(c,v,v0,n), picked\nby means of the choice rule in Line 38. The rule in Line 39 then provides the projection\nof such an atom to move(c,n), and the integrity constraint in Line 40 requires c to\nbe at the location v at time n. Moreover, atoms moving(c,v,v0,n0), derived by the\nrules in Lines 42–43 for n<n0≤n+d((v,v0)), yield time points n0∈u(c,(v,v0)).",
+      "size": 391,
+      "sentences": 2
+    },
+    {
+      "id": 87,
+      "content": "v0,n0), derived by the\nrules in Lines 42–43 for n<n0≤n+d((v,v0)), yield time points n0∈u(c,(v,v0)). Their\nprojection to moving(v,v0,n0) in Line 44 is inspected by the integrity constraint in\nLine 45 to, in case (v0,v)∈E, make sure that u(c,(v,v0))∩u(c0,(v0,v))=∅ holds for any\nc0∈C\\{c}.TheremainingrulesinLines47–51checkthatthemovesofavehiclecrespect\nnon-atomic durations d(v)>1 of halt and park nodes v∈h(V)∪p(V).",
+      "size": 414,
+      "sentences": 2
+    },
+    {
+      "id": 88,
+      "content": "checkthatthemovesofavehiclecrespect\nnon-atomic durations d(v)>1 of halt and park nodes v∈h(V)∪p(V). To this end, an\natom free(c,d(v),n) is derived by the rule in Line 47 when c is not already at v at\ntime n−1, and then propagated on in steps of the halt or park duration d(v) by the rule\nin Line 48 as long as c does not make any move.",
+      "size": 335,
+      "sentences": 2
+    },
+    {
+      "id": 89,
+      "content": "steps of the halt or park duration d(v) by the rule\nin Line 48 as long as c does not make any move. The projection to free(c,n) in Line 49\nalong with the rule in Line 50, also deriving free(c,n) in case c is not at any halt or\n===  11 ===\nRouting Driverless Transport Vehicles in Car Assembly with ASP 11\nListing 3. Encoding part for makespan, route length, crossing, and overlap minimization\n53 % objective criteria\n55 used(C,N) :- at(C,V,N). 56 used(C,N-1) :- used(C,N), 0 < N.\n57 :˜ used(C,N).",
+      "size": 496,
+      "sentences": 4
+    },
+    {
+      "id": 90,
+      "content": "objective criteria\n55 used(C,N) :- at(C,V,N). 56 used(C,N-1) :- used(C,N), 0 < N.\n57 :˜ used(C,N). [1@4,N]\n58 :˜ used(C,N). [1@3,C,N]\n60 move(C,V1,V2) :- move(C,V1,V2,N). 62 mark(C,V1,V) :- less(V1,V2,V), move(C,V2,V). 63 mark(C,V1,V) :- less(V1,V2,V), mark(C,V2,V). 64 :˜ mark(C1,V1,V), move(C2,V1,V), C1 < C2. [1@2,C1,C2,V]\n65 :˜ move(C1,V1,V), mark(C2,V1,V), C1 < C2. [1@2,C1,C2,V]\n67 same(C1,C2,V1,V2) :- move(C1,V1,V2), move(C2,V1,V2), C1 < C2.",
+      "size": 449,
+      "sentences": 9
+    },
+    {
+      "id": 91,
+      "content": "k(C2,V1,V), C1 < C2. [1@2,C1,C2,V]\n67 same(C1,C2,V1,V2) :- move(C1,V1,V2), move(C2,V1,V2), C1 < C2. 68 :˜ move(C1,V1,V2), move(C2,V2,V1), C1 < C2, V1 < V2. [1@1,C1,C2,V1,V2]\n69 :˜ move(C1,V2,V1), move(C2,V1,V2), C1 < C2, V1 < V2. [1@1,C1,C2,V1,V2]\n70 :˜ same(C1,C2,V1,V2), V1 < V2. [1@1,C1,C2,V1,V2]\n71 :˜ same(C1,C2,V2,V1), V1 < V2. [1@1,C1,C2,V1,V2]\n72 :˜ same(C1,C2,V1,V2), move(C1,V2,V1), V1 < V2. [1@1,C1,C2,V2,V1]\n73 :˜ same(C1,C2,V1,V2), move(C2,V2,V1), V1 < V2.",
+      "size": 469,
+      "sentences": 8
+    },
+    {
+      "id": 92,
+      "content": "1,V2), move(C1,V2,V1), V1 < V2. [1@1,C1,C2,V2,V1]\n73 :˜ same(C1,C2,V1,V2), move(C2,V2,V1), V1 < V2. [1@1,C1,C2,V2,V1]\n74 :˜ same(C1,C2,V2,V1), move(C1,V1,V2), V1 < V2. [1@1,C1,C2,V2,V1]\n75 :˜ same(C1,C2,V2,V1), move(C2,V1,V2), V1 < V2. [1@1,C1,C2,V2,V1]\n76 :˜ same(C1,C2,V1,V2), same(C1,C2,V2,V1), V1 < V2. [2@1,C1,C2,V1,V2]\npark node v∈h(V)∪p(V) with d(v)>1 at time n, indicate all times n at which c may\nmake a move, and the integrity constraint in Line 51 restricts moves to such time points.",
+      "size": 495,
+      "sentences": 6
+    },
+    {
+      "id": 93,
+      "content": "ich c may\nmake a move, and the integrity constraint in Line 51 restricts moves to such time points. Whiletheencodingpartsdescribedsofarmakesurethatstablemodelsmatchsolutions\nto automated guided vehicle routing scenarios, the fourth part in Listing 3 addresses the\nobjective criteria to distinguish optimal routes.",
+      "size": 313,
+      "sentences": 2
+    },
+    {
+      "id": 94,
+      "content": "arios, the fourth part in Listing 3 addresses the\nobjective criteria to distinguish optimal routes. To begin with, the rules in Lines 55–56\nderiveatoms used(c,n) toindicatethattherouteofavehiclec∈C isnotfinishedbefore\ntime n. The makespan ms is then minimized by means of the weak constraint with the\nhighest priority 4 in Line 57, associating a cost of 1 with each time n. To then minimize\nthe route length rl with priority 3, the weak constraint in Line 58 likewise penalizes\nused(c,n), where a cost of 1 for each time n is charged per vehicle c. The rule in Line 60\nprovides the projection of moves to move(c,v,v0) in order formulate conditions regarding\ncrossings and overlaps of routes without referring to particular times of moves.",
+      "size": 738,
+      "sentences": 2
+    },
+    {
+      "id": 95,
+      "content": "nditions regarding\ncrossings and overlaps of routes without referring to particular times of moves. In fact,\nthe rules in Lines 62–63 investigate and propagate move(c,v00,v) on to locations v0\nsuch that (v0,v)∈E and v0<v00 lexicographically, thus signaling the inclusion of some\nother predecessor location of v in the route of c in terms of mark(c,v0,v).",
+      "size": 354,
+      "sentences": 2
+    },
+    {
+      "id": 96,
+      "content": "g the inclusion of some\nother predecessor location of v in the route of c in terms of mark(c,v0,v). The weak\nconstraints in Lines 64–65 make use of this to detect a crossing at v by the move (v0,v)\nof another vehicle c0 ∈C\\{c}, while the lexicographical order of distinct predecessor\nlocations of v in the routes of c and c0 may likewise be switched.",
+      "size": 350,
+      "sentences": 2
+    },
+    {
+      "id": 97,
+      "content": "al order of distinct predecessor\nlocations of v in the routes of c and c0 may likewise be switched. In either case, a crossing\nat v accounts for a cost of 1 with priority 2, where the set {c,c0} in pairs ({c,c0},v)\ncontributing to cn is reflected by requiring that c<c0 lexicographically.",
+      "size": 288,
+      "sentences": 2
+    },
+    {
+      "id": 98,
+      "content": "c,c0} in pairs ({c,c0},v)\ncontributing to cn is reflected by requiring that c<c0 lexicographically. The remaining\nrules and weak constraints take care of overlapping connections, where the rule in Line 67\n===  12 ===\n12 M. Gebser, P. Obermeier, M. Ratsch-Heitmann, M. Runge, T. Schaub\nyields same(c,c0,v,v0) when distinct vehicles c<c0 both include (v,v0) in their routes.",
+      "size": 372,
+      "sentences": 2
+    },
+    {
+      "id": 99,
+      "content": ", T. Schaub\nyields same(c,c0,v,v0) when distinct vehicles c<c0 both include (v,v0) in their routes. This case as well as taking (v,v0) and (v0,v) in opposite directions is sanctioned by a cost\nof 1 with priority 1 in view of the weak constraints in Lines 68–71. If c or c0 includes both\ndirections, (v,v0) and (v0,v), in its route, an additional cost of 1 is charged by some of the\nweak constraints in Lines 72–75, by means of using a different term order regarding v and\nv0 than before.",
+      "size": 487,
+      "sentences": 3
+    },
+    {
+      "id": 100,
+      "content": "onstraints in Lines 72–75, by means of using a different term order regarding v and\nv0 than before. Finally, the weak constraint in Line 76 accounts for a cost of 2 if c and c0\nboth take (v,v0) as well as (v0,v), in which case the resulting sum of four matches the\nnumber of triples ({c,c0},e,e0) such that {e,e0}={(v,v0),(v0,v)} contributing to on.",
+      "size": 349,
+      "sentences": 2
+    },
+    {
+      "id": 101,
+      "content": "ur matches the\nnumber of triples ({c,c0},e,e0) such that {e,e0}={(v,v0),(v0,v)} contributing to on. As\na consequence, we have that the sums of costs with particular priority coincide with the\nobjectives ms, rl, cn, and on, where priorities follow the criteria’s order of significance.",
+      "size": 284,
+      "sentences": 2
+    },
+    {
+      "id": 102,
+      "content": "th the\nobjectives ms, rl, cn, and on, where priorities follow the criteria’s order of significance. Example 4\nThe optimal solution to the automated guided vehicle routing scenario from Example 1\nindicated in Figure 2 and described further in Example 2 is such that the vehicles\nc and c finish their last halts at t [3]=t [3]=2 at the times 55 and 49.",
+      "size": 350,
+      "sentences": 2
+    },
+    {
+      "id": 103,
+      "content": "is such that the vehicles\nc and c finish their last halts at t [3]=t [3]=2 at the times 55 and 49. Hence,\n1 2 1 2\na stable model representing this solution, obtained for the facts in Listing 1 along\nwith the encoding in Listings 2 and 3, contains the atoms at(c(1),v(2),55) and\nat(c(2),v(2),49).Theseinturnimplyatoms used(c(i),n i) fori∈{1,2},0≤n 1 ≤55,\nand0≤n 2 ≤49.Theweakconstraintswithpriorities 4 and 3 thusyield56or106distinct\nterms, respectively, of the form [1@4,n i] or [1@3,c(i),n i], where the numbers of terms\nmatch ms+1=55+1=56 and rl+i=104+2=106.",
+      "size": 560,
+      "sentences": 2
+    },
+    {
+      "id": 104,
+      "content": "form [1@4,n i] or [1@3,c(i),n i], where the numbers of terms\nmatch ms+1=55+1=56 and rl+i=104+2=106. Note that the addends 1 or i to ms\nandrl areduetoatomsoftheform used(c(i),0),whichcanbedeterministicallyderived\ninviewoftheinitiallocationsofvehiclesanddonotaffectthepreferenceorderofsolutions.",
+      "size": 293,
+      "sentences": 2
+    },
+    {
+      "id": 105,
+      "content": "nisticallyderived\ninviewoftheinitiallocationsofvehiclesanddonotaffectthepreferenceorderofsolutions. Regarding crossings, as detailed in Example 3, the connections taken by c and c trigger\n1 2\nweak constraints associated with the terms [1@2,c(1),c(2),v(1)], [1@2,c(1),c(2),\nv(4)], and [1@2,c(1),c(2),v(7)], leading to the sum cn=3 of costs.",
+      "size": 339,
+      "sentences": 2
+    },
+    {
+      "id": 106,
+      "content": "c(1),c(2),v(1)], [1@2,c(1),c(2),\nv(4)], and [1@2,c(1),c(2),v(7)], leading to the sum cn=3 of costs. Moreover, six\nunidirectional overlaps of the routes of c and c are indicated by terms of the form\n1 2\n[1@1,c(1),c(2),v(v),v(v0)] for (v,v0)∈{(1,2),(2,3),(3,4),(4,5),(5,6),(1,6)}, among\nwhich the lexicographically ordered pair (1,6) stands for the connection (6,1) taken in the\noppositedirection.However,suchtermorderingmattersforbidirectionalconnectionsonly,\nwhere (v,v0)∈{(1,4),(4,7)} yield three distinct terms each: [1@1,c(1),c(2),v(v),\nv(v0)], [1@1,c(1),c(2),v(v0),v(v)], and [2@1,c(1),c(2),v(v),v(v0)].",
+      "size": 607,
+      "sentences": 2
+    },
+    {
+      "id": 107,
+      "content": "erms each: [1@1,c(1),c(2),v(v),\nv(v0)], [1@1,c(1),c(2),v(v0),v(v)], and [2@1,c(1),c(2),v(v),v(v0)]. That is,\nthe weak constraints with priority 1 lead to twelve terms in total, ten of them accounting\nfor a cost of 1 and two having a cost of 2 (written before ‘@’), summing up to on=14.",
+      "size": 285,
+      "sentences": 2
+    },
+    {
+      "id": 108,
+      "content": "em accounting\nfor a cost of 1 and two having a cost of 2 (written before ‘@’), summing up to on=14. (cid:4)\n4 Empirical Results\nA preliminary field study by production engineers at Mercedes-Benz Ludwigsfelde GmbH\ninvestigated viable options for implementing a new control system for automated guided\nvehicles used in car assembly, where one goal consists of setting the routes for such\nvehicles up automatically rather than by hand.",
+      "size": 432,
+      "sentences": 2
+    },
+    {
+      "id": 109,
+      "content": "ere one goal consists of setting the routes for such\nvehicles up automatically rather than by hand. This study raised interest in the open-\nsource control system software openTCS (see http://www.opentcs.org), developed by\nFraunhofer IML. While openTCS offers a generic platform for automated guided vehicle\ncontrol, it is not geared to ship a solver for hard combinatorial tasks such as the multi-\nobjective optimization of routes off the shelf.",
+      "size": 445,
+      "sentences": 3
+    },
+    {
+      "id": 110,
+      "content": "ver for hard combinatorial tasks such as the multi-\nobjective optimization of routes off the shelf. Instead, the system is extensible and allows\nfor integrating customized components, which is where our ASP approach to vehicle\n===  13 ===\nRouting Driverless Transport Vehicles in Car Assembly with ASP 13\nFig. 3. Use cases solved by means of ASP (in blue) and the default scheduler of openTCS\n(in red)\nrouting is envisaged to come into play in the future.",
+      "size": 455,
+      "sentences": 4
+    },
+    {
+      "id": 111,
+      "content": "and the default scheduler of openTCS\n(in red)\nrouting is envisaged to come into play in the future. For reference, however, we contrast\nour results to those obtained with the default scheduler of openTCS, which implements a\nsimple round-robin procedure to assign tasks to and pick shortest routes for vehicles.",
+      "size": 310,
+      "sentences": 2
+    },
+    {
+      "id": 112,
+      "content": "implements a\nsimple round-robin procedure to assign tasks to and pick shortest routes for vehicles. In order to evaluate the practical applicability of control systems, the engineers at\nMercedes-BenzLudwigsfeldeGmbHdefined18usecasesbasedonafactorylayoutwith25\nlocations and 35 connections, resembling the storage areas, assembly lines, and transport\nroutesatthephysicalcarfactory.Suchusecasesareruninsimulationtotesttheentirefunc-\ntionalityofacontrolsystem,wheretaskassignmentandvehicleroutingareincorporatedat\nthe high level.",
+      "size": 526,
+      "sentences": 2
+    },
+    {
+      "id": 113,
+      "content": "nc-\ntionalityofacontrolsystem,wheretaskassignmentandvehicleroutingareincorporatedat\nthe high level. According to the main test targets, the use cases (available at http://www. cs.uni-potsdam.de/wv/projects/daimler/resources-iclp18.tar.xz) are grouped\ninto five categories: A) communication and feedback, B) task assignment and execution,\nC) routing and traffic management, D) special conditions and breakdowns, and E) full\nproduction cycle.",
+      "size": 440,
+      "sentences": 3
+    },
+    {
+      "id": 114,
+      "content": "routing and traffic management, D) special conditions and breakdowns, and E) full\nproduction cycle. While test cases in the first four groups focus on particular scenarios of\nsmall size, i.e., up to three tasks and vehicles, the use case in category E emulates a full\nproduction cycle of roughly 20 minutes in real time, involving ten transport tasks with 39\nsubtasks in total to be accomplished by four automated guided vehicles.",
+      "size": 430,
+      "sentences": 2
+    },
+    {
+      "id": 115,
+      "content": "ten transport tasks with 39\nsubtasks in total to be accomplished by four automated guided vehicles. For computing optimal routes with clingo (version 5.2.2), we represented the scenarios\noftheusecasesintermsoffactsasdescribedintheprevioussection,thusfocusingontask\nassignment and vehicle routing rather than system control.",
+      "size": 323,
+      "sentences": 2
+    },
+    {
+      "id": 116,
+      "content": "dintheprevioussection,thusfocusingontask\nassignment and vehicle routing rather than system control. As indicated by the blue bars\nin Figure 3, we succeeded in obtaining provably optimal routes in all of the 18 use cases,\nwhere the runtimes of clingo on a desktop machine equipped with Intel i7-6700 3.40GHz\nCPUrangedfromsplitsecondstotensecondsatmostforeachofthe17smallscenariosin\nthe first four groups.",
+      "size": 403,
+      "sentences": 2
+    },
+    {
+      "id": 117,
+      "content": "Hz\nCPUrangedfromsplitsecondstotensecondsatmostforeachofthe17smallscenariosin\nthe first four groups. While these small instances stem from use cases primarily created to\ntest the reaction of a control system to some isolated situation, the scenario in E aims at\nmanaging all of the transport tasks recurring within each full production cycle, a complex\noperationthathassofarbeencarriedoutbyhumanengineersbeforeaproductionprocess\nstarts or is resumed with an updated configuration, respectively.",
+      "size": 493,
+      "sentences": 2
+    },
+    {
+      "id": 118,
+      "content": "engineersbeforeaproductionprocess\nstarts or is resumed with an updated configuration, respectively. In fact, optimizing the\nroutes for automated guided vehicles over the full production cycle is computationally\nchallenging, even for a system like clingo that is geared to hard combinatorial problem\nsolving, and it took about 5 hours to compute a provably optimal solution.",
+      "size": 373,
+      "sentences": 2
+    },
+    {
+      "id": 119,
+      "content": "rd combinatorial problem\nsolving, and it took about 5 hours to compute a provably optimal solution. Its makespan\nof225clockcyclesamountstofivetimesasmanysecondsinrealtime,roughly20minutes,\nthe route length 891 corresponds to about 75 minutes of operation, shared between four\nvehicles whose computed routes involve 39 crossings and 141 overlaps in total.",
+      "size": 354,
+      "sentences": 2
+    },
+    {
+      "id": 120,
+      "content": "shared between four\nvehicles whose computed routes involve 39 crossings and 141 overlaps in total. While 5\nhours of computation time can certainly not be afforded by a control system that has to\n===  14 ===\n14 M. Gebser, P. Obermeier, M. Ratsch-Heitmann, M. Runge, T. Schaub\nreact to incidents in real time, the dimension of what has to be anticipated in comparable\nscenarios is nevertheless encouraging, as it tells us that routes for accomplishing recurrent\ntransport tasks in realistic production processes can be programmed in an automated\nfashion, going along with optimality that cannot be established by human engineers alone.",
+      "size": 633,
+      "sentences": 2
+    },
+    {
+      "id": 121,
+      "content": "automated\nfashion, going along with optimality that cannot be established by human engineers alone. TheredbarsshowninFigure3exhibitthatthedefaultschedulershippedwithopenTCS\nfails to come up with a feasible solution in 8 of the 18 use cases, which is due to its greedy\napproach to assign a task and lock locations along the shortest route of a vehicle one by\none.",
+      "size": 362,
+      "sentences": 2
+    },
+    {
+      "id": 122,
+      "content": "eedy\napproach to assign a task and lock locations along the shortest route of a vehicle one by\none. E.g., such an approach is bound to fail on the example scenario in Figure 2, where\neach of the vehicles c and c must necessarily visit node 4 in order to complete any\n1 2\nsubtask, which locks the respective other vehicle out from visiting node 4, while a single\nvehicle cannot alone complete both transport tasks, t and t , within their deadlines.",
+      "size": 447,
+      "sentences": 2
+    },
+    {
+      "id": 123,
+      "content": "hile a single\nvehicle cannot alone complete both transport tasks, t and t , within their deadlines. 1 2\nThis observation along with the fact that clingo can timely handle the small scenarios\nof use cases in the first four groups clearly motivate its integration into openTCS as a\ncomponent in charge of task assignment and vehicle routing, which we are working on.",
+      "size": 364,
+      "sentences": 2
+    },
+    {
+      "id": 124,
+      "content": "o openTCS as a\ncomponent in charge of task assignment and vehicle routing, which we are working on. 5 Discussion\nThe problem of assigning transport tasks to and routing automated guided vehicles\nin car assembly reveals parallels to Generalized Target Assignment and Path Finding\n(GTAPF; Nguyen et al. 2017) as well as Temporal Planning (cf. Fisher 2008).",
+      "size": 354,
+      "sentences": 4
+    },
+    {
+      "id": 125,
+      "content": "gnment and Path Finding\n(GTAPF; Nguyen et al. 2017) as well as Temporal Planning (cf. Fisher 2008). Similar to\nautomated guided vehicle routing scenarios, GTAPF allows for more tasks than there are\nagents, sequences of subtasks, and deadlines for tasks, while its framework assumes that\ntasks are completed according to some total order and it does not feature (non-atomic)\ndurations.",
+      "size": 384,
+      "sentences": 4
+    },
+    {
+      "id": 126,
+      "content": "t\ntasks are completed according to some total order and it does not feature (non-atomic)\ndurations. Unlike that, durations play a fundamental role in Temporal Planning, but\nstandard representations such as the Planning Domain Definition Language (PDDL; Fox\nand Long 2003) lack constructs for conveniently modeling task assignment and ordering.",
+      "size": 343,
+      "sentences": 2
+    },
+    {
+      "id": 127,
+      "content": "e (PDDL; Fox\nand Long 2003) lack constructs for conveniently modeling task assignment and ordering. We thus stick to a native ASP encoding, and a corresponding approach likewise turned\nas advantageous for planning by means of tabled logic programming (Zhou et al. 2015). Early work on using ASP for solving basic multi-agent path finding problems was done\nby Erdem et al. (2013); also, Nguyen et al. (2017) used ASP for solving GTAPF problems.",
+      "size": 443,
+      "sentences": 6
+    },
+    {
+      "id": 128,
+      "content": "ms was done\nby Erdem et al. (2013); also, Nguyen et al. (2017) used ASP for solving GTAPF problems. Action durations and intervals were previously considered in ASP by Son et al. (2004). Notably, we checked that clingo requires less than 1 GB of RAM to represent durations\nand makespan of a full production cycle at the car factory of Mercedes-Benz Ludwigsfelde\nGmbH, while extensions by difference logic (Neubauer et al. 2017) or integer variables\n(Banbara et al.",
+      "size": 464,
+      "sentences": 7
+    },
+    {
+      "id": 129,
+      "content": "H, while extensions by difference logic (Neubauer et al. 2017) or integer variables\n(Banbara et al. 2017) may possibly handle even greater time intervals in a compact way. The contributions of our work include a transparent and elaboration tolerant formal-\nization of transport tasks evolving in realistic production processes by specifying them\nin ASP, thus also making off-the-shelf solving systems accessible for computing optimal\nvehicle routes.",
+      "size": 449,
+      "sentences": 4
+    },
+    {
+      "id": 130,
+      "content": "SP, thus also making off-the-shelf solving systems accessible for computing optimal\nvehicle routes. As it turns out, our declarative approach allows for handling a scenario\ncovering the full production cycle at the car factory of Mercedes-Benz Ludwigsfelde\nGmbH, so that it can assist human engineers in setting up routes to be periodically\ntaken by automated guided vehicles.",
+      "size": 376,
+      "sentences": 2
+    },
+    {
+      "id": 131,
+      "content": "assist human engineers in setting up routes to be periodically\ntaken by automated guided vehicles. Moreover, scenarios of small size, resembling task\nreassignment or vehicle rerouting in case of unforeseen circumstances, can virtually be\nhandled in real time, which also makes the future integration of clingo as a component of\nthe control system software openTCS for task assignment and vehicle routing attractive.",
+      "size": 415,
+      "sentences": 2
+    },
+    {
+      "id": 132,
+      "content": "omponent of\nthe control system software openTCS for task assignment and vehicle routing attractive. ===  15 ===\nRouting Driverless Transport Vehicles in Car Assembly with ASP 15\nAcknowledgments This work was partially funded by DFG grant SCHA 550/9. We are\ngrateful to the anonymous reviewers for their helpful comments. References\nBanbara, M., Kaufmann, B., Ostrowski, M., and Schaub, T. 2017. Clingcon: The next\ngeneration. Theory and Practice of Logic Programming 17, 4, 408–461.",
+      "size": 482,
+      "sentences": 6
+    },
+    {
+      "id": 133,
+      "content": "b, T. 2017. Clingcon: The next\ngeneration. Theory and Practice of Logic Programming 17, 4, 408–461. Calimeri, F.,Faber, W.,Gebser, M.,Ianni, G.,Kaminski, R.,Krennwallner, T.,Leone,\nN., Ricca, F., and Schaub, T. 2012. ASP-Core-2: Input language format. Erdem, E., Kisa, D., O¨ztok, U., and Schu¨ller, P. 2013. A general formal framework for\npathfinding problems with multiple agents. In Proceedings of AAAI’13. AAAI Press, 290–296. Fisher, M. 2008. Temporal representation and reasoning.",
+      "size": 486,
+      "sentences": 11
+    },
+    {
+      "id": 134,
+      "content": "roceedings of AAAI’13. AAAI Press, 290–296. Fisher, M. 2008. Temporal representation and reasoning. In Handbook of Knowledge Represen-\ntation. Elsevier Science, 513–550. Fox,M.andLong,D.2003. PDDL2.1:AnextensiontoPDDLforexpressingtemporalplanning\ndomains. Journal of Artificial Intelligence Research 20, 61–124. Gebser, M., Janhunen, T., and Rintanen, J. Declarative encodings of acyclicity properties. Journal of Logic and Computation, in press.",
+      "size": 446,
+      "sentences": 11
+    },
+    {
+      "id": 135,
+      "content": "nen, J. Declarative encodings of acyclicity properties. Journal of Logic and Computation, in press. Gebser, M., Kaminski, R., Kaufmann, B., Lindauer, M., Ostrowski, M., Romero, J.,\nSchaub, T., and Thiele, S. 2015. Potassco User Guide. University of Potsdam. Gebser, M., Kaminski, R., Kaufmann, B., and Schaub, T. 2012. Answer Set Solving in\nPractice. Morgan and Claypool Publishers. Lifschitz, V. 1999. Answer set planning. In Proceedings of ICLP’99. MIT Press, 23–37.",
+      "size": 468,
+      "sentences": 12
+    },
+    {
+      "id": 136,
+      "content": "l Publishers. Lifschitz, V. 1999. Answer set planning. In Proceedings of ICLP’99. MIT Press, 23–37. Neubauer, K., Wanko, P., Schaub, T., and Haubelt, C. 2017. Enhancing symbolic system\nsynthesis through ASPmT with partial assignment evaluation. In Proceedings of DATE’17. IEEE Press, 306–309. Nguyen, V., Obermeier, P., Son, T., Schaub, T., and Yeoh, W. 2017. Generalized target\nassignment and path finding using answer set programming. In Proceedings of IJCAI’17. IJCAI/AAAI Press, 1216–1223.",
+      "size": 493,
+      "sentences": 13
+    },
+    {
+      "id": 137,
+      "content": "path finding using answer set programming. In Proceedings of IJCAI’17. IJCAI/AAAI Press, 1216–1223. Son, T., Baral, C., and Tuan, L. 2004. Adding time and intervals to procedural and\nhierarchical control specifications. In Proceedings of AAAI’04. AAAI Press, 92–97. Zhou, N., Barta´k, R., and Dovier, A. 2015. Planning as tabled logic programming. Theory\nand Practice of Logic Programming 15, 4-5, 543–558.",
+      "size": 406,
+      "sentences": 11
+    }
+  ]
+}

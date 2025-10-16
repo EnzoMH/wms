@@ -1,0 +1,1695 @@
+{
+  "source": "ArXiv",
+  "filename": "035_AGV_Learning_Efficient_and_Fair_Policies_for.pdf",
+  "domain": "AGV",
+  "total_chars": 97152,
+  "total_chunks": 281,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\nLearning Efficient and Fair Policies for Uncertainty-Aware Collaborative\nHuman-Robot Order Picking\nIgor G. Smita,b,∗, Zaharah Bukhsha, Mykola Pechenizkiyb, Kostas Alogariastosc, Kasper\nHendriksc, Yingqian Zhanga\naDepartment of Industrial Engineering & Innovation Sciences, Eindhoven University of Technology, P.O. Box 513,\n5600 MB Eindhoven, the Netherlands\nbDepartment of Mathematics & Computer Science, Eindhoven University of Technology, P.O.",
+      "size": 456,
+      "sentences": 2
+    },
+    {
+      "id": 2,
+      "content": "Netherlands\nbDepartment of Mathematics & Computer Science, Eindhoven University of Technology, P.O. Box 513, 5600 MB\nEindhoven, the Netherlands\ncVanderlande Industries B.V., P.O. Box 18, 5460 AA Veghel, the Netherlands\nAbstract\nIn collaborative human-robot order picking systems, human pickers and Autonomous Mobile\nRobots (AMRs) travel independently through a warehouse and meet at pick locations where pick-\ners load items onto the AMRs.",
+      "size": 439,
+      "sentences": 3
+    },
+    {
+      "id": 3,
+      "content": "ependently through a warehouse and meet at pick locations where pick-\ners load items onto the AMRs. In this paper, we consider an optimization problem in such systems\nwhereweallocatepickerstoAMRsinastochasticenvironment. Weproposeanovelmulti-objective\nDeep Reinforcement Learning (DRL) approach to learn effective allocation policies to maximize\npick efficiency while also aiming to improve workload fairness amongst human pickers.",
+      "size": 431,
+      "sentences": 3
+    },
+    {
+      "id": 4,
+      "content": "s to maximize\npick efficiency while also aiming to improve workload fairness amongst human pickers. In our\napproach, we model the warehouse states using a graph, and define a neural network architecture\nthat captures regional information and effectively extracts representations related to efficiency and\nworkload. We develop a discrete-event simulation model, which we use to train and evaluate the\nproposed DRL approach.",
+      "size": 422,
+      "sentences": 3
+    },
+    {
+      "id": 5,
+      "content": "op a discrete-event simulation model, which we use to train and evaluate the\nproposed DRL approach. In the experiments, we demonstrate that our approach can find non-\ndominated policy sets that outline good trade-offs between fairness and efficiency objectives. The\ntrained policies outperform the benchmarks in terms of both efficiency and fairness. Moreover,\nthey show good transferability properties when tested on scenarios with different warehouse sizes.",
+      "size": 459,
+      "sentences": 4
+    },
+    {
+      "id": 6,
+      "content": "they show good transferability properties when tested on scenarios with different warehouse sizes. The implementation of the simulation model, proposed approach, and experiments are published. Keywords: Artificial Intelligence, Collaborative Order Picking, Deep Reinforcement Learning,\nFairness\n∗Corresponding author. E-mail address: i.g.smit@tue.nl\nPreprint submitted to Elsevier April 15, 2024\n4202\nrpA\n9\n]OR.sc[\n1v60080.4042:viXra\n===  2 ===\n1.",
+      "size": 447,
+      "sentences": 4
+    },
+    {
+      "id": 7,
+      "content": "l\nPreprint submitted to Elsevier April 15, 2024\n4202\nrpA\n9\n]OR.sc[\n1v60080.4042:viXra\n===  2 ===\n1. Introduction\nOrder picking is one of the most fundamental and costly processes in logistics. In conventional\nwarehouses, human pickers typically spend up to 90% of time on picking activities, and 55% of\nall operating costs are commonly attributed to order picking (Dukic & Oluic, 2007).",
+      "size": 386,
+      "sentences": 3
+    },
+    {
+      "id": 8,
+      "content": "ies, and 55% of\nall operating costs are commonly attributed to order picking (Dukic & Oluic, 2007). To improve\npickingefficiency,collaborativehuman-robotorderpickinghasrecentlygainedincreasingattention,\nwhere human pickers and Autonomous Mobile Robots (AMRs) travel independently and meet at\npick locations, where pickers load retrieved items onto the AMRs.",
+      "size": 357,
+      "sentences": 2
+    },
+    {
+      "id": 9,
+      "content": "travel independently and meet at\npick locations, where pickers load retrieved items onto the AMRs. While optimizing efficiency (total picking time) is a dominant focus within both traditional\n(Koster et al., 2007) and robotized warehousing settings (Azadeh et al., 2019), our study also takes\ninto account the workload fairness, an objective often ignored in the literature.",
+      "size": 374,
+      "sentences": 2
+    },
+    {
+      "id": 10,
+      "content": "study also takes\ninto account the workload fairness, an objective often ignored in the literature. Existing solutions\n(Zˇulj et al., 2022; Srinivas & Yu, 2022; L¨offler et al., 2022) typically focus on deterministic sce-\nnarios and optimizing for efficiency. However, the sole focus on efficiency can negatively impact\nhuman well-being. If some pickers must pick much larger/heavier workloads than others, it can\nplace considerable physical and mental strain on them.",
+      "size": 467,
+      "sentences": 4
+    },
+    {
+      "id": 11,
+      "content": "larger/heavier workloads than others, it can\nplace considerable physical and mental strain on them. This increases injury risk, reduces picker\nwell-being and work satisfaction, and may violate ergonomic guidelines. In addition, the determin-\nistic nature of existing methods drastically limits their applicability. Collaborative picking involves\nmany pickers and AMRs interacting in complex ways.",
+      "size": 396,
+      "sentences": 4
+    },
+    {
+      "id": 12,
+      "content": "ir applicability. Collaborative picking involves\nmany pickers and AMRs interacting in complex ways. These systems have many sources of uncer-\ntainty, such as random movement speeds, uncertain pick times, congestion, and other disruptions. These uncertainties can drastically affect the process and make predetermined schedules infeasible. Hence, there is a need for an online stochastic solution approach.",
+      "size": 405,
+      "sentences": 5
+    },
+    {
+      "id": 13,
+      "content": "determined schedules infeasible. Hence, there is a need for an online stochastic solution approach. To address these challenges, we propose a novel multi-objective Deep Reinforcement Learning\n(DRL) approach that learns allocation policies to jointly optimize efficiency and fairness. As\ndecision-makers may value these objectives differently, we explicitly outline the achievable trade-\noffs.",
+      "size": 392,
+      "sentences": 4
+    },
+    {
+      "id": 14,
+      "content": "on-makers may value these objectives differently, we explicitly outline the achievable trade-\noffs. Ourapproachframesthewarehousesettingasanonlinedecision-makingproblemthatincludes\nuncertaintyanddisruptionsindynamicenvironments. Wemodelthewarehousestatesasagraphas\nthis allows for a representation that can easily adjust to different warehouse instances.",
+      "size": 354,
+      "sentences": 3
+    },
+    {
+      "id": 15,
+      "content": "sagraphas\nthis allows for a representation that can easily adjust to different warehouse instances. As existing\ngraph neural networks do not effectively handle the long-range dependencies in warehouse settings,\nwe propose anovelAisle-Embedding Multi-ObjectiveAwareNetwork (AEMO-Net)architectureto\neffectively capture regional information in warehouses. In addition, we show a feature separation\nprinciple to effectively extract workload and efficiency information in multi-objective DRL.",
+      "size": 487,
+      "sentences": 3
+    },
+    {
+      "id": 16,
+      "content": "ration\nprinciple to effectively extract workload and efficiency information in multi-objective DRL. 2\n===  3 ===\nWe conduct extensive experiments, and show that we can find non-dominated policy sets that\noutline good trade-offs between fairness and efficiency. Compared to greedy and business rule\nbenchmarks, the multi-objective policy sets contain multiple policies that achieve superior perfor-\nmance on both objectives.",
+      "size": 423,
+      "sentences": 3
+    },
+    {
+      "id": 17,
+      "content": "ctive policy sets contain multiple policies that achieve superior perfor-\nmance on both objectives. For large warehouses, we achieve policies improving efficiency by 20%\nwhile reducing unfairness (workload standard deviation) by 90% compared to the company bench-\nmark. Moreover, the trained policies generalize and transfer to new configurations like different\npicker/AMRnumbersandwarehousesizes,whilemaintainingbetterperformanceoverbenchmarks.",
+      "size": 445,
+      "sentences": 3
+    },
+    {
+      "id": 18,
+      "content": "like different\npicker/AMRnumbersandwarehousesizes,whilemaintainingbetterperformanceoverbenchmarks. Our work offers the following key contributions: (1) We have a unique problem setting of\nhuman-robot collaborative order picking with a focus on the workload fairness of human pickers.",
+      "size": 283,
+      "sentences": 2
+    },
+    {
+      "id": 19,
+      "content": "of\nhuman-robot collaborative order picking with a focus on the workload fairness of human pickers. This is the first study that optimizes both system performance and workload fairness, while we\nalso handle a highly stochastic environment directly derived from a real-world practical use case;\n(2) We develop a multi-objective DRL approach that explicitly generates a non-dominated set of\npolicies outlining the trade-offs between efficiency and fairness with different underlying metrics.",
+      "size": 488,
+      "sentences": 2
+    },
+    {
+      "id": 20,
+      "content": "olicies outlining the trade-offs between efficiency and fairness with different underlying metrics. Experiments demonstrate its good performance and transferability; (3) We propose a lightweight\ngraph-based neural network architecture, which can efficiently capture spatial information in ware-\nhouses in a less computationally demanding but more expressive way than standard graph neural\nnetworks.",
+      "size": 398,
+      "sentences": 2
+    },
+    {
+      "id": 21,
+      "content": "es in a less computationally demanding but more expressive way than standard graph neural\nnetworks. It also effectively handles multiple feature groups, which contain information related to\ndifferent objectives. The paper is structured as follows: Section 2 provides a review of the literature, Section 3 is\ndevoted to a formal definition of the problem, and Section 4 introduces our DRL-Guided Picker\nOptimizationmethodology. DetaileddescriptionsoftheexperimentalsetuparepresentedinSection\n5.",
+      "size": 493,
+      "sentences": 4
+    },
+    {
+      "id": 22,
+      "content": "Picker\nOptimizationmethodology. DetaileddescriptionsoftheexperimentalsetuparepresentedinSection\n5. Finally, we synthesize our findings and discuss the implications of our work in Section 6. 2. Related Work\nIn this section, we first outline the existing collaborative picking works. Then, we show the\npromise of DRL for online optimization problems and briefly describe current works addressing\nfairness in DRL. 2.1.",
+      "size": 415,
+      "sentences": 7
+    },
+    {
+      "id": 23,
+      "content": "or online optimization problems and briefly describe current works addressing\nfairness in DRL. 2.1. Collaborative Picking\nMost existing works in collaborative picking aim at optimizing warehouse layouts (Lee & Mur-\nray, 2019) and zoning strategies (Azadeh et al., 2020).",
+      "size": 270,
+      "sentences": 3
+    },
+    {
+      "id": 24,
+      "content": "at optimizing warehouse layouts (Lee & Mur-\nray, 2019) and zoning strategies (Azadeh et al., 2020). Recently, several studies have targeted\n3\n===  4 ===\noperations optimization, with focus on efficient picker routing (L¨offler et al., 2022), and tardiness\nminimization (Zˇulj et al., 2022) using Mixed-Integer Linear Programming (MILP) models. L¨offler\net al.",
+      "size": 359,
+      "sentences": 3
+    },
+    {
+      "id": 25,
+      "content": "mization (Zˇulj et al., 2022) using Mixed-Integer Linear Programming (MILP) models. L¨offler\net al. (2022) studied picker routing in Autonomous Guided Vehicle (AGV)-assisted picker-to-parts\norder picking in single-block, parallel-aisle warehouses. They developed an exact polynomial time\nalgorithm to minimize the total traveled distance for cases with fixed picking sequences. They\nshowed good performance compared to traditional order picking. Similarly, Zˇulj et al.",
+      "size": 469,
+      "sentences": 6
+    },
+    {
+      "id": 26,
+      "content": "uences. They\nshowed good performance compared to traditional order picking. Similarly, Zˇulj et al. (2022) con-\nsidered a different variant in which AMRs collect items and transfer them to the central warehouse\ndepot. They use a heuristic that solves an MILP formulation considering order batching and se-\nquencing. Srinivas & Yu (2022) also focused on minimizing tardiness. They considered a problem\nmost similar to ours in which both pickers and AMRs can freely move through the warehouse.",
+      "size": 491,
+      "sentences": 7
+    },
+    {
+      "id": 27,
+      "content": "problem\nmost similar to ours in which both pickers and AMRs can freely move through the warehouse. They integrated order batching, sequencing, and picker-robot routing in their method. Again,\ntheir method used an MILP model. They proposed a restarted simulated annealing approach with\nadaptive neighborhood search improving exploration and exploitation. They showed near-optimal\nresults for several problem instances. Lastly, Xie et al.",
+      "size": 436,
+      "sentences": 6
+    },
+    {
+      "id": 28,
+      "content": "nd exploitation. They showed near-optimal\nresults for several problem instances. Lastly, Xie et al. (2022) proposed two MILP formulations\nand a variable neighborhood search heuristic for a zone-based collaborative picking system. 2.2. Deep Reinforcement Learning for Online Planning\nThus, most existing methods consider deterministic scenarios that create full solutions in ad-\nvance, ignoring the fact that processes in warehouses are highly stochastic due to disruptions\nand uncertainties.",
+      "size": 491,
+      "sentences": 6
+    },
+    {
+      "id": 29,
+      "content": "g the fact that processes in warehouses are highly stochastic due to disruptions\nand uncertainties. Beeks et al. (2022) and Cals et al. (2021) have shown the advantages of DRL\napproaches in tackling uncertainties in warehouses. However, they focus on a very different opti-\nmization problem, i.e., order batching, and like other existing methods, do not incorporate human\nfactors. Regarding DRL for allocation or matching problems, Alomrani et al.",
+      "size": 447,
+      "sentences": 6
+    },
+    {
+      "id": 30,
+      "content": "o not incorporate human\nfactors. Regarding DRL for allocation or matching problems, Alomrani et al. (2022) solve an\nonline bipartite matching problem in which a fixed entity set must be matched with incoming\nentities. Our problem can also be considered as a matching problem but has additional complexity\nsuch as spatial relations, interdependent availability of nodes, both items/AMRs and pickers being\nuncertain over time, and fairness as an additional optimization objective.",
+      "size": 478,
+      "sentences": 4
+    },
+    {
+      "id": 31,
+      "content": "s/AMRs and pickers being\nuncertain over time, and fairness as an additional optimization objective. Recently, Begnardi et al. (2023) proposed a DRL approach to solving a similar matching prob-\nlem as ours related to collaborative order picking. However, they study a much more simplified\nenvironment. For instance, they do not regard a realistic warehouse layout, do not explicitly in-\ncorporate AMR interactions and congestion, and have limited stochasticity.",
+      "size": 460,
+      "sentences": 5
+    },
+    {
+      "id": 32,
+      "content": "t, do not explicitly in-\ncorporate AMR interactions and congestion, and have limited stochasticity. In addition, they do\n4\n===  5 ===\nnot consider workload fairness. 2.3. Fairness in Reinforcement Learning\nGajane et al. (2022) survey a variety of case-specific studies on fair RL, e.g. traffic light control\n(Li et al., 2020; Raeis & Leon-Garcia, 2021), UAV control (Qi et al., 2020; Nemer et al., 2022),\nor resource allocation (Zhu & Oh, 2018).",
+      "size": 445,
+      "sentences": 6
+    },
+    {
+      "id": 33,
+      "content": "2021), UAV control (Qi et al., 2020; Nemer et al., 2022),\nor resource allocation (Zhu & Oh, 2018). These studies consider single-objective DRL with hand-\ncrafted reward functions to find one specific policy and do not apply multi-objective DRL to find\ntrade-offs. Siddiqueetal.",
+      "size": 277,
+      "sentences": 3
+    },
+    {
+      "id": 34,
+      "content": "to find one specific policy and do not apply multi-objective DRL to find\ntrade-offs. Siddiqueetal. (2020)proposeamethodtolearnfairpoliciesinDRL.Theyusedthegen-\neralizedGinifunctiontodetermineafairpolicyovermultipleagentsandmodeledtheproblemasa\nMulti-ObjectiveMarkovDecisionProcess(MOMDP).Thedifferencebetweentheirmulti-objective\nmodeling and ours is that we have two optimization objectives, efficiency and workload fairness,\nwhile their performance objective is solely on optimizing a fair reward distribution among individ-\nuals.",
+      "size": 531,
+      "sentences": 3
+    },
+    {
+      "id": 35,
+      "content": "their performance objective is solely on optimizing a fair reward distribution among individ-\nuals. Note that in cases where performance efficiency is vital, like most operations optimization\nproblems, the approach by Siddique et al. (2020) for individual fairness is not applicable. 3. Problem Formulation\nWe consider a traditional warehouse layout with vertical, parallel aisles with storage racks\non both sides of the aisles.",
+      "size": 428,
+      "sentences": 5
+    },
+    {
+      "id": 36,
+      "content": "nal warehouse layout with vertical, parallel aisles with storage racks\non both sides of the aisles. At the top and the bottom, two horizontal cross-aisles connect the\nvertical aisles. The AMRs traverse vertical aisles unidirectionally. Human pickers can move in\nboth directions in each aisle. Both pickers and AMRs can move in either direction within the\nhorizontal cross-aisles.",
+      "size": 379,
+      "sentences": 5
+    },
+    {
+      "id": 37,
+      "content": "each aisle. Both pickers and AMRs can move in either direction within the\nhorizontal cross-aisles. We address an optimization problem where human pickers are assigned\nto AMRs (or items) in a collaborative picking environment. Each AMR is assigned with a set\nof “pickruns”, specifying the items to pick, corresponding locations, and the required collection\nsequence. The AMR moves toward its first pick destination.",
+      "size": 414,
+      "sentences": 5
+    },
+    {
+      "id": 38,
+      "content": "g locations, and the required collection\nsequence. The AMR moves toward its first pick destination. Upon arrival, it waits until a human\npicker arrives and places the required items on it. Then, the AMR proceeds to its next destination. This process continues until the AMR completes its entire pickrun. After unloading at a drop-off\nlocation, the AMR receives a new pickrun, and the cycle restarts. This happens for many AMRs\nsimultaneously. The human pickers are distributed through the warehouse.",
+      "size": 499,
+      "sentences": 8
+    },
+    {
+      "id": 39,
+      "content": "This happens for many AMRs\nsimultaneously. The human pickers are distributed through the warehouse. When idle, a picker\nrequests and receives a new picking location where the picker retrieves the items from the shelves\nand loads them onto the AMRs. 5\n===  6 ===\nVariables Descriptions\nA Decision variable; 1 if picker k is assigned to item i, 0 otherwise. i,k\nU i,i′ Decision variable; 1 if item i must be picked before i′ by same picker.",
+      "size": 438,
+      "sentences": 5
+    },
+    {
+      "id": 40,
+      "content": "i, 0 otherwise. i,k\nU i,i′ Decision variable; 1 if item i must be picked before i′ by same picker. BK Time when picker k arrives at item i.\ni,k\nFK Time when picker k is ready to leave item i’s location. i,k\nBR Time when item i can be placed on AMR r.\ni,r\nFR Time when item i has been placed on AMR r.\ni,r\nCR Completion time of the pickrun of AMR r.\nr\nC Completion time of the last pickrun. W The total workload of picker k.\nk\nM Sufficiently large positive number.",
+      "size": 463,
+      "sentences": 5
+    },
+    {
+      "id": 41,
+      "content": "time of the last pickrun. W The total workload of picker k.\nk\nM Sufficiently large positive number. τK Travel time from item i to item i′ by human pickers. i,i′\nτR Travel time from item i to item i′ by AMRs. i,i′\nτo,R Travel time from starting location of AMR r to location i.\nr,i\nτo,K Travel time from starting location of picker k to location i.\nk,i\nηL Time to place item i on an AMR. i\nuR 1 if AMR r collects i before i′, 0 otherwise. i,i′\naR 1 if AMR r must transport item i, 0 otherwise.",
+      "size": 492,
+      "sentences": 7
+    },
+    {
+      "id": 42,
+      "content": "if AMR r collects i before i′, 0 otherwise. i,i′\naR 1 if AMR r must transport item i, 0 otherwise. i,r\nw The workload value of item i.\ni\nTable 1: The variables of the picker allocation problem. Thestandardoptimizationobjectiveinwarehousingoperationsistomaximizeefficiency. Inour\ncase, we minimize the total time to complete the set of pickruns. In addition, we consider workload\nfairness in optimization. Most warehouses contain diverse product assortments of varying weights.",
+      "size": 476,
+      "sentences": 7
+    },
+    {
+      "id": 43,
+      "content": "d\nfairness in optimization. Most warehouses contain diverse product assortments of varying weights. For instance, in supermarket warehouses (our study case), some products weigh just a kilogram,\nlike boxes with crisps, while others can be ten or fifteen times as heavy, such as packs with drinks. Therefore, we measure the picker workload by the total mass of the lifted products they must pick,\nand measure the fairness by the standard deviation of the workloads of all pickers.",
+      "size": 479,
+      "sentences": 4
+    },
+    {
+      "id": 44,
+      "content": "they must pick,\nand measure the fairness by the standard deviation of the workloads of all pickers. To illustrate the problem formally, we formulate the deterministic version of the optimization\nproblem as an MILP. In this formulation, we assume that each AMR only fulfills one pickrun for\nsimplicity. Let i ∈ N denote the set of all items/orders that must be picked, r ∈ R a set of AMRs,\nandk ∈ K thehumanpickers.",
+      "size": 414,
+      "sentences": 4
+    },
+    {
+      "id": 45,
+      "content": "ote the set of all items/orders that must be picked, r ∈ R a set of AMRs,\nandk ∈ K thehumanpickers. Wehavetwobinarydecisionvariables: A andU , whereA = 1\ni,k i,i′ i,k\nifpickerk isassignedtoitemi,andU = 1ifimustberetrievedbeforeitemi′ bythesamepicker,\ni,i′\n0 otherwise. The list of variables can be found in Table 1. We define the problem as follows.",
+      "size": 349,
+      "sentences": 4
+    },
+    {
+      "id": 46,
+      "content": "i,i′\n0 otherwise. The list of variables can be found in Table 1. We define the problem as follows. minC, and minσ(W ,W ,...,W ),\n1 2 |K|\n6\n===  7 ===\nsubject to\n(cid:88)\nA = 1 ∀i ∈ N (1)\ni,k\nk∈K\nA −A ≤ 1−(U +U ) ∀i,i′ ∈ N,i ̸= i′,k ∈ K (2)\ni,k i′,k i,i′ i′,i\nA +A ≤ 1+(U +U ) ∀i,i′ ∈ N,i ̸= i′,k ∈ K (3)\ni,k i′,k i,i′ i′,i\nBK ≥ τo,K −M ·(1−A ) ∀i ∈ N,k ∈ K (4)\ni.k k,i i,k\n(cid:88) (cid:88)\nBK ≥ FK +τK ·U\ni.k i′,k i′,i i′,i\nk∈K k∈K ∀i,i′ ∈ N,i ̸= i′ (5)\n−M ·(1−U )\ni′,i\nFK ≥ FR −M · (cid:0) 2−A −aR (cid:1) ∀i ∈ N,k ∈ K,r ∈ R (6)\ni,k i,r i,k i,r\n(cid:32) (cid:33)\n(cid:88) (cid:88)\nBR ≥ FR +τR ·uR ∀i,i′ ∈ N,i ̸= i′ (7)\ni,r i′,r i′,i i′,i\nr∈R r∈R\nBR ≥ τo,R·aR ∀i ∈ N,r ∈ R (8)\ni,r r,i i,r\nBR ≥ BK −M ·(2−A −aR ) ∀i ∈ N,r ∈ R,k ∈ K (9)\ni,r i,k i,k i,r\nFR = BR +ηL·aR ∀i ∈ N,r ∈ R, (10)\ni,r i,r i i,r\nCR ≥ FR ∀i ∈ N,r ∈ R (11)\nr i,r\nC ≥ CR ∀r ∈ R (12)\nr\n(cid:88)\nW = w ·A ∀k ∈ K (13)\nk i i,k\ni∈N\nBK ≤ M ·A ∀i ∈ N,k ∈ K (14)\ni,k i,k\nFK ≤ M ·A ∀i ∈ N,k ∈ K (15)\ni,k i,k\nBR ≤ M ·aR ∀i ∈ N,r ∈ R (16)\ni,r i,r\nFR ≤ M ·aR ∀i ∈ N,r ∈ R (17)\ni,r i,r\nA i,k ,U i,i′ ∈ {0,1} ∀i,i′ ∈ N,k ∈ K,r ∈ R (18)\nBK,FK,FR,BR,CR,C ≥ 0 ∀i ∈ N,k ∈ K,r ∈ R (19)\ni,k i,k i,r i,r r\nThe first constraint ensures each item is picked by just one picker.",
+      "size": 1221,
+      "sentences": 4
+    },
+    {
+      "id": 47,
+      "content": "K,r ∈ R (19)\ni,k i,k i,r i,r r\nThe first constraint ensures each item is picked by just one picker. Constraints 2-3 define the\nrelative order of two items picked by the same picker. Constraints 4-5 compute the time when a\npicker can pick an item, and Constraint 6 indicates when a picker can leave a location. Constraints\n7\n===  8 ===\n7-9 describe when an AMR is ready for an item to be placed on it.",
+      "size": 400,
+      "sentences": 4
+    },
+    {
+      "id": 48,
+      "content": "ocation. Constraints\n7\n===  8 ===\n7-9 describe when an AMR is ready for an item to be placed on it. Then, an AMR has been loaded\nand can leave the location after the associated pick time has passed (10th constraint). Equation 11\nbounds the completion time of an AMR pickrun to the time at which the AMR has finished its last\npick. Constraint 12 computes the efficiency objective value. In Constraint 13, the total workload\nof a picker is the sum of the workloads of each pick.",
+      "size": 476,
+      "sentences": 6
+    },
+    {
+      "id": 49,
+      "content": "e value. In Constraint 13, the total workload\nof a picker is the sum of the workloads of each pick. Constraints 14-15 ensure the beginning and\nfinishing times of picker actions related to an item are only set when the picker is assigned to pick\nthis item. Constraints 16-17 enforce this for AMRs. The last two constraints specify the decision\nvariables A and U are binary and the time-related variables are non-negative.",
+      "size": 420,
+      "sentences": 5
+    },
+    {
+      "id": 50,
+      "content": "specify the decision\nvariables A and U are binary and the time-related variables are non-negative. i,k i,i′\nWefocusonoptimizingthepicker-AMRallocationdecisions,andassumethereleasingstrategies\noftheordersandtheAMRroutingarefixed. Despitethesefixedstrategiesandpre-determinedpick-\nruns,theenvironmentishighlystochasticinreality. Therefore,deterministicoptimizationmethods\nare not preferred.",
+      "size": 388,
+      "sentences": 4
+    },
+    {
+      "id": 51,
+      "content": "vironmentishighlystochasticinreality. Therefore,deterministicoptimizationmethods\nare not preferred. Instead, we model the problem as a sequential decision-making problem and\ndevelop a DRL approach to learn good allocation policies that account for inherent stochasticity. 4. DRL-Guided Picker Optimization\nTo address the problem, we propose the DRL-Guided Picker Optimization approach1. Figure\n1 offers an overview of this method.",
+      "size": 430,
+      "sentences": 6
+    },
+    {
+      "id": 52,
+      "content": "e propose the DRL-Guided Picker Optimization approach1. Figure\n1 offers an overview of this method. The approach builds upon several key components, which\nwe further elaborate on in this section. Firstly, we develop a discrete-event simulation model\nrepresenting the collaborative picking system, oultined in Section 4.1. Secondly, in Section 4.2, we\nformalizetheMOMDPwhichprovidesthegeneralframeworkinwhichtheDRLagentcaninteract.",
+      "size": 430,
+      "sentences": 5
+    },
+    {
+      "id": 53,
+      "content": "in Section 4.2, we\nformalizetheMOMDPwhichprovidesthegeneralframeworkinwhichtheDRLagentcaninteract. Thirdly, we propose a novel neural network architecture in Section 4.3. And lastly, we introduce\nthe learning algorithm in Section 4.4. 4.1. Simulation Model\nWe develop a discrete-event simulation model wrapped within the OpenAI Gym (Brockman\net al., 2016) interface to represent the collaborative picking system. We use product and order\npicking data from a real-world grocery distribution center.",
+      "size": 497,
+      "sentences": 6
+    },
+    {
+      "id": 54,
+      "content": "icking system. We use product and order\npicking data from a real-world grocery distribution center. Several sources of randomness are mod-\neled to simulate a stochastic environment: pick times, picker and AMR speeds, picking disruption\noccurrences and duration, and AMR overtaking delays. We apply our DRL framework within this\nsimulation environment, which we describe in more detail below. 1cf.",
+      "size": 396,
+      "sentences": 5
+    },
+    {
+      "id": 55,
+      "content": "our DRL framework within this\nsimulation environment, which we describe in more detail below. 1cf. https://github.com/ai-for-decision-making-tue/DRL-Guided-Picker-Optimization\n8\n===  9 ===\nFigure 1: Overview of DRL-Guided Picker Optimization. 1m 6m\n1.4m\nFigure 2: Illustration of the considered warehouse parameters and the associated undirected graph representation\nof a warehouse.",
+      "size": 382,
+      "sentences": 4
+    },
+    {
+      "id": 56,
+      "content": "considered warehouse parameters and the associated undirected graph representation\nof a warehouse. The dotted arrows represent the allowed AMR movement directions, and the grey areas represent\nstorage racks between the aisles. The circles indicate nodes and the connections between the circles are edges. The distance between adjacent pick locations within an aisle is 1.4 meters, while the distance\nto move to the other side of the aisle is 1 meter.",
+      "size": 450,
+      "sentences": 4
+    },
+    {
+      "id": 57,
+      "content": "ithin an aisle is 1.4 meters, while the distance\nto move to the other side of the aisle is 1 meter. The travel distance between two aisles is 6\nmeters. Figure 2 clarifies these warehouse parameters. To enable efficient calculations and to\nmodel the warehouse layout, we used a graph structure. Here, the nodes represent locations at\nwhich entities can be. The edges represent how entities can move within the warehouse and what\nthe distances between these locations are.",
+      "size": 470,
+      "sentences": 6
+    },
+    {
+      "id": 58,
+      "content": "sent how entities can move within the warehouse and what\nthe distances between these locations are. We illustrate this graph representation in Figure 2. The\nresulting adjacency and distance matrices can be used to calculate distances and routes within any\nwarehouse layout efficiently. In our use case, we use a directed graph to represent the AMR travel\npossibilities, while an undirected graph is used for the pickers, which can move in any direction\nwithinthewarehouse.",
+      "size": 472,
+      "sentences": 4
+    },
+    {
+      "id": 59,
+      "content": "le an undirected graph is used for the pickers, which can move in any direction\nwithinthewarehouse. Differentwarehousestructuresandtraveldirectionrulescanbeimplemented\nby switching the graph structure and, therefore, the adjacency and distance matrices. Apre-generatedsetofpickrunsmustbecollectedbythepickersandAMRstofulfillanepisode. Thus, simulation episodes start with the pickrun generation and end when all items from all\npickruns have been picked.",
+      "size": 453,
+      "sentences": 4
+    },
+    {
+      "id": 60,
+      "content": "isodes start with the pickrun generation and end when all items from all\npickruns have been picked. These pickruns contain the list of locations that must be visited, with\nthe number of items that must be picked at each location. The pickrun optimization is a problem\n9\n[  ]\n\n===  10 ===\non its own. As this is outside our scope, we use a basic approach. Namely, to generate these\npickruns, for each episode, we randomly select a set of pick locations.",
+      "size": 452,
+      "sentences": 5
+    },
+    {
+      "id": 61,
+      "content": ". Namely, to generate these\npickruns, for each episode, we randomly select a set of pick locations. We determine the pickrun\nlengths using uniform sampling between 15 and 25 locations. We select these lengths based on\nstakeholder knowledge and the pickrun lengths found in the available data. These pickruns must\nbe collected by the AMRs via an S-shaped/traversal routing policy.",
+      "size": 379,
+      "sentences": 5
+    },
+    {
+      "id": 62,
+      "content": "ilable data. These pickruns must\nbe collected by the AMRs via an S-shaped/traversal routing policy. Hence, we sort the locations\nby aisle and then by how early the locations are within their respective aisle, with the aisle entries\nbeingontheoppositeendoftheaisleforconsecutiveaisles. Thepickingfrequenciesatthelocations\nare randomly sampled using the empirical distribution of pick frequencies from the available data.",
+      "size": 419,
+      "sentences": 4
+    },
+    {
+      "id": 63,
+      "content": "are randomly sampled using the empirical distribution of pick frequencies from the available data. For the pickrun-AMR assignment, we use a trivial method, with the first pickrun in the queue\nbeing assigned to an AMR that becomes available. To start a simulation run, we use a diverse starting method. In diverse starting, all AMRs are\nassigned to a pickrun. These pickruns are cut off using a random uniform selection.",
+      "size": 419,
+      "sentences": 5
+    },
+    {
+      "id": 64,
+      "content": "g, all AMRs are\nassigned to a pickrun. These pickruns are cut off using a random uniform selection. In this way,\nthe system starts with the AMRs randomly spread through the warehouse. Similarly, the pickers\nare randomly allocated to destinations spread throughout the warehouse during instantiation. We\ndo so based on expert knowledge, as initialization procedures to create distributed initial states\nare common.",
+      "size": 413,
+      "sentences": 5
+    },
+    {
+      "id": 65,
+      "content": "on expert knowledge, as initialization procedures to create distributed initial states\nare common. To generate a product distribution through the warehouse, we randomly instantiate\nproduct locations based on the actual products and product categories in the warehouse data. To\ndo so, for each product category, we gather the distribution of how many items of the category are\nclusteredtogether.",
+      "size": 394,
+      "sentences": 3
+    },
+    {
+      "id": 66,
+      "content": "oduct category, we gather the distribution of how many items of the category are\nclusteredtogether. Then,tofillawarehousewithproductlocations,werandomlysampleaproduct\ncategory based on the relative frequencies of the categories. Consequently, we sample how many\nproducts must be grouped for this product category based on the empirical distribution. Finally,\nreal-world products of these categories are assigned to these locations.",
+      "size": 431,
+      "sentences": 4
+    },
+    {
+      "id": 67,
+      "content": "cal distribution. Finally,\nreal-world products of these categories are assigned to these locations. This is done repeatedly\nuntil each location contains a specific product with its weight and volume. We determine the expected pick time of an order line on a pickrun based on the product\ncharacteristics and the number of items that must be picked. To do so, we use an internal method\nfrom our industrial partner that was developed using the empirical product and pick time data.",
+      "size": 478,
+      "sentences": 5
+    },
+    {
+      "id": 68,
+      "content": "thod\nfrom our industrial partner that was developed using the empirical product and pick time data. This method combines the product volume and weight with the number of item pairs and single\nitems that must be picked. Using several empirically tested linear functions that use these two\nproduct characteristics and the number of items that must be collected, the expected pick time\nt can be calculated for each pick.",
+      "size": 417,
+      "sentences": 3
+    },
+    {
+      "id": 69,
+      "content": "e number of items that must be collected, the expected pick time\nt can be calculated for each pick. To create the actual pick times, we sampled a value from a\npick\n10\n===  11 ===\nGaussian distribution with µ = t and σ = 0.1·t . Since sampling the product characteristics\npick pick\nand the number of items that must be picked occurs independently, we verify whether the resulting\nexpected pick times are similar to those calculated from the real order distribution, which contains\n100,833 order lines.",
+      "size": 500,
+      "sentences": 3
+    },
+    {
+      "id": 70,
+      "content": "e similar to those calculated from the real order distribution, which contains\n100,833 order lines. The histograms of 100,000 sampled picking times through our method and\nthose from the data show a sufficiently similar distribution for our purpose. Besides, the means\nand standard deviations of the sampled pick times (µ = 11.3, σ = 10.3) and of the actual order\npick times (µ = 12.3, σ = 10.8) are also satisfactory similar. 4.1.1.",
+      "size": 432,
+      "sentences": 4
+    },
+    {
+      "id": 71,
+      "content": "10.3) and of the actual order\npick times (µ = 12.3, σ = 10.8) are also satisfactory similar. 4.1.1. Picker Process\nThe picker process describes the picker’s logic and how it interacts with the optimizer and\nAMRs. The supplementary material contains a schematic overview of this picker process. In the simulation, we model each transition of one location to another location by a picker\nor AMR in the warehouse as an event.",
+      "size": 422,
+      "sentences": 5
+    },
+    {
+      "id": 72,
+      "content": "ach transition of one location to another location by a picker\nor AMR in the warehouse as an event. This allows us to maintain a detailed overview of the\ncurrent state of the system with regard to the locations of all pickers and AMRs at any time. The\npicker process starts with a picker being allocated to a destination. Once the picker receives its\ndestination, it follows the shortest path to the destination. We set the average picker speed to 1.25\nm/s.",
+      "size": 457,
+      "sentences": 5
+    },
+    {
+      "id": 73,
+      "content": "tion, it follows the shortest path to the destination. We set the average picker speed to 1.25\nm/s. At the start of each path to a new destination of a picker, we randomly set the speed using\na Gaussian distribution with µ = 1.25 and σ = 0.15. This mimics the uncertainty in real-world\npicker speeds. After a timeout of distance/picker speed seconds, the movement event toward the\nfollowing location takes place. This is repeated until the picker reaches its destination.",
+      "size": 471,
+      "sentences": 6
+    },
+    {
+      "id": 74,
+      "content": "ward the\nfollowing location takes place. This is repeated until the picker reaches its destination. When a picker reaches the destination, it checks if any AMR is waiting there. If no AMR is\nwaiting at the location, the picker waits until any AMR arrives there. When an AMR is waiting\nat the location or an AMR arrives, the picking takes place. This picking is represented using a\ntimeout event. The picking time is sampled from a Gaussian distribution.",
+      "size": 453,
+      "sentences": 7
+    },
+    {
+      "id": 75,
+      "content": "ing is represented using a\ntimeout event. The picking time is sampled from a Gaussian distribution. However, in real-world\nwarehouses, picking does not always happen perfectly. Therefore, in consultation with business\nstakeholders, we include a random picking interruption. Namely, a picking delay is included every\nonceinawhiletomimicanyuncertaintycausedbypickers. Thisdelaycanrepresentpickershaving\nashortbreakorhavingtoreshuffleitemsontheAMR,itemsbeinghardtoretrievefromtheshelve,\nand so on.",
+      "size": 494,
+      "sentences": 6
+    },
+    {
+      "id": 76,
+      "content": "aving\nashortbreakorhavingtoreshuffleitemsontheAMR,itemsbeinghardtoretrievefromtheshelve,\nand so on. We set the frequency of this unexpected delay occurring for each picker using a Poisson\nrandom variable with λ = 50, indicating that, on average, a picker has an unexpected delay once\nper 50 picks. The distribution fits well when events are independent, which we can assume since a\n11\n===  12 ===\ndisruption, stock-out, or error at one location generally does not affect those at the next locations.",
+      "size": 499,
+      "sentences": 3
+    },
+    {
+      "id": 77,
+      "content": "ruption, stock-out, or error at one location generally does not affect those at the next locations. The disruption time is sampled from a Gaussian distribution with µ = 60 and σ = 7.5 seconds. WhenapickerhasfinishedpickingtheitemsforanAMR,itchecksifanyotherAMRiswaiting\nat the location. If so, it picks the items for this AMR. Then, if no AMRs are left to be served at\nthe location, the picker must request a new location from the optimizer, and the cycle repeats. 4.1.2.",
+      "size": 471,
+      "sentences": 6
+    },
+    {
+      "id": 78,
+      "content": "location, the picker must request a new location from the optimizer, and the cycle repeats. 4.1.2. AMR Process\nThe AMR process establishes the behavior of the AMRs within the system and how they\ninteract with each other and the human pickers. An overview of the process logic of the AMRs in\nthe simulation can found in the supplementary material. The AMR process starts with an AMR\nbeing assigned to fulfill a pickrun.",
+      "size": 418,
+      "sentences": 5
+    },
+    {
+      "id": 79,
+      "content": "the supplementary material. The AMR process starts with an AMR\nbeing assigned to fulfill a pickrun. Then, like for pickers, an event is used for each transition to the\nfollowing location on the AMR path toward the first destination in the pickrun. For AMRs, these\nevents occur after a timeout of distance/AMR speed seconds. We set the average AMR speed to\n1.5 m/s.",
+      "size": 364,
+      "sentences": 5
+    },
+    {
+      "id": 80,
+      "content": "vents occur after a timeout of distance/AMR speed seconds. We set the average AMR speed to\n1.5 m/s. Similar to the picker speed, at each tour toward a new destination, a random speed is\nselected from a Gaussian distribution with µ = 1.5 and σ = 0.15 m/s. Like the pickers, the AMR\ncontinues its movement until it has reached its destination. However, whereas pickers can walk easily through the warehouse, the AMRs can encounter\ncongestion.",
+      "size": 440,
+      "sentences": 5
+    },
+    {
+      "id": 81,
+      "content": "However, whereas pickers can walk easily through the warehouse, the AMRs can encounter\ncongestion. Namely, when another AMR is standing in the path of the vehicle, it has to do an\novertaking maneuver. We model this by adding an overtaking timeout whenever an AMR has\nto overtake another AMR. Since overtaking is a slow procedure for AMRs, this time penalty is\nrelatively large. We use a random Gaussian sampling method with µ = 15 and σ = 2.5 seconds for\nthe overtaking penalty.",
+      "size": 478,
+      "sentences": 5
+    },
+    {
+      "id": 82,
+      "content": "e use a random Gaussian sampling method with µ = 15 and σ = 2.5 seconds for\nthe overtaking penalty. This penalty indicates the importance of preventing congestion. When an AMR reaches its destination, it waits for the human picker to arrive if it is not yet\nthere. When the human picker arrives, a picking timeout occurs, representing the picker picking\nthe items for the AMR.",
+      "size": 376,
+      "sentences": 4
+    },
+    {
+      "id": 83,
+      "content": "an picker arrives, a picking timeout occurs, representing the picker picking\nthe items for the AMR. Once an AMR has been loaded at a pick location, the process is repeated,\nand the AMR moves to the next location on its pickrun. This occurs until all locations in the\npickrun have been visited. Then, in a real-world warehouse, the AMR moves to a drop-off location\noutside the picking area to unload its items. As we do not consider this unloading, we do not\ninclude it in our simulation.",
+      "size": 487,
+      "sentences": 5
+    },
+    {
+      "id": 84,
+      "content": "to unload its items. As we do not consider this unloading, we do not\ninclude it in our simulation. Instead, the AMR must return to the base location at the bottom\nleft of the warehouse, where it can start a new pickrun. As the AMRs at the drop-off location are\nsimply out of the system, not including this process in the simulation does not affect the picking\n12\n===  13 ===\nefficiency results.",
+      "size": 394,
+      "sentences": 4
+    },
+    {
+      "id": 85,
+      "content": "uding this process in the simulation does not affect the picking\n12\n===  13 ===\nefficiency results. By up- or down-scaling the number of AMRs, we can still capture the number\nof AMRs that are actually in the picking system. 4.2. Multi-Objective Markov Decision Process\nThe DRL agent is defined as a picker allocation optimizer. We learn a policy that assigns\nthe pickers to pick locations at each step. By doing so, the policy determines the assignment\nvariables A and U .",
+      "size": 472,
+      "sentences": 6
+    },
+    {
+      "id": 86,
+      "content": "pick locations at each step. By doing so, the policy determines the assignment\nvariables A and U . The picker optimizer receives the system state and allocates the picker to\ni,k i,i′\na new destination. Then, the cycle continues until any picker places a new request. The process is\nstochasticandmultiplepickersusuallyneverplacearequestattheexactsamemoment. Therefore,\nthe picker optimizer uses the natural order of incoming requests to allocate pickers one at a time.",
+      "size": 467,
+      "sentences": 6
+    },
+    {
+      "id": 87,
+      "content": "the picker optimizer uses the natural order of incoming requests to allocate pickers one at a time. Within this framework, we define the MOMDP below. Transition function. The transition function is formed by the warehouse system. One transition\nstep consists of the picking process between two consecutive allocation requests for the optimizer\nagent. An episode is one warehouse simulation in which a pre-generated set of pickruns is fulfilled. State Space.",
+      "size": 457,
+      "sentences": 7
+    },
+    {
+      "id": 88,
+      "content": "ode is one warehouse simulation in which a pre-generated set of pickruns is fulfilled. State Space. We use a graph to model the state space, with nodes representing the warehouse\nlocations and edges representing how entities can move between these locations. The node features\nare split into two categories: efficiency related and workload fairness related, shown in Tables 2\nand 3. For each node, there are 35 node features (23 efficiency and 12 fairness).",
+      "size": 457,
+      "sentences": 5
+    },
+    {
+      "id": 89,
+      "content": "shown in Tables 2\nand 3. For each node, there are 35 node features (23 efficiency and 12 fairness). Theefficiencyrelatedfeaturesconsistofinformationofthecurrentpicker,AMRs,otherpickers,\nnode location, and node neighborhood. The current picker information describes the positioning\nof the nodes in relation to the controlled picker for whom an allocation decision must be made. The AMR information describes the positioning and next destinations of the AMRs with respect\nto the nodes.",
+      "size": 483,
+      "sentences": 5
+    },
+    {
+      "id": 90,
+      "content": "information describes the positioning and next destinations of the AMRs with respect\nto the nodes. This helps to identify promising picking locations based on the AMR distribution\nin the warehouse. For similar reasons, we also included 5 node features describing other picker\ninformation in the state space. This allows the DRL agent to consider other pickers’ actions and\nlocations in the decision-making process, which can prevent unnecessary picker overlap and aid\nsynergies.",
+      "size": 478,
+      "sentences": 4
+    },
+    {
+      "id": 91,
+      "content": "ons in the decision-making process, which can prevent unnecessary picker overlap and aid\nsynergies. The node region information describes the regions in which the nodes are located within\nthe warehouse. These features may help policies consider the routing of AMRs. Namely, if two\nnodes are within the same aisle, it may be beneficial to first pick the one at the aisle entry since\nthe AMR will continue its route toward the aisle end.",
+      "size": 435,
+      "sentences": 4
+    },
+    {
+      "id": 92,
+      "content": "o first pick the one at the aisle entry since\nthe AMR will continue its route toward the aisle end. Similarly, if two nodes are in consecutive\n13\n===  14 ===\nCurrent picker information\nLocation Whetherthepickeriscurrentlyatthenode. Pickerdistance Providesthedistancebetweenpickerandthenodethroughwarehousepaths. AMR(s) information\nLocation WhethertheAMRiscurrentlyatthenode. #ofAMRsgoing NumberofAMRscurrentlygoingtowardsthenode.",
+      "size": 429,
+      "sentences": 5
+    },
+    {
+      "id": 93,
+      "content": "Location WhethertheAMRiscurrentlyatthenode. #ofAMRsgoing NumberofAMRscurrentlygoingtowardsthenode. MinimumtraveldistanceofAMRswiththisnodeastheirdestinationor-10if\nDestinationdistance\nnonearetravelingintowardsthenode. Sumofestimatedtraveltimetocurrentdestination,picktimeatdestinationand\nExpectedtimeuntilnextdestination timeuntilthenextdestination. Valueof-10ifnoAMRgoesforthenextpickrun,\notherwiseAMRwithminimumtraveltimeisselected.",
+      "size": 434,
+      "sentences": 5
+    },
+    {
+      "id": 94,
+      "content": "xtdestination. Valueof-10ifnoAMRgoesforthenextpickrun,\notherwiseAMRwithminimumtraveltimeisselected. Sameasexpectedtimeuntilnextdestinationfeaturebutcomputetheestimates\nExpectedtimeuntiltwo-stepahead\nfortwo-stepaheadAMRdestination. #ofAMRswithinsameaisle AMRsgoingtoadestinationwithinthesameaisleastheconsiderednode. #ofAMRwaiting AMRscurrentlywaitinginthesameaisleastheconsiderednode. Picker positioning in the system\nLocation Indicateifanypickerotherthanthepickerbeingassignedisatthisnode.",
+      "size": 490,
+      "sentences": 6
+    },
+    {
+      "id": 95,
+      "content": "positioning in the system\nLocation Indicateifanypickerotherthanthepickerbeingassignedisatthisnode. Minimumdistancetothisnodeamongallpickershavingthisnodeasdestination. Minimumtraveldistance\nIfnone,thevalueis-10. Numberofpickersgoingtoadestinationwithinthesameaisleastheconsidered\n#ofpickers\nnode. Minimumdistanceofanyotherpickertoitscurrentdestinationplusthedistance\nDistanceofotherpickers\nfromitscurrentdestinationtotheconsiderednode.",
+      "size": 435,
+      "sentences": 5
+    },
+    {
+      "id": 96,
+      "content": "rentdestinationplusthedistance\nDistanceofotherpickers\nfromitscurrentdestinationtotheconsiderednode. Similartotheabove,butconsideringtheexpectedtime,includingexpected\nExpectedtimeofotherpickers\npickingtimeatthecurrentdestination. Node region information\nAisledistancefromorigin Howfartheaisleofthisnodeisfromtheorigin,scaledbythewarehousesize. Howfartowardthebeginningorendoftheaisleanodeislocated,scaledbythe\nNodedepthwithinaisle\naislelength.",
+      "size": 442,
+      "sentences": 4
+    },
+    {
+      "id": 97,
+      "content": "Howfartowardthebeginningorendoftheaisleanodeislocated,scaledbythe\nNodedepthwithinaisle\naislelength. Node neighborhood features\nClosestand2nd closestdistancetothenextdestinationsoftheAMRsgoingto\nClosestnextdestinationdistances\nthisnode. 0ifnoAMRsorlastnodeinthepickrun. Closestdistancestotwo-stepahead. Sameasabovebutfortheclosesttwo-stepaheaddestination. Minimumdistancesfromthisnodetotheothernodesthatarecurrentlythe\nClosestdistancetopickers\ndestinationofanyofthepickers.",
+      "size": 472,
+      "sentences": 6
+    },
+    {
+      "id": 98,
+      "content": "omthisnodetotheothernodesthatarecurrentlythe\nClosestdistancetopickers\ndestinationofanyofthepickers. Distancestotheclosestand2nd closestothernodesthatarethedestinationofan\nDistancestoclosestunservedAMRs\nAMRandwherenopickerisalreadygoing. Table 2: List of state space features related to efficiency. aisles, picking the node in the aisle closer to the start could be beneficial. Lastly, we selected the\nnode neighborhood features to capture the picking process occurring around the nodes.",
+      "size": 486,
+      "sentences": 5
+    },
+    {
+      "id": 99,
+      "content": "selected the\nnode neighborhood features to capture the picking process occurring around the nodes. These may\nhelp capture high- or low-density pick areas. The workload fairness features are split into node-specific features describing the workload\ncharacteristics at the nodes and “distributional” features describing the current distribution of\npicker workloads. Although the distributional features are not node-specific, we included them as\nnode features to facilitate node-wise computations.",
+      "size": 495,
+      "sentences": 4
+    },
+    {
+      "id": 100,
+      "content": "ures are not node-specific, we included them as\nnode features to facilitate node-wise computations. Thus, these features contain the same value for\neach node. These features allow for consideration of workloads at specific picking locations while\nalso considering the current picker workload in comparison to the overall workload distribution. Action Space. We use a discrete action space that consists of the nodes in the graph.",
+      "size": 429,
+      "sentences": 5
+    },
+    {
+      "id": 101,
+      "content": "distribution. Action Space. We use a discrete action space that consists of the nodes in the graph. Namely, a\npolicy should assign a picker that places an allocation request to a single node, representing the\nnew picker destination. We use a truncated action space that, at any timestep, consists of all\n14\n===  15 ===\nNode specific workload information\nTotalmassinkilogramsthatthepickeratthisnodehaspickedsubtractedbythemean\nCurrentpickerworkload\nworkloadofallpickers.",
+      "size": 469,
+      "sentences": 5
+    },
+    {
+      "id": 102,
+      "content": "ramsthatthepickeratthisnodehaspickedsubtractedbythemean\nCurrentpickerworkload\nworkloadofallpickers. Nextpickerworkload Sameasabovewhenthepickerdestinationistheconsiderednode. Itemweight Massinkilogramsofasingleitemstoredatthenode. WaitingAMRworkload MassoftheitemsthatmustbeloadedonthewaitingAMRsatthislocation. MassoftheitemsthatmustbeloadedontheAMRsthataregoingtothislocationbut\nDestinationAMRsworkload\narenotyetthere.",
+      "size": 420,
+      "sentences": 5
+    },
+    {
+      "id": 103,
+      "content": "itemsthatmustbeloadedontheAMRsthataregoingtothislocationbut\nDestinationAMRsworkload\narenotyetthere. Totalmassescarriedbythetwoclosestpickerstothisnodeintermsofexpectedarrival\nClosestpickerworkloads\ntime,subtractedbythemeanpickerworkload. Distributional workload information\nPickertotalworkload Workloadinkilogramsofthecontrolledpickersubtractedbythemeanpickerworkload. Minimum,25th and75th percentile,maxixmumworkloadofallpickers,subtractedbythe\nOtherpickerworkloads\nmeanpickerworkload.",
+      "size": 486,
+      "sentences": 4
+    },
+    {
+      "id": 104,
+      "content": "th percentile,maxixmumworkloadofallpickers,subtractedbythe\nOtherpickerworkloads\nmeanpickerworkload. Table 3: List of state space features related to workload fairness. locations that are the current or the next destination in any AMR pickrun and where no other\nhuman picker is already going. The maximum size of this variable action space is achieved when\nall the AMR destinations and next destinations are unique locations. Then, the action space has\na size of 2×nr. of AMRs−(nr. of pickers−1).",
+      "size": 495,
+      "sentences": 7
+    },
+    {
+      "id": 105,
+      "content": "ations are unique locations. Then, the action space has\na size of 2×nr. of AMRs−(nr. of pickers−1). Reward Function. We use one reward signal for efficiency and one for workload fairness. For\nefficiency, we use a penalty on the passed time. Specifically, at each transition step, the penalty is\nthe elapsed time in seconds between the current step and the previous step. Formally, the reward\nis as follows, with T indicating the system time at step t: Refficiency = T −T .",
+      "size": 472,
+      "sentences": 9
+    },
+    {
+      "id": 106,
+      "content": "rmally, the reward\nis as follows, with T indicating the system time at step t: Refficiency = T −T . t t t−1 t\nFor fairness, the reward at each step is based on the increase or decrease of the standard\ndeviation of the total carried product masses between the previous and current steps.",
+      "size": 286,
+      "sentences": 2
+    },
+    {
+      "id": 107,
+      "content": "the standard\ndeviation of the total carried product masses between the previous and current steps. So, at step\nt, the fairness reward is as follows, with the standard deviation σ, W indicating the total lifted\nk,t\nmass by picker k until step t, and |K| the number of pickers: Rfairness = σ(W ,...,W )−\nt 1,t−1 |K|,t−1\nσ(W ,...,W ). The output vector of the reward function in the MOMDP at each step t is:\n1,t |K|,t\nR = (Refficiency,Rfairness). t t t\n4.3.",
+      "size": 454,
+      "sentences": 4
+    },
+    {
+      "id": 108,
+      "content": "e reward function in the MOMDP at each step t is:\n1,t |K|,t\nR = (Refficiency,Rfairness). t t t\n4.3. Aisle-Embedding Multi-Objective Aware Network\nWe propose an Aisle-Embedding Multi-Objective Aware Network (AEMO-Net), a graph-based\narchitecture tailored to capture neighborhoods within deep warehouse aisles comprising of often\n30-40 nodes.",
+      "size": 340,
+      "sentences": 3
+    },
+    {
+      "id": 109,
+      "content": "ure tailored to capture neighborhoods within deep warehouse aisles comprising of often\n30-40 nodes. The standard message-passing method of graph neural networks falls short in larger\nnode settings (Balcilar et al., 2021) resulting in multiple message-passing steps and deep networks\nwhich are difficult and slow to learn. Figure 3 outlines the proposed architecture.",
+      "size": 366,
+      "sentences": 3
+    },
+    {
+      "id": 110,
+      "content": "d deep networks\nwhich are difficult and slow to learn. Figure 3 outlines the proposed architecture. The aisle-\nembedding structure combines the idea of permutation invariant aggregation from graph networks\n15\n===  16 ===\nwith our warehouse domain knowledge. Specifically, aisles form natural regions of related nodes\nwithin a warehouse. By aggregating the embeddings of the nodes within an aisle, we create an\naisle-embedding that captures the regional information.",
+      "size": 465,
+      "sentences": 5
+    },
+    {
+      "id": 111,
+      "content": "of the nodes within an aisle, we create an\naisle-embedding that captures the regional information. Then, we combine the node-embedding\nwith the aisle-embedding to calculate the final node values used to output the action probabilities. Formally, the aisle-embedding of an aisle A is calculated as follows, with hl indicating the node\nv\nembeddings at layer l, and V the set of nodes within an aisle A: hl = Ψ (cid:0) {hl|v ∈ V } (cid:1) .",
+      "size": 437,
+      "sentences": 3
+    },
+    {
+      "id": 112,
+      "content": "beddings at layer l, and V the set of nodes within an aisle A: hl = Ψ (cid:0) {hl|v ∈ V } (cid:1) . We use\nA A v A\nthe mean as the permutation invariant function Ψ. To facilitate multi-objective learning, we use an architecture that separates the two feature\ncategories and treats them independently before their high-level embeddings are combined.",
+      "size": 348,
+      "sentences": 3
+    },
+    {
+      "id": 113,
+      "content": "o feature\ncategories and treats them independently before their high-level embeddings are combined. This\nenables learning embeddings related to both feature categories without noise while the shared\nfinal layers capture the interactions between the fairness and efficiency objectives. Combining the\naisle-embedding structure with feature separation, the AEMO-Net is formulated as: AEMO(v) =\nγ ([Emb (v),Emb (v)]).",
+      "size": 413,
+      "sentences": 3
+    },
+    {
+      "id": 114,
+      "content": "structure with feature separation, the AEMO-Net is formulated as: AEMO(v) =\nγ ([Emb (v),Emb (v)]). Here,Emb representstheaisle-embeddingnetworkforafeature\nactor fair effic cat\ncategory and xcat the feature vector of a category for node v: Emb (v) = ϕcat ([ψcat (xcat),\nv cat actor actor v\nAVG({ψcat (xcat)|u ∈ V })]).",
+      "size": 317,
+      "sentences": 2
+    },
+    {
+      "id": 115,
+      "content": "category for node v: Emb (v) = ϕcat ([ψcat (xcat),\nv cat actor actor v\nAVG({ψcat (xcat)|u ∈ V })]). For the critic network, we do not use the aisle-embedding\nactor u aisle(v)\narchitecture because preliminary tests showed that it is not required to approximate the value\nfunction well.",
+      "size": 284,
+      "sentences": 2
+    },
+    {
+      "id": 116,
+      "content": "re because preliminary tests showed that it is not required to approximate the value\nfunction well. Instead, we use feature separation with invariant feed-forward layers:\n(cid:16)(cid:88)(cid:16)(cid:110) (cid:16)(cid:104) (cid:105)(cid:17) (cid:111)(cid:17)(cid:17)\nCritic(G) = γ ϕ ψeffic(xeffic),ψfair(xfair) |v ∈ V .",
+      "size": 319,
+      "sentences": 2
+    },
+    {
+      "id": 117,
+      "content": "4) (cid:105)(cid:17) (cid:111)(cid:17)(cid:17)\nCritic(G) = γ ϕ ψeffic(xeffic),ψfair(xfair) |v ∈ V . crit crit crit v crit v G\nInput Graph\ndrawroF-deeF\ntnairavnI\nAisle-Embedding Architecture Efficiency Embeddings\nEfficiency Features Combined\nNode Values\nWorkload Fairness Workload Fairness\nFeatures Embeddings\ndrawroF-deeF\ntnairavnI\ndrawroF-deeF\ntnairavnI\ndrawroF-deeF\ntnairavnI\ndrawroF-deeF\ntnairavnI\nFigure 3: Illustration of the AEMO-Net architecture. 4.4.",
+      "size": 458,
+      "sentences": 3
+    },
+    {
+      "id": 118,
+      "content": "roF-deeF\ntnairavnI\ndrawroF-deeF\ntnairavnI\nFigure 3: Illustration of the AEMO-Net architecture. 4.4. Multi-objective Learning Algorithm\nWeextendthemulti-objectiveRLalgorithminXuetal. (2020)tohandlediscreteactionspaces\nand graph state spaces. Algorithm 1 shows the pseudo-code. 16\n===  17 ===\nAlgorithm 1 Multi-Objective Learning Algorithm. Input: Nr. parallel tasks n, Nr. warm-up iterations m , Nr. task iterations m , Nr.",
+      "size": 422,
+      "sentences": 10
+    },
+    {
+      "id": 119,
+      "content": "ning Algorithm. Input: Nr. parallel tasks n, Nr. warm-up iterations m , Nr. task iterations m , Nr. generations M.\nw t\n1: Initialize population P, Pareto archive EP, and RL history R.\n2: ▷ Warm-up Phase\n3: GenerateinitialtasksetT ={π ,ω }n usingrandompoliciesπ andevenlydistributedweightvectors\nj j j=1 j\nω . j\n4: for task (π ,ω )∈T do ▷ Run in parallel. j j\n5: Run PPO for m iterations. w\n6: Collect result policy π′ and intermediate policies in P′\nj\n7: Store eval.",
+      "size": 466,
+      "sentences": 9
+    },
+    {
+      "id": 120,
+      "content": "PO for m iterations. w\n6: Collect result policy π′ and intermediate policies in P′\nj\n7: Store eval. rewards of old, new, and intermediate policies with weights ω in R\nj\n8: end for\n9: Update P and EP with P′. 10: ▷ Evolutionary Phase\n11: for generation←1,2,...,M do\n12: Fit improvement prediction models for each policy in P using data in R\n13: Select new task set T ={π ,ω }n based on improvement predictions. j j j=1\n14: for task (π ,ω )∈T do ▷ Run in parallel. j j\n15: Run PPO for m iterations.",
+      "size": 496,
+      "sentences": 6
+    },
+    {
+      "id": 121,
+      "content": "predictions. j j j=1\n14: for task (π ,ω )∈T do ▷ Run in parallel. j j\n15: Run PPO for m iterations. w\n16: Collect result policy π′ in P′\nj\n17: Store eval. rewards of old, new, and intermediate policies with weights ω in R\nj\n18: end for\n19: Update P and EP with P′. 20: end for\nThecoreconceptistolearnDRLpoliciesusingProximalPolicyOptimization(PPO)(Schulman\net al., 2017) training with a weighted-sum reward function R = ωTR , with ω a weight vector and\nt t\nR therewardvectorattimet.",
+      "size": 482,
+      "sentences": 6
+    },
+    {
+      "id": 122,
+      "content": "h a weighted-sum reward function R = ωTR , with ω a weight vector and\nt t\nR therewardvectorattimet. Thealgorithmsteerslearningtowardtheweightvectorsexpectedto\nt\nstimulatepoliciesthatimprovethecurrentnon-dominatedsetofsolutions. Todoso, thealgorithm\nstarts with a warm-up phase, where n tasks are initialized. A task j consists of a policy π and\nj\na weight vector ω . The initial tasks consist of randomly initialized policy networks and evenly\nj\ndistributed weight vectors between 0 and 1.",
+      "size": 489,
+      "sentences": 5
+    },
+    {
+      "id": 123,
+      "content": "st of randomly initialized policy networks and evenly\nj\ndistributed weight vectors between 0 and 1. These initial tasks are trained using PPO for m\nw\nwarm-up iterations. The trained policies, intermediate policies, and their evaluation rewards are\nstored in a population P of both non-dominated and dominated policies. Based on the evaluation\nrewards, the intermediate Pareto archive is also updated to contain the non-dominated solutions.",
+      "size": 439,
+      "sentences": 4
+    },
+    {
+      "id": 124,
+      "content": "on\nrewards, the intermediate Pareto archive is also updated to contain the non-dominated solutions. Thus, the warm-up phase outputs several baseline policies for different objective preferences. Then, in the evolutionary phase, at each generation, for each policy in the population P, a\nprediction model is made to predict the rewards that can be achieved if the policy is trained\nusing a specific weight vector.",
+      "size": 412,
+      "sentences": 3
+    },
+    {
+      "id": 125,
+      "content": "o predict the rewards that can be achieved if the policy is trained\nusing a specific weight vector. This four-parameter hyperbolic model for each policy and objective\nfunction is trained based on data samples stored in history R that are in the neighborhood of the\npolicy. Usingthispredictionmodel, tasks(i.e., policiescombinedwithaweightvector)areselected\n17\n===  18 ===\nsuch that the predicted new non-dominated set improves the most, based on the hypervolume and\nsparsity.",
+      "size": 475,
+      "sentences": 3
+    },
+    {
+      "id": 126,
+      "content": "that the predicted new non-dominated set improves the most, based on the hypervolume and\nsparsity. Consequently, PPO training is done for m iterations, and the results are stored. Then,\nw\nthe evolutionary cycle repeats. The final output is a set of non-dominated policies. FortheinternalPPOtraining, weusetheactor-criticvariantwiththeclippedlossfunctionand\nentropy term. Algorithm 2 outlines the PPO algorithm.",
+      "size": 410,
+      "sentences": 6
+    },
+    {
+      "id": 127,
+      "content": "or-criticvariantwiththeclippedlossfunctionand\nentropy term. Algorithm 2 outlines the PPO algorithm. PPO is a so-called policy-based algorithm\nused to train a policy neural network π to output action probabilities. To do so, the algorithm\nalternates between collecting samples and updating the policy using the empirical estimates from\nthese samples. The loss function LCLIP used to update the network is as follows. Algorithm 2 PPO learning algorithm.",
+      "size": 451,
+      "sentences": 6
+    },
+    {
+      "id": 128,
+      "content": "e loss function LCLIP used to update the network is as follows. Algorithm 2 PPO learning algorithm. Input: Number of iterations N, initial actor parameters θ , initial critic parameters ϕ . 0 0\n1: i←0\n2: while i<N do\n3: Collect trajectories by running policy π =π(θ ) in parallel environments. i i\n4: Compute advantage estimates Aˆ using critic network V =V(ϕ ). t i i\n5: Update policy θ to θ via gradient descent on PPO loss L(θ ).",
+      "size": 432,
+      "sentences": 6
+    },
+    {
+      "id": 129,
+      "content": "sing critic network V =V(ϕ ). t i i\n5: Update policy θ to θ via gradient descent on PPO loss L(θ ). k k+1 k\n6: Update critic ϕ to ϕ via gradient descent on mean-squared error loss.",
+      "size": 180,
+      "sentences": 3
+    },
+    {
+      "id": 130,
+      "content": "on PPO loss L(θ ). k k+1 k\n6: Update critic ϕ to ϕ via gradient descent on mean-squared error loss. k k+1\n7: end while\n(cid:20) (cid:18) (cid:18) (cid:19) (cid:19)(cid:21)\nπ (a |s ) π (a |s )\nLCLIP(θ) = Eˆ min θ t t Aˆ ,clip θ t t ,1−ϵ,1+ϵ Aˆ\nt t t\nπ (a |s ) π (a |s )\nθ t t θ t t\nold old\nHere, Eˆ indicates the empirical expectation based on the collected samples, π θ (at|st) describes\nt π\nθold\n(at|st)\ntheratiobetweentheprobabilitiesoftheoldandnewpolicyofselectingactiona instates attime\nt t\nt, and Aˆ is an estimator of the advantage function at time t, indicating how good the action taken\nt\nat time t was.",
+      "size": 611,
+      "sentences": 3
+    },
+    {
+      "id": 131,
+      "content": "stimator of the advantage function at time t, indicating how good the action taken\nt\nat time t was. Thus, the loss tries to maximize the probability of taking good actions and minimize\ntheprobabilityoftakingbadactions. Toensurethepolicydoesnotchangetoodrastically,theratio\nis clipped using the hyperparameter ϵ, limiting the loss. The advantage function Aˆ is estimated\nt\nby the critic network that is updated during the learning process.",
+      "size": 438,
+      "sentences": 4
+    },
+    {
+      "id": 132,
+      "content": "ntage function Aˆ is estimated\nt\nby the critic network that is updated during the learning process. To handle the exploration-\nexploitation trade-off within the PPO algorithm, the loss function includes an entropy term. This\nterm measures the spread of the probabilities. This is incorporated as follows.",
+      "size": 304,
+      "sentences": 4
+    },
+    {
+      "id": 133,
+      "content": "entropy term. This\nterm measures the spread of the probabilities. This is incorporated as follows. L(θ) = Eˆ (cid:2) LCLIP(θ)+c ·S[π ](s ) (cid:3)\nt ent θ t\nHere,c istheentropycoefficient,whichdeterminestheweightoftheentropywithinthelossfunc-\nent\ntion, and S[π ](s ) represents the entropy measure. By choosing a small value c , the algorithm\nθ t ent\n18\n===  19 ===\nfocuses more on exploitation instead of exploration when the clipping loss has been reduced. 5.",
+      "size": 461,
+      "sentences": 6
+    },
+    {
+      "id": 134,
+      "content": "===\nfocuses more on exploitation instead of exploration when the clipping loss has been reduced. 5. Experiments\nIn this section, we first introduce the baselines that we use to compare our method and define\nthe implementation details of our method. Then, we perform initial single-objective experiments,\nshowcasing the quality on the efficiency objective, followed by elaborate multi-objective experi-\nments. We define various scenarios with different warehouse sizes and picker/AMR ratios.",
+      "size": 490,
+      "sentences": 5
+    },
+    {
+      "id": 135,
+      "content": "ve experi-\nments. We define various scenarios with different warehouse sizes and picker/AMR ratios. These\nscenarios are used to evaluate learning performance on problems of different scales and situations,\nbut also how the learned policies transfer directly to different environments. Table 4 gives an\noverview of the basic warehouse scenarios. Note that the XL type resembles the size of a large\nsupermarket warehouse in practice. Type Aisles Depth # Loc.",
+      "size": 456,
+      "sentences": 6
+    },
+    {
+      "id": 136,
+      "content": "e XL type resembles the size of a large\nsupermarket warehouse in practice. Type Aisles Depth # Loc. Pickers AMRs Picks\nS 10 10 200 10 25 5000\nM 15 15 450 20 50 7500\nL 25 25 1250 30 90 7500\nXL 35 40 2800 60 180 15000\nTable 4: Overview of warehouse types in the experiments. 5.1. Baseline and Benchmark Methods\nWe first implement the previously defined MILP model without the workload fairness con-\nsiderations (i.e., without Equation 13 and fairness objective).",
+      "size": 460,
+      "sentences": 5
+    },
+    {
+      "id": 137,
+      "content": "without the workload fairness con-\nsiderations (i.e., without Equation 13 and fairness objective). This baseline is used to compare\nour method on small, deterministic, single-objective instances. For larger, stochastic instances\nwith fairness considerations, the MILP method cannot be utilized. Hence, we use two bench-\nmark methods. First, the greedy baseline that always assigns a picker to the nearest available\nlocation where an AMR is going and no other picker is already going.",
+      "size": 483,
+      "sentences": 5
+    },
+    {
+      "id": 138,
+      "content": "icker to the nearest available\nlocation where an AMR is going and no other picker is already going. The second benchmark\n(referred to as VI benchmark) reflects our industrial partner’s current method. Under this rule-\nbased approach, a picker scans 10 locations ahead or behind in an aisle to find awaiting AMRs. If any are found, the picker moves to the nearest one. Among multiple AMRs, the priority goes\nto the one encountered first.",
+      "size": 436,
+      "sentences": 5
+    },
+    {
+      "id": 139,
+      "content": "cker moves to the nearest one. Among multiple AMRs, the priority goes\nto the one encountered first. If no AMRs are found in the scanned area, the picker takes a\nstep in the allowed AMR travel direction, and the process repeats. When the picker reaches\nthe aisle’s end, they are reassigned to a new aisle by selecting the aisle with the lowest cost:\n19\n===  20 ===\nAisle Cost = Nr. of aisles difference − Nr. of waiting AMRs.",
+      "size": 424,
+      "sentences": 6
+    },
+    {
+      "id": 140,
+      "content": "e with the lowest cost:\n19\n===  20 ===\nAisle Cost = Nr. of aisles difference − Nr. of waiting AMRs. Consequently, the picker moves to\nthis aisle, where the process is repeated. 5.2. Network Architectures\nIn the actor-network, to create the efficiency and fairness embeddings, we use two fully-\nconnected layers with 64 neurons and the Leaky ReLU activation function. These are followed\nby a fully-connected layer with 16 neurons. The Leaky ReLU α = 0.01 for all models.",
+      "size": 469,
+      "sentences": 8
+    },
+    {
+      "id": 141,
+      "content": "se are followed\nby a fully-connected layer with 16 neurons. The Leaky ReLU α = 0.01 for all models. The output\nis used to create the aisle-embeddings, and the node- and aisle-embeddings are stacked to get a\n32-dimensional node representation. To create the node efficiency and fairness embeddings, we use\ntwo fully-connected layers with Leaky ReLU activation and 64 and 16 neurons, respectively. The\n16-dimensional embeddings are stacked to create 32-dimensional combined node embeddings.",
+      "size": 488,
+      "sentences": 5
+    },
+    {
+      "id": 142,
+      "content": "ively. The\n16-dimensional embeddings are stacked to create 32-dimensional combined node embeddings. A\nfinal fully-connected layer with 16 channels and Leaky ReLU is followed by a single neuron layer. These final node values are masked by setting their values to negative infinity, and the softmax\nfunction is applied to get the action probabilities. In the critic network, we use the same principle of applying the same architecture to both the\nefficiency and workload fairness features.",
+      "size": 487,
+      "sentences": 5
+    },
+    {
+      "id": 143,
+      "content": "principle of applying the same architecture to both the\nefficiency and workload fairness features. Thus, we use the same three fully-connected layers per\nfeature category. The resulting embeddings with 16 layers are stacked to form a 32-dimensional\nembedding. These 32-dimensional embeddings are passed through a 16-neuron fully-connected\nLeaky ReLU layer and summed to get the aisle embedding. Then, one final linear layer of 2\nneurons outputs the two value estimates. 5.2.1.",
+      "size": 476,
+      "sentences": 6
+    },
+    {
+      "id": 144,
+      "content": "aisle embedding. Then, one final linear layer of 2\nneurons outputs the two value estimates. 5.2.1. Pure Efficiency and Fairness Networks\nWeuseanactornetworkwithaisle-embeddingstructureandthecriticnetworkwithaninvariant\nfeed-forward encoder. In the actor network architecture, to generate the node-embeddings, we use\ntwo fully-connected layers with 64 neurons and the Leaky ReLU activation function, followed by\na fully-connected layer with 16 neurons.",
+      "size": 451,
+      "sentences": 5
+    },
+    {
+      "id": 145,
+      "content": "eurons and the Leaky ReLU activation function, followed by\na fully-connected layer with 16 neurons. The output is used to create the aisle-embeddings, and\nthe node- and aisle-embeddings are stacked to get node representation vectors of length 32. To\ncreate the final node values from the vectors, we use two fully-connected layers with Leaky ReLU\nactivation and 64 and 16 neurons, respectively, followed by a single-neuron fully-connected layer.",
+      "size": 445,
+      "sentences": 3
+    },
+    {
+      "id": 146,
+      "content": "activation and 64 and 16 neurons, respectively, followed by a single-neuron fully-connected layer. Then, invalid nodes are masked, and the softmax function is used to get the action probabilities. In our critic networks, we use three fully-connected layers with the Leaky ReLU activation\nfunctiontocreatethenode-embeddings. Forthefirsttwolayers, weuse64neurons, whilethethird\n20\n===  21 ===\nlayer has 16 neurons.",
+      "size": 412,
+      "sentences": 4
+    },
+    {
+      "id": 147,
+      "content": "mbeddings. Forthefirsttwolayers, weuse64neurons, whilethethird\n20\n===  21 ===\nlayer has 16 neurons. Then, after aggregating the node-embeddings to form the graph-embedding,\nwe use one fully-connected layer with one neuron to get the value estimate. 5.3. Learning Algorithm\nFor the PPO, we use 64 parallel environments with 400 collected experience tuples per environ-\nment per PPO iteration.",
+      "size": 391,
+      "sentences": 5
+    },
+    {
+      "id": 148,
+      "content": "64 parallel environments with 400 collected experience tuples per environ-\nment per PPO iteration. For the loss function, we set the clipping parameter ϵ to 0.2 and entropy\ncoefficient c to 0.01 after preliminary tests. We use the Adam optimizer (Kingma & Ba, 2014)\nent\nwith a learning rate of 5×10−4. Per PPO iteration, we perform three epochs with a batch size of\n128. We set the discount factor γ to 0.995.",
+      "size": 409,
+      "sentences": 5
+    },
+    {
+      "id": 149,
+      "content": "iteration, we perform three epochs with a batch size of\n128. We set the discount factor γ to 0.995. During training, we sample the actions of the policies\nbased on the output probabilities, to facilitate exploration. We always pick the actions with the\nhighest action probability for evaluation. For the multi-objective learning algorithm, we use 6 parallel tasks.",
+      "size": 364,
+      "sentences": 5
+    },
+    {
+      "id": 150,
+      "content": "on probability for evaluation. For the multi-objective learning algorithm, we use 6 parallel tasks. For warehouse type S,\nwe set the number of warm-up iterations m to 80 and the number of task iterations between\nw\nevolutionary steps m to 12. For warehouse types M and L, we set m and m to 128 and 16,\nt w t\nrespectively. For warehouse S, we collect 7 million steps per task before termination, while for\nwarehouse types M and L, we use 7.5 million steps per task before termination.",
+      "size": 482,
+      "sentences": 5
+    },
+    {
+      "id": 151,
+      "content": "rmination, while for\nwarehouse types M and L, we use 7.5 million steps per task before termination. We perform 20\nevaluation episodes once every 6 and 8 PPO for type S, and types M and L, respectively. Lastly,\nwe normalize both reward functions to similar scales. Although not strictly necessary, this aids in\nfinding better weight vectors oppositely to when rewards are of different magnitudes. For all other\nalgorithm settings, we use the values defined by Xu et al. (2020).",
+      "size": 476,
+      "sentences": 6
+    },
+    {
+      "id": 152,
+      "content": "ferent magnitudes. For all other\nalgorithm settings, we use the values defined by Xu et al. (2020). To train the pure efficiency and fairness policies, we use PPO training using the same parame-\nters. We train for 150 epochs for warehouse type S, 200 epochs for types M and L, and 400 epochs\nfor type XL, which shows convergence.",
+      "size": 329,
+      "sentences": 5
+    },
+    {
+      "id": 153,
+      "content": "arehouse type S, 200 epochs for types M and L, and 400 epochs\nfor type XL, which shows convergence. To train the pure efficiency policies, we only include the\nefficiencyrelatedfeatures andreward, whileforpurefairnesspolicies, we only include theworkload\nfairness related features and reward. We train all policies on a machine with a 32-core Intel Xeon\nPlatinum 8360Y processor and an NVIDIA A100 GPU. 5.4.",
+      "size": 406,
+      "sentences": 4
+    },
+    {
+      "id": 154,
+      "content": "licies on a machine with a 32-core Intel Xeon\nPlatinum 8360Y processor and an NVIDIA A100 GPU. 5.4. Single-Objective Results\nTo assess the quality of our proposed method, we first evaluate the single-objective efficiency\nperformance. To do so, we train policies for all previously mentioned warehouse sizes. Then, we\nwe run 100 evaluation episodes per policy on the same warehouse type as they were trained on.",
+      "size": 410,
+      "sentences": 5
+    },
+    {
+      "id": 155,
+      "content": "n, we\nwe run 100 evaluation episodes per policy on the same warehouse type as they were trained on. 21\n===  22 ===\nEach episode has a unique set of pickruns and allocation of products through the warehouse. We\ncompare the results with the benchmark methods. Table 5 shows the results. We find that the DRL policies outperform the greedy and VI\nbenchmark policies by a clear margin for all warehouse sizes.",
+      "size": 405,
+      "sentences": 5
+    },
+    {
+      "id": 156,
+      "content": "policies outperform the greedy and VI\nbenchmark policies by a clear margin for all warehouse sizes. For the smallest warehouse size, the\nperformance improvement over the VI benchmark is 14.9% percent, while for the larger warehouse\nsizes DRL achieves over 30% faster completion times, with improvements of 31.7% and 33.6%\nfor warehouses L and XL, respectively. The greedy baseline performs slightly worse than the VI\nBenchmark, although the differences are just a few percent.",
+      "size": 476,
+      "sentences": 3
+    },
+    {
+      "id": 157,
+      "content": "ine performs slightly worse than the VI\nBenchmark, although the differences are just a few percent. These findings demonstrate that the\nDRL policies perform well as picker optimizer agents in collaborative order picking warehouses and\nthat they can achieve good efficiency in realistically-sized warehouse instances with randomness,\ncongestion, and unexpected interruptions.",
+      "size": 374,
+      "sentences": 2
+    },
+    {
+      "id": 158,
+      "content": "realistically-sized warehouse instances with randomness,\ncongestion, and unexpected interruptions. DRL Greedy VI Benchmark\nWarehouse Picking Time % Picking Time % Picking Time\nS 8586±62 14.9 10619±59 −5.3 10087±58\nM 8425±46 21.0 11023±58 −3.3 10669±41\nL 6540±37 31.7 9823±33 −2.7 9569±61\nXL 9010±21 33.6 13972±44 −3.0 13570±72\nTable 5: Performance evaluation on picking efficiency.",
+      "size": 381,
+      "sentences": 2
+    },
+    {
+      "id": 159,
+      "content": "69±61\nXL 9010±21 33.6 13972±44 −3.0 13570±72\nTable 5: Performance evaluation on picking efficiency. The values indicate the average picking time in seconds over\n100evaluationepisodes,with±indicatingthewidthofthe95%-confidenceintervals. The%indicatesthepercentage\nimprovementovertheVIBenchmark,withapositivepercentageindicatinganimprovementand,thus,lowerpicking\ntimes. The bold markings indicate the best performance values per warehouse size. 5.4.1.",
+      "size": 449,
+      "sentences": 5
+    },
+    {
+      "id": 160,
+      "content": "werpicking\ntimes. The bold markings indicate the best performance values per warehouse size. 5.4.1. Deterministic Instance Evaluation\nIn addition to the previous results, we perform additional experiments to understand how close\nwecangettooptimalresults. Todoso, wetestseveralwarehouseinstanceswithfullydeterministic\nsettings. We use fixed picking times of 7.5 seconds, fixed picker and AMR speeds of 1.25 m/s and\n1.5 m/s, respectively, no overtaking penalties, and no random disruptions.",
+      "size": 488,
+      "sentences": 6
+    },
+    {
+      "id": 161,
+      "content": "R speeds of 1.25 m/s and\n1.5 m/s, respectively, no overtaking penalties, and no random disruptions. The warehouses have 7\naisles with a depth of 7 (98 picking locations) and we include 4 pickers and 7 AMRs. The instances\nwe use all contain one pickrun per AMR. For each instance, we sample random pickruns of lengths\nbetween 9 and 14 items. We test two different instance types.",
+      "size": 378,
+      "sentences": 5
+    },
+    {
+      "id": 162,
+      "content": "we sample random pickruns of lengths\nbetween 9 and 14 items. We test two different instance types. First, we test instances with diverse\nstarting positions in which we cut off the sampled pickruns using random uniform selection to\nensure that AMRs are spread through the warehouse. Second, we test instances without diverse\nstarting positions. In these instances, all AMRs start a full pickrun, meaning they are initialized\n22\n===  23 ===\ncloser to each other at the beginning of the warehouse.",
+      "size": 494,
+      "sentences": 5
+    },
+    {
+      "id": 163,
+      "content": "meaning they are initialized\n22\n===  23 ===\ncloser to each other at the beginning of the warehouse. We train one DRL agent for the diverse starting scenarios and one for the non-diverse starting\nscenarios. In training, we use random warehouse instantiations with the same overall warehouse\nparameters. Thus, the DRL policies were not explicitly trained for the specific testing instances. We evaluate the DRL policies on each evaluation instance.",
+      "size": 446,
+      "sentences": 5
+    },
+    {
+      "id": 164,
+      "content": "ained for the specific testing instances. We evaluate the DRL policies on each evaluation instance. In addition, we evaluate the greedy\nand VI Benchmark methods on these instances. We implement and solve the equivalent MILP instances using the Gurobi solver (Gurobi Op-\ntimization, LLC, 2023). We use their indicator constraints option to solve the constraints with\nbig-M notation as efficiently as possible.",
+      "size": 408,
+      "sentences": 5
+    },
+    {
+      "id": 165,
+      "content": "dicator constraints option to solve the constraints with\nbig-M notation as efficiently as possible. For each instance, we run the Gurobi solver for 20 hours\non a computer with an AMD Rome 7H12 CPU instance with 64 CPU cores. Table 6 shows the results. The first thing that stands out is that the solver could not prove\noptimality within 20 hours, as indicated by the MILP gap. This indicates the complexity of the\nproblem, even in these minimalistic, deterministic instances.",
+      "size": 475,
+      "sentences": 5
+    },
+    {
+      "id": 166,
+      "content": "This indicates the complexity of the\nproblem, even in these minimalistic, deterministic instances. Instance DRL Greedy VI Benchmark MILP MILP gap (%)\n1 154 154 355 149 17.8\n2 187 190 397 187 6.0\n3 155 167 299 149 12.2\n4 206 248 269 212 17.5\n5 227 236 277 206 15.9\n(a)Instanceswithdiversestarting. Instance DRL Greedy VI Benchmark MILP MILP gap (%)\n1 244 262 355 244 28.2\n2 249 253 297 271 28.1\n3 265 272 299 267 29.3\n4 240 257 269 245 22.8\n5 251 255 277 260 30.9\n(b)Instanceswithoutdiversestarting.",
+      "size": 498,
+      "sentences": 3
+    },
+    {
+      "id": 167,
+      "content": "272 299 267 29.3\n4 240 257 269 245 22.8\n5 251 255 277 260 30.9\n(b)Instanceswithoutdiversestarting. Table6: Performanceevaluationformultiplesmall,deterministicwarehouseinstances. Thevaluesindicatethetotal\npicking time in seconds for the specific problem instance. The MILP gap indicates the percentage gap between the\nlower bound estimate of the solver and the best found solution. The bold markings indicate the best performance\nvalues per problem instance.",
+      "size": 457,
+      "sentences": 5
+    },
+    {
+      "id": 168,
+      "content": "e best found solution. The bold markings indicate the best performance\nvalues per problem instance. We also find that the DRL solutions are very close to the best MILP solution in all cases. DRL even achieves better results for 5 instances. The biggest deviation in total picking time\nfrom the best MILP solution is just 21 seconds (227 vs. 206), indicating that DRL policies can\nconsistently achieve good results.",
+      "size": 414,
+      "sentences": 5
+    },
+    {
+      "id": 169,
+      "content": "just 21 seconds (227 vs. 206), indicating that DRL policies can\nconsistently achieve good results. In addition, the DRL agents outperform the greedy and VI\n23\n===  24 ===\nbenchmark methods for each instance. Compared to the greedy baseline, the improvement is\ngenerally not large. However, with such small instances, no congestion, and the results being so\nclose to the MILP results, we cannot expect a large deviation from the greedy method.",
+      "size": 442,
+      "sentences": 4
+    },
+    {
+      "id": 170,
+      "content": "ults being so\nclose to the MILP results, we cannot expect a large deviation from the greedy method. That is,\nthe greedy method optimizes in the short run without much consideration of other pickers, leading\nto fast initial picks for the pickers. In such short episodes, the long-term consequences cannot be\naffected too much as episodes end relatively quickly. In addition, the greedy method experiences\nthe converse effects of congestion less due to the lack of overtaking penalties.",
+      "size": 484,
+      "sentences": 4
+    },
+    {
+      "id": 171,
+      "content": "method experiences\nthe converse effects of congestion less due to the lack of overtaking penalties. The VI benchmark\nresults are worse than greedy and DRL. This makes sense as this method was developed to spread\nthe pickers more evenly through the warehouse, while this may be less beneficial in short episodes\nwithout congestion effects.",
+      "size": 338,
+      "sentences": 3
+    },
+    {
+      "id": 172,
+      "content": "ough the warehouse, while this may be less beneficial in short episodes\nwithout congestion effects. All in all, the deterministic instance results show that we can achieve\ngood, near-optimal solutions using DRL that match the performance of the best solutions found\nby a solver with complete information of the problem instances. 5.5. Multi-Objective Results\nWe train policies for warehouse types S, M, and L. This results in a set of non-dominated\npolicies for each type.",
+      "size": 472,
+      "sentences": 4
+    },
+    {
+      "id": 173,
+      "content": "ies for warehouse types S, M, and L. This results in a set of non-dominated\npolicies for each type. We gather these policies and run 100 evaluation episodes per policy on the\nsamewarehousetypeastheyweretrainedon. Theobtainedpoliciesarecomparedintermsoftotal\npicking time and the standard deviation of the workloads. We further compare them with the two\nbaselines, i.e., pure efficiency, and pure fairness.",
+      "size": 405,
+      "sentences": 4
+    },
+    {
+      "id": 174,
+      "content": "orkloads. We further compare them with the two\nbaselines, i.e., pure efficiency, and pure fairness. Table 7 and Figure 4 show the performance of non-dominated policies on different warehouse\ntypes. There are 6 non-dominated policies for sizes S and L, whereas, 8 for size M. In Figure\n4a, the non-dominated set of multi-objective policies forms a clear front toward the bottom left.",
+      "size": 382,
+      "sentences": 4
+    },
+    {
+      "id": 175,
+      "content": "e\n4a, the non-dominated set of multi-objective policies forms a clear front toward the bottom left. The policies show a trade-off with a relatively sharp “angle.” This shows that we can decrease the\nworkload standard deviation a lot before we sacrifice much pick efficiency or decrease the picking\ntime by a lot before the workload fairness deteriorates. A policy that stands out is policy S3,\nwhich is represented by the dot in the bottom left of the front.",
+      "size": 458,
+      "sentences": 3
+    },
+    {
+      "id": 176,
+      "content": "licy that stands out is policy S3,\nwhich is represented by the dot in the bottom left of the front. This policy achieves both good\ncompletion times and good workload fairness. Namely, the average time to complete an episode\nis 9164 seconds, and the workload standard deviation is 66 kilograms, compared to 8586 seconds\nand 308 kilograms of the pure performance policy. Thus, by sacrificing just 6.7% of efficiency,\nthis policy decreases the workload standard deviation by 78.6%.",
+      "size": 478,
+      "sentences": 4
+    },
+    {
+      "id": 177,
+      "content": "acrificing just 6.7% of efficiency,\nthis policy decreases the workload standard deviation by 78.6%. Compared to the baselines, the\ntrained policies achieve both better picking times and fairer workload distributions. Overall, the\n24\n===  25 ===\nfront pushes the boundaries of the pure performance and fairness policies, indicating that better\ntrade-offs are hard to achieve.",
+      "size": 374,
+      "sentences": 3
+    },
+    {
+      "id": 178,
+      "content": "the pure performance and fairness policies, indicating that better\ntrade-offs are hard to achieve. The similar conclusions can be found for warehouse types M and L.\nTheseresultscanprovidedecision-makerswithseveralpotentialpoliciesbasedontheirpreferences.",
+      "size": 254,
+      "sentences": 2
+    },
+    {
+      "id": 179,
+      "content": "M and L.\nTheseresultscanprovidedecision-makerswithseveralpotentialpoliciesbasedontheirpreferences. Policy PickingTimeWorkloadSD\nPolicy PickingTimeWorkloadSD Policy PickingTimeWorkloadSD\nM1 22180±65 86±10\nS1 15555±125 41±4 M2 18695±174 100±10 L1 25562±92 70±7\nS2 12431±86 43±4 M3 14854±74 103±6 L2 15474±62 65±3\nS3 9164±60 66±4 M4 14897±153 140±9 L3 8463±32 72±5\nS4 9188±55 114±8 M5 9809±169 154±8 L4 8296±78 76±4\nS5 9074±60 118±7 M6 9323±136 223±11 L5 8116±62 139±6\nS6 9149±68 167±9 M7 8919±51 266±19 L6 7400±220 226±9\nEfficiency 8586±62 308±17 M8 8733±52 460±32 Efficiency 6540±37 228±7\nFairness 19962±86 61±9 Efficiency 8425±46 302±13 Fairness 21525±73 51±3\nGreedy 10619±59 278±15 Fairness 21793±73 73±4 Greedy 9823±33 253±7\nVIBenchmark 10087±58 442±23 Greedy 11023±58 288±9 VIBenchmark 9569±61 472±14\nVIBenchmark 10669±41 548±17\n(a)WarehousetypeS.",
+      "size": 850,
+      "sentences": 2
+    },
+    {
+      "id": 180,
+      "content": "±23 Greedy 11023±58 288±9 VIBenchmark 9569±61 472±14\nVIBenchmark 10669±41 548±17\n(a)WarehousetypeS. (c)WarehousetypeL. (b)WarehousetypeM. Table 7: Performance of the non-dominated set of policies learned on different warehouse types. The picking time\nis the average number of seconds to complete an episode, and the workload SD is the average standard deviation of\nthe picker workloads in kilograms over 100 evaluation episodes. The ± indicates the 95%-confidence interval.",
+      "size": 473,
+      "sentences": 6
+    },
+    {
+      "id": 181,
+      "content": "r workloads in kilograms over 100 evaluation episodes. The ± indicates the 95%-confidence interval. \u0000\u0017\u0000\u0018\u0000\u0013\n\u0000\u0017\u0000\u0013\u0000\u0013\n\u0000\u0016\u0000\u0018\u0000\u0013\n\u0000\u0016\u0000\u0013\u0000\u0013\n\u0000\u0015\u0000\u0018\u0000\u0013\n\u0000\u0015\u0000\u0013\u0000\u0013\n\u0000\u0014\u0000\u0018\u0000\u0013\n\u0000\u0014\u0000\u0013\u0000\u0013\n\u0000\u0018\u0000\u0013\n\u0000\u0013 \u0000\u0013 \u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0014\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0014\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0015\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0015\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013\n\u00003\u0000L\u0000F\u0000N\u0000L\u0000Q\u0000J\u0000\u0003\u00007\u0000L\u0000P\u0000H\u0000\u0003\u0000\u000bs\u0000\f\n\u0000\fgk\u0000\u000b\u0000\u0003\u0000Q\u0000R\u0000L\u0000W\u0000D\u0000L\u0000Y\u0000H\u0000'\u0000\u0003\u0000G\u0000U\u0000D\u0000G\u0000Q\u0000D\u0000W\u00006\u0000\u0003\u0000G\u0000D\u0000R\u0000O\u0000N\u0000U\u0000R\u0000: \u0000\u0019\u0000\u0013\u0000\u0013\n\u00000\u0000X\u0000O\u0000W\u0000L\u0000\u0010\u00002\u0000E\u0000M\u0000H\u0000F\u0000W\u0000L\u0000Y\u0000H\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000L\u0000H\u0000V\n\u00003\u0000X\u0000U\u0000H\u0000\u0003\u00003\u0000H\u0000U\u0000I\u0000R\u0000U\u0000P\u0000D\u0000Q\u0000F\u0000H\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000\\ \u0000\u0018\u0000\u0013\u0000\u0013\n\u00003\u0000X\u0000U\u0000H\u0000\u0003\u0000)\u0000D\u0000L\u0000U\u0000Q\u0000H\u0000V\u0000V\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000\\\n\u0000*\u0000U\u0000H\u0000H\u0000G\u0000\\ \u0000\u0017\u0000\u0013\u0000\u0013\n\u00009\u0000,\u0000\u0003\u0000%\u0000H\u0000Q\u0000F\u0000K\u0000P\u0000D\u0000U\u0000N\n\u0000\u0016\u0000\u0013\u0000\u0013\n\u0000\u0015\u0000\u0013\u0000\u0013\n\u0000\u0014\u0000\u0013\u0000\u0013\n\u0000\u0013 \u0000\u0013 \u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0014\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0014\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0015\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0015\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013\n\u00003\u0000L\u0000F\u0000N\u0000L\u0000Q\u0000J\u0000\u0003\u00007\u0000L\u0000P\u0000H\u0000\u0003\u0000\u000bs\u0000\f\n(a)TypeS.",
+      "size": 632,
+      "sentences": 3
+    },
+    {
+      "id": 182,
+      "content": "\u0013 \u0000\u0013 \u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0014\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0014\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0015\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0015\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013\n\u00003\u0000L\u0000F\u0000N\u0000L\u0000Q\u0000J\u0000\u0003\u00007\u0000L\u0000P\u0000H\u0000\u0003\u0000\u000bs\u0000\f\n(a)TypeS. \u0000\fgk\u0000\u000b\u0000\u0003\u0000Q\u0000R\u0000L\u0000W\u0000D\u0000L\u0000Y\u0000H\u0000'\u0000\u0003\u0000G\u0000U\u0000D\u0000G\u0000Q\u0000D\u0000W\u00006\u0000\u0003\u0000G\u0000D\u0000R\u0000O\u0000N\u0000U\u0000R\u0000: \u0000\u0018\u0000\u0013\u0000\u0013\n\u00000\u0000X\u0000O\u0000W\u0000L\u0000\u0010\u00002\u0000E\u0000M\u0000H\u0000F\u0000W\u0000L\u0000Y\u0000H\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000L\u0000H\u0000V\n\u00003\u0000X\u0000U\u0000H\u0000\u0003\u00003\u0000H\u0000U\u0000I\u0000R\u0000U\u0000P\u0000D\u0000Q\u0000F\u0000H\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000\\\n\u00003\u0000X\u0000U\u0000H\u0000\u0003\u0000)\u0000D\u0000L\u0000U\u0000Q\u0000H\u0000V\u0000V\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000\\ \u0000\u0017\u0000\u0013\u0000\u0013\n\u0000*\u0000U\u0000H\u0000H\u0000G\u0000\\\n\u00009\u0000,\u0000\u0003\u0000%\u0000H\u0000Q\u0000F\u0000K\u0000P\u0000D\u0000U\u0000N\n\u0000\u0016\u0000\u0013\u0000\u0013\n\u0000\u0015\u0000\u0013\u0000\u0013\n\u0000\u0014\u0000\u0013\u0000\u0013\n\u0000\u0013 \u0000\u0013 \u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0014\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0014\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0015\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0015\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013\n\u00003\u0000L\u0000F\u0000N\u0000L\u0000Q\u0000J\u0000\u0003\u00007\u0000L\u0000P\u0000H\u0000\u0003\u0000\u000bs\u0000\f\n(b)TypeM.",
+      "size": 473,
+      "sentences": 2
+    },
+    {
+      "id": 183,
+      "content": "\u0013 \u0000\u0013 \u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0014\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0014\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0015\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0015\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013\n\u00003\u0000L\u0000F\u0000N\u0000L\u0000Q\u0000J\u0000\u0003\u00007\u0000L\u0000P\u0000H\u0000\u0003\u0000\u000bs\u0000\f\n(b)TypeM. \u0000\fgk\u0000\u000b\u0000\u0003\u0000Q\u0000R\u0000L\u0000W\u0000D\u0000L\u0000Y\u0000H\u0000'\u0000\u0003\u0000G\u0000U\u0000D\u0000G\u0000Q\u0000D\u0000W\u00006\u0000\u0003\u0000G\u0000D\u0000R\u0000O\u0000N\u0000U\u0000R\u0000:\n\u00000\u0000X\u0000O\u0000W\u0000L\u0000\u0010\u00002\u0000E\u0000M\u0000H\u0000F\u0000W\u0000L\u0000Y\u0000H\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000L\u0000H\u0000V\n\u00003\u0000X\u0000U\u0000H\u0000\u0003\u00003\u0000H\u0000U\u0000I\u0000R\u0000U\u0000P\u0000D\u0000Q\u0000F\u0000H\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000\\\n\u00003\u0000X\u0000U\u0000H\u0000\u0003\u0000)\u0000D\u0000L\u0000U\u0000Q\u0000H\u0000V\u0000V\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000\\\n\u0000*\u0000U\u0000H\u0000H\u0000G\u0000\\\n\u00009\u0000,\u0000\u0003\u0000%\u0000H\u0000Q\u0000F\u0000K\u0000P\u0000D\u0000U\u0000N\n(c)TypeL. Figure 4: Performance of the non-dominated sets of policies learned on warehouse different warehouse types. 5.5.1.",
+      "size": 462,
+      "sentences": 4
+    },
+    {
+      "id": 184,
+      "content": "rmance of the non-dominated sets of policies learned on warehouse different warehouse types. 5.5.1. Policy Transferability to Various Picker/AMR Ratios\nTo test how the learned policies perform in different resource situations, we use the policies\ntrained in the performance evaluation experiment and evaluate each of these policies on 100 eval-\nuation episodes for different picker/AMR ratios than they are trained on.",
+      "size": 418,
+      "sentences": 3
+    },
+    {
+      "id": 185,
+      "content": "ese policies on 100 eval-\nuation episodes for different picker/AMR ratios than they are trained on. We test warehouse sizes\nwith different picker/AMR ratios for warehouse types S and L.\nFigures 5 and 6 show the multi-objective policies perform well in the different settings, as\nthe policy front reaches similar levels compared to the pure efficiency and fairness policies. The\nrelative comparison between the policies looks like the front on the fixed evaluation warehouse.",
+      "size": 474,
+      "sentences": 3
+    },
+    {
+      "id": 186,
+      "content": "he\nrelative comparison between the policies looks like the front on the fixed evaluation warehouse. 25\n[  ]\n\n===  26 ===\n\u0000\u0019\u0000\u0013\u0000\u0013\n\u0000\u0018\u0000\u0013\u0000\u0013\n\u0000\u0017\u0000\u0013\u0000\u0013\n\u0000\u0016\u0000\u0013\u0000\u0013\n\u0000\u0015\u0000\u0013\u0000\u0013\n\u0000\u0014\u0000\u0013\u0000\u0013\n\u0000\u0013\n\u0000\u0013 \u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0014\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0014\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0015\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0015\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0016\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0016\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0017\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013\n\u00003\u0000L\u0000F\u0000N\u0000L\u0000Q\u0000J\u0000\u0003\u00007\u0000L\u0000P\u0000H\u0000\u0003\u0000\u000bs\u0000\f\n\u0000\fgk\u0000\u000b\u0000\u0003\u0000Q\u0000R\u0000L\u0000W\u0000D\u0000L\u0000Y\u0000H\u0000'\u0000\u0003\u0000G\u0000U\u0000D\u0000G\u0000Q\u0000D\u0000W\u00006\u0000\u0003\u0000G\u0000D\u0000R\u0000O\u0000N\u0000U\u0000R\u0000: \u0000\u0017\u0000\u0018\u0000\u0013\n\u00000\u0000X\u0000O\u0000W\u0000L\u0000\u0010\u00002\u0000E\u0000M\u0000H\u0000F\u0000W\u0000L\u0000Y\u0000H\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000L\u0000H\u0000V\n\u00003\u0000X\u0000U\u0000H\u0000\u0003\u00003\u0000H\u0000U\u0000I\u0000R\u0000U\u0000P\u0000D\u0000Q\u0000F\u0000H\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000\\ \u0000\u0017\u0000\u0013\u0000\u0013\n\u00003\u0000X\u0000U\u0000H\u0000\u0003\u0000)\u0000D\u0000L\u0000U\u0000Q\u0000H\u0000V\u0000V\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000\\ \u0000\u0016\u0000\u0018\u0000\u0013\n\u0000*\u0000U\u0000H\u0000H\u0000G\u0000\\\n\u00009\u0000,\u0000\u0003\u0000%\u0000H\u0000Q\u0000F\u0000K\u0000P\u0000D\u0000U\u0000N \u0000\u0016\u0000\u0013\u0000\u0013\n\u0000\u0015\u0000\u0018\u0000\u0013\n\u0000\u0015\u0000\u0013\u0000\u0013\n\u0000\u0014\u0000\u0018\u0000\u0013\n\u0000\u0014\u0000\u0013\u0000\u0013\n\u0000\u0018\u0000\u0013\n\u0000\u0013\n\u0000\u0013 \u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0014\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0014\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0015\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0015\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013\n\u00003\u0000L\u0000F\u0000N\u0000L\u0000Q\u0000J\u0000\u0003\u00007\u0000L\u0000P\u0000H\u0000\u0003\u0000\u000bs\u0000\f\n(a)7pickersand15AMRs.",
+      "size": 692,
+      "sentences": 2
+    },
+    {
+      "id": 187,
+      "content": "\u0013 \u0000\u0014\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0014\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0015\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0015\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013\n\u00003\u0000L\u0000F\u0000N\u0000L\u0000Q\u0000J\u0000\u0003\u00007\u0000L\u0000P\u0000H\u0000\u0003\u0000\u000bs\u0000\f\n(a)7pickersand15AMRs. \u0000\fgk\u0000\u000b\u0000\u0003\u0000Q\u0000R\u0000L\u0000W\u0000D\u0000L\u0000Y\u0000H\u0000'\u0000\u0003\u0000G\u0000U\u0000D\u0000G\u0000Q\u0000D\u0000W\u00006\u0000\u0003\u0000G\u0000D\u0000R\u0000O\u0000N\u0000U\u0000R\u0000: \u0000\u0017\u0000\u0013\u0000\u0013\n\u00000\u0000X\u0000O\u0000W\u0000L\u0000\u0010\u00002\u0000E\u0000M\u0000H\u0000F\u0000W\u0000L\u0000Y\u0000H\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000L\u0000H\u0000V\n\u00003\u0000X\u0000U\u0000H\u0000\u0003\u00003\u0000H\u0000U\u0000I\u0000R\u0000U\u0000P\u0000D\u0000Q\u0000F\u0000H\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000\\ \u0000\u0016\u0000\u0018\u0000\u0013\n\u00003\u0000X\u0000U\u0000H\u0000\u0003\u0000)\u0000D\u0000L\u0000U\u0000Q\u0000H\u0000V\u0000V\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000\\ \u0000\u0016\u0000\u0013\u0000\u0013\n\u0000*\u0000U\u0000H\u0000H\u0000G\u0000\\\n\u00009\u0000,\u0000\u0003\u0000%\u0000H\u0000Q\u0000F\u0000K\u0000P\u0000D\u0000U\u0000N \u0000\u0015\u0000\u0018\u0000\u0013\n\u0000\u0015\u0000\u0013\u0000\u0013\n\u0000\u0014\u0000\u0018\u0000\u0013\n\u0000\u0014\u0000\u0013\u0000\u0013\n\u0000\u0018\u0000\u0013\n\u0000\u0013\n\u0000\u0013 \u0000\u0015\u0000\u0018\u0000\u0013\u0000\u0013 \u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u001a\u0000\u0018\u0000\u0013\u0000\u0013 \u0000\u0014\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0014\u0000\u0015\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0014\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0014\u0000\u001a\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0015\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013\n\u00003\u0000L\u0000F\u0000N\u0000L\u0000Q\u0000J\u0000\u0003\u00007\u0000L\u0000P\u0000H\u0000\u0003\u0000\u000bs\u0000\f\n(b)10pickersand30AMRs.",
+      "size": 530,
+      "sentences": 2
+    },
+    {
+      "id": 188,
+      "content": "\u0000\u0013\u0000\u0013\u0000\u0014\u0000\u0015\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0014\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0014\u0000\u001a\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0015\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013\n\u00003\u0000L\u0000F\u0000N\u0000L\u0000Q\u0000J\u0000\u0003\u00007\u0000L\u0000P\u0000H\u0000\u0003\u0000\u000bs\u0000\f\n(b)10pickersand30AMRs. \u0000\fgk\u0000\u000b\u0000\u0003\u0000Q\u0000R\u0000L\u0000W\u0000D\u0000L\u0000Y\u0000H\u0000'\u0000\u0003\u0000G\u0000U\u0000D\u0000G\u0000Q\u0000D\u0000W\u00006\u0000\u0003\u0000G\u0000D\u0000R\u0000O\u0000N\u0000U\u0000R\u0000:\n\u00000\u0000X\u0000O\u0000W\u0000L\u0000\u0010\u00002\u0000E\u0000M\u0000H\u0000F\u0000W\u0000L\u0000Y\u0000H\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000L\u0000H\u0000V\n\u00003\u0000X\u0000U\u0000H\u0000\u0003\u00003\u0000H\u0000U\u0000I\u0000R\u0000U\u0000P\u0000D\u0000Q\u0000F\u0000H\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000\\\n\u00003\u0000X\u0000U\u0000H\u0000\u0003\u0000)\u0000D\u0000L\u0000U\u0000Q\u0000H\u0000V\u0000V\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000\\\n\u0000*\u0000U\u0000H\u0000H\u0000G\u0000\\\n\u00009\u0000,\u0000\u0003\u0000%\u0000H\u0000Q\u0000F\u0000K\u0000P\u0000D\u0000U\u0000N\n(c)15pickersand35AMRs. Figure5: PerformanceofthepolicieslearnedonwarehousetypeSwhenevaluatedondifferentpicker/AMRnumbers.",
+      "size": 459,
+      "sentences": 3
+    },
+    {
+      "id": 189,
+      "content": "Figure5: PerformanceofthepolicieslearnedonwarehousetypeSwhenevaluatedondifferentpicker/AMRnumbers. \u0000\u0019\u0000\u0013\u0000\u0013\n\u0000\u0018\u0000\u0013\u0000\u0013\n\u0000\u0017\u0000\u0013\u0000\u0013\n\u0000\u0016\u0000\u0013\u0000\u0013\n\u0000\u0015\u0000\u0013\u0000\u0013\n\u0000\u0014\u0000\u0013\u0000\u0013\n\u0000\u0013\n\u0000\u0013 \u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0014\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0014\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0015\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0015\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0016\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0016\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013\n\u00003\u0000L\u0000F\u0000N\u0000L\u0000Q\u0000J\u0000\u0003\u00007\u0000L\u0000P\u0000H\u0000\u0003\u0000\u000bs\u0000\f\n\u0000\fgk\u0000\u000b\u0000\u0003\u0000Q\u0000R\u0000L\u0000W\u0000D\u0000L\u0000Y\u0000H\u0000'\u0000\u0003\u0000G\u0000U\u0000D\u0000G\u0000Q\u0000D\u0000W\u00006\u0000\u0003\u0000G\u0000D\u0000R\u0000O\u0000N\u0000U\u0000R\u0000: \u0000\u0018\u0000\u0013\u0000\u0013\n\u00000\u0000X\u0000O\u0000W\u0000L\u0000\u0010\u00002\u0000E\u0000M\u0000H\u0000F\u0000W\u0000L\u0000Y\u0000H\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000L\u0000H\u0000V\n\u00003\u0000X\u0000U\u0000H\u0000\u0003\u00003\u0000H\u0000U\u0000I\u0000R\u0000U\u0000P\u0000D\u0000Q\u0000F\u0000H\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000\\\n\u00003\u0000X\u0000U\u0000H\u0000\u0003\u0000)\u0000D\u0000L\u0000U\u0000Q\u0000H\u0000V\u0000V\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000\\ \u0000\u0017\u0000\u0013\u0000\u0013\n\u0000*\u0000U\u0000H\u0000H\u0000G\u0000\\\n\u00009\u0000,\u0000\u0003\u0000%\u0000H\u0000Q\u0000F\u0000K\u0000P\u0000D\u0000U\u0000N \u0000\u0016\u0000\u0013\u0000\u0013\n\u0000\u0015\u0000\u0013\u0000\u0013\n\u0000\u0014\u0000\u0013\u0000\u0013\n\u0000\u0013\n\u0000\u0013 \u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0014\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0014\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0015\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0015\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013\n\u00003\u0000L\u0000F\u0000N\u0000L\u0000Q\u0000J\u0000\u0003\u00007\u0000L\u0000P\u0000H\u0000\u0003\u0000\u000bs\u0000\f\n(a)25pickersand60AMRs.",
+      "size": 640,
+      "sentences": 2
+    },
+    {
+      "id": 190,
+      "content": "\u0000\u0014\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0014\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0015\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0015\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013\n\u00003\u0000L\u0000F\u0000N\u0000L\u0000Q\u0000J\u0000\u0003\u00007\u0000L\u0000P\u0000H\u0000\u0003\u0000\u000bs\u0000\f\n(a)25pickersand60AMRs. \u0000\fgk\u0000\u000b\u0000\u0003\u0000Q\u0000R\u0000L\u0000W\u0000D\u0000L\u0000Y\u0000H\u0000'\u0000\u0003\u0000G\u0000U\u0000D\u0000G\u0000Q\u0000D\u0000W\u00006\u0000\u0003\u0000G\u0000D\u0000R\u0000O\u0000N\u0000U\u0000R\u0000: \u0000\u0017\u0000\u0013\u0000\u0013\n\u00000\u0000X\u0000O\u0000W\u0000L\u0000\u0010\u00002\u0000E\u0000M\u0000H\u0000F\u0000W\u0000L\u0000Y\u0000H\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000L\u0000H\u0000V\n\u00003\u0000X\u0000U\u0000H\u0000\u0003\u00003\u0000H\u0000U\u0000I\u0000R\u0000U\u0000P\u0000D\u0000Q\u0000F\u0000H\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000\\ \u0000\u0016\u0000\u0018\u0000\u0013\n\u00003\u0000X\u0000U\u0000H\u0000\u0003\u0000)\u0000D\u0000L\u0000U\u0000Q\u0000H\u0000V\u0000V\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000\\ \u0000\u0016\u0000\u0013\u0000\u0013\n\u0000*\u0000U\u0000H\u0000H\u0000G\u0000\\\n\u00009\u0000,\u0000\u0003\u0000%\u0000H\u0000Q\u0000F\u0000K\u0000P\u0000D\u0000U\u0000N \u0000\u0015\u0000\u0018\u0000\u0013\n\u0000\u0015\u0000\u0013\u0000\u0013\n\u0000\u0014\u0000\u0018\u0000\u0013\n\u0000\u0014\u0000\u0013\u0000\u0013\n\u0000\u0018\u0000\u0013\n\u0000\u0013\n\u0000\u0013 \u0000\u0015\u0000\u0018\u0000\u0013\u0000\u0013 \u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u001a\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0014\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0014\u0000\u0015\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0014\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0014\u0000\u001a\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0015\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013\n\u00003\u0000L\u0000F\u0000N\u0000L\u0000Q\u0000J\u0000\u0003\u00007\u0000L\u0000P\u0000H\u0000\u0003\u0000\u000bs\u0000\f\n(b)30pickersand100AMRs.",
+      "size": 529,
+      "sentences": 2
+    },
+    {
+      "id": 191,
+      "content": "\u0013\u0000\u0013\u0000\u0014\u0000\u0015\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0014\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0014\u0000\u001a\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0015\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013\n\u00003\u0000L\u0000F\u0000N\u0000L\u0000Q\u0000J\u0000\u0003\u00007\u0000L\u0000P\u0000H\u0000\u0003\u0000\u000bs\u0000\f\n(b)30pickersand100AMRs. \u0000\fgk\u0000\u000b\u0000\u0003\u0000Q\u0000R\u0000L\u0000W\u0000D\u0000L\u0000Y\u0000H\u0000'\u0000\u0003\u0000G\u0000U\u0000D\u0000G\u0000Q\u0000D\u0000W\u00006\u0000\u0003\u0000G\u0000D\u0000R\u0000O\u0000N\u0000U\u0000R\u0000:\n\u00000\u0000X\u0000O\u0000W\u0000L\u0000\u0010\u00002\u0000E\u0000M\u0000H\u0000F\u0000W\u0000L\u0000Y\u0000H\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000L\u0000H\u0000V\n\u00003\u0000X\u0000U\u0000H\u0000\u0003\u00003\u0000H\u0000U\u0000I\u0000R\u0000U\u0000P\u0000D\u0000Q\u0000F\u0000H\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000\\\n\u00003\u0000X\u0000U\u0000H\u0000\u0003\u0000)\u0000D\u0000L\u0000U\u0000Q\u0000H\u0000V\u0000V\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000\\\n\u0000*\u0000U\u0000H\u0000H\u0000G\u0000\\\n\u00009\u0000,\u0000\u0003\u0000%\u0000H\u0000Q\u0000F\u0000K\u0000P\u0000D\u0000U\u0000N\n(c)40pickersand110AMRs. Figure6: PerformanceofthepolicieslearnedonwarehousetypeLwhenevaluatedondifferentpicker/AMRnumbers.",
+      "size": 460,
+      "sentences": 3
+    },
+    {
+      "id": 192,
+      "content": "Figure6: PerformanceofthepolicieslearnedonwarehousetypeLwhenevaluatedondifferentpicker/AMRnumbers. In this case, the fairness levels stay consistent for the different picker/AMR combinations. The\npure fairness policy also maintains its fairness level with larger numbers of entities. In accordance\nwiththepreviousresults, foreachcombinationofpickersandAMRs, severalpoliciesachievebetter\nefficiencyandfairnessthantheVIbenchmarkandgreedybaseline.",
+      "size": 444,
+      "sentences": 4
+    },
+    {
+      "id": 193,
+      "content": "kersandAMRs, severalpoliciesachievebetter\nefficiencyandfairnessthantheVIbenchmarkandgreedybaseline. Forexample,policyL4achieves\npick times and workload SD of 10545 and 79, 8177 and 87, and 6491 and 76, respectively. These\nresults are 22.0% 13.1%, and 19.6% better in terms of picking time and 86.9% 80.9%, and 79.6%\nbetter in terms of workload distribution than the VI benchmark. 5.5.2.",
+      "size": 386,
+      "sentences": 4
+    },
+    {
+      "id": 194,
+      "content": "e and 86.9% 80.9%, and 79.6%\nbetter in terms of workload distribution than the VI benchmark. 5.5.2. Policy Transferability to Various Warehouse Sizes\nTo show how the trained policies on fixed warehouse sizes perform on different sizes, we test\nthe policies for types S, M, and L on different warehouse sizes. We report evaluations on sizes M,\nL, and XL. Figure 7a shows that for warehouse M, the type S policies transfer remarkably well.",
+      "size": 437,
+      "sentences": 5
+    },
+    {
+      "id": 195,
+      "content": "s M,\nL, and XL. Figure 7a shows that for warehouse M, the type S policies transfer remarkably well. We find that all type M policies are dominated by the type S policies while evaluating for type M.\nUsing the type S policies, better combinations of fairness and efficiency are achieved than using\nthe type M policies.",
+      "size": 317,
+      "sentences": 3
+    },
+    {
+      "id": 196,
+      "content": "licies, better combinations of fairness and efficiency are achieved than using\nthe type M policies. For example, policy S3 achieves an average completion time of 8578 seconds\n26\n[  ]\n\n===  27 ===\n\u0000\u0019\u0000\u0013\u0000\u0013\n\u0000\u0018\u0000\u0013\u0000\u0013\n\u0000\u0017\u0000\u0013\u0000\u0013\n\u0000\u0016\u0000\u0013\u0000\u0013\n\u0000\u0015\u0000\u0013\u0000\u0013\n\u0000\u0014\u0000\u0013\u0000\u0013\n\u0000\u0013\n\u0000\u0013 \u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0014\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0014\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0015\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0015\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013\n\u00003\u0000L\u0000F\u0000N\u0000L\u0000Q\u0000J\u0000\u0003\u00007\u0000L\u0000P\u0000H\u0000\u0003\u0000\u000bs\u0000\f\n\u0000\fgk\u0000\u000b\u0000\u0003\u0000Q\u0000R\u0000L\u0000W\u0000D\u0000L\u0000Y\u0000H\u0000'\u0000\u0003\u0000G\u0000U\u0000D\u0000G\u0000Q\u0000D\u0000W\u00006\u0000\u0003\u0000G\u0000D\u0000R\u0000O\u0000N\u0000U\u0000R\u0000: \u0000\u0018\u0000\u0013\u0000\u0013\n\u00000\u0000X\u0000O\u0000W\u0000L\u0000\u0010\u00002\u0000E\u0000M\u0000H\u0000F\u0000W\u0000L\u0000Y\u0000H\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000L\u0000H\u0000V\u0000\u0003\u00006\n\u00000\u0000X\u0000O\u0000W\u0000L\u0000\u0010\u00002\u0000E\u0000M\u0000H\u0000F\u0000W\u0000L\u0000Y\u0000H\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000L\u0000H\u0000V\u0000\u0003\u00000\n\u00000\u0000X\u0000O\u0000W\u0000L\u0000\u0010\u00002\u0000E\u0000M\u0000H\u0000F\u0000W\u0000L\u0000Y\u0000H\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000L\u0000H\u0000V\u0000\u0003\u0000/ \u0000\u0017\u0000\u0013\u0000\u0013\n\u0000*\u0000U\u0000H\u0000H\u0000G\u0000\\\n\u00009\u0000,\u0000\u0003\u0000%\u0000H\u0000Q\u0000F\u0000K\u0000P\u0000D\u0000U\u0000N \u0000\u0016\u0000\u0013\u0000\u0013\n\u0000\u0015\u0000\u0013\u0000\u0013\n\u0000\u0014\u0000\u0013\u0000\u0013\n\u0000\u0013\n\u0000\u0013 \u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0014\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0014\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0015\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0015\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013\n\u00003\u0000L\u0000F\u0000N\u0000L\u0000Q\u0000J\u0000\u0003\u00007\u0000L\u0000P\u0000H\u0000\u0003\u0000\u000bs\u0000\f\n(a)EvaluationonsizeM.",
+      "size": 736,
+      "sentences": 2
+    },
+    {
+      "id": 197,
+      "content": "\u0013 \u0000\u0014\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0014\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0015\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0015\u0000\u0018\u0000\u0013\u0000\u0013\u0000\u0013\n\u00003\u0000L\u0000F\u0000N\u0000L\u0000Q\u0000J\u0000\u0003\u00007\u0000L\u0000P\u0000H\u0000\u0003\u0000\u000bs\u0000\f\n(a)EvaluationonsizeM. \u0000\fgk\u0000\u000b\u0000\u0003\u0000Q\u0000R\u0000L\u0000W\u0000D\u0000L\u0000Y\u0000H\u0000'\u0000\u0003\u0000G\u0000U\u0000D\u0000G\u0000Q\u0000D\u0000W\u00006\u0000\u0003\u0000G\u0000D\u0000R\u0000O\u0000N\u0000U\u0000R\u0000: \u0000\u0019\u0000\u0013\u0000\u0013\n\u00000\u0000X\u0000O\u0000W\u0000L\u0000\u0010\u00002\u0000E\u0000M\u0000H\u0000F\u0000W\u0000L\u0000Y\u0000H\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000L\u0000H\u0000V\u0000\u0003\u00006\n\u00000\u0000X\u0000O\u0000W\u0000L\u0000\u0010\u00002\u0000E\u0000M\u0000H\u0000F\u0000W\u0000L\u0000Y\u0000H\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000L\u0000H\u0000V\u0000\u0003\u00000 \u0000\u0018\u0000\u0013\u0000\u0013\n\u00000\u0000X\u0000O\u0000W\u0000L\u0000\u0010\u00002\u0000E\u0000M\u0000H\u0000F\u0000W\u0000L\u0000Y\u0000H\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000L\u0000H\u0000V\u0000\u0003\u0000/\n\u0000*\u0000U\u0000H\u0000H\u0000G\u0000\\\n\u0000\u0017\u0000\u0013\u0000\u0013\n\u00009\u0000,\u0000\u0003\u0000%\u0000H\u0000Q\u0000F\u0000K\u0000P\u0000D\u0000U\u0000N\n\u0000\u0016\u0000\u0013\u0000\u0013\n\u0000\u0015\u0000\u0013\u0000\u0013\n\u0000\u0014\u0000\u0013\u0000\u0013\n\u0000\u0013\n\u0000\u0013 \u0000\u0014\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0015\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0016\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0017\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013\n\u00003\u0000L\u0000F\u0000N\u0000L\u0000Q\u0000J\u0000\u0003\u00007\u0000L\u0000P\u0000H\u0000\u0003\u0000\u000bs\u0000\f\n(b)EvaluationonsizeL.",
+      "size": 505,
+      "sentences": 2
+    },
+    {
+      "id": 198,
+      "content": "\u0013 \u0000\u0014\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0015\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0016\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013 \u0000\u0017\u0000\u0013\u0000\u0013\u0000\u0013\u0000\u0013\n\u00003\u0000L\u0000F\u0000N\u0000L\u0000Q\u0000J\u0000\u0003\u00007\u0000L\u0000P\u0000H\u0000\u0003\u0000\u000bs\u0000\f\n(b)EvaluationonsizeL. \u0000\fgk\u0000\u000b\u0000\u0003\u0000Q\u0000R\u0000L\u0000W\u0000D\u0000L\u0000Y\u0000H\u0000'\u0000\u0003\u0000G\u0000U\u0000D\u0000G\u0000Q\u0000D\u0000W\u00006\u0000\u0003\u0000G\u0000D\u0000R\u0000O\u0000N\u0000U\u0000R\u0000:\n\u00000\u0000X\u0000O\u0000W\u0000L\u0000\u0010\u00002\u0000E\u0000M\u0000H\u0000F\u0000W\u0000L\u0000Y\u0000H\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000L\u0000H\u0000V\u0000\u0003\u00006\n\u00000\u0000X\u0000O\u0000W\u0000L\u0000\u0010\u00002\u0000E\u0000M\u0000H\u0000F\u0000W\u0000L\u0000Y\u0000H\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000L\u0000H\u0000V\u0000\u0003\u00000\n\u00000\u0000X\u0000O\u0000W\u0000L\u0000\u0010\u00002\u0000E\u0000M\u0000H\u0000F\u0000W\u0000L\u0000Y\u0000H\u0000\u0003\u00003\u0000R\u0000O\u0000L\u0000F\u0000L\u0000H\u0000V\u0000\u0003\u0000/\n\u0000*\u0000U\u0000H\u0000H\u0000G\u0000\\\n\u00009\u0000,\u0000\u0003\u0000%\u0000H\u0000Q\u0000F\u0000K\u0000P\u0000D\u0000U\u0000N\n(c)EvaluationsizeXL. Figure 7: Performance of policies trained on different warehouse sizes when evaluated on varying warehouse sizes.",
+      "size": 494,
+      "sentences": 3
+    },
+    {
+      "id": 199,
+      "content": "ormance of policies trained on different warehouse sizes when evaluated on varying warehouse sizes. and workload standard deviation of 69 kg, 19.6% and 87.4% better than the VI benchmark. The\ntype L policies transfer reasonably to warehouse size M. Figure 7a shows that the fronts pass\nthrough each other, with more type M policies having low picking times. All three fronts have\nseveral policies improving upon the baselines for both efficiency and workload fairness.",
+      "size": 468,
+      "sentences": 4
+    },
+    {
+      "id": 200,
+      "content": "ronts have\nseveral policies improving upon the baselines for both efficiency and workload fairness. For type L\nwarehouses (Figure 7b), the policy sets trained on the three different warehouse types form similar\nresult fronts, showing one objective can be improved a lot without sacrificing much on the other. All sets contained policies that outperformed the benchmarks. The evaluation on the XL warehouses shows a slightly different pattern (Figure 7c).",
+      "size": 454,
+      "sentences": 4
+    },
+    {
+      "id": 201,
+      "content": "the benchmarks. The evaluation on the XL warehouses shows a slightly different pattern (Figure 7c). Here, the\npolicy sets trained on the three different warehouse types formed similar result fronts, indicating\ngood transferability. What stands out is that the policies focussing more on fairness deteriorate in\ntermsoffairnesscomparedtothemoreefficientpolicies, especiallyforthepolicysetL. Incontrast,\nthefairnessscoresaresimilarorslightlybetterforthesmallersizes.",
+      "size": 464,
+      "sentences": 5
+    },
+    {
+      "id": 202,
+      "content": "eciallyforthepolicysetL. Incontrast,\nthefairnessscoresaresimilarorslightlybetterforthesmallersizes. Thus,policieswithasignificant\nfocus on fairness may scale less well to larger warehouses in some cases. However, in practice,\nthese policies will not often be selected as they achieved just a marginal fairness improvement\nwhile having much worse performance.",
+      "size": 358,
+      "sentences": 4
+    },
+    {
+      "id": 203,
+      "content": "selected as they achieved just a marginal fairness improvement\nwhile having much worse performance. On the other hand, the policies with better efficiency scale\nrelatively well to the largest warehouse sizes, with policy set L achieving the best trade-offs. For\nexample, one policy scores an average picking time of 10357 with a workload standard deviation\nof 45 kg, constituting improvements of 23.6% and 91.9% over the VI benchmark scores of 13570\nseconds and 558 kg, respectively.",
+      "size": 483,
+      "sentences": 3
+    },
+    {
+      "id": 204,
+      "content": "ovements of 23.6% and 91.9% over the VI benchmark scores of 13570\nseconds and 558 kg, respectively. These results show the practicality of our approach. The policies trained on specific warehouse\nsizes and picker/AMR ratios can be used directly for other situations, especially, larger and busier\nwarehouses. Thenumberscorrespondingtoallfiguresarepresentedinthesupplementarymaterial.",
+      "size": 383,
+      "sentences": 4
+    },
+    {
+      "id": 205,
+      "content": "r and busier\nwarehouses. Thenumberscorrespondingtoallfiguresarepresentedinthesupplementarymaterial. 27\n[  ]\n\n===  28 ===\nThere, we also outline the transferability of the single-objective policies, showing similar results. 5.5.3.",
+      "size": 229,
+      "sentences": 4
+    },
+    {
+      "id": 206,
+      "content": "also outline the transferability of the single-objective policies, showing similar results. 5.5.3. Ablation Study\nToshowtheeffectivenessofourproposedarchitecture,weevaluatetheperformanceoftheaisle-\nembedding (AISLE-EMB) architecture, compared to invariant feed-forward (INV-FF), Graph Iso-\nmorphism Network (GIN), and Graph Convolutional Network (GCN) networks on single-objective\nefficiency performance. Table 8 demonstrates that our network performs best on all warehouse sizes.",
+      "size": 480,
+      "sentences": 4
+    },
+    {
+      "id": 207,
+      "content": "efficiency performance. Table 8 demonstrates that our network performs best on all warehouse sizes. Oppositely, the\nGINandGCNstructuresbothperformpoorlycomparedtotheaisle-embeddingandinvariantfeed-\nforward networks. Especially for the two larger warehouses, the difference is clear. Thus, message\npassing networks cannot sufficiently extract useful regional information. Instead, the extra param-\neters introduce noise into the learning process, limiting their performance.",
+      "size": 473,
+      "sentences": 6
+    },
+    {
+      "id": 208,
+      "content": "tead, the extra param-\neters introduce noise into the learning process, limiting their performance. The difference with the\ninvariant feed-forward network is smaller. Even though the aisle-embedding actor outperforms it\non each warehouse type, the difference is within a few percent. This difference may be so slight be-\ncause we use multiple node features that already describe regional information related to efficiency.",
+      "size": 422,
+      "sentences": 4
+    },
+    {
+      "id": 209,
+      "content": "use we use multiple node features that already describe regional information related to efficiency. Still, the aisle-embedding architecture increases performance for single-objective optimization. Warehouse INV-FF AISLE-EMB GIN GCN\nS 8689±58 8586±62 8869±55 11677±67\nM 8628±40 8425±46 14151±75 13851±65\nL 6602±29 6540±37 11723±76 14419±88\nTable 8: Average picking times in seconds over 100 evaluation episodes of policies with different architectures.",
+      "size": 451,
+      "sentences": 3
+    },
+    {
+      "id": 210,
+      "content": "age picking times in seconds over 100 evaluation episodes of policies with different architectures. The\nbold markings indicate the best performances. We further compare our architecture on various weighted-sum objectives balancing efficiency\nand fairness to demonstrate the good performance of AEMO-Net compared to other architectures,\nfor which we refer to the supplementary material. In fact, for these weighted-sum objectives, the\nadvantage is larger.",
+      "size": 454,
+      "sentences": 4
+    },
+    {
+      "id": 211,
+      "content": "to the supplementary material. In fact, for these weighted-sum objectives, the\nadvantage is larger. This is likely because spatial information related to fairness is less easily\ncaptured in the node features and thus there is more dependence on the network architecture. 6. Conclusion\nWe present DRL-Guided Picker Optimization, which is a multi-objective DRL approach to\nsimultaneously optimize and balance efficiency and fairness in collaborative human-robot order\n28\n===  29 ===\npicking.",
+      "size": 489,
+      "sentences": 5
+    },
+    {
+      "id": 212,
+      "content": "mize and balance efficiency and fairness in collaborative human-robot order\n28\n===  29 ===\npicking. In contrast to most prior works focused solely on deterministic scenarios without regard\nfor fairness, we frame this as a sequential decision making problem under uncertainty. Experiment\nresults demonstrate that our approach can find non-dominated policy sets that outline good trade-\noffs between fairness and efficiency.",
+      "size": 422,
+      "sentences": 3
+    },
+    {
+      "id": 213,
+      "content": "h can find non-dominated policy sets that outline good trade-\noffs between fairness and efficiency. The proposed AEMO-Net architecture is shown to be effective\nin capturing regional information and information regarding two objectives. Furthermore, the\napproach is practical, in the sense that the learned policies exhibit good transferability to varying\noperational conditions and warehouse sizes.",
+      "size": 398,
+      "sentences": 3
+    },
+    {
+      "id": 214,
+      "content": "earned policies exhibit good transferability to varying\noperational conditions and warehouse sizes. Given the compelling advantages of our approach\nfor complex, real-world settings, our industrial partner is currently implementing our method. As future work, we will investigate how to further account for possible practical preferences and\nconstraints to solve relevant matching problems. References\nAlomrani, M. A., Moravej, R., & Khalil, E. B. (2022).",
+      "size": 454,
+      "sentences": 5
+    },
+    {
+      "id": 215,
+      "content": "solve relevant matching problems. References\nAlomrani, M. A., Moravej, R., & Khalil, E. B. (2022). Deep policies for online bipartite matching: A reinforcement\nlearning approach. Transactions on Machine Learning Research, . Azadeh, K., Koster, R. D., & Roy, D. (2019). Robotized and automated warehouse systems: Review and recent\ndevelopments. doi:10.1287/trsc.2018.0873. Azadeh, K., Roy, D., & Koster, R. D. (2020). Dynamic human-robot collaborative picking strategies. Available at\nSSRN 3585396, .",
+      "size": 499,
+      "sentences": 11
+    },
+    {
+      "id": 216,
+      "content": "r, R. D. (2020). Dynamic human-robot collaborative picking strategies. Available at\nSSRN 3585396, . Balcilar, M., H´eroux, P., Gauzere, B., Vasseur, P., Adam, S., & Honeine, P. (2021). Breaking the limits of message\npassing graph neural networks. In International Conference on Machine Learning (pp. 599–608). PMLR. Beeks, M., Refaei Afshar, R., Zhang, Y., Dijkman, R., Van Dorst, C., & De Looijer, S. (2022). Deep Reinforcement\nLearning for a Multi-Objective Online Order Batching Problem.",
+      "size": 490,
+      "sentences": 10
+    },
+    {
+      "id": 217,
+      "content": "ooijer, S. (2022). Deep Reinforcement\nLearning for a Multi-Objective Online Order Batching Problem. Proceedings of the International Conference on\nAutomated Planning and Scheduling, 32, 435–443. Begnardi, L., Baier, H., van Jaarsveld, W., & Zhang, Y. (2023). Deep reinforcement learning for two-sided online\nbipartitematchingincollaborativeorderpicking.InProceedingsofthe15thAsianConferenceonMachineLearning\n(ACML2023) Proceedings of Machine Learning Research. PMLR.",
+      "size": 466,
+      "sentences": 7
+    },
+    {
+      "id": 218,
+      "content": "fthe15thAsianConferenceonMachineLearning\n(ACML2023) Proceedings of Machine Learning Research. PMLR. Brockman, G., Cheung, V., Pettersson, L., Schneider, J., Schulman, J., Tang, J., & Zaremba, W. (2016). Openai\ngym. URL: http://arxiv.org/abs/1606.01540. Cals,B.,Zhang,Y.,Dijkman,R.,&vanDorst,C.(2021). Solvingtheonlinebatchingproblemusingdeepreinforce-\nment learning. Computers & Industrial Engineering, 156, 107221. Dukic, G., & Oluic, C. (2007).",
+      "size": 446,
+      "sentences": 9
+    },
+    {
+      "id": 219,
+      "content": "rce-\nment learning. Computers & Industrial Engineering, 156, 107221. Dukic, G., & Oluic, C. (2007). Order-picking methods: improving order-picking efficiency. International Journal of\nLogistics Systems and Management, 3, 451. doi:10.1504/IJLSM.2007.013214. Gajane, P., Saxena, A., Tavakol, M., Fletcher, G., & Pechenizkiy, M. (2022). Survey on fair reinforcement learning:\nTheory and practice. URL: http://arxiv.org/abs/2205.10032. Gurobi Optimization, LLC (2023). Gurobi Optimizer Reference Manual.",
+      "size": 499,
+      "sentences": 10
+    },
+    {
+      "id": 220,
+      "content": "ttp://arxiv.org/abs/2205.10032. Gurobi Optimization, LLC (2023). Gurobi Optimizer Reference Manual. URL: https://www.gurobi.com. 29\n===  30 ===\nKingma,D.P.,&Ba,J.(2014). Adam: Amethodforstochasticoptimization. URL:http://arxiv.org/abs/1412. 6980. Koster,R.D.,Le-Duc,T.,&Roodbergen,K.J.(2007). Designandcontrolofwarehouseorderpicking: Aliterature\nreview. European Journal of Operational Research, 182, 481–501. doi:10.1016/j.ejor.2006.07.009. Lee, H.-Y., & Murray, C. C. (2019).",
+      "size": 477,
+      "sentences": 13
+    },
+    {
+      "id": 221,
+      "content": "ational Research, 182, 481–501. doi:10.1016/j.ejor.2006.07.009. Lee, H.-Y., & Murray, C. C. (2019). Robotics in order picking: evaluating warehouse layouts for pick, place, and\ntransport vehicle routing systems. International Journal of Production Research, 57, 5821–5841. Li,C.,Ma,X.,Xia,L.,Zhao,Q.,&Yang,J.(2020). Fairnesscontroloftrafficlightviadeepreinforcementlearning. In 2020 IEEE 16th International Conference on Automation Science and Engineering (CASE) (pp. 652–658). IEEE.",
+      "size": 483,
+      "sentences": 10
+    },
+    {
+      "id": 222,
+      "content": "EEE 16th International Conference on Automation Science and Engineering (CASE) (pp. 652–658). IEEE. doi:10.1109/CASE48305.2020.9216899. Lo¨ffler, M., Boysen, N., & Schneider, M. (2022). Picker routing in agv-assisted order picking systems. INFORMS\nJournal on Computing, 34, 440–462. doi:10.1287/ijoc.2021.1060. Nemer,I.A.,Sheltami,T.R.,Belhaiza,S.,&Mahmoud,A.S.(2022). Energy-efficientuavmovementcontrolforfair\ncommunication coverage: A deep reinforcement learning approach.",
+      "size": 474,
+      "sentences": 10
+    },
+    {
+      "id": 223,
+      "content": "-efficientuavmovementcontrolforfair\ncommunication coverage: A deep reinforcement learning approach. Sensors, 22, 1919. doi:10.3390/s22051919. Qi, H., Hu, Z., Huang, H., Wen, X., & Lu, Z. (2020). Energy efficient 3-d uav control for persistent communication\nserviceandfairness: Adeepreinforcementlearningapproach.IEEEAccess,8,53172–53184.doi:10.1109/ACCESS. 2020.2981403. Raeis, M., & Leon-Garcia, A. (2021). A deep reinforcement learning approach for fair traffic signal control.",
+      "size": 479,
+      "sentences": 9
+    },
+    {
+      "id": 224,
+      "content": ", & Leon-Garcia, A. (2021). A deep reinforcement learning approach for fair traffic signal control. In 2021\nIEEE International Intelligent Transportation Systems Conference (ITSC) (pp.2512–2518). IEEE. doi:10.1109/\nITSC48978.2021.9564847. Schulman,J.,Wolski,F.,Dhariwal,P.,Radford,A.,&Klimov,O.(2017). Proximalpolicyoptimizationalgorithms. URL: http://arxiv.org/abs/1707.06347. Siddique,U.,Weng,P.,&Zimmer,M.(2020).",
+      "size": 415,
+      "sentences": 11
+    },
+    {
+      "id": 225,
+      "content": "optimizationalgorithms. URL: http://arxiv.org/abs/1707.06347. Siddique,U.,Weng,P.,&Zimmer,M.(2020). Learningfairpoliciesinmulti-objective(deep)reinforcementlearning\nwith average and discounted rewards. In H. D. III, & A. Singh (Eds. ), Proceedings of the 37th International\nConference on Machine Learning (pp. 8905–8915). PMLR volume 119. Srinivas, S., & Yu, S. (2022).",
+      "size": 369,
+      "sentences": 9
+    },
+    {
+      "id": 226,
+      "content": "nal\nConference on Machine Learning (pp. 8905–8915). PMLR volume 119. Srinivas, S., & Yu, S. (2022). Collaborative order picking with multiple pickers and robots: Integrated approach\nfor order batching, sequencing and picker-robot routing. International Journal of Production Economics, 254,\n108634. doi:10.1016/j.ijpe.2022.108634. Xie,L.,Li,H.,&Luttmann,L.(2022). Formulatingandsolvingintegratedorderbatchingandroutinginmulti-depot\nagv-assisted mixed-shelves warehouses.",
+      "size": 470,
+      "sentences": 8
+    },
+    {
+      "id": 227,
+      "content": "tingandsolvingintegratedorderbatchingandroutinginmulti-depot\nagv-assisted mixed-shelves warehouses. European Journal of Operational Research, . doi:10.1016/j.ejor.2022. 08.047. Xu,J.,Tian,Y.,Ma,P.,Rus,D.,Sueda,S.,&Matusik,W.(2020). Prediction-guidedmulti-objectivereinforcement\nlearning for continuous robot control. In H. D. III, & A. Singh (Eds. ), Proceedings of the 37th International\nConference on Machine Learning (pp. 10607–10616). PMLR volume 119. Zhu,Q.,&Oh,J.(2018).",
+      "size": 476,
+      "sentences": 12
+    },
+    {
+      "id": 228,
+      "content": "ternational\nConference on Machine Learning (pp. 10607–10616). PMLR volume 119. Zhu,Q.,&Oh,J.(2018). Deepreinforcementlearningforfairnessindistributedroboticmulti-typeresourcealloca-\ntion.In201817thIEEEInternationalConferenceonMachineLearningandApplications(ICMLA)(pp.460–466). IEEE. doi:10.1109/ICMLA.2018.00075. Zˇulj, I., Salewski, H., Goeke, D., & Schneider, M. (2022). Order batching and batch sequencing in an amr-assisted\npicker-to-parts system.",
+      "size": 451,
+      "sentences": 9
+    },
+    {
+      "id": 229,
+      "content": "chneider, M. (2022). Order batching and batch sequencing in an amr-assisted\npicker-to-parts system. European Journal of Operational Research, 298, 182–201. 30\n===  31 ===\nAppendix A. Single-Objective Transferability\nAppendix A.1. Policy Transferability to Various Picker/AMR Ratios\nTable A.9 shows the results of the transferability analysis of the single-objective DRL policies\nto the different picker and AMRs numbers.",
+      "size": 420,
+      "sentences": 5
+    },
+    {
+      "id": 230,
+      "content": "sferability analysis of the single-objective DRL policies\nto the different picker and AMRs numbers. DRL Greedy VI Benchmark\nPickers/AMRs Picking Time % Picking Time % Picking Time\n7/15 12825±83 17.1 15166±74 2.0 15472±87\n10/20 9206±51 19.4 11274±69 1.3 11420±56\n10/30 8221±54 13.0 10283±60 −8.8 9447±52\n15/25 6737±42 21.5 7994±40 6.9 8583±36\n15/30 5930±34 24.7 7804±55 1.0 7879±46\n15/35 5938±35 16.6 7550±44 −6.0 7121±38\n(a)WarehousetypeS.",
+      "size": 439,
+      "sentences": 2
+    },
+    {
+      "id": 231,
+      "content": "6\n15/30 5930±34 24.7 7804±55 1.0 7879±46\n15/35 5938±35 16.6 7550±44 −6.0 7121±38\n(a)WarehousetypeS. DRL Greedy VI Benchmark\nPickers/AMRs Picking Time % Picking Time % Picking Time\n15/35 11263±50 21.2 14240±66 0.4 14297±72\n20/40 9139±46 23.5 11331±56 5.2 11952±41\n20/60 7965±48 16.0 10569±51 −11.4 9489±53\n30/50 6795±34 26.2 8189±46 11.0 9206±34\n30/60 6293±38 22.7 7789±31 4.3 8136±50\n30/70 5944±37 20.6 7620±29 −1.7 7490±41\n(b)WarehousetypeM.",
+      "size": 442,
+      "sentences": 2
+    },
+    {
+      "id": 232,
+      "content": "4\n30/60 6293±38 22.7 7789±31 4.3 8136±50\n30/70 5944±37 20.6 7620±29 −1.7 7490±41\n(b)WarehousetypeM. DRL Greedy VI Benchmark\nPickers/AMRs Picking Time % Picking Time % Picking Time\n25/60 8566±34 36.6 11852±31 12.3 13512±65\n30/70 7209±26 37.7 10120±35 12.5 11563±58\n30/100 6354±65 32.5 9980±44 −6.0 9410±62\n40/90 5659±29 36.1 7962±29 10.1 8859±68\n40/100 5279±50 34.6 8141±44 3.4 8424±52\n40/110 5059±18 37.3 7605±27 5.8 8076±45\n(c)WarehousetypeL.",
+      "size": 443,
+      "sentences": 2
+    },
+    {
+      "id": 233,
+      "content": "40/100 5279±50 34.6 8141±44 3.4 8424±52\n40/110 5059±18 37.3 7605±27 5.8 8076±45\n(c)WarehousetypeL. DRL Greedy VI Benchmark\nPickers/AMRs Picking Time % Picking Time % Picking Time\n50/120 12028±23 40.2 16816±32 16.5 20142±112\n60/140 10150±20 40.7 14312±27 16.4 17118±101\n60/200 9009±44 35.6 14293±88 −2.2 13979±87\n80/180 8106±77 38.9 11343±30 14.6 13275±83\n80/200 8011±59 36.8 11765±52 6.4 12571±91\n80/220 6947±19 41.5 10799±40 9.1 11877±84\n(d)WarehousetypeXL.",
+      "size": 458,
+      "sentences": 2
+    },
+    {
+      "id": 234,
+      "content": "00 8011±59 36.8 11765±52 6.4 12571±91\n80/220 6947±19 41.5 10799±40 9.1 11877±84\n(d)WarehousetypeXL. Table A.9: Performance of DRL policies given varying picker/AMR combinations. The values indicate the picking\ntimeinseconds. The±indicatesthe95%-confidenceinterval. The%indicatesthepercentageimprovementoverthe\nVI Benchmark, with a positive percentage indicating an improvement and, thus, lower times. The bold markings\nindicate the best performance values per warehouse setting.",
+      "size": 478,
+      "sentences": 6
+    },
+    {
+      "id": 235,
+      "content": "d, thus, lower times. The bold markings\nindicate the best performance values per warehouse setting. The DRL approach outperforms both greedy and the VI Benchmark for each combination of\npickers and AMRs in each warehouse size. The performance improvement over the VI Benchmark\n31\n===  32 ===\nis the largest for the larger warehouses. Remarkably, the relative improvement of the picking times\nis better for most picker/AMR ratios than the improvements for the trained warehouse instances.",
+      "size": 487,
+      "sentences": 5
+    },
+    {
+      "id": 236,
+      "content": "mes\nis better for most picker/AMR ratios than the improvements for the trained warehouse instances. On warehouse types S and M, the advantage is only smaller for the ratios 10/30 and 20/60,\nrespectively. These are ratios with a relatively low number of pickers and, in comparison, many\nAMRs. For all other combinations, the percentage improvement over the VI Benchmark is roughly\nequal or better.",
+      "size": 396,
+      "sentences": 4
+    },
+    {
+      "id": 237,
+      "content": "ll other combinations, the percentage improvement over the VI Benchmark is roughly\nequal or better. This shows that, whereas the VI Benchmark efficiency deteriorates when the\ncrowdedness levels in the warehouse become either small or larger, the DRL policy continues to\nachieve good results. Thus, the DRL policy can adapt to extremer warehouse occupation levels\nmore efficiently.",
+      "size": 380,
+      "sentences": 3
+    },
+    {
+      "id": 238,
+      "content": "d results. Thus, the DRL policy can adapt to extremer warehouse occupation levels\nmore efficiently. In several cases, the greedy baseline performs slightly better than the VI Benchmark, with\nthe best of the two alternating for different settings. Especially for the larger warehouse size\nwith extremer picker/AMR numbers, the greedy policy seems more suitable. However, the greedy\nbaseline, like the VI benchmark, does not get close to the DRL performance for any problem\ninstance. Appendix A.2.",
+      "size": 495,
+      "sentences": 6
+    },
+    {
+      "id": 239,
+      "content": "the VI benchmark, does not get close to the DRL performance for any problem\ninstance. Appendix A.2. Policy Transferability to Various Warehouse Sizes\nTable A.10 shows the results of the transferability analysis of the DRL policies to the different\nwarehouse types. The results reveal that the policies adapt well to different warehouse sizes.",
+      "size": 342,
+      "sentences": 4
+    },
+    {
+      "id": 240,
+      "content": "rent\nwarehouse types. The results reveal that the policies adapt well to different warehouse sizes. We\nsee that thepolicy trained onwarehouse type S achieves an averagetotal pick time of 6877 seconds\non type L compared to the 6540 seconds reached by the policy trained on warehouse L. Thus,\nwhile being developed for a warehouse with over 6 times fewer pick locations and roughly 3 times\nas little pickers and AMRs, it only performs about 5% worse.",
+      "size": 448,
+      "sentences": 3
+    },
+    {
+      "id": 241,
+      "content": "wer pick locations and roughly 3 times\nas little pickers and AMRs, it only performs about 5% worse. Similarly, the policies also scale\ndown well to smaller warehouses. The policy of warehouse type L achieves an average completion\ntime of 8875 seconds compared to the 8586 seconds of policy S. This is a performance difference of\njust over 3%. Remarkably, policy L (8567 seconds) outperforms policy XL (9010) on all instance\nsizes.",
+      "size": 430,
+      "sentences": 4
+    },
+    {
+      "id": 242,
+      "content": "st over 3%. Remarkably, policy L (8567 seconds) outperforms policy XL (9010) on all instance\nsizes. Policy L achieves an improvement of 36.9% over the VI benchmark, compared to the 33.6%\nimprovement of policy XL. This indicates that training for increasingly larger warehouse sizes is\nnot necessary to get good performance on those warehouse sizes.",
+      "size": 348,
+      "sentences": 4
+    },
+    {
+      "id": 243,
+      "content": "reasingly larger warehouse sizes is\nnot necessary to get good performance on those warehouse sizes. In larger warehouse sizes, the\naction space is bigger, and therefore, learning can be slower and harder to fine-tune to get the\nlast percentage improvements.",
+      "size": 257,
+      "sentences": 2
+    },
+    {
+      "id": 244,
+      "content": "therefore, learning can be slower and harder to fine-tune to get the\nlast percentage improvements. Learning for many more iterations might eventually bring better\nresults, but this is not guaranteed and the learning is substantially slower, as we already train the\n32\n===  33 ===\nWarehouse Policy S Policy M Policy L Policy XL Greedy VI Benchmark\nS 8586±62 9190±53 8875±58 8986±51 10619±59 10087±58\nM 7931±42 8425±46 8064±41 8220±37 11023±58 10669±41\nL 6877±31 7190±42 6540±37 6877±23 9823±33 9569±61\nXL 9478±20 11275±33 8567±24 9010±21 13972±44 13570±72\nTable A.10: Performance of DRL policies when evaluated on a variety of warehouse sizes.",
+      "size": 642,
+      "sentences": 2
+    },
+    {
+      "id": 245,
+      "content": "44 13570±72\nTable A.10: Performance of DRL policies when evaluated on a variety of warehouse sizes. The values indicate the\npickingtimeinseconds. The±indicatesthe95%-confidenceinterval. PolicyX indicatestheDRLpolicytrainedon\nwarehouse type X. The bold markings indicate the best performance values per warehouse size.",
+      "size": 317,
+      "sentences": 5
+    },
+    {
+      "id": 246,
+      "content": "inedon\nwarehouse type X. The bold markings indicate the best performance values per warehouse size. XL policy for twice as many steps as those for types M and L. The XL policy does transfer\nwell to other warehouse sizes though, which again indicates the good transferability of policies. In\naddition to the comparative performances between each other, all DRL policies maintain a clear\nadvantage over the greedy and VI benchmark results.",
+      "size": 437,
+      "sentences": 4
+    },
+    {
+      "id": 247,
+      "content": "n each other, all DRL policies maintain a clear\nadvantage over the greedy and VI benchmark results. Thus, overall, the policies adapt well to different warehouse sizes. This enables easier deploy-\nment of policies to varying warehouses. Also, when a warehouse layout is changed, the policies can\nmaintain good performance without needing to retrain and redeploy new policies.",
+      "size": 375,
+      "sentences": 4
+    },
+    {
+      "id": 248,
+      "content": "d, the policies can\nmaintain good performance without needing to retrain and redeploy new policies. In addition, it\nis advantageous for the training process itself since one can train and evaluate different settings\nquicker on smaller warehouse instances and then scale the learned policies to larger warehouses. Appendix B. Multi-Objectives Experiments: Tables\nAppendix B.1.",
+      "size": 375,
+      "sentences": 3
+    },
+    {
+      "id": 249,
+      "content": "arned policies to larger warehouses. Appendix B. Multi-Objectives Experiments: Tables\nAppendix B.1. Policy Transferability to Various Picker/AMR Ratios\nTable B.11 shows the detailed numerical results belonging to the multi-objective transferability\nexperiments of different picker/AMR ratios. Appendix B.2. Policy Transferability to Various Warehouse Sizes\nTable B.12 shows the detailed numerical results belonging to the multi-objective transferability\nexperiments of different warehouse sizes.",
+      "size": 495,
+      "sentences": 5
+    },
+    {
+      "id": 250,
+      "content": "results belonging to the multi-objective transferability\nexperiments of different warehouse sizes. Appendix C. Ablation Study\nAppendix C.1.",
+      "size": 139,
+      "sentences": 2
+    },
+    {
+      "id": 251,
+      "content": "transferability\nexperiments of different warehouse sizes. Appendix C. Ablation Study\nAppendix C.1. Additional Experiment\nTo further evaluate the performance of our architecture, we test the performance of AEMO-\nNet compared to just an aisle-embedding (AISLE-EMB), an invariant feed-forward network with\n33\n===  34 ===\n7 Pickers/15 AMRs 10 Pickers/30 AMRs 15 Pickers/35 AMRs\nPolicy PT WF PT WF PT WF\nS1 22659±213 33±4 15117±133 42±4 10369±96 41±3\nS2 17921±134 39±4 12191±85 40±3 8603±56 45±3\nS3 13402±87 65±4 8765±64 66±5 6469±52 70±4\nS4 13443±87 109±8 8850±66 110±7 6482±48 110±6\nS5 13281±107 119±10 8684±70 118±8 6394±65 125±6\nS6 13345±113 162±12 8795±95 174±13 6474±72 163±11\nPure Performance 12825±83 347±23 8221±54 308±20 5938±35 282±15\nPure Fairness 27812±115 51±5 19916±104 92±12 13736±73 106±12\nGreedy 15166±74 304±21 10283±60 281±15 7550±44 265±11\nVI Benchmark 15472±87 591±40 9447±52 406±22 7121±38 378±15\n(a)WarehousetypeS.",
+      "size": 933,
+      "sentences": 3
+    },
+    {
+      "id": 252,
+      "content": "281±15 7550±44 265±11\nVI Benchmark 15472±87 591±40 9447±52 406±22 7121±38 378±15\n(a)WarehousetypeS. 25 Pickers/60 AMRs 30 Pickers/100 AMRs 40 Pickers/110 AMRs\nPolicy PT WF PT WF PT WF\nL1 29109±82 71±6 25928±93 75±7 19885±75 68±4\nL2 18050±62 66±3 15608±53 66±3 11904±48 65±2\nL3 10647±78 74±6 8332±64 78±6 6647±63 69±5\nL4 10545±81 79±4 8177±76 87±5 6491±68 76±5\nL5 10095±91 135±6 8059±73 145±6 6432±62 129±5\nL6 9407±42 227±10 7365±61 253±11 5826±56 189±7\nPure Performance 8566±34 236±7 6354±65 232±7 5059±18 206±5\nPure Fairness 25731±71 54±5 21554±72 52±3 16518±64 51±3\nGreedy 11852±31 254±8 9980±44 257±7 7605±27 221±6\nVI Benchmark 13512±65 603±15 9410±62 456±13 8076±45 373±9\n(b)WarehousetypeL.",
+      "size": 694,
+      "sentences": 2
+    },
+    {
+      "id": 253,
+      "content": "44 257±7 7605±27 221±6\nVI Benchmark 13512±65 603±15 9410±62 456±13 8076±45 373±9\n(b)WarehousetypeL. TableB.11: Performanceofmulti-objectiveDRLpoliciestrainedonwarehousetypeS andL,givenvaryingcombina-\ntionsofthenumberofpickersandAMRswithintheirrespectivewarehousesizes. PTisthepickingtimeinseconds\nand WF is the standard deviation of the workloads in kilograms. The ± indicates the 95%-confidence interval.",
+      "size": 405,
+      "sentences": 4
+    },
+    {
+      "id": 254,
+      "content": "the standard deviation of the workloads in kilograms. The ± indicates the 95%-confidence interval. feature separation (INV-FF-SEP), and a regular invariant feed-forward network (INV-FF) for\nseveral weight vectors leading to different weighted-sum rewards. Table C.13 outlines these results. The first thing that stands out is the performance difference\nbetween the aisle-embedding architectures and the invariant feed-forward architectures.",
+      "size": 440,
+      "sentences": 5
+    },
+    {
+      "id": 255,
+      "content": "difference\nbetween the aisle-embedding architectures and the invariant feed-forward architectures. On 5\nof the 6 settings, the aisle-embedding instances achieve better rewards than the invariant feed-\nforwardpoliciesbyaclearmargin. Thus,whereaswithsingle-objectiveoptimizationthedifferences\nbetween aisle-embedding and invariant feed-forward actors are small, the differences are more\nprominent when both fairness and performance must be optimized.",
+      "size": 448,
+      "sentences": 3
+    },
+    {
+      "id": 256,
+      "content": "are small, the differences are more\nprominent when both fairness and performance must be optimized. A possible explanation is\nthat the node features can capture less regional information regarding fairness. Hence, the aisle-\nembedding architecture has more possibilities to aid in extracting relevant regional information\nfrom the graph. In addition, the results show that the aisle-embedding without feature separation reaches\n34\n===  35 ===\nS M L\nPolicy nr.",
+      "size": 459,
+      "sentences": 4
+    },
+    {
+      "id": 257,
+      "content": "ts show that the aisle-embedding without feature separation reaches\n34\n===  35 ===\nS M L\nPolicy nr. PT WF PT WF PT WF\n1 15555±125 41±4 20876±129 95±19 21182±107 96±14\n2 12431±86 43±4 18938±146 98±10 19888±95 82±86\n3 9164±60 66±4 14666±96 74±5 13516±140 112±12\n4 9188±55 114±8 14879±134 106±11 12163±144 81±89\n5 9074±60 118±7 11193±147 155±11 11621±147 200±15\n6 9149±68 167±9 10302±168 226±15 10303±113 355±28\n7 - - 9577±53 206±18 - -\n8 - - 9464±57 441±51 - -\n(a)EvaluationresultsonwarehousetypeS.",
+      "size": 496,
+      "sentences": 2
+    },
+    {
+      "id": 258,
+      "content": "±113 355±28\n7 - - 9577±53 206±18 - -\n8 - - 9464±57 441±51 - -\n(a)EvaluationresultsonwarehousetypeS. S M L\nPolicy nr.",
+      "size": 116,
+      "sentences": 2
+    },
+    {
+      "id": 259,
+      "content": "9577±53 206±18 - -\n8 - - 9464±57 441±51 - -\n(a)EvaluationresultsonwarehousetypeS. S M L\nPolicy nr. PT WF PT WF PT WF\n1 15404±100 51±4 22180±65 86±10 22770±102 114±10\n2 13267±63 54±5 18695±174 100±10 19117±77 75±3\n3 8578±69 69±4 14854±74 103±6 12596±177 154±9\n4 8646±49 114±5 14897±153 140±9 10424±96 102±9\n5 8405±50 122±6 9809±169 154±8 10956±185 201±10\n6 8485±63 182±9 9323±136 223±11 8960±71 335±22\n7 - - 8919±51 266±19 - -\n8 - - 8733±52 460±32 - -\n(b)EvaluationresultsonwarehousetypeM.",
+      "size": 488,
+      "sentences": 3
+    },
+    {
+      "id": 260,
+      "content": "0±71 335±22\n7 - - 8919±51 266±19 - -\n8 - - 8733±52 460±32 - -\n(b)EvaluationresultsonwarehousetypeM. S M L\nPolicy nr. PT WF PT WF PT WF\n1 15913±90 68±7 26728±159 60±5 25562±92 70±7\n2 15146±67 68±7 21520±97 72±6 15474±62 65±3\n3 7302±62 85±6 14645±70 128±7 8463±32 72±5\n4 7340±53 131±6 12939±81 101±5 8296±78 76±4\n5 7249±137 137±6 7678±71 92±6 8116±62 139±6\n6 7087±64 199±8 7307±80 186±8 7400±220 226±9\n7 - - 7442±42 220±12 - -\n8 - - 7343±43 351±18 - -\n(c)EvaluationresultsonwarehousetypeL.",
+      "size": 487,
+      "sentences": 3
+    },
+    {
+      "id": 261,
+      "content": "0±220 226±9\n7 - - 7442±42 220±12 - -\n8 - - 7343±43 351±18 - -\n(c)EvaluationresultsonwarehousetypeL. S M L\nPolicy nr.",
+      "size": 116,
+      "sentences": 2
+    },
+    {
+      "id": 262,
+      "content": "7442±42 220±12 - -\n8 - - 7343±43 351±18 - -\n(c)EvaluationresultsonwarehousetypeL. S M L\nPolicy nr. PT WF PT WF PT WF\n1 25380±81 115±9 46473±337 94±5 40897±125 92±5\n2 25039±72 100±10 37004±231 116±5 21019±67 72±2\n3 10013±108 130±6 23413±65 160±5 10357±94 45±4\n4 9964±87 183±8 22389±267 111±4 10229±112 66±4\n5 10208±83 204±8 10730±151 101±5 10411±91 123±4\n6 9528±42 229±6 9524±96 230±7 9653±30 211±7\n7 - - 9932±92 312±3 - -\n8 - - 10173±113 444±17 - -\n(d)EvaluationresultsonwarehousetypeXL.",
+      "size": 487,
+      "sentences": 3
+    },
+    {
+      "id": 263,
+      "content": "±30 211±7\n7 - - 9932±92 312±3 - -\n8 - - 10173±113 444±17 - -\n(d)EvaluationresultsonwarehousetypeXL. Table B.12: Performance of multi-objective DRL policies when evaluated on various warehouse sizes. PT is the\npicking time in seconds and the workload fairness WF is the standard deviation of the workloads in kg. The ±\nindicates the 95%-confidence intervals. S, M, and L in the columns indicate the training warehouse types of the\npolicies.",
+      "size": 439,
+      "sentences": 5
+    },
+    {
+      "id": 264,
+      "content": "idence intervals. S, M, and L in the columns indicate the training warehouse types of the\npolicies. 35\n===  36 ===\nAISLE-EMB-SEP AISLE-EMB INV-FF-SEP INV-FF\nTypewperf wfair Reward PT WF Reward PT WF Reward PT WF Reward PT WF\nS 0.5 0.5 −264±7 17017±180 100±11−231±614693±209 91±11 −372±5 24400±83 129±9 −543±1222410±112506±26\nS 0.9 0.1 −236±4 10210±182 72±10 −379±3 16366±148 110±9 −288±2 12055±74 166±10 −536±3 21507±118502±25\nS 0.1 0.9 −149±11 21265±113 102±11−138±922106±102 89±9 −187±1321808±126142±14−179±11 21937±88 133±12\nM 0.5 0.5 −339±5 20340±141 166±10 −384±5 23555±100 175±10 −255±7 17023±90 230±8 −381±6 20989±110232±11\nM 0.9 0.1 −361±3 15305±139 163±8 −463±2 20154±80 100±6 −463±3 19324±100282±12 −358±3 15102±74 186±9\nM 0.1 0.9 −202±9 25250±84 151±9 −197±7 23302±86 151±8 −253±7 27338±95 200±8 −256±7 16946±93 232±6\nTable C.13: Performance comparison of policies with different network architectures, trained using a weighted-sum\nreward between performance and fairness for various warehouse sizes and weight combinations for performance\n(w ) and fairness (w ).",
+      "size": 1074,
+      "sentences": 3
+    },
+    {
+      "id": 265,
+      "content": "airness for various warehouse sizes and weight combinations for performance\n(w ) and fairness (w ). The table shows the obtained reward, the total picking time in seconds (PT), and the\nperf fair\nstandarddeviationofthepickerworkloadsinkg(WF).±indicatesthe95%-confidenceinterval. Theboldmarkings\nindicate the policies with the best rewards per scenario. slightly better rewards than the actor with feature separation in three instances. However, the\nimprovements are only marginal.",
+      "size": 479,
+      "sentences": 5
+    },
+    {
+      "id": 266,
+      "content": "the actor with feature separation in three instances. However, the\nimprovements are only marginal. Namely, for the weight vector (0.1,0.9), the final rewards of the\ntwo structures are very close and within each other’s 95%-confidence interval, indicating that we\ncannot conclude a statistically significant difference.",
+      "size": 318,
+      "sentences": 3
+    },
+    {
+      "id": 267,
+      "content": "95%-confidence interval, indicating that we\ncannot conclude a statistically significant difference. Additionally, the reward difference is rela-\ntively small for weight vector (0.5,0.5) on warehouse S. Oppositely, in the cases in which the actor\nwithfeatureseparationperformsbetter,thedifferenceinrewardsismuchlarger,being−236versus\n−379 and −361 versus −463. Moreover, we observe that in these instances, with these weight vec-\ntors, the best overall policies for the warehouse types are found.",
+      "size": 495,
+      "sentences": 3
+    },
+    {
+      "id": 268,
+      "content": "nstances, with these weight vec-\ntors, the best overall policies for the warehouse types are found. Namely, both policies dominate\nall other policies for all weight vectors on both picking time and workload fairness. Thus, this\nweight vector region in which the aisle-embedding with feature separation outperforms the other\narchitectures is also the region where the best policies are achievable.",
+      "size": 396,
+      "sentences": 3
+    },
+    {
+      "id": 269,
+      "content": "tion outperforms the other\narchitectures is also the region where the best policies are achievable. Hence, the aisle-embedding\nstructure with feature separation is the best network architecture for the multi-objective learning\ntask. What is also noteworthy in these results is that it is hard to judge which weight vectors lead to\nwhich trade-offs between efficiency and fairness.",
+      "size": 380,
+      "sentences": 3
+    },
+    {
+      "id": 270,
+      "content": "it is hard to judge which weight vectors lead to\nwhich trade-offs between efficiency and fairness. For example, we find that the policies for weights\nw = 0.9 and w = 0.1 score very well on both efficiency and fairness and even achieve better\nperf fair\nfairness than the policies with w = 0.1 and w = 0.9. In addition, the outcome of different\nperf fair\nweight settings varies between warehouse sizes.",
+      "size": 400,
+      "sentences": 3
+    },
+    {
+      "id": 271,
+      "content": ".9. In addition, the outcome of different\nperf fair\nweight settings varies between warehouse sizes. For example, for the aisle-embedding without\nfeature separation, the best efficiency and fairness scores in warehouse type S are achieved for\nweight vector (0.5,0.5), whereas for type M the policy for weight vector (0.9,0.1) outperforms the\nother policies.",
+      "size": 356,
+      "sentences": 3
+    },
+    {
+      "id": 272,
+      "content": "0.5,0.5), whereas for type M the policy for weight vector (0.9,0.1) outperforms the\nother policies. These findings highlight the value of using a multi-objective learning algorithm to\nfind the weights that form a high-quality non-dominated set of policies. Otherwise, trying to hand-\ntune the weights for each problem instance would cost a vast amount of computational resources\n36\n===  37 ===\nand effort to find clear trade-off fronts. Appendix C.2. Network Architectures\nAppendix C.2.1.",
+      "size": 488,
+      "sentences": 5
+    },
+    {
+      "id": 273,
+      "content": "===\nand effort to find clear trade-off fronts. Appendix C.2. Network Architectures\nAppendix C.2.1. Invariant Feed-Forward Network\nFor the invariant feed-forward actor network, we used two fully-connected layers with Leaky\nReLU activation and 64 neurons, followed by a fully-connected layer with 16 neurons and Leaky\nReLU and a last layer with one neuron that represents the node value, which is masked and passed\nthrough the softmax function with all nodes.",
+      "size": 457,
+      "sentences": 4
+    },
+    {
+      "id": 274,
+      "content": "represents the node value, which is masked and passed\nthrough the softmax function with all nodes. In the critic network, we used three fully-connected layers with the Leaky ReLU activation\nfunction to create the node-embeddings. For the first two layers, we used 64 neurons, while the\nthird layer had 16 neurons. Then, after aggregating the node-embeddings to form the graph-\nembedding, we used one fully-connected layer with one neuron to get the value estimate. Appendix C.2.2.",
+      "size": 480,
+      "sentences": 5
+    },
+    {
+      "id": 275,
+      "content": "dding, we used one fully-connected layer with one neuron to get the value estimate. Appendix C.2.2. Graph Networks\nFor the GCN actor, we used four consecutive GCN layers with 64 output channels and Leaky\nReLUactivationfunction, followedbytwofully-connectedfeed-forwardlayersof64and16neurons\nwith Leaky ReLU, and a last fully-connected layer with one neuron.",
+      "size": 357,
+      "sentences": 3
+    },
+    {
+      "id": 276,
+      "content": "ed-forwardlayersof64and16neurons\nwith Leaky ReLU, and a last fully-connected layer with one neuron. The GCN critic also had four\nconsecutive GCN layers with 64 output channels and Leaky ReLU activation function, followed\nby two fully-connected feed-forward layers of 64 and 16 neurons with Leaky ReLU. These were\nfollowed by the summation aggregation and one final linear layer with one neuron to output the\ngraph value.",
+      "size": 420,
+      "sentences": 3
+    },
+    {
+      "id": 277,
+      "content": "by the summation aggregation and one final linear layer with one neuron to output the\ngraph value. The GIN networks had the same structure as the GCN networks with GIN layers instead of\nGCN layers. For each GIN layer, we used a multilayer perceptron with two fully-connected layers\nof 64 neurons with Leaky ReLU activation. Appendix C.2.3. Other Networks\nFor the AISLE-EMB, we used the same structure used for the single-objective pure efficiency\nandpurefairnessactors.",
+      "size": 469,
+      "sentences": 5
+    },
+    {
+      "id": 278,
+      "content": "MB, we used the same structure used for the single-objective pure efficiency\nandpurefairnessactors. FortheINV-FF-SEP,weusedaninvariantfeed-forwardstructuretocreate\nthe efficiency and workload fairness embeddings. This invariant feed-forward structure consisted\nof two fully-connected layers with 64 neurons and a Leaky ReLU activation function followed by\none fully-connected layer with 16 neurons. 37\n===  38 ===\nAppendix D. Schematic Overviews Simulation Model\nAppendix D.1.",
+      "size": 476,
+      "sentences": 4
+    },
+    {
+      "id": 279,
+      "content": "ayer with 16 neurons. 37\n===  38 ===\nAppendix D. Schematic Overviews Simulation Model\nAppendix D.1. Picker Process\nFigure D.8 shows the schematic overview of the picker process in the simulation model. Start No\nRe f q r u o e m s t o d p e ti s m ti i n z a e t r ion Walk to o n n e p x a t t h location At destination? Yes\nNo\nYes\nMore AMRs waiting? Unexpected delay? Any AMRs at location?",
+      "size": 390,
+      "sentences": 7
+    },
+    {
+      "id": 280,
+      "content": "t h location At destination? Yes\nNo\nYes\nMore AMRs waiting? Unexpected delay? Any AMRs at location? No\nYes Yes No\nPick items for AMR Delay time Wait for AMR arrival\nFigure D.8: Overview of the picker process in the simulation model. Appendix D.2. AMR Process\nFigure D.9 shows the schematic overview of the AMR process in the simulation model. Start\nRequest new pickrun Get f n ro e m w p d i e c s k t r i u n n ation Drive to o n n e p x a t t h location No\nNo\nAt base? AMR blocking location?",
+      "size": 492,
+      "sentences": 9
+    },
+    {
+      "id": 281,
+      "content": "c s k t r i u n n ation Drive to o n n e p x a t t h location No\nNo\nAt base? AMR blocking location? No At destination? No Yes\nYes Yes\nDri o ve n t p o a n th e x to t l b o a c s a e tion Yes Pickrun finished? Overtaking delay\nItem picking by picker Yes Picker at location? No\nWait for picker to\narrive\nFigure D.9: Overview of the AMR process in the simulation model. 38",
+      "size": 370,
+      "sentences": 7
+    }
+  ]
+}

@@ -1,0 +1,1755 @@
+{
+  "source": "ArXiv",
+  "filename": "208_AI_ML_Achieve_Performatively_Optimal_Policy_fo.pdf",
+  "domain": "AI",
+  "total_chars": 106212,
+  "total_chunks": 291,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\nAchieve Performatively Optimal Policy for Performative\nReinforcement Learning\nZiyiChen,HengHuang\nDepartmentofComputerScience\nUniversityofMaryland\nCollegePark,MD20742,USA\n{zc286,heng}@umd.edu\nAbstract\nPerformativereinforcementlearningisanemergingdynamicaldecisionmakingframework,which\nextendsreinforcementlearningtothecommonapplicationswheretheagent’spolicycanchangetheenvi-\nronmentaldynamics.",
+      "size": 403,
+      "sentences": 1
+    },
+    {
+      "id": 2,
+      "content": "inforcementlearningtothecommonapplicationswheretheagent’spolicycanchangetheenvi-\nronmentaldynamics. Existingworksonperformativereinforcementlearningonlyaimataperformatively\nstable(PS)policythatmaximizesanapproximatevaluefunction. However,thereisaprovablypositive\nconstantgapbetweenthePSpolicyandthedesiredperformativelyoptimal(PO)policythatmaximizes\ntheoriginalvaluefunction.",
+      "size": 375,
+      "sentences": 3
+    },
+    {
+      "id": 3,
+      "content": "tweenthePSpolicyandthedesiredperformativelyoptimal(PO)policythatmaximizes\ntheoriginalvaluefunction. Incontrast,thisworkproposesazeroth-orderFrank-Wolfealgorithm(0-FW)\nalgorithm with a zeroth-order approximation of the performative policy gradient in the Frank-Wolfe\nframework,andobtainsthefirstpolynomial-timeconvergencetothedesiredPOpolicyunderthestan-\ndardregularizerdominancecondition. Fortheconvergenceanalysis,weprovetwoimportantproperties\nofthenonconvexvaluefunction.",
+      "size": 473,
+      "sentences": 3
+    },
+    {
+      "id": 4,
+      "content": "ancecondition. Fortheconvergenceanalysis,weprovetwoimportantproperties\nofthenonconvexvaluefunction. First,whenthepolicyregularizerdominatestheenvironmentalshift,\nthevaluefunctionsatisfiesacertaingradientdominanceproperty,sothatanystationarypoint(notPS)\nofthevaluefunctionisadesiredPO.Second,thoughthevaluefunctionhasunboundedgradient,we\nprovethatallthesufficientlystationarypointslieinaconvexandcompactpolicysubspaceΠ ,where\n∆\nthepolicyvaluehasaconstantlowerbound∆>0andthusthegradientbecomesboundedandLipschitz\ncontinuous.",
+      "size": 522,
+      "sentences": 3
+    },
+    {
+      "id": 5,
+      "content": "e\n∆\nthepolicyvaluehasaconstantlowerbound∆>0andthusthegradientbecomesboundedandLipschitz\ncontinuous. Experimentalresultsalsodemonstratethatour0-FWalgorithmismoreeffectivethanthe\nexistingalgorithmsinfindingthedesiredPOpolicy.",
+      "size": 223,
+      "sentences": 2
+    },
+    {
+      "id": 6,
+      "content": "emonstratethatour0-FWalgorithmismoreeffectivethanthe\nexistingalgorithmsinfindingthedesiredPOpolicy. 1 Introduction\nReinforcementlearningisausefuldynamicdecisionmakingframeworkwithmanysuccessesinAI,such\nas AlphaGo (Silver et al., 2017), AlphaStar (Vinyals et al., 2019), Pluribus (Brown & Sandholm, 2019),\nlarge language model alignment (Bai et al., 2022) and reasoning (Havrilla et al., 2024).",
+      "size": 393,
+      "sentences": 2
+    },
+    {
+      "id": 7,
+      "content": "lm, 2019),\nlarge language model alignment (Bai et al., 2022) and reasoning (Havrilla et al., 2024). However, most\nreinforcement learning works ignore the effect of the deployed policy on the environmental dynamics,\nincludingtransitionkernelandrewardfunction. Thiseffectissignificantinmulti-agentsystems,particularly\nthe Stackelberg game, where leaders’ policy change triggers the followers’ policy change, which in turn\naffectstheenvironmentaldynamicsfacedbytheleader(Mandaletal.,2023).",
+      "size": 486,
+      "sentences": 3
+    },
+    {
+      "id": 8,
+      "content": "rs’ policy change, which in turn\naffectstheenvironmentaldynamicsfacedbytheleader(Mandaletal.,2023). Forexample,arecommender\nsystem(leader)affectstheusers’(followers)demographicsandtheirinteractionstrategywiththesystem\n(Chaney et al., 2018; Mansoury et al., 2020). Autonomous vehicles (leaders) affect the strategies of the\npedestriansandtheothervehicles(followers)(Nikolaidisetal.,2017).",
+      "size": 387,
+      "sentences": 3
+    },
+    {
+      "id": 9,
+      "content": "ders) affect the strategies of the\npedestriansandtheothervehicles(followers)(Nikolaidisetal.,2017). Toaccountforsucheffectofdeployedpolicyonenvironmentaldynamics,performativereinforcement\nlearning has been proposed by (Mandal et al., 2023) where the transition kernel p and reward function\nπ\nr are modeled as functions of the deployed policy π.",
+      "size": 344,
+      "sentences": 2
+    },
+    {
+      "id": 10,
+      "content": "the transition kernel p and reward function\nπ\nr are modeled as functions of the deployed policy π. The ultimate goal is to find the performatively\nπ\n1\n5202\ntcO\n6\n]GL.sc[\n1v03440.0152:viXra\n===  2 ===\noptimal(PO)policythatmaximizestheperformativevaluefunction,definedastheaccumulateddiscounted\nrewardwhendeployingapolicyπ toitscorrespondingenvironment(p ,r ).",
+      "size": 358,
+      "sentences": 2
+    },
+    {
+      "id": 11,
+      "content": "definedastheaccumulateddiscounted\nrewardwhendeployingapolicyπ toitscorrespondingenvironment(p ,r ). However,thepolicy-dependent\nπ π\nenvironmentaldynamicsposesignificantchallengestoachievePO.Hence,(Mandaletal.,2023)pursuesa\nsuboptimalperformativelystable(PS)policyusingrepeatedretrainingmethodwithenvironmentaldynamics\nfixedforthecurrentpolicyateachpolicyoptimizationstep. However,(Mandaletal.,2023)showsthatPS\ncanhaveapositiveconstantdistancetoPO.",
+      "size": 447,
+      "sentences": 3
+    },
+    {
+      "id": 12,
+      "content": "policyoptimizationstep. However,(Mandaletal.,2023)showsthatPS\ncanhaveapositiveconstantdistancetoPO. Extensionsofthebasicperformativereinforcementlearningproblem(Mandaletal.,2023)havebeen\nproposed and all of them focus on the suboptimal PS policy. For example, Rank et al. (2024) allows the\nenvironmentaldynamicstograduallyadjusttothecurrentlydeployedpolicy,andproposesamixeddelayed\nrepeated retraining algorithm with accelerated convergence to a PS policy.",
+      "size": 456,
+      "sentences": 5
+    },
+    {
+      "id": 13,
+      "content": "andproposesamixeddelayed\nrepeated retraining algorithm with accelerated convergence to a PS policy. Mandal & Radanovic (2024)\nextends(Mandaletal.,2023)fromtabularsettingtolinearMarkovdecisionprocesseswithlargenumberof\nstates,andalsoobtainstheconvergencerateoftherepeatedretrainingalgorithmtoaPSpolicy. Pollatosetal. (2025)obtainsaPSpolicythatisrobusttodatacontamination. Sahitajetal.",
+      "size": 383,
+      "sentences": 5
+    },
+    {
+      "id": 14,
+      "content": "rithmtoaPSpolicy. Pollatosetal. (2025)obtainsaPSpolicythatisrobusttodatacontamination. Sahitajetal. (2025)obtainsaperformatively\nstable equilibrium as an extension of PS policy to performative Markov potential games with multiple\ncompetitiveagents. Insum,alltheseexistingperformativereinforcementlearningworkspursueasuboptimalPSpolicyby\nrepeatedretrainingalgorithms. Therefore,wewanttoaskthefollowingbasicresearchquestion:\nQ:Isthereanalgorithmthatconvergestothedesiredperformativelyoptimal(PO)policy?",
+      "size": 500,
+      "sentences": 7
+    },
+    {
+      "id": 15,
+      "content": "asicresearchquestion:\nQ:Isthereanalgorithmthatconvergestothedesiredperformativelyoptimal(PO)policy? 1.1 OurContributions\nWewillansweraffirmativelytotheresearchquestionaboveinthefollowingsteps. Eachstepyieldsanovel\ncontribution. • We study an entropy regularized performative reinforcement learning problem, compatible with the\nbasic performative reinforcement learning problem in (Mandal et al., 2023).",
+      "size": 402,
+      "sentences": 4
+    },
+    {
+      "id": 16,
+      "content": "em, compatible with the\nbasic performative reinforcement learning problem in (Mandal et al., 2023). We prove that the objective\nfunction satisfies a certain gradient dominance condition, which implies that an approximate stationary\npoint(notthesuboptimalPS)isthedesiredapproximatePOpolicy,underastandardregularizerdominance\nconditionsimilartothatusedby(Mandaletal.,2023;Ranketal.,2024;Mandal&Radanovic,2024;Pollatos\netal.,2025)toensureconvergencetoasuboptimalPSpolicy.",
+      "size": 468,
+      "sentences": 2
+    },
+    {
+      "id": 17,
+      "content": ";Ranketal.,2024;Mandal&Radanovic,2024;Pollatos\netal.,2025)toensureconvergencetoasuboptimalPSpolicy. Theproofadoptsnoveltechniquessuchas\nrecursionforp -relatederrortermandfrequentswitchamongvariousnecessaryandsufficientconditionsof\nπ\nsmoothnessandstrongconcavitylikepropertiesforvariousvariables(seeSection3.2). • Weobtainapolicylowerboundasadecreasingfunctionofastationarymeasure.",
+      "size": 380,
+      "sentences": 3
+    },
+    {
+      "id": 18,
+      "content": "iousvariables(seeSection3.2). • Weobtainapolicylowerboundasadecreasingfunctionofastationarymeasure. Thisboundnotonly\nimpliestheunboundedperformativepolicygradient (achallengetofindastationarypolicyandthusPO),\nbutalsoinspiresustofindastationarypolicyinthepolicysubspaceΠ withaconstantpolicylowerbound\n∆\n∆ > 0whereweprovetheobjectivefunctiontobeLipschitzcontinuousandLipschitzsmooth(asolution\ntothischallenge).",
+      "size": 408,
+      "sentences": 3
+    },
+    {
+      "id": 19,
+      "content": "ereweprovetheobjectivefunctiontobeLipschitzcontinuousandLipschitzsmooth(asolution\ntothischallenge). Thelowerbound∆isobtainedusinganoveltechniquewhichsimplifiesacomplicated\ninequalityoftheminimumpolicyvalueπ[a (s)|s]intwocases(seeSection3.3). min\n• Weconstructazeroth-orderestimationoftheperformativepolicygradient andobtainsitsestimation\nerror.",
+      "size": 344,
+      "sentences": 3
+    },
+    {
+      "id": 20,
+      "content": "• Weconstructazeroth-orderestimationoftheperformativepolicygradient andobtainsitsestimation\nerror. Thisismorechallengingthantheexistingzeroth-orderestimationmethodssinceourobjectivefunction\nisonlywell-definedonthepolicyspace,acompactsubsetofalinearsubspaceoftheEuclideanspaceR|S||A|.",
+      "size": 283,
+      "sentences": 2
+    },
+    {
+      "id": 21,
+      "content": "ction\nisonlywell-definedonthepolicyspace,acompactsubsetofalinearsubspaceoftheEuclideanspaceR|S||A|. Tosolvethispuzzle, weadjustatwo-pointestimationtothelinearsubspaceL ofpolicydifference, and\n0\nsimplifytheestimationerroranalysisbymappingpoliciesontotheEuclideanspaceR|S|(|A|−1)viaorthogonal\ntransformation(seeSection4.1). • We propose a zeroth-order Frank-Wolfe (0-FW) algorithm (see Algorithm 1) by combining the per-\nformativepolicygradientestimationabovewiththeFrank-Wolfealgorithm.",
+      "size": 485,
+      "sentences": 3
+    },
+    {
+      "id": 22,
+      "content": "gorithm 1) by combining the per-\nformativepolicygradientestimationabovewiththeFrank-Wolfealgorithm. Thenweobtainapolynomial\ncomputationcomplexityofour0-FWalgorithmtoconvergetoastationarypolicy,whichisalsothedesired\nPOpolicyundertheregularizerdominanceconditionabove. Theconvergenceanalysisusesapolicyaveraging\n2\n===  3 ===\ntechniquetoshowthatanapproximatestationarypolicyonΠ isalsoapproximatelystationaryonthewhole\n∆\npolicyspaceΠ(seeSection4.2).",
+      "size": 445,
+      "sentences": 3
+    },
+    {
+      "id": 23,
+      "content": "proximatestationarypolicyonΠ isalsoapproximatelystationaryonthewhole\n∆\npolicyspaceΠ(seeSection4.2). Finally, we briefly show that the results above, including gradient dominance, Lipschitz properties\nandthefinite-timeconvergenceof0-FWalgorithmtothedesiredPO,canbeadjustedtotheperformative\nreinforcementlearningproblemwiththequadraticregularizerusedby(Mandaletal.,2023;Ranketal.,2024;\nPollatosetal.,2025)(seeAppendixM).",
+      "size": 418,
+      "sentences": 2
+    },
+    {
+      "id": 24,
+      "content": "ththequadraticregularizerusedby(Mandaletal.,2023;Ranketal.,2024;\nPollatosetal.,2025)(seeAppendixM). 2 Preliminary: Performative Reinforcement Learning\n2.1 ProblemFormulation\nPerformativereinforcementlearningischaracterizedbyaMarkovdecisionprocess(MDP)M = (S,A,p ,r ,ρ)\nπ π π\nthat depends on a certain policy π. Here, S and A denote the finite state and action spaces respectively.",
+      "size": 380,
+      "sentences": 3
+    },
+    {
+      "id": 25,
+      "content": "epends on a certain policy π. Here, S and A denote the finite state and action spaces respectively. The policy π ∈ [0,1]|S||A|, transition kernel p ∈ [0,1]|S|2|A|, reward r ∈ [0,1]|S||A|, and initial state\nπ π\ndistribution ρ ∈ [0,1]|S| are vectors that represent distributions.",
+      "size": 277,
+      "sentences": 3
+    },
+    {
+      "id": 26,
+      "content": "1]|S||A|, and initial state\nπ π\ndistribution ρ ∈ [0,1]|S| are vectors that represent distributions. Specifically, the policy π ∈ [0,1]|S||A|,\nwithentriesπ(a|s)foranystates ∈ S andactiona ∈ A,liesinthepolicyspaceΠ d = ef (cid:8) π ∈ [0,1]|S|2|A| :\n(cid:80) (cid:9)\nπ(a|s) = 1,∀s ∈ S , such that π(·|s) for any state s can be seen as a distribution over A.",
+      "size": 354,
+      "sentences": 2
+    },
+    {
+      "id": 27,
+      "content": "(cid:9)\nπ(a|s) = 1,∀s ∈ S , such that π(·|s) for any state s can be seen as a distribution over A. The\na∈A\ntransition kernel p ∈ [0,1]|S|2|A| dependent on policy π ∈ Π, with entries p (s′|s,a) for any s,s′ ∈ S\nπ π\nanda ∈ A,liesinthetransitionkernelspaceP d = ef (cid:8) p ∈ [0,1]|S|2|A|: (cid:80) p(s′|s,a)=1,∀s∈S,a∈A (cid:9)\ns′∈S\nsuch that p (·|s,a) can be seen as a state distribution on S. r ∈ R d = ef [0,1]|S||A| is the reward function\nπ π\nwith entries r (s,a) ∈ [0,1] for any s ∈ S and a ∈ A. ρ ∈ [0,1]|S| is the initial state distribution such\nπ\n(cid:80)\nthat ρ(s) = 1.",
+      "size": 576,
+      "sentences": 2
+    },
+    {
+      "id": 28,
+      "content": "any s ∈ S and a ∈ A. ρ ∈ [0,1]|S| is the initial state distribution such\nπ\n(cid:80)\nthat ρ(s) = 1. Notethatweconsiderp ,r ,ρ,π asEuclideanvectors,sothatwecanconveniently\ns∈S π π\ndefine their Euclidean norm. For example, we define ∥p ∥ =\n(cid:2)(cid:80)\n|p\n(s′|s,a)|q(cid:3)1/q\nfor any q > 1\nπ q s,a,s′ π\nand ∥p ∥ = max |p (s′|s,a)|. Such norms can be similarly defined over r , ρ, π by summing or\nπ ∞ s,a,s′ π π\nmaximizingoveralltheentries. Specifically,denote∥·∥ = ∥·∥ byconvention.",
+      "size": 483,
+      "sentences": 5
+    },
+    {
+      "id": 29,
+      "content": "y summing or\nπ ∞ s,a,s′ π π\nmaximizingoveralltheentries. Specifically,denote∥·∥ = ∥·∥ byconvention. 2\nWhen an agent applies its policy π ∈ Π to MDP M = (S,A,p ,r ,ρ), the initial environmental\nπ′ π′ π′\nstate s ∈ S is generated from the distribution ρ. Then at each time t = 0,1,2,..., the agent takes a\n0\nrandomactiona ∼ π(·|s )basedonthecurrentstates ∈ S,theenvironmenttransitionstothenextstate\nt t t\ns ∼ p (·|s ,a )andprovidesrewardr = r (s ,a ) ∈ [0,1]totheagent.",
+      "size": 466,
+      "sentences": 4
+    },
+    {
+      "id": 30,
+      "content": "enttransitionstothenextstate\nt t t\ns ∼ p (·|s ,a )andprovidesrewardr = r (s ,a ) ∈ [0,1]totheagent. Thevalueofapplyingpolicy\nt+1 π′ t t t π′ t t\nπ toM canbecharacterizedbythefollowingvaluefunction:\nπ′\n∞\nVπ d = ef E\n(cid:104)(cid:88)\nγtr (s ,a )\n(cid:105)\n−λH (π). (1)\nλ,π′ π,p π′,ρ π′ t t π′\nt=0\nHere,E istheexpectationunderpolicyπ,transitionkernelp andinitialstatedistributionρ. γ ∈ (0,1)\nπ,p π′,ρ π′\nis the discount factor.",
+      "size": 425,
+      "sentences": 4
+    },
+    {
+      "id": 31,
+      "content": "licyπ,transitionkernelp andinitialstatedistributionρ. γ ∈ (0,1)\nπ,p π′,ρ π′\nis the discount factor. H (π) is a regularizer with coefficient λ ≥ 0 to ensure or accelerate algorithm\nπ′\nconvergence.",
+      "size": 195,
+      "sentences": 3
+    },
+    {
+      "id": 32,
+      "content": "or. H (π) is a regularizer with coefficient λ ≥ 0 to ensure or accelerate algorithm\nπ′\nconvergence. Existing works use the quadratic regularizers such as H (π)= 1∥d ∥2 (Mandal et al.,\nπ′ 2 π,p π′\n2023; Rank et al., 2024; Pollatos et al., 2025) and H (π)= 1∥Φ⊤d ∥2 (Mandal & Radanovic, 2024)\nπ′ 2 π,p π′\nwith a feature matrix Φ, where the occupancy measure d ∈ [0,1]|S||A| for any policy π and transition\nπ,p\nkernelpisdefinedasthefollowingdistributiononS ×A.",
+      "size": 457,
+      "sentences": 3
+    },
+    {
+      "id": 33,
+      "content": "∈ [0,1]|S||A| for any policy π and transition\nπ,p\nkernelpisdefinedasthefollowingdistributiononS ×A. ∞\nd (s,a) d = ef (1−γ) (cid:88) γtP {s = s,a = a}, (2)\nπ,p π,p,ρ t t\nt=0\ndef (cid:80)\nThenthestateoccupancymeasuredefinedasd (s) = d (s,a)satisfiesthefollowingwell-known\nπ,p a π,p\nBellmanequationforanystates′ ∈ S.\n(cid:88)\nd (s′)=(1−γ)ρ(s′)+γ d (s)π(a|s)p(s′|s,a).",
+      "size": 364,
+      "sentences": 2
+    },
+    {
+      "id": 34,
+      "content": "nown\nπ,p a π,p\nBellmanequationforanystates′ ∈ S.\n(cid:88)\nd (s′)=(1−γ)ρ(s′)+γ d (s)π(a|s)p(s′|s,a). (3)\nπ,p π,p\ns,a\n3\n===  4 ===\nThe goal of performative reinforcement learning is to find the performatively optimal (PO) policy π that\nmaximizestheperformativevaluefunctionVπ (withπ′ = π inEq. (1)),asdefinedbelow. λ,π\nDefinition 1 (Ultimate Goal: PO). For any ϵ ≥ 0, a policy π ∈ Π is defined as ϵ-performatively optimal\n(ϵ-PO)ifmax Vπ′ −Vπ ≤ ϵ. Specifically,wecalla0-POpolicyasaPOpolicy.",
+      "size": 487,
+      "sentences": 5
+    },
+    {
+      "id": 35,
+      "content": "ned as ϵ-performatively optimal\n(ϵ-PO)ifmax Vπ′ −Vπ ≤ ϵ. Specifically,wecalla0-POpolicyasaPOpolicy. π′∈Π λ,π′ λ,π\nConventionalreinforcementlearningcanbeseenasaspecialcaseofperformativereinforcementlearning\nwithfixedenvironmentaldynamics,namely,fixedtransitionkernelp ≡ pandfixedrewardfunctionr ≡ r.\nπ π\nHowever,thismayfailonapplicationswithpolicy-dependentenvironmentaldynamics,suchasrecommender\nsystemandautonomousdrivingasexplainedinSection1.",
+      "size": 444,
+      "sentences": 2
+    },
+    {
+      "id": 36,
+      "content": "y-dependentenvironmentaldynamics,suchasrecommender\nsystemandautonomousdrivingasexplainedinSection1. 2.2 ExistingRepeatedRetrainingMethodsforPerformativelyStable(PS)Policy\nAchievinganϵ-POpolicy(definedbyDefinition1)ischallenging,duetothepolicy-dependentenvironmental\ndynamicsp andr .",
+      "size": 282,
+      "sentences": 2
+    },
+    {
+      "id": 37,
+      "content": "-POpolicy(definedbyDefinition1)ischallenging,duetothepolicy-dependentenvironmental\ndynamicsp andr . Toalleviatethechallenge,alltheexistingworks(Mandaletal.,2023;Ranketal.,2024;\nπ π\nMandal&Radanovic,2024;Pollatosetal.,2025;Sahitajetal.,2025)aimataperformativelystable(PS)\npolicyπ definedasfollows,asanapproximationtoaPOpolicy. PS\nπ ∈ argmaxVπ . (4)\nPS λ,πPS\nπ∈Π\nInotherwords,aPSpolicyπ hastheoptimalvalueonthefixedenvironmentM . However,Mandal\nPS πPS\netal.(2023)showsthataPSpolicycanbesuboptimal.",
+      "size": 495,
+      "sentences": 6
+    },
+    {
+      "id": 38,
+      "content": "alvalueonthefixedenvironmentM . However,Mandal\nPS πPS\netal.(2023)showsthataPSpolicycanbesuboptimal. Nevertheless,wewillbrieflyintroducethesuboptimalrepeatedretrainingalgorithmsintheirworks,to\nlaterpartiallyinspireourmethodthatconvergestotheglobaloptimalPOpolicy. Alltheserepeatedretraining\nalgorithms share the fundamental idea that in each iteration t, the next policy π ≈argmax Vπ is\nt+1 π∈Π λ,πt\nobtainedbysolvingtheconventionalreinforcementlearningproblemunderfixeddynamicsp andr .",
+      "size": 485,
+      "sentences": 4
+    },
+    {
+      "id": 39,
+      "content": "t+1 π∈Π λ,πt\nobtainedbysolvingtheconventionalreinforcementlearningproblemunderfixeddynamicsp andr . This\nπt πt\nstrategyhighlyreliesonconventionalreinforcementlearningbutfailtomakefulluseofthepolicy-dependent\ndynamics,whichleadstothesuboptimalPSpolicy. Next,wewillproposeoursignificantlydifferentstrategies\ntoachievethedesiredPOpolicy.",
+      "size": 334,
+      "sentences": 3
+    },
+    {
+      "id": 40,
+      "content": "optimalPSpolicy. Next,wewillproposeoursignificantlydifferentstrategies\ntoachievethedesiredPOpolicy. 3 Entropy Regularized Performative Reinforcement Learning\nInthissection,weobtaincriticalpropertiesofanentropyregularizedperformativereinforcementlearning\nproblemforachievingthedesiredPOpolicy.",
+      "size": 292,
+      "sentences": 3
+    },
+    {
+      "id": 41,
+      "content": "rtiesofanentropyregularizedperformativereinforcementlearning\nproblemforachievingthedesiredPOpolicy. 3.1 NegativeEntropyRegularizer\nWeconsiderthefollowingnegativeentropyregularizerofthepolicyπ,whichiswidelyusedinreinforcement\nlearningtoencourageenvironmentexplorationandaccelerateconvergence(Mnihetal.,2016;Mankowitz\netal.,2019;Cenetal.,2022;Chen&Huang,2024). ∞\n(cid:104)(cid:88) (cid:105)\nH (π) = E γtlogπ(a |s ) .",
+      "size": 414,
+      "sentences": 3
+    },
+    {
+      "id": 42,
+      "content": "etal.,2019;Cenetal.,2022;Chen&Huang,2024). ∞\n(cid:104)(cid:88) (cid:105)\nH (π) = E γtlogπ(a |s ) . (5)\nπ′ π,p π′,ρ t t\nt=0\nIn addition, this negative entropy regularizer can be seen as a strongly convex function of the occupancy\nmeasure d (proved in Appendix D), which is critical to develop algorithms convergent to a PO (see\nπ,p π′\nTheorem 1 later) or PS policy (Mandal et al., 2023).",
+      "size": 386,
+      "sentences": 3
+    },
+    {
+      "id": 43,
+      "content": "elop algorithms convergent to a PO (see\nπ,p π′\nTheorem 1 later) or PS policy (Mandal et al., 2023). For optimization problem on a probability simplex\nvariable(policyπ oroccupancymeasured),negativeentropyregularizerismorenaturalandyieldsfaster\ntheoreticalconvergencethanthequadraticregularizersusedintheexistingperformativereinforcmentlearning\n4\n===  5 ===\nworks(Mandaletal.,2023;Ranketal.,2024;Pollatosetal.,2025)(seepages43-45of(Chen,2020)for\nexplanation).",
+      "size": 457,
+      "sentences": 2
+    },
+    {
+      "id": 44,
+      "content": "rks(Mandaletal.,2023;Ranketal.,2024;Pollatosetal.,2025)(seepages43-45of(Chen,2020)for\nexplanation). Therefore,wewillmainlyfocusonthefollowingentropy-regularizedvaluefunction,whichisobtained\nbysubstitutingthenegativeentropyregularizer(5)intothegeneralvaluefunction(1). ∞\nVπ d = ef E\n(cid:104)(cid:88)\nγt[r (s ,a )−λlogπ(a |s )]\n(cid:105)\n.",
+      "size": 338,
+      "sentences": 3
+    },
+    {
+      "id": 45,
+      "content": "othegeneralvaluefunction(1). ∞\nVπ d = ef E\n(cid:104)(cid:88)\nγt[r (s ,a )−λlogπ(a |s )]\n(cid:105)\n. (6)\nλ,π′ π,p π′,ρ π′ t t t t\nt=0\nSpecifically,wewillstudythecriticalpropertiesoftheentropy-regularizedvaluefunction(6)(Section4)to\ndevelopalgorithmthatconvergestoPO(Sections4.1-4.2). Thenwewillbrieflydiscussabouthowtoadjust\ntheseresultstotheexistingquadraticregularizers(AppendixM). Wemakethefollowingstandardassumptionstostudythepropertiesofthevaluefunction(6). Assumption1(Sensitivity).",
+      "size": 488,
+      "sentences": 6
+    },
+    {
+      "id": 46,
+      "content": "thefollowingstandardassumptionstostudythepropertiesofthevaluefunction(6). Assumption1(Sensitivity). Thereexistconstantsϵ ,ϵ > 0suchthatforanyπ,π′ ∈ Π,\np r\n∥p −p ∥≤ϵ ∥π′−π∥, ∥r −r ∥≤ϵ ∥π′−π∥ (7)\nπ′ π p π′ π r\nAssumption2(Smoothness). p andr areLipschitzsmoothwithmodulusS ,S > 0respectively,thatis,\nπ π p r\nforanyπ ∈ Π,s,s′ ∈ S,a ∈ A,wehave\n∥∇ p (s′|s,a)−∇ p (s′|s,a)∥ ≤S ∥π′−π∥, (8)\nπ π′ π π p\n∥∇ r (s,a)−∇ r (s,a)∥ ≤S ∥π′−π∥. (9)\nπ π′ π π r\nAssumption3.",
+      "size": 454,
+      "sentences": 5
+    },
+    {
+      "id": 47,
+      "content": "p (s′|s,a)∥ ≤S ∥π′−π∥, (8)\nπ π′ π π p\n∥∇ r (s,a)−∇ r (s,a)∥ ≤S ∥π′−π∥. (9)\nπ π′ π π r\nAssumption3. ThereexistsaconstantD > 0suchthatinf d (s) ≥ D.\nπ∈Π,p∈P,s∈S π,p\nAssumptions1-2ensurethattheenvironmentaldynamicsp andr adjustcontinuouslyandsmoothlyto\nπ π\npolicyπ,andthustheperformativevaluefunctionVπ isdifferentiablewithperformativepolicygradient\nλ,π\n∇ Vπ .",
+      "size": 357,
+      "sentences": 3
+    },
+    {
+      "id": 48,
+      "content": "cyπ,andthustheperformativevaluefunctionVπ isdifferentiablewithperformativepolicygradient\nλ,π\n∇ Vπ . SimilarversionsofAssumption1onenvironmentalsensitivityhavealsobeenusedforperformative\nπ λ,π\nreinforcementlearning(Mandaletal.,2023;Ranketal.,2024;Mandal&Radanovic,2024;Pollatosetal.,\n2025;Sahitajetal.,2025).",
+      "size": 307,
+      "sentences": 2
+    },
+    {
+      "id": 49,
+      "content": "rning(Mandaletal.,2023;Ranketal.,2024;Mandal&Radanovic,2024;Pollatosetal.,\n2025;Sahitajetal.,2025). Assumption3hasbeenused(Zhangetal.,2021;Sahitajetal.,2025)orimplied\nbystrongerassumptions(Weietal.,2021;Chenetal.,2022;Agarwaletal.,2021;Leonardosetal.,2022;\nWangetal.,2023;Chen&Huang,2024;Bhandari&Russo,2024)inconventionalreinforcementlearning\n(seeAppendixEfortheproof),whichguaranteesthateachstateisvisitedsufficientlyoften. 3.2 GradientDominance\nForthenonconvexpolicyoptimizationproblemmax Vπ inEq.",
+      "size": 500,
+      "sentences": 3
+    },
+    {
+      "id": 50,
+      "content": "isitedsufficientlyoften. 3.2 GradientDominance\nForthenonconvexpolicyoptimizationproblemmax Vπ inEq. (6)ontheconvexpolicyspaceΠ,itis\nπ∈Π λ,π\nnaturaltoconsideritsapproximatestationarysolutionasdefinedbelow. Definition2(StationaryPolicy). Foranyϵ ≥ 0,apolicyπ ∈ Πisϵ-stationaryifmax (cid:10) ∇ Vπ ,π˜−π (cid:11) ≤\nπ˜∈Π π λ,π\nϵ. Wecalla0-stationarypolicyasastationarypolicy.",
+      "size": 370,
+      "sentences": 5
+    },
+    {
+      "id": 51,
+      "content": "aryifmax (cid:10) ∇ Vπ ,π˜−π (cid:11) ≤\nπ˜∈Π π λ,π\nϵ. Wecalla0-stationarypolicyasastationarypolicy. NotethatforapolicytobethedesiredPO,itisnecessarytobestationary,whilethePSpolicytargeted\nbyexistingworksisneithernecessarynorsufficient. Furthermore,wewillshowthatstationarypolicycan\nalsobeasufficientconditionofthedesiredPOundermildconditions. Asapreliminarystep,weshowthe\nimportantgradientdominancepropertyoftheobjectivefunctionasfollows. Theorem 1 (Gradient Dominance).",
+      "size": 470,
+      "sentences": 5
+    },
+    {
+      "id": 52,
+      "content": "importantgradientdominancepropertyoftheobjectivefunctionasfollows. Theorem 1 (Gradient Dominance). Under Assumptions 1-3, the entropy regularized value function (6)\nsatisfiesthefollowinggradientdominancepropertyforanyπ ,π ∈ Π.",
+      "size": 226,
+      "sentences": 3
+    },
+    {
+      "id": 53,
+      "content": "ntropy regularized value function (6)\nsatisfiesthefollowinggradientdominancepropertyforanyπ ,π ∈ Π. 0 1\nVπ1 ≤Vπ0 +D−1max (cid:10) ∇ Vπ0 ,π−π (cid:11) − µ ∥π −π ∥2, (10)\nλ,π1 λ,π0 π∈Π π0 λ,π0 0 2 1 0\n5\n===  6 ===\nwhere\ndef Dλ 6γ|S|(1+λlog|A|)(cid:2) (cid:0)(cid:112) (cid:112) (cid:1) (cid:3)\nµ = − ϵ |A|+γϵ |S| +S (1−γ)\n1−γ D(1−γ)3 p p p\n(cid:112) (cid:112)\nS (1−γ)+4ϵ ( |A|+ϵ |S|)\nr r p\n− , (11)\nD2(1−γ)2\nThegradientdominancepropertyabovegeneralizesthatusedintheconventionalunregularizedreinforce-\nmentlearning(seeLemma4of(Agarwaletal.,2021)),whichimpliesthatstationarypolicyisclosetoaPO\npolicyasshowninthecorollarybelow.",
+      "size": 622,
+      "sentences": 2
+    },
+    {
+      "id": 54,
+      "content": "(Agarwaletal.,2021)),whichimpliesthatstationarypolicyisclosetoaPO\npolicyasshowninthecorollarybelow. Corollary1. UnderAssumptions1-3,anyDϵ-stationarypolicyisan(ϵ+|µ||S|)-POpolicy. Furthermore,\nthisisalsothedesiredϵ-POpolicyifµ ≥ 0. ThePOpolicyisuniqueifµ > 0. Remark: Corollary 1 implies that a Dϵ-stationary policy is always (ϵ+|µ||S|)-close to the desired PO\npolicy with |µ| proportional to the environmental sensitivity O(ϵ +ϵ +S +S ).",
+      "size": 437,
+      "sentences": 6
+    },
+    {
+      "id": 55,
+      "content": "ose to the desired PO\npolicy with |µ| proportional to the environmental sensitivity O(ϵ +ϵ +S +S ). Furthermore, since\np r p r\nµ = [O(1) − O(ϵ + S )]λ − O(ϵ + ϵ + S + S ) by Eq. (11), when O(ϵ + S ) < O(1) and the\np p p r p r p p\nregularizer strength dominates the environmental shift (λ ≥\nO(ϵp+ϵr+Sp+Sr)\n), we have µ ≥ 0 so that the\nO(1)−O(ϵp+Sp)\nDϵ-stationarypolicyisalsothedesiredϵ-POpolicy.",
+      "size": 394,
+      "sentences": 3
+    },
+    {
+      "id": 56,
+      "content": "ϵr+Sp+Sr)\n), we have µ ≥ 0 so that the\nO(1)−O(ϵp+Sp)\nDϵ-stationarypolicyisalsothedesiredϵ-POpolicy. Notethatsimilarregularizerdominanceconditionhas\nalsobeenusedtoguaranteeconvergencetoasuboptimalPSpolicy(Mandaletal.,2023;Ranketal.,2024;\nMandal&Radanovic,2024;Pollatosetal.,2025). IntuitionandNoveltyforProvingTheorem1: Definethefollowingmorerefinedvaluefunction\n∞\nJ (π,π′,p,r) d = ef E\n(cid:104)(cid:88)\nγt[r(s ,a )−λlogπ′(a |s )]\n(cid:12)\n(cid:12)s ∼ρ\n(cid:105)\n.",
+      "size": 464,
+      "sentences": 3
+    },
+    {
+      "id": 57,
+      "content": "(π,π′,p,r) d = ef E\n(cid:104)(cid:88)\nγt[r(s ,a )−λlogπ′(a |s )]\n(cid:12)\n(cid:12)s ∼ρ\n(cid:105)\n. (12)\nλ π,p t t t t (cid:12) 0\nt=0\nTo get the intuition, we will first prove the bound (10) in the special case with fixed p ≡ p and r ≡ r.\nπ π\nThenweallownon-constantp toinspecttheperturbationonthebound(10),andfinallyseetheeffectof\nπ\nnon-constantr onthebound(10). π\n(Step 1): For conventional reinforcement learning with fixed p ≡ p and r ≡ r, denote d =\nπ π α\nαd +(1−α)d (α ∈ [0,1]).",
+      "size": 483,
+      "sentences": 3
+    },
+    {
+      "id": 58,
+      "content": "ntional reinforcement learning with fixed p ≡ p and r ≡ r, denote d =\nπ π α\nαd +(1−α)d (α ∈ [0,1]). BasedontheBellmanequation(3),d = d istheoccupancymeasureof\nπ1,p π0,p α πα,p\nthepolicyπ (a|s) = dα(s,a) . Therefore,Vπα canberewrittenasJ (π ,π ,p,r) = (cid:80) d (s,a)[r(s,a)−\nα dα(s) λ,πα λ α α s,a α\nλlogπ (a|s)],whichhasthefollowingstrongconcavitylikepropertybyPinsker’sinequality.",
+      "size": 383,
+      "sentences": 3
+    },
+    {
+      "id": 59,
+      "content": "λ,πα λ α α s,a α\nλlogπ (a|s)],whichhasthefollowingstrongconcavitylikepropertybyPinsker’sinequality. α\nJ (π ,π ,p,r)−αJ (π ,π ,p,r)−(1−α)J (π ,π ,p,r)\nλ α α λ 1 1 λ 0 0\n1 (cid:88)(cid:2) (cid:3)\n= αd (s)KL[π (·|s)∥π (a|s)]+(1−α)d (s)KL[π (·|s)∥π (a|s)]\n1 1 α 0 0 α\n1−γ\ns\nDλα(1−α)\n≥ ∥π −π ∥2. (13)\n1 0\n2(1−γ)\n(Step2): Considerahardercasewithnon-constantp andconstantrewardr ≡ r. Similarly, denote\nπ π\nd = αd +(1−α)d andπ (a|s) =\ndα(s,a)\n.",
+      "size": 436,
+      "sentences": 3
+    },
+    {
+      "id": 60,
+      "content": "thnon-constantp andconstantrewardr ≡ r. Similarly, denote\nπ π\nd = αd +(1−α)d andπ (a|s) =\ndα(s,a)\n. Thenon-constantp bringsamajorchallengethat\nα π1,pπ1 π0,pπ0 α dα(s) π\nd = d requiredbyStep1abovenolongerholds. Tosolvethischallenge,weneedtoboundtheerror\nα πα,pπα\nterme (s) = d (s)−d (s)whichweprovetosatisfythefollowingnovelrecursion.",
+      "size": 333,
+      "sentences": 3
+    },
+    {
+      "id": 61,
+      "content": "eedtoboundtheerror\nα πα,pπα\nterme (s) = d (s)−d (s)whichweprovetosatisfythefollowingnovelrecursion. α πα,pα α\ne (s′) = γ (cid:88)(cid:2) e (s)π (a|s)p (s′|s,a)+h (s,a,s′) (cid:3) ,\nα α α πα α\ns,a\n6\n===  7 ===\nwhere h (s,a,s′) = d (s,a)p (s′|s,a) − αd (s,a)p (s′|s,a) − (1 − α)d (s,a)p (s′|s,a). Since\nα α πα 1 π1 0 π0\nd (s,a)p (s′|s,a) is a Lipschitz smooth function of α, we can upper bound |h (s,a,s′)| and substitute\nα πα α\nthisboundtotherecursionabove,whichyieldsthefollowingnovelerrorbound.",
+      "size": 495,
+      "sentences": 3
+    },
+    {
+      "id": 62,
+      "content": "s,a,s′)| and substitute\nα πα α\nthisboundtotherecursionabove,whichyieldsthefollowingnovelerrorbound. (cid:88)\n|e (s)| ≤\n3γ|S|α(1−α)\n∥π −π\n∥2(cid:2)\nϵ\n(cid:0)(cid:112)\n|A|+γϵ\n(cid:112)\n|S|\n(cid:1)\n+S (1−γ)\n(cid:3)\n,\nα D(1−γ)2 1 0 p p p\ns\nTheboundabovereflectstheeffectofnon-constantp ,whichperturbsthebound(13)into\nπ\nα(1−α)µ\nJ (π ,π ,p ,r)−αJ (π ,π ,p ,r)−(1−α)J (π ,π ,p ,r) ≥ 1 ∥π −π ∥2, (14)\nλ α α α λ 1 1 1 λ 0 0 0 1 0\n2\nwhere µ d = ef Dλ − 6γ|S|(1+λlog|A|)(cid:2) ϵ (cid:0)(cid:112) |A| + γϵ (cid:112) |S| (cid:1) + S (1 − γ) (cid:3) equals µ in Eq.",
+      "size": 552,
+      "sentences": 2
+    },
+    {
+      "id": 63,
+      "content": "og|A|)(cid:2) ϵ (cid:0)(cid:112) |A| + γϵ (cid:112) |S| (cid:1) + S (1 − γ) (cid:3) equals µ in Eq. (11) when\n1 1−γ D(1−γ)3 p p p\nϵ = S = 0.\nr r\n(Step 3): Now we consider performative reinforcement learning with non-constant p and r . The\nπ π\npolicy π and its occupancy measure d are the same as in Case II above. Then the function w(α) =\nα α\nαJ (π ,π ,p ,r )+(1−α)J (π ,π ,p ,r )canbeprovedµ ∥π −π ∥2-Lipschitzsmoothwithparameter\nλ 1 1 1 α λ 0 0 0 α 2 1 0\nµ = µ−µ ≥ 0. Usingr = r inEq.",
+      "size": 486,
+      "sentences": 5
+    },
+    {
+      "id": 64,
+      "content": "ovedµ ∥π −π ∥2-Lipschitzsmoothwithparameter\nλ 1 1 1 α λ 0 0 0 α 2 1 0\nµ = µ−µ ≥ 0. Usingr = r inEq. (14),weobtainthefollowingstrongconcavitylikepropertywith\n2 1 α\nµ = µ −µ . 1 2\nVπα −αVπ1 −(1−α)Vπ0\nλ,πα λ,π1 λ,π0\n=J (π ,π ,p ,r )−αJ (π ,π ,p ,r )−(1−α)J (π ,π ,p ,r )\nλ α α α α λ 1 1 1 1 λ 0 0 0 0\nα(1−α)µ α(1−α)µ\n≥ 1 ∥π −π ∥2+w(α)−αw(1)−(1−α)w(0) ≥ ∥π −π ∥2. 1 0 1 0\n2 2\nFinally,thedominanceproperty(10)followsfromtheinequalityaboveasα → +0.",
+      "size": 442,
+      "sentences": 5
+    },
+    {
+      "id": 65,
+      "content": "w(0) ≥ ∥π −π ∥2. 1 0 1 0\n2 2\nFinally,thedominanceproperty(10)followsfromtheinequalityaboveasα → +0. 3.3 PolicyLowerBoundandLipschitzProperties\nPolicy Lower Bound: Based on Section 3.2, we can focus on achieving an ϵ-stationary policy. A major\nchallengeistheunboundedperformativepolicygradient∇ Vπ onΠ. Specifically,wewillshowthatas\nπ λ,π\nπ(a|s) → 0foranystatesandactiona,∥∇ Vπ ∥ → +∞. Totacklethischallenge,weprovethefollowing\nπ λ,π\npolicylowerbound. Theorem2.",
+      "size": 460,
+      "sentences": 7
+    },
+    {
+      "id": 66,
+      "content": "ndactiona,∥∇ Vπ ∥ → +∞. Totacklethischallenge,weprovethefollowing\nπ λ,π\npolicylowerbound. Theorem2. IfAssumptions1and3hold,andp ,r aredifferentiablefunctionsofπ,thenthereexistsa\nπ π\nconstantπ > 0(seeitsvalueinEq. (95)inAppendixH)thefollowingpolicylowerboundholdsforany\nmin\nπ ∈ Π,s ∈ S,a ∈ A.",
+      "size": 291,
+      "sentences": 5
+    },
+    {
+      "id": 67,
+      "content": "> 0(seeitsvalueinEq. (95)inAppendixH)thefollowingpolicylowerboundholdsforany\nmin\nπ ∈ Π,s ∈ S,a ∈ A. (cid:104) 2|A| (cid:105)\nπ(a|s) ≥π exp − (1−γ)⟨∇ Vπ ,π′−π⟩ , (15)\nmin λ π λ,π\nHere,thepolicyπ′ isdefinedasfollowsdependingonπ:\n\nπ[a (s)|s], a = a (s)\n min max\n\nπ′(a|s) = π[a (s)|s], a = a (s) , (16)\nmax min\n\nπ(a|s), Otherwise\nwherea (s) ∈ argmax π(a|s)anda (s) ∈ argmin π(a|s).",
+      "size": 382,
+      "sentences": 3
+    },
+    {
+      "id": 68,
+      "content": ", a = a (s) , (16)\nmax min\n\nπ(a|s), Otherwise\nwherea (s) ∈ argmax π(a|s)anda (s) ∈ argmin π(a|s). max a min a\n7\n===  8 ===\nImplicationsofTheorem2: First,asπ(a|s) → 0,wehave⟨∇ Vπ ,π′−π⟩ → +∞,so∥∇ Vπ ∥ → +∞\nπ λ,π π λ,π\nas aforementioned. Second, any stationary policy π satisfies ⟨∇ Vπ ,π′ − π⟩ ≤ 0, so π(a|s) ≥ π . π λ,π min\ndef\nTherefore,wecansearchϵ-stationarypolicyontheconvexandcompactpolicysubspaceΠ = {π ∈ Π :\n∆\nπ(a|s) ≥ ∆}withlowerbound∆ ∈ (0,π ].",
+      "size": 455,
+      "sentences": 4
+    },
+    {
+      "id": 69,
+      "content": "tionarypolicyontheconvexandcompactpolicysubspaceΠ = {π ∈ Π :\n∆\nπ(a|s) ≥ ∆}withlowerbound∆ ∈ (0,π ]. min\nIntuitionandNoveltyforProvingTheorem2: Atfirst,considerconventionalreinforcementlearningwith\nfixedenvironmentaldynamicsp ≡ pandr ≡ r. Inthiscase,∇ Vπ hasanalyticalform(seeEq. (89)),so\nπ π π λ,π\nγ(1+λlog|A|)\nbydirectcomputationweobtainthefollowinginequalitywithconstantC = 1+ (seeEq.",
+      "size": 386,
+      "sentences": 3
+    },
+    {
+      "id": 70,
+      "content": "π π π λ,π\nγ(1+λlog|A|)\nbydirectcomputationweobtainthefollowinginequalitywithconstantC = 1+ (seeEq. (90)\n1−γ\nfordetail)\n⟨∇ J (π,π,p,r),π′−π⟩≥ 1 max (cid:110) (cid:0) π[a (s)|s]−π[a (s)|s] (cid:1) (cid:104) λlog π[a max (s)|s] −C (cid:105)(cid:111) . π λ max min\n1−γ s π[a min (s)|s]\nTo obtain a lower bound of π[a (s)|s], we simplify the inequality above by considering two cases,\nmin\nπ[a (s)|s] ≥ 1π[a (s)|s] ≥ 1 and π[a (s)|s] < 1π[a (s)|s].",
+      "size": 442,
+      "sentences": 3
+    },
+    {
+      "id": 71,
+      "content": "lity above by considering two cases,\nmin\nπ[a (s)|s] ≥ 1π[a (s)|s] ≥ 1 and π[a (s)|s] < 1π[a (s)|s]. In the second case, we replace\nmin 2 max 2|A| min 2 max\nπ[a (s)|s]andπ[a (s)|s]−π[a (s)|s]abovewiththeirlowerbounds 1 and 1 respectively. Then\nmax max min |A| 2|A|\ncombiningthetwocasesprovesthelowerbound(15)atthespecialcaseofϵ = ϵ = 0. Thenweextend\np r\nfromconventionalreinforcementlearningtoperformativereinforcementlearningwhichinvolvesagradient\nperturbationwithmagnitudeofatmostO(ϵ +ϵ )(seeEq.",
+      "size": 496,
+      "sentences": 4
+    },
+    {
+      "id": 72,
+      "content": "rmativereinforcementlearningwhichinvolvesagradient\nperturbationwithmagnitudeofatmostO(ϵ +ϵ )(seeEq. (93)fordetail)basedonthechainruleandleads\np r\ntothelowerbound(15)foranyϵ ,ϵ ≥ 0.\np r\nLipschitzProperties: Theorem2inspiresustofindanϵ-stationarypolicyinthepolicysubspaceΠ ,where\n∆\ntheperformativevaluefunctionVπ isLipschitzcontinuousandLipschitzsmoothasfollows. λ,π\nTheorem3. UnderAssumptions1-2,thereexistconstantsL ,ℓ > 0(seethevaluesinEqs.",
+      "size": 441,
+      "sentences": 4
+    },
+    {
+      "id": 73,
+      "content": "tzsmoothasfollows. λ,π\nTheorem3. UnderAssumptions1-2,thereexistconstantsL ,ℓ > 0(seethevaluesinEqs. (97)and(99)\nλ λ\ninAppendixI)suchthatthefollowingLipschitzpropretiesholdforany∆ > 0andπ,π′ ∈ Π . ∆\nL ℓ\n|Vπ′ −Vπ | ≤ λ ∥π′−π∥, ∥∇ Vπ′ −∇ Vπ ∥ ≤ λ ∥π′−π∥. (17)\nλ,π′ λ,π ∆ π′ λ,π′ π λ,π ∆\n4 Zeroth-Order Frank-Wolfe (0-FW) Algorithm\n4.1 PerformativePolicyGradientEstimation\nInSection3,wehaveobtainedimportantpropertiesoftheentropyregularizedperformativevaluefunction\nVπ (definedbyEq.",
+      "size": 478,
+      "sentences": 6
+    },
+    {
+      "id": 74,
+      "content": ",wehaveobtainedimportantpropertiesoftheentropyregularizedperformativevaluefunction\nVπ (definedbyEq. (6)),whichindicatesthatitsufficestofindanϵ-stationarypolicyinthesubspaceΠ\nλ,π ∆\nfor∆ ∈ (0,π ]. Toachievethisgoal,anaccurateestimationoftheperformativepolicygradient∇ Vπ\nmin π λ,π\nis important but also challenging, since the performative policy gradient involves the unknown gradients\n∇ p (s′|s,a)and∇ r (s,a).",
+      "size": 409,
+      "sentences": 3
+    },
+    {
+      "id": 75,
+      "content": "ng, since the performative policy gradient involves the unknown gradients\n∇ p (s′|s,a)and∇ r (s,a). π π π π\nDespite these challenges in estimating ∇ Vπ , note that Vπ for any policy π can be evaluated by\nπ λ,π λ,π\npolicyevaluationinconventionalreinforcementlearningunderfixedenvironmentp andr (forfixedπ).",
+      "size": 305,
+      "sentences": 2
+    },
+    {
+      "id": 76,
+      "content": "λ,π λ,π\npolicyevaluationinconventionalreinforcementlearningunderfixedenvironmentp andr (forfixedπ). π π\nFurthermore,foranyϵ > 0andη ∈ (0,1),manyexistingpolicyevaluationalgorithmssuchastemporal\nV\ndifference(Bhandarietal.,2018;Lietal.,2023;Samsonovetal.,2023),canobtainVˆπ ≈ Vπ withsmall\nλ,π λ,π\nerrorbound|Vˆπ −Vπ | ≤ ϵ withprobabilityatleast1−η. λ,π λ,π V\nAs a result, we will consider a zeroth-order estimation of ∇ Vπ using policy evaluation.",
+      "size": 444,
+      "sentences": 3
+    },
+    {
+      "id": 77,
+      "content": "λ,π λ,π V\nAs a result, we will consider a zeroth-order estimation of ∇ Vπ using policy evaluation. However,\nπ λ,π\nthishasanotherchallengethatVπ isonlywell-definedonπ ∈ Π,sowecannotdirectlyapplytheexisting\nλ,π\nzeroth-orderestimationmethods(Agarwaletal.,2010;Shamir,2017;Maliketal.,2020)whichrequirethe\nobjectivefunctiontobewell-definedonasphere. Fortunately,foranyπ,π′ ∈ Π,thepolicydifferenceπ′−π\nliesinthefollowinglinearsubspaceofdimensionality|S|(|A|−1).",
+      "size": 455,
+      "sentences": 3
+    },
+    {
+      "id": 78,
+      "content": ",foranyπ,π′ ∈ Π,thepolicydifferenceπ′−π\nliesinthefollowinglinearsubspaceofdimensionality|S|(|A|−1). L d = ef (cid:110) u ∈ R|S||A|: (cid:88) u(a|s)=0,∀s ∈ S (cid:111) . (18)\n0\na\n8\n===  9 ===\nTherefore,inspiredbythepopulartwo-pointzeroth-orderestimations,weestimate∇ Vπ asfollows. π λ,π\nN\ngˆ (π)= |S|(|A|−1) (cid:88)(cid:0) Vˆπ+δui −Vˆπ−δui (cid:1) u , (19)\nλ,δ 2Nδ λ,π+δui λ,π−δui i\ni=1\nwhere{u }N arei.i.d. samplesuniformlyfromU ∩L withU d = ef {u ∈ R|S||A|: ∥u∥=1}.",
+      "size": 467,
+      "sentences": 5
+    },
+    {
+      "id": 79,
+      "content": "+δui λ,π−δui i\ni=1\nwhere{u }N arei.i.d. samplesuniformlyfromU ∩L withU d = ef {u ∈ R|S||A|: ∥u∥=1}. Ourestimation\ni i=1 1 0 1\n(19)aboveismoretrickythantheexistingtwo-pointzeroth-orderestimations(Agarwaletal.,2010;Shamir,\n2017;Maliketal.,2020)whereu isuniformlydistributedonU .",
+      "size": 276,
+      "sentences": 3
+    },
+    {
+      "id": 80,
+      "content": "-orderestimations(Agarwaletal.,2010;Shamir,\n2017;Maliketal.,2020)whereu isuniformlydistributedonU . Toelaborate,wereplacetheirU with\ni 1 1\nU ∩L , a unit sphere on the linear subspace L , and further require π ∈ Π and δ < ∆, to guarantee\n1 0 0 ∆\nthatπ+δu ,π−δu ∈ Πforanyu ∈ U ∩L andthusthegradientestimation(19)iswell-defined(see\ni i i 1 0\nAppendixJfortheproof). Moreover,weusethefollowingthreestepstoobtainu uniformlyfromU ∩L :\ni 1 0\n(1)Obtainv uniformlyfromU ;(2)Projectv ontoL asEq.",
+      "size": 484,
+      "sentences": 3
+    },
+    {
+      "id": 81,
+      "content": "ingthreestepstoobtainu uniformlyfromU ∩L :\ni 1 0\n(1)Obtainv uniformlyfromU ;(2)Projectv ontoL asEq. (20)below;(3)Normalizethisprojectionby\ni 1 i 0\nu = proj (v )/∥proj (v )∥. i L0 i L0 i\n1 (cid:88)\nproj (v )(a|s) = v (a|s)− v (a′|s). (20)\nL0 i i |A| i\na′\nThegradientestimation(19)hasthefollowingprovableerrorbound. Proposition1.",
+      "size": 327,
+      "sentences": 5
+    },
+    {
+      "id": 82,
+      "content": "|s). (20)\nL0 i i |A| i\na′\nThegradientestimation(19)hasthefollowingprovableerrorbound. Proposition1. Forany∆ > δ > 0,η ∈ (0,1)andπ ∈ Π ,thestochasticgradient(19)iswell-defined(i.e.,\n∆\nπ+δu andπ−δu thereinarevalidpoliciesdefinedbyΠ)andapproximatestheprojectedperformative\ni i\npolicy gradient proj (∇ Vπ ) with the following error bound (see its full expression in Eq. (109) in\nL0 π λ,π\nAppendixJ),withprobabilityatleast1−η. ∥gˆ (π)−proj (∇ Vπ )∥ ≤ O (cid:0)ϵ V + log √ (N/η) +δ (cid:1) .",
+      "size": 485,
+      "sentences": 6
+    },
+    {
+      "id": 83,
+      "content": "pendixJ),withprobabilityatleast1−η. ∥gˆ (π)−proj (∇ Vπ )∥ ≤ O (cid:0)ϵ V + log √ (N/η) +δ (cid:1) . (21)\nλ,δ L0 π λ,π δ N\nRemark: Proposition1aboveaimstoapproximateproj (∇ Vπ )insteadof∇ Vπ . Thisissufficientto\nL0 π λ,π π λ,π\nfindanϵ-stationarypolicy,becauseforanypoliciesπ,π′,thestationaritymeasureonlyinvolves⟨∇ Vπ ,π′−\nπ λ,π\nπ⟩=⟨proj (∇ Vπ ),π′−π⟩asπ′−π ∈ L . Therefore,weonlycareaboutproj (∇ Vπ ).",
+      "size": 401,
+      "sentences": 5
+    },
+    {
+      "id": 84,
+      "content": "yinvolves⟨∇ Vπ ,π′−\nπ λ,π\nπ⟩=⟨proj (∇ Vπ ),π′−π⟩asπ′−π ∈ L . Therefore,weonlycareaboutproj (∇ Vπ ). Theestimation\nL0 π λ,π 0 L0 π λ,π\nerror(21)abovecanbearbitrarilysmallwithsufficientlylargebatchsizeN (toreducethevariance),smallδ\n(toreducethebias),andpolicyevaluationerrorϵ ≪ δ.\nV\nIntuitionandNoveltyforProvingProposition1: Unlikeexistingzeroth-orderestimationsonthewhole\nEuclidean space, our estimation (19) is made on the policy space Π, which lies in the linear manifold\nL +|A|−1 ⊂ R|S||A|.",
+      "size": 493,
+      "sentences": 3
+    },
+    {
+      "id": 85,
+      "content": "stimation (19) is made on the policy space Π, which lies in the linear manifold\nL +|A|−1 ⊂ R|S||A|. ThekeytoourproofistofindanorthogonaltransformationT : R|S|(|A|−1) → L ,so\n0 0\nthatthegoalissimplifiedtoanalyzethegradientestimationoff (x) d = ef V T(x)+|A|−1 onanyx ∈ R|S|(|A|−1). λ λ,T(x)+|A|−1\n4.2 Zeroth-OrderFrank-Wolfe(0-FW)Algorithm\nWiththeestimatedgradientgˆ (π )definedbyEq. (19),weconsiderthefollowingFrank-Wolfealgorithm\nλ,δ t\ntofindanϵ-stationarypolicy.",
+      "size": 464,
+      "sentences": 4
+    },
+    {
+      "id": 86,
+      "content": "(π )definedbyEq. (19),weconsiderthefollowingFrank-Wolfealgorithm\nλ,δ t\ntofindanϵ-stationarypolicy. π˜ =argmax ⟨π,gˆ (π )⟩, (22)\nt π∈Π∆ λ,δ t\nπ =π +β(π˜ −π ). (23)\nt+1 t t t\nLemma1. Thestep(22)hastheanalyticalsolutionbelow. (cid:40)\n∆;a ̸= a˜ (s)\nt\nπ˜ (a|s) = , (24)\nt\n1−∆(|A|−1);a = a˜ (s)\nt\nwherea˜ (s) ∈ argmax gˆ (π )(a|s). t a λ,δ t\n9\n===  10 ===\nSeetheproofofLemma1inSectionC.1.",
+      "size": 383,
+      "sentences": 7
+    },
+    {
+      "id": 87,
+      "content": "˜ (s)\nt\nwherea˜ (s) ∈ argmax gˆ (π )(a|s). t a λ,δ t\n9\n===  10 ===\nSeetheproofofLemma1inSectionC.1. Thencombiningtheperformativepolicygradientestimation\n(seeSection3.1)withtheFrank-Wolfealgorithm,weproposeourzeroth-orderFrank-Wolfe(0-FW)algorithm\n(see Algorithm 1). We obtain the following convergence result of Algorithm 1 in Theorem 4, the main\ntheoreticalresultofthiswork,asfollows. Theorem4. SupposeAssumptions1-3hold.",
+      "size": 422,
+      "sentences": 6
+    },
+    {
+      "id": 88,
+      "content": "in Theorem 4, the main\ntheoreticalresultofthiswork,asfollows. Theorem4. SupposeAssumptions1-3hold. Foranyη ∈ (0,1)andprecision0 < ϵ≤ min (cid:2) 24 (cid:112) 2|S|ℓ λ,\nD\n2λ , 288L λ |S|1.5|A|(cid:3) ,selectthefollowinghyperparametersforAlgorithm1: ∆ = πmin,β = Dπminϵ,\n5|A|D2(1−γ) Dπmin 3 36ℓ\nλ\n|S|\nδ = O(ϵ), ϵ = O(ϵ2), N = O[ϵ−2log(η−1ϵ−1)], and the number of iterations T = O(ϵ−2) (see Eqs. V\n(115)-(120)inAppendixLfordetailedexpressionofthesehyperparameters).",
+      "size": 461,
+      "sentences": 5
+    },
+    {
+      "id": 89,
+      "content": "erations T = O(ϵ−2) (see Eqs. V\n(115)-(120)inAppendixLfordetailedexpressionofthesehyperparameters). Thenwithprobabilityatleast\n1−η,theoutputpolicyπ˜ ofAlgorithm1isaDϵ-stationarypolicy. Furthermore,ifµ ≥ 0,π˜ isalsoan\nT˜ T˜\nϵ-POpolicy. Thetotalnumberofpolicyevaluationsis2NT = O[ϵ−4log(η−1ϵ−1)].",
+      "size": 294,
+      "sentences": 5
+    },
+    {
+      "id": 90,
+      "content": "e,ifµ ≥ 0,π˜ isalsoan\nT˜ T˜\nϵ-POpolicy. Thetotalnumberofpolicyevaluationsis2NT = O[ϵ−4log(η−1ϵ−1)]. Comparison with Existing Works:\nTheorem4indicatesthatour0-FWal-\nAlgorithm1Zeroth-orderFrank-Wolfe(0-FW)Algorithm\ngorithmforthefirsttimeconvergesto\nthe desire PO policy with arbitrarily 1: Inputs: T,N,∆ > δ > 0,ϵ V ≥ 0,β > 0.\nsmallprecisionϵinpolynomialcompu- 2: Initialize: policyπ 0 ∈ Π ∆ . 3: forIterationst = 0,1,...,T −1do\ntationcomplexity,undertheregularizer\ndominance condition that µ ≥ 0.",
+      "size": 495,
+      "sentences": 4
+    },
+    {
+      "id": 91,
+      "content": "orIterationst = 0,1,...,T −1do\ntationcomplexity,undertheregularizer\ndominance condition that µ ≥ 0. In 4: Obtaini.i.d. vectors{v i }N i=1 uniformlyfromtheunitsphere\ncontrast,existingworksonlyconverge U 1 d = ef {u∈R|S||A|: ∥u∥=1}. toasuboptimalPSpolicyunderasim- 5: Obtain{proj L0 (v i )}N i=1 fromEq. (20). ilar regularizer dominance condition 6: Obtain{u i }N i=1 whereu i = proj L0 (v i )/∥proj L0 (v i )∥.",
+      "size": 409,
+      "sentences": 6
+    },
+    {
+      "id": 92,
+      "content": "ar regularizer dominance condition 6: Obtain{u i }N i=1 whereu i = proj L0 (v i )/∥proj L0 (v i )∥. (Mandaletal.,2023;Ranketal.,2024; 7: ObtainstochasticpolicyevaluationVˆπ ≈ Vπ whichsatis-\nλ,π λ,π\nMandal & Radanovic, 2024; Pollatos fies|Vˆπ −Vπ | ≤ ϵ forπ ∈ {π ±δu }N . λ,π λ,π V t i i=1\net al., 2025). Our preferable conver- 8: Obtain stochastic performative policy gradient estimation\ngenceresultisduetothemainalgorith- gˆ (π )usingEq. (19).",
+      "size": 444,
+      "sentences": 5
+    },
+    {
+      "id": 93,
+      "content": "ic performative policy gradient estimation\ngenceresultisduetothemainalgorith- gˆ (π )usingEq. (19). λ,δ t\nmicdifferencethatexistingworksuse 9: Obtainπ˜ t byEq. (24). repeatedretrainingalgorithmswithit- 10: Updateπ t+1 byEq. (23). erationπ t+1 ≈argmax π∈Π V λ π , t π where 11: endfor\nthepolicyπ isdeployedinafixedenvi- 12: Output: π T(cid:101) whereT(cid:101)∈argmin 0≤t≤T−1 ⟨gˆ λ,δ (π t ),π˜ t −π t ⟩.",
+      "size": 402,
+      "sentences": 7
+    },
+    {
+      "id": 94,
+      "content": "edinafixedenvi- 12: Output: π T(cid:101) whereT(cid:101)∈argmin 0≤t≤T−1 ⟨gˆ λ,δ (π t ),π˜ t −π t ⟩. ronment M with π ̸= π , while our\nπt t\n0-FWalgorithmevaluatesVπ whereπ isalwaysdeployedatitscorrespondingenvironmentM . λ,π π\nIntuitionandNoveltyforProvingTheorem4: StandardconvergenceanalysisofFrank-Wolfealgorithm\nyieldsthatmax ⟨∇ V π T˜ ,π˜ −π ⟩ ≤ Dϵ onΠ . However,itrequiresatricktoprovethefollowing\nπ˜∈Π∆ π λ,π T˜ T˜ 2 ∆\nProposition2whichimpliesthatπ isDϵ-stationaryonΠ. T˜\nProposition 2.",
+      "size": 492,
+      "sentences": 5
+    },
+    {
+      "id": 95,
+      "content": "following\nπ˜∈Π∆ π λ,π T˜ T˜ 2 ∆\nProposition2whichimpliesthatπ isDϵ-stationaryonΠ. T˜\nProposition 2. If ∆ ≤ π /3 and a policy π satisfies max ⟨∇ Vπ ,π˜ −π⟩ ≤ Dλ , then the\nmin π˜∈Π∆ π λ,π 5|A|(1−γ)\nstationarymeasuresonΠ andΠboundeachotherasfollows. ∆\nmax⟨∇ Vπ ,π˜ −π⟩ ≤2 max⟨∇ Vπ ,π˜ −π⟩ (25)\nπ λ,π π λ,π\nπ˜∈Π π˜∈Π∆\nTo prove Proposition 2, note that π′ defined by Eq. (16) also belongs to Π , so Theorem 2 implies\n∆\nπ(a|s) ≥ 2∆.",
+      "size": 427,
+      "sentences": 5
+    },
+    {
+      "id": 96,
+      "content": "osition 2, note that π′ defined by Eq. (16) also belongs to Π , so Theorem 2 implies\n∆\nπ(a|s) ≥ 2∆. Thenforanyπ ∈ Π,wehave π2+π ∈ Π andthus\n2 2 ∆\n(cid:68) π +π (cid:69)\nmax⟨∇ Vπ ,π −π⟩ = 2max ∇ Vπ , 2 −π ≤ 2 max⟨∇ Vπ ,π˜ −π⟩. π2∈Π π λ,π 2 π2∈Π π λ,π 2 π˜∈Π∆ π λ,π\n5 Experiments\nWecompareourAlgorithm1withtheexistingrepeatedretrainingalgorithminasimulationenvironment. SeeAppendixBfortheimplementationdetails.",
+      "size": 408,
+      "sentences": 5
+    },
+    {
+      "id": 97,
+      "content": "istingrepeatedretrainingalgorithminasimulationenvironment. SeeAppendixBfortheimplementationdetails. Thenforthepoliciesπ obtainedbyeachalgorithm,weplot\nt\n10\n===  11 ===\nthetrainingcurvesoftheperformativevaluefunctionVπt (λ = 0.5)andtheunregularizedperformative\nvaluefunctionVπt inFigure1inAppendixB,whichsh λ o ,π w t thatourAlgorithm1convergesbetterthanthe\n0,πt\nexistingrepeatedretrainingalgorithmonbothregularizedandunregularizedperformativevaluefunctions.",
+      "size": 457,
+      "sentences": 3
+    },
+    {
+      "id": 98,
+      "content": ",πt\nexistingrepeatedretrainingalgorithmonbothregularizedandunregularizedperformativevaluefunctions. 6 Conclusion\nWehavestudiedanentropy-regularizedperformativereinforcementlearningproblem,obtaineditsimportant\npropertiesincludinggradientdominance,policylowerbound,Lipschitzcontinuityandsmoothness.",
+      "size": 296,
+      "sentences": 2
+    },
+    {
+      "id": 99,
+      "content": "tsimportant\npropertiesincludinggradientdominance,policylowerbound,Lipschitzcontinuityandsmoothness. Basedon\ntheseproperties,wehaveproposedazeroth-orderFrank-Wolfe(0-FW)algorithmonlyusingsample-based\npolicyevaluation,whichforthefirsttimeconvergestoaperformativelyoptimal(PO)policywithpolynomial\nnumber of policy evaluations under the regularizer dominance condition.",
+      "size": 365,
+      "sentences": 2
+    },
+    {
+      "id": 100,
+      "content": "mal(PO)policywithpolynomial\nnumber of policy evaluations under the regularizer dominance condition. These theoretical results also\nholdsforthequadraticeregularizersusedintheexistingworksonperformativereinforcementlearning(see\nAppendixMfordiscussion). References\nAlekhAgarwal,OferDekel,andLinXiao. Optimalalgorithmsforonlineconvexoptimizationwithmulti-\npointbanditfeedback. InColt,pp.28–40.Citeseer,2010. Alekh Agarwal, Sham M Kakade, Jason D Lee, and Gaurav Mahajan.",
+      "size": 466,
+      "sentences": 6
+    },
+    {
+      "id": 101,
+      "content": "back. InColt,pp.28–40.Citeseer,2010. Alekh Agarwal, Sham M Kakade, Jason D Lee, and Gaurav Mahajan. On the theory of policy gradient\nmethods: Optimality,approximation,anddistributionshift. TheJournalofMachineLearningResearch,\n22(1):4431–4506,2021. Yuntao Bai, Andy Jones, Kamal Ndousse, Amanda Askell, Anna Chen, Nova DasSarma, Dawn Drain,\nStanislav Fort, Deep Ganguli, Tom Henighan, et al. Training a helpful and harmless assistant with\nreinforcementlearningfromhumanfeedback. ArXiv:2204.05862,2022.",
+      "size": 500,
+      "sentences": 8
+    },
+    {
+      "id": 102,
+      "content": "helpful and harmless assistant with\nreinforcementlearningfromhumanfeedback. ArXiv:2204.05862,2022. Jalaj Bhandari and Daniel Russo. Global optimality guarantees for policy gradient methods. Operations\nResearch,2024. Jalaj Bhandari, Daniel Russo, and Raghav Singal. A finite time analysis of temporal difference learning\nwith linear function approximation. In Proceedings of the Conference on learning theory (COLT), pp. 1691–1692,2018. GavinBrown,ShlomiHod,andIdenKalemaj.",
+      "size": 472,
+      "sentences": 10
+    },
+    {
+      "id": 103,
+      "content": "the Conference on learning theory (COLT), pp. 1691–1692,2018. GavinBrown,ShlomiHod,andIdenKalemaj. Performativepredictioninastatefulworld. InInternational\nconferenceonartificialintelligenceandstatistics,pp.6045–6061,2022. NoamBrownandTuomasSandholm. Superhumanaiformultiplayerpoker. Science,365(6456):885–890,\n2019. Shicong Cen, Chen Cheng, Yuxin Chen, Yuting Wei, and Yuejie Chi. Fast global convergence of natural\npolicygradientmethodswithentropyregularization.",
+      "size": 463,
+      "sentences": 10
+    },
+    {
+      "id": 104,
+      "content": "and Yuejie Chi. Fast global convergence of natural\npolicygradientmethodswithentropyregularization. OperationsResearch,70(4):2563–2578,2022. Allison JB Chaney, Brandon M Stewart, and Barbara E Engelhardt. How algorithmic confounding in\nrecommendationsystemsincreaseshomogeneityanddecreasesutility. InProceedingsofthe12thACM\nconferenceonrecommendersystems,pp.224–232,2018. YuxinChen. Mirrordescent. https://yuxinchen2020.github.io/ele522_optimization/\nlectures/mirror_descent.pdf,2020.",
+      "size": 483,
+      "sentences": 9
+    },
+    {
+      "id": 105,
+      "content": "rrordescent. https://yuxinchen2020.github.io/ele522_optimization/\nlectures/mirror_descent.pdf,2020. 11\n===  12 ===\nZiyiChenandHengHuang. Acceleratedpolicygradientfors-rectangularrobustmdpswithlargestatespaces. InProceedingsoftheInternationalConferenceonMachineLearning(ICML),2024. Ziyi Chen, Shaocong Ma, and Yi Zhou. Sample efficient stochastic policy extragradient algorithm for\nzero-sum markov game. In Proceedings of the International Conference on Learning Representations\n(ICLR),2022.",
+      "size": 490,
+      "sentences": 8
+    },
+    {
+      "id": 106,
+      "content": "arkov game. In Proceedings of the International Conference on Learning Representations\n(ICLR),2022. WangChiCheung,DavidSimchi-Levi,andRuihaoZhu. Reinforcementlearningfornon-stationarymarkov\ndecisionprocesses: Theblessingof(more)optimism. InInternationalconferenceonmachinelearning,pp. 1843–1854,2020. OferDekelandEladHazan. Betterratesforanyadversarialdeterministicmdp. InInternationalConference\nonMachineLearning,pp.675–683,2013.",
+      "size": 430,
+      "sentences": 9
+    },
+    {
+      "id": 107,
+      "content": "atesforanyadversarialdeterministicmdp. InInternationalConference\nonMachineLearning,pp.675–683,2013. OmarDarwicheDomingues,PierreMénard,MatteoPirotta,EmilieKaufmann,andMichalValko. Akernel-\nbasedapproachtonon-stationaryreinforcementlearninginmetricspaces. InInternationalConferenceon\nArtificialIntelligenceandStatistics,pp.3538–3546,2021.",
+      "size": 337,
+      "sentences": 5
+    },
+    {
+      "id": 108,
+      "content": "ginmetricspaces. InInternationalConferenceon\nArtificialIntelligenceandStatistics,pp.3538–3546,2021. EyalEven-DarandYishayMansour.Expertsinamarkovdecisionprocess.InProceedingsoftheInternational\nConferenceonNeuralInformationProcessingSystems(Neurips),volume17,pp.401.MITPress,2004. Yingjie Fei, Zhuoran Yang, Zhaoran Wang, and Qiaomin Xie. Dynamic regret of policy optimization in\nnon-stationary environments.",
+      "size": 407,
+      "sentences": 5
+    },
+    {
+      "id": 109,
+      "content": "haoran Wang, and Qiaomin Xie. Dynamic regret of policy optimization in\nnon-stationary environments. In Proceedings of the International Conference on Neural Information\nProcessingSystems(Neurips),pp.6743–6754,2020. AbrahamDFlaxman,AdamTaumanKalai,andHBrendanMcMahan. Onlineconvexoptimizationinthe\nbanditsetting: gradientdescentwithoutagradient. InProceedingsofthesixteenthannualACM-SIAM\nsymposiumonDiscretealgorithms,pp.385–394,2005. PratikGajane,RonaldOrtner,andPeterAuer.",
+      "size": 473,
+      "sentences": 7
+    },
+    {
+      "id": 110,
+      "content": "nualACM-SIAM\nsymposiumonDiscretealgorithms,pp.385–394,2005. PratikGajane,RonaldOrtner,andPeterAuer. Asliding-windowalgorithmformarkovdecisionprocesses\nwitharbitrarilychangingrewardsandtransitions. ArXiv:1805.10066,2018. LIU Haitong, LI Qiang, and Hoi To Wai. Two-timescale derivative free optimization for performative\npredictionwithmarkoviandata. InProceedingsoftheInternationalConferenceonMachineLearning\n(ICML),2024. MoritzHardtandCelestineMendler-Dünner. Performativeprediction: Pastandfuture.",
+      "size": 497,
+      "sentences": 9
+    },
+    {
+      "id": 111,
+      "content": "Learning\n(ICML),2024. MoritzHardtandCelestineMendler-Dünner. Performativeprediction: Pastandfuture. ArXiv:2310.16608,\n2023. AlexanderHavrilla,YuqingDu,SharathChandraRaparthy,ChristoforosNalmpantis,JaneDwivedi-Yu,Eric\nHambro,SainbayarSukhbaatar,andRobertaRaileanu. Teachinglargelanguagemodelstoreasonwith\nreinforcementlearning. InAIforMathWorkshop@ICML2024,2024. Zachary Izzo, Lexing Ying, and James Zou. How to learn when data reacts to your model: performative\ngradientdescent.",
+      "size": 478,
+      "sentences": 9
+    },
+    {
+      "id": 112,
+      "content": "ing Ying, and James Zou. How to learn when data reacts to your model: performative\ngradientdescent. InInternationalConferenceonMachineLearning,pp.4641–4650,2021. Stefanos Leonardos, Will Overman, Ioannis Panageas, and Georgios Piliouras. Global convergence of\nmulti-agent policy gradient in markov potential games. In ICLR 2022 Workshop on Gamification and\nMultiagentSolutions,2022. GenLi,WeichenWu,YuejieChi,CongMa,AlessandroRinaldo,andYutingWei.",
+      "size": 447,
+      "sentences": 7
+    },
+    {
+      "id": 113,
+      "content": "tion and\nMultiagentSolutions,2022. GenLi,WeichenWu,YuejieChi,CongMa,AlessandroRinaldo,andYutingWei. Sharphigh-probability\nsamplecomplexitiesforpolicyevaluationwithlinearfunctionapproximation. ArXiv:2305.19001,2023. 12\n===  13 ===\nQiang Li and Hoi-To Wai. State dependent performative prediction with stochastic approximation. In\nInternationalConferenceonArtificialIntelligenceandStatistics,pp.3164–3186,2022. DhruvMalik,AshwinPananjady,KushBhatia,KoulikKhamaru,PeterLBartlett,andMartinJWainwright.",
+      "size": 497,
+      "sentences": 8
+    },
+    {
+      "id": 114,
+      "content": "3186,2022. DhruvMalik,AshwinPananjady,KushBhatia,KoulikKhamaru,PeterLBartlett,andMartinJWainwright. Derivative-free methods for policy optimization: Guarantees for linear quadratic systems. Journal of\nMachineLearningResearch,21(21):1–51,2020. DebmalyaMandalandGoranRadanovic. Performativereinforcementlearningwithlinearmarkovdecision\nprocess. ArXiv:2411.05234,2024. DebmalyaMandal,SteliosTriantafyllou,andGoranRadanovic. Performativereinforcementlearning.",
+      "size": 455,
+      "sentences": 9
+    },
+    {
+      "id": 115,
+      "content": "234,2024. DebmalyaMandal,SteliosTriantafyllou,andGoranRadanovic. Performativereinforcementlearning. In\nProceedingsoftheInternationalConferenceonMachineLearning(ICML),pp.23642–23680,2023. Daniel J Mankowitz, Nir Levine, Rae Jeong, Abbas Abdolmaleki, Jost Tobias Springenberg, Yuanyuan\nShi, Jackie Kay, Todd Hester, Timothy Mann, and Martin Riedmiller. Robust reinforcement learning\nforcontinuouscontrolwithmodelmisspecification.",
+      "size": 427,
+      "sentences": 6
+    },
+    {
+      "id": 116,
+      "content": "and Martin Riedmiller. Robust reinforcement learning\nforcontinuouscontrolwithmodelmisspecification. InProceedingsoftheInternationalConferenceon\nLearningRepresentations(ICLR),2019. MasoudMansoury,HimanAbdollahpouri,MykolaPechenizkiy,BamshadMobasher,andRobinBurke. Feed-\nbackloopandbiasamplificationinrecommendersystems. InProceedingsofthe29thACMinternational\nconferenceoninformation&knowledgemanagement,pp.2145–2148,2020. CelestineMendler-Dünner,JuanCPerdomo,TijanaZrnic,andMoritzHardt.",
+      "size": 485,
+      "sentences": 7
+    },
+    {
+      "id": 117,
+      "content": "ledgemanagement,pp.2145–2148,2020. CelestineMendler-Dünner,JuanCPerdomo,TijanaZrnic,andMoritzHardt. Stochasticoptimizationfor\nperformativeprediction. InProceedingsoftheInternationalConferenceonNeuralInformationProcessing\nSystems,pp.4929–4939,2020. JohnPMiller,JuanCPerdomo,andTijanaZrnic. Outsidetheechochamber: Optimizingtheperformative\nrisk. InInternationalConferenceonMachineLearning,pp.7710–7720,2021.",
+      "size": 405,
+      "sentences": 7
+    },
+    {
+      "id": 118,
+      "content": "mber: Optimizingtheperformative\nrisk. InInternationalConferenceonMachineLearning,pp.7710–7720,2021. VolodymyrMnih,AdriaPuigdomenechBadia,MehdiMirza,AlexGraves,TimothyLillicrap,TimHarley,\nDavid Silver, and Koray Kavukcuoglu. Asynchronous methods for deep reinforcement learning. In\nProceedingsoftheInternationalConferenceonMachineLearning(ICML),volume48,pp.1928–1937,\n2016. StefanosNikolaidis,SwapravaNath,ArielDProcaccia,andSiddharthaSrinivasa.",
+      "size": 444,
+      "sentences": 6
+    },
+    {
+      "id": 119,
+      "content": "olume48,pp.1928–1937,\n2016. StefanosNikolaidis,SwapravaNath,ArielDProcaccia,andSiddharthaSrinivasa. Game-theoreticmodeling\nofhumanadaptationinhuman-robotcollaboration. InProceedingsofthe2017ACM/IEEEinternational\nconferenceonhuman-robotinteraction,pp.323–331,2017. Juan Perdomo, Tijana Zrnic, Celestine Mendler-Dünner, and Moritz Hardt. Performative prediction. In\nInternationalConferenceonMachineLearning,pp.7599–7609,2020. Vasilis Pollatos, Debmalya Mandal, and Goran Radanovic.",
+      "size": 479,
+      "sentences": 8
+    },
+    {
+      "id": 120,
+      "content": "ferenceonMachineLearning,pp.7599–7609,2020. Vasilis Pollatos, Debmalya Mandal, and Goran Radanovic. On corruption-robustness in performative\nreinforcementlearning. InProceedingsoftheAAAIConferenceonArtificialIntelligence,volume39,pp. 19939–19947,2025. Ben Rank, Stelios Triantafyllou, Debmalya Mandal, and Goran Radanovic. Performative reinforcement\nlearningingraduallyshiftingenvironments.InThe40thConferenceonUncertaintyinArtificialIntelligence\n(UAI),2024.",
+      "size": 458,
+      "sentences": 7
+    },
+    {
+      "id": 121,
+      "content": "ngraduallyshiftingenvironments.InThe40thConferenceonUncertaintyinArtificialIntelligence\n(UAI),2024. MitasRay,LillianJRatliff,DmitriyDrusvyatskiy,andMaryamFazel. Decision-dependentriskminimization\ningeometricallydecayingdynamicenvironments. InProceedingsoftheAAAIConferenceonArtificial\nIntelligence,volume36,pp.8081–8088,2022. 13\n===  14 ===\nAvivRosenbergandYishayMansour. Onlineconvexoptimizationinadversarialmarkovdecisionprocesses.",
+      "size": 433,
+      "sentences": 6
+    },
+    {
+      "id": 122,
+      "content": "14 ===\nAvivRosenbergandYishayMansour. Onlineconvexoptimizationinadversarialmarkovdecisionprocesses. InInternationalConferenceonMachineLearning(ICML),pp.5478–5486,2019. Abhishek Roy, Krishnakumar Balasubramanian, and Saeed Ghadimi. Constrained stochastic nonconvex\noptimizationwithstate-dependentmarkovdata. InProceedingsofthe36thInternationalConferenceon\nNeuralInformationProcessingSystems,pp.23256–23270,2022. Rilind Sahitaj, Paulius Sasnauskas, Yig˘it Yalın, Debmalya Mandal, and Goran Radanovic´.",
+      "size": 499,
+      "sentences": 7
+    },
+    {
+      "id": 123,
+      "content": "3270,2022. Rilind Sahitaj, Paulius Sasnauskas, Yig˘it Yalın, Debmalya Mandal, and Goran Radanovic´. Independent\nlearninginperformativemarkovpotentialgames. ArXiv:2504.20593,2025. SergeySamsonov,DaniilTiapkin,AlexeyNaumov,andEricMoulines. Finite-sampleanalysisofthetemporal\ndifferencelearning. ArXiv:2310.14286,2023. OhadShamir. Anoptimalalgorithmforbanditandzero-orderconvexoptimizationwithtwo-pointfeedback. JournalofMachineLearningResearch,18(52):1–11,2017.",
+      "size": 459,
+      "sentences": 10
+    },
+    {
+      "id": 124,
+      "content": "ro-orderconvexoptimizationwithtwo-pointfeedback. JournalofMachineLearningResearch,18(52):1–11,2017. DavidSilver,JulianSchrittwieser,KarenSimonyan,IoannisAntonoglou,AjaHuang,ArthurGuez,Thomas\nHubert, Lucas Baker, Matthew Lai, Adrian Bolton, et al. Mastering the game of go without human\nknowledge. nature,550(7676):354–359,2017. Joel A Tropp et al. An introduction to matrix concentration inequalities. Foundations and Trends® in\nMachineLearning,8(1-2):1–230,2015.",
+      "size": 463,
+      "sentences": 8
+    },
+    {
+      "id": 125,
+      "content": "to matrix concentration inequalities. Foundations and Trends® in\nMachineLearning,8(1-2):1–230,2015. OriolVinyals,IgorBabuschkin,WojciechMCzarnecki,MichaëlMathieu,AndrewDudzik,JunyoungChung,\nDavidHChoi,RichardPowell,TimoEwalds,PetkoGeorgiev,etal. Grandmasterlevelinstarcraftiiusing\nmulti-agentreinforcementlearning. nature,575(7782):350–354,2019. QiuhaoWang,ChinPangHo,andMarekPetrik. Policygradientinrobustmdpswithglobalconvergence\nguarantee.",
+      "size": 442,
+      "sentences": 7
+    },
+    {
+      "id": 126,
+      "content": "9. QiuhaoWang,ChinPangHo,andMarekPetrik. Policygradientinrobustmdpswithglobalconvergence\nguarantee. InProceedingsoftheInternationalConferenceonMachineLearning(ICML),volume202,pp. 35763–35797,23–29Jul2023. Chen-YuWeiandHaipengLuo. Non-stationaryreinforcementlearningwithoutpriorknowledge: Anoptimal\nblack-boxapproach. InConferenceonlearningtheory(COLT),pp.4300–4354,2021. Chen-YuWei,Chung-WeiLee,MengxiaoZhang,andHaipengLuo.",
+      "size": 423,
+      "sentences": 9
+    },
+    {
+      "id": 127,
+      "content": "renceonlearningtheory(COLT),pp.4300–4354,2021. Chen-YuWei,Chung-WeiLee,MengxiaoZhang,andHaipengLuo. Last-iterateconvergenceofdecentralized\noptimisticgradientdescent/ascentininfinite-horizoncompetitivemarkovgames. InProceedingsofthe\nConferenceonLearningTheory(COLT),2021. JunyuZhang,AmritSinghBedi,MengdiWang,andAlecKoppel. Beyondcumulativereturnsviareinforce-\nmentlearningoverstate-actionoccupancymeasures. In2021AmericanControlConference(ACC),pp. 894–901.IEEE,2021.",
+      "size": 466,
+      "sentences": 8
+    },
+    {
+      "id": 128,
+      "content": "rningoverstate-actionoccupancymeasures. In2021AmericanControlConference(ACC),pp. 894–901.IEEE,2021. 14\n===  15 ===\nAppendix\nTable of Contents\nA RelatedWorks 15\nB ExperimentalDetailsandResults 16\nC SupportingLemmas 16\nC.1 Frank-WolfeStep . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 16\nC.2 LipschitzPropertyofOccupanyMeasure . . . . . . . . . . . . . . . . . . . . . . . . . . 17\nC.3 VariousValueFunctions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .",
+      "size": 499,
+      "sentences": 99
+    },
+    {
+      "id": 129,
+      "content": ". . . . 17\nC.3 VariousValueFunctions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 18\nC.4 Zeroth-orderGradientEstimationError . . . . . . . . . . . . . . . . . . . . . . . . . . . 23\nC.5 OrthogonalTransformation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 25\nC.6 BasicInequalities . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .",
+      "size": 406,
+      "sentences": 139
+    },
+    {
+      "id": 130,
+      "content": "C.6 BasicInequalities . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 26\nD NegativeEntropyRegularizerasaStronglyConvexFunctionofOccupancyMeasure 27\nE ExistingAssumptionsThatImpliesAssumption3 28\nF ProofofTheorem1 29\nG ProofofCorollary1 35\nH ProofofTheorem2 36\nI ProofofTheorem3 37\nJ ProofofProposition1 40\nK ProofofProposition2 43\nL ProofofTheorem4 44\nM AdjustingOurResultstotheExistingQuadraticRegularizer 47\nA Related Works\nNon-stationaryReinforcementLearning: Theperformativereinforcementlearningstudiedinthiswork\nrelatestosomenon-stationaryreinforcementlearning.",
+      "size": 596,
+      "sentences": 40
+    },
+    {
+      "id": 131,
+      "content": "erformativereinforcementlearningstudiedinthiswork\nrelatestosomenon-stationaryreinforcementlearning. Forexample,Gajaneetal.(2018);Feietal. (2020);\nCheung et al. (2020); Wei & Luo (2021); Domingues et al. (2021) provide theoretical results assuming\nthatthenon-stationaryenvironment(rewardsandtransitions)changeinaboundedamountornumber,and\nEven-Dar&Mansour(2004);Dekel&Hazan(2013);Rosenberg&Mansour(2019)studyreinforcement\nlearningwithadversarialrewardfunctions.",
+      "size": 459,
+      "sentences": 5
+    },
+    {
+      "id": 132,
+      "content": "Dekel&Hazan(2013);Rosenberg&Mansour(2019)studyreinforcement\nlearningwithadversarialrewardfunctions. 15\n===  16 ===\nPerformativePrediction: Performativepredictionproposedby(Perdomoetal.,2020)isastochastic\noptimizationframeworkwherethedatadistributiondependsonthedecisionpolicy. Comparedwithperforma-\ntiveprediction,performativereinforcementlearningissimilarbutmorecomplexduetothepolicy-dependent\ntransitiondynamics.",
+      "size": 414,
+      "sentences": 3
+    },
+    {
+      "id": 133,
+      "content": "erformativereinforcementlearningissimilarbutmorecomplexduetothepolicy-dependent\ntransitiondynamics. Variousalgorithmshavebeenobtainedwithfinite-timeconvergencetovarioussolutionsofperformative\nprediction. Forexample,Mendler-Dünneretal.(2020);Brownetal. (2022);Li&Wai(2022)convergeto\naperformativelystablesolutionthatapproximatestheperformativelyoptimalsolution(theprimarygoal). Izzoetal.(2021);Royetal.(2022);Haitongetal.",
+      "size": 420,
+      "sentences": 6
+    },
+    {
+      "id": 134,
+      "content": "imatestheperformativelyoptimalsolution(theprimarygoal). Izzoetal.(2021);Royetal.(2022);Haitongetal. (2024)convergetoastationarypointofthenonconvex\nperformative prediction objective. Miller et al. (2021); Ray et al.",
+      "size": 214,
+      "sentences": 5
+    },
+    {
+      "id": 135,
+      "content": "oastationarypointofthenonconvex\nperformative prediction objective. Miller et al. (2021); Ray et al. (2022) converge to the performatively\noptimalsolution(theprimarygoal),whichreliesonthestrongassumptionsthatthelossfunctionisstrongly\nconvexwithdegreedominatingthedistributionshiftandthatthedatadistributionsatisfiesmixturedominance\nconditionorbelongstoalocation-scalefamily,suchthattheobjectivefunctionbecomesconvexasproved\nby(Milleretal.,2021).",
+      "size": 444,
+      "sentences": 4
+    },
+    {
+      "id": 136,
+      "content": "ongstoalocation-scalefamily,suchthattheobjectivefunctionbecomesconvexasproved\nby(Milleretal.,2021). Incontrast,wehaveprovedananalogousresultthattheobjectiveofperformative\nreinforcement learning (harder than performative prediction) is gradient dominant (see our Theorem 1)\nwithoutthesestrongassumptions.",
+      "size": 303,
+      "sentences": 2
+    },
+    {
+      "id": 137,
+      "content": "an performative prediction) is gradient dominant (see our Theorem 1)\nwithoutthesestrongassumptions. Inparticular,ourconditionofregularizerdominatingtheenvironmental\nshift is analogous to their condition of strong convexity dominating the distribution shift, but our value\nfunctionstillremainsnonconvexwhichismorechallengingthantheirstronglyconvexlosses. Asurveyofperformativepredictioncanbeseenin(Hardt&Mendler-Dünner,2023).",
+      "size": 424,
+      "sentences": 3
+    },
+    {
+      "id": 138,
+      "content": "antheirstronglyconvexlosses. Asurveyofperformativepredictioncanbeseenin(Hardt&Mendler-Dünner,2023). B Experimental Details and Results\nWecompareourAlgorithm1withtheexistingrepeatedretrainingalgorithminasimulationenvironmentwith\n5states,4actions,discountfactorγ = 0.95,entropyregularizercoefficientλ = 0.5,aswellastransition\nkernel p (s′|s,a) = π(a|s)+π(a|s′)+1 and reward r (s,a) = π(a|s) that depend on the policy π.",
+      "size": 417,
+      "sentences": 3
+    },
+    {
+      "id": 139,
+      "content": "ition\nkernel p (s′|s,a) = π(a|s)+π(a|s′)+1 and reward r (s,a) = π(a|s) that depend on the policy π. We\nπ (cid:80) s′′[π(a|s)+π(a|s′′)+1] π\nimplement our Algorithm 1 for 401 iterations with N = 1000, β = 0.01, ∆ = 10−3, δ = 10−4 and the\nperformativevaluefunctionsareevaluatedbyvalueiteration.",
+      "size": 291,
+      "sentences": 2
+    },
+    {
+      "id": 140,
+      "content": "1000, β = 0.01, ∆ = 10−3, δ = 10−4 and the\nperformativevaluefunctionsareevaluatedbyvalueiteration. Therepeatedretrainingalgorithmobtainsthe\nnext policy π by applying the natural policy gradient algorithm (Cen et al., 2022) with 401 iterations\nt+1\nandstepsize0.01totheentropy-regularizedreinforcementlearningwithtransitionkernelp andreward\nπt\nr . Bothalgorithmsstartfromtheuniformpolicy(i.e. π (a|s) ≡ 1/4).",
+      "size": 406,
+      "sentences": 4
+    },
+    {
+      "id": 141,
+      "content": "withtransitionkernelp andreward\nπt\nr . Bothalgorithmsstartfromtheuniformpolicy(i.e. π (a|s) ≡ 1/4). Theexperimentisimplementedon\nπt 0\nPython3.9,usingAppleM1Prowith8coresand16GBmemory,whichcostsabout110minutesintotal. Thenforthepolicies{π }400 obtainedbyeachalgorithm,weplotthetrainingcurvesoftheperformative\nt t=0\nvaluefunctionVπt (definedbyEq. (6)withλ = 0.5)andtheunregularizedperformativevaluefunction\nVπt (defined by\nλ,\nE\nπt\nq.",
+      "size": 431,
+      "sentences": 6
+    },
+    {
+      "id": 142,
+      "content": "definedbyEq. (6)withλ = 0.5)andtheunregularizedperformativevaluefunction\nVπt (defined by\nλ,\nE\nπt\nq. (6) with λ = 0) on the left and right side of Figure 1 respectively, which show that\n0,πt\ntheexistingrepeatedretrainingalgorithmstucksattheinitialuniformpolicyπ sinceπ isaperformatively\n0 0\nstable(PS)policy,whileourAlgorithm1convergeswellonbothregularizedandunregularizedperformative\nvaluefunctionsinasimilarpattern. C Supporting Lemmas\nC.1 Frank-WolfeStep\nWerepeatLemma1asfollows. Lemma2.",
+      "size": 489,
+      "sentences": 5
+    },
+    {
+      "id": 143,
+      "content": "unctionsinasimilarpattern. C Supporting Lemmas\nC.1 Frank-WolfeStep\nWerepeatLemma1asfollows. Lemma2. Thestep(22)hasthefollowinganalyticalsolution. (cid:40)\n∆;a ̸= a˜ (s)\nt\nπ˜ (a|s) = , (26)\nt\n1−∆(|A|−1);a = a˜ (s)\nt\n16\n===  17 ===\nFigure1: ExperimentalResults. wherea˜ (s) ∈ argmax gˆ (π )(a|s). t a λ,δ t\nProof. Forπ˜ definedbyEq.",
+      "size": 330,
+      "sentences": 8
+    },
+    {
+      "id": 144,
+      "content": "igure1: ExperimentalResults. wherea˜ (s) ∈ argmax gˆ (π )(a|s). t a λ,δ t\nProof. Forπ˜ definedbyEq. (26)andforanyπ ∈ Π ,wehave\nt ∆\n⟨π˜ −π,gˆ (π )⟩\nt λ,δ t\n(cid:88)\n= gˆ (π )(a|s)[π˜ (a|s)−π(a|s)]\nλ,δ t t\ns,a\n(cid:88)(cid:110) (cid:2) (cid:3) (cid:88) (cid:111)\n= gˆ (π )[a˜ (s)|s] 1−∆(|A|−1)−π[a˜ (s)|s] − gˆ (π )(a|s)[π(a|s)−∆]\nλ,δ t t t λ,δ t\ns a̸=a˜t(s)\n(a)(cid:88)(cid:110)\n(cid:2) (cid:3)\n≥ gˆ (π )[a˜ (s)|s] 1−∆(|A|−1)−π[a˜ (s)|s]\nλ,δ t t t\ns\n(cid:88) (cid:111)\n− gˆ (π )[a˜ (s)|s][π(a|s)−∆]\nλ,δ t t\na̸=a˜t(s)\n(cid:88)(cid:110)\n(cid:2) (cid:3)\n= gˆ (π )[a˜ (s)|s] 1−∆(|A|−1)−π[a˜ (s)|s]\nλ,δ t t t\ns\n(cid:111)\n(cid:2) (cid:3)\n−gˆ (π )[a˜ (s)|s] 1−π[a˜ (s)|s]−∆(|A|−1)\nλ,δ t t t\n=0,\nwhere (a) uses π(a|s)−∆ ≥ 0 and gˆ (π )(a|s) ≤ gˆ (π )[a˜ (s)|s].",
+      "size": 752,
+      "sentences": 5
+    },
+    {
+      "id": 145,
+      "content": "[a˜ (s)|s]−∆(|A|−1)\nλ,δ t t t\n=0,\nwhere (a) uses π(a|s)−∆ ≥ 0 and gˆ (π )(a|s) ≤ gˆ (π )[a˜ (s)|s]. Therefore, Eq. (22) holds, that is,\nλ,δ t λ,δ t t\nπ˜ = argmax ⟨π,gˆ (π )⟩. t π∈Π∆ λ,δ t\nC.2 LipschitzPropertyofOccupanyMeasure\nLemma3. Theoccupancymeasured definedbyEq.",
+      "size": 268,
+      "sentences": 5
+    },
+    {
+      "id": 146,
+      "content": "π )⟩. t π∈Π∆ λ,δ t\nC.2 LipschitzPropertyofOccupanyMeasure\nLemma3. Theoccupancymeasured definedbyEq. (2)hasthefollowingLipschitzpropertiesforany\nπ,p\nπ,π′ ∈ Π,p,p′ ∈ P ands˜∈ S.\n(cid:112)\n(cid:88) γ γ |A|\n|d (s)−d (s)| ≤ max∥π′(·|s)−π(·|s)∥ ≤ ∥π′−π∥ (27)\nπ′,p π,p 1\n1−γ s 1−γ\ns\n(cid:112)\n(cid:88) γ γ |S|\n|d (s)−d (s)| ≤ max∥p′(·|s,a)−p(·|s,a)∥ ≤ ∥p′−p∥ (28)\nπ,p′ π,p 1\n1−γ s,a 1−γ\ns\n17\n===  18 ===\n(cid:88) 1 γ\n|d (s,a)−d (s,a)| ≤ max∥π′(·|s)−π(·|s)∥ + max∥p′(·|s,a)−p(·|s,a)∥\nπ′,p′ π,p 1 1\n1−γ s 1−γ s,a\ns,a\n(cid:112) (cid:112)\n|A| γ |S|\n≤ ∥π′−π∥+ ∥p′−p∥ (29)\n1−γ 1−γ\nProof.",
+      "size": 574,
+      "sentences": 4
+    },
+    {
+      "id": 147,
+      "content": "π′,p′ π,p 1 1\n1−γ s 1−γ s,a\ns,a\n(cid:112) (cid:112)\n|A| γ |S|\n≤ ∥π′−π∥+ ∥p′−p∥ (29)\n1−γ 1−γ\nProof. Thefirst≤ofEqs. (27)and(28)followsfromLemma5of(Chen&Huang,2024). Thesecond≤of\n√\nEqs. (27)and(28)uses∥x∥ ≤ d∥x∥foranyx ∈ Rd. 1\nEq. (29)canbeprovedasfollows.",
+      "size": 254,
+      "sentences": 7
+    },
+    {
+      "id": 148,
+      "content": "g,2024). Thesecond≤of\n√\nEqs. (27)and(28)uses∥x∥ ≤ d∥x∥foranyx ∈ Rd. 1\nEq. (29)canbeprovedasfollows. (cid:88)\n|d (s,a)−d (s,a)|\nπ′,p′ π,p\ns,a\n(cid:88)\n= |d (s)π′(a|s)−d (s)π(a|s)|\nπ′,p′ π,p\ns,a\n(cid:88)\n≤ d (s)|π′(a|s)−π(a|s)|+π(a|s)|d (s)−d (s)|\nπ′,p′ π′,p′ π,p\ns,a\n(cid:88) (cid:88)\n≤ [d (s)max∥π′(·|s′)−π(·|s′)∥ ]+ |d (s)−d (s)|\nπ′,p′ 1 π′,p′ π,p\ns′\ns s\n(a) γ γ\n≤ max∥π′(·|s′)−π(·|s′)∥ + max∥π′(·|s)−π(·|s)∥ + max∥p′(·|s,a)−p(·|s,a)∥\n1 1 1\ns′ 1−γ s 1−γ s,a\n1 γ\n≤ max∥π′(·|s)−π(·|s)∥ + max∥p′(·|s,a)−p(·|s,a)∥\n1 1\n1−γ s 1−γ s,a\n(cid:112) (cid:112)\n|A| γ |S|\n≤ ∥π′−π∥+ ∥p′−p∥,\n1−γ 1−γ\nwhere(a)usesEqs.",
+      "size": 601,
+      "sentences": 6
+    },
+    {
+      "id": 149,
+      "content": "(·|s,a)∥\n1 1\n1−γ s 1−γ s,a\n(cid:112) (cid:112)\n|A| γ |S|\n≤ ∥π′−π∥+ ∥p′−p∥,\n1−γ 1−γ\nwhere(a)usesEqs. (27)and(28). C.3 VariousValueFunctions\nDefinethefollowingvaluefunctions.",
+      "size": 172,
+      "sentences": 3
+    },
+    {
+      "id": 150,
+      "content": ",\n1−γ 1−γ\nwhere(a)usesEqs. (27)and(28). C.3 VariousValueFunctions\nDefinethefollowingvaluefunctions. ∞\nJ (π,π′,p,r) d = efE\n(cid:104)(cid:88)\nγt[r(s ,a )−λlogπ′(a |s )]\n(cid:12)\n(cid:12)s ∼ ρ\n(cid:105)\nλ π,p t t t t (cid:12) 0\nt=0\n1 (cid:88)\n= d (s,a)[r(s,a)−λlogπ′(a|s)], (30)\nπ,p\n1−γ\ns,a\n∞\nV (π,π′,p,r;s) d = efE\n(cid:104)(cid:88)\nγt[r(s ,a )−λlogπ′(a |s )]\n(cid:12)\n(cid:12)s = s\n(cid:105)\n, (31)\nλ π,p t t t t (cid:12) 0\nt=0\n∞\nQ (π,π′,p,r;s,a) d = efE\n(cid:104)(cid:88)\nγt[r(s ,a )−λlogπ′(a |s )]\n(cid:12)\n(cid:12)s = s,a = a\n(cid:105)\nλ π,p t t t t (cid:12) 0 0\nt=0\n(cid:88)\n=r(s,a)−λlogπ′(a|s)+γ p(s′|s,a)V (π,π′,p,r;s′).",
+      "size": 626,
+      "sentences": 4
+    },
+    {
+      "id": 151,
+      "content": "a\n(cid:105)\nλ π,p t t t t (cid:12) 0 0\nt=0\n(cid:88)\n=r(s,a)−λlogπ′(a|s)+γ p(s′|s,a)V (π,π′,p,r;s′). (32)\nλ\ns′\nNotethatthevaluefunction(6)ofinterestcanberewrittenintotheabovefunctionsasfollows. Vπ =J (π,π,p ,r )\nλ,π′ λ π′ π′\n(cid:88)\n= ρ(s)V (π,π,p ,r ;s)\nλ π′ π′\ns\n18\n===  19 ===\n(cid:88)\n= ρ(s)π(a|s)Q (π,π,p ,r ;s,a). λ π′ π′\ns,a\nHence,wewillinvestigatethepropertiesofthevaluefunctions(30)-(32)asfollows. Lemma4.",
+      "size": 414,
+      "sentences": 5
+    },
+    {
+      "id": 152,
+      "content": ",a). λ π′ π′\ns,a\nHence,wewillinvestigatethepropertiesofthevaluefunctions(30)-(32)asfollows. Lemma4. Foranyπ ∈ Π,p ∈ P,r ∈ R,wehaveVπ ,J (π,π,p,r),V (π,π,p,r;s),Q (π,π,p,r;s,a) ∈\nλ,π λ λ λ\n(cid:104) (cid:105)\n0, 1+λlog|A| . 1−γ\nProof. We will prove the range of J (π,π,p,r) as follows using r(s,a) ∈ [0,1]. The proof for the other\nλ\nvaluefunctionsfollowthesameway.",
+      "size": 363,
+      "sentences": 7
+    },
+    {
+      "id": 153,
+      "content": "π,π,p,r) as follows using r(s,a) ∈ [0,1]. The proof for the other\nλ\nvaluefunctionsfollowthesameway. ∞\n(cid:104)(cid:88) (cid:105)\n0 ≤ J (π,π,p,r) =E γt[r(s ,a )−λlogπ(a |s )]\nλ π,p,ρ t t t t\nt=0\n∞ ∞\n(cid:88) (cid:104)(cid:88) (cid:88) (cid:105)\n≤ γt+λE γt [−π(a|s )logπ(a|s )]\nπ,p,ρ t t\nt=0 t=0 a\n∞\n1 (cid:88)\n≤ +λ γtlog|A|\n1−γ\nt=0\n1+λlog|A|\n≤ . 1−γ\nLemma5. ThegradientsofJ (π,π′,p,r)definedbyEq. (30)havethefollowingexpressions.",
+      "size": 429,
+      "sentences": 6
+    },
+    {
+      "id": 154,
+      "content": "0\n1+λlog|A|\n≤ . 1−γ\nLemma5. ThegradientsofJ (π,π′,p,r)definedbyEq. (30)havethefollowingexpressions. λ\n∂J (π,π′,p,r) d (s)Q (π,π′,p,r;s,a)\nλ π,p λ\n= , (33)\n∂π(a|s) 1−γ\n∂J (π,π′,p,r) λd (s,a)\nλ π,p\n=− , (34)\n∂π′(a|s) (1−γ)π′(a|s)\n∂J λ (π,π′,p,r) = d π,p (s,a) (cid:2) r(s,a)−λlogπ′(a|s)+γV (π,π′,p,r;s′) (cid:3) , (35)\n∂p(s′|s,a) 1−γ λ\n∂J (π,π′,p,r) d (s,a)\nλ π,p\n= , (36)\n∂r(s,a) 1−γ\n∂J (π,π,p,r) d (s)[Q (π,π,p,r;s,a)−λ]\nλ π,p λ\n= . (37)\n∂π(a|s) 1−γ\nProof. Eq.",
+      "size": 460,
+      "sentences": 7
+    },
+    {
+      "id": 155,
+      "content": "= , (36)\n∂r(s,a) 1−γ\n∂J (π,π,p,r) d (s)[Q (π,π,p,r;s,a)−λ]\nλ π,p λ\n= . (37)\n∂π(a|s) 1−γ\nProof. Eq. (33)followsfromthepolicygradientexpressioninEq. (7)of(Agarwaletal.,2021),withreward\nfunctionr(s,a)replacedbyr(s,a)−λlogπ′(a|s). Eq. (35)canbeprovedasfollows. p(s′|s,a) ( = a)d π,p (s)π(a|s) (cid:2) r(s,a)−λlogπ(a|s)+γV (π,π′,p,r;s′) (cid:3)\nλ\n1−γ\nd (s,a)\n= π,p (cid:2) r(s,a)−λlogπ(a|s)+γV (π,π′,p,r;s′) (cid:3) ,\nλ\n1−γ\nwhere(a)usesEq. (9)in(Chen&Huang,2024). Eqs.",
+      "size": 463,
+      "sentences": 10
+    },
+    {
+      "id": 156,
+      "content": ":2) r(s,a)−λlogπ(a|s)+γV (π,π′,p,r;s′) (cid:3) ,\nλ\n1−γ\nwhere(a)usesEq. (9)in(Chen&Huang,2024). Eqs. (34)and(36)canbeprovedbytakingderivativesofEq. (30). Basedonthechainrule,Eq. (37)canbeprovedasfollowsbyaddingEqs. (33)and(34)withπ′ = π.",
+      "size": 236,
+      "sentences": 8
+    },
+    {
+      "id": 157,
+      "content": "ivesofEq. (30). Basedonthechainrule,Eq. (37)canbeprovedasfollowsbyaddingEqs. (33)and(34)withπ′ = π. ∂J (π,π,p,r) (cid:104)∂J (π,π′,p,r) ∂J (π,π′,p,r)(cid:105)(cid:12)\nλ = λ + λ (cid:12)\n∂π(a|s) ∂π(a|s) ∂π′(a|s) (cid:12) π′=π\n19\n===  20 ===\nd (s)Q (π,π,p,r;s,a) λd (s,a)\nπ,p λ π,p\n= −\n1−γ (1−γ)π(a|s)\nd (s)[Q (π,π,p,r;s,a)−λ]\nπ,p λ\n= ,\n1−γ\nwherethefinal=usesd (s,a) = d (s)π(a|s). π,p π,p\nLemma 6. The function J defined by Eq.",
+      "size": 426,
+      "sentences": 8
+    },
+    {
+      "id": 158,
+      "content": "p λ\n= ,\n1−γ\nwherethefinal=usesd (s,a) = d (s)π(a|s). π,p π,p\nLemma 6. The function J defined by Eq. (30) has the following Lipschitz properties for any π,π′ ∈ Π,\nλ\np,p′ ∈ P andr,r′ ∈ R.\n|J (π′,π′,p,r)−J (π,π,p,r)| ≤ L max∥logπ′(·|s)−logπ(·|s)∥ (38)\nλ λ π\ns\n|J (π,π,p′,r)−J (π,π,p,r)| ≤ L ∥p′−p∥ (39)\nλ λ p\n∥r′−r∥ ∥r′−r∥\n|J (π,π,p,r′)−J (π,π,p,r)| ≤ ∞ ≤ (40)\nλ λ\n1−γ 1−γ\n∥∇ J (π′,π′,p,r)−∇ J (π,π,p,r)∥ ≤ ℓ max∥logπ′(·|s)−logπ(·|s)∥ (41)\np λ p λ π\ns\n∥∇ J (π,π,p′,r)−∇ J (π,π,p,r)∥ ≤ ℓ ∥p′−p∥ (42)\np λ p λ p\n∥∇ J (π′,π′,p′,r′)−∇ J (π,π,p,r)∥\np λ p λ\n(cid:112)\n|S|\n≤ℓ max∥logπ′(·|s)−logπ(·|s)∥+ℓ ∥p′−p∥+ ∥r′−r∥ (43)\nπ s p (1−γ)2 ∞\n∥∇ J (π′,π′,p′,r′)−∇ J (π,π,p,r)∥\nr λ r λ\nmax ∥π′(·|s)−π(·|s)∥ +γmax ∥p′(·|s,a)−p(·|s,a)∥\ns 1 s,a 1\n≤ (44)\n(1−γ)2\n∥∇ J (π′,π′,p′,r′)−∇ J (π,π,p,r)∥\nπ λ π λ\n(cid:16)|A|(1+2λlog|A|) (cid:17)\n≤ +γL max∥logπ′(·|s)−logπ(·|s)∥\n(1−γ)2 π s\n(cid:112) (cid:112)\n+γ (cid:112) |A| (cid:104)2 |S|(1+λlog|A|) +L (cid:105) ∥p′−p∥+ |A|∥r′−r∥ ∞ , (45)\n(1−γ)2 p 1−γ\n√ √ √\nwhereL := |A|(2−γ+γλlog|A|) ,L := |S|(1+λlog|A|) ,ℓ := |S||A|(2+3γλlog|A|) andℓ := 2γ|S|(1+λlog|A|).",
+      "size": 1082,
+      "sentences": 4
+    },
+    {
+      "id": 159,
+      "content": "hereL := |A|(2−γ+γλlog|A|) ,L := |S|(1+λlog|A|) ,ℓ := |S||A|(2+3γλlog|A|) andℓ := 2γ|S|(1+λlog|A|). π (1−γ)2 p (1−γ)2 π (1−γ)3 p (1−γ)3\nProof. Eqs. (38),(39),(41)and(42)directlyfollowfromLemma6of(Chen&Huang,2024). Eq. (40)can\nbeprovedasfollows. (cid:12) 1 (cid:88) (cid:12)\n|J (π,p,r′)−J (π,p,r)| =(cid:12) d (s,a)[r′(s,a)−r(s,a)](cid:12)\nλ λ (cid:12)1−γ π,p (cid:12)\ns,a\n1 (cid:88)\n≤ d (s,a)|r′(s,a)−r(s,a)|\nπ,p\n1−γ\ns,a\n1 (cid:88)\n= d (s,a)∥r′−r∥\nπ,p ∞\n1−γ\ns,a\n1 1\n= ∥r′−r∥ ≤ ∥r′−r∥.",
+      "size": 484,
+      "sentences": 7
+    },
+    {
+      "id": 160,
+      "content": "d (s,a)|r′(s,a)−r(s,a)|\nπ,p\n1−γ\ns,a\n1 (cid:88)\n= d (s,a)∥r′−r∥\nπ,p ∞\n1−γ\ns,a\n1 1\n= ∥r′−r∥ ≤ ∥r′−r∥. ∞\n1−γ 1−γ\nToproveEq. (43),notethat\n(cid:12)∂J (π,π,p,r′) ∂J (π,π,p,r)(cid:12)\n(cid:12) λ − λ (cid:12)\n(cid:12) ∂p(s′|s,a) ∂p(s′|s,a) (cid:12)\n20\n===  21 ===\n( = a)d π,p (s,a)(cid:12) (cid:12)r′(s,a)−r(s,a)+γ[V λ (π,π′,p,r′;s′)−V λ (π,π′,p,r;s′)] (cid:12) (cid:12)\n1−γ\n∞\n( ≤ b)d π,p (s,a)(cid:104) ∥r′−r∥ +γ (cid:88) γt∥r′−r∥ (cid:105)\n∞ ∞\n1−γ\nt=0\nd (s,a)\n≤ π,p ∥r′−r∥ (46)\n(1−γ)2 ∞\nwhere(a)usesEq.",
+      "size": 497,
+      "sentences": 3
+    },
+    {
+      "id": 161,
+      "content": "r′−r∥ +γ (cid:88) γt∥r′−r∥ (cid:105)\n∞ ∞\n1−γ\nt=0\nd (s,a)\n≤ π,p ∥r′−r∥ (46)\n(1−γ)2 ∞\nwhere(a)usesEq. (35)and(b)usesEq. (31). Therefore,wecanproveEq. (43)asfollows.",
+      "size": 162,
+      "sentences": 5
+    },
+    {
+      "id": 162,
+      "content": "∥r′−r∥ (46)\n(1−γ)2 ∞\nwhere(a)usesEq. (35)and(b)usesEq. (31). Therefore,wecanproveEq. (43)asfollows. ∥∇ J (π′,π′,p′,r′)−∇ J (π,π,p,r)∥\np λ p λ\n≤∥∇ J (π′,π′,p′,r′)−∇ J (π,π,p′,r′)∥+∥∇ J (π,π,p′,r′)−∇ J (π,π,p,r′)∥\np λ p λ p λ p λ\n+∥∇ J (π,π,p,r′)−∇ J (π,π,p,r)∥\np λ p λ\n(cid:118)\n( ≤ a) ℓ max∥logπ′(·|s)−logπ(·|s)∥+ℓ ∥p′−p∥+ (cid:117) (cid:117) (cid:88) (cid:12) (cid:12) ∂J λ (π,π,p,r′) − ∂J λ (π,π,p,r)(cid:12) (cid:12) 2\nπ s p (cid:116) (cid:12) ∂p(s′|s,a) ∂p(s′|s,a) (cid:12)\ns,a,s′\n(cid:118)\n( ≤ b) ℓ max∥logπ′(·|s)−logπ(·|s)∥+ℓ ∥p′−p∥+ (cid:117) (cid:117) ∥r′−r∥2 ∞ (cid:88) d2 (s,a)\nπ s p (cid:116) (1−γ)4 π,p\ns,a,s′\n(cid:112)\n|S|\n≤ℓ max∥logπ′(·|s)−logπ(·|s)∥+ℓ ∥p′−p∥+ ∥r′−r∥ ,\nπ s p (1−γ)2 ∞\nwhere(a)usesEqs.",
+      "size": 715,
+      "sentences": 6
+    },
+    {
+      "id": 163,
+      "content": ",a,s′\n(cid:112)\n|S|\n≤ℓ max∥logπ′(·|s)−logπ(·|s)∥+ℓ ∥p′−p∥+ ∥r′−r∥ ,\nπ s p (1−γ)2 ∞\nwhere(a)usesEqs. (41)and(42)and(b)usesEq. (46). Then,weproveEq. (44)asfollows. ∥∇ J (π′,π′,p′,r′)−∇ J (π,π,p,r)∥\nr λ r λ\n(a)∥d\nπ′,p′\n−d\nπ,p\n∥\n=\n1−γ\n∥d −d ∥\nπ′,p′ π,p 1\n≤\n1−γ\n(b) 1 γ\n≤ max∥π′(·|s)−π(·|s)∥ + max∥p′(·|s,a)−p(·|s,a)∥ ,\n(1−γ)2 s 1 (1−γ)2 s,a 1\nwhere(a)usesEq. (36),(b)usesEq. (29). ToproveEq. (45),wewillfirstprovethefollowingauxiliarybounds.",
+      "size": 437,
+      "sentences": 10
+    },
+    {
+      "id": 164,
+      "content": "where(a)usesEq. (36),(b)usesEq. (29). ToproveEq. (45),wewillfirstprovethefollowingauxiliarybounds. (a)(cid:104) 1+λlog|A| (cid:105) (cid:12) (cid:12) 1+λlog|A|\nQ\nλ\n(π,π,p,r;s,a)−λ ∈ −λ, −λ ⇒(cid:12)Q\nλ\n(π,π,p,r;s,a)−λ(cid:12)≤ , (47)\n1−γ 1−γ\nwhere(a)usesLemma4.",
+      "size": 261,
+      "sentences": 6
+    },
+    {
+      "id": 165,
+      "content": "λ\n(π,π,p,r;s,a)−λ ∈ −λ, −λ ⇒(cid:12)Q\nλ\n(π,π,p,r;s,a)−λ(cid:12)≤ , (47)\n1−γ 1−γ\nwhere(a)usesLemma4. |V (π′,π′,p′,r′;s)−V (π,π,p,r;s)|\nλ λ\n≤|V (π′,π′,p′,r′;s)−V (π,π,p′,r′;s)|+|V (π,π,p′,r′;s)−V (π,π,p,r′;s)|\nλ λ λ λ\n+|V (π,π,p,r′;s)−V (π,π,p,r;s)|\nλ λ\n(a) ∥r′−r∥\n≤L max∥logπ′(·|s)−logπ(·|s)∥+L ∥p′−p∥+ ∞ , (48)\nπ p\ns 1−γ\nwhere (a) applies Eqs. (38)-(40) to the case where the initial state distribution ρ is probability 1 at s (so\nJ (π,π,p,r)becomesV (π,π,p,r;s)).",
+      "size": 464,
+      "sentences": 3
+    },
+    {
+      "id": 166,
+      "content": "where the initial state distribution ρ is probability 1 at s (so\nJ (π,π,p,r)becomesV (π,π,p,r;s)). λ λ\n|Q (π,π,p,r′;s,a)−Q (π,π,p,r;s,a)|\nλ λ\n21\n===  22 ===\n∞\n( = a) (cid:12) (cid:12)E (cid:104)(cid:88) γt[r′(s ,a )−r(s ,a )] (cid:12) (cid:12)s = s,a = a (cid:105)(cid:12) (cid:12)\n(cid:12) π,p t t t t (cid:12) 0 0 (cid:12)\nt=0\n∞\n(cid:104)(cid:88) (cid:12) (cid:105)\n≤E γt[r′(s ,a )−r(s ,a )|(cid:12)s = s,a = a\nπ,p t t t t (cid:12) 0 0\nt=0\n∞\n(cid:104)(cid:88) (cid:12) (cid:105)\n≤E γt∥r′−r∥ (cid:12)s = s,a = a\nπ,p ∞(cid:12) 0 0\nt=0\n∥r′−r∥\n∞\n≤ , (49)\n1−γ\nwhere(a)usesEq.",
+      "size": 572,
+      "sentences": 2
+    },
+    {
+      "id": 167,
+      "content": "id:105)\n≤E γt∥r′−r∥ (cid:12)s = s,a = a\nπ,p ∞(cid:12) 0 0\nt=0\n∥r′−r∥\n∞\n≤ , (49)\n1−γ\nwhere(a)usesEq. (32).",
+      "size": 105,
+      "sentences": 2
+    },
+    {
+      "id": 168,
+      "content": ")\n≤E γt∥r′−r∥ (cid:12)s = s,a = a\nπ,p ∞(cid:12) 0 0\nt=0\n∥r′−r∥\n∞\n≤ , (49)\n1−γ\nwhere(a)usesEq. (32). |Q (π′,π′,p′,r;s,a)−Q (π,π,p,r;s,a)|\nλ λ\n(a) (cid:12)(cid:88) (cid:12)\n≤λ|logπ′(a|s)−logπ(a|s)|+γ(cid:12) [p′(s′|s,a)V (π′,π′,p′,r;s)−p(s′|s,a)V (π,π,p,r;s)](cid:12)\n(cid:12) λ λ (cid:12)\ns′\n(cid:88)\n≤λ|logπ′(a|s)−logπ(a|s)|+γ p′(s′|s,a)|V (π′,π′,p′,r;s)−V (π,π,p,r;s)|\nλ λ\ns′\n(cid:88)\n+γ |p′(s′|s,a)−p(s′|s,a)||V (π,π,p,r;s)|\nλ\ns′\n(b)\n≤λ|logπ′(a|s)−logπ(a|s)|+γL max∥logπ′(·|s′)−logπ(·|s′)∥+γL ∥p′−p∥\nπ p\ns′\nγ(1+λlog|A|)\n+ ∥p′(·|s,a)−p(·|s,a)∥ , (50)\n1\n1−γ\nwhere(a)usesEq.",
+      "size": 573,
+      "sentences": 3
+    },
+    {
+      "id": 169,
+      "content": "·|s′)−logπ(·|s′)∥+γL ∥p′−p∥\nπ p\ns′\nγ(1+λlog|A|)\n+ ∥p′(·|s,a)−p(·|s,a)∥ , (50)\n1\n1−γ\nwhere(a)usesEq. (32),and(b)usesEq. (48)andLemma4.",
+      "size": 133,
+      "sentences": 3
+    },
+    {
+      "id": 170,
+      "content": "γ(1+λlog|A|)\n+ ∥p′(·|s,a)−p(·|s,a)∥ , (50)\n1\n1−γ\nwhere(a)usesEq. (32),and(b)usesEq. (48)andLemma4. Notethat\n(cid:12)∂J (π′,π′,p′,r′) ∂J (π,π,p,r)(cid:12)\n(1−γ)(cid:12) λ − λ (cid:12)\n(cid:12) ∂π′(a|s) ∂π(a|s) (cid:12)\n( = a)(cid:12) (cid:12)d π′,p′ (s)[Q λ (π′,π′,p′,r′;s,a)−λ]−d π,p (s)[Q λ (π,π,p,r;s,a)−λ] (cid:12) (cid:12)\n≤ (cid:12) (cid:12)[d\nπ′,p′\n(s)−d\nπ,p\n(s)][Q\nλ\n(π′,π′,p′,r′;s,a)−λ]\n+d (s)[Q (π′,π′,p′,r′;s,a)−Q (π′,π′,p′,r;s,a)]\nπ,p λ λ\n+d π,p (s)[Q λ (π′,π′,p′,r;s,a)−Q λ (π,π,p,r;s,a)] (cid:12) (cid:12)\n≤ (cid:12) (cid:12)d π′,p′ (s)−d π,p (s) (cid:12) (cid:12)· (cid:12) (cid:12)Q λ (π′,π′,p′,r′;s,a)−λ (cid:12) (cid:12)\n+d π,p (s) (cid:12) (cid:12)Q λ (π′,π′,p′,r′;s,a)−Q λ (π′,π′,p′,r;s,a) (cid:12) (cid:12)\n+d π,p (s) (cid:12) (cid:12)Q λ (π′,π′,p′,r;s,a)−Q λ (π,π,p,r;s,a) (cid:12) (cid:12)\n(b)1+λlog|A|(cid:12) (cid:12) d π,p (s)∥r′−r∥ ∞\n≤ (cid:12)d\nπ′,p′\n(s)−d\nπ,p\n(s)(cid:12)+\n1−γ 1−γ\n(cid:104)\n+d (s) λ|logπ′(a|s)−logπ(a|s)|+γL max∥logπ′(·|s′)−logπ(·|s′)∥\nπ,p π\ns′\nγ(1+λlog|A|) (cid:105)\n+γL ∥p′−p∥+ ∥p′(·|s,a)−p(·|s,a)∥ ,\np 1\n1−γ\nwhere(a)usesEq.",
+      "size": 1071,
+      "sentences": 4
+    },
+    {
+      "id": 171,
+      "content": "π(·|s′)∥\nπ,p π\ns′\nγ(1+λlog|A|) (cid:105)\n+γL ∥p′−p∥+ ∥p′(·|s,a)−p(·|s,a)∥ ,\np 1\n1−γ\nwhere(a)usesEq. (37),(b)usesEqs. (47),(49)and(50). Applyingtriangularinequalitytotheboundabove,\nwecanproveEq. (45)asfollows.",
+      "size": 208,
+      "sentences": 5
+    },
+    {
+      "id": 172,
+      "content": "sesEqs. (47),(49)and(50). Applyingtriangularinequalitytotheboundabove,\nwecanproveEq. (45)asfollows. (1−γ) (cid:13) (cid:13)∇ π′ J λ (π′,π′,p′,r′)−∇ π J λ (π,π,p,r) (cid:13) (cid:13)\n22\n===  23 ===\n≤ 1+λlog|A| (cid:115) (cid:88)(cid:12) (cid:12)d π′,p′ (s)−d π,p (s) (cid:12) (cid:12) 2 + ∥r′−r∥ ∞ (cid:115) (cid:88) d π,p (s)2\n1−γ 1−γ\ns,a s,a\n(cid:115)\n(cid:88)\n+λ d (s)2|logπ′(a|s)−logπ(a|s)|2\nπ,p\ns,a\n(cid:115)\n+ (cid:2) γL max∥logπ′(·|s′)−logπ(·|s′)∥+γL ∥p′−p∥ (cid:3) (cid:88) d (s)2\nπ p π,p\ns′\ns,a\n(cid:115)\nγ(1+λlog|A|) (cid:88)\n+ d (s)2∥p′(·|s,a)−p(·|s,a)∥2\n1−γ π,p 1\ns,a\n(cid:112) (cid:112)\n|A|(1+λlog|A|) (cid:88) |A|∥r′−r∥ ∞\n≤ |d (s)−d (s)|+\nπ′,p′ π,p\n1−γ 1−γ\ns\n(cid:115)\n(cid:88)\n+λ d (s)∥logπ′(·|s)−logπ(·|s)∥2\nπ,p\ns\n+ (cid:2) γL max∥logπ′(·|s′)−logπ(·|s′)∥+γL ∥p′−p∥ (cid:3)(cid:112) |A|\nπ p\ns′\n(cid:115)\nγ(1+λlog|A|) (cid:88)\n+ |S| ∥p′(·|s,a)−p(·|s,a)∥2\n1−γ\ns,a\n(cid:112)\n(a)γ |A|(1+λlog|A|)\n≤ (cid:2) max∥π′(·|s)−π(·|s)∥ +max∥p′(·|s,a)−p(·|s,a)∥ (cid:3)\n(1−γ)2 s 1 s,a 1\n(cid:112)\n|A|∥r′−r∥\n+ ∞ +λmax∥logπ′(·|s′)−logπ(·|s′)∥\n1−γ s′\n+ (cid:112) |A| (cid:2) γL max∥logπ′(·|s′)−logπ(·|s′)∥+γL ∥p′−p∥ (cid:3)\nπ p\ns′\n(cid:112)\nγ |S|(1+λlog|A|)\n+ ∥p′−p∥\n1−γ\n(b)(cid:104)|A|(γ +2λlog|A|) (cid:105)\n≤ +γL max∥logπ′(·|s′)−logπ(·|s′)∥\n(1−γ)2 π s′\n(cid:112) (cid:112)\n+γ (cid:112) |A| (cid:104)2 |S|(1+λlog|A|) +L (cid:105) ∥p′−p∥+ |A|∥r′−r∥ ∞ ,\n(1−γ)2 p 1−γ\nwhere(a)usesLemma3,(b)uses∥π′(·|s)−π(·|s)∥ ≤ ∥logπ′(·|s)−logπ(·|s)∥ ,\n1 √ 1 √\n∥p′(·|s,a)−p(·|s,a)∥ ≤ (cid:112) |S|∥p′(·|s,a)−p(·|s,a)∥ ≤ (cid:112) |S|∥p′−p∥, γ |S|(1+λlog|A|) ≤ |S||A|(1+λlog|A|)\n1 1−γ (1−γ)2\nλ|A|log|A|\nandλ ≤ .",
+      "size": 1590,
+      "sentences": 5
+    },
+    {
+      "id": 173,
+      "content": "|s,a)∥ ≤ (cid:112) |S|∥p′−p∥, γ |S|(1+λlog|A|) ≤ |S||A|(1+λlog|A|)\n1 1−γ (1−γ)2\nλ|A|log|A|\nandλ ≤ . (1−γ)2\nC.4 Zeroth-orderGradientEstimationError\nWeimportTheorem1.6.2of(Troppetal.,2015)asfollows. Lemma 7 (Matrix Bernstein Inequality).",
+      "size": 235,
+      "sentences": 3
+    },
+    {
+      "id": 174,
+      "content": "ationError\nWeimportTheorem1.6.2of(Troppetal.,2015)asfollows. Lemma 7 (Matrix Bernstein Inequality). Suppose complex-valued matrices S\n1\n,...,S\nN\n∈ Cd1×d2 are\nindependently distributed with ES = 0 and ∥S ∥ ≤ C for each k = 1,...,N. Denote the sum Z =\nk k N\n(cid:80)N\nS itsvariancestatisticasfollows\nk=1 k\nN N\n(cid:104)(cid:13)(cid:88) (cid:13) (cid:13)(cid:88) (cid:13)(cid:105)\nv(Z ) = max (cid:13) E(S S∗)(cid:13),(cid:13) E(S∗S )(cid:13) , (51)\nN (cid:13) k k (cid:13) (cid:13) k k (cid:13)\nk=1 k=1\n23\n===  24 ===\nwhereS∗ denotestheconjugatetransposeofS .",
+      "size": 557,
+      "sentences": 3
+    },
+    {
+      "id": 175,
+      "content": "k k (cid:13) (cid:13) k k (cid:13)\nk=1 k=1\n23\n===  24 ===\nwhereS∗ denotestheconjugatetransposeofS . Thenforanyϵ ≥ 0,wehave\nk k\n(cid:104) −ϵ2/2 (cid:105)\nP{∥Z ∥ ≥ ϵ} ≤ (d +d )exp . (52)\nN 1 2\nv(Z )+Cϵ/3\nN\nApplyingtheabovelemmatovectors,weobtainthefollowingvectorBernsteininequality. Lemma 8 (Vector Bernstein Inequality).",
+      "size": 320,
+      "sentences": 4
+    },
+    {
+      "id": 176,
+      "content": "emmatovectors,weobtainthefollowingvectorBernsteininequality. Lemma 8 (Vector Bernstein Inequality). Suppose independently distributed vectors x ,...,x ∈ Cd\n1 N\nsatisfies∥x ∥ ≤ cforeachk = 1,...,N. Thenforanyη ∈ (0,1),withprobabilityatleast1−η,wehave\nk\n(cid:115)\nN\n(cid:13) 1 (cid:88) (cid:13) 4c (cid:16)d+1(cid:17) 2 (cid:16)d+1(cid:17)\n(cid:13) (x −Ex )(cid:13) < log +2c log . (53)\n(cid:13)N k k (cid:13) 3N η N η\nk=1\nProof.",
+      "size": 427,
+      "sentences": 4
+    },
+    {
+      "id": 177,
+      "content": "1(cid:17)\n(cid:13) (x −Ex )(cid:13) < log +2c log . (53)\n(cid:13)N k k (cid:13) 3N η N η\nk=1\nProof. NotethatS = x −Ex satisfiestheconditionsofLemma7withd = d,d = 1andC replaced\nk k k 1 2\nby2c. Inaddition,v(Z )definedbyEq. (51)satisfiesv(Z ) ≤ 4Nc2 since\nN N\nmax[∥S S∗∥,∥S∗S ∥2] ≤ ∥S∗∥2∥S ∥2 ≤ 4c2. k k k k k k\nForanyη ∈ (0,1),let\n(cid:115)\n4c (cid:16)d+1(cid:17) (cid:16)d+1(cid:17)\nϵ = log +c 2N log .",
+      "size": 402,
+      "sentences": 6
+    },
+    {
+      "id": 178,
+      "content": "k k k\nForanyη ∈ (0,1),let\n(cid:115)\n4c (cid:16)d+1(cid:17) (cid:16)d+1(cid:17)\nϵ = log +c 2N log . 3 η η\nTherefore,Lemma7impliesthat\n(cid:110) 1 (cid:13)(cid:88) N (cid:13) ϵ (cid:111) (cid:104) −ϵ2/2 (cid:105)\nP (cid:13) (x −Ex )(cid:13) ≥ ≤ (d+1)exp ≤ η,\nN(cid:13) k k (cid:13) N 4Nc2+2cϵ/3\nk=1\nwhichimpliesthatwithprobabilityatleast1−η,wehave\n(cid:115)\nN\n1 (cid:13)(cid:88) (cid:13) ϵ 4c (cid:16)d+1(cid:17) 2 (cid:16)d+1(cid:17)\n(cid:13) (x −Ex )(cid:13) < = log +2c log .",
+      "size": 476,
+      "sentences": 2
+    },
+    {
+      "id": 179,
+      "content": "(cid:13) ϵ 4c (cid:16)d+1(cid:17) 2 (cid:16)d+1(cid:17)\n(cid:13) (x −Ex )(cid:13) < = log +2c log . N(cid:13) k k (cid:13) N 3N η N η\nk=1\nForanyfunctionf : Rd → R,obtainthefollowingzeroth-orderstochasticestimatorofthegradient∇f. N\nd (cid:88)\ng (x) = [f(x+δu )−f(x−δu )]u ≈ ∇f(x) (54)\nδ i i i\n2Nδ\ni=1\nwhereδ > 0and{u }N arei.i.d. samplesoftheuniformdistributiononthesphereS = {u ∈ Rd : ∥u∥ =\ni i=1 d\n1}. Lemma 9. Suppose f : Rd → R is an L -Lipschitz continuous and ℓ -smooth function.",
+      "size": 484,
+      "sentences": 6
+    },
+    {
+      "id": 180,
+      "content": "∥u∥ =\ni i=1 d\n1}. Lemma 9. Suppose f : Rd → R is an L -Lipschitz continuous and ℓ -smooth function. Then for any\nf f\nη ∈ (0,1),withprobabilityatleast1−η,thegradientestimatorg definedbyEq. (54)hasthefollowing\nδ\nerrorbound. (cid:115)\n4L d (cid:16)d+1(cid:17) 2 (cid:16)d+1(cid:17)\nf\n∥g (x)−∇f(x)∥ ≤ log +2L d log +δℓ . (55)\nδ f f\n3N η N η\n24\n===  25 ===\nProof.",
+      "size": 358,
+      "sentences": 7
+    },
+    {
+      "id": 181,
+      "content": "(cid:16)d+1(cid:17)\nf\n∥g (x)−∇f(x)∥ ≤ log +2L d log +δℓ . (55)\nδ f f\n3N η N η\n24\n===  25 ===\nProof. Notethatg (x) d = ef d [f(x+δu )−f(x−δu )]u hasthefollowingnormbound\nδ,i 2δ i i i\nd (cid:12) (cid:12) d\n∥g\nδ,i\n(x)∥ ≤ (cid:12)f(x+δu\ni\n)−f(x−δu\ni\n)(cid:12)·∥u\ni\n∥ ≤ ·L\nf\n∥2δu\ni\n∥ = L\nf\nd. (56)\n2δ 2δ\nDefinethefollowingsmoothedapproximationoff asfollows. f δ (x) d = ef E v∼Unif(B ) [f(x+δv)], (57)\nd\nwhere Unif(B ) denotes the uniform distribution on the ball B d = ef {u ∈ Rd : ∥u∥ ≤ 1}.",
+      "size": 487,
+      "sentences": 4
+    },
+    {
+      "id": 182,
+      "content": ")], (57)\nd\nwhere Unif(B ) denotes the uniform distribution on the ball B d = ef {u ∈ Rd : ∥u∥ ≤ 1}. Then based on\nd d\nLemma1of(Flaxmanetal.,2005),wehave\nE[g δ,i (x)] = ∇f δ (x) = E v∼Unif(B ) [∇f(x+δv)]. (58)\nd\nTherefore,applyingLemma8tog (x),thefollowingboundholdswithprobabilityatleast1−η. δ,i\n(cid:115)\nN\n1 (cid:13) (cid:13) (cid:88) [g (x)−∇f (x)] (cid:13) (cid:13) < 4L f d log (cid:16)d+1(cid:17) +2L d 2 log (cid:16)d+1(cid:17) .",
+      "size": 436,
+      "sentences": 4
+    },
+    {
+      "id": 183,
+      "content": "[g (x)−∇f (x)] (cid:13) (cid:13) < 4L f d log (cid:16)d+1(cid:17) +2L d 2 log (cid:16)d+1(cid:17) . (59)\nN(cid:13) δ,i δ (cid:13) 3N η f N η\ni=1\nNotethat\n∥∇f δ (x)−∇f(x)∥ = (cid:13) (cid:13) E v∼Unif(B ) [∇f(x+δv)−∇f(x)] (cid:13) (cid:13) ≤ δℓ f . (60)\nd\nAsaresult,wecanprovetheconclusionasfollowsbyusingEqs. (59)and(60)above.",
+      "size": 326,
+      "sentences": 4
+    },
+    {
+      "id": 184,
+      "content": "3) (cid:13) ≤ δℓ f . (60)\nd\nAsaresult,wecanprovetheconclusionasfollowsbyusingEqs. (59)and(60)above. N\n(cid:13)(cid:104) 1 (cid:88) (cid:105) (cid:13)\n∥g (x)−∇f(x)∥ =(cid:13) g (x) −∇f(x)(cid:13)\nδ (cid:13) N δ,i (cid:13)\ni=1\nN\n(cid:13)(cid:104) 1 (cid:88) (cid:105) (cid:13)\n≤(cid:13) g (x) −∇f (x)(cid:13)+∥∇f (x)−∇f(x)∥\n(cid:13) N δ,i δ (cid:13) δ\ni=1\n(cid:115)\n4L d (cid:16)d+1(cid:17) 2 (cid:16)d+1(cid:17)\nf\n< log +2L d log +δℓ . f f\n3N η N η\nC.5 OrthogonalTransformation\nLemma10.",
+      "size": 485,
+      "sentences": 5
+    },
+    {
+      "id": 185,
+      "content": "7) 2 (cid:16)d+1(cid:17)\nf\n< log +2L d log +δℓ . f f\n3N η N η\nC.5 OrthogonalTransformation\nLemma10. ThereexistsanorthogonaltransformationT fromthespaceRd−1 toZ = {z = [z ,...,z ] ∈\nd 1 d\nRd : (cid:80) z = 0}, that is, T is invertible and satisfies the following properties for any x,y ∈ Z and\ni i d\nα,β ∈ R.\nT(αx+βy) =αT(x)+βT(y), (61)\n⟨T(x),T(y)⟩ =⟨x,y⟩. (62)\nProof.",
+      "size": 367,
+      "sentences": 4
+    },
+    {
+      "id": 186,
+      "content": "ties for any x,y ∈ Z and\ni i d\nα,β ∈ R.\nT(αx+βy) =αT(x)+βT(y), (61)\n⟨T(x),T(y)⟩ =⟨x,y⟩. (62)\nProof. ItcanbeverifiedthatRd admitsthefollowingorthonormalbasiswith⟨e ,e ⟩ = 0foranyi ̸= j and\ni j\n∥e ∥ = 1.\ni\n1\ne = [1,1,...,1,−k,0,0,...,0] ∈ Rd;k = 1,2,...,d−1. k (cid:112)\nk(k+1) (cid:124) (cid:123)(cid:122) (cid:125) (cid:124) (cid:123)(cid:122) (cid:125)\nk1′s (d−k−1)0′s\n25\n===  26 ===\n1\ne =√ [1,1,...,1] ∈ Rd.",
+      "size": 409,
+      "sentences": 4
+    },
+    {
+      "id": 187,
+      "content": "125) (cid:124) (cid:123)(cid:122) (cid:125)\nk1′s (d−k−1)0′s\n25\n===  26 ===\n1\ne =√ [1,1,...,1] ∈ Rd. d\nd (cid:124) (cid:123)(cid:122) (cid:125)\nd1′s\nDefinethetransformationT atx = [x ,x ,...,x ] ∈ Rd−1 asfollows. 1 2 d−1\nd−1\n(cid:88)\nT(x) = x e . (63)\ni i\ni=1\nSince Z is a linear subspace of Rd orthogonal to e , Z admits the orthonormal basis {e }d−1. Hence,\nd d d i i=1\nT(x) ∈ Z . Conversely, foranyy ∈ Z , thereexistsuniquex ∈ Rd−1 suchthaty = (cid:80)d−1x e .",
+      "size": 462,
+      "sentences": 6
+    },
+    {
+      "id": 188,
+      "content": "d i i=1\nT(x) ∈ Z . Conversely, foranyy ∈ Z , thereexistsuniquex ∈ Rd−1 suchthaty = (cid:80)d−1x e . Hence,\nd d i=1 i i\nT : Rd−1 → Zd isinvertible. Foranyx = [x ,...,x ],y = [y ,...,y ] ∈ Rd−1 andα,β ∈ R,wecanproveEqs. (61)and(62)\n1 d−1 1 d−1\nrespectivelyasfollows. d−1\n(cid:88)\nT(αx+βy) = (αx +βy )e\ni i i\ni=1\nd−1 d−1\n(cid:88) (cid:88)\n=α x e +β y e\ni i i i\ni=1 i=1\n=αT(x)+βT(y).",
+      "size": 379,
+      "sentences": 6
+    },
+    {
+      "id": 189,
+      "content": "αx+βy) = (αx +βy )e\ni i i\ni=1\nd−1 d−1\n(cid:88) (cid:88)\n=α x e +β y e\ni i i i\ni=1 i=1\n=αT(x)+βT(y). d−1 d−1\n(cid:68)(cid:88) (cid:88) (cid:69)\n⟨T(x),T(y)⟩ = x e , y e\ni i j j\ni=1 j=1\nd−1d−1\n(cid:88)(cid:88)\n= x y ⟨e ,e ⟩\ni j i j\ni=1 j=1\nd−1\n(cid:88)\n= x y = ⟨x,y⟩. i i\ni=1\nC.6 BasicInequalities\nLemma11. Foranyϵ ∈ (0,0.5]andx ≥ 4ϵ−1log(ϵ−1),thefollowinginequalityholds. logx\n0 < ≤ ϵ (64)\nx\nSpecifically,anyx ≥ 3satisfies logx ≤ 1.\nx 2\nProof.",
+      "size": 441,
+      "sentences": 5
+    },
+    {
+      "id": 190,
+      "content": "hefollowinginequalityholds. logx\n0 < ≤ ϵ (64)\nx\nSpecifically,anyx ≥ 3satisfies logx ≤ 1.\nx 2\nProof. Asϵ−1 ≥ 2,wehavex ≥ 4ϵ−1log(ϵ−1) ≥ (4)(2)log(2) > 5.54,sologx > log5.54 > 1.71,which\nprovesthefirst<ofEq. (64). Notethatthefunctionf(x) = logx hasthefollowingderivative\nx\n1−logx\nf′(x) = < 0,\nx2\n26\n===  27 ===\nwhere<useslogx > 1.71. Hence,f ismonotonicdecreasinginx ≥ 4ϵ−1log(ϵ−1) > 5.54,Therefore,we\nprovethesecond≤ofEq. (64)asfollows.",
+      "size": 435,
+      "sentences": 7
+    },
+    {
+      "id": 191,
+      "content": "e,f ismonotonicdecreasinginx ≥ 4ϵ−1log(ϵ−1) > 5.54,Therefore,we\nprovethesecond≤ofEq. (64)asfollows. logx log[4ϵ−1log(ϵ−1)]\n≤\nxϵ ϵ[4ϵ−1log(ϵ−1)]\nlog4+log(ϵ−1)+log[log(ϵ−1)]\n=\n4log(ϵ−1)\n(a) log4 log(ϵ−1)+log(ϵ−1)\n≤ + = 1, (65)\n4log(2) 4log(ϵ−1)\nwhere(a)usesϵ−1 ≥ 2andlogu ≤ uforu = log(ϵ−1). Whenx ≥ 3,f′(x) = 1−logx < 0,sof(x) ≤ f(3) = log3 < 1.\nx2 3 2\n(cid:112)\nLemma12. Foranyπ,π′ ∈ Π,wehave∥π′−π∥ ≤ 2|S|. Proof.",
+      "size": 413,
+      "sentences": 6
+    },
+    {
+      "id": 192,
+      "content": "< 0,sof(x) ≤ f(3) = log3 < 1.\nx2 3 2\n(cid:112)\nLemma12. Foranyπ,π′ ∈ Π,wehave∥π′−π∥ ≤ 2|S|. Proof. (cid:88) (cid:88) (cid:88)\n∥π′−π∥2 = |π′(a|s)−π(a|s)|2 ≤ [π′2(a|s)+π2(a|s)] ≤ [π′(a|s)+π(a|s)] = 2|S|.",
+      "size": 201,
+      "sentences": 4
+    },
+    {
+      "id": 193,
+      "content": "d:88) (cid:88) (cid:88)\n∥π′−π∥2 = |π′(a|s)−π(a|s)|2 ≤ [π′2(a|s)+π2(a|s)] ≤ [π′(a|s)+π(a|s)] = 2|S|. s,a s,a s,a\nD Negative Entropy Regularizer as a Strongly Convex Function of Occu-\npancy Measure\nThenegativeentropyregularizer(5)canberewrittenasfollows\n∞\nH (π) = E (cid:104)(cid:88) γtlogπ(a |s ) (cid:105) = 1 (cid:88) d (s,a)log d π,p π′ (s,a) , (66)\nπ′ π,p π′,ρ t t 1−γ π,p π′ d (s)\nt=0 s,a π,p π′\nwhere d (s) = (cid:80) d (s,a′).",
+      "size": 432,
+      "sentences": 2
+    },
+    {
+      "id": 194,
+      "content": ",p π′ (s,a) , (66)\nπ′ π,p π′,ρ t t 1−γ π,p π′ d (s)\nt=0 s,a π,p π′\nwhere d (s) = (cid:80) d (s,a′). Hence, it suffices to prove that the following function of occupancy\nπ,p π′ a′ π,p π′\nmeasuredisstronglyconvex. (cid:88) d(s,a)\nH(d) = d(s,a)log , (67)\nd(s)\ns,a\nwhered(s) = (cid:80) d(s,a′). Foranyα ∈ [0,1]andoccupancymeasuresd ,d ,denoted = αd +(1−α)d\na′ 1 0 α 1 0\nandthecorrespondingpolicyasπ (a|s) =\ndα(s,a)\n.",
+      "size": 412,
+      "sentences": 4
+    },
+    {
+      "id": 195,
+      "content": "pancymeasuresd ,d ,denoted = αd +(1−α)d\na′ 1 0 α 1 0\nandthecorrespondingpolicyasπ (a|s) =\ndα(s,a)\n. Thenwehave\nα dα(s)\nαH(d )+(1−α)H(d )−H(d )\n1 0 α\n(cid:88)(cid:104)\n= αd (s,a)logπ (a|s)+(1−α)d (s,a)logπ (a|s)\n1 1 0 0\ns,a\n(cid:105)\n−[αd (s,a)+(1−α)d (s,a)]logπ (a|s)\n1 0 α\n(cid:88)(cid:104) π\n1\n(a|s) π\n0\n(a|s)(cid:105)\n= αd (s,a)log +(1−α)d (s,a)log\n1 0\nπ (a|s) π (a|s)\nα α\ns,a\n(cid:88)(cid:104) π\n1\n(a|s) π\n0\n(a|s)(cid:105)\n= αd (s)π (a|s)log +(1−α)d (s)π (a|s)log\n1 1 0 0\nπ (a|s) π (a|s)\nα α\ns,a\n27\n===  28 ===\n(cid:88)(cid:104) (cid:105)\n= αd (s)KL[π (·|s)∥π (a|s)]+(1−α)d (s)KL[π (·|s)∥π (a|s)]\n1 1 α 0 0 α\ns\n(a)1 (cid:88)(cid:104) (cid:105)\n≥ αd (s)∥π (·|s)−π (·|s)∥2+(1−α)d (s)∥π (·|s)−π (·|s)∥2\n2 1 1 α 1 0 0 α 1\ns\n(b)D (cid:88)(cid:104) (cid:105)\n≥ α∥π (·|s)−π (·|s)∥2+(1−α)∥π (·|s)−π (·|s)∥2\n2 1 α 1 0 α 1\ns\nD(cid:104) (cid:105)\n≥ αmax∥π (·|s)−π (·|s)∥2+(1−α)max∥π (·|s)−π (·|s)∥2\n2 s 1 α 1 s 0 α 1\n(c)D(1−γ)(cid:104) (cid:105)\n≥ α∥d −d ∥2+(1−α)max∥d −d ∥2\n2 1 α 1 s 0 α 1\nD(1−γ)(cid:104) (cid:105)\n= α(1−α)2∥d −d ∥2+(1−α)α2∥d −d ∥2\n2 1 0 1 1 0 1\nα(1−α)\n= ·D(1−γ)∥d −d ∥2.",
+      "size": 1083,
+      "sentences": 2
+    },
+    {
+      "id": 196,
+      "content": "D(1−γ)(cid:104) (cid:105)\n= α(1−α)2∥d −d ∥2+(1−α)α2∥d −d ∥2\n2 1 0 1 1 0 1\nα(1−α)\n= ·D(1−γ)∥d −d ∥2. (68)\n2 1 0 1\nwhere(a)usesPinsker’sinequality, (b)usesAssumption3, (c)usesEq. (29)withp′ = p. Theinequality\naboveimpliesthatH(d)isD(1−γ)-stronglyconvex,sothenegativeentropyregularizer(66)canbeseenas\naD-stronglyconvexfunctionoftheoccupancymeasured . π,p π′\nE Existing Assumptions That Implies Assumption 3\nThefollowingassumptionshavebeenusedinthereinforcementlearningliterature.",
+      "size": 476,
+      "sentences": 4
+    },
+    {
+      "id": 197,
+      "content": "That Implies Assumption 3\nThefollowingassumptionshavebeenusedinthereinforcementlearningliterature. Wewillshowthateachof\ntheseassumptionsimpliesAssumption3. Assumption4. (Bhandari&Russo,2024)ρ(s) > 0foranys ∈ S.\nAssumption 5. (Agarwal et al., 2021; Leonardos et al., 2022; Wang et al., 2023; Chen & Huang, 2024)\nD := sup ∥d /ρ∥ < ∞. ρ π∈Π,p∈P π,p ∞\nAssumption 6.",
+      "size": 361,
+      "sentences": 6
+    },
+    {
+      "id": 198,
+      "content": "l., 2022; Wang et al., 2023; Chen & Huang, 2024)\nD := sup ∥d /ρ∥ < ∞. ρ π∈Π,p∈P π,p ∞\nAssumption 6. (Wei et al., 2021; Chen et al., 2022) There exists a constant µ > 0 and mixing time\nmin\nt ∈ N such that under any policy π ∈ Π and transition kernel p ∈ P, the stationary state distribution\nmix\nµ (s)hasuniformlowerboundmin µ (s) ≥ µ ,and\nπ,p s∈S π,p min\nd\n(cid:2)P\n(s = ·),µ\n(cid:3)\n≤\n1\n, (69)\nTV π,p,ρ tmix π,p\n4\nwhereP (s = ·)denotesthestatedistributionattimet ,underthepolicyπ,transitionkernelpand\nπ,p,ρ tmix mix\ninitialstatedistributionρ,andd denotesthetotalvariationdistancebetweentwoprobabilitydistributions.",
+      "size": 614,
+      "sentences": 3
+    },
+    {
+      "id": 199,
+      "content": "initialstatedistributionρ,andd denotesthetotalvariationdistancebetweentwoprobabilitydistributions. TV\nProofofAssumption4⇒Assumption3: Foranypolicyπ ∈ Π,transitionkernelp ∈ P andstates ∈ S,\nwehave\n(cid:88)\nd (s) = d (s,a)\nπ,p π,p\na\n∞\n( = a)(cid:88) (1−γ) (cid:88) γtP {s = s,a = a}\nπ,p,ρ t t\na t=0\n∞\n(cid:88)\n=(1−γ) γtP {s = s}\nπ,p,ρ t\nt=0\n28\n===  29 ===\n≥(1−γ)P {s = s}\nπ,p,ρ 0\n=(1−γ)ρ(s)\n≥(1−γ)minρ(s). s∈S\nAs S is a finite state space, ρ(s) > 0,∀s ∈ S implies that min ρ(s) > 0.",
+      "size": 480,
+      "sentences": 3
+    },
+    {
+      "id": 200,
+      "content": "−γ)ρ(s)\n≥(1−γ)minρ(s). s∈S\nAs S is a finite state space, ρ(s) > 0,∀s ∈ S implies that min ρ(s) > 0. Hence, Assumption 3 holds\ns∈S\nwithD = (1−γ)min ρ(s) > 0.\ns∈S\nProof of Assumption 5⇒Assumption 3: If ρ(s) = 0 for a state s, then Assumption 5 implies that\nd (s) = (1−γ) (cid:80)∞ γtP {s = s} = 0foranyπ ∈ Πandp ∈ P,whichmeansthestateswillnever\nπ,p t=0 π,p,ρ t\nbevisited. Therefore,wecanexcludeallsuchstatessfromS suchthatAssumption4holds,whichimplies\nAssumption3asprovedabove.",
+      "size": 475,
+      "sentences": 4
+    },
+    {
+      "id": 201,
+      "content": "ore,wecanexcludeallsuchstatessfromS suchthatAssumption4holds,whichimplies\nAssumption3asprovedabove. ProofofAssumption6⇒Assumption3: Eq. (69)impliesthatforanyn ∈ N ,wehave\n+\nd (cid:2)P (s = ·),µ (cid:3) = 1 (cid:88) |P {s = s}−µ (s)| ≤ 1 . TV π,p,ρ nt mix π,p 2 π,p,ρ nt mix π,p 4n\ns\nSelectn = ⌈log(µ−1 )/log4⌉. Thentheboundaboveimplies|P {s = s}−µ (s)| ≤ µ /2for\nmin π,p,ρ nt mix π,p min\nanystates,whichalongwithµ (s) ≥ µ impliesthatP {s = s} ≥ µ /2.",
+      "size": 450,
+      "sentences": 5
+    },
+    {
+      "id": 202,
+      "content": "| ≤ µ /2for\nmin π,p,ρ nt mix π,p min\nanystates,whichalongwithµ (s) ≥ µ impliesthatP {s = s} ≥ µ /2. Therefore,wecan\nπ,p min π,p,ρ nt min\nmix\nproveAssumption3asfollows. ∞\nd (s) =(1−γ) (cid:88) γtP {s = s} ≥ (1−γ)γnt mix P {s = s} ≥ µ min γnt mix(1−γ). π,p π,p,ρ t π,p,ρ nt\nmix 2\nt=0\nF Proof of Theorem 1\nFix any π ,π ∈ Π. For any α ∈ [0,1], denote d = αd + (1 − α)d , π (a|s) =\ndα(s,a)\nwhere d (\n0\ns) =\n1\n(cid:80) d (s,a′), and p = p .",
+      "size": 434,
+      "sentences": 5
+    },
+    {
+      "id": 203,
+      "content": ",1], denote d = αd + (1 − α)d , π (a|s) =\ndα(s,a)\nwhere d (\n0\ns) =\n1\n(cid:80) d (s,a′), and p = p . It can\nα\nbe easil\nπ\ny\n1,\nv\np\ne\nπ\nr\n1\nified that d =\nπ0,\nd\npπ0\n,\nα\nd = d\ndα\na\n(s\nn\n)\nd\nα a′ α α πα 0 π0,p0 1 π1,p1\nd = αd +(1−α)d . Thenwecanobtainthefollowingderivativesandtheirboundsaboutπ ,d inEqs. α 0 1 α α\n(70)-(76).",
+      "size": 320,
+      "sentences": 4
+    },
+    {
+      "id": 204,
+      "content": "+(1−α)d . Thenwecanobtainthefollowingderivativesandtheirboundsaboutπ ,d inEqs. α 0 1 α α\n(70)-(76). d (s)[d (s,a)−d (s,a)]−d (s,a)[d (s)−d (s)]\nα 1 0 α 1 0\nd2(s)\nα\n[αd (s)+(1−α)d (s)][d (s,a)−d (s,a)]−[αd (s,a)+(1−α)d (s,a)][d (s)−d (s)]\n1 0 1 0 1 0 1 0\n=\nd2(s)\nα\nd (s)d (s,a)−d (s,a)d (s)\n0 1 0 1\n=\nd2(s)\nα\nd (s)d (s)[π (a|s)−π (a|s)]\n0 1 1 0\n= .",
+      "size": 347,
+      "sentences": 4
+    },
+    {
+      "id": 205,
+      "content": "0 1 0\n=\nd2(s)\nα\nd (s)d (s,a)−d (s,a)d (s)\n0 1 0 1\n=\nd2(s)\nα\nd (s)d (s)[π (a|s)−π (a|s)]\n0 1 1 0\n= . (70)\nd2(s)\nα\nHence,\n(cid:13)\n(cid:13)\ndπ\nα\n(cid:13)\n(cid:13)\n2\n=\n(cid:88)(cid:12)\n(cid:12)\nd\n0\n(s)d\n1\n(s)[π\n1\n(a|s)−π\n0\n(a|s)](cid:12)\n(cid:12)\n2\n(cid:13) dα (cid:13) (cid:12) d2(s) (cid:12)\ns,a α\n(\n≤\na)(cid:88)(cid:104)max[d\n0\n(s),d\n1\n(s)]min[d\n0\n(s),d\n1\n(s)](cid:105)2\n[π (a|s)−π (a|s)]2\nmin2[d (s),d (s)] 1 0\ns,a 0 1\n(b) (cid:88)\n≤D−2 [π (a|s)−π (a|s)]2 ≤ D−2∥π −π ∥2, (71)\n1 0 1 0\ns,a\n29\n===  30 ===\nwhere(a)usesd (s) = αd (s)+(1−α)d (s) ≥ min[d (s),d (s)]and(b)usesAssumption3.",
+      "size": 582,
+      "sentences": 2
+    },
+    {
+      "id": 206,
+      "content": "0\ns,a\n29\n===  30 ===\nwhere(a)usesd (s) = αd (s)+(1−α)d (s) ≥ min[d (s),d (s)]and(b)usesAssumption3. Thenby\nα 1 0 0 1\ntakingderivativeofEq. (70),wehave\nd2 2d (s)d (s)[π (a|s)−π (a|s)][d (s)−d (s)]\n0 1 1 0 1 0\nπ (a|s) = − .",
+      "size": 221,
+      "sentences": 3
+    },
+    {
+      "id": 207,
+      "content": "gderivativeofEq. (70),wehave\nd2 2d (s)d (s)[π (a|s)−π (a|s)][d (s)−d (s)]\n0 1 1 0 1 0\nπ (a|s) = − . (72)\ndα2 α d3(s)\nα\nHence,\n(cid:13)\n(cid:13)\nd2π\nα\n(cid:13)\n(cid:13)\n2\n=\n(cid:88)(cid:12)\n(cid:12)\n2d\n0\n(s)d\n1\n(s)[π\n1\n(a|s)−π\n0\n(a|s)][d\n1\n(s)−d\n0\n(s)](cid:12)\n(cid:12)\n2\n(cid:13) dα2 (cid:13) (cid:12) [αd (s)+(1−α)d (s)]3 (cid:12)\n1 0\ns,a\n(cid:12) (cid:12)\n(\n≤\na)(cid:88)(cid:104)2max[d\n0\n(s),d\n1\n(s)]min[d\n0\n(s),d\n1\n(s)](cid:12)d\n1\n(s)−d\n0\n(s)(cid:12)(cid:105)2\n[π (a|s)−π (a|s)]2\nD2min[d (s),d (s)] 1 0\n0 1\ns,a\n≤(2D−2)2max (cid:2) |d (s)−d (s)|2(cid:3)(cid:88) [π (a|s)−π (a|s)]2\n1 0 1 0\ns\ns,a\n(cid:104)(cid:88) (cid:105)2\n≤(2D−2)2∥π −π ∥2 |d (s)−d (s)|\n1 0 1 0\ns\n(cid:112) (cid:112)\n(b) (cid:104)γ |A| γ |S| (cid:105)2\n≤(2D−2)2∥π −π ∥2 ∥π −π ∥+ ∥p −p ∥\n1 0\n1−γ\n1 0\n1−γ\nπ1 π0\n(cid:112) (cid:112)\n(c) (cid:104)γ |A| γϵ |S| (cid:105)2\n≤(2D−2)2∥π −π ∥2 ∥π −π ∥+ p ∥π −π ∥\n1 0 1 0 1 0\n1−γ 1−γ\n(cid:112) (cid:112)\n(cid:104)γ(ϵ |S|+ |A|)(cid:105)2\n≤(2D−2)2∥π −π ∥4 p , (73)\n1 0\n1−γ\nwhere(a)usesd (s) = αd (s)+(1−α)d (s) ≥ min[d (s),d (s)] ≥ D,(b)usesLemma3,and(c)uses\nα 1 0 0 1\nAssumption1.",
+      "size": 1087,
+      "sentences": 3
+    },
+    {
+      "id": 208,
+      "content": "sesd (s) = αd (s)+(1−α)d (s) ≥ min[d (s),d (s)] ≥ D,(b)usesLemma3,and(c)uses\nα 1 0 0 1\nAssumption1. (cid:12) d (cid:104)d (s,a)(cid:105)(cid:12)\nd (s)d (s)(cid:12) α (cid:12)\n0 1 (cid:12)dα d2(s) (cid:12)\nα\n(cid:12)d (s)d (s) 2d (s)d (s)d (s,a) (cid:12)\n=(cid:12) 0 1 [d (s,a)−d (s,a)]− 0 1 α [d (s)−d (s)](cid:12)\n(cid:12) d2(s) 1 0 d3(s) 1 0 (cid:12)\nα α\nd (s)d (s)(cid:104) 2d (s,a) (cid:105)\n0 1 α\n≤ |d (s,a)−d (s,a)|+ |d (s)−d (s)|\nd2(s) 1 0 d (s) 1 0\nα α\nmax[d 0 (s),d 1 (s)]min[d 0 (s),d 1 (s)](cid:2) (cid:3)\n≤ |d (s,a)−d (s,a)|+2π (a|s)|d (s)−d (s)|\nmin2[d (s),d (s)] 1 0 α 1 0\n0 1\n≤D−1(cid:2)\n|d (s,a)−d (s,a)|+2π (a|s)|d (s)−d (s)|\n(cid:3)\n.",
+      "size": 652,
+      "sentences": 2
+    },
+    {
+      "id": 209,
+      "content": "(s)|\nmin2[d (s),d (s)] 1 0 α 1 0\n0 1\n≤D−1(cid:2)\n|d (s,a)−d (s,a)|+2π (a|s)|d (s)−d (s)|\n(cid:3)\n. (74)\n1 0 α 1 0\nd\n[d (s,a)p (s′|s,a)]\nα α\ndα\nd\n=p (s′|s,a)[d (s,a)−d (s,a)]+d (s,a)· π (a|s)·∇ p (s′|s,a)\nα 1 0 α\ndα\nα π πα\nd (s,a)d (s)d (s)[π (a|s)−π (a|s)]\n=p (s′|s,a)[d (s,a)−d (s,a)]+ α 0 1 1 0 ·∇ p (s′|s,a) (75)\nα 1 0 d2(s) π πα\nα\nThenforanyα,α′ ∈ [0,1],wehave\n(cid:12) d d (cid:12)\n(cid:12) [d (s,a)p (s′|s,a)]− [d (s,a)p (s′|s,a)](cid:12)\n(cid:12)dα α′ α′ dα α α (cid:12)\n30\n===  31 ===\n(a)\n≤|p (s′|s,a)−p (s′|s,a)|·|d (s,a)−d (s,a)|+d (s)d (s)|π (a|s)−π (a|s)|·\nα′ α 1 0 0 1 1 0\n(cid:104)(cid:12)d (s,a)(cid:12) (cid:12)d (s,a) d (s,a)(cid:12) (cid:105)\n(cid:12) α′ (cid:12)∥∇ p (s′|s,a)−∇ p (s′|s,a)∥+(cid:12) α′ − α (cid:12)∥∇ p (s′|s,a)∥\n(cid:12) d2 (s) (cid:12) π π α′ π πα (cid:12) d2 (s) d2(s) (cid:12) π πα\nα′ α′ α\n(b)\n≤ϵ ∥π −π ∥|d (s,a)−d (s,a)|\np α′ α 1 0\nmax[d (s),d (s)]min[d (s),d (s)]\n0 1 0 1\n+π (a|s)|π (a|s)−π (a|s)|· ·S ∥π −π ∥\nα′ 1 0 p α′ α\nmin[d (s),d (s)]\n0 1\n+D−1ϵ |π (a|s)−π (a|s)|· (cid:2) |d (s,a)−d (s,a)|+2π (a|s)|d (s)−d (s)| (cid:3) ·|α′−α|\np 1 0 1 0 α 1 0\n(c)\n≤ϵ D−1∥π −π ∥·|α′−α|·|d (s,a)−d (s,a)|\np 1 0 1 0\n+S π (a|s)·|π (a|s)−π (a|s)|·[d (s)+d (s)]·D−1∥π −π ∥·|α′−α|\np α′ 1 0 0 1 1 0\n+D−1ϵ |π (a|s)−π (a|s)|· (cid:2) |d (s,a)−d (s,a)|+2π (a|s)|d (s)−d (s)| (cid:3) ·|α′−α|\np 1 0 1 0 α 1 0\n(d)\n≤ℓ (s,a)|α′−α|, (76)\ndp\nwhere (a) uses Eq.",
+      "size": 1373,
+      "sentences": 2
+    },
+    {
+      "id": 210,
+      "content": "π (a|s)|d (s)−d (s)| (cid:3) ·|α′−α|\np 1 0 1 0 α 1 0\n(d)\n≤ℓ (s,a)|α′−α|, (76)\ndp\nwhere (a) uses Eq. (75), (b) uses Assumptions 1-2, d (s,a) = d (s)π (a|s), d (s) = α′d (s)+(1−\nα′ α′ α′ α′ 1\nα′)d (s) ≥ min[d (s),d (s)]andEq. (74),(c)usesAssumption3aswellasEq. (71),(d)definesℓ (s,a)\n0 0 1 dp\nasthefollowingEq. (77)andusesπ (a|s) =\nαd1(s)π1(a|s)+(1−α)d0(s)π0(a|s)\n≤ π (a|s)+π (a|s).",
+      "size": 380,
+      "sentences": 5
+    },
+    {
+      "id": 211,
+      "content": "0 0 1 dp\nasthefollowingEq. (77)andusesπ (a|s) =\nαd1(s)π1(a|s)+(1−α)d0(s)π0(a|s)\n≤ π (a|s)+π (a|s). α αd1(s)+(1−α)d0(s) 0 1\nℓ (s,a) =2D−1ϵ ∥π −π ∥|d (s,a)−d (s,a)|\ndp p 1 0 1 0\n+2D−1ϵ [π (a|s)+π (a|s)]·|π (a|s)−π (a|s)|·|d (s)−d (s)|\np 1 0 1 0 1 0\n+D−1S [π (a|s)+π (a|s)]·|π (a|s)−π (a|s)|·∥π −π ∥·[d (s)+d (s)]. (77)\np 1 0 1 0 1 0 0 1\nDenote e (s) = d (s) − d (s) as the error term due to the policy-dependent transition kernel\nα πα,pα α\np = p 1.",
+      "size": 446,
+      "sentences": 4
+    },
+    {
+      "id": 212,
+      "content": "= d (s) − d (s) as the error term due to the policy-dependent transition kernel\nα πα,pα α\np = p 1. Notethattheoccupancymeasure(2)satisfiesthattheBellmanequation(3)repeatedasfollows. α πα\n(cid:88)\nd (s′) = (1−γ)ρ(s′)+γ d (s)π(a|s)p(s′|s,a), s′ ∈ S. (78)\nπ,p π,p\ns,a\nTherefore,theerrorterme (s)satisfiesthefollowingrecursion.",
+      "size": 323,
+      "sentences": 3
+    },
+    {
+      "id": 213,
+      "content": "(a|s)p(s′|s,a), s′ ∈ S. (78)\nπ,p π,p\ns,a\nTherefore,theerrorterme (s)satisfiesthefollowingrecursion. α\ne (s′)\nα\n=d (s′)−αd (s′)−(1−α)d (s′)\nπα,pα 1 0\n(cid:88)\n=γ [d (s)π (a|s)p (s′|s,a)−αd (s)π (a|s)p (s′|s,a)\nπα,pα α α π1,p1 1 1\ns,a\n−(1−α)d (s)π (a|s)p (s′|s,a)]\nπ0,p0 0 0\n(cid:88)\n=γ [e (s)π (a|s)p (s′|s,a)+d (s,a)p (s′|s,a)−αd (s,a)p (s′|s,a)\nα α α α α 1 1\ns,a\n−(1−α)d (s,a)p (s′|s,a)].",
+      "size": 389,
+      "sentences": 2
+    },
+    {
+      "id": 214,
+      "content": ")π (a|s)p (s′|s,a)+d (s,a)p (s′|s,a)−αd (s,a)p (s′|s,a)\nα α α α α 1 1\ns,a\n−(1−α)d (s,a)p (s′|s,a)]. (79)\n0 0\nTheaboveinequalityimpliesthat\n(cid:88)\n|e (s′)|\nα\ns′\n1Ifp ≡pdoesnotdependonthepolicyπ ,itcanbeeasilyverifiedthate (s)=0foralls∈S.",
+      "size": 238,
+      "sentences": 2
+    },
+    {
+      "id": 215,
+      "content": "(cid:88)\n|e (s′)|\nα\ns′\n1Ifp ≡pdoesnotdependonthepolicyπ ,itcanbeeasilyverifiedthate (s)=0foralls∈S. πα α α\n31\n===  32 ===\n≤γ (cid:88) (cid:2) |e (s)|π (a|s)p (s′|s,a)\nα α α\ns,a,s′\n+|d (s,a)p (s′|s,a)−αd (s,a)p (s′|s,a)−(1−α)d (s,a)p (s′|s,a)| (cid:3)\nα α 1 1 0 0\n(a) (cid:88) γα(1−α) (cid:88)\n≤γ |e (s)|+ ℓ (s,a)\nα dp\n2\ns s,a,s′\n(b) (cid:88) γ|S|α(1−α)(cid:104) (cid:88)\n≤γ |e (s)|+ 2D−1ϵ ∥π −π ∥ |d (s,a)−d (s,a)|\nα p 1 0 1 0\n2\ns s,a\n(cid:88) (cid:105)\n+4D−1ϵ ∥π −π ∥ |d (s)−d (s)|+4D−1S ∥π −π ∥ ·∥π −π ∥\np 1 0 ∞ 1 0 p 1 0 ∞ 1 0\ns\n(c) (cid:88) γ|S|α(1−α)(cid:104) 1 (cid:16)(cid:112) (cid:112) (cid:17)\n≤γ |e (s)|+ 6D−1ϵ ∥π −π ∥· |A|∥π −π ∥+γ |S|∥p −p ∥\nα\n2\np 1 0\n1−γ\n1 0 π1 π0\ns\n(cid:105)\n+4D−1S ∥π −π ∥2\np 1 0\n( ≤ d) γ (cid:88) |e (s)|+3D−1γ|S|α(1−α)∥π −π ∥2 (cid:104) ϵ p ( (cid:112) |A|+γϵ (cid:112) |S|)+S (cid:105) ,\nα 1 0 p p\n1−γ\ns\nwhere(a)usesEq.",
+      "size": 855,
+      "sentences": 2
+    },
+    {
+      "id": 216,
+      "content": "−π ∥2 (cid:104) ϵ p ( (cid:112) |A|+γϵ (cid:112) |S|)+S (cid:105) ,\nα 1 0 p p\n1−γ\ns\nwhere(a)usesEq. (76)whichimpliesthatd (s,a)p (s′|s,a)isaLipschitzsmoothfunctionwithLipschitz\nα α\nconstantℓ (s,a)definedbyEq. (77),(b)usesEq. (77),(c)uses∥π −π ∥ ≤ ∥π −π ∥andLemma3,\ndp 1 0 ∞ 1 0\nand(d)usesAssumption1. Rearrangingtheaboveinequality,weget\n(cid:88)\n|e (s)| ≤\n3γ|S|α(1−α)\n∥π −π\n∥2(cid:2)\nϵ\n(cid:0)(cid:112)\n|A|+γϵ\n(cid:112)\n|S|\n(cid:1)\n+S (1−γ)\n(cid:3)\n.",
+      "size": 450,
+      "sentences": 5
+    },
+    {
+      "id": 217,
+      "content": ")| ≤\n3γ|S|α(1−α)\n∥π −π\n∥2(cid:2)\nϵ\n(cid:0)(cid:112)\n|A|+γϵ\n(cid:112)\n|S|\n(cid:1)\n+S (1−γ)\n(cid:3)\n. (80)\nα D(1−γ)2 1 0 p p p\ns\nTherefore,foranyrewardfunctionr,wehave\nJ (π ,π ,p ,r)−αJ (π ,π ,p ,r)−(1−α)J (π ,π ,p ,r)\nλ α α α λ 1 1 1 λ 0 0 0\n(a) 1 (cid:88)(cid:104)\n= d (s,a)[r(s,a)−λlogπ (a|s)]−αd (s,a)[r(s,a)−λlogπ (a|s)]\n1−γ\nπα,pα α 1 1\ns,a\n(cid:105)\n−(1−α)d (s,a)[r(s,a)−λlogπ (a|s)]\n0 0\n1 (cid:88)(cid:104)\n= [d (s,a)−d (s,a)][r(s,a)−λlogπ (a|s)]+d (s,a)[r(s,a)−λlogπ (a|s)]\n1−γ\nπα,pα α α α α\ns,a\n(cid:105)\n−αd (s,a)[r(s,a)−λlogπ (a|s)]−(1−α)d (s,a)[r(s,a)−λlogπ (a|s)]\n1 1 0 0\n(b) 1 (cid:88)\n= [d (s)−d (s)]π (a|s)[r(s,a)−λlogπ (a|s)]\n1−γ\nπα,pα α α α\ns,a\nλ (cid:88)(cid:104) π\n1\n(a|s) π\n0\n(a|s)(cid:105)\n+ αd (s,a)log +(1−α)d (s,a)log\n1 0\n1−γ π (a|s) π (a|s)\nα α\ns,a\n(c) 1+λlog|A|(cid:88)\n≥ − |e (s)|\nα\n1−γ\ns\nλ (cid:88)(cid:104) (cid:88)(cid:16) π\n1\n(a|s)(cid:17) (cid:88)(cid:16) π\n0\n(a|s)(cid:17)(cid:105)\n+ αd (s) π (a|s)log +(1−α)d (s) π (a|s)log\n1 1 0 0\n1−γ π (a|s) π (a|s)\nα α\ns a a\n(\n≥\nd)\n−\n1+λlog|A|3γ|S|α(1−α)\n∥π −π\n∥2(cid:2)\nϵ\n(cid:0)(cid:112)\n|A|+γϵ\n(cid:112)\n|S|\n(cid:1)\n+S (1−γ)\n(cid:3)\n1−γ D(1−γ)2 1 0 p p p\n32\n===  33 ===\nλ (cid:88)(cid:104) (cid:105)\n+ αd (s)KL[π (·|s)∥π (·|s)]+(1−α)d (s)KL[π (·|s)∥π (·|s)]\n1 1 α 0 0 α\n1−γ\ns\n(\n≥\ne)\n−\n3γ|S|α(1−α)(1+λlog|A|)\n∥π −π\n∥2(cid:2)\nϵ\n(cid:0)(cid:112)\n|A|+γϵ\n(cid:112)\n|S|\n(cid:1)\n+S (1−γ)\n(cid:3)\nD(1−γ)3 1 0 p p p\nλ (cid:88)(cid:104) (cid:105)\n+ αd (s)∥π (·|s)−π (·|s)∥2+(1−α)d (s)∥π (·|s)−π (·|s)∥2\n2(1−γ) 1 1 α 1 0 0 α 1\ns\n(\n=\nf)\n−\n3γ|S|α(1−α)(1+λlog|A|)\n∥π −π\n∥2(cid:2)\nϵ\n(cid:0)(cid:112)\n|A|+γϵ\n(cid:112)\n|S|\n(cid:1)\n+S (1−γ)\n(cid:3)\nD(1−γ)3 1 0 p p p\n+\nλ (cid:88)(cid:104)\nαd (s)\n(cid:13)\n(cid:13)\n(1−α)d\n0\n(s)\n[π (·|s)−π (·|s)]\n(cid:13)\n(cid:13)\n2\n2(1−γ) 1 (cid:13) d α (s) 1 0 (cid:13) 1\ns\n(cid:13)αd (s) (cid:13)2(cid:105)\n+(1−α)d (s)(cid:13) 1 [π (·|s)−π (·|s)](cid:13)\n0 (cid:13) d α (s) 1 0 (cid:13) 1\n( = g)λα(1−α) (cid:88) d 0 (s)d 1 (s) ∥π (·|s)−π (·|s)∥2\n2(1−γ) d (s) 1 0 1\nα\ns\n−\n3γ|S|α(1−α)(1+λlog|A|)\n∥π −π\n∥2(cid:2)\nϵ\n(cid:0)(cid:112)\n|A|+γϵ\n(cid:112)\n|S|\n(cid:1)\n+S (1−γ)\n(cid:3)\nD(1−γ)3 1 0 p p p\n(h)Dλα(1−α)\n≥ ∥π −π ∥2\n1 0\n2(1−γ)\n−\n3γ|S|α(1−α)(1+λlog|A|)\n∥π −π\n∥2(cid:2)\nϵ\n(cid:0)(cid:112)\n|A|+γϵ\n(cid:112)\n|S|\n(cid:1)\n+S (1−γ)\n(cid:3)\nD(1−γ)3 1 0 p p p\n( = i)µ 1 α(1−α) ∥π −π ∥2, (81)\n1 0\n2\nwhere (a) uses Eq.",
+      "size": 2297,
+      "sentences": 2
+    },
+    {
+      "id": 218,
+      "content": "(cid:1)\n+S (1−γ)\n(cid:3)\nD(1−γ)3 1 0 p p p\n( = i)µ 1 α(1−α) ∥π −π ∥2, (81)\n1 0\n2\nwhere (a) uses Eq. (30), (b) uses d (s,a) = d (s)π (a|s), d (s,a) = d (s)π (a|s) and d =\nπα,pα πα,pα α α α α α\n(cid:80)\nαd +(1−α)d ,(c)usesr(s,a) ∈ [0,1],− π (a|s)logπ (a|s) ∈ [0,log|A|]ande (s) = d (s)−\n1 0 a α α α πα,pα\nd (s), (d) uses Eq.",
+      "size": 322,
+      "sentences": 2
+    },
+    {
+      "id": 219,
+      "content": ",a) ∈ [0,1],− π (a|s)logπ (a|s) ∈ [0,log|A|]ande (s) = d (s)−\n1 0 a α α α πα,pα\nd (s), (d) uses Eq. (25), (e) uses Pinsker’s inequality, (f) uses π (a|s) =\ndα(s,a)\n=\nαd1(s)\nπ (a|s) +\nα α dα(s) dα(s) 1\n(1−α)d0(s)\nπ (a|s),(g)usesd (s) = αd (s)+(1−α)d (s),(h)usesAssumption3andd (s) ≤ max[d (s),d (s)],\ndα(s) 0 α 1 0 α 0 1\nand(i)definestheconstantµ below. 1\ndef Dλ 6γ|S|(1+λlog|A|)(cid:2) (cid:0)(cid:112) (cid:112) (cid:1) (cid:3)\nµ = − ϵ |A|+γϵ |S| +S (1−γ) .",
+      "size": 458,
+      "sentences": 3
+    },
+    {
+      "id": 220,
+      "content": "Dλ 6γ|S|(1+λlog|A|)(cid:2) (cid:0)(cid:112) (cid:112) (cid:1) (cid:3)\nµ = − ϵ |A|+γϵ |S| +S (1−γ) . (82)\n1 1−γ D(1−γ)3 p p p\nNext,webegintoconsiderthepolicy-dependentrewardr = r .",
+      "size": 179,
+      "sentences": 2
+    },
+    {
+      "id": 221,
+      "content": "|+γϵ |S| +S (1−γ) . (82)\n1 1−γ D(1−γ)3 p p p\nNext,webegintoconsiderthepolicy-dependentrewardr = r . Definethefunctionw(α) = αJ (π ,π ,p ,r )+\nα πα λ 1 1 1 α\n(1−α)J (π ,π ,p ,r ),whichhasthefollowingderivative\nλ 0 0 0 α\nw′(α) =J (π ,π ,p ,r )−J (π ,π ,p ,r )\nλ 1 1 1 α λ 0 0 0 α\ndπ\nα\n+[α∇ J (π ,π ,p ,r )+(1−α)∇ J (π ,π ,p ,r )](∇ r ) (83)\nr λ 1 1 1 α r λ 0 0 0 α π πα\ndα\nForany0 ≤ α ≤ α′ ≤ 1,weprovethesmoothnessofw(α)asfollows.",
+      "size": 428,
+      "sentences": 3
+    },
+    {
+      "id": 222,
+      "content": "r ) (83)\nr λ 1 1 1 α r λ 0 0 0 α π πα\ndα\nForany0 ≤ α ≤ α′ ≤ 1,weprovethesmoothnessofw(α)asfollows. |w′(α′)−w′(α)|\n(cid:12)(cid:90) α′\ndπ\n=(cid:12) ∇ [J (π ,π ,p ,r )−J (π ,π ,p ,r )](∇ r ) α˜ dα˜\n(cid:12) r λ 1 1 1 α˜ λ 0 0 0 α˜ π πα˜ dα˜\nα\n(cid:16)dπ dπ (cid:17)\n+[α′∇ J (π ,π ,p ,r )+(1−α′)∇ J (π ,π ,p ,r )](∇ r ) α′ − α\nr λ 1 1 1 α′ r λ 0 0 0 α′ π π α′ dα′ dα\n33\n===  34 ===\ndπ\n+[α′∇ J (π ,π ,p ,r )+(1−α′)∇ J (π ,π ,p ,r )](∇ r −∇ r ) α\nr λ 1 1 1 α′ r λ 0 0 0 α′ π π α′ π πα dα\n+ (cid:8) α′[∇ J (π ,π ,p ,r )−∇ J (π ,π ,p ,r )]\nr λ 1 1 1 α′ r λ 1 1 1 α\n+(1−α′)[∇ J (π ,π ,p ,r )−∇ J (π ,π ,p ,r )] (cid:9) (∇ r ) dπ α\nr λ 0 0 0 α′ r λ 0 0 0 α π πα\ndα\ndπ (cid:12)\n+(α′−α)[∇ J (π ,π ,p ,r )−∇ J (π ,π ,p ,r )](∇ r ) α(cid:12)\nr λ 1 1 1 α r λ 0 0 0 α π πα dα (cid:12)\n(a)(cid:90) α′\nϵ r ∥π 1 −π 0 ∥(cid:0) (cid:1)\n≤ max∥π (·|s)−π (·|s)∥ +γmax∥p (·|s,a)−p (·|s,a)∥ dα˜\nD(1−γ)2 s 1 0 1 s,a 1 0 1\nα\n(cid:112) (cid:112)\nϵ (cid:104)γ(ϵ |S|+ |A|)(cid:105) S ∥π −π ∥\n+ r ·2D−2∥π −π ∥2 p |α′−α|+ r α′ α ·D−1∥π −π ∥\n1 0 1 0\n1−γ 1−γ 1−γ\n+0+|α′−α|· ϵ r ∥π 1 −π 0 ∥(cid:0) max∥π (·|s)−π (·|s)∥ +γmax∥p (·|s,a)−p (·|s,a)∥ (cid:1)\nD(1−γ)2 s 1 0 1 s,a 1 0 1\n( ≤ b) 2|α′−α|· ϵ r ∥π 1 −π 0 ∥(cid:0)(cid:112) |A|∥π −π ∥+γ (cid:112) |S|∥p −p ∥ (cid:1)\nD(1−γ)2 1 0 1 0\n(cid:112) (cid:112)\n2ϵ ∥π −π ∥2(cid:104)γ(ϵ |S|+ |A|)(cid:105) S ∥π −π ∥2\n+ r 1 0 p |α′−α|+ r 1 0 |α′−α|\nD2(1−γ) 1−γ D2(1−γ)\n( ≤ c)2ϵ r ∥π 1 −π 0 ∥(cid:0)(cid:112) |A|∥π −π ∥+γϵ (cid:112) |S|∥π −π ∥ (cid:1) |α′−α|\nD(1−γ)2 1 0 p 1 0\n+ 2γϵ r ∥π 1 −π 0 ∥2 (cid:0)(cid:112) |A|+ϵ (cid:112) |S| (cid:1) |α′−α|+ S r (1−γ)∥π 1 −π 0 ∥2 |α′−α|\nD2(1−γ)2 p D2(1−γ)2\n(cid:112) (cid:112)\n(d)4ϵ ( |A|+γϵ |S|)+S (1−γ)\n≤ r p r ∥π −π ∥2|α′−α|,\nD2(1−γ)2 1 0\nwhere(a)usesAssumptions1-2,∥∇ J (·,·,·,·)∥ ≤ 1 (impliedbyEq.",
+      "size": 1751,
+      "sentences": 2
+    },
+    {
+      "id": 223,
+      "content": ")\n≤ r p r ∥π −π ∥2|α′−α|,\nD2(1−γ)2 1 0\nwhere(a)usesAssumptions1-2,∥∇ J (·,·,·,·)∥ ≤ 1 (impliedbyEq. (40))aswellasEqs. (44),(71)and\n√ r λ 1−γ\n(73),(b)usesEq. (71)and∥x∥ ≤ d∥x∥foranyx ∈ Rd,(c)usesAssumption1,and(d)usesD,γ ∈ [0,1]. 1\nTheinequalityaboveimpliesthatw(α)isµ ∥π −π ∥2-Lipschitzsmoothwiththeconstantµ definedas\n2 1 0 2\nfollows.",
+      "size": 335,
+      "sentences": 5
+    },
+    {
+      "id": 224,
+      "content": "equalityaboveimpliesthatw(α)isµ ∥π −π ∥2-Lipschitzsmoothwiththeconstantµ definedas\n2 1 0 2\nfollows. (cid:112) (cid:112)\n4ϵ ( |A|+ϵ |S|)+S (1−γ)\nr p r\nµ = (84)\n2 D2(1−γ)2\nTherefore,\nVπα −αVπ1 −(1−α)Vπ0\nλ,πα λ,π1 λ,π0\n=J (π ,π ,p ,r )−αJ (π ,π ,p ,r )−(1−α)J (π ,π ,p ,r )\nλ α α α α λ 1 1 1 1 λ 0 0 0 0\n(a) µ α(1−α)\n≥αJ (π ,π ,p ,r )+(1−α)J (π ,π ,p ,r )+ 1 ∥π −π ∥2\nλ 1 1 1 α λ 0 0 0 α 1 0\n2\n−αJ (π ,π ,p ,r )−(1−α)J (π ,π ,p ,r )\nλ 1 1 1 1 λ 0 0 0 0\nµ α(1−α)\n=w(α)−αw(1)−(1−α)w(0)+ 1 ∥π −π ∥2\n1 0\n2\n(b)(µ −µ )α(1−α)\n≥ 1 2 ∥π −π ∥2\n1 0\n2\n( = c)µα(1−α) ∥π −π ∥2, (85)\n1 0\n2\n34\n===  35 ===\nwhere(a)usesEq.",
+      "size": 602,
+      "sentences": 2
+    },
+    {
+      "id": 225,
+      "content": "µ −µ )α(1−α)\n≥ 1 2 ∥π −π ∥2\n1 0\n2\n( = c)µα(1−α) ∥π −π ∥2, (85)\n1 0\n2\n34\n===  35 ===\nwhere(a)usesEq. (81)withr replacedbyr , (b)usesthefactprovedabovethatw(α)isµ ∥π −π ∥2-\nα 2 1 0\nLipschitzsmooth,and(c)definesthefollowingconstantµ. def\nµ =µ −µ\n1 2\n(a) Dλ 6γ|S|(1+λlog|A|)(cid:2) (cid:0)(cid:112) (cid:112) (cid:1) (cid:3)\n= − ϵ |A|+γϵ |S| +S (1−γ)\n1−γ D(1−γ)3 p p p\n(cid:112) (cid:112)\nS (1−γ)+4ϵ ( |A|+ϵ |S|)\nr r p\n− , (86)\nD2(1−γ)2\nwhere(a)usesEqs. (82)and(84). RearrangingEq.",
+      "size": 477,
+      "sentences": 5
+    },
+    {
+      "id": 226,
+      "content": "d:112)\nS (1−γ)+4ϵ ( |A|+ϵ |S|)\nr r p\n− , (86)\nD2(1−γ)2\nwhere(a)usesEqs. (82)and(84). RearrangingEq. (85),weobtainthat\nVπα −Vπ0\nµ(1−α)\nλ,πα λ,π0 ≥ Vπ1 −Vπ0 + ∥π −π ∥2. α λ,π1 λ,π0 2 1 0\nLettingα → +0above,wecanprovetheconclusionasfollows.",
+      "size": 237,
+      "sentences": 5
+    },
+    {
+      "id": 227,
+      "content": "λ,π0 ≥ Vπ1 −Vπ0 + ∥π −π ∥2. α λ,π1 λ,π0 2 1 0\nLettingα → +0above,wecanprovetheconclusionasfollows. µ\nVπ1 −Vπ0 + ∥π −π ∥2\nλ,π1 λ,π0 2 1 0\n(cid:104) d (cid:105)(cid:12)\n≤ Vπα (cid:12)\ndα λ,πα (cid:12) α=0\n≤ (cid:88) ∂V λ π , 0 π0 (cid:104) d π (a|s) (cid:105)(cid:12) (cid:12)\n∂π 0 (s,a) dα α (cid:12) α=0\ns,a\n(\n=\na)(cid:88) d 1 (s) (cid:88) ∂V λ π , 0 π0\n[π (a|s)−π (a|s)]\n1 0\nd (s) ∂π (s,a)\n0 0\ns a\n≤\n(cid:88) d 1 (s)(cid:104)\nmax\n∂V λ π , 0 π0\n−\n(cid:88)\nπ (a|s)\n∂V λ π , 0 π0 (cid:105)\nd 0 (s) a′ ∂π 0 (s,a′) 0 ∂π 0 (s,a)\ns a\n( ≤ b) D−1 (cid:88) ∂V λ π , 0 π0 [π∗(a|s)−π (a|s)]\n∂π (s,a) 0 0\n0\ns,a\n≤D−1max (cid:10) ∇ Vπ0 ,π−π (cid:11) ,\nπ∈Π\nπ0 λ,π0 0\nwhere(a)usesEq.",
+      "size": 667,
+      "sentences": 3
+    },
+    {
+      "id": 228,
+      "content": "s)−π (a|s)]\n∂π (s,a) 0 0\n0\ns,a\n≤D−1max (cid:10) ∇ Vπ0 ,π−π (cid:11) ,\nπ∈Π\nπ0 λ,π0 0\nwhere(a)usesEq. (70),and(b)usesAssumption3aswellasthefollowingEq. (87)whereπ∗ ∈ Πisdefined\n0\n∂Vπ0\nasπ∗(a∗|s) = 1foracertaina∗ ∈ argmax λ,π0 andπ∗(a′|s) = 0fora′ ̸= a∗. 0 a′∂π0(s,a′) 0\n∂Vπ0 ∂Vπ0 ∂Vπ0\n(cid:88) π∗(a|s) λ,π0 = max λ,π0 ≥ (cid:88) π (a|s) λ,π0 . (87)\n0 ∂π 0 (s,a) a′ ∂π 0 (s,a′) 0 ∂π 0 (s,a)\na a\nG Proof of Corollary 1\nBasedonTheorem1,Eq. (86)holdsforanyπ ,π ∈ Πasrepeatedbelow.",
+      "size": 474,
+      "sentences": 6
+    },
+    {
+      "id": 229,
+      "content": "0 ∂π 0 (s,a)\na a\nG Proof of Corollary 1\nBasedonTheorem1,Eq. (86)holdsforanyπ ,π ∈ Πasrepeatedbelow. 0 1\nVπ1 ≤Vπ0 +D−1max (cid:10) ∇ Vπ0 ,π−π (cid:11) − µ ∥π −π ∥2, (88)\nλ,π1 λ,π0 π∈Π π0 λ,π0 0 2 1 0\nIntheaboveinequality,letπ ∈ argmax Vπ andπ = π isanyaDϵ-stationarypolicyofinterest. Then\n1 π∈Π λ,π 0\ntheinequalityabovebecomes\nµ (a)\nmaxVπ˜ ≤Vπ +D−1·Dϵ− ∥π −π∥2 ≤ Vπ +ϵ+|µ||S|,\nπ˜∈Π λ,π˜ λ,π 2 1 λ,π\n35\n===  36 ===\nwhere(a)usesLemma12.",
+      "size": 433,
+      "sentences": 4
+    },
+    {
+      "id": 230,
+      "content": "xVπ˜ ≤Vπ +D−1·Dϵ− ∥π −π∥2 ≤ Vπ +ϵ+|µ||S|,\nπ˜∈Π λ,π˜ λ,π 2 1 λ,π\n35\n===  36 ===\nwhere(a)usesLemma12. Thisimpliesthatmax Vπ˜ −Vπ ≤ ϵ+|µ||S|, thatis, theDϵ-stationary\nπ˜∈Π λ,π˜ λ,π\npolicyπ isalsoan(ϵ+|µ||S|)-POpolicy. Ifµ ≥ 0,theinequalityabovefurtherimpliesthatmax Vπ˜ −Vπ ≤ ϵ,thatis,theDϵ-stationary\nπ˜∈Π λ,π˜ λ,π\npolicyπ isalsoanϵ-POpolicy.",
+      "size": 340,
+      "sentences": 3
+    },
+    {
+      "id": 231,
+      "content": "furtherimpliesthatmax Vπ˜ −Vπ ≤ ϵ,thatis,theDϵ-stationary\nπ˜∈Π λ,π˜ λ,π\npolicyπ isalsoanϵ-POpolicy. Furthermore,supposeµ > 0andtherearetwoPOpoliciesπ ,π ∈ Π,whichshouldsatisfy\n0 1\nVπ1 = Vπ0 = maxVπ ,\nλ,π1 λ,π0\nπ∈Π\nλ,π\nmax (cid:10) ∇ Vπ0 ,π−π (cid:11) = 0.\nπ∈Π\nπ0 λ,π0 0\nSubstitutingthetwoequalitiesaboveintoEq. (10),weobtainthat µ∥π −π ∥2 ≤ 0,whichalongwithµ > 0\n2 1 0\nimpliesπ = π ,thatis,thePOpolicyisunique.",
+      "size": 410,
+      "sentences": 3
+    },
+    {
+      "id": 232,
+      "content": "(10),weobtainthat µ∥π −π ∥2 ≤ 0,whichalongwithµ > 0\n2 1 0\nimpliesπ = π ,thatis,thePOpolicyisunique. 1 0\nH Proof of Theorem 2\nForanyπ ∈ Π,p ∈ P,r ∈ R,wehave\n∂J\nλ\n(π,π,p,r) (a)d\nπ,p\n(s)[Q\nλ\n(π,π,p,r;s,a)−λ]\n=\n∂π(a|s) 1−γ\n( = b)d π,p (s)(cid:104) r(s,a)−λ−λlogπ(a|s)+γ (cid:88) p(s′|s,a)V (π,p,r;s′) (cid:105) , (89)\nλ\n1−γ\ns′\nwhere(a)usesEqs. (37),and(b)usesEq. (32).",
+      "size": 364,
+      "sentences": 4
+    },
+    {
+      "id": 233,
+      "content": "(cid:88) p(s′|s,a)V (π,p,r;s′) (cid:105) , (89)\nλ\n1−γ\ns′\nwhere(a)usesEqs. (37),and(b)usesEq. (32). Thenwehave\n∇ J (π,π,p,r)⊤(π′−π)\nπ λ\n= (cid:88)(cid:104)∂J λ (π,π,p,r)(cid:0) π′[a (s)|s]−π[a (s)|s] (cid:1)\nmax max\n∂π[a (s)|s]\nmax\ns\n+ ∂J λ (π,π,p,r)(cid:0) π′[a (s)|s]−π[a (s)|s] (cid:1) (cid:105)\nmin min\n∂π[a (s)|s]\nmin\n(cid:88)(cid:110)d\nπ,p\n(s)\n(cid:0) (cid:1)\n(cid:104)\n= π[a (s)|s]−π[a (s)|s] r[s,a (s)]−r[s,a (s)]\nmax min min max\n1−γ\ns\n+λlog π[a max (s)|s] +γ (cid:88) [p(s′|s,a (s))−p(s′|s,a (s))]V (π,p,r;s′) (cid:105)(cid:111)\nmin max λ\nπ[a (s)|s]\nmin\ns′\n(a) 1 (cid:110) (cid:0) (cid:1) (cid:104) π[a max (s)|s] γ(1+λlog|A|)(cid:105)(cid:111)\n≥ max π[a (s)|s]−π[a (s)|s] λlog −1− , (90)\nmax min\n1−γ s π[a min (s)|s] 1−γ\nwhere (a) uses π[a (s)|s] − π[a (s)|s] ≥ 0, r(a|s) ∈ [0,1], p(s′|s,a) ∈ [0,1] for any s,a,s′ and\nmax min\nLemma4.",
+      "size": 842,
+      "sentences": 4
+    },
+    {
+      "id": 234,
+      "content": "s π[a (s)|s] − π[a (s)|s] ≥ 0, r(a|s) ∈ [0,1], p(s′|s,a) ∈ [0,1] for any s,a,s′ and\nmax min\nLemma4. Considerthefollowingtwocases. (CaseI)Ifπ[a (s)|s] ≥ 1π[a (s)|s],thenasπ[a (s)|s] ≥ 1 ,wehaveπ[a (s)|s] ≥ 1 . min 2 max max |A| min 2|A|\n(CaseII)π[a (s)|s] < 1π[a (s)|s],thenasπ[a (s)|s] ≥ 1 ,Eq.",
+      "size": 294,
+      "sentences": 4
+    },
+    {
+      "id": 235,
+      "content": "(s)|s] ≥ 1 . min 2 max max |A| min 2|A|\n(CaseII)π[a (s)|s] < 1π[a (s)|s],thenasπ[a (s)|s] ≥ 1 ,Eq. (90)impliesthat\nmin 2 max max |A|\n∇ J (π,π,p,r)⊤(π′−π)\nπ λ\n(cid:110)π[a (s)|s](cid:104) 1 1+γλlog|A|(cid:105)(cid:111)\nmax\n≥max λlog −\ns 2(1−γ) |A|π[a min (s)|s] 1−γ\n36\n===  37 ===\n1 (cid:104) (cid:0) (cid:1) 1+γλlog|A|(cid:105)\n≥− λlog |A|minπ[a (s)|s] + , (91)\nmin\n2|A|(1−γ) s 1−γ\nwhichfurtherimpliesthatforanys ∈ S anda ∈ A,wehave\nπ(a|s) ≥π[a (s)|s]\nmin\n1 (cid:104) 1/λ+γlog|A| 2|A| (cid:105)\n≥ exp − − (1−γ)∇ J (π,π,p,r)⊤(π′−π)\nπ λ\n|A| 1−γ λ\n1 (cid:104) 1 2|A| (cid:105)\n≥ exp − − (1−γ)∇ J (π,π,p,r)⊤(π′−π) , (92)\nπ λ\n2|A|1/(1−γ) λ(1−γ) λ\nNotethatinthetwocasesabove,Eq.",
+      "size": 672,
+      "sentences": 3
+    },
+    {
+      "id": 236,
+      "content": "≥ exp − − (1−γ)∇ J (π,π,p,r)⊤(π′−π) , (92)\nπ λ\n2|A|1/(1−γ) λ(1−γ) λ\nNotethatinthetwocasesabove,Eq. (92)alwaysholds.",
+      "size": 115,
+      "sentences": 2
+    },
+    {
+      "id": 237,
+      "content": "J (π,π,p,r)⊤(π′−π) , (92)\nπ λ\n2|A|1/(1−γ) λ(1−γ) λ\nNotethatinthetwocasesabove,Eq. (92)alwaysholds. Furthermore,ifAssumption1holdsandp ,r aredifferentiablefunctionsofπ,thenwehave\nπ π\n(cid:13) (cid:13)\n(cid:13)∇ π J λ (π,π,p π ,r π )−∇ π J λ (π,π,p π˜ ,r π˜ )| π˜=π(cid:13)\n(cid:13) (cid:13)\n=(cid:13)∇ p J λ (π,π,p π ,r π )∇ π p π +∇ r J λ (π,π,p π ,r π )∇ π r π(cid:13)\n(cid:13) (cid:13)(cid:13) (cid:13) (cid:13) (cid:13)(cid:13) (cid:13)\n≤(cid:13)∇ p J λ (π,π,p π ,r π )(cid:13)(cid:13)∇ π p π(cid:13)+(cid:13)∇ r J λ (π,π,p π ,r π )(cid:13)(cid:13)∇ π r π(cid:13)\n(cid:112)\n(a)ϵ |S|(1+λlog|A|) ϵ\np r\n≤ + , (93)\n(1−γ)2 1−γ\nwhere(a)usesAssumption1aswellasEqs.",
+      "size": 660,
+      "sentences": 3
+    },
+    {
+      "id": 238,
+      "content": "d:13)\n(cid:112)\n(a)ϵ |S|(1+λlog|A|) ϵ\np r\n≤ + , (93)\n(1−γ)2 1−γ\nwhere(a)usesAssumption1aswellasEqs. (39)and(40).",
+      "size": 112,
+      "sentences": 2
+    },
+    {
+      "id": 239,
+      "content": "2)\n(a)ϵ |S|(1+λlog|A|) ϵ\np r\n≤ + , (93)\n(1−γ)2 1−γ\nwhere(a)usesAssumption1aswellasEqs. (39)and(40). Therefore,\n(cid:2) ∇ J (π,π,p ,r )| (cid:3)⊤ (π′−π)\nπ λ π˜ π˜ π˜=π\n=∇ J (π,π,p ,r )⊤(π′−π)− (cid:2) ∇ J (π,π,p ,r )−∇ J (π,π,p ,r )| (cid:3)⊤ (π′−π)\nπ λ π π π λ π π π λ π˜ π˜ π˜=π\n≤∇\nπ\nJ\nλ\n(π,π,p\nπ\n,r\nπ\n)⊤(π′−π)+ (cid:13) (cid:13)∇\nπ\nJ\nλ\n(π,π,p\nπ\n,r\nπ\n)−∇\nπ\nJ\nλ\n(π,π,p\nπ˜\n,r\nπ˜\n)|\nπ˜=π\n(cid:13) (cid:13)∥π′−π∥\n(cid:112)\n( ≤ a) ∇ J (π,π,p ,r )⊤(π′−π)+ (cid:112) 2|S| (cid:16)ϵ p |S|(1+λlog|A|) + ϵ r (cid:17) , (94)\nπ λ π π (1−γ)2 1−γ\nwhere(a)usesEq.",
+      "size": 549,
+      "sentences": 3
+    },
+    {
+      "id": 240,
+      "content": "(cid:112) 2|S| (cid:16)ϵ p |S|(1+λlog|A|) + ϵ r (cid:17) , (94)\nπ λ π π (1−γ)2 1−γ\nwhere(a)usesEq. (93)andLemma12. Substitutingp = p ,r = r andthenEq. (94)intoEq. (92),wecan\nπ π\nproveEq. (15)asfollows.",
+      "size": 201,
+      "sentences": 6
+    },
+    {
+      "id": 241,
+      "content": ")andLemma12. Substitutingp = p ,r = r andthenEq. (94)intoEq. (92),wecan\nπ π\nproveEq. (15)asfollows. 1 (cid:110) 1 2|A|\nπ(a|s) ≥ exp − − (1−γ)·\n2|A|1/(1−γ) λ(1−γ) λ\n(cid:112)\n(cid:104) ∇ J (π,π,p ,r )⊤(π′−π)+ (cid:112) 2|S| (cid:16)ϵ p |S|(1+λlog|A|) + ϵ r (cid:17)(cid:105)(cid:111)\nπ λ π π (1−γ)2 1−γ\n(cid:104) 2|A| (cid:105)\n=π exp − (1−γ)⟨∇ Vπ ,π′−π⟩ ,\nmin λ π λ,π\nwherethe=usesVπ = J (π,π,p ,r )andπ definedasfollows.",
+      "size": 421,
+      "sentences": 6
+    },
+    {
+      "id": 242,
+      "content": "105)\n=π exp − (1−γ)⟨∇ Vπ ,π′−π⟩ ,\nmin λ π λ,π\nwherethe=usesVπ = J (π,π,p ,r )andπ definedasfollows. λ,π λ π π min\n(cid:112) (cid:112)\n1 (cid:110) 1 2|A| 2|S|(cid:104)ϵ |S|(1+λlog|A|) (cid:105)(cid:111)\ndef p\nπ = exp − − +ϵ , (95)\nmin r\n2|A|1/(1−γ) λ(1−γ) λ 1−γ\nI Proof of Theorem 3\nForanypoliciesπ,π′,wehave\n|Vπ′ −Vπ |\nλ,π′ λ,π\n37\n===  38 ===\n≤|J (π′,p ,r )−J (π,p ,r )|\nλ π′ π′ λ π π\n≤|J (π′,p ,r )−J (π′,p ,r )|+|J (π′,p ,r )−J (π′,p ,r )|\nλ π′ π′ λ π′ π λ π′ π λ π π\n+|J (π′,p ,r )−J (π,p ,r )|\nλ π π λ π π\n(a)∥r −r ∥\n≤ π′ π +L ∥p −p ∥+L max∥logπ′(·|s)−logπ(·|s)∥\np π′ π π\n1−γ s\n(cid:115)\n( ≤ b)(cid:16) L ϵ + ϵ r (cid:17) ∥π′−π∥+L (cid:88) ∥logπ′(·|s)−logπ(·|s)∥2\np p π\n1−γ\ns\n(c)(cid:16) ϵ (cid:17)\n≤ L ϵ + r ∥logπ′−logπ∥+L ∥logπ′−logπ∥\np p π\n1−γ\n( = d) L ∥logπ′−logπ∥, (96)\nλ\nwhere(a)usesEqs.",
+      "size": 797,
+      "sentences": 2
+    },
+    {
+      "id": 243,
+      "content": ":17)\n≤ L ϵ + r ∥logπ′−logπ∥+L ∥logπ′−logπ∥\np p π\n1−γ\n( = d) L ∥logπ′−logπ∥, (96)\nλ\nwhere(a)usesEqs. (38),(39)and(40),(b)usesAssumption7,(c)uses|logy−logx| ≤ |y−x|forany\nx,y ∈ R,and(d)definesthefollowingconstant. (cid:112) (cid:112)\nϵ |A|(2−γ +γλlog|A|)+ϵ |S|(1+λlog|A|)+ϵ (1−γ)\nr p r\nL = L ϵ + +L = .",
+      "size": 300,
+      "sentences": 3
+    },
+    {
+      "id": 244,
+      "content": "gconstant. (cid:112) (cid:112)\nϵ |A|(2−γ +γλlog|A|)+ϵ |S|(1+λlog|A|)+ϵ (1−γ)\nr p r\nL = L ϵ + +L = . λ p p 1−γ π (1−γ)2\n(cid:112) (cid:112)\nϵ |A|(2−γ+γλlog|A|)+ϵ |S|(1+λlog|A|) ϵ\ndef r p r\nL =L ϵ + +L = + (97)\nλ p p 1−γ π (1−γ)2 1−γ\nNotethatforanyu,v ≥ ∆ > 0,\n|logu−logv| =logmax(u,v)−logmin(u,v)\n(cid:90) max(u,v) 1 1 |u−v|\n= dx ≤ [max(u,v)−min(u,v)] = .",
+      "size": 354,
+      "sentences": 3
+    },
+    {
+      "id": 245,
+      "content": "0,\n|logu−logv| =logmax(u,v)−logmin(u,v)\n(cid:90) max(u,v) 1 1 |u−v|\n= dx ≤ [max(u,v)−min(u,v)] = . x ∆ ∆\nmin(u,v)\nTherefore,foranyπ,π′ ∈ Π d = ef {π ∈ Π : π(a|s) ≥ ∆},wehave\n∆\n(cid:88)\n∥logπ′−logπ∥2 = |logπ′(a|s)−logπ(a|s)|2\ns,a\n(cid:88)\n≤∆−2 |π′(a|s)−π(a|s)|2 = ∆−2∥π′−π∥2. s,a\nSubstitutingtheaboveinequalityintoEq. (96)provesthefirstinequalityofEq. (96). Next, wewillprovethesecondinequalityofEq. (96)abouttheLipschitzcontinuityofthefollowing\nperformativepolicygradient.",
+      "size": 472,
+      "sentences": 7
+    },
+    {
+      "id": 246,
+      "content": "ethesecondinequalityofEq. (96)abouttheLipschitzcontinuityofthefollowing\nperformativepolicygradient. ∇ Vπ =∇ J (π,π,p ,r )\nπ λ,π π λ π π\n=∇ J (π,π,p ,r )| +(∇ p )∇ J (π,π,p ,r )+(∇ r )∇ J (π,π,p ,r ).",
+      "size": 199,
+      "sentences": 3
+    },
+    {
+      "id": 247,
+      "content": "∇ Vπ =∇ J (π,π,p ,r )\nπ λ,π π λ π π\n=∇ J (π,π,p ,r )| +(∇ p )∇ J (π,π,p ,r )+(∇ r )∇ J (π,π,p ,r ). π λ π˜ π˜ π˜=π π π pπ λ π π π π rπ λ π π\nForanyπ,π′ ∈ Π ,wehave\n∆\n∥∇ Vπ′ −∇ Vπ ∥\nπ′ λ,π′ π λ,π\n≤ (cid:13) (cid:13)∇ π′ J λ (π′,π′,p π˜ ,r π˜ )| π˜=π′ −∇ π J λ (π,π,p π˜ ,r π˜ )| π˜=π (cid:13) (cid:13)\n+∥∇ p ∥·∥∇ J (π′,π′,p ,r )−∇ J (π,π,p ,r )∥\nπ′ π′ p π′ λ π′ π′ pπ λ π π\n38\n===  39 ===\n+∥∇ J (π,π,p ,r )∥·∥∇ p −∇ p ∥\npπ λ π π π′ π′ π π\n+∥∇ r ∥·∥∇ J (π′,π′,p ,r )−∇ J (π,π,p ,r )∥\nπ′ π′ r π′ λ π′ π′ rπ λ π π\n+∥∇ J (π,π,p ,r )∥·∥∇ r −∇ r ∥\nrπ λ π π π′ π′ π π\n(a)(cid:16)|A|(1+2λlog|A|) (cid:17)\n≤ +γL max∥logπ′(·|s)−logπ(·|s)∥\n(1−γ)2 π s\n(cid:112)\n(cid:104)2(1+λlog|A|) (cid:105)(cid:112) |A|∥r\nπ′\n−r\nπ\n∥\n∞\n+ +γL |S||A|∥p −p ∥+\n(1−γ)2 p π′ π 1−γ\n(cid:104) 2−γ(cid:112) (cid:105)\n+ϵ ℓ max∥logπ′(·|s)−logπ(·|s)∥+ℓ ∥p −p ∥+ |S|∥r −r ∥\np π p π′ π π′ π ∞\ns 1−γ\n+L S ∥π′−π∥+ γϵ r (cid:0) max∥π′(·|s)−π(·|s)∥ +max∥p (·|s,a)−p (·|s,a)∥ (cid:1)\np p (1−γ)2 s 1 s,a π′ π 1\nS\n+ r ∥π′−π∥\n1−γ\n( ≤ b)(cid:16)|A|(1+2λlog|A|) + γL π (cid:17) ∥π′−π∥+ϵ (cid:112) |S||A| (cid:104)2(1+λlog|A|) +γL (cid:105) ∥π′−π∥\n∆(1−γ)2 ∆ p (1−γ)2 p\n(cid:112)\n+ ϵ r |A|∥π′−π∥ +ϵ (cid:104)ℓ π ∥π′−π∥+ℓ ϵ ∥π′−π∥+ 2−γ ϵ (cid:112) |S|∥π′−π∥ (cid:105)\np p p r\n1−γ ∆ 1−γ\n+L S ∥π′−π∥+ γϵ r (cid:0)(cid:112) |S|∥π′−π∥+ϵ (cid:112) |S|∥π′−π∥ (cid:1) + S r ∥π′−π∥\np p (1−γ)2 p 1−γ\n(cid:115)\n(c)(cid:16)|A|(1+2λlog|A|) γL (cid:17) ϵ |S|(cid:104)2(1+λlog|A|) (cid:105)\n≤ + π ∥π′−π∥+ p +γL ∥π′−π∥\n∆(1−γ)2 ∆ ∆ |A| (1−γ)2 p\n+ ϵ r ∥π′−π∥ + ϵ p (cid:104) ℓ + ℓ p ϵ p + 2−γ ϵ (cid:112) |S| (cid:105) ∥π′−π∥\n(cid:112) π r\n∆ |A|(1−γ) ∆ |A| |A|(1−γ)\n(cid:112)\nγϵ |S|(1+ϵ ) L S +S /(1−γ)\n+ r p ∥π′−π∥+ p p r ∥π′−π∥\n∆|A|(1−γ)2 ∆|A|\n(cid:112)\n(d)(cid:16)|A|(1+2λlog|A|) γ |A|(2−γ +γλlog|A|)(cid:17)\n≤ + ∥π′−π∥\n∆(1−γ)2 ∆(1−γ)2\n(cid:115) (cid:112)\nϵ |S|(cid:104)2(1+λlog|A|) γ |S|(1+λlog|A|)(cid:105)\n+ p + ∥π′−π∥\n∆ |A| (1−γ)2 (1−γ)2\n(cid:112)\n+ ϵ p (cid:104) |S||A|(2+3γλlog|A|) + 2ϵ p γ|S|(1+λlog|A|) + 2−γ ϵ (cid:112) |S| (cid:105) ∥π′−π∥\n∆ (1−γ)3 |A|(1−γ)3 |A|(1−γ) r\n(cid:112) (cid:112)\nϵ |A|(1−γ)+γϵ |S|(1+ϵ )\n+ r r p ∥π′−π∥\n∆|A|(1−γ)2\n(cid:112)\nS |S|(1+λlog|A|)+S (1−γ)\n+ p r ∥π′−π∥\n∆|A|(1−γ)2\n(cid:112)\n3|A|(1+λlog|A|) ϵ |S||A|(5+6λlog|A|)\n≤ ∥π′−π∥+ p ∥π′−π∥\n∆(1−γ)2 ∆(1−γ)3\n(cid:2)(cid:112) (cid:112) (cid:3) (cid:112)\nϵ |A|(1−γ)+ |S|(γ +2ϵ ) +S |S|(1+λlog|A|)+S (1−γ)\n+ r p p r ∥π′−π∥, (98)\n∆|A|(1−γ)2\nwhere(a)usesEqs.",
+      "size": 2367,
+      "sentences": 2
+    },
+    {
+      "id": 248,
+      "content": "|A|(1−γ)+ |S|(γ +2ϵ ) +S |S|(1+λlog|A|)+S (1−γ)\n+ r p p r ∥π′−π∥, (98)\n∆|A|(1−γ)2\nwhere(a)usesEqs. (39),(40)and(43)-(45)aswellasAssumptions1-2,and(b)usesthefollowingbounds\nfor any π,π′ ∈ ∆, (c) uses ∆ ≤ |A|−1 (since for any π ∈ Π , 1 = (cid:80) π(a|s) ≥ ∆|A|), (d) uses\n∆ a\n39\n===  40 ===\n√ √ √\n|A|(2−γ+γλlog|A|) |S|(1+λlog|A|) |S||A|(2+3γλlog|A|) 2γ|S|(1+λlog|A|)\nL := , L := , ℓ := andℓ :=\nπ (1−γ)2 p (1−γ)2 π (1−γ)3 p (1−γ)3\ndefinedinLemma6,(e)usesℓ definedbyEq. (99).",
+      "size": 471,
+      "sentences": 3
+    },
+    {
+      "id": 249,
+      "content": "L := , ℓ := andℓ :=\nπ (1−γ)2 p (1−γ)2 π (1−γ)3 p (1−γ)3\ndefinedinLemma6,(e)usesℓ definedbyEq. (99). λ\nmax∥logπ′(·|s)−logπ(·|s)∥ ≤∆−1max∥π′(·|s)−π(·|s)∥ ≤ ∆−1∥π′−π∥,\ns s\n(a)\n∥p −p ∥ ≤ϵ ∥π′−π∥,\nπ′ π p\n(a)\n∥r −r ∥ ≤∥r −r ∥ ≤ ϵ ∥π′−π∥,\nπ′ π ∞ π′ π r\n(cid:112) (cid:112)\nmax∥π′(·|s)−π(·|s)∥ ≤ |S|max∥π′(·|s)−π(·|s)∥ ≤ |S|∥π′−π∥,\n1\ns s\n(cid:112)\nmax∥p (·|s,a)−p (·|s,a)∥ ≤ |S|max∥p (·|s,a)−p (·|s,a)∥\nπ′ π 1 π′ π\ns,a s,a\n(cid:112) (a) (cid:112)\n≤ |S|∥p −p ∥ ≤ ϵ |S|∥π′−π∥. π′ π p\nHere,(a)usesAssumption1.",
+      "size": 498,
+      "sentences": 4
+    },
+    {
+      "id": 250,
+      "content": "1 π′ π\ns,a s,a\n(cid:112) (a) (cid:112)\n≤ |S|∥p −p ∥ ≤ ϵ |S|∥π′−π∥. π′ π p\nHere,(a)usesAssumption1. Finally,definetheLipschitzconstantℓ asfollowsandthusEq. (98)implies\nλ\nthesecondinequalityofEq. (96)that∥∇\nπ′\nV\nλ\nπ\n,π\n′\n′\n−∇\nπ\nV\nλ\nπ\n,π\n∥ ≤ ℓ\n∆\nλ∥π′−π∥. (cid:112)\n3|A|(1+λlog|A|) ϵ |S||A|(5+6λlog|A|)\ndef p\nℓ = +\nλ (1−γ)2 (1−γ)3\n(cid:2)(cid:112) (cid:112) (cid:3) (cid:112)\nϵ |A|(1−γ)+ |S|(γ +2ϵ ) S |S|(1+λlog|A|)+S (1−γ)\nr p p r\n+ + .",
+      "size": 434,
+      "sentences": 6
+    },
+    {
+      "id": 251,
+      "content": "cid:112) (cid:112) (cid:3) (cid:112)\nϵ |A|(1−γ)+ |S|(γ +2ϵ ) S |S|(1+λlog|A|)+S (1−γ)\nr p p r\n+ + . (99)\n|A|(1−γ)2 |A|(1−γ)2\nJ Proof of Proposition 1\nWe prove the validity of the stochastic gradient (19) first. For any π ∈ Π , s ∈ S and a ∈ A, we have\n∆\nπ(a|s) ≥ ∆, so π(a|s) ≤ 1 − ∆ (since (cid:80) π(a′|s) = 1). For any u ∈ U , we have |u (a|s)| ≤ 1.\na′ i 1 i\nTherefore,\n(π±δu )(a|s) ≥ π(a|s)−δ|u (a|s)| ≥ ∆−δ > 0, (100)\ni i\nwhichmeansπ±δu ∈ Π. Hence,Vπ′ iswelldefinedforπ′ ∈ {π+δu ,π−δu }.",
+      "size": 492,
+      "sentences": 4
+    },
+    {
+      "id": 252,
+      "content": ")−δ|u (a|s)| ≥ ∆−δ > 0, (100)\ni i\nwhichmeansπ±δu ∈ Π. Hence,Vπ′ iswelldefinedforπ′ ∈ {π+δu ,π−δu }. i λ,π′ i i\nThen we will prove the estimation error bound (21). Based on Lemma 10, there exists an orthogonal\ntransformationT : R|A|→Z ={z=[z ,...,z ] ∈ R|A| : (cid:80) z =0}. |A|−1 1 |A| i i\nNotethatanyx ∈ R|S|(|A|−1) canbewrittenasx = [x ] ,aconcatenationof|S|vectorsx ∈ R|A|.",
+      "size": 377,
+      "sentences": 4
+    },
+    {
+      "id": 253,
+      "content": "−1 1 |A| i i\nNotethatanyx ∈ R|S|(|A|−1) canbewrittenasx = [x ] ,aconcatenationof|S|vectorsx ∈ R|A|. s s∈S s\nTherefore,wecandefinethetransformationT : R|S|(|A|−1) → L d = ef (cid:8) u ∈ R|S||A|: u(·|s) ∈ Z ,∀s ∈\n0 |A|−1\n(cid:9)\nS asfollows\n[T(x)](·|s) = T(x ),∀s ∈ S (101)\ns\nwhere x ∈ R|A| are extracted from |A| entries of x = [x ] . For any x = [x ] ,y = [y ] ∈\ns s s∈S s s∈S s s∈S\nR|S|(|A|−1) andα,β ∈ R,wecanprovethatT isanorthogonaltransformationasfollows.",
+      "size": 460,
+      "sentences": 3
+    },
+    {
+      "id": 254,
+      "content": "∈\ns s s∈S s s∈S s s∈S\nR|S|(|A|−1) andα,β ∈ R,wecanprovethatT isanorthogonaltransformationasfollows. [T(αx+βy)](·|s) = T(αx +βy ) = αT(x )+βT(y ) = α[T(x)](·|s)+β[T(x)](·|s)\ns s s s\n⇒T(αx+βy) = αT(x)+βT(y). (cid:88)(cid:10) (cid:11) (cid:88) (cid:88)\n⟨T(x),T(y)⟩ = [T(x)](·|s),[T(y)](·|s) = ⟨T(x ),T(y )⟩ = ⟨x ,y ⟩ = ⟨x,y⟩. s s s s\ns s s\n40\n===  41 ===\nDefinethefollowingset.",
+      "size": 374,
+      "sentences": 4
+    },
+    {
+      "id": 255,
+      "content": ",[T(y)](·|s) = ⟨T(x ),T(y )⟩ = ⟨x ,y ⟩ = ⟨x,y⟩. s s s s\ns s s\n40\n===  41 ===\nDefinethefollowingset. T−1(Π −|A|−1) d = ef {π ∈ Π : T−1(π−|A|−1)}, (102)\n∆ ∆\nwhereπ−|A|−1 ∈ R|S||A|hasentries(π−|A|−1)(a|s) = π(a|s)−|A|−1,soπ−|A|−1 ∈ L . Furthermore,\n0\nsince Π is a convex and compact set and T−1 is an orthogonal transformation, T−1(Π −|A|−1) is a\n∆ ∆\nconvexandcompactsubsetofL . 0\nThen for any x ∈ T−1(Π − |A|−1), we have T(x) +|A|−1 ∈ Π , so we can define the function\n∆ ∆\ndef T(x)+|A|−1\nf (x) = V .",
+      "size": 497,
+      "sentences": 5
+    },
+    {
+      "id": 256,
+      "content": "(Π − |A|−1), we have T(x) +|A|−1 ∈ Π , so we can define the function\n∆ ∆\ndef T(x)+|A|−1\nf (x) = V . λ λ,T(x)+|A|−1\nNotethatasVπ isadifferentiablefunctionofπ,soforanyπ′ ∈ Πandfixedπ ∈ Πwehave\nλ,π\nVπ′ −Vπ −⟨∇ Vπ ,π′−π⟩ Vπ′ −Vπ −⟨proj (∇ Vπ ),π′−π⟩\nλ,π′ λ,π π λ,π\n=\nλ,π′ λ,π L0 π λ,π\n∥π′−π∥ ∥π′−π∥\n→0 (asπ′ ∈ Πandπ′ → π), (103)\nwheretheabove=usesπ′−π ∈ L .",
+      "size": 353,
+      "sentences": 2
+    },
+    {
+      "id": 257,
+      "content": "π λ,π\n=\nλ,π′ λ,π L0 π λ,π\n∥π′−π∥ ∥π′−π∥\n→0 (asπ′ ∈ Πandπ′ → π), (103)\nwheretheabove=usesπ′−π ∈ L . Then,wecanprovethatf isdifferentiablewithgradient∇f (x) =\n0 λ λ\nT−1(cid:0) proj L0 ∇ π V λ π ,π (cid:12) (cid:12) π=T(x)+|A|−1 (cid:1) ,sinceforanyx′ ∈ T−1(Π ∆ −|A|−1)andfixedx ∈ T−1(Π ∆ −|A|−1)\nwehave\nf λ (x′)−f λ (x)− (cid:10) T−1(cid:2) proj L0 (cid:0) ∇ π V λ π ,π (cid:12) (cid:12) π=T(x)+|A|−1 (cid:1)(cid:3) ,x′−x (cid:11)\n∥x′−x∥\n(a) 1 (cid:104) T(x′)+|A|−1 T(x)+|A|−1\n= V −V\n(cid:13) (cid:13)[T(x′)+|A|−1]−[T(x)+|A|−1] (cid:13) (cid:13) λ,T(x′)+|A|−1 λ,T(x)+|A|−1\n− (cid:10) proj L0 (cid:0) ∇ π V λ π ,π (cid:12) (cid:12) π=T(x)+|A|−1 (cid:1) ,[T(x′)+|A|−1]−[T(x)+|A|−1] (cid:11) (cid:105)\n→ (b) 0asx′ ∈ T−1(Π −|A|−1)andx′ → x, (104)\n∆\nwhere (a) uses the property of the orthogonal transformation T, and (b) uses Eq.",
+      "size": 823,
+      "sentences": 2
+    },
+    {
+      "id": 258,
+      "content": "andx′ → x, (104)\n∆\nwhere (a) uses the property of the orthogonal transformation T, and (b) uses Eq. (103) and the fact that\n(cid:13) (cid:13)\nx′ → xmeans(cid:13)[T(x′)+|A|−1]−[T(x)+|A|−1](cid:13) = ∥x′−x∥ → 0. Furthermore,wewillshowthatf (x)isaLipscthizcontinuousandLipschitzsmoothfunctionofx ∈ Π .",
+      "size": 298,
+      "sentences": 3
+    },
+    {
+      "id": 259,
+      "content": "x′−x∥ → 0. Furthermore,wewillshowthatf (x)isaLipscthizcontinuousandLipschitzsmoothfunctionofx ∈ Π . λ ∆\nForanyx,x′ ∈ T−1(Π −|A|−1),wehave\n∆\n|f λ (x′)−f λ (x)| = (cid:12) (cid:12)V λ T ,T (x ( ′ x ) ′ + )+ |A |A |− |− 1 1 −V λ T ,T (x ( ) x + )+ |A |A |− |− 1 1 (cid:12) (cid:12) ( ≤ a) L ∆ λ ∥T(x′)−T(x)∥ ( = b) L ∆ λ ∥x′−x∥,\n∥∇f λ (x′)−∇f λ (x)∥ = (cid:13) (cid:13)T−1(cid:2) proj L0 (cid:0) ∇ π V λ π ,π (cid:12) (cid:12) π=T(x′) (cid:1)(cid:3) −T−1(cid:2) proj L0 (cid:0) ∇ π V λ π ,π (cid:12) (cid:12) π=T(x) (cid:1)(cid:3)(cid:13) (cid:13)\n( = b)(cid:13) (cid:13)proj L0 (cid:0) ∇ π V λ π ,π (cid:12) (cid:12) π=T(x′)+|A|−1 (cid:1) −proj L0 (cid:0) ∇ π V λ π ,π (cid:12) (cid:12) π=T(x)+|A|−1 (cid:1)(cid:13) (cid:13)\n≤ (cid:13) (cid:13) (cid:0) ∇ π V λ π ,π (cid:12) (cid:12) π=T(x′)+|A|−1 (cid:1) − (cid:0) ∇ π V λ π ,π (cid:12) (cid:12) π=T(x)+|A|−1 (cid:1)(cid:13) (cid:13)\n( ≤ a)ℓ λ ∥T(x′)−T(x)∥ ( = b) ℓ λ ∥x′−x∥,\n∆ ∆\nInboththeinequalitiesabove,(a)appliesTheorem3toT(x)+|A|−1,T(x′)+|A|−1 ∈ Π and(b)usesthe\n∆\npropertyoftheorthogonaltransformationT.",
+      "size": 1058,
+      "sentences": 3
+    },
+    {
+      "id": 260,
+      "content": "appliesTheorem3toT(x)+|A|−1,T(x′)+|A|−1 ∈ Π and(b)usesthe\n∆\npropertyoftheorthogonaltransformationT. Thetwoinequalitiesaboveimpliesthatf isan L λ-Lipschitz\nλ ∆\ncontinuousand ℓ λ-LipschitzsmoothfunctiononT−1(Π −|A|−1). ∆ ∆\nDenote\nN\ng (π)= |S|(|A|−1) (cid:88)(cid:0) Vπ+δui −Vπ−δui (cid:1) u , (105)\nλ,δ 2Nδ λ,π+δui λ,π−δui i\ni=1\n41\n===  42 ===\nwhichreplacesVˆπ′ withVπ′\ninEq. (19). Theestimationerroroftheperformativepolicygradientestimator\nλ,π′ λ,π′\nabovecanberewrittenasfollowsforanyπ ∈ Π .",
+      "size": 490,
+      "sentences": 5
+    },
+    {
+      "id": 261,
+      "content": "onerroroftheperformativepolicygradientestimator\nλ,π′ λ,π′\nabovecanberewrittenasfollowsforanyπ ∈ Π . ∆\ng (π)−proj (∇ Vπ )\nλ,δ L0 π λ,π\nN\n( = a)(cid:16)|S|(|A|−1) (cid:88)(cid:0) Vπ+δui −Vπ−δui (cid:1) u (cid:17) −proj (∇ Vπ )\n2Nδ λ,π+δui λ,π−δui i L0 π λ,π\ni=1\nN\n( = b)(cid:16)|S|(|A|−1) (cid:88)(cid:0) f (cid:2) T−1(π−|A|−1)+δT−1(u ) (cid:3) −f (cid:2) T−1(π−|A|−1])−δT−1(u ) (cid:3)(cid:1) ·\nλ i λ i\n2Nδ\ni=1\n(cid:17)\nT−1(u ) −T−1[proj (∇ Vπ )]\ni L0 π λ,π\nN\n( = c)(cid:16)|S|(|A|−1) (cid:88)(cid:0) f (cid:2) T−1(π−|A|−1)+δT−1(u ) (cid:3) −f (cid:2) T−1(π−|A|−1])−δT−1(u ) (cid:3)(cid:1) ·\nλ i λ i\n2Nδ\ni=1\n(cid:17)\nT−1(u ) −∇f [T−1(π−|A|−1)], (106)\ni λ\ndef T(x)+|A|−1\nwhere(a)usesEq.",
+      "size": 684,
+      "sentences": 2
+    },
+    {
+      "id": 262,
+      "content": ":1) ·\nλ i λ i\n2Nδ\ni=1\n(cid:17)\nT−1(u ) −∇f [T−1(π−|A|−1)], (106)\ni λ\ndef T(x)+|A|−1\nwhere(a)usesEq. (19),(b)usesf (x) = V andthepropertyoftheorthogonaltransformation\nλ λ,T(x)+|A|−1\nT−1,(c)uses∇f λ (x) = T−1(cid:0) proj L0 ∇ π V λ π ,π (cid:12) (cid:12) π=T(x)+|A|−1 (cid:1) . NotethatintheaboveEq. (106),π ∈ Π ∆ and\nu isuniformlydistributedonthesphereU ∩L withU d = ef {u ∈ R|S||A|: ∥u∥=1}.",
+      "size": 390,
+      "sentences": 4
+    },
+    {
+      "id": 263,
+      "content": "oveEq. (106),π ∈ Π ∆ and\nu isuniformlydistributedonthesphereU ∩L withU d = ef {u ∈ R|S||A|: ∥u∥=1}. i 1 0 1\nHence, π ± δu ∈ Π which implies T−1(π − |A|−1) ± δT−1(u ) = T−1(π ± δu − |A|−1) ∈\ni ∆−δ i i\nT−1(Π −|A|−1). Also,T−1(u )isuniformlydistributedonthesphereT−1(U ) = S = {u ∈\n∆−δ i 1,0 |S|(|A|−1)\nR|S|(|A|−1) : ∥u∥ = 1}. Therefore,wecanapplyLemma9totheaboveEq.",
+      "size": 363,
+      "sentences": 5
+    },
+    {
+      "id": 264,
+      "content": "U ) = S = {u ∈\n∆−δ i 1,0 |S|(|A|−1)\nR|S|(|A|−1) : ∥u∥ = 1}. Therefore,wecanapplyLemma9totheaboveEq. (106)wherethefunctionf is\nλ\nan L λ -Lipschitzcontinuousand ℓ λ -LipschitzsmoothfunctiononT−1(Π −|A|−1),andobtainthe\n∆−δ ∆−δ ∆−δ\nfollowingboundwhichholdswithprobabilityatleast1−η.",
+      "size": 278,
+      "sentences": 3
+    },
+    {
+      "id": 265,
+      "content": "functiononT−1(Π −|A|−1),andobtainthe\n∆−δ ∆−δ ∆−δ\nfollowingboundwhichholdswithprobabilityatleast1−η. ∥g (π)−proj (∇ Vπ )∥\nλ,δ L0 π λ,π\n(cid:115)\n4L |S|(|A|−1) (cid:16)|S|(|A|−1)+1(cid:17) L |S|(|A|−1) 2 (cid:16)|S|(|A|−1)+1(cid:17) δℓ\nλ λ λ\n≤ log + log +\n3N(∆−δ) η ∆−δ N η ∆−δ\n(cid:115)\n4L |S||A| (cid:16)|S||A|(cid:17) L |S||A| 2 (cid:16)|S||A|(cid:17) δℓ\nλ λ λ\n≤ log + log + . (107)\n3N(∆−δ) η ∆−δ N η ∆−δ\nNotethat|Vˆπ −Vπ | ≤ ϵ holdsforanyacertainpolicyπ withprobabilityatleast1−η.",
+      "size": 482,
+      "sentences": 3
+    },
+    {
+      "id": 266,
+      "content": "3N(∆−δ) η ∆−δ N η ∆−δ\nNotethat|Vˆπ −Vπ | ≤ ϵ holdsforanyacertainpolicyπ withprobabilityatleast1−η. Therefore,with\nλ,π λ,π V\nprobabilityatleast1−2Nη,wehave\n|Vˆπ′ −Vπ′ | ≤ ϵ ,∀π′ ∈ {π±δu }N (108)\nλ,π′ λ,π′ V i i=1\nTherefore,withprobabilityatleast1−(2N +1)η,Eqs.",
+      "size": 259,
+      "sentences": 2
+    },
+    {
+      "id": 267,
+      "content": "−Vπ′ | ≤ ϵ ,∀π′ ∈ {π±δu }N (108)\nλ,π′ λ,π′ V i i=1\nTherefore,withprobabilityatleast1−(2N +1)η,Eqs. (107)and(108)holdandthuswehave\n∥gˆ (π)−proj (∇ Vπ )∥\nλ,δ L0 π λ,π\n≤∥gˆ (π)−g (π)∥+∥g (π)−proj (∇ Vπ )∥\nλ,δ λ,δ λ,δ L0 π λ,π\nN\n( ≤ a)(cid:13) (cid:13) |S|(|A|−1) (cid:88)(cid:0) Vˆπ+δui −Vπ+δui −Vˆπ−δui +Vπ−δui (cid:1) u (cid:13) (cid:13)\n(cid:13) 2Nδ λ,π+δui λ,π+δui λ,π−δui λ,π−δui i(cid:13)\ni=1\n(cid:115)\n4L |S||A| (cid:16)|S||A|(cid:17) L |S||A| 2 (cid:16)|S||A|(cid:17) δℓ\nλ λ λ\n+ log + log +\n3N(∆−δ) η ∆−δ N η ∆−δ\n42\n===  43 ===\nN\n( ≤ b)|S N || δ A| (cid:88)(cid:13) (cid:13) (cid:0) Vˆ λ π ,π + + δu δu i i −V λ π ,π + + δu δu i i −Vˆ λ π ,π − − δu δu i i +V λ π ,π − − δu δu i i (cid:1) u i (cid:13) (cid:13)\ni=1\n(cid:115)\n4L |S||A| (cid:16)|S||A|(cid:17) L |S||A| 2 (cid:16)|S||A|(cid:17) δℓ\nλ λ λ\n+ log + log +\n3N(∆−δ) η ∆−δ N η ∆−δ\nN\n≤ |S||A| (cid:88)(cid:0) |Vˆπ+δui −Vπ+δui |+|Vˆπ−δui +Vπ−δui | (cid:1)\nNδ λ,π+δui λ,π+δui λ,π−δui λ,π−δui\ni=1\n(cid:115)\n4L |S||A| (cid:16)|S||A|(cid:17) L |S||A| 2 (cid:16)|S||A|(cid:17) δℓ\nλ λ λ\n+ log + log +\n3N(∆−δ) η ∆−δ N η ∆−δ\n(cid:115)\n(c)2|S||A|ϵ 4L |S||A| (cid:16)|S||A|(cid:17) L |S||A| 2 (cid:16)|S||A|(cid:17) δℓ\nV λ λ λ\n≤ + log + log + ,\nδ 3N(∆−δ) η ∆−δ N η ∆−δ\nwhere(a)usesEqs.",
+      "size": 1233,
+      "sentences": 2
+    },
+    {
+      "id": 268,
+      "content": "||A| 2 (cid:16)|S||A|(cid:17) δℓ\nV λ λ λ\n≤ + log + log + ,\nδ 3N(∆−δ) η ∆−δ N η ∆−δ\nwhere(a)usesEqs. (19),(54)and(107),(b)usesJensen’sinequalitythat∥1 (cid:80)N x ∥2 ≤ 1 (cid:80)N ∥x ∥2\nN i=1 i N i=1 i\nfor any vectors {x }N of the same dimensionality, (c) uses |Vˆπ′ −Vπ′ | ≤ ϵ for any policy π′. By\ni i=1 λ,π λ,π′ V\nreplacing η with η in the inequality above, we prove the error bound (21) as follows which holds with\n3N\nprobabilityatleast1−η.",
+      "size": 443,
+      "sentences": 3
+    },
+    {
+      "id": 269,
+      "content": "equality above, we prove the error bound (21) as follows which holds with\n3N\nprobabilityatleast1−η. ∥gˆ (π)−proj (∇ Vπ )∥\nλ,δ L0 π λ,π\n(cid:115)\n2|S||A|ϵ 4L |S||A| (cid:16)3N|S||A|(cid:17) L |S||A| 2 (cid:16)3N|S||A|(cid:17) δℓ\nV λ λ λ\n≤ + log + log + (109)\nδ 3N(∆−δ) η ∆−δ N η ∆−δ\n=O (cid:0)ϵ V + log √ (N/η) +δ (cid:1)\nδ N\nK Proof of Proposition 2\nForanyπ ∈ Π ,itiseasilyseenthatthecorrespondingπ′definedbyEq. (16)alsobelongstoΠ . Therefore,\n∆ ∆\nDλ\n⟨∇ Vπ ,π′−π⟩ ≤ max⟨∇ Vπ ,π˜ −π⟩ ≤ .",
+      "size": 486,
+      "sentences": 4
+    },
+    {
+      "id": 270,
+      "content": "respondingπ′definedbyEq. (16)alsobelongstoΠ . Therefore,\n∆ ∆\nDλ\n⟨∇ Vπ ,π′−π⟩ ≤ max⟨∇ Vπ ,π˜ −π⟩ ≤ . π λ,π π˜∈Π∆ π λ,π 5|A|(1−γ)\nSubstitutingtheaboveinequalityintoEq. (15),weobtainthat\n(cid:104) 2|A| (cid:105) 2π\nπ(a|s) ≥π exp − (1−γ)⟨∇ Vπ ,π′−π⟩ ≥ min ≥ 2∆. min Dλ π λ,π 3\nTherefore,foranyπ ∈ Π,wecanprovethat π2+π ∈ Π asfollows. 2 2 ∆\nπ (a|s)+π(a|s) 0+2∆\n2\n≥ = ∆. 2 2\nTherefore,wecanproveEq. (25)asfollows. (cid:68) π +π (cid:69) (a)\nmax⟨∇ Vπ ,π −π⟩ =2max ∇ Vπ , 2 −π ≤ 2 max⟨∇ Vπ ,π˜ −π⟩.",
+      "size": 490,
+      "sentences": 10
+    },
+    {
+      "id": 271,
+      "content": ". (25)asfollows. (cid:68) π +π (cid:69) (a)\nmax⟨∇ Vπ ,π −π⟩ =2max ∇ Vπ , 2 −π ≤ 2 max⟨∇ Vπ ,π˜ −π⟩. π2∈Π π λ,π 2 π2∈Π π λ,π 2 π˜∈Π∆ π λ,π\nwhere(a)uses π2+π ∈ Π . 2 ∆\n43\n===  44 ===\nL Proof of Theorem 4\nIfπ ∈ Π ,thenπ ∈ Π ,sinceΠ isaconvexsetandπ obtainedbyEq. (23)isaconvexcombination\nt ∆ t+1 ∆ ∆ t+1\nofπ ,π˜ ∈ Π . Sinceπ ∈ Π ,wehaveπ ∈ Π foralltbyinduction. Therefore,Proposition1implies\nt t ∆ 0 ∆ t ∆\nthatthefollowingboundholdssimultaneouslyforall{π }T ⊆ Π withprobabilityatleast1−η.",
+      "size": 485,
+      "sentences": 8
+    },
+    {
+      "id": 272,
+      "content": "es\nt t ∆ 0 ∆ t ∆\nthatthefollowingboundholdssimultaneouslyforall{π }T ⊆ Π withprobabilityatleast1−η. t t=1 ∆\n∥gˆ (π )−proj (∇ Vπt )∥\nλ,δ t L0 π λ,πt\n(cid:115)\n2|S||A|ϵ 4L |S||A| (cid:16)3TN|S||A|(cid:17) L |S||A| 2 (cid:16)3TN|S||A|(cid:17) δℓ\nV λ λ λ\n≤ + log + log + .",
+      "size": 268,
+      "sentences": 2
+    },
+    {
+      "id": 273,
+      "content": "|S||A| (cid:16)3TN|S||A|(cid:17) L |S||A| 2 (cid:16)3TN|S||A|(cid:17) δℓ\nV λ λ λ\n≤ + log + log + . (110)\nδ 3TN(∆−δ) η ∆−δ N η ∆−δ\nTheboundabovefurtherimpliesthatforanyπ ∈ Π,wehave\n(cid:12) (cid:12) (cid:10) gˆ λ,δ (π t )−∇ π V λ π , t πt ,π−π t (cid:11)(cid:12) (cid:12)\n( = a)(cid:12) (cid:12) (cid:10) gˆ λ,δ (π t )−proj L0 (∇ π V λ π , t πt ),π−π t (cid:11)(cid:12) (cid:12)\n≤∥gˆ (π )−proj (∇ Vπt )∥·∥π−π ∥\nλ,δ t L0 π λ,πt t\n(b)(cid:112) (cid:104)2|S||A|ϵ\nV\n4L\nλ\n|S||A| (cid:16)3TN|S||A|(cid:17)\n≤ 2|S| + log\nδ 3TN(∆−δ) η\n(cid:115)\nL |S||A| 2 (cid:16)3TN|S||A|(cid:17) δℓ (cid:105)\nλ λ\n+ log + , (111)\n∆−δ N η ∆−δ\nwhere(a)usesπ˜ −π ,π˜ −π ∈ L forπ˜ ,π˜ ∈ Π ,and(b)usesEq.",
+      "size": 674,
+      "sentences": 2
+    },
+    {
+      "id": 274,
+      "content": "(cid:105)\nλ λ\n+ log + , (111)\n∆−δ N η ∆−δ\nwhere(a)usesπ˜ −π ,π˜ −π ∈ L forπ˜ ,π˜ ∈ Π ,and(b)usesEq. (110)andLemma12.",
+      "size": 116,
+      "sentences": 2
+    },
+    {
+      "id": 275,
+      "content": "og + , (111)\n∆−δ N η ∆−δ\nwhere(a)usesπ˜ −π ,π˜ −π ∈ L forπ˜ ,π˜ ∈ Π ,and(b)usesEq. (110)andLemma12. t t t 0 t ∆\nUndertheconditionsabove,wehave\nV\nπt+1\nλ,πt+1\n(a) ℓ\n≥Vπt +⟨∇ Vπt ,π −π ⟩− λ ∥π −π ∥2\nλ,πt π λ,πt t+1 t 2∆ t+1 t\n( = b) Vπt +β⟨∇ Vπt ,π˜ −π ⟩− ℓ λ β2 ∥π˜ −π ∥2\nλ,πt π λ,πt t t 2∆ t t\nℓ β2\n=Vπt +β⟨gˆ (π ),π˜ −π ⟩+β⟨∇ Vπt −gˆ (π ),π˜ −π ⟩− λ ∥π˜ −π ∥2\nλ,πt λ,δ t t t π λ,πt λ,δ t t t 2∆ t t\n( ≥ c) Vπt +β⟨gˆ (π ),π˜ −π ⟩− ℓ λ |S|β2 −β (cid:112) 2|S| (cid:104)2|S||A|ϵ V\nλ,πt λ,δ t t t ∆ δ\n(cid:115)\n4L |S||A| (cid:16)3TN|S||A|(cid:17) L |S||A| 2 (cid:16)3TN|S||A|(cid:17) δℓ (cid:105)\nλ λ λ\n+ log + log + , (112)\n3TN(∆−δ) η ∆−δ N η ∆−δ\nwhere(a)usesthe ℓ λ-LipschitzsmoothnessofVπ onΠ ,(b)usesEq.",
+      "size": 703,
+      "sentences": 3
+    },
+    {
+      "id": 276,
+      "content": "+ log + , (112)\n3TN(∆−δ) η ∆−δ N η ∆−δ\nwhere(a)usesthe ℓ λ-LipschitzsmoothnessofVπ onΠ ,(b)usesEq. (23),(c)usesEq. (111)andLemma\n∆ λ,π ∆\n12. RearrangingandaveragingEq.",
+      "size": 167,
+      "sentences": 4
+    },
+    {
+      "id": 277,
+      "content": "smoothnessofVπ onΠ ,(b)usesEq. (23),(c)usesEq. (111)andLemma\n∆ λ,π ∆\n12. RearrangingandaveragingEq. (112)overt = 0,1,...,T −1,weobtainthat\nmax⟨gˆ (π ),π˜ −π ⟩\nπ˜∈Π∆\nλ,δ T(cid:101) T(cid:101)\n(a)\n=⟨gˆ (π ),π˜ −π ⟩\nλ,δ T(cid:101) T(cid:101) T(cid:101)\nT−1\n(b)1 (cid:88)\n≤ ⟨gˆ (π ),π˜ −π ⟩\nλ,δ t t t\nT\nt=0\n44\n===  45 ===\n≤\nV λ π , T πT −V λ π , 0 π0\n+\nℓ λ |S|β\n+\n(cid:112)\n2|S|\n(cid:104)2|S||A|ϵ V\nTβ ∆ δ\n(cid:115)\n4L |S||A| (cid:16)3TN|S||A|(cid:17) L |S||A| 2 (cid:16)3TN|S||A|(cid:17) δℓ (cid:105)\nλ λ λ\n+ log + log +\n3TN(∆−δ) η ∆−δ N η ∆−δ\n1+λlog|A| ℓ λ |S|β (cid:112) (cid:104)2|S||A|ϵ V\n≤ + + 2|S|\nTβ(1−γ) ∆ δ\n(cid:115)\n4L |S||A| (cid:16)3TN|S||A|(cid:17) L |S||A| 2 (cid:16)3TN|S||A|(cid:17) δℓ (cid:105)\nλ λ λ\n+ log + log + , (113)\n3TN(∆−δ) η ∆−δ N η ∆−δ\nwhere(a)usesLemma1whichmeansπ˜ satisfiesEq.",
+      "size": 803,
+      "sentences": 5
+    },
+    {
+      "id": 278,
+      "content": "105)\nλ λ λ\n+ log + log + , (113)\n3TN(∆−δ) η ∆−δ N η ∆−δ\nwhere(a)usesLemma1whichmeansπ˜ satisfiesEq. (22)and(b)usestheoutputruleofAlgorithm1that\nt\nT(cid:101) ∈ argmin\n0≤t≤T−1\n⟨gˆ\nλ,δ\n(π\nt\n),π˜\nt\n−π\nt\n⟩.",
+      "size": 201,
+      "sentences": 2
+    },
+    {
+      "id": 279,
+      "content": "2)and(b)usestheoutputruleofAlgorithm1that\nt\nT(cid:101) ∈ argmin\n0≤t≤T−1\n⟨gˆ\nλ,δ\n(π\nt\n),π˜\nt\n−π\nt\n⟩. Therefore,\n(cid:10) π (cid:11)\nπ˜\nm\n∈\na\nΠ\nx\n∆\n∇ π V λ, T π (cid:101)\nT(cid:101)\n,π˜ −π T(cid:101)\n(cid:2)(cid:10) π (cid:11) (cid:10) (cid:11)(cid:3)\n= π˜ m ∈ a Π x ∆ ∇ π V λ, T π (cid:101) T(cid:101) −gˆ λ,δ (π π T(cid:101) ),π˜ −π T(cid:101) + gˆ λ,δ (π π T(cid:101) ),π˜ −π T(cid:101)\n(a)1+λlog|A| ℓ λ |S|β (cid:112) (cid:104)2|S||A|ϵ V\n≤ + +2 2|S|\nTβ(1−γ) ∆ δ\n(cid:115)\n4L |S||A| (cid:16)3TN|S||A|(cid:17) L |S||A| 2 (cid:16)3TN|S||A|(cid:17) δℓ (cid:105)\nλ λ λ\n+ log + log + , (114)\n3TN(∆−δ) η ∆−δ N η ∆−δ\nwhere(a)usesEqs.",
+      "size": 627,
+      "sentences": 2
+    },
+    {
+      "id": 280,
+      "content": ")3TN|S||A|(cid:17) δℓ (cid:105)\nλ λ λ\n+ log + log + , (114)\n3TN(∆−δ) η ∆−δ N η ∆−δ\nwhere(a)usesEqs. (111)and(113). UsethefollowinghyperparameterchoicesforAlgorithm1.",
+      "size": 165,
+      "sentences": 3
+    },
+    {
+      "id": 281,
+      "content": "δ) η ∆−δ N η ∆−δ\nwhere(a)usesEqs. (111)and(113). UsethefollowinghyperparameterchoicesforAlgorithm1. π\nmin\n∆ = , (115)\n3\nD∆ϵ Dπ ϵ\nmin\nβ = = = O(ϵ), (116)\n12ℓ |S| 36ℓ |S|\nλ λ\n12(1+λlog|A|) 432ℓ |S|(1+λlog|A|)\nT = = λ = O(ϵ−2) (117)\nDϵβ(1−γ) π D2(1−γ)ϵ2\nmin\nD∆ϵ Dπ ϵ (a) ∆\nmin\nδ = = = O(ϵ) ≤ , (118)\n(cid:112) (cid:112)\n48 2|S|ℓ 144 2|S|ℓ 2\nλ λ\nDδϵ π D2ϵ2\nϵ = = min = O(ϵ2) (119)\nV 48|S||A| (cid:112) 2|S| 13824ℓ λ |S|2|A|\n663552L2|S|3|A|2 (cid:16)165888L2|S|3|A|2 1296ℓ |S|2|A|(1+λlog|A|)(cid:17)\nN = λ logmax λ , λ\nD2π2 ϵ2 D2π2 ϵ2 D2ηπ (1−γ)ϵ2\nmin min min\n(cid:16)3|S||A|(cid:17)\n+2log +3\nη\n=O[ϵ−2log(η−1ϵ−1)] (120)\n(cid:112)\nwhere (a) uses ϵ ≤ 24 2|S|ℓ /D.",
+      "size": 656,
+      "sentences": 4
+    },
+    {
+      "id": 282,
+      "content": "id:16)3|S||A|(cid:17)\n+2log +3\nη\n=O[ϵ−2log(η−1ϵ−1)] (120)\n(cid:112)\nwhere (a) uses ϵ ≤ 24 2|S|ℓ /D. With the hyperparameter choices above, we obtain the following\nλ\ninequalities(121)-(123).",
+      "size": 189,
+      "sentences": 2
+    },
+    {
+      "id": 283,
+      "content": "2|S|ℓ /D. With the hyperparameter choices above, we obtain the following\nλ\ninequalities(121)-(123). (cid:115)\n(cid:112) L λ |S||A| 2 (cid:16)3TN|S||A|(cid:17)\n2 2|S|· log\n∆−δ N η\n45\n===  46 ===\n(cid:115)\n(a)24L |S|1.5|A| logN 1 (cid:16)1296ℓ |S|2|A|(1+λlog|A|)(cid:17)\nλ λ\n≤ + log\nπ N N ηπ D2(1−γ)ϵ2\nmin min\n(cid:114)\n(b)24L |S|1.5|A| ϵ˜\nλ\n≤ ϵ˜+\nπ 4\n√ min\n12 5L |S|1.5|A| Dπ ϵ Dϵ\n= λ · √ min ≤ , (121)\nπ min 165888L λ |S|1.5|A| 12\nwhere(a)usesEq. (117)andδ ≤ ∆/2 = π /6impliedbyEqs.",
+      "size": 482,
+      "sentences": 4
+    },
+    {
+      "id": 284,
+      "content": "· √ min ≤ , (121)\nπ min 165888L λ |S|1.5|A| 12\nwhere(a)usesEq. (117)andδ ≤ ∆/2 = π /6impliedbyEqs. (115)and(118),(b)usesEq. (120)andits\nmin\nimplicationthatN ≥ 4ϵ˜−1log(ϵ˜−1)withϵ˜= π m 2 in ϵ2 ≤ 0.5(sinceϵ ≤ 288DL λ |S|1.5|A| ),which\n165888D2L2\nλ\n|S|3|A|2 πmin\nimplies logN ≤ ϵ˜basedonLemma11. N\n1 (cid:16)3TN|S||A|(cid:17) log(TN) 1 (cid:16)3|S||A|(cid:17) (a) 1 1\nlog = + log ≤ + = 1, (122)\nTN η TN TN η 2 2\n(cid:104) (cid:16) (cid:17)(cid:105)\n3|S||A|\nwhere(a)usesNT ≥ N ≥ max 3,2log andLemma11.",
+      "size": 498,
+      "sentences": 5
+    },
+    {
+      "id": 285,
+      "content": "N TN η 2 2\n(cid:104) (cid:16) (cid:17)(cid:105)\n3|S||A|\nwhere(a)usesNT ≥ N ≥ max 3,2log andLemma11. η\n√ (cid:115)\n(cid:112) 4L λ |S||A| (cid:16)3TN|S||A|(cid:17) (a) (cid:112) 2L λ |S||A| 1 (cid:16)3TN|S||A|(cid:17)\n2 2|S|· log ≤2 2|S|· log\n3TN(∆−δ) η ∆−δ TN η\n(b)Dϵ\n≤ (123)\n12\n√ √ (cid:16) (cid:17)\nwhere(a)uses 4 < 2andy ≤ y fory = 1 log 3TN|S||A| ≤ 1(Eq. (122)),and(b)usesT ≥ 1and\n3 TN η\nEq. (121). Bysubstitutingthehyperparameterchoices(115)-(120)aswellasEqs. (121)and(123)intoEq.",
+      "size": 484,
+      "sentences": 6
+    },
+    {
+      "id": 286,
+      "content": "TN η\nEq. (121). Bysubstitutingthehyperparameterchoices(115)-(120)aswellasEqs. (121)and(123)intoEq. (114),wehave\n(cid:10) π (cid:11)\nπ˜\nm\n∈\na\nΠ\nx\n∆\n∇ π V λ, T π (cid:101)\nT(cid:101)\n,π˜ −π T(cid:101)\n1+λlog|A| ℓ λ |S|β (cid:112) (cid:104)2|S||A|ϵ V\n≤ + +2 2|S|\nTβ(1−γ) ∆ δ\n(cid:115)\n4L |S||A| (cid:16)3TN|S||A|(cid:17) L |S||A| 2 (cid:16)3TN|S||A|(cid:17) δℓ (cid:105)\nλ λ λ\n+ log + log +\n3TN(∆−δ) η ∆−δ N η ∆−δ\n1+λlog|A| ϵβ(1−γ) ℓ |S| ∆ϵ\nλ\n≤ + ·\nβ(1−γ) 12D(1+λlog|A|) ∆ 12Dℓ |S|\nλ\n(cid:112) (cid:112)\n4 2|S||S||A| δϵ ϵ ϵ 2 2|S|ℓ ∆ϵ\nλ\n+ · + + + ·\n(cid:112) (cid:112)\nδ 48D|S||A| 2|S| 12D 12D ∆/2 48 2|S|Dℓ\nλ\nDϵ (a) Dλ\n= ≤ ,\n2 5|A|(1−γ)\nwhere(a)usesϵ ≤\n2λD2\n.",
+      "size": 657,
+      "sentences": 5
+    },
+    {
+      "id": 287,
+      "content": "id:112)\nδ 48D|S||A| 2|S| 12D 12D ∆/2 48 2|S|Dℓ\nλ\nDϵ (a) Dλ\n= ≤ ,\n2 5|A|(1−γ)\nwhere(a)usesϵ ≤\n2λD2\n. ThenbasedonProposition2,theinequalityaboveimpliesthat\n5|A|(1−γ)\n(cid:10) π (cid:11)\nm\nπ˜∈\na\nΠ\nx ∇ π V λ, T π (cid:101)\nT(cid:101)\n,π˜ −π T(cid:101) ≤ Dϵ,\nwhichmeansπ isaDϵ-stationarypolicy. Thenifµ ≥ 0,Corollary1impliesthatπ isalsoanϵ-POpolicy.",
+      "size": 344,
+      "sentences": 3
+    },
+    {
+      "id": 288,
+      "content": "1) ≤ Dϵ,\nwhichmeansπ isaDϵ-stationarypolicy. Thenifµ ≥ 0,Corollary1impliesthatπ isalsoanϵ-POpolicy. T(cid:101) T(cid:101)\n46\n===  47 ===\nM Adjusting Our Results to the Existing Quadratic Regularizer\nInSection4,wehaveproposeda0-FWalgorithmandobtainitsfinite-timeconvergenceresulttothedesired\nPOpolicyforourentropy-regularizedvaluefunction(6).",
+      "size": 341,
+      "sentences": 3
+    },
+    {
+      "id": 289,
+      "content": "btainitsfinite-timeconvergenceresulttothedesired\nPOpolicyforourentropy-regularizedvaluefunction(6). Wewillbrieflyshowthat0-FWalgorithmcanalso\nconvergetoPOfortheexistingperformativereinforcementlearningdefinedbythevaluefunction(1)with\nquadratic regularizer H (π) = 1∥d ∥2 (Mandal et al., 2023; Rank et al., 2024; Pollatos et al., 2025). π′ 2 π,p π′\nTheperformativevaluefunctioncanberewrittenasthefollowingλ-stronglyconcavefunctionofd . π,pπ\nVπ = ⟨d ,r ⟩−λ∥d ∥2.",
+      "size": 460,
+      "sentences": 4
+    },
+    {
+      "id": 290,
+      "content": "vevaluefunctioncanberewrittenasthefollowingλ-stronglyconcavefunctionofd . π,pπ\nVπ = ⟨d ,r ⟩−λ∥d ∥2. (124)\nλ,π π,pπ π π,pπ\nWecanprovetheperformativevaluefunctionabovealsosatisfiesTheorem1(gradientdominance)witha\ndifferentµ,followingthesameprooflogic,sincebothregularizersH (π)arestronglyconvexfunctionsof\nπ\nd whichimpliesthatVπα isaµ-stronglyconcavefunctionofαasshownintheproofofTheorem1in\nπ,pπ λ,πα\nAppendixF.Bydirectcalculation,wecanalsoshowthatVπ aboveisaLipschitzcontinuousandLipschitz\nλ,π\nsmoothfunctionofπ ∈ Π. Withthesetwoproperties,wecanfollowtheprooflogicofTheorem4toshow\nthatthe0-FWalgorithm(withthesameprocedureasthatofAlgorithm1exceptthedifferentvaluesofVπα\nλ,πα\ninthepolicyevaluationstep)convergestoastationarypolicyoftheperformativevaluefunction(124),which\nbygradientdominanceisaPOpolicywhenthenewvalueofµsatisfiesµ ≥ 0.",
+      "size": 833,
+      "sentences": 3
+    },
+    {
+      "id": 291,
+      "content": "erformativevaluefunction(124),which\nbygradientdominanceisaPOpolicywhenthenewvalueofµsatisfiesµ ≥ 0. 47",
+      "size": 102,
+      "sentences": 2
+    }
+  ]
+}

@@ -1,0 +1,1275 @@
+{
+  "source": "ArXiv",
+  "filename": "158_SmartFactory_PDHCG__A_Scalable_First-Order_Method_for.pdf",
+  "domain": "SmartFactory",
+  "total_chars": 68080,
+  "total_chunks": 211,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\n5202\nnuJ\n6\n]CO.htam[\n1v85260.6052:viXra\nPDHCG: A Scalable First-Order Method for Large-Scale\nCompetitive Market Equilibrium Computation\nHuikang Liu1, Yicheng Huang2, Hongpei Li3, Dongdong Ge((cid:0))4, and Yinyu Ye5\n1 Shanghai Jiao Tong University, Shanghai, China. hkl1u@sjtu.edu.cn\n2 Shanghai University of Finance and Economics, Shanghai, China. huangyc@stu.sufe.edu.cn\n3 Shanghai University of Finance and Economics, Shanghai, China.",
+      "size": 448,
+      "sentences": 3
+    },
+    {
+      "id": 2,
+      "content": "ai, China. huangyc@stu.sufe.edu.cn\n3 Shanghai University of Finance and Economics, Shanghai, China. ishongpeili@gmail.com\n4 Shanghai Jiao Tong University, Shanghai, China. ddge@sjtu.edu.cn\n5 Stanford University, California, USA. yinyu-ye@stanford.edu\nAbstract. Large-scale competitive market equilibrium problems arise in a wide range of important\napplications, including economic decision-making and intelligent manufacturing.",
+      "size": 427,
+      "sentences": 6
+    },
+    {
+      "id": 3,
+      "content": "range of important\napplications, including economic decision-making and intelligent manufacturing. Traditional solution\nmethods,suchasinterior-pointalgorithmsandcertainprojection-basedapproaches,oftenfailtoscale\neffectivelytolargeprobleminstances.Inthispaper,weproposeanefficientcomputationalframework\nthat integrates the primal-dual hybrid conjugate gradient (PDHCG) algorithm with GPU-based par-\nallelcomputingtosolvelarge-scaleFishermarketequilibriumproblems.Byexploitingtheunderlying\nmathematical structure of the problem, we establish a theoretical guarantee of linear convergence for\ntheproposedalgorithm.Furthermore,theproposedframeworkcanbeextendedtosolvelarge-scaleAr-\nrow–Debreumarketequilibriumproblemsthroughafixed-pointiterationscheme.Extensivenumerical\nexperiments conducted on GPU platforms demonstrate substantial improvements in computational\nefficiency, significantly expanding the practical solvable scale and applicability of market equilibrium\nmodels.",
+      "size": 972,
+      "sentences": 2
+    },
+    {
+      "id": 4,
+      "content": "ignificantly expanding the practical solvable scale and applicability of market equilibrium\nmodels. Keywords: Competitivemarketequilibrium·Fishermarket·Arrow-Debreumarket·PDHCG·GPU\nAcceleration · Linear convergence. 1 Introduction\nThe Arrow–Debreu competitive market equilibrium is a cornerstone of modern economic theory, tracing\nits origins to Walras’s foundational work in 1874 [40].",
+      "size": 386,
+      "sentences": 3
+    },
+    {
+      "id": 5,
+      "content": "nerstone of modern economic theory, tracing\nits origins to Walras’s foundational work in 1874 [40]. Walras posed the fundamental question of whether\nit is possible to assign prices to goods in such a way that every consumer maximizes their utility and all\nmarkets simultaneously clear.",
+      "size": 285,
+      "sentences": 2
+    },
+    {
+      "id": 6,
+      "content": "ods in such a way that every consumer maximizes their utility and all\nmarkets simultaneously clear. This question was affirmatively answered by Arrow and Debreu in 1954 [4],\nwhoprovedtheexistenceofsuchanequilibriumundertheassumptionofconcaveutilityfunctions.However,\ntheirproofwasexistentialinnatureanddidnotyieldaconstructivemethodforcomputingtheequilibrium,\nleaving open the algorithmic challenge of finding such prices.",
+      "size": 422,
+      "sentences": 2
+    },
+    {
+      "id": 7,
+      "content": "ivemethodforcomputingtheequilibrium,\nleaving open the algorithmic challenge of finding such prices. Fisherwasthefirsttoconsideranalgorithmicapproach[7]forcomputingequilibriumpricesinarelated,\nyet distinct, market model where participants are divided into two sets: consumers and producers. In the\nFisher market model, there are m producers and n consumers.",
+      "size": 356,
+      "sentences": 3
+    },
+    {
+      "id": 8,
+      "content": "o sets: consumers and producers. In the\nFisher market model, there are m producers and n consumers. Each consumer i ∈ [n] is endowed with\na budget w > 0 and seeks to purchase goods to maximize their individual utility, while each producer\ni\nj ∈ [m] offers one unit of a good for sale. A market equilibrium consists of a set of prices such that every\nconsumerpurchasesanoptimalbundlewithintheirbudget,andallgoodsarefullysoldwithallmoneyfully\nspent—i.e., the market clears.",
+      "size": 471,
+      "sentences": 4
+    },
+    {
+      "id": 9,
+      "content": "imalbundlewithintheirbudget,andallgoodsarefullysoldwithallmoneyfully\nspent—i.e., the market clears. It has been shown that if the consumers’ utility functions satisfy the CCNH\nconditions (Concave, Continuous, Nonnegative, and Homogeneous), then the market equilibrium can be\ncomputed by solving the Eisenberg–Gale convex program [18]:\n(cid:88)\nmax w logu (x )\ni i i\nx\ni∈[n]\n(cid:88)\ns.t. x =1, ∀j ∈[m] (1)\nij\ni∈[n]\nx ≥0, ∀i,j\nij\n===  2 ===\n2 H. Liu et al.",
+      "size": 455,
+      "sentences": 3
+    },
+    {
+      "id": 10,
+      "content": "x )\ni i i\nx\ni∈[n]\n(cid:88)\ns.t. x =1, ∀j ∈[m] (1)\nij\ni∈[n]\nx ≥0, ∀i,j\nij\n===  2 ===\n2 H. Liu et al. where x denotes the amount of good j purchased by consumer i, and u (x ) represents the total util-\nij i i\nity derived by consumer i from their bundle.",
+      "size": 251,
+      "sentences": 3
+    },
+    {
+      "id": 11,
+      "content": "nsumer i, and u (x ) represents the total util-\nij i i\nity derived by consumer i from their bundle. Several standard utility functions are commonly consid-\n(cid:80)\nered in this setting, including linear utility where u (x ) = u x , CES utility where u (x ) =\ni i j∈[m] ij ij i i\n(cid:16) (cid:17)1/p (cid:110) (cid:111)\n(cid:80) u xp , p≤1, and Leontief utility where u (x )=min xij . In this paper, we primarily\nj∈[m] ij ij i i j∈[m] uij\nfocus on the case where utility functions are linear.",
+      "size": 493,
+      "sentences": 3
+    },
+    {
+      "id": 12,
+      "content": "paper, we primarily\nj∈[m] ij ij i i j∈[m] uij\nfocus on the case where utility functions are linear. The Fisher market model exhibits appealing theoretical properties, especially when all consumers have\nequal budgets. Under this condition, the resulting equilibrium satisfies the Competitive Equilibrium from\nEqual Incomes (CEEI) mechanism [39], which guarantees envy-freeness, Pareto optimality, and incentive\ncompatibility in large markets [8,5].",
+      "size": 447,
+      "sentences": 3
+    },
+    {
+      "id": 13,
+      "content": "ch guarantees envy-freeness, Pareto optimality, and incentive\ncompatibility in large markets [8,5]. This mechanism has been successfully applied in course allocation at\nthe Wharton School [9]. Beyond education, Fisher markets have been used in applications such as recom-\nmendation systems, online auctions, resource allocation, and donation matching [25,6,34,36], highlighting\ntheir broad practical relevance in promoting fairness and efficiency.",
+      "size": 447,
+      "sentences": 3
+    },
+    {
+      "id": 14,
+      "content": "ng [25,6,34,36], highlighting\ntheir broad practical relevance in promoting fairness and efficiency. With the rapid advancement of technology and networked systems, market equilibrium problems are\nbeing formulated at increasingly larger scales. A central challenge that arises is how to efficiently compute\nequilibrium in large-scale Fisher market – and more generally, in Arrow–Debreu market models. In2002,Devanuretal.",
+      "size": 419,
+      "sentences": 4
+    },
+    {
+      "id": 15,
+      "content": "large-scale Fisher market – and more generally, in Arrow–Debreu market models. In2002,Devanuretal. [16]proposedacombinatorialalgorithmforsolvingtheFishermarketwithlinear\nutility functions, achieving a polynomial-time complexity of O(n8log(1/ϵ)).",
+      "size": 245,
+      "sentences": 3
+    },
+    {
+      "id": 16,
+      "content": "eFishermarketwithlinear\nutility functions, achieving a polynomial-time complexity of O(n8log(1/ϵ)). Subsequently, Jain [24] formu-\nlated the Arrow–Debreu model as a convex inequality problem and designed an ellipsoid-based algorithm\nforitssolution.Later,Ye[41]appliedinterior-pointmethodstobothFisherandArrow–Debreumodelswith\nlinear utilities, significantly reducing the complexity to O(n4log(1/ϵ)).",
+      "size": 399,
+      "sentences": 2
+    },
+    {
+      "id": 17,
+      "content": "andArrow–Debreumodelswith\nlinear utilities, significantly reducing the complexity to O(n4log(1/ϵ)). Despite these theoretical advances,\nthe strong dependence on the problem dimension n severely limits the scalability of these methods, making\nthem impractical for solving large-scale market equilibrium problems. Motivated by the need to address large-scale instances, first-order methods have been introduced as a\npromising alternative.",
+      "size": 436,
+      "sentences": 3
+    },
+    {
+      "id": 18,
+      "content": "address large-scale instances, first-order methods have been introduced as a\npromising alternative. In 2020, Gao and Kroer [20] proposed a proximal gradient method for solving the\nFisher market equilibrium problem and established a linear convergence rate. To further improve compu-\ntational efficiency, they later incorporated block coordinate descent techniques [35]. For the Arrow–Debreu\nmodel, Devanur et al.",
+      "size": 412,
+      "sentences": 4
+    },
+    {
+      "id": 19,
+      "content": "r incorporated block coordinate descent techniques [35]. For the Arrow–Debreu\nmodel, Devanur et al. [15] proposed a rational convex formulation under the special setting where there is\na one-to-one correspondence between participants and goods. Building on this, Chen et al. [13] developed\nan alternating optimization algorithm to solve the resulting convex program.",
+      "size": 366,
+      "sentences": 5
+    },
+    {
+      "id": 20,
+      "content": "et al. [13] developed\nan alternating optimization algorithm to solve the resulting convex program. However, a major bottleneck\nin these approaches lies in the requirement of polyhedral projections at each iteration, which limits their\nscalability.Asaresult,thedimensionalityofsolvableinstancesremainsrestrictedtoproblemsofonlyafew\nthousand variables. Recently, GPU-accelerated primal–dual first-order methods have gained considerable attention for solv-\ning large-scale convex optimization problems.",
+      "size": 499,
+      "sentences": 4
+    },
+    {
+      "id": 21,
+      "content": "methods have gained considerable attention for solv-\ning large-scale convex optimization problems. These methods have demonstrated remarkable success in\nvarious domains, including linear programming [2,29,12], quadratic programming [30,23], semidefinite pro-\ngramming[21,22],conicprogramming[27],optimaltransport[31,43],andlarge-scalenetworkflowproblems\n[42]; see the further related work section for more details.",
+      "size": 414,
+      "sentences": 2
+    },
+    {
+      "id": 22,
+      "content": ",43],andlarge-scalenetworkflowproblems\n[42]; see the further related work section for more details. These GPU-enabled primal–dual methods offer\nsignificant improvements over traditional approaches in terms of both scalability and computational effi-\nciency.Motivatedbytheseadvances,weaimtodevelopanefficientGPU-acceleratedprimal–dualframework\nfor solving the Fisher market model and, more generally, the Arrow–Debreu market equilibrium problem. OurContributions.",
+      "size": 462,
+      "sentences": 3
+    },
+    {
+      "id": 23,
+      "content": "er market model and, more generally, the Arrow–Debreu market equilibrium problem. OurContributions. Inthispaper,wedevelopascalableandefficientcomputationalframeworkforsolving\nlarge-scale market equilibrium problems. Our main contributions are as follows:\n1. GPU-AcceleratedPrimal–DualFramework.Weproposeaprimal-dualhybridconjugategradient(PDHCG)\nalgorithmtailoredforFishermarketmodelswithlinearutilities,andimplementitonGPUarchitectures\nto exploit massive parallelism.",
+      "size": 468,
+      "sentences": 5
+    },
+    {
+      "id": 24,
+      "content": "hermarketmodelswithlinearutilities,andimplementitonGPUarchitectures\nto exploit massive parallelism. The algorithm avoids expensive matrix factorizations, enabling efficient\nlarge-scale computation. 2. TheoreticalGuarantee.Byleveragingtheunderlyingmathematicalstructureoftheproblem,weestablish\na theoretical guarantee of linear convergence for the proposed PDHCG method. 3.",
+      "size": 372,
+      "sentences": 5
+    },
+    {
+      "id": 25,
+      "content": "problem,weestablish\na theoretical guarantee of linear convergence for the proposed PDHCG method. 3. ExtensiontoArrow–DebreuEquilibrium.WeintegratethePDHCGalgorithmintoafixed-pointiteration\nscheme, allowing it to solve large-scale Arrow–Debreu market equilibrium problems beyond the Fisher\nsetting. ===  3 ===\nPDHCG: A Scalable First-Order Method for Large-Scale Competitive Market Equilibrium Computation 3\n4.",
+      "size": 409,
+      "sentences": 4
+    },
+    {
+      "id": 26,
+      "content": "DHCG: A Scalable First-Order Method for Large-Scale Competitive Market Equilibrium Computation 3\n4. Comprehensive Experimental Validation.Weconductextensiveexperimentsonbothsyntheticdataand\nreal-worldtransactiondata(fromJD.com),demonstratingthatourGPU-basedframeworksignificantly\noutperforms traditional solvers in terms of scalability and runtime—solving problems with up to tens\nof millions of variables. Further Related Work.",
+      "size": 428,
+      "sentences": 3
+    },
+    {
+      "id": 27,
+      "content": "bility and runtime—solving problems with up to tens\nof millions of variables. Further Related Work. First-order algorithms, which primarily rely on matrix–vector multiplications,\nare inherently well-suited for parallelization. This computational structure enables them to fully leverage\nthe massive parallelism of modern GPUs, leading to significantly improved speed and scalability.",
+      "size": 383,
+      "sentences": 4
+    },
+    {
+      "id": 28,
+      "content": "ge\nthe massive parallelism of modern GPUs, leading to significantly improved speed and scalability. In linear\nprogramming, Lu and Yang [2] introduced the Primal-Dual Linear Programming (PDLP) method, which\nwas later adapted to GPU platforms [29]. This led to the development of cuPDLP-C [33], the first high-\nperformance, GPU-native first-order LP solver implemented in C. In parallel, Chen et al.",
+      "size": 397,
+      "sentences": 3
+    },
+    {
+      "id": 29,
+      "content": "irst high-\nperformance, GPU-native first-order LP solver implemented in C. In parallel, Chen et al. [12] proposed\nHPR-LP, a solver based on the Halpern–Peaceman–Rachford method with semi-proximal terms, which\nachieves further speedups over PDLP. For quadratic programming, Lu [30] and Huang [23] developed the PDQP and PDHCG algorithms,\nrespectively, enabling the solution of problems with hundreds of millions of variables.",
+      "size": 424,
+      "sentences": 3
+    },
+    {
+      "id": 30,
+      "content": "algorithms,\nrespectively, enabling the solution of problems with hundreds of millions of variables. In semidefinite pro-\ngramming, Han [21] introduced the LoRADS algorithm and its GPU-enhanced version cuLoRADS [22],\nscaling up the solvable problem size by several orders of magnitude. For general conic linear programs, Lin\netal.",
+      "size": 329,
+      "sentences": 3
+    },
+    {
+      "id": 31,
+      "content": "solvable problem size by several orders of magnitude. For general conic linear programs, Lin\netal. [27]proposedPDCS,alarge-scaleprimal-dualsolverwithGPUacceleration.Inoptimaltransport,Lu\n[31]introducedthePDOTalgorithmforsolvinglarge-scaleproblemsefficiently.TheseGPU-basedmethods\nhavealsobeenappliedtoreal-worldapplications;forinstance,Zhang[42]leveragedGPU-acceleratedsolvers\nto address multi-commodity network flow problems at scale. Organization.",
+      "size": 449,
+      "sentences": 4
+    },
+    {
+      "id": 32,
+      "content": "agedGPU-acceleratedsolvers\nto address multi-commodity network flow problems at scale. Organization. The remainder of this paper is organized as follows. Section 2 introduces the standard\nPrimal–Dual Hybrid Gradient (PDHG) algorithm and presents our proposed PDHCG algorithm tailored\nfor the Fisher market problem.",
+      "size": 313,
+      "sentences": 4
+    },
+    {
+      "id": 33,
+      "content": "(PDHG) algorithm and presents our proposed PDHCG algorithm tailored\nfor the Fisher market problem. In Section 3, we establish the linear convergence rate of the algorithm by\nproving the quadratic growth property of the smoothed duality gap and leveraging this property to derive\nconvergence guarantees.",
+      "size": 302,
+      "sentences": 2
+    },
+    {
+      "id": 34,
+      "content": "property of the smoothed duality gap and leveraging this property to derive\nconvergence guarantees. Section 4 extends our framework to the Arrow–Debreu market equilibrium prob-\nlem by proposing a fixed-point iteration scheme that incorporates the PDHCG algorithm; we also provide\nconvergence analysis under mild conditions. Section 5 presents empirical evaluations on both synthetic and\nreal-world market instances, demonstrating the efficiency and scalability of our approach.",
+      "size": 477,
+      "sentences": 3
+    },
+    {
+      "id": 35,
+      "content": "etic and\nreal-world market instances, demonstrating the efficiency and scalability of our approach. Finally, Section 6\nconcludes the paper with a summary of findings. 2 Primal-Dual Hybrid Conjugate Gradient Method\nInthissection,wereviewthestandardPrimal–DualHybridGradient(PDHG)methodproposedin[10]and\nintroduce the PDHCG-type method [23] for solving the Fisher market equilibrium problem formulated as\nthe Eisenberg–Gale convex program (1).",
+      "size": 441,
+      "sentences": 3
+    },
+    {
+      "id": 36,
+      "content": "solving the Fisher market equilibrium problem formulated as\nthe Eisenberg–Gale convex program (1). Throughout this paper, we make the following assumption:\nAssumption 1. There is at least one u >0 for every i∈[n], and at least one u >0 for every j ∈[m]. ij ij\nThis is to say that every consumer in the market likes at least one good; and every good is valued by at\nleast one consumer.",
+      "size": 384,
+      "sentences": 4
+    },
+    {
+      "id": 37,
+      "content": "consumer in the market likes at least one good; and every good is valued by at\nleast one consumer. Assumption 1 is quite standard and necessary to guarantee that each good can have a\npositive equilibrium price [41]. 2.1 PDHG Methods\nBy introducing auxiliary variables t, the Eisenberg–Gale model (1) can be equivalently reformulated as:\n(cid:88)\nmin −w logt\ni i\nx,t\ni∈[n]\n(cid:88)\ns.t. x =1, ∀j ∈[m]\nij\ni∈[n] (2)\n(cid:88)\nt − u x =0, ∀i∈[n]\ni ij ij\nj∈[m]\nt ,x ≥0, ∀i,j.",
+      "size": 469,
+      "sentences": 4
+    },
+    {
+      "id": 38,
+      "content": "]\n(cid:88)\ns.t. x =1, ∀j ∈[m]\nij\ni∈[n] (2)\n(cid:88)\nt − u x =0, ∀i∈[n]\ni ij ij\nj∈[m]\nt ,x ≥0, ∀i,j. i ij\n===  4 ===\n4 H. Liu et al. Noticethatitiscomputationallychallengingtodirectlyprojectontotheconstraintsetof (2),whichinvolves\nboth column-sum and row-sum coupling constraints.",
+      "size": 279,
+      "sentences": 4
+    },
+    {
+      "id": 39,
+      "content": "lyprojectontotheconstraintsetof (2),whichinvolves\nboth column-sum and row-sum coupling constraints. This difficulty becomes particularly pronounced in\nlarge-scalesettings.Toovercomethis,weinsteadconsiderthecorrespondingprimal–dualformulationofthe\nproblem:\n   \n(cid:88) (cid:88) (cid:88) (cid:88) (cid:88)\nmin max L(x,t;p,y)= −w i logt i + p j x ij −1+ y it i − u ij x ij (3)\nx≥0,t>0 p,y\ni∈[n] j∈[m] i∈[n] i∈[n] j∈[m]\nwhere p ∈ Rm and y ∈ Rn are the dual variables introduced to enforce the market-clearing and utility\nconstraints, respectively.",
+      "size": 552,
+      "sentences": 2
+    },
+    {
+      "id": 40,
+      "content": "the dual variables introduced to enforce the market-clearing and utility\nconstraints, respectively. Notably, the optimal dual variable p⋆ corresponds to the equilibrium prices of\nthe goods [41]. To solve the resulting saddle-point problem, we adopt the PDHG algorithm introduced by\nChambolleandPock[10].PDHGisawidelyusedfirst-ordermethodforconvex–concaveminimaxproblems\nand achieves convergence by performing alternating updates to the primal and dual variables.",
+      "size": 462,
+      "sentences": 3
+    },
+    {
+      "id": 41,
+      "content": "oblems\nand achieves convergence by performing alternating updates to the primal and dual variables. The one-step\nupdate is formulated as follows:\n(pk+1,yk+1)=argmax L(2xk−xk−1,2tk−tk−1;p,y)− 1 (cid:0) ∥y−yk∥2+∥p−pk∥2(cid:1)\n2σ 2 2\np,y k\n(4)\n1\n(xk+1,tk+1)=argmin L(x,t;pk+1,yk+1)+ (∥x−xk∥2+∥t−tk∥2),\n2τ 2 2\nx≥0,t>0 k\nwhere τ and σ denote the primal and dual step-sizes. Note that the optimization problems in (4) are\nk k\nseparable with respect to each variable x ,t ,p , and y .",
+      "size": 477,
+      "sentences": 3
+    },
+    {
+      "id": 42,
+      "content": "the optimization problems in (4) are\nk k\nseparable with respect to each variable x ,t ,p , and y . Especially, the maximization problems w.r.t. each\nij i j i\np and y are unconstrained quadratic programs, and thus their closed-form update rules can be derived\nj i\ndirectly:\n(cid:32) (cid:33)\n(cid:88)\npk+1 =pk+σ (2xk −xk−1)−1 ,\nj j k ij ij\ni∈N\n  (5)\n(cid:88)\ny\ni\nk+1 =y\ni\nk+σ k2tk\ni\n−tk\ni\n−1− u\nij\n(2xk\nij\n−x\ni\nk\nj\n−1).",
+      "size": 422,
+      "sentences": 3
+    },
+    {
+      "id": 43,
+      "content": "1 ,\nj j k ij ij\ni∈N\n  (5)\n(cid:88)\ny\ni\nk+1 =y\ni\nk+σ k2tk\ni\n−tk\ni\n−1− u\nij\n(2xk\nij\n−x\ni\nk\nj\n−1). j∈M\nWhile, for each x and t , the minimization problems become\nij i\n1\nxk+1 =arg min pk+1x −u yk+1x + (x −xk)2,\nij xij≥0 j ij ij i ij 2τ k ij ij\n1\ntk+1 =argmin −w logt +yk+1t + (t −tk)2.\ni i i i i 2τ i i\nti>0 k\nThe corresponding KKT condition for each t is given by\ni\nw 1\n− i +yk+1+ (t −tk)=0, ⇔ t2+(τ yk+1−tk)t −τ w =0.",
+      "size": 419,
+      "sentences": 2
+    },
+    {
+      "id": 44,
+      "content": "ponding KKT condition for each t is given by\ni\nw 1\n− i +yk+1+ (t −tk)=0, ⇔ t2+(τ yk+1−tk)t −τ w =0. t i τ i i i k i i i k i\ni k\nA simple computation shows that the optimal solution is give by\n(cid:113)\ntk−τ yk+1+ (τ yk+1−tk)2+4τ w\ntk+1 = i k i k i i k i . (6)\ni 2\nSimilarly, for each x , a simple computation shows that\nij\nxk+1 =Proj (xk −τ (pk+1−u yk+1)). (7)\nij R + ij k j ij i\nAlgorithm 1 outlines the standard two-loop restarted PDHG method.",
+      "size": 445,
+      "sentences": 4
+    },
+    {
+      "id": 45,
+      "content": "−u yk+1)). (7)\nij R + ij k j ij i\nAlgorithm 1 outlines the standard two-loop restarted PDHG method. The algorithm begins with an\ninitialpoint(x0,0,t0,0,p0,0,y0,0),asequenceofstepsizes{(σ ,τ )},andaspecifiedrestartintervalK.Within\nk k\neach outer iteration n, the algorithm performs K inner iterations using the standard PDHG updates [10].",
+      "size": 337,
+      "sentences": 3
+    },
+    {
+      "id": 46,
+      "content": "outer iteration n, the algorithm performs K inner iterations using the standard PDHG updates [10]. Theiteratesatthek-thinnersteparedenotedby(xn,k,tn,k,pn,k,yn,k),andtheirrunningaverageistracked\n===  5 ===\nPDHCG: A Scalable First-Order Method for Large-Scale Competitive Market Equilibrium Computation 5\nAlgorithm 1: Restarted PDHG\nInput: initial point (x0,0,t0,0,p0,0,y0,0), step-size {(σ ,τ )}, restart frequency K.\nk k\n1 Repeat until (xn,0,tn,0,pn,0,yn,0) converges\nInitialize the inner loop: (xn,0,tn,0,pn,0,yn,0)←(xn,0,tn,0,pn,0,yn,0)\n2 for each k=0,...,K−1\n3\nUpdate (pn,k+1,yn,k+1) according to (5)\n4\nUpdate (xn,k+1,tn,k+1) according to (6) and (7)\n5 (xn,k+1,tn,k+1,pn,k+1,yn,k+1)= k (xn,k,tn,k,pn,k,yn,k)+ 1 (xn,k+1,tn,k+1,pn,k+1,yn,k+1)\nk+1 k+1\n6 end\nRestart the inner loop: (xn+1,0,tn+1,0,pn+1,0,yn+1,0)←(xn,K,tn,K,pn,K,yn,K), n←n+1.",
+      "size": 841,
+      "sentences": 2
+    },
+    {
+      "id": 47,
+      "content": ")\nk+1 k+1\n6 end\nRestart the inner loop: (xn+1,0,tn+1,0,pn+1,0,yn+1,0)←(xn,K,tn,K,pn,K,yn,K), n←n+1. 7 end\nOutput: (xn,0,tn,0,pn,0,yn,0)\nas(xn,k,t n,k ,pn,k,yn,k).Aftereachinnerloop,thealgorithmisrestarted,andthesubsequentouteriteration\nis initialized using the averaged solution(xn,K,t n,K ,pn,K,yn,K) obtained from the preceding inner loop. The restart strategy is incorporated to enhance the convergence rate of the PDHG algorithm.",
+      "size": 433,
+      "sentences": 3
+    },
+    {
+      "id": 48,
+      "content": "r loop. The restart strategy is incorporated to enhance the convergence rate of the PDHG algorithm. While\nPDHGexhibitssublinearconvergenceforgeneralconvex–concavesaddle-pointproblems[11],recentwork[3,23,30]\nshows that restarting can yield linear convergence in structured settings such as linear and quadratic pro-\ngramming,byexploitingpropertieslikesharpnessandquadraticgrowth.Motivatedbythesetheoreticaland\npracticalgains,weadopttherestartschemeinourPDHGframeworkfortheFishermarketproblem.Inthe\nnext section, we can see that the proposed method indeed enjoys a linear convergence guarantee.",
+      "size": 592,
+      "sentences": 3
+    },
+    {
+      "id": 49,
+      "content": "the\nnext section, we can see that the proposed method indeed enjoys a linear convergence guarantee. 2.2 PDHCG-Type Methods\nThe standard restarted accelerated PDHG method, as presented in Algorithm 1, is well-suited for GPU\nimplementation and can scale to solve large Fisher market equilibrium problems.",
+      "size": 302,
+      "sentences": 2
+    },
+    {
+      "id": 50,
+      "content": "well-suited for GPU\nimplementation and can scale to solve large Fisher market equilibrium problems. However, due to the\n(cid:80)\nintroduction of auxiliary variables t and the corresponding constraints t − u x = 0 for all i ∈\ni j∈[m] ij ij\n[n], additional primal and dual variables must be updated at each iteration. This increases per-iteration\ncomplexityandmayslowconvergence,especiallygiventhetypicallyslowandcircuitousconvergencebehavior\nof PDHG-type methods [32].",
+      "size": 467,
+      "sentences": 3
+    },
+    {
+      "id": 51,
+      "content": "vergence,especiallygiventhetypicallyslowandcircuitousconvergencebehavior\nof PDHG-type methods [32]. To further improve convergence, we return to the original formulation of the\nproblem:\n \n(cid:88) (cid:88)\nmax w i log u ij x ij\nx\ni∈[n] j∈[m]\n(cid:88) (8)\ns.t. x =1, ∀j ∈[m]\nij\ni∈[n]\nx ≥0, ∀i,j. ij\nWe still consider its primal-dual formulation:\n   \n(cid:88) (cid:88) (cid:88) (cid:88)\nminmax L(x,p)= −w i log u ij x ij+ p j x ij −1.",
+      "size": 444,
+      "sentences": 4
+    },
+    {
+      "id": 52,
+      "content": "on:\n   \n(cid:88) (cid:88) (cid:88) (cid:88)\nminmax L(x,p)= −w i log u ij x ij+ p j x ij −1. (9)\nx≥0 p\ni∈[n] j∈[m] j∈[m] i∈[n]\nAlthough the minimax problem (9) involves significantly fewer variables compared to (3), a key challenge\narises when applying the PDHG update: the subproblem with respect to x is no longer separable and thus\nbecomes difficult to solve efficiently.",
+      "size": 381,
+      "sentences": 2
+    },
+    {
+      "id": 53,
+      "content": "ubproblem with respect to x is no longer separable and thus\nbecomes difficult to solve efficiently. The primal–dual hybrid conjugate gradient (PDHCG) method, first introduced in [23] for solving large-\nscale quadratic programming (QP) problems, is a variant of the standard PDHG algorithm.",
+      "size": 289,
+      "sentences": 2
+    },
+    {
+      "id": 54,
+      "content": "ving large-\nscale quadratic programming (QP) problems, is a variant of the standard PDHG algorithm. The key idea\nof PDHCG is to address the difficulty of solving the primal subproblem: rather than applying a single\ngradient descent step as in accelerated PDHG methods [14,30], it employs a more efficient sub-algorithm to\napproximately solve the primal subproblem to a specified accuracy. This inexact update can significantly\nimprove convergence speed and overall algorithmic efficiency.",
+      "size": 488,
+      "sentences": 3
+    },
+    {
+      "id": 55,
+      "content": "This inexact update can significantly\nimprove convergence speed and overall algorithmic efficiency. In [23], the authors adopt the conjugate\n===  6 ===\n6 H. Liu et al.",
+      "size": 167,
+      "sentences": 2
+    },
+    {
+      "id": 56,
+      "content": "overall algorithmic efficiency. In [23], the authors adopt the conjugate\n===  6 ===\n6 H. Liu et al. Algorithm 2: Restarted PDHCG\nInput: initial point (x0,0,p0,0), step-size {(σ ,τ )}, restart frequency K.\nk k\n1 Repeat until (xn,0,pn,0) converges\nInitialize the inner loop: (xn,0,pn,0)←(xn,0,pn,0)\n2 for each k=0,...,K−1\n3\nUpdate pn,k+1 according to (5)\n4\nParallel update each row of xn,k+1 via Algorithm 3\n5 (xn,k+1,pn,k+1)= k (xn,k,pn,k)+ 1 (xn,k+1,pn,k+1)\nk+1 k+1\n6 end\nRestart the inner loop: (xn+1,0,pn+1,0)←(xn,K,pn,K), n←n+1.",
+      "size": 531,
+      "sentences": 3
+    },
+    {
+      "id": 57,
+      "content": ",pn,k)+ 1 (xn,k+1,pn,k+1)\nk+1 k+1\n6 end\nRestart the inner loop: (xn+1,0,pn+1,0)←(xn,K,pn,K), n←n+1. 7 end\nOutput: (xn,0,pn,0)\ngradient method to solve the primal subproblem, which, in the QP case, reduces to an unconstrained\nquadratic optimization. Fortunately, the subproblem with respect to x remains row-separable. For each row x , the subproblem\ni\ntakes the form:\nmin−w log (cid:0) uTx (cid:1) +(pk+1)Tx + 1 ∥x −xk∥2\nxi≥0 i i i i 2τ k i i\nwhere u =(u ) denote the i-th row of the utility matrix.",
+      "size": 499,
+      "sentences": 4
+    },
+    {
+      "id": 58,
+      "content": "pk+1)Tx + 1 ∥x −xk∥2\nxi≥0 i i i i 2τ k i i\nwhere u =(u ) denote the i-th row of the utility matrix. The KKT conditions are given by\ni ij j\nw 1\n− i +pk+1+ (x −xk)=λ ,\nuT i x i τ k i i i (10)\nλTx =0, λ ≥0, x ≥0. i i i i\nwhere λ ∈ Rm is the dual variable associated with the non-negativity constraint. Define a new variable\ni\ns=uTx , then, based on (10), each component x can be computed as:\ni i ij\n(cid:16) τ w (cid:17)\nx =proj xk −τ pk+1+ k i , ∀j ∈[m].",
+      "size": 452,
+      "sentences": 4
+    },
+    {
+      "id": 59,
+      "content": "ach component x can be computed as:\ni i ij\n(cid:16) τ w (cid:17)\nx =proj xk −τ pk+1+ k i , ∀j ∈[m]. (11)\nij R + ij k j s\nThe goal is to find a s > 0 such that s = (cid:80)\nj∈[m]\nu\nij\nx\nij\n= (cid:80)\nj∈[m]\nu\nij\n·proj\nR +\n(cid:0) xk\nij\n−τ\nk\npk\nj\n+1+ τk\ns\nwi (cid:1) . That\nis, we need to solve the equation\nϕ(s)=s− (cid:88) u ·proj (cid:16) xk −τ pk+1+ τ k w i (cid:17) =0.",
+      "size": 371,
+      "sentences": 3
+    },
+    {
+      "id": 60,
+      "content": "s, we need to solve the equation\nϕ(s)=s− (cid:88) u ·proj (cid:16) xk −τ pk+1+ τ k w i (cid:17) =0. ij R + ij k j s\nj∈[m]\nItiseasytoverifythatϕ(s)ismonotonicallyincreasingw.r.t.s>0.Therefore,thestandardbisectionsearch\nalgorithm can be applied to efficiently identify the root of ϕ(s), thereby solving the KKT system (10). However, a more effective update strategy is available. Let x⋆ denote the optimal solution to (10), and\ni\ndefine s⋆ = uTx⋆.",
+      "size": 445,
+      "sentences": 4
+    },
+    {
+      "id": 61,
+      "content": "e update strategy is available. Let x⋆ denote the optimal solution to (10), and\ni\ndefine s⋆ = uTx⋆. Given a trial value s = uTx , we can compute x˜ using the update rule in (11), and\ni i i i ij\nobtain the corresponding value s˜=uTx˜ . If s<s⋆, then x˜ >x⋆, which implies s˜>s⋆ >s. Conversely, if\ni i ij ij\ns > s⋆, then x˜ < x⋆, leading to s˜< s⋆ < s. Therefore, the values of s and s˜naturally form a bracketing\nij ij\ninterval that provides lower and upper bounds for s⋆.",
+      "size": 471,
+      "sentences": 5
+    },
+    {
+      "id": 62,
+      "content": "of s and s˜naturally form a bracketing\nij ij\ninterval that provides lower and upper bounds for s⋆. ThebisectionsearchprocedureisoutlinedinAlgorithm3.Atthebeginningofthealgorithm,wecompute\naninitialtrialvaluesbasedonthepreviousiteratexk,anduseittoobtainanupdatedvalues˜.Asestablished\ni\nabove, the pair (s,s˜) forms valid lower and upper bounds for the optimal value s⋆.",
+      "size": 368,
+      "sentences": 2
+    },
+    {
+      "id": 63,
+      "content": "Asestablished\ni\nabove, the pair (s,s˜) forms valid lower and upper bounds for the optimal value s⋆. At each iteration of the\nbisection algorithm, a new trial value is chosen as the midpoint s=(L+U)/2 given the current lower and\nupper bounds L and U, respectively. A new value s˜is then computed using the update rule. Since both U\nand max{s,s˜} are valid upper bounds, we update the upper bound by taking min{U,max{s,s˜}}.",
+      "size": 422,
+      "sentences": 4
+    },
+    {
+      "id": 64,
+      "content": "both U\nand max{s,s˜} are valid upper bounds, we update the upper bound by taking min{U,max{s,s˜}}. Similarly,\nboth L and min{s,s˜} are valid lower bounds, so we update the lower bound as max{L,min{s,s˜}}. Remark 1. In the worst case, where s˜ lies outside the current interval [L,U], the method behaves like\nstandard bisection, halving the interval at each step. In the better case where s˜∈[L,U], the bounds (s,s˜)\nform a tighter bracketing interval for s⋆, potentially accelerating convergence.",
+      "size": 496,
+      "sentences": 5
+    },
+    {
+      "id": 65,
+      "content": "the bounds (s,s˜)\nform a tighter bracketing interval for s⋆, potentially accelerating convergence. Therefore, Algorithm 3 can\nbe viewed as an enhanced bisection method that adaptively exploits intermediate values to tighten bounds\nmore efficiently than standard bisection.",
+      "size": 272,
+      "sentences": 2
+    },
+    {
+      "id": 66,
+      "content": "adaptively exploits intermediate values to tighten bounds\nmore efficiently than standard bisection. ===  7 ===\nPDHCG: A Scalable First-Order Method for Large-Scale Competitive Market Equilibrium Computation 7\nAlgorithm 3: Bisection Search\nInput: parameters xk,pk+1,τ , and tolerance ε.\ni k\n1\nCompute a trial value s=uT\ni\nxk\ni\n2 Compute x˜ i according to (11) and set s˜=uT i x˜ i\n3 Let U =max{s,s˜} and L=min{s,s˜}\n4 Repeat until U −L≤ε converges\n5 Set s=(U +L)/2, compute x˜ i according to (11), and set s˜=uT i x˜ i\n6 Update U =min{U,max{s,s˜}} and L=max{L,min{s,s˜}}\n7 end\nOutput: x˜\ni\nTo summarize, our extensive numerical experiments in Section 5 show that the proposed PDHCG algo-\nrithmconsistentlyrequiresfeweriterationsthantheclassicalPDHGmethod,indicatingfasterconvergence.",
+      "size": 782,
+      "sentences": 2
+    },
+    {
+      "id": 67,
+      "content": "go-\nrithmconsistentlyrequiresfeweriterationsthantheclassicalPDHGmethod,indicatingfasterconvergence. However,achievinghigh-accuracysolutionsviabisectionsearchcanbetime-consuming,limitingoverallrun-\ntimeimprovement.Toaddressthis,weintroducea32-sectionsearchalgorithmtailoredtoGPUarchitecture,\nwhich significantly enhances practical efficiency and might be of independent interest.",
+      "size": 378,
+      "sentences": 2
+    },
+    {
+      "id": 68,
+      "content": "chitecture,\nwhich significantly enhances practical efficiency and might be of independent interest. 32-Section Search In our GPU implementation, we adopt a 32-section search strategy in place of the\nstandardbisectionsearchdescribedinAlgorithm3.Specifically,givenanupperboundU andalowerbound\nL, we evaluate 32 candidate points in the interval [L,U], defined as:\n(cid:18) (cid:19)\nl l\ns = 1− L+ U, l=1,2,...,32.\nl 33 33\nFor each candidate s , we compute the corresponding x˜l in parallel according to (11), and then evaluate\nl i\ns˜ =uTx˜l.",
+      "size": 537,
+      "sentences": 2
+    },
+    {
+      "id": 69,
+      "content": ", we compute the corresponding x˜l in parallel according to (11), and then evaluate\nl i\ns˜ =uTx˜l. The bounds U and L are then updated as follows:\nl i i\nU =min{U,max{s ,s˜ },max{s ,s˜ },··· ,max{s ,s˜ }},\n1 1 2 2 32 32\nL=max{L,min{s ,s˜ },min{s ,s˜ },··· ,min{s ,s˜ }}. 1 1 2 2 32 32\nThe32-sectionsearchsignificantlyoutperformsstandardbisectioninGPUimplementationsforthefollowing\nthree reasons:\n– Warp-Level Synchronization Overhead.",
+      "size": 433,
+      "sentences": 3
+    },
+    {
+      "id": 70,
+      "content": "dbisectioninGPUimplementationsforthefollowing\nthree reasons:\n– Warp-Level Synchronization Overhead. In GPU architectures, a warp consists of 32 threads that\nexecuteinstructionsinlockstep,meaningallthreadsinawarpmustwaitforthelongest-runningthread\nto complete its operation before the warp can proceed.",
+      "size": 301,
+      "sentences": 2
+    },
+    {
+      "id": 71,
+      "content": "dsinawarpmustwaitforthelongest-runningthread\nto complete its operation before the warp can proceed. When the bisection search method is executed\nindependently by each thread within a warp, the number of iterations can vary significantly across\nthreads, leading to inefficiencies due to thread divergence.",
+      "size": 304,
+      "sentences": 2
+    },
+    {
+      "id": 72,
+      "content": "erations can vary significantly across\nthreads, leading to inefficiencies due to thread divergence. In contrast, although the 32-section search\nmethod employs more threads overall, it exhibits lower variance in per-thread workload within a warp\nand thus incurs less synchronization delay from warp-level execution constraints. – Memory/Compute Bandwidth Balance. The balance between memory access and computational\nworkload plays a critical role in determining GPU performance.",
+      "size": 477,
+      "sentences": 4
+    },
+    {
+      "id": 73,
+      "content": "ween memory access and computational\nworkload plays a critical role in determining GPU performance. During each row update, GPU kernels\nmust frequently access memory to retrieve required data. In the 32-section search method, all threads\nwithin a block operate on a shared set of data, enabling effective utilization of shared memory and\nminimizing redundant memory accesses.",
+      "size": 375,
+      "sentences": 3
+    },
+    {
+      "id": 74,
+      "content": "of data, enabling effective utilization of shared memory and\nminimizing redundant memory accesses. In contrast, the binary search method requires each thread\nto access distinct data during its update process, leading to substantially higher memory bandwidth\nconsumption.",
+      "size": 270,
+      "sentences": 2
+    },
+    {
+      "id": 75,
+      "content": "tinct data during its update process, leading to substantially higher memory bandwidth\nconsumption. – Algorithmic vs. Computational Efficiency Trade-off.Higher-divisionsearchmethods,suchas64-\nsection or 128-section search, involve more threads per iteration but offer diminishing returns in terms\nof reducing the number of required iterations.",
+      "size": 343,
+      "sentences": 2
+    },
+    {
+      "id": 76,
+      "content": "per iteration but offer diminishing returns in terms\nof reducing the number of required iterations. As the division level increases, algorithmic efficiency\ndegradessignificantlyduetothelimitedmarginalreductioniniterations,whilethecomputationalgains\nbecome negligible. Consequently, the overall performance of such methods tends to worsen.",
+      "size": 338,
+      "sentences": 3
+    },
+    {
+      "id": 77,
+      "content": "onalgains\nbecome negligible. Consequently, the overall performance of such methods tends to worsen. Taking these trade-offs into account, we adopt the 32-section search method in our implementation, as\nit offers a balanced compromise between algorithmic and computational efficiency across a wide range of\n===  8 ===\n8 H. Liu et al. Table 1.",
+      "size": 341,
+      "sentences": 4
+    },
+    {
+      "id": 78,
+      "content": "algorithmic and computational efficiency across a wide range of\n===  8 ===\n8 H. Liu et al. Table 1. Runtime (ms) in each iteration of different sections\nn m Sparsity 2 4 8 16 32 64\n0.5 247.3 163.2 131.0 113.3 95.9 172.8\n105 4000 0.2 93.6 67.1 58.0 50.1 43.3 64.6\n0.1 45.4 30.9 27.2 23.4 19.4 34.1\n0.05 188.0 130.4 110.5 99.0 84.3 155.9\n106 4000 0.02 74.4 50.6 43.9 39.6 36.1 68.8\n0.01 42.7 34.1 31.1 27.6 26.3 39.8\nproblem settings.",
+      "size": 432,
+      "sentences": 3
+    },
+    {
+      "id": 79,
+      "content": ".9\n106 4000 0.02 74.4 50.6 43.9 39.6 36.1 68.8\n0.01 42.7 34.1 31.1 27.6 26.3 39.8\nproblem settings. Table 1 reports the average iteration runtime of various section search algorithms applied\nto the Fisher market model with synthetic data (see Section 5 for details). As shown, the 32-section search\nconsistently yields the lowest total runtime across all settings, demonstrating its practical advantage over\nother division strategies.",
+      "size": 434,
+      "sentences": 3
+    },
+    {
+      "id": 80,
+      "content": "runtime across all settings, demonstrating its practical advantage over\nother division strategies. 3 Convergence Analysis\nIn this section, we present the computational guarantees for the PDHCG algorithm, as described in Al-\ngorithm 2. It is important to note that the analysis and results developed here are directly applicable to\nthe PDHG algorithm in Algorithm 1 as well. We begin by introducing several progress metrics that are\nfundamental to the subsequent analysis.",
+      "size": 471,
+      "sentences": 4
+    },
+    {
+      "id": 81,
+      "content": ". We begin by introducing several progress metrics that are\nfundamental to the subsequent analysis. Let Z = Rn×m ×Rm, and define z = (x,p) ∈ Z as the pair of\n+\nprimal and dual variables. Furthermore, let Z⋆ ⊆Z denote the set of optimal saddle points of the minimax\nproblem (9). Definition 1. For any z =(x,p) and zˆ=(xˆ,pˆ), we define\nQ(z,zˆ):=L(x,pˆ)−L(xˆ,p).",
+      "size": 360,
+      "sentences": 6
+    },
+    {
+      "id": 82,
+      "content": "max\nproblem (9). Definition 1. For any z =(x,p) and zˆ=(xˆ,pˆ), we define\nQ(z,zˆ):=L(x,pˆ)−L(xˆ,p). (12)\nWe call max Q(z,zˆ) the duality gap at z.\nzˆ∈Z\nThe duality gap is a natural and widely used progress metric for analyzing primal–dual algorithms, and\nhas appeared extensively in the literature. However, as noted in [30], it often suffers from divergence issues\ndue to the potentially unbounded nature of the constraint set.",
+      "size": 428,
+      "sentences": 5
+    },
+    {
+      "id": 83,
+      "content": "often suffers from divergence issues\ndue to the potentially unbounded nature of the constraint set. To address this, a smoothed duality gap\nwas proposed in [19], which mitigates this issue by introducing a penalization term based on the distance\nbetween zˆand a reference point z˙. This smoothed metric is defined as follows:\nDefinition 2. For any ξ >0 and z,z˙ ∈Z, we define the smoothed duality gap at z centered at z˙ as\n(cid:26) (cid:27)\nξ\nG (z;z˙)=max Q(z,zˆ)− ∥zˆ−z˙∥2 .",
+      "size": 476,
+      "sentences": 4
+    },
+    {
+      "id": 84,
+      "content": "he smoothed duality gap at z centered at z˙ as\n(cid:26) (cid:27)\nξ\nG (z;z˙)=max Q(z,zˆ)− ∥zˆ−z˙∥2 . (13)\nξ zˆ∈Z 2\nFurthermore, [19] establishes a quadratic growth condition for the smoothed duality gap, which plays a\ncentral role in their analysis of the linear convergence of the PDHG algorithm. In this work, we adopt this\nconcept to analyze the convergence behavior of Algorithm 2:\nDefinition 3. Suppose ξ >0.",
+      "size": 412,
+      "sentences": 4
+    },
+    {
+      "id": 85,
+      "content": "adopt this\nconcept to analyze the convergence behavior of Algorithm 2:\nDefinition 3. Suppose ξ >0. We say that the smoothed duality gap satisfies quadratic growth on a bounded\nset S if there exists some α >0 such that, it holds for all z⋆ ∈Z⋆ and any z ∈S that\nξ\nG (z;z⋆)≥α dist(z,Z⋆)2. (14)\nξ ξ\nItturnsoutthatthesmootheddualitygapassociatedwithbothproblems(3)and(9)satisfiesthequadratic\ngrowth property on any bounded set.",
+      "size": 423,
+      "sentences": 4
+    },
+    {
+      "id": 86,
+      "content": "litygapassociatedwithbothproblems(3)and(9)satisfiesthequadratic\ngrowth property on any bounded set. A formal characterization of the corresponding growth parameter α\nξ\nis provided in Section 3.2.",
+      "size": 195,
+      "sentences": 2
+    },
+    {
+      "id": 87,
+      "content": "et. A formal characterization of the corresponding growth parameter α\nξ\nis provided in Section 3.2. ===  9 ===\nPDHCG: A Scalable First-Order Method for Large-Scale Competitive Market Equilibrium Computation 9\n3.1 Convergence Analysis\nWe begin by presenting a decay lemma for the primal-dual hybrid gradient method, originally established\nin[10].Part(1)ofthelemmashowsthattheiteratesremainbounded,whilepart(2)providesatelescoping\nbound on the duality gap Q(zn,K,zˆ) for each iteration.",
+      "size": 484,
+      "sentences": 3
+    },
+    {
+      "id": 88,
+      "content": "ainbounded,whilepart(2)providesatelescoping\nbound on the duality gap Q(zn,K,zˆ) for each iteration. Throughout this section, we focus on the constant\n√\nstepsize τ =τ and σ =σ, and define L=max{∥xT1 ∥ :∥x∥ ≤1}= n. . k k n 2 F\nLemma 1 ([10, Theorem 1]). For any n ≥ 0, let zn,k = (xn,k,pn,k),k = 1,··· ,K be the sequence\ngenerated by Algorithm 2 in n-th outer iteration.",
+      "size": 368,
+      "sentences": 4
+    },
+    {
+      "id": 89,
+      "content": "t zn,k = (xn,k,pn,k),k = 1,··· ,K be the sequence\ngenerated by Algorithm 2 in n-th outer iteration. Assume that the stepsize στL2 <1, then we have\n(1) {(xn,k,pn,k)} remains bounded, indeed, for any k and any z⋆ ∈Z⋆:\n∥xn,k−x⋆∥2 ∥pn,k−p⋆∥2 1 (cid:18) ∥xn,0−x⋆∥2 ∥pn,0−p⋆∥2(cid:19)\n+ ≤ + , (15)\n2τ 2σ 1−στL2 2τ 2σ\n(cid:16) (cid:17)\n(2) for the average (xn,K,pn,K)= 1 (cid:80)K xn,k, 1 (cid:80)K pn,k and any zˆ∈Z:\nK k=1 K k=1\n1 (cid:18) ∥xn,0−xˆ∥2 ∥pn,0−pˆ∥2(cid:19)\nQ(zn,K,zˆ)≤ + . K 2τ 2σ\nRemark 2.",
+      "size": 497,
+      "sentences": 3
+    },
+    {
+      "id": 90,
+      "content": "nd any zˆ∈Z:\nK k=1 K k=1\n1 (cid:18) ∥xn,0−xˆ∥2 ∥pn,0−pˆ∥2(cid:19)\nQ(zn,K,zˆ)≤ + . K 2τ 2σ\nRemark 2. Toensurethevalidityoftheanalysis,weassumethatthesubproblemwithrespecttoxissolved\nexactlysothattheKKTconditionsin(10)aresatisfied.Inpractice,thisassumptioniswelljustified:owing\ntothelinearconvergenceofthebisection(or32-section)searchanditshighlyefficientGPUimplementation,\nthe subproblem can be solved to very high precision (e.g., 10−8) without introducing noticeable error or\naffecting overall convergence performance.",
+      "size": 519,
+      "sentences": 3
+    },
+    {
+      "id": 91,
+      "content": "ion (e.g., 10−8) without introducing noticeable error or\naffecting overall convergence performance. The next lemma establishes the sublinear convergence rate O(1/K) of the PDHCG inner iterates with\nrespect to the primal-dual gap G (zn,K;z˙). ξ\nLemma 2. By choosing σ =τ = 1 and K ≥4L/ξ, we have\n2L\n(1) for any z⋆ ∈Z⋆,\n∥zn,K −z⋆∥≤2∥zn,0−z⋆∥; (16)\n(2) for any z˙ ∈Z,\n2L\nG (zn,K;z˙)≤ ∥zn,0−z˙∥2. (17)\nξ K\nProof.",
+      "size": 408,
+      "sentences": 5
+    },
+    {
+      "id": 92,
+      "content": "z⋆ ∈Z⋆,\n∥zn,K −z⋆∥≤2∥zn,0−z⋆∥; (16)\n(2) for any z˙ ∈Z,\n2L\nG (zn,K;z˙)≤ ∥zn,0−z˙∥2. (17)\nξ K\nProof. According to the choices of stepsize σ =τ = 1 , part (1) of Lemma 1 implies that\n2L\n∥zn,k−z⋆∥2 ≤4∥zn,0−z⋆∥2\nholds for any k ∈[K] and any z⋆ ∈Z⋆.",
+      "size": 243,
+      "sentences": 3
+    },
+    {
+      "id": 93,
+      "content": ", part (1) of Lemma 1 implies that\n2L\n∥zn,k−z⋆∥2 ≤4∥zn,0−z⋆∥2\nholds for any k ∈[K] and any z⋆ ∈Z⋆. Then, we have\n(cid:13) (cid:13)\n(cid:13) (cid:13)\n∥zn,K −z⋆∥= (cid:13) (cid:13) 1 (cid:88) zn,k−z⋆(cid:13) (cid:13)≤ 1 (cid:88) ∥zn,k−z⋆∥≤2∥zn,0−z⋆∥,\n(cid:13)K (cid:13) K\n(cid:13) k∈[K] (cid:13) k∈[K]\nwhere the first inequality holds because of the triangle inequality. So we complete the proof of part (1).",
+      "size": 406,
+      "sentences": 3
+    },
+    {
+      "id": 94,
+      "content": "he first inequality holds because of the triangle inequality. So we complete the proof of part (1). Next, according to part (2) of Lemma 1, for any zˆ,z˙ ∈Z, we know that\nξ L 2L 2L\nQ(zn,K,zˆ)− ∥zˆ−z˙∥2 ≤ ∥zn,0−zˆ∥2− ∥zˆ−z˙∥2 ≤ ∥zn,0−z˙∥2 (18)\n2 K K K\nwhere the first inequality holds because we choose K ≥ 4L/ξ so that ξ/2 ≥ 2L/K, and the last inequality\nholds because of Cauchy–Schwarz inequality. Therefore, we have\n(cid:26) (cid:27)\nξ 2L\nG (zn,K;z˙)=max Q(zn,K,zˆ)− ∥zˆ−z˙∥2 ≤ ∥zn,0−z˙∥2.",
+      "size": 491,
+      "sentences": 4
+    },
+    {
+      "id": 95,
+      "content": "ality. Therefore, we have\n(cid:26) (cid:27)\nξ 2L\nG (zn,K;z˙)=max Q(zn,K,zˆ)− ∥zˆ−z˙∥2 ≤ ∥zn,0−z˙∥2. ξ zˆ 2 K\n===  10 ===\n10 H. Liu et al. The following theorem presents our major theoretical result of Algorithm 2 for Fisher market model. (cid:110) (cid:111)\nTheorem 1. By choosing σ =τ = 1 and K ≥max 4L,4L , we have for all n≥0 that\n2L ξ αξ\n1\ndist(zn+1,0,Z⋆)≤ dist(zn,0,Z⋆). (19)\n2\nProof.",
+      "size": 389,
+      "sentences": 7
+    },
+    {
+      "id": 96,
+      "content": "and K ≥max 4L,4L , we have for all n≥0 that\n2L ξ αξ\n1\ndist(zn+1,0,Z⋆)≤ dist(zn,0,Z⋆). (19)\n2\nProof. First of all, suppose that the sequence {zn,0} always lies in a bounded set S, then we can apply the\nquadratic growth property stated in Definition 3.",
+      "size": 250,
+      "sentences": 3
+    },
+    {
+      "id": 97,
+      "content": "ys lies in a bounded set S, then we can apply the\nquadratic growth property stated in Definition 3. Let z⋆ =proj (zn,0), we have\nZ⋆\n1 1\ndist(zn+1,0,Z⋆)2 ≤ G (zn+1,0;z⋆)= G (zn,K;z⋆)\nα ξ α ξ\nξ ξ\n2L 2L\n≤ ∥zn,0−z⋆∥2 = dist(zn,0,Z⋆)2\nKα Kα\nξ ξ\n1\n≤ dist(zn,0,Z⋆)\n2\nwhere the first inequality follows from the quadratic growth property in Definition 3, the second inequality\nfollows from Lemma 2, and the last inequality holds by our choice K ≥ 4L/α . So we complete the proof.",
+      "size": 471,
+      "sentences": 3
+    },
+    {
+      "id": 98,
+      "content": "lows from Lemma 2, and the last inequality holds by our choice K ≥ 4L/α . So we complete the proof. ξ\nThe remaining part is to verify the assumption that the sequence {zn,0} remains bounded. We can show by\ninduction that\ndist(zn,0,Z⋆)≤2dist(z0,0,Z⋆), ∀n≥0. (20)\nThen,thesequenceisboundedsinceZ⋆ isbounded.Firstly,(20)trivallyholdsforn=0.Assume(20)holds\nforalln≤N,then(19)alsoholdsforalln≤N−1,whichimpliesthatdist(zN,0,Z⋆)≤dist(z0,0,Z⋆)/2N ≤\ndist(z0,0,Z⋆).",
+      "size": 455,
+      "sentences": 5
+    },
+    {
+      "id": 99,
+      "content": "alln≤N,then(19)alsoholdsforalln≤N−1,whichimpliesthatdist(zN,0,Z⋆)≤dist(z0,0,Z⋆)/2N ≤\ndist(z0,0,Z⋆). Then, according to (16) in Lemma 2 with z⋆ =proj (zN,0), we have\nZ⋆\ndist(zN+1,0,Z⋆)≤∥zN+1,0−z⋆∥≤2∥zN,0−z⋆∥=2dist(zN,0,Z⋆)≤2dist(z0,0,Z⋆). By induction, we complete the proof.",
+      "size": 274,
+      "sentences": 3
+    },
+    {
+      "id": 100,
+      "content": "+1,0,Z⋆)≤∥zN+1,0−z⋆∥≤2∥zN,0−z⋆∥=2dist(zN,0,Z⋆)≤2dist(z0,0,Z⋆). By induction, we complete the proof. 3.2 Quadratic Growth\nThe quadratic growth property (14) of the smoothed duality gap is generally difficult to establish and has\nonly been verified for a few structured problems—such as quadratic programming [30]—typically through\ncase-by-case analysis.",
+      "size": 352,
+      "sentences": 3
+    },
+    {
+      "id": 101,
+      "content": "few structured problems—such as quadratic programming [30]—typically through\ncase-by-case analysis. Fortunately, recent work by [28] demonstrates that, for general convex and smooth\noptimization problems with linear constraints, the quadratic growth property can be implied by an ap-\npropriate KKT error bound–also known as the metric subregularity of the KKT operator [1,17,26]–for the\noriginalproblem.Therefore,toestablishthequadraticgrowthpropertyforoursetting,itsufficestoanalyze\nthe KKT error bound for the Fisher market problem.",
+      "size": 534,
+      "sentences": 2
+    },
+    {
+      "id": 102,
+      "content": "cgrowthpropertyforoursetting,itsufficestoanalyze\nthe KKT error bound for the Fisher market problem. KKT Error Bound for PDHG We need to first establish the KKT error bound for the PDHG refor-\nmulation (2), and then extend the result to derive the corresponding KKT error bound for the PDHCG\nformulation (9).",
+      "size": 307,
+      "sentences": 2
+    },
+    {
+      "id": 103,
+      "content": "d then extend the result to derive the corresponding KKT error bound for the PDHCG\nformulation (9). The KKT conditions for the Fisher equilibrium problem (2) are given by:\nt y −w =0, ∀i∈[n] (21a)\ni i i\nx (p −u y )=0, ∀i,j (21b)\nij j ij i\np −u y ≥0, ∀i,j (21c)\nj ij i\n(cid:88)\nx =1, ∀j ∈[m] (21d)\nij\ni∈[n]\n(cid:88)\nt − u x =0, ∀i∈[n] (21e)\ni ij ij\nj∈[m]\nx ≥0, ∀i,j.",
+      "size": 364,
+      "sentences": 2
+    },
+    {
+      "id": 104,
+      "content": "i\n(cid:88)\nx =1, ∀j ∈[m] (21d)\nij\ni∈[n]\n(cid:88)\nt − u x =0, ∀i∈[n] (21e)\ni ij ij\nj∈[m]\nx ≥0, ∀i,j. (21f)\nij\n===  11 ===\nPDHCG: A Scalable First-Order Method for Large-Scale Competitive Market Equilibrium Computation 11\nItisstraightforwardtoverifythatthecomplementaryslacknesscondition(21b)isequivalenttothefollowing\nformulation [30], which avoids the explicit use of quadratic terms:\nx −[x −η(p −u y )] =0, for any η >0.",
+      "size": 421,
+      "sentences": 2
+    },
+    {
+      "id": 105,
+      "content": "lation [30], which avoids the explicit use of quadratic terms:\nx −[x −η(p −u y )] =0, for any η >0. (22)\nij ij j ij i +\nThis equivalence holds in the following way: if (21b) holds, then the condition in (22) is satisfied for any\nη >0; conversely, if (22) holds for some η >0, then (21b) must also hold. Therefore, we can replace (21b)\nwith (22) for some η >0 and define the following scaled KKT residual [30]. Definition 4.",
+      "size": 423,
+      "sentences": 4
+    },
+    {
+      "id": 106,
+      "content": "lace (21b)\nwith (22) for some η >0 and define the following scaled KKT residual [30]. Definition 4. For any ξ >0 and any point (x,t,p,y) with x≥0, we call\n (t y −w ) \ni i i i\n(cid:16) (cid:17)\n x −[x − 1(p −u y )] \n ij ij ξ j ij i + ij\nF ξ (x,t,p,y)=  ([p j −u ij y i ] − ) j   (23)\n (cid:80) \n ( i∈[n] x ij −1) j \n(cid:80)\n(t − u x )\ni j∈[m] ij ij i\nthe scaled KKT residual of (2) at (x,t,p,y).",
+      "size": 409,
+      "sentences": 3
+    },
+    {
+      "id": 107,
+      "content": "i∈[n] x ij −1) j \n(cid:80)\n(t − u x )\ni j∈[m] ij ij i\nthe scaled KKT residual of (2) at (x,t,p,y). ThescaledKKTresidualF (x,t,p,y)servesasaproxyforassessingtheoptimalityofaprimal-dualsolution\nξ\n(x,t,p,y). Specifically, (x,t,p,y) is an optimal solution to (2) if and only if F (x,t,p,y)=0. Furthermore,\nξ\nwe establish the following KKT error bound condition which quantitatively links the distance to optimality\nwith the residual norm in any bounded set. Proposition 1.",
+      "size": 469,
+      "sentences": 5
+    },
+    {
+      "id": 108,
+      "content": "tatively links the distance to optimality\nwith the residual norm in any bounded set. Proposition 1. Let X⋆ denote the set of solutions to the KKT system (21). For any R > 0, there exists\nsome γ >0 such that\nξ\n∥F (x,t,p,y)∥≥γ ·dist((x,t,p,y),X⋆), ∀∥(x,t,p,y)∥≤R. (24)\nξ ξ\nBefore proceeding, we need to introduce some facts about the KKT system (21). Fact 1.",
+      "size": 356,
+      "sentences": 6
+    },
+    {
+      "id": 109,
+      "content": "∥≤R. (24)\nξ ξ\nBefore proceeding, we need to introduce some facts about the KKT system (21). Fact 1. Under Assumption 1, we have\n(1) the optimal solution t⋆ is unique;\n(2) the equilibrium price p⋆ is unique and lies in the simplex {p∈Rm | (cid:80) p = (cid:80) w };\n+ j∈[m] j i∈[n] i\n(3) X⋆ is a bounded polyhedron. Proof. For part (1), we prove this by contradiction. Suppose there exists two distinct optimal solutions\n(t⋆,x⋆) and (t˜⋆,x˜⋆) such that t⋆ ̸= t˜⋆.",
+      "size": 462,
+      "sentences": 7
+    },
+    {
+      "id": 110,
+      "content": "ion. Suppose there exists two distinct optimal solutions\n(t⋆,x⋆) and (t˜⋆,x˜⋆) such that t⋆ ̸= t˜⋆. Since the feasible set is convex, their average (t⋆+t˜⋆,x⋆+x˜⋆) must\n(cid:80) 2 2\nalsobeafeasiblesolution.However,theobjectivefunctionf(t)= −w logt isstrictlyconvex,which\ni∈[n] i i\nimplies that\n(cid:18) t⋆+t˜⋆(cid:19) f(t⋆)+f(t˜⋆)\nf < . 2 2\nThis contradicts the fact that both t˜⋆ and t˜⋆ are optimal, since their average would yield a strictly smaller\nobjective value.",
+      "size": 469,
+      "sentences": 4
+    },
+    {
+      "id": 111,
+      "content": "t both t˜⋆ and t˜⋆ are optimal, since their average would yield a strictly smaller\nobjective value. Therefore, the optimal solution t⋆ must be unique. For part (2), the uniqueness is a direct result of [41, Corollary 2].",
+      "size": 220,
+      "sentences": 3
+    },
+    {
+      "id": 112,
+      "content": "l solution t⋆ must be unique. For part (2), the uniqueness is a direct result of [41, Corollary 2]. Besides, based on the KKT system\n(21), we know that\n(cid:88) (cid:88) (cid:88) (cid:88) (cid:88) (cid:88) (cid:88)\np⋆ = p⋆x = u y x = y t = w (25)\nj j ij ij i ij i i i\nj∈[m] j∈[m]i∈[n] j∈[m]i∈[n] i∈[n] i∈[n]\nwhere the first, second, third, and the last equality hold because of (21d), (21b), (21e), and (21a), respec-\ntively. While the non-negativity of p⋆ comes from (21c).",
+      "size": 474,
+      "sentences": 4
+    },
+    {
+      "id": 113,
+      "content": "of (21d), (21b), (21e), and (21a), respec-\ntively. While the non-negativity of p⋆ comes from (21c). For part (3), since t⋆, y⋆ and p⋆ are unique, the system (21) implies that X⋆ is a polyhedron w.r.t. x\nand thus bounded. Now, we are ready to prove Proposition 1. ===  12 ===\n12 H. Liu et al. Proof (Proof of Proposition 1).",
+      "size": 323,
+      "sentences": 7
+    },
+    {
+      "id": 114,
+      "content": ", we are ready to prove Proposition 1. ===  12 ===\n12 H. Liu et al. Proof (Proof of Proposition 1). Wefirstconsiderthefollowingmodifiedproblemof (2),wheretheobjective\nfunction is replaced by the second-order Taylor expansion of f(t)= (cid:80) −w logt at t⋆:\ni∈[n] i i\nmin (cid:88) −w logt⋆− w i(t −t⋆)+ w i (t −t⋆)2\nx,t i i t⋆ i i 2t⋆2 i i\ni∈[n] i i\n(cid:88)\ns.t. x =1, ∀j ∈[m]\nij\ni∈[n] (26)\n(cid:88)\nt − u x =0, ∀i∈[n]\ni ij ij\nj∈[m]\nt ,x ≥0, ∀i,j.",
+      "size": 448,
+      "sentences": 5
+    },
+    {
+      "id": 115,
+      "content": "(cid:88)\ns.t. x =1, ∀j ∈[m]\nij\ni∈[n] (26)\n(cid:88)\nt − u x =0, ∀i∈[n]\ni ij ij\nj∈[m]\nt ,x ≥0, ∀i,j. i ij\nThe KKT system to the problem (26) is same as (21) with replacing t y =w by\ni i i\nw w\n− i + i(t −t⋆)+y =0, ⇔ y⋆(t −t⋆)+t⋆(y −y⋆)=0\nt⋆ t⋆2 i i i i i i i i i\ni i\nwhere y⋆ = w /t⋆ denote the optimal dual solution according to (21a).",
+      "size": 333,
+      "sentences": 3
+    },
+    {
+      "id": 116,
+      "content": "t⋆ t⋆2 i i i i i i i i i\ni i\nwhere y⋆ = w /t⋆ denote the optimal dual solution according to (21a). It is easy to see that t⋆ is also a\ni i i\noptimal solution to the modified problem (26) by checking the KKT conditions, and is also unique since\nthe objective is strongly convex regarding t. Thus, we know that X⋆ is also the set of solution to the KKT\nsystem of (26).",
+      "size": 366,
+      "sentences": 2
+    },
+    {
+      "id": 117,
+      "content": "ly convex regarding t. Thus, we know that X⋆ is also the set of solution to the KKT\nsystem of (26). Then, we can define the modified KKT residual as\n (y⋆(t −t⋆)+t⋆(y −y⋆)) \ni i i i i i i\n(x −[x −η(p −u y )] )\n ij ij j ij i + ij\nF˜ ξ (x,t,p,y)=   ([p j −u ij y i ] − ) ij  .",
+      "size": 281,
+      "sentences": 2
+    },
+    {
+      "id": 118,
+      "content": "i i i\n(x −[x −η(p −u y )] )\n ij ij j ij i + ij\nF˜ ξ (x,t,p,y)=   ([p j −u ij y i ] − ) ij  . (27)\n (cid:80) \n ( i∈[n] x ij −1) j \n(cid:80)\n(t − u x )\ni j∈[m] ij ij i\nNotice that every entry in F˜ (x,t,p,y) is a piecewise linear function in (x,t,p,y), thus the l norm of\nξ 2\nF˜ (x,t,p,y) is a sharp function, name, there exists some β >0 such that it holds for any (x,t,p,y) within\nξ ξ\nthe bounded set S ={(x,t,p,y):∥(x,t,p,y)∥≤R} that\n∥F˜ (x,t,p,y)∥≥β ·dist((x,t,p,y),X⋆).",
+      "size": 482,
+      "sentences": 2
+    },
+    {
+      "id": 119,
+      "content": "within\nξ ξ\nthe bounded set S ={(x,t,p,y):∥(x,t,p,y)∥≤R} that\n∥F˜ (x,t,p,y)∥≥β ·dist((x,t,p,y),X⋆). (28)\nξ ξ\nFinally, it is easy to see that\ny⋆(t −t⋆)+t⋆(y −y⋆)=t y −w −(t −t⋆)(y −y⋆)\ni i i i i i i i i i i i i\nwhich implies that\n1 1\n|∥y⋆(t −t⋆)+t⋆(y −y⋆)∥−∥t y −w ∥|≤∥(t −t⋆)(y −y⋆)∥≤ (∥t −t⋆∥2+∥y −y⋆∥2)≤ dist((x,t,p,y),X⋆)2.\ni i i i i i i i i i i i i 2 i i i i 2\n√ √\nUsing the fact that a2+b2− a′2+b2 ≤|a−a′|, we have\n1\n∥F˜ (x,t,p,y)∥−∥F (x,t,p,y)∥≤|∥y⋆(t −t⋆)+t⋆(y −y⋆)∥−∥t y −w ∥|≤ dist((x,t,p,y),X⋆)2.\nξ ξ i i i i i i i i i 2\nCombining this with (28), we get\n1 β\n∥F (x,t,p,y)∥≥β dist((x,t,p,y),X⋆)− dist((x,t,p,y),X⋆)2 ≥ ξdist((x,t,p,y),X⋆) (29)\nξ ξ 2 2\nwhere the last inequality hold if dist((x,t,p,y),X⋆) < β .",
+      "size": 716,
+      "sentences": 2
+    },
+    {
+      "id": 120,
+      "content": ",X⋆)2 ≥ ξdist((x,t,p,y),X⋆) (29)\nξ ξ 2 2\nwhere the last inequality hold if dist((x,t,p,y),X⋆) < β . Besides, consider the complementary region\nξ\nS = {(x,t,p,y) ∈ S | dist((x,t,p,y),X⋆) ≥ β }, since S is compact and ∥F (x,t,p,y)∥ is strictly positive\nξ ξ\nover the region, there exists a constant ϑ>0 such that\nϑ\n∥F (x,t,p,y)∥≥ϑ≥ dist((x,t,p,y),X⋆), ∀(x,t,p,y)∈S, (30)\nξ R+∥X⋆∥\n===  13 ===\nPDHCG: A Scalable First-Order Method for Large-Scale Competitive Market Equilibrium Computation 13\nwhere∥X⋆∥denotethelargestnormoftheoptimalsolution,whichisfinitesinceX⋆ isbounded.Combining\ninequalities (29) and (30), we conclude that for any (x,t,p,y) with ∥(x,t,p,y)∥≤R, the following holds:\n(cid:26) (cid:27)\nϑ β\n∥F (x,t,p,y)∥≥min , ξ dist((x,t,p,y),X⋆).",
+      "size": 745,
+      "sentences": 2
+    },
+    {
+      "id": 121,
+      "content": "∥(x,t,p,y)∥≤R, the following holds:\n(cid:26) (cid:27)\nϑ β\n∥F (x,t,p,y)∥≥min , ξ dist((x,t,p,y),X⋆). ξ R+∥X⋆∥ 2\nThis completes the proof. KKT Error Bound for PDHCG The KKT conditions for the Fisher equilibrium problem (9) are given\nas follows:\n(cid:32) (cid:33)\nu w\nx p − ij i =0, ∀i,j (31a)\nij j (cid:80) u x\nj∈[m] ij ij\nu w\np − ij i ≥0, ∀i,j (31b)\nj (cid:80) u x\nj∈[m] ij ij\n(cid:88)\nx =1, ∀j ∈[m] (31c)\nij\ni∈[n]\nx ≥0, ∀i,j.",
+      "size": 425,
+      "sentences": 3
+    },
+    {
+      "id": 122,
+      "content": "− ij i ≥0, ∀i,j (31b)\nj (cid:80) u x\nj∈[m] ij ij\n(cid:88)\nx =1, ∀j ∈[m] (31c)\nij\ni∈[n]\nx ≥0, ∀i,j. (31d)\nij\n(cid:80)\nThis system is equivalent to (21), with t and y substituted using the relations t = u x and\ni i i j∈[m] ij ij\ny =w /t . Similar to (22), we can replace the complementary slackness condition (31a) with the following\ni i i\ncondition to avoid explicit use of quadratic terms:\n(cid:34) (cid:32) (cid:33)(cid:35)\nu w\nx − x −η p − ij i =0, for any η >0.",
+      "size": 464,
+      "sentences": 3
+    },
+    {
+      "id": 123,
+      "content": "use of quadratic terms:\n(cid:34) (cid:32) (cid:33)(cid:35)\nu w\nx − x −η p − ij i =0, for any η >0. (32)\nij ij j (cid:80) u x\nj∈[m] ij ij\n+\nThen, we define the following scaled KKT residual of (9). Definition 5.",
+      "size": 210,
+      "sentences": 3
+    },
+    {
+      "id": 124,
+      "content": "(cid:80) u x\nj∈[m] ij ij\n+\nThen, we define the following scaled KKT residual of (9). Definition 5. For any ξ >0 and any point (x,t,p,y) with x≥0, we call\n(cid:18) (cid:104) (cid:16) (cid:17)(cid:105) (cid:19) \nx − x −η p − uijwi\n\nij ij j (cid:80)\nj∈[m]\nuijxij\n+ ij\nF ξ (x,p)=     (cid:18)(cid:104) p j − (cid:80) j∈ u [m ij ] w u i ijxij (cid:105) − (cid:19) j     (33)\n(cid:80)\n( x −1)\ni∈[n] ij j\nthe scaled KKT residual of (9) at (x,p).",
+      "size": 450,
+      "sentences": 3
+    },
+    {
+      "id": 125,
+      "content": "105) − (cid:19) j     (33)\n(cid:80)\n( x −1)\ni∈[n] ij j\nthe scaled KKT residual of (9) at (x,p). Note that, for any (x,p)∈Z, by choosing t i = (cid:80) j∈[m] u ij x ij and y i = w ti i for each i∈[n], it is easy to see\nthat\nF (x,p)=F (x,t,p,y).",
+      "size": 247,
+      "sentences": 2
+    },
+    {
+      "id": 126,
+      "content": "id:80) j∈[m] u ij x ij and y i = w ti i for each i∈[n], it is easy to see\nthat\nF (x,p)=F (x,t,p,y). ξ ξ\nThen, letting (x⋆,t⋆,p⋆,y⋆)=Proj (x,t,p,y), we have\nX⋆\nG (x,p)=F (x,t,p,y)≥γ dist((x,t,p,y),X⋆)2 ≥γ ∥(x,p)−(x⋆,p⋆)∥2 ≥γ dist((x,p),Z⋆)2, (34)\nξ ξ ξ ξ ξ\nwhere the first inequality holds because of Proposition (1), the second one holds because of the fact\n(x⋆,t⋆,p⋆,y⋆) = Proj (x,t,p,y), and the last inequality holds because (x⋆,p⋆) ∈ Z⋆.",
+      "size": 441,
+      "sentences": 2
+    },
+    {
+      "id": 127,
+      "content": "use of the fact\n(x⋆,t⋆,p⋆,y⋆) = Proj (x,t,p,y), and the last inequality holds because (x⋆,p⋆) ∈ Z⋆. Thus, (34) shows\nX⋆\nthat the same KKT error bound also holds for the Fisher equilibrium problem (9). Finally, the quadratic growth property for both the problem (3) and the problem (9) follows directly\nfrom Proposition 1, (34), and Theorem 1 in [28]. This leads to the following corollary:\nCorollary 1.",
+      "size": 402,
+      "sentences": 4
+    },
+    {
+      "id": 128,
+      "content": "rom Proposition 1, (34), and Theorem 1 in [28]. This leads to the following corollary:\nCorollary 1. For both minimax problems (3) and (9), the quadratic growth condition defined in (14) holds\nwith some constant α >0. ξ\n===  14 ===\n14 H. Liu et al. Algorithm 4: Fixed Point Iteration\nInput: initial budget w0 and tolerance ε.",
+      "size": 324,
+      "sentences": 5
+    },
+    {
+      "id": 129,
+      "content": "4 ===\n14 H. Liu et al. Algorithm 4: Fixed Point Iteration\nInput: initial budget w0 and tolerance ε. 1 for each k=0,1,2,...,\n2\nCompute the Fisher equilibrium price p(wk) via Algorithm 2\n3\nUpdate wk+1 =E·p(wk)\n4\nStop if ∥wk+1−wk∥≤ε\n5 end\nOutput: p(wk)\n4 Extension to Arrow-Debreu Exchange Market\nIn the Arrow–Debreu market model, there are n players and m divisible goods. Each player i is initially\nendowed with a fraction e ≥0 of good j.",
+      "size": 437,
+      "sentences": 4
+    },
+    {
+      "id": 130,
+      "content": "n players and m divisible goods. Each player i is initially\nendowed with a fraction e ≥0 of good j. Without loss of generality, the total endowment of each good is\nij\n(cid:80)\nnormalized to one, i.e., e =1 for all j ∈[m].",
+      "size": 221,
+      "sentences": 3
+    },
+    {
+      "id": 131,
+      "content": "lity, the total endowment of each good is\nij\n(cid:80)\nnormalized to one, i.e., e =1 for all j ∈[m]. Each player seeks to purchase a bundle of goods that\ni∈[n] ij\nmaximizestheirutility,usingtherevenueobtainedfromsellingtheirinitialendowment.Apriceequilibrium\nis an assignment of prices to goods such that, when each player purchases their utility-maximizing bundle,\nall markets clear—meaning that the total demand for each good equals its total supply.",
+      "size": 451,
+      "sentences": 2
+    },
+    {
+      "id": 132,
+      "content": "zing bundle,\nall markets clear—meaning that the total demand for each good equals its total supply. ThekeydistinctionbetweenFisher’sandWalras’(Arrow–Debreu)modelsliesinthetreatmentofinitial\nendowments. In the Arrow–Debreu model, each player acts as both a producer and a consumer, and their\ninitial endowment is not fixed in advance; instead, it is determined by the equilibrium prices.",
+      "size": 386,
+      "sentences": 3
+    },
+    {
+      "id": 133,
+      "content": "eir\ninitial endowment is not fixed in advance; instead, it is determined by the equilibrium prices. As noted\nin [41], computing an Arrow–Debreu equilibrium reduces to finding an initial budget vector w ∈ Rn that\nsatisfies the fixed-point condition:\nw =E·p(w), (35)\nwhereE =(e )isthematrixofinitialendowments,andp(w)denotestheFishermarketequilibriumprices\nij\ngiven budget w, which is unique according to Fact 1, ensuring that the mapping p(w) is well-defined.",
+      "size": 458,
+      "sentences": 2
+    },
+    {
+      "id": 134,
+      "content": "iven budget w, which is unique according to Fact 1, ensuring that the mapping p(w) is well-defined. LetT :Rn →Rn denotethemappingT(w)=E·p(w).Then,thefixed-pointequation(35)characterizes\nthe Arrow–Debreu market equilibrium as the solution to w = T(w). A natural approach to solving this is\nthrough fixed-point iteration: starting from an initial budget w0, we iteratively update the budget using\nwk+1 =T(wk), k =0,1,2,··· .",
+      "size": 422,
+      "sentences": 3
+    },
+    {
+      "id": 135,
+      "content": "rting from an initial budget w0, we iteratively update the budget using\nwk+1 =T(wk), k =0,1,2,··· . Ateachiterationk,thisrequirescomputingtheFisherequilibriumpricesforthegivenbudgetwk,whichcan\nbe efficiently obtained using Algorithm 2. The overall procedure for solving the Arrow–Debreu equilibrium\nis summarized in Algorithm 4.",
+      "size": 328,
+      "sentences": 3
+    },
+    {
+      "id": 136,
+      "content": "thm 2. The overall procedure for solving the Arrow–Debreu equilibrium\nis summarized in Algorithm 4. To ensure the convergence of the fixed-point iteration method, a sufficient condition, as established by\nthe Banach fixed-point theorem, is that the mapping T is a contraction. We formally define this property\nbelow:\nDefinition 6. Let Ω ⊆ Rn be a region. A mapping T : Ω → Ω is called a contractive mapping if there\nexists a constant γ ∈[0,1) such that for all w,w′ ∈Ω,\n∥T(w)−T(w′)∥≤γ∥w−w′∥.",
+      "size": 491,
+      "sentences": 6
+    },
+    {
+      "id": 137,
+      "content": "active mapping if there\nexists a constant γ ∈[0,1) such that for all w,w′ ∈Ω,\n∥T(w)−T(w′)∥≤γ∥w−w′∥. (36)\nUnder this condition, the sequence {wk} generated by wk+1 =T(wk) converges linearly to the unique fixed\npoint w⋆ ∈S satisfying T(w⋆)=w⋆.",
+      "size": 241,
+      "sentences": 2
+    },
+    {
+      "id": 138,
+      "content": "k} generated by wk+1 =T(wk) converges linearly to the unique fixed\npoint w⋆ ∈S satisfying T(w⋆)=w⋆. However,themappingT(w)=E·p(w)isnotcontractiveingeneral.Infact,atwo-dimensionalcounterex-\nample provided in [41] demonstrates that the fixed-point iteration for computing Arrow–Debreu equilibria\ncandiverge.Fortunately,inlarge-scalesettings,thecontractivenessofthemappingT canbeensuredbyin-\ncorporatingrandomnessintoboththeutilitymatrixU =(u )andtheinitialendowmentmatrixE =(e ).",
+      "size": 477,
+      "sentences": 2
+    },
+    {
+      "id": 139,
+      "content": "suredbyin-\ncorporatingrandomnessintoboththeutilitymatrixU =(u )andtheinitialendowmentmatrixE =(e ). ij ij\nTo formalize this, we introduce the following assumptions. Assumption 2. Theutilitycoefficients{u }arei.i.d.randomvariablessupportedon[0,1],andthereexists\nij\na constant u >0 such that P(u ≥u )=p>0. 0 ij 0\nAssumption 3. Theinitialendowments{e }areassumedtobei.i.d.randomvariablessupportedon[0,1],\nij\nwith mean 1/n and variance δ2. Moreover, there exists a constant e >0 such that P(e ≥e )=q >0.",
+      "size": 499,
+      "sentences": 7
+    },
+    {
+      "id": 140,
+      "content": ",\nij\nwith mean 1/n and variance δ2. Moreover, there exists a constant e >0 such that P(e ≥e )=q >0. 0 ij 0\n===  15 ===\nPDHCG: A Scalable First-Order Method for Large-Scale Competitive Market Equilibrium Computation 15\nAssumption 2 reflects the setting where players’ preferences for goods are independent and randomly\ndistributed—aplausiblemodelinscenarioslikee-commerceplatformswhereuserinterestsarehighlydiverse.",
+      "size": 414,
+      "sentences": 3
+    },
+    {
+      "id": 141,
+      "content": "ly\ndistributed—aplausiblemodelinscenarioslikee-commerceplatformswhereuserinterestsarehighlydiverse. Assumption3furtherassumesthateachplayerholdsarandompositivefractionofeverygood,whichmodels\ndecentralized and diverse initial resource distributions. Based on the randomness assumptions above, we can establish the following result, which ensures that\nT(Ω)⊆Ω for some compact Ω which is away from the origin. Lemma 3.",
+      "size": 415,
+      "sentences": 4
+    },
+    {
+      "id": 142,
+      "content": "lowing result, which ensures that\nT(Ω)⊆Ω for some compact Ω which is away from the origin. Lemma 3. Let ∆={w ∈Rn | (cid:80) w =1} be the n-dimensional simplex and define\ni∈[n] i\n(cid:110) u e q (cid:111)\nΩ = w ∈∆|w ≥ 0 0 , ∀i∈[n] . (37)\ni 4n\nUnderAssumptions2and3,withprobabilityatleast1−mexp(−2np2)−n2exp(−mp2q2/2),foranyw ∈Ω,\nwe have T(w)∈Ω. (cid:80)\nProof. First of all, according to part (2) in Fact 1 and the fact that e =1,∀j ∈[m], we have\ni∈[n] ij\n1TT(w)=1TE·p(w)=1Tp(w)=1Tw.",
+      "size": 482,
+      "sentences": 6
+    },
+    {
+      "id": 143,
+      "content": "to part (2) in Fact 1 and the fact that e =1,∀j ∈[m], we have\ni∈[n] ij\n1TT(w)=1TE·p(w)=1Tp(w)=1Tw. n n m n\nThus, if w ∈ ∆, we know that T(w) ∈ ∆. Next, given the budget w, the KKT condition (21c) shows that\nthe Fisher equilibrium price p(w) satisfies\nw u w\np (w)≥u y =u i ≥ ij i, ∀i∈[n], (38)\nj ij i ij t m\ni\n(cid:80)\nwherethefirstequalityholdsbecauset y =w ,andthesecondinequalityholdssincet = u x ≤m.",
+      "size": 402,
+      "sentences": 3
+    },
+    {
+      "id": 144,
+      "content": "t m\ni\n(cid:80)\nwherethefirstequalityholdsbecauset y =w ,andthesecondinequalityholdssincet = u x ≤m. i i i i j∈m ij ij\nForany fixedj ∈[m],denoted by Φ ={i∈[n]|u ≥u }.Assumption2tells usthat {1(i∈Φ )} arei.i.d. j ij 0 j\nBernoulli variables. According to Hoeffding’s inequality, we have\n \n(cid:88)\nP |Φ\nj\n|= 1(i∈Φ\nj\n)≤2np≤exp(−2np2), ∀j ∈[m]. i∈[n]\nThe union bound theory shows that, with probability at least 1−mexp(−2np2), we have |Φ |≤2np, ∀j ∈\nj\n[m].",
+      "size": 455,
+      "sentences": 5
+    },
+    {
+      "id": 145,
+      "content": "ion bound theory shows that, with probability at least 1−mexp(−2np2), we have |Φ |≤2np, ∀j ∈\nj\n[m]. Then, summing (38) over all i∈Φ , we obtain\nj\np (w)≥ 1 (cid:88) u ij w i ≥ u 0 (cid:88) w , ∀j ∈[m]. j |Φ | m 2mnp i\nj\ni∈Φj i∈Φj\nNext, for any i,l ∈ [n], define Ψ = {j ∈ [m] | e ≥ e } and Ξ = {j ∈ [m] | e ≥ e , u ≥ u }. Similarly,\nl lj 0 li lj 0 ij 0\nwe can show that, with probability at least 1−n2exp(−mp2q2/2), we have |Ξ |≥mpq/2.",
+      "size": 433,
+      "sentences": 4
+    },
+    {
+      "id": 146,
+      "content": "j 0 li lj 0 ij 0\nwe can show that, with probability at least 1−n2exp(−mp2q2/2), we have |Ξ |≥mpq/2. Then, we have\nli\n[T(w)] = (cid:88) e p (w)≥e (cid:88) p (w)≥ u 0 e 0 (cid:88) (cid:88) w = u 0 e 0 (cid:88) (cid:88) w ≥ u 0 e 0 q . l lj j 0 j 2mnp i 2mnp i 4n\nj∈[m] j∈Ψl j∈Ψli∈Φj i∈[n]j∈Ξli\nThis complete the proof. According to Theorem 4 in [41], the Fisher equilibrium mapping p(w) is continuous on the relative\ninterior of the simplex ∆.",
+      "size": 441,
+      "sentences": 4
+    },
+    {
+      "id": 147,
+      "content": "[41], the Fisher equilibrium mapping p(w) is continuous on the relative\ninterior of the simplex ∆. Since Ω defined in (37) lies entirely within this relative interior of ∆ and is\ncompact, the continuity of p(w) implies, by the Heine–Cantor theorem, that p(w) is Lipschitz continuous\non Ω. This leads to the following corollary:\nCorollary 2. There exists some constant κ>0 such that p(w) is κ-Lipschitz continuous on Ω, i,e., for all\nw,w′ ∈Ω,\n∥p(w)−p(w′)∥≤κ∥w−w′∥.",
+      "size": 463,
+      "sentences": 4
+    },
+    {
+      "id": 148,
+      "content": "ant κ>0 such that p(w) is κ-Lipschitz continuous on Ω, i,e., for all\nw,w′ ∈Ω,\n∥p(w)−p(w′)∥≤κ∥w−w′∥. Finally, equipped with the κ-Lipschitz continuity of the mapping p(w), we can establish that the operator\nT is contractive under the assumption that the variance of the endowment variables {e } is sufficiently\nij\nsmall. Consequently, the fixed-point iteration algorithm described in Algorithm 4 converges linearly with\nhigh probability. ===  16 ===\n16 H. Liu et al. Theorem 2.",
+      "size": 476,
+      "sentences": 5
+    },
+    {
+      "id": 149,
+      "content": "ed in Algorithm 4 converges linearly with\nhigh probability. ===  16 ===\n16 H. Liu et al. Theorem 2. Under Assumption 2 and 3, and assume δ ≤ √ γ for some γ ∈(0,1), then with\n2κ (m+n)log(m+n)\nprobability at least 1−mexp(−2np2)−n2exp(−mp2q2/2)−c/(m+n), T is a contractive mapping on Ω\nwith parameter γ. Furthermore, the sequence {wk} generated by Algorithm 4 satisfies\nγk\n∥wk−w⋆∥≤ ∥w0−w⋆∥\n1−γ\nwhere w⋆ is the unique fixed point of the mapping T on ∆. Proof.",
+      "size": 455,
+      "sentences": 6
+    },
+    {
+      "id": 150,
+      "content": "satisfies\nγk\n∥wk−w⋆∥≤ ∥w0−w⋆∥\n1−γ\nwhere w⋆ is the unique fixed point of the mapping T on ∆. Proof. For any w ∈Ω, we have\n(cid:18) (cid:19) (cid:18) (cid:19)\n1 1 1 1\nT(w)=E·p(w)= E− 1 ·1T p(w)+ 1 ·1T ·p(w)= E− 1 ·1T p(w)+ 1 ,\nn n m n n m n n m n n\nwhere the last equality hold because fo (25). Note that the expectation of the endowment matrix satisfies\n1\n(cid:34)(cid:18)\n1\n(cid:19)(cid:18)\n1\n(cid:19)T (cid:35)\nE[E]= 1 ·1T and E E− 1 ·1T E− 1 ·1T =mδ2I .",
+      "size": 455,
+      "sentences": 4
+    },
+    {
+      "id": 151,
+      "content": "cid:34)(cid:18)\n1\n(cid:19)(cid:18)\n1\n(cid:19)T (cid:35)\nE[E]= 1 ·1T and E E− 1 ·1T E− 1 ·1T =mδ2I . n n m n n m n n m n\nThen,accordingtothematrixBernsteininequality[38,Theorem1.6.2],withprobabilityatleast1−c/(m+n)\nfor some constant c>0, we have\n(cid:13) (cid:13)\n(cid:13) (cid:13) (cid:13) E− n 1 1 n ·1T m (cid:13) (cid:13) (cid:13) ≤2δ (cid:112) (m+n)log(m+n).",
+      "size": 362,
+      "sentences": 2
+    },
+    {
+      "id": 152,
+      "content": "(cid:13) (cid:13) (cid:13) E− n 1 1 n ·1T m (cid:13) (cid:13) (cid:13) ≤2δ (cid:112) (m+n)log(m+n). (39)\nThus, for any w,w′ ∈Ω, we have\n(cid:13)(cid:18) (cid:19) (cid:13)\n∥T(w)−T(w′)∥= (cid:13) (cid:13) (cid:13) E− n 1 1 n ·1T m (p(w)−p(w′) (cid:13) (cid:13) (cid:13) ≤2κδ (cid:112) (m+n)log(m+n)∥w−w′∥≤γ∥w−w′∥.",
+      "size": 311,
+      "sentences": 2
+    },
+    {
+      "id": 153,
+      "content": "E− n 1 1 n ·1T m (p(w)−p(w′) (cid:13) (cid:13) (cid:13) ≤2κδ (cid:112) (m+n)log(m+n)∥w−w′∥≤γ∥w−w′∥. TheremainingpartfollowsfromthestandardanalysisoftheBanachfixed-pointtheorem,andtheprobability\nis the union bound of the probability stated in Lemma (3) and the probability with which (39) holds.",
+      "size": 294,
+      "sentences": 2
+    },
+    {
+      "id": 154,
+      "content": "s the union bound of the probability stated in Lemma (3) and the probability with which (39) holds. Theorem2establishesthat,underrandomizedassumptionsonboththeutilitymatrixU andtheendow-\nment matrix E, the fixed-point iteration algorithm (Algorithm 4) converges linearly to the Arrow–Debreu\nmarket equilibrium. This result provides a practical and scalable approach for solving large-scale Ar-\nrow–Debreu models, for which no existing methods are known to be effective at such scale.",
+      "size": 483,
+      "sentences": 3
+    },
+    {
+      "id": 155,
+      "content": "scale Ar-\nrow–Debreu models, for which no existing methods are known to be effective at such scale. 5 Numerical Experiments\nIn this section, we present numerical experiments on both the Fisher market and Arrow-Debreu market\nmodels to evaluate the performance of our proposed PDHCG algorithm. We compare it against several\nstate-of-the-artmethodsusingbothsyntheticandreal-worlddatasets.Theimplementationcodeisavailable\non GitHub6. The section is organized as follows.",
+      "size": 466,
+      "sentences": 4
+    },
+    {
+      "id": 156,
+      "content": "eal-worlddatasets.Theimplementationcodeisavailable\non GitHub6. The section is organized as follows. In Section 5.1, we evaluate the scalability and efficiency\nof our algorithm on synthetic Fisher market instances with varying problem sizes, ranging from 103 to 107. In Section 5.2, we test our method on a real-world large-scale dataset–one-month transaction data from\nJD.com–to demonstrate practical effectiveness.",
+      "size": 415,
+      "sentences": 4
+    },
+    {
+      "id": 157,
+      "content": "large-scale dataset–one-month transaction data from\nJD.com–to demonstrate practical effectiveness. In Section 5.3, we turn to the Arrow-Debreu model and\nassess the proposed fixed-point iteration algorithm on synthetic datasets of different sizes, again from 103\nto 107, to verify its efficiency and scalability. Solvers.",
+      "size": 320,
+      "sentences": 3
+    },
+    {
+      "id": 158,
+      "content": "asets of different sizes, again from 103\nto 107, to verify its efficiency and scalability. Solvers. We compare the GPU implementation of our proposed PDHCG algorithm against the standard\nPDHG algorithm (with GPU support) and several state-of-the-art methods, including MOSEK–a leading\ncommercialsolverforexponentialconeproblems;PDCS[27]–arecentGPU-acceleratedsolverforlarge-scale\nconicprogramming;andPGLS[20]—afirst-ordermethodspecificallydesignedfortheFishermarketmodel.",
+      "size": 471,
+      "sentences": 3
+    },
+    {
+      "id": 159,
+      "content": "e-scale\nconicprogramming;andPGLS[20]—afirst-ordermethodspecificallydesignedfortheFishermarketmodel. 6 The code is available on https://github.com/Huangyc98/PDHCG-in-Fisher.git\n===  17 ===\nPDHCG: A Scalable First-Order Method for Large-Scale Competitive Market Equilibrium Computation 17\nForbothMOSEKandPDCS,wereformulatetheFishermarketproblemintothefollowingexponentialcone\nprogramming form:\n(cid:88)\nmax w v\ni i\nx\ni∈[n]\n(cid:88)\ns.t.",
+      "size": 434,
+      "sentences": 2
+    },
+    {
+      "id": 160,
+      "content": "problemintothefollowingexponentialcone\nprogramming form:\n(cid:88)\nmax w v\ni i\nx\ni∈[n]\n(cid:88)\ns.t. x =1, ∀j ∈[m]\nij\ni∈[n] (40)\n(cid:88)\nevi ≤ u x , ∀i∈[n]\nij ij\nj∈[m]\nx ≥0, ∀i,j. ij\nCriteria. We use the same criteria as those of PDLP [2], PDQP [30], and PDHCG [23]. The relative KKT\nerror,whichisdefinedasthemaximalrelativeprimalresidual,dualresidual,andprimal-dualgap,isutilized\nas the progress metric for different algorithm.",
+      "size": 428,
+      "sentences": 5
+    },
+    {
+      "id": 161,
+      "content": "lresidual,dualresidual,andprimal-dualgap,isutilized\nas the progress metric for different algorithm. The relative primal residual, dual residual and primal dual\ngap for (3) are defined as follows:\nmax (cid:8) ∥1Tx−1∥ , max {|t −uTx |} (cid:9)\nr = n ∞ i∈[n] i i i ,\nprimal 1+max{∥1Tx∥ , max {|t −uTx |}, 1}\nn ∞ i∈[n] i i i\n(cid:8) (cid:9)\nmax ∥w/t−y∥ }, max {(p −max {u y }) }\n∞ j∈[m] j i∈[n] ij i −\nr = ,\ndual (cid:8) (cid:9)\n1+max ∥w/t∥ , ∥y∥ , max {p −max {u y }}\n∞ ∞ j∈[m] j i∈[n] ij i\nmax {x (p −u y ) }\nr = i,j ij j ij i + ,\ngap 1+max{∥x∥ , max {(p −u y ) }}\n∞ i,j j ij i +\nwhere the term w/t denotes entry-wise division between two vectors.",
+      "size": 645,
+      "sentences": 2
+    },
+    {
+      "id": 162,
+      "content": "ax {(p −u y ) }}\n∞ i,j j ij i +\nwhere the term w/t denotes entry-wise division between two vectors. For PDHCG w.r.t. (9), we only need\nto set t = uTx ,∀i ∈ [n] and y = w/t. Note that if the relative KKT error is 0, i.e., the relative primal\ni i i\nresidual, dual residual, and primal-dual gap are all equal to 0, then by KKT optimality conditions, we have\nfound an optimal solution. Throughout this paper, we set the stopping criteria as the relative KKT error\nless than 10−4.",
+      "size": 475,
+      "sentences": 5
+    },
+    {
+      "id": 163,
+      "content": "tion. Throughout this paper, we set the stopping criteria as the relative KKT error\nless than 10−4. Algorithmic Enhancements. In both PDHG and PDHCG, we utilize several algorithmic enhancements\nupon Algorithm 1 and Algorithm 2 to improve its practical performance. More specifically,\n– Preprocessing.IntheFishermarketmodel,scalingaconsumer’sutilityfunctionbyapositiveconstant\ndoes not affect their optimal choice.",
+      "size": 413,
+      "sentences": 5
+    },
+    {
+      "id": 164,
+      "content": "ketmodel,scalingaconsumer’sutilityfunctionbyapositiveconstant\ndoes not affect their optimal choice. Therefore, at the beginning of the computation, we normalize each\nconsumer’s utility such that all the utilities range from (0,1). – Adaptive restart. We mainly utilize the restarting strategy outlined in PDHCG [23], with parameter\nsettings fine-tuned to address the specifics of our problem:\nβ =0.2, β =0.8, and β =0.2.",
+      "size": 420,
+      "sentences": 4
+    },
+    {
+      "id": 165,
+      "content": "parameter\nsettings fine-tuned to address the specifics of our problem:\nβ =0.2, β =0.8, and β =0.2. sufficient necessary artificial\n– Adaptive step-size.Theprimalandthedualstep-sizesofbothPDHGandPDHCGarereparameter-\nized as\nτ =η/ω, and σ =ηω\nwhere η, called step-size, controls the scale of the step-sizes, and ω, called primal weight, balances\nthe primal and the dual progress. For both step-size and primal weight adjustment, we impose the\nsame strategy as in PDHCG [23] with the parameter θ = 0.2.",
+      "size": 499,
+      "sentences": 3
+    },
+    {
+      "id": 166,
+      "content": "primal weight adjustment, we impose the\nsame strategy as in PDHCG [23] with the parameter θ = 0.2. Besides the update strategy, We also\nset an upper and low bound for the step-size and primal weight.The suitable range for step-size is\n0.01η ≤ η ≤ 3η . For primal weight, We will check it every 3 restarts. If it exceeds the\ninitial initial\npredefined boundary, we reset it to the initial primal weight.",
+      "size": 402,
+      "sentences": 4
+    },
+    {
+      "id": 167,
+      "content": "s. If it exceeds the\ninitial initial\npredefined boundary, we reset it to the initial primal weight. Computing environment All numerical experiments were executed on a high-performance computing\ncluster. We utilize an NVIDIA H100 GPU with 80GB of HBM3 memory and running CUDA version 12.4\nfor GPU based solver and an Intel Xeon Platinum 8469C operating at 2.60 GHz, equipped with 512 GB of\nRAM for CPU based solver. All the experiments are executed using Julia version 1.11.1.",
+      "size": 475,
+      "sentences": 4
+    },
+    {
+      "id": 168,
+      "content": "th 512 GB of\nRAM for CPU based solver. All the experiments are executed using Julia version 1.11.1. ===  18 ===\n18 H. Liu et al. 5.1 Fisher Market Equilibrium: Synthetic Data\nToevaluatethecomputationalefficiencyoftheproposedalgorithmatdifferentproblemscales,werandomly\ngenerate instances of varying sizes.",
+      "size": 305,
+      "sentences": 4
+    },
+    {
+      "id": 169,
+      "content": "iencyoftheproposedalgorithmatdifferentproblemscales,werandomly\ngenerate instances of varying sizes. In alignment with real-world markets—where the number of buyers\ntypically far exceeds the number of goods, and each buyer is interested in only a small subset of items—our\nsynthetic problem settings reflect these characteristics: the number of buyers n is larger than the number\nof goods m, and the utility matrix U is sparse.",
+      "size": 426,
+      "sentences": 2
+    },
+    {
+      "id": 170,
+      "content": "s: the number of buyers n is larger than the number\nof goods m, and the utility matrix U is sparse. This setting allows us to test the proposed algorithm’s\nscalability and robustness in sparse, buyer-dominant market environments. Specifically, each buyer’s budget is independently sampled from a uniform distribution, w ∼ U(0,1).",
+      "size": 329,
+      "sentences": 3
+    },
+    {
+      "id": 171,
+      "content": "Specifically, each buyer’s budget is independently sampled from a uniform distribution, w ∼ U(0,1). i\nThe utility of buyer i for good j, denoted u , is set to zero with probability 1−q, and with probability q,\nij\nit is independently drawn from a uniform distribution, u ∼U(0,1). The parameter q ∈(0,1] controls the\nij\nsparsity level of the utility matrix. Table 2. Solving time (seconds) of different algorithms on synchetic dataset.",
+      "size": 433,
+      "sentences": 5
+    },
+    {
+      "id": 172,
+      "content": "f the utility matrix. Table 2. Solving time (seconds) of different algorithms on synchetic dataset. PDHCG PDHG\nn m Sparsity PDCS MosekPDLS\nIteration Time Iteration Time\n103 400 0.2 2,612 1.7 4303.8 4.5 13.4 0.6 356.9\n104 4,000 0.02 2,758 3.6 7604 7.1 1079.3 118.8 f\n105 4,000 0.02 1,200 8.3 10463 29.9 f 1038.9 f\n106 4,000 0.02 2,283 116.3 26793 739.1 f f f\n107 4,000 0.01 2,423 589.7 29749 4,374.2 f f f\nNote. “f” indicate failure due to exceeding the time limit (7200s) or returning errors.",
+      "size": 492,
+      "sentences": 5
+    },
+    {
+      "id": 173,
+      "content": "374.2 f f f\nNote. “f” indicate failure due to exceeding the time limit (7200s) or returning errors. Table 2 reports the geometric mean of solving times across 10 randomly generated Fisher market in-\nstances with varying dimensions and sparsity levels. For small-scale problems (e.g., m = 103, n = 400),\nMOSEK performs exceptionally well, achieving the shortest runtime of 0.6 seconds.",
+      "size": 384,
+      "sentences": 4
+    },
+    {
+      "id": 174,
+      "content": "= 103, n = 400),\nMOSEK performs exceptionally well, achieving the shortest runtime of 0.6 seconds. However, as the prob-\nlem size increases, its performance deteriorates rapidly due to the high computational cost of matrix fac-\ntorization, and it fails to solve instances with m ≥ 105 within the 7200-second time limit. In contrast, the\nproposed PDHCG algorithm demonstrates strong scalability, solving the largest instance with m = 107\nin 589.7 seconds.",
+      "size": 454,
+      "sentences": 3
+    },
+    {
+      "id": 175,
+      "content": "orithm demonstrates strong scalability, solving the largest instance with m = 107\nin 589.7 seconds. Although it requires more iterations than interior-point methods, it achieves competitive\nruntimes through matrix-free updates and GPU acceleration. Compared to the classical PDHG algorithm,\nPDHCG consistently uses fewer iterations and significantly less time, indicating faster convergence.",
+      "size": 391,
+      "sentences": 3
+    },
+    {
+      "id": 176,
+      "content": "DHCG consistently uses fewer iterations and significantly less time, indicating faster convergence. Other\nfirst-order methods such as PDCS and PDLS fail to converge or exceed the time limit on medium to\nlarge-scale problems, underscoring PDHCG’s superior robustness and efficiency. 5.2 Fisher Market Equilibrium: Real Data\nJD.com, China’s largest retailer, provides transaction-level data [37] to MSOM members for data-driven\nresearch as part of the 2020 MSOM Data-Driven Research Challenge.",
+      "size": 491,
+      "sentences": 3
+    },
+    {
+      "id": 177,
+      "content": "] to MSOM members for data-driven\nresearch as part of the 2020 MSOM Data-Driven Research Challenge. The dataset records user activity\nfrom March 2018, covering over 2.5 million customers and more than 30,000 products on the platform.",
+      "size": 233,
+      "sentences": 2
+    },
+    {
+      "id": 178,
+      "content": "from March 2018, covering over 2.5 million customers and more than 30,000 products on the platform. It includes both purchase histories and detailed browsing behaviors for individual users across a diverse\nproductrange.Inourexperiments,weusethenumberofproductclicksasaproxyforusers’utilityfunctions,\ntherebycapturingtheirunderlyingpreferences.Eachuser’sbudgetw isindependentlydrawnfromauniform\ni\ndistribution, w ∼U(0,1).",
+      "size": 420,
+      "sentences": 2
+    },
+    {
+      "id": 179,
+      "content": "underlyingpreferences.Eachuser’sbudgetw isindependentlydrawnfromauniform\ni\ndistribution, w ∼U(0,1). i\nTable 3 reports the solving times of different algorithms on the JD.com transaction dataset, where m,\nn, and nnz represent the numbers of products, users, and nonzero entries in the utility matrix, respectively. We evaluate various problem sizes by selecting the most active users along with the products they are\ninterested in. As shown in the table, PDHCG perform well in all instances.",
+      "size": 490,
+      "sentences": 4
+    },
+    {
+      "id": 180,
+      "content": "th the products they are\ninterested in. As shown in the table, PDHCG perform well in all instances. As the problem size increases,\n===  19 ===\nPDHCG: A Scalable First-Order Method for Large-Scale Competitive Market Equilibrium Computation 19\nthe performance advantage of PDHCG over Mosek and PDCS becomes increasingly evident. On large-\nscale instances, Mosek’s CPU memory and PDCS’s GPU memory requirements become prohibitively high,\nmaking it infeasible to run on our hardware.",
+      "size": 479,
+      "sentences": 4
+    },
+    {
+      "id": 181,
+      "content": "S’s GPU memory requirements become prohibitively high,\nmaking it infeasible to run on our hardware. In contrast, PDHCG successfully solves the full-scale problem\nin 1222.9 seconds. Moreover, compared to the PDHG algorithm, PDHCG requires only about 15% of the\niterations and approximately 30% of the solving time. Table 3. Solving time (seconds) of different algorithms on the JD.com transaction dataset.",
+      "size": 404,
+      "sentences": 5
+    },
+    {
+      "id": 182,
+      "content": "ng time. Table 3. Solving time (seconds) of different algorithms on the JD.com transaction dataset. PDHCG PDHG\nn m nnz PDCSMosek\nIteration Time Iteration Time\n2000 13541 136877 3930 7.0 18299 19.8 62.2 25.1\n5000 15887 265220 4839 8.4 20805 23.6 256.3 78.2\n20000 19449 698579 5894 12.4 39896 51.1 f 526.1\n50000 21410 1278391 6865 17.1 266792 379.6 f f\n200000 23853 2937906 10090 41.3 345911 867.1 f f\n500000 25214 4679648 14899 85.8 545280 1623.3 f f\n1000000 26115 6189526 48726 313.9 706925 2301.2 f f\n2557841 27330 8073837 152373 1222.9 798329 2839.6 f f\nNote.",
+      "size": 561,
+      "sentences": 4
+    },
+    {
+      "id": 183,
+      "content": "5 6189526 48726 313.9 706925 2301.2 f f\n2557841 27330 8073837 152373 1222.9 798329 2839.6 f f\nNote. “f” indicate failure due to exceeding the time limit (7200s) or returning errors. 5.3 Arrow-Debreu Market Equilibrium\nToevaluatethecomputationalefficiencyoftheproposedfixed-pointalgorithmforsolvingtheArrow–Debreu\nmarketequilibriumproblem,wefollowasimilarsetuptothatinSection5.1byrandomlygeneratinginstances\nof varying sizes.",
+      "size": 424,
+      "sentences": 3
+    },
+    {
+      "id": 184,
+      "content": "briumproblem,wefollowasimilarsetuptothatinSection5.1byrandomlygeneratinginstances\nof varying sizes. The utility matrix is generated in the same manner as described in Section 5.1, while the\ninitial endowment matrix E ∈ Rn×m is constructed using the same approach but with a different sparsity\nlevel.Thisallowsustosimulaterealisticmarketenvironmentswhereutilityandendowmentstructuresdiffer\nin sparsity. Table 4.",
+      "size": 410,
+      "sentences": 3
+    },
+    {
+      "id": 185,
+      "content": "tosimulaterealisticmarketenvironmentswhereutilityandendowmentstructuresdiffer\nin sparsity. Table 4. Iterations and runtime (seconds) of fixed-point method for solving Arrow-Debreu Equilibrium.",
+      "size": 192,
+      "sentences": 3
+    },
+    {
+      "id": 186,
+      "content": "ble 4. Iterations and runtime (seconds) of fixed-point method for solving Arrow-Debreu Equilibrium. n m Sparsity of E Sparsity of U Iterations Time\n103 400 0.5 0.2 12.0 2.7\n104 4000 0.05 0.02 9.3 13.0\n105 4000 0.05 0.02 9.2 62.4\n106 4000 0.05 0.02 9.7 560.7\n107 4000 0.02 0.01 33.1 2305.3\nTable4reportsthenumberofiterationsandruntime(inseconds)oftheproposedfixed-pointmethodfor\nsolving the Arrow–Debreu market equilibrium problem on randomly generated instances of increasing size.",
+      "size": 481,
+      "sentences": 3
+    },
+    {
+      "id": 187,
+      "content": "ing the Arrow–Debreu market equilibrium problem on randomly generated instances of increasing size. As shown in the table, the algorithm exhibits stable convergence behavior across a wide range of problem\nsizes. However, as the problem size reaches n = 107, both the number of iterations and the total runtime\nincrease significantly, with runtime exceeding 2300 seconds.",
+      "size": 370,
+      "sentences": 3
+    },
+    {
+      "id": 188,
+      "content": "er of iterations and the total runtime\nincrease significantly, with runtime exceeding 2300 seconds. This can be attributed to the extremely low\nsparsity (i.e., dense interactions) and the increased cost of computing market excess demand over a large\npopulation. Despite this, the algorithm remains tractable and successfully solves the problem, highlighting\nits potential for large-scale applications in market analysis and economic modeling. ===  20 ===\n20 H. Liu et al.",
+      "size": 471,
+      "sentences": 4
+    },
+    {
+      "id": 189,
+      "content": "for large-scale applications in market analysis and economic modeling. ===  20 ===\n20 H. Liu et al. 6 Conclusion\nIn this work, we propose a GPU-accelerated primal-dual hybrid conjugate gradient (PDHCG) algorithm\ntailored for solving large-scale Fisher market equilibrium problems.",
+      "size": 280,
+      "sentences": 3
+    },
+    {
+      "id": 190,
+      "content": "ate gradient (PDHCG) algorithm\ntailored for solving large-scale Fisher market equilibrium problems. By leveraging problem structure and\nincorporating efficient subproblem solvers such as bisection and 32-section search, our method achieves\nsignificantlyimprovedconvergencecomparedtostandardPDHG.Weestablishalinearconvergenceratefor\ntheproposedalgorithmbyprovingaquadraticgrowthconditiononthesmootheddualitygap.Furthermore,\nwe extend the approach to the Arrow–Debreu setting via a fixed-point iteration framework, and provide\ntheoretical guarantees under mild assumptions.",
+      "size": 571,
+      "sentences": 2
+    },
+    {
+      "id": 191,
+      "content": "g via a fixed-point iteration framework, and provide\ntheoretical guarantees under mild assumptions. Extensive experiments on both synthetic and real-world\ndatasets demonstrate the scalability and practical efficiency of our approach, outperforming several state-\nof-the-art solvers. This work offers a promising direction for high-performance computation in large-scale\neconomic modeling and algorithmic market design. References\n1.",
+      "size": 432,
+      "sentences": 4
+    },
+    {
+      "id": 192,
+      "content": "rformance computation in large-scale\neconomic modeling and algorithmic market design. References\n1. Alacaoglu, A., Fercoq, O., Cevher, V.: On the convergence of stochastic primal-dual hybrid gradient. SIAM\nJournal on Optimization 32(2), 1288–1318 (2022)\n2. Applegate, D., Díaz, M., Hinder, O., Lu, H., Lubin, M., O’Donoghue, B., Schudy, W.: Practical large-scale\nlinearprogrammingusingprimal-dualhybridgradient.AdvancesinNeuralInformationProcessingSystems34,\n20243–20257 (2021)\n3.",
+      "size": 480,
+      "sentences": 5
+    },
+    {
+      "id": 193,
+      "content": "singprimal-dualhybridgradient.AdvancesinNeuralInformationProcessingSystems34,\n20243–20257 (2021)\n3. Applegate, D., Hinder, O., Lu, H., Lubin, M.: Faster first-order primal-dual methods for linear programming\nusing restarts and sharpness. Mathematical Programming 201(1), 133–184 (2023)\n4. Arrow, K.J., Debreu, G.: Existence of an equilibrium for a competitive economy. Econometrica 22(3), 265–290\n(1954)\n5. Azevedo, E.M., Budish, E.: Strategy-proofness in the large.",
+      "size": 466,
+      "sentences": 6
+    },
+    {
+      "id": 194,
+      "content": ". Econometrica 22(3), 265–290\n(1954)\n5. Azevedo, E.M., Budish, E.: Strategy-proofness in the large. The Review of Economic Studies 86(1), 81–116\n(2019)\n6. Bateni,M.,Chen,Y.,Ciocan,D.F.,Mirrokni,V. :Fairresourceallocationinavolatilemarketplace.Operations\nResearch 70(1), 288–308 (2022)\n7. Brainard, W.C., Scarf, H.E. : How to compute equilibrium prices in 1891. American Journal of Economics and\nSociology 64(1), 57–83 (2005)\n8.",
+      "size": 427,
+      "sentences": 9
+    },
+    {
+      "id": 195,
+      "content": "pute equilibrium prices in 1891. American Journal of Economics and\nSociology 64(1), 57–83 (2005)\n8. Budish, E.: The combinatorial assignment problem: Approximate competitive equilibrium from equal incomes. Journal of Political Economy 119(6), 1061–1103 (2011)\n9. Budish, E., Kessler, J.B., et al. : Bringing real market participants’ real preferences into the lab: An experiment\nthat changed the course allocation mechanism at Wharton. National Bureau of Economic Research (2016)\n10.",
+      "size": 483,
+      "sentences": 7
+    },
+    {
+      "id": 196,
+      "content": "changed the course allocation mechanism at Wharton. National Bureau of Economic Research (2016)\n10. Chambolle,A.,Pock,T.:Afirst-orderprimal-dualalgorithmforconvexproblemswithapplicationstoimaging. Journal of mathematical imaging and vision 40, 120–145 (2011)\n11. Chambolle,A.,Pock,T. :Ontheergodicconvergenceratesofafirst-orderprimal–dualalgorithm.Mathematical\nProgramming 159(1), 253–287 (2016)\n12.",
+      "size": 399,
+      "sentences": 6
+    },
+    {
+      "id": 197,
+      "content": "vergenceratesofafirst-orderprimal–dualalgorithm.Mathematical\nProgramming 159(1), 253–287 (2016)\n12. Chen, K., Sun, D., Yuan, Y., Zhang, G., Zhao, X.: Hpr-lp: An implementation of an hpr method for solving\nlinear programming. arXiv preprint arXiv:2408.12179 (2024)\n13. Chen, P.A., Lu, C.J., Lu, Y.S. : An alternating algorithm for finding linear arrow-debreu market equilibria. Theory of Computing Systems pp. 1–18 (2022)\n14. Chen,Y.,Lan,G.,Ouyang,Y.",
+      "size": 449,
+      "sentences": 8
+    },
+    {
+      "id": 198,
+      "content": "-debreu market equilibria. Theory of Computing Systems pp. 1–18 (2022)\n14. Chen,Y.,Lan,G.,Ouyang,Y. :Optimalprimal-dualmethodsforaclassofsaddlepointproblems.SIAMJournal\non Optimization 24(4), 1779–1814 (2014)\n15. Devanur, N.R., Garg, J., Végh, L.A.: A rational convex program for linear arrow-debreu markets. ACM Trans-\nactions on Economics and Computation (TEAC) 5(1), 1–13 (2016)\n16. Devanur, N.R., Papadimitriou, C.H., Saberi, A., Vazirani, V.V.",
+      "size": 448,
+      "sentences": 8
+    },
+    {
+      "id": 199,
+      "content": "utation (TEAC) 5(1), 1–13 (2016)\n16. Devanur, N.R., Papadimitriou, C.H., Saberi, A., Vazirani, V.V. : Market equilibrium via a primal-dual-type\nalgorithm.In:The43rdAnnualIEEESymposiumonFoundationsofComputerScience,2002.Proceedings.pp. 389–395. IEEE (2002)\n17. Drusvyatskiy, D., Lewis, A.S.: Error bounds, quadratic growth, and linear convergence of proximal methods. Mathematics of Operations Research 43(3), 919–948 (2018)\n18.",
+      "size": 427,
+      "sentences": 7
+    },
+    {
+      "id": 200,
+      "content": "inear convergence of proximal methods. Mathematics of Operations Research 43(3), 919–948 (2018)\n18. Eisenberg, E., Gale, D.: Consensus of subjective probabilities: The pari-mutuel method. The Annals of Mathe-\nmatical Statistics 30(1), 165–168 (1959)\n19. Fercoq,O.:Quadraticerrorboundofthesmoothedgapandtherestartedaveragedprimal-dualhybridgradient. arXiv preprint arXiv:2206.03041 (2022)\n20. Gao, Y., Kroer, C.: First-order methods for large-scale market equilibrium computation.",
+      "size": 479,
+      "sentences": 7
+    },
+    {
+      "id": 201,
+      "content": "(2022)\n20. Gao, Y., Kroer, C.: First-order methods for large-scale market equilibrium computation. Advances in Neural\nInformation Processing Systems 33, 21738–21750 (2020)\n21. Han, Q., Li, C., Lin, Z., Chen, C., Deng, Q., Ge, D., Liu, H., Ye, Y.: A low-rank admm splitting approach for\nsemidefinite programming. arXiv preprint arXiv:2403.09133 (2024)\n===  21 ===\nPDHCG: A Scalable First-Order Method for Large-Scale Competitive Market Equilibrium Computation 21\n22.",
+      "size": 465,
+      "sentences": 5
+    },
+    {
+      "id": 202,
+      "content": "CG: A Scalable First-Order Method for Large-Scale Competitive Market Equilibrium Computation 21\n22. Han,Q.,Lin,Z.,Liu,H.,Chen,C.,Deng,Q.,Ge,D.,Ye,Y. :Acceleratinglow-rankfactorization-basedsemidef-\ninite programming algorithms on gpu. arXiv preprint arXiv:2407.15049 (2024)\n23. Huang,Y.,Zhang,W.,Li,H.,Ge,D.,Liu,H.,Ye,Y. :Restartedprimal-dualhybridconjugategradientmethod\nfor large-scale quadratic programming. arXiv preprint arXiv:2405.16160 (2024)\n24.",
+      "size": 453,
+      "sentences": 7
+    },
+    {
+      "id": 203,
+      "content": "ategradientmethod\nfor large-scale quadratic programming. arXiv preprint arXiv:2405.16160 (2024)\n24. Jain, K.: A polynomial time algorithm for computing an arrow–debreu market equilibrium for linear utilities. SIAM Journal on Computing 37(1), 303–318 (2007)\n25. Kroer,C.,Peysakhovich,A. :Scalablefairdivisionfor’atmostone’preferences.arXivpreprintarXiv:1909.10925\n(2019)\n26. Liang,J.,Fadili,J.,Peyré,G.",
+      "size": 401,
+      "sentences": 7
+    },
+    {
+      "id": 204,
+      "content": "isionfor’atmostone’preferences.arXivpreprintarXiv:1909.10925\n(2019)\n26. Liang,J.,Fadili,J.,Peyré,G. :Convergencerateswithinexactnon-expansiveoperators.MathematicalProgram-\nming 159, 403–434 (2016)\n27. Lin, Z., Xiong, Z., Ge, D., Ye, Y.: Pdcs: A primal-dual large-scale conic programming solver with gpu enhance-\nments. arXiv preprint arXiv:2505.00311 (2025)\n28. Liu, H., Li, J.: Bridging primal and primal-dual analyses: From error bounds to quadratic growth.",
+      "size": 459,
+      "sentences": 6
+    },
+    {
+      "id": 205,
+      "content": ". Liu, H., Li, J.: Bridging primal and primal-dual analyses: From error bounds to quadratic growth. https://huikang2019.github.io/NonLinear_PDHCG.pdf (2025)\n29. Lu,H.,Yang,J. :cupdlp.jl:Agpuimplementationofrestartedprimal-dualhybridgradientforlinearprogram-\nming in julia. arXiv preprint arXiv:2311.12180 (2023)\n30. Lu, H., Yang, J.: A practical and optimal first-order method for large-scale convex quadratic programming. arXiv preprint arXiv:2311.07710 (2023)\n31.",
+      "size": 465,
+      "sentences": 8
+    },
+    {
+      "id": 206,
+      "content": "der method for large-scale convex quadratic programming. arXiv preprint arXiv:2311.07710 (2023)\n31. Lu, H., Yang, J.: Pdot: A practical primal-dual algorithm and a gpu-based solver for optimal transport. arXiv\npreprint arXiv:2407.19689 (2024)\n32. Lu, H., Yang, J.: Restarted halpern pdhg for linear programming. arXiv preprint arXiv:2407.16144 (2024)\n33.",
+      "size": 354,
+      "sentences": 6
+    },
+    {
+      "id": 207,
+      "content": "Yang, J.: Restarted halpern pdhg for linear programming. arXiv preprint arXiv:2407.16144 (2024)\n33. Lu, H., Yang, J., Hu, H., Huangfu, Q., Liu, J., Liu, T., Ye, Y., Zhang, C., Ge, D.: cupdlp-c: A strengthened\nimplementation of cupdlp for linear programming by c language. arXiv preprint arXiv:2312.14832 (2023)\n34. McElfresh,D.C.,Kroer,C.,Pupyrev,S.,Sodomka,E.,Sankararaman,K.A.,Chauvin,Z.,Dexter,N.,Dickerson,\nJ.P.: Matching algorithms for blood donation.",
+      "size": 456,
+      "sentences": 5
+    },
+    {
+      "id": 208,
+      "content": ",E.,Sankararaman,K.A.,Chauvin,Z.,Dexter,N.,Dickerson,\nJ.P.: Matching algorithms for blood donation. In: Proceedings of the 21st ACM Conference on Economics and\nComputation. pp. 463–464 (2020)\n35. Nan, T., Gao, Y., Kroer, C.: Fast and interpretable dynamics for fisher markets via block-coordinate updates. In: Proceedings of the AAAI Conference on Artificial Intelligence. vol. 37, pp. 5832–5840 (2023)\n36.",
+      "size": 406,
+      "sentences": 9
+    },
+    {
+      "id": 209,
+      "content": "n: Proceedings of the AAAI Conference on Artificial Intelligence. vol. 37, pp. 5832–5840 (2023)\n36. Parkes, D.C., Procaccia, A.D., Shah, N.: Beyond dominant resource fairness: Extensions, limitations, and indi-\nvisibilities. ACM Transactions on Economics and Computation (TEAC) 3(1), 1–22 (2015)\n37. Shen, M., Tang, C.S., Wu, D., Yuan, R., Zhou, W.: Jd. com: Transaction-level data for the 2020 msom data\ndriven research challenge. Manufacturing & Service Operations Management 26(1), 2–10 (2024)\n38.",
+      "size": 500,
+      "sentences": 9
+    },
+    {
+      "id": 210,
+      "content": "ata\ndriven research challenge. Manufacturing & Service Operations Management 26(1), 2–10 (2024)\n38. Tropp, J.A. : An introduction to matrix concentration inequalities. No. 1 (2015)\n39. Vazirani, V.V. : Combinatorial algorithms for market equilibria. Algorithmic game theory pp. 103–134 (2007)\n40. Walras, L.: Éléments d’économie politique pure: ou, Théorie de la richesse sociale. F. Rouge (1900)\n41. Ye, Y.: A path to the arrow–debreu competitive market equilibrium.",
+      "size": 467,
+      "sentences": 13
+    },
+    {
+      "id": 211,
+      "content": "sse sociale. F. Rouge (1900)\n41. Ye, Y.: A path to the arrow–debreu competitive market equilibrium. Mathematical Programming 111(1), 315–\n348 (2008)\n42. Zhang, F., Boyd, S.: Solving large multicommodity network flow problems on gpus. arXiv preprint\narXiv:2501.17996 (2025)\n43. Zhang, G., Gu, Z., Yuan, Y., Sun, D.: Hot: An efficient halpern accelerating algorithm for optimal transport\nproblems. IEEE Transactions on Pattern Analysis and Machine Intelligence (2025)",
+      "size": 465,
+      "sentences": 8
+    }
+  ]
+}

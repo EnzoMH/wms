@@ -1,0 +1,1029 @@
+{
+  "source": "ArXiv",
+  "filename": "033_AGV_Sorting_multibay_block_stacking_storage_.pdf",
+  "domain": "AGV",
+  "total_chars": 82495,
+  "total_chunks": 170,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\n∗\nSorting multibay block stacking storage systems\nJakob Pfrommer†, Thomas Bo¨mer ‡, Daniyar Akizhanov §, Anne Meyer¶\nAbstract\nAutonomous mobile robots (AMRs) are increasingly used to automate operations in in-\ntralogistics. One crucial feature of AMRs is their availability, allowing them to operate\n24/7. This work addresses the multibay unit load pre-marshalling problem, which extends\npre-marshalling from a single bay to larger warehouse configurations with multiple bays.",
+      "size": 487,
+      "sentences": 3
+    },
+    {
+      "id": 2,
+      "content": "ch extends\npre-marshalling from a single bay to larger warehouse configurations with multiple bays. Pre-marshalling leverages off-peak time intervals to sort a block stacking warehouse in an-\nticipation of future orders. These larger warehouse configurations require not only the\nminimization of the number of moves but also the consideration of distance or time when\nmaking sorting decisions.",
+      "size": 393,
+      "sentences": 3
+    },
+    {
+      "id": 3,
+      "content": "f the number of moves but also the consideration of distance or time when\nmaking sorting decisions. Our proposed solution for the multibay unit load pre-marshalling\nproblemisbasedonourtwo-stepapproachthatfirstdeterminestheaccessdirectionforeach\nstack and then finds a sequence of moves to sort the warehouse.",
+      "size": 308,
+      "sentences": 2
+    },
+    {
+      "id": 4,
+      "content": "determinestheaccessdirectionforeach\nstack and then finds a sequence of moves to sort the warehouse. In addition to adapting\nthe existing approach that integrates a network flow model and an extended A* algorithm,\nwe additionally present an exact constraint programming approach for the second stage of\nthe problem-solving process.",
+      "size": 330,
+      "sentences": 2
+    },
+    {
+      "id": 5,
+      "content": "esent an exact constraint programming approach for the second stage of\nthe problem-solving process. The results demonstrate that the presented solution approach\neffectively enhances the access time of unit loads and reduces the sorting effort for block\nstacking warehouses with multiple bays. 1 Introduction\nBlock stacking storage systems are a very simple and widely used type of warehouse.",
+      "size": 391,
+      "sentences": 3
+    },
+    {
+      "id": 6,
+      "content": "1 Introduction\nBlock stacking storage systems are a very simple and widely used type of warehouse. Unit loads\nlike pallets, boxes, containers, or movable shelves are placed on the ground and may be stacked\non top of another. The advantage of block storage is that it does not require high investments\nin infrastructure, is highly flexible, and easily scalable. Figure 1 shows an example of a block\nstacking warehouse with four bays separated by aisles for traveling.",
+      "size": 466,
+      "sentences": 4
+    },
+    {
+      "id": 7,
+      "content": "1 shows an example of a block\nstacking warehouse with four bays separated by aisles for traveling. Each bay contains unit\nloads that are placed in lanes. Dependent on the available access directions and the properties\nof the unit load, access to the outermost stacks from up to four cardinal directions is possible.",
+      "size": 315,
+      "sentences": 3
+    },
+    {
+      "id": 8,
+      "content": "s\nof the unit load, access to the outermost stacks from up to four cardinal directions is possible. The use of autonomous mobile robots (AMRs) for material handling allows to increase the\nstorage density by utilizing a shared storage policy and rearrangement operations that are\n∗ThisworkwaspartlyfundedbytheDeutscheForschungsgemeinschaft(DFG,GermanResearchFoundation)\nthrough the Research Training Group 2193 (Project number: 276879186).",
+      "size": 438,
+      "sentences": 2
+    },
+    {
+      "id": 9,
+      "content": "DFG,GermanResearchFoundation)\nthrough the Research Training Group 2193 (Project number: 276879186). †Corresponding author, TU Dortmund University, Leonhard-Euler-Straße 5, 44227 Dortmund, Germany,\njakob.pfrommer@tu-dortmund.de, ORCID: https://orcid.org/0000-0003-2492-0621\n‡TU Dortmund University, Leonhard-Euler-Straße 5, 44227 Dortmund, Germany, thomas.boemer@tu-\ndortmund.de, ORCID: https://orcid.org/0000-0003-4979-7455\n§Rice University, 6100 Main St, Houston, TX 77005, USA, da44@rice.edu\n¶TU Dortmund University, Leonhard-Euler-Straße 5, 44227 Dortmund, Germany, anne2.meyer@tu-\ndortmund.de, ORCID: https://orcid.org/0000-0001-6380-1348\n1\n4202\nyaM\n8\n]SD.sc[\n1v74840.5042:viXra\n===  2 ===\nFigure 1: Example of a block stacking warehouse with a robotic forklift\ndifficult to implement by human operators.",
+      "size": 808,
+      "sentences": 2
+    },
+    {
+      "id": 10,
+      "content": "le of a block stacking warehouse with a robotic forklift\ndifficult to implement by human operators. The reason is the high availability of AMRs, also\nduringoff-peakhoursandaccurateinformationonthestoragesystemstate. Forexample,AMRs\ncould rearrange the storage during idle time and prepare it for a future demand sequence that\nmay be derived from a production schedule or truck loading time slots.",
+      "size": 396,
+      "sentences": 3
+    },
+    {
+      "id": 11,
+      "content": "future demand sequence that\nmay be derived from a production schedule or truck loading time slots. In Pfrommer, Meyer,\nand Tierney (2022), we introduced this problem as unit-load pre-marshalling problem (UPMP). This work is the continuation of this paper extending the problem to a larger multibay setup\nand hence to a much wider range of applications.",
+      "size": 352,
+      "sentences": 3
+    },
+    {
+      "id": 12,
+      "content": "r extending the problem to a larger multibay setup\nand hence to a much wider range of applications. Extending the scope to multiple bays requires\nnot only a highly efficient solution approach but also additional features like the consideration\nof travel times/distances of the AMRs. The main contributions of this paper are:\n1. We formally introduce the multibay unit-load pre-marshalling problem (MUPMP) with\nup to four access directions. 2.",
+      "size": 442,
+      "sentences": 5
+    },
+    {
+      "id": 13,
+      "content": "roduce the multibay unit-load pre-marshalling problem (MUPMP) with\nup to four access directions. 2. We show that our two-stage solution approach for the UPMP can be applied to solve the\nMUPMP with little modifications. 3. We further introduce an optimal constraint programming (CP) approach for the second\nstage to evaluate our heuristic tree search approach. 4. We show that the approaches can solve real-world size instances and publish the bench-\nmark datasets.",
+      "size": 464,
+      "sentences": 7
+    },
+    {
+      "id": 14,
+      "content": "show that the approaches can solve real-world size instances and publish the bench-\nmark datasets. This paper is structured in the following main sections. We commence this paper with an\nintroduction of the MUPMP in Section 2 followed by a brief literature review in Section 3. Subsequently, we introduce the extended solution approach in Section 4 and conduct a series of\nexperiments presented in Section 5. Finally, we provide a summary and outlook in Section 6.",
+      "size": 464,
+      "sentences": 5
+    },
+    {
+      "id": 15,
+      "content": "ries of\nexperiments presented in Section 5. Finally, we provide a summary and outlook in Section 6. 2\n===  3 ===\n2 The Multibay unit load Pre-marshalling Problem\nThe MUPMP is about sorting a block stacking warehouse that may contain multiple bays until\nthe resolution of all blockage based on the future retrieval time of each unit load. Similar to the\nUPMPforasinglebay, weassumethattheAMRsareidleandthatnounitloadsareenteringor\nleaving the storage system.",
+      "size": 457,
+      "sentences": 4
+    },
+    {
+      "id": 16,
+      "content": "orasinglebay, weassumethattheAMRsareidleandthatnounitloadsareenteringor\nleaving the storage system. The warehouse consists of N given bays that are interconnected via\naisle space for traveling. Each bay n ∈ {1,...,N} can be accessed from one or up to four access\ndirections and is filled with a set of unit loads with a known position and retrieval priority\ngroup.",
+      "size": 364,
+      "sentences": 3
+    },
+    {
+      "id": 17,
+      "content": "rections and is filled with a set of unit loads with a known position and retrieval priority\ngroup. Because a fully shared storage policy is applied, stock keeping units (SKUs) can be\nplaced anywhere and mixed in lanes as well as stacks. The retrieval priority group is derived\nbased on a known (e.g., planned truck arrivals or production schedule) or predicted (e.g., based\non material supply precedence graph or demand forecast) future retrieval time.",
+      "size": 453,
+      "sentences": 3
+    },
+    {
+      "id": 18,
+      "content": "edicted (e.g., based\non material supply precedence graph or demand forecast) future retrieval time. We define unit\nloads as blocking when they have a higher retrieval group compared to the unit loads that are\nplaced underneath or behind. These unit loads with a lower retrieval group will be retrieved\nbeforetheunitloadwithahigherretrievalgroup. Inblockstorage, placingaunitloadathigher\ntiers requires a unit load to be located underneath. Only the top unit load can be accessed\ndirectly.",
+      "size": 488,
+      "sentences": 5
+    },
+    {
+      "id": 19,
+      "content": "ers requires a unit load to be located underneath. Only the top unit load can be accessed\ndirectly. When filling up or accessing a bay, the available access directions must be considered\nto prevent empty gaps. In terms of AMR specifications, we assume that they cannot reach over\na stack in front and can only carry a single unit load.",
+      "size": 335,
+      "sentences": 4
+    },
+    {
+      "id": 20,
+      "content": "ions, we assume that they cannot reach over\na stack in front and can only carry a single unit load. Whereas in case of the UPMP, the goal was solely to find a minimum number of unit-load\nmoves to sort a bay such that there is no blockage, in case of the MUPMP, the move time or\ndistance must also be considered due to the much greater time/distance differences between\nthe moves.",
+      "size": 379,
+      "sentences": 2
+    },
+    {
+      "id": 21,
+      "content": "stance must also be considered due to the much greater time/distance differences between\nthe moves. Minimizing the total move time allows pre-marshalling to be conducted in short\ntime intervals, thereby ensuring long operational availability. Hence, our goal for solving the\nMUPMP is to minimize the travel time/distance for the pre-marshalling process that consists\nof the total travel as well as the handling times (i.g. pick-up and fine-positioning).",
+      "size": 453,
+      "sentences": 4
+    },
+    {
+      "id": 22,
+      "content": "hat consists\nof the total travel as well as the handling times (i.g. pick-up and fine-positioning). To do so,\nwe aim for the minimal total loaded move distance for the minimal number of moves. Only\ndistances travelled while an AMR is loaded are taken into account. This allows an allocation of\nthe moves to multiple AMRs. Because multibay block stacking warehouses are usually operated\nby multiple vehicles, it is necessary to split and allocate the resulting sequence of moves to the\nAMRs.",
+      "size": 490,
+      "sentences": 6
+    },
+    {
+      "id": 23,
+      "content": "ltiple vehicles, it is necessary to split and allocate the resulting sequence of moves to the\nAMRs. The allocation of moves is the scope of future work. Figure 2 shows the state representation of a block stacking warehouse with four bays arranged\nasasquare. Withinabay,thestoragelocationsarerepresentedasathree-dimensionalgridwith\ncolumns i ∈ {1,...,I}, rows j ∈ {1,...,J}, and tiers t ∈ {1,...,T} that is filled with unit loads\nof priority groups g ∈ {1,...,G}.",
+      "size": 462,
+      "sentences": 4
+    },
+    {
+      "id": 24,
+      "content": "{1,...,J}, and tiers t ∈ {1,...,T} that is filled with unit loads\nof priority groups g ∈ {1,...,G}. Assuming rectangular warehouse footprints with length\nijt\nL and width W, we also use a two-dimensional global x-y coordination system to determine\nthe position of bays, storage locations, and access points in the warehouse. The access points\np ∈ {1,...,P} are located in the aisle space in front of the bays and specify the stacks that can\nbe accessed directly.",
+      "size": 461,
+      "sentences": 3
+    },
+    {
+      "id": 25,
+      "content": "cated in the aisle space in front of the bays and specify the stacks that can\nbe accessed directly. This representation with access points is more detailed than just defining\nthe allowed access directions, as also partial access via one access direction can be modeled,\nwhich may be necessary due to pillars, for example. An MUPMP-instance is fully defined by a\nlist of bays, where each bay contains (I,J,T,G,g ∈ GI·J·T,P).",
+      "size": 423,
+      "sentences": 3
+    },
+    {
+      "id": 26,
+      "content": "MUPMP-instance is fully defined by a\nlist of bays, where each bay contains (I,J,T,G,g ∈ GI·J·T,P). ijt\nThe example in 3 (a) shows a warehouse configuration containing two square bays of the same\n3\n===  4 ===\nx\ny\nTier\n2\nRow\n1\n1 2\n3\n1 2 3\nColumn\nWidth\nFigure 2: State representation with four bays of the multibay block stacking warehouse\nsize with I = 3, J = 3, and T = 1 that can both be accessed from all four directions.",
+      "size": 422,
+      "sentences": 2
+    },
+    {
+      "id": 27,
+      "content": "ing warehouse\nsize with I = 3, J = 3, and T = 1 that can both be accessed from all four directions. It is filled\nwith unit loads of retrieval groups g from one to five that are specified on top of each load. ijt\n3 (b) switches the perspective to the top view with white tiles for empty/aisle space and dark\ngray tiles for unit loads. The bold red digits are the unit loads that are blocking the center unit\nload of the bottom bay. A red-dotted arrow indicates a possible move to resolve all blockage.",
+      "size": 500,
+      "sentences": 5
+    },
+    {
+      "id": 28,
+      "content": "unit\nload of the bottom bay. A red-dotted arrow indicates a possible move to resolve all blockage. Relocating one of the other blocking unit loads would also be possible, but it requires a longer\ntransport distance. 3 (c) shows the resulting sorted configuration of the MUPMP.",
+      "size": 276,
+      "sentences": 4
+    },
+    {
+      "id": 29,
+      "content": "requires a longer\ntransport distance. 3 (c) shows the resulting sorted configuration of the MUPMP. 5 1\n4 2 1\n5 1 5 1\n1\n4 2 1 4 2 1\n1 1 3\n1 3 2\n5 1 3\n1 3 2 1 2\n2 4 3\n5 1 3 5 1 3\n2 4 3 2 4 3\na) b) c)\nFigure 3: Example configuration in (a), top view of the grid-based layout and red arrow for a\npossible move in (b) and solution of the MUPMP in (c)\nThe MUPMP increases the scope to a variety of storage applications considering not only a\nsingle bay but larger multibay warehouses.",
+      "size": 478,
+      "sentences": 3
+    },
+    {
+      "id": 30,
+      "content": "a variety of storage applications considering not only a\nsingle bay but larger multibay warehouses. Hence, the MUPMP is a generalization of the\nUPMP in Pfrommer, Meyer, and Tierney (2022). In the case of bays that can only be accessed\n4\n[  ]\n\n===  5 ===\nfrom one access direction, it can be reduced to the container pre-marshalling problem (CPMP)\nand is thus also NP-hard (Caserta, Schwarze, & Voß, 2011). Bays with more than once access\ndirection require further investigation on the complexity.",
+      "size": 496,
+      "sentences": 4
+    },
+    {
+      "id": 31,
+      "content": ", 2011). Bays with more than once access\ndirection require further investigation on the complexity. 3 Related work\nOur literature review presents related publications focusing on rearrangement activities for\nmultibay setups as well as the minimization of travel time. For an overview of single-bay pre-\nmarshalling literature, we refer to Pfrommer, Meyer, and Tierney (2022).",
+      "size": 375,
+      "sentences": 4
+    },
+    {
+      "id": 32,
+      "content": "verview of single-bay pre-\nmarshalling literature, we refer to Pfrommer, Meyer, and Tierney (2022). 3.1 Multiple bays\nIn maritime transportation, the rearrangement of containers within multiple bays is known as\nthe remarshalling problem (RMP). Similar to pre-marshalling, the goal is to sort the scattered\ncontainers based on their retrieval priority with a minimum number of moves until all blockings\nare resolved Caserta et al. (2011).",
+      "size": 437,
+      "sentences": 4
+    },
+    {
+      "id": 33,
+      "content": "val priority with a minimum number of moves until all blockings\nare resolved Caserta et al. (2011). Different problem definitions exist for RMP, which the\nfollowing literature review shows. An early publication by Kim and Bae Kim and Bae (1998) deals with the RMP and converting\nthe configuration of a current bay into a target configuration.",
+      "size": 342,
+      "sentences": 4
+    },
+    {
+      "id": 34,
+      "content": ") deals with the RMP and converting\nthe configuration of a current bay into a target configuration. Instead of the exact position of\neach container, the bay configuration is defined simply as the number of containers per group\nthat are located within each bay. The group is a collection of containers going to the same\ndestinationonthesamevessel. Theproblemisdividedintotwosub-problems: (1)baymatching\nandmoveplanningand(2)sequencingthemovingtasks.",
+      "size": 448,
+      "sentences": 4
+    },
+    {
+      "id": 35,
+      "content": "eproblemisdividedintotwosub-problems: (1)baymatching\nandmoveplanningand(2)sequencingthemovingtasks. Inthefirststep,dynamicprogramming\nand an approach referred to as ”transportation algorithm” are used to determine the flow and\nmovementbetweenbaystoreachthetargetconfiguration. Second, thetasksequencingproblem\nis modeled as a traveling salesperson problem (TSP) with precedence constraints to consider\nspace availability at the destination bay, with the goal of minimizing travel time.",
+      "size": 485,
+      "sentences": 3
+    },
+    {
+      "id": 36,
+      "content": "nts to consider\nspace availability at the destination bay, with the goal of minimizing travel time. Because\nthe exact positions of the containers are neglected in the bay configuration, the rehandling of\ncontainers within a bay is not addressed in this work. Later publications take exact container positions into account and investigate the intra-block\nRMP where containers are sorted based on categories and retrieval priorities. In successive\npublications, Kang, Oh, Ahn, Ryu, and Kim Kang et al.",
+      "size": 499,
+      "sentences": 4
+    },
+    {
+      "id": 37,
+      "content": "ories and retrieval priorities. In successive\npublications, Kang, Oh, Ahn, Ryu, and Kim Kang et al. (2006) and Choe, Park, Oh, Kang,\nand Ryu Choe et al. (2011) investigate the RMP where, starting from a source, bay containers\nare relocated to an empty target bay so that no rehandling is necessary either during the\nrearrangementprocessorlaterintheshiploadingprocess. Interferencebetweenmultiplecranes\nis taken into account.",
+      "size": 424,
+      "sentences": 5
+    },
+    {
+      "id": 38,
+      "content": "mentprocessorlaterintheshiploadingprocess. Interferencebetweenmultiplecranes\nis taken into account. Both publications present a similar two-phase solution approach that\ncouples a simulated annealing algorithm for finding a target configuration and partial order\ngraph with crane scheduling to determine a minimum-time re-marshalling plan. Park, Park, and Ryu Park et al. (2009) study the RMP in a container terminal with two cranes.",
+      "size": 432,
+      "sentences": 5
+    },
+    {
+      "id": 39,
+      "content": "plan. Park, Park, and Ryu Park et al. (2009) study the RMP in a container terminal with two cranes. Whereas one crane is used for loading containers from the storage yard on the vessel (seaside),\nthe second crane is used to carry in containers from external trucks (landside).",
+      "size": 276,
+      "sentences": 4
+    },
+    {
+      "id": 40,
+      "content": "vessel (seaside),\nthe second crane is used to carry in containers from external trucks (landside). The goal of\ntheir solution is to bring containers from the landside of the storage yard to the seaside where\nthe ship loading happens and, at the same time, sort the containers based on their retrieval\n5\n===  6 ===\npriority. Therefore, the authors propose a two-stage algorithm: First, potential stacks where\nthe containers will be moved are selected heuristically.",
+      "size": 464,
+      "sentences": 3
+    },
+    {
+      "id": 41,
+      "content": "e algorithm: First, potential stacks where\nthe containers will be moved are selected heuristically. Second, an algorithm is used to conduct\nanalternatingsearchtosolvethetwosub-problemsofdeterminingtargetslotsthatareassigned\nto each container as well as the order of container movements.",
+      "size": 286,
+      "sentences": 2
+    },
+    {
+      "id": 42,
+      "content": "eterminingtargetslotsthatareassigned\nto each container as well as the order of container movements. Further approaches deal with rearrangement activities to improve the location of containers\nwhenever one of the cranes is temporarily idle (called ”housekeeping” (Kemme, 2012, p 148)\nor ”iterative rescheduling”), where the re-marshalling jobs that most reduce future loading\ntimes are selected with the objective of minimizing current delay times as well as the overall\nmakespan Choe, Kim, Kim, and Ryu (2015).",
+      "size": 510,
+      "sentences": 2
+    },
+    {
+      "id": 43,
+      "content": "e of minimizing current delay times as well as the overall\nmakespan Choe, Kim, Kim, and Ryu (2015). Besides re-marshalling before a ship is loaded\n(exportterminal),re-marshallingactivitiesmayalsobeperformedafterunloadingaship(import\nterminal) before containers are retrieved (e.g., to external trucks). The works of van Asperen,\nBorgman, and Dekkervan Asperen et al.",
+      "size": 366,
+      "sentences": 3
+    },
+    {
+      "id": 44,
+      "content": "trieved (e.g., to external trucks). The works of van Asperen,\nBorgman, and Dekkervan Asperen et al. (2013) and Covic Covic (2017) investigate this type of\nre-marshalling problem where container departure times are reported by a truck announcement\nsystem. The presented research for multiple bays deals with a variety of use-case-specific problems (e.g.,\nmovingcontainerstoanemptytargetbay)usingrelaxingassumptionstosimplifytheproblems.",
+      "size": 435,
+      "sentences": 4
+    },
+    {
+      "id": 45,
+      "content": "c problems (e.g.,\nmovingcontainerstoanemptytargetbay)usingrelaxingassumptionstosimplifytheproblems. We could not find an extension of the CPMP to the RMP, possibly because cranes are typically\ninstalled permanently for a single block (here: bay) and cannot move between them. 3.2 Minimization of crane times\nBesides publications that specifically address rearrangement operations between multiple bays,\nthere are also solution approaches of the CPMP considering crane times.",
+      "size": 474,
+      "sentences": 3
+    },
+    {
+      "id": 46,
+      "content": "ions between multiple bays,\nthere are also solution approaches of the CPMP considering crane times. Instead of minimizing\nmoves, Parren˜o-Torres, Alvarez-Valdes, Ruiz, and Tierney Parren˜o-Torres et al. (2020) address\nthe minimization of crane times for the pre-marshalling of containers. The authors propose an\ninteger linear model that builds upon Parren˜o-Torres, Alvarez-Valdes, and Ruiz (2019) as well\nas a branch and bound algorithm, which is set up as an iterative deepening search.",
+      "size": 489,
+      "sentences": 4
+    },
+    {
+      "id": 47,
+      "content": "z (2019) as well\nas a branch and bound algorithm, which is set up as an iterative deepening search. Besides\nthe lower bound from Tanaka, Tierney, Parren˜o-Torres, Alvarez-Valdes, and Ruiz (2019), a\nnovel lower bound incorporating the travel time, as well as a heuristic algorithm for an upper\nbound for the number of moves, are also introduced. The heuristic algorithm is executed at\neach iteration of the search, and the algorithm stops when the depth level reaches the upper\nbound.",
+      "size": 483,
+      "sentences": 3
+    },
+    {
+      "id": 48,
+      "content": "each iteration of the search, and the algorithm stops when the depth level reaches the upper\nbound. The novel time-based lower bound extends the lower bound for the number of moves. Each move is multiplied by a minimum time that consists of the travel time unloaded and\nloaded, crane lowering and lifting times, and twistlock time. Further variants of the time-based\nlower bound also consider the position of the blocking container and the highest positions they\ncan be moved to.",
+      "size": 479,
+      "sentences": 4
+    },
+    {
+      "id": 49,
+      "content": "lso consider the position of the blocking container and the highest positions they\ncan be moved to. The time-based lower bound is used as a secondary tie-breaking criterion. Overall, thebranchandboundalgorithmoutperformstheintegerprogrammingmodelsinterms\nof solved instances and runtime. In a recent publication, Parren˜o-Torres, Alvarez-Valdes, and\nParren˜o Parren˜o-Torres et al.",
+      "size": 381,
+      "sentences": 4
+    },
+    {
+      "id": 50,
+      "content": "time. In a recent publication, Parren˜o-Torres, Alvarez-Valdes, and\nParren˜o Parren˜o-Torres et al. (2022) propose a beam search algorithm that is able to find all\npreviously found optimal and more improved solutions (not necessarily optimal).",
+      "size": 243,
+      "sentences": 3
+    },
+    {
+      "id": 51,
+      "content": "is able to find all\npreviously found optimal and more improved solutions (not necessarily optimal). For the tree\nsearch procedure, the authors use several tie-breaking criteria based on the move type (bad-bad\n(BB),bad-good(BG),good-bad(GB)andgood-good(GG);seePfrommer, Meyer,andTierney\n(2022)), develop a global evaluation heuristic to obtain the most promising nodes, and present\n6\n===  7 ===\nnew dominance rules for eliminating nodes that cannot result in a better solution.",
+      "size": 476,
+      "sentences": 2
+    },
+    {
+      "id": 52,
+      "content": "ent\n6\n===  7 ===\nnew dominance rules for eliminating nodes that cannot result in a better solution. The research on the minimization of crane times by Parren˜o-Torres et al. Parren˜o-Torres et al. (2022)usesalowerboundbasedonminimumtraveltimesmultipliedbythenumberofmoves. In\nsingle-bay scenarios, this is a feasible approach. However, in larger multibay warehouses, using\na similar lower bound based on the minimum move time would not be an effective approach.",
+      "size": 461,
+      "sentences": 6
+    },
+    {
+      "id": 53,
+      "content": "ses, using\na similar lower bound based on the minimum move time would not be an effective approach. 4 Solving the MUPMP\nIn this section, we give an overview and briefly describe our adapted two-step solution approach\nfor the MUPMP based on a network flow model and a tree search procedure that has been\npresented in Pfrommer, Meyer, and Tierney (2022). Our main extensions are:\n• Apre-processingsteptodeterminetheaccesspointsforeachbayandcalculatethedistance\nmatrix.",
+      "size": 466,
+      "sentences": 3
+    },
+    {
+      "id": 54,
+      "content": "sions are:\n• Apre-processingsteptodeterminetheaccesspointsforeachbayandcalculatethedistance\nmatrix. • Multipleoutputswhensolvingthenetworkflowmodelforeachbayapplyingtheadvanced\nlower bound as an additional tie-breaking rule. • An improved tree search procedure\n– with an incremental calculation of the lower bound heuristics,\n– new tie-breaking rule that includes the total loaded move distance,\n• An exact CP approach to validate the results of the tree search procedure.",
+      "size": 472,
+      "sentences": 3
+    },
+    {
+      "id": 55,
+      "content": "loaded move distance,\n• An exact CP approach to validate the results of the tree search procedure. The process flow of our two-step approach is shown in Figure 4. 4.1 Two-step Approach\nWe start this section by giving an overview and briefly describing the steps of our solution\napproach based on a network flow model and a tree search procedure that have been presented\nin Pfrommer, Meyer, and Tierney (2022). The process flow of our two-step approach is shown\nin Figure 4.",
+      "size": 473,
+      "sentences": 4
+    },
+    {
+      "id": 56,
+      "content": "frommer, Meyer, and Tierney (2022). The process flow of our two-step approach is shown\nin Figure 4. Beforehand, a pre-processing step converts the warehouse representation into a list\nof bays with access points that indicate from which aisle locations stacks are accessible. Based\non a graph that is placed in the grid-based layout, we calculate a static distance matrix with\nthe distances between all access points.",
+      "size": 416,
+      "sentences": 4
+    },
+    {
+      "id": 57,
+      "content": "d-based layout, we calculate a static distance matrix with\nthe distances between all access points. In the first step, we use the network flow model to determine the access directions for each\nstack. The objective is to minimize the blocking unit loads. Based on the access directions,\nwe can transform the configuration into a state representation of virtual lanes. Each virtual\nlane consists of a sequence of 1 to max(I,J) stacks in a row/column that can be accessed one\nafter the other.",
+      "size": 489,
+      "sentences": 5
+    },
+    {
+      "id": 58,
+      "content": "sts of a sequence of 1 to max(I,J) stacks in a row/column that can be accessed one\nafter the other. The access direction for each virtual lane is defined by an access point, and the\nlength of the lane may be different. In the second step, we use the virtual lane representation\nto find a solution for sorting the warehouse with a minimum number of moves. Therefore, we\npresent an adapted tree search procedure as well as a CP approach.",
+      "size": 435,
+      "sentences": 4
+    },
+    {
+      "id": 59,
+      "content": "m number of moves. Therefore, we\npresent an adapted tree search procedure as well as a CP approach. In the following subsections, we explain our solution approach in detail and focus on the newly\nadded adaptations as well as the additional pre- and post-processing steps.",
+      "size": 271,
+      "sentences": 3
+    },
+    {
+      "id": 60,
+      "content": "and focus on the newly\nadded adaptations as well as the additional pre- and post-processing steps. 7\n===  8 ===\nInput\nPre-\nproces Bay representations DistanceMatrix\nsing\nNetwork flowmodel\nConversionof\nto determinethe\nStep1 thestateto\naccessdirectionsfor\nvirtuallanes\neachstackofa bay\nVirtual lanerepresentationofall bays\nTreesearchwithadaptedlower\nStep2 boundforthecalculationof\nnecessaryGX movesbasedon a\nMIP formulation\nSolution Sequenceofmovestosortthestorage\nFigure 4: Illustration of the main components of our extended solution approach based on\nPfrommer, Meyer, and Tierney (2022).",
+      "size": 588,
+      "sentences": 2
+    },
+    {
+      "id": 61,
+      "content": "the main components of our extended solution approach based on\nPfrommer, Meyer, and Tierney (2022). 4.2 Input\nIn the beginning, we add the required inputs. A grid-based warehouse is represented as a list\nof bays including the access points and directions to the respective bay as shown in Figure\n5. The purple dots indicate possible access points from aisle space to the bay. This example\nallowsaccessfromallfourcardinaldirections.",
+      "size": 431,
+      "sentences": 5
+    },
+    {
+      "id": 62,
+      "content": "access points from aisle space to the bay. This example\nallowsaccessfromallfourcardinaldirections. Next, welayagraphintotheaislespacetilesand\ncalculatealldistancesbetweentheaccesspointsofallbaysviabreadth-first-search. Adownside\nDortmund, 05.02.2019\nofusingsuchastaticdistancematrixbetweenallaccesspointsisthatpossibleshortcutsthrough\nstorage space in case of low fill levels are not considered.",
+      "size": 395,
+      "sentences": 4
+    },
+    {
+      "id": 63,
+      "content": "sspointsisthatpossibleshortcutsthrough\nstorage space in case of low fill levels are not considered. Bay 1 Bay 2\nNorth\naccess\nS1 S4 S7 S1 S4 S7\n-,1 1,5 -,- 3,2 -,1 -,2\nWest East\naccess access S2 S5 S8 S2 S5 S8\n3,2 4,2 2,5 2,2 1,4 1,3\nSouth\naccess S3 S6 S9 S3 S6 S9\n-,1 -,2 4,1 2,4 -,5 5,3\nAccess point\nFigure 5: Example of a warehouse configuration with two bays and possible access points. 4.3 Step 1: Access direction fixing\nIn this step, we want to define the access direction for each stack.",
+      "size": 494,
+      "sentences": 3
+    },
+    {
+      "id": 64,
+      "content": "tep 1: Access direction fixing\nIn this step, we want to define the access direction for each stack. This is necessary to make\nthe application of our lower bound valid and also because we want to avoid crossing AMRs\nwhen accessing a bay. Fixing the access directions at the beginning of our approach may lead to\nadditionalmoves, asdiscussedinPfrommer, Meyer,andTierney(2022).",
+      "size": 374,
+      "sentences": 3
+    },
+    {
+      "id": 65,
+      "content": "ginning of our approach may lead to\nadditionalmoves, asdiscussedinPfrommer, Meyer,andTierney(2022). Tocalculatetheaccess\ndirection for each stack that minimizes the number of misplaced unit loads, we use the network\nflowmodelfromPfrommer,Meyer,andTierney(2022). Theresultisusedtodetermineavirtual\nlane representation that defines how each stack is accessed via a defined access point.",
+      "size": 384,
+      "sentences": 3
+    },
+    {
+      "id": 66,
+      "content": "ineavirtual\nlane representation that defines how each stack is accessed via a defined access point. In our\n8\n[  ]\n\n===  9 ===\nprevious version, we obtained a single optimal solution in case many symmetrical solutions were\navailable. Now, we want to utilize situations in which many symmetrical solutions are available\nby returning multiple optimal solutions for each bay.",
+      "size": 371,
+      "sentences": 3
+    },
+    {
+      "id": 67,
+      "content": "hich many symmetrical solutions are available\nby returning multiple optimal solutions for each bay. We then compare up to 10 solutions with\nour more advanced lower bound heuristic that also considers the priority groups of blocking\nunit loads and open locations (see Pfrommer, Meyer, and Tierney (2022)). Figure6givesanexamplewithtwobaysthatproducealistofvirtuallanes. Thetwobaysontop\nof the figure show an exemplary result of the network flow model for the example from Figure\n5.",
+      "size": 480,
+      "sentences": 4
+    },
+    {
+      "id": 68,
+      "content": "top\nof the figure show an exemplary result of the network flow model for the example from Figure\n5. Thick black lines and colors illustrate the virtual lanes with the respective access directions\nand access points. At the bottom of the figure, we show the final virtual lane representation\nthat is used throughout the following procedure to determine the pre-marshalling moves.",
+      "size": 377,
+      "sentences": 3
+    },
+    {
+      "id": 69,
+      "content": "resentation\nthat is used throughout the following procedure to determine the pre-marshalling moves. Bay 1 Bay 2\n1 2 3 9 10\nNorth S1 S4 S7 S1 S4 S7\naccess -,1 1,5 -,- 16 3,2 -,1 -,2\nS2 S5 S8 S2 S5 S8\nWest East\n8 3,2 4,2 2,5 4 15 2,2 1,4 1,3 11\naccess access\nS3 S6 S9 S3 S6 S9\nSouth -,1 -,2 4,1 2,4 -,5 5,3 12\naccess\n7 6 5 14 13\nAccess point\nAccess\n6 9\nSequence\nS6 S4\nPosition 1 - -\nS6 S4\nPosition 2 2 1\n1 2 3 4 5 7 8 10 11 12 13 14 15 16\nS1 S4 S7 S8 S3 S5 S9 S2 S5 S7 S8 S9 S3 S6 S1 S2\nPosition 3 - 1 - 2 - 4 4 3 1 - 1 5 2 - 3 2\nS1 S4 S7 S8 S3 S5 S9 S2 S5 S7 S8 S9 S3 S6 S1 S2\nPosition 4 1 5 - 5 1 2 1 2 4 2 3 3 4 5 2 2\nLane l: l1 l2 l3 l4 l5 l6 l7 l8 l9 l10 l11 l12 l13 l14 l15 l16\nAccess\ndirection: North East South West North East South West\nBay b:\nBay 1 Bay 2\nFigure 6: Resulting virtual lanes for the example from 5.",
+      "size": 820,
+      "sentences": 2
+    },
+    {
+      "id": 70,
+      "content": "North East South West\nBay b:\nBay 1 Bay 2\nFigure 6: Resulting virtual lanes for the example from 5. Thick black lines in bay 1 and bay\n2 illustrate the virtual lanes. These lanes are transformed into a representation of one access\ndirection. 4.4 Step 2 - Alternative 1: Tree search\nThe new implementation of the A* algorithm differs in some details from our previous work.",
+      "size": 371,
+      "sentences": 4
+    },
+    {
+      "id": 71,
+      "content": "e search\nThe new implementation of the A* algorithm differs in some details from our previous work. We introduce a new tie-breaking rule that considers the total loaded move distance for popping\nnodesoutofthepriorityqueueandafasterincrementalcalculationofthelowerboundheuristics\n(which is not visible in the algorithm). Algorithm 1 shows the modified algorithm.",
+      "size": 361,
+      "sentences": 3
+    },
+    {
+      "id": 72,
+      "content": "rboundheuristics\n(which is not visible in the algorithm). Algorithm 1 shows the modified algorithm. After initialization, the main search loop runs until\n9\n[  ]\n\n===  10 ===\na solution with no blocking unit loads is found, until the open list is empty and no solution\nexists, or until the time limit has been reached.",
+      "size": 317,
+      "sentences": 3
+    },
+    {
+      "id": 73,
+      "content": "und, until the open list is empty and no solution\nexists, or until the time limit has been reached. In each iteration of the loop, a node n that\nminimizes the cost estimation f(n) = g(n) + h(n) is popped off the open list, where g(n)\nis the number of moves already performed at node n and h(n) the lower bound estimating\nthe number of moves until a blockage-free configuration is reached.",
+      "size": 388,
+      "sentences": 2
+    },
+    {
+      "id": 74,
+      "content": "h(n) the lower bound estimating\nthe number of moves until a blockage-free configuration is reached. If there are many nodes\nwith the same cost estimation f(n), we use a new tie-breaking rule for node selection that is\nexplained in the subsequent paragraphs. The only difference in calculating successor nodes is\nthat we incrementally calculate and update the total loaded move distance.",
+      "size": 386,
+      "sentences": 3
+    },
+    {
+      "id": 75,
+      "content": "ating successor nodes is\nthat we incrementally calculate and update the total loaded move distance. A successor node\nis pushed to the open list and added to an f- and distance-dictionary, if there is not already a\nnode with the same configuration in the f-dictionary that has a smaller cost estimation or the\nsame cost estimation but a smaller total loaded move distance. Our procedure guarantees an\nexact solution for the minimization of moves.",
+      "size": 445,
+      "sentences": 3
+    },
+    {
+      "id": 76,
+      "content": "tal loaded move distance. Our procedure guarantees an\nexact solution for the minimization of moves. Since the travel distance is considered only for\ntie-breaking, the resulting total loaded move distance is not necessarily optimal for the minimal\nnumber of moves. As long as the processing time for handling exceeds the travel time for each\nmove, we expect good results for the total processing time as well. Algorithm 1: Modified A* algorithm from Pfrommer, Meyer, and Tierney (2022).",
+      "size": 485,
+      "sentences": 5
+    },
+    {
+      "id": 77,
+      "content": "ocessing time as well. Algorithm 1: Modified A* algorithm from Pfrommer, Meyer, and Tierney (2022). Function astar(root):\nopen ← priority queue(); ▷ new tie-breaking rules\nf lookup ← dict();\ndistance lookup ← dict(); ▷ new distance lookup\nclosed ← ∅;\npush(open, root);\nf lookup[root] ← f(root);\ndistance lookup[root] ← 0;\nwhile open > 0 and time < timeout do\nn ← pop(open);\n(cid:83)\nclosed ← closed {n};\nif blocking(n) = 0 then\nreturn n;\nend\nsuccessors ← branching(n); ▷ new extended branching over all bays\nfor s ∈ successors do\nif s ∈/ closed and (s ∈/ f lookup or f lookup[s] > f(s) or (f lookup[s] = f(s)\nand distance lookup[s] > total loaded distance(s))) then\npush(open, s);\nf lookup[s] ← f(s);\ndistance lookup[s] ← total loaded distance(s);\nend\nend\nend\nTie-breaking rules with travel distance: When selecting the next move, our algorithm\ncompares the different rules in a lexicographic order.",
+      "size": 899,
+      "sentences": 3
+    },
+    {
+      "id": 78,
+      "content": "When selecting the next move, our algorithm\ncompares the different rules in a lexicographic order. The applied rules for tie-breaking are\nthe f-value (total cost estimation), h-value (lower bound heuristics), and the total loaded move\ndistance dist (aggregated from the root to this node). The distance between two virtual lanes\nis defined as the length of the shortest path between their respective access points.",
+      "size": 414,
+      "sentences": 3
+    },
+    {
+      "id": 79,
+      "content": "virtual lanes\nis defined as the length of the shortest path between their respective access points. The travel\n10\n===  11 ===\ntime within each virtual lane is neglected (it can be added by counting the empty tiles). We\nbuilddifferentcombinationsbasedontheserules. Inourapproach, wealwaysselectthepossible\nmoves with the lowest f-value first.",
+      "size": 341,
+      "sentences": 4
+    },
+    {
+      "id": 80,
+      "content": "onsbasedontheserules. Inourapproach, wealwaysselectthepossible\nmoves with the lowest f-value first. Because in many cases (especially large warehouses) there\nare still plenty of options with the same minimum f-value, we use the h-value as the first, and\nthe total loaded move distance dist as the second tie-breaker: f h dist. Incremental lower bound calculation: The A* search is further optimized by incremental\nlower bound calculation, which is not visible in Algorithm 1.",
+      "size": 475,
+      "sentences": 4
+    },
+    {
+      "id": 81,
+      "content": "h is further optimized by incremental\nlower bound calculation, which is not visible in Algorithm 1. If the configuration and lower\nbound of a given node are known, calculating the lower bound of its successor can be simplified. The estimated number of required moves based on the bad-good and bad-bad (BX) and the\ngood-good and good-bad (GX) moves can be computed faster if information about its predeces-\nsor is known.",
+      "size": 419,
+      "sentences": 3
+    },
+    {
+      "id": 82,
+      "content": "ood and good-bad (GX) moves can be computed faster if information about its predeces-\nsor is known. The number of misplaced unit loads can be changed only in the lanes impacted\nby a move. Therefore, the difference in misplaced unit loads within these lanes is therefore also\nthe total difference in misplaced unit loads in the entire warehouse.",
+      "size": 344,
+      "sentences": 3
+    },
+    {
+      "id": 83,
+      "content": "these lanes is therefore also\nthe total difference in misplaced unit loads in the entire warehouse. The BX moves based on\nthe minimum number of misplaced unit loads per virtual lane, can also be updated simply by\ncomparing it to the number of misplaced unit loads in the virtual lanes affected by the most\nrecent move. The calculation of additional GX moves uses a supply-and-demand model.",
+      "size": 389,
+      "sentences": 3
+    },
+    {
+      "id": 84,
+      "content": "ted by the most\nrecent move. The calculation of additional GX moves uses a supply-and-demand model. The\nchange in supply and demand is dependent only on the change in the virtual lanes affected by\nthe most recent move. To calculate the difference, the supply and demand of the two virtual\nlanes affected by the move must to be determined for the parent node and the successor.",
+      "size": 376,
+      "sentences": 4
+    },
+    {
+      "id": 85,
+      "content": "two virtual\nlanes affected by the move must to be determined for the parent node and the successor. The\ndifference in supply and demand is calculated by subtracting the parent’s supply and demand\nfrom the successor’s supply and demand. Based on the supply and demand differences, we cal-\nculate the cumulative incremental supply and demand, deriving the demand surplus difference.",
+      "size": 380,
+      "sentences": 3
+    },
+    {
+      "id": 86,
+      "content": "e cal-\nculate the cumulative incremental supply and demand, deriving the demand surplus difference. We then add the demand surplus difference to the demand surplus of the parent node to obtain\nthe new demand surplus of the successor. The following steps to derive the GX moves are the\nsame. 4.5 Step 2 - Alternative 2: Constraint programming\nTodemonstratetheperformanceoftheA*algorithm,wecompareitssolutiontoaCPapproach.",
+      "size": 420,
+      "sentences": 4
+    },
+    {
+      "id": 87,
+      "content": "nstraint programming\nTodemonstratetheperformanceoftheA*algorithm,wecompareitssolutiontoaCPapproach. We employ a CP approach proposed by Jim´enez-Piqueras, Ruiz, Parren˜o-Torres, and Alvarez-\nValdes (2023). Jim´enez-Piqueras et al. solve the CPMP with the minimum number of moves. The core concept involves constructing a CP model that allows a limited number of moves,\nstarting from a lower bound of moves.",
+      "size": 406,
+      "sentences": 5
+    },
+    {
+      "id": 88,
+      "content": "onstructing a CP model that allows a limited number of moves,\nstarting from a lower bound of moves. If no solution emerges after a complete search, an\nadditional move is incorporated into the model until a solution is identified. The authors\nintroduce multiple model versions. We opt for CP5 as it proved to be the most efficient. In the\nsubsequentsections,wedetailonlytherelevantpartsofthemodelthatunderwentmodifications\nto solve the MUPMP.",
+      "size": 441,
+      "sentences": 5
+    },
+    {
+      "id": 89,
+      "content": "equentsections,wedetailonlytherelevantpartsofthemodelthatunderwentmodifications\nto solve the MUPMP. The complete model is described in appendix A.1:\nEach stack of containers in the original model equates to a virtual lane, and each tier equates to\na position in the access sequence of the virtual lane (see section 4.3). To ensure comparability,\nthe variable names used are matched to the original model.",
+      "size": 404,
+      "sentences": 3
+    },
+    {
+      "id": 90,
+      "content": "e section 4.3). To ensure comparability,\nthe variable names used are matched to the original model. Let s¯denote the number of virtual\nlanes and t¯represent the number of positions in each virtual lane s. Accordingly, S = {1,...,s¯}\nis the set of virtual lanes and T = {1,...,t¯} is the set of positions for virtual lane s ∈ S. A slot\ns\n(s,t) is defined by a virtual lane s ∈ S and position t ∈ T . Let k¯ be the permissible number of\ns\n11\n===  12 ===\nmoves in the model.",
+      "size": 471,
+      "sentences": 4
+    },
+    {
+      "id": 91,
+      "content": "s ∈ S and position t ∈ T . Let k¯ be the permissible number of\ns\n11\n===  12 ===\nmoves in the model. K is the set of stages, defined as K = {1,...,k¯}. Stage 0 signifies the initial\nlayout. K0 = {0,1,...,k¯} is the set of stages, including the initial layout. Further, the variables\nzk and yk are introduced.",
+      "size": 307,
+      "sentences": 6
+    },
+    {
+      "id": 92,
+      "content": "s the set of stages, including the initial layout. Further, the variables\nzk and yk are introduced. s,t i,j\n\n1 If a unit load is removed from slot (s,t) during stage k\nzk =\ns,t\n0 Otherwise\n∀s ∈ S,∀t ∈ T ,∀k ∈ K\ns\n\n1 If a unit load is moved to slot (s,t) during stage k\nyk =\ns,t\n0 Otherwise\n∀s ∈ S,∀t ∈ T ,∀k ∈ K\ns\nLet d be the distance between virtual lane s ∈ S and s′ ∈ S. The total loaded move distance\ns,s′\nis minimized for the minimum number of moves.",
+      "size": 462,
+      "sentences": 3
+    },
+    {
+      "id": 93,
+      "content": "s ∈ S and s′ ∈ S. The total loaded move distance\ns,s′\nis minimized for the minimum number of moves. The objective function is defined as:\n(cid:88)(cid:88)(cid:88) (cid:88) (cid:88)\nmin zk ·yk ·d (4.1)\ns,t s′,t′ s,s′\nk∈Ks∈Ss′∈St∈Tst′∈T s′\nLet cUB be the objective value of the solution of the A* algorithm. To restrict the search space,\nthe objective value of the A* algorithm is set as an upper bound for the total loaded move\ndistance in constraint A.23.",
+      "size": 455,
+      "sentences": 3
+    },
+    {
+      "id": 94,
+      "content": "of the A* algorithm is set as an upper bound for the total loaded move\ndistance in constraint A.23. (cid:88)(cid:88)(cid:88) (cid:88) (cid:88)\nzk ·yk ·d ≤ cUB (4.2)\ns,t s′,t′ s,s′\nk∈Ks∈Ss′∈St∈Tst′∈T s′\nGiven that the number of virtual lanes can be substantial for large warehouse layouts, the\nsymmetry-breaking constraints (27) of CP5 (Jim´enez-Piqueras et al., 2023) are omitted from\nthe model to reduce the model building time.",
+      "size": 429,
+      "sentences": 2
+    },
+    {
+      "id": 95,
+      "content": "CP5 (Jim´enez-Piqueras et al., 2023) are omitted from\nthe model to reduce the model building time. The influence of those constraints is inherently\ndiminished by accounting for the total loaded move distance. 5 Experiments\nThe objective of the analysis is to evaluate the performance of the A* algorithm approach (see\nSection 4.4) and to compare it with the CP approach (see Section 4.5). We refer to the A*\nalgorithm approach as A* and the CP approach as CP.",
+      "size": 459,
+      "sentences": 4
+    },
+    {
+      "id": 96,
+      "content": "approach (see Section 4.5). We refer to the A*\nalgorithm approach as A* and the CP approach as CP. 5.1 Instance generator and dataset\nWe conduct experiments on 3520 instances and publish an even more extensive dataset for\nfuture research (Pfrommer & B¨omer, 2024). Table 1 shows an overview of the configuration\nparameters for this study. In all instances, we consider four access directions and one tier.",
+      "size": 405,
+      "sentences": 5
+    },
+    {
+      "id": 97,
+      "content": "ation\nparameters for this study. In all instances, we consider four access directions and one tier. The\nvaried parameters include priority classes, fill percentage, bay layout, and warehouse layout. For each configuration, we create 10 randomly generated instances (seeds 1-10).",
+      "size": 278,
+      "sentences": 4
+    },
+    {
+      "id": 98,
+      "content": "d warehouse layout. For each configuration, we create 10 randomly generated instances (seeds 1-10). 12\n===  13 ===\nParameter Value\nAccess directions {four}\nTiers {1}\nPriority classes {5, 10}\nFill percentage {40%, 60%, 80%, 90%}\nBay layout {3x3, 4x4, 5x5, 6x6}\nWarehouse layout {2x2, 3x3, 4x4, 5x5, 6x6, 7x7, 8x8, 9x9, 10x10, 11x11, 12x12}\nTable 1: Dataset configurations. The test instances consider five or 10 different priority classes. Fill percentages of 40%, 60%,\n80%, and90%aretakenintoaccount.",
+      "size": 500,
+      "sentences": 5
+    },
+    {
+      "id": 99,
+      "content": "ive or 10 different priority classes. Fill percentages of 40%, 60%,\n80%, and90%aretakenintoaccount. Forthisstudy, weonlyconsiderquadraticlayouts. A6x6\nbay layout describes a bay in which six lanes are arranged next to each other with a depth of\nsix slots. This results in 36 slots per bay. A warehouse layout of 5x5 describes a warehouse that\nconsists of 25 bays that are arranged in a quadratic pattern. Hence, a 6x6 bay layout and a 5x5\nwarehouse layout combined results in 900 slots.",
+      "size": 486,
+      "sentences": 7
+    },
+    {
+      "id": 100,
+      "content": "uadratic pattern. Hence, a 6x6 bay layout and a 5x5\nwarehouse layout combined results in 900 slots. This study includes bay layouts from 3x3 up to\n6x6 and warehouse layouts from 2x2 up to 12x12. Table 2 shows the resulting number of slots\nfor each considered bay and warehouse layout configuration. The largest layout configurations\ninclude 1296 slots.",
+      "size": 352,
+      "sentences": 5
+    },
+    {
+      "id": 101,
+      "content": "dered bay and warehouse layout configuration. The largest layout configurations\ninclude 1296 slots. Warehouse layout\nBay layout 2x2 3x3 4x4 5x5 6x6 7x7 8x8 9x9 10x10 11x11 12x12\n3x3 36 81 144 225 324 441 576 729 900 1089 1296\n4x4 64 144 256 400 576 784 1024\n5x5 100 225 400 625 900\n6x6 144 324 576 900 1296\nTable 2: Number of slots for each layout configuration.",
+      "size": 362,
+      "sentences": 3
+    },
+    {
+      "id": 102,
+      "content": "00 225 400 625 900\n6x6 144 324 576 900 1296\nTable 2: Number of slots for each layout configuration. 5.2 Analysis\nWe conduct computational experiments on the Linux High-Performance-Computing Cluster\nLiDo3 at the Technical University of Dortmund. We run all experiments on a node with 4 ×\nIntel Xeon E5 4640v4 2.1 GHz and 512 GB RAM. The algorithms are implemented in Python\nusing Google OR-Tools 9.5 with default parameters for the network flow model and the CP\nmodel.",
+      "size": 467,
+      "sentences": 4
+    },
+    {
+      "id": 103,
+      "content": "thon\nusing Google OR-Tools 9.5 with default parameters for the network flow model and the CP\nmodel. The solution time of the A* algorithm is limited to 10 minutes. The solution time of the\nCP model is limited to 60 minutes. We present the findings using examples. For completeness,\na detailed overview of the results is provided in the appendix A.2 and A.3. Solved instances Table 3 shows the number of solved instances by A* for each instance\nconfiguration.",
+      "size": 458,
+      "sentences": 6
+    },
+    {
+      "id": 104,
+      "content": "olved instances Table 3 shows the number of solved instances by A* for each instance\nconfiguration. The results show that instances with 10 priority classes are harder to solve than\ninstances with five priority classes. An example is given for a 5x5 bay layout, 6x6 warehouse\nlayout, and 90% fill percentage. For five priority classes, all instances have been solved, for\n10 priority classes only four have been solved.",
+      "size": 419,
+      "sentences": 4
+    },
+    {
+      "id": 105,
+      "content": "iority classes, all instances have been solved, for\n10 priority classes only four have been solved. Further, the bay layout has a stronger impact\n13\n===  14 ===\non the solvability of an instance than the warehouse layout. For example, the instances with a\n5x5 bay layout and 6x6 warehouse layout are solvable for the A*, while instances with a 6x6\nbay layout and 5x5 warehouse layout are barely solvable for fill percentages over 40%. Both\nconfigurations contain the same number of slots.",
+      "size": 488,
+      "sentences": 4
+    },
+    {
+      "id": 106,
+      "content": "arely solvable for fill percentages over 40%. Both\nconfigurations contain the same number of slots. Also, a larger fill percentage seem to make instances harder to solve up to a certain point. The number of solved instances decreases with a rising fill percentage from 40% to 80%. The\ncomparison of 80% fill percentage and 90% shows that the instances with 80% fill percentage\nare harder to solve than the ones with 90%.",
+      "size": 420,
+      "sentences": 5
+    },
+    {
+      "id": 107,
+      "content": "d 90% shows that the instances with 80% fill percentage\nare harder to solve than the ones with 90%. The reason for that is that a high 90% fill\npercentage heavily restricts the potential slots for relocations. Hence, the A* has to evaluate\nfewer nodes to find a solution.",
+      "size": 271,
+      "sentences": 3
+    },
+    {
+      "id": 108,
+      "content": "the potential slots for relocations. Hence, the A* has to evaluate\nfewer nodes to find a solution. Priority classes 5 10\nFill percentages 40% 60% 80% 90% 40% 60% 80% 90%\nBay layout Warehouse layout\n3x3 2x2 10 10 10 10 10 10 10 10\n3x3 10 10 10 10 10 10 10 10\n4x4 10 10 10 10 10 10 10 10\n5x5 10 10 10 10 10 10 10 10\n6x6 10 10 10 10 10 10 10 10\n7x7 10 10 10 10 10 10 10 10\n8x8 10 10 10 10 10 10 10 10\n9x9 10 10 10 10 10 10 10 10\n10x10 10 10 10 10 10 10 10 10\n11x11 10 10 10 10 10 10 10 10\n12x12 10 10 9 10 10 10 8 10\n4x4 2x2 10 10 10 10 10 10 10 10\n3x3 10 10 10 10 10 10 10 10\n4x4 10 10 10 10 10 10 10 10\n5x5 10 10 10 10 10 10 10 10\n6x6 10 10 10 10 10 10 10 10\n7x7 10 10 10 10 10 10 10 10\n8x8 10 10 10 10 10 9 3 9\n5x5 2x2 10 10 10 10 10 10 10 10\n3x3 10 10 10 10 10 10 10 10\n4x4 10 10 10 10 10 10 10 9\n5x5 10 10 10 10 10 10 10 10\n6x6 10 10 5 10 10 10 0 4\n6x6 2x2 10 10 10 9 10 10 10 10\n3x3 10 10 10 7 10 10 10 7\n4x4 10 10 10 6 10 10 10 1\n5x5 10 5 0 0 10 2 0 0\n6x6 3 0 0 0 0 0 0 0\nTable 3: Solved instances for A*.",
+      "size": 1009,
+      "sentences": 3
+    },
+    {
+      "id": 109,
+      "content": "4 10 10 10 6 10 10 10 1\n5x5 10 5 0 0 10 2 0 0\n6x6 3 0 0 0 0 0 0 0\nTable 3: Solved instances for A*. Figure 7 shows the mean number of evaluated nodes for instances with a 4x4 bay layout. The\nmean number of evaluated nodes is an indicator of the solution effort of each instance. The\n14\n===  15 ===\nmean number of evaluated nodes for 80% fill percentage instances exceeds the number for 90%\nfill percentage.",
+      "size": 406,
+      "sentences": 4
+    },
+    {
+      "id": 110,
+      "content": "er of evaluated nodes for 80% fill percentage instances exceeds the number for 90%\nfill percentage. Consequently, the solution effort for 80% is higher than for 90% which results\nin an A* time-out for smaller layout configurations than for 90% fill percentage.",
+      "size": 260,
+      "sentences": 2
+    },
+    {
+      "id": 111,
+      "content": "90% which results\nin an A* time-out for smaller layout configurations than for 90% fill percentage. \u0000\u0017\u0000[\u0000\u0017\u0000\u0010\u0000\u0015\u0000[\u0000\u0015\n\u0000\u0017\u0000[\u0000\u0017\u0000\u0010\u0000\u0016\u0000[\u0000\u0016\n\u0000\u0017\u0000[\u0000\u0017\u0000\u0010\u0000\u0017\u0000[\u0000\u0017\n\u0000\u0017\u0000[\u0000\u0017\u0000\u0010\u0000\u0018\u0000[\u0000\u0018\n\u0000\u0017\u0000[\u0000\u0017\u0000\u0010\u0000\u0019\u0000[\u0000\u0019\n\u0000\u0017\u0000[\u0000\u0017\u0000\u0010\u0000\u001a\u0000[\u0000\u001a\n\u0000\u0017\u0000[\u0000\u0017\u0000\u0010\u0000\u001b\u0000[\u0000\u001b\n\u0000\u0017\u0000\u0013\u0000\b \u0000\u0019\u0000\u0013\u0000\b \u0000\u001b\u0000\u0013\u0000\b \u0000\u001c\u0000\u0013\u0000\b\n\u0000)\u0000L\u0000O\u0000O\u0000\u0003\u00003\u0000H\u0000U\u0000F\u0000H\u0000Q\u0000W\u0000D\u0000J\u0000H\u0000V\n\u0000W\u0000X\u0000R\u0000\\\u0000D\u0000/\u0000\u0003\u0000H\u0000V\u0000X\u0000R\u0000K\u0000H\u0000U\u0000D\u0000:\u0000\u0003\u0000\u0010\u0000\u0003\u0000W\u0000X\u0000R\u0000\\\u0000D\u0000/\u0000\u0003\u0000\\\u0000D\u0000%\n\u0000\u0014\u0000H\u0000\u0019\n\u0000\u0014\u0000\u0011\u0000\u0017\u0000H\u0000\u000e\u0000\u0013\u0000\u0015 \u0000\u0015\u0000\u0011\u0000\u0016\u0000H\u0000\u000e\u0000\u0013\u0000\u0015 \u0000\u0014\u0000\u0011\u0000\u0014\u0000H\u0000\u000e\u0000\u0013\u0000\u0016 \u0000\u0018\u0000\u0011\u0000\u001b\u0000H\u0000\u000e\u0000\u0013\u0000\u0015 \u0000\u0015\u0000\u0011\u0000\u0018\n\u0000\u0014\u0000\u0011\u0000\u001b\u0000H\u0000\u000e\u0000\u0013\u0000\u0016 \u0000\u0017\u0000\u0011\u0000\u0018\u0000H\u0000\u000e\u0000\u0013\u0000\u0016 \u0000\u0014\u0000\u0011\u0000\u0014\u0000H\u0000\u000e\u0000\u0013\u0000\u0017 \u0000\u001a\u0000\u0011\u0000\u001a\u0000H\u0000\u000e\u0000\u0013\u0000\u0016\n\u0000\u0015\u0000\u0011\u0000\u0013\n\u0000\u001a\u0000H\u0000\u000e\u0000\u0013\u0000\u0016 \u0000\u0016\u0000H\u0000\u000e\u0000\u0013\u0000\u0017 \u0000\u0017\u0000\u0011\u0000\u0017\u0000H\u0000\u000e\u0000\u0013\u0000\u0017 \u0000\u0016\u0000\u0011\u0000\u001c\u0000H\u0000\u000e\u0000\u0013\u0000\u0017\n\u0000\u0014\u0000\u0011\u0000\u0018\n\u0000\u0016\u0000\u0011\u0000\u0015\u0000H\u0000\u000e\u0000\u0013\u0000\u0017 \u0000\u0014\u0000\u0011\u0000\u0014\u0000H\u0000\u000e\u0000\u0013\u0000\u0018 \u0000\u0014\u0000\u0011\u0000\u001c\u0000H\u0000\u000e\u0000\u0013\u0000\u0018 \u0000\u0014\u0000\u0011\u0000\u0018\u0000H\u0000\u000e\u0000\u0013\u0000\u0018\n\u0000\u0019\u0000\u0011\u0000\u0019\u0000H\u0000\u000e\u0000\u0013\u0000\u0017 \u0000\u0015\u0000\u0011\u0000\u001b\u0000H\u0000\u000e\u0000\u0013\u0000\u0018 \u0000\u0018\u0000\u0011\u0000\u001b\u0000H\u0000\u000e\u0000\u0013\u0000\u0018 \u0000\u0017\u0000\u0011\u0000\u0016\u0000H\u0000\u000e\u0000\u0013\u0000\u0018 \u0000\u0014\u0000\u0011\u0000\u0013\n\u0000\u0014\u0000\u0011\u0000\u001b\u0000H\u0000\u000e\u0000\u0013\u0000\u0018 \u0000\u001b\u0000\u0011\u0000\u0016\u0000H\u0000\u000e\u0000\u0013\u0000\u0018 \u0000\u0014\u0000\u0011\u0000\u0016\u0000H\u0000\u000e\u0000\u0013\u0000\u0019 \u0000\u0014\u0000\u0011\u0000\u0014\u0000H\u0000\u000e\u0000\u0013\u0000\u0019\n\u0000\u0013\u0000\u0011\u0000\u0018\n\u0000\u0015\u0000\u0011\u0000\u001b\u0000H\u0000\u000e\u0000\u0013\u0000\u0018 \u0000\u0014\u0000\u0011\u0000\u001b\u0000H\u0000\u000e\u0000\u0013\u0000\u0019 \u0000\u0015\u0000\u0011\u0000\u001a\u0000H\u0000\u000e\u0000\u0013\u0000\u0019 \u0000\u0015\u0000\u0011\u0000\u0018\u0000H\u0000\u000e\u0000\u0013\u0000\u0019\nFigure 7: Mean number of evaluated nodes in A* for 10 priority classes.",
+      "size": 850,
+      "sentences": 2
+    },
+    {
+      "id": 112,
+      "content": "\u0000\u0011\u0000\u001a\u0000H\u0000\u000e\u0000\u0013\u0000\u0019 \u0000\u0015\u0000\u0011\u0000\u0018\u0000H\u0000\u000e\u0000\u0013\u0000\u0019\nFigure 7: Mean number of evaluated nodes in A* for 10 priority classes. Runtimes The total runtimes in Figure 8 include the access direction fixing pre-processing\nstep and the solution time of the A* algorithm itself. The total runtimes increase with the\nnumber of evaluated nodes. Consequently, the total runtimes increase with the size of the bay\nand warehouse layout. Further, the total runtimes increase with the fill percentage until 80%.",
+      "size": 471,
+      "sentences": 5
+    },
+    {
+      "id": 113,
+      "content": "bay\nand warehouse layout. Further, the total runtimes increase with the fill percentage until 80%. However, the solving times for the 90% fill percentage instances are lower than for the 80%. The reason for this is that more nodes have to be evaluated for 80% fill percentage than for\n90% fill percentage (see Figure 7). The runtimes for the access direction fixing pre-processing step are shown in Figure 9 for the\nsame instances as in Figure 8.",
+      "size": 446,
+      "sentences": 5
+    },
+    {
+      "id": 114,
+      "content": "s direction fixing pre-processing step are shown in Figure 9 for the\nsame instances as in Figure 8. Figure 9 shows that the pre-processing runtime is not dependent\non the fill percentages, but only on the size of the layout configuration. The pre-processing\nruntime increases in proportion to the number of bays because the pre-processing step has to be\nperformed for each bay individually. Larger bay layouts cause longer pre-processing times.",
+      "size": 444,
+      "sentences": 4
+    },
+    {
+      "id": 115,
+      "content": "as to be\nperformed for each bay individually. Larger bay layouts cause longer pre-processing times. This\nbecomes evident when comparing two layout configurations with the same number of slots: The\nmean pre-processing runtime for a 4x4 bay layout and a 5x5 warehouse layout is 3.31s for a 5x5\nbay layout and a 4x4 warehouse layout the mean is 4.39s. The number of priority classes does\nnot show a significant impact on the pre-processing time.",
+      "size": 442,
+      "sentences": 4
+    },
+    {
+      "id": 116,
+      "content": ".39s. The number of priority classes does\nnot show a significant impact on the pre-processing time. The maximum pre-processing time of\nall solved instances is 39.25s for a 6x6 bay layout, 6x6 warehouse layout, 40% fill percentage,\nand five priority classes. Objective value To analyze the A* approach, we compare its objective value (total loaded\nmove distance for the minimal number of moves) with the exact CP approach.",
+      "size": 421,
+      "sentences": 4
+    },
+    {
+      "id": 117,
+      "content": "tive value (total loaded\nmove distance for the minimal number of moves) with the exact CP approach. Table 4 shows\nthe number of proven optimally solved instances for each solution approach.",
+      "size": 189,
+      "sentences": 2
+    },
+    {
+      "id": 118,
+      "content": "approach. Table 4 shows\nthe number of proven optimally solved instances for each solution approach. Please note that\n15\n[  ]\n\n===  16 ===\n\u0000\u0019\u0000\u0013\u0000\u0013\n\u0000\u0018\u0000\u0013\u0000\u0013\n\u0000\u0017\u0000\u0013\u0000\u0013\n\u0000\u0016\u0000\u0013\u0000\u0013\n\u0000\u0015\u0000\u0013\u0000\u0013\n\u0000\u0014\u0000\u0013\u0000\u0013\n\u0000\u0013\n\u0000\u0015\u0000[\u0000\u0015 \u0000\u0016\u0000[\u0000\u0016 \u0000\u0017\u0000[\u0000\u0017 \u0000\u0018\u0000[\u0000\u0018 \u0000\u0019\u0000[\u0000\u0019 \u0000\u001a\u0000[\u0000\u001a \u0000\u001b\u0000[\u0000\u001b\n\u0000:\u0000D\u0000U\u0000H\u0000K\u0000R\u0000X\u0000V\u0000H\u0000\u0003\u0000/\u0000D\u0000\\\u0000R\u0000X\u0000W\n\u0000\f\u0000V\u0000\u000b\u0000\u0003\u0000H\u0000P\u0000L\u0000W\u0000Q\u0000X\u00005\u0000\u0003\u0000O\u0000D\u0000W\u0000R\u00007\n\u0000)\u0000L\u0000O\u0000O\u0000\u0003\u00003\u0000H\u0000U\u0000F\u0000H\u0000Q\u0000W\u0000D\u0000J\u0000H\u0000V\n\u0000\u0017\u0000\u0013\u0000\b\n\u0000\u0019\u0000\u0013\u0000\b\n\u0000\u001b\u0000\u0013\u0000\b\n\u0000\u001c\u0000\u0013\u0000\b\nFigure 8: Total runtimes for A* for a 4x4 bay layout and 10 priority classes.",
+      "size": 438,
+      "sentences": 3
+    },
+    {
+      "id": 119,
+      "content": "\u0000\u0019\u0000\u0013\u0000\b\n\u0000\u001b\u0000\u0013\u0000\b\n\u0000\u001c\u0000\u0013\u0000\b\nFigure 8: Total runtimes for A* for a 4x4 bay layout and 10 priority classes. \u0000\u0014\u0000\u0017\n\u0000\u0014\u0000\u0015\n\u0000\u0014\u0000\u0013\n\u0000\u001b\n\u0000\u0019\n\u0000\u0017\n\u0000\u0015\n\u0000\u0013\n\u0000\u0015\u0000[\u0000\u0015 \u0000\u0016\u0000[\u0000\u0016 \u0000\u0017\u0000[\u0000\u0017 \u0000\u0018\u0000[\u0000\u0018 \u0000\u0019\u0000[\u0000\u0019 \u0000\u001a\u0000[\u0000\u001a \u0000\u001b\u0000[\u0000\u001b\n\u0000:\u0000D\u0000U\u0000H\u0000K\u0000R\u0000X\u0000V\u0000H\u0000\u0003\u0000/\u0000D\u0000\\\u0000R\u0000X\u0000W\n\u0000\f\u0000V\u0000\u000b\u0000\u0003\u0000H\u0000P\u0000L\u0000W\u0000Q\u0000X\u00005\u0000\u0003\u0000J\u0000Q\u0000L\u0000V\u0000V\u0000H\u0000F\u0000R\u0000U\u0000S\u0000H\u0000U\u00003\n\u0000)\u0000L\u0000O\u0000O\u0000\u0003\u00003\u0000H\u0000U\u0000F\u0000H\u0000Q\u0000W\u0000D\u0000J\u0000H\u0000V\n\u0000\u0017\u0000\u0013\u0000\b\n\u0000\u0019\u0000\u0013\u0000\b\n\u0000\u001b\u0000\u0013\u0000\b\n\u0000\u001c\u0000\u0013\u0000\b\nFigure 9: Access direction fixing (pre-processing) runtime for 4x4 bay layout and 10 priority\nclasses.",
+      "size": 425,
+      "sentences": 2
+    },
+    {
+      "id": 120,
+      "content": "ure 9: Access direction fixing (pre-processing) runtime for 4x4 bay layout and 10 priority\nclasses. we only run the CP model if a solution was found by the A*, because the A* solution serves\nas an upper bound for the CP model. The number 20 indicates that all instances for that\nconfiguration were solved proven optimally.",
+      "size": 322,
+      "sentences": 3
+    },
+    {
+      "id": 121,
+      "content": "el. The number 20 indicates that all instances for that\nconfiguration were solved proven optimally. If the number of instances for the A* is lower\nthan the number of optimally solved instances by the CP model, a difference between the A*\nobjective value and the proven optimal objective value of the CP model is found. Overall, the\nCP model found the optimal solution in 1364 instances. The A* found the same solution in\n97.43% (1329) of these instances.",
+      "size": 454,
+      "sentences": 5
+    },
+    {
+      "id": 122,
+      "content": "mal solution in 1364 instances. The A* found the same solution in\n97.43% (1329) of these instances. In 35 instances the CP model found an optimal solution that\ndiffers from the A* solution. The A* can find the proven optimal solution for almost every 3x3 and 4x4 bay layout configu-\n16\n[  ]\n\n===  17 ===\nration that the CP model was able to solve to optimality. Only for fill percentages of 90% few\nsuboptimal solutions exist.",
+      "size": 426,
+      "sentences": 5
+    },
+    {
+      "id": 123,
+      "content": "l was able to solve to optimality. Only for fill percentages of 90% few\nsuboptimal solutions exist. For 5x5 and 6x6 bay layouts, more instances cannot be optimally\nsolved for 80% and 90% fill percentages by A*. Bay layout and fill percentage have the biggest\nimpact on the optimality of the A* solution. The warehouse layout has little to no impact.",
+      "size": 349,
+      "sentences": 5
+    },
+    {
+      "id": 124,
+      "content": "biggest\nimpact on the optimality of the A* solution. The warehouse layout has little to no impact. Fill percentages 40% 60% 80% 90%\nA* CP A* CP A* CP A* CP\nBay layout Warehouse layout\n3x3 2x2 20 20 20 20 20 20 18 20\n3x3 20 20 20 20 20 20 20 20\n4x4 20 20 20 20 20 20 19 20\n5x5 20 20 20 20 20 20 20 20\n6x6 20 20 20 20 20 20 18 19\n7x7 20 20 20 20 20 20 17 17\n8x8 20 20 20 20 19 19 9 9\n9x9 20 20 20 20 15 15 9 9\n10x10 20 20 20 20 8 8 1 1\n11x11 20 20 20 20 4 4 1 1\n12x12 10 10 10 10 3 3 1 1\n4x4 2x2 20 20 20 20 20 20 18 20\n3x3 20 20 20 20 20 20 14 19\n4x4 20 20 20 20 15 15 6 7\n5x5 20 20 18 19 4 4 0 0\n6x6 20 20 17 17 1 1 0 0\n7x7 20 20 12 12 0 0 0 0\n8x8 20 20 9 9 0 0 0 0\n5x5 2x2 20 20 19 20 15 19 6 18\n3x3 20 20 19 20 2 3 0 0\n4x4 20 20 8 8 0 0 0 0\n5x5 20 20 1 1 0 0 0 0\n6x6 18 18 0 0 0 0 0 0\n6x6 2x2 20 20 20 20 3 6 0 0\n3x3 20 20 2 2 0 0 0 0\n4x4 15 15 0 0 0 0 0 0\n5x5 5 5 0 0\n6x6 0 0\nTable 4: Number of proven optimal solved instances.",
+      "size": 930,
+      "sentences": 3
+    },
+    {
+      "id": 125,
+      "content": "0 0 0\n4x4 15 15 0 0 0 0 0 0\n5x5 5 5 0 0\n6x6 0 0\nTable 4: Number of proven optimal solved instances. Figure 10 shows an overview of the relative difference between the total loaded move distance\nin the A* solution and the CP solution if the objective value differs. A value of 20% indicates\nthat the loaded move distance of the A* solution is 20% longer than the optimal loaded move\ndistance found by the CP modle. For most layout configurations no or only a few data points\nexist.",
+      "size": 480,
+      "sentences": 4
+    },
+    {
+      "id": 126,
+      "content": "distance found by the CP modle. For most layout configurations no or only a few data points\nexist. For a 5x5 bay layout and a 2x2 warehouse layout, the A* was not able to find the loaded\nmove distance optimal solution in overall 19 instances. For this layout configuration, the mean\nrelative difference of the differing instances is 17.4% across all fill percentage groups. The\nmaximum relative difference for this configuration is 32.6%.",
+      "size": 438,
+      "sentences": 5
+    },
+    {
+      "id": 127,
+      "content": "across all fill percentage groups. The\nmaximum relative difference for this configuration is 32.6%. 17\n===  18 ===\n\u0000\u0017\u0000\u0013\u0000\b\n\u0000\u0016\u0000\u0018\u0000\b\n\u0000\u0016\u0000\u0013\u0000\b\n\u0000\u0015\u0000\u0018\u0000\b\n\u0000\u0015\u0000\u0013\u0000\b\n\u0000\u0014\u0000\u0018\u0000\b\n\u0000\u0014\u0000\u0013\u0000\b\n\u0000\u0018\u0000\b\n\u0000\u0013\u0000\b\n\u0000\u0016\u0000[\u0000\u0016\u0000\u0010\u0000\u0015\u0000[\u0000\u0015 \u0000\u0016\u0000[\u0000\u0016\u0000\u0010\u0000\u0017\u0000[\u0000\u0017 \u0000\u0016\u0000[\u0000\u0016\u0000\u0010\u0000\u0019\u0000[\u0000\u0019 \u0000\u0017\u0000[\u0000\u0017\u0000\u0010\u0000\u0015\u0000[\u0000\u0015 \u0000\u0017\u0000[\u0000\u0017\u0000\u0010\u0000\u0016\u0000[\u0000\u0016 \u0000\u0017\u0000[\u0000\u0017\u0000\u0010\u0000\u0017\u0000[\u0000\u0017 \u0000\u0017\u0000[\u0000\u0017\u0000\u0010\u0000\u0018\u0000[\u0000\u0018 \u0000\u0018\u0000[\u0000\u0018\u0000\u0010\u0000\u0015\u0000[\u0000\u0015 \u0000\u0018\u0000[\u0000\u0018\u0000\u0010\u0000\u0016\u0000[\u0000\u0016 \u0000\u0019\u0000[\u0000\u0019\u0000\u0010\u0000\u0015\u0000[\u0000\u0015\n\u0000%\u0000D\u0000\\\u0000\u0003\u0000/\u0000D\u0000\\\u0000R\u0000X\u0000W\u0000\u0003\u0000\u0010\u0000\u0003\u0000:\u0000D\u0000U\u0000H\u0000K\u0000R\u0000X\u0000V\u0000H\u0000\u0003\u0000/\u0000D\u0000\\\u0000R\u0000X\u0000W\n\u0000H\u0000F\u0000Q\u0000H\u0000U\u0000H\u0000I\u0000I\u0000L\u0000'\u0000\u0003\u0000H\u0000Y\u0000L\u0000W\u0000D\u0000O\u0000H\u00005\n\u0000)\u0000L\u0000O\u0000O\u0000\u0003\u00003\u0000H\u0000U\u0000F\u0000H\u0000Q\u0000W\u0000D\u0000J\u0000H\n\u0000\u0017\u0000\u0013\u0000\b\n\u0000\u0019\u0000\u0013\u0000\b\n\u0000\u001b\u0000\u0013\u0000\b\n\u0000\u001c\u0000\u0013\u0000\b\nFigure 10: Relative difference between total loaded move distance of the A* and CP approach\nfor instances optimally solved by CP.",
+      "size": 610,
+      "sentences": 3
+    },
+    {
+      "id": 128,
+      "content": "between total loaded move distance of the A* and CP approach\nfor instances optimally solved by CP. A closer look into the move sequence of both approaches in comparison explains why the A*\ntotalloadedmovedistanceisnotoptimalforsomeinstances. Figure11showsthemovesequence\nof the A* (purple) and CP (pink, dotted) approach in comparison for a 5x5 bay layout, 2x2\nwarehouse layout, 90% fill percentage, and 10 priority classes. Move 1 of the A* is identical\nto move 2 of the CP approach.",
+      "size": 484,
+      "sentences": 4
+    },
+    {
+      "id": 129,
+      "content": "ll percentage, and 10 priority classes. Move 1 of the A* is identical\nto move 2 of the CP approach. The same is true for the moves 2/1, 4/5, and 5/4. The longer\nloaded move distance of the A* results from the fact that dependencies between moves are not\ntaken into account during the search. The A* selects the shortest moves greedily. However,\na shorter move earlier in the sequence can cause longer distances later in the sequence.",
+      "size": 433,
+      "sentences": 6
+    },
+    {
+      "id": 130,
+      "content": ". However,\na shorter move earlier in the sequence can cause longer distances later in the sequence. For\nexample, the A* performs a short move 3 that results in a longer distance for move 6 later. A*\nmove 6 causes a greater distance for move 7. The CP model respects these dependencies, which\nresults in a lower total move distance for the same number of moves.",
+      "size": 360,
+      "sentences": 5
+    },
+    {
+      "id": 131,
+      "content": "ects these dependencies, which\nresults in a lower total move distance for the same number of moves. Move number and loaded move distance Figure12showsthedistributionforthenumber\nof moves for five and 10 priority classes in a 5x5 bay layout and 4x4 warehouse layout. For\neach fill percentage, the number of moves for 10 priority classes is larger than for five priority\nclasses. This is because the chance that a unit load is blocking another unit load increases with\nthe number of priority classes.",
+      "size": 498,
+      "sentences": 4
+    },
+    {
+      "id": 132,
+      "content": "hance that a unit load is blocking another unit load increases with\nthe number of priority classes. Forabetterunderstanding,wecalculatethemeanlikelihoodthataunitloadisblockinganother. We assume that the priority classes are equally distributed. We sum up the likelihood for each\npriority class that it is blocking if it is standing in front of a random unit load in a virtual lane\nwith a depth of two.",
+      "size": 401,
+      "sentences": 4
+    },
+    {
+      "id": 133,
+      "content": "is blocking if it is standing in front of a random unit load in a virtual lane\nwith a depth of two. Let P be the set of priority classes and p¯ the maximum priority class\np ∈ P. The mean blockage likelihood L is calculated as:\np¯\n(cid:18) (cid:19)\n1 (cid:88) p\nL = 1− (5.1)\np¯\np¯ p¯\np∈P\n18\n[  ]\n\n===  19 ===\n1\n8 92 8 8 5\n4\n9 5 4\n2 3 9 9 10 4 7 8 79\n2 1 5\n6 3 8 1 9 9 5 4 6\n8 5 4 4 9 5 7 6 6 5\n3\n4 6 2 3 7 2 8 10 8\n7\n6\n9 6 10 2 9 7 5 6 2 1\n6\n2 3 3 5 1 4 5 7\n6 10 6 10 6 2 6 2 5\n6 5 8 9 1 6 1 2 5\n5 3\n8 2 8 1 4 5 10 8 2 10\nFigure 11: Move sequence of A* (purple) and CP (pink, dotted) approach in comparison for a\n5x5 bay layout, 2x2 warehouse layout, 90% fill percentage and 10 priority classes\n\u0000\u0016\u0000\u0013\n\u0000\u0015\u0000\u0018\n\u0000\u0015\u0000\u0013\n\u0000\u0014\u0000\u0018\n\u0000\u0014\u0000\u0013\n\u0000\u0018\n\u0000\u0013\n\u0000\u0017\u0000\u0013\u0000\b \u0000\u0019\u0000\u0013\u0000\b \u0000\u001b\u0000\u0013\u0000\b \u0000\u001c\u0000\u0013\u0000\b\n\u0000)\u0000L\u0000O\u0000O\u0000\u0003\u00003\u0000H\u0000U\u0000F\u0000H\u0000Q\u0000W\u0000D\u0000J\u0000H\n\u0000V\u0000H\u0000Y\u0000R\u00000\u0000\u0003\u0000U\u0000H\u0000E\u0000P\u0000X\u00001\n\u00003\u0000U\u0000L\u0000R\u0000U\u0000L\u0000W\u0000\\\u0000\u0003\u0000&\u0000O\u0000D\u0000V\u0000V\u0000H\u0000V\n\u0000\u0018\n\u0000\u0014\u0000\u0013\nFigure 12: Number of moves per fill percentage for each priority class configuration in a 5x5\nbay layout and 4x4 warehouse layout.",
+      "size": 980,
+      "sentences": 2
+    },
+    {
+      "id": 134,
+      "content": "fill percentage for each priority class configuration in a 5x5\nbay layout and 4x4 warehouse layout. For five priority classes, the mean likelihood of blocking is L = 40%. For 10 priority classes, it\n5\nisL =45%. Theeffectofextrablockagesdecreasesasthenumberofprioritygroupsincreases:\n10\nlim L = 0.5.\np¯→∞ p¯\nFigure13showsthenumberofmovesandthetotalloadedmovedistanceforvariousfillpercent-\nages and layout configurations. Both configurations have 400 slots in total.",
+      "size": 464,
+      "sentences": 5
+    },
+    {
+      "id": 135,
+      "content": "forvariousfillpercent-\nages and layout configurations. Both configurations have 400 slots in total. The combination\nof a 4x4 bay layout with a 5x5 warehouse layout requires fewer reshuffling moves than a 5x5\nbay layout with a 4x4 warehouse layout. Shallower lanes result in fewer blockages. The total\nloaded move distance shows a similar pattern, as the reshuffling move number and loaded move\ndistance are strongly correlated.",
+      "size": 427,
+      "sentences": 5
+    },
+    {
+      "id": 136,
+      "content": "a similar pattern, as the reshuffling move number and loaded move\ndistance are strongly correlated. Further, the figure displays that a higher fill percentage results\ninmorereshufflingmovesandhighertotalloadedmovedistances. Especially,thestepfrom80%\n19\n[  ]\n\n===  20 ===\nto 90% shows a substantial increase in the total loaded move distance.",
+      "size": 341,
+      "sentences": 3
+    },
+    {
+      "id": 137,
+      "content": "from80%\n19\n[  ]\n\n===  20 ===\nto 90% shows a substantial increase in the total loaded move distance. \u0000\u0016\u0000\u0013\n\u0000\u0015\u0000\u0018\n\u0000\u0015\u0000\u0013\n\u0000\u0014\u0000\u0018\n\u0000\u0014\u0000\u0013\n\u0000\u0018\n\u0000\u0013\n\u0000\u0017\u0000\u0013\u0000\b \u0000\u0019\u0000\u0013\u0000\b \u0000\u001b\u0000\u0013\u0000\b \u0000\u001c\u0000\u0013\u0000\b\n\u0000)\u0000L\u0000O\u0000O\u0000\u0003\u00003\u0000H\u0000U\u0000F\u0000H\u0000Q\u0000W\u0000D\u0000J\u0000H\n\u0000V\u0000H\u0000Y\u0000R\u00000\u0000\u0003\u0000U\u0000H\u0000E\u0000P\u0000X\u00001\n\u0000/\u0000D\u0000\\\u0000R\u0000X\u0000W\u0000V\n\u0000%\u0000D\u0000\\\u0000\u0003\u0000 \u0000\u0003\u0000\u0017\u0000[\u0000\u0017\u0000\u000f\u0000\u0003\u0000:\u0000D\u0000U\u0000H\u0000K\u0000R\u0000X\u0000V\u0000H\u0000\u0003\u0000 \u0000\u0003\u0000\u0018\u0000[\u0000\u0018\n\u0000\u0015\u0000\u0018\u0000\u0013\n\u0000%\u0000D\u0000\\\u0000\u0003\u0000 \u0000\u0003\u0000\u0018\u0000[\u0000\u0018\u0000\u000f\u0000\u0003\u0000:\u0000D\u0000U\u0000H\u0000K\u0000R\u0000X\u0000V\u0000H\u0000\u0003\u0000 \u0000\u0003\u0000\u0017\u0000[\u0000\u0017\n\u0000\u0015\u0000\u0013\u0000\u0013\n\u0000\u0014\u0000\u0018\u0000\u0013\n\u0000\u0014\u0000\u0013\u0000\u0013\n\u0000\u0018\u0000\u0013\n\u0000\u0013\n\u0000\u0017\u0000\u0013\u0000\b \u0000\u0019\u0000\u0013\u0000\b \u0000\u001b\u0000\u0013\u0000\b \u0000\u001c\u0000\u0013\u0000\b\n\u0000)\u0000L\u0000O\u0000O\u0000\u0003\u00003\u0000H\u0000U\u0000F\u0000H\u0000Q\u0000W\u0000D\u0000J\u0000H\n\u0000H\u0000F\u0000Q\u0000D\u0000W\u0000V\u0000L\u0000'\u0000\u0003\u0000H\u0000Y\u0000R\u00000\u0000\u0003\u0000G\u0000H\u0000G\u0000D\u0000R\u0000/\u0000\u0003\u0000O\u0000D\u0000W\u0000R\u00007\nFigure 13: Number of moves and total loaded move distance for two layout configurations with\nthe same number of slots and 10 priority classes.",
+      "size": 626,
+      "sentences": 2
+    },
+    {
+      "id": 138,
+      "content": "move distance for two layout configurations with\nthe same number of slots and 10 priority classes. Figure 14 presents the mean loaded move distance for instances with a 4x4 bay layout and 10\npriority classes. It shows that the mean loaded move distance per move increases with the fill\npercentage. The reason for this is that fewer repositioning slots are available in close range.",
+      "size": 381,
+      "sentences": 4
+    },
+    {
+      "id": 139,
+      "content": "ill\npercentage. The reason for this is that fewer repositioning slots are available in close range. Larger warehouse layouts cause smaller mean loaded move distances because the blocking unit\nloads are less likely at the edge of a warehouse. Hence, more potential repositioning slots are\nnearby. For a 40% fill percentage, this effect does not show because enough open slots are\navailable in the surrounding area of a blocking unit load.",
+      "size": 437,
+      "sentences": 5
+    },
+    {
+      "id": 140,
+      "content": "s not show because enough open slots are\navailable in the surrounding area of a blocking unit load. \u0000\u0017\u0000[\u0000\u0017\u0000\u0010\u0000\u0015\u0000[\u0000\u0015\n\u0000\u0017\u0000[\u0000\u0017\u0000\u0010\u0000\u0016\u0000[\u0000\u0016\n\u0000\u0017\u0000[\u0000\u0017\u0000\u0010\u0000\u0017\u0000[\u0000\u0017\n\u0000\u0017\u0000[\u0000\u0017\u0000\u0010\u0000\u0018\u0000[\u0000\u0018\n\u0000\u0017\u0000[\u0000\u0017\u0000\u0010\u0000\u0019\u0000[\u0000\u0019\n\u0000\u0017\u0000[\u0000\u0017\u0000\u0010\u0000\u001a\u0000[\u0000\u001a\n\u0000\u0017\u0000[\u0000\u0017\u0000\u0010\u0000\u001b\u0000[\u0000\u001b\n\u0000\u0017\u0000\u0013\u0000\b \u0000\u0019\u0000\u0013\u0000\b \u0000\u001b\u0000\u0013\u0000\b \u0000\u001c\u0000\u0013\u0000\b\n\u0000)\u0000L\u0000O\u0000O\u0000\u0003\u00003\u0000H\u0000U\u0000F\u0000H\u0000Q\u0000W\u0000D\u0000J\u0000H\u0000V\n\u0000W\u0000X\u0000R\u0000\\\u0000D\u0000/\u0000\u0003\u0000H\u0000V\u0000X\u0000R\u0000K\u0000H\u0000U\u0000D\u0000:\u0000\u0003\u0000\u0010\u0000\u0003\u0000W\u0000X\u0000R\u0000\\\u0000D\u0000/\u0000\u0003\u0000\\\u0000D\u0000%\n\u0000\u0019\n\u0000\u0014\u0000\u0011\u0000\u0013\u0000\u0013 \u0000\u0016\u0000\u0011\u0000\u0019\u0000\u001a \u0000\u0016\u0000\u0011\u0000\u0019\u0000\u0013 \u0000\u0019\u0000\u0011\u0000\u0014\u0000\u0018\n\u0000\u0014\u0000\u0011\u0000\u0013\u0000\u0013 \u0000\u0014\u0000\u0011\u0000\u001c\u0000\u0019 \u0000\u0015\u0000\u0011\u0000\u0019\u0000\u001c \u0000\u0017\u0000\u0011\u0000\u0019\u0000\u001c \u0000\u0018\n\u0000\u0014\u0000\u0011\u0000\u0015\u0000\u0018 \u0000\u0015\u0000\u0011\u0000\u0013\u0000\u0014 \u0000\u0016\u0000\u0011\u0000\u0014\u0000\u0015 \u0000\u0017\u0000\u0011\u0000\u001c\u0000\u0015\n\u0000\u0017\n\u0000\u0014\u0000\u0011\u0000\u0015\u0000\u0018 \u0000\u0014\u0000\u0011\u0000\u0019\u0000\u0014 \u0000\u0015\u0000\u0011\u0000\u001b\u0000\u0017 \u0000\u0017\u0000\u0011\u0000\u0018\u0000\u001a\n\u0000\u0016\n\u0000\u0014\u0000\u0011\u0000\u0016\u0000\u0016 \u0000\u0014\u0000\u0011\u0000\u001b\u0000\u0016 \u0000\u0015\u0000\u0011\u0000\u001a\u0000\u001a \u0000\u0017\u0000\u0011\u0000\u0019\u0000\u0016\n\u0000\u0014\u0000\u0011\u0000\u0013\u0000\u0017 \u0000\u0014\u0000\u0011\u0000\u001b\u0000\u001b \u0000\u0015\u0000\u0011\u0000\u0018\u0000\u0019 \u0000\u0017\u0000\u0011\u0000\u001a\u0000\u0015\n\u0000\u0015\n\u0000\u0014\u0000\u0011\u0000\u0017\u0000\u001c \u0000\u0014\u0000\u0011\u0000\u0018\u0000\u0013 \u0000\u0015\u0000\u0011\u0000\u0015\u0000\u001a \u0000\u0017\u0000\u0011\u0000\u001a\u0000\u001c\n\u0000\u0014\nFigure 14: Mean loaded move distance for instances with 10 priority classes.",
+      "size": 671,
+      "sentences": 2
+    },
+    {
+      "id": 141,
+      "content": "\u0013 \u0000\u0015\u0000\u0011\u0000\u0015\u0000\u001a \u0000\u0017\u0000\u0011\u0000\u001a\u0000\u001c\n\u0000\u0014\nFigure 14: Mean loaded move distance for instances with 10 priority classes. 20\n[  ]\n\n===  21 ===\n6 Conclusion\nIn this work, we extended the UPMP from a single bay to multiple bays. As the objective,\nwe considered the total loaded move distance for the minimal number of moves. To solve the\nproblem, we adapted the two-step approach from Pfrommer, Meyer, and Tierney (2022) that is\nbased on a network flow model and an A* tree search procedure.",
+      "size": 467,
+      "sentences": 4
+    },
+    {
+      "id": 142,
+      "content": "r, Meyer, and Tierney (2022) that is\nbased on a network flow model and an A* tree search procedure. However, given the potential\nfor suboptimal solutions of the tree search in terms of loaded move distance due to inter-move\ndependencies, we devised an alternative strategy proposing an exact CP approach. In this\nstudy, we meticulously evaluated and contrasted the performance of both approaches.",
+      "size": 396,
+      "sentences": 3
+    },
+    {
+      "id": 143,
+      "content": "proach. In this\nstudy, we meticulously evaluated and contrasted the performance of both approaches. The experiments show that the A* approach can achieve optimal solutions for the total loaded\nmove distance in almost all instances that the CP approach was able to solve optimally while\nproviding a tremendously faster runtime. Suboptimal solutions were particularly noticeable in\ninstances characterized by larger bay layouts and high fill levels.",
+      "size": 447,
+      "sentences": 4
+    },
+    {
+      "id": 144,
+      "content": "were particularly noticeable in\ninstances characterized by larger bay layouts and high fill levels. At these high fill levels of\n80% or 90%, the reduced availability of repositioning options within short distances heightens\nthe significance of optimizing loaded move distances. Further, we found that an increase in\nfill percentage does not necessarily increase the A* solution time, even though more moves are\nnecessarybecauseofareducedbranchingfactorbyasmallernumberofpossiblemoves.",
+      "size": 484,
+      "sentences": 3
+    },
+    {
+      "id": 145,
+      "content": "ven though more moves are\nnecessarybecauseofareducedbranchingfactorbyasmallernumberofpossiblemoves. Overall,\nthe number of reshuffling moves increases with the number of priority classes and the size of the\nlayout configuration. The bay size has a significantly larger impact on the number of reshuffling\nmoves than the warehouse size. Hence, it can be beneficial to split the same number of slots\ninto multiple bays. Future work should extend the MUPMP to multiple agents.",
+      "size": 473,
+      "sentences": 5
+    },
+    {
+      "id": 146,
+      "content": "he same number of slots\ninto multiple bays. Future work should extend the MUPMP to multiple agents. Hence, dispatching moves to\nthe available AMRs instead of a single-move sequence. The objective function for multiple\nagents could focus on the minimization of total travel time or an evenly distributed workload\nto minimize the makespan. In addition, cases in which a lower move distance can be achieved\nby additional moves should be discussed.",
+      "size": 444,
+      "sentences": 5
+    },
+    {
+      "id": 147,
+      "content": "tion, cases in which a lower move distance can be achieved\nby additional moves should be discussed. Moreover, exploring the integration of the MUPMP\ninto a simulation model akin to Pfrommer, Rinciog, Zahid, Morrissey, and Meyer (2022), which\ncomprehensivelyaddressespertinentoperationaldecisionproblemsPfrommerandMeyer(2020),\nwould provide valuable insights into the collective effect on warehouse performance. 21\n===  22 ===\nReferences\nCaserta, M., Schwarze, S., & Voß, S. (2011).",
+      "size": 481,
+      "sentences": 3
+    },
+    {
+      "id": 148,
+      "content": "ct on warehouse performance. 21\n===  22 ===\nReferences\nCaserta, M., Schwarze, S., & Voß, S. (2011). Container Rehandling at Maritime Container\nTerminals. In Handbook of Terminal Planning (pp. 247–269). Choe, R., Kim, T. S., Kim, T., & Ryu, K. R. (2015). Crane scheduling for opportunistic remar-\nshaling of containers in an automated stacking yard. Flexible Services and Manufacturing\nJournal, 27(2), 331–349. Choe, R., Park, T., Oh, M.-S., Kang, J., & Ryu, K. R. (2011).",
+      "size": 471,
+      "sentences": 9
+    },
+    {
+      "id": 149,
+      "content": "anufacturing\nJournal, 27(2), 331–349. Choe, R., Park, T., Oh, M.-S., Kang, J., & Ryu, K. R. (2011). Generating a rehandling-free\nintra-block remarshaling plan for an automated container yard. Journal of Intelligent\nManufacturing, 22(2), 201–217. Covic, F. (2017). Re-marshalling in automated container yards with terminal appointment\nsystems. Flexible Services and Manufacturing Journal, 29(3), 433–503. Jim´enez-Piqueras, C., Ruiz, R., Parren˜o-Torres, C., & Alvarez-Valdes, R. (2023).",
+      "size": 486,
+      "sentences": 8
+    },
+    {
+      "id": 150,
+      "content": "29(3), 433–503. Jim´enez-Piqueras, C., Ruiz, R., Parren˜o-Torres, C., & Alvarez-Valdes, R. (2023). A constraint\nprogramming approach for the premarshalling problem. European Journal of Operational\nResearch, 306(2), 668–678. Kang, J., Oh, M.-S., Ahn, E. Y., Ryu, K. R., & Kim, K. H. (2006). Planning for intra-\nblock remarshalling in a container terminal. In International conference on industrial,\nengineering and other applications of applied intelligent systems (pp. 1211–1220). Kemme, N. (2012).",
+      "size": 498,
+      "sentences": 9
+    },
+    {
+      "id": 151,
+      "content": "ngineering and other applications of applied intelligent systems (pp. 1211–1220). Kemme, N. (2012). Design and operation of automated container storage systems. Springer\nScience & Business Media. Kim, K. H., & Bae, J. W. (1998). Re-marshaling export containers in port container terminals. Computers & Industrial Engineering, 35(3-4), 655–658. Park, K., Park, T., & Ryu, K. R. (2009). Planning for remarshaling in an automated container\nterminal using cooperative coevolutionary algorithms.",
+      "size": 490,
+      "sentences": 10
+    },
+    {
+      "id": 152,
+      "content": "ng for remarshaling in an automated container\nterminal using cooperative coevolutionary algorithms. In Proceedings of the 2009 acm\nsymposium on applied computing (pp. 1098–1105). Parren˜o-Torres, C., Alvarez-Valdes, R., & Parren˜o, F. (2022). A beam search algorithm for\nminimizing crane times in premarshalling problems. European Journal of Operational\nResearch. Parren˜o-Torres, C., Alvarez-Valdes, R., Ruiz, R., & Tierney, K. (2020). Minimizing crane times\nin pre-marshalling problems.",
+      "size": 488,
+      "sentences": 8
+    },
+    {
+      "id": 153,
+      "content": "rez-Valdes, R., Ruiz, R., & Tierney, K. (2020). Minimizing crane times\nin pre-marshalling problems. Transportation Research Part E: Logistics and Transporta-\ntion Review, 137, 101917. Parren˜o-Torres, C., Alvarez-Valdes, R., & Ruiz, R. (2019). Integer programming models for the\npre-marshalling problem. European Journal of Operational Research, 274(1), 142–154. Pfrommer, J.,&B¨omer, T. (2024). Multibay unit-load pre-marshalling problem instances (Tech. Rep.).",
+      "size": 462,
+      "sentences": 9
+    },
+    {
+      "id": 154,
+      "content": "Pfrommer, J.,&B¨omer, T. (2024). Multibay unit-load pre-marshalling problem instances (Tech. Rep.). Retrieved from https://doi.org/10.5281/zenodo.11093870\nPfrommer, J., & Meyer, A. (2020). Autonomously organized block stacking warehouses: A re-\nviewofdecisionproblemsandmajorchallenges. LogisticsJournal: Proceedings,2020(12). Pfrommer, J., Meyer, A., & Tierney, K. (2022). Solving the unit-load pre-marshalling prob-\nlem in block stacking storage systems with multiple access directions.",
+      "size": 488,
+      "sentences": 9
+    },
+    {
+      "id": 155,
+      "content": "t-load pre-marshalling prob-\nlem in block stacking storage systems with multiple access directions. arXiv preprint\narXiv:2207.09118. Pfrommer, J., Rinciog, A., Zahid, S., Morrissey, M., & Meyer, A. (2022). Slapstack: A\nsimulationframeworkandalarge-scalebenchmarkusecaseforautonomousblockstacking\nwarehouses. In International conference on computational logistics (pp. 291–305). 22\n===  23 ===\nTanaka, S., Tierney, K., Parren˜o-Torres, C., Alvarez-Valdes, R., & Ruiz, R. (2019).",
+      "size": 477,
+      "sentences": 8
+    },
+    {
+      "id": 156,
+      "content": "22\n===  23 ===\nTanaka, S., Tierney, K., Parren˜o-Torres, C., Alvarez-Valdes, R., & Ruiz, R. (2019). A branch\nand bound approach for large pre-marshalling problems. European Journal of Operational\nResearch, 278(1), 211–225. Tierney, K., Pacino, D., & Voß, S. (2017). Solving the pre-marshalling problem to optimality\nwith A* and IDA*. Flexible Services and Manufacturing Journal, 29(2), 223–259. vanAsperen,E.,Borgman,B.,&Dekker,R. (2013).",
+      "size": 438,
+      "sentences": 8
+    },
+    {
+      "id": 157,
+      "content": "ble Services and Manufacturing Journal, 29(2), 223–259. vanAsperen,E.,Borgman,B.,&Dekker,R. (2013). Evaluatingimpactoftruckannouncements\noncontainerstackingefficiency. Flexible Services and Manufacturing Journal, 25(4), 543–\n556. 23\n===  24 ===\nA Appendix\nA.1 Complete constraint programming model\nIn this section, the complete CP model is presented.",
+      "size": 350,
+      "sentences": 6
+    },
+    {
+      "id": 158,
+      "content": "ndix\nA.1 Complete constraint programming model\nIn this section, the complete CP model is presented. Let s¯ denote the number of virtual lanes\nand t¯represent the number of positions in each virtual lane s. Accordingly, S = {1,...,s¯} is the\nset of virtual lanes and T = {1,...,t¯} is the set of positions for virtual lane s ∈ S. A slot (s,t)\ns\nis defined by virtual lane s ∈ S and position t ∈ T .",
+      "size": 397,
+      "sentences": 2
+    },
+    {
+      "id": 159,
+      "content": "itions for virtual lane s ∈ S. A slot (s,t)\ns\nis defined by virtual lane s ∈ S and position t ∈ T . Let d be the distance between virtual\ns s,s′\nlane s ∈ S and s′ ∈ S. Let k¯ be the permissible number of moves in the model. K is the set\nof stages, defined as K = {1,...,k¯}. Stage 0 signifies the initial layout. K0 = {0,1,...,k¯} is the\nset of stages, including the initial layout. Let p¯ denote the maximum priority class and let P\nbe the set of priority classes P ∈ {1,...,p¯}.",
+      "size": 480,
+      "sentences": 6
+    },
+    {
+      "id": 160,
+      "content": ". Let p¯ denote the maximum priority class and let P\nbe the set of priority classes P ∈ {1,...,p¯}. An empty slot has the priority class 0. Further, the\nvariables xk , yk , δk , zk , and wk are introduced.",
+      "size": 205,
+      "sentences": 4
+    },
+    {
+      "id": 161,
+      "content": "ty slot has the priority class 0. Further, the\nvariables xk , yk , δk , zk , and wk are introduced. s,t s,t s,t s,t s,t\n\n0 If the slot (s,t) is empty during stage k\nxk =\ns,t\np If a unit load with priority p is placed in slot (s,t) during stage k\n∀s ∈ S,∀t ∈ T ,∀k ∈ K0\ns\n\n1 If a unit load is moved to slot (s,t) during stage k\nyk =\ns,t\n0 Otherwise\n∀s ∈ S,∀t ∈ T ,∀k ∈ K\ns\n\n1 If there is a unit load in slot (s,t) is empty during stage k\nδk =\ns,t\n0 If a slot (s,t) is empty during stage k\n∀s ∈ S,∀t ∈ T ,∀k ∈ K0\ns\n\n1 If a unit load is removed from slot (s,t) during stage k\nzk =\ns,t\n0 Otherwise\n∀s ∈ S,∀t ∈ T ,∀k ∈ K\ns\n\n1 If there is a blocking unit load in slot (s,t) during stage k\nwk =\ns,t\n0 Otherwise\n∀s ∈ S,∀t ∈ T ,∀k ∈ K\ns\n24\n===  25 ===\n(cid:88)(cid:88)(cid:88) (cid:88) (cid:88)\nmin zk ·yk ·d (A.1)\ns,t s′,t′ s,s′\nk∈Ks∈Ss′∈St∈Tst′∈T s′\nSubject to:\nx0 = f ∀s ∈ S,∀t ∈ T (A.2)\ns,t s,t s\n|{xk : s ∈ S,t ∈ T ,xk = p}| = m p ∈ P0,k ∈ K (A.3)\ns,t s s,t p\n(cid:88)(cid:88)\nyk = 1 ∀k ∈ K (A.4)\ns,t\ns∈St∈Ts\nxk ≤ p¯·δk ∀s ∈ S,∀t ∈ T ,∀k ∈ K0 (A.5)\ns,t s,t s\nδk ≤ xk ∀s ∈ S,∀t ∈ T ,∀k ∈ K0 (A.6)\ns,t s,t s\nxk−1 ≤ xk +p¯(1−δk ) ∀s ∈ S,∀t ∈ T ,∀k ∈ K (A.7)\ns,t s,t s,t s\nxk ≤ xk−1+p¯(1−δk−1) ∀s ∈ S,∀t ∈ T ,∀k ∈ K (A.8)\ns,t s,t s,t s\nyk +δk−1 ≤ 1 ∀s ∈ S,∀k ∈ K (A.9)\ns,1 s,1\nyk ≤ δk+1 ∀s ∈ S,∀t ∈ T,∀k ∈ K\\{k¯} (A.10)\ns,t s,t\n(cid:88)(cid:88)\nzk = 1 ∀k ∈ K (A.11)\ns,t\ns∈St∈Ts\nδk +zk = yk +δk−1 ∀s ∈ S,∀t ∈ T ,∀k ∈ K (A.12)\ns,t s,t s,t s,t s\nyk +δk−1 +zk ≤ δk−1 ∀s ∈ S,∀t ∈ T \\{t¯},∀k ∈ K (A.13)\ns,t+1 s,t+1 s,t s,t s\nzk+1+yk ≤ δk ∀s ∈ S,∀k ∈ K\\{k¯} (A.14)\ns,t¯ s,t¯ s,t¯\nz1 ≤ δ0 ∀s ∈ S (A.15)\ns,t¯ s,t¯\n(cid:88) (cid:88)\nyk + zk+1 ≤ 1 ∀s ∈ S,∀k ∈ K\\{k¯} (A.16)\ns,t s,t\nt∈Ts t∈Ts\nxk ≤ xk +p¯·wk ∀s ∈ S,∀t ∈ T \\{t¯},∀k ∈ K (A.17)\ns,t+1 s,t s,t+1 s\nwk +δk ≤ wk +1 ∀s ∈ S,∀t ∈ T \\{t¯},∀k ∈ K (A.18)\ns,t s,t+1 s,t+1 s\nwk ≤ δk ∀s ∈ S,∀t ∈ T ,∀k ∈ K (A.19)\ns,t s,t s\nwk = 0 ∀s ∈ S,∀k ∈ K (A.20)\ns,1\nxk +1 ≤ xk +(p¯+1)·(1−wk +wk ) ∀s ∈ S,∀t ∈ T \\{t¯},∀k ∈ K (A.21)\ns,t s,t+1 s,t+1 s,t s\n(cid:88)(cid:88)\nwk +k ≤ k¯ ∀k ∈ K (A.22)\ns,t\ns∈St∈Ts\n(cid:88)(cid:88)(cid:88) (cid:88) (cid:88)\nzk ·yk ·d ≤ cUB (A.23)\ns,t s′,t′ s,s′\nk∈Ks∈Ss′∈St∈Tst′∈T s′\nTheobjectivefunction(A.1)minimizesthetotalloadedmovedistance.",
+      "size": 2206,
+      "sentences": 3
+    },
+    {
+      "id": 162,
+      "content": "s,t s′,t′ s,s′\nk∈Ks∈Ss′∈St∈Tst′∈T s′\nTheobjectivefunction(A.1)minimizesthetotalloadedmovedistance. Constraints(A.2)assign\ntheinitiallayouttothevirtuallanesofthewarehouse. Constraints(A.3)ensurethatthenumber\nof unit loads per priority group and the number of empty slots stays consistent for each stage. The number of moves per stage is restricted to one by constraints (A.4). Constraints (A.5)\nand (A.6) link the variables xk and δk . δk is 0 if xk is 0, else δk is 1.",
+      "size": 468,
+      "sentences": 6
+    },
+    {
+      "id": 163,
+      "content": "(A.4). Constraints (A.5)\nand (A.6) link the variables xk and δk . δk is 0 if xk is 0, else δk is 1. Unit loads that are\ns,t s,t s,t s,t s,t\nnot moved are fixed to their position by constraints (A.7) and (A.8). Constraints (A.9) impose\nthat a unit load can only be moved to a slot that was empty in the previous stage. Constraints\n25\n===  26 ===\n(A.10)preventtheunitloadsfrombeingmovedintwoconsecutivestagesbecausethetwomoves\ncould have been performed in one move.",
+      "size": 463,
+      "sentences": 6
+    },
+    {
+      "id": 164,
+      "content": "tloadsfrombeingmovedintwoconsecutivestagesbecausethetwomoves\ncould have been performed in one move. This rule is also called ”transitive move avoidance”\n(Tierney, Pacino, & Voß, 2017). Constraints (A.11) set the number of unit loads removed from\nthe virtual lanes to 1 for each stage. Constrains (A.12) make sure that if a unit load is in a slot. It has been there in the previous stage or was moved there in the current stage.",
+      "size": 427,
+      "sentences": 5
+    },
+    {
+      "id": 165,
+      "content": "load is in a slot. It has been there in the previous stage or was moved there in the current stage. (A.13) impose\nthat a unit load can be removed from a certain slot in a stage k only if the respective slot was\noccupiedandtheslotinfront(s,t+1)wasemptyduringthepreviousstage. Constraints(A.14)\nimpose that a unit load can only be moved to a slot (s,t) that was empty during the previous\nstage. It also requires that the slot (s,t−1) was occupied. Constraints (A.15) do the same for\nthe first stage.",
+      "size": 497,
+      "sentences": 6
+    },
+    {
+      "id": 166,
+      "content": "so requires that the slot (s,t−1) was occupied. Constraints (A.15) do the same for\nthe first stage. Constraints (A.16) impose that when a unit load is moved to a certain virtual\nlane, no unit load can be removed from that virtual lane in the next stage. Constraints (A.17)\nexpress that a unit load that is in front of another unit load with a higher priority class is a\nblocking unit load.",
+      "size": 389,
+      "sentences": 4
+    },
+    {
+      "id": 167,
+      "content": "it load that is in front of another unit load with a higher priority class is a\nblocking unit load. Constraints (A.18) require that if there is a blocking unit load on slot (s,t)\nand slot (s,t+1) is occupied, there is also a blocking unit load on slot (s,t+1). Constraints\n(A.19) impose that empty slots can not be blocking. Constraints (A.20) define that the first\nposition of a virtual lane is never blocking because access is always granted.",
+      "size": 444,
+      "sentences": 4
+    },
+    {
+      "id": 168,
+      "content": "efine that the first\nposition of a virtual lane is never blocking because access is always granted. Constraints (A.21)\ndetermine that if there is no blocking unit load in slot (s,t) and there is no higher priority unit\nload in the slot in front of it, then there is no blocking unit load in slot (s,t+1). Constraints\n(A.22) impose that the number of blocking unit loads at each stage cannot be greater than the\nnumber of blocking unit loads in the following stages.",
+      "size": 465,
+      "sentences": 3
+    },
+    {
+      "id": 169,
+      "content": "ads at each stage cannot be greater than the\nnumber of blocking unit loads in the following stages. Constraint (A.23) limits the total loaded\nmove distance to the objective value of the A* algorithm.",
+      "size": 199,
+      "sentences": 2
+    },
+    {
+      "id": 170,
+      "content": "Constraint (A.23) limits the total loaded\nmove distance to the objective value of the A* algorithm. 26\n===  27 ===\nA.2 Detailed Results for A*\nLayout Fill% Priority Number Number Mean Mean Mean(solved) Mean(all) Mean(all)\n(Bay-Warehouse) classes solved optimal moves distance totalruntime[s] totalruntime[s] evaluatednodes\n3x3-2x2 40% 5 10 10 0 0 0.19 0.19 0\n3x3-2x2 40% 10 10 10 0 0 0.19 0.19 0\n3x3-2x2 60% 5 10 10 0.1 0.3 0.18 0.18 26.50\n3x3-2x2 60% 10 10 10 0.1 0.3 0.17 0.17 26.50\n3x3-2x2 80% 5 10 10 0.1 0.4 0.18 0.18 18.70\n3x3-2x2 80% 10 10 10 0.2 0.7 0.17 0.17 36.80\n3x3-2x2 90% 5 10 9 0.6 3.3 0.19 0.19 68.90\n3x3-2x2 90% 10 10 9 0.5 2.9 0.18 0.18 57.10\n3x3-3x3 40% 5 10 10 0 0 0.44 0.44 0\n3x3-3x3 40% 10 10 10 0 0 0.44 0.44 0\n3x3-3x3 60% 5 10 10 0.3 1 0.45 0.45 412.60\n3x3-3x3 60% 10 10 10 0.3 1 0.45 0.45 412.60\n3x3-3x3 80% 5 10 10 0.3 1.2 0.44 0.44 274.60\n3x3-3x3 80% 10 10 10 0.4 1.5 0.45 0.45 370.20\n3x3-3x3 90% 5 10 10 1.3 6.3 0.49 0.49 670.30\n3x3-3x3 90% 10 10 10 1.4 6.9 0.49 0.49 724.30\n3x3-4x4 40% 5 10 10 0 0 0.88 0.88 0\n3x3-4x4 40% 10 10 10 0 0 0.87 0.87 0\n3x3-4x4 60% 5 10 10 0.2 0.6 0.92 0.92 890\n3x3-4x4 60% 10 10 10 0.3 0.9 0.94 0.94 1324.40\n3x3-4x4 80% 5 10 10 0.7 2.4 1.02 1.02 2077.40\n3x3-4x4 80% 10 10 10 1.1 3.4 1.13 1.13 3318.20\n3x3-4x4 90% 5 10 9 1.5 9.1 1.07 1.07 2446.70\n3x3-4x4 90% 10 10 10 1.8 10.1 1.1 1.10 2939.80\n3x3-5x5 40% 5 10 10 0 0 1.57 1.57 0\n3x3-5x5 40% 10 10 10 0 0 1.56 1.56 0\n3x3-5x5 60% 5 10 10 0.2 0.6 1.69 1.69 2172.60\n3x3-5x5 60% 10 10 10 0.2 0.6 1.69 1.69 2181.20\n3x3-5x5 80% 5 10 10 1 3.9 2.17 2.17 7156.80\n3x3-5x5 80% 10 10 10 1.4 5 2.47 2.47 10127.90\n3x3-5x5 90% 5 10 10 2.3 11.3 2.38 2.38 9170.30\n3x3-5x5 90% 10 10 10 2.9 14.3 2.61 2.61 11519.60\n3x3-6x6 40% 5 10 10 0 0 2.61 2.61 0\n3x3-6x6 40% 10 10 10 0 0 2.58 2.58 0\n3x3-6x6 60% 5 10 10 0.2 0.2 2.97 2.97 4526.10\n3x3-6x6 60% 10 10 10 0.3 0.3 3.2 3.20 6770.30\n3x3-6x6 80% 5 10 10 1.6 5.1 4.97 4.97 24022.30\n3x3-6x6 80% 10 10 10 2.2 6.9 6.14 6.14 33202.50\n3x3-6x6 90% 5 10 10 2.4 11.9 4.58 4.58 19762.90\n3x3-6x6 90% 10 10 8 3.4 17.8 5.59 5.59 28070.70\n3x3-7x7 40% 5 10 10 0 0 4.07 4.07 0\n3x3-7x7 40% 10 10 10 0 0 4.03 4.03 0\n3x3-7x7 60% 5 10 10 0.6 1.6 6.95 6.95 24955.50\n3x3-7x7 60% 10 10 10 0.5 1.5 6.5 6.50 20901.70\n3x3-7x7 80% 5 10 10 2 6.8 10.52 10.52 55077.20\n3x3-7x7 80% 10 10 10 2.4 7.6 12.32 12.32 66775.80\n3x3-7x7 90% 5 10 10 3.1 16.2 9.77 9.77 47855.10\n3x3-7x7 90% 10 10 7 4.8 26 13.17 13.17 74456.70\n3x3-8x8 40% 5 10 10 0 0 6.17 6.17 0\n3x3-8x8 40% 10 10 10 0 0 6.1 6.10 0\n3x3-8x8 60% 5 10 10 0.4 0.8 9.82 9.82 28259.30\n3x3-8x8 60% 10 10 10 0.6 1.5 12.19 12.19 42748.20\n3x3-8x8 80% 5 10 10 2.6 8.6 22.57 22.57 122547.40\n3x3-8x8 80% 10 10 9 3.4 10.9 28.81 28.81 161588.10\n3x3-8x8 90% 5 10 5 4.4 21.9 22.13 22.13 117164.20\n3x3-8x8 90% 10 10 4 6.3 30.6 30.36 30.36 168428.00\n3x3-9x9 40% 5 10 10 0 0 8.98 8.98 0\n3x3-9x9 40% 10 10 10 0 0 8.89 8.89 0\n3x3-9x9 60% 5 10 10 0.7 2 21.23 21.23 79208.10\n3x3-9x9 60% 10 10 10 1.3 3.8 32.8 32.80 148341.30\n3x3-9x9 80% 5 10 9 4 13.2 57.04 57.04 302799.20\n3x3-9x9 80% 10 10 6 5.1 16.4 73.03 73.03 389257.90\n3x3-9x9 90% 5 10 5 5.2 22 43.63 43.63 221346.80\n3x3-9x9 90% 10 10 4 7.8 33.4 62.57 62.57 333319.70\n3x3-10x10 40% 5 10 10 0 0 12.74 12.74 0\n3x3-10x10 40% 10 10 10 0 0 12.6 12.60 0\n3x3-10x10 60% 5 10 10 1.1 3.3 46.56 46.56 189601.20\n3x3-10x10 60% 10 10 10 1.5 4.2 61.78 61.78 261124.70\n3x3-10x10 80% 5 10 5 5.2 17.3 120.22 120.22 599225.80\n3x3-10x10 80% 10 10 3 6.3 21.3 151.67 151.67 731393.00\n3x3-10x10 90% 5 10 1 7.4 33.5 98.1 98.10 482019.00\n3x3-10x10 90% 10 10 0 10.3 49 139.47 139.47 673714.80\n3x3-11x11 40% 5 10 10 0 0 17.68 17.68 0\n3x3-11x11 40% 10 10 10 0 0 17.42 17.42 0\n3x3-11x11 60% 5 10 10 0.9 1.5 64.44 64.44 227332.80\n3x3-11x11 60% 10 10 10 1.5 3.2 96.08 96.08 381905.20\n27\n===  28 ===\nLayout Fill% Priority Number Number Mean Mean Mean(solved) Mean(all) Mean(all)\n(Bay-Warehouse) classes solved optimal moves distance totalruntime[s] totalruntime[s] evaluatednodes\n3x3-11x11 80% 5 10 3 5.8 19.6 225.66 225.66 981061.40\n3x3-11x11 80% 10 10 1 7.3 25.4 277.2 277.20 1244995.00\n3x3-11x11 90% 5 10 1 8.3 37.2 183.35 183.35 791859.00\n3x3-11x11 90% 10 10 0 11.7 53.3 250.88 250.88 1121264.80\n3x3-12x12 40% 5 10 10 0 0 23.82 23.82 0\n3x3-12x12 40% 10 10 0 0 0 23.61 23.61 0\n3x3-12x12 60% 5 10 10 1.2 3.3 123.81 123.81 427072.60\n3x3-12x12 60% 10 10 0 1.9 5.4 182.69 182.69 683436.70\n3x3-12x12 80% 5 9 3 6.11 21.33 375.64 404.01 1576710.10\n3x3-12x12 80% 10 8 0 7.38 26.12 441.62 484.71 1950353.70\n3x3-12x12 90% 5 10 1 9.2 43 319.42 319.42 1242832.90\n3x3-12x12 90% 10 10 0 13.3 62.8 447.59 447.59 1803927.20\n4x4-2x2 40% 5 10 10 0.2 0.2 0.45 0.45 140.50\n4x4-2x2 40% 10 10 10 0.2 0.2 0.44 0.44 143.60\n4x4-2x2 60% 5 10 10 0.1 0.1 0.4 0.40 74.30\n4x4-2x2 60% 10 10 10 0.3 1.1 0.4 0.40 225.40\n4x4-2x2 80% 5 10 10 1.6 4.7 0.48 0.48 765.80\n4x4-2x2 80% 10 10 10 2.3 9 0.52 0.52 1113.00\n4x4-2x2 90% 5 10 9 1.7 10.6 0.46 0.46 431.90\n4x4-2x2 90% 10 10 9 2.2 14.1 0.46 0.46 577.10\n4x4-3x3 40% 5 10 10 0.5 0.5 1.21 1.21 1824.80\n4x4-3x3 40% 10 10 10 0.5 0.5 1.2 1.20 1845.50\n4x4-3x3 60% 5 10 10 0.9 1.6 1.28 1.28 3362.40\n4x4-3x3 60% 10 10 10 1.2 2.5 1.36 1.36 4488.90\n4x4-3x3 80% 5 10 10 3 9 1.65 1.65 7370.80\n4x4-3x3 80% 10 10 10 4.3 11.8 1.98 1.98 10582.70\n4x4-3x3 90% 5 10 7 4.2 21.7 1.54 1.54 5790.30\n4x4-3x3 90% 10 10 7 5.6 25.9 1.74 1.74 7738.40\n4x4-4x4 40% 5 10 10 0.5 0.5 2.59 2.59 5733.80\n4x4-4x4 40% 10 10 10 0.6 0.7 2.73 2.73 7010\n4x4-4x4 60% 5 10 10 2.1 3.3 4.57 4.57 24637.80\n4x4-4x4 60% 10 10 10 2.5 4.5 5.12 5.12 29887.30\n4x4-4x4 80% 5 10 8 4.3 13.2 5.46 5.46 33630.40\n4x4-4x4 80% 10 10 7 5.6 17.8 6.7 6.70 44190.50\n4x4-4x4 90% 5 10 4 6.8 32.4 5.29 5.29 31007.10\n4x4-4x4 90% 10 10 2 8.5 42.3 6.18 6.18 38524.00\n4x4-5x5 40% 5 10 10 0.9 0.9 6.59 6.59 25710.90\n4x4-5x5 40% 10 10 10 1.1 1.4 7.49 7.49 31678.50\n4x4-5x5 60% 5 10 10 3.2 5.3 14.61 14.61 92090.40\n4x4-5x5 60% 10 10 8 3.7 6.3 17.11 17.11 107858.60\n4x4-5x5 80% 5 10 2 7.7 21.8 21.52 21.52 148077.00\n4x4-5x5 80% 10 10 2 9.8 27.2 28.82 28.82 190096.30\n4x4-5x5 90% 5 10 0 11.4 52.5 18.73 18.73 124148.00\n4x4-5x5 90% 10 10 0 13.5 62.1 22.56 22.56 146985.60\n4x4-6x6 40% 5 10 10 0.9 1.4 13.05 13.05 53388.10\n4x4-6x6 40% 10 10 10 1.1 1.7 15.59 15.59 65781.70\n4x4-6x6 60% 5 10 9 3.9 5.9 38.97 38.97 231822.10\n4x4-6x6 60% 10 10 8 4.7 8.3 48.73 48.73 282370.50\n4x4-6x6 80% 5 10 1 10.8 32.5 67.87 67.87 429111.60\n4x4-6x6 80% 10 10 0 14.5 40.7 95 95.00 581696.30\n4x4-6x6 90% 5 10 0 15.7 71 58.2 58.20 358401.80\n4x4-6x6 90% 10 10 0 18.9 88.6 71.56 71.56 430959.40\n4x4-7x7 40% 5 10 10 1.2 1.3 30.99 30.99 131013.60\n4x4-7x7 40% 10 10 10 1.6 1.7 39.83 39.83 176378.10\n4x4-7x7 60% 5 10 7 5.9 10.9 121.01 121.01 644435.70\n4x4-7x7 60% 10 10 5 7.5 14.2 162.66 162.66 830804.90\n4x4-7x7 80% 5 10 0 13.4 35.7 183.59 183.59 985488.20\n4x4-7x7 80% 10 10 0 18 46.4 257.77 257.77 1335510\n4x4-7x7 90% 5 10 0 20.8 91.2 163 163.00 869454.60\n4x4-7x7 90% 10 10 0 26.6 125.5 213.88 213.88 1114507.90\n4x4-8x8 40% 5 10 10 1.3 2.1 60.29 60.29 242777.50\n4x4-8x8 40% 10 10 10 1.5 2.4 72.8 72.80 283148.40\n4x4-8x8 60% 5 10 6 7.9 12.2 315.95 315.95 1471892.00\n4x4-8x8 60% 10 9 3 9.22 14.22 385.38 409.41 1830648.00\n4x4-8x8 80% 5 10 0 17 47.7 455.63 455.63 2136719.20\n4x4-8x8 80% 10 3 0 17 39 480.73 588.24 2658906.30\n4x4-8x8 90% 5 10 0 28.4 134 429.52 429.52 2013887.50\n4x4-8x8 90% 10 9 0 35.44 170.11 551.01 558.03 2541578.90\n5x5-2x2 40% 5 10 10 0.2 0.2 1.19 1.19 279.00\n5x5-2x2 40% 10 10 10 0.1 0.1 1.06 1.06 143.90\n5x5-2x2 60% 5 10 10 1.4 2 1.13 1.13 2062.30\n5x5-2x2 60% 10 10 9 1.9 3 1.18 1.18 2894.70\n5x5-2x2 80% 5 10 8 4.8 16.9 1.46 1.46 4931.40\n5x5-2x2 80% 10 10 7 5.6 20.2 1.52 1.52 5791.50\n5x5-2x2 90% 5 10 3 6.3 40.4 1.87 1.87 3633.20\n5x5-2x2 90% 10 10 3 6.5 42.7 1.71 1.71 3811.30\n5x5-3x3 40% 5 10 10 0.8 1.4 3.25 3.25 5887.10\n5x5-3x3 40% 10 10 10 0.9 1.5 3.19 3.19 6911.80\n5x5-3x3 60% 5 10 9 4 5.6 5.44 5.44 30512.20\n28\n===  29 ===\nLayout Fill% Priority Number Number Mean Mean Mean(solved) Mean(all) Mean(all)\n(Bay-Warehouse) classes solved optimal moves distance totalruntime[s] totalruntime[s] evaluatednodes\n5x5-3x3 60% 10 10 10 5.1 8 6.38 6.38 39562.40\n5x5-3x3 80% 5 10 2 9.3 28.3 7.64 7.64 48149.60\n5x5-3x3 80% 10 10 0 11 35.5 8.73 8.73 57883.80\n5x5-3x3 90% 5 10 0 12.9 78.6 7.16 7.16 36873.70\n5x5-3x3 90% 10 10 0 15 103.6 11.08 11.08 43014.20\n5x5-4x4 40% 5 10 10 1.6 2 9.56 9.56 38372.20\n5x5-4x4 40% 10 10 10 2 2.4 11.11 11.11 49292.20\n5x5-4x4 60% 5 10 7 6.4 10.4 23.81 23.81 154610\n5x5-4x4 60% 10 10 1 8.3 14.9 31.43 31.43 204025.80\n5x5-4x4 80% 5 10 0 16.4 49.6 39.64 39.64 269769.20\n5x5-4x4 80% 10 10 0 19.3 63.1 48.41 48.41 318932.60\n5x5-4x4 90% 5 10 0 22.3 129.3 32.29 32.29 203788.00\n5x5-4x4 90% 10 9 0 25.67 202.11 46.82 105.66 223789.70\n5x5-5x5 40% 5 10 10 2.6 2.9 31.58 31.58 152807.90\n5x5-5x5 40% 10 10 10 3.2 3.7 39.27 39.27 193354.70\n5x5-5x5 60% 5 10 1 10 14.8 101.65 101.65 587673.70\n5x5-5x5 60% 10 10 0 12.1 20.6 126.81 126.81 723945.20\n5x5-5x5 80% 5 10 0 25.9 74.9 179.58 179.58 1034880.90\n5x5-5x5 80% 10 10 0 30.4 92.2 216.08 216.08 1229095.20\n5x5-5x5 90% 5 10 0 34 222.2 140.45 140.45 756237.40\n5x5-5x5 90% 10 10 0 40 320.2 214.51 214.51 892873.00\n5x5-6x6 40% 5 10 9 4.5 5.9 119.25 119.25 554191.00\n5x5-6x6 40% 10 10 9 5 6.1 139.05 139.05 629140.20\n5x5-6x6 60% 5 10 0 14.4 21.8 358.22 358.22 1764740.10\n5x5-6x6 60% 10 10 0 17.5 28.4 455.78 455.78 2165744.20\n5x5-6x6 80% 5 5 0 33.4 95.8 554.65 591.85 2936941.50\n5x5-6x6 80% 10 0 0 - - - 629.84 2978653.50\n5x5-6x6 90% 5 10 0 49.9 294.6 474.75 474.75 2321518.40\n5x5-6x6 90% 10 4 0 55 398.75 558.31 599.97 2474100.70\n6x6-2x2 40% 5 10 10 1.3 1.6 3.73 3.73 3524.90\n6x6-2x2 40% 10 10 10 1.8 1.9 3.62 3.62 4814.50\n6x6-2x2 60% 5 10 10 3.8 6.1 3.98 3.98 10097.90\n6x6-2x2 60% 10 10 10 4.1 7.2 3.77 3.77 11035.50\n6x6-2x2 80% 5 10 3 9 30.8 5.21 5.21 16101.90\n6x6-2x2 80% 10 10 0 10 38.4 4.72 4.72 18053.00\n6x6-2x2 90% 5 9 0 15.22 109.22 32.38 89.70 53779.20\n6x6-2x2 90% 10 10 0 17.8 134.9 28.51 28.51 17581.10\n6x6-3x3 40% 5 10 10 2.5 3 11.58 11.58 34221.90\n6x6-3x3 40% 10 10 10 3.4 3.6 12.56 12.56 46321.70\n6x6-3x3 60% 5 10 1 9.2 14.9 22.48 22.48 125896.90\n6x6-3x3 60% 10 10 1 10.7 17.9 25.15 25.15 147818.40\n6x6-3x3 80% 5 10 0 21.4 76.7 32.22 32.22 196502.70\n6x6-3x3 80% 10 10 0 23.6 90.6 36.14 36.14 217582.90\n6x6-3x3 90% 5 7 0 29.86 243.14 128.16 275.12 143359.60\n6x6-3x3 90% 10 7 0 34.71 309.57 240.95 354.19 161045.90\n6x6-4x4 40% 5 10 8 5.2 6.3 49.28 49.28 225499.70\n6x6-4x4 40% 10 10 7 6.6 8.3 60.31 60.31 289254.70\n6x6-4x4 60% 5 10 0 16.9 28.6 129.11 129.11 723113.90\n6x6-4x4 60% 10 10 0 20.1 34.7 157.83 157.83 872274.70\n6x6-4x4 80% 5 10 0 37.3 127.6 190.62 190.62 1068095.50\n6x6-4x4 80% 10 10 0 42.3 160.3 221.23 221.23 1225004.20\n6x6-4x4 90% 5 6 0 51.33 420 430.3 540.33 521842.80\n6x6-4x4 90% 10 1 0 57 561 604.41 662.54 237768.50\n6x6-5x5 40% 5 10 4 7.7 9.1 183.49 183.49 805432.80\n6x6-5x5 40% 10 10 1 9.9 12 243.01 243.01 1055137.80\n6x6-5x5 60% 5 5 0 24.4 37.4 538.7 589.32 2816754.70\n6x6-5x5 60% 10 2 0 27 48 620.84 636.79 2915731.00\n6x6-5x5 80% 5 0 0 - - - 638.69 3055372.20\n6x6-5x5 80% 10 0 0 - - - 636.58 2896008.00\n6x6-5x5 90% 5 0 0 - - - 776.20 372995.60\n6x6-5x5 90% 10 0 0 - - - 916.25 109171.70\n6x6-6x6 40% 5 3 0 7.67 8.67 450.96 602.21 2219468.90\n6x6-6x6 40% 10 0 0 - - - 674.83 2406356.67\n6x6-6x6 60% 5 0 0 - - - 672.85 2457076.10\n6x6-6x6 60% 10 0 0 - - - 655.50 2423895.50\n6x6-6x6 80% 5 0 0 - - - 668.63 2457173.50\n6x6-6x6 80% 10 0 0 - - - 656.12 2323745.33\n6x6-6x6 90% 5 0 0 - - - 1048.79 690075.70\n6x6-6x6 90% 10 0 0 - - - 1273.73 422809.60\n29\n===  30 ===\nA.3 Detailed Results for CP\nLayout Fill% Priority Number Number Mean Mean Modelbuildtime[s] Modelruntime[s]\n(Bay-Warehouse) Classes solved optimal moves distance solved all solved all\n3x3-2x2 40% 5 10 10 0 0 - - - -\n3x3-2x2 40% 10 10 10 0 0 - - - -\n3x3-2x2 60% 5 10 10 0.1 0.3 0.39 0.39 0.05 0.05\n3x3-2x2 60% 10 10 10 0.1 0.3 0.45 0.45 0.05 0.05\n3x3-2x2 80% 5 10 10 0.1 0.4 0.4 0.4 0.05 0.05\n3x3-2x2 80% 10 10 10 0.2 0.7 0.46 0.46 0.05 0.05\n3x3-2x2 90% 5 10 10 0.6 2.9 0.48 0.48 0.07 0.07\n3x3-2x2 90% 10 10 10 0.5 2.5 0.6 0.6 0.09 0.09\n3x3-3x3 40% 5 10 10 0 0 - - - -\n3x3-3x3 40% 10 10 10 0 0 - - - -\n3x3-3x3 60% 5 10 10 0.3 1 1.75 1.75 0.2 0.2\n3x3-3x3 60% 10 10 10 0.3 1 1.93 1.93 0.21 0.21\n3x3-3x3 80% 5 10 10 0.3 1.2 2.62 2.62 0.38 0.38\n3x3-3x3 80% 10 10 10 0.4 1.5 2.42 2.42 0.34 0.34\n3x3-3x3 90% 5 10 10 1.3 6.3 3.28 3.28 1.32 1.32\n3x3-3x3 90% 10 10 10 1.4 6.9 3.37 3.37 1.33 1.33\n3x3-4x4 40% 5 10 10 0 0 - - - -\n3x3-4x4 40% 10 10 10 0 0 - - - -\n3x3-4x4 60% 5 10 10 0.2 0.6 5.31 5.31 0.59 0.59\n3x3-4x4 60% 10 10 10 0.3 0.9 5.76 5.76 0.65 0.65\n3x3-4x4 80% 5 10 10 0.7 2.4 10.65 10.65 1.07 1.07\n3x3-4x4 80% 10 10 10 1.1 3.4 10.06 10.06 2.36 2.36\n3x3-4x4 90% 5 10 10 1.5 8.7 11.48 11.48 7.81 7.81\n3x3-4x4 90% 10 10 10 1.8 10.1 10.51 10.51 6 6\n3x3-5x5 40% 5 10 10 0 0 - - - -\n3x3-5x5 40% 10 10 10 0 0 - - - -\n3x3-5x5 60% 5 10 10 0.2 0.6 13.29 13.29 1.63 1.63\n3x3-5x5 60% 10 10 10 0.2 0.6 14.77 14.77 1.67 1.67\n3x3-5x5 80% 5 10 10 1 3.9 18.21 18.21 2.42 2.42\n3x3-5x5 80% 10 10 10 1.4 5 23.16 23.16 6.83 6.83\n3x3-5x5 90% 5 10 10 2.3 11.3 38.44 38.44 45.09 45.09\n3x3-5x5 90% 10 10 10 2.9 14.3 46.28 46.28 62.92 62.92\n3x3-6x6 40% 5 10 10 0 0 - - - -\n3x3-6x6 40% 10 10 10 0 0 - - - -\n3x3-6x6 60% 5 10 10 0.2 0.2 26.41 26.41 3.75 3.75\n3x3-6x6 60% 10 10 10 0.3 0.3 29.01 29.01 3.5 3.5\n3x3-6x6 80% 5 10 10 1.6 5.1 57.51 57.51 11.56 11.56\n3x3-6x6 80% 10 10 10 2.2 6.9 78.06 78.06 201.29 201.29\n3x3-6x6 90% 5 10 10 2.4 11.9 92.23 92.23 116.16 116.16\n3x3-6x6 90% 10 10 9 3.4 17.6 101.76 101.76 419.37 419.37\n3x3-7x7 40% 5 10 10 0 0 - - - -\n3x3-7x7 40% 10 10 10 0 0 - - - -\n3x3-7x7 60% 5 10 10 0.6 1.6 74.04 74.04 11.73 11.73\n3x3-7x7 60% 10 10 10 0.5 1.5 85.65 85.65 12.46 12.46\n3x3-7x7 80% 5 10 10 2 6.8 129 129 36.77 36.77\n3x3-7x7 80% 10 10 10 2.4 7.6 169.58 169.58 52.28 52.28\n3x3-7x7 90% 5 10 10 3.1 16.2 233.86 233.86 436.21 436.21\n3x3-7x7 90% 10 7 7 3.86 21 212.36 263.01 1027.18 1802.76\n3x3-8x8 40% 5 10 10 0 0 - - - -\n3x3-8x8 40% 10 10 10 0 0 - - - -\n3x3-8x8 60% 5 10 10 0.4 0.8 175.42 175.42 27.84 27.84\n3x3-8x8 60% 10 10 10 0.6 1.5 183.57 183.57 34.53 34.53\n3x3-8x8 80% 5 10 10 2.6 8.6 247.44 247.44 75.62 75.62\n3x3-8x8 80% 10 10 9 3.4 10.9 330.63 330.63 869.04 869.04\n3x3-8x8 90% 5 7 5 3.57 19.14 342.61 404.96 1097.71 1852.4\n3x3-8x8 90% 10 6 4 5 24 472.05 1374.17 1564.24 2378.25\n3x3-9x9 40% 5 10 10 0 0 - - - -\n3x3-9x9 40% 10 10 10 0 0 - - - -\n3x3-9x9 60% 5 10 10 0.7 2 241.11 241.11 44.03 44.03\n3x3-9x9 60% 10 10 10 1.3 3.8 311.2 311.2 70.72 70.72\n3x3-9x9 80% 5 9 9 3.67 11.11 522.64 1000.59 423.01 736.28\n3x3-9x9 80% 10 7 6 3.86 10.71 570.28 1462.72 846.28 1676.38\n3x3-9x9 90% 5 6 5 4 15.67 561.16 1579.6 863.1 1955.96\n3x3-9x9 90% 10 4 4 4.5 19.25 734.26 3050.75 716.62 2433.85\n3x3-10x10 40% 5 10 10 0 0 - - - -\n3x3-10x10 40% 10 10 10 0 0 - - - -\n3x3-10x10 60% 5 10 10 1.1 3.3 255.22 255.22 38.02 38.02\n3x3-10x10 60% 10 10 10 1.5 4.2 374.04 374.04 68.28 68.28\n3x3-10x10 80% 5 7 5 4.43 15 942.06 1649.37 1244.67 1946.85\n3x3-10x10 80% 10 6 3 5 18.5 1097.4 3201.49 2221.12 2755.72\n3x3-10x10 90% 5 2 1 5 14.5 1058.54 4626.94 1934.16 3233.6\n3x3-10x10 90% 10 1 0 6 22 1464.67 5021.39 3616.94 3663.17\n3x3-11x11 40% 5 10 10 0 0 - - - -\n3x3-11x11 40% 10 10 10 0 0 - - - -\n3x3-11x11 60% 5 10 10 0.9 1.5 389.95 389.95 54.76 54.76\n3x3-11x11 60% 10 10 10 1.5 3.2 565.83 565.83 121.78 121.78\n30\n===  31 ===\nLayout Fill% Priority Number Number Mean Mean Modelbuildtime[s] Modelruntime[s]\n(Bay-Warehouse) Classes solved optimal moves distance solved all solved all\n3x3-11x11 80% 5 5 3 4.6 13.6 1589.32 4067.93 1743.9 2669.01\n3x3-11x11 80% 10 4 1 5.25 17 1734.45 5001.65 2837.93 3316.58\n3x3-11x11 90% 5 1 1 4 11 1993.87 6248.04 516.67 3322.09\n3x3-11x11 90% 10 0 0 - - - 7595.76 - 3495.12\n3x3-12x12 40% 5 10 10 0 0 - - - -\n3x3-12x12 40% 10 - - - - - - - -\n3x3-12x12 60% 5 10 10 1.2 3.3 572.23 572.23 85.14 85.14\n3x3-12x12 60% 10 - - - - - - - -\n3x3-12x12 80% 5 4 3 4.25 15.25 2094.34 6332.23 1378.22 2549.2\n3x3-12x12 80% 10 - - - - - - - -\n3x3-12x12 90% 5 1 1 4 15 1891.16 5854.54 824.39 2232.68\n3x3-12x12 90% 10 - - - - - - - -\n4x4-2x2 40% 5 10 10 0.2 0.2 1.12 1.12 0.12 0.12\n4x4-2x2 40% 10 10 10 0.2 0.2 1.17 1.17 0.13 0.13\n4x4-2x2 60% 5 10 10 0.1 0.1 1.15 1.15 0.12 0.12\n4x4-2x2 60% 10 10 10 0.3 1.1 1.22 1.22 0.13 0.13\n4x4-2x2 80% 5 10 10 1.6 4.7 2.04 2.04 1.79 1.79\n4x4-2x2 80% 10 10 10 2.3 9 2.61 2.61 4.11 4.11\n4x4-2x2 90% 5 10 10 1.7 10 2.46 2.46 3.91 3.91\n4x4-2x2 90% 10 10 10 2.2 13.5 2.79 2.79 3.45 3.45\n4x4-3x3 40% 5 10 10 0.5 0.5 7.35 7.35 0.8 0.8\n4x4-3x3 40% 10 10 10 0.5 0.5 6.71 6.71 0.83 0.83\n4x4-3x3 60% 5 10 10 0.9 1.6 7.36 7.36 0.88 0.88\n4x4-3x3 60% 10 10 10 1.2 2.5 9.18 9.18 3.12 3.12\n4x4-3x3 80% 5 10 10 3 9 18.82 18.82 19.04 19.04\n4x4-3x3 80% 10 10 10 4.3 11.8 23.87 23.87 38.84 38.84\n4x4-3x3 90% 5 10 10 4.2 21.2 22.68 22.68 278.89 278.89\n4x4-3x3 90% 10 10 9 5.6 25.6 32.34 32.34 1135.08 1135.08\n4x4-4x4 40% 5 10 10 0.5 0.5 28.09 28.09 6.21 6.21\n4x4-4x4 40% 10 10 10 0.6 0.7 27.41 27.41 5.42 5.42\n4x4-4x4 60% 5 10 10 2.1 3.3 45.47 45.47 12.32 12.32\n4x4-4x4 60% 10 10 10 2.5 4.5 49.97 49.97 19.61 19.61\n4x4-4x4 80% 5 10 8 4.3 13.2 84.02 84.02 854.3 854.3\n4x4-4x4 80% 10 10 7 5.6 17.7 100.25 100.25 1269.42 1269.42\n4x4-4x4 90% 5 8 4 6.25 27.75 108.64 118.32 2073.2 2379.79\n4x4-4x4 90% 10 5 3 7 29.6 130.32 154.46 2301.81 2954.73\n4x4-5x5 40% 5 10 10 0.9 0.9 69.7 69.7 10.89 10.89\n4x4-5x5 40% 10 10 10 1.1 1.4 77.77 77.77 13.37 13.37\n4x4-5x5 60% 5 10 10 3.2 5.3 149.12 149.12 63.44 63.44\n4x4-5x5 60% 10 10 9 3.7 6.2 161.21 161.21 417.62 417.62\n4x4-5x5 80% 5 4 2 5.5 12.25 273.39 350.14 1823.63 2899.28\n4x4-5x5 80% 10 3 2 6 15.33 258.74 420.07 1336.06 2939.9\n4x4-5x5 90% 5 1 0 8 27 337.39 1145.73 3611.32 3427.68\n4x4-5x5 90% 10 0 0 - - - 2155.33 - 3359.57\n4x4-6x6 40% 5 10 10 0.9 1.4 115.81 115.81 20.93 20.93\n4x4-6x6 40% 10 10 10 1.1 1.7 156.06 156.06 22.46 22.46\n4x4-6x6 60% 5 10 9 3.9 5.9 369.12 369.12 597.78 597.78\n4x4-6x6 60% 10 9 8 4.22 7.33 376.79 420.6 634.33 931.58\n4x4-6x6 80% 5 1 1 5 5 533 3438.81 144.97 3234.02\n4x4-6x6 80% 10 0 0 - - - 4463.78 - 3617.62\n4x4-6x6 90% 5 0 0 - - - 4758.33 - 3596.25\n4x4-6x6 90% 10 0 0 - - - 4608.67 - 3633.29\n4x4-7x7 40% 5 10 10 1.2 1.3 280.76 280.76 46.36 46.36\n4x4-7x7 40% 10 10 10 1.6 1.7 317.15 317.15 59.3 59.3\n4x4-7x7 60% 5 7 7 4.43 7.29 809.11 1528.97 676.15 1544.67\n4x4-7x7 60% 10 6 5 6 11 1032.33 2212.51 1498.65 2326.8\n4x4-7x7 80% 5 1 0 8 10 1455.04 5085.65 3612.17 3667.92\n4x4-7x7 80% 10 0 0 - - - - - -\n4x4-7x7 90% 5 0 0 - - - 4356.87 - 3782.87\n4x4-7x7 90% 10 0 0 - - - - - -\n4x4-8x8 40% 5 10 10 1.3 2.1 517.87 517.87 100.96 100.96\n4x4-8x8 40% 10 10 10 1.5 2.4 588.7 588.7 124.77 124.77\n4x4-8x8 60% 5 6 6 6 7.83 1622.96 4291.83 1693.18 2418.77\n4x4-8x8 60% 10 5 3 7.4 9.8 2201.89 4501.86 2431.16 2953.2\n4x4-8x8 80% 5 0 0 - - - 5056.85 - 3648.01\n4x4-8x8 80% 10 0 0 - - - 8545.23 - 3819.07\n4x4-8x8 90% 5 0 0 - - - 36987.4 - -\n4x4-8x8 90% 10 0 0 - - - - - -\n5x5-2x2 40% 5 10 10 0.2 0.2 2.9 2.9 0.27 0.27\n5x5-2x2 40% 10 10 10 0.1 0.1 2.7 2.7 0.34 0.34\n5x5-2x2 60% 5 10 10 1.4 2 4.77 4.77 0.76 0.76\n5x5-2x2 60% 10 10 10 1.9 2.9 5.07 5.07 1.93 1.93\n5x5-2x2 80% 5 10 10 4.8 16.4 13.23 13.23 436.51 436.51\n5x5-2x2 80% 10 10 9 5.6 18.6 15.03 15.03 438.64 438.64\n5x5-2x2 90% 5 10 10 6.3 35.7 24.25 24.25 428.03 428.03\n5x5-2x2 90% 10 10 8 6.5 35.6 18.8 18.8 921.79 921.79\n5x5-3x3 40% 5 10 10 0.8 1.4 20.82 20.82 2.92 2.92\n5x5-3x3 40% 10 10 10 0.9 1.5 22.97 22.97 3.79 3.79\n5x5-3x3 60% 5 10 10 4 5.4 52.16 52.16 128.76 128.76\n31\n===  32 ===\nLayout Fill% Priority Number Number Mean Mean Modelbuildtime[s] Modelruntime[s]\n(Bay-Warehouse) Classes solved optimal moves distance solved all solved all\n5x5-3x3 60% 10 10 10 5.1 8 70.62 70.62 306.87 306.87\n5x5-3x3 80% 5 5 3 7 20.2 95.78 126.65 1893.9 2748.42\n5x5-3x3 80% 10 4 0 8.75 27.5 169.3 178.79 3605.36 3607.13\n5x5-3x3 90% 5 1 0 10 62 127.47 194.85 3602.96 3608.21\n5x5-3x3 90% 10 0 0 - - - 202.12 - 3608.51\n5x5-4x4 40% 5 10 10 1.6 2 81.85 81.85 16.16 16.16\n5x5-4x4 40% 10 10 10 2 2.4 99.35 99.35 22.92 22.92\n5x5-4x4 60% 5 10 7 6.4 10.4 257.08 257.08 1247.23 1247.23\n5x5-4x4 60% 10 8 1 8.25 13.88 365.33 368.24 3170.97 3258.17\n5x5-4x4 80% 5 0 0 - - - 2209.49 - 2936.74\n5x5-4x4 80% 10 0 0 - - - 3658.71 - 3108.33\n5x5-4x4 90% 5 0 0 - - - 4058.58 - 3408.84\n5x5-4x4 90% 10 0 0 - - - - - -\n5x5-5x5 40% 5 10 10 2.6 2.9 284.35 284.35 58.25 58.25\n5x5-5x5 40% 10 10 10 3.2 3.7 320.39 320.39 77.78 77.78\n5x5-5x5 60% 5 4 1 8.75 12.5 907.63 1431.99 3428.61 3539.99\n5x5-5x5 60% 10 0 0 - - - 3795.2 - 3552.09\n5x5-5x5 80% 5 0 0 - - - 5447.5 - 3730.5\n5x5-5x5 80% 10 0 0 - - - 6135.13 - 3678.31\n5x5-5x5 90% 5 0 0 - - - 5071.32 - 3969.73\n5x5-5x5 90% 10 0 0 - - - - - -\n5x5-6x6 40% 5 10 9 4.5 5.9 968.01 968.01 920.15 920.15\n5x5-6x6 40% 10 10 9 5 6.1 1028.72 1028.72 866.77 866.77\n5x5-6x6 60% 5 0 0 - - - 8179.91 - 3591.7\n5x5-6x6 60% 10 0 0 - - - 7964.47 - 3627.83\n5x5-6x6 80% 5 0 0 - - - - - -\n5x5-6x6 80% 10 0 0 - - - - - -\n5x5-6x6 90% 5 0 0 - - - - - -\n5x5-6x6 90% 10 0 0 - - - - - -\n6x6-2x2 40% 5 10 10 1.3 1.6 11.78 11.78 3.23 3.23\n6x6-2x2 40% 10 10 10 1.8 1.9 10.79 10.79 3.56 3.56\n6x6-2x2 60% 5 10 10 3.8 6.1 20.57 20.57 24.4 24.4\n6x6-2x2 60% 10 10 10 4.1 7.2 22.13 22.13 41.51 41.51\n6x6-2x2 80% 5 6 4 7 21.67 37.45 56.52 1905.4 2582.87\n6x6-2x2 80% 10 6 2 8.33 29 67.07 67.98 2933.08 3201.05\n6x6-2x2 90% 5 0 0 - - - 89.45 - 3600.53\n6x6-2x2 90% 10 1 0 14 148 77.42 99.21 3603.21 3602.85\n6x6-3x3 40% 5 10 10 2.5 3 70.33 70.33 17.13 17.13\n6x6-3x3 40% 10 10 10 3.4 3.6 98.12 98.12 38.97 38.97\n6x6-3x3 60% 5 7 1 8.29 13 229.2 251.08 3111.47 3258.98\n6x6-3x3 60% 10 6 1 9 12.67 251.07 314.45 3044.07 3270.57\n6x6-3x3 80% 5 0 0 - - - 1036.94 - 3354.02\n6x6-3x3 80% 10 0 0 - - - 2850.4 - 2692.97\n6x6-3x3 90% 5 0 0 - - - 3542.83 - 3231.76\n6x6-3x3 90% 10 0 0 - - - - - -\n6x6-4x4 40% 5 8 8 4 4.75 366.35 470.71 120.5 815.27\n6x6-4x4 40% 10 8 7 5.25 6 468.81 581.25 794.58 1356.79\n6x6-4x4 60% 5 0 0 - - - 5359.21 - 3563.36\n6x6-4x4 60% 10 0 0 - - - 5628.63 - 3587.41\n6x6-4x4 80% 5 0 0 - - - 5786.41 - 3615.39\n6x6-4x4 80% 10 0 0 - - - 6510.6 - 3705.79\n6x6-4x4 90% 5 0 0 - - - - - -\n6x6-4x4 90% 10 0 0 - - - - - -\n6x6-5x5 40% 5 6 4 6.67 8 1450.83 2545.86 1807.87 2504.45\n6x6-5x5 40% 10 5 1 7.8 9 1609.39 2549.4 3160.58 3346.92\n6x6-5x5 60% 5 0 0 - - - 17886.9 - 1868.99\n6x6-5x5 60% 10 0 0 - - - 30407 - -\n6x6-5x5 80% 5 0 0 - - - - - -\n6x6-5x5 80% 10 0 0 - - - - - -\n6x6-5x5 90% 5 0 0 - - - - - -\n6x6-5x5 90% 10 0 0 - - - - - -\n6x6-6x6 40% 5 0 0 - - - - - -\n6x6-6x6 40% 10 0 0 - - - - - -\n6x6-6x6 60% 5 0 0 - - - - - -\n6x6-6x6 60% 10 0 0 - - - - - -\n6x6-6x6 80% 5 0 0 - - - - - -\n6x6-6x6 80% 10 0 0 - - - - - -\n6x6-6x6 90% 5 0 0 - - - - - -\n6x6-6x6 90% 10 0 0 - - - - - -\n32",
+      "size": 22466,
+      "sentences": 2
+    }
+  ]
+}

@@ -1,0 +1,1569 @@
+{
+  "source": "ArXiv",
+  "filename": "106_AI_ML_NeST-BO__Fast_Local_Bayesian_Optimizatio.pdf",
+  "domain": "AI",
+  "total_chars": 83208,
+  "total_chunks": 260,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\nNeST-BO: Fast Local Bayesian Optimization via Newton-Step\nTargeting of Gradient and Hessian Information\nWei-Ting Tang Akshay Kudva Joel A. Paulson\nUniv. of Wisconsin–Madison The Ohio State University Univ.",
+      "size": 216,
+      "sentences": 2
+    },
+    {
+      "id": 2,
+      "content": "i-Ting Tang Akshay Kudva Joel A. Paulson\nUniv. of Wisconsin–Madison The Ohio State University Univ. of Wisconsin–Madison\nAbstract often deteriorates, with recent studies attributing this\ndeclinetodegeneraciessuchasvanishingoruninforma-\ntive gradients in the Gaussian process (GP) surrogate\nBayesian optimization (BO) is effective for\nthatmakeacquisitionoptimizationbrittlewhenlength\nexpensive black-box problems but remains\nscales are poorly chosen (Papenmeier et al., 2025).",
+      "size": 475,
+      "sentences": 3
+    },
+    {
+      "id": 3,
+      "content": "length\nexpensive black-box problems but remains\nscales are poorly chosen (Papenmeier et al., 2025). challenging in high dimensions. We propose\nNeST-BO, a local BO method that targets This work develops a curvature-aware local BO ap-\nthe Newton step by jointly learning gradi- proachandapracticalwaytomakeitscaletoveryhigh\nent and Hessian information with Gaussian dimensions.",
+      "size": 375,
+      "sentences": 3
+    },
+    {
+      "id": 4,
+      "content": "proachandapracticalwaytomakeitscaletoveryhigh\nent and Hessian information with Gaussian dimensions. WeintroduceNeST-BO(Newton-Step-\nprocess surrogates, and selecting evaluations Targeted BO), which uses the GP surrogate model\nvia a one-step lookahead bound on Newton- tojointly learngradientandHessianinformation, and\nstep error. We show that this bound (and choosesnewevaluationstoshrinkaone-steplookahead\nhence the step error) contracts with batch boundontheNewton-steperror.",
+      "size": 477,
+      "sentences": 3
+    },
+    {
+      "id": 5,
+      "content": "nstoshrinkaone-steplookahead\nhence the step error) contracts with batch boundontheNewton-steperror. Theresultingupdate\nsize, so NeST-BO directly inherits inexact- moves along the predicted Newton step with standard\nNewton convergence: global progress under damping techniques. Conceptually, NeST-BO targets\nmild stability assumptions and quadratic lo- the step rather than the derivatives themselves – an\ncal rates once steps are sufficiently accurate.",
+      "size": 452,
+      "sentences": 3
+    },
+    {
+      "id": 6,
+      "content": "he step rather than the derivatives themselves – an\ncal rates once steps are sufficiently accurate. approach that we find can learn the Newton direc-\nTo scale, we optimize the acquisition in low- tion with far fewer samples than, e.g., finite difference\ndimensional subspaces (e.g., random embed- methodswouldrequire.",
+      "size": 317,
+      "sentences": 2
+    },
+    {
+      "id": 7,
+      "content": "mples than, e.g., finite difference\ndimensional subspaces (e.g., random embed- methodswouldrequire. BecauseNewtonmethodscan\ndings or learned sparse subspaces), reducing converge much faster than first-order approaches in\nthedominantcostoflearningcurvaturefrom ill-conditionedlandscapes,weconjecturetargetingthe\nO(d2) to O(m2) with m ≪ d while preserv- step can substantially accelerate local BO. ing step targeting.",
+      "size": 415,
+      "sentences": 3
+    },
+    {
+      "id": 8,
+      "content": "to O(m2) with m ≪ d while preserv- step can substantially accelerate local BO. ing step targeting. Across high-dimensional\nAn important obstacle is the cost of Hessian-based\nsynthetic and real-world problems, includ-\nterms, which grows as O(d2) with input dimension d.\ning cases with thousands of variables and\nToaddressthis,weinstantiateNeST-BOinsidelower-\nunknown active subspaces, NeST-BO con-\ndimensionalsubspaces,usinganestedsubspaceexpan-\nsistently yields faster convergence and lower\nsion strategy similar to BAxUS (Papenmeier et al.,\nregret than state-of-the-art local and high-\n2022).",
+      "size": 593,
+      "sentences": 3
+    },
+    {
+      "id": 9,
+      "content": "n strategy similar to BAxUS (Papenmeier et al.,\nregret than state-of-the-art local and high-\n2022). This collapses the dominant cost to O(m2)\ndimensional BO baselines. for subspace dimension m ≪ d while preserving the\nbenefits of Newton-step targeting.",
+      "size": 252,
+      "sentences": 3
+    },
+    {
+      "id": 10,
+      "content": "BO baselines. for subspace dimension m ≪ d while preserving the\nbenefits of Newton-step targeting. We find that the\n1 INTRODUCTION local Newton step is also naturally robust to the non-\nstationarity in the mapping from the subspace to the\nBayesian optimization (BO) is a popular framework objectivefunctionthatcanbeintroducedbysubspace\nfor optimizing expensive black-box functions because embeddings, which helps explain why our approach\nit often needs far fewer evaluations than alternative continues to perform well for some problems even as\nderivative-free methods.",
+      "size": 568,
+      "sentences": 3
+    },
+    {
+      "id": 11,
+      "content": "tions than alternative continues to perform well for some problems even as\nderivative-free methods. BO has been applied suc- the ambient dimension reaches thousands or more.",
+      "size": 173,
+      "sentences": 2
+    },
+    {
+      "id": 12,
+      "content": "derivative-free methods. BO has been applied suc- the ambient dimension reaches thousands or more. cessfully in automatedmachinelearning (Snoek et al.,\nFinally, we find that our acquisition includes a scale\n2012; Lindauer et al., 2022), prompt optimization for\nfactor that balances gradient and Hessian learning\nLLMs (Sabbatella et al., 2024), robotics and control\nwhoseoptimalvaluemustbeestimatedby,e.g.,Monte\n(Berkenkamp et al., 2023; Paulson et al., 2023), pro-\nCarlosampling;ourempiricalresultsshowthatperfor-\ncess optimization (Kudva et al., 2025), materials de-\nmanceisrobusttotheprecisechoiceofthisfactor,and\nsign (Frazier and Wang, 2015; Tang et al., 2024), and\nweuseasimpledefaultthatavoidsthisextracomputa-\nmore.",
+      "size": 722,
+      "sentences": 3
+    },
+    {
+      "id": 13,
+      "content": "razier and Wang, 2015; Tang et al., 2024), and\nweuseasimpledefaultthatavoidsthisextracomputa-\nmore. However, as dimensionality grows, performance\n5202\ntcO\n7\n]GL.sc[\n1v61550.0152:viXra\n===  2 ===\nNeST-BO\ntion. Weprovea“vanishingpower-functioncondition” asparsity-promotingprioroninverseGPlength-scales\nshowing that NeST-BO drives the Newton-step error (Eriksson and Jankowiak, 2021).",
+      "size": 382,
+      "sentences": 3
+    },
+    {
+      "id": 14,
+      "content": "seGPlength-scales\nshowing that NeST-BO drives the Newton-step error (Eriksson and Jankowiak, 2021). This can be very ef-\nto zero as batch size increases regardless of the scale fective when the active set is small and axis-aligned,\nfactor, so the algorithm inherits the standard inexact butthefullyBayesianinferenceofthekernelhyperpa-\nNewtonconvergenceproperties: globalprogressunder rameters makes the inference cost scale cubically with\nmildstabilityandfastlocalconvergenceoncestepsare thenumberofevaluations,whichgreatlylimititsabil-\nsufficiently accurate (Karimireddy et al., 2018).",
+      "size": 586,
+      "sentences": 2
+    },
+    {
+      "id": 15,
+      "content": "thenumberofevaluations,whichgreatlylimititsabil-\nsufficiently accurate (Karimireddy et al., 2018). ity to scale beyond fairly small sampling budgets. In summary, our key contributions are:\nLocal BO. Local BO restricts search to neighbor-\n• A curvature-aware local BO algorithm that ex- hoods around the incumbent to mitigate the curse of\ndimensionality.",
+      "size": 353,
+      "sentences": 4
+    },
+    {
+      "id": 16,
+      "content": "are local BO algorithm that ex- hoods around the incumbent to mitigate the curse of\ndimensionality. TuRBO, a trust-region variant, main-\nplicitly targets the Newton step via a tractable\ntainsmultiplelocalregionswithadaptivesizes(Eriks-\nand theoretically-sound acquisition function. son et al., 2019). Another line of work is directional\n• A scalable instantiation that runs NeST-BO in local BO, which uses a GP to define a local step\nenlarging subspaces, reducing computation from rule.",
+      "size": 486,
+      "sentences": 4
+    },
+    {
+      "id": 17,
+      "content": "cal BO, which uses a GP to define a local step\nenlarging subspaces, reducing computation from rule. GIBOreducesgradientposterioruncertaintyand\nO(d2) to O(m2) (where d and m are the ambient moves along the mean gradient (Mu¨ller et al., 2021),\nandmaximumsubspacedimensions)andenabling while MDP chooses the direction maximizing the pos-\napplication to arbitrarily large problems. terior probability of descent (Nguyen et al., 2022).",
+      "size": 431,
+      "sentences": 3
+    },
+    {
+      "id": 18,
+      "content": "os-\napplication to arbitrarily large problems. terior probability of descent (Nguyen et al., 2022). MinUCB forgoes direct gradient inference and instead\n• Theoretical guarantees showing that NeST-BO\nminimizes the upper confidence bound (UCB) objec-\ndrives Newton-step error to zero and thus inher-\ntive as a local step.",
+      "size": 319,
+      "sentences": 3
+    },
+    {
+      "id": 19,
+      "content": "onfidence bound (UCB) objec-\ndrives Newton-step error to zero and thus inher-\ntive as a local step. Our approach differs by explicitly\nits strong local quadratic and linear global con-\ntargeting the Newton step, which uses both gradient\nvergence behavior of modified Newton methods. and Hessian predictions from the GP. • Extensive empirical results on more than 12 syn-\ntheticandreal-worldproblems(rangingfrom20d “Vanilla BO works” in high dimensions.",
+      "size": 452,
+      "sentences": 4
+    },
+    {
+      "id": 20,
+      "content": "more than 12 syn-\ntheticandreal-worldproblems(rangingfrom20d “Vanilla BO works” in high dimensions. Sev-\nto >7000d), where NeST-BO variants yield large eral recent works show that standard BO can be com-\nperformance improvements over six state-of-the- petitive in high dimensions when properly designed. art high-dimensional BO baselines. Hvarfner et al. scale a log-normal length-scale prior\nwith dimension, yielding a strong “D-scaled” LogEI\n2 RELATED WORK baseline (Hvarfner et al., 2024).",
+      "size": 492,
+      "sentences": 5
+    },
+    {
+      "id": 21,
+      "content": "with dimension, yielding a strong “D-scaled” LogEI\n2 RELATED WORK baseline (Hvarfner et al., 2024). Xu et al. argue that\npoor length-scale initialization induces vanishing gra-\ndients in GPs with squared exponential (SE) kernels\nLinear subspaces and embeddings. A common\nand show Mat´ern kernels or robust initialization can\nstrategy forhigh-dimensional BOis toassumethe ob-\navoid this pathology (Xu et al., 2024). Papenmeier\njective varies mainly in a lower-dimensional subspace\net al.",
+      "size": 486,
+      "sentences": 5
+    },
+    {
+      "id": 22,
+      "content": "athology (Xu et al., 2024). Papenmeier\njective varies mainly in a lower-dimensional subspace\net al. analyze why such settings succeed, attributing\nand reduce model complexity accordingly. REMBO\ngains to low effective dimensionality or benign bench-\nprojects the search into a random linear subspace and\nmark structure rather than a general cure for high-\noptimizesthere,withguaranteeswhentheeffectivedi-\ndimensional problems (Papenmeier et al., 2025). We\nmension is small (Wang et al., 2016).",
+      "size": 492,
+      "sentences": 5
+    },
+    {
+      "id": 23,
+      "content": "fectivedi-\ndimensional problems (Papenmeier et al., 2025). We\nmension is small (Wang et al., 2016). ALEBO im-\ninclude such strong “vanilla” baselines in our experi-\nproves robustness by using a Mahalanobis kernel and\nments to reflect these practices. linear constraints on the acquisition to respect the\noriginal box (Letham et al., 2020). HeSBO replaces\ndense projections with count-sketch-style sparse em- Modified sampling strategies.",
+      "size": 437,
+      "sentences": 5
+    },
+    {
+      "id": 24,
+      "content": ". HeSBO replaces\ndense projections with count-sketch-style sparse em- Modified sampling strategies. Beyondthesurro-\nbeddings that preserve structure with negligible over- gate,candidategenerationduringoptimizationcanbe\nhead. BAxUS introduces nested random subspaces crucial in high-dimensional settings.",
+      "size": 303,
+      "sentences": 4
+    },
+    {
+      "id": 25,
+      "content": "imizationcanbe\nhead. BAxUS introduces nested random subspaces crucial in high-dimensional settings. A widely used\nthat expand during the run and a mechanism to carry pattern in TuRBO is the perturbation of a small ran-\nobservations across enlargements, providing improved dom subset of coordinates of promising points. A re-\nsuccess probabilities and practical robustness (Papen- cent paper on Cylindrical Thompson Sampling (CTS)\nmeieretal.,2022).",
+      "size": 447,
+      "sentences": 4
+    },
+    {
+      "id": 26,
+      "content": "nd practical robustness (Papen- cent paper on Cylindrical Thompson Sampling (CTS)\nmeieretal.,2022). Inthispaper,toimprovethescala- (Rashidi et al., 2024) refers to this as Random Axis-\nbilityofourmethod,weadopttheBAxUSembedding Aligned Subspace Perturbations (RAASP) and shows\nand enlargement schedule but replace its trust-region- ithelpsavoidover-exploration,butmayunder-explore\nbased optimizer with NeST-BO. active subspaces as dimension d grows.",
+      "size": 449,
+      "sentences": 3
+    },
+    {
+      "id": 27,
+      "content": "xploration,butmayunder-explore\nbased optimizer with NeST-BO. active subspaces as dimension d grows. Motivated by\nthis observation, they derive CTS as a way to main-\nLearning sparse structure. Another interesting tain locality without requiring axis alignment. Our\nstrategy for tackling high-dimensional problems is to approach is complementary to this line of work; we\nadaptively learn space substructure.",
+      "size": 405,
+      "sentences": 5
+    },
+    {
+      "id": 28,
+      "content": "blems is to approach is complementary to this line of work; we\nadaptively learn space substructure. SAASBO places focus on learning effective (local) step directions that\n===  3 ===\nWei-Ting Tang, Akshay Kudva, Joel A. Paulson\naccount for curvature rather than modifying the way methods refine this idea by explicitly selecting eval-\ncandidate samples are generated for optimizing exist- uations that reduce uncertainty about the local de-\ning acquisition functions. scent direction.",
+      "size": 483,
+      "sentences": 3
+    },
+    {
+      "id": 29,
+      "content": "st- uations that reduce uncertainty about the local de-\ning acquisition functions. scent direction. A prominent example is the Gradi-\nent Information (GI) acquisition that underlies GIBO\n3 PRELIMINARIES (Mu¨lleretal.,2021). Letx t bethecurrentiterateand\nZ ∈Rbt×d abatchofcandidates.",
+      "size": 282,
+      "sentences": 4
+    },
+    {
+      "id": 30,
+      "content": "IBO\n3 PRELIMINARIES (Mu¨lleretal.,2021). Letx t bethecurrentiterateand\nZ ∈Rbt×d abatchofcandidates. GIselectsZ tomax-\nimally reduce the expected posterior covariance of the\n3.1 Problem Setup & Bayesian Optimization\ngradient at x given current data D after observing a\nt\nWe consider the following zeroth-order optimization new batch of points (Z,y):\nproblem over a d-dimensional space:\nα (Z|x ,D) (2)\nGI t\nx⋆ ∈argminf(x), X ⊆Rd, (1) =E (cid:8) tr (cid:0) Σg(x ) (cid:1) −tr (cid:0) Σg (x ) (cid:1)(cid:9) .",
+      "size": 505,
+      "sentences": 3
+    },
+    {
+      "id": 31,
+      "content": "⋆ ∈argminf(x), X ⊆Rd, (1) =E (cid:8) tr (cid:0) Σg(x ) (cid:1) −tr (cid:0) Σg (x ) (cid:1)(cid:9) . y|D,Z D t D∪(Z,y) t\nx∈X\nThe key observation is, since posterior covariances do\nwhere the expensive function f can only be accessed\nnotdependontheobservedtargetsy,thissimplifiesto\nthroughnoisyqueriesy =f(x)+ϵwithi.i.d. Gaussian\nnoise ϵ∼N(0,σ2).",
+      "size": 343,
+      "sentences": 3
+    },
+    {
+      "id": 32,
+      "content": "eobservedtargetsy,thissimplifiesto\nthroughnoisyqueriesy =f(x)+ϵwithi.i.d. Gaussian\nnoise ϵ∼N(0,σ2). Bayesian optimization (BO) tack- minimizing a (squared) “power function” for the gra-\ndient defined as the trace of the posterior covariance:\nles (1) by fitting a probabilistic surrogate p(f|D) over\navailable data D and uses it to select new evaluations α˜ (Z|x ,D)=tr (cid:0) Σg (x ) (cid:1) =πg (x ).",
+      "size": 402,
+      "sentences": 3
+    },
+    {
+      "id": 33,
+      "content": "lable data D and uses it to select new evaluations α˜ (Z|x ,D)=tr (cid:0) Σg (x ) (cid:1) =πg (x ). (3)\nby maximizing an acquisition function α(x|D) that GI t D∪Z t D∪Z t\ntradesoffexplorationandexploitation. Afterexhaust- This criterion encourages sampling along directions\ningthebudget,therecommendedsolutioniseitherthe thatmostreducegradientuncertainty,afterwhichthe\nbest observed point or the minimizer of the surrogate algorithmstepsalongtheGPposteriormeangradient. mean.",
+      "size": 475,
+      "sentences": 4
+    },
+    {
+      "id": 34,
+      "content": "served point or the minimizer of the surrogate algorithmstepsalongtheGPposteriormeangradient. mean. Many acquisitions have been proposed includ- Theoretical analysis of GIBO showed that the conver-\ning expected improvement (EI) (Jones et al., 1998), gence rate to a stationary point scales linearly in d,\nupperconfidencebound(UCB)(Srinivasetal.,2010), which is significantly better than the rates at which\nknowledge gradient (KG) (Frazier et al., 2008), and global optimization can find the global optimum (Wu\nentropy-based methods (Hvarfner et al., 2022).",
+      "size": 556,
+      "sentences": 3
+    },
+    {
+      "id": 35,
+      "content": "global optimization can find the global optimum (Wu\nentropy-based methods (Hvarfner et al., 2022). We etal.,2023). GIprovidesanaturalbenchmarkforour\nrefer readers to Garnett (2023) for a full tutorial. Newton-step-targetedapproach,whichgeneralizesthis\nidea to jointly learning gradients and curvature.",
+      "size": 301,
+      "sentences": 4
+    },
+    {
+      "id": 36,
+      "content": "Newton-step-targetedapproach,whichgeneralizesthis\nidea to jointly learning gradients and curvature. 3.2 Gaussian Processes and their Derivatives\n3.4 Newton’s Method for Optimization\nWe use Gaussian processes (GPs) (Williams and Ras-\nmussen,2006)assurrogates,whichisthemostpopular Newton’smethod(NM)isaclassicalalgorithmforun-\nsurrogatemodelclassinBO.AGPpriorf ∼GP(µ,k) constrained minimization of smooth functions.",
+      "size": 414,
+      "sentences": 2
+    },
+    {
+      "id": 37,
+      "content": "ithmforun-\nsurrogatemodelclassinBO.AGPpriorf ∼GP(µ,k) constrained minimization of smooth functions. Start-\ninduces a joint Gaussian belief over any finite set of ing from x ∈Rd, it makes the following updates:\n0\ninputs; conditioning on the dataset D yields a poste-\nx =x −γ H(x )−1g(x ), t=0,1,..., (4)\nriorGPf|D ∼GP(µ ,k )withclosed-formposterior t+1 t t t t\nD D\nmean µ and covariance (or kernel) function k .",
+      "size": 410,
+      "sentences": 2
+    },
+    {
+      "id": 38,
+      "content": "D ∼GP(µ ,k )withclosed-formposterior t+1 t t t t\nD D\nmean µ and covariance (or kernel) function k . A\nD D where γ >0 denotes the step size at iteration t. NM\nt\nkey property we repeatedly use in this work is that\nre-scales and rotates the gradient using local curva-\nderivatives of a GP remain GPs because differentia-\nture. On well-behaved landscapes this makes progress\ntionislinear(DeRoosetal.,2021).",
+      "size": 402,
+      "sentences": 3
+    },
+    {
+      "id": 39,
+      "content": "e differentia-\nture. On well-behaved landscapes this makes progress\ntionislinear(DeRoosetal.,2021). Thus,thegradient\nfarlesssensitivetoconditioningthanfirst-ordermeth-\ng(x)=∇f(x)andHessianH(x)=∇2f(x)haveana-\nodsandyieldslocal quadratic convergencenearamin-\nlytic posterior means and covariances obtained by dif-\nimizer,incontrasttothelinearorsublinearratestypi-\nferentiating the kernel in the appropriate arguments.",
+      "size": 415,
+      "sentences": 3
+    },
+    {
+      "id": 40,
+      "content": "er,incontrasttothelinearorsublinearratestypi-\nferentiating the kernel in the appropriate arguments. calofgradientschemesundercomparableassumptions\nWe collect the explicit formulas for f, g, and H pos-\n(Nocedal and Wright, 2006). More recently, NM has\nteriors in Appendix A.\nbeen shown to have global guarantees under mild reg-\nularity, with variants that remain affine-invariant and\n3.3 Local BO using Gradients\nallow approximate Hessians and inexact subproblem\nsolves (Karimireddy et al., 2018).",
+      "size": 496,
+      "sentences": 3
+    },
+    {
+      "id": 41,
+      "content": "sing Gradients\nallow approximate Hessians and inexact subproblem\nsolves (Karimireddy et al., 2018). Learning a globally accurate surrogate becomes data-\nhungry as d grows because regret bounds for global IntheBOcontext,wedonotgettodirectlyobserveg\nBO (e.g., GP-UCB) scale exponentially with dimen- orH,buttheirGPposteriors(implicitly)defineadis-\nsion unless strong structural assumptions hold (Srini- tribution over the Newton step d(x) = H(x)−1g(x). vas et al., 2010).",
+      "size": 469,
+      "sentences": 3
+    },
+    {
+      "id": 42,
+      "content": "tural assumptions hold (Srini- tribution over the Newton step d(x) = H(x)−1g(x). vas et al., 2010). Local BO addresses this by focusing NeST-BO is built around actively reducing the poste-\nsearch near the incumbent and updating the model rioruncertainty ofthestepd(x), ratherthanestimat-\nwith more locally collected data. Gradient-informed ing g(x) and H(x) separately.",
+      "size": 369,
+      "sentences": 4
+    },
+    {
+      "id": 43,
+      "content": "atherthanestimat-\nwith more locally collected data. Gradient-informed ing g(x) and H(x) separately. The thought is that,\n===  4 ===\nNeST-BO\nwhentheNewtonstepgetsclosetoalocalsolution,the Algorithm 1 NeST-BO\niteration advantage of NM can outweigh the per-step Inputs: initial iterate x ∈Rd; initial data D ; batch\n0 0\ncostoflearningcurvature,yieldingstrongersampleef- sizes {b }; step sizes {γ }; scale factors {s }; GP hy-\nt t (cid:98)t\nficiency than gradient-only methods like GIBO.",
+      "size": 483,
+      "sentences": 3
+    },
+    {
+      "id": 44,
+      "content": "sizes {γ }; scale factors {s }; GP hy-\nt t (cid:98)t\nficiency than gradient-only methods like GIBO. perpriors; and total number of iterations T.\n1: Fit GP surrogate on D . 0\n4 NEWTON-STEP-TARGETED 2: for t=0,...,T −1 do\nBAYESIAN OPTIMIZATION 3: X t ∈argmin Z∈Rbt×d α (cid:98)NeST (Z|x t ,D t ,s (cid:98)t ). 4: Evaluate f at X to obtain y . t t\n5: Augment dataset D ←D ∪(X ,y ). 4.1 An Acquisition for the Newton Step t+1 t t t\n6: Update GP posterior with D .",
+      "size": 459,
+      "sentences": 6
+    },
+    {
+      "id": 45,
+      "content": "set D ←D ∪(X ,y ). 4.1 An Acquisition for the Newton Step t+1 t t t\n6: Update GP posterior with D . t+1\nLet x t be the current iterate and Z∈Rbt×d a batch 7: Computeg (cid:98) ←g (cid:98)Dt+1 (x t )andH(cid:99) ←H(cid:99)Dt+1 (x t ). o\nis\nf\nt\nc\no\nan\nl\nd\nea\nid\nr\na\nn\nte\nt\ns\nhe\nat\nN\nw\ne\nh\nw\ni\nt\nc\no\nh\nn\nw\ns\ne\nte\nm\np\nig\nd\nh\n(\nt\nx\ne\n)\nv\n=\nalu\nH\nate\n(x\nf\n)\n. −\nO\n1g\nu\n(\nr\nx\ng\n)\no\na\na\nt\nl 8: Solve H(cid:99)v =g\n(cid:98)\nfor d(cid:98)Dt+1 (x\nt\n)←v. x under the GP posterior.",
+      "size": 468,
+      "sentences": 6
+    },
+    {
+      "id": 46,
+      "content": "g\n)\no\na\na\nt\nl 8: Solve H(cid:99)v =g\n(cid:98)\nfor d(cid:98)Dt+1 (x\nt\n)←v. x under the GP posterior. Because d(x) is non-\n9: Update iterate: x\nt+1\n=x\nt\n−γ\nt\nd(cid:98)Dt+1 (x\nt\n). t 10: end for\nGaussian, its posterior covariance is not available in\nclosed form; instead we work derive an Reproducing\nKernelHilbertSpace(RKHS)errorbound(inspiredby tor used (see Appendix C), which motivates the fol-\nthe results derived in (Wu et al., 2023)).",
+      "size": 438,
+      "sentences": 4
+    },
+    {
+      "id": 47,
+      "content": "edby tor used (see Appendix C), which motivates the fol-\nthe results derived in (Wu et al., 2023)). Let the gra- lowing computationally cheaper acquisition:\ndient and (vectorized) Hessian (squared) power func-\ntions at x be denoted by πg(x) = tr(Σg(x)) and α (Z|x ,D,s )=πg (x )+s πH (x ), (7)\nD D (cid:98)NeST t (cid:98)t D∪Z t (cid:98)t D∪Z t\nπH(x) = tr (cid:0) Σvec(H)(x) (cid:1) .",
+      "size": 384,
+      "sentences": 2
+    },
+    {
+      "id": 48,
+      "content": "x ), (7)\nD D (cid:98)NeST t (cid:98)t D∪Z t (cid:98)t D∪Z t\nπH(x) = tr (cid:0) Σvec(H)(x) (cid:1) . Also, let H be the RKHS\nD D\non X equipped with a reproducing kernel k(·,·) and with a user- or data-selected s (cid:98)t > 0. This recovers\nRKHS norm ∥ · ∥ H . We can establish the following GI when s (cid:98)t = 0 and focuses more on curvature as\nbound (the proof is in Appendix B): s (cid:98)t increases.",
+      "size": 406,
+      "sentences": 4
+    },
+    {
+      "id": 49,
+      "content": "8)t = 0 and focuses more on curvature as\nbound (the proof is in Appendix B): s (cid:98)t increases. In Section 4.4, we show that samples\nsuggested by NeST can drive the bound in (5) to zero\nTheorem 1 (Newton-steperrorbound). Let ε (x)=\nD asthebatchsizeincreasesforanychoiceofscalefactor. ∥d(x) − d(cid:98)D (x)∥ denote the Newton-step error at x\ngiven data D with d(cid:98)D (x)=H(cid:99)D (x)−1g\n(cid:98)D\n(x). Assume\n4.2 The NeST-BO Algorithm\nthekernelk isstationaryandfour-timesdifferentiable.",
+      "size": 496,
+      "sentences": 5
+    },
+    {
+      "id": 50,
+      "content": "(cid:98)D\n(x). Assume\n4.2 The NeST-BO Algorithm\nthekernelk isstationaryandfour-timesdifferentiable. For any f ∈H with ∥f∥ H ≤B, x∈X, and D: Algorithm1summarizestheloop: atiteratex t ,choose\na batch X by (approximately) minimizing (7) at x ;\n(cid:113) t t\nε (x)≤C πg(x)+s (x)πH(x), (5) update the GP with the new observations; then move\nD x D D D\nalong the predicted Newton step with damping.",
+      "size": 391,
+      "sentences": 3
+    },
+    {
+      "id": 51,
+      "content": "the GP with the new observations; then move\nD x D D D\nalong the predicted Newton step with damping. In\npractice, weeitherbacktrackontheGPmeanoropti-\nwhere s\nD\n(x) = ∥H(cid:99)D (x)−1∥2∥g\n(cid:98)D\n(x)∥2 is a scale fac-\nmize (7) inside a trust region centered at x .",
+      "size": 265,
+      "sentences": 2
+    },
+    {
+      "id": 52,
+      "content": "H(cid:99)D (x)−1∥2∥g\n(cid:98)D\n(x)∥2 is a scale fac-\nmize (7) inside a trust region centered at x . We pro-\ntor that trades off gradient and Hessian information t\n√ videanillustrationandvisualcomparisonofNeST-BO\nand C = 2B∥H(x)−1∥ is independent of D.\nx (top) to GIBO (bottom) in Figure 1, which demon-\nstrates the advantages of simultaneously learning gra-\nMotivated by (5), we can try to develop a similar\ndient and Hessian (curvature) information.",
+      "size": 450,
+      "sentences": 2
+    },
+    {
+      "id": 53,
+      "content": "g gra-\nMotivated by (5), we can try to develop a similar\ndient and Hessian (curvature) information. acquisition to GI in (2) using this bound on ε (x). D\nThe key challenge, when attempting to do a similar\ntransformation from (2) to (3), is that the scale fac- 4.3 Implementation Details\ntors (x )dependsontheposteriormeans,such\nD∪(Z,y) t\nthat the expectation does not cleanly collapse as be-\nMoving direction. If H(cid:99) is positive semi-definite\n(PSD), the Newton step is a descent direction.",
+      "size": 495,
+      "sentences": 4
+    },
+    {
+      "id": 54,
+      "content": "ng direction. If H(cid:99) is positive semi-definite\n(PSD), the Newton step is a descent direction. If\nfore. Thus, after rearrangement, we end up with the\nnot, we revert to a length-scale-normalized gradient\nfollowing Newton Step Targeting (NeST) acquisition\nstep (Mu¨ller et al., 2021, Appendix A.4). This ap-\nfunction that can be minimized to maximally reduce\nproach worked well in our experiments.",
+      "size": 400,
+      "sentences": 5
+    },
+    {
+      "id": 55,
+      "content": "This ap-\nfunction that can be minimized to maximally reduce\nproach worked well in our experiments. Other fall-\nthe expected lookahead reduction of the bound in (5):\nback methods, which are compatible with NeST-BO,\ninclude using a modified Newton direction that en-\nα˜ (Z|x ,D) (6)\nNeST t\nforces PSD curvature or a conjugate gradient variant\n=πg (x )+E (cid:8) s (x ) (cid:9) πH (x ). D∪Z t y|D,Z D∪(Z,y) t D∪Z t with negative-curvature handling (Royer et al., 2020). A practical family.",
+      "size": 486,
+      "sentences": 4
+    },
+    {
+      "id": 56,
+      "content": "t y|D,Z D∪(Z,y) t D∪Z t with negative-curvature handling (Royer et al., 2020). A practical family. The expectation in (6) is gen- Batchvs.sequentialselection. Although(7)sup-\nerally irreducible.",
+      "size": 194,
+      "sentences": 4
+    },
+    {
+      "id": 57,
+      "content": "ly. The expectation in (6) is gen- Batchvs.sequentialselection. Although(7)sup-\nerally irreducible. Empirically, we observed relatively portsjointbatches,weselectpointsgreedily: aftereach\nlow sensitivity in performance to the precise scale fac- selection we update the posteriors and re-optimize for\n===  5 ===\nWei-Ting Tang, Akshay Kudva, Joel A. Paulson\nFigure 1: Top: NeST-BO’s acquisition α˜ ; Bottom: GIBO’s acquisition α˜ on the same 2D test function\nNeST GI\natiteratex (bluecircle).",
+      "size": 489,
+      "sentences": 4
+    },
+    {
+      "id": 58,
+      "content": "on α˜ ; Bottom: GIBO’s acquisition α˜ on the same 2D test function\nNeST GI\natiteratex (bluecircle). Darkerbackgroundindicateslargeracquisitionvalue. Redsquare: locationofthetrue\nt\nNewton step. Blue triangle: update using the GP-predicted step. Orange star: acquisition minimizer (batch\nvisualized as black crosses). NeST-BO places samples away from x along directions informative for curvature,\nt\nrapidlyshrinkingtheNewton-steperrorbound;GItendstooversamplenearx ,slowingcurvatureidentification.",
+      "size": 495,
+      "sentences": 6
+    },
+    {
+      "id": 59,
+      "content": "rapidlyshrinkingtheNewton-steperrorbound;GItendstooversamplenearx ,slowingcurvatureidentification. t\nthe next point. This replaces a single b d-dimensional tionsatx canbedriventozeroasb →∞. Although\nt t t\nsearchwithb independentd-dimensionalsearchesand we cannot minimize (5) directly in NeST-BO (since\nt\ndiscourages near-duplicate picks because the covari- s (x ) is revealed after observing the batch), this\nDt+1 t\nance terms grow deterministically.",
+      "size": 451,
+      "sentences": 4
+    },
+    {
+      "id": 60,
+      "content": "vari- s (x ) is revealed after observing the batch), this\nDt+1 t\nance terms grow deterministically. In our preliminary bound still holds for the realized step error produced\ntests,greedysequentialselectioncloselymatchedjoint byanysamplingrule. Further,unlikeanalysesofinex-\noptimization while being much simpler to implement. actNMthatassumeanabstractboundonε ,VPCties\nt\nour error to concrete, design-controllable posterior co-\nStep size. We use a standard Armijo backtracking variances.",
+      "size": 487,
+      "sentences": 5
+    },
+    {
+      "id": 61,
+      "content": "rete, design-controllable posterior co-\nStep size. We use a standard Armijo backtracking variances. We next show that NeST’s sampling policy\nlinesearch on the GP mean µ , which is effective and ensures VPC and make precise the difference between\nD\nwidely used in practice; we adopt standard defaults noiseless/noisy observations (proof in Appendix D.1). andcapthenumberofsteps(Bertsekas,2016,Chapter\nTheorem 2 (VPC under NeST sampling). Fix any\n1).",
+      "size": 448,
+      "sentences": 5
+    },
+    {
+      "id": 62,
+      "content": ".1). andcapthenumberofsteps(Bertsekas,2016,Chapter\nTheorem 2 (VPC under NeST sampling). Fix any\n1). One can replace backtracking with a trust-region\nsequence {s } with s >0 for all t≥0, and assume\nNewton step that minimizes a penalized quadratic (cid:98)t t≥0 (cid:98)t\nthe kernel regularity from Theorem 1 holds. model inside a ball around x . This variant carries\nt\nstrong global convergence properties and is a drop-in (Noiseless case) Suppose σ2 = 0.",
+      "size": 454,
+      "sentences": 6
+    },
+    {
+      "id": 63,
+      "content": "nt carries\nt\nstrong global convergence properties and is a drop-in (Noiseless case) Suppose σ2 = 0. If the batch size\nchange to NeST-BO’s update rule. satisfies b ≥ b⋆ = d2 +d+1, then the optimization\nt\nproblem min πg (x )+s πH (x ) has op-\nZ∈Rbt×d Dt∪Z t (cid:98)t Dt∪Z t\nScale factor. Thescales tradesoffgradientversus timal value 0 (as an infimum), and NeST can make\n(cid:98)t\ncurvature learning.",
+      "size": 399,
+      "sentences": 4
+    },
+    {
+      "id": 64,
+      "content": "desoffgradientversus timal value 0 (as an infimum), and NeST can make\n(cid:98)t\ncurvature learning. We use s = 1 by default, which πg (x )+s πH (x )arbitrarilysmallforanys >0\n(cid:98)t Dt+1 t (cid:98)t Dt+1 t (cid:98)t\nperformedwellacrossdimensionsandavoidstheextra bychoosingasymmetricstencilthatshrinkstowardx . t\ncomputation of plug-in or Monte Carlo estimates (see\n(Noisy case) If σ > 0, there exist central-differencing\nAppendix C for comparisons).",
+      "size": 453,
+      "sentences": 3
+    },
+    {
+      "id": 65,
+      "content": "estimates (see\n(Noisy case) If σ > 0, there exist central-differencing\nAppendix C for comparisons). designs Z with m replicates per symmetric location\ncfd\nsuch that πv (x )≤(bias due to finite stencil)+\n4.4 Theoretical Analysis σ2/m for v D ∈ t∪ { Z g c , fd H} t . Thus, both contributions can be\ndriven arbitrarily small by increasing b . For simplicity, let ε = ε (x ) be the Newton-step t\nt Dt+1 t\nerrorattheendofiterationt,whichhasbound(5)ac- Hence, VPCholdsinbothnoiselessandnoisysettings.",
+      "size": 495,
+      "sentences": 4
+    },
+    {
+      "id": 66,
+      "content": "t+1 t\nerrorattheendofiterationt,whichhasbound(5)ac- Hence, VPCholdsinbothnoiselessandnoisysettings. cordingtoTheorem1. Weintroduceasimple“vanish-\ning power-function condition” (VPC) that says, along Two immediate consequences follow. First, as ε →0,\nt\nthe run, the local gradient and Hessian power func- NeST-BO asymptotically recovers the local quadratic\n===  6 ===\nNeST-BO\nrate of NM in well-behaved neighborhoods.",
+      "size": 416,
+      "sentences": 4
+    },
+    {
+      "id": 67,
+      "content": "totically recovers the local quadratic\n===  6 ===\nNeST-BO\nrate of NM in well-behaved neighborhoods. Second, Unlessaglobalminimizerisknown,wereportthemin-\nunderc-stableHessianconditions(Karimireddyetal., imum observed value; otherwise we show simple regret\n2018, Section 2.1), NeST-BO matches the global lin- (in log scale).",
+      "size": 323,
+      "sentences": 2
+    },
+    {
+      "id": 68,
+      "content": "otherwise we show simple regret\n2018, Section 2.1), NeST-BO matches the global lin- (in log scale). Curves display the median across 10\near convergence of damped Newton, with a residual independent replicates with ± one standard error as\nterm that vanishes under VPC; see Appendix D for the shaded band. Implementation details (e.g., mod-\nprecise statements and proofs.",
+      "size": 369,
+      "sentences": 3
+    },
+    {
+      "id": 69,
+      "content": "e Appendix D for the shaded band. Implementation details (e.g., mod-\nprecise statements and proofs. Importantly, the VPC els,hyperparameterupdates,acquisitionoptimization,\nstatement and its implications do not depend on the and the precise evaluation budgets for each task) are\nspecific choice of scale factor beyond s > 0, so the provided in Appendix E. In short, we used a common\n(cid:98)t\nsimplified acquisition in (7) retains these guarantees.",
+      "size": 447,
+      "sentences": 3
+    },
+    {
+      "id": 70,
+      "content": "dix E. In short, we used a common\n(cid:98)t\nsimplified acquisition in (7) retains these guarantees. SE kernel across methods and standard GP training\nand acquisition optimizers from BoTorch (Balandat\net al., 2020); hyperparameter update schedules and\n4.5 Scaling NeST-BO via Subspaces\nmethod-specificsettingsfollowpriorworkandareheld\nconsistent across tasks to keep comparisons fair.",
+      "size": 383,
+      "sentences": 2
+    },
+    {
+      "id": 71,
+      "content": "method-specificsettingsfollowpriorworkandareheld\nconsistent across tasks to keep comparisons fair. Due\nThe main computational bottleneck for NeST-BO in\ntospacelimitations,additionalablationsanddiagnos-\nhigh ambient dimension d is the Hessian power func-\ntics appear in Appendix F.\ntion term πH (x ), which scales quadratically in d.\nD∪Z t\nWe propose to address this by instantiating NeST-\nBO inside embedded subspaces v ∈ Rm of size m ≪ 5.1 Synthetic Test Functions\nd. Specifically, we adopt the nested, sparse random-\nWeconsidertworegimesrelevanttoourmethod.",
+      "size": 559,
+      "sentences": 2
+    },
+    {
+      "id": 72,
+      "content": "tions\nd. Specifically, we adopt the nested, sparse random-\nWeconsidertworegimesrelevanttoourmethod. Mod-\nembedding scheme of BAxUS – bins of input coor-\neratedimension (d=20): Sphere,Griewank,andAck-\ndinates are hashed into m target coordinates with\nley.",
+      "size": 254,
+      "sentences": 2
+    },
+    {
+      "id": 73,
+      "content": "atedimension (d=20): Sphere,Griewank,andAck-\ndinates are hashed into m target coordinates with\nley. High dimension with sparse structure (d = 1000\nrandom signs, and the target dimension is increased\nwith d = 30 relevant variables): Griewank, Ackley,\novertimebysplitting binswhileretainingobservations eff\nand Rosenbrock; the remaining coordinates are dum-\nacross embeddings (Papenmeier et al., 2022).",
+      "size": 400,
+      "sentences": 2
+    },
+    {
+      "id": 74,
+      "content": "eff\nand Rosenbrock; the remaining coordinates are dum-\nacross embeddings (Papenmeier et al., 2022). This\nmies and the algorithms are not told which ones are\ndesign both preserves past data under splits and in-\nactive. These are commonly chosen test problems in\ncreases the probability that the subspace contains (or\nthe BO literature; formal definitions are given in Ap-\nwell-approximates) an optimizer as m grows. pendix E.3.",
+      "size": 426,
+      "sentences": 4
+    },
+    {
+      "id": 75,
+      "content": "rature; formal definitions are given in Ap-\nwell-approximates) an optimizer as m grows. pendix E.3. Figure 2 (first six panels in the top two\nWe run NeST-BO in the subspace v, map the candi- rows) summarizes the results. datesbacktotheambientdimensionx=S⊤v (where\nOn the d = 20 problems, NeST-BO consistently\nS⊤ ∈ Rd×m is the projection matrix) for evaluation,\nmatches or outperforms all non-subspace baselines.",
+      "size": 411,
+      "sentences": 4
+    },
+    {
+      "id": 76,
+      "content": "∈ Rd×m is the projection matrix) for evaluation,\nmatches or outperforms all non-subspace baselines. A\nand update the GP in the embedded subspace co-\ncommon pattern is a two-phase trajectory: an initial\nordinates. This reduces the per-candidate curvature\nperiodwithslowerprogresswhenfarfromaminimizer\ncost from O(d2) to O(m2) while preserving the step-\nand before curvature is well estimated, followed by\ntargeting principle.",
+      "size": 424,
+      "sentences": 3
+    },
+    {
+      "id": 77,
+      "content": "while preserving the step-\nand before curvature is well estimated, followed by\ntargeting principle. Compared to the original BAxUS\na steep drop once the iterate enters a well-behaved\nalgorithm,whichcouplesitsembeddingwithavariant\nneighborhood.",
+      "size": 243,
+      "sentences": 2
+    },
+    {
+      "id": 78,
+      "content": "once the iterate enters a well-behaved\nalgorithm,whichcouplesitsembeddingwithavariant\nneighborhood. As several steps accumulate, the es-\nof TuRBO, our version replaces TuRBO with NeST-\ntimated Newton step better aligns with the true lo-\nBO; in problems where curvature matters, we find\ncal geometry, further accelerating progress – consis-\nthatthiscancansubstantiallyaccelerateoptimization\ntentwithourNewton-steperrorbound,whichtightens\nprogress (see experimental results in Section 5).",
+      "size": 486,
+      "sentences": 2
+    },
+    {
+      "id": 79,
+      "content": "on\ntentwithourNewton-steperrorbound,whichtightens\nprogress (see experimental results in Section 5). We\nas the gradient and Hessian power functions shrink.",
+      "size": 154,
+      "sentences": 2
+    },
+    {
+      "id": 80,
+      "content": "ess (see experimental results in Section 5). We\nas the gradient and Hessian power functions shrink. viewtheBAxUS-stylenestedembeddingsasoneeffec-\nSubspace methods start from stronger initial values\ntive instantiation of this idea; other learned or struc-\nby design (they restrict the initial design and acquisi-\nturedembeddingsarecompatibleandwebelievearea\ntions), but NeST-BO-sub ultimately achieves the low-\nvery interesting direction for future work.",
+      "size": 453,
+      "sentences": 3
+    },
+    {
+      "id": 81,
+      "content": "ea\ntions), but NeST-BO-sub ultimately achieves the low-\nvery interesting direction for future work. est regret and, notably, improves over BAxUS across\nall three problems. These results indicate that how\n5 RESULTS onemovesinsideasubspacematters: curvature-aware\nNewton updates can be more effective than trust-\nregion moves, even when both operate in the same\nWe now benchmark NeST-BO and its subspace vari-\nembedding space.",
+      "size": 424,
+      "sentences": 3
+    },
+    {
+      "id": 82,
+      "content": "even when both operate in the same\nWe now benchmark NeST-BO and its subspace vari-\nembedding space. ant, labeled NeST-BO-sub, against strong local and\nglobal BO baselines: TuRBO (Eriksson et al., 2019), On the d = 1000 sparse suite, subspaces are essen-\nGIBO (Mu¨ller et al., 2021), MPD (Nguyen et al., tial.",
+      "size": 308,
+      "sentences": 2
+    },
+    {
+      "id": 83,
+      "content": "d = 1000 sparse suite, subspaces are essen-\nGIBO (Mu¨ller et al., 2021), MPD (Nguyen et al., tial. Methods that attempt to learn gradients and/or\n2022), MinUCB (Fan et al., 2024), BAxUS (Papen- Hessians in the ambient space require O(d) queries\nmeier et al., 2022), and a “vanilla” GP-BO configured per iteration and cannot meaningfully progress un-\nwithdimensionallycalibratedpriorsandLogEI(wela- der our fixed budgets (e.g., 200 evaluations), so we do\nbel this D-scaled LogEI) (Hvarfner et al., 2024).",
+      "size": 503,
+      "sentences": 2
+    },
+    {
+      "id": 84,
+      "content": "r fixed budgets (e.g., 200 evaluations), so we do\nbel this D-scaled LogEI) (Hvarfner et al., 2024). We not include them here. NeST-BO-sub clearly domi-\nalso include Sobol sampling as a non-model baseline. nates BAxUS, D-scaled LogEI, and TuRBO, achiev-\n===  7 ===\nWei-Ting Tang, Akshay Kudva, Joel A. Paulson\nFigure2: Summaryofperformanceversusevaluationsforallsyntheticandreal-worldproblemsandallmethods.",
+      "size": 405,
+      "sentences": 4
+    },
+    {
+      "id": 85,
+      "content": "on\nFigure2: Summaryofperformanceversusevaluationsforallsyntheticandreal-worldproblemsandallmethods. Each panel shows either simple regret (log scale; when the global minimizer is known) or the minimum observed\nvalue (otherwise). Curves are medians across 10 runs; shading is ± one standard error. Top two rows: synthetic\nproblems (20d and 1000d with 30 active variables). Bottom two rows: real-world tasks (control, planning, and\nhigh-dimensional model selection).",
+      "size": 464,
+      "sentences": 5
+    },
+    {
+      "id": 86,
+      "content": "bles). Bottom two rows: real-world tasks (control, planning, and\nhigh-dimensional model selection). See Appendix E for the full protocol and Appendix F for extended studies. ing substantially lower regret on both Ackley and 5.2 Mid- to High-Dim. Real-World Tasks\nGriewank.",
+      "size": 272,
+      "sentences": 5
+    },
+    {
+      "id": 87,
+      "content": "ing substantially lower regret on both Ackley and 5.2 Mid- to High-Dim. Real-World Tasks\nGriewank. TuRBO’s trust-region strategy is disad-\nvantaged in very high dimensions, where large local\nWe evaluate six real-world benchmarks spanning re-\ndiameters push pairwise distances into regimes that\ninforcement learning (RL) control, robotic planning,\ndegrade GP fit and acquisition gradients; in contrast,\nandlarge-scalehyperparametertuning.",
+      "size": 437,
+      "sentences": 3
+    },
+    {
+      "id": 88,
+      "content": "lanning,\ndegrade GP fit and acquisition gradients; in contrast,\nandlarge-scalehyperparametertuning. Control: Lu-\nNeST-BO-sub converts a handful of targeted samples\nnar Lander (d = 12) and Swimmer (d = 16) from\nnear the iterate into accurate Newton steps inside the\nOpenAI Gymnasium; the objective is the negative\nselected subspace (that can expand as iterations pro-\nepisodic return (reward sign flipped) (Towers et al.,\nceed), which drives fast local improvement. 2024).",
+      "size": 471,
+      "sentences": 3
+    },
+    {
+      "id": 89,
+      "content": "dic return (reward sign flipped) (Towers et al.,\nceed), which drives fast local improvement. 2024). Planning: RobotPushing(d=14)andRover\n===  8 ===\nNeST-BO\nTrajectory (d = 60) from Wang et al. (2018); Eriks-\nson et al. (2019), both optimized as negative reward.",
+      "size": 261,
+      "sentences": 5
+    },
+    {
+      "id": 90,
+      "content": "tory (d = 60) from Wang et al. (2018); Eriks-\nson et al. (2019), both optimized as negative reward. Very high-dimension: Ant (d = 888) – a Mu-\nJoCo quadruped with 8-dimensional action space and\n111-dimensional observations, yielding a linear state-\nfeedback policy with 888 parameters – and Leukemia\n(d = 7129), a weighted Lasso problem with 7129 hy-\nperparameters from LassoBench (Sˇehi´c et al., 2022). Task definitions, bounds, and initialization protocols\nare summarized in Appendix E.4.",
+      "size": 491,
+      "sentences": 5
+    },
+    {
+      "id": 91,
+      "content": "al., 2022). Task definitions, bounds, and initialization protocols\nare summarized in Appendix E.4. Figure 2 (last six\npanels in bottom two rows) reports median perfor-\nmance with ± one standard error bands. In the mid-dimensional group (d ≤ 60), NeST-BO is\nconsistently state of the art or competitive, achieving\nthelowestaveragevalueinthefewestiterationsforLu-\nnar Lander, Robot Pushing, and Swimmer.",
+      "size": 401,
+      "sentences": 4
+    },
+    {
+      "id": 92,
+      "content": "achieving\nthelowestaveragevalueinthefewestiterationsforLu-\nnar Lander, Robot Pushing, and Swimmer. On Rover\nTrajectory, NeST-BO-sub edges out NeST-BO, align-\ning with the intuition that embeddings can capture\nuseful structure as dimensionality and coupling grow. On Lunar Lander and Swimmer, however, subspaces\ncanslightlyhurtperformance,suggestingmostcoordi-\nnates contribute and the ambient space is preferable.",
+      "size": 413,
+      "sentences": 3
+    },
+    {
+      "id": 93,
+      "content": "slightlyhurtperformance,suggestingmostcoordi-\nnates contribute and the ambient space is preferable. Figure3: Optimizationof1000-dimensionalGriewank\nIn the very high-dimensional group, NeST-BO-sub is and Ackley with 30 active variables. All -sub variants\nagainthebest-performingmethod. OnAnt(d=888), operate using the same BAxUS-style embedding ap-\nD-scaledLogEIandTuRBOshowlittle-to-noimprove- proach.",
+      "size": 401,
+      "sentences": 4
+    },
+    {
+      "id": 94,
+      "content": "rate using the same BAxUS-style embedding ap-\nD-scaledLogEIandTuRBOshowlittle-to-noimprove- proach. Median simple regret (log scale) with ± one\nmentovertheirstartingvalues,whileBAxUSimproves standard error shading across 10 runs. but plateaus well above NeST-BO-sub.",
+      "size": 266,
+      "sentences": 3
+    },
+    {
+      "id": 95,
+      "content": "lues,whileBAxUSimproves standard error shading across 10 runs. but plateaus well above NeST-BO-sub. The Ant\nlandscape is both non-stationary and ill-conditioned;\nlength-scale calibration alone (as in D-scaled LogEI)\ntern holds: NeST-BO-sub reaches substantially lower\ncan over-smooth such objectives, and trust-region\nregret and converges faster, while the other subspace\nsteps struggle to adapt their geometry. On Leukemia\nmethods level off earlier.",
+      "size": 450,
+      "sentences": 4
+    },
+    {
+      "id": 96,
+      "content": "e the other subspace\nsteps struggle to adapt their geometry. On Leukemia\nmethods level off earlier. (d = 7129), NeST-BO-sub continues to improve\nthroughout the budget and achieves the best final ob-\njective, whereas other methods stagnate early.",
+      "size": 245,
+      "sentences": 3
+    },
+    {
+      "id": 97,
+      "content": "hroughout the budget and achieves the best final ob-\njective, whereas other methods stagnate early. 6 CONCLUSIONS\n5.3 Other Methods in Same Subspace\nA natural question raised by our subspace results in ThisworkpresentsNeST-BO,acurvature-awarelocal\nFigure 2 is whether NeST-BO’s gains are primarily Bayesian optimization (BO) method that selects sam-\ndue to the embedding, or whether targeting the lo- plestoshrinkaone-steplookaheadboundonNewton-\ncal Newton step continues to matter once we restrict step error and then moves with a damped Newton\nthe search to lower-dimensional subspaces.",
+      "size": 588,
+      "sentences": 2
+    },
+    {
+      "id": 98,
+      "content": "restrict step error and then moves with a damped Newton\nthe search to lower-dimensional subspaces. To iso- update.",
+      "size": 114,
+      "sentences": 2
+    },
+    {
+      "id": 99,
+      "content": "rror and then moves with a damped Newton\nthe search to lower-dimensional subspaces. To iso- update. Theoretical analysis establishes a vanish-\nlate these effects, we compare NeST-BO-sub to two ing power-function condition that holds under NeST-\nstrong baselines that use the same subspace machin- BO sampling, implying the algorithm inherits (inex-\nery: (i) GIBO-sub, i.e., GIBO run in the subspace us- act) Newton guarantees while our experiments show\ning its length-scale-normalized gradient step (Mu¨ller consistent gains over state-of-the-art local and high-\net al., 2021) and (ii) D-scaled LogEI-sub, i.e., stan- dimensional BO baselines on synthetic and real-world\ndard LogEI run in the subspace using the GP prior problems, including tasks with several thousands of\nfrom (Hvarfner et al., 2024).",
+      "size": 802,
+      "sentences": 3
+    },
+    {
+      "id": 100,
+      "content": "sing the GP prior problems, including tasks with several thousands of\nfrom (Hvarfner et al., 2024). For context, we also in- variables (when combined with a subspace variant to\ncludeBAxUS.Figure3showstheembeddingisnot the enhance scalability). Looking ahead, two promising\nwhole story.",
+      "size": 285,
+      "sentences": 3
+    },
+    {
+      "id": 101,
+      "content": "S.Figure3showstheembeddingisnot the enhance scalability). Looking ahead, two promising\nwhole story. NeST-BO-sub drives regret down by sev- directionsforfutureresearchincludeinvestigatingim-\neral orders of magnitude relative to GIBO-sub and D- proved subspace embedding strategies and improving\nscaledLogEI-sub(thelattertwoplateaunear∼100on numerical efficiency of the acquisition optimization\nthe log scale), while NeST-BO-sub continues improv- by better exploiting kernel structure and sparsity for\ning throughout the budget.",
+      "size": 526,
+      "sentences": 3
+    },
+    {
+      "id": 102,
+      "content": "continues improv- by better exploiting kernel structure and sparsity for\ning throughout the budget. On Ackley, the same pat- derivative-aware GPs. ===  9 ===\nWei-Ting Tang, Akshay Kudva, Joel A. Paulson\nReferences C. Hvarfner, E. O. Hellsten, and L. Nardi. Vanilla\nBayesian optimization performs great in high\nS. Ament, S. Daulton, D. Eriksson, M. Balandat, and\ndimensions. In R. Salakhutdinov, Z. Kolter,\nE. Bakshy.",
+      "size": 416,
+      "sentences": 5
+    },
+    {
+      "id": 103,
+      "content": "t, S. Daulton, D. Eriksson, M. Balandat, and\ndimensions. In R. Salakhutdinov, Z. Kolter,\nE. Bakshy. Unexpected improvements to expected\nK. Heller, A. Weller, N. Oliver, J. Scarlett, and\nimprovementforbayesianoptimization.Advancesin\nF. Berkenkamp, editors, Proceedings of the 41st In-\nNeural Information Processing Systems, 36:20577–\nternational Conference on Machine Learning, vol-\n20612, 2023.\nume 235 of Proceedings of Machine Learning Re-\nM. Balandat, B. Karrer, D. Jiang, S. Daulton, search, pages 20793–20817.",
+      "size": 514,
+      "sentences": 3
+    },
+    {
+      "id": 104,
+      "content": "gs of Machine Learning Re-\nM. Balandat, B. Karrer, D. Jiang, S. Daulton, search, pages 20793–20817. PMLR, 21–27 Jul 2024. B. Letham, A. G. Wilson, and E. Bakshy. Botorch:\nD. R. Jones, M. Schonlau, and W. J. Welch. Ef-\nAframeworkforefficientmonte-carlobayesianopti-\nficient global optimization of expensive black-box\nmization.Advancesinneuralinformationprocessing\nfunctions. Journal of Global Optimization, 13(4):\nsystems, 33:21524–21538, 2020. 455–492, 1998.",
+      "size": 458,
+      "sentences": 7
+    },
+    {
+      "id": 105,
+      "content": "ing\nfunctions. Journal of Global Optimization, 13(4):\nsystems, 33:21524–21538, 2020. 455–492, 1998. F. Berkenkamp, A. Krause, and A. P. Schoellig. Bayesian optimization with safety constraints: safe S. P. Karimireddy, S. U. Stich, and M. Jaggi. and automatic parameter tuning in robotics. Ma- Globallinearconvergenceofnewton’smethodwith-\nchine Learning, 112(10):3713–3747, 2023. out strong-convexity or lipschitz gradients. arXiv\npreprint arXiv:1806.00413, 2018. D. Bertsekas. Nonlinear Programming.",
+      "size": 499,
+      "sentences": 10
+    },
+    {
+      "id": 106,
+      "content": "or lipschitz gradients. arXiv\npreprint arXiv:1806.00413, 2018. D. Bertsekas. Nonlinear Programming. Athena Scien-\ntific, Belmont, MA, 3rd edition, 2016. A. Kudva, W.-T. Tang, and J. A. Paulson. Multi-\nobjectivebayesianoptimizationfornetworkedblack-\nF. De Roos, A. Gessner, and P. Hennig. High-\nbox systems: A path to greener profits and smarter\ndimensionalGaussianprocessinferencewithderiva-\ndesigns. arXiv preprint arXiv:2502.14121, 2025.\ntives.",
+      "size": 446,
+      "sentences": 10
+    },
+    {
+      "id": 107,
+      "content": "mensionalGaussianprocessinferencewithderiva-\ndesigns. arXiv preprint arXiv:2502.14121, 2025.\ntives. In International Conference on Machine\nLearning, pages 2535–2545. PMLR, 2021. B. Letham, R. Calandra, A. Rai, and E. Bakshy. Re-\nD. Eriksson and M. Jankowiak. High-dimensional examining linear embeddings for high-dimensional\nbayesian optimization with sparse axis-aligned sub- Bayesian optimization. Advances in Neural Infor-\nspaces.",
+      "size": 433,
+      "sentences": 8
+    },
+    {
+      "id": 108,
+      "content": "optimization with sparse axis-aligned sub- Bayesian optimization. Advances in Neural Infor-\nspaces. In Uncertainty in Artificial Intelligence, mation Processing Systems, 33:1546–1558, 2020.\npages 493–503. PMLR, 2021. M. Lindauer, K. Eggensperger, M. Feurer,\nD.Eriksson,M.Pearce,J.Gardner,R.D.Turner,and A.Biedenkapp,D.Deng,C.Benjamins,T.Ruhkopf,\nM. Poloczek. Scalable global optimization via local R. Sass, and F. Hutter. SMAC3: A versatile\nBayesian optimization.",
+      "size": 463,
+      "sentences": 7
+    },
+    {
+      "id": 109,
+      "content": "ble global optimization via local R. Sass, and F. Hutter. SMAC3: A versatile\nBayesian optimization. Advances in Neural Infor- Bayesian optimization package for hyperparam-\nmation Processing Systems, 32, 2019. eter optimization. Journal of Machine Learning\nResearch, 23(54):1–9, 2022. Z. Fan, W. Wang, S. H. Ng, and Q. Hu. Minimizing\nucb: abetterlocalsearchstrategyinlocalBayesian H. Mania, A. Guy, and B. Recht. Simple random\noptimization.",
+      "size": 439,
+      "sentences": 9
+    },
+    {
+      "id": 110,
+      "content": "etterlocalsearchstrategyinlocalBayesian H. Mania, A. Guy, and B. Recht. Simple random\noptimization. Advances in Neural Information Pro- searchprovidesacompetitiveapproachtoreinforce-\ncessing Systems, 37:130602–130634, 2024. ment learning. arXiv preprint arXiv:1803.07055,\nP. I. Frazier and J. Wang. Bayesian optimization for 2018.\nmaterials design. In Information Science for Mate-\nS. Mu¨ller, A. von Rohr, and S. Trimpe. Local pol-\nrials Discovery and Design, pages 45–75.",
+      "size": 473,
+      "sentences": 8
+    },
+    {
+      "id": 111,
+      "content": "r Mate-\nS. Mu¨ller, A. von Rohr, and S. Trimpe. Local pol-\nrials Discovery and Design, pages 45–75. Springer,\nicy search with Bayesian optimization. Advances in\n2015. Neural Information Processing Systems, 34:20708–\nP. I. Frazier, W. B. Powell, and S. Dayanik. A 20720, 2021.\nknowledge-gradient policy for sequential informa-\nY.NesterovandB.T.Polyak. Cubicregularizationof\ntion collection. SIAM Journal on Control and Op-\nNewton method and its global performance.",
+      "size": 463,
+      "sentences": 8
+    },
+    {
+      "id": 112,
+      "content": "zationof\ntion collection. SIAM Journal on Control and Op-\nNewton method and its global performance. Math-\ntimization, 47(5):2410–2439, 2008.\nematical Programming, 108(1):177–205, 2006. J. Gardner, G. Pleiss, K. Q. Weinberger, D. Bindel,\nQ.Nguyen,K.Wu,J.Gardner,andR.Garnett. Local\nand A. G. Wilson. Gpytorch: Blackbox matrix-\nBayesianoptimizationviamaximizingprobabilityof\nmatrix gaussian process inference with gpu accel-\ndescent. Advances in neural information processing\neration.",
+      "size": 482,
+      "sentences": 7
+    },
+    {
+      "id": 113,
+      "content": "ssian process inference with gpu accel-\ndescent. Advances in neural information processing\neration. Advances in neural information processing\nsystems, 35:13190–13202, 2022.\nsystems, 31, 2018. R. Garnett. Bayesian optimization. Cambridge Uni- J. Nocedal and S. J. Wright. Numerical Optimization. versity Press, 2023. Springer, 2006. C. Hvarfner, F. Hutter, and L. Nardi. Joint entropy L.Papenmeier, L.Nardi, andM.Poloczek.",
+      "size": 421,
+      "sentences": 11
+    },
+    {
+      "id": 114,
+      "content": "er, 2006. C. Hvarfner, F. Hutter, and L. Nardi. Joint entropy L.Papenmeier, L.Nardi, andM.Poloczek. Increasing\nsearch for maximally-informed Bayesian optimiza- thescopeasyoulearn: AdaptiveBayesianoptimiza-\ntion. Advances in Neural Information Processing tion in nested subspaces. Advances in Neural Infor-\nSystems, 35:11494–11506, 2022. mation Processing Systems, 35:11586–11601, 2022. ===  10 ===\nNeST-BO\nL. Papenmeier, M. Poloczek, and L. Nardi.",
+      "size": 447,
+      "sentences": 7
+    },
+    {
+      "id": 115,
+      "content": "essing Systems, 35:11586–11601, 2022. ===  10 ===\nNeST-BO\nL. Papenmeier, M. Poloczek, and L. Nardi. Under- S. Schulhoff, J. J. Tai, H. Tan, and O. G. You-\nstanding high-dimensional Bayesian optimization. nis. Gymnasium: Astandardinterfaceforreinforce-\narXiv preprint arXiv:2502.09198, 2025. ment learning environments, 2024. URL https:\n//arxiv.org/abs/2407.17032. J. A. Paulson, F. Sorourifar, and A. Mesbah.",
+      "size": 408,
+      "sentences": 8
+    },
+    {
+      "id": 116,
+      "content": "ronments, 2024. URL https:\n//arxiv.org/abs/2407.17032. J. A. Paulson, F. Sorourifar, and A. Mesbah. A tu-\ntorial on derivative-free policy learning methods for Z. Wang, F. Hutter, M. Zoghi, D. Matheson, and\ninterpretable controller representations. In Proceed- N. De Feitas. Bayesian optimization in a billion di-\nings of the American Control Conference. IEEE, mensions via random embeddings. Journal of Arti-\n2023. ficial Intelligence Research, 55:361–387, 2016. A. Rahimi and B. Recht.",
+      "size": 487,
+      "sentences": 10
+    },
+    {
+      "id": 117,
+      "content": "ngs. Journal of Arti-\n2023. ficial Intelligence Research, 55:361–387, 2016. A. Rahimi and B. Recht. Random features for large- Z. Wang, C. Gehring, P. Kohli, and S. Jegelka. scalekernelmachines. Advances in Neural Informa- Batched large-scale Bayesian optimization in high-\ntion Processing Systems, 20, 2007. dimensional spaces. In International Conference on\nArtificial Intelligence and Statistics, pages 745–754. B. Rashidi, K. Johnstonbaugh, and C. Gao.",
+      "size": 456,
+      "sentences": 8
+    },
+    {
+      "id": 118,
+      "content": "on\nArtificial Intelligence and Statistics, pages 745–754. B. Rashidi, K. Johnstonbaugh, and C. Gao. Cylin-\nPMLR, 2018.\ndrical Thompson sampling for high-dimensional\nH. Wendland. Scattered data approximation, vol-\nBayesian optimization. In International Conference\nume 17. Cambridge university press, 2004.\non Artificial Intelligence and Statistics,pages3502–\n3510. PMLR, 2024. C. K. Williams and C. E. Rasmussen. Gaussian Pro-\ncesses for Machine Learning, volume 2.",
+      "size": 465,
+      "sentences": 9
+    },
+    {
+      "id": 119,
+      "content": "MLR, 2024. C. K. Williams and C. E. Rasmussen. Gaussian Pro-\ncesses for Machine Learning, volume 2. MIT Press,\nC. W. Royer, M. O’Neill, and S. J. Wright. A\nCambridge, MA, 2006. Newton-CG algorithm with complexity guarantees\nfor smooth unconstrained optimization. Mathemat- K. Wu, K. Kim, R. Garnett, and J. Gardner. The be-\nical Programming, 180(1):451–488, 2020. havior and convergence of local Bayesian optimiza-\ntion.",
+      "size": 420,
+      "sentences": 8
+    },
+    {
+      "id": 120,
+      "content": "e-\nical Programming, 180(1):451–488, 2020. havior and convergence of local Bayesian optimiza-\ntion. Advances in Neural Information Processing\nA. Sabbatella, A. Ponti, I. Giordani, and F. Archetti. Systems, 36:73497–73523, 2023. A Bayesian approach for prompt optimization in\nLLMs. InInternationalConferenceonLearningand Z. Xu, H. Wang, J. M. Phillips, and S. Zhe. Stan-\nIntelligent Optimization, pages 348–360.",
+      "size": 410,
+      "sentences": 6
+    },
+    {
+      "id": 121,
+      "content": "rningand Z. Xu, H. Wang, J. M. Phillips, and S. Zhe. Stan-\nIntelligent Optimization, pages 348–360. Springer, dard Gaussian process is all you need for high-\n2024. dimensional Bayesian optimization. In The Thir-\nteenth International Conference on Learning Repre-\nK. Sˇehi´c, A. Gramfort, J. Salmon, and L. Nardi. Las-\nsentations, 2024.\nsobench: A high-dimensional hyperparameter opti-\nC. Zhu, R. H. Byrd, P. Lu, and J. Nocedal. Al-\nmizationbenchmarksuiteforlasso.",
+      "size": 463,
+      "sentences": 6
+    },
+    {
+      "id": 122,
+      "content": "hyperparameter opti-\nC. Zhu, R. H. Byrd, P. Lu, and J. Nocedal. Al-\nmizationbenchmarksuiteforlasso. InInternational\ngorithm 778: L-BFGS-B: Fortran subroutines for\nConference on Automated Machine Learning, pages\nlarge-scale bound-constrained optimization. ACM\n2–1. PMLR, 2022. Transactionsonmathematicalsoftware(TOMS),23\nA. E. Siemenn, Z. Ren, Q. Li, and T. Buonassisi. (4):550–560, 1997. Fast Bayesian optimization of needle-in-a-haystack\nproblems using zooming memory-based initializa-\ntion (ZoMBI).",
+      "size": 500,
+      "sentences": 8
+    },
+    {
+      "id": 123,
+      "content": "optimization of needle-in-a-haystack\nproblems using zooming memory-based initializa-\ntion (ZoMBI). npj Computational Materials, 9(1):\n79, 2023. J. Snoek, H. Larochelle, and R. P. Adams. Practi-\ncal bayesian optimization of machine learning algo-\nrithms. Advances in neural information processing\nsystems, 25, 2012. N. Srinivas, A. Krause, S. Kakade, and M. Seeger. Gaussianprocessoptimizationinthebanditsetting:\nNo regret and experimental design.",
+      "size": 446,
+      "sentences": 7
+    },
+    {
+      "id": 124,
+      "content": "e, and M. Seeger. Gaussianprocessoptimizationinthebanditsetting:\nNo regret and experimental design. In Proceedings\nof the 27th International Conference on Machine\nLearning, pages 1015–1022. Omnipress, 2010. W.-T.Tang,A.Chakrabarty,andJ.A.Paulson.BEA-\nCON: A Bayesian optimization strategy for nov-\nelty search in expensive black-box systems. arXiv\npreprint arXiv:2406.03616, 2024.",
+      "size": 380,
+      "sentences": 6
+    },
+    {
+      "id": 125,
+      "content": "trategy for nov-\nelty search in expensive black-box systems. arXiv\npreprint arXiv:2406.03616, 2024. M. Towers, A. Kwiatkowski, J. Terry, J. U. Balis,\nG. D. Cola, T. Deleu, M. Goul˜ao, A. Kallinteris,\nM. Krimmel, A. KG, R. Perez-Vicente, A. Pierr´e,\n===  11 ===\nSupplementary Material\nA GAUSSIAN PROCESS DERIVATIVE EXPRESSIONS\nA.1 Notation Summary\nLet X ⊂Rd be a convex, compact domain and let H be a reproducing kernel Hilbert space (RKHS) on X with\nreproducing kernel k(·,·), inner product ⟨·,·⟩ , and norm ∥·∥ .",
+      "size": 513,
+      "sentences": 3
+    },
+    {
+      "id": 126,
+      "content": "rnel Hilbert space (RKHS) on X with\nreproducing kernel k(·,·), inner product ⟨·,·⟩ , and norm ∥·∥ . H H\nFor the objective f :X →R, denote the gradient and Hessian at x∈X by\ng(x)=∇f(x)∈Rd, H(x)=∇2f(x)∈Rd×d. A Gaussian process (GP) prior GP(µ,k) is specified by mean µ and covariance k functions. Conditioning on\ndata D ={(X,y)} for X ∈Rn×d and y ∈Rn yields a posterior GP f|D ∼GP(µ ,k ). Since differentiation is\nD D\nlinear, ∇f and ∇2f are also GPs under the same conditioning.",
+      "size": 476,
+      "sentences": 5
+    },
+    {
+      "id": 127,
+      "content": "P(µ ,k ). Since differentiation is\nD D\nlinear, ∇f and ∇2f are also GPs under the same conditioning. We use the shorthand\ng (x)=E{g(x)|D}∈Rd, Σg(x)=cov{g(x)|D}∈Rd×d,\n(cid:98)D D\nH(cid:99)D (x)=E{H(x)|D}∈Rd×d, ΣH\nD\n(x)=cov{vec(H(x))|D}∈Rd2×d2 . We write ∥·∥ for the Euclidean norm (vectors) and the induced operator 2-norm (matrices). A.2 Posterior GP under Linear Operators\nGPs GP(µ,k) are closed under linear operators.",
+      "size": 419,
+      "sentences": 5
+    },
+    {
+      "id": 128,
+      "content": "(matrices). A.2 Posterior GP under Linear Operators\nGPs GP(µ,k) are closed under linear operators. For linear operators L,M and f ∼GP(µ,k),\n(cid:20) Lf (cid:21) (cid:18)(cid:20) Lµ (cid:21) (cid:20) LkL′ LkM′ (cid:21)(cid:19)\n∼ GP , ,\nMf Mµ MkL′ MkM′\nwhere L′ and M′ act on the second kernel argument as adjoints of L and M. We condition on noisy function\nobservations at X ∈Rn×d, y =f(X)+ε, ε∼N(0,σ2I), take M=Id at X, and evaluate L∈{Id,∇,∇2} at\na test point x.",
+      "size": 463,
+      "sentences": 3
+    },
+    {
+      "id": 129,
+      "content": "ions at X ∈Rn×d, y =f(X)+ε, ε∼N(0,σ2I), take M=Id at X, and evaluate L∈{Id,∇,∇2} at\na test point x. Then, for any L, the posterior Lf(x)|D ∼N(µL(x), ΣL(x)) with\nD D\nµL(x)=Lµ(x)+Lk(x,X) (cid:0) k(X,X)+σ2I (cid:1)−1(cid:0) y−µ(X) (cid:1) , (A.1a)\nD\nkL(x,x′)=Lk(x,x′)L′−Lk(x,X) (cid:0) k(X,X)+σ2I (cid:1)−1 k(X,x′)L′, (A.1b)\nD\nΣL(x)=kL(x,x′) (cid:12) (cid:12) . (A.1c)\nD D x′=x\nLet K =k(X,X)+σ2I and α=K−1 (cid:0) y−µ(X) (cid:1) ; these can be precomputed from the prior.",
+      "size": 468,
+      "sentences": 3
+    },
+    {
+      "id": 130,
+      "content": "x′=x\nLet K =k(X,X)+σ2I and α=K−1 (cid:0) y−µ(X) (cid:1) ; these can be precomputed from the prior. XX XX\nA.3 Power Functions for Gradient and Hessian\nWe quantify posterior uncertainty via the (squared) power functions (traces of derivative covariances) at x:\nπ D g(x)=tr(Σg D (x))= (cid:88) i= d 1 ∂2 ∂ k x D i ( ∂ x x ,x ′ i ′) (cid:12) (cid:12) (cid:12) (cid:12) x′=x , π D H(x)=tr (cid:0) ΣH D (x) (cid:1) = (cid:88) i= d 1 (cid:88) j= d 1 ∂x ∂ i 4 ∂ k x D j ( ∂ x x ,x ′ i ∂ ′) x′ j (cid:12) (cid:12) (cid:12) (cid:12) (cid:12) x′=x .",
+      "size": 538,
+      "sentences": 2
+    },
+    {
+      "id": 131,
+      "content": "d 1 ∂x ∂ i 4 ∂ k x D j ( ∂ x x ,x ′ i ∂ ′) x′ j (cid:12) (cid:12) (cid:12) (cid:12) (cid:12) x′=x . Using (A.1), these admit closed forms:\n(cid:88) d (cid:20) ∂2k(x,x′) ∂k(x,X) ∂k(X,x′) (cid:21)\nπg(x)= − K−1 , (A.2a)\nD ∂x ∂x′ ∂x XX ∂x′\ni=1 i i i i x′=x\n(cid:88) d (cid:88) d (cid:34) ∂4k(x,x′) ∂2k(x,X) ∂2k(X,x′) (cid:35)\nπH(x)= − K−1 .",
+      "size": 336,
+      "sentences": 2
+    },
+    {
+      "id": 132,
+      "content": "=1 i i i i x′=x\n(cid:88) d (cid:88) d (cid:34) ∂4k(x,x′) ∂2k(x,X) ∂2k(X,x′) (cid:35)\nπH(x)= − K−1 . (A.2b)\nD ∂x ∂x ∂x′∂x′ ∂x ∂x XX ∂x′∂x′\ni=1j=1 i j i j i j i j x′=x\n===  12 ===\nNeST-BO\nA.4 Derivatives for the Squared Exponential (SE) Kernel\nWe use the SE kernel with automatic relevance determination (ARD) (i.e., independent length-scales ℓ are\ni\nincluded for each dimension to control their importance)\nk(x,x′)=σ2 exp (cid:0) −1(x−x′)⊤L(x−x′) (cid:1) ,\nf 2\nwithscalehyperparameterσ2 thatcontrolstheexpectedvarianceoff andL=diag(ℓ−2,...,ℓ−2).",
+      "size": 544,
+      "sentences": 2
+    },
+    {
+      "id": 133,
+      "content": "(cid:1) ,\nf 2\nwithscalehyperparameterσ2 thatcontrolstheexpectedvarianceoff andL=diag(ℓ−2,...,ℓ−2). LetL =ℓ−2\nf 1 d ii i\nand r =x−x′ with r denoting its i-th component. i\nFirst derivatives. ∂k(x,x′) ∂k(x,x′)\n=−L r k(x,x′), =+L r k(x,x′). ∂x ii i ∂x′ jj j\ni j\nSecond derivatives (mixed across arguments). (cid:12)\n∂2k(x,x′) (cid:16) (cid:17) ∂2k (cid:12)\n= L δ −L L r r k(x,x′), (cid:12) =L δ σ2. ∂x ∂x′ ii ij ii jj i j ∂x ∂x′ (cid:12) ii ij f\ni j i j(cid:12) x′=x\nSecond derivatives (same argument).",
+      "size": 498,
+      "sentences": 7
+    },
+    {
+      "id": 134,
+      "content": "x′ ii ij ii jj i j ∂x ∂x′ (cid:12) ii ij f\ni j i j(cid:12) x′=x\nSecond derivatives (same argument). ∂2k(x,x′) ∂2k(x,x′) (cid:16) (cid:17)\n= = −L δ +L L r r k(x,x′). ∂x ∂x ∂x′∂x′ ii ij ii jj i j\ni j i j\nFourth derivatives (two in each argument).",
+      "size": 244,
+      "sentences": 3
+    },
+    {
+      "id": 135,
+      "content": "δ +L L r r k(x,x′). ∂x ∂x ∂x′∂x′ ii ij ii jj i j\ni j i j\nFourth derivatives (two in each argument). For the Hessian trace terms we require\n∂4k(x,x′) (cid:40) L2\nii\n(cid:0) L2\nii\nr\ni\n4−6L\nii\nr\ni\n2+3 (cid:1) k(x,x′) if i=j,\n=\n∂x i ∂x j ∂x′ i ∂x′ j L ii L jj (cid:0) L ii L jj r i 2r j 2−L ii r i 2−L jj r j 2+1 (cid:1) k(x,x′) if i̸=j,\nand at coincidence x′ =x these reduce to\n∂x ∂ i 2 ∂ k x j (cid:12) (cid:12) (cid:12) (cid:12) x′=x =−L ii δ ij σ f 2, ∂x i ∂x ∂ j 4 ∂ k x′ i ∂x′ j (cid:12) (cid:12) (cid:12) (cid:12) (cid:12) x′=x =σ f 2 × (cid:40) 3 L L ii L 2 ii , jj , i i= ̸= j j. ,\nB PROOF OF DATA-DEPENDENT NEWTON-STEP ERROR BOUND\nWeproveTheorem1fromthemaintextinthisappendix.",
+      "size": 682,
+      "sentences": 3
+    },
+    {
+      "id": 136,
+      "content": ". ,\nB PROOF OF DATA-DEPENDENT NEWTON-STEP ERROR BOUND\nWeproveTheorem1fromthemaintextinthisappendix. NotationfortheGPposteriorandderivativeprocesses\n(including g\n(cid:98)D\n, H(cid:99)D , and the gradient/Hessian power functions π\nD\ng, π\nD\nH) is summarized in Appendix A. Throughout this work, we make the following standard assumptions about the regularity of the kernel and\nboundedness of the ground-truth function. Assumption 1 (Kernel regularity).",
+      "size": 449,
+      "sentences": 5
+    },
+    {
+      "id": 137,
+      "content": "arity of the kernel and\nboundedness of the ground-truth function. Assumption 1 (Kernel regularity). The kernel k is stationary and four times continuously differentiable. Assumption 2 (Function class). The ground-truth f is in H and satisfies ∥f∥ ≤B for some B <∞. H\nThese two assumptions directly imply pointwise boundedness of all the first- and second-order derivatives of f\nin terms of the RKHS norm.",
+      "size": 404,
+      "sentences": 6
+    },
+    {
+      "id": 138,
+      "content": "ointwise boundedness of all the first- and second-order derivatives of f\nin terms of the RKHS norm. B.1 Auxiliary Bounds via Power Functions\nThe following are minor extensions of standard RKHS “power function” bounds for derivative estimates under\nGP posteriors, which are a consequence of (Wendland, 2004, Theorem 11.4). The first was presented in (Wu\net al., 2023, Lemma 1) and the second we prove here. Lemma 1 (Gradient posterior error).",
+      "size": 441,
+      "sentences": 4
+    },
+    {
+      "id": 139,
+      "content": "ted in (Wu\net al., 2023, Lemma 1) and the second we prove here. Lemma 1 (Gradient posterior error). For any x∈X and dataset D,\n(cid:13) (cid:13)g(x)−g (cid:98)D (x) (cid:13) (cid:13) 2 ≤ π D g(x)∥f∥2 H . ===  13 ===\nWei-Ting Tang, Akshay Kudva, Joel A. Paulson\nLemma 2 (Hessian posterior error). For any x∈X and dataset D,\n(cid:13) (cid:13)H(x)−H(cid:99)D (x) (cid:13) (cid:13) 2 ≤ π\nD\nH(x)∥f∥2\nH\n. Proof. Let λ : H → R be the composition of the evaluation operator and a differential operator.",
+      "size": 494,
+      "sentences": 7
+    },
+    {
+      "id": 140,
+      "content": "H\n. Proof. Let λ : H → R be the composition of the evaluation operator and a differential operator. (Wendland,\n2004, Theorem 11.4) provides a bound on the squared error between the operator λ applied to the true function\nf and the posterior mean function µ , i.e.,\nD\n(λf(x)−λµ (x))2 ≤λ(1)λ(2)k (x,x)∥f∥2 ,\nD D H\nwhere λ(1) and λ(2) are applied to the first and second argument of k (·,·), respectively.",
+      "size": 402,
+      "sentences": 4
+    },
+    {
+      "id": 141,
+      "content": ",\nD D H\nwhere λ(1) and λ(2) are applied to the first and second argument of k (·,·), respectively. Select the linear\nD\nfunctionaltobethesecondpartialderivativeλ:f (cid:55)→ ∂2 f. Thelefthandsideoftheinequalitythenbecomes\n∂xi∂xj\n(cid:16) (cid:17)2\n∂2 f(x)− ∂2 µ (x) , which is the error in the n-th element of the vectorized Hessian matrix where\n∂xi∂xj ∂xi∂xj D\nn=(i−1)d+j. Therighthandsideisexactlythen-thdiagonalentryofΣH(x).",
+      "size": 426,
+      "sentences": 3
+    },
+    {
+      "id": 142,
+      "content": "sian matrix where\n∂xi∂xj ∂xi∂xj D\nn=(i−1)d+j. Therighthandsideisexactlythen-thdiagonalentryofΣH(x). Wecanusethisinequalityfor\nD\nevery element n and sum over n=1,...,d2 to arrive at the Frobenius norm of the error in the Hessian matrix:\n(cid:16) (cid:17)2\n∥H(x) − H(cid:99)D (x)∥2\nF\n= (cid:80)d\ni=1\n(cid:80)d\nj=1 ∂x\n∂\ni∂\n2\nxj\nf(x)−\n∂x\n∂\ni∂\n2\nxj\nµ\nD\n(x) . We can then use the standard inequality\n∥A∥≤∥A∥ for any square matrix A to complete the proof.",
+      "size": 448,
+      "sentences": 4
+    },
+    {
+      "id": 143,
+      "content": "x) . We can then use the standard inequality\n∥A∥≤∥A∥ for any square matrix A to complete the proof. F\nB.2 Proof of Theorem 1 – Bounding the Newton-Step Error\nRecall from the definitions provided in the theorem statement that ε\nD\n(x) = ∥d(x)−d(cid:98)D (x)∥, where d(x) =\nH(x)−1g(x) and d(cid:98)D (x)=H(cid:99)D (x)−1g\n(cid:98)D\n(x).",
+      "size": 333,
+      "sentences": 3
+    },
+    {
+      "id": 144,
+      "content": "∥d(x)−d(cid:98)D (x)∥, where d(x) =\nH(x)−1g(x) and d(cid:98)D (x)=H(cid:99)D (x)−1g\n(cid:98)D\n(x). Suppressing the explicit dependence on x for readability:\nd−d(cid:98)D =H−1g−H(cid:99) −\nD\n1 g\n(cid:98)D\n=H−1(cid:0) g−g\n(cid:98)D\n(cid:1) + (cid:0) H−1−H(cid:99) −\nD\n1(cid:1) g\n(cid:98)D\n.",
+      "size": 288,
+      "sentences": 2
+    },
+    {
+      "id": 145,
+      "content": "1 g\n(cid:98)D\n=H−1(cid:0) g−g\n(cid:98)D\n(cid:1) + (cid:0) H−1−H(cid:99) −\nD\n1(cid:1) g\n(cid:98)D\n. (cid:124) (cid:123)(cid:122) (cid:125) (cid:124) (cid:123)(cid:122) (cid:125)\n(a) (b)\nBy ∥a+b∥2 ≤2∥a∥2+2∥b∥2 (from the Cauchy-Schwarz inequality) and submultiplicativity,\n−1\nε2\nD\n≤2∥H−1∥2∥g−g\n(cid:98)D\n∥2+2∥H−1−H(cid:99)\nD\n∥2∥g\n(cid:98)D\n∥2.",
+      "size": 340,
+      "sentences": 2
+    },
+    {
+      "id": 146,
+      "content": "ty) and submultiplicativity,\n−1\nε2\nD\n≤2∥H−1∥2∥g−g\n(cid:98)D\n∥2+2∥H−1−H(cid:99)\nD\n∥2∥g\n(cid:98)D\n∥2. Use the resolvent identity H−1 −H(cid:99) −\nD\n1 = H−1(cid:0) H(cid:99)D −H (cid:1) H(cid:99) −\nD\n1 to bound the second term by ∥H−1∥2∥H(cid:99)D −\n−1\nH∥2∥H(cid:99)\nD\n∥2∥g\n(cid:98)D\n∥2. Applying Lemmas 1–2 and ∥f∥\nH\n≤B gives\n \nε2\nD\n≤2B2∥H−1∥2\n\nπ\nD\ng(x)+∥H(cid:99)D (x)−1∥2∥g\n(cid:98)D\n(x)∥2 π\nD\nH(x)\n\n.",
+      "size": 407,
+      "sentences": 3
+    },
+    {
+      "id": 147,
+      "content": "∥f∥\nH\n≤B gives\n \nε2\nD\n≤2B2∥H−1∥2\n\nπ\nD\ng(x)+∥H(cid:99)D (x)−1∥2∥g\n(cid:98)D\n(x)∥2 π\nD\nH(x)\n\n. (cid:124) (cid:123)(cid:122) (cid:125)\nsD(x)\n(cid:113) √\nEquivalently, ε (x)≤C πg(x)+s (x)πH(x) with C = 2B∥H(x)−1∥, as stated. □\nD x D D D x\nWhat the bound says. The error in the Newton step decomposes into (i) gradient uncertainty and (ii)\nHessian uncertainty at x scaled by a factor s\nD\n(x) = ∥H(cid:99)D (x)−1∥2∥g\n(cid:98)D\n(x)∥2.",
+      "size": 433,
+      "sentences": 4
+    },
+    {
+      "id": 148,
+      "content": "d (ii)\nHessian uncertainty at x scaled by a factor s\nD\n(x) = ∥H(cid:99)D (x)−1∥2∥g\n(cid:98)D\n(x)∥2. This scale is large precisely when\nthe local problem is ill-conditioned and/or when the gradient is sizeable, so the bound quantitatively formalizes\nwhen learning curvature is disproportionately valuable.",
+      "size": 304,
+      "sentences": 2
+    },
+    {
+      "id": 149,
+      "content": "ble, so the bound quantitatively formalizes\nwhen learning curvature is disproportionately valuable. C EMPIRICAL STUDY OF THE SCALE FACTOR’S IMPACT\nThe practical NeST acquisition (7) derived in the main text is\nα (Z|x ,D,s )=πg (x )+s πH (x ),\n(cid:98)NeST t (cid:98)t D∪Z t (cid:98)t D∪Z t\ni.e., a weighted sum of the local gradient and Hessian power functions. While the one-step lookahead form (6)\nincludesanexpectationoverfutureobservations,estimatingthatexpectationbyMonteCarlocanbecostly.",
+      "size": 493,
+      "sentences": 3
+    },
+    {
+      "id": 150,
+      "content": "m (6)\nincludesanexpectationoverfutureobservations,estimatingthatexpectationbyMonteCarlocanbecostly. This\nappendix asks: how sensitive is performance to the choice of the scale factor s ? (cid:98)t\n===  14 ===\nNeST-BO\nSetup.",
+      "size": 223,
+      "sentences": 3
+    },
+    {
+      "id": 151,
+      "content": "sensitive is performance to the choice of the scale factor s ? (cid:98)t\n===  14 ===\nNeST-BO\nSetup. We compare four acquisition functions for sequential design over b =d points:\nt\n• α (s=1) with s =1 (our default);\n(cid:98)NeST (cid:98)t\n• α\n(cid:98)NeST\n(s=plugin) with s\n(cid:98)t\n=s\nD\n(x\nt\n)=∥H(cid:99)D (x\nt\n)−1∥2∥g\n(cid:98)D\n(x\nt\n)∥2;\n• α˜ (MC), which uses a Monte Carlo estimate of the expectation (with 32 samples) in (6);\nNeST\n• the GIBO gradient–information rule α˜ .",
+      "size": 476,
+      "sentences": 3
+    },
+    {
+      "id": 152,
+      "content": "stimate of the expectation (with 32 samples) in (6);\nNeST\n• the GIBO gradient–information rule α˜ . GI\nWe also include a random sampling (RS) baseline. At each iteration, we minimize the chosen acquisition over\nthe domain using L-BFGS (Zhu et al., 1997) with 20 random multistarts.",
+      "size": 281,
+      "sentences": 3
+    },
+    {
+      "id": 153,
+      "content": "the chosen acquisition over\nthe domain using L-BFGS (Zhu et al., 1997) with 20 random multistarts. We study the Griewank function\nf(x)= (cid:88) d x2 i − (cid:89) d cos (cid:18) √ x i (cid:19) +1,\n4000 i\ni=1 i=1\nin dimensions d∈{2,3,4,5} on [0,1]d. For each d, we evaluate the Newton-step error ε\nD\n(x)=∥d(x)−d(cid:98)D (x)∥\nat 10 randomly chosen test locations x and report the per-iteration median across 10 replicates.",
+      "size": 421,
+      "sentences": 2
+    },
+    {
+      "id": 154,
+      "content": ")∥\nat 10 randomly chosen test locations x and report the per-iteration median across 10 replicates. The GP\nhyperparameters are fixed across methods: they are fit once (on a separate set of samples) and then held\nconstant. Initial designs use 5/10/20/30 points for d=2/3/4/5. Results.",
+      "size": 283,
+      "sentences": 4
+    },
+    {
+      "id": 155,
+      "content": "t of samples) and then held\nconstant. Initial designs use 5/10/20/30 points for d=2/3/4/5. Results. Figure C.1 illustrates two main messages: (i) α (s=1) and the plug-in/MC variants reduce\nNeST\nNewton-step error at very similar rates across all d and consistently outperform α and RS; and (ii) this\nGI\nadvantage translates into better optimization, as seen in the best-found value distributions (bottom row). The\ngapwidenswithdimension,wherecurvatureinformationbecomesmoreimportant.",
+      "size": 482,
+      "sentences": 5
+    },
+    {
+      "id": 156,
+      "content": "stributions (bottom row). The\ngapwidenswithdimension,wherecurvatureinformationbecomesmoreimportant. Afixed,data-agnosticweight\ns =1 is a robust and inexpensive choice: it matches the plug-in and MC versions while avoiding extra computa-\nt\ntionandhyper-sensitivity. Thissupportsourthedefaultselectedinallexperimentsinthemaintext.",
+      "size": 328,
+      "sentences": 4
+    },
+    {
+      "id": 157,
+      "content": "omputa-\nt\ntionandhyper-sensitivity. Thissupportsourthedefaultselectedinallexperimentsinthemaintext. Itwouldbe\ninterestingtomorecarefullystudy, eithertheoreticallyorempirically, howthetuningofs impactsoptimization\n(cid:98)t\nperformance; this type of analysis was outside the scope of this initial contribution. Our results further suggest\nthat NeST-BO’s gains might come from targeting curvature at all compared to delicate tuning of s – but this\n(cid:98)t\nyet to be rigorously formalized.",
+      "size": 488,
+      "sentences": 4
+    },
+    {
+      "id": 158,
+      "content": "ature at all compared to delicate tuning of s – but this\n(cid:98)t\nyet to be rigorously formalized. D THEORETICAL CONVERGENCE PROOFS\nWe continue to use the notation summarized in Appendix A and let Assumptions 1–2 hold from Appendix B.\nD.1 Proof of Theorem 2 – Showing the Vanishing Power-Function Condition (VPC) Holds\nWefirstconnectourprooftothe“errorfunction”deviceusedinpriorlocalBOanalyses(Wuetal.,2023). Fixa\nbatch size b>0.",
+      "size": 430,
+      "sentences": 3
+    },
+    {
+      "id": 159,
+      "content": "ectourprooftothe“errorfunction”deviceusedinpriorlocalBOanalyses(Wuetal.,2023). Fixa\nbatch size b>0. For a stationary kernel k(x,x′)=φ(x−x′) and noise variance σ2≥0, define the (design-only)\nerror function at the origin\nE (b)= inf (cid:2) πg(0) + sπH(0) (cid:3) ,\nd,k,s,σ Z∈Rb×d Z Z\nwhere π· denotes the power function of the posterior conditioning only on the batch inputs Z (no prior data). Z\nBy construction, E (b)≥0. d,k,s,σ\nLemma 3 (Monotonicity via conditioning).",
+      "size": 468,
+      "sentences": 5
+    },
+    {
+      "id": 160,
+      "content": "uts Z (no prior data). Z\nBy construction, E (b)≥0. d,k,s,σ\nLemma 3 (Monotonicity via conditioning). For any dataset D, point x, and b-point augmentation Z ∈ Rb×d,\nπg (x)≤πg(x) and πH (x)≤πH(x). Consequently, πg (x)+sπH (x)≤E (b). D∪Z Z D∪Z Z D∪Z D∪Z d,k,s,σ\nProof.",
+      "size": 264,
+      "sentences": 6
+    },
+    {
+      "id": 161,
+      "content": "(x)≤πg(x) and πH (x)≤πH(x). Consequently, πg (x)+sπH (x)≤E (b). D∪Z Z D∪Z Z D∪Z D∪Z d,k,s,σ\nProof. For any linear operator L (e.g., gradient components or Hessian entries), the posterior variance has the\nSchur-complement form Var[Lf(x) | Z] = Lk(x,x)L′ −Lk(x,Z) (cid:0) K +σ2I (cid:1)−1 k(Z,x)L′, which is the prior\nZZ\nvariance minus a positive semidefinite term. Hence conditioning on more inputs (augmenting by D) can only\nreduce the variance, and taking traces gives the claimed inequalities.",
+      "size": 495,
+      "sentences": 5
+    },
+    {
+      "id": 162,
+      "content": "s (augmenting by D) can only\nreduce the variance, and taking traces gives the claimed inequalities. Finally, by stationarity, we may shift\ncoordinates so that x = 0 without changing the value on the left; then take the infimum over Z to obtain the\nbound. See also the identical subset-conditioning step for the gradient in Wu et al. (2023, Lemma 8).",
+      "size": 349,
+      "sentences": 4
+    },
+    {
+      "id": 163,
+      "content": "und. See also the identical subset-conditioning step for the gradient in Wu et al. (2023, Lemma 8). Thus, to show the VPC it suffices to show, for each t, a batch Z of size b at the current iterate x such that\nt t\nE (b ) can be made arbitrarily small as b grows. We do that for the noiseless and noisy cases next. d,k,s,σ t t\n===  15 ===\nWei-Ting Tang, Akshay Kudva, Joel A. Paulson\nFigureC.1: Empiricalstudyofscalefactorsensitivity.",
+      "size": 433,
+      "sentences": 6
+    },
+    {
+      "id": 164,
+      "content": "===\nWei-Ting Tang, Akshay Kudva, Joel A. Paulson\nFigureC.1: Empiricalstudyofscalefactorsensitivity. Top: MedianNewton-steperror(logscale)versusnumber\nof function evaluations. Bottom: Distribution of best-found objective value (log scale) at the final budget of\n100 iterations. NeST with a fixed s=1 closely tracks the plug-in and Monte Carlo (MC) sampling variants and\nconsistently beats α , the core acquisition underpinning the GIBO method (Mu¨ller et al., 2021), and random\nGI\nsampling (RS).",
+      "size": 494,
+      "sentences": 4
+    },
+    {
+      "id": 165,
+      "content": "core acquisition underpinning the GIBO method (Mu¨ller et al., 2021), and random\nGI\nsampling (RS). All experiments were replicated 10 times and the shaded regions show ± one standard error. Noiseless case (σ =0). Let h>0 and consider the symmetric stencil\nS ={0} ∪ {±he : 1≤i≤d} ∪ {±h(e +e ): 1≤i<j ≤d},\nh i i j\nwhere e is the i-th standard unit vector. This stencil contains b⋆ =d2+d+1 points.",
+      "size": 394,
+      "sentences": 5
+    },
+    {
+      "id": 166,
+      "content": "i<j ≤d},\nh i i j\nwhere e is the i-th standard unit vector. This stencil contains b⋆ =d2+d+1 points. For stationary k(x,x′)=\ni\nφ(x − x′) with φ even and four-times continuously differentiable, the odd derivatives vanish at the origin:\n∇φ(0) = 0 and ∇3φ(0) = 0. Central-difference symmetries then cancel the leading odd terms in the Taylor\nexpansions of the kernel derivatives used in the gradient and Hessian power functions.",
+      "size": 424,
+      "sentences": 4
+    },
+    {
+      "id": 167,
+      "content": "n the Taylor\nexpansions of the kernel derivatives used in the gradient and Hessian power functions. As h → 0, the mixed\nsecond- and fourth-order blocks are exactly interpolated at 0, hence\nlim πg (0)=0, lim πH(0)=0. h→0\nSh\nh→0\nSh\nTherefore,E (b⋆)=0foranys>0. ByLemma3,theNeSTbatchthatminimizesπg (x )+s πH (x )\nd,k,s,0 Dt∪Z t (cid:98)t Dt∪Z t\ncandrivethisquantityarbitrarilycloseto0 by shrinking h. Notethat, forthe gradientterm alone, thisrecovers\nthe noiseless result in Wu et al.",
+      "size": 482,
+      "sentences": 4
+    },
+    {
+      "id": 168,
+      "content": "by shrinking h. Notethat, forthe gradientterm alone, thisrecovers\nthe noiseless result in Wu et al. 2023, Lemma 2; our stencil adds the (i,j) pairs so that the Hessian power\nsimultaneously vanishes. Noisy case (σ > 0). Use the same symmetric stencil and place m independent replicates at each symmetric\nlocation.",
+      "size": 312,
+      "sentences": 4
+    },
+    {
+      "id": 169,
+      "content": "> 0). Use the same symmetric stencil and place m independent replicates at each symmetric\nlocation. Aggregating m replicates by averaging is equivalent (for GP posteriors) to a single pseudo-observation\natthatinputwithnoisevarianceσ2/m; substitutingthisintotheSchur-complementexpressionfortheposterior\ncovariance shows that each coordinate-wise contribution to the gradient power function is reduced by O(σ2/m)\nrelative to the noiseless limit.",
+      "size": 443,
+      "sentences": 3
+    },
+    {
+      "id": 170,
+      "content": "contribution to the gradient power function is reduced by O(σ2/m)\nrelative to the noiseless limit. The same calculation applies to the Hessian power function because it is built\nfrom derivatives of the kernel, and the covariance update depends only on inputs and (effective) noise. Taking\nh→0 (eliminating finite-stencil bias) and m→∞ (variance →0) as b grows yields\nt\nπg (x )→0 and πH (x )→0,\nDt+1 t Dt+1 t\n===  16 ===\nNeST-BO\ni.e., the VPC holds in the noisy case as well.",
+      "size": 474,
+      "sentences": 3
+    },
+    {
+      "id": 171,
+      "content": ")→0 and πH (x )→0,\nDt+1 t Dt+1 t\n===  16 ===\nNeST-BO\ni.e., the VPC holds in the noisy case as well. Combining the noiseless and noisy arguments with Lemma 3 completes the proof. D.2 Local Quadratic Convergence\nWe now analyze the local convergence behavior of NeST-BO, which follows from relatively standard results for\n(inexact) Newton’s method. The main difference here is that we have a data-driven Newton-step error. Theorem 3 (Local quadratic convergence with NeST).",
+      "size": 470,
+      "sentences": 5
+    },
+    {
+      "id": 172,
+      "content": "is that we have a data-driven Newton-step error. Theorem 3 (Local quadratic convergence with NeST). Assume f is twice differentiable, H is β-Lipschitz on a\nneighborhood N of a local minimizer x⋆, and λ (H(x))≥λ >0 on N. Consider the full-step NeST update\nmin min\nx\nt+1\n=x\nt\n−d(cid:98)Dt+1 (x\nt\n) with Newton-step error ε\nt\n=∥d(x\nt\n)−d(cid:98)Dt+1 (x\nt\n)∥.",
+      "size": 355,
+      "sentences": 3
+    },
+    {
+      "id": 173,
+      "content": "in min\nx\nt+1\n=x\nt\n−d(cid:98)Dt+1 (x\nt\n) with Newton-step error ε\nt\n=∥d(x\nt\n)−d(cid:98)Dt+1 (x\nt\n)∥. Then, for any x\nt\n∈N, we have\n∥x t+1 −x⋆∥≤ 2λ β ∥x t −x⋆∥2+ε t , ε2 t ≤2B2(cid:13) (cid:13)H(x t )−1(cid:13) (cid:13) 2 Φ Dt+1 (x t ),\nmin\nwhere Φ (x)=πg(x)+s (x)πH(x). In particular, if ε ≤κ∥x −x⋆∥2 eventually for κ>0 (e.g., under VPC),\nD D D D t t\nthe iterates enter the quadratic regime. Proof.",
+      "size": 397,
+      "sentences": 4
+    },
+    {
+      "id": 174,
+      "content": "2 eventually for κ>0 (e.g., under VPC),\nD D D D t t\nthe iterates enter the quadratic regime. Proof. Write d(cid:98)t =d(cid:98)Dt+1 (x\nt\n) and decompose the updated iterate as follows\nx\nt+1\n−x⋆ = (cid:2) x\nt\n−x⋆−H(x\nt\n)−1g(x\nt\n) (cid:3) + (cid:2) d(x\nt\n)−d(cid:98)t (cid:3) . The second bracket is ε by definition.",
+      "size": 314,
+      "sentences": 4
+    },
+    {
+      "id": 175,
+      "content": "t\n)−1g(x\nt\n) (cid:3) + (cid:2) d(x\nt\n)−d(cid:98)t (cid:3) . The second bracket is ε by definition. For the first bracket, inexact-Newton analysis with β-Lipschitz Hessian\nt\ngives the following sequence of equalities/inequalities\n∥x −x⋆−H(x )−1g(x )∥=∥H(x )−1(H(x )(x −x⋆)−g(x ))∥\nt t t t t t t\n=∥H(x )−1(g(x⋆)−g(x )−H(x )(x −x⋆))∥,\nt t t t\n≤∥H(x )−1∥·∥g(x⋆)−g(x )−H(x )(x −x⋆)∥,\nt t t t\nβ\n≤∥H(x )−1∥· ∥x−x⋆∥2,\nt 2\nβ\n≤ ∥x −x⋆∥2,\n2λ t\nmin\nwhere the first line follows from simple rearrangement, the second line follows from g(x⋆) = 0 since x⋆ is a\nlocal minimizer, the third line follows from standard norm inequalities, the fourth line follows from β-Lipschitz\ncondition on the Hessian (Nesterov and Polyak, 2006, Lemma 1), and the final line follows from ∥H(x )−1∥ ≤\nt\n1/λ .",
+      "size": 774,
+      "sentences": 3
+    },
+    {
+      "id": 176,
+      "content": "e Hessian (Nesterov and Polyak, 2006, Lemma 1), and the final line follows from ∥H(x )−1∥ ≤\nt\n1/λ . The bound on ε follows from Theorem 1; the stated result follows from these two bounds. min t\nD.3 Global Linear Convergence with Damping\nThe previous result in Theorem 3 assumes we are applying the full step variant of Newton’s method. It is\nmorecommontoapply“damped”versions,astheyhaveimprovedstabilityandrobustnessproperties. Applying\nresultsestablishedbyKarimireddyetal.",
+      "size": 473,
+      "sentences": 5
+    },
+    {
+      "id": 177,
+      "content": "s,astheyhaveimprovedstabilityandrobustnessproperties. Applying\nresultsestablishedbyKarimireddyetal. (Karimireddyetal.,2018),wecanshowthatNeST-BOinheritsstronger\nglobal convergence properties. Theorem4(Globallinearconvergencewithdamping). Assumef hasanL-Lipschitzgradient(soλ (H(x))≤\nmax\nL along the path) and satisfies the c-stable Hessian condition of Karimireddy et al. (2018). Consider the damped\nupdate x\nt+1\n=x\nt\n−γd(cid:98)Dt+1 (x\nt\n) with any fixed γ ∈(0,1/c].",
+      "size": 467,
+      "sentences": 7
+    },
+    {
+      "id": 178,
+      "content": "al. (2018). Consider the damped\nupdate x\nt+1\n=x\nt\n−γd(cid:98)Dt+1 (x\nt\n) with any fixed γ ∈(0,1/c]. Then, we have\nf(x t+1 )−f(x⋆)≤ (cid:16) 1− γ c (cid:17)(cid:2) f(x t )−f(x⋆) (cid:3) + γ 2 Lε2 t , ε2 t ≤2B2(cid:13) (cid:13)H(x t )−1(cid:13) (cid:13) 2 Φ Dt+1 (x t ). In particular, under VPC the bias term vanishes as b grows, and NeST-BO matches the global linear rate of\nt\ndamped Newton with a small enough step size. Proof.",
+      "size": 428,
+      "sentences": 6
+    },
+    {
+      "id": 179,
+      "content": "and NeST-BO matches the global linear rate of\nt\ndamped Newton with a small enough step size. Proof. Let d(cid:98)t and ε\nt\nbe defined as above, and write d(cid:98)t = d\nt\n+δ\nt\nwith d\nt\n= H(x\nt\n)−1g(x\nt\n) and ∥δ\nt\n∥ = ε\nt\n. The\nL-smoothness condition gives\nf(x\nt+1\n)≤f(x\nt\n)−γ⟨g\nt\n,d(cid:98)t ⟩+ γ2\n2\nL∥d(cid:98)t ∥2.",
+      "size": 316,
+      "sentences": 4
+    },
+    {
+      "id": 180,
+      "content": "ε\nt\n. The\nL-smoothness condition gives\nf(x\nt+1\n)≤f(x\nt\n)−γ⟨g\nt\n,d(cid:98)t ⟩+ γ2\n2\nL∥d(cid:98)t ∥2. ===  17 ===\nWei-Ting Tang, Akshay Kudva, Joel A. Paulson\nUsing g\nt\n=H\nt\nd\nt\nand expanding d(cid:98)t ,\nf(x )≤f(x )− γ∥d ∥2 + γLε2,\nt+1 t 2 t Ht 2 t\nby completing the square in the d ,δ terms and using the fact that ∥δ ∥2 ≤ L∥δ ∥2.",
+      "size": 330,
+      "sentences": 3
+    },
+    {
+      "id": 181,
+      "content": "t+1 t 2 t Ht 2 t\nby completing the square in the d ,δ terms and using the fact that ∥δ ∥2 ≤ L∥δ ∥2. The c-stable Hessian\nconditionyieldsthelowerboundf( t x⋆) t ≥f(x )−c∥d ∥2 from(Karimire t d H dy t etal.,2 t 018, Lemma2), suchthat\n∥d ∥2 ≥ 2(cid:2) f(x )−f(x⋆) (cid:3) .Insertthisexpres t sion 2 into t t H he t inequalityabovetoobtaintheclaimedrecursionthat\nt Ht c t\nestablishes linear convergence.",
+      "size": 399,
+      "sentences": 2
+    },
+    {
+      "id": 182,
+      "content": "t t H he t inequalityabovetoobtaintheclaimedrecursionthat\nt Ht c t\nestablishes linear convergence. The bound on ε again follows from Theorem 1.\nt\nE EXPERIMENT DETAILS\nE.1 Implementation\nReproducibility. Allcoderequiredtoreproduceourresultsisincludedassupplementarymaterialtopreserve\nanonymity. If the paper is accepted, we will release the repository publicly on GitHub. Software packages and shared settings.",
+      "size": 409,
+      "sentences": 5
+    },
+    {
+      "id": 183,
+      "content": "accepted, we will release the repository publicly on GitHub. Software packages and shared settings. Unless otherwise stated, all BO baselines are implemented using\ntheBoTorch(version0.15)1 (Balandatetal.,2020)andGPyTorch2 (version1.14)(Gardneretal.,2018)packages. We use squared exponential (SE) kernels with automatic relevance determination (ARD) throughout for a con-\ntrolled comparison across methods.",
+      "size": 405,
+      "sentences": 4
+    },
+    {
+      "id": 184,
+      "content": "th automatic relevance determination (ARD) throughout for a con-\ntrolled comparison across methods. Acquisition optimization in BoTorch is performed with the optimize acqf\nfunction using num restarts=5 and raw samples=20; for the very high-dimensional problems with d≥1000\n(e.g., Ant, Leukemia), we add a 2 second timeout and reduce num restarts to 3 (only on the Leukemia prob-\nlem) to limit wall-clock cost.",
+      "size": 409,
+      "sentences": 2
+    },
+    {
+      "id": 185,
+      "content": "ond timeout and reduce num restarts to 3 (only on the Leukemia prob-\nlem) to limit wall-clock cost. Hyperparameters are refit at different frequencies by task class: every move for\ndirectional local methods, every d iterations on our 20d synthetic tasks and the Lunar Lander, Swimmer, Robot\nPusher, and Rover Trajectory benchmarks; every iteration for 1000d synthetic tasks; and every 10 iterations for\nAnt and Leukemia (see Appendix E.3–E.4 for task definitions).",
+      "size": 464,
+      "sentences": 2
+    },
+    {
+      "id": 186,
+      "content": "ic tasks; and every 10 iterations for\nAnt and Leukemia (see Appendix E.3–E.4 for task definitions). Initialization and starting location. Initial designs use Sobol sequences over the full domain and always\ninclude the starting point (for local BO methods). Following prior local BO work, we start directional methods\nfromthedomaincenteronthereal-worldproblemsandfromarandompointonsynthetictasks, sincethecenter\ncan coincide with the global solution on some synthetic functions.",
+      "size": 477,
+      "sentences": 4
+    },
+    {
+      "id": 187,
+      "content": "onsynthetictasks, sincethecenter\ncan coincide with the global solution on some synthetic functions. Note that Sobol sampling uses the standard\ntorch.quasirandom.SobolEngine. Local optimization of NeST. Because the NeST acquisition (7) targets the Newton step at x and our\nt\nkernels are stationary, informative experimental designs concentrate fairly close to the current iterate. We\nthereforeoptimizeα withinasmallboxcenteredatx withradiusδ ,i.e.,searchdomain[x −δ ,x +δ ].",
+      "size": 473,
+      "sentences": 5
+    },
+    {
+      "id": 188,
+      "content": "rate. We\nthereforeoptimizeα withinasmallboxcenteredatx withradiusδ ,i.e.,searchdomain[x −δ ,x +δ ]. In\n(cid:98)NeST t t t t t t\nprinciple,δ canbeadaptedusingstandardmodel-agreementtestsfromtrust-regionmethods; inallexperiments\nt\nwe use a fixed radius for simplicity and speed. We set δ =0.2 in most tasks and δ =0.01 on Ant due to strong\nnon-stationarity. Batch sizes for directional methods.",
+      "size": 392,
+      "sentences": 5
+    },
+    {
+      "id": 189,
+      "content": "most tasks and δ =0.01 on Ant due to strong\nnon-stationarity. Batch sizes for directional methods. For NeST-BO, GIBO, MPD, and MinUCB we query b = d points\nt\nper iteration to learn the local step/direction (or b = m in subspace dimension m for the subspace variant). t\nThis choice is supported by the ablations in Appendix F.3. Method-specific details.",
+      "size": 352,
+      "sentences": 5
+    },
+    {
+      "id": 190,
+      "content": "ace variant). t\nThis choice is supported by the ablations in Appendix F.3. Method-specific details. Below,wesummarizespecificimplementationdetailsforeachmethodtestedinour\ncomparisons throughout this work:\n• NeST-BO: We implement NeST-BO (Algorithm 1) by extending the public GIBO codebase to reuse its BO\nloop, GP wrappers, and acquisition optimizer, replacing GIBO’s GI acquisition with our weighted power-\nfunction objective and adding the Newton step update with line search.",
+      "size": 478,
+      "sentences": 4
+    },
+    {
+      "id": 191,
+      "content": "ion with our weighted power-\nfunction objective and adding the Newton step update with line search. The acquisition is optimized in the\nlocal box described above; backtracking line search is applied on the GP mean.",
+      "size": 214,
+      "sentences": 2
+    },
+    {
+      "id": 192,
+      "content": "is optimized in the\nlocal box described above; backtracking line search is applied on the GP mean. • NeST-BO(subspacevariant): Tostudycompatibilitywithlearnedembeddings,weintegrateNeST-BOwith\nthe BAxUS (Papenmeier et al., 2022) subspace machinery from the implementation provided at https:\n1BoTorch: https://botorch.org/\n2GPyTorch: https://gpytorch.ai/\n===  18 ===\nNeST-BO\n//botorch.org/docs/tutorials/baxus/.",
+      "size": 409,
+      "sentences": 2
+    },
+    {
+      "id": 193,
+      "content": "torch.org/\n2GPyTorch: https://gpytorch.ai/\n===  18 ===\nNeST-BO\n//botorch.org/docs/tutorials/baxus/. As opposed to keeping it fixed in all cases, we treat the initial\nsubspacedimensionasatunablehyperparameter. Weusea4formostproblemsbutincreaseditsomeforthe\nreal-world problems based on some preliminary experimentation. We adopt the same subspace expansion\nheuristic of the original BAxUS implementation: if no improvement is found after 10 consecutive iterations,\nthe subspace dimension is expanded.",
+      "size": 499,
+      "sentences": 4
+    },
+    {
+      "id": 194,
+      "content": "on: if no improvement is found after 10 consecutive iterations,\nthe subspace dimension is expanded. • D-scaled LogEI: We follow the “vanilla BO works” recommendation from (Hvarfner et al., 2024) to use\nLogEI (Ament et al., 2023) with dimension-aware length-scale priors and standardized outputs; in BoTorch\nthis corresponds to LogExpectedImprovement on a SingleTaskGP with appropriate priors.",
+      "size": 392,
+      "sentences": 2
+    },
+    {
+      "id": 195,
+      "content": "s; in BoTorch\nthis corresponds to LogExpectedImprovement on a SingleTaskGP with appropriate priors. • TuRBO: We use the (single-trust-region) TuRBO (Eriksson et al., 2019) implementation from the BoTorch\ntutorial at https://botorch.org/docs/tutorials/turbo_1/ with LogEI for consistency with the global\nbaseline. TuRBOadaptivelyshrinks/expandsalocalboxbasedonsuccess/failurecounters,providingstrong\nanytime performance in higher dimensions.",
+      "size": 440,
+      "sentences": 3
+    },
+    {
+      "id": 196,
+      "content": "dsalocalboxbasedonsuccess/failurecounters,providingstrong\nanytime performance in higher dimensions. • GIBO: TheGIBOmethod(Mu¨lleretal.,2021)selectssamplesthatmaximallyreducetheposteriorgradient\ncovariance (GI acquisition), then takes a length-scale-normalized gradient step. We use the original public\nimplementationavailableathttps://github.com/sarmueller/giboanditsearly-stoppingruleforgradient\nlearning to avoid oversampling near the iterate.",
+      "size": 445,
+      "sentences": 3
+    },
+    {
+      "id": 197,
+      "content": "sarmueller/giboanditsearly-stoppingruleforgradient\nlearning to avoid oversampling near the iterate. • MPD: Maximum Probability of Descent (MPD) (Nguyen et al., 2022) chooses directions maximizing the\nposterior probability that the (normalized) gradient is a descent direction; we use the reference implemen-\ntation available at https://github.com/kayween/local-bo-mpd with step size δ = 0.01 and probability\nthreshold p⋆ =0.65.",
+      "size": 427,
+      "sentences": 2
+    },
+    {
+      "id": 198,
+      "content": "https://github.com/kayween/local-bo-mpd with step size δ = 0.01 and probability\nthreshold p⋆ =0.65. • MinUCB: The MinUCB method (Fan et al., 2024) minimizes a UCB-style surrogate of gradient magni-\ntude along candidate directions; we use the reference implementation available at https://github.com/\nchinafzy1/Minimizing-UCB and default settings from the original paper.",
+      "size": 370,
+      "sentences": 2
+    },
+    {
+      "id": 199,
+      "content": "lable at https://github.com/\nchinafzy1/Minimizing-UCB and default settings from the original paper. • BAxUS: ForthestandaloneBAxUSbaseline,weusetheBoTorchtutorialcodebasedon(Papenmeieretal.,\n2022)(sameassubspacevariantofNeST-BO)withLogEItomatchourotherbaselines; BAxUSinitializesa\nsmallsubspaceandenlargesitonstagnation. ThetutorialusesaSingleTaskGPwithlog-normallengthscale\npriors.",
+      "size": 382,
+      "sentences": 3
+    },
+    {
+      "id": 200,
+      "content": "allsubspaceandenlargesitonstagnation. ThetutorialusesaSingleTaskGPwithlog-normallengthscale\npriors. We follow the original heuristic to set the subspace dimension, but increase it to 4 in the synthetic\nproblems to avoid initial projections getting an unfair advantage of landing near the global optimum at 0. • Sobol: Non-adaptiveSobolsamplingusestorch.quasirandom.SobolEnginewithscramblingenabled,which\nis a standard baseline method considered in the BO literature.",
+      "size": 466,
+      "sentences": 4
+    },
+    {
+      "id": 201,
+      "content": "bolEnginewithscramblingenabled,which\nis a standard baseline method considered in the BO literature. E.2 Computing Resources\nAllexperimentswereexecutedontheOhioSupercomputingCenter(OSC)cluster(https://www.osc.edu)using\nCPU nodes equipped with Intel Xeon CPU Max 9470 processors and 512 GB RAM. E.3 Definition of Synthetic Functions\nWeusefourstandardtestfunctionthatjointlyprobeconditioning,non-convexity,andmulti-modalityproperties\nthat stress local learning of curvature. Sphere.",
+      "size": 479,
+      "sentences": 4
+    },
+    {
+      "id": 202,
+      "content": "itioning,non-convexity,andmulti-modalityproperties\nthat stress local learning of curvature. Sphere. The d-dimensional Sphere function is a convex quadratic function expressed as:\nf(x)= (cid:80)d x2,\ni=1 i\nwhichwasusedasacheckforlocalmethods,asithaswell-behavedcurvatureandnolocalminima. Weoptimize\nover X =[−d2,d2]d. The global minimum is f(x⋆)=0 at x⋆ =(0,0,...,0). ===  19 ===\nWei-Ting Tang, Akshay Kudva, Joel A. Paulson\nRosenbrock.",
+      "size": 435,
+      "sentences": 5
+    },
+    {
+      "id": 203,
+      "content": "is f(x⋆)=0 at x⋆ =(0,0,...,0). ===  19 ===\nWei-Ting Tang, Akshay Kudva, Joel A. Paulson\nRosenbrock. The d-dimensional Rosenbrock function is a bowl-shaped function with a narrow, curved valley,\nwhich can be expressed as:\nf(x)= (cid:80)d−1(cid:2) 100(x −x2)2+(x −1)2(cid:3) . i=1 i+1 i i\nIt is a classical “ill-conditioned” test function that is likely to reward updates that incorporate curvature infor-\nmation.",
+      "size": 411,
+      "sentences": 4
+    },
+    {
+      "id": 204,
+      "content": "nditioned” test function that is likely to reward updates that incorporate curvature infor-\nmation. We optimize within the bounds X = [−5,5]d. The global minimum is f(x⋆) = 0 at x⋆ = (1,1,...,1). This is a common benchmark in the BO literature; see, e.g., (Xu et al., 2024) for example. Griewank.",
+      "size": 296,
+      "sentences": 4
+    },
+    {
+      "id": 205,
+      "content": "his is a common benchmark in the BO literature; see, e.g., (Xu et al., 2024) for example. Griewank. The d-dimensional Griewank function is a separable quadratic modulated by a product of cosines:\nf(x)= (cid:88) d x2 i − (cid:89) d cos (cid:18) √ x i (cid:19) +1,\n4000 i\ni=1 i=1\nwhich features many regularly spaced local minima. We optimize within the bounds [−300,300]d. The global\nminimumisf(x⋆)=0atx⋆ =(0,0,...,0).",
+      "size": 417,
+      "sentences": 4
+    },
+    {
+      "id": 206,
+      "content": "al minima. We optimize within the bounds [−300,300]d. The global\nminimumisf(x⋆)=0atx⋆ =(0,0,...,0). Thishasbeenrecentlyusedasabenchmarkproblemwhenanalyzing\nhigh-dimensional BO algorithms; see, e.g., (Papenmeier et al., 2025). Ackley.",
+      "size": 233,
+      "sentences": 4
+    },
+    {
+      "id": 207,
+      "content": "kproblemwhenanalyzing\nhigh-dimensional BO algorithms; see, e.g., (Papenmeier et al., 2025). Ackley. The d-dimensional Ackley function is a highly multi-modal landscape with a flat outer region and a\nsteep basin near the global optimum:\n (cid:118) (cid:117) d  (cid:32) d (cid:33)\n(cid:117)1(cid:88) 1(cid:88)\nf(x)=−20exp−0.2(cid:116)\nd\nx2\ni\n−exp\nd\ncos(2πx\ni\n) +20+exp(1). i=1 i=1\nWe optimize within the bounds [−5,5]d. The global minimum is f(x⋆) = 0 at x⋆ = (0,0,...,0).",
+      "size": 475,
+      "sentences": 4
+    },
+    {
+      "id": 208,
+      "content": "i=1 i=1\nWe optimize within the bounds [−5,5]d. The global minimum is f(x⋆) = 0 at x⋆ = (0,0,...,0). The Ackley\nfunction is another popular benchmark in both low- and high-dimensional BO works; see, e.g., (Siemenn et al.,\n2023; Ament et al., 2023).",
+      "size": 247,
+      "sentences": 2
+    },
+    {
+      "id": 209,
+      "content": "in both low- and high-dimensional BO works; see, e.g., (Siemenn et al.,\n2023; Ament et al., 2023). We highlight that these choices follow common practice in the BO literature and are meant to cover comple-\nmentary problem aspects: Rosenbrock isolates ill-conditioning (benefiting Newton steps), Griewank/Ackley add\ndense local structure (testing how fast local surrogates learn gradients and curvature), while Sphere confirms\nthat added second-order machinery can still add value on easy, well-conditioned cases.",
+      "size": 512,
+      "sentences": 2
+    },
+    {
+      "id": 210,
+      "content": "ere confirms\nthat added second-order machinery can still add value on easy, well-conditioned cases. E.4 Real-World Benchmark Problems\nWe include six problems spanning reinforcement learning (RL) control, robotic planning, and large-scale hyper-\nparameter tuning. Together they cover medium to very high dimensionality, varying degrees of non-stationarity,\nand different noise profiles – settings where local curvature can accelerate progress and subspaces can be useful. LunarLander(12d).",
+      "size": 488,
+      "sentences": 4
+    },
+    {
+      "id": 211,
+      "content": "ttings where local curvature can accelerate progress and subspaces can be useful. LunarLander(12d). AclassiccontroltaskintheOpenAIGymnasium(LunarLander-v3),whereacontroller\nwith 12 parameters maps the measured state to four discrete actions. Following prior BO studies from, e.g.,\n(Erikssonetal.,2019),weminimizethenegativeepisodicreturn(rewardsignflipped). Episodesarerunfor1000\nsteps; we initialize the GP from 10 Sobol points. Swimmer (16d).",
+      "size": 444,
+      "sentences": 6
+    },
+    {
+      "id": 212,
+      "content": "ignflipped). Episodesarerunfor1000\nsteps; we initialize the GP from 10 Sobol points. Swimmer (16d). This is a MuJoCo locomotion task in the OpenAI Gymnasium (Swimmer-v5) with a linear\npolicy (16 parameters). This probelm has been considered in prior BO studies, e.g., (Mu¨ller et al., 2021); we\nminimize negative reward and run episodes for 1000 steps. We again initialize the GP from 10 Sobol points. Robot Pushing (14d).",
+      "size": 422,
+      "sentences": 7
+    },
+    {
+      "id": 213,
+      "content": "run episodes for 1000 steps. We again initialize the GP from 10 Sobol points. Robot Pushing (14d). This is a planar manipulation benchmark where 14 controller parameters must be\ntuned to reduce distances to targets. We adopt bounds and setup from prior BO work, reported in (Eriksson\net al., 2019), and run it in a small-noise regime to isolate optimization behavior. Rover Trajectory (60d).",
+      "size": 391,
+      "sentences": 6
+    },
+    {
+      "id": 214,
+      "content": "2019), and run it in a small-noise regime to isolate optimization behavior. Rover Trajectory (60d). Atrajectory-planningtask–originallyintroducedin(Wangetal.,2018)–inwhich\n30 two-dimensional waypoints are optimized to maximize a reward that penalizes rough terrain and constraint\nviolations. The resulting 60-dimensional design is structured and non-stationary, which stresses local surrogates\nand benefits from curvature information.",
+      "size": 434,
+      "sentences": 4
+    },
+    {
+      "id": 215,
+      "content": "ctured and non-stationary, which stresses local surrogates\nand benefits from curvature information. We minimize negative reward and follow the large-domain setting\n(using 200 Sobol initial points) suggested in the literature. ===  20 ===\nNeST-BO\nAnt (888d). This is a MuJoCo quadruped with an 8-dimensional action space and 111-dimensional observa-\ntions;weoptimizealinearstate-feedbackpolicy(888parameters)andminimizenegativereward.",
+      "size": 433,
+      "sentences": 4
+    },
+    {
+      "id": 216,
+      "content": "ional observa-\ntions;weoptimizealinearstate-feedbackpolicy(888parameters)andminimizenegativereward. Thisbenchmark\nhasrecentlybeenusedtoprobehigh-dimensionalBOwithsubspaces(Hvarfneretal.,2024). Incontrasttoprevi-\nousworkthatneglectscontactforcesandusestheAnt-v2environment,weuseAnt-v4(inOpenAIGymnasium)\nwith contact forces enabled, which increases complexity.",
+      "size": 359,
+      "sentences": 3
+    },
+    {
+      "id": 217,
+      "content": "environment,weuseAnt-v4(inOpenAIGymnasium)\nwith contact forces enabled, which increases complexity. For NeST-BO-sub and BAxUS, we initialize at the\ncenter point of the subspace, which yields an initial objective (negative reward) of approximately -990. Leukemia (7129d). A weighted Lasso regression task with one weight per feature (7129 hyperparameters)\non the Leukemia dataset from LassoBench (Sˇehi´c et al., 2022).",
+      "size": 418,
+      "sentences": 4
+    },
+    {
+      "id": 218,
+      "content": "per feature (7129 hyperparameters)\non the Leukemia dataset from LassoBench (Sˇehi´c et al., 2022). We follow the standard least-squares objective\nwithweightedℓ regularizationandevaluatetesterrorundertheLassoBenchprotocol. Thisproblemexemplifies\n1\nextremely high-dimensional, sparse settings where subspace methods are essential.",
+      "size": 328,
+      "sentences": 3
+    },
+    {
+      "id": 219,
+      "content": "blemexemplifies\n1\nextremely high-dimensional, sparse settings where subspace methods are essential. The RL tasks (Lunar Lander, Swimmer, Ant) expose NeST-BO to non-stationary, stochastic objectives where\nlocal Newton steps and line search stabilize progress; Robot Pushing and Rover emphasize structured geometry\nand curvature; Leukemia provides a sparse, ultra-high-dimensional regime.",
+      "size": 386,
+      "sentences": 2
+    },
+    {
+      "id": 220,
+      "content": "asize structured geometry\nand curvature; Leukemia provides a sparse, ultra-high-dimensional regime. This mix lets us isolate when curva-\nture helps (ill-conditioned valleys, non-stationary responses) and when subspaces are essential, and it explains\nthe large empirical gains we report over purely gradient-based local BO and global BO baselines.",
+      "size": 346,
+      "sentences": 2
+    },
+    {
+      "id": 221,
+      "content": "ns\nthe large empirical gains we report over purely gradient-based local BO and global BO baselines. E.5 Violin Plots of Final Objective Values\nTo complement the performance versus iteration plots in Figure 2 in the main text, Figure E.1 summarizes,\nfor each benchmark, the empirical distribution of the final best-found objective across replicates and methods. Each panel corresponds to one task (title shows name and dimensionality).",
+      "size": 434,
+      "sentences": 3
+    },
+    {
+      "id": 222,
+      "content": "s replicates and methods. Each panel corresponds to one task (title shows name and dimensionality). Within a panel, one violin plot per\nmethod shows the distribution of final outcomes; interior dashed lines denote empirical quartiles (median in the\nmiddle). All y-axes are in the native objective scale used throughout the paper (negative is better for all tasks).",
+      "size": 364,
+      "sentences": 4
+    },
+    {
+      "id": 223,
+      "content": "xes are in the native objective scale used throughout the paper (negative is better for all tasks). F ADDITIONAL EXPERIMENTS AND ABLATIONS\nF.1 GP Prior Realizations\nWe consider a similar study to that in (Mu¨ller et al., 2021) wherein we optimize samples drawn from a GP\nprior. We take a GP prior with zero mean and the squared exponential (SE) kernel with unit variance.",
+      "size": 371,
+      "sentences": 3
+    },
+    {
+      "id": 224,
+      "content": "rior. We take a GP prior with zero mean and the squared exponential (SE) kernel with unit variance. To vary\ndifficulty with dimension d, we draw the kernel length-scale ℓ(d) uniformly over a narrow interval centered at\nthe heuristic used by (Mu¨ller et al., 2021, Appendix A.5), and keep ℓ(d) fixed within each realization. Ratherthan fittingasurrogate tofiniteprior samples, wedirectly samplefunctionsfrom thepriorusing random\nFourier features (RFF) (Rahimi and Recht, 2007).",
+      "size": 476,
+      "sentences": 4
+    },
+    {
+      "id": 225,
+      "content": "edirectly samplefunctionsfrom thepriorusing random\nFourier features (RFF) (Rahimi and Recht, 2007). Concretely, with n =1024 features,\nb\n(cid:88) nb (cid:113)\nf(x)≈ w ϕ (x), ϕ (x)= 2 cos(θ⊤x+τ ),\ni i i nb i i\ni=1\nwhere w ∼ N(0,1), τ ∼ U(0,2π), and for the SE kernel we sample θ ∼ N(0,ℓ(d)−2I) by Bochner’s theorem\ni i i\n(Rahimi and Recht, 2007). We treat the resulting f as the ground-truth objective.",
+      "size": 401,
+      "sentences": 3
+    },
+    {
+      "id": 226,
+      "content": "r’s theorem\ni i i\n(Rahimi and Recht, 2007). We treat the resulting f as the ground-truth objective. Tocomputesimpleregret,weapproximatetheglobaloptimumviaL-BFGS(Zhuetal.,1997)with100multistarts\non each GP prior realization. We consider d ∈ {15,20}, generate 10 independent realizations per d, and report\nthe median across runs.",
+      "size": 327,
+      "sentences": 4
+    },
+    {
+      "id": 227,
+      "content": "onsider d ∈ {15,20}, generate 10 independent realizations per d, and report\nthe median across runs. Since the goal here is to stress NeST-BO itself as a high-performance algorithm in the\n“medium-dimensional” regime (10 to 50 dimensions), no subspace mechanisms are used (and BAxUS is omitted\nto reduce confounding factors). We also include Augmented Random Search (ARS) (Mania et al., 2018) as an\nadditional baseline.",
+      "size": 417,
+      "sentences": 3
+    },
+    {
+      "id": 228,
+      "content": "ors). We also include Augmented Random Search (ARS) (Mania et al., 2018) as an\nadditional baseline. Figure F.1 shows that NeST-BO consistently achieves the lowest simple regret across both\ndimensions. GIBO, D-scaled LogEI, and TuRBO are competitive early on, but lag in later iterations, suggesting\na benefit from explicitly targeting curvature in this regime. We also observe tighter best-value distributions\nfor NeST-BO.",
+      "size": 422,
+      "sentences": 5
+    },
+    {
+      "id": 229,
+      "content": "y targeting curvature in this regime. We also observe tighter best-value distributions\nfor NeST-BO. Note that the absolute regret depends on the RFF approximation and the length-scale draw; all\nmethods use the same realizations to ensure a fair comparison. ===  21 ===\nWei-Ting Tang, Akshay Kudva, Joel A. Paulson\nFigureE.1: Finalbest-foundvaluesacrosstasks. Foreachtestproblem,violinsshowthedistributionofthefinal\nbest-found objective over repeated runs for all methods.",
+      "size": 471,
+      "sentences": 5
+    },
+    {
+      "id": 230,
+      "content": "oblem,violinsshowthedistributionofthefinal\nbest-found objective over repeated runs for all methods. Dashed lines mark quartiles (median centered). Lower\nis better in every panel. The plot provides a compact view of both central tendency and spread at termination,\ncomplementing the iteration-wise trajectories in the main text.",
+      "size": 327,
+      "sentences": 4
+    },
+    {
+      "id": 231,
+      "content": "tendency and spread at termination,\ncomplementing the iteration-wise trajectories in the main text. F.2 Alternative Ways to Learn Embeddings\nOurmainresultsshowthatsubspacescanbeapowerfulvehicleforscalingNeST-BOtohigh-dimensionalspaces\n(e.g., using BAxUS-style nested subspaces). In this section, we ask a complementary question: is NeST-BO\nalso compatible with other ways of constructing subspaces?",
+      "size": 398,
+      "sentences": 3
+    },
+    {
+      "id": 232,
+      "content": "ask a complementary question: is NeST-BO\nalso compatible with other ways of constructing subspaces? To answer this, we consider an adaptively learned\nembedding obtained using the Sparse Axis-Aligned Subspace GP (SAAS-GP) (Eriksson and Jankowiak, 2021).",
+      "size": 252,
+      "sentences": 2
+    },
+    {
+      "id": 233,
+      "content": "edding obtained using the Sparse Axis-Aligned Subspace GP (SAAS-GP) (Eriksson and Jankowiak, 2021). In particular, we fit a SAAS-GP once at the start to select an active set of coordinates – those whose posterior\nmeanlength-scalesfallbelowathresholdγ –andthenrunNeST-BOonly inthislearnedsubspacewhileholding\ntheremainingcoordinatesfixedattheirincumbentvalues.",
+      "size": 359,
+      "sentences": 2
+    },
+    {
+      "id": 234,
+      "content": "unNeST-BOonly inthislearnedsubspacewhileholding\ntheremainingcoordinatesfixedattheirincumbentvalues. WedenotethisvariantNeST-BO-SAAS.Toassess\nthe importance of the Newton step itself, we also run GIBO-SAAS, which uses the identical SAAS subspace\nbut follows a gradient-based step rule. We evaluate on a two-dimensional Branin function3 embedded in 50 dimensions; we use a threshold γ = 10,\ninitialize with 30 Sobol points, and report results over 10 independent runs.",
+      "size": 466,
+      "sentences": 3
+    },
+    {
+      "id": 235,
+      "content": "e a threshold γ = 10,\ninitialize with 30 Sobol points, and report results over 10 independent runs. We intentionally exclude BAxUS\n3See https://www.sfu.ca/~ssurjano/branin.html\n===  22 ===\nNeST-BO\nFigureF.1: OptimizationofGP-priordrawsind∈{15,20}withoutsubspaces. Top: Mediansimpleregretversus\nnumber of function evaluations (shaded region corresponds to ± one standard error). Bottom: Distribution of\nbest-found values across 10 realizations.",
+      "size": 443,
+      "sentences": 4
+    },
+    {
+      "id": 236,
+      "content": "esponds to ± one standard error). Bottom: Distribution of\nbest-found values across 10 realizations. NeST-BO converges faster and to lower regret than strong baselines on\nthese medium-dimensional tasks. here to avoid confounding the question of which subspace to use with how the local step is computed inside\nthat subspace. As shown in Figure F.2, NeST-BO-SAAS delivers a sharp reduction in simple regret and\nsubstantiallyoutperformsbothGIBO-SAASandthenon-subspacebaselinesonthisbenchmark.",
+      "size": 489,
+      "sentences": 5
+    },
+    {
+      "id": 237,
+      "content": "simple regret and\nsubstantiallyoutperformsbothGIBO-SAASandthenon-subspacebaselinesonthisbenchmark. Thissuggests\nthatonceareasonablyinformativesubspaceisavailable, evenfromasimpleaxis-alignedselector, thecurvature-\naware Newton step provides a potentially large advantage over gradient-only updates. F.3 Impact of Batch Size on NeST-BO\nA defining feature of NeST-BO is its explicit use of gradient and Hessian information to construct a local\nNewtonstep.",
+      "size": 453,
+      "sentences": 3
+    },
+    {
+      "id": 238,
+      "content": "of NeST-BO is its explicit use of gradient and Hessian information to construct a local\nNewtonstep. Thiscreatesanaturaltrade-off: ineachiterationwecaneitherdevotemoresamplestoaccurately\nestimating the step, or spend fewer samples per step and move on more quickly. In other words, the batch size b\ncontrols how well the Newton direction is learned relative to how frequently it can be updated.",
+      "size": 393,
+      "sentences": 3
+    },
+    {
+      "id": 239,
+      "content": "e b\ncontrols how well the Newton direction is learned relative to how frequently it can be updated. Intuitively, very\nsmall b risks moving along a poorly estimated (heavily biased or noisy) direction, which can slow convergence\nor even push the search off course; large b improves the estimation quality but consumes budget so quickly that\nonly a few iterations of actual movement occur.",
+      "size": 387,
+      "sentences": 2
+    },
+    {
+      "id": 240,
+      "content": "imation quality but consumes budget so quickly that\nonly a few iterations of actual movement occur. To examine this tradeoff, we ran NeST-BO on two standard d = 10 benchmarks – Griewank4 and Ackley5 –\nusing three batch sizes: b ∈ {0.2d, d, 2d}. Each run started from 10 Sobol points and was repeated 10 times.",
+      "size": 309,
+      "sentences": 3
+    },
+    {
+      "id": 241,
+      "content": "ee batch sizes: b ∈ {0.2d, d, 2d}. Each run started from 10 Sobol points and was repeated 10 times. 4See https://www.sfu.ca/~ssurjano/griewank.html\n5See https://www.sfu.ca/~ssurjano/ackley.html\n===  23 ===\nWei-Ting Tang, Akshay Kudva, Joel A. Paulson\nFigure F.2: Branin embedded in D = 50 dimensions with a learned SAAS subspace (d=2 active dimensions);\nshading = ± one standard error. Left: Median simple regret (log scale) over 10 runs. Right: Distribution of\nthe best simple regret across runs.",
+      "size": 497,
+      "sentences": 5
+    },
+    {
+      "id": 242,
+      "content": "simple regret (log scale) over 10 runs. Right: Distribution of\nthe best simple regret across runs. NeST-BO-SAAS uses a one-time SAAS-GP to select active coordinates, then\nruns NeST-BO only in that subspace; GIBO-SAAS uses the identical subspace but uses gradient-only steps. This setup lets us isolate how the per-iteration sampling budget influences the quality of the learned Newton\nstep and the resulting optimization trajectory. The results in Figure F.3 reveal a clear pattern.",
+      "size": 482,
+      "sentences": 5
+    },
+    {
+      "id": 243,
+      "content": "n\nstep and the resulting optimization trajectory. The results in Figure F.3 reveal a clear pattern. When the batch\nsize is too small (b = 0.2d), the algorithm learns an imprecise Newton direction: simple regret decreases slowly\nand often plateaus at higher values.",
+      "size": 264,
+      "sentences": 3
+    },
+    {
+      "id": 244,
+      "content": "an imprecise Newton direction: simple regret decreases slowly\nand often plateaus at higher values. In contrast, moving from b = d to b = 2d produces only marginal gains in\nearly-iteration slope but nearly identical final performance, indicating diminishing returns once the local power\nfunctions for g and H are already reasonably small.",
+      "size": 337,
+      "sentences": 2
+    },
+    {
+      "id": 245,
+      "content": "cating diminishing returns once the local power\nfunctions for g and H are already reasonably small. In practice, this suggests that, beyond a moderate batch\nsize,furtherincreasingbyieldsonlyaslightbenefitindirectionaccuracywhilesubstantiallyreducingthenumber\nof outer iterations. Overall,theseexperimentsshowthatNeST-BObenefitsfromasufficientlylargebatchsizetoaccuratelyestimate\ntheNewtonstepbutdoesnotrequireverylargebatchestoconvergeeffectively.",
+      "size": 447,
+      "sentences": 3
+    },
+    {
+      "id": 246,
+      "content": "ebatchsizetoaccuratelyestimate\ntheNewtonstepbutdoesnotrequireverylargebatchestoconvergeeffectively. Thissupportsourdefaultchoice\nof b=d in the main experiments as a balanced setting between step-accuracy and iteration budget. F.4 Impact of Step Size on GIBO\nFirst-order local Bayesian optimization methods (such as GIBO) build steps using only gradient information. This raises an important question: how sensitive is their performance to the choice of step size?",
+      "size": 463,
+      "sentences": 4
+    },
+    {
+      "id": 247,
+      "content": ". This raises an important question: how sensitive is their performance to the choice of step size? A step that is\ntooaggressivecanovershootnarrowvalleysoroscillatearoundtheoptimum,whileastepthatistooconservative\nmaycrawlslowlytowardthesolution. Incontrast, NeST-BOaugmentsgradientinformationwithcurvatureand\nemploys an automatic backtracking line search, which potentially makes it less sensitive to such manual tuning.",
+      "size": 420,
+      "sentences": 4
+    },
+    {
+      "id": 248,
+      "content": "utomatic backtracking line search, which potentially makes it less sensitive to such manual tuning. To examine this issue, we compared NeST-BO with GIBO on the four-dimensional Rosenbrock function6, a\nclassical ill-conditioned test problem. GIBO used their length-scale-normalized gradient update with fixed step\nsizes η ∈ {1.0, 0.5, 0.1}. NeST-BO used its default line search.",
+      "size": 377,
+      "sentences": 4
+    },
+    {
+      "id": 249,
+      "content": "ed gradient update with fixed step\nsizes η ∈ {1.0, 0.5, 0.1}. NeST-BO used its default line search. All methods started from 10 Sobol points, and\nwe averaged results over 10 independent runs to reduce sensitivity to the initial data. The results in Figure F.4 highlight a striking difference.",
+      "size": 292,
+      "sentences": 4
+    },
+    {
+      "id": 250,
+      "content": "reduce sensitivity to the initial data. The results in Figure F.4 highlight a striking difference. GIBO’s performance is highly step-size dependent:\nwith η = 0.1, it converges relatively well, but with larger steps (η = 0.5 or 1.0), the algorithm’s performance\ndeteriorates, often stalling or oscillating near Rosenbrock’s curved valley. This behavior is consistent with\novershooting under ill-conditioned curvature.",
+      "size": 416,
+      "sentences": 4
+    },
+    {
+      "id": 251,
+      "content": "ock’s curved valley. This behavior is consistent with\novershooting under ill-conditioned curvature. NeST-BO, by contrast, maintains steady progress without any\nstep-sizetuning,leveragingitslinesearchandcurvaturescalingtoautomaticallyadjustthesteplength. Evenon\n6See https://www.sfu.ca/~ssurjano/rosen.html\n===  24 ===\nNeST-BO\nFigure F.3: Effect of sampling budget on Newton-step learning. NeST-BO with b ∈ {0.2d,d,2d} on Griewank\nand Ackley (d = 10).",
+      "size": 450,
+      "sentences": 5
+    },
+    {
+      "id": 252,
+      "content": "pling budget on Newton-step learning. NeST-BO with b ∈ {0.2d,d,2d} on Griewank\nand Ackley (d = 10). Top: Median simple regret (log scale) across 10 runs, shading = ± one standard error. Bottom: Distribution of best-seen values. Small b underestimates the step and slows convergence; b = d and\nb=2d give comparable performance, indicating diminishing returns beyond b≈d. this challenging landscape, NeST-BO achieves competitive regret compared with the best-tuned GIBO setting.",
+      "size": 476,
+      "sentences": 6
+    },
+    {
+      "id": 253,
+      "content": "allenging landscape, NeST-BO achieves competitive regret compared with the best-tuned GIBO setting. Overall, this study underscores the practical advantage of NeST-BO’s Newton-based update: by removing the\nneed for manual step-size selection, it improves robustness and reduces the burden of hyperparameter tuning\nrelative to first-order local BO methods like GIBO.",
+      "size": 365,
+      "sentences": 2
+    },
+    {
+      "id": 254,
+      "content": "and reduces the burden of hyperparameter tuning\nrelative to first-order local BO methods like GIBO. F.5 Runtime Comparison\nIn this section, we analyze the runtime of NeST-BO compared to GIBO and D-scaled LogEI under controlled\nconditions. To perform a fair comparison, we run each method on the same shared CPU cluster (see Appendix\nE.2) limited to 4 cores and evaluate the cumulative time required to complete 200 iterations, which is reported\nin Table F.1.",
+      "size": 458,
+      "sentences": 3
+    },
+    {
+      "id": 255,
+      "content": "d evaluate the cumulative time required to complete 200 iterations, which is reported\nin Table F.1. Each method is initialized with 10 Sobol points, and we report average CPU time across 10\nindependent replicates on both 12- and 20-dimensional test functions. Empirically, we find that NeST-BO is modestly more expensive than the other methods, with runtime increases\nofroughly15–40%comparedtoGIBOdependingonthedimension.",
+      "size": 421,
+      "sentences": 3
+    },
+    {
+      "id": 256,
+      "content": "han the other methods, with runtime increases\nofroughly15–40%comparedtoGIBOdependingonthedimension. Thisdifferenceisexpected: NeST-BOmust\nconstruct and invert GP posteriors over gradient and Hessian quantities during each update, and evaluating the\nposteriorvarianceoftheNewtonstepisthemostcostlystep. Incontrast,GIBOusesonlyfirst-orderinformation\nand LogEI computes acquisition values from scalar posteriors. Despite these additional costs, we argue that the tradeoff is often worthwhile.",
+      "size": 489,
+      "sentences": 4
+    },
+    {
+      "id": 257,
+      "content": "scalar posteriors. Despite these additional costs, we argue that the tradeoff is often worthwhile. First, NeST-BO consistently\nprovides lower regret than the alternatives across synthetic and real-world benchmarks, as shown throughout\n===  25 ===\nWei-Ting Tang, Akshay Kudva, Joel A. Paulson\nFigure F.4: Step-size sensitivity of GIBO on Rosenbrock (d=4). Left: Median simple regret (log scale) across\n10 runs; shading = ± one standard error. Right: Distribution of best-seen values.",
+      "size": 482,
+      "sentences": 5
+    },
+    {
+      "id": 258,
+      "content": "log scale) across\n10 runs; shading = ± one standard error. Right: Distribution of best-seen values. GIBO requires careful step-\nsize tuning (η = 0.1 works best here); larger η harms stability. NeST-BO’s line search removes this sensitivity\nwhile leveraging curvature. Table F.1: Average cumulative CPU time (in seconds) to complete 200 BO iterations across 10 replicates for\nvarious algorithms. Standard deviation across replicates is shown in parentheses.",
+      "size": 456,
+      "sentences": 6
+    },
+    {
+      "id": 259,
+      "content": "10 replicates for\nvarious algorithms. Standard deviation across replicates is shown in parentheses. Method 12-dim function 20-dim function\nNeST-BO 167.4 (14.2) 260.1 (16.3)\nGIBO 138.2 (12.5) 183.6 (15.7)\nD-scaled LogEI 150.7 (10.2) 189.6 (15.7)\nthe main paper and Appendix. Second, the marginal CPU time increase is negligible in most practical BO\napplications, where each black-box evaluation may take minutes to hours (or longer).",
+      "size": 432,
+      "sentences": 4
+    },
+    {
+      "id": 260,
+      "content": "t practical BO\napplications, where each black-box evaluation may take minutes to hours (or longer). Finally, the current\nNeST-BO implementation uses exact kernel derivatives with dense covariance matrices and no real numerical\nacceleration. We believe this leaves ample room for improvement, especially if recent advances in scaling GPs\nwith derivatives (for certain common kernel classes) are leveraged, e.g., (De Roos et al., 2021)",
+      "size": 433,
+      "sentences": 3
+    }
+  ]
+}

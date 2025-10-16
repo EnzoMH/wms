@@ -1,0 +1,1377 @@
+{
+  "source": "ArXiv",
+  "filename": "231_AI_ML_Learning_to_Solve_Optimization_Problems_.pdf",
+  "domain": "AI",
+  "total_chars": 72879,
+  "total_chunks": 228,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\nLEARNING TO SOLVE\nOPTIMIZATION PROBLEMS CONSTRAINED\nWITH PARTIAL DIFFERENTIAL EQUATIONS\nYusufGu¨ven∗ VincenzoDiVito∗andFerdinandoFioretto\nIstanbulTechnicalUniversity UniversityofVirginia\nControlandAutomationEngineeringDepartment DepartmentofComputerScience\nIstanbul,Turkey Charlottesville,USA\nngu6fh@virginia.edu {eda8pc,fioretto}@virginia.edu\nABSTRACT\nPartialdifferentialequation(PDE)-constrainedoptimizationarisesinmanyscientificandengineer-\ning domains, such as energy systems, fluid dynamics, and material design.",
+      "size": 528,
+      "sentences": 1
+    },
+    {
+      "id": 2,
+      "content": "anyscientificandengineer-\ning domains, such as energy systems, fluid dynamics, and material design. In these problems, the\ndecisionvariables(e.g.,controlinputsordesignparameters)aretightlycoupledwiththePDEstate\nvariables, and the feasible set is implicitly defined by the governing PDE constraints. This cou-\nplingmakestheproblemscomputationallydemanding,asitrequireshandlinghigh-dimensionaldis-\ncretizationsanddynamicconstraints.",
+      "size": 430,
+      "sentences": 3
+    },
+    {
+      "id": 3,
+      "content": "omputationallydemanding,asitrequireshandlinghigh-dimensionaldis-\ncretizationsanddynamicconstraints. Toaddressthesechallenges,thispaperintroducesalearning-\nbased framework that integrates a dynamic predictor with an optimization surrogate.",
+      "size": 238,
+      "sentences": 2
+    },
+    {
+      "id": 4,
+      "content": "ducesalearning-\nbased framework that integrates a dynamic predictor with an optimization surrogate. The dy-\nnamic predictor, a novel time-discrete Neural Operator [1], efficiently approximates system tra-\njectories governed by PDE dynamics, while the optimization surrogate leverages proxy optimizer\ntechniques [2] to approximate the associated optimal decisions.",
+      "size": 363,
+      "sentences": 2
+    },
+    {
+      "id": 5,
+      "content": "surrogate leverages proxy optimizer\ntechniques [2] to approximate the associated optimal decisions. This dual-network design enables\nreal-time approximation of optimal strategies while explicitly capturing the coupling between de-\ncisions and PDE dynamics.",
+      "size": 256,
+      "sentences": 2
+    },
+    {
+      "id": 6,
+      "content": "of optimal strategies while explicitly capturing the coupling between de-\ncisions and PDE dynamics. We validate the proposed approach on benchmark PDE-constrained\noptimizationtasksincludingBurgers’equation, heatequation, andvoltageregulation, anddemon-\nstratethatitachievessolutionqualitycomparabletoclassicalcontrol-basedalgorithmssuchasthe\nDirectMethodandModelPredictiveControl(MPC),whileprovidinguptofourordersofmagnitude\nimprovementincomputationalspeed.",
+      "size": 457,
+      "sentences": 2
+    },
+    {
+      "id": 7,
+      "content": "odelPredictiveControl(MPC),whileprovidinguptofourordersofmagnitude\nimprovementincomputationalspeed. 1 Introduction\nPartialdifferentialequations(PDEs)arecentraltomodelingawiderangeofphysicalandengineeringsystems,cap-\nturingphenomenathatevolvejointlyoverspaceandtime.",
+      "size": 265,
+      "sentences": 2
+    },
+    {
+      "id": 8,
+      "content": "ingawiderangeofphysicalandengineeringsystems,cap-\nturingphenomenathatevolvejointlyoverspaceandtime. Applicationsincludefluidtransport,whichcanbemodeled\nwith Burgers’ equations which are key in fluid mechanics and gas dynamics, thermal processes captured by heat\nequations, often used in financial mathematics and image analysis, and voltage dynamics in power systems.",
+      "size": 367,
+      "sentences": 2
+    },
+    {
+      "id": 9,
+      "content": "ons, often used in financial mathematics and image analysis, and voltage dynamics in power systems. Opti-\nmizingdecisionsinsuchdomainsrequiressolvingPDE-constrainedoptimizationproblems,wherecontrolordesign\nobjectivesmustbeoptimizedwhileensuringconsistencywiththeunderlyinggoverningPDEdynamics. Despitetheirimportance,PDE-constrainedoptimizationremainscomputationallyintractable.",
+      "size": 378,
+      "sentences": 3
+    },
+    {
+      "id": 10,
+      "content": "ngPDEdynamics. Despitetheirimportance,PDE-constrainedoptimizationremainscomputationallyintractable. Traditionalapproaches\ntypicallyrelyonfiniteelementandfinitedifferencediscretizationscombinedwithadjoint-basedoptimization. These\nmethodsoftensufferfromhighdimensionality,highcomputationalcost,andconvergencedifficultieswhenappliedto\nnonlineardynamics.",
+      "size": 350,
+      "sentences": 4
+    },
+    {
+      "id": 11,
+      "content": "highdimensionality,highcomputationalcost,andconvergencedifficultieswhenappliedto\nnonlineardynamics. Forexample, whenappliedtothenonlinearBurgers’equations, ourexperimentsshowthatthe\nruntimesoftheadjoint-basedandNonlinearMPCapproachesruninapproximately120 sand878 s;suchcomputa-\ntionalcosthindertheirapplicabilityinlarge-scaleorreal-timedecision-makingtasks.",
+      "size": 357,
+      "sentences": 2
+    },
+    {
+      "id": 12,
+      "content": "d878 s;suchcomputa-\ntionalcosthindertheirapplicabilityinlarge-scaleorreal-timedecision-makingtasks. ∗EqualContribution\nThe implementation of the methods used to reproduce the experiments described in this work con be found at\nhttps://github.com/vdvf96/PDE-OP. 5202\npeS\n92\n]GL.sc[\n1v37542.9052:viXra\n===  2 ===\nIn various classes of continuous optimization tasks not constrained by PDEs, proxy optimizers [2] have recently\nemergedasapowerfultooltoquicklyfindapproximatesolutions.",
+      "size": 478,
+      "sentences": 3
+    },
+    {
+      "id": 13,
+      "content": "y PDEs, proxy optimizers [2] have recently\nemergedasapowerfultooltoquicklyfindapproximatesolutions. Inparallel,researchershavefocusedondeveloping\navarietyofsurrogates[3,4,5,6]forcapturingsystemdynamics. Ourapproachisauniquecombinationofelements\nfromboththeseareas, andconsistsofadual-networkarchitecturetotacklePDE-constrainedoptimizationproblems\nwhereboththestatedynamicsandthecontroldecisionsevolveinspaceandtime. Contributions.",
+      "size": 430,
+      "sentences": 4
+    },
+    {
+      "id": 14,
+      "content": "izationproblems\nwhereboththestatedynamicsandthecontroldecisionsevolveinspaceandtime. Contributions. Specifically, the paper makes the following contributions: (1) It introduces a novel learning-based\nmethodtoefficientlyapproximatesolutionsofPDE-constrainedoptimizationproblems. Ourapproach,PDE-OP(Op-\ntimizationProxy),consistsofadual-networkarchitectureinwhichadynamicpredictorcapturesthesystemdynamics,\nwhile a surrogate controller approximates the optimal control actions.",
+      "size": 474,
+      "sentences": 4
+    },
+    {
+      "id": 15,
+      "content": "orcapturesthesystemdynamics,\nwhile a surrogate controller approximates the optimal control actions. These components are trained in a synergis-\ntic manner in a self-supervised fashion using a primal–dual method. (2) It shows that the proposed time-discrete\nNeural Operator accurately captures the dynamics governed by PDEs.",
+      "size": 323,
+      "sentences": 3
+    },
+    {
+      "id": 16,
+      "content": "that the proposed time-discrete\nNeural Operator accurately captures the dynamics governed by PDEs. (3) It demonstrates that the proposed frame-\nworkachievesdecisionqualitycomparabletostate-of-the-artnumericalsolvers,suchasModelPredictiveControland\nthe Adjoint-sensitivity method, while providing several orders of magnitude improvements in computational speed. The approach is validated on a set of widely adopted PDE-constrained optimization tasks, including Burgers’, heat,\nandvoltageequations.",
+      "size": 496,
+      "sentences": 3
+    },
+    {
+      "id": 17,
+      "content": "f widely adopted PDE-constrained optimization tasks, including Burgers’, heat,\nandvoltageequations. Webelievethattheseresultscouldboosttheadoptionoflearning-basedmethodsforcontrol\nproblemsthatrequirehigh-fidelitydynamicmodelingandnearreal-timeoptimaldecision-making.",
+      "size": 266,
+      "sentences": 2
+    },
+    {
+      "id": 18,
+      "content": "dsforcontrol\nproblemsthatrequirehigh-fidelitydynamicmodelingandnearreal-timeoptimaldecision-making. 2 RelatedWork\nAcentralparadigmfordecision-makingcoupledwithdynamicalsystemsisModelPredictiveControl(MPC)[7].Itre-\npeatedlysolvesanoptimizationproblemoverafinitetimehorizonusingpredictedsystemstates.WhileMPCprovides\nhigh-quality control decisions, its reliance on repeatedly solving an optimization problem makes it computationally\nintractableandlimitsitsapplicabilityinreal-timesettings.",
+      "size": 487,
+      "sentences": 2
+    },
+    {
+      "id": 19,
+      "content": "imization problem makes it computationally\nintractableandlimitsitsapplicabilityinreal-timesettings. Inasimilarfashion,exactPDE-constrainedoptimization\nmethodsrelyontime–spacediscretizationofthegoverningequations,afterwhichtheresultinghigh-dimensionalsys-\ntemisincorporatedintoanoptimizationproblem[8,9]. Whiletheoreticallywell-founded,theseapproachesbecome\nquickly impractical as the problem size grows, especially in the presence of nonlinear dynamics or when real-time\nfeasibilityisrequired.",
+      "size": 493,
+      "sentences": 3
+    },
+    {
+      "id": 20,
+      "content": "ze grows, especially in the presence of nonlinear dynamics or when real-time\nfeasibilityisrequired. Tomitigatetheselimitations,surrogatemodelshavebeendevelopedforreduced-orderadjoint\nsolutions[10],sensitivityPDEs[11],andlearningPDEoperators[12],offeringsignificantcomputationaladvantages. Nevertheless, these methods often face trade-offs between accuracy and efficiency and limited adaptability across\noperatingregimes[4,1,13].",
+      "size": 428,
+      "sentences": 3
+    },
+    {
+      "id": 21,
+      "content": "rade-offs between accuracy and efficiency and limited adaptability across\noperatingregimes[4,1,13]. Inparallel, toapproximatesolutionsofconstrainedoptimizationproblemsinreal-timesetting, machinelearningre-\nsearchers have developed a class of methods known as proxy optimizers. These methods employ machine learning\nmodels, to learn mappings from problem parameters or system configurations to optimal decisions, thereby signifi-\ncantlyacceleratinginference[2]comparedtoclassicaloptimizationsolvers.",
+      "size": 498,
+      "sentences": 3
+    },
+    {
+      "id": 22,
+      "content": "l decisions, thereby signifi-\ncantlyacceleratinginference[2]comparedtoclassicaloptimizationsolvers. Bothsupervisedapproaches[14],which\nrelyonprecomputedoptimalsolutions,andself-supervisedones[15],whichexploitknowledgeoftheproblemstruc-\nture, have been proposed, showing promising results. A recurring challenge in this setting is ensuring feasibility:\nlearned solutions may violate problem constraints.",
+      "size": 402,
+      "sentences": 3
+    },
+    {
+      "id": 23,
+      "content": "allenge in this setting is ensuring feasibility:\nlearned solutions may violate problem constraints. This issue has been tackled through penalty-based training [14],\nimplicit-layerformulationsthatembedconstraintsdirectlyintothemodelarchitecture[16],orpost-processingprojec-\ntionstorestorefeasibility[17]. A large body of recent work has also focused on learning surrogates for PDE dynamics.",
+      "size": 389,
+      "sentences": 3
+    },
+    {
+      "id": 24,
+      "content": "sibility[17]. A large body of recent work has also focused on learning surrogates for PDE dynamics. Physics-Informed Neural\nNetworks [18] directly encode PDE residuals into the loss function, enabling solutions that adhere to the governing\nequations.",
+      "size": 250,
+      "sentences": 3
+    },
+    {
+      "id": 25,
+      "content": "de PDE residuals into the loss function, enabling solutions that adhere to the governing\nequations. Neural operator approaches, such as the Fourier Neural Operator [5] and DeepONet [1], learn mappings\nbetween infinite-dimensional function spaces, which allows them to approximate solution operators of families of\nPDEs, with strong generalization across different boundary conditions and coefficients [4].",
+      "size": 405,
+      "sentences": 2
+    },
+    {
+      "id": 26,
+      "content": "lies of\nPDEs, with strong generalization across different boundary conditions and coefficients [4]. Other operator-learning\nframeworks [19, 20] and kernel-based methods [21] have also been developed. While these approaches excel at\nreproducingPDEsolutions,theyaretypicallynotdesignedtoincorporatedecisionvariablesortodirectlysolvePDE-\nconstrained optimization problems.",
+      "size": 369,
+      "sentences": 3
+    },
+    {
+      "id": 27,
+      "content": "lynotdesignedtoincorporatedecisionvariablesortodirectlysolvePDE-\nconstrained optimization problems. The closest related work is [22], where the authors propose a learning-based\nsurrogate solver to tackle ODE or SDE-constrained optimization tasks. Our approach goes further, by integrating\noperator-learningsurrogateswithintheoptimizationpipeline,therebycouplingtherepresentationofPDEdynamics\nwithproxyoptimizersandenablingreal-timesolutionstoPDE-constrainedoptimizationtasks.",
+      "size": 475,
+      "sentences": 3
+    },
+    {
+      "id": 28,
+      "content": "onofPDEdynamics\nwithproxyoptimizersandenablingreal-timesolutionstoPDE-constrainedoptimizationtasks. 2\n===  3 ===\n3 SettingsandGoals\nThispaperfocusesonoptimizationproblemconstrainedbyasystemofpartialdifferentialequations:\nJ(u(t,x),y(t,x))\n(cid:122) (cid:125)(cid:124) (cid:123)\n(cid:90) T(cid:90) (cid:90) T(cid:90)\nMinimize L (cid:0) y(T,·) (cid:1) + Φ (cid:0) u(t,x),y(t,x) (cid:1) dxdt+ ∥u(t,x)∥2dxdt (1a)\nu:Q→R\n0 Ω 0 Ω\n2\n(cid:0) (cid:1)\ns.t.",
+      "size": 444,
+      "sentences": 2
+    },
+    {
+      "id": 29,
+      "content": ":1) + Φ (cid:0) u(t,x),y(t,x) (cid:1) dxdt+ ∥u(t,x)∥2dxdt (1a)\nu:Q→R\n0 Ω 0 Ω\n2\n(cid:0) (cid:1)\ns.t. ∂ y(t,x) = I y(t,x),u(t,x),t,x , (t,x)∈Q, (1b)\nt t\n(cid:0) (cid:1)\n∂ y(t,x) = I y(t,x),u(t,x),t,x , (t,x)∈Q, (1c)\nx x\ny(t ,x) = y (x), x∈Ω, (1d)\n0 t0\ny(t,x) = y (t,x), (t,x)∈[t ,T]×∂Ω, (1e)\n∂ 0\ng(u(t,x),y(t,x) ≤ 0, h(u(t,x),y(t,x)) = 0, (t,x)∈Q.",
+      "size": 345,
+      "sentences": 2
+    },
+    {
+      "id": 30,
+      "content": "t0\ny(t,x) = y (t,x), (t,x)∈[t ,T]×∂Ω, (1e)\n∂ 0\ng(u(t,x),y(t,x) ≤ 0, h(u(t,x),y(t,x)) = 0, (t,x)∈Q. (1f)\nInthisformulation, thecontrolactionisdenotedbyu : Q → R, whereQ = [t ,T]×Ωisthespace–timedomain,\n0\nwitht ,T ∈ Rbeingtheinitialtimeinstantandthetimehorizon,respectively,andΩbeingthespatialdomain,e.g.,\n0\nifx ∈ R,thenΩ ⊆ R. Thesystemstateisrepresentedbyy : Q → R. tandxdenotetheindependenttemporaland\n(cid:0) (cid:1)\nspatialvariable,respectively.",
+      "size": 447,
+      "sentences": 2
+    },
+    {
+      "id": 31,
+      "content": "ntedbyy : Q → R. tandxdenotetheindependenttemporaland\n(cid:0) (cid:1)\nspatialvariable,respectively. Theoptimizationobjective(1a)combinesaterminalcostL y(T,·) ,whichdependson\nthe state at the final time T, with a running cost Φ, integrated over time and space, and an effort cost, which is the\nenergyusedtocontrolthesystem. ThesystemdynamicsaregovernedbytwoPDEconstraints.",
+      "size": 371,
+      "sentences": 3
+    },
+    {
+      "id": 32,
+      "content": "t cost, which is the\nenergyusedtocontrolthesystem. ThesystemdynamicsaregovernedbytwoPDEconstraints. Equation(1b)modelsthetemporalevolutionofthestate,\nwhile (1c) captures spatial dependencies, for example through diffusion–reaction relations. Initial conditions (1d)\nprescribe the state distribution at t = t , while boundary conditions (1e) specify the state behavior on the spatial\n0\nboundary ∂Ω.",
+      "size": 397,
+      "sentences": 4
+    },
+    {
+      "id": 33,
+      "content": "at t = t , while boundary conditions (1e) specify the state behavior on the spatial\n0\nboundary ∂Ω. Finally, (1f) represents additional inequality and equality constraints on (u,y), which may encode\nfeasibilityrequirementsorapplication-specificrestrictions. Temperature control example.",
+      "size": 285,
+      "sentences": 3
+    },
+    {
+      "id": 34,
+      "content": "may encode\nfeasibilityrequirementsorapplication-specificrestrictions. Temperature control example. In the context of ther-\nmal regulation problems, the decision variable u(t,x)\nrepresentslocalizedactuatorsappliedalongthemedium,\nwhile the state variable y(t,x) describes the tempera-\nture distribution over space and time.",
+      "size": 321,
+      "sentences": 3
+    },
+    {
+      "id": 35,
+      "content": "dium,\nwhile the state variable y(t,x) describes the tempera-\nture distribution over space and time. These two com-\nponents are tightly coupled: the control inputs directly\nenter the governing PDE as forcing terms, shaping the\nspatio-temporal evolution of the state, while the opti-\nmizationobjectiveisevaluatedontheresultingstatetra-\njectory. System dynamics (1b–1c) follow a controlled\nreaction–diffusion equation, which models heat diffu-\nsion, dissipation, and externally applied control.",
+      "size": 491,
+      "sentences": 3
+    },
+    {
+      "id": 36,
+      "content": "ion–diffusion equation, which models heat diffu-\nsion, dissipation, and externally applied control. The Figure 1: Temperature regulation process: control actions\ninitial condition (1d) specifies the temperature distribu- u(t,x) steer the system from the initial state y(t 0 ,x) to-\ntionatt = t ,andtheboundarycondition(1e)enforces wardsatargetstatey(T,x). 0\nzero-flux(Neumann)boundaries, preventingheattrans-\nfer across the domain boundary.",
+      "size": 440,
+      "sentences": 3
+    },
+    {
+      "id": 37,
+      "content": "etstatey(T,x). 0\nzero-flux(Neumann)boundaries, preventingheattrans-\nfer across the domain boundary. The objective 1a combines a terminal cost to match the target temperature profile,\na running cost for deviations along the horizon, and a control effort penalty. A simplified illustration is provided in\nFig.1,whileafullmathematicaldescriptionisgiveninSection5.2. Challenges. Whilefundamentalformanyapplications,Problem(1)presentsthreekeychallenges:\n1.",
+      "size": 451,
+      "sentences": 6
+    },
+    {
+      "id": 38,
+      "content": "ection5.2. Challenges. Whilefundamentalformanyapplications,Problem(1)presentsthreekeychallenges:\n1. Finding optimal solutions to Problem (1) is computationally intractable. Even without the differential equation\nconstraints,thedecisionversionoftheproblemaloneisNP-hardingeneral. 2. Achievinghigh-qualityapproximationsofthesystemdynamics(1b)-(1c)innearreal-time, posesthesecondsig-\nnificantchallenge. Thenon-linearityofthesedynamicsfurthercomplicatethetask. 3.",
+      "size": 459,
+      "sentences": 9
+    },
+    {
+      "id": 39,
+      "content": ", posesthesecondsig-\nnificantchallenge. Thenon-linearityofthesedynamicsfurthercomplicatethetask. 3. Finally,theintegrationofthesystemdynamicsintheoptimizationframeworkrenderstraditionalnumericalmeth-\nodsimpracticalforreal-timeapplications. 4 PDE-OptimizationProxy\nTo tackle the challenges discussed above, we introduce PDE-Optimization Proxy (PDE-OP): a fully differentiable\nsurrogate for PDE-constrained optimization.",
+      "size": 418,
+      "sentences": 5
+    },
+    {
+      "id": 40,
+      "content": "PDE-Optimization Proxy (PDE-OP): a fully differentiable\nsurrogate for PDE-constrained optimization. PDE-OP adopts a dual-network architecture: the first network, U ,\nω\napproximatestheoptimaldecisionvariableu∗(t,x),whilethesecond,Y ,predictsthecorrespondingstatevariables\nθ\n3\n===  4 ===\nFigure2: Ateachtimeinstantt ,PDE-OPusesadualnetworkarchitectureconsistingofaproxyoptimizationmodel\nk\nU toestimatethebasisfunctionsweightsc(t )andconstructthecontrolactionuˆ(t ,x),andaneural-DEmodelY\nω k k θ\ntoestimatethestate-variablesyˆ(t ,x),withtheobjectivefunctionJ(uˆ(t,x),yˆ(t,x))capturingtheoverallloss.",
+      "size": 596,
+      "sentences": 2
+    },
+    {
+      "id": 41,
+      "content": "timatethestate-variablesyˆ(t ,x),withtheobjectivefunctionJ(uˆ(t,x),yˆ(t,x))capturingtheoverallloss. k+1\ny(t,x) using a discrete-time neural operator architecture. Here, ω and θ denote the trainable parameters of U and\nY, respectively. These two components are jointly trained in an end-to-end differentiable manner, and a schematic\nillustration of their interaction is provided in Figure 2.",
+      "size": 390,
+      "sentences": 4
+    },
+    {
+      "id": 42,
+      "content": "d differentiable manner, and a schematic\nillustration of their interaction is provided in Figure 2. In what follows, we first describe each network individually\nandthendetailtheirintegrationwithintheproposedlearningframework. Learning Goal. PDE-OP trains on a distribution Π of problem instances generated by different states y(t,x) for\nvarioustandxvalues. Forinstance,inthethermalregulationexample,thisdistributioncorrespondstothevarietyof\ntemperatureprofilesthatarisefromdifferentcontrolinputs.",
+      "size": 496,
+      "sentences": 5
+    },
+    {
+      "id": 43,
+      "content": "e,thisdistributioncorrespondstothevarietyof\ntemperatureprofilesthatarisefromdifferentcontrolinputs. Withreferenceto(1a),thelearningobjectiveis:\nMinimizeE [J (U (t,x,y),Y (t,x,uˆ))] (2a)\ny(t,x)∼Π ω θ\nω,θ\ns.t. (1b)–(1f), (2b)\nwhere, to simplify the notation, we denote the estimated control variable as uˆ(t,x) = U (t,x,yˆ), while the state\nω\nvariable estimate is denoted as yˆ(t,x) = Y (t,x,uˆ).",
+      "size": 394,
+      "sentences": 3
+    },
+    {
+      "id": 44,
+      "content": "le as uˆ(t,x) = U (t,x,yˆ), while the state\nω\nvariable estimate is denoted as yˆ(t,x) = Y (t,x,uˆ). Given the complexity of solving Problem (2), the goal is to\nθ\ndevelop a fast and accurate neural PDE optimization surrogate. This approach uses the concept of proxy optimizers\n[2],whichisdetailednext. 4.1 SurrogateController\nThefirstobjectiveistoestablishaneuralnetwork-basedmappingthattransformsthesystemstatey(t,x)ofaPDE-\nconstrainedoptimizationproblem1toacontrolactionu(t,x).",
+      "size": 478,
+      "sentences": 4
+    },
+    {
+      "id": 45,
+      "content": "ingthattransformsthesystemstatey(t,x)ofaPDE-\nconstrainedoptimizationproblem1toacontrolactionu(t,x). Practically, thismappingisimplementedasaneural\nnetwork U , which takes the current system state yˆ(t,x) and desired terminal state y(T,x) as input, and outputs an\nω\narrayofcoefficientscˆ(t)thatarethenusedtoestimatethecorrespondingoptimaldecisionvariables.Thesecoefficients\naretheweightsusedtocombineasetofbasisfunctionstorepresentthecontrolaction,andaredescribednext.",
+      "size": 467,
+      "sentences": 2
+    },
+    {
+      "id": 46,
+      "content": "ents\naretheweightsusedtocombineasetofbasisfunctionstorepresentthecontrolaction,andaredescribednext. Basis function representation of the control action. To approximate the optimal control action using a neural\nnetwork, we represent the control trajectory u(t,x) as a linear combination of basis functions. This representation\nhasalsobeenproposedin[23,24].",
+      "size": 355,
+      "sentences": 4
+    },
+    {
+      "id": 47,
+      "content": "(t,x) as a linear combination of basis functions. This representation\nhasalsobeenproposedin[23,24]. Thisdesignchoiceismotivatedbythefactthat, althoughtheoutputofaneural\nnetworkliesinafinite-dimensionalspace,combiningitwithcontinuousbasisfunctionsϕ (x)allowsustoconstruct\ni\nacontinuousapproximationofthecontroltrajectoryu(t,x). Inthisway,thecontrollermodelU operatesinalow-\nω\ndimensional space, while the basis functions map these finite number of outputs into a continuous-time signal.",
+      "size": 485,
+      "sentences": 4
+    },
+    {
+      "id": 48,
+      "content": "space, while the basis functions map these finite number of outputs into a continuous-time signal. As\nshown in the additional experiments provided in Appendix 9.6, direct modeling of continuous-time control actions,\neither with a neural network or classical method, leads to qualitatively similar performance to our basis expansion\napproach, but while the computational cost of our method remains extremely low, the running time of the classical\nmethodsgrowssignificantly.",
+      "size": 472,
+      "sentences": 2
+    },
+    {
+      "id": 49,
+      "content": "t of our method remains extremely low, the running time of the classical\nmethodsgrowssignificantly. Theseresultsshowthatourmethodissuitableforreal-timetasks.",
+      "size": 157,
+      "sentences": 2
+    },
+    {
+      "id": 50,
+      "content": "the classical\nmethodsgrowssignificantly. Theseresultsshowthatourmethodissuitableforreal-timetasks. Considerthecontrolactionu(t ,x),wheret denotesacollocationpoint;ateachtimeinstantt ,thecontrolu(t ,x)\nk k k k\nisexpressedasaweightedsumofM continuousbasisfunctions{ϕ (x)}M :\ni i=1\nM\n(cid:88)\nu(t ,x)= c (t )ϕ (x), t =0,...,T, (3)\nk i k i k\ni=1\n4\n===  5 ===\nwherec(t ) = [c (t ) ... c (t )]⊤ denotesthecoefficientsofthebasisfunctionsattimeinstantt .",
+      "size": 446,
+      "sentences": 3
+    },
+    {
+      "id": 51,
+      "content": "5 ===\nwherec(t ) = [c (t ) ... c (t )]⊤ denotesthecoefficientsofthebasisfunctionsattimeinstantt . Forexample,\nk 1 k M k k\ninoneofourexperiments,weadoptsinusoidalbasisfunctions,e.g. ϕ (x) = sin(πx/X),ϕ (x) = cos(πx/X),...,\n1 2\nϕ (x)=sin(Mπx/X),ϕ (x)=cos(Mπx/X),whichprovideaFourier-likeexpansionofthecontrolsignal. 2M−1 2M\nHere M denotes the number of sinusoidal modes included in the expansion, with higher values of M allowing for\nbetterapproximationsofthecontrolvariable.",
+      "size": 473,
+      "sentences": 4
+    },
+    {
+      "id": 52,
+      "content": "ed in the expansion, with higher values of M allowing for\nbetterapproximationsofthecontrolvariable. Surrogate controller model training.",
+      "size": 136,
+      "sentences": 2
+    },
+    {
+      "id": 53,
+      "content": "es of M allowing for\nbetterapproximationsofthecontrolvariable. Surrogate controller model training. The role of the controller surrogate U is to predict the array of coefficients\nω\nc(t )=[c (t ) ... c (t )]T. Formally,thenetworkU approximatesthefunction\nk 1 k M k ω\n(cid:0) (cid:1)\nU : y(t ,x),y(T,x) (cid:55)→c(t ), (4)\nk k\nwhich maps the state variable y(t ,x) and desired terminal state y(T,x) to the corresponding controller weights\nk\nc(t ), subsequently used to construct the control action u(t ,x) according to (3).",
+      "size": 521,
+      "sentences": 3
+    },
+    {
+      "id": 54,
+      "content": "roller weights\nk\nc(t ), subsequently used to construct the control action u(t ,x) according to (3). The surrogate controller model\nk k\nU is trained on-the-fly, using a dataset D = {(yˆi(t ,x), y(T,x)}N , where yˆ(t ,x) denotes the state variables\nω k i=1 k\nestimatedbythedynamicpredictorY , y(T,x)isthedesiredterminalstateandN isthenumberofsamples.",
+      "size": 348,
+      "sentences": 2
+    },
+    {
+      "id": 55,
+      "content": "k i=1 k\nestimatedbythedynamicpredictorY , y(T,x)isthedesiredterminalstateandN isthenumberofsamples. Here,\nθ\nbold symbols y(t ,x) denote the space-discrete version of the corresponding vector y(t ,x), with each collocation\nk k\n(cid:2) (cid:3)T\npointcorrespondingtoaspecificoutputofY , e.g. y(t ,x) = yˆ(t ,x ) ... yˆ(t ,x ) .",
+      "size": 324,
+      "sentences": 3
+    },
+    {
+      "id": 56,
+      "content": "(cid:2) (cid:3)T\npointcorrespondingtoaspecificoutputofY , e.g. y(t ,x) = yˆ(t ,x ) ... yˆ(t ,x ) . Notethatthissettingis\nθ k k 1 k n\nunsupervised: optimal weights c(t ) are unknown, and candidate weights cˆ(t ) = U (yˆ(t ,x),y(T,x)) are evalu-\nk k ω k\natedsolelybytheobjectivevalueJ in(1a)theyinduce. Figure2illustratestheinteractionbetweenPDE-OP’sproxy\noptimizerU anddynamicpredictorY attimeinstantt = t .",
+      "size": 406,
+      "sentences": 4
+    },
+    {
+      "id": 57,
+      "content": "2illustratestheinteractionbetweenPDE-OP’sproxy\noptimizerU anddynamicpredictorY attimeinstantt = t . Giventhepredictedstateyˆ(t ,x)(fork = 0wehave\nω θ k k\nyˆ(t ,x) = y (x)), thesurrogatecontrolleroutputsanestimateofc(t )whicharethenusedtoconstructthecontrol\n0 0 k\nactionu(t ,x); thisissubsequentlyusedbyY topredictthenextstateyˆ(t ,x). Thisprocessisrepeatedateach\nk θ k+1\ncollocationpoint,untiltheterminalstatey(T,x)isestimated.",
+      "size": 427,
+      "sentences": 3
+    },
+    {
+      "id": 58,
+      "content": "t ,x). Thisprocessisrepeatedateach\nk θ k+1\ncollocationpoint,untiltheterminalstatey(T,x)isestimated. To build our surrogate controller, we build on the proxy optimizer method proposed in [15], which allows self-\nsupervised training without access to precomputed optimal solutions, while directly encouraging feasibility through\nprimal–dualupdates. Oncetrained,themodelU canbeusedtogeneratenear-optimalsolutionsatlowcost.",
+      "size": 419,
+      "sentences": 4
+    },
+    {
+      "id": 59,
+      "content": "hrough\nprimal–dualupdates. Oncetrained,themodelU canbeusedtogeneratenear-optimalsolutionsatlowcost. Thenext\nω\nsectiondiscusseshowthestatevariablesareestimatedusingadiscrete-timeNeuralOperatorarchitecture. 4.2 Discrete-timeNeuralOperator\nThesecondcomponentofPDE-OPisadiscrete-timeNeuralOperatorarchitecture,heredenotedasY ,whichmodels\nθ\nthe PDE solution operator.",
+      "size": 362,
+      "sentences": 4
+    },
+    {
+      "id": 60,
+      "content": "isadiscrete-timeNeuralOperatorarchitecture,heredenotedasY ,whichmodels\nθ\nthe PDE solution operator. The proposed dynamic predictor employs two subnetworks: the first, which we denote\nbranch network, encodes input functions (e.g., control signals), and the second, called trunk network, encodes the\ncoordinateswherethesolutionisevaluated(e.g.,spatiallocations).",
+      "size": 360,
+      "sentences": 2
+    },
+    {
+      "id": 61,
+      "content": "d, called trunk network, encodes the\ncoordinateswherethesolutionisevaluated(e.g.,spatiallocations). Theiroutputsarethencombinedtoapproximate\nthetargetoperator.Thisarchitectureisinspiredby[1],aneuraloperatorframeworkdesignedtoapproximatemappings\nbetweeninfinite-dimensionalfunctionspaces. Recall that the PDE-constrained problem couples system dynamics and decision variables. To take account for this\ncoupling, the proposed architecture incorporates both the system state and the controller output.",
+      "size": 498,
+      "sentences": 4
+    },
+    {
+      "id": 62,
+      "content": "s\ncoupling, the proposed architecture incorporates both the system state and the controller output. Given the current\nestimatedstateyˆ(t ,x)andthecontrolweightscˆ(t )estimatedbyU ,thenetworkY outputsanestimateofthestate\nk k ω θ\natthesubsequentcollocationpointintime:\nyˆ(t ,x)=Y (t,x,yˆ(t ,x),cˆ(t )). (5)\nk+1 θ k k\nRollingout(5)acrossk =0,...,T −1yieldsthefullestimatedstatetrajectory,{yˆ(t ,x)}T . k k=0\nBranch network.",
+      "size": 420,
+      "sentences": 4
+    },
+    {
+      "id": 63,
+      "content": "gout(5)acrossk =0,...,T −1yieldsthefullestimatedstatetrajectory,{yˆ(t ,x)}T . k k=0\nBranch network. The branch net encodes the estimated system state sampled at n fixed sensor locations, yˆ(t ,x),\nk\ntogetherwithestimatedcontrolweightscˆ(t ),andmapsthisconcatenatedinputtoad-dimensionalvectorofcoeffi-\nk\ncientsb(yˆ(t ,x),cˆ(t ))∈Rd. k k\nTrunknetwork. Thetrunknetencodesthespatialquerycoordinatex,producingalatentfeaturevectorγ(x)∈Rd.",
+      "size": 432,
+      "sentences": 5
+    },
+    {
+      "id": 64,
+      "content": "k\nTrunknetwork. Thetrunknetencodesthespatialquerycoordinatex,producingalatentfeaturevectorγ(x)∈Rd. The estimated subsequent (in time) state yˆ(t ,x) at location x is obtained by combining the branch coefficients\nk+1 i\nandtrunkfeaturesthroughaninnerproduct:\nd\n(cid:88)\nyˆ(t ,x ) = b (yˆ(t ,x ),cˆ(t )) γ (x ), i=1,...,n. (6)\nk+1 i j k i k j i\nj=1\nTheremainderofthissectiondetailsthemethodbywhichthestatevariablesarepreciselyestimatedusingtheproposed\ndiscrete-timeNeuralOperator.",
+      "size": 477,
+      "sentences": 3
+    },
+    {
+      "id": 65,
+      "content": "themethodbywhichthestatevariablesarepreciselyestimatedusingtheproposed\ndiscrete-timeNeuralOperator. Model initialization and training. Given the proposed time-discrete neural operator model Y takes as input the\nθ\nweightsofthebasisfunctionsestimatedbythesurrogatecontrollerU ,itispracticaltoinitializethedynamicpredictor\nθ\n5\n===  6 ===\nmodel.",
+      "size": 341,
+      "sentences": 3
+    },
+    {
+      "id": 66,
+      "content": "imatedbythesurrogatecontrollerU ,itispracticaltoinitializethedynamicpredictor\nθ\n5\n===  6 ===\nmodel. To achieve this, we initialize Y in a supervised fashion; its training data are generated by sampling time-\nθ\nvarying control weight sequences c(t ) from a gaussian distribution, e.g., c (t ) ∼ N(0,σ ), and by specifying\nk i k i\nthe terminal state y(T,x). The corresponding solution y(t,x) satisfying (1b)–(1f) is computed using a numerical\nPDEsolver.",
+      "size": 451,
+      "sentences": 3
+    },
+    {
+      "id": 67,
+      "content": "x). The corresponding solution y(t,x) satisfying (1b)–(1f) is computed using a numerical\nPDEsolver. Eachtrajectoryisdiscretizedintoone-steptrainingsamplesoftheform(y(t ,x),c(t )) (cid:55)→ y(t ,x). k k k+1\nFormally,thedatasetoftrainingpairsisgivenbyD = (cid:110)(cid:0) yi(t ,x),ci(t ),yi(t ,x) (cid:1) (cid:12) (cid:12) t ∈ {0,...,T −1} (cid:111)N . k k k+1 (cid:12) k\ni=1\nThenetworkY istrainedtominimizethepredictionerrorbetweenitsoutputsandtheground-truthvalues.",
+      "size": 465,
+      "sentences": 5
+    },
+    {
+      "id": 68,
+      "content": ") k\ni=1\nThenetworkY istrainedtominimizethepredictionerrorbetweenitsoutputsandtheground-truthvalues. Formally,\nθ\nthismodelistrainedbyminimizingtheloss:\nmin E (c,y)∼D (cid:104)(cid:13) (cid:13)yˆ(t,x)−y(t,x) (cid:13) (cid:13) 2 (cid:105) , (7)\nθ\nwhere D denotes the dataset of pairs (c,y).",
+      "size": 287,
+      "sentences": 2
+    },
+    {
+      "id": 69,
+      "content": "13)yˆ(t,x)−y(t,x) (cid:13) (cid:13) 2 (cid:105) , (7)\nθ\nwhere D denotes the dataset of pairs (c,y). This training strategy ensures that Y learns to approximate the PDE\nθ\nsolution operator given a distribution of weights c(t) approximating the distribution of estimated weights generated\nby the surrogate controller U , so that it can provide accurate PDE-solutions given the predicted controller weights\nω\ncˆ(t).",
+      "size": 412,
+      "sentences": 2
+    },
+    {
+      "id": 70,
+      "content": "r U , so that it can provide accurate PDE-solutions given the predicted controller weights\nω\ncˆ(t). 4.3 HandlingStaticandDynamicsConstraintsJointly\nTointegratetheproposedtime-discreteneuralperatorwithinthedecisionprocess,thispaperproposesaPrimalDual\n(LD)learningapproach,whichisinspiredbytheaugmentedLagrangianrelaxationtechnique[25]adoptedinclassic\noptimization.",
+      "size": 363,
+      "sentences": 2
+    },
+    {
+      "id": 71,
+      "content": "proach,whichisinspiredbytheaugmentedLagrangianrelaxationtechnique[25]adoptedinclassic\noptimization. In Lagrangian relaxation, some or all the problem constraints are relaxed into the objective function\nusingLagrangianmultiplierstocapturethepenaltiesinducedbyviolatingthem. Theproposedformulationleverages\nLagrangiandualitytointegratetrainableregularizationtermsthatencapsulatesviolationsoftheconstraintfunctions.",
+      "size": 412,
+      "sentences": 3
+    },
+    {
+      "id": 72,
+      "content": "andualitytointegratetrainableregularizationtermsthatencapsulatesviolationsoftheconstraintfunctions. Whenalltheconstraintsarerelaxed,theviolation-basedLagrangianofproblem(1)is\nMinimizeJ(u(t,x),y(t,x))+λ⊤|h′(u(t,x),y(t,x))|+λ⊤max(0,g(u(t,x),y(t,x))),\nh′ g\nu\nwhereJ,garedefinedin(1a),and(1f),respectively,andh′isdefinedasfollows,\n∂ y(t,x)−I (cid:0) y(t,x),u(t,x),t,x (cid:1)\nt t\n(cid:0) (cid:1)\n∂ x y(t,x)−I x y(t,x),u(t,x),t,x \nh′(u,y) =   y(0,x)−y 0 (x)  =0.",
+      "size": 465,
+      "sentences": 2
+    },
+    {
+      "id": 73,
+      "content": "cid:1)\nt t\n(cid:0) (cid:1)\n∂ x y(t,x)−I x y(t,x),u(t,x),t,x \nh′(u,y) =   y(0,x)−y 0 (x)  =0. (8)\n \n y(t,x)−y (t,x) \n∂\nh(u,y)\nItdenotesthesetofallequalityconstraintsofproblem(1),thusextendingtheconstraintshin(1e),withthesystem\ndynamics(1b)-(1c)andtheinitialandboundaryconditionsequations(1d)-(1e)writteninanimplicitformasabove. Therein, λ and λ are the vectors of Lagrange multipliers associated with functions h′ and g, e.g.",
+      "size": 435,
+      "sentences": 3
+    },
+    {
+      "id": 74,
+      "content": ". Therein, λ and λ are the vectors of Lagrange multipliers associated with functions h′ and g, e.g. λi ,λj are\nh′ g h′ g\nassociated with the i-th equality h′ in h′ and j-th inequality g in g, respectively.",
+      "size": 205,
+      "sentences": 3
+    },
+    {
+      "id": 75,
+      "content": "are\nh′ g h′ g\nassociated with the i-th equality h′ in h′ and j-th inequality g in g, respectively. The key advantage of expressing\ni j\nthesystemdynamics(1b)-(1c)andinitialandboundaryconditions(1d)-(1e)inthesameimplicitformastheequality\nconstraints h, (as shown in (8)), is treating the system dynamics in the same manner as the constraint functions h.\nThis enables us to satisfy the system dynamics and the static set of constraints ensuring that they are incorporated\nseamlesslyintotheoptimizationprocess.",
+      "size": 506,
+      "sentences": 2
+    },
+    {
+      "id": 76,
+      "content": "static set of constraints ensuring that they are incorporated\nseamlesslyintotheoptimizationprocess. The proposed primal-dual learning method uses an iterative approach to find good values of the primal ω, θ and\ndualλ ,λ variables;itusesanaugmentedmodifiedLagrangianasalossfunctiontotrainthepredictionuˆ,yˆ(t)as\nh′ g\nemployed\nLPDE-OP(uˆ,yˆ)=J(uˆ(t,x),yˆ(t,x))+λ⊤|h′(uˆ(t,x),yˆ(t,x))|+λ⊤max(0,g(uˆ(t,x),yˆ(t,x))), (9)\nh′ g\nwhere J(uˆ(t,x),yˆ(t,x)) represents the total objective cost, while λ⊤|h′(uˆ(t,x),yˆ(t,x))| and\nh′\nλ⊤max(0,g(uˆ(t,x),yˆ(t,x))) measures the constraint violations incurred by prediction uˆ(t,x) and yˆ(t,x).",
+      "size": 626,
+      "sentences": 2
+    },
+    {
+      "id": 77,
+      "content": ",g(uˆ(t,x),yˆ(t,x))) measures the constraint violations incurred by prediction uˆ(t,x) and yˆ(t,x). g\nThe loss function in (9) combines an objective term to ensure minimization of the objective function (1a) with a\nweightedpenaltyonviolationsoftheconstraintfunctionsh′,g. Thisaccountsforthecontributionofbothnetworks\nU,Y duringtraining,whichisbalancedviaiterativeupdatesofthemultipliersin(9)basedontheamountofviolation\noftheassociatedconstraintfunction.",
+      "size": 453,
+      "sentences": 3
+    },
+    {
+      "id": 78,
+      "content": "iterativeupdatesofthemultipliersin(9)basedontheamountofviolation\noftheassociatedconstraintfunction. Atiterationj+1,findingtheoptimalparametersω,θrequiressolving\n(cid:104) (cid:16) (cid:17)(cid:105)\nωj+1,θj+1 =argminE LPDE-OP Uλj (t,x,yˆ),Yλj (t,x,uˆ) , (10)\ny(t,x)∼D ωj θj\nω,θ\n6\n===  7 ===\nwhere Uλj and Yλj denote the DE-OP’s optimization and predictor models U and Y , at iteration j, with λj =\nω θ ω θ\n[λj λj]⊤.",
+      "size": 414,
+      "sentences": 2
+    },
+    {
+      "id": 79,
+      "content": "the DE-OP’s optimization and predictor models U and Y , at iteration j, with λj =\nω θ ω θ\n[λj λj]⊤. Thisstepisapproximatedusingastochasticgradientdescentmethod\nh′ g\n(cid:16) (cid:17)\nωj+1 =ωj −η∇ LPDE-OP Uλj (t,x,yˆ),Yλj (t,x,uˆ)\nω ωj θj\n(11)\n(cid:16) (cid:17)\nθj+1 =θj −η∇ LPDE-OP Uλj (t,x,yˆ),Yλj (t,x,uˆ)\nθ ωj θj\nwhere η denotes the learning rate and ∇ L and ∇ L represent the gradients of the loss function L with respect to\nω θ\ntheparametersω andθ,respectively,atthecurrentiterationk.",
+      "size": 489,
+      "sentences": 2
+    },
+    {
+      "id": 80,
+      "content": "of the loss function L with respect to\nω θ\ntheparametersω andθ,respectively,atthecurrentiterationk. Importantly,thisstepdoesnotrecomputethetraining\nparameters from scratch, but updates the weights ω, θ based on their value at the previous iteration. Finally, the\nLagrangemultipliersareupdatedas\nλj+1 =λj +ρ|h′(uˆ(t,x),yˆ(t,x))|\nh′ h′ (12)\nλj+1 =λj +ρmax(0,g(uˆ(t,x),yˆ(t,x)))\ng g\nwhereρdenotestheLagrangestepsizeandthemaxoperationisperformedelement-wise.",
+      "size": 454,
+      "sentences": 3
+    },
+    {
+      "id": 81,
+      "content": ",g(uˆ(t,x),yˆ(t,x)))\ng g\nwhereρdenotestheLagrangestepsizeandthemaxoperationisperformedelement-wise. Next, we evaluate our method on a range of PDE-constrained optimization tasks with varying levels of complexity,\nincludingcasesspace-timevaryingcontrolactionsandnonlinearPDEdynamics.",
+      "size": 282,
+      "sentences": 2
+    },
+    {
+      "id": 82,
+      "content": "varying levels of complexity,\nincludingcasesspace-timevaryingcontrolactionsandnonlinearPDEdynamics. 5 ExperimentalSetting\nInthissection,weevaluatetheproposedmethodonthreeoptimalcontroltasksofincreasingcomplexity.Inthesetasks\nthedynamicsaredescribedbythefollowingPDEequations:VoltageDynamics(linearPDEwithtime-invariantcontrol\ninputu(x)),1DHeatequation(linearPDEwithtime-variantcontrolinputu(t,x)),and1DviscousBurgers’equation\n(nonlinear PDE with time-variant control input u(t,x)).",
+      "size": 481,
+      "sentences": 2
+    },
+    {
+      "id": 83,
+      "content": "olinputu(t,x)),and1DviscousBurgers’equation\n(nonlinear PDE with time-variant control input u(t,x)). PDE-OP is compared against state-of-the-art approaches\nfor optimal control problems: the Direct method [26], the Adjoint-Sensitivity method [27], and (non-linear) Model\nPredictiveControl(NMPC)[28]. Thesemethodsarewidelyadoptedintheliterature,allofwhichrelyonnumerical\nPDEsolverswheneverdynamicsorgradientsareevaluated.",
+      "size": 418,
+      "sentences": 3
+    },
+    {
+      "id": 84,
+      "content": "adoptedintheliterature,allofwhichrelyonnumerical\nPDEsolverswheneverdynamicsorgradientsareevaluated. TheOpen-loop(direct/adjoint)Controlmethodrequires\nafullforwardrolloutpergradientstepandabackwardadjointevalution,whileMPCsolvesafinite-horizonproblem\nat every control step (i.e., a receding horizon).",
+      "size": 299,
+      "sentences": 2
+    },
+    {
+      "id": 85,
+      "content": "intevalution,whileMPCsolvesafinite-horizonproblem\nat every control step (i.e., a receding horizon). The runtime of these methods is determined by repeated calls to the\nunderlyingnumericalPDEsolverandgrowswiththespatialgridsize(n), horizonlength(T), andcomplexity(e.g.,\nnon-linearity) of the PDE dynamics.",
+      "size": 304,
+      "sentences": 2
+    },
+    {
+      "id": 86,
+      "content": "iththespatialgridsize(n), horizonlength(T), andcomplexity(e.g.,\nnon-linearity) of the PDE dynamics. For each experiment and method, we report the accuracy, measured as the L\n2\nerror between the terminal state and the predicted terminal state, ∥y(T,x)−yˆ(T,x)∥2, the inference time of PDE-\n2\nOP and runtime of the classical methods, both expressed in seconds.",
+      "size": 358,
+      "sentences": 2
+    },
+    {
+      "id": 87,
+      "content": "2, the inference time of PDE-\n2\nOP and runtime of the classical methods, both expressed in seconds. For each task, we assess the capability of the\nproposed time-discrete neural operator to capture system dynamics by comparing its outputs against the solutions\nobtainedfromanumericalPDEsolver. Please refer to Appendices 8, and 10 for details on the baseline methods and hyperparameter settings, respectively.",
+      "size": 408,
+      "sentences": 3
+    },
+    {
+      "id": 88,
+      "content": "Appendices 8, and 10 for details on the baseline methods and hyperparameter settings, respectively. In Appendix 9.4 we report an ablation to evaluate the impact of our basis functions, introduced in Section 4.1). In\nsummary, this experiment shows that using a full formulation is impractical for NMPC, pushing solve times well\nbeyond real-time limits. Finally, we show that Adjoint methods suffer from inaccurate gradients, which leads to a\nmarkeddecreaseinsolutionquality.",
+      "size": 473,
+      "sentences": 4
+    },
+    {
+      "id": 89,
+      "content": "Adjoint methods suffer from inaccurate gradients, which leads to a\nmarkeddecreaseinsolutionquality. 5.1 VoltageControlOptimization\nTheproblemofregulatingthevoltagemagnitudeinaleakyelectricaltransmissionline,subjecttoareaction-diffusion\nPDEwithNeumannconditionsisdescribedasfollows:\n(cid:90) (cid:90)\nMinimize (y(T,x)−y (x))2dx+γ u(x)2dx (13a)\ntarget\nu(x) Ω Ω\n∂y ∂2y\ns.t.",
+      "size": 370,
+      "sentences": 2
+    },
+    {
+      "id": 90,
+      "content": "asfollows:\n(cid:90) (cid:90)\nMinimize (y(T,x)−y (x))2dx+γ u(x)2dx (13a)\ntarget\nu(x) Ω Ω\n∂y ∂2y\ns.t. =D −β(y−y (x))+αu(x), ∀(x,t)∈Ω×[0,T] (13b)\n∂t ∂x2 ref\ny(0,x)=y (x), ∀x∈Ω,{t=0} (13c)\n0\n∂y\n(t,x)=0, ∀x∈∂Ω, t∈[0,T] (13d)\n∂x\nu ≤u(x)≤u . ∀x∈Ω. (13e)\nmin max\nHere,y(t,x)∈Rrepresentsthevoltageprofileacrossthespace-timedomaindefinedbythecartesianproductbetween\nΩ and time horizon [0,T].",
+      "size": 381,
+      "sentences": 4
+    },
+    {
+      "id": 91,
+      "content": "oltageprofileacrossthespace-timedomaindefinedbythecartesianproductbetween\nΩ and time horizon [0,T]. The system dynamics, expressed by (13b), model the physical phenomena of diffusion\n7\n===  8 ===\nFigure 3: Voltage Control Optimization; comparison of PDE-OP and classical methods for three target profiles:\ny (x)=1+0.2sin(6x)(left),y (x)=x+0.5(center),andy (x)=1(right)\ntarget target target\nFigure 4: Voltage control optimization; comparison between the solution estimate (center) of PDE-OP’s dynamic\npredictorY attesttimewiththesolutionobtainedwithanumericalalgorithm(left)andrelatedabsoluteerror(right).",
+      "size": 604,
+      "sentences": 2
+    },
+    {
+      "id": 92,
+      "content": "ctorY attesttimewiththesolutionobtainedwithanumericalalgorithm(left)andrelatedabsoluteerror(right). θ\n(D∂2y),\nvoltage leakage towards a reference y (x) (−β(y −y (x))) and the applied control action (αu(x)). D,\n∂x2 ref ref\nβ, andαareallconstantsrepresentingthediffusionrate, leakagerate, andcontrolgain, respectively. Thesystemis\ninitializedfromastatey (x)accordingto(13c)andisconstrainedbyzero-fluxNeumannboundaryconditions(13d),\n0\nimplying no voltage diffusion across the boundaries of the domain.",
+      "size": 498,
+      "sentences": 4
+    },
+    {
+      "id": 93,
+      "content": "eumannboundaryconditions(13d),\n0\nimplying no voltage diffusion across the boundaries of the domain. The control decision u(x) is a space-dependent\nfunction representing the externally applied voltage, constrained by actuator limits in (13e). The objective (13a)\nminimizesacombinationofterminalcostandcontrolenergy. Datasetsandmethods. Inthesystemdynamics(13b),wesetthediffusionrateD = 0.1,leakagerateβ = 1.0,and\ncontrolgainα=2.0,withauniformreferencevoltagey (x)=1.0.",
+      "size": 467,
+      "sentences": 5
+    },
+    {
+      "id": 94,
+      "content": "diffusionrateD = 0.1,leakagerateβ = 1.0,and\ncontrolgainα=2.0,withauniformreferencevoltagey (x)=1.0. Theground-truthdynamicsaresimulatedusing\nref\nasecond-orderimplicitCrank-Nicolsonfinite-differencemethod[29].",
+      "size": 208,
+      "sentences": 2
+    },
+    {
+      "id": 95,
+      "content": "-truthdynamicsaresimulatedusing\nref\nasecond-orderimplicitCrank-Nicolsonfinite-differencemethod[29]. Toinitializetheproposedtime-discreteNeural\nOperator Y , we generate a dataset by sampling a diverse set of control functions u(x) from a zero-mean Gaussian\nθ\nRandomField(GRF)withasquared-exponentialkernel,withmeanm(x)andcovariancefunctionk (x ,x )as:\nℓ 1 2\n(cid:18)\n∥x −x\n∥2(cid:19)\nm(x)=0, k (x ,x ) = σ2exp − 1 2 2 , (14)\nℓ 1 2 2ℓ2\nwhereℓ > 0isthelength–scaleandσ2 > 0themarginalvariance.",
+      "size": 490,
+      "sentences": 2
+    },
+    {
+      "id": 96,
+      "content": "k (x ,x ) = σ2exp − 1 2 2 , (14)\nℓ 1 2 2ℓ2\nwhereℓ > 0isthelength–scaleandσ2 > 0themarginalvariance. Thecorrespondingsolutiony(t,x)iscomputed\nusinganumericalsolver,andthensplitinto80%training,10%validation,and10%testset. PDE-OP’smodelY estimatesthevoltageprofiley(t,x);fort = T thispredictionyieldy(T,x),whichiscompared\nθ\nagainst the target profile y (x). PDE-OP’s surrogate controller U is trained to produce optimal control action\ntarget ω\nuˆ(x)whileminimizingobjective(13a).",
+      "size": 476,
+      "sentences": 4
+    },
+    {
+      "id": 97,
+      "content": "troller U is trained to produce optimal control action\ntarget ω\nuˆ(x)whileminimizingobjective(13a). OurapproachisbenchmarkedagainstDirectandAdjoint-Method,whichare\ndescribedinAppendix8.1-8.2. Atinferencetime,PDE-OP’ssurrogatecontrollerU istestedonthreeunseentarget\nω\nprofilesofdifferentlevelofcomplexities:constant(y (x)=p ),linearramp(y (x)=p x+p ),andsinewave\ntarget 1 target 1 2\n(y (x)=p +p (sinf x+p )). Foreachtarget,thecontroluˆ(x)isgeneratedinasingleforwardpass. target 1 2 0 3\nResults.",
+      "size": 493,
+      "sentences": 5
+    },
+    {
+      "id": 98,
+      "content": "(sinf x+p )). Foreachtarget,thecontroluˆ(x)isgeneratedinasingleforwardpass. target 1 2 0 3\nResults. Figure4showsthepredictedvoltage(centralsub-figureofFig. 4)ofPDE-OP’sdynamiccomponentY at\nθ\ntesttime,whichiscomparedtothesolution(leftsub-figure)obtainedwithanumericalPDE-solver. Thefigureshows\nthatthepredictedvoltagecloselymatchesthenumericalPDE-solversolution,withanabsoluteerror(rightsub-figure)\nontheorderof10−2acrossthespace–timedomain.",
+      "size": 440,
+      "sentences": 6
+    },
+    {
+      "id": 99,
+      "content": "lPDE-solversolution,withanabsoluteerror(rightsub-figure)\nontheorderof10−2acrossthespace–timedomain. 8\n===  9 ===\nFigure5:OptimalControloftheHeatEquation;comparisonofPDE-OPandclassicalmethodsforthreetargetprofiles:\ny (x)=0.6+0.3(sin(2x)),y (x)=x+0.5,andy (x)=1.",
+      "size": 260,
+      "sentences": 2
+    },
+    {
+      "id": 100,
+      "content": "onofPDE-OPandclassicalmethodsforthreetargetprofiles:\ny (x)=0.6+0.3(sin(2x)),y (x)=x+0.5,andy (x)=1. target target target\nFigure6: OptimalControlofthe1DHeatEquation: comparisonbetweenthesolutionestimate(center)ofPDE-OP’s\ndynamic predictor Y at test time with the solution obtained with a numerical algorithm (left) and related absolute\nθ\nerror(right).",
+      "size": 350,
+      "sentences": 2
+    },
+    {
+      "id": 101,
+      "content": "e with the solution obtained with a numerical algorithm (left) and related absolute\nθ\nerror(right). Figure3presentsacomparisonbetweenPDE-OP’spredictedterminalstateyˆ(T,x)andthatobtainedusingtheclas-\nsicalmethods,over3targetprofilesy (x): sinusoidal,linearandconstant. Thisfigureshowsthatthevoltagedis-\ntarget\ntributionproducedbyPDE-OPiswellalignedwiththoseproducedbytheDirectandtheAdjoint-sensitivitymethod.",
+      "size": 407,
+      "sentences": 3
+    },
+    {
+      "id": 102,
+      "content": "tributionproducedbyPDE-OPiswellalignedwiththoseproducedbytheDirectandtheAdjoint-sensitivitymethod. As shown in the first row of Table 1, the direct method is the slowest, requiring 26.097s and yielding an MSE of\n7.46×10−3. The Adjoint method runs in 0.755s with a similar accuracy, 7.13×10−3. Notably, PDE-OP is the\nfastest, by a significant margin: it runs in only 0.035 s (∼ 21.6× faster than Adjoint; ∼ 746× faster than Direct)\nandyieldthelowestMSE,with6.95×10−3.",
+      "size": 466,
+      "sentences": 4
+    },
+    {
+      "id": 103,
+      "content": ".035 s (∼ 21.6× faster than Adjoint; ∼ 746× faster than Direct)\nandyieldthelowestMSE,with6.95×10−3. Theseresultsshowtheenormouspotentialoftheproposedapproach,\nwhichproducessolutionsthatarequalitativelysimilar(orevenslightlybetter)thantheclassicalmethods,whilebeing\nbetween20and750timesfasterthanthem. Table1:ComparisonacrossPDEtasksandclassicalmethods. Allresultsusesinusoidaltargetprofiles. Furtherdetails\nandresultsforlinearandconstantprofilescanbefoundinAppendix9.",
+      "size": 467,
+      "sentences": 5
+    },
+    {
+      "id": 104,
+      "content": "nusoidaltargetprofiles. Furtherdetails\nandresultsforlinearandconstantprofilescanbefoundinAppendix9. PDESystem ControlType Methods Runtime Accuracy\nDirect(FiniteDiff.)",
+      "size": 166,
+      "sentences": 3
+    },
+    {
+      "id": 105,
+      "content": "ntprofilescanbefoundinAppendix9. PDESystem ControlType Methods Runtime Accuracy\nDirect(FiniteDiff.) 26.097 0.00746\nVoltageControl\nOpen-Loop Adjoint-Method 0.755 0.00713\n(Reaction-Diffusion)\nPDE-OP(ours) 0.035 0.00695\nLMPC 0.384 0.00035\n1DHeatEquation\nClosed-Loop Adjoint-Method 0.662 0.00035\n(LinearPDE)\nPDE-OP(ours) 0.124 0.00035\nNMPC 878.667 0.00007\n1DBurgers’Equation\nClosed-Loop Adjoint-Method 120.696 0.00023\n(NonlinearPDE)\nPDE-OP(ours) 0.062 0.00030\n9\n===  10 ===\n5.2 OptimalControloftheHeatEquation\nThis task involves controlling the evolution of temperature in a one-dimensional domain described by a reac-\ntion–diffusionPDE.Givenaninitialprofile,thecontrolleraimstoreachaprescribedtargetstatewithminimalcontrol\neffort.",
+      "size": 727,
+      "sentences": 3
+    },
+    {
+      "id": 106,
+      "content": "nPDE.Givenaninitialprofile,thecontrolleraimstoreachaprescribedtargetstatewithminimalcontrol\neffort. Theproblemisformulatedas:\nMinimize L=L +λL +γL (15a)\nterminal running effort\nc(t)t∈[0,T]\n∂y ∂2y\ns.t. =D −β(y−y (x))+αu(t,x), ∀(x,t)∈Ω×[0,T] (15b)\n∂t ∂x2 ref\nu(t,x)=c(t)⊤ϕ(x), ∀(x,t)∈Ω×[0,T] (15c)\ny(0,x)=y (x), ∀x∈Ω (15d)\n0\n∂y\n(t,x)=0, ∀x∈∂Ω, t∈[0,T] (15e)\n∂x\nc ≤c(t)≤c , ∀t∈[0,T]. (15f)\nmin max\nThelosscomponentsin(15a)definesasfollows.",
+      "size": 436,
+      "sentences": 4
+    },
+    {
+      "id": 107,
+      "content": "∈∂Ω, t∈[0,T] (15e)\n∂x\nc ≤c(t)≤c , ∀t∈[0,T]. (15f)\nmin max\nThelosscomponentsin(15a)definesasfollows. (cid:90)\nL := |y(T,x)−y (x)|2 dx, (16a)\nterminal target\nΩ\n(cid:90) T (cid:90)\nL := |y(t,x)−y (x)|2 dxdt, (16b)\nrunning target\n0 Ω\n(cid:90) T\nL := ||c(t)||2dt. (16c)\neffort 2\n0\nHerey(t,x)representsthetemperatureprofile. Theobjective(15a)balancesthreeterms:aterminallossforfinalstate\naccuracy,arunninglossfortemperaturetracking,andaneffortlossforcontrolefficiency,describedby(16a)–(16c).",
+      "size": 485,
+      "sentences": 5
+    },
+    {
+      "id": 108,
+      "content": "racy,arunninglossfortemperaturetracking,andaneffortlossforcontrolefficiency,describedby(16a)–(16c). Datasetsandmethods. Thesolutionsof(15b)aregeneratedusingaCrank-Nicolsonmethod,whichdealwithtime-\nvaryingsourcetermbyaveragingthecontrolinputovereachtimestep.",
+      "size": 257,
+      "sentences": 3
+    },
+    {
+      "id": 109,
+      "content": "rank-Nicolsonmethod,whichdealwithtime-\nvaryingsourcetermbyaveragingthecontrolinputovereachtimestep. Totrainourmodels,wegenerateadatasetof\ndiversetrajectories.First,smooth,time-varyingcontrolweights(c(t))aregeneratedbysamplingeachoftheM weight\ntrajectoriesfromaGRFoverthetimedomain.Thefullspatial-temporalcontrolfieldu(t,x)isthenreconstructedfrom\ntheseweightsconstrainedby(15f)usingasetoffixedbasisfunctions,asdefinedin(15c).",
+      "size": 424,
+      "sentences": 2
+    },
+    {
+      "id": 110,
+      "content": "henreconstructedfrom\ntheseweightsconstrainedby(15f)usingasetoffixedbasisfunctions,asdefinedin(15c). Foreachgeneratedcontrol\nfield,thefullPDEissolvedtogenerateaground-truthtemperatureevolutiony(t,x). Eachcompletesimulationyields\na training sample, consisting of the control input weight trajectory {c(t )}, and the corresponding state trajectory\nk\n{y(t ,x)}evaluatedatasetoffixedsensorlocations. Thedatasetisthensplitinto80%training,10%validationand\nk\n10%test. Our framework uses two neural networks.",
+      "size": 499,
+      "sentences": 5
+    },
+    {
+      "id": 111,
+      "content": "tasetisthensplitinto80%training,10%validationand\nk\n10%test. Our framework uses two neural networks. First discrete-time neural operator, Y , is trained as a surrogate model\nθ\ndescribedinSection(4.2). Itactasaone-steptime-advancementoperator,learningthemapping(y(t ,x),c(t )) →\nk k\ny(t ,x). Second,PDE-OP’ssurrogatecontrollerU isarecurrentneuralnetworkthatactsassequentialdecision-\nk+1 ω\nmaker.",
+      "size": 393,
+      "sentences": 5
+    },
+    {
+      "id": 112,
+      "content": "nd,PDE-OP’ssurrogatecontrollerU isarecurrentneuralnetworkthatactsassequentialdecision-\nk+1 ω\nmaker. At each time step t , it takes the current state y(t ,x) and the final target y (x) to produce the control\nk k target\nweights(c(t )).Thecontrolleristrainedend-to-endbyunrollingthetrajectoryusingthesurrogateY .Webenchmark\nk θ\nourapproachagainstahighly-tunedAdjoint-MethodandLinearMPC(LMPC).Furtherimplementationdetailsarein\nAppendix8.3-8.4.",
+      "size": 439,
+      "sentences": 2
+    },
+    {
+      "id": 113,
+      "content": "nstahighly-tunedAdjoint-MethodandLinearMPC(LMPC).Furtherimplementationdetailsarein\nAppendix8.3-8.4. At inference, we evaluate PDE-OP model on three unseen target profiles: constant(y (x) = p ), linear\ntarget 1\nramp(y (x)=p x+p ),andsinewave(y (x)=p +p (sinf x+p )). target 1 2 target 1 2 0 3\nResults. Figure6showsthetemperature(centralsub-figureofFig. 6)estimatedbyPDE-OP’sdynamiccomponent\nY attesttime,whichiscomparedtothesolution(leftsub-figure)obtainedwithanumericalPDE-solver.",
+      "size": 480,
+      "sentences": 5
+    },
+    {
+      "id": 114,
+      "content": "omponent\nY attesttime,whichiscomparedtothesolution(leftsub-figure)obtainedwithanumericalPDE-solver. Thefigure\nθ\nshowsthatalsointhissettingthepredictedtemperaturealignscloselywiththenumericalPDE-solversolution,with\nanabsoluteerrorontheorderof10−3acrossthespace–timedomain. Figure5illustratesthecomparisonofPDE-OP’spredictedterminalstateyˆ(T,x)andthoseobtainedusingtheclassical\nmethods, over the same target profiles introduced in the previous experiment.",
+      "size": 453,
+      "sentences": 3
+    },
+    {
+      "id": 115,
+      "content": "inedusingtheclassical\nmethods, over the same target profiles introduced in the previous experiment. As also shown in Table 1, all three\nmethodsachievethesameaccuracy,reportingaMSEof3.5×10−4. However,PDE-OPisbyfarthefastestmethod,\nrunningin0.124s. Thiscorrespondstoa3.1×speedupoverLMPC(runningin0.384s)anda5.3×speedupoverthe\nAdjoint method (which runs in 0.662s).",
+      "size": 362,
+      "sentences": 4
+    },
+    {
+      "id": 116,
+      "content": "oa3.1×speedupoverLMPC(runningin0.384s)anda5.3×speedupoverthe\nAdjoint method (which runs in 0.662s). These results demonstrate that even in a more complex setting, with time-\nvariantcontrolactionsandlinearPDE-dynamics,ourmethodproducessolutionsthatarequalitativelycomparableto\ntheclassicalmethods,butatasignificantlyreducedcomputationcost.",
+      "size": 338,
+      "sentences": 2
+    },
+    {
+      "id": 117,
+      "content": "ionsthatarequalitativelycomparableto\ntheclassicalmethods,butatasignificantlyreducedcomputationcost. 10\n===  11 ===\nFigure7: Optimalcontrolofthe1DBurgers’equation;comparisonofPDE-OPandclassicalmethodsforthreetarget\nprofiles: y (x)=0.8(sin(x))(left),y (x)=2x(1−x)(center),andy (x)=0(right).",
+      "size": 288,
+      "sentences": 2
+    },
+    {
+      "id": 118,
+      "content": "calmethodsforthreetarget\nprofiles: y (x)=0.8(sin(x))(left),y (x)=2x(1−x)(center),andy (x)=0(right). target target target\n5.3 OptimalControlofthe1DBurgers’Equation\nTo test the ability of PDE-OP to handle nonlinear dynamics, we address the control of the 1D viscous Burgers’\nequationwithDirichletboundarycondition. Thecontrolinputandexternalforceu(t,x),isparameterizedidentically\ntotheheatequationtask,usingtime-varyingweights(c(t ))forasetofbasisfunctions.",
+      "size": 455,
+      "sentences": 3
+    },
+    {
+      "id": 119,
+      "content": "ameterizedidentically\ntotheheatequationtask,usingtime-varyingweights(c(t ))forasetofbasisfunctions. Theoptimizationgoalisto\nk\nfindtheoptimaltrajectoryoftheseweightssubjecttoBurger’sequation(17b), initial(17d)andDirchlet’sboundary\ncondition(17e)andboxconstraints(17f). Minimize L=L +λL +γL (17a)\nterminal running effort\nc(t)t∈[0,T]\n∂y ∂y ∂2y\ns.t.",
+      "size": 345,
+      "sentences": 3
+    },
+    {
+      "id": 120,
+      "content": "dboxconstraints(17f). Minimize L=L +λL +γL (17a)\nterminal running effort\nc(t)t∈[0,T]\n∂y ∂y ∂2y\ns.t. +y =ν +u(t,x), ∀(x,t)∈Ω×[0,T] (17b)\n∂t ∂x ∂x2\nu(t,x)=c(t)⊤ϕ(x), ∀(x,t)∈Ω×[0,T] (17c)\ny(0,x)=y (x), ∀x∈Ω (17d)\n0\ny(t,x)=0, ∀x∈∂Ω, t∈[0,T] (17e)\nc ≤c(t)≤c , ∀t∈[0,T]. (17f)\nmin max\ny(t,x)isvelocityfield,andν representstheviscosityparameter. ThePDEin(17b)containsconvectivenonlinearity\n(y∂y)whichhasasignificantcontrolchallengenotpresentinthelinearheatequation.",
+      "size": 458,
+      "sentences": 5
+    },
+    {
+      "id": 121,
+      "content": "sconvectivenonlinearity\n(y∂y)whichhasasignificantcontrolchallengenotpresentinthelinearheatequation. Theobjectiveretrainsthesame\n∂x\nstructure,balancingfinalstateaccuracy,pathtracking,andcontrolefficiency. Datasetsandmethods. Theground-truthdynamicsforthenonlinearBurgers’equationaresimulatedusingahigh-\nfidelitynumericalsolver.",
+      "size": 326,
+      "sentences": 4
+    },
+    {
+      "id": 122,
+      "content": "ground-truthdynamicsforthenonlinearBurgers’equationaresimulatedusingahigh-\nfidelitynumericalsolver. Thedatasetgenerationprocessmirrorsthatoftheheatequation: time-varyingweightsc(t)\naresampledfromaGRF,andtheforcefieldu(t,x)isreconstructedusingspatialbasisfunctions,andthePDEissolved\ntogeneratetrajectories.Duetothesystem’shighnonlinearity,webenchmarkourmethodagainstamuchmoregeneral\nand computationally expensive Nonlinear MPC (NMPC) and Adjoint-Sensitivity Method.",
+      "size": 464,
+      "sentences": 2
+    },
+    {
+      "id": 123,
+      "content": "amuchmoregeneral\nand computationally expensive Nonlinear MPC (NMPC) and Adjoint-Sensitivity Method. Further implementation\ndetailsareinAppendix8.3-8.4. At inference, we test our PDE-OP model on three unseen target profiles: constant (y (x) = p ), parabolic\ntarget 1\n(y (x) = p x(1 − x)) and sine wave (y (x) = p (sinf x + p )). We don’t use a a linear target profile,\ntarget 1 target 1 0 2\nbecauseoftheDirichletBCs. Results. Figure 8 shows the system dynamics (central sub-figure of Fig.",
+      "size": 487,
+      "sentences": 6
+    },
+    {
+      "id": 124,
+      "content": "2\nbecauseoftheDirichletBCs. Results. Figure 8 shows the system dynamics (central sub-figure of Fig. 8) estimated by PDE-OP’s dynamic com-\nponent Y at test time, which is compared to the solution (left sub-figure) obtained with a numerical PDE-solver.",
+      "size": 250,
+      "sentences": 4
+    },
+    {
+      "id": 125,
+      "content": "est time, which is compared to the solution (left sub-figure) obtained with a numerical PDE-solver. θ\nThefigureshowsthatthepredictedtemperaturealignscloselywiththenumericalPDE-solversolution;withabsolute\nerrorontheorderof10−3acrossthespace–timedomain,demonstratingtheabilityofPDE-OP’sdynamicpredictorto\naccuratelycapturesystemdynamicsevenundernonlinearities.",
+      "size": 358,
+      "sentences": 2
+    },
+    {
+      "id": 126,
+      "content": "atingtheabilityofPDE-OP’sdynamicpredictorto\naccuratelycapturesystemdynamicsevenundernonlinearities. Figure7illustratesthecomparisonofPDE-OP’spredictedterminalstateyˆ(T,x)andthoseobtainedusingtheclassical\nmethods,overthesametargetprofilesintroducedinthepreviousexperiments. AsshowninFigure7andTable1,each\nmethodproduceshighlyaccuratesolutions,withNMPCachievingthelowesterror(MSE=7.0×10−5)butrequiring\n878.667s. TheAdjointmethodisslightlylessaccurate,yieldingaMSE=2.3×10−4in120.696s.",
+      "size": 481,
+      "sentences": 4
+    },
+    {
+      "id": 127,
+      "content": "10−5)butrequiring\n878.667s. TheAdjointmethodisslightlylessaccurate,yieldingaMSE=2.3×10−4in120.696s. Incontrast,PDE-\nOP produces qualitatively comparable predictions while being the fastest 0.062s by a big margin - approximately\n1.42×104fasterthanNMPCand1.95×103fasterthantheAdjointmethod!",
+      "size": 288,
+      "sentences": 3
+    },
+    {
+      "id": 128,
+      "content": "0.062s by a big margin - approximately\n1.42×104fasterthanNMPCand1.95×103fasterthantheAdjointmethod! 11\n===  12 ===\nFigure 8: Optimal control of the 1D Burgers’ equation: comparison between the solution estimate (center) of PDE-\nOP’sdynamicpredictorY attesttimewiththesolutionobtainedwithanumericalalgorithm(left)andrelatedabsolute\nθ\nerror(right).",
+      "size": 346,
+      "sentences": 2
+    },
+    {
+      "id": 129,
+      "content": "rY attesttimewiththesolutionobtainedwithanumericalalgorithm(left)andrelatedabsolute\nθ\nerror(right). 6 Conclusion\nThis work was motivated by the efficiency requirements associated with solving partial differential equations-\nconstrained optimization problems. It introduced a novel learning-based framework, PDE-OP, which incorporates\ndifferentialequationconstraintsintooptimizationtasksforreal-timeapplications.",
+      "size": 411,
+      "sentences": 3
+    },
+    {
+      "id": 130,
+      "content": "P, which incorporates\ndifferentialequationconstraintsintooptimizationtasksforreal-timeapplications. Theapproachusesadual-network\narchitecture, with one approximating the control strategies and another capturing the associated PDEs. This archi-\ntecture exploits a primal-dual method to ensure that both the dynamics dictated by the PDEs and the optimization\nobjectives are concurrently learned and respected.",
+      "size": 407,
+      "sentences": 3
+    },
+    {
+      "id": 131,
+      "content": "namics dictated by the PDEs and the optimization\nobjectives are concurrently learned and respected. This integration enables end-to-end differentiation, allowing for\nefficientgradient-basedoptimization,and,toourknowledge,solvesPDE-constrainedoptimizationproblemsinreal-\ntimeforthefirsttime. EmpiricalevaluationsacrossasetofPDE-constrainedoptimizationtasksillustratedPDE-OP’s\ncapability to address these complex challenges adeptly.",
+      "size": 430,
+      "sentences": 3
+    },
+    {
+      "id": 132,
+      "content": "trainedoptimizationtasksillustratedPDE-OP’s\ncapability to address these complex challenges adeptly. Our comprehensive results demonstrate the effectiveness of\nour approach and its broad potential applicability across various scientific and engineering domains where system\ndynamicsariseinoptimizationorcontrolprocesses.",
+      "size": 319,
+      "sentences": 2
+    },
+    {
+      "id": 133,
+      "content": "ious scientific and engineering domains where system\ndynamicsariseinoptimizationorcontrolprocesses. 7 Acknowledgments\nThe material is based upon work supported by National Science Foundations (NSF) awards 2533631,\n2401285, 2334448, and 2334936, and Defense Advanced Research Projects Agency (DARPA) under Contract\nNo.#HR0011252E005. Anyopinions,findings,conclusions,orrecommendationsexpressedinthismaterialarethose\noftheauthorsanddonotnecessarilyreflecttheviewsofNSForDARPA.",
+      "size": 474,
+      "sentences": 3
+    },
+    {
+      "id": 134,
+      "content": "ndationsexpressedinthismaterialarethose\noftheauthorsanddonotnecessarilyreflecttheviewsofNSForDARPA. References\n[1] Lu Lu, Pengzhan Jin, Guofei Pang, Zhongqiang Zhang, and George Em Karniadakis. Learning nonlinear op-\neratorsviadeeponetbasedontheuniversalapproximationtheoremofoperators. NatureMachineIntelligence,\n3(3):218–229,March2021. [2] JamesKotary,FerdinandoFioretto,PascalVanHentenryck,andBryanWilder.End-to-endconstrainedoptimiza-\ntionlearning: Asurvey.",
+      "size": 461,
+      "sentences": 5
+    },
+    {
+      "id": 135,
+      "content": "doFioretto,PascalVanHentenryck,andBryanWilder.End-to-endconstrainedoptimiza-\ntionlearning: Asurvey. InProceedingsoftheThirtiethInternationalJointConferenceonArtificialIntelligence,\nIJCAI-21,pages4475–4482,2021. [3] Maziar Raissi, Paris Perdikaris, and George Em Karniadakis. Physics informed deep learning (part i): Data-\ndrivensolutionsofnonlinearpartialdifferentialequations,2017.",
+      "size": 382,
+      "sentences": 4
+    },
+    {
+      "id": 136,
+      "content": "informed deep learning (part i): Data-\ndrivensolutionsofnonlinearpartialdifferentialequations,2017. [4] Nikola Kovachki, Zongyi Li, Burigede Liu, Kamyar Azizzadenesheli, Kaushik Bhattacharya, Andrew Stuart,\nandAnimaAnandkumar. Neuraloperator: Learningmapsbetweenfunctionspaces,2024. [5] Zongyi Li, Nikola Kovachki, Kamyar Azizzadenesheli, Burigede Liu, Kaushik Bhattacharya, Andrew Stuart,\nandAnimaAnandkumar. Fourierneuraloperatorforparametricpartialdifferentialequations,2021.",
+      "size": 478,
+      "sentences": 5
+    },
+    {
+      "id": 137,
+      "content": "ew Stuart,\nandAnimaAnandkumar. Fourierneuraloperatorforparametricpartialdifferentialequations,2021. [6] RickyT.Q.Chen,YuliaRubanova,JesseBettencourt,andDavidDuvenaud. Neuralordinarydifferentialequa-\ntions.InProceedingsofthe32ndInternationalConferenceonNeuralInformationProcessingSystems,NIPS’18,\npage6572–6583.CurranAssociatesInc.,2018. [7] DavidQMayne,JamesBRawlings,CVRao,andPOScokaert. Constrainedmodelpredictivecontrol: Stability\nandoptimality. Automatica,36(6):789–814,2000.",
+      "size": 479,
+      "sentences": 7
+    },
+    {
+      "id": 138,
+      "content": "cokaert. Constrainedmodelpredictivecontrol: Stability\nandoptimality. Automatica,36(6):789–814,2000. 12\n===  13 ===\n[8] Michael Hinze, Rene´ Pinnau, Michael Ulbrich, and Stefan Ulbrich. Optimization with PDE Constraints, vol-\nume23ofMathematicalModelling: TheoryandApplications. Springer,2008. [9] FrediTro¨ltzsch. OptimalControlofPartialDifferentialEquations: Theory,Methods,andApplications,volume\n112ofGraduateStudiesinMathematics. AmericanMathematicalSociety,2010.",
+      "size": 466,
+      "sentences": 9
+    },
+    {
+      "id": 139,
+      "content": "Methods,andApplications,volume\n112ofGraduateStudiesinMathematics. AmericanMathematicalSociety,2010. [10] Matthew J Zahr and Charbel Farhat. Progressive construction of a parametric reduced-order model\nfor pde-constrained optimization. International Journal for Numerical Methods in Engineering, 2014.\nhttps://arxiv.org/abs/1407.7618. [11] Markus A Dihlmann and Bernard Haasdonk. Certified pde-constrained parameter optimization using reduced\nbasis surrogate models for evolution problems.",
+      "size": 488,
+      "sentences": 7
+    },
+    {
+      "id": 140,
+      "content": "pde-constrained parameter optimization using reduced\nbasis surrogate models for evolution problems. Computational Optimization and Applications, 60:753–787,\n2015. [12] RakhoonHwang,JaeYongLee,JinYoungShin,andHyungJuHwang. Solvingpde-constrainedcontrolprob-\nlemsusingoperatorlearning. ProceedingsoftheAAAIConferenceonArtificialIntelligence,36(4):4504–4512,\nJune2022. [13] KarenWillcoxandOmarGhattas. Theimperativeofphysics-basedmachinelearningandtheroleofreduced-\nordermodels.",
+      "size": 475,
+      "sentences": 7
+    },
+    {
+      "id": 141,
+      "content": "WillcoxandOmarGhattas. Theimperativeofphysics-basedmachinelearningandtheroleofreduced-\nordermodels. NatureComputationalScience,1(3):166–168,2021. [14] Ferdinando Fioretto, Pascal Van Hentenryck, Terrence WK Mak, Cuong Tran, Federico Baldo, and Michele\nLombardi.Lagrangiandualityforconstraineddeeplearning.InJointEuropeanConferenceonMachineLearning\nandKnowledgeDiscoveryinDatabases,pages118–135.Springer,2020. [15] SeonhoParkandPascalVanHentenryck.",
+      "size": 447,
+      "sentences": 5
+    },
+    {
+      "id": 142,
+      "content": "andKnowledgeDiscoveryinDatabases,pages118–135.Springer,2020. [15] SeonhoParkandPascalVanHentenryck. Self-supervisedprimal-duallearningforconstrainedoptimization. In\nProceedingsoftheAAAIConferenceonArtificialIntelligence,volume37,pages4052–4060,2023. [16] PriyaLDonti,DavidRolnick,andJZicoKolter. Dc3:Alearningmethodforoptimizationwithhardconstraints. InICLR,2020. [17] JamesKotary,VincenzoDiVito,JacobCristopher,PascalVanHentenryck,andFerdinandoFioretto.",
+      "size": 454,
+      "sentences": 8
+    },
+    {
+      "id": 143,
+      "content": "LR,2020. [17] JamesKotary,VincenzoDiVito,JacobCristopher,PascalVanHentenryck,andFerdinandoFioretto. Learning\njointmodelsofpredictionandoptimization,2024. [18] M. Raissi, P. Perdikaris, and G. E. Karniadakis. Physics-informed neural networks: A deep learning frame-\nwork for solving forward and inverse problems involving nonlinear partial differential equations. Journal of\nComputationalPhysics,378:686–707,Feb2019.",
+      "size": 415,
+      "sentences": 6
+    },
+    {
+      "id": 144,
+      "content": "ving nonlinear partial differential equations. Journal of\nComputationalPhysics,378:686–707,Feb2019. [19] Zongyi Li, Nikola B. Kovachki, Kamyar Azizzadenesheli, Burigede Liu, Kaushik Bhattacharya, Andrew M.\nStuart,andAnimaAnandkumar. Multipolegraphneuraloperatorforparametricpartialdifferentialequations. In\nAdvancesinNeuralInformationProcessingSystems(NeurIPS),volume33,pages6755–6766,2020. [20] Kaushik Bhattacharya, Bamdad Hosseini, Nikola B. Kovachki, and Andrew M. Stuart.",
+      "size": 476,
+      "sentences": 6
+    },
+    {
+      "id": 145,
+      "content": "55–6766,2020. [20] Kaushik Bhattacharya, Bamdad Hosseini, Nikola B. Kovachki, and Andrew M. Stuart. Model reduction and\nneuralnetworksforparametricpdes. InMathematicalandScientificMachineLearning(MSML),volume145of\nProceedingsofMachineLearningResearch,pages203–233.PMLR,2021. [21] MaziarRaissi,ParisPerdikaris,andGeorgeEmKarniadakis.Thedeepgreenalgorithmforlearninggenericpdes. JournalofComputationalPhysics,420:109707,2021. [22] VincenzoDiVito,MostafaMohammadian,KyriBaker,andFerdinandoFioretto.",
+      "size": 495,
+      "sentences": 7
+    },
+    {
+      "id": 146,
+      "content": "nalPhysics,420:109707,2021. [22] VincenzoDiVito,MostafaMohammadian,KyriBaker,andFerdinandoFioretto. Learningtosolvedifferential\nequationconstrainedoptimizationproblems,2024. [23] Mingquan Feng, Zhijie Chen, Yixin Huang, Yizhou Liu, and Junchi Yan. Optimal control operator perspec-\ntive and a neural adaptive spectral method. Proceedings of the AAAI Conference on Artificial Intelligence,\n39(14):14567–14575,Apr.2025. [24] Zhexian Li, Athanassios S. Fokas, and Ketan Savla.",
+      "size": 473,
+      "sentences": 7
+    },
+    {
+      "id": 147,
+      "content": "Intelligence,\n39(14):14567–14575,Apr.2025. [24] Zhexian Li, Athanassios S. Fokas, and Ketan Savla. On linear quadratic regulator for the heat equation with\ngeneral boundary conditions. In 2024 IEEE 63rd Conference on Decision and Control (CDC), pages 7594–\n7599,2024. [25] MagnusR.Hestenes.Multiplierandgradientmethods.JournalofOptimizationTheoryandApplications,4:303–\n320,1969. [26] JohnT.Betts. PracticalMethodsforOptimalControlandEstimationUsingNonlinearProgramming. SIAM,2\nedition,2010.",
+      "size": 490,
+      "sentences": 8
+    },
+    {
+      "id": 148,
+      "content": "etts. PracticalMethodsforOptimalControlandEstimationUsingNonlinearProgramming. SIAM,2\nedition,2010. [27] YangCao, ShengtaiLi, LindaPetzold, andRaduSerban. Adjointsensitivityanalysisfordifferential-algebraic\nequations: The adjoint dae system and its numerical solution. SIAM Journal on Scientific Computing,\n24(3):1076–1089,2003. [28] MaxSchwenzer,MuzafferAy,ThomasBergs,andDirkAbel. Reviewonmodelpredictivecontrol: anengineer-\ningperspective.",
+      "size": 442,
+      "sentences": 8
+    },
+    {
+      "id": 149,
+      "content": "zer,MuzafferAy,ThomasBergs,andDirkAbel. Reviewonmodelpredictivecontrol: anengineer-\ningperspective. TheInternationalJournalofAdvancedManufacturingTechnology,117:1327–1349,2021. 13\n===  14 ===\n[29] J.CrankandP.Nicolson.Apracticalmethodfornumericalevaluationofsolutionsofpartialdifferentialequations\noftheheat-conductiontype. MathematicalProceedingsoftheCambridgePhilosophicalSociety, 43(1):50–67,\n1947. [30] Richard H. Byrd, Peihuang Lu, Jorge Nocedal, and Ciyou Zhu.",
+      "size": 466,
+      "sentences": 6
+    },
+    {
+      "id": 150,
+      "content": "ophicalSociety, 43(1):50–67,\n1947. [30] Richard H. Byrd, Peihuang Lu, Jorge Nocedal, and Ciyou Zhu. A limited memory algorithm for bound con-\nstrainedoptimization. SIAMJournalonScientificComputing,16(5):1190–1208,1995. [31] StevenDiamondandStephenBoyd. Cvxpy: Apython-embeddedmodelinglanguageforconvexoptimization. TheJournalofMachineLearningResearch,17(1):2909–2913,2016. [32] Dieter Kraft. Algorithm 733: Tomp–fortran modules for optimal control calculations.",
+      "size": 461,
+      "sentences": 9
+    },
+    {
+      "id": 151,
+      "content": "2913,2016. [32] Dieter Kraft. Algorithm 733: Tomp–fortran modules for optimal control calculations. ACM Transactions on\nMathematicalSoftware(TOMS),20:262–281,1994. [33] IanGoodfellow,YoshuaBengio,andAaronCourville. DeepLearning. MITPress,2016. [34] SeppHochreiterandJu¨rgenSchmidhuber. Longshort-termmemory. NeuralComputation,9:1735–1780,1997.",
+      "size": 343,
+      "sentences": 10
+    },
+    {
+      "id": 152,
+      "content": "[34] SeppHochreiterandJu¨rgenSchmidhuber. Longshort-termmemory. NeuralComputation,9:1735–1780,1997. 14\n===  15 ===\nAppendix\n8 ClassicalMethods\n8.1 DirectMethod(Finite-DifferenceApproach)\nThedirectmethodtreatsthesimulatorasablackboxmappingtheboundedcontrolvectorutothediscreteobjective\nJ(u) and employs a standard optimizer to minimize it. Here the control variable is discretized at each collocation\npoint: u∈RNx. Mechanism.",
+      "size": 424,
+      "sentences": 6
+    },
+    {
+      "id": 153,
+      "content": "minimize it. Here the control variable is discretized at each collocation\npoint: u∈RNx. Mechanism. We use L-BFGS-B[30] with per–coordinate box bounds u ≤ u ≤ u to minimize (31). No\nmin j max\nanalytic gradients are provided; instead, numerical derivatives are queried via finite differences. With a forward-\ndifferencemethod,\n∂J ≈ J(u+ϵ j e j )−J(u) , ϵ =η (cid:0) 1+|u | (cid:1) , (18)\n∂u ϵ j j\nj j\nwheree isthej-thunitvectorandηisasmallscalar(e.g.,µ=10−6).",
+      "size": 457,
+      "sentences": 6
+    },
+    {
+      "id": 154,
+      "content": "id:0) 1+|u | (cid:1) , (18)\n∂u ϵ j j\nj j\nwheree isthej-thunitvectorandηisasmallscalar(e.g.,µ=10−6). Forhigheraccuracy(towhichcorrespondsa\nj\ndoublecomputationalcost),thecentral-differencemethodisadopted:\n∂J J (u+ϵ e )−J (u−ϵ e )\nh ≈ h j j h j j . (19)\n∂u 2ϵ\nj j\nComputationalcost. EachgradientevaluationrequiresN +1simulatorcallswithforwarddifferences(or2N with\nx x\ncentraldifferences),whereN denotesthenumberofspatialcollocationpoints.",
+      "size": 435,
+      "sentences": 4
+    },
+    {
+      "id": 155,
+      "content": "arddifferences(or2N with\nx x\ncentraldifferences),whereN denotesthenumberofspatialcollocationpoints. Sinceonesimulatorcallisacomplete\nx (cid:0) (cid:1)\nrollout(27)overN timesteps,thecomplexityperiterationisO (N +1)N N . Thismethodisrobustandsimple,\nt x t x\nbutitscostscaleslinearlywithN ,whichbecomesprohibitivefordensespatialdiscretizations. x\n8.2 AdjointSensitivityMethodforOpen-LoopProblem\nThe Adjoint-Sensitivity Method efficiently computes exact gradients of PDE-constrained objectives w.r.t.",
+      "size": 496,
+      "sentences": 4
+    },
+    {
+      "id": 156,
+      "content": "djoint-Sensitivity Method efficiently computes exact gradients of PDE-constrained objectives w.r.t. high-\ndimensional control variables. Crucially, the cost of one gradient evaluation is one forward solve + one backward\nadjoint solve, regardless of the number of control parameters. We derive the continuous adjoint for the open-loop,\ntime-invariant Voltage Control Optimization (5.1) and then we present the discrete-time adjoint state used in our\nCrank–Nicolson(CN)implementation.",
+      "size": 482,
+      "sentences": 4
+    },
+    {
+      "id": 157,
+      "content": ") and then we present the discrete-time adjoint state used in our\nCrank–Nicolson(CN)implementation. Functionspaces&BCs. Consideru∈L2(Ω),y ∈L2([0,T]×Ω),andimposehomogeneousNeumannBCsonV so\nthattheboundarytermsvanishinthevariationalcalculus;theadjointinheritsthesameNeumannBCs.",
+      "size": 275,
+      "sentences": 3
+    },
+    {
+      "id": 158,
+      "content": "nnBCsonV so\nthattheboundarytermsvanishinthevariationalcalculus;theadjointinheritsthesameNeumannBCs. Theproblemconsistsoffindingu(x)minimizing\n(cid:90) (cid:90)\nJ(u)= 1 (y(T,x)−y (x))2dx + γ u(x)2dx, (20)\n2 target 2\nΩ Ω\nsubjectto\n∂y ∂2y (cid:0) (cid:1)\n−D +β y−y (x) −αu(x)=0, ∀(t,x)∈[0,T]×Ω, (21a)\n∂t ∂x2 ref\ny(0,x)=y (x), ∀x∈Ω, (21b)\n0\n∂ y(t,x)=0, ∀(t,x)∈[0,T]×∂Ω, (21c)\nx\nwhereγ >0istheregularizationweightinthecontroleffort. Lagrangian.",
+      "size": 439,
+      "sentences": 3
+    },
+    {
+      "id": 159,
+      "content": "(t,x)=0, ∀(t,x)∈[0,T]×∂Ω, (21c)\nx\nwhereγ >0istheregularizationweightinthecontroleffort. Lagrangian. Wedefine\n(cid:90) T(cid:90) (cid:20) ∂y ∂2y (cid:0) (cid:1) (cid:21)\nL(u,y,p)=J(u)+ p(t,x) −D +β y−y (x) −αu(x) dxdt, (22)\n∂t ∂x2 ref\n0 Ω\nwhere p(t,x) is the adjoint state. By imposing ∇ J = 0 and integrating by parts in t and x (with Neumann BCs)\ny\nyieldstheadjointsystem. AdjointPDE. ∂p ∂2p\n− −D +βp=0, ∂ p| =0. (23)\n∂t ∂x2 x ∂Ω\n15\n===  16 ===\nTerminalcondition. p(T,x)=y(T,x)−y (x).",
+      "size": 485,
+      "sentences": 8
+    },
+    {
+      "id": 160,
+      "content": "∂p ∂2p\n− −D +βp=0, ∂ p| =0. (23)\n∂t ∂x2 x ∂Ω\n15\n===  16 ===\nTerminalcondition. p(T,x)=y(T,x)−y (x). (24)\ntarget\nGradientw.r.t.u(x). Becauseuistime-invariant,variationw.r.t.ugives\n(cid:90) T\n∇ J = γu(x) − α p(t,x)dt. (25)\nu(x)\n0\nWeoptimizeuwithL-BFGS-Bunderelementwiseboundsu ≤u ≤u ;noprojectionstepisneeded. min i max\n(cid:104) (cid:105)\nSemi-discreteforwarddynamics.",
+      "size": 367,
+      "sentences": 7
+    },
+    {
+      "id": 161,
+      "content": "oundsu ≤u ≤u ;noprojectionstepisneeded. min i max\n(cid:104) (cid:105)\nSemi-discreteforwarddynamics. Tosimplifythenotation,lety(t)= y(t,x\n1\n) ... y(t,x\ni\n) ... y(t,x\nNx\n) ∈RNx\nbe the discretized version of y(t,x) on a uniform grid with Neumann BCs, L ∈ RNx×Nx be the the Neumann\nLaplacian,andu ∈ RNx thestaticcontrolvectorwithelementsu(x\ni\n). DefineA := DL−βI\nNx\nands := βy\nref\n. Then\ny˙(t) = Ay(t) + αu + s. (26)\nCrank–Nicolson(CN)step.",
+      "size": 436,
+      "sentences": 5
+    },
+    {
+      "id": 162,
+      "content": "i\n). DefineA := DL−βI\nNx\nands := βy\nref\n. Then\ny˙(t) = Ay(t) + αu + s. (26)\nCrank–Nicolson(CN)step. With∆t=T/N andt =k∆t,CNgives\nt k\n(cid:0) I − ∆tA (cid:1) y(t ) = (cid:0) I + ∆tA (cid:1) y(t ) + ∆tαu + ∆ts. (27)\nNx 2 k+1 Nx 2 k\nEquivalently,theaffineone-stepmapis\ny(t )=A y(t ) + B u + d, (28)\nk+1 CN k stat\nA = (cid:0) I − ∆tA (cid:1)−1(cid:0) I + ∆tA (cid:1) , B =∆t (cid:0) I − ∆tA (cid:1)−1 αI , (29)\nCN Nx 2 Nx 2 stat Nx 2 Nx\nd=∆t (cid:0) I − ∆tA (cid:1)−1 s. (30)\nNx 2\nDiscreteobjective.",
+      "size": 495,
+      "sentences": 5
+    },
+    {
+      "id": 163,
+      "content": "αI , (29)\nCN Nx 2 Nx 2 stat Nx 2 Nx\nd=∆t (cid:0) I − ∆tA (cid:1)−1 s. (30)\nNx 2\nDiscreteobjective. WithM =∆xI wehave:\nNx\nJ (u)= 1∥y −y ∥2 + γ ∥u∥2 = 1(y −y )⊤M(y −y )+ γ u⊤Mu. (31)\nh 2 Nt target M 2 M 2 Nt target Nt target 2\nDiscreteadjoint&gradientw.r.t.staticu. λ =M(y −y ), λ =A⊤ λ , k =N −1,...,0, (32)\nNt Nt target k CN k+1 t\n∇ J =γMu−\nN (cid:88)t−1\nB⊤ λ = γMu−α∆t (cid:0) I − ∆tA (cid:1)−⊤\n(cid:32)N (cid:88)t−1\nλ\n(cid:33)\n. (33)\nu h stat k+1 Nx 2 k+1\nk=0 k=0\nComputational cost.",
+      "size": 485,
+      "sentences": 5
+    },
+    {
+      "id": 164,
+      "content": "(cid:1)−⊤\n(cid:32)N (cid:88)t−1\nλ\n(cid:33)\n. (33)\nu h stat k+1 Nx 2 k+1\nk=0 k=0\nComputational cost. One forward CN rollout (27) and one backward adjoint sweep (32) yield the exact discrete\ngradient(33);then,uisupdatedwithL-BFGS-Bunderboxbounds. In1D,theCNmatrixistime-invariantandcan\nbe prefactored once, so that each step reduces to cheap triangular-matrix solver call; the totla cost per iteration is\nO(N N ).",
+      "size": 411,
+      "sentences": 4
+    },
+    {
+      "id": 165,
+      "content": "each step reduces to cheap triangular-matrix solver call; the totla cost per iteration is\nO(N N ). t x\n8.3 Time-VaryingAdjointforClosed-LoopBaselines\nThe adjoint method extends naturally to a time-varying control u(t,x). The continuous adjoint PDE and termi-\nnal/boundaryconditionsremainasperEq. (23)–(24),whilethegradientsw.r.t. u(t,x)arecalculatedas:\n∇ J = γu(t,x) − αp(t,x).",
+      "size": 377,
+      "sentences": 5
+    },
+    {
+      "id": 166,
+      "content": "onsremainasperEq. (23)–(24),whilethegradientsw.r.t. u(t,x)arecalculatedas:\n∇ J = γu(t,x) − αp(t,x). (34)\nu(t,x)\nWeusethistime-varyingadjointfortheHeatandBurgersexperiments(pleaserefertoSection5.2and5.3);thediscrete\nformsbelowmatchourCNimplementations. Heatoptimizationproblem—CNdiscretization.",
+      "size": 293,
+      "sentences": 5
+    },
+    {
+      "id": 167,
+      "content": "2and5.3);thediscrete\nformsbelowmatchourCNimplementations. Heatoptimizationproblem—CNdiscretization. Withy(t ) = Ay(t )+Bu(t )+g andaquadraticrun-\nk+1 k k\nning/terminalcosts,thediscreteadjointequationandper-stepgradientare\nλ =Q(y −y ), λ =A⊤λ +T (y(t )−y ), (35)\nNt Nt target k k+1 Q k target\n∇ J =Ru(t )+B⊤λ . (36)\nu(tk) h k k+1\nThisisthegradientusedbyLMPCinSection5.2. Q,T , andRrepresenttheweightmatrices. Q\n16\n===  17 ===\nBurgers’ optimization problem — implicit CN step.",
+      "size": 474,
+      "sentences": 6
+    },
+    {
+      "id": 168,
+      "content": "andRrepresenttheweightmatrices. Q\n16\n===  17 ===\nBurgers’ optimization problem — implicit CN step. We write one CN step as the implicit map y(t ) =\nk+1\nG(y(t ),u(t );∆t)withDirichletendpointsenforcedateachstep. Let\nk k\nA = I− ∆tJ(y(t )), B = −I− ∆tJ(y(t )), (37)\nk 2 k+1 k 2 k\nwhereJ(y) = −Ddiag(y)+νD2 istheJacobianofthesemi-discreteresidual,andB stackstheactuatorshapes.",
+      "size": 372,
+      "sentences": 4
+    },
+    {
+      "id": 169,
+      "content": "2 k\nwhereJ(y) = −Ddiag(y)+νD2 istheJacobianofthesemi-discreteresidual,andB stackstheactuatorshapes. ForrunningcostL = ∆t∥y(t )−y ∥2+ α∆t∥u(t )∥2,theclosed-loopadjoint/backwardsweepis\nk 2 k+1 target 2 2 k 2\nA⊤q =∆t(y(t )−y ), (38)\nk k k+1 target\np =∆t(y(t )−y )−B⊤q , (39)\nk k target k k\n∇ J =∆t (cid:0) αu(t )+B⊤q (cid:1) , (40)\nu(tk) h k k\nwhich are the NMPC equations we implemented and related to the experiments in Section 5.3. Here q and p are\nk k\nadjointthevariables.",
+      "size": 473,
+      "sentences": 3
+    },
+    {
+      "id": 170,
+      "content": "mplemented and related to the experiments in Section 5.3. Here q and p are\nk k\nadjointthevariables. 8.4 ModelPredictiveControl(MPC)\nIn what follows, we introduce the MPC algorithm; to simplify notation we omit the dependency from the spatial\nvariablex. Ateachtimeinstantt ,MPCsolvesafinite-horizonproblemofN stepsgiveninputs{u(t )}k+Np−1 ;it\nk p i i=k\nappliesthefirstinputu(t ),thenappliesshiftsanditerates(recedinghorizon). k\nLinearMPCfortheHeatequation.",
+      "size": 455,
+      "sentences": 5
+    },
+    {
+      "id": 171,
+      "content": "iesthefirstinputu(t ),thenappliesshiftsanditerates(recedinghorizon). k\nLinearMPCfortheHeatequation. WithCrank–Nicolsondiscretizationandcosine-basisexpansionforthecontrol\naction,thedynamicsarelinear:\ny(t ) = Ay(t ) + Bc(t ) + g, y(t )∈RNx, c(t )∈RM. (41)\ni+1 i i i i\nWesolvetheconvexQP\nk+Np−1\n(cid:88)\nmin ∥y(t )−y ∥2 +∥c(t )∥2 +∥y(t )−y ∥2\n{c(ti)}k\ni=\n+\nk\nNp−1\ni=k\ni target TQ i R k+Np target Q\n(42)\ns.t. (41)\nc ≤c(t )≤c .",
+      "size": 422,
+      "sentences": 5
+    },
+    {
+      "id": 172,
+      "content": ")∥2 +∥y(t )−y ∥2\n{c(ti)}k\ni=\n+\nk\nNp−1\ni=k\ni target TQ i R k+Np target Q\n(42)\ns.t. (41)\nc ≤c(t )≤c . min i max\nHere,A = M−1M ,B = M−1(∆tB ),g = M−1(∆ts)(NeumannBCs),B stackscos(jπx/X);(42)issolved\nL R L c L c\nwithCVXPY/OSQP[31]. HereM andM aretheCNmatricesofthesystem,obtainedfromthesemi-discretePDE\nL R\noperatorA :\nc\nM = I− ∆tA , M = I+ ∆tA . (43)\nL 2 c R 2 c\nThiswayoneCNstepwritesas:\nM y(t ) = M y(t ) + ∆tB c(t ) + ∆ts. (44)\nL k+1 R k c k\nNonlinearMPCfortheBurgersequation.",
+      "size": 476,
+      "sentences": 6
+    },
+    {
+      "id": 173,
+      "content": "ritesas:\nM y(t ) = M y(t ) + ∆tB c(t ) + ∆ts. (44)\nL k+1 R k c k\nNonlinearMPCfortheBurgersequation. ForviscousBurgers,theCNstepisnonlinearduetoconvectionterm;\nwewriteonestepastheimplicitmap\ny(t ) = G(y(t ),c(t );∆t), (45)\ni+1 i i\nwhereG istheuniqueCNsolutionforBurgerswithinputBc(t )(computedviafsolveontheCNresidualandby\ni\nimposingDirichletendpointsateachstep). k+Np−1\n(cid:88)\nmin ∥y(t )−y ∥2 +∥c(t )∥2 +∥y(t )−y ∥2\n{c(ti)}k\ni=\n+\nk\nNp−1\ni=k\ni target TQ i R k+Np target Q\n(46)\ns.t.45, c ≤c(t )≤c .",
+      "size": 498,
+      "sentences": 4
+    },
+    {
+      "id": 174,
+      "content": "t )∥2 +∥y(t )−y ∥2\n{c(ti)}k\ni=\n+\nk\nNp−1\ni=k\ni target TQ i R k+Np target Q\n(46)\ns.t.45, c ≤c(t )≤c . min i max\nWeusesingleshootingoverthefull-ordermodel: propagatewith(45),optimizewithSLSQP[32]underboxbounds,\napplyy(t ),advanceoneCNstep,anditerate. HereBstackssin((j+1)πx/X)shapesusedintheimplementation. k\nNotably,T ,R, andQrepresenttheweightmatrices,whichcorrespondtothemultipliersλinourPDE-OPmethod. Q\n17\n===  18 ===\nChoiceofcontroller.",
+      "size": 438,
+      "sentences": 5
+    },
+    {
+      "id": 175,
+      "content": "ghtmatrices,whichcorrespondtothemultipliersλinourPDE-OPmethod. Q\n17\n===  18 ===\nChoiceofcontroller. Forthevoltageoptimizationtask, weuseDirect andAdjoint-methodforopenloop. Forthe\nheatequation,CNyieldsalinearPDE,sothefinite-horizonproblemisaconvexQP,whichcanbesolvedwithLinear\nMPC. For Burgers’ equation, the dynamics are nonlinear and CN produces an implicit nonlinear update, so we use\nNonlinear MPC, with NMPC optimizing over an implicit CN step.",
+      "size": 449,
+      "sentences": 5
+    },
+    {
+      "id": 176,
+      "content": "implicit nonlinear update, so we use\nNonlinear MPC, with NMPC optimizing over an implicit CN step. In both the heat and burgers’ tasks, we also use\nAdjoint-methodforclosedloop,andreportitsresults. 9 AdditionalExperimentalResults\nIn this section we evaluate the runtime and terminal tracking error (MSE) achieved by each method on polynomial\ntargetprofiles,andreportthesemetricsinTables2,3,and4. Allmethodsusethesamespatial/temporaldiscretization\nandsolversettingsasdescribedinAppendix10.",
+      "size": 487,
+      "sentences": 4
+    },
+    {
+      "id": 177,
+      "content": ",and4. Allmethodsusethesamespatial/temporaldiscretization\nandsolversettingsasdescribedinAppendix10. Figure9:OptimalControlofthe1DBurgers’equationwithdirectmodeling;comparisonbetweenthesolutionestimate\n(center)ofPDE-OP’sdynamicpredictorY attesttimewiththesolutionobtainedwithanumericalalgorithm(left)\nθ\nandrelatedabsoluteerror(right).",
+      "size": 333,
+      "sentences": 3
+    },
+    {
+      "id": 178,
+      "content": "rY attesttimewiththesolutionobtainedwithanumericalalgorithm(left)\nθ\nandrelatedabsoluteerror(right). 9.1 VoltageControlOptimization\nWetesteachmethodonadditionaltargetprofilesy (x)=p x+p :(i)constant:(p ,p )=(0,1)soy (x)=1;\ntarget 1 2 1 2 target\n(ii)ramp: (p ,p ) = (1,0.5)soy (x) = x+0.5. (Equivalently,y (x) = p x+p with(p ,p ) = (0,1)and\n1 2 target target 1 2 1 2\n(1,0.5),respectively. )Sincearamptargetprofileisinfeasibleunderzero-flux(Neumann)boundaries,allmethodscan\nonlyproduceapproximations.",
+      "size": 497,
+      "sentences": 4
+    },
+    {
+      "id": 179,
+      "content": "targetprofileisinfeasibleunderzero-flux(Neumann)boundaries,allmethodscan\nonlyproduceapproximations. Table2: VoltageOptimizationTask. Foreachmethodandtargetprofilewereportruntime(s)andMSE. Methods y (x)=1 y (x)=x+0.5\ntarget target\nRuntime Accuracy Runtime Accuracy\nDirect(FiniteDiff.) 2.422s 4.6498e-11 12.810s 0.00005\nAdjoint-Method 0.049s 2.8213e-12 0.464s 0.00004\nPDE-OP(ours) 0.037s 1.5275e-6 0.050s 0.00007\nResults. Constanttargety (x) = 1.",
+      "size": 444,
+      "sentences": 6
+    },
+    {
+      "id": 180,
+      "content": "3e-12 0.464s 0.00004\nPDE-OP(ours) 0.037s 1.5275e-6 0.050s 0.00007\nResults. Constanttargety (x) = 1. TheAdjointmethodattainsthehighestaccuracy(MSE2.82×10−12)in\ntarget\n0.049 s, while the Direct method is much slower at 2.422 s with MSE 4.65×10−11.PDE-OP is fastest at 0.037 s\n(about65.5×fasterthanDirectand1.32×fasterthanAdjoint)andreportsanMSEof1.53×10−6. Ramptargety (x) = x+0.5.",
+      "size": 379,
+      "sentences": 4
+    },
+    {
+      "id": 181,
+      "content": "65.5×fasterthanDirectand1.32×fasterthanAdjoint)andreportsanMSEof1.53×10−6. Ramptargety (x) = x+0.5. TheAdjointmethodyieldsthelowesterror(4.0×10−5),runningin0.464s;the\ntarget\nDirect method achieves 5.0×10−5 but takes 12.810 s. PDE-OP runs in 0.050 s, about 256× faster than Direct\nand9.3×fasterthanAdjointmethod,producinganMSEof7.0×10−5,whichisonsameorderofmagnitudeofthe\nbaselines.",
+      "size": 381,
+      "sentences": 3
+    },
+    {
+      "id": 182,
+      "content": "d9.3×fasterthanAdjointmethod,producinganMSEof7.0×10−5,whichisonsameorderofmagnitudeofthe\nbaselines. 9.2 OptimalControlofthe1DHeatEquation\nForthe1Dheatequation(closed-loopcontrol),weconsideraffinetargetsy (x)=p x+p with(p ,p )=(0,1)\ntarget 1 2 1 2\nand (1,0.5).",
+      "size": 259,
+      "sentences": 2
+    },
+    {
+      "id": 183,
+      "content": "losed-loopcontrol),weconsideraffinetargetsy (x)=p x+p with(p ,p )=(0,1)\ntarget 1 2 1 2\nand (1,0.5). Under zero-flux (Neumann) boundary conditions, the ramp profile is not exactly admissible, as its\n18\n===  19 ===\nderivative at the boundaries is nonzero; all controllers therefore track its best achievable approximation under these\nconstraint. Here,wecomparetheproposedPDE-OPmodelwithLMPCandtheAdjoint-SensitivityMethod. Table3: HeatEquationTask.",
+      "size": 446,
+      "sentences": 4
+    },
+    {
+      "id": 184,
+      "content": "e,wecomparetheproposedPDE-OPmodelwithLMPCandtheAdjoint-SensitivityMethod. Table3: HeatEquationTask. Foreachmethodandtargetprofilewereportruntime(s)andMSE. Methods y (x)=1 y (x)=x+0.5\ntarget target\nRuntime Accuracy Runtime Accuracy\nLMPC 0.443s 2.3289e-14 0.562s 0.00008\nAdjoint-Method 0.485s 6.6612e-11 0.552s 0.00008\nPDE-OP(ours) 0.223s 1.5210e-6 0.132s 0.00009\nResults. Constanttargety (x) = 1.",
+      "size": 395,
+      "sentences": 5
+    },
+    {
+      "id": 185,
+      "content": "2e-11 0.552s 0.00008\nPDE-OP(ours) 0.223s 1.5210e-6 0.132s 0.00009\nResults. Constanttargety (x) = 1. LMPCachievesproducesaccurateterminalprofile(MSE2.33×10−14)\ntarget\nandrunsin0.443s;theAdjointrunsin0.485swithMSE6.66×10−11. PDE-OPisfastestat0.223s(about2.0×\nfasterthanLMPCand2.2×thanAdjoint)withastillsmallerrorof1.52×10−6. Ramp target y (x) = x+0.5. LMPC and Adjoint achieves for the highest accuracy (MSE=8.0×10−5) with\ntarget\nruntimes0.562sand0.552s,respectively.",
+      "size": 465,
+      "sentences": 6
+    },
+    {
+      "id": 186,
+      "content": "achieves for the highest accuracy (MSE=8.0×10−5) with\ntarget\nruntimes0.562sand0.552s,respectively. PDE-OP runsonlyin0.132s(about4.3×fasterLMPCand4.2×than\ntheAdjoint),withanMSEof9.0×10−5ofthesameorderofmagnitudeasthebaselines. 9.3 OptimalControlofthe1DBurgers’Equation\nForthe1DviscousBurgersequationwithDirichletboundariesy(t,0) = y(t,L) = 0,admissiblesteadytargetsmust\nsatisfy these conditions.",
+      "size": 394,
+      "sentences": 3
+    },
+    {
+      "id": 187,
+      "content": "ionwithDirichletboundariesy(t,0) = y(t,L) = 0,admissiblesteadytargetsmust\nsatisfy these conditions. We therefore consider (i) a zero (constant) target y (x) = 0, and (ii) a parabolic target\ntarget\ny (x) = p x(1−x)(weusep = 2.0inexperiments). WecompareourmethodwithNMPCandtime-varying\ntarget 1 1\nAdjointbaseline. Table4: BurgerOptimizationTask. Foreachmethodandtargetprofilewereportruntime(s)andMSE.",
+      "size": 398,
+      "sentences": 5
+    },
+    {
+      "id": 188,
+      "content": "intbaseline. Table4: BurgerOptimizationTask. Foreachmethodandtargetprofilewereportruntime(s)andMSE. Methods y (x)=0 y (x)=2x(1−x)\ntarget target\nRuntime Accuracy Runtime Accuracy\nNMPC 132.243s 5.6760e-14 671.033s 0.00006\nAdjoint-Method 21.487s 5.8290e-11 122.116s 0.00013\nPDE-OP(ours) 0.059s 0.00002 0.073s 0.00031\nResults. Zerotargety (x) = 0. NMPCreachesnearlymachineprecision(MSE5.68×10−14)butisslowat\ntarget\n132.243s; theAdjointbaselineisfasterat21.487swithMSE5.83×10−11.",
+      "size": 474,
+      "sentences": 6
+    },
+    {
+      "id": 189,
+      "content": "on(MSE5.68×10−14)butisslowat\ntarget\n132.243s; theAdjointbaselineisfasterat21.487swithMSE5.83×10−11. PDE-OP isfastestat0.059s(about\n2.24×103vs.NMPCand3.64×102vs.Adjoint)withasmallbutlargererrorof2.0×10−5. Parabolic target y (x) = 2x(1−x). NMPC attains the lowest error (MSE 6.0×10−5) in 671.033 s; Adjoint\ntarget\nyields1.3×10−4at122.116s. PDE-OPrunsin0.073s—about9.19×103fasterthanNMPCand1.67×103faster\nthanAdjoint—withMSE3.1×10−4(sameorderofmagnitude).",
+      "size": 452,
+      "sentences": 5
+    },
+    {
+      "id": 190,
+      "content": "73s—about9.19×103fasterthanNMPCand1.67×103faster\nthanAdjoint—withMSE3.1×10−4(sameorderofmagnitude). Takeaway.FornonlinearBurgersdynamicswithDirichletBCs,NMPC/AdjointprovidethebestMSE,whilePDE-OP\ndeliversthreetofourordersofmagnitudelowerruntimewithmodestaccuracyloss.",
+      "size": 266,
+      "sentences": 2
+    },
+    {
+      "id": 191,
+      "content": "ovidethebestMSE,whilePDE-OP\ndeliversthreetofourordersofmagnitudelowerruntimewithmodestaccuracyloss. 9.4 Discrete-TimeNeuralOperatorwithDirectControlFieldu(x,t)\nIn this section we describe a variant of our discrete-time neural operator that learns directly the spatio–temporal\ncontrolfieldu(t,x)ratherthantheweightsofthebasisfunctionasintroducedinSection4.2.",
+      "size": 357,
+      "sentences": 2
+    },
+    {
+      "id": 192,
+      "content": "e spatio–temporal\ncontrolfieldu(t,x)ratherthantheweightsofthebasisfunctionasintroducedinSection4.2. Similarlytotheoriginal\nDeepONet[1],PDE-OP’smodelY factorsintoabranchnetworkthatencodesinputfunctionsandatrunk network\nθ\nthatencodesquerycoordinates. Ateachtimet ,giventhecurrentstatey(t ,x)andtheappliedcontrolu(t ,x),this\nk k k\nmodelpredictsthenextstateatcoordinatex:\n(cid:0) (cid:1)\nyˆ(t ,x) = Y t, x, yˆ(t ,x), uˆ(t ,x) (47)\nk+1 θ k k\n19\n===  20 ===\nBranch network.",
+      "size": 467,
+      "sentences": 3
+    },
+    {
+      "id": 193,
+      "content": "(cid:0) (cid:1)\nyˆ(t ,x) = Y t, x, yˆ(t ,x), uˆ(t ,x) (47)\nk+1 θ k k\n19\n===  20 ===\nBranch network. The branch net encodes the estimated system state yˆ(t ,x) sampled at n fixed sensor locations\nk\ntogetherwithestimatedcontrolsignalsuˆ(t ,x),andmapsthisconcatenatedinputtoad-dimensionalvectorofcoef-\nk\nficientsb(yˆ(t ,x),uˆ(t ))∈Rd. k k\nTrunknetwork. Thetrunknetencodesthespatialquerycoordinatex,producingalatentfeaturevectorγ(x)∈Rd.",
+      "size": 432,
+      "sentences": 4
+    },
+    {
+      "id": 194,
+      "content": "k\nTrunknetwork. Thetrunknetencodesthespatialquerycoordinatex,producingalatentfeaturevectorγ(x)∈Rd. The estimated subsequent (in time) state yˆ(t ,x) at location x is obtained by combining the branch coefficients\nk+1 i\nandtrunkfeaturesthroughaninnerproduct:\nd\n(cid:88)\nyˆ(t ,x ) = b (yˆ(t ,x ),uˆ(t ,x )) γ (x ), i=1,...,n. (48)\nk+1 i j k i k i j i\nj=1\nModelinitializationandtraining(directu).InthissettingthedynamicpredictorY takesasinputthecontrolaction\nθ\nsampledonthespatialgrid,togetherwiththecurrentstate.",
+      "size": 509,
+      "sentences": 3
+    },
+    {
+      "id": 195,
+      "content": "namicpredictorY takesasinputthecontrolaction\nθ\nsampledonthespatialgrid,togetherwiththecurrentstate. Y isinitializedinasupervisedfashionbygeneratingthe\nθ\ntargettrajectorieswithanumericalPDEsolverunderdiversetime-varyingcontrolsu(t,x).",
+      "size": 233,
+      "sentences": 2
+    },
+    {
+      "id": 196,
+      "content": "nbygeneratingthe\nθ\ntargettrajectorieswithanumericalPDEsolverunderdiversetime-varyingcontrolsu(t,x). We sample admissible control sequences {u(t ,x )} on the grid {x }n from a zero-mean Gaussian random field\nk i i i=1\n(GRF) with prescribed spatial covariance (and optional temporal correlation), after which a clipping operation is\nappliedtomeettheactuatorboundsu ≤ u(t ,x ) ≤ u . Rollingthesolverwiththeseinputsproducesstates\nmin k i max\ny(t ,·)satisfying(1b)-(1f).",
+      "size": 465,
+      "sentences": 3
+    },
+    {
+      "id": 197,
+      "content": "(t ,x ) ≤ u . Rollingthesolverwiththeseinputsproducesstates\nmin k i max\ny(t ,·)satisfying(1b)-(1f). Eachtrajectoryisconvertedintoone-steptrainingpairs\nk\n(cid:0) (cid:1)\ny(t ,x ), u(t ,x ) (cid:55)−→ y(t ,x ), k =0,...,T −1, i=1,...,n\nk i k i k+1 i\n(cid:110)(cid:0) (cid:1)(cid:111)\nFormally, the dataset consists of triples D = y(t ,x), u(t ,x), y(t ,x) , with y(t ,x) =\nk k k+1 k\n[y(t ,x ),...,y(t ,x )]⊤andu(t ,x)=[u(t ,x ),...,u(t ,x )]⊤.",
+      "size": 441,
+      "sentences": 3
+    },
+    {
+      "id": 198,
+      "content": "x), y(t ,x) , with y(t ,x) =\nk k k+1 k\n[y(t ,x ),...,y(t ,x )]⊤andu(t ,x)=[u(t ,x ),...,u(t ,x )]⊤. Y istrainedtominimizethefollowingloss\nk 1 k n k k 1 k n θ\nmin E (u,y)∼D (cid:104)(cid:13) (cid:13)yˆ(t,x)−y(t,x) (cid:13) (cid:13) 2 (cid:105) , (49)\nθ\n9.5 MPCforDirectControlFieldu(x,t)\nHere we describe a “direct-u” variant for viscous Burgers with Dirichlet boundaries, where the control action is\nparameterized at every spatial collocation point.",
+      "size": 449,
+      "sentences": 2
+    },
+    {
+      "id": 199,
+      "content": "Dirichlet boundaries, where the control action is\nparameterized at every spatial collocation point. At each time t a vector, the optimization task consists of finding\nk\nu(t\nk\n,x) ∈ RNx (e.g., for a given time instant t\nk\nwe have N\nx\nspatial collocation point), and applying an implicit\nCrank–Nicolsonsteptopropagatethestateintimefromt tot . k k+1\nk+Np−1\n(cid:88)\nmin ∥y(t )−y ∥2 +∥u(t )∥2 +∥y(t )−y ∥2\n{u(ti)}k\ni=\n+\nk\nNp−1\ni=k\ni target TQ i R k+Np target Q\n(50)\ns.t.45, u ≤u(t )≤u .",
+      "size": 482,
+      "sentences": 3
+    },
+    {
+      "id": 200,
+      "content": "t )∥2 +∥y(t )−y ∥2\n{u(ti)}k\ni=\n+\nk\nNp−1\ni=k\ni target TQ i R k+Np target Q\n(50)\ns.t.45, u ≤u(t )≤u . min i max\nIncaseofclosedloop(NMPC),ahorizonoflengthN yieldsN N decisionvariablesperiteration;wewarmstart\np p x\nacross receding horizons and use bound-constrained quasi-Newton (e.g., L-BFGS-B/SLSQP). Here T ,R, andQ\nQ\nrepresenttheweightmatrices,whichcorrespondtoidenticalwiththeLagrangemultipliersλofourPDE-OP’strain-\ningalgorithm.",
+      "size": 430,
+      "sentences": 3
+    },
+    {
+      "id": 201,
+      "content": "ightmatrices,whichcorrespondtoidenticalwiththeLagrangemultipliersλofourPDE-OP’strain-\ningalgorithm. Tocomputethegradients,weeitherbackpropagatethroughthediscreteCNintegratorusingautomatic\ndifferentiationorusethefullydiscreteadjoint;bothmethodsareexactbutrequireoneforwardrolloutandoneback-\nward sweep over the horizon.",
+      "size": 318,
+      "sentences": 2
+    },
+    {
+      "id": 202,
+      "content": "creteadjoint;bothmethodsareexactbutrequireoneforwardrolloutandoneback-\nward sweep over the horizon. This grid-wise formulation removes any basis bias and shows the attainable tracking\nwhenthecontrollerhasfullspatialfreedom,butitisWhiledirectmodelingofthecontrolactiondoesn’trequireany\nbasis representation, its computational cost higher w.r.t.",
+      "size": 343,
+      "sentences": 2
+    },
+    {
+      "id": 203,
+      "content": "elingofthecontrolactiondoesn’trequireany\nbasis representation, its computational cost higher w.r.t. to the case in which a basis representation is adopted: the\nper-stepcostscalesroughlywithN N N ,duetoline-search/gradientevaluationentailingmultipleCNsolves. We\np t x\nthereforeincludeitasacomprehensivebaselinetocontextualizetheefficiencyofourreduced-parameter(mode-based)\ncontrollers.",
+      "size": 384,
+      "sentences": 3
+    },
+    {
+      "id": 204,
+      "content": "asacomprehensivebaselinetocontextualizetheefficiencyofourreduced-parameter(mode-based)\ncontrollers. 9.6 ExperimentalResultsForDirectControlFieldu(t,x)\nWhen using the direct control field modeling for u(t,x), we evaluate each method on the nonlinear, time-variant\noptimal control of the 1D Burgers’ equation, using the same target profiles presented in Section 5.3. Tables 5-6\nreporttheruntime(s)andterminaltrackingerror(MSE)ofeachmethod.",
+      "size": 437,
+      "sentences": 3
+    },
+    {
+      "id": 205,
+      "content": "presented in Section 5.3. Tables 5-6\nreporttheruntime(s)andterminaltrackingerror(MSE)ofeachmethod. Allmethodsusethesamespatial/temporal\ndiscretizationandsolversettingsasin10. Figure9showsthepredictedvoltage(centralsub-figureofFig. 9)ofPDE-\nOP’sdynamiccomponentY attesttime,whichiscomparedtothesolution(leftsub-figure)obtainedwithanumerical\nθ\nPDE-solver.",
+      "size": 353,
+      "sentences": 5
+    },
+    {
+      "id": 206,
+      "content": "ponentY attesttime,whichiscomparedtothesolution(leftsub-figure)obtainedwithanumerical\nθ\nPDE-solver. Figures10and11showthecomparisonofPDE-OP’spredictedterminalstateyˆ(T,x)andthoseobtained\nusing the baseline methods, over the same target profiles introduced in the main text. In figure 10, we set N = 1\np\nforNMPCandN = 10fortheAdjoint-method,whileinfigure11,wesetN = 4forNMPCandN = 20forthe\np p p\nAdjoint-method.",
+      "size": 410,
+      "sentences": 3
+    },
+    {
+      "id": 207,
+      "content": "ndN = 10fortheAdjoint-method,whileinfigure11,wesetN = 4forNMPCandN = 20forthe\np p p\nAdjoint-method. 20\n===  21 ===\nTable5:PDE-OPvs.classicalbaselineswithshorthorizonN .HereweuseN =1forNMPCandN =10foradjoint. p p p\nWereportruntime(s)andMSE(lowerisbetter).",
+      "size": 254,
+      "sentences": 3
+    },
+    {
+      "id": 208,
+      "content": "orthorizonN .HereweuseN =1forNMPCandN =10foradjoint. p p p\nWereportruntime(s)andMSE(lowerisbetter). y (x)=2x(1−x) y (x)=0.8(sin(x)) y (x)=0\ntarget target target\nMethod Runtime MSE Runtime MSE Runtime MSE\nNMPC 39.254s 0.00002 76.368s 0.00014 36.483s 7.9141e−06\nAdjoint-Method 47.805s 0.00124 79.644s 0.00317 24.956s 2.7618e−08\nPDE-OP(ours) 0.267s 0.00003 0.256s 0.00008 0.257s 0.00008\nFigure 10: Comparison between PDE-OP and each baseline method’s solution on three different target profile:\ny (x) = 0.8(sin(x)) (left), y (x) = 2x(1 − x) (center), and y (x) = 0 (right).",
+      "size": 570,
+      "sentences": 3
+    },
+    {
+      "id": 209,
+      "content": "rent target profile:\ny (x) = 0.8(sin(x)) (left), y (x) = 2x(1 − x) (center), and y (x) = 0 (right). We set N = 1 for\ntarget target target p\nNMPC,andN =10foradjoint-method. p\nResults. Acrossalltargets, PDE-OPistwoordersofmagnitudefasterthanclassicalmethods,between100–300×\nfasterthentheNMPCandtheAdjoint.",
+      "size": 303,
+      "sentences": 4
+    },
+    {
+      "id": 210,
+      "content": "-OPistwoordersofmagnitudefasterthanclassicalmethods,between100–300×\nfasterthentheNMPCandtheAdjoint. Intermsofaccuracy,forthesinetarget, PDE-OP achievesthelowestMSE;\nfor the parabola, NMPC attains the best results with PDE-OP close behind; for the zero target, the adjoint method\nachievesthelowestMSEwithPDE-OPproducinganMSEoftheorderof10−5. Table6: PDE-OPvs.classicalbaselineswithlongerhorizons. HereweuseN =4forNMPCandN =20foradjoint. p p\nWereportruntime(s)andMSE(lowerisbetter).",
+      "size": 480,
+      "sentences": 5
+    },
+    {
+      "id": 211,
+      "content": "ongerhorizons. HereweuseN =4forNMPCandN =20foradjoint. p p\nWereportruntime(s)andMSE(lowerisbetter). y (x)=2x(1−x) y (x)=0.8(sin(x)) y (x)=0\ntarget target target\nMethod Runtime MSE Runtime MSE Runtime MSE\nNMPC 826.176s 0.00016 3143.735s 0.00032 470.851s 0.00061\nAdjoint-Method 186.910s 0.00129 263.891s 0.00316 51.702s 4.9213e−09\nPDE-OP(ours) 0.254s 0.00003 0.277s 0.00008 0.956s 0.00008\nResults.",
+      "size": 395,
+      "sentences": 4
+    },
+    {
+      "id": 212,
+      "content": ".891s 0.00316 51.702s 4.9213e−09\nPDE-OP(ours) 0.254s 0.00003 0.277s 0.00008 0.956s 0.00008\nResults. With N =4 (NMPC) and N =20 (adjoint), PDE-OP remains dramatically faster, three to four orders of\np p\nmagnitude—than classical solvers. For the parabola target, PDE-OP is ∼3250× faster than NMPC and ∼740×\nfaster than adjoint, while also reporting the best MSE (3×10−5).",
+      "size": 369,
+      "sentences": 3
+    },
+    {
+      "id": 213,
+      "content": "∼3250× faster than NMPC and ∼740×\nfaster than adjoint, while also reporting the best MSE (3×10−5). For the sine target, the speedups over classical\nmethodsis∼11300×vs.NMPCand∼950×vs.adjoint,whileattaining(again)thelowestaccuracy(8×10−5). For\nthezerotarget,theAdjointmethodattainsnear-perfectregulation(4.9×10−9),withPDE-OPisstillfastest,running\nin0.956sandapproximately54×fasterthantheAdjointmethodand495×fasterthanNMPC,whilereportingavery\nsmalltrackingerror(8×10−5).",
+      "size": 467,
+      "sentences": 3
+    },
+    {
+      "id": 214,
+      "content": "y54×fasterthantheAdjointmethodand495×fasterthanNMPC,whilereportingavery\nsmalltrackingerror(8×10−5). 10 HyperparameterSettings\nInTables7,8,and9,weprovidethevaluesofthehyperparametersofPDE-OPmodelandthebaselinesbaselinemeth-\nodsrelatedtothevoltageoptimizationexperiments; Tables10, 11, and12, reportthevaluesofthehyperparameters\nofPDE-OPmodelandthebaselinesbaselinemethodsrelatedtotheheatequationexperiments;lastly,Tables13,14,\nand13reportthevaluesofthehyperparametersofPDE-OPmodelandthebaselinesbaselinemethodsrelatedtothe\nBurgers’equationexperiments.",
+      "size": 550,
+      "sentences": 2
+    },
+    {
+      "id": 215,
+      "content": "hyperparametersofPDE-OPmodelandthebaselinesbaselinemethodsrelatedtothe\nBurgers’equationexperiments. Forafairevaluation,eachmethodadoptsthesamePDE,grid,andhorizonparameters\nn,N ,N ,[u ,u ],[c ,c ]. x t min max min max\n21\n===  22 ===\nFigure 11: Comparison between PDE-OP and each baseline method’s solution on three different target profile:\ny (x) = 0.8(sin(x)) (left), y (x) = 2x(1 − x) (center), and y (x) = 0 (right). We set N = 4 for\ntarget target target p\nNMPC,andN =20foradjoint-method.",
+      "size": 490,
+      "sentences": 4
+    },
+    {
+      "id": 216,
+      "content": "er), and y (x) = 0 (right). We set N = 4 for\ntarget target target p\nNMPC,andN =20foradjoint-method. p\nTable7: Voltageequation: simulationparametersandmodel/traininghyperparameters. MLP[33]afullyconnectedfeedforwardnetwork.",
+      "size": 222,
+      "sentences": 4
+    },
+    {
+      "id": 217,
+      "content": "on: simulationparametersandmodel/traininghyperparameters. MLP[33]afullyconnectedfeedforwardnetwork. Category Hyperparameter Value\nDomainlengthL 1.0\nFinaltimeT 5.0\nDiffusionD 0.1\nLeakageβ 1.0\nPDE&Simulation\nControlgainα 2.0\nInitialstateV(x,0) 0.0\nReferenceV (x) 1.0\nref\nControlbounds[u ,u ] [−1.0, 1.0]\nmin max\nSolvergrid(n) 101\nDiscretization Solversteps(N ) 101\nt\nNumberofsensors(N =n) 101\nx\nLearningRate 5×10−4\nNumberofepochs 1000\nOptimizer Adam\nBatchsize 1024\nActivationfunction SiLU\nPDE-OP’sY LagrangeMultiplierρ 0.05\nθ\nBranchnet(b): #layers 4\nBranchnet(b): hiddensizes [512,512,512,512]\nTrunknet(γ): #layers 4\nTrunknet(γ): hiddensizes [512,512,512,512]\nFeaturedimension(d) 512\nLearningrate 1×10−3\nNumberofepochs 1000\nOptimizer AdamW\nPDE-OP’sU Batchsize 256\nω\nActivationfunction RELU\nMLP:#layers 3\nMLP:hiddensizes [256,256,256]\n22\n===  23 ===\nTable8: Voltageequation: Direct(finite-difference)methodparameters.",
+      "size": 914,
+      "sentences": 3
+    },
+    {
+      "id": 218,
+      "content": "es [256,256,256]\n22\n===  23 ===\nTable8: Voltageequation: Direct(finite-difference)methodparameters. Category Hyperparameter Value/Note\nOptimizer Algorithm L-BFGS-B(boxbounds[u ,u ])\nmin max\nMaxiterations 100\nTolerances ftol=10−6(and/orgtol)\nInitialization u(t )=0(uniform)\n0\nFinitediff. Stencil forward(optionallycentral)\nStepsize ϵ =η(1+|u |),η =10−6\nj j\nCosteval Rolloutsolver CN\nRuntimenote N +1evals/grad(or2N forcentral)\nx x\nTable9: Voltageequation: Adjoint-methodparameters.",
+      "size": 480,
+      "sentences": 3
+    },
+    {
+      "id": 219,
+      "content": "Runtimenote N +1evals/grad(or2N forcentral)\nx x\nTable9: Voltageequation: Adjoint-methodparameters. Category Hyperparameter Value/Note\nOptimizer Algorithm L-BFGS-B(boxbounds[u ,u ])\nmin max\nMaxiterations 100\nTolerances ftol=10−6(and/orgtol)\nInitialization u(t )=0\n0\nAdjointsolves Forwardstepper CN\nBackwardsweep discreteadjoint(onepass)\nNumerics Linearsolves direct(LU)oriterativetol10−10\n23\n===  24 ===\nTable10: Heatequation: simulationparametersandmodel/traininghyperparameters.",
+      "size": 479,
+      "sentences": 2
+    },
+    {
+      "id": 220,
+      "content": "ol10−10\n23\n===  24 ===\nTable10: Heatequation: simulationparametersandmodel/traininghyperparameters. LSTM[34]denotesaLongShort-TermMemorynetwork.",
+      "size": 144,
+      "sentences": 2
+    },
+    {
+      "id": 221,
+      "content": "simulationparametersandmodel/traininghyperparameters. LSTM[34]denotesaLongShort-TermMemorynetwork. Category Hyperparameter Value\nDomainlengthL 1.0\nFinaltimeT 1.0\nDiffusionD 0.1\nPDE&Simulation Leakageβ 0.5\nControlgainα 2.0\nInitialstateV(x,0) 0.0\nReferenceV (x) 0.0\nref\nWeightbounds[c ,c ] [−1.0, 1.0]\nmin max\nSolvergrid(n) 41\nSolversteps(N ) 41\nDiscretization t\nNumberofsensors(N =n) 41\nx\nNumberofbasisfunctions(M) 6\nLearningRate 1×10−3\nNumberofepochs 2000\nOptimizer AdamW\nBatchsize 128\nActivationfunction RELU\nPDE-OP’sY\nθ Branchnet(b): #layers 4\nBranchnet(b): hiddensizes [512,512,512,512]\nTrunknet(γ): #layers 4\nTrunknet(γ): hiddensizes [512,512,512,512]\nFeaturedimension(d) 512\nLearningrate 1×10−4\nNumberofepochs 5000\nOptimizer AdamW\nPDE-OP’sU Batchsize 2048\nω\nActivationfunction RELU\nLSTM:#layers 2\nLSTM:hiddensizes [256,256]\nTable11: Heatequation: LinearMPC(LMPC)parameters.",
+      "size": 878,
+      "sentences": 3
+    },
+    {
+      "id": 222,
+      "content": "on RELU\nLSTM:#layers 2\nLSTM:hiddensizes [256,256]\nTable11: Heatequation: LinearMPC(LMPC)parameters. (∗)Thebasisfunctionareusedbyeachmethod. Category Parameter Value/Note\nHorizon PredictionlengthN 10\np\nDynamics Stateupdate y(t )=Ay(t )+Bu(t )+g\nk+1 k k\nDiscretization Crank–Nicolson(linear)\nActuation Basis∗ cos(jπx/L),j =0,...,m−1\nSolver QPsolver OSQP(CVXPY),warmstart\nStopping Tolerances defaultOSQP(primal/dualres.) Table12: Heatequation: Adjointmethodparameters.",
+      "size": 465,
+      "sentences": 4
+    },
+    {
+      "id": 223,
+      "content": "rt\nStopping Tolerances defaultOSQP(primal/dualres.) Table12: Heatequation: Adjointmethodparameters. Category Parameter Value/Note\nHorizon PredictionlengthN 10\np\nForward Integrator Crank–Nicolson(linear),sameA,B,g\nAdjoint Backwardrecursion λ =Q(y −y )\nNt Nt target\nλ =A⊤λ +T (y(t )−y )\nk k+1 Q k target\nGradient Perstep ∇ J =Ru(t )+B⊤λ .",
+      "size": 336,
+      "sentences": 3
+    },
+    {
+      "id": 224,
+      "content": "n λ =Q(y −y )\nNt Nt target\nλ =A⊤λ +T (y(t )−y )\nk k+1 Q k target\nGradient Perstep ∇ J =Ru(t )+B⊤λ . u(tk) h k k+1\nOptimizer Algorithm L-BFGS-B,warmstart\nStopping Maxiters/tolerances 100;ftol=10−6\n24\n===  25 ===\nTable13: Burgers’equation: simulationparametersandmodel/traininghyperparameters. LSTM[34]denotesaLongShort-TermMemorynetwork.",
+      "size": 336,
+      "sentences": 3
+    },
+    {
+      "id": 225,
+      "content": "simulationparametersandmodel/traininghyperparameters. LSTM[34]denotesaLongShort-TermMemorynetwork. Category Hyperparameter Value\nDomainlengthL 1.0\nPDE&Simulation\nFinaltimeT 4.0\nViscosityν 0.03\nWeightbounds[c ,c ] [−1.0, 1.0]\nmin max\nSolvergrid(n) 81\nSolversteps(N ) 201\nDiscretization t\nNumberofsensors(N =n) 81\nx\nNumberofbasisfunctions(M) 4\nLearningRate 1×10−3\nNumberofepochs 2000\nOptimizer AdamW\nBatchsize 512\nActivationfunction RELU\nPDE-OP’sY\nθ Branchnet(b): #layers 3\nBranchnet(b): hiddensizes [256,256,256]\nTrunknet(γ): #layers 5\nTrunknet(γ): hiddensizes [256,256,256,256,256]\nFeaturedimension(d) 128\nLearningrate 1×10−4\nNumberofepochs 5000\nOptimizer AdamW\nPDE-OP’sU Batchsize 2048\nω\nActivationfunction RELU\nLSTM:#layers 2\nLSTM:hiddensizes [256,256]\nTable14: Burgers’equation: NonlinearMPC(NMPC)parameters.",
+      "size": 811,
+      "sentences": 3
+    },
+    {
+      "id": 226,
+      "content": "LSTM:#layers 2\nLSTM:hiddensizes [256,256]\nTable14: Burgers’equation: NonlinearMPC(NMPC)parameters. (∗)Thebasisfunctionareusedbyeachmethod.",
+      "size": 138,
+      "sentences": 2
+    },
+    {
+      "id": 227,
+      "content": "6]\nTable14: Burgers’equation: NonlinearMPC(NMPC)parameters. (∗)Thebasisfunctionareusedbyeachmethod. Category Parameter Value/Note\nHorizon PredictionlengthN e.g.10(recedinghorizon)\np\nDynamics Implicitstep(CN) y(t ) = G(y(t ),c(t ))\nk+1 k k\nActuation Basis∗ sin (cid:0) (j+1)πx/X (cid:1) ,j =0,...,M −1\nSolver Nonlinearoptimizer SLSQP(single-shooting),boxbounds;warmstartbyshift\nCNinner Newtonsolveperstep tolerance10−10,maxiters25\nTable15: Burgers’equation: Adjointmethodparameters.",
+      "size": 481,
+      "sentences": 3
+    },
+    {
+      "id": 228,
+      "content": "er Newtonsolveperstep tolerance10−10,maxiters25\nTable15: Burgers’equation: Adjointmethodparameters. Category Parameter Value/Note\nHorizon PredictionlentghN 10\np\nForward ImplicitCNdynamics asinNMPC,Dirichletenforcedeachstep\nJacobian Semi-discreteresidual J(y)=−Ddiag(y)+νD2\nAdjoint Backwardsweep A⊤q =∆t(y(t )−y );\nk k k+1 target\np =∆t(y(t )−y )−B⊤q\nGradient Per-stepcontrolgradient ∇ k J =∆ k t (cid:0) αu( t t arg ) et +B⊤ k q (cid:1) k ,\nu(tk) k k\nOptimizer Outeroptimizer L-BFGS-B,warmstart\n25",
+      "size": 496,
+      "sentences": 2
+    }
+  ]
+}

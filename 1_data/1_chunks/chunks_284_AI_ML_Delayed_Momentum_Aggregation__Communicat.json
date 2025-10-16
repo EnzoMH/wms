@@ -1,0 +1,1233 @@
+{
+  "source": "ArXiv",
+  "filename": "284_AI_ML_Delayed_Momentum_Aggregation__Communicat.pdf",
+  "domain": "AI",
+  "total_chars": 75909,
+  "total_chunks": 204,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\nDelayed Momentum Aggregation: Communication-efficient\nByzantine-robust Federated Learning with Partial Participation\nKaoruOtsuka KAORU.OTSUKA@OIST.JP\nOIST,Japan\nYukiTakezawa YUKI-TAKEZAWA@ML.IST.I.KYOTO-U.AC.JP\nKyotoUniversity,OIST,Japan\nMakotoYamada MAKOTO.YAMADA@OIST.JP\nOIST,Japan\nAbstract\nFederatedLearning(FL)allowsdistributedmodeltrainingacrossmultipleclientswhilepreserving\ndataprivacy,butitremainsvulnerabletoByzantineclientsthatexhibitmaliciousbehavior.",
+      "size": 473,
+      "sentences": 1
+    },
+    {
+      "id": 2,
+      "content": "tswhilepreserving\ndataprivacy,butitremainsvulnerabletoByzantineclientsthatexhibitmaliciousbehavior. While\nexistingByzantine-robustFLmethodsprovidestrongconvergenceguarantees(e.g.,toastationary\npointinexpectation)underByzantineattacks,theytypicallyassumefullclientparticipation,which\nisunrealisticduetocommunicationconstraintsandclientavailability.",
+      "size": 347,
+      "sentences": 2
+    },
+    {
+      "id": 3,
+      "content": "ssumefullclientparticipation,which\nisunrealisticduetocommunicationconstraintsandclientavailability. Underpartialparticipation,\nexistingmethodsfailimmediatelyafterthesampledclientscontainaByzantinemajority,creatinga\nfundamentalchallengeforsparsecommunication.First,weintroducedelayedmomentumaggrega-\ntion,anovelprinciplewheretheserveraggregatesthemostrecentlyreceivedgradientsfromnon-\nparticipatingclientsalongsidefreshmomentumfromactiveclients.",
+      "size": 444,
+      "sentences": 2
+    },
+    {
+      "id": 4,
+      "content": "emostrecentlyreceivedgradientsfromnon-\nparticipatingclientsalongsidefreshmomentumfromactiveclients. OuroptimizerD-Byz-SGDM\n(Delayed Byzantine-robust SGD with Momentum) implements this delayed momentum aggrega-\ntionprincipleforByzantine-robustFLwithpartialparticipation. Then, weestablishconvergence\nguaranteesthatrecoverpreviousfullparticipationresultsandmatchthefundamentallowerbounds\nwe prove for the partial participation setting.",
+      "size": 433,
+      "sentences": 3
+    },
+    {
+      "id": 5,
+      "content": "rticipationresultsandmatchthefundamentallowerbounds\nwe prove for the partial participation setting. Experiments on deep learning tasks validated our\ntheoreticalfindings,showingstableandrobusttrainingundervariousByzantineattacks. Keywords: Byzantine-robustLearningwithPartialParticipation,Communication-efficientFeder-\natedLearning,Byzantine-robustFederatedLearning\n1.",
+      "size": 367,
+      "sentences": 3
+    },
+    {
+      "id": 6,
+      "content": "artialParticipation,Communication-efficientFeder-\natedLearning,Byzantine-robustFederatedLearning\n1. Introduction\nFederated Learning (FL) enables collaborative training across many clients without centralizing\nrawdata,andhasbecomeastandardapproachwhenprivacy,bandwidth,orgovernanceconstraints\nprevent data pooling [41, 57]. Its central idea is to transmit gradients rather than raw data. Specif-\nically, each client computes the gradient using their local dataset and sends it to the central server.",
+      "size": 498,
+      "sentences": 4
+    },
+    {
+      "id": 7,
+      "content": "ly, each client computes the gradient using their local dataset and sends it to the central server. Then, the central server computes the average of the gradients and updates the parameters.",
+      "size": 190,
+      "sentences": 2
+    },
+    {
+      "id": 8,
+      "content": "server. Then, the central server computes the average of the gradients and updates the parameters. Since\nits proposal, FL has attracted many optimization researchers and has been widely studied in areas\nsuchascommunicationcompression[2,4,28,39,46,54,61,72],dataheterogeneity[3,17,37,43,\n53, 67, 73, 74, 79, 83], accelerated methods [22, 36, 40, 49, 55, 62, 63], and Byzantine-robust FL,\nincludingdefensesforhomogeneousdata[5,10,11,21,44,58,59,66,81]andheterogeneousdata\n[1,7,15,23,24,26,52,68,70,77,80].",
+      "size": 503,
+      "sentences": 3
+    },
+    {
+      "id": 9,
+      "content": "forhomogeneousdata[5,10,11,21,44,58,59,66,81]andheterogeneousdata\n[1,7,15,23,24,26,52,68,70,77,80]. Due to the nature of FL, where a large number of clients participate in the training process, it\nisvulnerabletoclientsthatbehaveincorrectly,commonlyreferredtoasByzantineclients[41,50]. © K.Otsuka,Y.Takezawa&M.Yamada. 5202\npeS\n3\n]GL.sc[\n1v07920.9052:viXra\n===  2 ===\nDELAYEDMOMENTUMAGGREGATION\nFor instance, some clients may be faulty, while others may act maliciously to disrupt training.",
+      "size": 488,
+      "sentences": 4
+    },
+    {
+      "id": 10,
+      "content": "ION\nFor instance, some clients may be faulty, while others may act maliciously to disrupt training. UnderByzantinefailures,naiveaveragingisnotoriouslybrittle: evenasingleByzantineclientcan\nsignificantly skew the aggregated model updates. To address this issue, a large body of work has\nproposedByzantine-robustFLmethods[7,11,12,44],whichreplacesimpleaveragingwithrobust\naggregationrulesatthecentralserver.",
+      "size": 405,
+      "sentences": 3
+    },
+    {
+      "id": 11,
+      "content": "bustFLmethods[7,11,12,44],whichreplacesimpleaveragingwithrobust\naggregationrulesatthecentralserver. Arobustaggregatorguaranteesthat,aslongasthemajority\nof inputs come from honest clients, the aggregation output remains close to the true average of\nthe honest clients’ parameters, regardless of the values sent by malicious clients. Thanks to these\nrobust aggregation techniques, Byzantine-robust FL can maintain convergence guarantees, despite\nthepresenceofByzantineclients.",
+      "size": 474,
+      "sentences": 3
+    },
+    {
+      "id": 12,
+      "content": "es, Byzantine-robust FL can maintain convergence guarantees, despite\nthepresenceofByzantineclients. However, most of these existing Byzantine-robust FL methods rely on the assumption that all\nclientsparticipateineveryround,whichisunrealistic. Someclientsmaybetemporarilyunavailable,\nforexample,duetounreliableconnectionsorcompetingcomputationaltasks[13,35,41,64,75,78].",
+      "size": 369,
+      "sentences": 3
+    },
+    {
+      "id": 13,
+      "content": "unavailable,\nforexample,duetounreliableconnectionsorcompetingcomputationaltasks[13,35,41,64,75,78]. Even if all clients were available, it is common practice to sample only a subset of the clients to\nreduce the communication overhead between the central server and the clients [42, 43, 65]. When\nonly a subset of clients participates, most existing Byzantine-robust FL methods fail to remain\nrobust against Byzantine clients.",
+      "size": 425,
+      "sentences": 3
+    },
+    {
+      "id": 14,
+      "content": "cipates, most existing Byzantine-robust FL methods fail to remain\nrobust against Byzantine clients. Specifically, in the partial participation setting, the majority of\nthe sampled clients can be malicious. In such a case, a robust aggregator may no longer provide a\ngood estimation of the average of the honest clients’ parameters. Only a few papers have studied\nByzantine-robust FL with partial participation [8, 56]. Malinovsky et al.",
+      "size": 436,
+      "sentences": 5
+    },
+    {
+      "id": 15,
+      "content": "a few papers have studied\nByzantine-robust FL with partial participation [8, 56]. Malinovsky et al. [56] proposed a variance\nreduction-based optimizer with a specialized clipping strategy, showing tolerance even in rounds\nwithaByzantinemajority. However,variancereductionmethodsperformpoorlyfordeeplearning\nmodels [25]. Allouah et al. [8] proposed replacing the naive averaging in FedAvg [57] with a\nByzantine-robust aggregator.",
+      "size": 428,
+      "sentences": 6
+    },
+    {
+      "id": 16,
+      "content": "t al. [8] proposed replacing the naive averaging in FedAvg [57] with a\nByzantine-robust aggregator. Their algorithm, however, relies on vanilla (non-momentum) SGD,\nwhich is vulnerable to time-coupled attacks [9, 44], and it offers no mitigation when Byzantine\nclientsformamajority. In this paper, we tackle the challenge of Byzantine-robust FL with partial participation, aim-\ning for a solution that is not just theoretically appealing but also practical.",
+      "size": 456,
+      "sentences": 4
+    },
+    {
+      "id": 17,
+      "content": "participation, aim-\ning for a solution that is not just theoretically appealing but also practical. Our proposed method,\nD-Byz-SGDM(DelayedByzantine-robustSGDwithMomentum),isstrikinglysimple: ateachag-\ngregationstep,thecentralserveraggregatesnotonlythegradientssentfromthesampledclientsbut\nalsothemostrecentlyreceivedgradientsfromthenon-sampledclients.",
+      "size": 352,
+      "sentences": 2
+    },
+    {
+      "id": 18,
+      "content": "radientssentfromthesampledclientsbut\nalsothemostrecentlyreceivedgradientsfromthenon-sampledclients. Asaresult,thiseffectively\naggregatestheentiresetofclients,therebyensuringthattheaggregationinwhichByzantineclients\nconstitute a majority never occurs during the training.",
+      "size": 270,
+      "sentences": 2
+    },
+    {
+      "id": 19,
+      "content": "ngthattheaggregationinwhichByzantineclients\nconstitute a majority never occurs during the training. Despite its simplicity, the method enjoys\nstrong theoretical guarantees, with convergence bounds that match the fundamental lower bounds\nweestablishforthepartialparticipationsettingunderbinomialsampling,whereeachclientpartic-\nipates according to independent Bernoulli trials [30].",
+      "size": 380,
+      "sentences": 2
+    },
+    {
+      "id": 20,
+      "content": "underbinomialsampling,whereeachclientpartic-\nipates according to independent Bernoulli trials [30]. Experiments on deep learning tasks validate\nthetheory,showingstableandrobusttrainingunderbothpartialparticipationandByzantineattacks. WeprovideacomprehensivediscussionofrelatedworkinSection2andproceedwiththeformal\nproblemsetup. 2. RelatedWork\nByzantine-robustFLunderfullparticipation.",
+      "size": 384,
+      "sentences": 5
+    },
+    {
+      "id": 21,
+      "content": "tion2andproceedwiththeformal\nproblemsetup. 2. RelatedWork\nByzantine-robustFLunderfullparticipation. Classicaldefensesreplacenaiveaveragingbyro-\nbustaggregationrulessuchasKrum[11],coordinate-wisemedianandtrimmed-mean[12],andge-\nometric–median–based RFA [66]; meta-rules like Bulyan further reduce adversarial leverage [58].",
+      "size": 322,
+      "sentences": 4
+    },
+    {
+      "id": 22,
+      "content": "ge-\nometric–median–based RFA [66]; meta-rules like Bulyan further reduce adversarial leverage [58]. Yet these per-round defenses can be vulnerable to time-coupled attacks that inject small, unde-\n2\n===  3 ===\nDELAYEDMOMENTUMAGGREGATION\ntectable biases which accumulate across rounds [9, 76]. A key development is to leverage history:\nKarimireddy et al.",
+      "size": 352,
+      "sentences": 3
+    },
+    {
+      "id": 23,
+      "content": "hich accumulate across rounds [9, 76]. A key development is to leverage history:\nKarimireddy et al. [44] formalize such time-coupled failures and prove that momentum (together\nwith robust aggregation) provably restores convergence; subsequent works refine the momentum\nview and resilient averaging [27].",
+      "size": 303,
+      "sentences": 3
+    },
+    {
+      "id": 24,
+      "content": "vably restores convergence; subsequent works refine the momentum\nview and resilient averaging [27]. Heterogeneity (non-IID client data) exacerbates the problem:\nbucketing [45] and nearest-neighbor mixing (NNM) [7] are pre-aggregation mechanisms that sys-\ntematicallyadaptIID-optimalrules(e.g.,Krum,median,RFA)totheheterogeneousregime,closing\ngaps between achievable rates and lower bounds.",
+      "size": 389,
+      "sentences": 2
+    },
+    {
+      "id": 25,
+      "content": "g.,Krum,median,RFA)totheheterogeneousregime,closing\ngaps between achievable rates and lower bounds. Beyond aggregation, algorithmic alternatives in-\nclude coding-theoretic redundancy (DRACO) [15] and filtering for non-convex objectives [5, 6].",
+      "size": 243,
+      "sentences": 2
+    },
+    {
+      "id": 26,
+      "content": "in-\nclude coding-theoretic redundancy (DRACO) [15] and filtering for non-convex objectives [5, 6]. Complementingthesemeta-aggregationapproachesthatassumefullparticipation,DahanandLevy\n[20] propose an efficient Centered Trimmed Meta-Aggregator (CTMA) that upgrades base robust\naggregators to order-optimal performance at near-averaging cost, and couple it with a double-\nmomentum estimator to establish theoretical guarantees within the stochastic convex optimization\n(SCO)frameworkforsynchronous(full-participation)training.",
+      "size": 524,
+      "sentences": 2
+    },
+    {
+      "id": 27,
+      "content": "within the stochastic convex optimization\n(SCO)frameworkforsynchronous(full-participation)training. Partial participation, and local updates. Partial participation makes robustness strictly harder\nbecausethesampledsetoccasionallycontainsaByzantinemajority.",
+      "size": 256,
+      "sentences": 3
+    },
+    {
+      "id": 28,
+      "content": "pation makes robustness strictly harder\nbecausethesampledsetoccasionallycontainsaByzantinemajority. EarlytheorycouplingByzan-\ntine robustness with local steps shows that convergence can be ensured only when the sampled\ncohort has a sufficiently large honest fraction at each synchronization—e.g., ε ≤ 1/3 corrupted\namong the K active clients [24, Thm. 1], an assumption strained by client sampling.",
+      "size": 398,
+      "sentences": 3
+    },
+    {
+      "id": 29,
+      "content": "≤ 1/3 corrupted\namong the K active clients [24, Thm. 1], an assumption strained by client sampling. The interac-\ntion between client sampling, multiple local steps, and robust aggregation has since been analyzed\nin detail by Allouah et al. [8], who quantifies how client sampling reshapes the effective number\nof Byzantine clients and shows regimes where standard robust aggregators suffice; however, these\nschemes omit momentum and do not mitigate time-coupled drift.",
+      "size": 468,
+      "sentences": 4
+    },
+    {
+      "id": 30,
+      "content": "t aggregators suffice; however, these\nschemes omit momentum and do not mitigate time-coupled drift. The concurrent line on variance\nreductionshowsanotherpath: bycouplingrobustaggregationwithgradient-differenceclippingand\nperiodicanchorsteps,Malinovskyetal. [56]provestoleranceevenwhenasampledroundisentirely\nByzantine, at the cost of periodic heavier steps.",
+      "size": 357,
+      "sentences": 3
+    },
+    {
+      "id": 31,
+      "content": "56]provestoleranceevenwhenasampledroundisentirely\nByzantine, at the cost of periodic heavier steps. From a statistical-efficiency angle, protocols with\nnear-optimal rates under full participation have been derived via modern robust statistics [84], and\nrecentworkexplorescommunicationcompressionjointlywithrobustness[34,69]. Asynchrony,delayedgradients,andrelevancetoourstalenessmechanism.",
+      "size": 389,
+      "sentences": 3
+    },
+    {
+      "id": 32,
+      "content": "ssionjointlywithrobustness[34,69]. Asynchrony,delayedgradients,andrelevancetoourstalenessmechanism. Analysisofasyn-\nchronousSGD(ASGD)formalizesdelayed/stalegradientsandshowsthatdelayscanbecontrolled\nvia delay-aware stepsizes [48, 60]. In the Byzantine asynchronous regime, recent work Dahan\nand Levy [19] develops a weighted robust-aggregation framework and, combined with a double-\nmomentum estimator, proves optimal convergence in the smooth convex homogeneous (i.i.d.) set-\nting[19].",
+      "size": 486,
+      "sentences": 5
+    },
+    {
+      "id": 33,
+      "content": "ntum estimator, proves optimal convergence in the smooth convex homogeneous (i.i.d.) set-\nting[19]. Importantlyforassumptions,DahanandLevy[19,20]’sanalysis(bothasynchronousand\nsynchronous) operates over a compact feasible set (bounded diameter), which is stricter than the\nbounded-gradientconditionscommonlyadoptedinFLtheory. Oursettingisnotasynchronous;nevertheless,partialparticipationinducesserver-sidestaleness\nbecause non-sampled clients contribute historical (per-client) gradients.",
+      "size": 488,
+      "sentences": 4
+    },
+    {
+      "id": 34,
+      "content": "ducesserver-sidestaleness\nbecause non-sampled clients contribute historical (per-client) gradients. This places our analysis\nclose to the ASGD toolbox while tackling a distinct failure mode (occasional Byzantine-majority\nsamples under subsampling) without trusted validation data. Technically, we leverage per-client\nstale gradients to preserve a history-coupled (global) momentum across rounds, complementing\nweightedrobustaggregationintheasynchronousliterature[19].",
+      "size": 467,
+      "sentences": 3
+    },
+    {
+      "id": 35,
+      "content": "al) momentum across rounds, complementing\nweightedrobustaggregationintheasynchronousliterature[19]. Relative to prior momentum-based defenses [27, 44] and heterogeneity fixes [7, 45], we study\nthe regime where clients refresh stochastically and adversaries can transiently comprise the sam-\npledmajority.",
+      "size": 304,
+      "sentences": 2
+    },
+    {
+      "id": 36,
+      "content": "here clients refresh stochastically and adversaries can transiently comprise the sam-\npledmajority. Comparedtovariancereduction-basedapproaches[56],ourmethodavoidsperiodic\n3\n===  4 ===\nDELAYEDMOMENTUMAGGREGATION\nfull/anchorgradientcomputations,whileourtheorycapturestheunavoidable1/ppriceofsampling\ninthenon-vanishingerrorterms(Sec.4.2). 3. Preliminary\nNotations. Our notation largely follows [45, 47].",
+      "size": 402,
+      "sentences": 5
+    },
+    {
+      "id": 37,
+      "content": "enon-vanishingerrorterms(Sec.4.2). 3. Preliminary\nNotations. Our notation largely follows [45, 47]. We denote by n the total number of clients,\nand for any positive integer k, let [k] := {1,2,...,k}. The set of good (non-Byzantine) clients is\nrepresentedbyG ⊆ [n]withcardinalityG := |G|. TheByzantineratioisdefinedasδ := (n−G)/n,\nand throughout this paper we assume δ < 1/2. For each client i, let D denote the distribution of\ni\nlocaldataξ overparameterspaceΩ .",
+      "size": 461,
+      "sentences": 8
+    },
+    {
+      "id": 38,
+      "content": "ume δ < 1/2. For each client i, let D denote the distribution of\ni\nlocaldataξ overparameterspaceΩ . Thelocallossfunctionisgivenbyf : Rd → R, definedas\ni i i\nf (x) := E [F (x;ξ )]whereF : Rd×Ω → Risthesampleloss. i ξi i i i i\nProblem Definition. We formalize the problem as follows: min (cid:8) f(x) := 1 (cid:80) f (x) (cid:9)\nx∈Rd G i∈G i\nwhere x ∈ Rd denotes the model parameters and D represents the dataset distribution of client i.\ni\nIngeneral,D ̸= D ,reflectingdataheterogeneityacrossclients.",
+      "size": 498,
+      "sentences": 5
+    },
+    {
+      "id": 39,
+      "content": "the dataset distribution of client i.\ni\nIngeneral,D ̸= D ,reflectingdataheterogeneityacrossclients. i j\nByzantine-robustLearningunderFull-Participation Thefullparticipationsettingservesasthe\ntheoreticalfoundationforByzantine-robustfederatedlearning,wherethefundamentalchallengeis\ndesigning aggregation mechanisms that maintain convergence guarantees despite adversarial be-\nhavior.",
+      "size": 381,
+      "sentences": 2
+    },
+    {
+      "id": 40,
+      "content": "signing aggregation mechanisms that maintain convergence guarantees despite adversarial be-\nhavior. Thissettingprovidescleantheoreticalanalysisbyeliminatingclientsamplingcomplexities,\nestablishingdesignprinciplesforrobustaggregationrulesandperformancebenchmarksthatinform\npractical algorithm design. The case of full client participation has been extensively studied in the\nliterature[7,34,45].",
+      "size": 394,
+      "sentences": 3
+    },
+    {
+      "id": 41,
+      "content": "ign. The case of full client participation has been extensively studied in the\nliterature[7,34,45]. In this setting, robustness is typically achieved by replacing the simple average with a robust\naggregationrule. Whiletheprecisedefinitionofsuchaggregatorsmayvaryacrossworks,weadopt\nthefollowingnotionfromKarimireddyetal.[45]anduseitthroughoutthispaper. Assumption1((δ,c)-RobustAggregator[45,56]) Let {X ,X ,...,X } be a set of random\n1 2 n\nvectors.",
+      "size": 448,
+      "sentences": 5
+    },
+    {
+      "id": 42,
+      "content": "er. Assumption1((δ,c)-RobustAggregator[45,56]) Let {X ,X ,...,X } be a set of random\n1 2 n\nvectors. Suppose there exists a “good” subset G ⊆ [n] of size G = |G| > n/2 such that\nE∥X − X ∥2 ≤ ρ2, ∀i,j ∈ G. Then the output Xˆ of a Byzantine-robust aggregator Agg sat-\ni j\nisfiesE∥Agg(X ,...,X )−X¯∥2 ≤ cδρ2, where X¯ = 1 (cid:80) X . 1 n G i∈G i\nImportantly,thisdefinitionisnotmerelyabstract. Karimireddyetal.",
+      "size": 406,
+      "sentences": 5
+    },
+    {
+      "id": 43,
+      "content": "ere X¯ = 1 (cid:80) X . 1 n G i∈G i\nImportantly,thisdefinitionisnotmerelyabstract. Karimireddyetal. [45]prove(inTheorem1)\nthat well-known aggregation rules such as KRUM [11], RFA [66], and the coordinate-wise me-\ndian,whencombinedwiththeirproposedbucketingtechnique,indeedsatisfyAssumption1. Thus,\nconcrete and practical instantiations of robust aggregators are available within this framework.",
+      "size": 394,
+      "sentences": 5
+    },
+    {
+      "id": 44,
+      "content": "s,\nconcrete and practical instantiations of robust aggregators are available within this framework. In\naddition,momentum-basedorvariancereduction-basedtechniques[34,69]arenecessarytoachieve\nrobustness against sophisticated attacks. Without such techniques, Karimireddy et al. [44] showed\na fundamental lower bound demonstrating that learning fails when stochastic gradient noise is not\nproperlycontrolled,makingthesemethodsessentialforcounteringtime-coupledattacks[9].",
+      "size": 468,
+      "sentences": 4
+    },
+    {
+      "id": 45,
+      "content": "ent noise is not\nproperlycontrolled,makingthesemethodsessentialforcounteringtime-coupledattacks[9]. FederatedLearningwithPartialParticipation Federatedlearningwithpartialparticipationisa\nfundamental characteristic of practical federated learning systems. Real-world deployments inher-\nentlyinvolveclientswithheterogeneouscapabilitiesandintermittentavailabilityduetodevicecon-\nstraints,batterylimitations,andnetworkconnectivityvariations[41,57].",
+      "size": 444,
+      "sentences": 3
+    },
+    {
+      "id": 46,
+      "content": "entavailabilityduetodevicecon-\nstraints,batterylimitations,andnetworkconnectivityvariations[41,57]. Thisparticipationpattern\ndirectlyimpactscommunicationefficiencyandsystemscalability,makingitacriticalconsideration\nforalgorithmdesign. 4\n===  5 ===\nDELAYEDMOMENTUMAGGREGATION\nIn the usual partial participation setting, all clients are assumed to be non-Byzantine, i.e., G =\n[n].",
+      "size": 378,
+      "sentences": 3
+    },
+    {
+      "id": 47,
+      "content": "he usual partial participation setting, all clients are assumed to be non-Byzantine, i.e., G =\n[n]. The classical FEDAVG algorithm [57] samples a subset of active clients, denoted by S\nt\n⊆\n[n], uniformly at random at each round t, and aggregates their local updates by naive averaging:\n1 (cid:80) gt,wheregt denotesthelocalgradientestimatorofclienti(e.g.,astochasticgradient).",
+      "size": 376,
+      "sentences": 2
+    },
+    {
+      "id": 48,
+      "content": "eraging:\n1 (cid:80) gt,wheregt denotesthelocalgradientestimatorofclienti(e.g.,astochasticgradient). |St| i∈St i i\nFailure of Byzantine-robust Learning with Partial Participation A natural extension of the\nfullparticipationsettingistoreplacethenaiveaveragingstep\n(cid:88)\n1 gt −→ Agg({gt} ). |St| i i i∈St\ni∈St\nWhile appealing, this strategy fails with partial participation: in some rounds, the sampled set\nmaycontainaByzantinemajority,despitetheglobalconditionδ<1/2.",
+      "size": 467,
+      "sentences": 3
+    },
+    {
+      "id": 49,
+      "content": "ation: in some rounds, the sampled set\nmaycontainaByzantinemajority,despitetheglobalconditionδ<1/2. Insuchcases,norobustag-\ngregatorcanreliablydistinguishadversarialfromhonestupdates. ThelikelihoodofsuchByzantine-\nmajorityroundsgrowswithtime. Recent work has sought to address this issue. Allouah et al. [8] provided lower bounds on\nthe subsample size. However, due to a lack of momentum or variance reduction, their method\ncollapses under time-coupled attacks such as ALIE [9]. Malinovsky et al.",
+      "size": 496,
+      "sentences": 8
+    },
+    {
+      "id": 50,
+      "content": "ce reduction, their method\ncollapses under time-coupled attacks such as ALIE [9]. Malinovsky et al. [56] established conver-\ngence guarantees tolerating Byzantine-majority rounds via gradient-difference clipping, but their\nanalysis relies on variance reduction-based optimizers, which are known to be ineffective in deep\nlearning[25]. 4.",
+      "size": 337,
+      "sentences": 4
+    },
+    {
+      "id": 51,
+      "content": "on variance reduction-based optimizers, which are known to be ineffective in deep\nlearning[25]. 4. ProposedMethod\nInthissection,weproposedelayedmomentumaggregation,whichistoapplytherobustaggrega-\ntornotonlytothemomentumofsampledclientsbutalsotothecachedmomentumofnon-sampled\nclients. Then,weproposeadelayedmomentumaggregation-basedoptimizerD-Byz-SGDM,which\nisByzantine-robustevenifonlyasubsetofclientsparticipateineachround.",
+      "size": 424,
+      "sentences": 4
+    },
+    {
+      "id": 52,
+      "content": "-basedoptimizerD-Byz-SGDM,which\nisByzantine-robustevenifonlyasubsetofclientsparticipateineachround. Formally,letxtdenote\nthe global model parameter maintained by the server at round t. The server then updates it using\ndelayedmomentumaggregationasfollows:\n(cid:16) (cid:17)\nxt = xt−1−η Agg {mt} ∪{m t−τ(i,t) } , (delayedmomentumaggregation)\ni i∈St i i∈[n]\\St\nwhereeachmt representsalocalmomentumestimate,andτ(i,t)denotesthe(possiblystochastic)\ni\ndelaysinceclienti’slastupdatewasreceived.",
+      "size": 486,
+      "sentences": 2
+    },
+    {
+      "id": 53,
+      "content": "omentumestimate,andτ(i,t)denotesthe(possiblystochastic)\ni\ndelaysinceclienti’slastupdatewasreceived. ThisdesignmaintainsthatAgg(·)consistentlysees\ntheglobalByzantinefractionδ < 1/2,ensuringrobustnessevenwithpartialparticipation. Asaconcretespecialcaseofthemainidea, weproposeanewmethod, D-Byz-SGDM,whose\nupdate rule is given in Algorithm 1. In each round t, the server independently samples each client\nwith probability p (i.e., zt ∼ Ber(p)⊗n and S = {i : zt = 1}).",
+      "size": 464,
+      "sentences": 4
+    },
+    {
+      "id": 54,
+      "content": "er independently samples each client\nwith probability p (i.e., zt ∼ Ber(p)⊗n and S = {i : zt = 1}). The selected clients refresh their\nt i\nmomentum,whilenon-selectedclientsretaintheircachedvalue:\n(cid:40) (1−α)mt−1+α∇f (xt−1,ξt−1), i ∈ S ,\nmt = i i i t\ni mt−1, i ∈/ S ,\ni t\nwhere α ∈ (0,1] is the client momentum parameter. Note that each client i is included in S with\nt\nprobabilityp. Importantly,D-Byz-SGDMintroducesnoextracommunicationoverhead.",
+      "size": 447,
+      "sentences": 4
+    },
+    {
+      "id": 55,
+      "content": "is included in S with\nt\nprobabilityp. Importantly,D-Byz-SGDMintroducesnoextracommunicationoverhead. Theserver\nsimplymaintainsonevectormtperclientwhilereusingcachedmomentumfornon-sampledclients,\ni\nresultinginamemoryrequirementmatchingthefullparticipationsetting.",
+      "size": 261,
+      "sentences": 3
+    },
+    {
+      "id": 56,
+      "content": "dmomentumfornon-sampledclients,\ni\nresultinginamemoryrequirementmatchingthefullparticipationsetting. 5\n===  6 ===\nDELAYEDMOMENTUMAGGREGATION\nAlgorithm1:Optimizerwithdelayedmomentumaggregation: D-Byz-SGDM\nRequire:initialvectorsx0,m0,stepsizeη,momentumparameterα,robustaggregatorAgg,\nclientsamplingprobabilityp ∈ (0,1]\nInitializem0 andτ(i,0) ← 0foralli ∈ [n];\ni\nfort = 1,2,... do\nSampleS ⊆ [n]byincludingeachi ∈ [n]independentlywithprob.",
+      "size": 434,
+      "sentences": 2
+    },
+    {
+      "id": 57,
+      "content": ",0) ← 0foralli ∈ [n];\ni\nfort = 1,2,... do\nSampleS ⊆ [n]byincludingeachi ∈ [n]independentlywithprob. p\nt\nServerbroadcastsxt−1 toalli ∈ S\nt\nforeachi ∈ S inparalleldo\nt\nDrawξt−1 ∼ D andcompute\ni i\nmt ← (1−α)mt−1+α∇F (xt−1;ξt−1)\ni i i i\nSendmt toserver\ni\nend\nforeachi ∈/ S (onserver)do\nt\nUpdatemt ← mt−1\ni i\nend\n(cid:16) (cid:17)\nmt ← Agg {mt} ∪ {mt} // delayed momentum aggregation\ni i∈St i i∈/St\nxt ← xt−1−ηmt\nend\n4.1.",
+      "size": 416,
+      "sentences": 2
+    },
+    {
+      "id": 58,
+      "content": "(cid:17)\nmt ← Agg {mt} ∪ {mt} // delayed momentum aggregation\ni i∈St i i∈/St\nxt ← xt−1−ηmt\nend\n4.1. Assumptions\nThroughout this work, we adopt several standard assumptions that are widely used in the analysis\noffederatedlearning[14,31,32,47,51].",
+      "size": 245,
+      "sentences": 2
+    },
+    {
+      "id": 59,
+      "content": "eral standard assumptions that are widely used in the analysis\noffederatedlearning[14,31,32,47,51]. Assumption2(L-smoothnessandlowerboundedness) Eachlocalobjectivef isL-smooth,i.e.,\ni\nitsgradientisL-Lipschitz: ∥∇f (x)−∇f (y)∥ ≤ L∥x−y∥, ∀x,y ∈ Rd.Wefurtherassumethat\ni i\ntheglobalobjectiveadmitsaminimumf∗ := min f(x)anddenotetheinitialsuboptimalityby\nx∈Rd\n∆ := f(x0)−f∗.",
+      "size": 370,
+      "sentences": 2
+    },
+    {
+      "id": 60,
+      "content": "heglobalobjectiveadmitsaminimumf∗ := min f(x)anddenotetheinitialsuboptimalityby\nx∈Rd\n∆ := f(x0)−f∗. Assumption3(Boundedvariance) There exists a constant σ2 ≥ 0 such that the variance of the\nstochasticgradientsisuniformlybounded: E(cid:2) ∥∇F (x,ξ )−∇f (x)∥2(cid:3) ≤ σ2, ∀x ∈ Rd, i ∈ [n],\ni i i\nwhere each ξ ∼ D is an independent sample from client i’s data distribution. We also assume\ni i\nstochasticgradientsareunbiased,i.e.,E [∇F (x,ξ )] = ∇f (x).",
+      "size": 450,
+      "sentences": 3
+    },
+    {
+      "id": 61,
+      "content": "s data distribution. We also assume\ni i\nstochasticgradientsareunbiased,i.e.,E [∇F (x,ξ )] = ∇f (x). ξi∼Di i i i\nAssumption4(ζ2-heterogeneity) Thereexistsaconstantζ2 ≥ 0suchthattheaveragedeviation\noflocalgradientsfromtheglobalgradientisbounded: 1 (cid:80) ∥∇f (x)−∇f(x)∥2 ≤ ζ2, ∀x ∈\nG i∈G i\nRd. Assumption5(Boundedgradient) Each function f : Rd → R, i ∈ [n] is differentiable and\ni\nthereexistsaconstantB ≥ 0suchthat∥∇f (x)∥2 ≤ B2, ∀x ∈ Rd. i\nRemark on Assumption.",
+      "size": 462,
+      "sentences": 5
+    },
+    {
+      "id": 62,
+      "content": "ferentiable and\ni\nthereexistsaconstantB ≥ 0suchthat∥∇f (x)∥2 ≤ B2, ∀x ∈ Rd. i\nRemark on Assumption. The bounded gradient assumption above is admittedly strong; we in-\ncludeitprimarilytokeeptheanalysissimple. Itisnotessential: withmorerefinedtechniques,one\n6\n===  7 ===\nDELAYEDMOMENTUMAGGREGATION\nmayremoveitentirely[48,60].",
+      "size": 323,
+      "sentences": 4
+    },
+    {
+      "id": 63,
+      "content": ": withmorerefinedtechniques,one\n6\n===  7 ===\nDELAYEDMOMENTUMAGGREGATION\nmayremoveitentirely[48,60]. Inourcase,simplicitycomesfromreusingstalemomentumterms,\nwhich makes the iterate depend on past gradients—typically controlled in asynchronous-SGD via\nbounded-gradient assumptions [48, 60, 71]. Notably, with p = 1 (full participation), our rates\nbecomeindependentoftheconstantB. 4.2.",
+      "size": 382,
+      "sentences": 4
+    },
+    {
+      "id": 64,
+      "content": "60, 71]. Notably, with p = 1 (full participation), our rates\nbecomeindependentoftheconstantB. 4.2. TheoreticalResults\nWeanalyzeD-Byz-SGDMunderAssumptions2,3,4,and5andthe(δ,c)-robustaggregatorprop-\nerty (Assumption 1), proving robustness to Byzantine clients even with partial participation (proof\ninAppendixF).",
+      "size": 310,
+      "sentences": 4
+    },
+    {
+      "id": 65,
+      "content": "on 1), proving robustness to Byzantine clients even with partial participation (proof\ninAppendixF). Theorem6(D-Byz-SGDM) Under Assumptions 2, 3, 4, and 5 and the (δ,c)-robust aggregator\nproperty (Assumption 1), with suitable initialization, Algorithm 1 with appropriate stepsize η and\nα := min(1,9Lη/p)satisfies\n(cid:115) (cid:115)\n1 T (cid:88) −1 (cid:18) cδζ2 L∆ (cid:18) 1 (cid:19) cδ(1−p)B2(L∆+cδσ2) L∆ (cid:19)\nE∥∇f(xt)∥2 ≤ O +σ cδ+ + + ,\nT p pT n pT pT\nt=0\nDiscussion.",
+      "size": 474,
+      "sentences": 2
+    },
+    {
+      "id": 66,
+      "content": "(cid:19) cδ(1−p)B2(L∆+cδσ2) L∆ (cid:19)\nE∥∇f(xt)∥2 ≤ O +σ cδ+ + + ,\nT p pT n pT pT\nt=0\nDiscussion. The above theorem shows that D-Byz-SGDM is robust to Byzantine clients for any\nclientsamplingprobabilityp. OurguaranteesensureconvergencetoanO(δζ2/p)neighborhoodof\na stationary point. In the homogeneous setting (ζ = 0), D-Byz-SGDM converges.",
+      "size": 340,
+      "sentences": 4
+    },
+    {
+      "id": 67,
+      "content": "(δζ2/p)neighborhoodof\na stationary point. In the homogeneous setting (ζ = 0), D-Byz-SGDM converges. When p = 1,\nthe residual non-vanishing term coincides with the phenomenon reported in [45] and can be cir-\ncumvented via overparametrization (an analysis we omit). When δ = 0, the sublinear component\nreduces to the standard convergence rate under the partial participation setting, matching the rates\nof the existing methods, such as SCAFFOLD [43] and FEDAVG [47, 79, 82].",
+      "size": 472,
+      "sentences": 4
+    },
+    {
+      "id": 68,
+      "content": "setting, matching the rates\nof the existing methods, such as SCAFFOLD [43] and FEDAVG [47, 79, 82]. Our O(δζ2/p) de-\npendence,thoughlooserthanKarimireddyetal. [45](fullparticipation),recoverstheirresultwhen\np = 1andextendstopartialparticipation. Thenexttheoremshowsthisdependenceisunavoidable\nunderBinomialsampling(proofinAppendixG).",
+      "size": 333,
+      "sentences": 4
+    },
+    {
+      "id": 69,
+      "content": "ticipation. Thenexttheoremshowsthisdependenceisunavoidable\nunderBinomialsampling(proofinAppendixG). Theorem7(LowerBound) Given any optimization algorithm ALG, we can find n functions\n{f (x),...,f (x)}, of which at least (1 − δ)n are good, where each function is sampled with\n1 n\nprobability p, is 1-smooth, µ-strongly convex, and satisfies 1 (cid:80) ∥∇f (x) − ∇f(x)∥2 ≤ ζ2. G i∈G i\nThentheoutputofALGhaserroratleast\n(cid:18) δζ2(cid:19)\nE∥∇f(ALG(f ,...,f ))∥2 ≥ Ω . 1 n\np\nConsequence and tightness.",
+      "size": 499,
+      "sentences": 5
+    },
+    {
+      "id": 70,
+      "content": "Ghaserroratleast\n(cid:18) δζ2(cid:19)\nE∥∇f(ALG(f ,...,f ))∥2 ≥ Ω . 1 n\np\nConsequence and tightness. The lower bound certifies that Ω(δζ2/p) error is intrinsic to any\nalgorithmthat(i)facesaδ-fractionofByzantineclientsand(ii)onlyobserveshonestfreshupdates\nwithprobabilityp.",
+      "size": 271,
+      "sentences": 3
+    },
+    {
+      "id": 71,
+      "content": "thmthat(i)facesaδ-fractionofByzantineclientsand(ii)onlyobserveshonestfreshupdates\nwithprobabilityp. Thus,ourupperboundisinformationtheoreticallyoptimalinitsdependenceon\nδ, ζ2, and p. This complements prior observations that heterogeneity terms persist even under full\nparticipation[45],andthatbothclientsampling[56]andsparsity[38]canenlargethenon-vanishing\nneighborhood. Incontrast,ourresultshowssuchgrowthis,ingeneral,unavoidable.",
+      "size": 431,
+      "sentences": 3
+    },
+    {
+      "id": 72,
+      "content": "nenlargethenon-vanishing\nneighborhood. Incontrast,ourresultshowssuchgrowthis,ingeneral,unavoidable. 7\n===  8 ===\nDELAYEDMOMENTUMAGGREGATION\n100\n80\n60\n40\n20\n0 2.5 5.0 7.5 10.0\nEpoch\n)%(\nycaruccA\nnoitadilaV\nALIE Bit-Flipping INFINITY IPM Label-Flipping 100 100 100 100 100\n80 80 80 80 80\n60 60 60 60 60\n40 40 40 40 40\n20 20 20 20 20\n0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0\nEpoch Epoch Epoch Epoch Epoch\nIID\nMimic\n100\n80\n60\n40\n20\n0 2.5 5.0 7.5 10.0\nEpoch\n)%(\nycaruccA\nnoitadilaV\n100 100 100 100 100\n80 80 80 80 80\n60 60 60 60 60\n40 40 40 40 40\n20 20 20 20 20\n0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0\nEpoch Epoch Epoch Epoch Epoch\nNon-IID\nAggregator: CP\nFedAvg FedAvgM D-Byz-SGDM (Proposed Method) Byz-VR-MARINA-PP ( =100, 10, 1)\nFigure1: Training dynamics with centered clipping (cp), n = 25, δ = 0.2, p = 0.5 across six\nattacks.",
+      "size": 935,
+      "sentences": 3
+    },
+    {
+      "id": 73,
+      "content": "igure1: Training dynamics with centered clipping (cp), n = 25, δ = 0.2, p = 0.5 across six\nattacks. D-Byz-SGDM outperformed all baselines, while FedAvg/FedAvg-M diverged\nwhenByzantinemajoritywassampled. SeeAppendixCforotheraggregators. 5. Experiments\nWe evaluate D-Byz-SGDM under various Byzantine attacks with partial participation (p = 0.5)\nby training an MLP on MNIST across IID and non-IID data partitions.",
+      "size": 410,
+      "sentences": 5
+    },
+    {
+      "id": 74,
+      "content": "partial participation (p = 0.5)\nby training an MLP on MNIST across IID and non-IID data partitions. We compared four op-\ntimizers (FedAvg, FedAvg-M, D-Byz-SGDM, and the heuristic momentum extension of Byz-\nVR-MARINA-PP from Malinovsky et al. [56]) with five robust aggregators under six Byzantine\nattacks. FedAvg[57]performssingle-stepSGDperclientfollowedbyserver-sideaveraging,while\nFedAvg-M[17]extendsthiswithclient-sidemomentum(β = 0.9).",
+      "size": 440,
+      "sentences": 4
+    },
+    {
+      "id": 75,
+      "content": "clientfollowedbyserver-sideaveraging,while\nFedAvg-M[17]extendsthiswithclient-sidemomentum(β = 0.9). Inoursetting,thestandardav-\neragingstepinfouroptimizersisreplacedbyrobustaggregationrules,allowingustoassessperfor-\nmanceunderByzantineattacks. OurimplementationextendedKarimireddyetal. [45]’scodebase1\nwithattacksfromtheByzFLframework[33]. AppendixBprovidescompleteexperimentaldetails. 5.1.",
+      "size": 390,
+      "sentences": 6
+    },
+    {
+      "id": 76,
+      "content": "scodebase1\nwithattacksfromtheByzFLframework[33]. AppendixBprovidescompleteexperimentaldetails. 5.1. ByzantineRobustnesswithPartialParticipation(MainResult)\nFigure 1 shows representative results with the cp aggregator under Byzantine attacks with partial\nparticipation. Both FedAvg and FedAvg-M diverged after approximately three epochs when too\nmany Byzantine clients were sampled in a round.",
+      "size": 392,
+      "sentences": 5
+    },
+    {
+      "id": 77,
+      "content": "diverged after approximately three epochs when too\nmany Byzantine clients were sampled in a round. While Byz-VR-MARINA-PP remained func-\ntional, it can achieve competitive performance with D-Byz-SGDM only under carefully chosen\nhyperparameters(notablytheclippingradiusλ),whichischallengingtoidentifyinpractice. Keyfindings. (1)D-Byz-SGDMconsistentlyachievedthehighestfinalaccuracyacrossalltested\nscenarios,demonstratingsuperiorrobustnessunderByzantineattackswithpartialparticipation.",
+      "size": 483,
+      "sentences": 4
+    },
+    {
+      "id": 78,
+      "content": "ssalltested\nscenarios,demonstratingsuperiorrobustnessunderByzantineattackswithpartialparticipation. (2)\nThedelayedmomentumaggregationprincipleprovedcrucial: whilestandardmethodsfailedwhen\na Byzantine majority was sampled,2 D-Byz-SGDM maintained stable convergence. (3) Similar\ntrends held across other aggregators (avg, krum, cm, rfa), confirming the generality of our ap-\nproach(AppendixC).",
+      "size": 391,
+      "sentences": 3
+    },
+    {
+      "id": 79,
+      "content": "oss other aggregators (avg, krum, cm, rfa), confirming the generality of our ap-\nproach(AppendixC). 8\n[  ]\n\n===  9 ===\nDELAYEDMOMENTUMAGGREGATION\n100\n80\n60\n40\n20\n0\n2 4 6 8 10\nEpoch\n)%(\nycaruccA\nIID Setting - Validation Accuracy\n100\n80\n60\n40\n20\n0\n2 4 6 8 10\nEpoch\n)%(\nycaruccA\nNon-IID Setting - Validation Accuracy\n0 10\n1\n10\n2 4 6 8 10\nEpoch\nssoL\nIID Setting - Validation Loss\n0\n10\n1\n10\n2 4 6 8 10\nEpoch\nssoL\nNon-IID Setting - Validation Loss\nFedAvg FedAvgM D-Byz-SGDM (Proposed Method) Byz-VR-MARINA-PP ( =100, 10, 1)\nFigure2: (non-Byzantine) Federated Learning with Partial Participation Training dynamics\nacross optimizers with n = 20, δ = 0, and p = 0.5.",
+      "size": 657,
+      "sentences": 2
+    },
+    {
+      "id": 80,
+      "content": "ing with Partial Participation Training dynamics\nacross optimizers with n = 20, δ = 0, and p = 0.5. Byz-VR-MARINA-PP under-\nperformed in all cases, while D-Byz-SGDM surpassed FedAvg-M under both IID and\nnon-IIDpartitions,suggestingbenefitsfrommitigatingheterogeneity-induceddrift. 5.2. BaselinePerformancewithoutByzantineClients\nWe also examined the non-Byzantine setting (δ = 0) to establish baseline performance. The setup\nuses n = 20 clients with the avg aggregator.",
+      "size": 469,
+      "sentences": 5
+    },
+    {
+      "id": 81,
+      "content": "g (δ = 0) to establish baseline performance. The setup\nuses n = 20 clients with the avg aggregator. Four optimizer families were compared (with Byz-\nVR-MARINA-PPatthreeλvalues)underbothIIDandnon-IIDpartitions. Theresultsaresumma-\nrizedinFigure2. Key findings. Across both IID and non-IID settings, Byz-VR-MARINA-PP achieved the worst\nvalidationaccuracyandhighestlossthroughouttraining.",
+      "size": 385,
+      "sentences": 6
+    },
+    {
+      "id": 82,
+      "content": "D settings, Byz-VR-MARINA-PP achieved the worst\nvalidationaccuracyandhighestlossthroughouttraining. Surprisingly,D-Byz-SGDMconsistently\noutperformedFedAvg-Minthenon-Byzantinesetting(δ = 0),despitetheriskthatreusingmomen-\ntum across rounds could degrade performance.",
+      "size": 265,
+      "sentences": 2
+    },
+    {
+      "id": 83,
+      "content": "yzantinesetting(δ = 0),despitetheriskthatreusingmomen-\ntum across rounds could degrade performance. The curves suggest that with partial participation\n(p = 0.5)andheterogeneity(non-IID),thedelayedmomentumaggregationmechanisminD-Byz-\n1.https://github.com/epfml/byzantine-robust-noniid-optimizer\n2.Withp=0.5,ifmanyByzantinesweresampledtogether,theycouldoverwhelmtheaggregation.",
+      "size": 375,
+      "sentences": 2
+    },
+    {
+      "id": 84,
+      "content": "-noniid-optimizer\n2.Withp=0.5,ifmanyByzantinesweresampledtogether,theycouldoverwhelmtheaggregation. 9\n[  ]\n\n===  10 ===\nDELAYEDMOMENTUMAGGREGATION\nSGDMmitigatesheterogeneity-induceddrift,actingasanimplicitregularizerevenwithoutattacks. WefurtherexaminedByz-VR-MARINA-PPinthenon-Byzantineregime. Somewhatunexpectedly,\napplying clipping to momentum differences introduced a bias detrimental to performance unless\ntheclippinghyperparameterλwaschosenwithextremecare.",
+      "size": 462,
+      "sentences": 4
+    },
+    {
+      "id": 85,
+      "content": "oduced a bias detrimental to performance unless\ntheclippinghyperparameterλwaschosenwithextremecare. Thissensitivityhighlightsatrade-off:\nwhileclippingisessentialtodefendagainstByzantinebehaviors,itcansignificantlydistortgradient\nestimates in non-Byzantine settings, underscoring the difficulty of tuning λ across both Byzantine\nandnon-Byzantineenvironments. 6.",
+      "size": 360,
+      "sentences": 3
+    },
+    {
+      "id": 86,
+      "content": "ngs, underscoring the difficulty of tuning λ across both Byzantine\nandnon-Byzantineenvironments. 6. Conclusion\nWeproposeddelayedmomentumaggregation,anovelprinciplewhereserversaggregatefreshgra-\ndientsfromparticipatingclientswiththemostrecentlyreceivedmomentumfromnon-participating\nclients. Our D-Byz-SGDM optimizer achieves Byzantine-robustness under partial participation\nwith tight convergence guarantees that match the fundamental lower bounds we establish for het-\nerogeneousclientsampling.",
+      "size": 494,
+      "sentences": 4
+    },
+    {
+      "id": 87,
+      "content": "guarantees that match the fundamental lower bounds we establish for het-\nerogeneousclientsampling. Experimentsvalidatedourtheoreticalfindings,showingtheconsistent\nimprovements over existing methods across various attacks and data distributions. The delayed\nmomentum aggregation principle opens promising avenues for extension to other client selection\nschemes[16,18,29,30,53]beyondBernoullisampling. 7.",
+      "size": 402,
+      "sentences": 4
+    },
+    {
+      "id": 88,
+      "content": "avenues for extension to other client selection\nschemes[16,18,29,30,53]beyondBernoullisampling. 7. Acknowledgement\nMakoto Yamada was partly supported by JSPS KAKENHI Grant Number 24K03004 and by JST\nASPIREJPMJAP2302. YukiTakezawawassupportedbyJSPSKAKENHIGrantNumber23KJ1336. References\n[1] AnishAcharya,AbolfazlHashemi,PrateekJain,SujaySanghavi,InderjitS.Dhillon,andUfuk\nTopcu. Robusttraininginhighdimensionsviablockcoordinategeometricmediandescent.",
+      "size": 449,
+      "sentences": 6
+    },
+    {
+      "id": 89,
+      "content": "jitS.Dhillon,andUfuk\nTopcu. Robusttraininginhighdimensionsviablockcoordinategeometricmediandescent. In\nInternationalConferenceonArtificialIntelligenceandStatistics,2022. [2] Alyazeed Albasyoni, Mher Safaryan, Laurent Condat, and Peter Richta´rik. Optimal gradient\ncompressionfordistributedandfederatedlearning. ArXivpreprint,abs/2010.03246,2020. [3] Sulaiman A. Alghunaim. Local exact-diffusion for decentralized optimization and learning. IEEETransactionsonAutomaticControl,69(11):7371–7386,2024.",
+      "size": 497,
+      "sentences": 9
+    },
+    {
+      "id": 90,
+      "content": "decentralized optimization and learning. IEEETransactionsonAutomaticControl,69(11):7371–7386,2024. [4] Dan Alistarh, Demjan Grubic, Jerry Li, Ryota Tomioka, and Milan Vojnovic. QSGD:\ncommunication-efficientSGDviagradientquantizationandencoding. InAdvancesinNeural\nInformationProcessingSystems,2017. [5] Dan Alistarh, Zeyuan Allen-Zhu, and Jerry Li. Byzantine stochastic gradient descent. In\nAdvancesinNeuralInformationProcessingSystems,2018.",
+      "size": 441,
+      "sentences": 8
+    },
+    {
+      "id": 91,
+      "content": "ry Li. Byzantine stochastic gradient descent. In\nAdvancesinNeuralInformationProcessingSystems,2018. [6] ZeyuanAllen-Zhu,FaezeEbrahimianghazani,JerryLi,andDanAlistarh. Byzantine-resilient\nnon-convexstochasticgradientdescent. InInternationalConferenceonLearningRepresenta-\ntions,2021. 10\n===  11 ===\nDELAYEDMOMENTUMAGGREGATION\n[7] Youssef Allouah, Sadegh Farhadkhani, Rachid Guerraoui, Nirupam Gupta, Rafael Pinot, and\nJohnStephan. Fixingbymixing: ArecipeforoptimalbyzantineMLunderheterogeneity.",
+      "size": 493,
+      "sentences": 8
+    },
+    {
+      "id": 92,
+      "content": "pta, Rafael Pinot, and\nJohnStephan. Fixingbymixing: ArecipeforoptimalbyzantineMLunderheterogeneity. In\nInternationalConferenceonArtificialIntelligenceandStatistics,2023. [8] YoussefAllouah,SadeghFarhadkhani,RachidGuerraoui,NirupamGupta,RafaelPinot,Geo-\nvani Rizk, and Sasha Voitovych. Byzantine-robust federated learning: Impact of client sub-\nsamplingandlocalupdates. InInternationalConferenceonMachineLearning,2024. [9] GiladBaruch,MoranBaruch,andYoavGoldberg.",
+      "size": 462,
+      "sentences": 7
+    },
+    {
+      "id": 93,
+      "content": "ates. InInternationalConferenceonMachineLearning,2024. [9] GiladBaruch,MoranBaruch,andYoavGoldberg. Alittleisenough: Circumventingdefenses\nfordistributedlearning. InAdvancesinNeuralInformationProcessingSystems,2019. [10] Jeremy Bernstein, Jiawei Zhao, Kamyar Azizzadenesheli, and Anima Anandkumar. signsgd\nwithmajorityvoteiscommunicationefficientandfaulttolerant. InInternationalConference\nonLearningRepresentations,2019.",
+      "size": 421,
+      "sentences": 8
+    },
+    {
+      "id": 94,
+      "content": "iscommunicationefficientandfaulttolerant. InInternationalConference\nonLearningRepresentations,2019. [11] PevaBlanchard,ElMahdiElMhamdi,RachidGuerraoui,andJulienStainer.Machinelearning\nwith adversaries: Byzantine tolerant gradient descent. In Advances in Neural Information\nProcessingSystems,2017. [12] PevaBlanchard,ElMahdiElMhamdi,RachidGuerraoui,andJulienStainer.Machinelearning\nwith adversaries: Byzantine tolerant gradient descent. In Advances in Neural Information\nProcessingSystems,2017.",
+      "size": 493,
+      "sentences": 6
+    },
+    {
+      "id": 95,
+      "content": "ies: Byzantine tolerant gradient descent. In Advances in Neural Information\nProcessingSystems,2017. [13] KallistaA.Bonawitz,VladimirIvanov,BenKreuter,AntonioMarcedone,H.BrendanMcMa-\nhan, Sarvar Patel, Daniel Ramage, Aaron Segal, and Karn Seth. Practical secure aggregation\nforprivacy-preservingmachinelearning.InACMSIGSACConferenceonComputerandCom-\nmunicationsSecurity,pages1175–1191,2017. [14] Le´on Bottou, Frank E. Curtis, and Jorge Nocedal. Optimization methods for large-scale ma-\nchinelearning.",
+      "size": 500,
+      "sentences": 6
+    },
+    {
+      "id": 96,
+      "content": "Bottou, Frank E. Curtis, and Jorge Nocedal. Optimization methods for large-scale ma-\nchinelearning. SIAMRev.,60(2):223–311,2018. [15] LingjiaoChen,HongyiWang,ZacharyB.Charles,andDimitrisS.Papailiopoulos. DRACO:\nbyzantine-resilient distributed training via redundant gradients. In International Conference\nonMachineLearning,2018. [16] Wenlin Chen, Samuel Horva´th, and Peter Richta´rik. Optimal client sampling for federated\nlearning. Trans.Mach.Learn.Res.,2022.",
+      "size": 461,
+      "sentences": 9
+    },
+    {
+      "id": 97,
+      "content": ", and Peter Richta´rik. Optimal client sampling for federated\nlearning. Trans.Mach.Learn.Res.,2022. [17] Ziheng Cheng, Xinmeng Huang, Pengfei Wu, and Kun Yuan. Momentum benefits non-iid\nfederatedlearningsimplyandprovably. InInternationalConferenceonLearningRepresenta-\ntions,2024. [18] Yae Jee Cho, Jianyu Wang, and Gauri Joshi. Client selection in federated learning: Con-\nvergence analysis and power-of-choice selection strategies. ArXiv preprint, abs/2010.01243,\n2020.",
+      "size": 471,
+      "sentences": 9
+    },
+    {
+      "id": 98,
+      "content": "-\nvergence analysis and power-of-choice selection strategies. ArXiv preprint, abs/2010.01243,\n2020. [19] TehilaDahanandKfirY.Levy.Weightforrobustness: Acomprehensiveapproachtowardsop-\ntimalfault-tolerantasynchronousML.InAdvancesinNeuralInformationProcessingSystems,\n2024. 11\n===  12 ===\nDELAYEDMOMENTUMAGGREGATION\n[20] Tehila Dahan and Kfir Yehuda Levy. Fault tolerant ML: efficient meta-aggregation and syn-\nchronoustraining. InInternationalConferenceonMachineLearning,2024.",
+      "size": 475,
+      "sentences": 6
+    },
+    {
+      "id": 99,
+      "content": "icient meta-aggregation and syn-\nchronoustraining. InInternationalConferenceonMachineLearning,2024. [21] Georgios Damaskinos, El-Mahdi El-Mhamdi, Rachid Guerraoui, Arsany Guirguis, and\nSe´bastien Rouault. AGGREGATHOR: byzantine machine learning via robust gradient ag-\ngregation. InProceedingsofMachineLearningandSystems,2019. [22] Alexandred’Aspremont,DamienScieur,andAdrienB.Taylor. Accelerationmethods. Found. TrendsOptim.,5(1-2):1–245,2021. [23] DeepeshDataandSuhasN.Diggavi.",
+      "size": 479,
+      "sentences": 10
+    },
+    {
+      "id": 100,
+      "content": "lor. Accelerationmethods. Found. TrendsOptim.,5(1-2):1–245,2021. [23] DeepeshDataandSuhasN.Diggavi. Byzantine-resilientSGDinhighdimensionsonhetero-\ngeneousdata. InIEEEInternationalSymposiumonInformationTheory,2021. [24] Deepesh Data and Suhas N. Diggavi. Byzantine-resilient high-dimensional SGD with local\niterationsonheterogeneousdata. InInternationalConferenceonMachineLearning,2021. [25] AaronDefazioandLe´onBottou. Ontheineffectivenessofvariancereducedoptimizationfor\ndeeplearning.",
+      "size": 486,
+      "sentences": 12
+    },
+    {
+      "id": 101,
+      "content": "[25] AaronDefazioandLe´onBottou. Ontheineffectivenessofvariancereducedoptimizationfor\ndeeplearning. InAdvancesinNeuralInformationProcessingSystems,2019. [26] El-Mahdi El-Mhamdi, Sadegh Farhadkhani, Rachid Guerraoui, Arsany Guirguis, Leˆ-Nguyeˆn\nHoang,andSe´bastienRouault. Collaborativelearninginthejungle(decentralized,byzantine,\nheterogeneous, asynchronous and nonconvex learning). In Advances in Neural Information\nProcessingSystems,2021.",
+      "size": 441,
+      "sentences": 6
+    },
+    {
+      "id": 102,
+      "content": "us, asynchronous and nonconvex learning). In Advances in Neural Information\nProcessingSystems,2021. [27] Sadegh Farhadkhani, Rachid Guerraoui, Nirupam Gupta, Rafael Pinot, and John Stephan. Byzantinemachinelearningmadeeasybyresilientaveragingofmomentums. InInternational\nConferenceonMachineLearning,2022. [28] IlyasFatkhullin,AlexanderTyurin,andPeterRichta´rik. Momentumprovablyimproveserror\nfeedback! InAdvancesinNeuralInformationProcessingSystems,2023.",
+      "size": 454,
+      "sentences": 8
+    },
+    {
+      "id": 103,
+      "content": "a´rik. Momentumprovablyimproveserror\nfeedback! InAdvancesinNeuralInformationProcessingSystems,2023. [29] YannFraboni,RichardVidal,LaetitiaKameni,andMarcoLorenzi. Clusteredsampling: Low-\nvarianceandimprovedrepresentativityforclientsselectioninfederatedlearning. InInterna-\ntionalConferenceonMachineLearning,2021. [30] Yann Fraboni, Richard Vidal, Laetitia Kameni, and Marco Lorenzi. A general theory for\nclient sampling in federated learning.",
+      "size": 441,
+      "sentences": 8
+    },
+    {
+      "id": 104,
+      "content": "al, Laetitia Kameni, and Marco Lorenzi. A general theory for\nclient sampling in federated learning. In International Workshop on Trustworthy Federated\nLearning.Springer,2022. [31] GuillaumeGarrigosandRobertMGower.Handbookofconvergencetheoremsfor(stochastic)\ngradientmethods. ArXivpreprint,abs/2301.11235,2023. [32] SaeedGhadimiandGuanghuiLan. Stochasticfirst-andzeroth-ordermethodsfornonconvex\nstochasticprogramming. SIAMJ.Optim.,23(4):2341–2368,2013.",
+      "size": 451,
+      "sentences": 8
+    },
+    {
+      "id": 105,
+      "content": "cfirst-andzeroth-ordermethodsfornonconvex\nstochasticprogramming. SIAMJ.Optim.,23(4):2341–2368,2013. [33] Marc Gonza´lez, Rachid Guerraoui, Rafael Pinot, Geovani Rizk, John Stephan, and Franc¸ois\nTa¨ıani. Byzfl: Researchframeworkforrobustfederatedlearning,2025. [34] EduardGorbunov,SamuelHorva´th,PeterRichta´rik,andGauthierGidel. Variancereductionis\nanantidotetobyzantines: Betterrates, weakerassumptionsandcommunicationcompression\nasacherryonthetop.",
+      "size": 450,
+      "sentences": 6
+    },
+    {
+      "id": 106,
+      "content": "nantidotetobyzantines: Betterrates, weakerassumptionsandcommunicationcompression\nasacherryonthetop. InInternationalConferenceonLearningRepresentations,2023. 12\n===  13 ===\nDELAYEDMOMENTUMAGGREGATION\n[35] Xinran Gu, Kaixuan Huang, Jingzhao Zhang, and Longbo Huang. Fast federated learning in\nthepresenceofarbitrarydeviceunavailability. InAdvancesinNeuralInformationProcessing\nSystems,2021. [36] OsmanGu¨ler. Newproximalpointalgorithmsforconvexminimization. SIAMJ.Optim.,2(4):\n649–664,1992.",
+      "size": 488,
+      "sentences": 8
+    },
+    {
+      "id": 107,
+      "content": "[36] OsmanGu¨ler. Newproximalpointalgorithmsforconvexminimization. SIAMJ.Optim.,2(4):\n649–664,1992. [37] Farzin Haddadpour, Mohammad Mahdi Kamani, Aryan Mokhtari, and Mehrdad Mahdavi. Federatedlearningwithcompression: Unifiedanalysisandsharpguarantees. InInternational\nConferenceonArtificialIntelligenceandStatistics,2021. [38] LieHe,SaiPraneethKarimireddy,andMartinJaggi. Byzantine-robustdecentralizedlearning\nviaclippedgossip. arXivpreprintarXiv:2202.01545,2022.",
+      "size": 464,
+      "sentences": 9
+    },
+    {
+      "id": 108,
+      "content": "nJaggi. Byzantine-robustdecentralizedlearning\nviaclippedgossip. arXivpreprintarXiv:2202.01545,2022. [39] SamuelHorva´th, DmitryKovalev, KonstantinMishchenko, PeterRichta´rik, andSebastianU. Stich. Stochastic distributed learning with gradient quantization and double-variance reduc-\ntion. Optim.MethodsSoftw.,38(1):91–106,2023. [40] XiaowenJiang,AntonRodomanov,andSebastianU.Stich.Stabilizedproximal-pointmethods\nforfederatedoptimization. InAdvancesinNeuralInformationProcessingSystems,2024.",
+      "size": 491,
+      "sentences": 9
+    },
+    {
+      "id": 109,
+      "content": "roximal-pointmethods\nforfederatedoptimization. InAdvancesinNeuralInformationProcessingSystems,2024. [41] Peter Kairouz, H. Brendan McMahan, Brendan Avent, Aure´lien Bellet, Mehdi Bennis, Ar-\njun Nitin Bhagoji, Kallista A. Bonawitz, Zachary Charles, Graham Cormode, Rachel Cum-\nmings, Rafael G. L. D’Oliveira, Hubert Eichner, Salim El Rouayheb, David Evans, Josh\nGardner, Zachary Garrett, Adria` Gasco´n, Badih Ghazi, Phillip B. Gibbons, Marco Gruteser,\nZa¨ıd Harchaoui, Chaoyang He, Lie He, Zhouyuan Huo, Ben Hutchinson, Justin Hsu, Martin\nJaggi,TaraJavidi,GauriJoshi,MikhailKhodak,JakubKonecˇny´,AleksandraKorolova,Fari-\nnazKoushanfar,SanmiKoyejo,Tancre`deLepoint,YangLiu,PrateekMittal,MehryarMohri,\nRichard Nock, Ayfer O¨zgu¨r, Rasmus Pagh, Hang Qi, Daniel Ramage, Ramesh Raskar, Mari-\nana Raykova, Dawn Song, Weikang Song, Sebastian U. Stich, Ziteng Sun, Ananda Theertha\nSuresh, Florian Trame`r, Praneeth Vepakomma, Jianyu Wang, Li Xiong, Zheng Xu, Qiang\nYang,FelixX.Yu,HanYu,andSenZhao.",
+      "size": 990,
+      "sentences": 3
+    },
+    {
+      "id": 110,
+      "content": "rame`r, Praneeth Vepakomma, Jianyu Wang, Li Xiong, Zheng Xu, Qiang\nYang,FelixX.Yu,HanYu,andSenZhao. Advancesandopenproblemsinfederatedlearning. Found.TrendsMach.Learn.,14(1-2):1–210,2021. [42] Sai Praneeth Karimireddy, Martin Jaggi, Satyen Kale, Mehryar Mohri, Sashank J Reddi, Se-\nbastianUStich,andAnandaTheerthaSuresh. Mime: Mimickingcentralizedstochasticalgo-\nrithmsinfederatedlearning. ArXivpreprint,abs/2008.03606,2020.",
+      "size": 424,
+      "sentences": 6
+    },
+    {
+      "id": 111,
+      "content": ": Mimickingcentralizedstochasticalgo-\nrithmsinfederatedlearning. ArXivpreprint,abs/2008.03606,2020. [43] SaiPraneethKarimireddy,SatyenKale,MehryarMohri,SashankJ.Reddi,SebastianU.Stich,\nand Ananda Theertha Suresh. SCAFFOLD: stochastic controlled averaging for federated\nlearning. InInternationalConferenceonMachineLearning,2020. [44] Sai Praneeth Karimireddy, Lie He, and Martin Jaggi. Learning from history for byzantine\nrobustoptimization. InInternationalConferenceonMachineLearning,2021.",
+      "size": 489,
+      "sentences": 8
+    },
+    {
+      "id": 112,
+      "content": "ing from history for byzantine\nrobustoptimization. InInternationalConferenceonMachineLearning,2021. [45] Sai Praneeth Karimireddy, Lie He, and Martin Jaggi. Byzantine-robust learning on hetero-\ngeneous datasets via bucketing. In International Conference on Learning Representations,\n2022. 13\n===  14 ===\nDELAYEDMOMENTUMAGGREGATION\n[46] SaritKhirirat,HamidRezaFeyzmahdavian,andMikaelJohansson. Distributedlearningwith\ncompressedgradients. ArXivpreprint,abs/1806.06573,2018.",
+      "size": 472,
+      "sentences": 8
+    },
+    {
+      "id": 113,
+      "content": "andMikaelJohansson. Distributedlearningwith\ncompressedgradients. ArXivpreprint,abs/1806.06573,2018. [47] AnastasiaKoloskova,NicolasLoizou,SadraBoreiri,MartinJaggi,andSebastianU.Stich. A\nunified theory of decentralized SGD with changing topology and local updates. In Interna-\ntionalConferenceonMachineLearning,2020. [48] Anastasia Koloskova, Sebastian U. Stich, and Martin Jaggi. Sharper convergence guarantees\nforasynchronousSGDfordistributedandfederatedlearning.",
+      "size": 464,
+      "sentences": 8
+    },
+    {
+      "id": 114,
+      "content": "Martin Jaggi. Sharper convergence guarantees\nforasynchronousSGDfordistributedandfederatedlearning. InAdvancesinNeuralInforma-\ntionProcessingSystems,2022. [49] Dmitry Kovalev, Aleksandr Beznosikov, Ekaterina Borodich, Alexander V. Gasnikov, and\nGesualdo Scutari. Optimal gradient sliding and its application to optimal distributed opti-\nmizationundersimilarity. InAdvancesinNeuralInformationProcessingSystems,2022. [50] Leslie Lamport, Robert E. Shostak, and Marshall C. Pease.",
+      "size": 476,
+      "sentences": 7
+    },
+    {
+      "id": 115,
+      "content": "alInformationProcessingSystems,2022. [50] Leslie Lamport, Robert E. Shostak, and Marshall C. Pease. The byzantine generals problem. InConcurrency: theWorksofLeslieLamport,pages203–226.2019. [51] Guanghui Lan. First-order and stochastic optimization methods for machine learning. Springer,2020. [52] Liping Li, Wei Xu, Tianyi Chen, Georgios B. Giannakis, and Qing Ling. RSA: byzantine-\nrobust stochastic aggregation methods for distributed learning from heterogeneous datasets.",
+      "size": 476,
+      "sentences": 9
+    },
+    {
+      "id": 116,
+      "content": "antine-\nrobust stochastic aggregation methods for distributed learning from heterogeneous datasets. InAAAIConferenceonArtificialIntelligence,2019. [53] Tian Li, Anit Kumar Sahu, Manzil Zaheer, Maziar Sanjabi, Ameet Talwalkar, and Virginia\nSmith. Federatedoptimizationinheterogeneousnetworks. InProceedingsofMachineLearn-\ningandSystems,2020. [54] ZhizeLi,HongyanBao,XiangliangZhang,andPeterRichta´rik. PAGE:Asimpleandoptimal\nprobabilistic gradient estimator for nonconvex optimization.",
+      "size": 484,
+      "sentences": 7
+    },
+    {
+      "id": 117,
+      "content": "eterRichta´rik. PAGE:Asimpleandoptimal\nprobabilistic gradient estimator for nonconvex optimization. In International Conference on\nMachineLearning,2021. [55] Hongzhou Lin, Julien Mairal, and Za¨ıd Harchaoui. A universal catalyst for first-order opti-\nmization. InAdvancesinNeuralInformationProcessingSystems,2015. [56] Grigory Malinovsky, Peter Richta´rik, Samuel Horva´th, and Eduard Gorbunov. Byzantine ro-\nbustness and partial participation can be achieved at once: Just clip gradient differences.",
+      "size": 500,
+      "sentences": 8
+    },
+    {
+      "id": 118,
+      "content": "ine ro-\nbustness and partial participation can be achieved at once: Just clip gradient differences. In\nAdvancesinNeuralInformationProcessingSystems,2024. [57] BrendanMcMahan,EiderMoore,DanielRamage,SethHampson,andBlaiseAgu¨erayArcas. Communication-efficientlearningofdeepnetworksfromdecentralizeddata. InInternational\nConferenceonArtificialIntelligenceandStatistics,2017. [58] ElMahdiElMhamdi,RachidGuerraoui,andSe´bastienRouault. Thehiddenvulnerabilityof\ndistributedlearninginbyzantium.",
+      "size": 487,
+      "sentences": 7
+    },
+    {
+      "id": 119,
+      "content": "amdi,RachidGuerraoui,andSe´bastienRouault. Thehiddenvulnerabilityof\ndistributedlearninginbyzantium. InInternationalConferenceonMachineLearning,2018. [59] El Mahdi El Mhamdi, Rachid Guerraoui, and Se´bastien Rouault. Distributed momentum for\nbyzantine-resilientstochasticgradientdescent. InInternationalConferenceonLearningRep-\nresentations,2021. 14\n===  15 ===\nDELAYEDMOMENTUMAGGREGATION\n[60] Konstantin Mishchenko, Francis R. Bach, Mathieu Even, and Blake E. Woodworth.",
+      "size": 470,
+      "sentences": 7
+    },
+    {
+      "id": 120,
+      "content": "ENTUMAGGREGATION\n[60] Konstantin Mishchenko, Francis R. Bach, Mathieu Even, and Blake E. Woodworth. Asyn-\nchronousSGDbeatsminibatchSGDunderarbitrarydelays. InAdvancesinNeuralInforma-\ntionProcessingSystems,2022. [61] Konstantin Mishchenko, Eduard Gorbunov, Martin Taka´cˇ, and Peter Richta´rik. Distributed\nlearning with compressed gradient differences. Optimization Methods and Software, pages\n1–16,2024. [62] RenatoD.C.MonteiroandBenarFuxSvaiter.",
+      "size": 447,
+      "sentences": 7
+    },
+    {
+      "id": 121,
+      "content": "ces. Optimization Methods and Software, pages\n1–16,2024. [62] RenatoD.C.MonteiroandBenarFuxSvaiter. Anacceleratedhybridproximalextragradient\nmethodforconvexoptimizationanditsimplicationstosecond-ordermethods.SIAMJ.Optim.,\n23(2):1092–1125,2013. [63] YuriiNesterov. Lecturesonconvexoptimization. Springer,2018. [64] Chaoyue Niu, Fan Wu, Shaojie Tang, Lifeng Hua, Rongfei Jia, Chengfei Lv, Zhihua Wu,\nandGuihaiChen. Billion-scalefederatedlearningonmobileclients: asubmodeldesignwith\ntunable privacy.",
+      "size": 496,
+      "sentences": 9
+    },
+    {
+      "id": 122,
+      "content": "andGuihaiChen. Billion-scalefederatedlearningonmobileclients: asubmodeldesignwith\ntunable privacy. In Annual International Conference on Mobile Computing and Networking,\n2020. [65] Kumar Kshitij Patel, Lingxiao Wang, Blake E. Woodworth, Brian Bullins, and Nati Srebro. Towards optimal communication complexity in distributed non-convex optimization. In Ad-\nvancesinNeuralInformationProcessingSystems,2022. [66] Krishna Pillutla, Sham M. Kakade, and Za¨ıd Harchaoui.",
+      "size": 465,
+      "sentences": 7
+    },
+    {
+      "id": 123,
+      "content": "euralInformationProcessingSystems,2022. [66] Krishna Pillutla, Sham M. Kakade, and Za¨ıd Harchaoui. Robust aggregation for federated\nlearning. IEEETrans.SignalProcess.,70:1142–1154,2022. [67] Shi Pu and Angelia Nedic´. Distributed stochastic gradient tracking methods. Mathematical\nProgramming,187(1):409–457,2021. [68] ShashankRajput,HongyiWang,ZacharyB.Charles,andDimitrisS.Papailiopoulos.DETOX:\nAredundancy-basedframeworkforfasterandmorerobustgradientaggregation.",
+      "size": 466,
+      "sentences": 8
+    },
+    {
+      "id": 124,
+      "content": "imitrisS.Papailiopoulos.DETOX:\nAredundancy-basedframeworkforfasterandmorerobustgradientaggregation. InAdvances\ninNeuralInformationProcessingSystems,2019. [69] Ahmad Rammal, Kaja Gruntkowska, Nikita Fedin, Eduard Gorbunov, and Peter Richta´rik. Communicationcompressionforbyzantinerobustlearning: Newefficientalgorithmsandim-\nprovedrates. InInternationalConferenceonArtificialIntelligenceandStatistics,2024. [70] FelixSattler,Klaus-RobertMu¨ller,ThomasWiegand,andWojciechSamek.",
+      "size": 476,
+      "sentences": 6
+    },
+    {
+      "id": 125,
+      "content": "telligenceandStatistics,2024. [70] FelixSattler,Klaus-RobertMu¨ller,ThomasWiegand,andWojciechSamek. Onthebyzantine\nrobustness of clustered federated learning. In IEEE International Conference on Acoustics,\nSpeechandSignalProcessing,2020. [71] Chang-WeiShi,Yi-RuiYang,andWu-JunLi. OrderedmomentumforasynchronousSGD. In\nAdvancesinNeuralInformationProcessingSystems,2024. [72] SebastianU.Stich,Jean-BaptisteCordonnier,andMartinJaggi.SparsifiedSGDwithmemory.",
+      "size": 454,
+      "sentences": 8
+    },
+    {
+      "id": 126,
+      "content": "Systems,2024. [72] SebastianU.Stich,Jean-BaptisteCordonnier,andMartinJaggi.SparsifiedSGDwithmemory. InAdvancesinNeuralInformationProcessingSystems,2018. [73] YukiTakezawa,HanBao,KentaNiwa,RyomaSato,andMakotoYamada. Momentumtrack-\ning: Momentumaccelerationfordecentralizeddeeplearningonheterogeneousdata. Transac-\ntionsonMachineLearning,2022. 15\n===  16 ===\nDELAYEDMOMENTUMAGGREGATION\n[74] JianyuWang,QinghuaLiu,HaoLiang,GauriJoshi,andH.VincentPoor.",
+      "size": 448,
+      "sentences": 7
+    },
+    {
+      "id": 127,
+      "content": "16 ===\nDELAYEDMOMENTUMAGGREGATION\n[74] JianyuWang,QinghuaLiu,HaoLiang,GauriJoshi,andH.VincentPoor. Tacklingtheobjec-\ntive inconsistency problem in heterogeneous federated optimization. In Advances in Neural\nInformationProcessingSystems,2020. [75] ShiqiangWangandMingyueJi. Aunifiedanalysisoffederatedlearningwitharbitraryclient\nparticipation. InAdvancesinNeuralInformationProcessingSystems,2022. [76] Cong Xie, Oluwasanmi Koyejo, and Indranil Gupta.",
+      "size": 449,
+      "sentences": 7
+    },
+    {
+      "id": 128,
+      "content": "cesinNeuralInformationProcessingSystems,2022. [76] Cong Xie, Oluwasanmi Koyejo, and Indranil Gupta. Fall of empires: Breaking byzantine-\ntolerantSGDbyinnerproductmanipulation. InUncertaintyinArtificialIntelligence,2019. [77] Cong Xie, Sanmi Koyejo, and Indranil Gupta. Zeno: Distributed stochastic gradient descent\nwithsuspicion-basedfault-tolerance.InInternationalConferenceonMachineLearning,2019.",
+      "size": 398,
+      "sentences": 6
+    },
+    {
+      "id": 129,
+      "content": "radient descent\nwithsuspicion-basedfault-tolerance.InInternationalConferenceonMachineLearning,2019. [78] Yikai Yan, Chaoyue Niu, Yucheng Ding, Zhenzhe Zheng, Shaojie Tang, Qinya Li, Fan Wu,\nChengfei Lyu, Yanghe Feng, and Guihai Chen. Federated optimization under intermittent\nclientavailability. INFORMSJournalonComputing,36(1):185–202,2024. [79] Haibo Yang, Minghong Fang, and Jia Liu. Achieving linear speedup with partial worker\nparticipation in non-iid federated learning.",
+      "size": 476,
+      "sentences": 6
+    },
+    {
+      "id": 130,
+      "content": "Jia Liu. Achieving linear speedup with partial worker\nparticipation in non-iid federated learning. In International Conference on Learning Repre-\nsentations,2021. [80] Yi-RuiYangandWu-JunLi. BASGD:bufferedasynchronousSGDforbyzantinelearning. In\nInternationalConferenceonMachineLearning,2021. [81] DongYin, YudongChen, KannanRamchandran, andPeterL.Bartlett. Byzantine-robustdis-\ntributed learning: Towards optimal statistical rates. In International Conference on Machine\nLearning,2018.",
+      "size": 485,
+      "sentences": 9
+    },
+    {
+      "id": 131,
+      "content": "learning: Towards optimal statistical rates. In International Conference on Machine\nLearning,2018. [82] Hao Yu, Sen Yang, and Shenghuo Zhu. Parallel restarted SGD with faster convergence and\nless communication: Demystifying why model averaging works for deep learning. In AAAI\nConferenceonArtificialIntelligence,2019. [83] XinweiZhang,MingyiHong,SairajV.Dhople,WotaoYin,andYangLiu. Fedpd: Afederated\nlearningframeworkwithadaptivitytonon-iiddata.",
+      "size": 445,
+      "sentences": 7
+    },
+    {
+      "id": 132,
+      "content": "SairajV.Dhople,WotaoYin,andYangLiu. Fedpd: Afederated\nlearningframeworkwithadaptivitytonon-iiddata. IEEETransactionsonSignalProcessing,\n69:6055–6070,2021. [84] Banghua Zhu, Lun Wang, Qi Pang, Shuai Wang, Jiantao Jiao, Dawn Song, and Michael I.\nJordan. Byzantine-robust federated learning with optimal statistical rates. In International\nConferenceonArtificialIntelligenceandStatistics,2023. 16\n===  17 ===\nDELAYEDMOMENTUMAGGREGATION\nAppendixA.",
+      "size": 443,
+      "sentences": 7
+    },
+    {
+      "id": 133,
+      "content": "nceonArtificialIntelligenceandStatistics,2023. 16\n===  17 ===\nDELAYEDMOMENTUMAGGREGATION\nAppendixA. AlgorithmDetails\nWepresentthedetailedalgorithmforD-Byz-SGDM(DelayedByzantine-robustSGDwithMomen-\ntum),whichimplementsourdelayedmomentumaggregationprinciple. Thekeyideaistoapplythe\nrobust aggregator not only to the momentum of sampled clients but also to the cached momentum\nofnon-sampledclients,ensuringthattheaggregatorconsistentlyseestheglobalByzantinefraction\nδ < 1/2evenunderpartialparticipation.",
+      "size": 500,
+      "sentences": 4
+    },
+    {
+      "id": 134,
+      "content": "ngthattheaggregatorconsistentlyseestheglobalByzantinefraction\nδ < 1/2evenunderpartialparticipation. In each round t, the server independently samples each client with probability p (i.e., zt ∼\nBer(p)⊗n andS = {i : zt = 1}). Theselectedclientsrefreshtheirmomentumusing:\nt i\n(cid:40) (1−α)mt−1+α∇f (xt−1,ξt−1), i ∈ S ,\nmt = i i i t\ni mt−1, i ∈/ S ,\ni t\nwhere α ∈ (0,1] is the client momentum parameter. Non-selected clients retain their cached mo-\nmentumvaluesfrompreviousrounds.",
+      "size": 477,
+      "sentences": 4
+    },
+    {
+      "id": 135,
+      "content": "nt momentum parameter. Non-selected clients retain their cached mo-\nmentumvaluesfrompreviousrounds. The server then performs delayed momentum aggregation by applying the robust aggregator\nAgg to the union of fresh momentum from sampled clients and cached momentum from non-\nsampledclients:\n(cid:16) (cid:17)\nmt = Agg {mt} ∪ {mt}\ni i∈St i i∈/St\nThis design ensures that even when partial participation might lead to a Byzantine majority\namongsampledclients,theaggregatoralwaysoperatesonthefullsetofclients(freshandcached),\nmaintainingrobustness.",
+      "size": 544,
+      "sentences": 3
+    },
+    {
+      "id": 136,
+      "content": "ledclients,theaggregatoralwaysoperatesonthefullsetofclients(freshandcached),\nmaintainingrobustness. To see how this corresponds to the delayed momentum aggregation principle, note that the\ndelayfunctionτ(i,t)representsthenumberofroundssinceclienti’smomentumwaslastupdated. Formally:\nτ(i,t) = min{s ≥ 0 : i ∈ S }\nt−s\nThisisarandomvariablethatdependsonthesamplinghistory. Wheni ∈ S , wehaveτ(i,t) = 0\nt\n(fresh update), and when i ∈/ S , we have τ(i,t) > 0 (stale update).",
+      "size": 469,
+      "sentences": 4
+    },
+    {
+      "id": 137,
+      "content": "Wheni ∈ S , wehaveτ(i,t) = 0\nt\n(fresh update), and when i ∈/ S , we have τ(i,t) > 0 (stale update). The algorithm effectively\nt\nimplements:\n(cid:16) (cid:17)\nxt = xt−1−η Agg {mt} ∪{m t−τ(i,t) }\ni i∈St i i∈[n]\\St\nt−τ(i,t)\nwhere for non-sampled clients, m is their most recent momentum update, which is exactly\ni\nwhatwestoreasmt inthealgorithm.",
+      "size": 342,
+      "sentences": 2
+    },
+    {
+      "id": 138,
+      "content": "clients, m is their most recent momentum update, which is exactly\ni\nwhatwestoreasmt inthealgorithm. i\nImportantly, D-Byz-SGDM does not incur additional communication costs compared to stan-\ndard partial participation methods: the server only queries sampled clients and stores one momen-\ntumvectormt perclient,matchingthememoryrequirementsoffullparticipationsettings. i\nAppendixB. AdditionalExperimentalDetails\nB.1.",
+      "size": 415,
+      "sentences": 4
+    },
+    {
+      "id": 139,
+      "content": "ngthememoryrequirementsoffullparticipationsettings. i\nAppendixB. AdditionalExperimentalDetails\nB.1. CommonExperimentalSettings\nAll experiments use the MNIST dataset with a convolutional neural network architecture (CONV-\nCONV-DROPOUT-FC-DROPOUT-FC). Training employs negative log-likelihood loss with batch\nsize 32 per client and client participation probability p = 0.5. We evaluate both IID and non-IID\ndata partitions, with the latter following the class-based approach of Karimireddy et al. [45].",
+      "size": 500,
+      "sentences": 7
+    },
+    {
+      "id": 140,
+      "content": "IID\ndata partitions, with the latter following the class-based approach of Karimireddy et al. [45]. Four\n17\n===  18 ===\nDELAYEDMOMENTUMAGGREGATION\noptimizers are compared: FedAvg, FedAvg-M, D-Byz-SGDM, and the heuristic momentum ex-\ntensionofByz-VR-MARINA-PP(withλ ∈ {100,10,1})introducedin[56],allusingmomentum\nparameterα = 0.9whereapplicable. Trainingrunsfor10epochs(300iterationstotal),withresults\naveragedovermultiplerandomseeds. Table1providescompleteconfigurationdetails. B.2.",
+      "size": 482,
+      "sentences": 6
+    },
+    {
+      "id": 141,
+      "content": "otal),withresults\naveragedovermultiplerandomseeds. Table1providescompleteconfigurationdetails. B.2. BaselinePerformanceEvaluation\nThisexperimentestablishesbaselineperformanceunderpartialparticipationwithoutByzantinead-\nversaries. We used n = 20 clients with no Byzantine clients (δ = 0) and simple averaging ag-\ngregation. The objective was to validate that D-Byz-SGDM maintains competitive performance\ninbenignsettingsandtoestablishreferenceperformancelevelsforsubsequentrobustnesscompar-\nisons.",
+      "size": 496,
+      "sentences": 6
+    },
+    {
+      "id": 142,
+      "content": "mance\ninbenignsettingsandtoestablishreferenceperformancelevelsforsubsequentrobustnesscompar-\nisons. Results in fig.2 demonstrate that D-Byz-SGDM outperforms standard momentum methods\neven without adversaries, suggesting that delayed momentum aggregation provides implicit regu-\nlarizationbenefitsunderheterogeneousdatadistributions. B.3. ByzantineRobustnessAssessment\nThisexperimentevaluatesrobustnessagainstByzantineattacksunderpartialparticipation.",
+      "size": 450,
+      "sentences": 4
+    },
+    {
+      "id": 143,
+      "content": "stnessAssessment\nThisexperimentevaluatesrobustnessagainstByzantineattacksunderpartialparticipation. Wecon-\nfiguredn = 25clientswith5Byzantineclients(20Fiverobustaggregatorswereevaluated: Krum,\ncoordinate-wisemedian,centeredclipping,RFA,andsimpleaveragingasbaseline. Theexperimen-\ntal design included both IID and non-IID data partitions, with bucketing applied in the Byzantine\nnon-IID setting to mitigate extreme heterogeneity.",
+      "size": 428,
+      "sentences": 3
+    },
+    {
+      "id": 144,
+      "content": "titions, with bucketing applied in the Byzantine\nnon-IID setting to mitigate extreme heterogeneity. This comprehensive evaluation spans 720 total\nexperimental runs across all combinations of attacks, aggregators, optimizers, data partitions, and\nrandomseeds. B.4. Non-IIDdatapartition\nWeconstructedthenon-IIDsplitfollowingKarimireddyetal.",
+      "size": 338,
+      "sentences": 4
+    },
+    {
+      "id": 145,
+      "content": "s, and\nrandomseeds. B.4. Non-IIDdatapartition\nWeconstructedthenon-IIDsplitfollowingKarimireddyetal. [45]inthebalanced case: (i)sorted\ntheMNISTtrainingsetbylabel;(ii)splititintoGequal,contiguousshards(whereGisthenumber\nof good/honest clients); (iii) assigned one shard to each honest client and shuffle examples within\neachclient. Wepartitionedthetestsetanalogously. Counts used. MNIST has 60,000 training examples. For n = 20 (no Byzantine clients), each\nclient holds 60,000/20 = 3,000 samples.",
+      "size": 494,
+      "sentences": 8
+    },
+    {
+      "id": 146,
+      "content": "training examples. For n = 20 (no Byzantine clients), each\nclient holds 60,000/20 = 3,000 samples. For n = 25 with Byzantine fraction δ = 0.2 (G = 20\nhonest clients), each honest client holds 3,000 samples. Byzantine clients were allowed access to\nthe full training set when crafting adversarial updates. (When using non-IID with Byzantines we\nalsoapplybucketingasinKarimireddyetal.[45].) B.5. ComputingEnvironment\nExperimentsranonNVIDIAA100-SXM4-80GBGPUs(CUDA12.2)andAMDEPYC7763CPUs.",
+      "size": 484,
+      "sentences": 7
+    },
+    {
+      "id": 147,
+      "content": "].) B.5. ComputingEnvironment\nExperimentsranonNVIDIAA100-SXM4-80GBGPUs(CUDA12.2)andAMDEPYC7763CPUs. Table2providesdetailedhardwareandsoftwarespecifications. AppendixC. ExtendedResults\nPer-aggregator curves with Byzantine clients. This section complements Fig. 1 by showing\ntraining dynamics for the other robust aggregators across the same attacks, data partitions, and\noptimizers. 18\n===  19 ===\nDELAYEDMOMENTUMAGGREGATION\nTable1: Defaultexperimentalsettingsforpartialparticipationexperiments.",
+      "size": 494,
+      "sentences": 9
+    },
+    {
+      "id": 148,
+      "content": "=\nDELAYEDMOMENTUMAGGREGATION\nTable1: Defaultexperimentalsettingsforpartialparticipationexperiments. Baseline(NoAttacks) ByzantineRobustness\nDataset MNIST MNIST\nArchitecture CONV-CONV-DROPOUT-FC-DROPOUT-FC same\nTrainingobjective Negativeloglikelihoodloss same\nEvaluationobjective Top-1accuracy same\nWorkersn 20 25\nByzantine 0 5(20%)\nBatchsize 32perworker 32perworker\nClientparticipation p=0.5 same\nNon-IID IIDandNon-IID IIDandNon-IID;bucketings=2\nSeeds 0,1 0,1,2\nOptimizers FedAvg;FedAvg-M;D-Byz-SGDM; same\nByz-VR-MARINA-PP(λ∈{100,10,1})\nMomentum 0.9 0.9\nLearningrate 0.01 {0.1,0.01,0.001}\nAggregators avg avg,krum,cm,cp,rfa\nAttacks NA(noattack) BF,LF,mimic,IPM,ALIE,INF\nIterations 300(30batches×10epochs) same\nNotes: avg=naive average, krum=Krum[11], cm=coordinate-wise median, cp=centered clipping[44],\nrfa=geometricmedian(RFA)[66].Testbatchsize:128.",
+      "size": 851,
+      "sentences": 2
+    },
+    {
+      "id": 149,
+      "content": "m=coordinate-wise median, cp=centered clipping[44],\nrfa=geometricmedian(RFA)[66].Testbatchsize:128. Table2: Runtimehardwareandsoftware.",
+      "size": 135,
+      "sentences": 2
+    },
+    {
+      "id": 150,
+      "content": "d clipping[44],\nrfa=geometricmedian(RFA)[66].Testbatchsize:128. Table2: Runtimehardwareandsoftware. CPU\nModelname AMDEPYC776364-CoreProcessor\n#CPU(s) 128\nGPU\nProductName NVIDIAA100-SXM4-80GB\nCUDAVersion 12.2\nPyTorch\nVersion 2.7.1\n19\n===  20 ===\nDELAYEDMOMENTUMAGGREGATION\n100\n80\n60\n40\n20\n0 2.5 5.0 7.5 10.0\nEpoch\n)%(\nycaruccA\nnoitadilaV\nALIE Bit-Flipping INFINITY IPM Label-Flipping 100 100 100 100 100\n80 80 80 80 80\n60 60 60 60 60\n40 40 40 40 40\n20 20 20 20 20\n0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0\nEpoch Epoch Epoch Epoch Epoch\nIID\nMimic\n100\n80\n60\n40\n20\n0 2.5 5.0 7.5 10.0\nEpoch\n)%(\nycaruccA\nnoitadilaV\n100 100 100 100 100\n80 80 80 80 80\n60 60 60 60 60\n40 40 40 40 40\n20 20 20 20 20\n0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0\nEpoch Epoch Epoch Epoch Epoch\nNon-IID\nAggregator: AVG\nFedAvg FedAvgM D-Byz-SGDM (Proposed Method) Byz-VR-MARINA-PP ( =100, 10, 1)\nFigure3: avg(simplemean)underByzantineattackswithpartialparticipation.",
+      "size": 1038,
+      "sentences": 3
+    },
+    {
+      "id": 151,
+      "content": "-VR-MARINA-PP ( =100, 10, 1)\nFigure3: avg(simplemean)underByzantineattackswithpartialparticipation. 100\n80\n60\n40\n20\n0 2.5 5.0 7.5 10.0\nEpoch\n)%(\nycaruccA\nnoitadilaV\nALIE Bit-Flipping INFINITY IPM Label-Flipping 100 100 100 100 100\n80 80 80 80 80\n60 60 60 60 60\n40 40 40 40 40\n20 20 20 20 20\n0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0\nEpoch Epoch Epoch Epoch Epoch\nIID\nMimic\n100\n80\n60\n40\n20\n0 2.5 5.0 7.5 10.0\nEpoch\n)%(\nycaruccA\nnoitadilaV\n100 100 100 100 100\n80 80 80 80 80\n60 60 60 60 60\n40 40 40 40 40\n20 20 20 20 20\n0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0\nEpoch Epoch Epoch Epoch Epoch\nNon-IID\nAggregator: CM\nFedAvg FedAvgM D-Byz-SGDM (Proposed Method) Byz-VR-MARINA-PP ( =100, 10, 1)\nFigure4: cm(coordinate-wisemedian)underByzantineattackswithpartialparticipation.",
+      "size": 875,
+      "sentences": 2
+    },
+    {
+      "id": 152,
+      "content": "-PP ( =100, 10, 1)\nFigure4: cm(coordinate-wisemedian)underByzantineattackswithpartialparticipation. 20\n[  ]\n\n===  21 ===\nDELAYEDMOMENTUMAGGREGATION\n100\n80\n60\n40\n20\n0 2.5 5.0 7.5 10.0\nEpoch\n)%(\nycaruccA\nnoitadilaV\nALIE Bit-Flipping INFINITY IPM Label-Flipping 100 100 100 100 100\n80 80 80 80 80\n60 60 60 60 60\n40 40 40 40 40\n20 20 20 20 20\n0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0\nEpoch Epoch Epoch Epoch Epoch\nIID\nMimic\n100\n80\n60\n40\n20\n0 2.5 5.0 7.5 10.0\nEpoch\n)%(\nycaruccA\nnoitadilaV\n100 100 100 100 100\n80 80 80 80 80\n60 60 60 60 60\n40 40 40 40 40\n20 20 20 20 20\n0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0\nEpoch Epoch Epoch Epoch Epoch\nNon-IID\nAggregator: KRUM\nFedAvg FedAvgM D-Byz-SGDM (Proposed Method) Byz-VR-MARINA-PP ( =100, 10, 1)\nFigure5: krum/Multi-KrumunderByzantineattackswithpartialparticipation.",
+      "size": 915,
+      "sentences": 2
+    },
+    {
+      "id": 153,
+      "content": "-VR-MARINA-PP ( =100, 10, 1)\nFigure5: krum/Multi-KrumunderByzantineattackswithpartialparticipation. 100\n80\n60\n40\n20\n0 2.5 5.0 7.5 10.0\nEpoch\n)%(\nycaruccA\nnoitadilaV\nALIE Bit-Flipping INFINITY IPM Label-Flipping 100 100 100 100 100\n80 80 80 80 80\n60 60 60 60 60\n40 40 40 40 40\n20 20 20 20 20\n0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0\nEpoch Epoch Epoch Epoch Epoch\nIID\nMimic\n100\n80\n60\n40\n20\n0 2.5 5.0 7.5 10.0\nEpoch\n)%(\nycaruccA\nnoitadilaV\n100 100 100 100 100\n80 80 80 80 80\n60 60 60 60 60\n40 40 40 40 40\n20 20 20 20 20\n0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0 0 2.5 5.0 7.5 10.0\nEpoch Epoch Epoch Epoch Epoch\nNon-IID\nAggregator: RFA\nFedAvg FedAvgM D-Byz-SGDM (Proposed Method) Byz-VR-MARINA-PP ( =100, 10, 1)\nFigure6: rfa(RobustFederatedAveraging)underByzantineattackswithpartialparticipation.",
+      "size": 880,
+      "sentences": 2
+    },
+    {
+      "id": 154,
+      "content": "( =100, 10, 1)\nFigure6: rfa(RobustFederatedAveraging)underByzantineattackswithpartialparticipation. AppendixD. NotationSummaryforConvergenceAnalysis\nThe table 3z summarizes the key notations used in the convergence analysis of D-Byz-SGDM in\nbothhomogeneousandheterogeneoussettings. AppendixE. AnalysisofD-Byz-SGDMintheHomogeneousSetting\nIn the homogeneous setting, all non-Byzantine clients share the same data distribution, i.e., D =\ni\nD , ∀i ̸= j.",
+      "size": 449,
+      "sentences": 5
+    },
+    {
+      "id": 155,
+      "content": "neous setting, all non-Byzantine clients share the same data distribution, i.e., D =\ni\nD , ∀i ̸= j. This section provides a detailed convergence analysis for this special case, which\nj\nservesasafoundationforunderstandingthealgorithm’sbehavior.",
+      "size": 243,
+      "sentences": 2
+    },
+    {
+      "id": 156,
+      "content": "analysis for this special case, which\nj\nservesasafoundationforunderstandingthealgorithm’sbehavior. 21\n[  ]\n\n===  22 ===\nDELAYEDMOMENTUMAGGREGATION\nNotation Description\nSystemParameters\nG Numberofgood(non-Byzantine)clients\nδ FractionofByzantineclients\np Partialparticipationprobability(parameterofBernoullisampling)\nt Round/iterationindex\nAlgorithmParameters\nα Momentumparameter,α∈(0,1]\nη Learningrate/stepsize\nxt Globalmodelparametersatroundt\nMomentumVariables\nmt Localmomentumofclientiatroundt\ni\nmˆt “truegradientmomentum”forclienti\ni\nm¯t Trueaveragemomentumacrossgoodclients\nmˆt Deterministiccounterpartofaveragemomentum\nmt Robustaggregateofclientmomentums\ne¯ Truemomentumerror: m¯t−∇f(xt)\nt\nParticipation&Functions\nrt Binaryindicator: 1ifclientiparticipates,0otherwise\ni\nK Numberoftimesclientiparticipateduptoroundt\ni,t\nf(x) Globalobjectivefunction\nf (x) Localobjectivefunctionforclienti\ni\n∇f(xt) Truegradientofglobalobjectiveatxt\n∇f (xt) Truegradientoflocalobjectiveforclienti\ni\n∇f(xt,ξt) Stochasticgradientforclientiwithbatchξt\ni i\nf∗ Optimalvalueofobjectivefunction\nProblemConstants&ErrorTerms\nL Smoothnessparameter\nσ2 Boundonstochasticgradientvariance\nζ2 Heterogeneityparameter(heterogeneoussettingonly)\nB Gradientbound: ∥∇f(x)∥≤B\nc Robustaggregationconstant\nD Aggregationerrorboundatroundt\nt\nS Accumulatedstalenessfrompreviousrounds\nl\nΛ Lyapunovfunctionforconvergenceanalysis\nt\nG Setofgood(non-Byzantine)clients\nD Datadistributionforclienti\ni\nξt Databatchsampledbyclientiatroundt\ni\nTable3: Summaryofnotationsusedintheconvergenceanalysis\nMomentum update dynamics.",
+      "size": 1570,
+      "sentences": 2
+    },
+    {
+      "id": 157,
+      "content": "yclientiatroundt\ni\nTable3: Summaryofnotationsusedintheconvergenceanalysis\nMomentum update dynamics. Under partial participation, each good client’s local momentum\nisupdatedaccordingtothefollowingstochasticprocess:\n(cid:40)\n(1−α)mt+α∇f(xt,ξt), withprobabilityp(clientparticipates)\nmt+1 = i i\ni mt withprobability1−p(clientdoesnotparticipate)\ni\n22\n===  23 ===\nDELAYEDMOMENTUMAGGREGATION\nwheremtdenotesthelocalmomentumofclientiatroundt,α ∈ (0,1]isthemomentumparameter,\ni\nandξtrepresentsthelocaldatabatchsampledbyclientiatroundt.",
+      "size": 525,
+      "sentences": 2
+    },
+    {
+      "id": 158,
+      "content": "roundt,α ∈ (0,1]isthemomentumparameter,\ni\nandξtrepresentsthelocaldatabatchsampledbyclientiatroundt. Whenaclientparticipates(with\ni\nprobability p), it updates its momentum using a fresh gradient; otherwise, it retains its previous\nmomentumvalue. Lemma8(Descentbound[44,45]) Suppose f is an L-smooth function 2. For any α ∈ [0,1] for\nt ≥ 2, η ≤ 1/L,wehaveforanyt ≥ 1\nη\nE[f(xt)] ≤ f(xt−1)− ∥∇f(xt−1)∥2+ηE∥m¯t−∇f(xt−1)∥2+ηE∥mt−m¯t∥2. 2\nProof TheresultfollowsdirectlyfromtheanalysisinKarimireddyetal.",
+      "size": 495,
+      "sentences": 5
+    },
+    {
+      "id": 159,
+      "content": "∥2+ηE∥m¯t−∇f(xt−1)∥2+ηE∥mt−m¯t∥2. 2\nProof TheresultfollowsdirectlyfromtheanalysisinKarimireddyetal. [44,45],whereanalogous\nboundsareestablishedunderthestatedassumptions. Forcompleteness,wereferthereadertotheir\nproofs. Lemma9(Localmomentumdeviationbound) Suppose assumptions 1, 2, 3, and 5 hold. For\nanygoodclienti ∈ G androundt,theexpectedsquareddeviationofthelocalmomentumfromthe\ntruegradientisboundedby:\n(cid:18) 4(1−α)2 4(1−p) (cid:19)\nE∥mt−∇f(xt)∥2 ≤ α2σ2+4L2η2B2 + .",
+      "size": 471,
+      "sentences": 6
+    },
+    {
+      "id": 160,
+      "content": "mfromthe\ntruegradientisboundedby:\n(cid:18) 4(1−α)2 4(1−p) (cid:19)\nE∥mt−∇f(xt)∥2 ≤ α2σ2+4L2η2B2 + . i pα p2\nThefirsttermcapturesstochasticgradientnoise, whilethesecondtermaccountsforstalenessdue\ntopartialparticipation. Proof Theproofanalyzesthedeviationbyconstructingan”truegradientmomentum”processthat\nusesexactgradientsinsteadofstochasticones.",
+      "size": 345,
+      "sentences": 3
+    },
+    {
+      "id": 161,
+      "content": "viationbyconstructingan”truegradientmomentum”processthat\nusesexactgradientsinsteadofstochasticones. Definethetruegradientmomentumpathmˆt as:\n(cid:40)\n(1−α)mˆt−1+α∇f(xt−1) withprobabilityp\nmˆt =\nmˆt−1 withprobability1−p\nNotethatmˆt = E[mt|participationhistory],wheretheexpectationistakenoverstochasticgradients\ni i\nbutconditioningontheBernoulliparticipationprocess. Errordecomposition.",
+      "size": 384,
+      "sentences": 3
+    },
+    {
+      "id": 162,
+      "content": "noverstochasticgradients\ni i\nbutconditioningontheBernoulliparticipationprocess. Errordecomposition. Wedecomposethetotalerroras:\nE∥mt−∇f(xt)∥2 = E∥mt−mˆt∥2+E∥mˆt−∇f(xt)∥2,\ni i i i\nwherethecrosstermvanishesduetotheunbiasednessofstochasticgradients. Boundingthestochasticnoise. Thefirsttermcapturespurestochasticgradientnoise:\nt\n(cid:88)\nE∥mt−mˆt∥2 = Pr[K = k]α2σ2 = α2σ2, (1)\ni i i,t\nk=0\nwhereK denotesthenumberoftimesclientiparticipateduptoroundt.",
+      "size": 446,
+      "sentences": 5
+    },
+    {
+      "id": 163,
+      "content": "Pr[K = k]α2σ2 = α2σ2, (1)\ni i i,t\nk=0\nwhereK denotesthenumberoftimesclientiparticipateduptoroundt. i,t\n23\n===  24 ===\nDELAYEDMOMENTUMAGGREGATION\nBoundingthestalenesserror.",
+      "size": 171,
+      "sentences": 2
+    },
+    {
+      "id": 164,
+      "content": "ntiparticipateduptoroundt. i,t\n23\n===  24 ===\nDELAYEDMOMENTUMAGGREGATION\nBoundingthestalenesserror. Thesecondtermcapturestheeffectofusingstalegradientsdueto\npartialparticipation:\nt−1\n(cid:88)\nE∥mˆt−∇f(xt)∥2 = (1−p)t−lpE∥mˆl −∇f(xt)∥2+(1−p)tE∥mˆ0−∇f(xt)∥2 (2)\ni i i\nl=0\nE∥mˆl −∇f(xt)∥2 = E∥mˆl −∇f(xl)+∇f(xl)−∇f(xt)∥2 (3)\ni i\n≤ 2E∥mˆl −∇f(xl)∥2+2E∥∇f(xl)−∇f(xt)∥2 (4)\ni\nl−1\n(cid:88)\n≤ 2L2η2B2( (l−k)2(1−α)2(l−k)α2+l2(1−α)2l)+2L2η2B2(t−l)2\nk=0\n(5)\n= 2L2η2B2(S +(t−l)2) (6)\nl\nwhere S := (cid:80)l−1(l − k)2(1 − α)2(l−k)α2 + l2(1 − α)2l ≤ 4(1−α)2 bounds the accumulated\nl k=0 α\nstalenessfrompreviousrounds.",
+      "size": 602,
+      "sentences": 3
+    },
+    {
+      "id": 165,
+      "content": "(1 − α)2(l−k)α2 + l2(1 − α)2l ≤ 4(1−α)2 bounds the accumulated\nl k=0 α\nstalenessfrompreviousrounds. Combiningthebounds,thestalenesserrorbecomes:\n(cid:32)t−1 (cid:33)\n(cid:88)\nE∥mˆt−∇f(xt)∥2 ≤ 2L2η2B2 (1−p)t−lp(S +(t−l)2)+(1−p)tt2 (7)\ni l\nl=0\n(cid:18) 4(1−α)2 4(1−p) (cid:19)\n≤ 4L2η2B2 + , (8)\npα p2\nwherethefinalinequalityfollowsfromstandardgeometricseriessummationsandtheboundonS . l\nE.1. AggregationError\nLemma10(Robustaggregationerrorinhomogeneouscase) SupposeAssumptions1,2,3,and\n5 hold.",
+      "size": 491,
+      "sentences": 4
+    },
+    {
+      "id": 166,
+      "content": "gregationError\nLemma10(Robustaggregationerrorinhomogeneouscase) SupposeAssumptions1,2,3,and\n5 hold. The expected squared error between the true average momentum and the robust aggregate\nisboundedby:\n(cid:18) (cid:19)\n1−p\nE∥mt−m¯t∥2 ≤ 2cδσ2(α+(1−αp)t−1)+96cδL2η2B2 =: D ,\nαp2 t\nwherecistherobustaggregationconstantandδ isthefractionofByzantineclients. Proof Theproofanalyzesthepairwisedifferencesbetweengoodclients’momentumvectors,which\ndeterminestherobustaggregationerror.",
+      "size": 472,
+      "sentences": 3
+    },
+    {
+      "id": 167,
+      "content": "thepairwisedifferencesbetweengoodclients’momentumvectors,which\ndeterminestherobustaggregationerror. 24\n===  25 ===\nDELAYEDMOMENTUMAGGREGATION\nPairwise momentum difference.",
+      "size": 171,
+      "sentences": 2
+    },
+    {
+      "id": 168,
+      "content": "stherobustaggregationerror. 24\n===  25 ===\nDELAYEDMOMENTUMAGGREGATION\nPairwise momentum difference. For any two good clients i,j, we decompose their momentum\ndifference:\nE∥mt−mt∥2 = p2(1−α)2E∥mˆt−1−mˆt−1∥2+2p2α2σ2\ni j i j\n+(1−p)pE∥(1−α)(mˆt−1−mˆt−1)+α(∇f(xt−1)−mˆt−1)∥2+(1−p)pα2σ2\ni j j\n+(1−p)pE∥(1−α)(mˆt−1−mˆt−1)+α(∇f(xt−1)−mˆt−1)∥2+(1−p)pα2σ2\nj i i\n+(1−p)2E∥mˆt−1−mˆt−1∥2\ni j\n(cid:16) (cid:16) α(cid:17) (cid:17)\n≤ p2(1−α)2+2p(1−p) 1+ (1−α)2+(1−p)2 E∥mˆt−1−mˆt−1∥2\n2 i j\n(cid:18) (cid:19)\n2\n+p(1−p) 1+ α2E∥∇f(xt−1)−mˆt−1∥2\nα j\n(cid:18) (cid:19)\n2\n+p(1−p) 1+ α2E∥∇f(xt−1)−mˆt−1∥2\nα j\n+2pα2σ2\n≤ (1−αp)E∥mˆt−1−mˆt−1∥2+6p(1−p)αE∥∇f(xt−1)−mˆt−1∥2+2pα2σ2\ni j i\n(cid:18) (1−p)2α (cid:19)\n≤ (1−αp)E∥mt−1−mt−1∥2+96L2η2B2 (1−p)(1−α)2+ +2pα2σ2\ni j p\nApplyingLemma9andunrollingtherecursiongivesus:\n(cid:88)\nt−1 (cid:18) (1−p)2α (cid:19)\nE∥mt−mt∥2 ≤ ( (1−αp)t−l)(2pα2σ2+96L2η2B2 (1−p)(1−α)2+ )+(1−αp)t−12σ2\ni j p\nl=2\n(cid:18) (1−p)(1−α)2 (1−p)2(cid:19)\n≤ 2σ2(α+(1−αp)t−1)+96L2η2B2 +\npα p2\n(cid:18) (cid:19)\n1−p\n≤ 2σ2(α+(1−αp)t−1)+96L2η2B2\nαp2\nHereweusetheconventionthatatt = 1,wesetα = 1andp = 1forinitialization.",
+      "size": 1103,
+      "sentences": 3
+    },
+    {
+      "id": 169,
+      "content": "σ2(α+(1−αp)t−1)+96L2η2B2\nαp2\nHereweusetheconventionthatatt = 1,wesetα = 1andp = 1forinitialization. Applying robust aggregation guarantee. The final bound follows from the definition of the ro-\nbustaggregator,whichensuresthatE∥mt−m¯t∥2 ≤ cδ·max E∥mt−mt∥2. i,j∈G i j\nRemark11 Ifp = 1,theresultmatcheswith[44]. E.2.",
+      "size": 313,
+      "sentences": 5
+    },
+    {
+      "id": 170,
+      "content": "ensuresthatE∥mt−m¯t∥2 ≤ cδ·max E∥mt−mt∥2. i,j∈G i j\nRemark11 Ifp = 1,theresultmatcheswith[44]. E.2. Errorbound\nLemma12(Convergenceoftruemomentumtogradient) Suppose Assumptions 2, and 3 hold,\nandassumeE(cid:13) (cid:13)e1 (cid:13) (cid:13) 2 ≤ 2 n σ2 .Definethetruemomentumerrorase¯ t = m¯t−∇f(xt). Then:\n(cid:18) (cid:19)\n2αp pα\nE∥e¯∥2 ≤ 1− E∥e¯ ∥2+ E∥m¯t−1−mt−1∥2\nt t−1\n5 10\npα α2σ2\n+ E∥∇f(xt−1)∥2+ .",
+      "size": 401,
+      "sentences": 5
+    },
+    {
+      "id": 171,
+      "content": ":\n(cid:18) (cid:19)\n2αp pα\nE∥e¯∥2 ≤ 1− E∥e¯ ∥2+ E∥m¯t−1−mt−1∥2\nt t−1\n5 10\npα α2σ2\n+ E∥∇f(xt−1)∥2+ . 10 G\nThisshowsthatthetruemomentumerrorcontractswithrate(1− 2αp)plusadditionaltermsfrom\n5\naggregationerrorandgradientnorms. 25\n===  26 ===\nDELAYEDMOMENTUMAGGREGATION\nProof Theproofdecomposesthetruemomentumerrorintostochasticnoiseanddeterministicbias\nterms. Errordecomposition.",
+      "size": 375,
+      "sentences": 4
+    },
+    {
+      "id": 172,
+      "content": "oofdecomposesthetruemomentumerrorintostochasticnoiseanddeterministicbias\nterms. Errordecomposition. Wedecomposethetotalerroras:\nE∥m¯t−∇f(xt)∥2 = E∥m¯t−mˆt+mˆt−∇f(xt)∥2 (9)\npα2σ2\n= E∥mˆt−∇f(xt)∥2+ , (10)\nG\nwherethesecondequalityfollowsfromtheunbiasednessofstochasticgradients. Analyzingthedeterministicbias.",
+      "size": 306,
+      "sentences": 4
+    },
+    {
+      "id": 173,
+      "content": "erethesecondequalityfollowsfromtheunbiasednessofstochasticgradients. Analyzingthedeterministicbias. Thefirsttermcapturesthebiasfromusingstalegradients:\n(cid:13) (cid:13)2\n(cid:13)1 (cid:88) (cid:13)\nE∥mˆt−∇f(xt)∥2 = E(cid:13) rt((1−α)mˆt−1+α∇f(xt−1))+(1−rt)mˆt−1−∇f(xt)(cid:13)\n(cid:13)G i i i i (cid:13)\n(cid:13) (cid:13)\ni∈G\n(cid:13) (cid:13)2\n(cid:13)1 (cid:88) (cid:13)\n= E(cid:13) (1−αrt)(mˆt−1−∇f(xt−1))+∇f(xt−1)−∇f(xt)(cid:13)\n(cid:13)G i i (cid:13)\n(cid:13) (cid:13)\ni∈G\n(cid:16) αp(cid:17) 1 (cid:88)\n≤ 1+ E∥ (1−αrt)∥2E∥mˆt−1−∇f(xt−1)∥2\n2 G2 i\ni∈G\n(cid:18) (cid:19)\n2\n+ 1+ L2η2E∥mt−1∥2\nαp\nInthefirstinequality,weusedYoung’sinequality.",
+      "size": 643,
+      "sentences": 3
+    },
+    {
+      "id": 174,
+      "content": "2\n2 G2 i\ni∈G\n(cid:18) (cid:19)\n2\n+ 1+ L2η2E∥mt−1∥2\nαp\nInthefirstinequality,weusedYoung’sinequality. ByusingE∥ (cid:80) (1−αrt)∥2 = G2(1−αp)2+\ni∈G i\nα2Gp(1−p),\n(cid:16) αp(cid:17)\nE∥mˆt−∇f(xt)∥2 ≤ 1− E∥mˆt−1−∇f(xt−1)∥2\n2\n9 9\n+ η2L2E∥mt−1−m¯t−1∥2+ η2L2E∥m¯t−1−∇f(xt−1)∥2\nαp αp\n9\n+ η2L2E∥∇f(xt−1)∥2\nαp\nBytakingmomentumparameter 90L2η2 ≤ α2 ≤ 1\np2\n(cid:18) (cid:19)\n2αp pα\n≤ 1− E∥m¯t−1−∇f(xt−1)∥2+ E∥m¯t−1−mt−1∥2\n5 10\npα\n+ E∥∇f(xt−1)∥2\n10\n26\n===  27 ===\nDELAYEDMOMENTUMAGGREGATION\nE.3.",
+      "size": 481,
+      "sentences": 2
+    },
+    {
+      "id": 175,
+      "content": "∇f(xt−1)∥2+ E∥m¯t−1−mt−1∥2\n5 10\npα\n+ E∥∇f(xt−1)∥2\n10\n26\n===  27 ===\nDELAYEDMOMENTUMAGGREGATION\nE.3. ConvergenceResult\nTheorem13(Convergencerateforhomogeneouscase) SupposeAssumptions1,2,3,and5hold,\nand assume at initialization (t = 1) with p = 1, α = 1, and E(cid:13) (cid:13) 1 (cid:80) m1−∇f(x1) (cid:13) (cid:13) 2 ≤ 2σ2 .",
+      "size": 324,
+      "sentences": 2
+    },
+    {
+      "id": 176,
+      "content": "(t = 1) with p = 1, α = 1, and E(cid:13) (cid:13) 1 (cid:80) m1−∇f(x1) (cid:13) (cid:13) 2 ≤ 2σ2 . G i∈G i n\nWithstepsize\n(cid:32) (cid:33)\np (cid:18) 4(f(x0)−f∗)+10cδσ2/9L (cid:19)1/2\nη := min 1, ,\n10L (90cδσ2Lη)/p+40cδσ2(1−p)2LB2+90Lσ2/pG)T\nandmomentumparameterα := min(1,9Lη/p),\n1 (cid:88) T (cid:18)L (cid:0) f(x0)−f∗(cid:1) σ2 cδσ2 cδσ2\nE∥∇f(xt)∥2 ≤ O + + +\nT pT GT T pT\nt=0\n(cid:115) (cid:115)\n(cid:0) (cid:1)\ncδσ2L f(x0)−f∗ c2δ2σ4\n+ +\npT pT\n(cid:115) (cid:115)\ncδ(1−p)LB2(f(x0)−f∗) c2δ2σ2(1−p)B2\n+ +\npT pT\n(cid:115) (cid:115)\nLσ2 (cid:0) f(x0)−f∗ (cid:1) cδσ4(cid:19)\n+ +\npGT pGT\nProof\n(cid:16) (cid:17)\nLetLyapunovfunctionΛ = Ef(xt)−f∗+ 5η −η E∥e¯∥2+ ηE∥∇f(xt−1)∥2.",
+      "size": 673,
+      "sentences": 2
+    },
+    {
+      "id": 177,
+      "content": "+ +\npGT pGT\nProof\n(cid:16) (cid:17)\nLetLyapunovfunctionΛ = Ef(xt)−f∗+ 5η −η E∥e¯∥2+ ηE∥∇f(xt−1)∥2. Then,\nt 2αp t 4\nη 5η 5ηα\nΛ ≤ Λ − E∥∇f(xt)∥2+ E∥mt−m¯t∥2+ σ2\nt+1 t\n4 4 2G\n(cid:124) (cid:123)(cid:122) (cid:125)\nDt\n≤ Λ − η\nT\n(cid:88)\n−1\nE∥∇f(xt)∥2+ 5η\n(cid:80)T\nt=1 D t + 5ηαT σ2\n1\n4 4 2G\nt=1\nSince at t = 1, we take p = 1 and α = 1 (technically we can prove this but omit it for simplicity\nmaybeincludedtotime0)forΛ :\n1\n3η η\nΛ ≤ Ef(x1)−f∗+ E∥e¯ ∥2+ E∥∇f(x0)∥2\n1 1\n2 4\n5η η\n≤ f(x0)−f∗+ E∥e¯ ∥2− E∥∇f(x0)∥2+ηE∥m1−m¯1∥2\n1\n2 4\nη 5ησ2\n≤ f(x0)−f∗− E∥∇f(x0)∥2+ +2cδησ2\n4 2G\n27\n===  28 ===\nDELAYEDMOMENTUMAGGREGATION\nThus,bypositivityofLyapunovfunction:\n1 T (cid:88) −1 4(f(x0)−f∗) 10σ2 8cδσ2 5 T (cid:88) −1 10αpσ2\nE∥∇f(xt)∥2 ≤ + + + D +\nt\nT ηT GT T T G\nt=0 t=0\n4(f(x0)−f∗) 10σ2 8cδσ2\n= + +\nηT GT T\n(cid:18) (cid:19) T−1\n1−p 1 (cid:88)\n+10cδσ2α+480cδL2B2η2 +10cδσ2 (1−αp)t−1\nαp2 T\nt=0\n10ασ2\n+\nG\nLetmomentumparameterα = min(9Lη/p,1)\n1 T (cid:88) −1 4(f(x0)−f∗) 10σ2 8cδσ2 10cδσ2\nE∥∇f(xt)∥2 ≤ + + +\nT ηT GT T 9LηT\nt=0\n90cδσ2Lη (cid:18) 1−p (cid:19)\n+ +54cδLB2η\np p\n90Lησ2\n+\npG\n(cid:18) (cid:19)\nStepsize choice.",
+      "size": 1102,
+      "sentences": 2
+    },
+    {
+      "id": 178,
+      "content": "T\nt=0\n90cδσ2Lη (cid:18) 1−p (cid:19)\n+ +54cδLB2η\np p\n90Lησ2\n+\npG\n(cid:18) (cid:19)\nStepsize choice. Setting η := min 1, p ,\n(cid:16)\n4(f(x0)−f∗)+10cδσ2/9L\n(cid:17)1/2\n(see\n10L (90cδσ2L)/p+54cδLB2(1−p)/p+90Lσ2/pG)T\nLemma15in[47]):\n1 T (cid:88) −1 40L(f(x0)−f∗) 10σ2 8cδσ2 10cδσ2\nE∥∇f(xt)∥2 ≤ + + +\nT pT GT T 9pT\nt=0\n(cid:18) cδσ2(360L(f(x0)−f∗)+100cδσ2) (cid:19)1/2\n+2\npT\n(cid:18) 216cδLB2∆(1−p)+60c2δ2σ2B2(1−p) (cid:19)1/2\n+2\npT\n(cid:18) σ2(360L(f(x0)−f∗)+100cδσ2) (cid:19)1/2\n+2\npGT\nAppendixF.",
+      "size": 494,
+      "sentences": 2
+    },
+    {
+      "id": 179,
+      "content": "60c2δ2σ2B2(1−p) (cid:19)1/2\n+2\npT\n(cid:18) σ2(360L(f(x0)−f∗)+100cδσ2) (cid:19)1/2\n+2\npGT\nAppendixF. AnalysisofD-Byz-SGDMintheHeterogeneousSetting\nIntheheterogeneoussetting,clientshavedifferentlocaldatadistributions,characterizedbythehet-\nerogeneityparameterζ2 > 0. Thisintroducesadditionalchallengescomparedtothehomogeneous\n28\n===  29 ===\nDELAYEDMOMENTUMAGGREGATION\ncase, asthelocalgradients∇f (x)candiffersignificantlyfromtheglobalgradient∇f(x)evenin\ni\ntheabsenceofstochasticnoise.",
+      "size": 482,
+      "sentences": 3
+    },
+    {
+      "id": 180,
+      "content": "radients∇f (x)candiffersignificantlyfromtheglobalgradient∇f(x)evenin\ni\ntheabsenceofstochasticnoise. Nevertheless, we emphasize that the proof for the error bound term E∥e¯t∥2 does not rely on\nheterogeneity assumptions. Hence, we can directly invoke Lemma 12. The only new difficulty\narisesfromtheaggregationerror,buteveninthiscase,thedeviationanalysisprovidedbyLemma9\nremainsapplicable.",
+      "size": 386,
+      "sentences": 4
+    },
+    {
+      "id": 181,
+      "content": "esfromtheaggregationerror,buteveninthiscase,thedeviationanalysisprovidedbyLemma9\nremainsapplicable. Therefore, the heterogeneousanalysis differsfrom thehomogeneous oneonly\ninhandlingthisadditionalaggregationcomponent. F.1. AggregationError\nLemma14(Robustaggregationerrorinheterogeneouscase) Suppose Assumptions 1, 2, 3, 4,\nand 5 hold, and assume E(cid:13) (cid:13)e1 (cid:13) (cid:13) 2 ≤ 2σ2 .",
+      "size": 394,
+      "sentences": 4
+    },
+    {
+      "id": 182,
+      "content": "ose Assumptions 1, 2, 3, 4,\nand 5 hold, and assume E(cid:13) (cid:13)e1 (cid:13) (cid:13) 2 ≤ 2σ2 . The expected squared error between the true average\nn\nmomentumandtherobustaggregateintheheterogeneoussettingisboundedby:\n3ζ2 3ζ2 (cid:18) 1−p (cid:19)\nE∥mt−m¯t∥2 ≤ 4cδ(6ασ2+ )+4cδ(6σ2− )(1−αp)t−1+576cδL2η2B2 =: D . p p αp2 t\nRemark15 Wheninthehomogeneouscaseζ = 0,itmatcheswiththehomogeneousresultEupto\naconstantfactor.",
+      "size": 419,
+      "sentences": 3
+    },
+    {
+      "id": 183,
+      "content": "p2 t\nRemark15 Wheninthehomogeneouscaseζ = 0,itmatcheswiththehomogeneousresultEupto\naconstantfactor. Proof The proof follows a similar structure to the homogeneous case but must carefully account\nfordataheterogeneity. Weanalyzethreekeyerrorcomponentsandcombinethem. Individualclientmomentumerror. Foreachclienti,weboundthedeviationbetweenactualand\nexpectedmomentum:\nE∥mt−mˆt∥2 = pE∥α(∇f (xt−1;ξt−1)−∇f(xt−1))+(1−α)(mt−1−mˆt−1)∥2\ni i i i i i\n+(1−p)E∥mt−1−mˆt−1∥2\ni i\n≤ (1−αp)E∥mt−1−mˆt−1∥2+pα2σ2.",
+      "size": 494,
+      "sentences": 5
+    },
+    {
+      "id": 184,
+      "content": "1)−∇f(xt−1))+(1−α)(mt−1−mˆt−1)∥2\ni i i i i i\n+(1−p)E∥mt−1−mˆt−1∥2\ni i\n≤ (1−αp)E∥mt−1−mˆt−1∥2+pα2σ2. i i\nUnrollingtherecursionyields:\nE∥mt−mˆt∥2 ≤ σ2(α+(1−pα)t−1). i i\nGlobalmomentumerror.",
+      "size": 187,
+      "sentences": 3
+    },
+    {
+      "id": 185,
+      "content": "−1∥2+pα2σ2. i i\nUnrollingtherecursionyields:\nE∥mt−mˆt∥2 ≤ σ2(α+(1−pα)t−1). i i\nGlobalmomentumerror. Weboundthedeviationoftheaveragemomentumfromitsdetermin-\nisticcounterpart:\n(cid:13)\nE∥m¯t−mˆt∥2 = E (cid:13) (cid:13) 1 (cid:88) rt(cid:2) (1−α)(mt−1−mˆt−1)+α(∇f (xt−1;ξt−1)−∇f (xt−1)) (cid:3)\n(cid:13)G i i i i i i\n(cid:13)\ni∈G\n+(1−rt)(mt−1−mˆt−1) (cid:13)\n(cid:13)\n2\ni i i\n(cid:13) (cid:13)1 (cid:88) (cid:13) (cid:13) 2(cid:20) α2σ2(cid:21)\n= E(cid:13) rt(cid:13) (1−α)2E∥m¯t−1−mˆt−1∥2+\n(cid:13)G i(cid:13) G\n(cid:13) (cid:13)\ni∈G\n(cid:13) (cid:13)2\n(cid:13)1 (cid:88) (cid:13)\n+E(cid:13) (1−rt)(cid:13) E∥m¯t−1−mˆt−1∥2\n(cid:13)G i (cid:13)\n(cid:13) (cid:13)\ni∈G\npα2σ2\n≤ (1−αp)E∥m¯t−1−mˆt−1∥2+ .",
+      "size": 696,
+      "sentences": 4
+    },
+    {
+      "id": 186,
+      "content": "cid:13) E∥m¯t−1−mˆt−1∥2\n(cid:13)G i (cid:13)\n(cid:13) (cid:13)\ni∈G\npα2σ2\n≤ (1−αp)E∥m¯t−1−mˆt−1∥2+ . G\n29\n===  30 ===\nDELAYEDMOMENTUMAGGREGATION\nUnrollingtherecursionyields:\nσ2\nE∥m¯t−mˆt∥2 ≤ (α+(1−pα)t−1). G\nHeterogeneity-induced error. This is the most complicated part: we analyze how client hetero-\ngeneity contributes to momentum divergence. For a uniformly sampled client i ∈ G, we need to\nboundE ∥mˆt−mˆt∥2. i i\nThe analysis considers all possible participation patterns of the G good clients.",
+      "size": 498,
+      "sentences": 6
+    },
+    {
+      "id": 187,
+      "content": "E ∥mˆt−mˆt∥2. i i\nThe analysis considers all possible participation patterns of the G good clients. When k out of\nGclientsparticipate(withprobability (cid:0)G(cid:1) pk(1−p)G−k),theerrorincludes:\nk\n• Momentumdifferences: (1−α)2E ∥mˆt−1−mˆt−1∥2\ni i\n• Directheterogeneitybias: α2E ∥∇f (xt−1)−∇f(xt−1)∥2 = α2ζ2\ni i\n• Cross-clientinterferencefromstaleness: Additionaltermswhensomeclientsdon’tparticipate\nWe sample worker i uniformly random from G (which is equivalent to computing 1 (cid:80) ∥·∥2,\nG\nwedothisforsimplicity),then\nE\ni\n(cid:13) (cid:13)mˆt\ni\n−mˆt(cid:13)\n(cid:13)\n2\n(cid:40) (cid:41)\n= pG (1−α)2E i (cid:13) (cid:13)mˆt i −1−mˆt−1(cid:13) (cid:13) 2 +α2E i (cid:13) (cid:13)∇f i (xt−1)−∇f(xt−1) (cid:13) (cid:13) 2\n(cid:40)\n(cid:18) (cid:19)\n+ G 1 pG−1(1−p) (1−α)2 (cid:16) 1+ α 2 (cid:17) E i (cid:13) (cid:13)mˆt i −1−mˆt−1(cid:13) (cid:13) 2 +α2E i (cid:13) (cid:13)∇f i (xt−1)−∇f(xt−1) (cid:13) (cid:13) 2\n(cid:41)\n+α2 (cid:16) 1+ α 2 (cid:17) E l1 (cid:13) (cid:13)mˆt l1 −1−∇f l1 (xt−1) (cid:13) (cid:13) 2\n+···\n(cid:40)\n(cid:18) (cid:19)\n+ m G pG−m(1−p)m (1−α)2 (cid:16) 1+ α 2 (cid:17) E i (cid:13) (cid:13)mˆt i −1−mˆt−1(cid:13) (cid:13) 2 +α2E i (cid:13) (cid:13)∇f i (xt−1)−∇f(xt−1) (cid:13) (cid:13) 2\nm (cid:41)\n+α2 (cid:16) 1+ α 2 (cid:17)(cid:88) E lj (cid:13) (cid:13)mˆ l t 1 −1−∇f l1 (xt−1) (cid:13) (cid:13) 2\nj=1\n+···\n≤ (1−αp)E i (cid:13) (cid:13)mˆt i −1−mˆt−1(cid:13) (cid:13) 2 +αζ2+3αp(1−p)·4L2η2B2 (cid:18) 4(1 p − α α)2 + 4(1 p − 2 p) (cid:19) .",
+      "size": 1480,
+      "sentences": 3
+    },
+    {
+      "id": 188,
+      "content": "−1−mˆt−1(cid:13) (cid:13) 2 +αζ2+3αp(1−p)·4L2η2B2 (cid:18) 4(1 p − α α)2 + 4(1 p − 2 p) (cid:19) . Unrollingtherecursiongives:\nζ2 (cid:18) 1−p (cid:19)\nE ∥mˆt−mˆt∥2 ≤ (1−(1−αp)t)+48L2η2B2\ni i p αp2\nCombining the bounds. We combine the three error components using triangle inequality. For\nanytwogoodclientsi,j:\nE∥mt−mt∥2 ≤ 2E∥mt−m¯t∥2+2E∥mt −m¯t∥2. i j i j\n30\n===  31 ===\nDELAYEDMOMENTUMAGGREGATION\nEachindividualclienterrordecomposesas:\nE∥mt−m¯t∥2 ≤ 3E∥mt−mˆt∥2+3E∥mˆt−m¯t∥2+3E∥mˆt−mˆt∥2.",
+      "size": 489,
+      "sentences": 5
+    },
+    {
+      "id": 189,
+      "content": "REGATION\nEachindividualclienterrordecomposesas:\nE∥mt−m¯t∥2 ≤ 3E∥mt−mˆt∥2+3E∥mˆt−m¯t∥2+3E∥mˆt−mˆt∥2. i i i i\nSubstitutingourboundsfromSteps1-3:\n3σ2\nE∥mt−m¯t∥2 ≤ 3σ2(α+(1−pα)t−1)+ (α+(1−pα)t−1)\ni G\n3ζ2 (cid:18) 1−p (cid:19)\n+ (1−(1−αp)t)+144L2η2B2\np αp2\n3ζ2 3ζ2 (cid:18) 1−p (cid:19)\n≤ (6ασ2+ )+(6σ2− )(1−αp)t−1+144L2η2B2 . p p αp2\nFinalbound. Combiningforthemaximumpairwisedifference:\n3ζ2 3ζ2\nmaxE∥mt−mt∥2 ≤ 4(6ασ2+ )+4(6σ2− )(1−αp)t−1\ni,j∈G i j p p\n(cid:18) (cid:19)\n1−p\n+576L2η2B2 .",
+      "size": 483,
+      "sentences": 4
+    },
+    {
+      "id": 190,
+      "content": "3ζ2 3ζ2\nmaxE∥mt−mt∥2 ≤ 4(6ασ2+ )+4(6σ2− )(1−αp)t−1\ni,j∈G i j p p\n(cid:18) (cid:19)\n1−p\n+576L2η2B2 . αp2\nThe claim follows from the robust aggregation property: E∥mt −m¯t∥2 ≤ cδ ·max E∥mt −\ni,j∈G i\nmt∥2. j\nF.2. ConvergenceAnalysis\nTheorem16(Convergencerateforheterogeneouscase) Suppose Assumptions 1, 2, 3, 4, and 5\nhold,andassumeatinitialization(t = 1)withp = 1,α = 1,andE(cid:13) (cid:13)e¯1 (cid:13) (cid:13) 2 ≤ 2σ2 .",
+      "size": 420,
+      "sentences": 4
+    },
+    {
+      "id": 191,
+      "content": "ndassumeatinitialization(t = 1)withp = 1,α = 1,andE(cid:13) (cid:13)e¯1 (cid:13) (cid:13) 2 ≤ 2σ2 . Withstepsize\nn\n(cid:32) (cid:33)\np (cid:18) 4(f(x0)−f∗)+14cδσ2/L (cid:19)1/2\nη := min 1, ,\n10L (14cδσ2L)/p+320cδLB2(1−p)/p+90Lσ2/pG)T\nandmomentumparameterα := min(1,9Lη/p),\n1 (cid:88) T (cid:18) cδζ2 L (cid:0) f(x0)−f∗(cid:1) σ2 cδσ2 cδσ2\nE∥∇f(xt)∥2 ≤ O + + + +\nT p pT GT T pT\nt=0\n(cid:115) (cid:115)\n(cid:0) (cid:1)\ncδσ2L f(x0)−f∗ c2δ2σ4\n+ +\npT pT\n(cid:115) (cid:115)\ncδ(1−p)LB2(f(x0)−f∗) c2δ2σ2(1−p)B2\n+ +\npT pT\n(cid:115) (cid:115)\nLσ2 (cid:0) f(x0)−f∗ (cid:1) cδσ4(cid:19)\n+ +\npGT pGT\nRemark17(Interpretationofheterogeneousconvergencerate) Theheterogeneousconvergence\nrateincludesseveralkeydifferencescomparedtothehomogeneouscase:\n31\n===  32 ===\nDELAYEDMOMENTUMAGGREGATION\n•\ncδζ2\n: Newheterogeneitypenalty,scaledinverselybyparticipationprobabilityp\np\n• All other terms: Similar structure to homogeneous case but with potentially different con-\nstants\n• Theheterogeneitytermζ2 appearsbothintheleadingconstantandwithinsquarerootterms,\nshowingthatdataheterogeneitycompoundswithByzantineattacksandpartialparticipation\nWhen ζ = 0 (homogeneous case), this bound recovers the homogeneous result up to constant\nfactors.",
+      "size": 1214,
+      "sentences": 2
+    },
+    {
+      "id": 192,
+      "content": "n\nWhen ζ = 0 (homogeneous case), this bound recovers the homogeneous result up to constant\nfactors. Proof\n(cid:16) (cid:17)\nLetLyapunovfunctionΛ = Ef(xt)−f∗+ 5η −η E∥e¯∥2+ ηE∥∇f(xt−1)∥2.",
+      "size": 186,
+      "sentences": 2
+    },
+    {
+      "id": 193,
+      "content": "ant\nfactors. Proof\n(cid:16) (cid:17)\nLetLyapunovfunctionΛ = Ef(xt)−f∗+ 5η −η E∥e¯∥2+ ηE∥∇f(xt−1)∥2. Then,\nt 2αp t 4\nη 5η 5ηα\nΛ ≤ Λ − E∥∇f(xt)∥2+ E∥mt−m¯t∥2+ σ2\nt+1 t\n4 4 2G\n(cid:124) (cid:123)(cid:122) (cid:125)\nDt\n≤ Λ − η\nT\n(cid:88)\n−1\nE∥∇f(xt)∥2+ 5η\n(cid:80)T\nt=1 D t + 5ηαT σ2\n1\n4 4 2G\nt=1\nSinceatt = 1,wetakep = 1andα = 1,wehave:\n3η η\nΛ ≤ Ef(x1)−f∗+ E∥e¯ ∥2+ E∥∇f(x0)∥2\n1 1\n2 4\n5η η\n≤ f(x0)−f∗+ E∥e¯ ∥2− E∥∇f(x0)∥2+ηE∥m1−m¯1∥2\n1\n2 4\nη 5ησ2\n≤ f(x0)−f∗− E∥∇f(x0)∥2+ +2cδησ2\n4 2G\nThus,bypositivityofLyapunovfunction:\n1 T (cid:88) −1 4(f(x0)−f∗) 10σ2 8cδσ2 5 T (cid:88) −1 10αpσ2\nE∥∇f(xt)∥2 ≤ + + + D +\nt\nT ηT GT T T G\nt=0 t=0\n4(f(x0)−f∗) 10σ2 8cδσ2\n= + +\nηT GT T\n3ζ2 3ζ2 1 T (cid:88) −1\n+20cδ(6ασ2+ )+20cδ(6σ2− ) (1−αp)t−1\np p T\nt=0\n(cid:18) 1−p (cid:19) 10ασ2\n+2880cδL2η2B2 +\nαp2 G\n32\n===  33 ===\nDELAYEDMOMENTUMAGGREGATION\nLetmomentumparameterα = min(9Lη/p,1)\n1 T (cid:88) −1 4(f(x0)−f∗) 10σ2 8cδσ2 14cδσ2\nE∥∇f(xt)∥2 ≤ + + +\nT ηT GT T LηT\nt=0\n60cδζ2 14cδσ2Lη (cid:18) 1−p (cid:19)\n+ + +320cδLB2η\np p p\n90Lησ2\n+\npG\n(cid:18) (cid:19)\nSettingη := min 1, p ,\n(cid:16)\n4(f(x0)−f∗)+14cδσ2/L\n(cid:17)1/2\nandtuningthestepsize\n10L (14cδσ2L)/p+320cδLB2(1−p)/p+90Lσ2/pG)T\n(seeLemma15in[47])\n1 T (cid:88) −1 40L(f(x0)−f∗) 10σ2 8cδσ2 14cδσ2\nE∥∇f(xt)∥2 ≤ + + +\nT pT GT T pT\nt=0\n(cid:18) cδσ2(56L(f(x0)−f∗)+196cδσ2) (cid:19)1/2\n+2\npT\n(cid:18) 1280cδLB2∆(1−p)+4480c2δ2σ2B2(1−p) (cid:19)1/2\n+2\npT\n(cid:18) σ2(360L(f(x0)−f∗)+1260cδσ2) (cid:19)1/2\n+2\npGT\n60cδζ2\n+\np\nAppendixG.",
+      "size": 1460,
+      "sentences": 3
+    },
+    {
+      "id": 194,
+      "content": "−p) (cid:19)1/2\n+2\npT\n(cid:18) σ2(360L(f(x0)−f∗)+1260cδσ2) (cid:19)1/2\n+2\npGT\n60cδζ2\n+\np\nAppendixG. LowerBoundAnalysis\nThis section establishes a fundamental lower bound showing that the Ω(δζ2/p) error term in our\nupper bound is unavoidable for any algorithm operating under partial participation with Byzantine\nclients. Proofstrategy. Weuseaclassicaltwo-worldargumentwhereweconstructtwodifferentproblem\ninstances that are indistinguishable to any algorithm, but have different optimal solutions.",
+      "size": 496,
+      "sentences": 4
+    },
+    {
+      "id": 195,
+      "content": "roblem\ninstances that are indistinguishable to any algorithm, but have different optimal solutions. Since\nnoalgorithmcantelltheseworldsapartbasedonthelimitedinformationitreceives(duetopartial\nparticipationandByzantineinterference),itmustperformpoorlyonatleastoneofthem. 33\n===  34 ===\nDELAYEDMOMENTUMAGGREGATION\nG.1. World1Construction\nInWorld1,wecreateaheterogeneousproblemwheresomeclientshavebiasedobjectivesthatshift\ntheglobaloptimum.",
+      "size": 437,
+      "sentences": 4
+    },
+    {
+      "id": 196,
+      "content": "World1,wecreateaheterogeneousproblemwheresomeclientshavebiasedobjectivesthatshift\ntheglobaloptimum. Wedefinetheclientfunctionsas:\n(cid:40)\nµx2−ζδ−1/2p−3/2x fori ∈ {1,...,pδn}(biasedclients)\nf1(x) = 2\ni µx2 fori ∈ {pδn+1,...,n}(unbiasedclients)\n2\nUnderpartialparticipation,whenclientiissampled(withprobabilityp),thealgorithmobserves:\n(cid:40)\nµx−ζδ−1/2p−3/2 ifi ∈ {1,...,pδn}(biasedclients)\n∇f1(x) =\ni\nµx otherwise(unbiasedclients)\nGlobalobjective.",
+      "size": 447,
+      "sentences": 2
+    },
+    {
+      "id": 197,
+      "content": "1/2p−3/2 ifi ∈ {1,...,pδn}(biasedclients)\n∇f1(x) =\ni\nµx otherwise(unbiasedclients)\nGlobalobjective. TheglobalobjectiveforWorld1is:\nn\n1 (cid:88) µ pδn µ\nf1(x) = f1(x) = x2− ·ζδ−1/2p−3/2x = x2−δ1/2p−1/2ζx. n i 2 n 2\ni=1\nBytakingthederivativeandsettingittozero,theglobaloptimumisachievedat:\nδ1/2ζ\nx1 = . ∗ µp1/2\nHeterogeneity verification. We must verify that our construction satisfies the heterogeneity as-\nsumptionE ∥∇f (x)−∇f1(x)∥2 ≤ ζ2.",
+      "size": 438,
+      "sentences": 5
+    },
+    {
+      "id": 198,
+      "content": "must verify that our construction satisfies the heterogeneity as-\nsumptionE ∥∇f (x)−∇f1(x)∥2 ≤ ζ2. i∼Unif([n]) i\nTheexpectedsquareddeviationis:\nE ∥∇f (x)−∇f1(x)∥2\ni∼Unif([n]) i\nδn (1−δ)n\n= [(ζp−3/2δ−1/2−ζδ1/2p−1/2)2]+ [(ζδ1/2p−1/2)2]\nn n\n= δ(ζp−3/2δ−1/2−ζδ1/2p−1/2)2+(1−δ)(ζδ1/2p−1/2)2\n1−δp\n= ζ2\np2\n≤ ζ2\n√\nThelastinequalityholdswhenp ≥ −δ+ δ2+4,whichissatisfiedforreasonablechoicesofpandδ. 2\nG.2.",
+      "size": 396,
+      "sentences": 3
+    },
+    {
+      "id": 199,
+      "content": "2\n≤ ζ2\n√\nThelastinequalityholdswhenp ≥ −δ+ δ2+4,whichissatisfiedforreasonablechoicesofpandδ. 2\nG.2. World2Construction\nIn World 2, the first δn clients are Byzantine attackers (B2 = {1,...,δn}), while the remaining\nclientsarehonestwithhomogeneousobjectives:\nµ\nf2(x) = x2 fori ∈ G2 = {δn+1,...,n}\ni 2\nTheglobalobjectiveconsideringonlyhonestclientsis:\n1 (cid:88) µ\nf2(x) = f2(x) = x2. |G2| i 2\ni∈G2\nTherefore,theglobaloptimumforWorld2isx2 = 0. ∗\n34\n===  35 ===\nDELAYEDMOMENTUMAGGREGATION\nMimicattack.",
+      "size": 498,
+      "sentences": 5
+    },
+    {
+      "id": 200,
+      "content": "erefore,theglobaloptimumforWorld2isx2 = 0. ∗\n34\n===  35 ===\nDELAYEDMOMENTUMAGGREGATION\nMimicattack. ThekeyinsightisthatByzantineclientsinWorld2canperfectlymimicthebehav-\niorofhonestclientsfromWorld1. SinceByzantineclientshaveaccesstoallinformation(including\nrandomizationseedsforclientsampling),theycanimitate:\n(cid:40)\nµx2−ζδ−1/2p−3/2x fori ∈ {1,...,pδn}\nByzantineclientiinWorld2mimics: 2\nµx2 fori ∈ {pδn+1,...,δn}\n2\nIndistinguishability argument.",
+      "size": 448,
+      "sentences": 4
+    },
+    {
+      "id": 201,
+      "content": ".,pδn}\nByzantineclientiinWorld2mimics: 2\nµx2 fori ∈ {pδn+1,...,δn}\n2\nIndistinguishability argument. This imitation makes the two worlds completely indistinguish-\nable to any algorithm. An algorithm observes the same distribution of gradients in both worlds,\nso:\nxout = ALG(World1) = ALG(World2). G.3. FinalLowerBoundArgument\nSinceanyalgorithmmustoutputthesamesolutionforbothworlds,buttheoptimalsolutionsdiffer,\nthe algorithm must perform poorly on at least one world.",
+      "size": 467,
+      "sentences": 5
+    },
+    {
+      "id": 202,
+      "content": "orbothworlds,buttheoptimalsolutionsdiffer,\nthe algorithm must perform poorly on at least one world. We establish this through the following\nchainofinequalities:\nmax E∥∇fk(xout)∥2 ≥ 2µ max E(fk(xk)−fk(xout))\n∗\nk∈{1,2} k∈{1,2}\nµ\n≥ 2µ max E∥xk −xout∥2\n2 k∈{1,2} ∗\n(cid:18)\n1\n(cid:19)2\n≥ µ2 ∥x1−x2∥\n2 ∗ ∗\n(cid:32) (cid:33)2\n1 δ1/2ζ\n= µ2 ·\n2 µp1/2\nδζ2\n= . 4p\nThefirstinequalityfollowsfromthePolyak-Łojasiewicz(PL)condition,whichholdsforµ-strongly\nconvex functions.",
+      "size": 459,
+      "sentences": 3
+    },
+    {
+      "id": 203,
+      "content": "stinequalityfollowsfromthePolyak-Łojasiewicz(PL)condition,whichholdsforµ-strongly\nconvex functions. The second inequality is a direct consequence of µ-strong convexity. The third\ninequalityfollowsfromthepigeonholeprinciple: sincexoutisthesameforbothworldsbutx1 ̸= x2,\n∗ ∗\nthe algorithm must be at least distance 1∥x1 −x2∥ from one of the optima. The final equality is\n2 ∗ ∗\nobtainedbysubstitutingx1 = δ1/2ζ andx2 = 0.",
+      "size": 417,
+      "sentences": 4
+    },
+    {
+      "id": 204,
+      "content": "x2∥ from one of the optima. The final equality is\n2 ∗ ∗\nobtainedbysubstitutingx1 = δ1/2ζ andx2 = 0. ∗ µp1/2 ∗\nThisestablishesthefundamentallowerboundΩ(δζ2/p)foranyalgorithmoperatingunderpar-\ntialparticipationwithByzantineclients. 35",
+      "size": 232,
+      "sentences": 4
+    }
+  ]
+}

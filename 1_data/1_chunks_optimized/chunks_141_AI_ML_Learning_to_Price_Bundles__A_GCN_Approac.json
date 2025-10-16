@@ -1,0 +1,771 @@
+{
+  "source": "ArXiv",
+  "filename": "141_AI_ML_Learning_to_Price_Bundles__A_GCN_Approac.pdf",
+  "domain": "AI",
+  "total_chars": 42222,
+  "total_chunks": 127,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\nPreprint. LEARNING TO PRICE BUNDLES:\nA GCN APPROACH FOR MIXED BUNDLING\nLiangyuDing∗,ChenghanWu∗,GuokaiLi,ZizhuoWang†\nSchoolofDataScience\nTheChineseUniversityofHongKong,Shenzhen\nGuangdong,518172,P.R.China\n{liangyuding, chenghanwu, guokaili}@link.cuhk.edu.cn\nwangzizhuo@cuhk.edu.cn\nABSTRACT\nBundle pricing refers to designing several product combinations (i.e., bundles)\nand determining their prices in order to maximize the expected profit.",
+      "size": 450,
+      "sentences": 2
+    },
+    {
+      "id": 2,
+      "content": "combinations (i.e., bundles)\nand determining their prices in order to maximize the expected profit. It is a\nclassic problem in revenue management and arises in many industries, such as\ne-commerce, tourism, and video games. However, the problem is typically in-\ntractable due to the exponential number of candidate bundles. In this paper, we\nexplore the usage of graph convolutional networks (GCNs) in solving the bun-\ndle pricing problem.",
+      "size": 438,
+      "sentences": 4
+    },
+    {
+      "id": 3,
+      "content": "e\nexplore the usage of graph convolutional networks (GCNs) in solving the bun-\ndle pricing problem. Specifically, we first develop a graph representation of the\nmixed bundling model (where every possible bundle is assigned with a specific\nprice)andthentrainaGCNtolearnthelatentpatternsofoptimalbundles. Based\non the trained GCN, we propose two inference strategies to derive high-quality\nfeasible solutions. A local-search technique is further proposed to improve the\nsolutionquality.",
+      "size": 484,
+      "sentences": 4
+    },
+    {
+      "id": 4,
+      "content": "ty\nfeasible solutions. A local-search technique is further proposed to improve the\nsolutionquality. Numericalexperimentsvalidatetheeffectivenessandefficiency\nofourproposedGCN-basedframework. UsingaGCNtrainedoninstanceswith\n5 products, our methods consistently achieve near-optimal solutions (better than\n97%)withonlyafractionofcomputationaltimeforproblemsofsmalltomedium\nsize.",
+      "size": 376,
+      "sentences": 4
+    },
+    {
+      "id": 5,
+      "content": "mal solutions (better than\n97%)withonlyafractionofcomputationaltimeforproblemsofsmalltomedium\nsize. Italsoachievessuperiorsolutionsforlargersizeofproblemscomparedwith\nother heuristic methods such as bundle size pricing (BSP). The method can also\nprovidehighqualitysolutionsforinstanceswithmorethan30productsevenfor\nthechallengingcaseswhereproductutilitiesarenon-additive. 1 INTRODUCTION\nBundlepricingisawidelyadoptedstrategyacrossindustriessuchase-commerce,tourism,digital\nsubscriptions,andretail.",
+      "size": 497,
+      "sentences": 4
+    },
+    {
+      "id": 6,
+      "content": "ngisawidelyadoptedstrategyacrossindustriessuchase-commerce,tourism,digital\nsubscriptions,andretail. Itreferstothepracticethatafirmprovidescombinations(i.e.,“bundles”)\nofproductsorservices(atdiscountedprices),supplementingthetraditionalcomponentpricing(CP)\nstrategy where products are only sold separately, each with its own price.",
+      "size": 330,
+      "sentences": 2
+    },
+    {
+      "id": 7,
+      "content": "onalcomponentpricing(CP)\nstrategy where products are only sold separately, each with its own price. For instance, Amazon\nPrime combines fast shipping, video streaming, and music services into a single package, and re-\nportsshowthatsubscriptionbundlesdrive$44billioninsubscriptionrevenueforAmazonin2024\n(Modern Retail, 2024).",
+      "size": 324,
+      "sentences": 2
+    },
+    {
+      "id": 8,
+      "content": "owthatsubscriptionbundlesdrive$44billioninsubscriptionrevenueforAmazonin2024\n(Modern Retail, 2024). Similarly, Statista estimates a significant growth of the global digital sub-\nscription market, estimated at $832.99 billion in 2023 and projected to reach $1902.28 billion in\n2030.",
+      "size": 281,
+      "sentences": 2
+    },
+    {
+      "id": 9,
+      "content": "ption market, estimated at $832.99 billion in 2023 and projected to reach $1902.28 billion in\n2030. Thisexpansionislargelyfueledbytheincreasingadoptionofbundledsubscriptionpackages,\nsuch as Amazon Prime’s combination of fast shipping, video streaming, and music services, and\nDisney+’sbundledofferingswithHulu(GrandViewResearch,2023).",
+      "size": 334,
+      "sentences": 2
+    },
+    {
+      "id": 10,
+      "content": "video streaming, and music services, and\nDisney+’sbundledofferingswithHulu(GrandViewResearch,2023). In order to optimize this policy, the firm needs to determine which bundles to offer and how to\nset the corresponding prices, under the constraint that customers will self-select the option that\nmaximizestheirsurplus.",
+      "size": 317,
+      "sentences": 2
+    },
+    {
+      "id": 11,
+      "content": "prices, under the constraint that customers will self-select the option that\nmaximizestheirsurplus. Thisproblemisinherentlycombinatorial: withnproducts,thenumberof\npossiblebundlesgrowsexponentially(2n).Classicalformulations,suchasthemixedbundling(MB)\nmodel by Hanson & Martin (1990), rigorously capture customer surplus constraints but become\ncomputationallyintractablewhennexceeds15. Laterapproximations,suchasbundle-sizepricing\n∗Thefirsttwoauthorscontributedequallyandareorderedalphabetically.",
+      "size": 495,
+      "sentences": 3
+    },
+    {
+      "id": 12,
+      "content": "imations,suchasbundle-sizepricing\n∗Thefirsttwoauthorscontributedequallyandareorderedalphabetically. †Correspondingauthor. 1\n5202\ntcO\n7\n]GL.sc[\n2v75522.9052:viXra\n===  2 ===\nPreprint. (bundleswiththesamesizessharethesameprices),see,e.g.,Chuetal. (2011),improvescalability\nbut rely on strong simplifying assumptions (e.g., ignoring product heterogeneity), limiting their\nrealism. Moreover,Chenetal.",
+      "size": 396,
+      "sentences": 6
+    },
+    {
+      "id": 13,
+      "content": "ying assumptions (e.g., ignoring product heterogeneity), limiting their\nrealism. Moreover,Chenetal. (2018)show#P-hardnessofthebundlepricingproblemevenunder\nvery restricted settings (e.g., size two, discounted bundle-pricing), which further underscores that\ncomputationaltractabilityremainsthecentralchallengeofbundlepricinginrealisticmarkets. Toovercomethischallenge, weproposeaGCN-basedframeworkthatlearnstoidentifythelatent\nstructureofthebundlepricingproblemandhenceprovideshigh-qualitysolutions.",
+      "size": 498,
+      "sentences": 4
+    },
+    {
+      "id": 14,
+      "content": "tlearnstoidentifythelatent\nstructureofthebundlepricingproblemandhenceprovideshigh-qualitysolutions. Thecoreideaof\nourapproachistotrainaGCNtomakeapredictionofwhichbundleeachsegmentofcustomerwill\nchoose at the optimal solution, which effectively reduces the intractable exponential search space\ntoamuchsmallersubset. Specifically,wefirstdesignatwo-layerGCNthatlearnsbundle-segment\nmatchingsandpredictslikelihoodsofeachproductbeingintheoptimalbundle.",
+      "size": 447,
+      "sentences": 3
+    },
+    {
+      "id": 15,
+      "content": "yerGCNthatlearnsbundle-segment\nmatchingsandpredictslikelihoodsofeachproductbeingintheoptimalbundle. TheGCN,although\ntrained only on small-scale instances (whose optimal solutions can be efficiently computed), can\nproduce high-quality predictions for large-scale problems. Then, based on these predictions, we\ndevelop two strategies to generate candidate solutions. The first is a Fixed Cutoff Pruning (FCP)\nmethod.",
+      "size": 414,
+      "sentences": 4
+    },
+    {
+      "id": 16,
+      "content": "p two strategies to generate candidate solutions. The first is a Fixed Cutoff Pruning (FCP)\nmethod. In the FCP method, for each segment, we only keep those bundles that contain prod-\nucts with predicted probability greater than 0.5, and discard the rest. The second is a Progressive\nCutoffPruning(PCP)method. InthePCPmethod,foreachsegment,werankbundlesbytheirpre-\ndictedprobabilityandretainthebundlesthatsatisfyacutoffrequirementascandidatestoconstruct\nprefixbundlesforeachsegment.",
+      "size": 481,
+      "sentences": 5
+    },
+    {
+      "id": 17,
+      "content": "ndretainthebundlesthatsatisfyacutoffrequirementascandidatestoconstruct\nprefixbundlesforeachsegment. Basedontheprunedspace, weapplyHanson&Martin(1990)’s\nmixedintegerlinearprogramming(MILP)formulationtofindtheoptimalprices,whichsuccessfully\nmaintainnear-optimalrevenueperformancewhilesavingsignificantcomputationalcosts.Tofurther\nimprovesolutionquality,weincorporatealocalsearchmethodtoexplorealternativepromisingbun-\ndle assortments by strategically adding or dropping products, guided by the likelihood predictions\nof our GCN model.",
+      "size": 532,
+      "sentences": 2
+    },
+    {
+      "id": 18,
+      "content": "y strategically adding or dropping products, guided by the likelihood predictions\nof our GCN model. Finally, we conduct extensive experiments on synthetic datasets with varying\nproductandsegmentscales,comparingagainstestablishedbaselinesincludingmixedbundlingand\nbundle-sizepricing.",
+      "size": 282,
+      "sentences": 2
+    },
+    {
+      "id": 19,
+      "content": "tandsegmentscales,comparingagainstestablishedbaselinesincludingmixedbundlingand\nbundle-sizepricing. Ourresultsdemonstratethatforsmallscaleproblems(withnomorethan10products),theproposed\nstrategiesconsistentlyachieveover97%ofoptimalrevenuewhilerequiringonlyafractionofrun-\ntimecomparedtootherbaselinemethods.Moreover,theintegrationoflocalsearchfurtherimproves\nsolution quality, yielding an additional 1% increase in revenue on average within shorter runtime\ncomparedtotraditionalstrategies.",
+      "size": 488,
+      "sentences": 2
+    },
+    {
+      "id": 20,
+      "content": "dditional 1% increase in revenue on average within shorter runtime\ncomparedtotraditionalstrategies. Formedium-scaleproblems(with15-25products),wheremixed\nbundlingisintractable,ourstrategiesconsistentlybeatsbundlesizepricing,ineitherrevenueperfor-\nmanceunderlessthan30secondsorcomputationaltimewhenachievingsimilarlyeffectivelevelof\noptimality.",
+      "size": 343,
+      "sentences": 2
+    },
+    {
+      "id": 21,
+      "content": "r-\nmanceunderlessthan30secondsorcomputationaltimewhenachievingsimilarlyeffectivelevelof\noptimality. Forlarge-scaleproblems(e.g.,withmorethan30products)withnon-additiveutilities,\ntraditionalmethodsbecomecomputationallyintractable,whileourproposedmethodcanstillobtain\nasolutionefficiently.Tothebestofourknowledge,ourapproachpresentsthefirstscalableapproach\nforprovidinganefficientsolutiontothebundlepricingproblemunderthenon-additivesettingand\nthenumericalexperimentsdemonstratetheeffectivenessandscalabilityofourproposedapproach.",
+      "size": 528,
+      "sentences": 2
+    },
+    {
+      "id": 22,
+      "content": "vesettingand\nthenumericalexperimentsdemonstratetheeffectivenessandscalabilityofourproposedapproach. 2 RELATED WORK\nThestudyofbundlepricinghasalonghistoryineconomicsandoperationsresearchcommunities.",
+      "size": 197,
+      "sentences": 2
+    },
+    {
+      "id": 23,
+      "content": ". 2 RELATED WORK\nThestudyofbundlepricinghasalonghistoryineconomicsandoperationsresearchcommunities. Early work in the two-product setting established the profitability of bundling relative to separate\nsales: Stigler(1963)firstshowsthatpurebundling(PB)inwhichproductsareonlysoldtogetheras\napackageatasinglepricecandominatecomponentpricinginprofitabilityfortwoproducts,while\nAdams&Yellen(1976)andSchmalensee(1984)demonstratetheprofitabilityforCP,PBandMB\nforthetwo-productscase.",
+      "size": 475,
+      "sentences": 3
+    },
+    {
+      "id": 24,
+      "content": "ms&Yellen(1976)andSchmalensee(1984)demonstratetheprofitabilityforCP,PBandMB\nforthetwo-productscase. Laterresearchextendstheseinsightstolarge-scalesettings. Astreamof\nworkanalyzessimplifiedmechanismssuchasCP(Abdallah2019),PB(Bakos&Brynjolfsson1999;\nAbdallah2019),andbundle-sizepricing(BSP)(Chuetal.,2011). Specifically,Bakos&Brynjolfs-\nson(1999)provethatPBapproximatestherevenueofMBwhenthenumberofproductsgrowslarge\nunder zero costs and independent and additive valuations.",
+      "size": 472,
+      "sentences": 4
+    },
+    {
+      "id": 25,
+      "content": "enueofMBwhenthenumberofproductsgrowslarge\nunder zero costs and independent and additive valuations. Later, Abdallah (2019) provides lower\nboundsfor revenuelossunder positivecostsfrom PB.Empiricaland theoreticalstudiesshow that\nBSPcanoutperformCPandPBincertainconditionsandcanachieveasymptoticoptimalitywhen\nproductcostsarehomogeneous,thoughitdeterioratesundercostheterogeneity(Hitt&Chen,2005;\nChuetal.,2011;Abdallahetal.,2021;Lietal.,2021).",
+      "size": 440,
+      "sentences": 2
+    },
+    {
+      "id": 26,
+      "content": "tdeterioratesundercostheterogeneity(Hitt&Chen,2005;\nChuetal.,2011;Abdallahetal.,2021;Lietal.,2021). Morerecently,novelmechanismshavebeen\nproposed,suchaspurebundlingwithdisposalforcosts(Ma&Simchi-Levi,2021),lootboxschemes\n(Chenetal.,2021),andcomponentpricingwithbundle-sizediscounts(CPBSD)(Chenetal.,2022),\n2\n===  3 ===\nPreprint. whichunifyCP,PBandBSPapproachesandachieveconstant-factorguarantees.",
+      "size": 396,
+      "sentences": 3
+    },
+    {
+      "id": 27,
+      "content": ".,2022),\n2\n===  3 ===\nPreprint. whichunifyCP,PBandBSPapproachesandachieveconstant-factorguarantees. Complementary\ntomechanismdesign,acomputationallineofworkhasmodeledbundlepricingdirectlyasamixed-\ninteger program. The seminal work by Hanson & Martin (1990) pioneers the MB formulation of\nthe optimal bundle pricing problem, showing that it preserves rigorous surplus maximization and\npricesub-additivityconstraints,thoughitsscalabilityislimitedbytheexponentialgrowthofcandi-\ndatebundles.",
+      "size": 487,
+      "sentences": 4
+    },
+    {
+      "id": 28,
+      "content": "esub-additivityconstraints,thoughitsscalabilityislimitedbytheexponentialgrowthofcandi-\ndatebundles. Ourworkfollowsthiscomputationaltradition: weretainHanson&Martin(1990)’s\nframework while leveraging graph-based learning to prune the bundle space before invoking the\nMILPsolver,therebycombiningtheoreticalrigorwithpracticalscalability. Recently,theuseofmachinelearningtoacceleratethesolutionofcombinatorialoptimizationprob-\nlemshasattractedincreasingattention.AseminalworkbyGasseetal.",
+      "size": 483,
+      "sentences": 3
+    },
+    {
+      "id": 29,
+      "content": "lutionofcombinatorialoptimizationprob-\nlemshasattractedincreasingattention.AseminalworkbyGasseetal. (2019)encodesmixed-integer\nprogramsasconstraint-variablebipartitegraphsandtrainsaGCNtoimitatestrongbranchingdeci-\nsions,acceleratingbranch-and-bound(B&B)andinspiringaseriesoffollow-upwork.Forexample,\nNairetal.(2020)introduceneuraldivingandneuralbranchingstrategiesforB&B;Dingetal. (2020)\nextendthebipartiterepresentationtoatripartitegraphtopredictpartialsolutions;Guptaetal.",
+      "size": 474,
+      "sentences": 3
+    },
+    {
+      "id": 30,
+      "content": "etal. (2020)\nextendthebipartiterepresentationtoatripartitegraphtopredictpartialsolutions;Guptaetal. (2022)\npropose a lookback imitation framework for branching efficiency; Sonnerat et al. (2021) combine\nneural diving with neural neighborhood search to improve solution quality, and Paulus & Krause\n(2023)designGCN-baseddivingmethodstofacilitateB&B.Inthecontextoflinearprogramming,\nFanetal. (2023)proposeGCN-basedinitialbasisselectiontowarm-startsimplexandcolumngen-\neration, whileLiuetal.",
+      "size": 488,
+      "sentences": 5
+    },
+    {
+      "id": 31,
+      "content": "(2023)proposeGCN-basedinitialbasisselectiontowarm-startsimplexandcolumngen-\neration, whileLiuetal. (2024)trainGCNstoimitateexpertpivotpolicies, shorteningpivotpaths. ThesestudiesconfirmthatGCNscansubstantiallyreducecomputationaleffortinsolvingoptimiza-\ntion problems. In addition to accelerating optimization solvers, machine learning is also directly\nintegrated into the core structure of operations research problems. Kool et al.",
+      "size": 431,
+      "sentences": 5
+    },
+    {
+      "id": 32,
+      "content": "ng is also directly\nintegrated into the core structure of operations research problems. Kool et al. (2019) introduce an\nattention-basedmodelthatlearnspowerfulheuristicsforcomplexroutingproblemslikethetraveling\nsalesmanproblem(TSP)andthevehicleroutingproblem(VRP),achievingnear-optimalresults. Li\netal. (2025)leveragethegeneralizabilityofGCNstosolvelarge-scaleNP-hardconstrainedassort-\nmentoptimizationproblemsunderthemultinomiallogitchoicemodel.",
+      "size": 445,
+      "sentences": 5
+    },
+    {
+      "id": 33,
+      "content": "velarge-scaleNP-hardconstrainedassort-\nmentoptimizationproblemsunderthemultinomiallogitchoicemodel. Inasimilarvein,weapply\nGCNs directly to the bundle pricing problem, where the GCN learns segment–bundle interactions\nandpredictspromisingcandidates. Inthisway,ourapproachpreservesthetheoreticalrigorofHan-\nson&Martin(1990)’smodelwhileleveragingGCNpredictionstoacceleratelarge-scaleinstances,\ntherebyextendingGCN-assistedoptimizationtoacorerevenuemanagementsetting.",
+      "size": 463,
+      "sentences": 3
+    },
+    {
+      "id": 34,
+      "content": "eratelarge-scaleinstances,\ntherebyextendingGCN-assistedoptimizationtoacorerevenuemanagementsetting. 3 PROBLEM DEFINITION AND BASELINES\nWe study a bundle pricing problem where a seller offers n distinct products to m heterogeneous\ncustomer segments.",
+      "size": 248,
+      "sentences": 2
+    },
+    {
+      "id": 35,
+      "content": "dle pricing problem where a seller offers n distinct products to m heterogeneous\ncustomer segments. Hence, there are a total of 2n bundle choices, denoted as B = {0,1,...,L},\nwhereL=2n−1and0indicatestheemptybundle.Thesellerchoosesthesetofprices{p |b∈B}\nb\nforbundlestomaximizeprofit,whichcanbedefinedas\n(cid:80)m (cid:80)\n(p −c )·q ,wherec is\nk=1 b∈B b kb kb kb\ntheservingcostofsellingbundlebtosegmentkandq ∈{0,1}denoteswhethersegmentkselects\nkb\nbundlebunderself-selectionassumption.",
+      "size": 482,
+      "sentences": 2
+    },
+    {
+      "id": 36,
+      "content": "gbundlebtosegmentkandq ∈{0,1}denoteswhethersegmentkselects\nkb\nbundlebunderself-selectionassumption. The buyers’ demand for bundles follows standard assumptions: each segment k has a certain val-\nuationR forbundleb. Afterobservingthepricep ,eachbuyerwouldselectexactlyonebundle\nkb b\nthatmaximizeshis/herindividualsurplus,definedbys = R −p ,providedthatthesurplusis\nkb kb b\nnon-negative.",
+      "size": 385,
+      "sentences": 3
+    },
+    {
+      "id": 37,
+      "content": "maximizeshis/herindividualsurplus,definedbys = R −p ,providedthatthesurplusis\nkb kb b\nnon-negative. Undertheseassumptions,theseller’srevenueoptimizationproblemcanbeformulatedasfollows:\nm\n(cid:88)(cid:88)\nmax (p −c )·α q (1)\nb kb k kb\nk=1b∈B\n(cid:18) (cid:19)\ns.t. q ≤1 b∈argmax{R −p } ∧ R −p ≥0 , ∀k,b∈B (2)\nkb kb′ b′ kb b\nb′∈B\n(cid:88)\nq =1, ∀k (3)\nkb\nb∈B\np ≥0, ∀b∈B. (4)\nb\n3\n===  4 ===\nPreprint.",
+      "size": 397,
+      "sentences": 4
+    },
+    {
+      "id": 38,
+      "content": "k,b∈B (2)\nkb kb′ b′ kb b\nb′∈B\n(cid:88)\nq =1, ∀k (3)\nkb\nb∈B\np ≥0, ∀b∈B. (4)\nb\n3\n===  4 ===\nPreprint. Here,α istheproportionofbuyersegmentk,and1(·)istheindicatorfunctionthatenforcesbuyers’\nk\nsurplusmaximizationchoice. (cid:16) (cid:17)\n(cid:80)\nInthefollowingdiscussion,weassumeR =f u whereu istheutilityofproductjfor\nkb j∈b kj kj\nsegmentk,f(·)isanincreasingconcavefunction,capturingpotentialcorrelationsamongproducts.",
+      "size": 416,
+      "sentences": 4
+    },
+    {
+      "id": 39,
+      "content": "b j∈b kj kj\nsegmentk,f(·)isanincreasingconcavefunction,capturingpotentialcorrelationsamongproducts. (cid:16) (cid:17)\nWeassumec = (cid:80) cu +cs,wherecs isthecostassociatedwithservingcustomersegment\nkb j∈b j k k\nk (e.g., the shipping cost) and cu is the unit cost of product j.",
+      "size": 278,
+      "sentences": 2
+    },
+    {
+      "id": 40,
+      "content": "rvingcustomersegment\nkb j∈b j k k\nk (e.g., the shipping cost) and cu is the unit cost of product j. The concavity of f(·) captures the\nj\neconomicconsensusofdiminishingmarginalutility,andthecoststructurecapturestheprincipleof\neconomiesofscale: sincethefixedcostisspreadacrossallitemsinthebundle,theaveragecostper\nitemdecreasesasmoreproductsareadded. Hanson&Martin(1990)formulatedthisproblemasa\nmixed-integer linear program (MILP).",
+      "size": 429,
+      "sentences": 3
+    },
+    {
+      "id": 41,
+      "content": "eproductsareadded. Hanson&Martin(1990)formulatedthisproblemasa\nmixed-integer linear program (MILP). For the sake of completeness, we describe this formulation\ninthefollowing. 3.1 MIXEDBUNDLINGFORMULATION(HANSON&MARTIN,1990)\nConsider the problem with all possible bundles denoted by B.",
+      "size": 284,
+      "sentences": 4
+    },
+    {
+      "id": 42,
+      "content": "UNDLINGFORMULATION(HANSON&MARTIN,1990)\nConsider the problem with all possible bundles denoted by B. We define the following variables:\nθ isabinaryindicatorforwhethersegmentkchoosesbundleb;p isthepriceofbundleb;P is\nkb b kb\ntheeffectivepricepaidbysegmentk;s isthesurplusofsegmentk;Z istheprofitfromassigning\nk kb\nbundlebtosegmentk; andA isthesetofcomponentswhichdefinebundleb. Themixedbundle\nb\npricingproblemcanbewrittenasfollows:\nm\n(cid:88)(cid:88)\nmax α ·Z (5)\nk kb\nk=1b∈B\n(cid:88)\ns.t.",
+      "size": 487,
+      "sentences": 3
+    },
+    {
+      "id": 43,
+      "content": "le\nb\npricingproblemcanbewrittenasfollows:\nm\n(cid:88)(cid:88)\nmax α ·Z (5)\nk kb\nk=1b∈B\n(cid:88)\ns.t. θ =1, ∀k (6)\nkb\nb∈B\ns ≥R −p , ∀k,b∈B (7)\nk kb b\np −R (1−θ )≤P , ∀k,b∈B (8)\nb max kb kb\nP ≤p , ∀k,b∈B (9)\nkb b\n(cid:88)\ns = (R θ −P ), ∀k (10)\nk kb kb kb\nb∈B\nR θ −P ≥0, ∀k,b∈B (11)\nkb kb kb\n(cid:88)\ns ≥ (R θ −P ), ∀k,j (12)\nk kb jb jb\nb∈B\nZ =P −c θ , ∀k,b∈B (13)\nkb kb kb kb\np ≤p +p , ifA(b)=A(b )∪A(b ) (14)\nb b1 b2 1 2\np ,P ,s ≥0,s =0,θ ∈{0,1} (15)\nb kb k k,0 ki\n(16)\nWenotethatweuseasimplifiedpricesub-additivityconstraintsin(13).",
+      "size": 532,
+      "sentences": 2
+    },
+    {
+      "id": 44,
+      "content": "=0,θ ∈{0,1} (15)\nb kb k k,0 ki\n(16)\nWenotethatweuseasimplifiedpricesub-additivityconstraintsin(13). WerefertoAppendixA.3\nforthedetaileddiscussions. In the original formulation in Hanson & Martin (1990), all bundles combinations are included in\nthe formulation, that is B = F = 2{1,...,n}. We call the corresponding problem with complete\ncombinationsHM(F). Meanwhile, onecanrestricttoasubsetofbundlesBandsolvearestricted\nversionoftheaboveproblemwithonlyb∈B. WecallthecorrespondingproblemHM(B).",
+      "size": 492,
+      "sentences": 6
+    },
+    {
+      "id": 45,
+      "content": "undlesBandsolvearestricted\nversionoftheaboveproblemwithonlyb∈B. WecallthecorrespondingproblemHM(B). We note that the main computational challenge of the above formulation lies in the exponential\nnumber of variables corresponding to all the possible bundles. In the following, we demonstrate\nhowGCNframeworkcanbeleveragedtohelpsolvelarge-scalebundlepricingproblemefficiently.",
+      "size": 374,
+      "sentences": 4
+    },
+    {
+      "id": 46,
+      "content": "we demonstrate\nhowGCNframeworkcanbeleveragedtohelpsolvelarge-scalebundlepricingproblemefficiently. 4 GCN-BASED STRATEGIES\nInthissection,wedesignaGCN-basedstrategytosolvetheoptimalbundlepricingproblem.Specif-\nically,weadoptabi-directionalGCNarchitecture,whereeachdirectionalpassisimplementedus-\ningageneralizedgraphconvolutionallayerthataggregatestransformedneighborandedgefeatures\n4\n===  5 ===\nPreprint.",
+      "size": 403,
+      "sentences": 2
+    },
+    {
+      "id": 47,
+      "content": "lizedgraphconvolutionallayerthataggregatestransformedneighborandedgefeatures\n4\n===  5 ===\nPreprint. through softmax aggregation (i.e., assigning normalized weights to neighbor messages using the\nsoftmaxfunction). Ourmodelpredictsasegment-productprobabilitymatrixP∈Rm×n whereP\nkj\nisthepredictedlikelihoodthatcustomersegmentk selectsproductj. Theseprobabilitiesserveas\nacompactrepresentationofheterogeneouspreferencesandprovidethebasisforpruningtheexpo-\nnentiallylargebundlespace.",
+      "size": 478,
+      "sentences": 4
+    },
+    {
+      "id": 48,
+      "content": "esentationofheterogeneouspreferencesandprovidethebasisforpruningtheexpo-\nnentiallylargebundlespace. Wedescribeourstrategiesindetailinthefollowingsections. 4.1 GRAPHREPRESENTATION\nThefigurebelowisthegraphrepresentationoftheoptimalbundlepricingproblem,whichservesas\ntheinputoftheGCN.Twotypesofnodesareincludedinthegraphrepresentation: productnodes\n(□),andcustomernodes(⃝),asshowninFigure1. Product Customer\n1 1\n2 2\n3 3\nn m\n𝑢\n%! 𝑐\", ∑# !$%\"! \",0,0 0,0,𝛼 % ,𝑐 % &\n!",
+      "size": 461,
+      "sentences": 6
+    },
+    {
+      "id": 49,
+      "content": "odes(⃝),asshowninFigure1. Product Customer\n1 1\n2 2\n3 3\nn m\n𝑢\n%! 𝑐\", ∑# !$%\"! \",0,0 0,0,𝛼 % ,𝑐 % &\n! $\nFigure1: Graphrepresentationofthebundlepricingproblemwithcustomerandproductnodes. In Figure 1, V and E denote the sets of nodes and edges, respectively. Let YP and YS denote the\nfeature matrices of product nodes and customer nodes, respectively.",
+      "size": 347,
+      "sentences": 7
+    },
+    {
+      "id": 50,
+      "content": "ively. Let YP and YS denote the\nfeature matrices of product nodes and customer nodes, respectively. The feature vector of each\nproduct j is yP = (cid:2) cu, 1 (cid:80)m u , 0, 0 (cid:3) ; the feature vector of each customer k is yS =\nj j m k=1 kj k\n(cid:2)\n0, 0, α ,\ncs(cid:3)\n. Let Z denote the feature matrix of edges. Each edge is characterized by u ,\nk k kj\nrepresentingthek-thcustomer’sutilitytowardsproductj.",
+      "size": 414,
+      "sentences": 5
+    },
+    {
+      "id": 51,
+      "content": "dges. Each edge is characterized by u ,\nk k kj\nrepresentingthek-thcustomer’sutilitytowardsproductj. 4.2 GCNSTRUCTURE\nWeemploytwobi-directionalmessage-passinglayersbasedontheGeneralizedGraphConvolution,\nwithdropout(p=0.5)appliedaftereachfusion. Thenetworkwillproduceedgelogits,andproba-\nbilitiesareobtainedatinferencetimebyapplyingasigmoidfunctiontotheselogits. Weexplainthe\ncomputationdetailsbelow. Firstbi-directionalmessage-passinglayer.",
+      "size": 439,
+      "sentences": 6
+    },
+    {
+      "id": 52,
+      "content": "nctiontotheselogits. Weexplainthe\ncomputationdetailsbelow. Firstbi-directionalmessage-passinglayer. Thefirstmessage-passinglayerinFigure2mapsthe\ngraphinFigure1intoanewgraphwithupdatednodefeaturesandthesameedgefeatures. DenotethesetofallproductsbyP andthesetofallcustomersbyS. Wethendefinetheforward\n→− ←− →−\nedgeset E ={(j,k)|j ∈P, k ∈S},andthebackwardedgeset E ={(k,j)|(j,k)∈ E}. ThefeaturematrixXisformedbystackingtheproductandcustomernodefeatures.",
+      "size": 450,
+      "sentences": 7
+    },
+    {
+      "id": 53,
+      "content": "dedgeset E ={(k,j)|(j,k)∈ E}. ThefeaturematrixXisformedbystackingtheproductandcustomernodefeatures. X= (cid:2) (yP)⊤ ··· (yP)⊤ | (yS)⊤ ··· (yS)⊤(cid:3)⊤ ∈R(n+m)×4. 1 n 1 m\nForanyfeaturematrix, weletabolduppercaseletter(e.g., X)representthematrixandthecorre-\nspondingboldlowercaseletterwithanindex(e.g.,x )denoteitsi-throw.",
+      "size": 322,
+      "sentences": 4
+    },
+    {
+      "id": 54,
+      "content": ", X)representthematrixandthecorre-\nspondingboldlowercaseletterwithanindex(e.g.,x )denoteitsi-throw. i\nSpecifically,thebi-directionalgeneralizedgraphconvolutionallayerupdateforeachnodeiinfor-\nward(product-to-customer)andbackward(customer-to-product)directionisdefinedas\n5\n===  6 ===\nPreprint. 1 1 1 1\n2 2 2 2\nFirst Bi-\nDirectional\n3 3 Message 3 3 Dropout\nPassing Layer Layer\n𝐿2𝑅−𝑐𝑜𝑛𝑣 &\nn m 𝑅2𝐿−𝑐𝑜𝑛𝑣 n m\n𝒀! 𝒀\" 𝒀( & $) 𝒀( ’ $)\nGraphInput First-LayerOutput\n𝒱,ℰ,𝒀!,𝒀\",𝒁 𝒱,ℰ,𝒀!",
+      "size": 471,
+      "sentences": 4
+    },
+    {
+      "id": 55,
+      "content": "r\n𝐿2𝑅−𝑐𝑜𝑛𝑣 &\nn m 𝑅2𝐿−𝑐𝑜𝑛𝑣 n m\n𝒀! 𝒀\" 𝒀( & $) 𝒀( ’ $)\nGraphInput First-LayerOutput\n𝒱,ℰ,𝒀!,𝒀\",𝒁 𝒱,ℰ,𝒀! ,𝒀\" ,𝒁\n($) ($)\n1 1 1 1\nSecond Bi- 2 2 2 2\nDirectional\nMessage 3 3 3 3\nPassing Layer 𝑬 Sigmoid ℙ\n𝐿2𝑅−𝑐𝑜𝑛𝑣 & Layer\n𝑅2𝐿−𝑐𝑜𝑛𝑣 n m n m\n𝑬!\" 𝒀( & () 𝒀( ’ () 𝒀( & () 𝒀( ’ ()\nSecond-LayerOutput Edge Score Output\n𝒱,ℰ,𝒀 ( ! &) ,𝒀 ( \" &) ,𝒁 𝒱,ℰ,𝒀 ( ! &) ,𝒀 ( \" &) ,𝒁,𝑬\nFigure2: IllustrationofGCNnetwork.",
+      "size": 391,
+      "sentences": 6
+    },
+    {
+      "id": 56,
+      "content": "ore Output\n𝒱,ℰ,𝒀 ( ! &) ,𝒀 ( \" &) ,𝒁 𝒱,ℰ,𝒀 ( ! &) ,𝒀 ( \" &) ,𝒁,𝑬\nFigure2: IllustrationofGCNnetwork.  \nx\ni\nf\n,\nw\n(1)\n=MLPx\ni\n+ (cid:88) Softmax (cid:0) ϕ(x\nj\n,Z\nji\n) (cid:1) ⊙ϕ(x\nj\n,Z\nji\n),\nj∈N(i)\n \nx\ni\nb\n,(\nw\n1)\n=MLPx\ni\n+ (cid:88) Softmax (cid:0) ϕ(x\nj\n,Z\nij\n) (cid:1) ⊙ϕ(x\nj\n,Z\nij\n). j∈N(i)\nHere,MLP(·)denotesastandardmulti-layerperceptron(asequenceoffullyconnectedlayerswith\nnonlinear activations). The N(i) denotes the set of neighbors of node i.",
+      "size": 457,
+      "sentences": 6
+    },
+    {
+      "id": 57,
+      "content": "offullyconnectedlayerswith\nnonlinear activations). The N(i) denotes the set of neighbors of node i. The operator ⊙ denotes\ncomponent-wise multiplication between two vectors (i.e., multiplying elements with the same in-\ndex),andthesoftmaxisappliedcomponent-wiseacrossneighborsforeachfeaturedimension. The\nmessagefunctionisdefinedasϕ(x ,Z )=ReLU(x +Z · 1)+ϵ· 1,whereϵisasmallcon-\nj ij j ij\nstant(wechooseϵtobe1×10−7inourimplementation)fornumericalstability.",
+      "size": 455,
+      "sentences": 4
+    },
+    {
+      "id": 58,
+      "content": "1,whereϵisasmallcon-\nj ij j ij\nstant(wechooseϵtobe1×10−7inourimplementation)fornumericalstability. Whenconsidering\nreversededges,thecorrespondingedgeattributesarealsoreversedsothateachedgefeatureremains\nwell-aligned. The node features from both directions are then merged using a mask matrix M (where diagonal\nentriesare1forproductnodesand0otherwise),passedthroughanentry-wiseReLUactivation,and\nregularizedwithdropout(p=0.5):\nX(1) =Dropout (cid:0) ReLU (cid:0) (I−M)·Xfw +M·Xbw(cid:1)(cid:1) .",
+      "size": 493,
+      "sentences": 3
+    },
+    {
+      "id": 59,
+      "content": "regularizedwithdropout(p=0.5):\nX(1) =Dropout (cid:0) ReLU (cid:0) (I−M)·Xfw +M·Xbw(cid:1)(cid:1) . (1) (1)\nOncetheupdatedfeaturematrixX(1) iscomputed, theupdatedfeaturematricesforproductsYP\n(1)\nand customers YS after the first bi-directional layer are obtained by selecting the corresponding\n(1)\nrows: YP =M·X ,YS =(I−M)·X . (1) (1) (1) (1)\nX(1) serves as the input for the second layer with different dimensionalities.",
+      "size": 419,
+      "sentences": 3
+    },
+    {
+      "id": 60,
+      "content": "·X . (1) (1) (1) (1)\nX(1) serves as the input for the second layer with different dimensionalities. The input sizes and\ntheoutputsizesofthefirstlayerare(n+m,4),and(n+m,d ),respectively,whereweset\nhidden\nd =128inallexperiments. hidden\n6\n[  ]\n\n===  7 ===\nPreprint. Second bi-directional message-passing layer. The construction of the second bi-directional\nmessage-passinglayerissimilartothefirstmessage-passinglayer.",
+      "size": 414,
+      "sentences": 6
+    },
+    {
+      "id": 61,
+      "content": "struction of the second bi-directional\nmessage-passinglayerissimilartothefirstmessage-passinglayer. Theonlydifferenceisthatthe\ninputsizesandtheoutputsizesare(n+m,d ),and(n+m,d ),respectively. hidden hidden\nEdge score calculation.",
+      "size": 229,
+      "sentences": 3
+    },
+    {
+      "id": 62,
+      "content": "utsizesandtheoutputsizesare(n+m,d ),and(n+m,d ),respectively. hidden hidden\nEdge score calculation. After calculating the output YP and YS of the second bi-directional\n(2) (2)\nlayer,thescoreE fortheedgeconnectingproductj andsegmentkiscalculatedas\njk\nE =(yP )⊤UyS +MLP (Z ),\njk j,(2) k,(2) edge jk\nwhere U ∈ Rdhidden×dhidden is a learnable bilinear weight matrix, Z\njk\nis the edge attribute for\npair (j,k), and MLP : R → R is a two-layer feed-forward network (Linear–ReLU–Linear)\nedge\nproducingascalarcorrectionterm.",
+      "size": 515,
+      "sentences": 3
+    },
+    {
+      "id": 63,
+      "content": "R → R is a two-layer feed-forward network (Linear–ReLU–Linear)\nedge\nproducingascalarcorrectionterm. Output. The model outputs the logits E ∈ Rn×m. In practice, we apply a sigmoid function at\ninferencetimetoobtainprobabilities,P = σ(E)⊤ ∈ Rm×n,whereeachentryP correspondsto\nkj\nthepredictedprobabilitythatsegmentkincludeproductj inhis/herpurchasedbundle.",
+      "size": 352,
+      "sentences": 4
+    },
+    {
+      "id": 64,
+      "content": "ntryP correspondsto\nkj\nthepredictedprobabilitythatsegmentkincludeproductj inhis/herpurchasedbundle. 4.3 PRUNING-BASEDSTRATEGIES\nIn this section, we leverage the probability matrix P predicted by the GCN model to guide two\npruning strategies that construct a compact yet high-quality bundle space. The resulting reduced\nproblemisthensolvedusingtheMILPformulationofHanson&Martin(1990),butrestrictedtothe\nprunedbundlesetratherthanthefullexponentialspace. Fixed Cutoff Pruning (FCP).",
+      "size": 479,
+      "sentences": 4
+    },
+    {
+      "id": 65,
+      "content": "0),butrestrictedtothe\nprunedbundlesetratherthanthefullexponentialspace. Fixed Cutoff Pruning (FCP). For each segment k ∈ [m] = {1,...,m} and j ∈ [n] =\n{1,...,n},wedefineitscandidatebundlebyafixedcutoffvalue. Inourdefaultmethod,wesetthe\nfixedcutoffto0.5. ThatisBFCP ={j ∈[n]|P ≥0.5}fork ∈[m]andtheoverallcandidateset\nk kj\nisFFCP = {BFCP | k ∈ [m]},withsizeatmostm. Here,theoverallcandidatesetissharedacross\nk\nallsegments, meaningthatanysegmentisfreetoselectanyBFCP, notonlyitsown.",
+      "size": 479,
+      "sentences": 6
+    },
+    {
+      "id": 66,
+      "content": "andidatesetissharedacross\nk\nallsegments, meaningthatanysegmentisfreetoselectanyBFCP, notonlyitsown. Thisreduces\nk\nthefeasiblespacefrom2n toO(m),makingthesubsequentMILPmuchmoretractable. Thenwe\nsolvetheMILPformulationontheprunedspaceconstructedbyFCP(thatis,wesolveHM(FFCP)\ntoobtainthesolution). In the case where all probabilities of a segment fall below the cutoff, we retain the single product\nwiththehighestprobabilitytoavoidproducinganemptybundle. Progressive Cutoff Pruning (PCP).",
+      "size": 484,
+      "sentences": 5
+    },
+    {
+      "id": 67,
+      "content": "e product\nwiththehighestprobabilitytoavoidproducinganemptybundle. Progressive Cutoff Pruning (PCP). For each segment k, we sort products by descending\nprobability and retain the products with P ≥ 0.5. Denote the ordered set as S =\nkj k\n(cid:0) j ,j ,...,j (cid:1) . We then construct prefix bundles BPCP = {j ,j ,...,j } for i =\n(1) (2) (|Sk|) k,i (1) (2) (i)\n1,...,|S |. The overall candidate set is FPCP = (cid:83)m {BPCP | i = 1,...,|S |}, with size at\nk k=1 k,i k\nmost m · (n + 1).",
+      "size": 485,
+      "sentences": 6
+    },
+    {
+      "id": 68,
+      "content": "ndidate set is FPCP = (cid:83)m {BPCP | i = 1,...,|S |}, with size at\nk k=1 k,i k\nmost m · (n + 1). Then we solve the MILP formulation on the pruned space constructed by\nPCP (that is, we solve HM(FPCP) to obtain the solution). Since PCP produces a strictly nested\nchain of bundles for each segment k: {j } ⊂ {j ,j } ⊂ ··· ⊂ {j ,...,j }.",
+      "size": 336,
+      "sentences": 3
+    },
+    {
+      "id": 69,
+      "content": "produces a strictly nested\nchain of bundles for each segment k: {j } ⊂ {j ,j } ⊂ ··· ⊂ {j ,...,j }. We\n(1) (1) (2) (1) (|Sk|)\nreplace the within-segment sub-additivity constraints by a chain of monotone price inequalities\np ≤ p (i=1,...,|S |−1).Acrosssegments,wekeeptheoriginalsub-additivitylogic. bi bi+1 k\n4.4 LOCALSEARCHSTRATEGY\nIn order to further improve our solution, we propose a local search strategy.",
+      "size": 409,
+      "sentences": 3
+    },
+    {
+      "id": 70,
+      "content": "4 LOCALSEARCHSTRATEGY\nIn order to further improve our solution, we propose a local search strategy. The basic idea is to\niterativelymodifyeachsegment’sbundlespacebyeitheraddinganunselectedproductordropping\naselectedproduct,andacceptmodificationsifrevenueincreases. However, the effectivenessof local search largelydepends on an effective searchpath. Therefore,\nwedevelopapreference-basedlocalsearchstrategyguidedbytheprobabilitymatrixpredictedby\ntheGCNmodel.",
+      "size": 458,
+      "sentences": 4
+    },
+    {
+      "id": 71,
+      "content": ",\nwedevelopapreference-basedlocalsearchstrategyguidedbytheprobabilitymatrixpredictedby\ntheGCNmodel. Particularly,whenaddingaproducttothebundleofasegmentk,weconsiderthe\nproductwiththehighestP thatisunselected;andwhendroppingaproductfromthebundleofa\nkj\nsegmentk,weconsidertheproductwiththelowestP thatisselected. kj\nMoreprecisely,weconstructinitialbundleassortmentsbytheFCPapproach. Heretheinitialbun-\ndles are fixed as segment–bundle assignments, so each segment starts strictly with its own BFCP.",
+      "size": 496,
+      "sentences": 4
+    },
+    {
+      "id": 72,
+      "content": "n-\ndles are fixed as segment–bundle assignments, so each segment starts strictly with its own BFCP. k\n7\n===  8 ===\nPreprint. For each iteration, every segment generates two neighbors: one by adding the highest-probability\nunselected product and one by dropping the lowest-probability selected product.",
+      "size": 301,
+      "sentences": 3
+    },
+    {
+      "id": 73,
+      "content": "highest-probability\nunselected product and one by dropping the lowest-probability selected product. All neighbors\nare evaluated sequentially in segment order, and if any improvement is found, the first improving\nmodificationisacceptedimmediatelyandanewiterationbeginsfromtheupdatedsolution(thusa\ndeep-firstsearchisconducted). Thelocalsearchprocesswillterminatewhenafullcycleoverallsegmentscompleteswithoutany\nimprovement,orwhenthepredefinediterationlimitisreached.",
+      "size": 464,
+      "sentences": 3
+    },
+    {
+      "id": 74,
+      "content": "fullcycleoverallsegmentscompleteswithoutany\nimprovement,orwhenthepredefinediterationlimitisreached. Furthermore,tosavetheevaluation\ncost at each neighbor, we rely on the LP relaxation to evaluate neighbors during iteration. In the\nLP relaxation, we fix the bundle-segment assignment, and the resulting LP provides a valid lower\nbound of the optimal value of the MILP (see Appendix A.2 for the LP formulation).",
+      "size": 409,
+      "sentences": 3
+    },
+    {
+      "id": 75,
+      "content": "des a valid lower\nbound of the optimal value of the MILP (see Appendix A.2 for the LP formulation). Thus, any\nimprovementdetectedunderLPisguaranteedtobevalidforMILP,whichensurestheaccuracyof\nimprovementevaluation. Atthesametime,LPsolvesmuchfasterthanMILP,greatlyreducingthe\ncomputationalcostofeachexplorationstep.WeuseFCP+LStodenotethecorrespondingalgorithm\nandprovidethedetailedpseudo-codeinAlgorithm1.",
+      "size": 403,
+      "sentences": 3
+    },
+    {
+      "id": 76,
+      "content": "tionstep.WeuseFCP+LStodenotethecorrespondingalgorithm\nandprovidethedetailedpseudo-codeinAlgorithm1. 5 NUMERICAL EXPERIMENTS\nWe now present comprehensive numerical experiments designed to evaluate the effectiveness and\nscalability of our proposed GCN-assisted bundle pricing strategies.",
+      "size": 285,
+      "sentences": 2
+    },
+    {
+      "id": 77,
+      "content": "evaluate the effectiveness and\nscalability of our proposed GCN-assisted bundle pricing strategies. The goals of this section are\ntwofold:(i)todemonstratethatourapproachesconsistentlyachievehighrevenueratioswhilemain-\ntaining significant computational efficiency, and (ii) to validate their robustness across heteroge-\nneousproblemsettingswithvaryingnumbersofcustomersegmentsandproducts.",
+      "size": 386,
+      "sentences": 2
+    },
+    {
+      "id": 78,
+      "content": "ir robustness across heteroge-\nneousproblemsettingswithvaryingnumbersofcustomersegmentsandproducts. Tothoroughlytestscalabilityandrobustness, weevaluateourstrategiesundervaryingnumbersof\n√\ncustomer segment m and product number n. For every scenario, we use f(x) = x for the f(·)\ninthereservation,andtaketheaverageof100samples. Allexperimentswereconductedusingthe\nGurobi Optimizer version 12.0.2 on a machine with an Apple M1 Pro CPU (3.2 GHz) and 16GB\nRAM,utilizingupto8threads.",
+      "size": 478,
+      "sentences": 3
+    },
+    {
+      "id": 79,
+      "content": "version 12.0.2 on a machine with an Apple M1 Pro CPU (3.2 GHz) and 16GB\nRAM,utilizingupto8threads. Toevaluateanymethod,weadopttwonormalizedmetrics:RevenueRatio(RR)andTimeRatio(TR)\nRR = RevenueofapproachA, TR = RuntimeofapproachA. A,B RevenueofapproachB A,B RuntimeofapproachB\nwhere RR measures solution quality and TR captures efficiency. These two metrics allow direct\ncomparisonofsolutionqualityandspeedacrossdifferentalgorithms.",
+      "size": 431,
+      "sentences": 4
+    },
+    {
+      "id": 80,
+      "content": "iency. These two metrics allow direct\ncomparisonofsolutionqualityandspeedacrossdifferentalgorithms. 5.1 NUMERICALRESULTS\nWe compare our proposed approach to two baselines, the mixed bundling (MB) baseline and the\nbundlesizepricing(BSP)baseline:\nMixed Bundling (MB) baseline: For MB, we follow Hanson & Martin (1990)’s MILP formu-\nlation. The MB formulation is a MILP that assigns each bundle with its own price respectively. DetailedformulationisprovidedinSection3.1.",
+      "size": 467,
+      "sentences": 5
+    },
+    {
+      "id": 81,
+      "content": "hat assigns each bundle with its own price respectively. DetailedformulationisprovidedinSection3.1. BundleSizePricing(BSP)baseline: TheBSPbaselineisproposedbyChuetal. (2011).TheBSP\napproximatesMBbyassigningthesamepricetoallbundlesofequalsize. Detailedformulationis\nprovidedinAppendixA.1. In Table 5.1, we report the numerical results of our algorithms compared with both baselines, for\nproblemwithn = 10andvaryingnumberofsegments.",
+      "size": 430,
+      "sentences": 6
+    },
+    {
+      "id": 82,
+      "content": "ts of our algorithms compared with both baselines, for\nproblemwithn = 10andvaryingnumberofsegments. FromTable5.1,wecanseethatourthree\nstrategiesallmaintainmorethan97.5%oftheoptimalrevenuewhileonlyrequiringafractionofthe\ncomputationtimeoftheMBbaseline. Meanwhile, theBSPapproachoftenhasasignificantprofit\nlosscomparedtotheMBbaseline.",
+      "size": 332,
+      "sentences": 3
+    },
+    {
+      "id": 83,
+      "content": "meoftheMBbaseline. Meanwhile, theBSPapproachoftenhasasignificantprofit\nlosscomparedtotheMBbaseline. Amongthestrategieswepropose,wefindthatthePCPstrategy\nachievesaround1%higherrevenuethanFCPbyretainingalargercandidatespace,whileFCP+LS\nalsogivesa1%revenueimprovementovertheplainFCPapproach. Forproblemswithmorethan10products,calculatingtheoptimalsolutionoftheMILPmodelunder\nthemixedbundlingbaselineiscomputationallychallenging. Therefore,weusetheBSPasbaseline\ntotestproblemswithlargerthan10products.",
+      "size": 497,
+      "sentences": 5
+    },
+    {
+      "id": 84,
+      "content": "computationallychallenging. Therefore,weusetheBSPasbaseline\ntotestproblemswithlargerthan10products. TheresultsarereportedinTable5.2. FromTable5.2,\n8\n===  9 ===\nPreprint. Table5.1: PerformanceofGCN-basedstrategiesvs.MixedBundlingbaseline(n=10).",
+      "size": 243,
+      "sentences": 5
+    },
+    {
+      "id": 85,
+      "content": "2,\n8\n===  9 ===\nPreprint. Table5.1: PerformanceofGCN-basedstrategiesvs.MixedBundlingbaseline(n=10). m=10,n=10 m=20,n=10 m=30,n=10\nStrategy\nRR ·,MB Time(s) TR ·,MB RR ·,MB Time(s) TR ·,MB RR ·,MB Time(s) TR ·,MB\nFCP 0.9836 0.0558 0.0106 0.9785 0.3767 0.0130 0.9757 1.2276 0.0151\nPCP 0.9907 0.7587 0.1383 0.9874 9.0669 0.2886 0.9862 71.5509 0.6835\nFCP+LocalSearch 0.9945 0.9700 0.1799 0.9877 7.0461 0.2410 0.9850 30.1076 0.4158\nBSP 0.8990 0.0382 0.0070 0.8796 0.1861 0.0064 0.8669 0.5386 0.0014\nwecanseethattheplainFCPapproachcanachievecomparableperformancewiththeBSPapproach\nwithafractionofcomputationtime,whilethePCPapproachcanachievesignificantlybettersolution\nthantheBSPapproachwithmorecomputationaltime(thetotaltimeisstilllessthan30seconds).",
+      "size": 744,
+      "sentences": 3
+    },
+    {
+      "id": 86,
+      "content": "lybettersolution\nthantheBSPapproachwithmorecomputationaltime(thetotaltimeisstilllessthan30seconds). Table5.2: Comparisonofdifferentstrategiesacrossvariousproblemsizes.",
+      "size": 167,
+      "sentences": 2
+    },
+    {
+      "id": 87,
+      "content": "ltimeisstilllessthan30seconds). Table5.2: Comparisonofdifferentstrategiesacrossvariousproblemsizes. FCP PCP\nScenario RR Time(s) TR RR Time(s) TR\n·,BSP ·,BSP ·,BSP ·,BSP\nm=10,n=15 1.060 0.043 0.380 1.150 2.056 17.975\nm=15,n=15 1.074 0.125 0.588 1.167 9.921 47.579\nm=20,n=15 1.082 0.307 0.829 1.171 27.215 71.445\nm=10,n=20 1.007 0.044 0.331 1.147 4.799 36.676\nm=10,n=25 0.953 0.048 0.243 1.146 8.250 41.401\nScalability with product size.",
+      "size": 435,
+      "sentences": 3
+    },
+    {
+      "id": 88,
+      "content": "31 1.147 4.799 36.676\nm=10,n=25 0.953 0.048 0.243 1.146 8.250 41.401\nScalability with product size. Table 5.3 illustrates how FCP and PCP scale with the number of\nproductsnwhenthenumberofsegmentsisfixedat10. AkeyobservationisthatFCPmaintainsa\nnearlyconstantcandidatesetsizeO(m),resultinginstableruntimesaround0.03secondsregardless\nofn. Bycontrast,PCPexhibitsO(n)growthincandidatespace.",
+      "size": 385,
+      "sentences": 4
+    },
+    {
+      "id": 89,
+      "content": "ginstableruntimesaround0.03secondsregardless\nofn. Bycontrast,PCPexhibitsO(n)growthincandidatespace. Andbothmethodsenabletractable\nsolutionsofbundlepricinginstancesupton=100,whichwouldbeintractableunderexactmixed\nbundling. Thishighlightsourabilitytocombinestrongpruningwithbroadscalabilityacrosslarge\nproblemsizes. Table5.3: ScalabilityofFCPandPCPstrategiesacrossdifferentproductsizesn(m=10).",
+      "size": 391,
+      "sentences": 5
+    },
+    {
+      "id": 90,
+      "content": "sslarge\nproblemsizes. Table5.3: ScalabilityofFCPandPCPstrategiesacrossdifferentproductsizesn(m=10). n FCPTime(s) PCPTime(s) FCPRev PCPRev RR(FCP/PCP) FCPBundles PCPBundles\n10 0.107 0.843 1.719 1.770 0.972 10 61\n20 0.032 5.440 2.361 2.363 0.999 10 137\n30 0.034 21.103 2.610 2.638 0.990 10 220\n40 0.032 36.134 2.933 2.986 0.982 10 282\n50 0.034 59.050 3.029 3.130 0.968 10 359\n60 0.026 73.665 3.115 3.277 0.951 10 431\n70 0.030 122.706 3.054 3.356 0.910 10 503\n80 0.028 184.814 3.067 3.421 0.897 10 572\n90 0.029 206.681 3.177 3.612 0.880 10 647\n100 0.030 283.578 3.190 3.743 0.852 10 710\n6 CONCLUSION\nThis paper introduces a learning-guided framework for solving the bundle pricing problem.",
+      "size": 686,
+      "sentences": 3
+    },
+    {
+      "id": 91,
+      "content": "ONCLUSION\nThis paper introduces a learning-guided framework for solving the bundle pricing problem. We\nleverageGCNstolearnsegment–productpreferencestructuresunderthenon-additivesetting, and\nusethesepredictionstoprunetheexponentialcandidatebundlespace. Theprunedfeasibleregion\nis then solved with Hanson & Martin (1990)’s MILP formulation, thereby retaining the rigor of\nproduct heterogeneity while substantially extending the tractable problem size. Coupled with a\n9\n===  10 ===\nPreprint.",
+      "size": 488,
+      "sentences": 4
+    },
+    {
+      "id": 92,
+      "content": "ty while substantially extending the tractable problem size. Coupled with a\n9\n===  10 ===\nPreprint. probability-guidedDFSlocalsearch,ourframeworkdemonstratesrobustnessandscalabilityacross\ndifferent problem sizes. Numerical experiments show that our approach provides solutions that\narenear-optimalattractablescales,andscalabletomuchlargersettingswhileoutperformingother\nheuristics. Therefore,ourworkprovidesanear-optimalandefficientsolutionforlarge-scalebundle\npricingproblem.",
+      "size": 476,
+      "sentences": 5
+    },
+    {
+      "id": 93,
+      "content": "ics. Therefore,ourworkprovidesanear-optimalandefficientsolutionforlarge-scalebundle\npricingproblem. 7 CODE OF ETHICS STATEMENT\nTheauthorsofthisworkadheretotheICLRCodeofEthics. Thisresearchonbundlepricingopti-\nmizationwasconductedwiththeprinciplesofacademicintegrityandrigor. Wehaveconsideredthe\npotentialsocietalimpactsofourwork.",
+      "size": 329,
+      "sentences": 5
+    },
+    {
+      "id": 94,
+      "content": "iththeprinciplesofacademicintegrityandrigor. Wehaveconsideredthe\npotentialsocietalimpactsofourwork. Whileanyadvancedpricingalgorithmcouldpotentiallybe\nusedforexploitativepricediscrimination,theprimarygoalofthisresearchistoimproveeconomic\nefficiency,whichcanleadtobettervaluepropositionsforconsumersandmoresustainablebusiness\nmodels for firms.",
+      "size": 342,
+      "sentences": 3
+    },
+    {
+      "id": 95,
+      "content": "iency,whichcanleadtobettervaluepropositionsforconsumersandmoresustainablebusiness\nmodels for firms. We believe the societal benefits of more efficient market mechanisms outweigh\nthe potential risks, which can be mitigated by fair business practices and regulation. The experi-\nmentsinthispaperwereconductedonsyntheticdatasetsanddonotinvolvesensitiveorpersonally\nidentifiableinformation. 8 REPRODUCIBILITY STATEMENT\nToensurethereproducibilityofourresearch, weprovideacomprehensivesuiteofmaterials.",
+      "size": 496,
+      "sentences": 4
+    },
+    {
+      "id": 96,
+      "content": "IBILITY STATEMENT\nToensurethereproducibilityofourresearch, weprovideacomprehensivesuiteofmaterials. The\ncomplete source code for our proposed GCN-based policies (FCP, PCP, and FCP+LS), baseline\nimplementations, and all numerical experiments is available in the supplementary materials. The\nmathematical formulations for the baselines are detailed in 3.1 and Appendix A.1.",
+      "size": 371,
+      "sentences": 3
+    },
+    {
+      "id": 97,
+      "content": "ry materials. The\nmathematical formulations for the baselines are detailed in 3.1 and Appendix A.1. Key hyperpa-\nrameters and the versions of the main software libraries used (e.g., PyTorch, PyTorch Geometric,\nGurobi)arealsodocumentedintheAppendixDtofacilitatethereplicationofourresults. REFERENCES\nTarekAbdallah. Onthebenefit(orcost)oflarge-scalebundling. ProductionandOperationsMan-\nagement,28(4):955–969,2019. Tarek Abdallah, Amir Asadpour, and Jared Reed.",
+      "size": 459,
+      "sentences": 7
+    },
+    {
+      "id": 98,
+      "content": "ductionandOperationsMan-\nagement,28(4):955–969,2019. Tarek Abdallah, Amir Asadpour, and Jared Reed. Large-scale bundle-size pricing: A theoretical\nanalysis. OperationsResearch,69(4):1158–1185,2021. WilliamJamesAdamsandJanetL.Yellen. Commoditybundlingandtheburdenofmonopoly. The\nQuarterlyJournalofEconomics,90(3):475–498,1976. YannisBakosandErikBrynjolfsson. Bundlinginformationgoods: Pricing,profits,andefficiency. ManagementScience,45(12):1613–1630,1999.",
+      "size": 455,
+      "sentences": 10
+    },
+    {
+      "id": 99,
+      "content": ". Bundlinginformationgoods: Pricing,profits,andefficiency. ManagementScience,45(12):1613–1630,1999. NingyuanChen,AdamN.Elmachtoub,MichaelL.Hamilton,andXiaoLei. Lootboxpricingand\ndesign. ManagementScience,67(8):4809–4825,2021. Ningyuan Chen, Xiaobo Li, Zechao Li, and Chun Wang. Component pricing with a bundle size\ndiscount. 2022. AvailableatSSRN:https://ssrn.com/abstract=4032247. XiChen,GeorgeMatikas,DimitrisPaparas,andMihalisYannakakis.",
+      "size": 440,
+      "sentences": 11
+    },
+    {
+      "id": 100,
+      "content": "tSSRN:https://ssrn.com/abstract=4032247. XiChen,GeorgeMatikas,DimitrisPaparas,andMihalisYannakakis. Onthecomplexityofsimple\nandoptimaldeterministicmechanismsforanadditivebuyer. InProceedingsofthe29thAnnual\nACM-SIAMSymposiumonDiscreteAlgorithms,pp.2036–2049,2018. ChenghuanSeanChu,PhillipLeslie,andAlanSorensen. Bundle-sizepricingasanapproximation\ntomixedbundling. AmericanEconomicReview,101(1):263–303,2011. Jian-Ya Ding, Chao Zhang, Lei Shen, Shengyin Li, Bing Wang, Yinghui Xu, and Le Song.",
+      "size": 492,
+      "sentences": 8
+    },
+    {
+      "id": 101,
+      "content": ":263–303,2011. Jian-Ya Ding, Chao Zhang, Lei Shen, Shengyin Li, Bing Wang, Yinghui Xu, and Le Song. Ac-\ncelerating primal solution findings for mixed integer programs based on solution prediction. In\nProceedingsofthe34thAAAIConferenceonArtificialIntelligence,pp.1452–1459,2020. Zhenan Fan, Xinglu Wang, Oleksandr Yakovenko, Abdullah Ali Sivas, Owen Ren, Yong Zhang,\nand Zirui Zhou. Smart initial basis selection for linear programs.",
+      "size": 432,
+      "sentences": 6
+    },
+    {
+      "id": 102,
+      "content": "Ali Sivas, Owen Ren, Yong Zhang,\nand Zirui Zhou. Smart initial basis selection for linear programs. In Proceedings of the 40th\nInternationalConferenceonMachineLearning,pp.9650–9664,2023. 10\n===  11 ===\nPreprint. Maxime Gasse, Didier Che´telat, Nicola Ferroni, Laurent Charlin, and Andrea Lodi. Exact com-\nbinatorial optimization with graph convolutional neural networks. In Proceedings of the 33rd\nConferenceonNeuralInformationProcessingSystems,pp.15580–15592,2019. Grand View Research.",
+      "size": 486,
+      "sentences": 8
+    },
+    {
+      "id": 103,
+      "content": "f the 33rd\nConferenceonNeuralInformationProcessingSystems,pp.15580–15592,2019. Grand View Research. Digital media market size, share & growth report, 2023. URL https:\n//www.grandviewresearch.com/industry-analysis/digital-media-mar\nket-report. PrateekGupta,EliasB.Khalil,DidierChe´telat,MaximeGasse,YoshuaBengio,AndreaLodi,and\nM.PawanKumar. Lookbackforlearningtobranch. arXivpreprintarXiv:2206.14987,2022. WardHansonandR.KippMartin. Optimalbundlepricing. ManagementScience,36(2):155–174,\n1990.",
+      "size": 492,
+      "sentences": 10
+    },
+    {
+      "id": 104,
+      "content": "14987,2022. WardHansonandR.KippMartin. Optimalbundlepricing. ManagementScience,36(2):155–174,\n1990. Lorin M. Hitt and Pei-yu Chen. Bundling with customer self-selection: A simple approach to\nbundlinglow-marginal-costgoods. ManagementScience,51(10):1481–1493,2005. WouterKool,HerkevanHoof,andMaxWelling. Attention,learntosolveroutingproblems! arXiv\npreprintarXiv:1803.08475,2019. Guokai Li, Pin Gao, Stefanus Jasin, and Zizhuo Wang.",
+      "size": 431,
+      "sentences": 11
+    },
+    {
+      "id": 105,
+      "content": "problems! arXiv\npreprintarXiv:1803.08475,2019. Guokai Li, Pin Gao, Stefanus Jasin, and Zizhuo Wang. From small to large: A graph con-\nvolutional network approach for solving assortment optimization problems. arXiv preprint\narXiv:2507.10834,2025. Xiaobo Li, Hailong Sun, and Chung-Piaw Teo. Convex optimization for the bundle size pricing\nproblem. ManagementScience,68(2):1095–1106,2021. Tianhao Liu, Shanwen Pu, Dongdong Ge, and Yinyu Ye. Learning to pivot as a smart expert.",
+      "size": 475,
+      "sentences": 10
+    },
+    {
+      "id": 106,
+      "content": "1106,2021. Tianhao Liu, Shanwen Pu, Dongdong Ge, and Yinyu Ye. Learning to pivot as a smart expert. In\nProceedingsofthe38thAAAIConferenceonArtificialIntelligence,pp.8073–8081,2024. WillMaandDavidSimchi-Levi. Reapingthebenefitsofbundlingunderhighproductioncosts. In\nInternationalConferenceonArtificialIntelligenceandStatistics,pp.1342–1350.PMLR,2021. ModernRetail.InsideAmazon’sPrimeplaybook:Howthesubscriptiongiantchooseswhatbenefits\ntoaddnext,2024.",
+      "size": 449,
+      "sentences": 8
+    },
+    {
+      "id": 107,
+      "content": "ModernRetail.InsideAmazon’sPrimeplaybook:Howthesubscriptiongiantchooseswhatbenefits\ntoaddnext,2024. URLhttps://www.modernretail.co/operations/inside-a\nmazons-prime-playbook-how-the-subscription-giant-chooses-what-b\nenefits-to-add-next/.",
+      "size": 236,
+      "sentences": 2
+    },
+    {
+      "id": 108,
+      "content": "ions/inside-a\nmazons-prime-playbook-how-the-subscription-giant-chooses-what-b\nenefits-to-add-next/. VinodNair,SergeyBartunov,FelixGimeno,IngridvonGlehn,PawelLichocki,IvanLobov,Bren-\ndan O’Donoghue, Nicolas Sonnerat, Christian Tjandraatmadja, Pengming Wang, Ravichandra\nAddanki,TharindiHapuarachchi,ThomasKeck,JamesKeeling,PushmeetKohli,IraKtena,Yu-\njia Li, Oriol Vinyals, and Yori Zwols. Solving mixed integer programs using neural networks. arXivpreprintarXiv:2012.13349,2020.",
+      "size": 477,
+      "sentences": 4
+    },
+    {
+      "id": 109,
+      "content": "ri Zwols. Solving mixed integer programs using neural networks. arXivpreprintarXiv:2012.13349,2020. MaxPaulusandAndreasKrause. Learningtodiveinbranchandbound. InProceedingsofthe37th\nInternationalConferenceonNeuralInformationProcessingSystems,pp.34260–34277,2023. RichardSchmalensee. Gaussiandemandandcommoditybundling. TheJournalofBusiness,57(1):\n211–230,1984. NicolasSonnerat,PengmingWang,IraKtena,SergeyBartunov,andVinodNair. Learningalarge\nneighborhood search algorithm for mixed integer programs.",
+      "size": 500,
+      "sentences": 11
+    },
+    {
+      "id": 110,
+      "content": "rgeyBartunov,andVinodNair. Learningalarge\nneighborhood search algorithm for mixed integer programs. arXiv preprint arXiv:2107.10201,\n2021. GeorgeJ.Stigler.Unitedstatesv.loew’sinc. :Anoteonblock-booking.TheSupremeCourtReview,\npp.152–157,1963. 11\n===  12 ===\nPreprint. A FORMULATIONS FOR BUNDLE PRICING\nA.1 BUNDLESIZEPRICING(BSP)FORMULATIONCHUETAL. (2011)\nAdditionalVariables:\n• p : priceforbundlesofsizes∈{0,...,n};\ns\n• P =p θ .",
+      "size": 427,
+      "sentences": 8
+    },
+    {
+      "id": 111,
+      "content": "ORMULATIONCHUETAL. (2011)\nAdditionalVariables:\n• p : priceforbundlesofsizes∈{0,...,n};\ns\n• P =p θ . ks s ks\nObjective:\nm n\n(cid:88)(cid:88)\nmax α ·Z (17)\nk ks\nk=1s=0\nConstraints:\ns ≥R −p , ∀k,s (18)\nk ks s\nn\n(cid:88)\nθ =1, ∀k (19)\nks\ns=0\nP ≤p , ∀k,s (20)\nks s\nP ≥p −M(1−θ ), ∀k,s (21)\nks s ks\nZ =P −c θ , ∀k,s (22)\nks ks ks ks\nn\n(cid:88)\ns = (R θ −P ), ∀k (23)\nk ks ks ks\ns=0\nn\n(cid:88)\ns ≥ (R θ −P ), ∀k,j ̸=k (24)\nk ks js js\ns=0\nR θ −P ≥0, ∀k,s (25)\nks ks ks\np ≤p +p , ∀s ,s s.t.",
+      "size": 481,
+      "sentences": 3
+    },
+    {
+      "id": 112,
+      "content": ":88)\ns ≥ (R θ −P ), ∀k,j ̸=k (24)\nk ks js js\ns=0\nR θ −P ≥0, ∀k,s (25)\nks ks ks\np ≤p +p , ∀s ,s s.t. s +s ≤n (26)\ns1+s2 s1 s2 1 2 1 2\np ≥p , ∀s=0,...,n−1 (27)\ns+1 s\np ,P ,Z ≥0, θ ∈{0,1} ∀k,s\ns ks ks ks\nA.2 LPFORMULATION(FIXEDASSIGNMENT)\nDecisionvariables:\n• p ≥0: priceofbundlei∈F,whereF istheprunedcandidatebundleset;\ni\n• s : surplusofsegmentk ∈{1,...,m}. k\nObjective:\nm\n(cid:88) (cid:0) (cid:1)\nmax α · p −c , (L.1)\np,s\nk bk k,bk\nk=1\nwhereb ∈F isthefixedbundleassignedtosegmentk.",
+      "size": 480,
+      "sentences": 3
+    },
+    {
+      "id": 113,
+      "content": "cid:0) (cid:1)\nmax α · p −c , (L.1)\np,s\nk bk k,bk\nk=1\nwhereb ∈F isthefixedbundleassignedtosegmentk. k\nConstraints:\ns ≥ R −p ∀k =1,...,m, ∀i∈F (lowerbound) (L.2)\nk k,i i\ns ≤ R −p ∀k (assignmentbinding) (L.3)\nk k,bk bk\np ≤ p +p , ifA =A ∪A , {j ,j }⊂F (sub-additivity) (L.4)\ni j1 j2 i j1 j2 1 2\np =0 (emptybundleprice) (L.5)\n0\nRemarks. • Bundle assignments are fixed externally by assigning each segment with their exact FCP\noptimalbundleprediction: θ =1andθ =0fori̸=b .",
+      "size": 468,
+      "sentences": 3
+    },
+    {
+      "id": 114,
+      "content": "rnally by assigning each segment with their exact FCP\noptimalbundleprediction: θ =1andθ =0fori̸=b . kbk ki k\n12\n===  13 ===\nPreprint. • Constraints(L.2)and(L.3)togetherensureincentivecompatibility: s = R −p =\nk k,bk bk\nmax {R −p }. i∈F k,i i\n• OnlybundlesinF (predictedorassigned)havepricevariables,reducingdimensionality. • ThemodelisapureLPwithoutintegerdecisionvariables,incontrasttotheMILPformu-\nlations.",
+      "size": 408,
+      "sentences": 5
+    },
+    {
+      "id": 115,
+      "content": "mensionality. • ThemodelisapureLPwithoutintegerdecisionvariables,incontrasttotheMILPformu-\nlations. • TheoptimalvalueoftheLPformulationisalowerboundofthecorrespondingMILPwith\npossiblebundlesetF. Thatis,theoptimalvalueofthisLPislessthanorequaltothatof\nHM(F). A.3 MODIFIEDPRICESUB-ADDITIVITYCONSTRAINTS\nOurmixedbundlingfollowsHanson&Martin(1990)’sformulationintermsofdecisionvariables,\nobjective,andmostconstraints(consumersurplus,singlepriceschedule,etc.).",
+      "size": 455,
+      "sentences": 6
+    },
+    {
+      "id": 116,
+      "content": "intermsofdecisionvariables,\nobjective,andmostconstraints(consumersurplus,singlepriceschedule,etc.). Theonlydifference\nlies in the treatment of price sub-additivity. To enforce the general K-way Cover sub-additivity\n(S )proposedbyHanson&Martin(1990),weintroduceamoreparsimonioussetofconstraints. C,K\nSpecifically,weonlyenforcesub-additivityon2-waypartitions(S ),whichsignificantlyreduces\nP,2\nthenumberofpricesub-additivityconstraintswhilebeingsufficienttoguaranteethegeneralcondi-\ntion.",
+      "size": 485,
+      "sentences": 4
+    },
+    {
+      "id": 117,
+      "content": "P,2\nthenumberofpricesub-additivityconstraintswhilebeingsufficienttoguaranteethegeneralcondi-\ntion. TheequivalencebetweenthesetwoareprovedinAppendixB. Definition1(K-wayCoversub-additivity—StatementS ). ForanybundleB andany(poten-\nC,K\ntiallyoverlapping)coverbyK ≥2sub-bundles{B ,...,B },thefollowingholds:\n1 K\nK\n(cid:88)\np(B)≤ p(B ). j\nj=1\nDefinition2(2-wayPartitionsub-additivity—StatementS ).",
+      "size": 392,
+      "sentences": 5
+    },
+    {
+      "id": 118,
+      "content": "wingholds:\n1 K\nK\n(cid:88)\np(B)≤ p(B ). j\nj=1\nDefinition2(2-wayPartitionsub-additivity—StatementS ). ForanybundleBandanydisjoint\nP,2\npartitionintotwosub-bundles{B ,B },thefollowingholds:\n1 2\np(B)≤p(B )+p(B ). 1 2\nB PROOF OF EQUIVALENCE BETWEEN PRICE SUB-ADDITIVITY\nCONSTRAINTS\nB.1 DEFINITIONS\nLetU bethesetcontainingallproducts,andletp:P(U)→R bethepricefunction,whereP(U)\n≥0\ndenotesthepowersetofU. Definition3(PriceMonotonicity—StatementM). ForanytwobundlesAandB,ifA⊆B,then\np(A)≤p(B).",
+      "size": 483,
+      "sentences": 6
+    },
+    {
+      "id": 119,
+      "content": "powersetofU. Definition3(PriceMonotonicity—StatementM). ForanytwobundlesAandB,ifA⊆B,then\np(A)≤p(B). Definition4(K-wayPartitionsub-additivity—StatementS ). ForanybundleBandanydisjoint\nP,K\npartitionintoK ≥2sub-bundles{B ,...,B },thefollowingholds:\n1 K\nK\n(cid:88)\np(B)≤ p(B ). j\nj=1\nB.2 THEOREM\nProposition1. StatementS andStatementS areequivalent. P,2 P,K\nProof. Weprovethepropositioninbothdirections. Direction1: S =⇒ S Thisistruebydefinition.",
+      "size": 442,
+      "sentences": 10
+    },
+    {
+      "id": 120,
+      "content": "t. P,2 P,K\nProof. Weprovethepropositioninbothdirections. Direction1: S =⇒ S Thisistruebydefinition. S isaspecialcaseofS wherewe\nP,K P,2 P,2 P,K\nchoosethenumberofpartitionsK =2. Direction 2: S =⇒ S We use mathematical induction on the number of partitions, k.\nP,2 P,K\nThe base case (k = 2) is Statement S , which is assumed to be true. Assume the statement\nP,2\n13\n===  14 ===\nPreprint. holdsfork partitions(InductiveHypothesis). WeproveforK = k+1. LetB bepartitionedinto\n{B ,...,B }.",
+      "size": 482,
+      "sentences": 9
+    },
+    {
+      "id": 121,
+      "content": ". holdsfork partitions(InductiveHypothesis). WeproveforK = k+1. LetB bepartitionedinto\n{B ,...,B }. LetB′ = (cid:83)k B . ThenB =B′∪B isa2-waydisjointpartition. ByS :\n1 k+1 j=1 j k+1 P,2\np(B)≤p(B′)+p(B ). (28)\nk+1\nBytheinductivehypothesis,p(B′)≤ (cid:80)k p(B ). Substitutingthisyields:\nj=1 j\nk+1\n(cid:88)\np(B)≤ p(B ). j\nj=1\nThus,S =⇒ S . P,2 P,K\nProposition2. AssumingPriceMonotonicity(M),StatementS andStatementS areequiv-\nP,K C,K\nalent. Proof. Weprovethepropositioninbothdirections,assumingMholds.",
+      "size": 500,
+      "sentences": 14
+    },
+    {
+      "id": 122,
+      "content": "andStatementS areequiv-\nP,K C,K\nalent. Proof. Weprovethepropositioninbothdirections,assumingMholds. Direction 1: S =⇒ S . A disjoint partition is a special case of a cover. Thus, if the rule\nC,K P,K\nholdsforanycover,itmustholdforanydisjointpartition. Direction2: (S ∧M) =⇒ S .Weshowthat(S ∧M) =⇒ S (thebinarycase). Let\nP,K C,K P,2 C,2\nB =B ∪B beacover. WecanwriteBasadisjointpartition: B =(B \\B )∪B . ByS :\n1 2 1 2 2 P,2\np(B ∪B )≤p(B \\B )+p(B ).",
+      "size": 445,
+      "sentences": 10
+    },
+    {
+      "id": 123,
+      "content": "cover. WecanwriteBasadisjointpartition: B =(B \\B )∪B . ByS :\n1 2 1 2 2 P,2\np(B ∪B )≤p(B \\B )+p(B ). (29)\n1 2 1 2 2\nSince(B \\B )⊆B ,byMonotonicity(M),wehavep(B \\B )≤p(B ).Substitutingthisgives\n1 2 1 1 2 1\np(B ∪B )≤p(B )+p(B ),whichprovesS . 1 2 1 2 C,2\nSince S ⇐⇒ S (from Prop. 1) and S ⇐⇒ S (by induction), it follows that\nP,K P,2 C,K C,2\n(S ∧M) =⇒ S . P,K C,K\nTheorem1. AssumingPriceMonotonicity(M),the2-wayPartitionsub-additivity(S )isequiv-\nP,2\nalenttotheK-wayCoversub-additivity(S ). C,K\nProof.",
+      "size": 498,
+      "sentences": 9
+    },
+    {
+      "id": 124,
+      "content": ",the2-wayPartitionsub-additivity(S )isequiv-\nP,2\nalenttotheK-wayCoversub-additivity(S ). C,K\nProof. From Proposition 1, S ⇐⇒ S , and from Proposition 2 under Price Monotonicity\nP,2 P,K\nM,S ⇐⇒ S . HenceS ⇐⇒ S . P,K C,K P,2 C,K\n14\n===  15 ===\nPreprint.",
+      "size": 250,
+      "sentences": 5
+    },
+    {
+      "id": 125,
+      "content": "under Price Monotonicity\nP,2 P,K\nM,S ⇐⇒ S . HenceS ⇐⇒ S . P,K C,K P,2 C,K\n14\n===  15 ===\nPreprint. C PSEUDOCODE FOR THE LOCAL SEARCH STRATEGIES\nAlgorithm1Segment-wiseLocalSearch\n1: Input: Initialsolutionx,probabilitymatrixP,max iter\n2: Output: Optimizedsolutionx∗\n3: x∗ ←MILP-Init({B k }),rev∗ ←LP-Eval(x∗)\n4: iter ←0\n5: whileiter <max iterdo\n6: iter ←iter+1,improve←FALSE\n7: forseg =1tomdo\n8: Generatetwoneighborsofx∗insegmentseg:\n9: (i)Addthehighest-probabilityunselectedproduct\n10: (ii)Dropthelowest-probabilityselectedproduct\n11: forneighbory(intheaboveorder)do\n12: (feas,rev)←LP-Eval(y)\n13: iffeasandrev >rev∗+ϵthen\n14: x∗ ←y,rev∗ ←rev\n15: improve←TRUE\n16: breakandrestartnextiteration ▷greedyaccept\n17: endif\n18: endfor\n19: ifimprovethen\n20: break ▷restartfromnextiteration\n21: endif\n22: endfor\n23: ifnotimprovethen\n24: break ▷fullcycle,noimprovement\n25: endif\n26: endwhile\n27: returnx∗\nD SOFTWARE VERSION\nAll experiments are conducted using PyTorch 2.5.1 with PyTorch Geometric 2.6.1 and Gurobi\n12.0.2, without CUDA support.",
+      "size": 1031,
+      "sentences": 4
+    },
+    {
+      "id": 126,
+      "content": "conducted using PyTorch 2.5.1 with PyTorch Geometric 2.6.1 and Gurobi\n12.0.2, without CUDA support. The EdgeScoringGCN model we use trains for 500 epochs\nwith batch size 512, learning rate 0.01, 128 hidden channels, bilinear edge scoring, 0.5 dropout,\nϵ=1×10−7,Adamoptimizer,andearlystoppingpatienceof50epochs. E LLM USAGE\nThe authors acknowledge the use of a large language model (LLM) in preparing this paper.",
+      "size": 411,
+      "sentences": 3
+    },
+    {
+      "id": 127,
+      "content": "LLM USAGE\nThe authors acknowledge the use of a large language model (LLM) in preparing this paper. Its\nuse was limited to assisting with language polishing, such as improving grammar and clarity, and\nhelpingtogenerateanddebugcodesnippetsforthenumericalexperiments. Allfinaltextandcode\nwerereviewedandvalidatedbytheauthors,whotakefullresponsibilityforthecontentofthiswork. 15",
+      "size": 374,
+      "sentences": 4
+    }
+  ]
+}

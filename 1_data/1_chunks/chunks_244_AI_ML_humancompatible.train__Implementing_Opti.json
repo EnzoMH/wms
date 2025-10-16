@@ -1,0 +1,309 @@
+{
+  "source": "ArXiv",
+  "filename": "244_AI_ML_humancompatible.train__Implementing_Opti.pdf",
+  "domain": "AI",
+  "total_chars": 16963,
+  "total_chunks": 50,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\nhumancompatible.train: Implementing Optimization\nAlgorithms for Stochastically-Constrained Stochastic\nOptimization Problems\nAndriiKliachkin∗, JanaLepšová∗, GillesBareilles∗, JakubMarecek\nArtificialIntelligenceCenter,\nCzechTechnicalUniversityinPrague\nfirstname.lastname@fel.cvut.cz\nAbstract\nThere has been a considerable interest in constrained training of deep neural\nnetworks(DNNs)recentlyforapplicationssuchasfairnessandsafety.",
+      "size": 440,
+      "sentences": 1
+    },
+    {
+      "id": 2,
+      "content": "n constrained training of deep neural\nnetworks(DNNs)recentlyforapplicationssuchasfairnessandsafety. Several\ntoolkits have been proposed for this task, yet there is still no industry standard. Wepresenthumancompatible.train(https://github.com/humancompatible/train),an\neasily-extendablePyTorch-basedPythonpackagefortrainingDNNswithstochastic\nconstraints. We implement multiple previously unimplemented algorithms for\nstochasticallyconstrainedstochasticoptimization.",
+      "size": 464,
+      "sentences": 4
+    },
+    {
+      "id": 3,
+      "content": "t multiple previously unimplemented algorithms for\nstochasticallyconstrainedstochasticoptimization. Wedemonstratethetoolkituse\nbycomparingtwoalgorithmsonadeeplearningtaskwithfairnessconstraints. 1 Introduction\nThere has been a considerable interest in constrained training of deep neural networks (DNNs),\nrecently[23]. Therein,oneconsidersanempiricalriskminimization(ERM)problemwithconstraints\ninvolvingexpectations:\nmin E[f(x,ξ)] s.t.",
+      "size": 435,
+      "sentences": 4
+    },
+    {
+      "id": 4,
+      "content": "ersanempiricalriskminimization(ERM)problemwithconstraints\ninvolvingexpectations:\nmin E[f(x,ξ)] s.t. E[c(x,ζ)]≤0, (1)\nx∈Rn\nwhereξ andζ arerandomvariables,andf(·,ξ) :Rn →Randc(·,ζ) :Rn →Rm arecontinuous\nnonsmoothnonconvexmappings. Thiscanbeseenasaspecialcaseofstochasticallyconstrained\nstochasticoptimizationproblem,whoseapplicationsinoperationsresearchandstatisticsgowell\nbeyondDNNs.",
+      "size": 382,
+      "sentences": 3
+    },
+    {
+      "id": 5,
+      "content": "stochasticoptimizationproblem,whoseapplicationsinoperationsresearchandstatisticsgowell\nbeyondDNNs. Inthiswork,wepresenthumancompatible.train: aPythontoolkitfortrainingofneuralnetworks\nwithconstraintsasin(1),anddemonstrateitonafairnessuse-case. Thisdrawsonnumerousrecent\nproposals[12,1,6,22,2,20,21,4,7,24,11,15,16]tosolveconvexandnon-convexempirical-risk\nminimizationproblemssubjecttoconstraintsboundingtheabsolutevalueofempiricalrisk. SeeTable\n1foranoverview.",
+      "size": 460,
+      "sentences": 4
+    },
+    {
+      "id": 6,
+      "content": "zationproblemssubjecttoconstraintsboundingtheabsolutevalueofempiricalrisk. SeeTable\n1foranoverview. Numerousotheralgorithmsofthiskindcouldbeconstrued,basedonanumber\nofdesignchoices, including: (a)samplingtechniquesfortheERMobjectiveandtheconstraints,\neitherthesameordifferent;(b)useoffirst-orderorhigher-orderderivatives;(c)useofglobalization\nstrategiessuchasfiltersorlinesearch;(d)useof“true”globalizationstrategiesincludingrandom\ninitialpointsandrandomrestartsinordertoreachglobalminimizers.",
+      "size": 493,
+      "sentences": 3
+    },
+    {
+      "id": 7,
+      "content": "lobalizationstrategiesincludingrandom\ninitialpointsandrandomrestartsinordertoreachglobalminimizers. Nevertheless,thereisnoestablishedtoolkit,yet,whichwouldimplementallofthesealgorithmsand\nwhichwouldallowfortheirfaircomparison. Thisisnottosaythattherearenotoolkitsdeveloped\nin this direction. Indeed, the package CHOP [14] implements Proximal Gradient Descent [19],\nFrank-Wolfe[18],andtheStochasticThree-CompositeMinimization[26,25],butisnotactively\nmaintainedanymore.",
+      "size": 467,
+      "sentences": 4
+    },
+    {
+      "id": 8,
+      "content": "nk-Wolfe[18],andtheStochasticThree-CompositeMinimization[26,25],butisnotactively\nmaintainedanymore. Thesealgorithmsrequiretheprojection,whichisnon-trivialintraininggeneral\n∗Equalcontribution,morejuniorauthorslistedfirst. 39thConferenceonNeuralInformationProcessingSystems(NeurIPS2025)Workshop:ConstrainedOptimiza-\ntionforMachineLearning(COML). 5202\npeS\n52\n]GL.sc[\n1v45212.9052:viXra\n===  2 ===\nDNNs,tobeefficientlyimplementable.",
+      "size": 428,
+      "sentences": 4
+    },
+    {
+      "id": 9,
+      "content": "earning(COML). 5202\npeS\n52\n]GL.sc[\n1v45212.9052:viXra\n===  2 ===\nDNNs,tobeefficientlyimplementable. ThereistherecentlyproposedCooper[13],thatfocuses\non translating constrained problem to the unconstrained problem of minimizing the augmented\nLagrangian.",
+      "size": 252,
+      "sentences": 3
+    },
+    {
+      "id": 10,
+      "content": "ranslating constrained problem to the unconstrained problem of minimizing the augmented\nLagrangian. Incontrastwithunconstrainedminimizationofstochasticnonconvexobjectives,where\nconvergence guarantees exists [9], no convergence guarantees are available for the Augmented\nLagrangianmethodinthestochasticnonconvexobjectiveandconstraintssetting; seeSSL-ALM\n[15]. ThereisalsoGeoTorch[17],whichfocusesonparticularsmoothmanifoldsencountered,e.g.,\ninquantuminformationtheory.",
+      "size": 467,
+      "sentences": 3
+    },
+    {
+      "id": 11,
+      "content": "soGeoTorch[17],whichfocusesonparticularsmoothmanifoldsencountered,e.g.,\ninquantuminformationtheory. Whileourtoolkitisstillworkinprogress,weimplementseveral\nalgorithmsthathaveneverbeenimplementedbefore,suchasSSL-ALM[15],StochasticSwitching\nSubgradient[16]andtheStochasticGhost[11]. Ourcontributions.",
+      "size": 298,
+      "sentences": 3
+    },
+    {
+      "id": 12,
+      "content": "e,suchasSSL-ALM[15],StochasticSwitching\nSubgradient[16]andtheStochasticGhost[11]. Ourcontributions. Thecontributionsofthispaperare:\n• aliteraturereviewofalgorithmssubjecttohandling(1);\n• atoolboxthatimplementsalgorithmsapplicableinconstrainedtrainingofDNNs;\n• numericalexperimentsthatcomparethesealgorithmsonareal-worlddataset.",
+      "size": 327,
+      "sentences": 3
+    },
+    {
+      "id": 13,
+      "content": "einconstrainedtrainingofDNNs;\n• numericalexperimentsthatcomparethesealgorithmsonareal-worlddataset. 2 Algorithms\nSolving(1)encountersthefollowingchallenges:\n• large-scaleobjectiveandconstraintfunctions,whichrequiresamplingschemes,\n• thenecessityofincorporatinginequalityconstraints,notmerelyequalityconstraints,\n• thenecessitytocopewiththenonconvexityandnonsmoothness,duetothenatureofneural\nnetworks. Inthissection,weidentifythealgorithmsthataddressthesechallengesmostprecisely.",
+      "size": 478,
+      "sentences": 3
+    },
+    {
+      "id": 14,
+      "content": "ureofneural\nnetworks. Inthissection,weidentifythealgorithmsthataddressthesechallengesmostprecisely. However,we\nnotethatthereexistscurrentlynoalgorithmwithguaranteesforsuchageneralsetting. Notation. WedenotetheprojectionofapointxontoasetX byproj (x)=argmin ∥x−v∥2. X v∈X\nWedistinguishbetweentherandomvariableξassociatedwiththeobjectivefunctionandtherandom\nvariableζassociatedwiththeconstraintfunction.WedenoteP andP theirprobabilitydistributions.",
+      "size": 445,
+      "sentences": 6
+    },
+    {
+      "id": 15,
+      "content": "herandom\nvariableζassociatedwiththeconstraintfunction.WedenoteP andP theirprobabilitydistributions. ξ ζ\n2.1 ReviewofmethodsforconstrainedERM\nWecomparerecentconstrainedoptimizationalgorithmsconsideringastochasticobjectivefunction\ninTable1. Wenotethatmostofthemdonotconsiderthecaseofstochasticconstraints. Among\nthosewhichdoconsiderstochasticconstraints,onlythreeadmitinequalityconstraints.",
+      "size": 388,
+      "sentences": 4
+    },
+    {
+      "id": 16,
+      "content": "icconstraints. Among\nthosewhichdoconsiderstochasticconstraints,onlythreeadmitinequalityconstraints. Moreover,\nwiththeexceptionof[16],allthealgorithmsinTable1assumeF tobeatleastC1,whichmakes\naddressingthechallengeofnonsmoothnessof F infeasible. Therecentpaper[8]leadsustothe\nconclusion that assumingthe objective and constraintfunctions to be tame andlocally Lipschitz\nisasuitablerequirementforsolving(1)withtheoreticalguaranteesofconvergence.",
+      "size": 442,
+      "sentences": 4
+    },
+    {
+      "id": 17,
+      "content": "ame andlocally Lipschitz\nisasuitablerequirementforsolving(1)withtheoreticalguaranteesofconvergence. Atthispoint,\nhowever, nosuchalgorithmexists, tothebestofourknowledge. Consequently, weconsiderthe\npractical performance of the algorithms that address the challenges of solving (1) most closely:\nSSL-ALM[15],andStoch. SwitchingSubgradient[16].",
+      "size": 342,
+      "sentences": 4
+    },
+    {
+      "id": 18,
+      "content": "address the challenges of solving (1) most closely:\nSSL-ALM[15],andStoch. SwitchingSubgradient[16]. 2.2 StochasticSmoothedandLinearizedALMethod(SSL-ALM)\nTheStochasticSmoothedandLinearizedALMethod(SSL-ALM)wasdescribedin[15]foropti-\nmizationproblemswithstochasticlinearconstraints. Althoughproblem(1)hasnon-linearinequality\nconstraints,weusetheSSL-ALMduetothelackofalgorithmsintheliteraturedealingwithstochastic\nnon-linearconstraints;seeTable1.",
+      "size": 442,
+      "sentences": 4
+    },
+    {
+      "id": 19,
+      "content": "SL-ALMduetothelackofalgorithmsintheliteraturedealingwithstochastic\nnon-linearconstraints;seeTable1. Thetransitionbetweenequalityandinequalityconstraintscanbe\nhandledbyeithertakingthemaximumbetweentheconstraintvalueand0orusingslackvariables. Followingthestructureof[15],weminimizeoverthesetX = Rn ×Rm . Themethodisbased\n≥0\nontheaugmentedLagrangian(AL)functionL (x,y) = F(x)+y⊤C(x)+ ρ∥C(x)∥2,whichis\nρ 2\naresultofmergingtheLagrangefunctionwiththepenaltymethods[3].",
+      "size": 462,
+      "sentences": 4
+    },
+    {
+      "id": 20,
+      "content": "y) = F(x)+y⊤C(x)+ ρ∥C(x)∥2,whichis\nρ 2\naresultofmergingtheLagrangefunctionwiththepenaltymethods[3]. Addingasmoothingterm\nandavariablez ∈RnyieldstheproximalALfunction\nµ\nK (x,y,z)=L (x,y)+ ∥x−z∥2. ρ,µ ρ 2\n2\n===  3 ===\nTheSSL-ALMmethodwasoriginallyproposedin[15]whereitisinterpretedasaninexactgradient\ndescent step on the Moreau envelope. An important property of the Moreau envelope is that its\nstationarypointscoincidewiththoseoftheoriginalfunction.",
+      "size": 448,
+      "sentences": 4
+    },
+    {
+      "id": 21,
+      "content": "property of the Moreau envelope is that its\nstationarypointscoincidewiththoseoftheoriginalfunction. iid iid\nIn each iteration, we sample ξ ∼P to evaluate the objective and ζ , ζ ∼P to evaluate the\nξ 1 2 ζ\nconstraintfunctionanditsJacobianmatrix,respectively. Thefunction\nG(x,y,z;ξ,ζ ,ζ )=∇f(x,ξ)+∇c(x,ζ )⊤y+ρ∇c(x,ζ )⊤c(x,ζ )+µ(x−z) (2)\n1 2 1 1 2\nisdefinedsothat,initerationk,E [G(x ,y ,z ;ξ,ζ ,ζ )] = ∇K (x ,y ,z ).",
+      "size": 414,
+      "sentences": 3
+    },
+    {
+      "id": 22,
+      "content": "⊤c(x,ζ )+µ(x−z) (2)\n1 2 1 1 2\nisdefinedsothat,initerationk,E [G(x ,y ,z ;ξ,ζ ,ζ )] = ∇K (x ,y ,z ). Omit-\nξ,ζ1,ζ2 k k+1 k 1 2 ρ,µ k k+1 k\ntingsomedetails,theupdatesareperformedusingsomeparametersη,τ,andβ asfollows:\ny =y +ηc(x,ζ ),\nk+1 k 1\nx =proj (x −τG(x ,y ,z ;ξ,ζ ,ζ )), (3)\nk+1 X k k k+1 k 1 2\nz =z +β(x −z ).",
+      "size": 313,
+      "sentences": 2
+    },
+    {
+      "id": 23,
+      "content": "y =y +ηc(x,ζ ),\nk+1 k 1\nx =proj (x −τG(x ,y ,z ;ξ,ζ ,ζ )), (3)\nk+1 X k k k+1 k 1 2\nz =z +β(x −z ). k+1 k k k\n2.3 StochasticSwitchingSubgradientMethod(SSw)\nThe Stochastic Switching Subgradient method was described in [16] for optimization problems\noveraclosedconvexsetX ⊂Rdwhichiseasytoprojectonandforweaklyconvexobjectiveand\nconstraintfunctionsF andC whichmaybenon-smooth. ThisiswhythenotionofgradientofF and\nC isreplacedbyamoregeneralnotionofsubgradient,whichisanelementofasubdifferential.",
+      "size": 490,
+      "sentences": 3
+    },
+    {
+      "id": 24,
+      "content": "ofgradientofF and\nC isreplacedbyamoregeneralnotionofsubgradient,whichisanelementofasubdifferential. Thealgorithmrequiresasinputaprescribedsequenceofinfeasibilitytolerancesϵ andsequencesof\nk\nstepsizesηf andηc. Initerationk,wesampleζ ,...,ζ i ∼ id P tocomputeanestimatecJ(x ). If\nk k 1 J ζ k\ncJ(x )issmallerthanϵ ,wesampleξ i ∼ id P andanupdatebetweenx andx iscomputedusing\nk k ξ k k+1\nastochasticestimateSf(x ,ξ)ofanelementofthesubdifferential∂F(x )oftheobjectivefunction:\nk k\nx =proj (x −ηfSf(x ,ξ)).",
+      "size": 500,
+      "sentences": 4
+    },
+    {
+      "id": 25,
+      "content": "teSf(x ,ξ)ofanelementofthesubdifferential∂F(x )oftheobjectivefunction:\nk k\nx =proj (x −ηfSf(x ,ξ)). k+1 X k k k\nOtherwise,wesampleζ i ∼ id P andtheupdateiscomputedusingastochasticestimateSc(x ,ζ)of\nζ k\nanelementofthesubdifferential∂C(x )oftheconstraintfunction:\nk\nx =proj (x −ηcSc(x ,ζ)).",
+      "size": 288,
+      "sentences": 2
+    },
+    {
+      "id": 26,
+      "content": "(x ,ζ)of\nζ k\nanelementofthesubdifferential∂C(x )oftheconstraintfunction:\nk\nx =proj (x −ηcSc(x ,ζ)). k+1 X k k k\nThealgorithmpresentedhereisslightlymoregeneralthantheonepresentedin[16]: weallowfor\nthepossibilityofdifferentstepsizesfortheobjectiveupdate,ηf,andtheconstraintupdateηc,while\nk k\ntheoriginalmethodemploysequalstepsizesηf =ηc. k k\n2.4 Packageimplementation\nInthepackage,bothalgorithmsareimplementedwithanAPIclosetothatofaPyTorchOptimizer.",
+      "size": 447,
+      "sentences": 3
+    },
+    {
+      "id": 27,
+      "content": "ageimplementation\nInthepackage,bothalgorithmsareimplementedwithanAPIclosetothatofaPyTorchOptimizer. In\nadditiontothestep()method,whichperformstheprimalupdate,weaddadual_step()method,\nwhichupdatesthedualparametersandperformsotherrelatedtasks. Thisallowsforpipelinessimilar\ntothoseofPyTorch. 3 Experimentalevaluation\nData.",
+      "size": 320,
+      "sentences": 4
+    },
+    {
+      "id": 28,
+      "content": "msotherrelatedtasks. Thisallowsforpipelinessimilar\ntothoseofPyTorch. 3 Experimentalevaluation\nData. Inthissection,weillustratethepresentedalgorithmsonareal-worldinstanceoftheACS\ndataset,whichisbasedontheACSPUMSdatasample(AmericanCommunitySurveyPublicUse\nMicrodataSample),accessedinPythonviatheFolktablespackage[10]. Inparticular,weusethe\nACSIncomedatasetoverthestateofVirginia,andchoosethebinaryclassificationtaskofpredicting\nwhetheranindividual’sincomeisover$50,000.",
+      "size": 467,
+      "sentences": 5
+    },
+    {
+      "id": 29,
+      "content": "Virginia,andchoosethebinaryclassificationtaskofpredicting\nwhetheranindividual’sincomeisover$50,000. Thedatasetcontains9featuresand46,144data\npoints. Wechoosemaritalstatus(MAR)astheprotectedattribute,whichisacategoricalattribute\nwith 5 values: Married, Widowed, Divorced, Separated, and Never Married/Under 15. Thedatasetissplitrandomlyintotrain(80%,36,915points)andtest(20%,9,229points)subsets. Theprotectedattributeisthenremovedfromthedatasothatthemodelcannotlearnfromitdirectly.",
+      "size": 480,
+      "sentences": 5
+    },
+    {
+      "id": 30,
+      "content": "ints)subsets. Theprotectedattributeisthenremovedfromthedatasothatthemodelcannotlearnfromitdirectly. ThedataisnormalizedusingScikit-LearnStandardScaler. Usingautilityprovidedwiththehumancompatible.trainpackage,wesampleequalnumberofdata\npointsfromeachsubgroupateachiterationtoensurethatallconstraintscanbecomputed. 3\n===  4 ===\nTable1: Assumptionsonobjectiveandconstraintfunctions,F andC,whichallowfortheoretical\nconvergenceproofs.",
+      "size": 429,
+      "sentences": 5
+    },
+    {
+      "id": 31,
+      "content": "e1: Assumptionsonobjectiveandconstraintfunctions,F andC,whichallowfortheoretical\nconvergenceproofs. ObjectivefunctionF ConstraintfunctionC\nAlgorithm\ncitsahcots\nxevnocylkaew\nF∇ztihcspiLhtiw1C\nztihcspiL.colemat\ncitsahcots 0=)x(C\n0≤)x(Cdna0=)x(C\nraenil\nxevnocylkaew\nC∇ztihcspiLhtiw1C\nztihcspiL.colemat\nSGD ✓ (✓) (✓) ✓\n[2][12][6] ✓ – ✓ – – ✓ – – – ✓ –\n[20] ✓ – ✓(C3) – – ✓ – – – ✓(C3) –\n[24][7] ✓ – ✓ – – (✓) ✓ – – ✓ –\n[21] ✓ – ✓(C2) – – (✓) ✓ – – ✓(C2) –\n[4] ✓ – ✓(+cvx) – – ✓ – ✓ – – –\n[22] ✓ – ✓ – ✓ ✓ – – – ✓ –\nSSL-ALM[15] ✓ – ✓ – ✓ (✓) ✓ ✓ – – –\nStoch.Ghost[11] ✓ – ✓ – ✓ (✓) ✓ – – ✓ –\nStoch.Switch.Subg.",
+      "size": 605,
+      "sentences": 2
+    },
+    {
+      "id": 32,
+      "content": "✓ –\nSSL-ALM[15] ✓ – ✓ – ✓ (✓) ✓ ✓ – – –\nStoch.Ghost[11] ✓ – ✓ – ✓ (✓) ✓ – – ✓ –\nStoch.Switch.Subg. [16] ✓ ✓ – – ✓ (✓) ✓ – ✓ – –\nProblems. Inallproblems,wesettheobjectivefunctiontheBinaryCrossEntropywithLogitsLoss\nℓ(f (X ),Y )=−Y ·logσ(f (X ))−(1−Y )·log(1−σ(f (X ))), (4)\nθ i i i θ i i θ i\nwhereσ(z)= 1 isthesigmoidfunction,andthepredictionfunctionf isaneuralnetworkwith\n1+e−z θ\n2interconnectedhiddenlayersofsizes64and32andReLUactivation,withatotalof194parameters.",
+      "size": 464,
+      "sentences": 3
+    },
+    {
+      "id": 33,
+      "content": "kwith\n1+e−z θ\n2interconnectedhiddenlayersofsizes64and32andReLUactivation,withatotalof194parameters. For the constrained algorithms, for each of the 5 groups (defined by the value of the protected\nattribute),weputanupperboundontheabsolutedifferencebetweenPositiveRatecomputedonthat\ngroupandtheoverallPositiveRate:\n|P(f (X)=1|G=g)−P(f (X)=1)|≤c, (5)\nθ θ\nwhereGisthegroupmembershipindicator. Wesettheconstraintboundc=0.05forallgroups;weuseFairret[5]tocomputetheconstraints. Algorithms and parameters.",
+      "size": 497,
+      "sentences": 4
+    },
+    {
+      "id": 34,
+      "content": "onstraintboundc=0.05forallgroups;weuseFairret[5]tocomputetheconstraints. Algorithms and parameters. We compare the performance of two algorithms for solving the\nconstrainedproblem: (1)SSL-ALM(Sec. 2.2-parametersµ = 2.0,ρ = 1.0,τ = 0.05,η = 0.1,\nβ = 0.5, M = 100), and (2) Stochastic Switching Subgradient (SSw) (Sec. 2.3 - ηf = 0.01,\ny k\nη\nk\nc = 0.01,ϵ\n1\n= 10−1,ϵ\nk\n= ϵ √k−\nk\n1 forallk ≥ 1). Asabaseline,wealsotrainthenetworkwithout\nconstraintsusingAdamwithdefaulthyperparametervaluesfoundinPyTorch.",
+      "size": 499,
+      "sentences": 6
+    },
+    {
+      "id": 35,
+      "content": "ine,wealsotrainthenetworkwithout\nconstraintsusingAdamwithdefaulthyperparametervaluesfoundinPyTorch. Setup. ExperimentsareconductedonanAsusZenbookUX535laptopwithAMDRyzen75800H\nCPU,and16GBRAM.Eachalgorithmisrunfor1minute,repeated5times. Optimizationperformance. Figure1presentstheevolutionoflossandconstraintvaluesover\nthetrainandtestdatasetsforthebaseline(Adam)(row1),andthetwoalgorithmsaddressingthe\nconstrainedproblem(SSL-ALMonrow2andSSwonrow3).",
+      "size": 446,
+      "sentences": 5
+    },
+    {
+      "id": 36,
+      "content": "aseline(Adam)(row1),andthetwoalgorithmsaddressingthe\nconstrainedproblem(SSL-ALMonrow2andSSwonrow3). BothSSL-ALMandSSwalgorithms\nsucceedinkeepingtheconstraintvalueswithinbounds,withSSL-ALMminimizingtheobjective\nfunctionfasterunderthechosenhyperparameters. Acknowledgements\nTheworkwasfundedbyEuropeanUnion’sHorizonEuroperesearchandinnovationprogramunder\ngrantagreementNo. 101070568. References\n[1] Albert Berahas, Frank E. Curtis, Daniel Robinson, and Baoyu Zhou.",
+      "size": 461,
+      "sentences": 5
+    },
+    {
+      "id": 37,
+      "content": "mentNo. 101070568. References\n[1] Albert Berahas, Frank E. Curtis, Daniel Robinson, and Baoyu Zhou. Sequential quadratic\noptimization for nonlinear equality constrained stochastic optimization. SIAM Journal on\nOptimization,31:1352–1379,052021. 4\n[  ]\n\n===  5 ===\nFigure1: Train(blue)andtest(orange)statisticsovertime(s)ontheACSIncomedatasetforeach\nalgorithm: Adam (top-row), SSL-ALM (middle-row), and SSw (bottom-row).",
+      "size": 418,
+      "sentences": 6
+    },
+    {
+      "id": 38,
+      "content": "ontheACSIncomedatasetforeach\nalgorithm: Adam (top-row), SSL-ALM (middle-row), and SSw (bottom-row). The plots depict\nthemeanvaluesforloss(leftmostcolumn)andconstraints(secondtorightmostcolumn)ateach\ntimestamp (rounded to the nearest 0.1 seconds) over 5 runs. The shaded area depicts the region\nbetweenthelowestandthehighestvalueforcorrespondingstatisticscalculatedthesameway. [2] AlbertS.Berahas,FrankE.Curtis,MichaelJ.O’Neill,andDanielP.Robinson.",
+      "size": 447,
+      "sentences": 4
+    },
+    {
+      "id": 39,
+      "content": "isticscalculatedthesameway. [2] AlbertS.Berahas,FrankE.Curtis,MichaelJ.O’Neill,andDanielP.Robinson. Astochastic\nsequentialquadraticoptimizationalgorithmfornonlinearequalityconstrainedoptimization\nwithrank-deficientjacobians,2023. [3] D.P.BertsekasandW.Rheinboldt. ConstrainedOptimizationandLagrangeMultiplierMethods. Computerscienceandappliedmathematics.AcademicPress,2014. [4] RaghuBollapragada,CemKaramanli,BrendanKeith,BoyanLazarov,SocratisPetrides,and\nJingyiWang.",
+      "size": 467,
+      "sentences": 7
+    },
+    {
+      "id": 40,
+      "content": "2014. [4] RaghuBollapragada,CemKaramanli,BrendanKeith,BoyanLazarov,SocratisPetrides,and\nJingyiWang. Anadaptivesamplingaugmentedlagrangianmethodforstochasticoptimization\nwithdeterministicconstraints. ComputersandMathematicswithApplications,149:239–258,\n2023. [5] MaartenBuyl, MarybethDefrance, andTijlDeBie. fairret: aframeworkfordifferentiable\nfairnessregularizationterms. InInternationalConferenceonLearningRepresentations,2024. [6] FrankE.Curtis,MichaelJ.O’Neill,andDanielP.Robinson.",
+      "size": 485,
+      "sentences": 8
+    },
+    {
+      "id": 41,
+      "content": "alConferenceonLearningRepresentations,2024. [6] FrankE.Curtis,MichaelJ.O’Neill,andDanielP.Robinson. Worst-casecomplexityofansqp\nmethodfornonlinearequalityconstrainedstochasticoptimization. MathematicalProgramming,\n205(1):431–483,May2024. [7] FrankE.Curtis,DanielP.Robinson,andBaoyuZhou. Sequentialquadraticoptimizationfor\nstochasticoptimizationwithdeterministicnonlinearinequalityandequalityconstraints. SIAM\nJournalonOptimization,34(4):3592–3622,2024.",
+      "size": 452,
+      "sentences": 7
+    },
+    {
+      "id": 42,
+      "content": "ministicnonlinearinequalityandequalityconstraints. SIAM\nJournalonOptimization,34(4):3592–3622,2024. [8] DamekDavis,DmitriyDrusvyatskiy,ShamKakade,andJasonD.Lee. Stochasticsubgradient\nmethodconvergesontamefunctions,2018. [9] DamekDavis,DmitriyDrusvyatskiy,ShamKakade,andJasonD.Lee. StochasticSubgradient\nMethodConvergesonTameFunctions. FoundationsofComputationalMathematics,20(1):119–\n154,February2020. [10] FrancesDing,MoritzHardt,JohnMiller,andLudwigSchmidt.",
+      "size": 459,
+      "sentences": 8
+    },
+    {
+      "id": 43,
+      "content": "lMathematics,20(1):119–\n154,February2020. [10] FrancesDing,MoritzHardt,JohnMiller,andLudwigSchmidt. Retiringadult: Newdatasets\nforfairmachinelearning. AdvancesinNeuralInformationProcessingSystems,34,2021. [11] FranciscoFacchineiandVyacheslavKungurtsev. Stochasticapproximationforexpectation\nobjectiveandexpectationinequality-constrainednonconvexoptimization,2023. [12] YuchenFang,SenNa,MichaelW.Mahoney,andMladenKolar.",
+      "size": 418,
+      "sentences": 7
+    },
+    {
+      "id": 44,
+      "content": "ality-constrainednonconvexoptimization,2023. [12] YuchenFang,SenNa,MichaelW.Mahoney,andMladenKolar. Fullystochastictrust-region\nsequential quadratic programming for equality-constrained optimization problems. SIAM\nJournalonOptimization,34(2):2007–2037,2024. [13] JoseGallego-Posada,JuanRamirez,MerajHashemizadeh,andSimonLacoste-Julien. Cooper:\nALibraryforConstrainedOptimizationinDeepLearning. arXivpreprintarXiv:2504.01212,\n2025. 5\n===  6 ===\n[14] FabianPedregosaGeoffreyNegiar.",
+      "size": 479,
+      "sentences": 8
+    },
+    {
+      "id": 45,
+      "content": "DeepLearning. arXivpreprintarXiv:2504.01212,\n2025. 5\n===  6 ===\n[14] FabianPedregosaGeoffreyNegiar. Chop: continuousoptimizationbuiltonpytorch. 2020. [15] Ruichuan Huang, Jiawei Zhang, and Ahmet Alacaoglu. Stochastic smoothed primal-dual\nalgorithmsfornonconvexoptimizationwithlinearinequalityconstraints,2025. [16] Yankun Huang and Qihang Lin. Oracle complexity of single-loop switching subgradient\nmethodsfornon-smoothweaklyconvexfunctionalconstrainedoptimization,2023. [17] Mario Lezcano-Casado.",
+      "size": 497,
+      "sentences": 10
+    },
+    {
+      "id": 46,
+      "content": "methodsfornon-smoothweaklyconvexfunctionalconstrainedoptimization,2023. [17] Mario Lezcano-Casado. Trivializations for gradient-based optimization on manifolds. In\nAdvancesinNeuralInformationProcessingSystems,NeurIPS,pages9154–9164,2019. [18] FrancescoLocatello,AlpYurtsever,OlivierFercoq,andVolkanCevher. Stochasticfrank-wolfe\nforcompositeconvexminimization. AdvancesinNeuralInformationProcessingSystems,32,\n2019. [19] AleksanderMadry,AleksandarMakelov,LudwigSchmidt,DimitrisTsipras,andAdrianVladu.",
+      "size": 499,
+      "sentences": 8
+    },
+    {
+      "id": 47,
+      "content": "tems,32,\n2019. [19] AleksanderMadry,AleksandarMakelov,LudwigSchmidt,DimitrisTsipras,andAdrianVladu. Towardsdeeplearningmodelsresistanttoadversarialattacks. InInternationalConferenceon\nLearningRepresentations,2018. [20] Sen Na, Mihai Anitescu, and Mladen Kolar. An adaptive stochastic sequential quadratic\nprogrammingwithdifferentiableexactaugmentedlagrangians. MathematicalProgramming,\n199(1):721–791,May2023. [21] Sen Na, Mihai Anitescu, and Mladen Kolar.",
+      "size": 456,
+      "sentences": 8
+    },
+    {
+      "id": 48,
+      "content": "ns. MathematicalProgramming,\n199(1):721–791,May2023. [21] Sen Na, Mihai Anitescu, and Mladen Kolar. Inequality constrained stochastic nonlinear\noptimizationviaactive-setsequentialquadraticprogramming,2023. [22] FigenOztoprak,RichardByrd,andJorgeNocedal. Constrainedoptimizationinthepresenceof\nnoise. SIAMJournalonOptimization,33(3):2118–2136,2023. [23] JuanRamirez,MerajHashemizadeh,andSimonLacoste-Julien. Position: Adoptconstraints\noverpenaltiesindeeplearning,2025.",
+      "size": 467,
+      "sentences": 9
+    },
+    {
+      "id": 49,
+      "content": "ajHashemizadeh,andSimonLacoste-Julien. Position: Adoptconstraints\noverpenaltiesindeeplearning,2025. [24] QiankunShi,XiaoWang,andHaoWang. Amomentum-basedlinearizedaugmentedlagrangian\nmethodfornonconvexconstrainedstochasticoptimization. OptimizationOnline,2022. [25] AlpYurtsever,VarunMangalick,andSuvritSra. Threeoperatorsplittingwithanonconvex\nlossfunction.",
+      "size": 357,
+      "sentences": 7
+    },
+    {
+      "id": 50,
+      "content": ". [25] AlpYurtsever,VarunMangalick,andSuvritSra. Threeoperatorsplittingwithanonconvex\nlossfunction. InMarinaMeilaandTongZhang,editors,Proceedingsofthe38thInternational\nConferenceonMachineLearning,volume139ofProceedingsofMachineLearningResearch,\npages12267–12277.PMLR,18–24Jul2021. [26] AlpYurtsever,BangCôngVu,andVolkanCevher. Stochasticthree-compositeconvexmini-\nmization. AdvancesinNeuralInformationProcessingSystems,29,2016. 6",
+      "size": 429,
+      "sentences": 8
+    }
+  ]
+}

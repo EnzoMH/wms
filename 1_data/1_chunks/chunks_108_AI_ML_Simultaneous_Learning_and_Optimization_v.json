@@ -1,0 +1,1821 @@
+{
+  "source": "ArXiv",
+  "filename": "108_AI_ML_Simultaneous_Learning_and_Optimization_v.pdf",
+  "domain": "AI",
+  "total_chars": 105271,
+  "total_chunks": 302,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\nSimultaneous Learning and Optimization via\nMisspecified Saddle Point Problems\nMohammad Mahdi Ahmadi∗ Erfan Yazdandoost Hamedani∗\nOctober 8, 2025\nAbstract\nWestudyaclassofmisspecifiedsaddlepoint(SP)problems,wheretheoptimizationobjective\ndepends on an unknown parameter that must be learned concurrently from data.",
+      "size": 322,
+      "sentences": 1
+    },
+    {
+      "id": 2,
+      "content": "eoptimizationobjective\ndepends on an unknown parameter that must be learned concurrently from data. Unlike existing\nstudies that assume parameters are fully known or pre-estimated, our framework integrates\noptimization and learning into a unified formulation, enabling a more flexible problem class. To\naddress this setting, we propose two algorithms based on the accelerated primal-dual (APD)\nby [21].",
+      "size": 402,
+      "sentences": 3
+    },
+    {
+      "id": 3,
+      "content": "address this setting, we propose two algorithms based on the accelerated primal-dual (APD)\nby [21]. In particular, we first analyze the Naive extension of the APD method by directly\nsubstituting the evolving parameter estimates into the primal-dual updates; then, we design a\nnew Learning-aware variant of the APD method that explicitly accounts for parameter dynamics\nby adjusting the momentum updates.",
+      "size": 403,
+      "sentences": 2
+    },
+    {
+      "id": 4,
+      "content": "f the APD method that explicitly accounts for parameter dynamics\nby adjusting the momentum updates. Both methods achieve a provable convergence rate of\nO(logK/K), while the Learning-aware approach attains a tighter O(1) constant and further\nbenefitsfromanadaptivestep-sizeselectionenabledbyabacktrackingstrategy.",
+      "size": 312,
+      "sentences": 2
+    },
+    {
+      "id": 5,
+      "content": "r O(1) constant and further\nbenefitsfromanadaptivestep-sizeselectionenabledbyabacktrackingstrategy. Furthermore,we\nextend the framework to problems where the learning problem admits multiple optimal solutions,\n√\nshowing that our modified algorithm for a structured setting achieves an O(1/ K) rate. To\ndemonstrate practical impact, we evaluate our methods on a misspecified portfolio optimization\nproblem and show superior empirical performance compared to state-of-the-art algorithms.",
+      "size": 485,
+      "sentences": 3
+    },
+    {
+      "id": 6,
+      "content": "timization\nproblem and show superior empirical performance compared to state-of-the-art algorithms. 1 Introduction\nSaddle point (SP) problems, also known as min-max optimization, represent a significant class of\noptimizationproblemsthathavereceivedconsiderableattentioninrecentyears[14,21,36,40]. Their\nversatile formulation encompasses a wide range of optimization challenges, including convex opti-\nmization with nonlinear conic constraints.",
+      "size": 443,
+      "sentences": 3
+    },
+    {
+      "id": 7,
+      "content": "range of optimization challenges, including convex opti-\nmization with nonlinear conic constraints. This broad category further includes linear programming\n(LP), quadratic programming (QP), quadratically constrained quadratic programming (QCQP),\nsecond-order cone programming (SOCP), and semidefinite programming (SDP) as subclasses.",
+      "size": 333,
+      "sentences": 2
+    },
+    {
+      "id": 8,
+      "content": "ing (QCQP),\nsecond-order cone programming (SOCP), and semidefinite programming (SDP) as subclasses. In\nthese optimization problems, a common and crucial assumption is that all model parameters are\nprecisely known; however, real-world scenarios often lack explicit parameter availability, leading\nto uncertainty that affects decision-making [6, 19].",
+      "size": 348,
+      "sentences": 2
+    },
+    {
+      "id": 9,
+      "content": "lack explicit parameter availability, leading\nto uncertainty that affects decision-making [6, 19]. Stochastic optimization [31, 44, 50] provides a\nframework for addressing uncertainty by modeling input parameters as random variables with known\n∗Department of Systems and Industrial Engineering, The University of Arizona, Tucson, AZ, USA. {ahmadi, erfany}@arizona.edu\n1\n5202\ntcO\n6\n]GL.sc[\n1v14250.0152:viXra\n===  2 ===\nprobability distributions.",
+      "size": 445,
+      "sentences": 3
+    },
+    {
+      "id": 10,
+      "content": ", erfany}@arizona.edu\n1\n5202\ntcO\n6\n]GL.sc[\n1v14250.0152:viXra\n===  2 ===\nprobability distributions. However, in many practical scenarios, these distributions are not explicitly\nknown. Robust optimization offers an alternative by assuming that the uncertain parameters or\ntheir distributions lie within a predefined uncertainty set. While this approach avoids reliance on\nprecise distributions, it often leads to overly conservative solutions, limiting its applicability in\ncertain contexts.",
+      "size": 490,
+      "sentences": 4
+    },
+    {
+      "id": 11,
+      "content": "s, it often leads to overly conservative solutions, limiting its applicability in\ncertain contexts. A more flexible alternative is misspecified optimization, which incorporates learning\nthe unknown parameters through a secondary optimization problem. Let (X,∥·∥ ), (Y,∥·∥ ),\nX Y\n(Θ,∥·∥ ), (W,∥·∥ ) be finite-dimensional real vector spaces.",
+      "size": 339,
+      "sentences": 3
+    },
+    {
+      "id": 12,
+      "content": "n problem. Let (X,∥·∥ ), (Y,∥·∥ ),\nX Y\n(Θ,∥·∥ ), (W,∥·∥ ) be finite-dimensional real vector spaces. In this paper, we adopt a broader\nΘ W\nperspective and investigate the following misspecified SP problem:\n(Optimization) : ϕ(θ∗) ≜ minmaxL(x,y;θ∗) ≜ f(x)+Φ(x,y;θ∗)−h(y),\nx∈X y∈Y\n(1)\n(Learning) : θ∗ ∈ argminmaxl(θ,w) ≜ f′(θ)+ℓ(θ,w)−h′(w),\nθ∈Θ w∈W\nwhere f : X → R∪{+∞}, h : Y → R∪{+∞}, f′ : Θ → R∪{+∞}, and h′ : W → R∪{+∞}\nare convex functions (possibly nonsmooth); Φ : X ×Y ×Θ → R is a continuously differentiable\nfunction such that for any θ ∈ Θ, Φ(·,·;θ) is convex in x and concave in y; and ℓ : Θ×W → R\nis continuously differentiable, convex in θ, and linear in w. The problem in (1) has a wide range\nof applications including portfolio optimization problem [4, 10, 20, 33], inventory control problem\n[17, 18, 24, 48], and power systems [26, 29, 30, 55].",
+      "size": 855,
+      "sentences": 3
+    },
+    {
+      "id": 13,
+      "content": "em [4, 10, 20, 33], inventory control problem\n[17, 18, 24, 48], and power systems [26, 29, 30, 55]. Oneapproachforsolvingaproblemundermisspecification, suchasproblem(1), istouseasequential\nmethod. First, estimate θ∗ with high accuracy through the (Learning) process, and then solve the\nparameterized (Optimization) problem in (1).",
+      "size": 330,
+      "sentences": 3
+    },
+    {
+      "id": 14,
+      "content": "acy through the (Learning) process, and then solve the\nparameterized (Optimization) problem in (1). However, this approach could have several downsides\nas discussed in [3, 22, 26, 54]: first, in the case of a large-scale (Learning) problem, achieving\nhighly accurate parameter estimation within a reasonable time becomes impractical, leading to\na significant delay in solving the (Optimization) problem.",
+      "size": 403,
+      "sentences": 2
+    },
+    {
+      "id": 15,
+      "content": "ble time becomes impractical, leading to\na significant delay in solving the (Optimization) problem. Second, due to the lack of asymptotic\nconvergence in the sequential method, this approach can only provide approximate solutions for\nthe (Learning) problem. Consequently, the resulting approximation error will impact the resolution\nof the subsequent (Optimization) problem.",
+      "size": 373,
+      "sentences": 3
+    },
+    {
+      "id": 16,
+      "content": "resulting approximation error will impact the resolution\nof the subsequent (Optimization) problem. An alternative approach is to solve the (Learning)\nand (Optimization) problems simultaneously, such that, using the available observations, at each\niteration k, θ , which is an increasingly exact estimate of the misspecified parameter θ∗, is generated\nk\nby a distinct process as a minimizer of the (Learning) problem and then used in the (Optimization)\nproblem to solve it in the same iteration [4, 25, 26].",
+      "size": 506,
+      "sentences": 2
+    },
+    {
+      "id": 17,
+      "content": "problem and then used in the (Optimization)\nproblem to solve it in the same iteration [4, 25, 26]. This scheme produces a sequences {(x ,y )}\nk k\nand {θ } such that: lim (x ,y ) = (x∗,y∗) and lim θ = θ∗. k k→∞ k k k→∞ k\nIt is noteworthy to mention that the structure of the misspecified problem in (1) differs from that\nof a simple bilevel optimization setting [45, 15].",
+      "size": 370,
+      "sentences": 3
+    },
+    {
+      "id": 18,
+      "content": "he misspecified problem in (1) differs from that\nof a simple bilevel optimization setting [45, 15]. In simple bilevel optimization, the goal is to find\nthe optimal decision set for the lower-level objective and use it to minimize the smooth upper-level\nobjective, thereby determining the overall optimal decision.",
+      "size": 313,
+      "sentences": 2
+    },
+    {
+      "id": 19,
+      "content": "it to minimize the smooth upper-level\nobjective, thereby determining the overall optimal decision. In contrast, misspecified optimization\ninvolves learning an unknown parameter by solving a separate learning problem, whose decision\nvariables are independent of the main optimization task. This learned parameter is then used to\nsolve the original optimization problem.",
+      "size": 368,
+      "sentences": 3
+    },
+    {
+      "id": 20,
+      "content": "optimization task. This learned parameter is then used to\nsolve the original optimization problem. 1.1 Literature Review\nIn this section, we briefly discuss common approaches for solving optimization problems with\nunknown or misspecified parameters. We then focus on the existing methods and problem setup in\nmisspecified optimization. 2\n===  3 ===\nStochastic Optimization.",
+      "size": 373,
+      "sentences": 5
+    },
+    {
+      "id": 21,
+      "content": "sting methods and problem setup in\nmisspecified optimization. 2\n===  3 ===\nStochastic Optimization. In the structure of a stochastic optimization problem, it is assumed\nthat the unavailable parameter θ follows a probability distribution D, which can be stated as:\nmin E [Φ(x;θ)] [31, 44, 50].",
+      "size": 292,
+      "sentences": 3
+    },
+    {
+      "id": 22,
+      "content": "ameter θ follows a probability distribution D, which can be stated as:\nmin E [Φ(x;θ)] [31, 44, 50]. The stochastic optimization approach has a wide range of\nx∈X θ∼D\napplications in solving optimization problems [49]; however, it may face challenges when data\navailability for estimation is limited or noisy [44]. Robust Optimization. In the formulation of robust optimization (RO) problems, the parameter\nθ is unknown and is represented by an uncertainty set U [8, 34].",
+      "size": 469,
+      "sentences": 4
+    },
+    {
+      "id": 23,
+      "content": "ation (RO) problems, the parameter\nθ is unknown and is represented by an uncertainty set U [8, 34]. In RO problems, the objective is\nθ\nto optimize the worst-case scenario across all possible values of the unknown parameter θ within\nthe uncertainty set U : min max Φ(x;θ).",
+      "size": 271,
+      "sentences": 2
+    },
+    {
+      "id": 24,
+      "content": "cross all possible values of the unknown parameter θ within\nthe uncertainty set U : min max Φ(x;θ). Despite its usefulness in certain applications such\nθ x∈X θ∈U\nθ\nas optimization [5], design, and control [7, 13], RO can lead to conservative solutions and become\nintractable if the uncertainty set is not appropriately defined [4, 9]. Misspecified Problems and Data-driven Approaches.",
+      "size": 384,
+      "sentences": 3
+    },
+    {
+      "id": 25,
+      "content": "ertainty set is not appropriately defined [4, 9]. Misspecified Problems and Data-driven Approaches. Inrecentoptimizationliterature,there\nhas been a growing focus on problems involving one or more unknown or misspecified parameters. The key distinction between these problems and those studied in stochastic or robust optimization\nlies in how the uncertainty is addressed.",
+      "size": 371,
+      "sentences": 4
+    },
+    {
+      "id": 26,
+      "content": "ms and those studied in stochastic or robust optimization\nlies in how the uncertainty is addressed. In stochastic and robust optimization, the uncertain\nparameter is typically modeled as a random variable or captured through an uncertainty set, which\noften leads to conservative solutions.",
+      "size": 289,
+      "sentences": 2
+    },
+    {
+      "id": 27,
+      "content": "andom variable or captured through an uncertainty set, which\noften leads to conservative solutions. In contrast, misspecified problems are approached in a data-\ndriven manner: the unknown parameter is learned from the observational data, rather than being\ntreated purely as randomness or bounded uncertainty [52, 54]. Several works have emphasized the theoretical modeling and formulation of such problems [9, 43]. Forinstance, [9]leveragesdatatodesignuncertaintysetsforrobustoptimization.",
+      "size": 489,
+      "sentences": 4
+    },
+    {
+      "id": 28,
+      "content": "f such problems [9, 43]. Forinstance, [9]leveragesdatatodesignuncertaintysetsforrobustoptimization. Ontheotherhand,\nthere is increasing interest in developing algorithms that explicitly integrate learning mechanisms to\naddress parameter misspecification through data-driven approaches [52, 53].",
+      "size": 294,
+      "sentences": 3
+    },
+    {
+      "id": 29,
+      "content": "learning mechanisms to\naddress parameter misspecification through data-driven approaches [52, 53]. In the existing literature, the optimization problems with misspecified parameters have been studied\nin various settings, including misspecified optimization, Nash equilibrium problems, and variational\ninequality (VI) formulations. Misspecified Optimization.",
+      "size": 357,
+      "sentences": 3
+    },
+    {
+      "id": 30,
+      "content": "Nash equilibrium problems, and variational\ninequality (VI) formulations. Misspecified Optimization. In this area, several studies concentrate solely on minimizing an\nobjectivefunctioninbothdeterministic[1,2,3,4,22]andstochasticsettings[25,26,28,46,52,53,54]. In deterministic setup, [2, 3] consider a misspecified optimization problem where the objective is to\nminimize a strongly or merely convex function Φ(x;θ∗) with respect to x over a closed and convex\nset X.",
+      "size": 464,
+      "sentences": 4
+    },
+    {
+      "id": 31,
+      "content": "mize a strongly or merely convex function Φ(x;θ∗) with respect to x over a closed and convex\nset X. Here, θ∗ is an unknown or misspecified vector of parameters that represents the solution of a\ndistinct strongly convex objective function g(θ). It is assumed that θ∗ can be learned through a\nparallel learning process, which produces a sequence of estimators θ , each progressively improving\nk\nin accuracy as an approximation of θ∗.",
+      "size": 431,
+      "sentences": 3
+    },
+    {
+      "id": 32,
+      "content": "a sequence of estimators θ , each progressively improving\nk\nin accuracy as an approximation of θ∗. The authors in [2, 3] study two main schemes: gradient-based\nmethods and subgradient methods, to achieve the canonical convergence rates of O(1/K) and\n√\nO(1/ K), respectively. When strong convexity of g(·) assumptions are relaxed, their results include\nan additional error term in the convergence bounds that scales with the initial parameter estimation\nerror, specifically proportional to ∥θ −θ∗∥.",
+      "size": 497,
+      "sentences": 3
+    },
+    {
+      "id": 33,
+      "content": "unds that scales with the initial parameter estimation\nerror, specifically proportional to ∥θ −θ∗∥. In other studies, [1, 4] investigate a convex optimization\n0\nproblem subject to a constraint set that includes a misspecified parameter, which needs to be\nlearned through a separate process. They develop a first-order inexact parametric augmented\nLagrangian method (IPALM) that consists of inner and outer loops.",
+      "size": 412,
+      "sentences": 3
+    },
+    {
+      "id": 34,
+      "content": "rder inexact parametric augmented\nLagrangian method (IPALM) that consists of inner and outer loops. The inner loop corresponds to\niterations that update x by employing a particular implementation of the accelerated proximal\nk+1\ngradient (APG) algorithm [39]. The outer loop is designed to update the Lagrangian multiplier.",
+      "size": 322,
+      "sentences": 3
+    },
+    {
+      "id": 35,
+      "content": "k+1\ngradient (APG) algorithm [39]. The outer loop is designed to update the Lagrangian multiplier. 3\n===  4 ===\nThey compute the overall iteration complexity for the constant penalty case and the increasing\npenalty parameter sequence and show that it requires at most O(ϵ−4) and O(ϵ−1log(ϵ−1)) proximal-\ngradient computations, respectively.",
+      "size": 340,
+      "sentences": 3
+    },
+    {
+      "id": 36,
+      "content": "w that it requires at most O(ϵ−4) and O(ϵ−1log(ϵ−1)) proximal-\ngradient computations, respectively. In the stochastic setting, [25, 26] consider a misspecified\nstochastic convex optimization problem, E[Φ(x;θ∗,ξ)], where θ∗ is a misspecified parameter that\nmay be learned by minimizing a distinct stochastic objective function E[g(θ;η)].",
+      "size": 336,
+      "sentences": 2
+    },
+    {
+      "id": 37,
+      "content": "ied parameter that\nmay be learned by minimizing a distinct stochastic objective function E[g(θ;η)]. They propose a\ncoupled stochastic approximation scheme to solve both the optimization and learning problems\nsimultaneously, demonstrating that the method possesses almost sure convergence properties when Φ\nis strongly convex or convex. Moreover, they establish convergence rates for the upper bound on the\nmean-squared error of the decision variable as O(1/K) under strong convexity of Φ.",
+      "size": 488,
+      "sentences": 3
+    },
+    {
+      "id": 38,
+      "content": "per bound on the\nmean-squared error of the decision variable as O(1/K) under strong convexity of Φ. In contrast, for\nthe merely convex setting, they derive an upper bound on the expected objective gap, which decays\n√ √\nattherateofO( lnK/ K). Inarecentwork, [53]presentaclassofprimal-dualalgorithmstosolve\na nonsmooth convex-concave stochastic minimax optimization problem with expectation constraints\nas min max E[Φ(x;θ,ξ)] s.t. E[g(θ,η)] ≤ g∗ := min E[g(θ,η)].",
+      "size": 461,
+      "sentences": 4
+    },
+    {
+      "id": 39,
+      "content": "n problem with expectation constraints\nas min max E[Φ(x;θ,ξ)] s.t. E[g(θ,η)] ≤ g∗ := min E[g(θ,η)]. Moreover, they demonstrate\nx∈X θ √ θ\nthe optimal rate of O(1/ K) for their proposed algorithms. It is important to emphasize that\nthe problem setting considered in their work does not encompass the misspecified SP problem (1)\naddressed in this paper.",
+      "size": 350,
+      "sentences": 4
+    },
+    {
+      "id": 40,
+      "content": "onsidered in their work does not encompass the misspecified SP problem (1)\naddressed in this paper. When adapted to misspecified problems, as outlined in their motivating\nexample, their focus is on misspecified minimization problems in which the parameter θ is learned\nthrough a secondary minimization task that may have multiple solutions.",
+      "size": 340,
+      "sentences": 2
+    },
+    {
+      "id": 41,
+      "content": "the parameter θ is learned\nthrough a secondary minimization task that may have multiple solutions. To handle the challenge\nof multiple learning solutions, their approach adopts a pessimistic formulation – optimizing for the\nworst-case parameter – subject to certain structural assumptions. In particular, their framework\nrequires the objective function to be concave with respect to θ, and the reformulated constrained\nproblem includes the optimal value of the learning problem. Nash Game Problems.",
+      "size": 498,
+      "sentences": 4
+    },
+    {
+      "id": 42,
+      "content": "mulated constrained\nproblem includes the optimal value of the learning problem. Nash Game Problems. The authors in [27] and [28] investigate misspecified convex Nash games\nunder deterministic and stochastic settings, respectively. Specifically, [27] examines a constrained\nNash-Cournot game where the learning process is linear in the parameter.",
+      "size": 345,
+      "sentences": 4
+    },
+    {
+      "id": 43,
+      "content": "27] examines a constrained\nNash-Cournot game where the learning process is linear in the parameter. The study introduces\nTikhonov regularization and single-timescale distributed schemes that ensure convergence to an\nequilibrium and the solution of the equivalent variational inequality problem. In particular, the\nlearning problem is formulated as a variational inequality where the associated mapping is linear in\nthe unknown parameter.",
+      "size": 437,
+      "sentences": 3
+    },
+    {
+      "id": 44,
+      "content": "ulated as a variational inequality where the associated mapping is linear in\nthe unknown parameter. In [28], the authors study the distributed computation of Nash equilibria in\nconvex stochastic games with a parameter misspecification. They propose two distributed learning\nschemes: (i) A stochastic gradient scheme designed for stochastic Nash games, which involves\ntwo steps of projected gradient updates.",
+      "size": 407,
+      "sentences": 3
+    },
+    {
+      "id": 45,
+      "content": "scheme designed for stochastic Nash games, which involves\ntwo steps of projected gradient updates. They demonstrate that the mean-squared error of the\nequilibrium estimates converges to zero at the optimal rate of O(1/K). (ii) An iterative fixed-point\nscheme developed for stochastic Nash-Cournot games, where the generated iterates are shown to\nconverge almost surely to the Nash-Cournot equilibrium.",
+      "size": 401,
+      "sentences": 3
+    },
+    {
+      "id": 46,
+      "content": ", where the generated iterates are shown to\nconverge almost surely to the Nash-Cournot equilibrium. In [32], the authors focus on computing\nNash equilibria in convex stochastic noncooperative games, where the associated potential function\nmay be nonconvex. One class of such games involves studying a misspecified potential stochastic\ngame, where the misspecified parameter is the solution to a stochastic convex optimization problem.",
+      "size": 434,
+      "sentences": 3
+    },
+    {
+      "id": 47,
+      "content": "game, where the misspecified parameter is the solution to a stochastic convex optimization problem. To address this, they develop an asynchronous inexact proximal best-response (BR) scheme, where\neach player updates their equilibrium strategy and their belief about the misspecified parameter\nusing delayed information about their rivals.",
+      "size": 338,
+      "sentences": 2
+    },
+    {
+      "id": 48,
+      "content": "egy and their belief about the misspecified parameter\nusing delayed information about their rivals. They propose an asynchronous inexact proximal\nBR scheme with a stochastic learning algorithm, and it is proven that the iterates generated by\nthis scheme converge almost surely to a connected subset of the Nash equilibrium set.",
+      "size": 327,
+      "sentences": 2
+    },
+    {
+      "id": 49,
+      "content": "generated by\nthis scheme converge almost surely to a connected subset of the Nash equilibrium set. Later, the\nauthors in [23] propose a distributed learning algorithm that guarantees almost-sure convergence\nto stochastic Nash equilibria (SNEs) in locally coupled network games with unknown parameters. Their approach combines the proximal-point iteration with an ordinary least squares estimator and\nensures convergence when the updating step sizes decay at an appropriate rate.",
+      "size": 478,
+      "sentences": 3
+    },
+    {
+      "id": 50,
+      "content": "quares estimator and\nensures convergence when the updating step sizes decay at an appropriate rate. 4\n===  5 ===\nVariational Inequality Problems. Variationalinequality(VI)problemsprovideabroadframework\nfor modeling optimization and equilibrium problems [16]. In [3], the authors investigate a class of\nmisspecified monotone variational inequality problems, considering both general misspecifications\nand the possibility of a parameter misspecification in the constraint set.",
+      "size": 474,
+      "sentences": 4
+    },
+    {
+      "id": 51,
+      "content": "eneral misspecifications\nand the possibility of a parameter misspecification in the constraint set. To address these challenges,\nthey propose extragradient and regularized first-order schemes specifically designed for misspecified\nmonotone variational inequality problems with strongly convex learning problems. These methods\noffer a structured approach to handling misspecifications in both the objective function and the\nconstraint set while ensuring reliable convergence properties.",
+      "size": 485,
+      "sentences": 3
+    },
+    {
+      "id": 52,
+      "content": "both the objective function and the\nconstraint set while ensuring reliable convergence properties. The authors in [26] study a class of\nstochastic variational inequality (SVI) problems as part of their analysis of misspecified problems. These problems encompass both stochastic convex optimization and various stochastic equilibrium\nmodels. They establish almost-sure convergence for both strongly monotone and merely monotone\nregimes, with the latter utilizing iterative Tikhonov regularization.",
+      "size": 496,
+      "sentences": 4
+    },
+    {
+      "id": 53,
+      "content": "monotone and merely monotone\nregimes, with the latter utilizing iterative Tikhonov regularization. Their proposed schemes achieve\n√ √\noptimal convergence rates of O(1/K) in the strongly monotone setting and O( lnK/ K) in the\nmonotone setting, where the latter result relies on the assumption of weak sharpness. Notably,\nthese results assume that the learning problem is strongly convex, which is crucial for ensuring the\nconvergence of both the learning and optimization iterates.",
+      "size": 480,
+      "sentences": 3
+    },
+    {
+      "id": 54,
+      "content": "nvex, which is crucial for ensuring the\nconvergence of both the learning and optimization iterates. 1.2 Contribution\nIn this paper, we study a class of misspecified saddle point (SP) problems where the optimization\nobjective depends on an unknown parameter that must be learned simultaneously from data through\na lower-level learning problem.",
+      "size": 342,
+      "sentences": 2
+    },
+    {
+      "id": 55,
+      "content": "own parameter that must be learned simultaneously from data through\na lower-level learning problem. Unlike existing works that assume parameters are fully known or pre-\nestimated, our framework couples optimization and learning into a unified SP formulation, making\nthe problem more general and challenging. To address this setting, we propose two accelerated\nprimal-dual (APD) algorithms.",
+      "size": 389,
+      "sentences": 3
+    },
+    {
+      "id": 56,
+      "content": "and challenging. To address this setting, we propose two accelerated\nprimal-dual (APD) algorithms. The first, called the Naive APD, extends the method of [21] to the\nmisspecified case by directly substituting the current parameter estimate into the APD updates;\nhowever, this approach ignores the dynamics of the evolving parameter, which may lead to instability\nand weaker performance.",
+      "size": 386,
+      "sentences": 3
+    },
+    {
+      "id": 57,
+      "content": "nores the dynamics of the evolving parameter, which may lead to instability\nand weaker performance. To overcome these limitations, we develop the Learning-aware APD,\nwhich explicitly incorporates the parameter evolution into the dual momentum step and employs an\nadaptive backtracking strategy for step-size selection.",
+      "size": 318,
+      "sentences": 2
+    },
+    {
+      "id": 58,
+      "content": "into the dual momentum step and employs an\nadaptive backtracking strategy for step-size selection. This scheme dynamically adjusts step-sizes\nusing only observable quantities at each iteration, without requiring knowledge of the problem\nparameter, e.g., Lipschitz constants, thereby ensuring stable updates and improved convergence\nguarantees.",
+      "size": 343,
+      "sentences": 2
+    },
+    {
+      "id": 59,
+      "content": "er, e.g., Lipschitz constants, thereby ensuring stable updates and improved convergence\nguarantees. Our main theoretical guarantees for the proposed methods are summarized as follows:\n• Assuming that dom f ×dom h is compact, the proposed Naive APD method achieves a\nprovable convergence rate of O(logK/K) where the O(1) constant depends on the diameters\nof the minimization and maximization domains.",
+      "size": 399,
+      "sentences": 2
+    },
+    {
+      "id": 60,
+      "content": "K/K) where the O(1) constant depends on the diameters\nof the minimization and maximization domains. • The proposed Learning-aware APD method also achieves a convergence rate of O(logK/K)\nwithout requiring the compactness assumption. Moreover, compared with the Naive APD, it\nhas a smaller O(1) constant.",
+      "size": 303,
+      "sentences": 3
+    },
+    {
+      "id": 61,
+      "content": "the compactness assumption. Moreover, compared with the Naive APD, it\nhas a smaller O(1) constant. More specifically, this method addresses two major limitations\nof the Naive approach: (i) it adaptively adjusts the momentum and dual updates based on\nthe evolving θ , and (ii) it introduces a principled backtracking linesearch enabling adaptive\nk\nstep-size selection.",
+      "size": 367,
+      "sentences": 3
+    },
+    {
+      "id": 62,
+      "content": "nd (ii) it introduces a principled backtracking linesearch enabling adaptive\nk\nstep-size selection. • ConsideringastructuredcouplingfunctionintheobjectiveasΦ(x,y,θ) = g (x,θ)+g (x,y)for\n1 2\nsome convex-concave and continuously differentiable functions g ,g , we extend our framework\n1 2\nto a setting in which the learning problem may admit multiple optimal solutions.",
+      "size": 367,
+      "sentences": 2
+    },
+    {
+      "id": 63,
+      "content": "our framework\n1 2\nto a setting in which the learning problem may admit multiple optimal solutions. By adopting\n5\n===  6 ===\na pessimistic formulation, we reformulate the problem as a misspecified SP problem that\nremains tractable within our framework. We design a modified version of the Learning-\naware APD algorithm that incorporates an update for the learning part and preserves the\n√\nbacktracking mechanism.",
+      "size": 411,
+      "sentences": 3
+    },
+    {
+      "id": 64,
+      "content": "rithm that incorporates an update for the learning part and preserves the\n√\nbacktracking mechanism. This extension achieves a provable convergence rate of O(1/ K),\nthereby demonstrating the flexibility and robustness of our approach beyond the unique\nlearning solution setting.",
+      "size": 277,
+      "sentences": 2
+    },
+    {
+      "id": 65,
+      "content": "trating the flexibility and robustness of our approach beyond the unique\nlearning solution setting. 1.3 Motivating examples\nThe misspecified SP problem in (1) finds broad applications in areas such as portfolio optimization\n[4, 33], power systems [26], inventory control [41, 18], and Robust Optimization with Anomaly-aware\nLearning [42, 47, 9]. Next, we provide a detailed description of two specific examples.",
+      "size": 411,
+      "sentences": 3
+    },
+    {
+      "id": 66,
+      "content": "omaly-aware\nLearning [42, 47, 9]. Next, we provide a detailed description of two specific examples. 1.4 Portfolio Optimization Problem\nConsider the Markowitz portfolio optimization problem discussed in [4, 10, 20, 33]. Suppose the\nrandom returns of n financial assets, denoted by {R }n .",
+      "size": 287,
+      "sentences": 4
+    },
+    {
+      "id": 67,
+      "content": "discussed in [4, 10, 20, 33]. Suppose the\nrandom returns of n financial assets, denoted by {R }n . Suppose the joint distribution of the\ni i=1\naggregated return R = {R }n follows a multivariate Normal distribution N(µ0,Σ0), where the\ni i=1\nmean µ0 is defined as µ0 ≜ E[R] and the covariance matrix Σ0 ≜ E[(R−µ0)⊤(R−µ0)]. Here,\nΣ0 = [σ ] is assumed to be positive definite, indicating that there are no redundant assets\nij 1≤i,j≤n\nwithin the set.",
+      "size": 445,
+      "sentences": 4
+    },
+    {
+      "id": 68,
+      "content": "d to be positive definite, indicating that there are no redundant assets\nij 1≤i,j≤n\nwithin the set. Let x ∈ R represent the proportion of asset i maintained in the portfolio during the specified period. i\nConsequently, the portfolio vector x = [x ]n ∈ Rn satisfies the conditions (cid:80)n x = 1 and x ≥ 0\ni i=1 i=1 i i\nfor all i = 1,...,n, which corresponds to a portfolio without short selling.",
+      "size": 396,
+      "sentences": 3
+    },
+    {
+      "id": 69,
+      "content": "nd x ≥ 0\ni i=1 i=1 i i\nfor all i = 1,...,n, which corresponds to a portfolio without short selling. Assume there are s\nsectors, with m denoting the maximum proportion of the portfolio that can be invested in sector\nj\n(cid:80)\nj for j = 1,...,s. The sector constraints are expressed as x ≤ m for j = 1,...,s, where\ni∈Ij i j\nI ⊂ {1,...,n} represents the set of indices corresponding to assets in sector j.",
+      "size": 403,
+      "sentences": 2
+    },
+    {
+      "id": 70,
+      "content": ",s, where\ni∈Ij i j\nI ⊂ {1,...,n} represents the set of indices corresponding to assets in sector j. These constraints\nj\ncan be succinctly written as Ax ≤ b, where b ≜ [m ,...,m ]⊤, and A = 1 if asset i belongs to\n1 s ji\nsector j.",
+      "size": 229,
+      "sentences": 2
+    },
+    {
+      "id": 71,
+      "content": "cinctly written as Ax ≤ b, where b ≜ [m ,...,m ]⊤, and A = 1 if asset i belongs to\n1 s ji\nsector j. According to Markowitz’s theory, the optimal portfolio is determined by solving the following\nproblem:\n(cid:26) (cid:27)\n1\nmin x⊤Σ∗x−κµ⊤x : Ax ≤ b,x ∈ X , (2)\nx∈Rn 2\nwhere κ > 0 is a trade-off parameter balancing the expected portfolio return and risk (measured by\nvariance), µ and Σ represent estimates of µ0 and Σ0, respectively; and X ≜ {x ∈ Rn : (cid:80)n x =\ni=1 i\n1,x ≥ 0}.",
+      "size": 479,
+      "sentences": 2
+    },
+    {
+      "id": 72,
+      "content": "d Σ represent estimates of µ0 and Σ0, respectively; and X ≜ {x ∈ Rn : (cid:80)n x =\ni=1 i\n1,x ≥ 0}. To avoid the computational complexity of solving the constrained optimization problem in (2), we\ncan reformulate it using the Lagrangian method and solve the dual problem as\n(cid:26) (cid:27)\n1\n(Optimization) : minmax x⊤Σ∗x−κµ⊤x+y⊤(Ax−b) . (3)\nx∈X y≥0 2\n6\n===  7 ===\nIn this problem, we assume that the vector µ = µ0 is known, but the covariance matrix Σ is unknown\nor misspecified.",
+      "size": 482,
+      "sentences": 3
+    },
+    {
+      "id": 73,
+      "content": "we assume that the vector µ = µ0 is known, but the covariance matrix Σ is unknown\nor misspecified. Consequently, the problem in (3) can be regarded as a misspecified SP problem. For the (Learning) problem, given sample returns for n assets with a sample size p for each asset,\nlet S = (s ) ∈ Rn×n. Since, in practice, the number of assets is much larger than the sample\nij 1≤i,j≤n\nsize, S cannot be positive definite, which contrasts with Σ0 ≻ 0 ∈ Rn×n.",
+      "size": 453,
+      "sentences": 4
+    },
+    {
+      "id": 74,
+      "content": "than the sample\nij 1≤i,j≤n\nsize, S cannot be positive definite, which contrasts with Σ0 ≻ 0 ∈ Rn×n. Therefore, instead of\nusing S as our true covariance estimator, we consider the sparse covariance selection (SCS) problem\nproposed in [51] as follows:\n(cid:26) (cid:27)\n1\nΣ∗ ≜ argmin ∥Σ−S∥2 +v∥Σ∥ : Σ ⪰ ϵI ,\nΣ∈Sn 2 F 1\nwhere v and ϵ are positive regularization parameters, Sn denotes the set of n×n symmetric matrices,\n∥·∥ represents the Frobenius norm, ∥Σ∥ is the ℓ norm of the vector composed of all off-diagonal\nF 1 1\nelements of Σ, and Σ ⪰ ϵI means that all eigenvalues of Σ are greater than or equal to ϵ > 0.",
+      "size": 613,
+      "sentences": 2
+    },
+    {
+      "id": 75,
+      "content": "F 1 1\nelements of Σ, and Σ ⪰ ϵI means that all eigenvalues of Σ are greater than or equal to ϵ > 0. Using a symmetric Lagrange multiplier matrix W ∈ Sn, where W ⪰ 0 denotes that W is positive\nsemi-definite, the constraint Σ ⪰ ϵI can be incorporated into the objective function and form an SP\nproblem as\n(cid:26) (cid:27)\n(Learning) : Σ∗ ∈ argmin max 1 ∥Σ−S∥2 +v∥Σ∥ −Tr (cid:0) W⊤(Σ−ϵI) (cid:1) .",
+      "size": 395,
+      "sentences": 2
+    },
+    {
+      "id": 76,
+      "content": "lem as\n(cid:26) (cid:27)\n(Learning) : Σ∗ ∈ argmin max 1 ∥Σ−S∥2 +v∥Σ∥ −Tr (cid:0) W⊤(Σ−ϵI) (cid:1) . Σ∈Sn W∈Sn\n+\n2 F 1\nIndeed, one can easily verify that in this setting the (Optimization) and (Learning) problems form\na misspecified SP problem, which is a special case of our main formulation in Problem (1).",
+      "size": 307,
+      "sentences": 2
+    },
+    {
+      "id": 77,
+      "content": "ems form\na misspecified SP problem, which is a special case of our main formulation in Problem (1). 1.5 Robust Optimization with Anomaly-aware Learning\nWe consider a robust decision-making problem under uncertainty, where the objective is to optimize\na decision variable x ∈ X ⊆ Rd in the presence of an uncertain parameter u ∈ Rd. The cost function\nf(x,u) depends on this uncertain parameter, which is not known a priori but is partially observed\nthrough historical data.",
+      "size": 472,
+      "sentences": 3
+    },
+    {
+      "id": 78,
+      "content": "uncertain parameter, which is not known a priori but is partially observed\nthrough historical data. A canonical example of such a problem is:\nminmaxf(x,u),\nx∈X u∈U\nwhere U ⊂ Rd is an uncertainty set that captures plausible realizations of u. A commonly used\nform of U is the Euclidean ball U = {u ∈ Rd : ∥u−c∥ ≤ r}, where c and r denote the center and\nradius of the uncertainty set, respectively.",
+      "size": 396,
+      "sentences": 3
+    },
+    {
+      "id": 79,
+      "content": "∈ Rd : ∥u−c∥ ≤ r}, where c and r denote the center and\nradius of the uncertainty set, respectively. For instance, in linear settings such as f(x,u) = u⊤x,\nthe worst-case realization of u lies on the boundary of this set and significantly affects the robust\nsolution. However, both c and r may be unknown or inaccurately specified due to noise or anomalies in the\nhistorical data. Let {u }n be a set of observed samples drawn from an unknown data-generating\ni i=1\nprocess.",
+      "size": 471,
+      "sentences": 4
+    },
+    {
+      "id": 80,
+      "content": "l data. Let {u }n be a set of observed samples drawn from an unknown data-generating\ni i=1\nprocess. Thesesamplesmayincludeoutliersorcorrupteddatapointsduetosensorerrors,adversarial\nmanipulations, or rare events. Naively using all samples to construct the uncertainty set could\nseverely degrade the robustness of the solution. To address this challenge, we adopt an anomaly\ndetection approach to learn a reliable uncertainty set from the data.",
+      "size": 442,
+      "sentences": 5
+    },
+    {
+      "id": 81,
+      "content": "hallenge, we adopt an anomaly\ndetection approach to learn a reliable uncertainty set from the data. In particular, we employ the\nDeep Support Vector Data Description (Deep SVDD) method [42, 47]. Deep SVDD is a kernel-based\nor neural network-based anomaly detection framework that aims to learn a mapping ϕ(u) such that\nthe majority of the transformed data points lie within a minimal-volume hypersphere in feature\n7\n===  8 ===\nspace.",
+      "size": 433,
+      "sentences": 3
+    },
+    {
+      "id": 82,
+      "content": "the transformed data points lie within a minimal-volume hypersphere in feature\n7\n===  8 ===\nspace. Formally, the Deep SVDD optimization problem is:\nn\n1 (cid:88)\nmin r2+ ξ2 subject to ∥ϕ (u )−c∥2 ≤ r2+ξ , ξ ≥ 0, ∀i,\nc,r,{ξi} 2n\ni=1\ni k i i i\nwhere ϕ : Rd → F maps data to a reproducing kernel Hilbert space (RKHS) associated with a\nk k\npositive semi-definite kernel k(·,·), and ⟨·,·⟩ denotes the inner product in this space.",
+      "size": 423,
+      "sentences": 2
+    },
+    {
+      "id": 83,
+      "content": "with a\nk k\npositive semi-definite kernel k(·,·), and ⟨·,·⟩ denotes the inner product in this space. F\nk\nTheparametersθ = (c,r)definethecenterandradiusofthelearneduncertaintysetandarecomputed\nfrom the solution of this anomaly detection problem.",
+      "size": 243,
+      "sentences": 2
+    },
+    {
+      "id": 84,
+      "content": "radiusofthelearneduncertaintysetandarecomputed\nfrom the solution of this anomaly detection problem. Note that by solving this optimization, we\neffectively remove the influence of anomalous samples by inflating their slack variables ξ , preventing\ni\nthem from overly influencing c and r.\nWith the uncertainty set learned from the Deep SVDD procedure, we now couple the anomaly\ndetection and robust optimization into a single problem.",
+      "size": 432,
+      "sentences": 2
+    },
+    {
+      "id": 85,
+      "content": "SVDD procedure, we now couple the anomaly\ndetection and robust optimization into a single problem. Specifically, the decision-maker solves a\nmisspecified SP problem:\n(Optimization) : min maxf(x,u)−λ(∥u−c∥2−r2),\nx∈X,λ≥0u∈Rd\n(cid:40) n (cid:41)\n1 (cid:88)\n(Learning) : (c,r) ∈ argmin r2+ ξ2 : ∥ϕ (u )−c∥2 ≤ r2+ξ , ξ ≥ 0, ∀i . 2n i k i i i\nc,r,{ξi}\ni=1\nThis formulation unifies robust optimization and anomaly detection, which can be viewed as a\nspecial case of (1).",
+      "size": 463,
+      "sentences": 3
+    },
+    {
+      "id": 86,
+      "content": "on unifies robust optimization and anomaly detection, which can be viewed as a\nspecial case of (1). 2 Preliminaries\nIn this section, we state the assumptions and introduce the notions used in the paper. 2.1 Assumptions and Definitions\nDefinition 2.1. Let φ : X → R and φ : Y → R be differentiable functions defined on open\nX Y\nsets containing domf and domh, respectively. Assume that φ and φ have closed domains and\nX Y\nare 1-strongly convex with respect to the norms ∥·∥ and ∥·∥ , respectively.",
+      "size": 495,
+      "sentences": 5
+    },
+    {
+      "id": 87,
+      "content": "closed domains and\nX Y\nare 1-strongly convex with respect to the norms ∥·∥ and ∥·∥ , respectively. Define the Bregman\nX Y\ndistance functions associated with φ and φ as D : X × X → R and D : Y × Y → R ,\nX Y X + Y +\nrespectively. Specifically, the Bregman distance for X is given by\nD (x,x¯) = φ (x)−φ (x¯)−⟨∇φ (x¯),x−x¯⟩,\nX X X X\nwith D (y,y¯) defined analogously. Moreover, it follows that\nY\n1\nD (x,x¯) ≥ ∥x−x¯∥2 , ∀x ∈ X, x¯ ∈ domf,\nX 2 X\nand similarly,\n1\nD (y,y¯) ≥ ∥y−y¯∥2, ∀y ∈ Y, y¯∈ domh.",
+      "size": 494,
+      "sentences": 4
+    },
+    {
+      "id": 88,
+      "content": "(x,x¯) ≥ ∥x−x¯∥2 , ∀x ∈ X, x¯ ∈ domf,\nX 2 X\nand similarly,\n1\nD (y,y¯) ≥ ∥y−y¯∥2, ∀y ∈ Y, y¯∈ domh. Y 2 Y\nMoreover, the dual spaces are denoted as X∗ and Y∗. For x′ ∈ X∗, the dual norm is defined as\n∥x′∥ ≜ max{⟨x′,x⟩ : ∥x∥ ≤ 1}. X∗ X\n8\n===  9 ===\nSimilarly, the dual norm ∥·∥ is defined for Y∗ in the same manner. Moreover, analogously, we\nY∗\ndefine Bregman distances D and D using differentiable and 1-strongly convex reference functions\nΘ W\nφ and φ over the domains Θ and W, respectively.",
+      "size": 489,
+      "sentences": 5
+    },
+    {
+      "id": 89,
+      "content": "iable and 1-strongly convex reference functions\nΘ W\nφ and φ over the domains Θ and W, respectively. Θ W\nNext, to adaptively estimate local Lipschitz constants in our proposed method, we integrate a\nbacktracking strategy. To verify if the step-sizes selected at each iteration k ≥ 0 align with the local\nLipschitz constants, we introduce a test function E (·,·;·) that utilizes the linearization of Φ with\nk\nrespect to both x and y. Definition 2.2.",
+      "size": 447,
+      "sentences": 4
+    },
+    {
+      "id": 90,
+      "content": "tion E (·,·;·) that utilizes the linearization of Φ with\nk\nrespect to both x and y. Definition 2.2. Given a free parameter sequence {α ,β } ⊆ R , we define\nk k k≥0 +\n1\nE (x,y;θ) ≜ ⟨∇ Φ(x,y;θ)−∇ Φ(x ,y;θ),x−x ⟩+ ∥∇ Φ(x,y;θ)−∇ Φ(x ,y;θ)∥2\nk x x k k\n2α\ny y k Y∗\nk+1\n(cid:16) 1 (cid:17) 1\n− −η (α +β ) D (y,y )+ ∥∇ Φ(x ,y;θ )−∇ Φ(x ,y ;θ )∥2\nσ\nk k k Y k\nβ\ny k k y k k k Y∗\nk k+1\n1\n− D (x,x ).",
+      "size": 388,
+      "sentences": 3
+    },
+    {
+      "id": 91,
+      "content": "(α +β ) D (y,y )+ ∥∇ Φ(x ,y;θ )−∇ Φ(x ,y ;θ )∥2\nσ\nk k k Y k\nβ\ny k k y k k k Y∗\nk k+1\n1\n− D (x,x ). X k\nτ\nk\nLater we show that for given α ,β ≥ 0 and η , the inequality E (x,y;θ) ≤ 0 lead to selecting\nk k k k\nthe step-sizes {τ ,σ } to ensure that the condition test in line 9 of Algorithm 3 is satisfied within\nk k\nthe Learning-aware framework. Next, we define the gap function to measure the optimality of the\nsolution generated by the proposed methods. Definition 2.3.",
+      "size": 469,
+      "sentences": 4
+    },
+    {
+      "id": 92,
+      "content": "nction to measure the optimality of the\nsolution generated by the proposed methods. Definition 2.3. Let Z¯ ⊆ domf ×domh be a compact and convex set containing a saddle point\nsolution of (1), and z ≜ [x⊤,y⊤]⊤. The gap function for Problem (1) is defined as\n(cid:110) (cid:111)\nG (z¯ ) ≜ sup L(x¯ ,y;θ∗)−L(x,y¯ ;θ∗) ,\nZ¯ K K K\nz∈Z¯\nwhere z¯ ≜ [x¯⊤,y¯⊤]⊤ denotes the weighted average of the iterates {z }K−1.",
+      "size": 405,
+      "sentences": 4
+    },
+    {
+      "id": 93,
+      "content": "y¯ ;θ∗) ,\nZ¯ K K K\nz∈Z¯\nwhere z¯ ≜ [x¯⊤,y¯⊤]⊤ denotes the weighted average of the iterates {z }K−1. K K K k k=0\nThe supremum is finite, and as shown in [38, Lemma 1], this construction defines a valid gap\nfunction for saddle point problems. Assumption 2.1. The functions f and h are closed and convex, and Φ is continuous and satisfies\nthe following conditions:\n(i) For any y ∈ domh ⊂ Y and θ ∈ Θ, the function Φ(·,y;θ) is convex and differentiable.",
+      "size": 449,
+      "sentences": 4
+    },
+    {
+      "id": 94,
+      "content": "conditions:\n(i) For any y ∈ domh ⊂ Y and θ ∈ Θ, the function Φ(·,y;θ) is convex and differentiable. Moreover, there exists constants LΦ ≥ 0 and LΦ > 0 such that for all x,x¯ ∈ domf and\nxx xθ\ny,y¯∈ domh and θ,θ¯∈ Θ, the following inequality holds:\n∥∇ Φ(x,y;θ)−∇ Φ(x¯,y;θ¯)∥ ≤ LΦ ∥x−x¯∥ +LΦ ∥θ−θ¯∥ . x x X∗ xx X xθ Θ\n(ii) For any x ∈ domf ⊂ X and θ ∈ Θ, the function Φ(x,·;θ) is concave and differentiable.",
+      "size": 404,
+      "sentences": 3
+    },
+    {
+      "id": 95,
+      "content": "xx X xθ Θ\n(ii) For any x ∈ domf ⊂ X and θ ∈ Θ, the function Φ(x,·;θ) is concave and differentiable. Additionally, thereexistconstantsLΦ > 0, LΦ ≥ 0, andLΦ > 0suchthatforallx,x¯ ∈ domf\nyx yy yθ\nand y,y¯∈ domh and θ,θ¯∈ Θ, the following inequality holds:\n∥∇ Φ(x,y;θ)−∇ Φ(x¯,y¯;θ¯)∥ ≤ LΦ ∥x−x¯∥ +LΦ ∥y−y¯∥ +LΦ ∥θ−θ¯∥ . y y Y∗ yx X yy Y yθ Θ\nBefore presenting the step-size assumptions, we clarify that these conditions are required to establish\nthe convergence guarantees of the proposed algorithms.",
+      "size": 496,
+      "sentences": 3
+    },
+    {
+      "id": 96,
+      "content": "t these conditions are required to establish\nthe convergence guarantees of the proposed algorithms. Later, we will provide explicit parameter\nselections that satisfy these conditions. 9\n===  10 ===\nAssumption 2.2 (step-size condition I).",
+      "size": 237,
+      "sentences": 3
+    },
+    {
+      "id": 97,
+      "content": "ter\nselections that satisfy these conditions. 9\n===  10 ===\nAssumption 2.2 (step-size condition I). There exists a sequence {τ ,σ ,η } such that the\nk k k k≥0\niterates {(x ,y )} , generated by Algorithm 3, along with the step-size sequence, satisfy the\nk k k≥0\nfollowing conditions for all k ≥ 0:\n(i) E (x ,y ;θ ) ≤ 0,\nk k+1 k+1 k+1\n(ii) t k ≥ t k+1, t k ≥ t k+1, t k = η ,\nτ τ σ σ t k+1\nk k+1 k k+1 k+1\nfor some positive sequences {t ,α } with t = 1, and a nonnegative sequence {β } , where\nk k k≥0 0 k k≥0\nE (·,·;·) is defined in Definition 2.2 using the parameters {α ,β ,η } as specified above.",
+      "size": 598,
+      "sentences": 3
+    },
+    {
+      "id": 98,
+      "content": "0 k k≥0\nE (·,·;·) is defined in Definition 2.2 using the parameters {α ,β ,η } as specified above. k k k k\nAssumption 2.3 (step-size condition II). For any k ≥ 0, the step-sizes τ and σ , along with the\nk k\nmomentum parameter η ≥ 0, satisfy η = 1 as well as condition in Assumption 2.2-(i), and\nk 0\n(i) 1 ≥\n(LΦ\nyx\n)2\n+LΦ ,\nτ α xx\nk k+1\n(ii) 1 ≥ η (α +β )+\n2(LΦ\nyy\n)2\n,\nσ k k k β\nk k+1\nfor some positive sequences {t ,α } with t = 1, and a nonnegative sequence {β } .",
+      "size": 466,
+      "sentences": 3
+    },
+    {
+      "id": 99,
+      "content": ",\nσ k k k β\nk k+1\nfor some positive sequences {t ,α } with t = 1, and a nonnegative sequence {β } . k k k≥0 0 k k≥0\nAssumption 2.4 (Structure of the Learning Problem). We assume that the learning objective\nl(θ,w) = f′(θ)+ℓ(θ,w)−h′(w) satisfies the following conditions:\n(i) f′ : Θ → R∪{+∞} and h′ : W → R∪{+∞} are closed, convex functions (possibly nonsmooth).",
+      "size": 360,
+      "sentences": 3
+    },
+    {
+      "id": 100,
+      "content": "ditions:\n(i) f′ : Θ → R∪{+∞} and h′ : W → R∪{+∞} are closed, convex functions (possibly nonsmooth). (ii) ℓ : Θ×W → R is continuously differentiable, strongly convex in θ with modulus µ′ > 0, and\nlinear in w.\n3 Proposed Methods\nIn this section, we propose two accelerated primal-dual (APD) algorithms with a momentum term,\nbuilding upon the framework introduced in [21], to solve the misspecified saddle point (SP) problem\ndefined in (1).",
+      "size": 437,
+      "sentences": 2
+    },
+    {
+      "id": 101,
+      "content": "e framework introduced in [21], to solve the misspecified saddle point (SP) problem\ndefined in (1). The SP formulation involves a coupling function Φ(x,y;θ) that depends on an\nunknown parameter θ∗, which is not available a priori but must be learned via a simultaneous\nlearning process. This introduces a structural misspecification into the optimization component of\nthe problem.",
+      "size": 380,
+      "sentences": 3
+    },
+    {
+      "id": 102,
+      "content": "cess. This introduces a structural misspecification into the optimization component of\nthe problem. To address this challenge, we consider two algorithmic strategies for integrating and\nupdating the parameter estimate θ within the APD framework:\nk\n• Naive Approach: This method, described in Section 3.1, directly substitutes the current\nestimate θ into the primal-dual updates at each iteration.",
+      "size": 396,
+      "sentences": 3
+    },
+    {
+      "id": 103,
+      "content": "on 3.1, directly substitutes the current\nestimate θ into the primal-dual updates at each iteration. However, it does not account\nk\nfor the evolution of θ in the momentum step, nor does it support backtracking since the\nk\nbacktracking test function depends on the unknown ground-truth parameter θ∗. • Learning-aware Approach: This method, detailed in Section 3.2, improves upon the Naive\nstrategy by explicitly incorporating the temporal variation of θ into the acceleration dynamics.",
+      "size": 483,
+      "sentences": 3
+    },
+    {
+      "id": 104,
+      "content": "ve\nstrategy by explicitly incorporating the temporal variation of θ into the acceleration dynamics. k\nMoreover, itintroducesaprincipledbacktrackinglinesearchbasedonasurrogateerrorfunction\nthat only depends on current iterates and θ , enabling adaptive step-size selection without\nk\nrequiring access to θ∗.",
+      "size": 305,
+      "sentences": 2
+    },
+    {
+      "id": 105,
+      "content": "on current iterates and θ , enabling adaptive step-size selection without\nk\nrequiring access to θ∗. 10\n===  11 ===\nTogether, these methods extend the work of [21] to a misspecified setting and offer a comparative\nperspective on how parameter estimation and its integration into the optimization process affect\nconvergence behavior. In what follows, we formally describe each method and analyze its theoretical\nguarantees.",
+      "size": 421,
+      "sentences": 3
+    },
+    {
+      "id": 106,
+      "content": "behavior. In what follows, we formally describe each method and analyze its theoretical\nguarantees. 3.1 Naive Approach: Inexact Accelerated Primal-dual Method\nBuilding on the accelerated primal-dual (APD) algorithm of [21], we extend their framework to\naddressthemisspecifiedsettingwherethecouplingtermΦ(x,y;θ)dependsonanunknownparameter\nθ∗. In our setting, this parameter must be estimated via a simultaneous learning process.",
+      "size": 427,
+      "sentences": 4
+    },
+    {
+      "id": 107,
+      "content": "parameter\nθ∗. In our setting, this parameter must be estimated via a simultaneous learning process. The\nresulting procedure is outlined in Algorithm 1 and is referred to as the Naive approach. We use the term Naive because this algorithm treats the evolving parameter θ in a simplified,\nk\nnon-adaptive manner.",
+      "size": 309,
+      "sentences": 4
+    },
+    {
+      "id": 108,
+      "content": "aive because this algorithm treats the evolving parameter θ in a simplified,\nk\nnon-adaptive manner. Specifically, the parameter estimate θ is obtained by a separate one-step\nk\nAPD learning update (see Algorithm 2, called in line 6 of Algorithm 1), and then directly substituted\ninto the primal and dual updates. Once inserted, θ is held fixed throughout that iteration’s\nk\noptimization steps, as if it were the true value θ∗.",
+      "size": 425,
+      "sentences": 3
+    },
+    {
+      "id": 109,
+      "content": "θ is held fixed throughout that iteration’s\nk\noptimization steps, as if it were the true value θ∗. However, inthisNaiveapproach, wedonotmodifytheaccelerationstepstoaccountforthetemporal\nvariationofθ; theestimatedvalueθ istreatedasfixedwithineachprimal-dualupdate.",
+      "size": 263,
+      "sentences": 2
+    },
+    {
+      "id": 110,
+      "content": "accountforthetemporal\nvariationofθ; theestimatedvalueθ istreatedasfixedwithineachprimal-dualupdate. Forexample,\nk\nin line 3 of Algorithm 1, we have:\ns = (1+η )∇ Φ(x ,y ;θ )−η ∇ Φ(x ,y ;θ ),\nk k y k k k k y k−1 k−1 k\nwhich relies entirely on the current estimate θ and does not incorporate any information about the\nk\npreceding value θ . Thus, the momentum term is blind to the dynamics of the evolving parameter,\nk−1\nmaking the design structurally naive with respect to the misspecification.",
+      "size": 491,
+      "sentences": 3
+    },
+    {
+      "id": 111,
+      "content": "evolving parameter,\nk−1\nmaking the design structurally naive with respect to the misspecification. This differs from the\nLearning-aware accelerated primal-dual algorithm we propose in the next section, where the change\nin θ is explicitly captured in the update rule. Consequently, the effect of θ ’s evolution appears implicitly as a residual approximation error\nk\nintroduced by using θ instead of θ∗.",
+      "size": 401,
+      "sentences": 3
+    },
+    {
+      "id": 112,
+      "content": "olution appears implicitly as a residual approximation error\nk\nintroduced by using θ instead of θ∗. This residual is later aggregated and bounded in our\nk\nconvergence analysis using Lipschitz constants, including LΦ and LΦ . Despite this limitation, the\nxθ yθ\nNaive method remains theoretically sound and achieves a provable convergence rate, making it a\nbaseline against which we compare our Learning-aware accelerated primal-dual method.",
+      "size": 439,
+      "sentences": 3
+    },
+    {
+      "id": 113,
+      "content": "e, making it a\nbaseline against which we compare our Learning-aware accelerated primal-dual method. Algorithm 1 Naive accelerated primal-dual algorithm for misspecified saddle point problem\n1: input: τ 0 ,σ 0 ,η 0 > 0, (x 0 ,y 0 ) ∈ X ×Y, θ 0 ∈ Rm, (x −1 ,y −1 ;θ −1 ) ← (x 0 ,y 0 ;θ 0 ), σ −1 ← σ 0\n2: for k = 0 to K −1 do\n3: s k ← (1+η k )∇ y Φ(x k ,y k ;θ k )−η k ∇ y Φ(x k−1 ,y k−1 ;θ k )\n(cid:110) (cid:111)\n4: y k+1 ← argmin y∈Y h(y)−⟨s k ,y⟩+ σ 1 D Y (y,y k )\nk\n(cid:110) (cid:111)\n5: x k+1 ← argmin x∈X f(x)+⟨∇ x Φ(x k ,y k+1 ;θ k ),x⟩+ τ 1 D X (x,x k )\nk\n6: θ k+1 ← M(θ k ,w k ,σ k ,η k )\n7: end for\nRemark 3.1 (Backtracking Step-Size Scheme for Learning).",
+      "size": 665,
+      "sentences": 2
+    },
+    {
+      "id": 114,
+      "content": "θ k+1 ← M(θ k ,w k ,σ k ,η k )\n7: end for\nRemark 3.1 (Backtracking Step-Size Scheme for Learning). In Algorithm 2, the step-size parameters\nτ′ and σ′ are dynamically adjusted through a backtracking mechanism governed by parameters\nk k\n11\n===  12 ===\nAlgorithm 2 M(θ,w,τ′,σ′,η′): One-step accelerated primal-dual algorithm with backtracking for\nlearning problem\n1: input:µ′ > 0, τ¯′ > 0, γ 0 ′ > 0, ρ′ ∈ (0,1), (θ 0 ,w 0 ) ∈ Θ×W, (θ −1 ,w −1 ) ← (θ 0 ,w 0 ), τ 0 ′ ← τ¯′,\nσ′ ← γ′τ′\n−1 0 0\n2: while stopping criterion not satisfied do\n3: σ′ ← γ′τ′, η′ ← σ′ /σ′, α′ ← 1/σ′\nk k k k k−1 k k+1 k\n4: s′ k ← (1+η k ′)∇ w ℓ(θ k ,w k )−η k ′∇ w ℓ(θ k−1 ,w k−1 )\n(cid:110) (cid:111)\n5: w k+1 ← argmin w∈W h′(w)−⟨s′ k ,w⟩+ σ 1 ′ D W (w,w k )\n(cid:110) k (cid:111)\n6: θ k+1 ← argmin θ∈Θ f′(θ)+⟨∇ θ ℓ(θ k ,w k+1 ),θ⟩+ τ 1 ′ D Θ (θ,θ k )\nk\n7: if ⟨∇ θ ℓ(θ k+1 ,w k+1 )−∇ θ ℓ(θ k ,w k+1 ),θ k+1 −θ k ⟩− τ 1 ′ ∥θ k+1 −θ k ∥2 Θ\nk\n+ σ k ′ ∥∇ ℓ(θ ,w )−∇ ℓ(θ ,w )∥2 ≤ 0 then\n2 w k+1 k+1 w k k+1 W∗\n8: go to line 14\n9: else\n10: τ′ ← ρ′τ′\nk k\n11: go to line 3\n12: end if\n13: end while\n(cid:113)\n14: γ′ ← γ′(1+µ′τ′), τ′ ← τ′ γ′/γ′ , k ← k+1\nk+1 k k k+1 k k k+1\nρ′ ∈ (0,1) and γ′, where the update rules are given by\nk\n(cid:115)\nγ′\nγ′ ← γ′(1+µ′τ′), τ′ ← τ′ k .",
+      "size": 1234,
+      "sentences": 2
+    },
+    {
+      "id": 115,
+      "content": "ρ′ ∈ (0,1) and γ′, where the update rules are given by\nk\n(cid:115)\nγ′\nγ′ ← γ′(1+µ′τ′), τ′ ← τ′ k . k+1 k k k+1 k γ′\nk+1\nThis update scheme ensures the compatibility of the primal and dual updates in the accelerated\nframework and is inspired by the adaptive primal-dual methods in [21]. The test condition in lines\n7–11 of Algorithm 2 ensures that the local smoothness of ℓ is respected. Next, we analyze the iteration complexity of the Naive approach in Theorem 3.1. Theorem 3.1.",
+      "size": 479,
+      "sentences": 5
+    },
+    {
+      "id": 116,
+      "content": "ected. Next, we analyze the iteration complexity of the Naive approach in Theorem 3.1. Theorem 3.1. Suppose Assumption 2.1 holds. Let z ≜ [x⊤,y⊤]⊤. If {x ,y ,θ } is generated by\nk k k k≥0\nAlgorithm 1, using a constant parameter sequence {τ ,σ ,η } satisfying Assumption 2.3.",
+      "size": 274,
+      "sentences": 6
+    },
+    {
+      "id": 117,
+      "content": "by\nk k k k≥0\nAlgorithm 1, using a constant parameter sequence {τ ,σ ,η } satisfying Assumption 2.3. Then\nk k k k≥0\nfor any convex compact set Z¯ ⊆ domf ×domh containing a saddle point solution of (1) and\nK ≥ 1,\n1 (cid:16) 1 1 (cid:17)\nG (z¯ ) ≤ sup D (x,x )+ D (y,y )\nZ¯ K\nT τ\nX 0\nσ\nY 0\nK z∈Z¯ 0 0\nK−1\n1 (cid:16) (cid:88)\n+ sup LΦ t (2η +1)∥θ −θ∗∥ ∥y −y∥\nT yθ k k k Θ k+1 Y\nK z∈Z¯\nk=0\nK−1\n(cid:88) (cid:17)\n+LΦ t ∥θ −θ∗∥ ∥x −x∥ , (4)\nxθ k k Θ k+1 X\nk=0\nwherez¯ ≜ [x¯⊤,y¯⊤]⊤ denotestheweightedaverageoftheiterates{z }K−1, i.e., z¯ ≜ 1 (cid:80)K−1t z ,\nK K K k k=0 K TK k=0 k k+1\nand T =\n(cid:80)K−1t\n.",
+      "size": 600,
+      "sentences": 2
+    },
+    {
+      "id": 118,
+      "content": "theiterates{z }K−1, i.e., z¯ ≜ 1 (cid:80)K−1t z ,\nK K K k k=0 K TK k=0 k k+1\nand T =\n(cid:80)K−1t\n. K k=0 k\n12\n===  13 ===\nProof. See Appendix B for the proof. Remark 3.2. To satisfy Assumption 2.3 with constant step-sizes, we fix η = η = 1, and select\nk\nconstants α > 0 and β > 0. Then the conditions are met by choosing τ =\n(cid:16) (LΦ\nyx\n)2\n+LΦ\n(cid:17)−1\nand\nα xx\nσ =\n(cid:16)\nα+β +\n2(LΦ\nyy\n)2(cid:17)−1\n, where LΦ ,LΦ ,LΦ are the Lipschitz constants.",
+      "size": 456,
+      "sentences": 6
+    },
+    {
+      "id": 119,
+      "content": "−1\nand\nα xx\nσ =\n(cid:16)\nα+β +\n2(LΦ\nyy\n)2(cid:17)−1\n, where LΦ ,LΦ ,LΦ are the Lipschitz constants. β xx yx yy\nRemark 3.3 (Convergence of Learning Sequence). Considering Assumption 2.4, the accelerated\nprimal-dual algorithm by [21] presented in Algorithm 2 for solving the learning problem in (1) satisfy\nC\n∥θ −θ∗∥2 ≤ θ ,\nk+1 Θ (k+1)2\nfor some constant C > 0, where θ∗ denotes the unique minimizer of the (Learning) problem. θ\nCorollary 3.2.",
+      "size": 441,
+      "sentences": 4
+    },
+    {
+      "id": 120,
+      "content": "e constant C > 0, where θ∗ denotes the unique minimizer of the (Learning) problem. θ\nCorollary 3.2. Suppose Assumption 2.4 holds, dom f and dom h are compact, and let Z¯ =\ndom f ×dom h. Under the premises of Theorem 3.1 with the step-sizes selected as in Remark 3.2,\nfor any K ≥ 1, it holds that\n(cid:18) (cid:19)\nG (z¯ ) ≤ 1 1 R + 1 R + log(K) (cid:16) LΦ (cid:112) R +3LΦ (cid:112) R (cid:17)(cid:112) C ,\nZ¯ K K τ x σ y K xθ x yθ y θ\n0 0\nwhere R ≜ sup D (x,x¯) < ∞ and R ≜ sup D (y,y¯) < ∞ are the Bregman\nx x,x¯∈domf X y y,y¯∈domh Y\ndiameters.",
+      "size": 547,
+      "sentences": 3
+    },
+    {
+      "id": 121,
+      "content": "≜ sup D (x,x¯) < ∞ and R ≜ sup D (y,y¯) < ∞ are the Bregman\nx x,x¯∈domf X y y,y¯∈domh Y\ndiameters. Proof. From Theorem 3.1, we have\n(cid:18) (cid:19)\n1 1 1\nG (z¯ ) ≤ sup D (x,x )+ D (y,y )\nZ¯ K\nT τ\nX 0\nσ\nY 0\nK z∈Z¯ 0 0\n(cid:32) K−1\n1 (cid:88)\n+ sup LΦ t (2η +1)∥θ −θ∗∥ ∥y −y∥\nT yθ k k k Θ k+1 Y\nK z∈Z¯\nk=0\nK−1 (cid:33)\n(cid:88)\n+LΦ t ∥θ −θ∗∥ ∥x −x∥ .",
+      "size": 350,
+      "sentences": 3
+    },
+    {
+      "id": 122,
+      "content": "t (2η +1)∥θ −θ∗∥ ∥y −y∥\nT yθ k k k Θ k+1 Y\nK z∈Z¯\nk=0\nK−1 (cid:33)\n(cid:88)\n+LΦ t ∥θ −θ∗∥ ∥x −x∥ . (5)\nxθ k k Θ k+1 X\nk=0\nNote that in this setting, t = 1, hence, T = K. Moreover, from the compactness of domains, we\nk K √\nhave that for any (x,y) ∈ Z¯, ∥x −x∥ ≤ 2R and ∥y −y∥ ≤ (cid:112) 2R .",
+      "size": 291,
+      "sentences": 2
+    },
+    {
+      "id": 123,
+      "content": "pactness of domains, we\nk K √\nhave that for any (x,y) ∈ Z¯, ∥x −x∥ ≤ 2R and ∥y −y∥ ≤ (cid:112) 2R . Therefore,\nk+1 X x k+1 Y y\nK−1 K\n(cid:88) (2η +1)∥θ −θ∗∥ ∥y −y∥ ≤ (2η+1) (cid:112) 2R · (cid:112) C (cid:88) 1 ,\nk k Θ k+1 Y y θ\nk\nk=0 k=1\nK−1 K\n(cid:88) (cid:112) (cid:112) (cid:88) 1\n∥θ −θ∗∥ ∥x −x∥ ≤ R · C .",
+      "size": 309,
+      "sentences": 2
+    },
+    {
+      "id": 124,
+      "content": ",\nk k Θ k+1 Y y θ\nk\nk=0 k=1\nK−1 K\n(cid:88) (cid:112) (cid:112) (cid:88) 1\n∥θ −θ∗∥ ∥x −x∥ ≤ R · C . k Θ k+1 X x θ\nk\nk=0 k=1\nCombining the above inequalities with (5) leads to\n(cid:18) (cid:19)\nG (z¯ ) ≤ 1 1 R + 1 R + log(K) · (cid:16) LΦ (cid:112) R +LΦ (2η+1) (cid:112) R (cid:17)(cid:112) C . Z¯ K K τ x σ y K xθ x yθ y θ\n0 0\nFinally, using Remark 3.2 to set η = 1 completes the proof.",
+      "size": 386,
+      "sentences": 3
+    },
+    {
+      "id": 125,
+      "content": "2) C . Z¯ K K τ x σ y K xθ x yθ y θ\n0 0\nFinally, using Remark 3.2 to set η = 1 completes the proof. 13\n===  14 ===\n3.2 Learning-aware Accelerated Primal-dual Method\nIn this section, we propose a refined accelerated primal-dual algorithm for solving the misspecified\nsaddle point (SP) problem in (1). In particular, one of the key innovations of this method lies in\nthe way the parameter update θ is embedded in the algorithm.",
+      "size": 425,
+      "sentences": 4
+    },
+    {
+      "id": 126,
+      "content": "key innovations of this method lies in\nthe way the parameter update θ is embedded in the algorithm. In contrast to the Naive method,\nk\nwhere θ is kept fixed within each iteration, here θ is updated before the primal variable update\nk k\n(line 7 of Algorithm 3) using the learning subroutine M, and then injected into the subsequent\nprimal update (line 8).",
+      "size": 354,
+      "sentences": 2
+    },
+    {
+      "id": 127,
+      "content": "m 3) using the learning subroutine M, and then injected into the subsequent\nprimal update (line 8). More importantly, θ also influences the momentum term used in the dual\nk\nupdate (line 5), where the extrapolated gradient takes the form:\ns = (1+η )∇ Φ(x ,y ;θ )−η ∇ Φ(x ,y ;θ ),\nk k y k k k k y k−1 k−1 k−1\nwhich now explicitly includes the temporal variation of θ. This enables the dual variable y to\nadaptively track the changing dynamics introduced by the learning process.",
+      "size": 476,
+      "sentences": 3
+    },
+    {
+      "id": 128,
+      "content": "s the dual variable y to\nadaptively track the changing dynamics introduced by the learning process. We refer to this\napproach as a Learning-aware because it directly captures the effect of parameter misspecification\nin the acceleration step. Another significant improvement over the Naive method is the development of a backtracking line\nsearch for adaptive step-size selection.",
+      "size": 378,
+      "sentences": 3
+    },
+    {
+      "id": 129,
+      "content": "the Naive method is the development of a backtracking line\nsearch for adaptive step-size selection. This is made possible by introducing the test function\nE (x,y;θ), defined in Definition 2.2, which uses the generated iterate θ without requiring the\nk k+1\nknowledge of the unknown ground-truth θ∗. This allows the algorithm to verify local smoothness\nconditionsdynamicallyandadjuststep-sizes(τ ,σ )ateachiteration(lines9–13).",
+      "size": 425,
+      "sentences": 3
+    },
+    {
+      "id": 130,
+      "content": "verify local smoothness\nconditionsdynamicallyandadjuststep-sizes(τ ,σ )ateachiteration(lines9–13). Suchamechanism\nk k\nwas infeasible in the Naive method, as the construction of such a test function would depend on θ∗. Assumption 3.1.",
+      "size": 233,
+      "sentences": 3
+    },
+    {
+      "id": 131,
+      "content": "n the Naive method, as the construction of such a test function would depend on θ∗. Assumption 3.1. For any given x ∈ X and y ∈ Y, function Φ(x,y;·) is Lipschitz continuous with\nconstant L ≥ 0; that is |Φ(x,y;θ )−Φ(x,y;θ )| ≤ L ∥θ −θ ∥ for any θ ,θ ∈ Θ.\nθ 1 2 θ 1 2 Θ 1 2\nAlgorithm 3 Learning-aware accelerated primal-dual algorithm with backtracking for misspecified\nsaddle point problem\n1: Input: c α ,c β ≥ 0, ρ ∈ (0,1), τ¯,γ 0 > 0, (x 0 ,y 0 ) ∈ X×Y, θ 0 ∈ Rm, (x −1 ,y −1 ;θ −1 ) ← (x 0 ,y 0 ;θ 0 ),\nτ ← τ¯, σ ← γ τ\n0 −1 0 0\n2: for k ≥ 0 do\n3: while stopping criterion not satisfied do\nσ\n4: σ k ← γ k τ k , η k ← σ k−1, α k+1 ← c α /σ k , β k+1 ← c β /σ k\nk\n5: s k ← (1+η)∇ y Φ(x k ,y k ;θ k )−η∇ y Φ(x k−1 ,y k−1 ;θ k−1 )\n6: y k+1 ← argmin y∈Y h(y)−⟨s k ,y⟩+ σ 1 D Y (y,y k )\nk\n7: θ k+1 ← M(θ k ,w k ,τ k ,σ k ,η k )\n8: x k+1 ← argmin x∈X f(x)+⟨∇ x Φ(x k ,y k+1 ;θ k+1 ),x⟩+ τ 1 D X (x,x k )\nk\n9: if E k (x k+1 ,y k+1 ;θ k+1 ) ≤ 0 then\n10: go to line 16\n11: else\n12: τ k ← ρτ k\n13: go to line 4\n14: end if\n15: end while\n(cid:113)\n16: γ k+1 ← γ k , τ k+1 ← τ k γ γ k , k ← k+1\nk+1\n17: end for\n14\n===  15 ===\nNote that Assumption 3.1 clearly holds if Θ is a compact set.",
+      "size": 1174,
+      "sentences": 3
+    },
+    {
+      "id": 132,
+      "content": "← k+1\nk+1\n17: end for\n14\n===  15 ===\nNote that Assumption 3.1 clearly holds if Θ is a compact set. Next, we establish some key properties\nof the sequences {τ ,σ ,η } associated with the Learning-aware algorithm, which will be used to\nk k k\nderive the convergence rate in Theorem 3.6. Lemma 3.3. Suppose the sequence {τ ,σ ,η } satisfies the step-size conditions in Assumption\nk k k k≥0\n2.3 for some positive sequences {t ,α } , and nonnegative sequence {β } .",
+      "size": 459,
+      "sentences": 4
+    },
+    {
+      "id": 133,
+      "content": "s in Assumption\nk k k k≥0\n2.3 for some positive sequences {t ,α } , and nonnegative sequence {β } . Let {x ,y } be the\nk k k≥0 k k≥0 k k\niterate sequence of Algorithm 3 corresponding to {τ ,σ ,η }. Then {x ,y } and {τ ,σ ,η } satisfy\nk k k k k k k k\nthe condition in Assumption 2.2-(i) with the same sequences {t ,α ,β }. k k k\nProof.",
+      "size": 334,
+      "sentences": 4
+    },
+    {
+      "id": 134,
+      "content": "k k k k k k k\nthe condition in Assumption 2.2-(i) with the same sequences {t ,α ,β }. k k k\nProof. Using Assumption 2.1, and Definition 2.1, for any k ≥ 0, and (x,y) ∈ X ×Y, we obtain\nLΦ\n⟨∇ Φ(x,y;θ)−∇ Φ(x ,y;θ),x−x ⟩ ≤ xx∥x−x ∥2 ≤ LΦ D (x,x ),\nx x k k 2 k X xx X k\n1 (LΦ )2\n∥∇ Φ(x,y;θ)−∇ Φ(x ,y;θ)∥2 ≤ yx ∥x−x ∥2 ≤ (LΦ )2D (x,x ),\n2 y y k Y∗ 2 k X yx X k\n∥∇ Φ(x ,y;θ )−∇ Φ(x ,y ;θ )∥2 ≤ (LΦ )2∥y−y ∥2 ≤ 2(LΦ )2D (y,y ).",
+      "size": 419,
+      "sentences": 3
+    },
+    {
+      "id": 135,
+      "content": "2D (x,x ),\n2 y y k Y∗ 2 k X yx X k\n∥∇ Φ(x ,y;θ )−∇ Φ(x ,y ;θ )∥2 ≤ (LΦ )2∥y−y ∥2 ≤ 2(LΦ )2D (y,y ). y k k y k k k Y∗ yy k Y yy Y k\nBy evaluating the above inequality at (x,y;θ) = (x ,y ;θ ), and using Assumption 2.3 along\nk+1 k+1 k+1\nwith the nonnegativity of Bregman functions, we can show\nE ≜ E (x ,y ;θ ) ≤ (cid:0) (LΦ yx )2 +LΦ − 1 (cid:1) D (x ,x )\nk k k+1 k+1 k+1 α xx τ X k+1 k\nk+1 k\n(cid:0) 2(LΦ yy )2 1 (cid:1)\n+ +η (α +β )− D (y ,y ). k k k Y k+1 k\nβ σ\nk+1 k\nLemma 3.4.",
+      "size": 479,
+      "sentences": 3
+    },
+    {
+      "id": 136,
+      "content": "+1 k\nk+1 k\n(cid:0) 2(LΦ yy )2 1 (cid:1)\n+ +η (α +β )− D (y ,y ). k k k Y k+1 k\nβ σ\nk+1 k\nLemma 3.4. Let {τ } ⊂ R and suppose τ¯,γ > 0. Define σ = γ τ¯ and set σ = γ τ ,\nk k≥0 ++ 0 −1 0 k k k\nη = σ /σ , and γ = γ for all k ≥ 0. Then the sequences {τ ,σ ,η } satisfy Assumption 2.2-\nk k−1 k k+1 k k k k\n(ii) for the choice t = σ /σ . k k 0\nProof.",
+      "size": 344,
+      "sentences": 6
+    },
+    {
+      "id": 137,
+      "content": "{τ ,σ ,η } satisfy Assumption 2.2-\nk k−1 k k+1 k k k k\n(ii) for the choice t = σ /σ . k k 0\nProof. By definition, t = σ /σ , and since τ > 0 for all k ≥ 0, Assumption 2.2-(ii) is equivalent to\nk k 0 k\nverifying the two conditions:\nσ τ σ\nk+1 k k\n≤ 1 and η = . k+1\nσ τ σ\nk k+1 k+1\nThe second condition holds directly by the definition of η .",
+      "size": 339,
+      "sentences": 4
+    },
+    {
+      "id": 138,
+      "content": "k k\n≤ 1 and η = . k+1\nσ τ σ\nk k+1 k+1\nThe second condition holds directly by the definition of η . For the first condition, observe that\nk\nsince σ = γ τ and γ = γ , we have\nk k k k+1 k\nσ τ γ τ τ γ\nk+1 k k+1 k+1 k k+1\n= = = 1.\nσ τ γ τ τ γ\nk k+1 k k k+1 k\nHence, the inequality holds with equality, and the result follows. Lemma 3.5. Suppose Assumption 2.1 holds. Consider Algorithm 3 with constants c ,c ≥ 0 such\nα β\nthat c +c ≤ 1.",
+      "size": 430,
+      "sentences": 6
+    },
+    {
+      "id": 139,
+      "content": "Suppose Assumption 2.1 holds. Consider Algorithm 3 with constants c ,c ≥ 0 such\nα β\nthat c +c ≤ 1. If LΦ > 0, assume c ,c > 0; otherwise, if LΦ = 0, take c > 0 and c = 0.\nα β yy α β yy α β\nThen the iterates {x ,y } and step-size sequences {τ ,σ ,η } in Algorithm 3 are well-defined. k k k≥0 k k k k≥0\nSpecifically, for every iteration index k ≥ 0, the backtracking condition E (x ,y ;θ ) ≤ 0 is\nk k+1 k+1 k+1\nsatisfied after a finite number of backtracking steps.",
+      "size": 463,
+      "sentences": 4
+    },
+    {
+      "id": 140,
+      "content": "condition E (x ,y ;θ ) ≤ 0 is\nk k+1 k+1 k+1\nsatisfied after a finite number of backtracking steps. Furthermore, there exists a constant τˆ > 0 such\nk\nthat τ ≥ ρτˆ . When LΦ = 0, we have τˆ ≥ Ψ for all k ≥ 0. In the case where LΦ > 0, it holds\nk k yy k 1 yy\nthat τˆ\nk\n≥ min{Ψ\n1\n,Ψ\n2\n} for all k ≥ 0, where Ψ\n1\n≜ −LΦ xx +\n2\n(cid:114)\n(L\n(L\nΦ yx\nΦ x\n)\nx\n2\n)\nγ\n2\nk\n+\n/\n4\nc\n(\nα\nLΦ y c x α )2γk and Ψ\n2\n≜ √ c β√ (1\n2\n−\nγ k\n(c\nL\nα\nΦ y\n+\ny\nc β )) . 15\n===  16 ===\nProof. Fixanyk ≥ 0.",
+      "size": 475,
+      "sentences": 6
+    },
+    {
+      "id": 141,
+      "content": "y c x α )2γk and Ψ\n2\n≜ √ c β√ (1\n2\n−\nγ k\n(c\nL\nα\nΦ y\n+\ny\nc β )) . 15\n===  16 ===\nProof. Fixanyk ≥ 0. FromLemma3.3, weknowthatifAssumption2.3holds, thenAssumption2.2-\n(i) is automatically satisfied. We now demonstrate that there exists a positive threshold τˆ such\nk\nthat Assumption 2.3 is valid for all τ ∈ (0,τˆ ]. k k\nUsing the relationships σ = γ τ and η = σ /σ , the two inequalities in Assumption 2.3 become:\nk k k k k−1 k\n(LΦ )2 2(LΦ )2\n0 ≥ −1+LΦ τ + yx γ τ2, 1−(c +c ) ≥ yy γ2τ2.",
+      "size": 485,
+      "sentences": 6
+    },
+    {
+      "id": 142,
+      "content": "in Assumption 2.3 become:\nk k k k k−1 k\n(LΦ )2 2(LΦ )2\n0 ≥ −1+LΦ τ + yx γ τ2, 1−(c +c ) ≥ yy γ2τ2. (6)\nxx k c k k α β c k k\nα β\nIf LΦ > 0, both inequalities must be satisfied. The first inequality leads to a quadratic condition in\nyy\nτ with a known positive root, and the second provides a bound based on a square root expression. k\nCombining both gives:\n (cid:113) \n−LΦ + (LΦ )2+ 4(LΦ yx )2γ k (cid:112) c (1−(c +c ))\nτˆ ≜ min xx xx cα , β √ α β .",
+      "size": 452,
+      "sentences": 4
+    },
+    {
+      "id": 143,
+      "content": ":\n (cid:113) \n−LΦ + (LΦ )2+ 4(LΦ yx )2γ k (cid:112) c (1−(c +c ))\nτˆ ≜ min xx xx cα , β √ α β . (7)\nk  2(LΦ yx )2γ k /c α 2γ k LΦ yy \nWhen LΦ = 0, the second inequality in (6) trivially holds, so only the first term in (7) is relevant. yy\nDuring the backtracking procedure, τ is geometrically reduced by a factor ρ ∈ (0,1) at each inner\nk\nstep. Therefore, once the stopping criterion is met, it must hold that τ ≥ ρτˆ . k k\nFinally, from Line 16 of Algorithm 3, we know γ = γ for all k ≥ 0.",
+      "size": 496,
+      "sentences": 5
+    },
+    {
+      "id": 144,
+      "content": "it must hold that τ ≥ ρτˆ . k k\nFinally, from Line 16 of Algorithm 3, we know γ = γ for all k ≥ 0. Hence, the expression for τˆ\nk 0 k\nremains constant over iterations, i.e., τˆ = τˆ . This implies that for LΦ = 0, we have τˆ ≥ Ψ , and\nk 0 yy 0 1\nfor LΦ > 0, we have τˆ ≥ min{Ψ ,Ψ }, as desired. yy 0 1 2\nNext, we proceed with the iteration complexity analysis of the Learning-aware approach, as detailed\nin Theorem 3.6. Theorem 3.6. Suppose Assumptions 2.1 and 3.1 hold. Let z ≜ [x⊤,y⊤]⊤.",
+      "size": 488,
+      "sentences": 8
+    },
+    {
+      "id": 145,
+      "content": "h, as detailed\nin Theorem 3.6. Theorem 3.6. Suppose Assumptions 2.1 and 3.1 hold. Let z ≜ [x⊤,y⊤]⊤. If {x ,y ,θ } is\nk k k k≥0\ngenerated by Algorithm 3, using a parameter sequence {τ ,σ ,η } that satisfies Assumptions 2.2\nk k k k≥0\nor 2.3.",
+      "size": 239,
+      "sentences": 5
+    },
+    {
+      "id": 146,
+      "content": "Algorithm 3, using a parameter sequence {τ ,σ ,η } that satisfies Assumptions 2.2\nk k k k≥0\nor 2.3. Then for any bounded set Z¯ ⊆ domf ×domh containing a saddle point solution of (1)\nand K ≥ 1,\n1 (cid:16) 1 1 (cid:17)\nG (z¯ ) ≤ sup D (x,x )+ D (y,y )\nZ¯ K\nT τ\nX 0\nσ\nY 0\nK z∈Z¯ 0 0\n+ 2L θ\nK\n(cid:88)\n−1\nt ∥θ −θ∗∥ +\nL2\nyθ\nK\n(cid:88)\n−1\nt k ∥θ −θ ∥2, (8)\nT k k+1 Θ T β k+1 k Θ\nK K k+1\nk=0 k=0\nwherez¯ ≜ [x¯⊤,y¯⊤]⊤ denotestheweightedaverageoftheiterates{z }K−1, i.e., z¯ ≜ 1 (cid:80)K−1t z ,\nK K K k k=0 K TK k=0 k k+1\nand T =\n(cid:80)K−1t\n.",
+      "size": 537,
+      "sentences": 2
+    },
+    {
+      "id": 147,
+      "content": "theiterates{z }K−1, i.e., z¯ ≜ 1 (cid:80)K−1t z ,\nK K K k k=0 K TK k=0 k k+1\nand T =\n(cid:80)K−1t\n. K k=0 k\nProof. Considering that in Algorithm 3, the variable x is updated after the variable y and the\nparameter θ are updated. Based on Algorithm 3, we can define the following:\nq ≜ ∇ Φ(x ,y ;θ )−∇ Φ(x ,y ;θ ),\nk y k k k y k−1 k−1 k−1\ns ≜ ∇ Φ(x ,y ;θ )+η q ,\nk y k k k k k\n16\n===  17 ===\nwhere q is the momentum parameter.",
+      "size": 423,
+      "sentences": 4
+    },
+    {
+      "id": 148,
+      "content": "k−1 k−1 k−1\ns ≜ ∇ Φ(x ,y ;θ )+η q ,\nk y k k k k k\n16\n===  17 ===\nwhere q is the momentum parameter. For k ≥ 0, using Lemma A.1 for the y- and x-subproblems\nk\nin Algorithm 3, we get the following two inequalities that hold for any y ∈ Y and x ∈ X:\nh(y )−⟨s ,y −y⟩\nk+1 k k+1\n1 (cid:104) (cid:105)\n≤ h(y)+ D (y,y )−D (y,y )−D (y ,y ) , (9)\nY k Y k+1 Y k+1 k\nσ\nk\nf(x )+⟨∇ Φ(x ,y ;θ ),x −x⟩\nk+1 x k k+1 k+1 k+1\n1 (cid:104) (cid:105)\n≤ f(x)+ D (x,x )−D (x,x )−D (x ,x ) .",
+      "size": 465,
+      "sentences": 2
+    },
+    {
+      "id": 149,
+      "content": "∇ Φ(x ,y ;θ ),x −x⟩\nk+1 x k k+1 k+1 k+1\n1 (cid:104) (cid:105)\n≤ f(x)+ D (x,x )−D (x,x )−D (x ,x ) . (10)\nX k X k+1 X k+1 k\nτ\nk\n(cid:104) (cid:105) (cid:104)\nFor all k ≥ 0, let A ≜ 1 D (y,y )−D (y,y )−D (y ,y ) and B ≜ 1 D (x,x )−\nk+1 σ Y k Y k+1 Y k+1 k k+1 τ X k\nk k\n(cid:105)\nD (x,x )−D (x ,x ) .",
+      "size": 298,
+      "sentences": 2
+    },
+    {
+      "id": 150,
+      "content": "−D (y ,y ) and B ≜ 1 D (x,x )−\nk+1 σ Y k Y k+1 Y k+1 k k+1 τ X k\nk k\n(cid:105)\nD (x,x )−D (x ,x ) . By adding and subtracting ∇ Φ(x ,y ;θ )x , the inner product\nX k+1 X k+1 k x k k+1 k+1 k\nin (10) can be lower bounded using convexity of Φ(x ,y ;·) as follows:\nk k+1\n⟨∇ Φ(x ,y ;θ ),x −x⟩\nx k k+1 k+1 k+1\n= ⟨∇ Φ(x ,y ;θ ),x −x⟩+⟨∇ Φ(x ,y ;θ ),x −x ⟩,\nx k k+1 k+1 k x k k+1 k+1 k+1 k\n≥ Φ(x ,y ;θ )−Φ(x,y ;θ )+⟨∇ Φ(x ,y ;θ ),x −x ⟩.",
+      "size": 428,
+      "sentences": 2
+    },
+    {
+      "id": 151,
+      "content": "Φ(x ,y ;θ ),x −x ⟩,\nx k k+1 k+1 k x k k+1 k+1 k+1 k\n≥ Φ(x ,y ;θ )−Φ(x,y ;θ )+⟨∇ Φ(x ,y ;θ ),x −x ⟩. (11)\nk k+1 k+1 k+1 k+1 x k k+1 k+1 k+1 k\nUsing this inequality after adding Φ(x ,y ;θ ) to both sides of (10), we can get\nk+1 k+1 k+1\nf(x )+Φ(x ,y ;θ ) ≤ f(x)+Φ(x,y ;θ )+B +Λ , (12)\nk+1 k+1 k+1 k+1 k+1 k+1 k+1 k\nwhere Λ ≜ Φ(x ,y ;θ )−Φ(x ,y ;θ )−⟨∇ Φ(x ,y ;θ ),x −x ⟩, for k ≥ 0.\nk k+1 k+1 k+1 k k+1 k+1 x k k+1 k+1 k+1 k\nFor k ≥ 0, summing (9) and (12) and rearranging the terms lead to\nL(x ,y;θ )−L(x,y ;θ )\nk+1 k+1 k+1 k+1\n= f(x )+Φ(x ,y;θ )−h(y)−f(x)−Φ(x,y ;θ )+h(y )\nk+1 k+1 k+1 k+1 k+1 k+1\n≤ Φ(x ,y;θ )−Φ(x ,y ;θ )+⟨s ,y −y⟩+Λ +A +B\nk+1 k+1 k+1 k+1 k+1 k k+1 k k+1 k+1\n≤ −⟨q ,y −y⟩+η ⟨q ,y −y⟩+Λ +A +B , (13)\nk+1 k+1 k k k+1 k k+1 k+1\nwhere in the last inequality we use the concavity of Φ(x ,·;θ ).",
+      "size": 805,
+      "sentences": 2
+    },
+    {
+      "id": 152,
+      "content": "B , (13)\nk+1 k+1 k k k+1 k k+1 k+1\nwhere in the last inequality we use the concavity of Φ(x ,·;θ ). k+1 k+1\nTo obtain a telescoping sum later, by adding and subtracting η q y , we can rewrite the bound in\nk k k\n(13) as\nL(x ,y;θ )−L(x,y ;θ )\nk+1 k+1 k+1 k+1\n(cid:104) 1 1 (cid:105)\n≤ D (x,x )+ D (y,y )+η ⟨q ,y −y⟩\nX k Y k k k k\nτ σ\nk k\n(cid:104) 1 1 (cid:105)\n− D (x,x )+ D (y,y )+⟨q ,y −y⟩\nX k+1 Y k+1 k+1 k+1\nτ σ\nk k\n1 1\n+Λ − D (x ,x )− D (y ,y )+η ⟨q ,y −y ⟩.",
+      "size": 462,
+      "sentences": 2
+    },
+    {
+      "id": 153,
+      "content": "(x,x )+ D (y,y )+⟨q ,y −y⟩\nX k+1 Y k+1 k+1 k+1\nτ σ\nk k\n1 1\n+Λ − D (x ,x )− D (y ,y )+η ⟨q ,y −y ⟩. (14)\nk X k+1 k Y k+1 k k k k+1 k\nτ σ\nk k\nOnecanbound⟨q ,y−y ⟩foranygiveny ∈ Y asfollows. Letpx ≜ ∇ Φ(x ,y ;θ )−∇ Φ(x ,y ;θ ),\nk k k y k k k y k−1 k k\npθ ≜ ∇ Φ(x ,y ;θ )−∇ Φ(x ,y ;θ ),andpy ≜ ∇ Φ(x ,y ;θ )−∇ Φ(x ,y ;θ )\nk y k−1 k k y k−1 k k−1 k y k−1 k k−1 y k−1 k−1 k−1\nwhich imply that q = px + pθ + py. Moreover, for any y ∈ Y, y′ ∈ Y∗, and a > 0, we have\nk k k k\n|⟨y′,y⟩| ≤ a∥y∥2 + 1 ∥y′∥2 .",
+      "size": 494,
+      "sentences": 4
+    },
+    {
+      "id": 154,
+      "content": "pθ + py. Moreover, for any y ∈ Y, y′ ∈ Y∗, and a > 0, we have\nk k k k\n|⟨y′,y⟩| ≤ a∥y∥2 + 1 ∥y′∥2 . Hence, using this inequality for each ⟨px,y−y ⟩, and ⟨py+pθ,y−y ⟩\n2 Y 2a Y∗ k k k k k\nand the fact that D (y,y) ≥ 1∥y−y∥2, we obtain for all k ≥ 0:\nY 2 Y\n1 1\n|⟨q ,y−y ⟩| ≤ α D (y,y )+ ∥px∥2 +β D (y,y )+ ∥py +pθ∥2 , (15)\nk k k Y k 2α k Y∗ k Y k 2β k k Y∗\nk k\n17\n===  18 ===\nwhich holds for any α ,β > 0.",
+      "size": 401,
+      "sentences": 3
+    },
+    {
+      "id": 155,
+      "content": "∥py +pθ∥2 , (15)\nk k k Y k 2α k Y∗ k Y k 2β k k Y∗\nk k\n17\n===  18 ===\nwhich holds for any α ,β > 0. Therefore, using (15) within (14), we can show for k ≥ 0\nk k\n1\nL(x ,y;θ )−L(x,y ;θ ) ≤ Q (z)−R (z)+E + ∥pθ ∥2 , (16a)\nk+1 k+1 k+1 k+1 k k+1 k β k+1 Y∗\nk+1\n1 1 η\nQ (z) ≜ D (x,x )+ D (y,y )+η ⟨q ,y −y⟩+ k ∥px∥2\nk τ X k σ Y k k k k 2α k Y∗\nk k k\nη\n+ k ∥py +pθ∥2 , (16b)\n2β k k Y∗\nk\n1 1 1\nR (z) ≜ D (x,x )+ D (y,y )+⟨q ,y −y⟩+ ∥px ∥2\nk+1 τ X k+1 σ Y k+1 k+1 k+1 2α k+1 Y∗\nk k k+1\n1\n+ ∥py +pθ ∥2 , (16c)\n2β k+1 k+1 Y∗\nk+1\n1 1 1\nE ≜ Λ + ∥px ∥2 − D (x ,x )+ ∥py ∥2\nk k 2α k+1 Y∗ τ X k+1 k β k+1 Y∗\nk+1 k k+1\n(cid:16) 1 (cid:17)\n− −η (α +β ) D (y ,y ), (16d)\nk k k Y k+1 k\nσ\nk\nIt should be mentioned that E = E (x ,y ;θ ) where E (·,·;·) is defined as in Definition\nk k k+1 k+1 k+1 k\n2.2 for k ≥ 0.",
+      "size": 790,
+      "sentences": 2
+    },
+    {
+      "id": 156,
+      "content": "that E = E (x ,y ;θ ) where E (·,·;·) is defined as in Definition\nk k k+1 k+1 k+1 k\n2.2 for k ≥ 0. Considering Assumption 3.1, we can show\n|L(x ,y;θ )−L(x ,y;θ∗)| ≤ L ∥θ −θ∗∥\nk+1 k+1 k+1 θ k+1 Θ\n|L(x,y ;θ )−L(x,y ;θ∗)| ≤ L ∥θ −θ∗∥\nk+1 k+1 k+1 θ k+1 Θ\nFor θ∗,θ ∈ Θ we can show\nk+1\nL(x ,y;θ∗)−L(x,y ;θ∗)\nk+1 k+1\n= L(x ,y;θ∗)−L(x ,y;θ )+L(x ,y;θ )−L(x,y ;θ )\nk+1 k+1 k+1 k+1 k+1 k+1 k+1\n+L(x,y ;θ )−L(x,y ;θ∗)\nk+1 k+1 k+1\nThen, using the triangle inequality, we can obtain\nL(x ,y;θ∗)−L(x,y ;θ∗)\nk+1 k+1\n≤ |L(x ,y;θ∗)−L(x ,y;θ )|+L(x ,y;θ )−L(x,y ;θ )\nk+1 k+1 k+1 k+1 k+1 k+1 k+1\n+|L(x,y ;θ )−L(x,y ;θ∗)|\nk+1 k+1 k+1\n1\n≤ 2L ∥θ −θ∗∥ +Q (z)−R (z)+E + ∥pθ ∥2\nθ k+1 Θ k k+1 k β k+1 Y∗\nk+1\nL2\n≤ Q (z)−R (z)+E +2L ∥θ −θ∗∥ + yθ ∥θ −θ ∥2, (17)\nk k+1 k θ k+1 Θ β k+1 k Θ\nk+1\nwhere the inequality in (17) is obtained by using Assumption 3.1 in (16a) and Assumption 2.1-(ii).",
+      "size": 860,
+      "sentences": 2
+    },
+    {
+      "id": 157,
+      "content": "where the inequality in (17) is obtained by using Assumption 3.1 in (16a) and Assumption 2.1-(ii). All the derivations up to now, including (17), hold for any Bregman distance functions D and\nX\nD .",
+      "size": 197,
+      "sentences": 2
+    },
+    {
+      "id": 158,
+      "content": "All the derivations up to now, including (17), hold for any Bregman distance functions D and\nX\nD . Now, multiplying both sides by t > 0, summing over k = 0 to K −1, and then using Jensen’s\nY k\n18\n===  19 ===\ninequality, we obtain\nT (L(x ,y;θ∗)−L(x,y ;θ∗))\nK K K\n≤\nK\n(cid:88)\n−1\nt (cid:16) Q (z)−R (z)+E +2L ∥θ −θ∗∥ +\nL2\nyθ ∥θ −θ ∥2 (cid:17) ,\nk k k+1 k θ k+1 Θ β k+1 k Θ\nk+1\nk=0\nK−1 K−1\n(cid:88) (cid:88)\n≤ t Q (z)−t R (z)+ t E +2L t ∥θ −θ∗∥\n0 0 K−1 K k k θ k k+1 Θ\nk=0 k=0\nK−1\n+L2 (cid:88) t k ∥θ −θ ∥2, (18)\nyθ β k+1 k Θ\nk+1\nk=0\nwhere T =\n(cid:80)K−1t\nand the last inequality follows from the step-size conditions in Assumption\nK k=0 k\n2.2-(ii), which imply that t Q (z)−t R (z) ≤ 0 for k = 0 to K −2.",
+      "size": 703,
+      "sentences": 2
+    },
+    {
+      "id": 159,
+      "content": "conditions in Assumption\nK k=0 k\n2.2-(ii), which imply that t Q (z)−t R (z) ≤ 0 for k = 0 to K −2. k+1 k+1 k k+1\nAccording to Assumption 2.2, τ ,σ and η are chosen such that E ≤ 0 for k = 0,...,K −1; then\nk k k k\n(18) implies that\nT (L(x ,y;θ∗)−L(x,y ;θ∗))\nK K K\nK−1 K−1\n≤ t Q (z)−t R (z)+2L (cid:88) t ∥θ −θ∗∥ +L2 (cid:88) t k ∥θ −θ ∥2,\n0 0 K−1 K θ k k+1 Θ yθ β k+1 k Θ\nk+1\nk=0 k=0\nt 0 t 0 (cid:2) 1\n≤ D (x,x )+ D (y,y )+t η ⟨q ,y−y ⟩−t D (x,x )\nX 0 Y 0 K K K K K X K\nτ σ τ\n0 0 K\nK−1\n+ 1 D (y,y )+ η K ∥px ∥2 + η K ∥py +pθ ∥2 (cid:3) +2L (cid:88) t ∥θ −θ∗∥\nσ Y K 2α K Y∗ 2β K K Y∗ θ k k+1 Θ\nK K K\nk=0\nK−1\n+L2 (cid:88) t k ∥θ −θ ∥2, (19)\nyθ β k+1 k Θ\nk+1\nk=0\nwhere in the last inequality we use t Q (z) ≤ t R (z) and q = px = pθ = py = 0.",
+      "size": 738,
+      "sentences": 2
+    },
+    {
+      "id": 160,
+      "content": "θ β k+1 k Θ\nk+1\nk=0\nwhere in the last inequality we use t Q (z) ≤ t R (z) and q = px = pθ = py = 0. Using (15)\nK K K−1 K 0 0 0 0\nto bound ⟨q ,y−y ⟩ and dividing both sides of (19) by T , we can get\nK K K\nL(x ,y;θ∗)−L(x,y ;θ∗)\nK K\nK−1\n≤ 1 (cid:16) 1 D (x,x )+ 1 D (y,y ) (cid:17) + 2L θ (cid:88) t ∥θ −θ∗∥ − t K (cid:104) 1 D (x,x )\nX 0 Y 0 k k+1 Θ X K\nT τ σ T T τ\nK 0 0 K K K\nk=0\n+ (cid:16) 1 −η (α +β ) (cid:17) D (y,y ) (cid:105) +\nL2\nyθ\nK\n(cid:88)\n−1\nt k ∥θ −θ ∥2.",
+      "size": 467,
+      "sentences": 2
+    },
+    {
+      "id": 161,
+      "content": "0 K K K\nk=0\n+ (cid:16) 1 −η (α +β ) (cid:17) D (y,y ) (cid:105) +\nL2\nyθ\nK\n(cid:88)\n−1\nt k ∥θ −θ ∥2. (20)\nσ K K K Y K T β k+1 k Θ\nK K k+1\nk=0\nBy applying sup to both sides of the inequality (20) and using Definition 2.3, we obtain the desired\nresult in (8). Corollary 3.7.",
+      "size": 271,
+      "sentences": 3
+    },
+    {
+      "id": 162,
+      "content": "f the inequality (20) and using Definition 2.3, we obtain the desired\nresult in (8). Corollary 3.7. Under the premises of Theorem 3.6, for any K ≥ 1, it holds that:\n√\n1 (cid:18) 1 1 (cid:19) 2L θ C θ 4C θ L2 yθ π2\nG (z¯ ) ≤ R + R + (logK +1)+ ,\nZ¯ K\nT τ\nx\nσ\ny\nT 6T β\nK 0 0 K K\nwhere T = (cid:80)K−1t , and R ≜ sup D (x,x¯) < ∞ and R ≜ sup D (y,y¯) < ∞ are\nK k=0 k x x,x¯∈X¯ X y y,y¯∈Y¯ Y\nthe finite Bregman distances. 19\n===  20 ===\nProof.",
+      "size": 439,
+      "sentences": 4
+    },
+    {
+      "id": 163,
+      "content": "(y,y¯) < ∞ are\nK k=0 k x x,x¯∈X¯ X y y,y¯∈Y¯ Y\nthe finite Bregman distances. 19\n===  20 ===\nProof. From Theorem 3.6, we have the bound:\n(cid:18) (cid:19)\n1 1 1\nG (z¯ ) ≤ sup D (x,x )+ D (y,y )\nZ¯ K\nT τ\nX 0\nσ\nY 0\nK z∈Z¯ 0 0\n+ 2L θ\nK\n(cid:88)\n−1\nt ∥θ −θ∗∥ +\nL2\nyθ\nK\n(cid:88)\n−1\nt k ∥θ −θ ∥2 .",
+      "size": 290,
+      "sentences": 3
+    },
+    {
+      "id": 164,
+      "content": ")\nZ¯ K\nT τ\nX 0\nσ\nY 0\nK z∈Z¯ 0 0\n+ 2L θ\nK\n(cid:88)\n−1\nt ∥θ −θ∗∥ +\nL2\nyθ\nK\n(cid:88)\n−1\nt k ∥θ −θ ∥2 . (21)\nT k k+1 Θ T β k+1 k Θ\nK K k+1\nk=0 k=0\n(cid:124) (cid:123)(cid:122) (cid:125) (cid:124) (cid:123)(cid:122) (cid:125)\n(I) (II)\nFor the term (I), using Remark 3.3, we get:\n√\nK−1 K\n2L θ (cid:88) t ∥θ −θ∗∥ ≤ 2L θ(cid:112) C (cid:88) 1 ≤ 2L θ C θ (logK +1).",
+      "size": 356,
+      "sentences": 2
+    },
+    {
+      "id": 165,
+      "content": "ark 3.3, we get:\n√\nK−1 K\n2L θ (cid:88) t ∥θ −θ∗∥ ≤ 2L θ(cid:112) C (cid:88) 1 ≤ 2L θ C θ (logK +1). (22)\nk k+1 Θ θ\nT T k T\nK K K\nk=0 k=1\nOn the other hand, by adding and subtracting θ∗, using Young’s inequality and Remark 3.3:\n(cid:18) (cid:19)\n∥θ −θ ∥2 ≤ 2 (cid:0) ∥θ −θ∗∥2 +∥θ −θ∗∥2(cid:1) ≤ 2C 1 + 1 ,\nk+1 k Θ k+1 Θ k Θ θ (k+1)2 k2\nTherefore,\nK (cid:88) −1 t k ∥θ −θ ∥2 ≤ 2C θ (cid:88) K (cid:18) 1 + 1 (cid:19) ≤ 4C θ · π2 ,\nβ k+1 k Θ β k2 (k+1)2 β 6\nk+1\nk=0 k=1\nTherefore, the term (II) is bounded by\nL2 yθ K (cid:88) −1 t k ∥θ −θ ∥2 ≤ 4C θ L2 yθ π2 .",
+      "size": 556,
+      "sentences": 2
+    },
+    {
+      "id": 166,
+      "content": "1\nk=0 k=1\nTherefore, the term (II) is bounded by\nL2 yθ K (cid:88) −1 t k ∥θ −θ ∥2 ≤ 4C θ L2 yθ π2 . (23)\nT β k+1 k Θ 6T β\nK k+1 K\nk=0\nCombining the inequalities in (22) and (23) within (21) we obtain,\n√\n1 (cid:18) 1 1 (cid:19) 2L θ C θ 4C θ L2 yθ π2\nG (z¯ ) ≤ R + R + (logK +1)+ ,\nZ¯ K\nT τ\nx\nσ\ny\nT 6T β\nK 0 0 K K\nwhich concludes the proof. Remark 3.4.",
+      "size": 351,
+      "sentences": 3
+    },
+    {
+      "id": 167,
+      "content": "(z¯ ) ≤ R + R + (logK +1)+ ,\nZ¯ K\nT τ\nx\nσ\ny\nT 6T β\nK 0 0 K K\nwhich concludes the proof. Remark 3.4. When comparing the convergence bounds of the Naive and Learning-aware approaches\n(cid:16) (cid:17)\n(Corollaries 3.2 and 3.7), we see that both share a leading term of order 1 1 R + 1 R and\nK τ0 x σ0 y\nnoting that T = Ω(K), which reflects the baseline convergence guaranteed by the primal–dual\nK\nupdates.",
+      "size": 403,
+      "sentences": 3
+    },
+    {
+      "id": 168,
+      "content": "ing that T = Ω(K), which reflects the baseline convergence guaranteed by the primal–dual\nK\nupdates. The main distinction lies in the subsequent terms: in particular, the O(1) contribution,\ncorresponding to the terms with a slower rate of log(K)/K, captures how each method accounts\nfor the interaction between optimization and learning dynamics.",
+      "size": 345,
+      "sentences": 2
+    },
+    {
+      "id": 169,
+      "content": ", captures how each method accounts\nfor the interaction between optimization and learning dynamics. Assuming Lipschitz constants are\n√\n(cid:112)\nof order O(1), the Naive approach (Corollary 3.2) depends on the domain diameter R + R ,\nx y\nwhile the Learning-aware approach (Corollary 3.7) does not, which demonstrates the benefit of the\nproposed Learning-aware approach.",
+      "size": 369,
+      "sentences": 2
+    },
+    {
+      "id": 170,
+      "content": "h (Corollary 3.7) does not, which demonstrates the benefit of the\nproposed Learning-aware approach. 20\n===  21 ===\n4 Multiple Learning Solutions\nIn this section, we extend our framework to a setting where the learning subproblem may admit\nmultiple optimal solutions by focusing on a scenario where the learning problem is a minimization\nof the form: min ℓ(θ) for some convex and continuously differentiable function ℓ(·).",
+      "size": 421,
+      "sentences": 2
+    },
+    {
+      "id": 171,
+      "content": "a minimization\nof the form: min ℓ(θ) for some convex and continuously differentiable function ℓ(·). In this case,\nθ∈Θ\nthe structure becomes more complex, as the decision-making process requires determining which\nelement of the learning solution set Θ∗ should be selected in the objective function. To address this,\nwe adopt a pessimistic (worst-case) formulation of the original saddle point problem in (1), leading\nto the following formulation.",
+      "size": 445,
+      "sentences": 3
+    },
+    {
+      "id": 172,
+      "content": "ase) formulation of the original saddle point problem in (1), leading\nto the following formulation. minmaxmaxL(x,y,θ), (24)\nx∈X y∈Y θ∈Θ∗\nwhere Θ∗ ≜ argmin ℓ(θ) = {θ ∈ Θ | ℓ(θ) ≤ ℓ∗} and ℓ∗ ≜ min ℓ(θ). In this pessimistic formu-\nθ∈Θ θ∈Θ\nlation, θ is treated as a decision variable that captures the worst-case performance of the objective\nfunction L with respect to the learning solution set Θ∗.",
+      "size": 394,
+      "sentences": 3
+    },
+    {
+      "id": 173,
+      "content": "he worst-case performance of the objective\nfunction L with respect to the learning solution set Θ∗. This setting introduces two key challenges: First, the objective L(x,·,·) in (24) is not necessarily\njointly concave in y and θ. Second, the set Θ∗ is implicitly defined through the optimal value ℓ∗ and\nis not directly available. To overcome the first difficulty, we focus on a structured case in which the\nroles of θ and y are decoupled.",
+      "size": 438,
+      "sentences": 4
+    },
+    {
+      "id": 174,
+      "content": "me the first difficulty, we focus on a structured case in which the\nroles of θ and y are decoupled. Specifically, we assume that the saddle function Φ can be written as\nΦ(x,y,θ) = g (x,θ)+g (x,y), where g and g are continuously differentiable and convex–concave.",
+      "size": 262,
+      "sentences": 2
+    },
+    {
+      "id": 175,
+      "content": "en as\nΦ(x,y,θ) = g (x,θ)+g (x,y), where g and g are continuously differentiable and convex–concave. 1 2 1 2\nThis structure commonly appears in constrained optimization problems where θ affects only the\nobjective (via g ), while y represents the dual variables for the constraints (via g ) – see the portfolio\n1 2\noptimization example in Section 1.4 for an instance of this setting. Under this structure, we can\nrewrite (24) as:\nminmaxmaxf(x)+g (x,θ)+g (x,y)−h(y).",
+      "size": 463,
+      "sentences": 3
+    },
+    {
+      "id": 176,
+      "content": "of this setting. Under this structure, we can\nrewrite (24) as:\nminmaxmaxf(x)+g (x,θ)+g (x,y)−h(y). (25)\n1 2\nx∈X y∈Y θ∈Θ∗\nTo address the second challenge and handling the constraint ℓ(θ) ≤ ℓ∗, we introduce a Lagrange\nmultiplier w and write the saddle point reformulation for the inner maximization in (25) as follows:\nmaxmin{g (x,θ)−⟨w,ℓ(θ)−ℓ∗⟩}. (26)\n1\nθ∈Θ w≥0\nNotethatsincethefeasibleset{θ ∈ Θ | ℓ(θ) ≤ ℓ∗}doesnotsatisfystrictfeasibility,Slater’scondition\nfails and strong duality may not hold.",
+      "size": 495,
+      "sentences": 4
+    },
+    {
+      "id": 177,
+      "content": "ℓ(θ) ≤ ℓ∗}doesnotsatisfystrictfeasibility,Slater’scondition\nfails and strong duality may not hold. To remedy this, we relax the constraint by introducing an\nϵ-approximation and define the relaxed solution set: {θ ∈ Θ | ℓ(θ) ≤ ℓ∗+ϵ}. This relaxation ensures\nthe Slater’s condition and subsequently strong duality hold [11], allowing us to safely exchange\nthe max–min in (26) with a min–max.",
+      "size": 389,
+      "sentences": 3
+    },
+    {
+      "id": 178,
+      "content": "uently strong duality hold [11], allowing us to safely exchange\nthe max–min in (26) with a min–max. Substituting the dual formulation into (25), we obtain the\nfollowing min-max reformulation:\nmin max L(x,w,y,θ;ℓ∗) (27)\nx∈X,w≥0y∈Y,θ∈Θ\nL(x,w,y,θ;ℓ∗) ≜ f(x)+g (x,θ)+g (x,y)−⟨w,ℓ(θ)−ℓ∗−ϵ⟩−h(y). 1 2\nIn this setting, the problem becomes a misspecified saddle-point problem where ℓ∗ serves as an\nunknown parameter estimated through a distinct learning process.",
+      "size": 454,
+      "sentences": 3
+    },
+    {
+      "id": 179,
+      "content": "oint problem where ℓ∗ serves as an\nunknown parameter estimated through a distinct learning process. The variable θ now selects among\nmultiple near-optimal learning solutions, while w acts as the dual multiplier associated with the\nlearning constraint. To solve problem (27), we employ a modified version of our Learning-aware APD algorithm with\nbacktracking proposed in Section 3.2, incorporating the following adjustments.",
+      "size": 423,
+      "sentences": 3
+    },
+    {
+      "id": 180,
+      "content": "e APD algorithm with\nbacktracking proposed in Section 3.2, incorporating the following adjustments. In particular, the\n21\n===  22 ===\nminimization variables are (x,w) and the maximization variables are (y,θ). Accordingly, we define\ntwo momentum terms, sy and sθ, which are used in the maximization variable updates (lines 5–6).",
+      "size": 327,
+      "sentences": 3
+    },
+    {
+      "id": 181,
+      "content": "ine\ntwo momentum terms, sy and sθ, which are used in the maximization variable updates (lines 5–6). k k\nA key difference from the standard setting is that we introduce an auxiliary sequence {θ˜} updated\nk\nvia one-step of accelerated projected gradient descent [37],\nζ ← θ˜ + k−2 (θ˜ −θ˜ ), θ˜ ← P (cid:16) ζ −γ ∇ℓ (cid:0) ζ (cid:1) (cid:17) ,\nk k k k−1 k+1 Θ k θ k\nk+1\nandthenevaluatedatthelearningobjectiveℓtoestimatetheobjectivevalueofthelearningproblem,\ni.e., ℓ = ℓ(θ˜ ) (see lines 9-11 in Algorithm 4).",
+      "size": 506,
+      "sentences": 2
+    },
+    {
+      "id": 182,
+      "content": "ℓtoestimatetheobjectivevalueofthelearningproblem,\ni.e., ℓ = ℓ(θ˜ ) (see lines 9-11 in Algorithm 4). k+1 k+1\nNext, to adaptively select the step-sizes using local Lipschitz constants in our method, we employ a\nbacktracking strategy. At each iteration k ≥ 0, we check whether the chosen step-sizes are consistent\nwith the local Lipschitz behavior by introducing a test function E¯ (·,·,·,·;·).",
+      "size": 391,
+      "sentences": 3
+    },
+    {
+      "id": 183,
+      "content": "zes are consistent\nwith the local Lipschitz behavior by introducing a test function E¯ (·,·,·,·;·). Note that, compared\nk\nto the test function E in the Learning-aware approach in Definition 2.2, we further need to estimate\nk\nthe local Lipschitz constants corresponding to variables w and θ. Definition 4.1.",
+      "size": 306,
+      "sentences": 3
+    },
+    {
+      "id": 184,
+      "content": "eed to estimate\nk\nthe local Lipschitz constants corresponding to variables w and θ. Definition 4.1. Given a free parameter sequence {α ,β } ⊆ R , we define\nk k k≥0 +\nE¯ (x,w,y,θ;ℓ)\nk\n≜ ⟨∇ g (x,θ)−∇ g (x ,θ),x−x ⟩+⟨∇ g (x,y)−∇ g (x ,y),x−x ⟩\nx 1 x 1 k k x 2 x 2 k k\n1 1\n+ ∥∇ g (x,y)−∇ g (x ,y)∥2 + ∥∇ g (x ,y)−∇ g (x ,y )∥2\n2α\ny 2 y 2 k Y∗\nβ\ny 2 k y 2 k k Y∗\nk+1 k+1\n1 1\n+ ∥∇ g (x,θ)−∇ g (x ,θ)∥2 + ∥∇ g (x ,θ)−∇ g (x ,θ )∥2\nα\nθ 1 θ 1 k Θ∗\nα\nθ 1 k θ 1 k k Θ∗\nk+1 k+1\n1 1\n+ ∥−w∇ℓ(θ)+w ∇ℓ(θ)∥2 + ∥−w ∇ℓ(θ)+w ∇ℓ(θ )∥2\nβ\nk Θ∗\nβ\nk k k Θ∗\nk+1 k+1\n(cid:16) 1 (cid:17)(cid:16) (cid:17) 1 1\n− −η (α +β ) D (y,y )+D (θ,θ ) − D (x,x )− D (w,w ).",
+      "size": 633,
+      "sentences": 3
+    },
+    {
+      "id": 185,
+      "content": "1 k+1\n(cid:16) 1 (cid:17)(cid:16) (cid:17) 1 1\n− −η (α +β ) D (y,y )+D (θ,θ ) − D (x,x )− D (w,w ). k k k Y k Θ k X k W k\nσ τ τ\nk k k\nLater, we demonstrate that for given α ,β ≥ 0 and η ∈ [0,1], the inequality E¯ (x,w,y,θ;ℓ) ≤ 0\nk k k k\ndetermines the selection of step-sizes {τ ,σ } such that the condition in line 14 of Algorithm 4 is\nk k\nsatisfied. Assumption 4.1. We assume that the feasible sets Θ and domf are bounded.",
+      "size": 424,
+      "sentences": 4
+    },
+    {
+      "id": 186,
+      "content": "orithm 4 is\nk k\nsatisfied. Assumption 4.1. We assume that the feasible sets Θ and domf are bounded. Recall that by introducing the ϵ-approximation (with ϵ > 0), Slater’s condition holds for the relaxed\nconstraint set {θ ∈ Θ | ℓ(θ) ≤ ℓ∗+ϵ}. In particular, for any given x ∈ X, there exists a Slater point\nθS such that the constraint violation is strictly negative. This allows us to bound the optimal dual\nvariable w∗(x) ∈ argmin max {g (x,θ)−⟨w,ℓ(θ)−ℓ∗−ϵ⟩}.",
+      "size": 457,
+      "sentences": 6
+    },
+    {
+      "id": 187,
+      "content": "tive. This allows us to bound the optimal dual\nvariable w∗(x) ∈ argmin max {g (x,θ)−⟨w,ℓ(θ)−ℓ∗−ϵ⟩}. Following [35, Lemma 1.1], by\nw≥0 θ∈Θ 1\nselecting θS ∈ Θ∗, we conclude that for any given x,\ng (x,θS)−inf g (x,θ)\n∥w∗(x)∥ ≤ 1 θ∈Θ 1 . 2\nϵ\nTaking supremum over x ∈ dom f and noting that g is a continuous function and dom f and Θ\n1\nare compact sets, we conclude that sup ∥w∗(x)∥ ≤ sup g1(x,θS)−inf θ∈Θ g1(x,θ) < +∞.",
+      "size": 413,
+      "sentences": 4
+    },
+    {
+      "id": 188,
+      "content": "d dom f and Θ\n1\nare compact sets, we conclude that sup ∥w∗(x)∥ ≤ sup g1(x,θS)−inf θ∈Θ g1(x,θ) < +∞. x∈domf 2 x∈domf ϵ\nNow, let us define\ng (x,θS)−inf g (x,θ)\nB ≜ 1+ sup 1 θ∈Θ 1 < +∞,\nϵ\nx∈domf\n22\n===  23 ===\nAlgorithm 4 Learning-aware accelerated primal-dual algorithm with backtracking for misspecified\nsaddle point problem with multiple learning solutions\n1: Input: c α ,c β ≥ 0, ρ ∈ (0,1), τ¯,γ 0 > 0, (x 0 ,w 0 ,y 0 ,θ 0 ) ∈ dom f ×W ×dom h×Θ, ℓ 0 ∈ Rm,\n(x ,w ,y ,θ ;ℓ ) ← (x ,w ,y ,θ ;ℓ ), τ ← τ¯, σ ← γ τ , θ˜ ← θ , ζ ← θ , θ˜ ← θ ,\n−1 −1 −1 −1 −1 0 0 0 0 0 0 −1 0 0 0 0 0 0 −1 0\nγ ≤ 1/L\nθ θ\n2: for k ≥ 0 do\n3: while stopping criterion not satisfied do\nσ\n4: σ k ← γ k τ k , η k ← σ k−1, α k+1 ← c α /σ k , β k+1 ← c β /σ k\n5: sy k ← (1+η k )∇ y g 2 (x k k ,y k )−η k ∇ y g 2 (x k−1 ,y k−1 )\n6: sθ k ← (1+η k )(∇ θ g 1 (x k ,θ k )−w k ∇ℓ(θ k )) − η k (∇ θ g 1 (x k−1 ,θ k−1 )−w k−1 ∇ℓ(θ k−1 ))\n7: y k+1 ← argmin y∈Y h(y)−⟨sy k ,y⟩+ σ 1 D Y (y,y k )\nk\n8: θ k+1 ← argmin θ∈Θ −⟨sθ k ,θ⟩+ σ 1 D Θ (θ,θ k )\nk\n9: ζ k ← θ˜ k + k k − + 2 1 (θ˜ k −θ˜ k−1 )\n(cid:16) (cid:17)\n10: θ˜ k+1 ← P Θ ζ k −γ θ ∇ℓ (cid:0) ζ k (cid:1)\n11: ℓ k+1 ← ℓ(θ˜ k+1 )\n(cid:110) (cid:111)\n12: x k+1 ← argmin f(x)+⟨∇ x g 1 (x k ,θ k+1 )+∇ x g 2 (x k ,y k+1 ),x⟩ + τ 1 D X (x,x k )\nx∈X k\n(cid:110) (cid:111)\n13: w k+1 ← argmin w≥0 −⟨ℓ(θ k+1 )−ℓ k+1 −ϵ,w⟩+ τ 1 D W (w,w k )\nk\n14: if E¯ k (x k+1 ,w k+1 ,y k+1 ,θ k+1 ;ℓ k+1 ) ≤ 0 then\n15: go to line 21\n16: else\n17: τ k ← ρτ k\n18: go to line 4\n19: end if\n20: end while\n(cid:113)\n21: γ k+1 ← γ k , τ k+1 ← τ k γ γ k , k ← k+1\nk+1\n22: end for\n23\n===  24 ===\nand let W ≜ [0,B], then problem (27) can be equivalently rewritten as\nmin max L(x,w,y,θ;ℓ∗).",
+      "size": 1667,
+      "sentences": 2
+    },
+    {
+      "id": 189,
+      "content": "24 ===\nand let W ≜ [0,B], then problem (27) can be equivalently rewritten as\nmin max L(x,w,y,θ;ℓ∗). (28)\nx∈X,w∈Wy∈Y,θ∈Θ\nThe boundedness of the dual multiplier w corresponding to the learning constraint helps us to derive\na Lipschitz constant L > 0 for the objective function L(x,w,y,θ;ℓ∗) with respect to the parameter\nℓ\nℓ∗. In particular, one can observe that for any (x,w,y,θ) ∈ dom f ×W ×dom h×Θ,\n|L(x,w,y,θ;ℓ )−L(x,w,y,θ;ℓ )| ≤ ∥w∥ ∥ℓ −ℓ ∥ ≤ B∥ℓ −ℓ ∥ .",
+      "size": 456,
+      "sentences": 3
+    },
+    {
+      "id": 190,
+      "content": "hat for any (x,w,y,θ) ∈ dom f ×W ×dom h×Θ,\n|L(x,w,y,θ;ℓ )−L(x,w,y,θ;ℓ )| ≤ ∥w∥ ∥ℓ −ℓ ∥ ≤ B∥ℓ −ℓ ∥ . (29)\n1 2 2 1 2 2 1 2 2\nIn fact, this implies L = B = O(1/ϵ). ℓ\nNext, we present counterparts of Assumptions 2.1, 2.2, and 2.3 in the form of Assumptions 4.2,\n4.3, and 4.4, respectively. These alternative formulations mirror the original assumptions but are\nadapted to the current setting for notational convenience. Assumption 4.2.",
+      "size": 431,
+      "sentences": 5
+    },
+    {
+      "id": 191,
+      "content": "inal assumptions but are\nadapted to the current setting for notational convenience. Assumption 4.2. Let X,Y,Θ,W be finite-dimensional normed spaces with norms ∥·∥ ,∥·∥ ,∥·\nX Y\n∥ ,∥·∥ andcorrespondingdualnorms∥·∥ ,∥·∥ ,∥·∥ ,∥·∥ . Furthermore, welet∥·∥ = ∥·∥ . Θ W X∗ Y∗ Θ∗ W∗ W 2\nAssume g : X ×Θ → R, g : X ×Y → R, and ℓ : Θ → R are continuously differentiable on open\n1 2\nsets containing domf ×Θ, domf ×domh, and Θ, respectively.",
+      "size": 429,
+      "sentences": 5
+    },
+    {
+      "id": 192,
+      "content": "e continuously differentiable on open\n1 2\nsets containing domf ×Θ, domf ×domh, and Θ, respectively. There exist nonnegative constants\nLg1, Lg1, Lg2, Lg2, Lg2, Lg2, Lg1, Lg1, Lℓ, Lℓ ≥ 0, such that the following inequalities hold for all\nxx xθ xx xy yx yy θx θθ θ w\nx,x¯ ∈ domf ⊆ X, y,y¯∈ domh ⊆ Y, θ,θ¯∈ Θ, and w,w¯ ∈ W:\n(i) (cid:13) (cid:13)∇ x g 1 (x,θ)−∇ x g 1 (x¯,θ¯) (cid:13) (cid:13) X∗ ≤ Lg x 1 x ∥x−x¯∥ X +Lg x 1 θ ∥θ−θ¯∥ Θ ,\n(ii) (cid:13) (cid:13)∇ x g 2 (x,y)−∇ x g 2 (x¯,y¯) (cid:13) (cid:13) X∗ ≤ Lg x 2 x ∥x−x¯∥ X +Lg x 2 y ∥y−y¯∥ Y ,\n(iii) (cid:13) (cid:13)∇ y g 2 (x,y)−∇ y g 2 (x¯,y¯) (cid:13) (cid:13) Y∗ ≤ Lg y 2 x ∥x−x¯∥ X +Lg y 2 y ∥y−y¯∥ Y ,\n(iv) (cid:13) (cid:13)∇ θ g 1 (x,θ)−∇ θ g 1 (x¯,θ¯) (cid:13) (cid:13) Θ∗ ≤ Lg θ 1 x ∥x−x¯∥ X +Lg θ 1 θ ∥θ−θ¯∥ Θ ,\n(v) (cid:13) (cid:13)−w∇ℓ(θ)+w¯∇ℓ(θ¯) (cid:13) (cid:13) Θ∗ ≤ Lℓ θ ∥θ−θ¯∥ Θ +Lℓ w ∥w−w¯∥ W .",
+      "size": 867,
+      "sentences": 2
+    },
+    {
+      "id": 193,
+      "content": "θ¯∥ Θ ,\n(v) (cid:13) (cid:13)−w∇ℓ(θ)+w¯∇ℓ(θ¯) (cid:13) (cid:13) Θ∗ ≤ Lℓ θ ∥θ−θ¯∥ Θ +Lℓ w ∥w−w¯∥ W . Before presenting the step-size assumptions, we clarify that these conditions are required to establish\nthe convergence guarantees of the proposed algorithm. Assumption 4.3 (step-size condition I).",
+      "size": 297,
+      "sentences": 3
+    },
+    {
+      "id": 194,
+      "content": "blish\nthe convergence guarantees of the proposed algorithm. Assumption 4.3 (step-size condition I). There exists a sequence {τ ,σ ,η } such that the\nk k k k≥0\niterates {(x ,w ,y ,θ )} , generated by Algorithm 4, along with the step-size sequence, satisfy\nk k k k k≥0\nthe following conditions for all k ≥ 0:\n(i) E¯ (x ,w ,y ,θ ;ℓ ) ≤ 0,\nk k+1 k+1 k+1 k+1 k+1\n(ii) t k ≥ t k+1, t k ≥ t k+1, t k = η\nτ τ σ σ t k+1\nk k+1 k k+1 k+1\nfor some positive sequences {t ,α } with t = 1, and a nonnegative sequence {β } , where E¯\nk k k≥0 0 k k≥0 k\nis defined in Definition 4.1 using the parameters {α ,β ,η } as specified above.",
+      "size": 616,
+      "sentences": 3
+    },
+    {
+      "id": 195,
+      "content": "k k k≥0 0 k k≥0 k\nis defined in Definition 4.1 using the parameters {α ,β ,η } as specified above. k k k\nAssumption 4.4 (step-size condition II).",
+      "size": 145,
+      "sentences": 2
+    },
+    {
+      "id": 196,
+      "content": "using the parameters {α ,β ,η } as specified above. k k k\nAssumption 4.4 (step-size condition II). For any k ≥ 0, the step-sizes τ and σ , along with the\nk k\nmomentum parameter η , satisfy η = 1 as well as condition in Assumption 4.3-(i), and\nk 0\n(i) 1 ≥ max (cid:110) (Lg y 2 x)2+2(Lg θ 1 x )2 +Lg1 +Lg2, 2(Lℓ w )2 (cid:111) ,\nτ α xx xx β\nk k+1 k+1\n24\n===  25 ===\n(ii) 1 ≥ max (cid:110) η (α +β )+ (Lg y 2 y)2 ,η (α +β )+ 2(Lg θ 1 θ )2 + 2(Lℓ θ )2(cid:111) ,\nσ k k k β k k k α β\nk k+1 k+1 k+1\nfor some positive sequences {t ,α } with t = 1, and a nonnegative sequence {β } .",
+      "size": 575,
+      "sentences": 3
+    },
+    {
+      "id": 197,
+      "content": "α β\nk k+1 k+1 k+1\nfor some positive sequences {t ,α } with t = 1, and a nonnegative sequence {β } . k k k≥0 0 k k≥0\nNext, we derive a key property of the parameter sequences {τ ,σ ,η } generated by Algorithm 4,\nk k k\nwhich play a central role in establishing the convergence rate stated in Theorem 4.2. Lemma 4.1. Suppose the sequence {τ ,σ ,η } satisfies the step-size conditions in Assumption\nk k k k≥0\n4.4 for some positive sequences {t ,α } , and nonnegative sequence {β } .",
+      "size": 478,
+      "sentences": 4
+    },
+    {
+      "id": 198,
+      "content": "s in Assumption\nk k k k≥0\n4.4 for some positive sequences {t ,α } , and nonnegative sequence {β } . Let {x ,w ,y ,θ }\nk k k≥0 k k≥0 k k k k\nbe the iterate sequence of Algorithm 4 corresponding to {τ ,σ ,η }. Then {x ,w ,y ,θ } and\nk k k k k k k\n{τ ,σ ,η } satisfy the condition in Assumption 4.3-(i) with the same sequences {t ,α ,β }. k k k k k k\nProof.",
+      "size": 354,
+      "sentences": 4
+    },
+    {
+      "id": 199,
+      "content": "satisfy the condition in Assumption 4.3-(i) with the same sequences {t ,α ,β }. k k k k k k\nProof. Using Assumption 4.2, and Definition 2.1, for any k ≥ 0, and (x,w,y,θ) ∈ dom f ×W ×\ndom h×Θ, we obtain\nLg1\n⟨∇ g (x,θ)−∇ g (x ,θ),x−x ⟩ ≤ xx ∥x−x ∥2 ≤ Lg1D (x,x ),\nx 1 x 1 k k 2 k X xx X k\nLg2\n⟨∇ g (x,y)−∇ g (x ,y),x−x ⟩ ≤ xx ∥x−x ∥2 ≤ Lg2D (x,x ),\nx 2 x 2 k k 2 k X xx X k\n1 (Lg2)2\n∥∇ g (x,y)−∇ g (x ,y)∥2 ≤ yx ∥x−x ∥2 ≤ (Lg2)2D (x,x ),\n2 y 2 y 2 k Y∗ 2 k X yx X k\n1 (Lg2)2\n∥∇ g (x ,y)−∇ g (x ,y )∥2 ≤ yy ∥y−y ∥2 ≤ (Lg2)2D (y,y ),\n2 y 2 k y 2 k k Y∗ 2 k Y yy Y k\n∥∇ g (x,θ)−∇ g (x ,θ)∥2 ≤ (Lg1)2∥x−x ∥2 ≤ 2(Lg1)2D (x,x ),\nθ 1 θ 1 k Θ∗ θx k X θx X k\n∥∇ g (x ,θ)−∇ g (x ,θ )∥2 ≤ (Lg1)2∥θ−θ ∥2 ≤ 2(Lg1)2D (θ,θ ),\nθ 1 k θ 1 k k Θ∗ θθ k Θ θθ Θ k\n∥−w∇ℓ(θ)+w ∇ℓ(θ)∥2 ≤ (Lℓ )2∥w−w ∥2 ≤ 2(Lℓ )2D (w,w ),\nk Θ∗ w k W w W k\n∥−w ∇ℓ(θ)+w ∇ℓ(θ )∥2 ≤ (Lℓ)2∥θ−θ ∥2 ≤ 2(Lℓ)2D (θ,θ ).",
+      "size": 864,
+      "sentences": 3
+    },
+    {
+      "id": 200,
+      "content": ")2∥w−w ∥2 ≤ 2(Lℓ )2D (w,w ),\nk Θ∗ w k W w W k\n∥−w ∇ℓ(θ)+w ∇ℓ(θ )∥2 ≤ (Lℓ)2∥θ−θ ∥2 ≤ 2(Lℓ)2D (θ,θ ). k k k Θ∗ θ k Θ θ Θ k\nBy evaluating the above inequality at (x,w,y,θ;ℓ) = (x ,w ,y ,θ ;ℓ ), and using\nk+1 k+1 k+1 k+1 k+1\nAssumption 4.4 along with the nonnegativity of Bregman functions, we can show\nE¯ ≜ E¯ (x ,w ,y ,θ ;ℓ )\nk k k+1 k+1 k+1 k+1 k+1\n≤ (cid:0) Lg1 +Lg2 + Lg y 2 x + 2(Lg θ 1 x )2 − 1 (cid:1) D (x ,x )\nxx xx α α τ X k+1 k\nk+1 k+1 k\n(cid:0)(Lg y 2 y )2 1 (cid:1)\n+ +η (α +β )− D (y ,y )\nk k k Y k+1 k\nβ σ\nk+1 k\n+ (cid:0) 2(Lg θ 1 θ )2 + 2(Lℓ θ )2 +η (α +β )− 1 (cid:1) D (θ ,θ )\nk k k Θ k+1 k\nα β σ\nk+1 k+1 k\n+ (cid:0)2(Lℓ w )2 − 1 (cid:1) D (w ,w ).",
+      "size": 663,
+      "sentences": 2
+    },
+    {
+      "id": 201,
+      "content": "α +β )− 1 (cid:1) D (θ ,θ )\nk k k Θ k+1 k\nα β σ\nk+1 k+1 k\n+ (cid:0)2(Lℓ w )2 − 1 (cid:1) D (w ,w ). W k+1 k\nβ τ\nk+1 k\nWe now present the iteration complexity analysis of the proposed Learning-aware approach in the\nsetting with multiple learning solutions in the following theorem and the corollary afterwards. 25\n===  26 ===\nDefinition 4.2. Let S¯ ≜ domf ×W ×domh×Θ and s ≜ [x⊤,w⊤,y⊤,θ⊤]⊤. The gap function is\ndefined as\nG (s) ≜ sup{L(x,w,y,θ;ℓ∗)−L(x,w,y,θ;ℓ∗)}.",
+      "size": 462,
+      "sentences": 5
+    },
+    {
+      "id": 202,
+      "content": "×Θ and s ≜ [x⊤,w⊤,y⊤,θ⊤]⊤. The gap function is\ndefined as\nG (s) ≜ sup{L(x,w,y,θ;ℓ∗)−L(x,w,y,θ;ℓ∗)}. S¯\ns∈S¯\nNow we are ready to present the main result of this section. Theorem4.2. SupposeAssumptions4.1and4.2holdandlets ≜ [x⊤,w⊤,y⊤,θ⊤]⊤. Let{x ,w ,y ,θ ,ℓ }\nk k k k k k≥0\nbe the sequence generated by Algorithm 4, using a parameter sequence {τ ,σ ,η } that satisfies\nk k k k≥0\nAssumptions 4.3 or 4.4.",
+      "size": 400,
+      "sentences": 6
+    },
+    {
+      "id": 203,
+      "content": "Algorithm 4, using a parameter sequence {τ ,σ ,η } that satisfies\nk k k k≥0\nAssumptions 4.3 or 4.4. Then, for any K ≥ 1,\n1 (cid:16) 1 1 1 1 (cid:17)\nG (s ) ≤ sup D (x,x )+ D (w,w )+ D (y,y )+ D (θ,θ )\nS¯ K\nT τ\nX 0\nτ\nW 0\nσ\nY 0\nσ\nΘ 0\nK s∈S¯ 0 0 0 0\nK−1\n+ 2L ℓ (cid:88) t ∥ℓ −ℓ∗∥ , (30)\nk k+1 2\nT\nK\nk=0\nwhere s¯ ≜ [x¯⊤,w¯⊤,y¯⊤,θ¯⊤]⊤ denotes the weighted average of the iterates {s }K−1, i.e., s¯ ≜\nK K K K K k k=0 K\n1 (cid:80)K−1t s , and T = (cid:80)K−1t . TK k=0 k k+1 K k=0 k\nProof.",
+      "size": 482,
+      "sentences": 3
+    },
+    {
+      "id": 204,
+      "content": "i.e., s¯ ≜\nK K K K K k k=0 K\n1 (cid:80)K−1t s , and T = (cid:80)K−1t . TK k=0 k k+1 K k=0 k\nProof. The proof of Theorem 4.2 follows similar steps to the convergence analysis in the proof of\nTheorem 3.6 for the Learning-aware APD approach, with some modifications. For completeness, we\nprovide the full proof of Theorem 4.2 in Appendix C.\n√\nCorollary 4.3.",
+      "size": 354,
+      "sentences": 4
+    },
+    {
+      "id": 205,
+      "content": "cations. For completeness, we\nprovide the full proof of Theorem 4.2 in Appendix C.\n√\nCorollary 4.3. Under the premises of Theorem 4.2, for any K ≥ 1, let ϵ = 1/ K, it holds that:\n√\n1 (cid:18) 1 1 1 1 (cid:19) c c π2 K\n0 1\nG (s ) ≤ R + R + R + R + , (31)\nS¯ K\nT τ\nx\nτ\nw\nσ\ny\nσ\nθ\n3T\nK 0 0 0 0 K\n√\n1 (cid:18) 1 1 1 1 (cid:19) c c π2 K 1\nℓ(θ¯ )−ℓ∗ ≤ R + R + R + R + 0 1 + √ , (32)\nK x w y θ\nT K τ 0 τ 0 σ 0 σ 0 3T K K\nwhere T = (cid:80)K−1t = Ω(K), , R ≜ sup D (x,x¯) < ∞, R ≜ sup D (w,w¯) < ∞,\nK k=0 k x x,x¯∈X¯ X w w,w¯∈W¯ W\nR ≜ sup D (y,y¯) < ∞, and R ≜ sup D (θ,θ¯) < ∞.",
+      "size": 569,
+      "sentences": 3
+    },
+    {
+      "id": 206,
+      "content": "≜ sup D (w,w¯) < ∞,\nK k=0 k x x,x¯∈X¯ X w w,w¯∈W¯ W\nR ≜ sup D (y,y¯) < ∞, and R ≜ sup D (θ,θ¯) < ∞. y y,y¯∈Y¯ Y θ θ,θ¯∈Θ¯ Θ\nProof. From Theorem 4.2, we have that\n1 (cid:16) 1 1 1 1 (cid:17)\nG (s ) ≤ sup D (x,x )+ D (w,w )+ D (y,y )+ D (θ,θ )\nS¯ K\nT τ\nX 0\nτ\nW 0\nσ\nY 0\nσ\nΘ 0\nK s∈S¯ 0 0 0 0\nK−1\n+ 2L ℓ (cid:88) t ∥ℓ −ℓ∗∥ , (33)\nk k+1 2\nT\nK\nk=0\nUnder the accelerated projected gradient descent update, we have that ∥ℓ −ℓ∗∥ ≤ c1 for\n√ k+1 2 (k+1)2\nsome constant c > 0, and L = c /ϵ = c K for some c > 0.",
+      "size": 498,
+      "sentences": 3
+    },
+    {
+      "id": 207,
+      "content": "e have that ∥ℓ −ℓ∗∥ ≤ c1 for\n√ k+1 2 (k+1)2\nsome constant c > 0, and L = c /ϵ = c K for some c > 0. Hence\n1 ℓ 0 0 0\n2L ℓ K (cid:88) −1 t ∥ℓ −ℓ∗∥ ≤ 2c 0 c 1 (cid:88) K 1 ≤ 2c 0 c 1 · π2 = c 0 c 1 π2 . T k k+1 2 T ϵ k2 T ϵ 6 3T ϵ\nK K K K\nk=0 k=1\n26\n===  27 ===\nCombining the above bound with (33), we obtain\n1 (cid:18) 1 1 1 1 (cid:19) c c π2\n0 1\nG (s ) ≤ R + R + R + R + . (34)\nS¯ K\nT τ\nx\nτ\nw\nσ\ny\nσ\nθ\n3T ϵ\nK 0 0 0 0 K\n√\nTherefore, selecting ϵ = 1/ K, we obtain the desired result in (31).",
+      "size": 487,
+      "sentences": 4
+    },
+    {
+      "id": 208,
+      "content": "τ\nw\nσ\ny\nσ\nθ\n3T ϵ\nK 0 0 0 0 K\n√\nTherefore, selecting ϵ = 1/ K, we obtain the desired result in (31). Moreover, using the earlier result in (34), and Definition 4.2, for any [x,w,y,θ] ∈ S¯, we have:\nL(x¯ ,w¯ ,y,θ;ℓ∗)−L(x,w,y¯ ,θ¯ ;ℓ∗)\nK K K K\n1 (cid:18) 1 1 1 1 (cid:19) c c π2\n0 1\n≤ R + R + R + R + .",
+      "size": 299,
+      "sentences": 2
+    },
+    {
+      "id": 209,
+      "content": "¯ ,w¯ ,y,θ;ℓ∗)−L(x,w,y¯ ,θ¯ ;ℓ∗)\nK K K K\n1 (cid:18) 1 1 1 1 (cid:19) c c π2\n0 1\n≤ R + R + R + R + . x w y θ\nT τ τ σ σ 3T ϵ\nK 0 0 0 0 K\nNow, for any solution tuple (x∗,w∗,y∗,θ∗) of (27), by letting s = [x∗,w∗+1,y∗,θ∗] ∈ S¯, one can\nobserve that\nL(x¯ ,w¯ ,y∗,θ∗;ℓ∗)−L(x∗,w∗+1,y¯ ,θ¯ ;ℓ∗)\nK K K K\n= L(x¯ ,w¯ ,y∗,θ∗;ℓ∗)−L(x∗,w∗,y¯ ,θ¯ ;ℓ∗)+(ℓ(θ¯ )−ℓ∗−ϵ)\nK K K K K\n≥ ℓ(θ¯ )−ℓ∗−ϵ,\nK\nwhere in the last inequality we used the fact that (x∗,w∗,y∗,θ∗) is an SP solution of (27).",
+      "size": 468,
+      "sentences": 2
+    },
+    {
+      "id": 210,
+      "content": "ℓ∗−ϵ,\nK\nwhere in the last inequality we used the fact that (x∗,w∗,y∗,θ∗) is an SP solution of (27). Therefore,\nwe obtain\n1 (cid:18) 1 1 1 1 (cid:19) c c π2\nℓ(θ¯ )−ℓ∗ ≤ R + R + R + R + 0 1 +ϵ. K x w y θ\nT τ τ σ σ 3T ϵ\nK 0 0 0 0 K\n√\nFinally, selecting ϵ = 1/ K to minimize the right-hand-side with respect to ϵ, we obtain the desired\nresult in (32). Remark 4.1.",
+      "size": 359,
+      "sentences": 4
+    },
+    {
+      "id": 211,
+      "content": "o minimize the right-hand-side with respect to ϵ, we obtain the desired\nresult in (32). Remark 4.1. The primal–dual method proposed in Algorithm 4 is designed for misspecified saddle\npoint problems with multiple learning solutions in (24), which incorporates an adaptive step-size\n√\nrule. Corollary 4.3 establishes a convergence rate of O(1/ K) for finding an SP solution of (27),\nalong with guarantees on the suboptimality of the associated learning problem.",
+      "size": 459,
+      "sentences": 4
+    },
+    {
+      "id": 212,
+      "content": "SP solution of (27),\nalong with guarantees on the suboptimality of the associated learning problem. To the best of our\nknowledge, this is the first non-asymptotic convergence result for this class of problems. 5 Numerical Experiment\nIn this section, we present a set of numerical experiments to assess the effectiveness of our proposed\nalgorithms in solving a misspecified SP problem.",
+      "size": 384,
+      "sentences": 3
+    },
+    {
+      "id": 213,
+      "content": "iments to assess the effectiveness of our proposed\nalgorithms in solving a misspecified SP problem. We benchmark their performance against two\nexisting methods: the inexact parametric augmented Lagrangian method (IPALM) [4] and a\nvariationalinequality(VI)[26]basedmethod. Inparticular,weapplyourmethodstothemisspecified\nportfolio optimization problem described in Section 1.4. Consider the Markowitz portfolio optimization problem discussed in [4].",
+      "size": 448,
+      "sentences": 4
+    },
+    {
+      "id": 214,
+      "content": "m described in Section 1.4. Consider the Markowitz portfolio optimization problem discussed in [4]. We formulate it as a\nmisspecified SP problem, as described in Section 1.4:\n(cid:26) (cid:27)\n1\n(Optimization) : minmax x⊤Σ∗x−κµ⊤x+y⊤(Ax−b) ,\nx∈X y≥0 2\n(35)\n(cid:26) (cid:27)\n1 (cid:16) (cid:17)\n(Learning) : Σ∗ ∈ argmin max ∥Σ−S∥2 +v∥Σ∥ −Tr W⊤(Σ−ϵI) . Σ∈Sn W∈Sn\n+\n2 F 1\n27\n===  28 ===\nHere, x ∈ Rn denotestheportfoliovector, wherex representstheproportionofassetimaintainedin\ni\nthe portfolio.",
+      "size": 491,
+      "sentences": 4
+    },
+    {
+      "id": 215,
+      "content": "∈ Rn denotestheportfoliovector, wherex representstheproportionofassetimaintainedin\ni\nthe portfolio. The set X ≜ {x ∈ Rn : (cid:80)n x = 1, x ≥ 0} enforces a fully-invested, no-short-selling\ni=1 i\nportfolio. The parameter κ > 0 governs the trade-off between risk and expected return, where\nµ ∈ Rn denotes the expected return vector.",
+      "size": 331,
+      "sentences": 3
+    },
+    {
+      "id": 216,
+      "content": "ns the trade-off between risk and expected return, where\nµ ∈ Rn denotes the expected return vector. The matrix A ∈ Rs×n and vector b ∈ Rs define the\nsector constraints, with A = 1 if asset i belongs to sector j, and b representing the maximum\nji j\nallowed investment in sector j. The dual variable y ∈ Rs corresponds to these sector constraints. +\nThe matrix Σ∗ ∈ Sn represents the estimated covariance of asset returns.",
+      "size": 420,
+      "sentences": 4
+    },
+    {
+      "id": 217,
+      "content": "hese sector constraints. +\nThe matrix Σ∗ ∈ Sn represents the estimated covariance of asset returns. It is learned from the\nsample covariance matrix S ∈ Rn×n using a sparse covariance selection problem. The term ∥Σ∥\n1\ndenotes the ℓ norm of the off-diagonal elements of Σ, ∥·∥ is the Frobenius norm, and v > 0 is a\n1 F\nregularization parameter promoting sparsity. The constraint Σ ⪰ ϵI ensures positive definiteness,\nenforced via a symmetric Lagrange multiplier matrix W ∈ Sn.",
+      "size": 474,
+      "sentences": 5
+    },
+    {
+      "id": 218,
+      "content": "t Σ ⪰ ϵI ensures positive definiteness,\nenforced via a symmetric Lagrange multiplier matrix W ∈ Sn. +\nWeconductexperimentsonbothrealandsyntheticdatasets. Fortherealdata, weusetheNASDAQ-\n100 (n = 82, T = 596) and Dow Jones (n = 28, T = 1363) datasets from [12], where n denotes\nthe number of assets and T the number of weekly return observations. The datasets have been\npreprocessed to remove errors and are adjusted for dividends and stock splits.",
+      "size": 447,
+      "sentences": 4
+    },
+    {
+      "id": 219,
+      "content": "e datasets have been\npreprocessed to remove errors and are adjusted for dividends and stock splits. Using these datasets,\nwe compute the true mean return vector µ0 (the row-wise mean of the return matrix) and the true\ncovariance matrix Σ0 (the column-wise covariance of the returns). For the synthetic dataset, we consider n = 800 assets whose joint returns R = {R }n follow a\ni i=1\nmultivariate Normal distribution N(µ0,Σ0).",
+      "size": 425,
+      "sentences": 3
+    },
+    {
+      "id": 220,
+      "content": "800 assets whose joint returns R = {R }n follow a\ni i=1\nmultivariate Normal distribution N(µ0,Σ0). The true mean vector µ0 is drawn uniformly from the\nhypercube [−1,1]n ⊂ Rn, while the true covariance matrix Σ0 = [σ ], where σ = max{1− |i−j| ,0}. ij ij 10\nWe then generate p = n/2 i.i.d. samples from N(µ0,Σ0), and compute the empirical covariance\nmatrix S from these samples.",
+      "size": 376,
+      "sentences": 4
+    },
+    {
+      "id": 221,
+      "content": "n/2 i.i.d. samples from N(µ0,Σ0), and compute the empirical covariance\nmatrix S from these samples. The (Learning) problem is solved to estimate the parameter matrix\nΣ∗ using the structured covariance selection (SCS) formulation, with parameters set to v = 0.4 and\nκ = 0.1. To evaluate algorithmic performance, we compare infeasibility and suboptimality measures over\nthe course of iterations.",
+      "size": 393,
+      "sentences": 4
+    },
+    {
+      "id": 222,
+      "content": "mic performance, we compare infeasibility and suboptimality measures over\nthe course of iterations. Additionally, we track and plot the standardized norm of the difference\nbetween successive iterates for the parameter estimate. All methods are run for a maximum of\nK = 103 iterations, with the number of market sectors set to s = 10. Step-sizes for each method\nare chosen according to their respective theoretical convergence requirements and are fine-tuned to\nensure practical efficiency.",
+      "size": 489,
+      "sentences": 4
+    },
+    {
+      "id": 223,
+      "content": "respective theoretical convergence requirements and are fine-tuned to\nensure practical efficiency. The performance of the algorithms on both real and synthetic datasets is illustrated in Figure 1. Our\nproposed algorithms, Naive and Learning-aware APD, demonstrate significantly faster convergence\nin the infeasibility and suboptimality measures compared to the IPALM and VI methods.",
+      "size": 382,
+      "sentences": 3
+    },
+    {
+      "id": 224,
+      "content": "r convergence\nin the infeasibility and suboptimality measures compared to the IPALM and VI methods. In\nparticular, the Learning-aware method, which incorporates a backtracking line search strategy,\nachieves the most rapid convergence among all approaches, outperforming the Naive method in\nboth infeasibility and suboptimality measures.",
+      "size": 336,
+      "sentences": 2
+    },
+    {
+      "id": 225,
+      "content": "ng all approaches, outperforming the Naive method in\nboth infeasibility and suboptimality measures. It is also important to note that the parameter updates for the (Learning) problem (i.e., the\ncovariance matrix Σ) are carried out using the same learning algorithm (Algorithm 2) in both\nproposedmethods. Asaresult,theconvergencetrajectoriesforΣareidentical,leadingtooverlapping\ncurves in the last columns of Figure 1.",
+      "size": 417,
+      "sentences": 3
+    },
+    {
+      "id": 226,
+      "content": "onvergencetrajectoriesforΣareidentical,leadingtooverlapping\ncurves in the last columns of Figure 1. 28\n===  29 ===\nNASDAQ-100 (real data)\nDow Jones (real data)\nSynthetic data\n(a) (b) (c)\nFigure 1: Comparison of our proposed Naive (blue) and Learning-aware (red) with IPALM (yellow)\nand VI (purple) across three datasets and three metrics over iteration k. From top to bottom:\nNASDAQ-100, Dow Jones, and Synthetic datasets.",
+      "size": 422,
+      "sentences": 2
+    },
+    {
+      "id": 227,
+      "content": "three metrics over iteration k. From top to bottom:\nNASDAQ-100, Dow Jones, and Synthetic datasets. From left to right, the figures correspond to\nsuboptimality, infeasibility, and learning solution metrics. 6 Conclusion\nIn this paper, we studied a class of misspecified saddle point (SP) problems, where the optimization\nobjective depends on an unknown parameter that must be simultaneously learned from data.",
+      "size": 408,
+      "sentences": 3
+    },
+    {
+      "id": 228,
+      "content": "timization\nobjective depends on an unknown parameter that must be simultaneously learned from data. Unlike\nprior works that assume fully known or pre-estimated parameters, our framework couples the\noptimization and learning processes within a unified saddle point formulation. We proposed two accelerated primal-dual (APD) algorithms for solving this problem. The first\nmethod, Naive APD, directly substitutes the current parameter estimate into the primal-dual\nupdates.",
+      "size": 470,
+      "sentences": 4
+    },
+    {
+      "id": 229,
+      "content": "ethod, Naive APD, directly substitutes the current parameter estimate into the primal-dual\nupdates. While it achieves a convergence rate of O(logK/K), its dependence on large Lipschitz and\ndiameter constants may reduce practical performance.",
+      "size": 241,
+      "sentences": 2
+    },
+    {
+      "id": 230,
+      "content": "logK/K), its dependence on large Lipschitz and\ndiameter constants may reduce practical performance. To address this limitation, we introduced\nthe Learning-aware APD algorithm, which explicitly incorporates the dynamics of the evolving\n29\n===  30 ===\nparameter into the acceleration step and employs an adaptive backtracking line search for step-size\nselection. This design preserves the same O(logK/K) rate but with a smaller O(1) constant.",
+      "size": 440,
+      "sentences": 3
+    },
+    {
+      "id": 231,
+      "content": "tep-size\nselection. This design preserves the same O(logK/K) rate but with a smaller O(1) constant. Furthermore, we extended our framework to the setting where the learning subproblem admits\nmultiple optimal solutions. By considering a structured min-max and adopting a pessimistic\nformulation, we reformulated the problem as a misspecified saddle point model and developed a\nmodified version of the Learning-aware APD algorithm to address it.",
+      "size": 443,
+      "sentences": 4
+    },
+    {
+      "id": 232,
+      "content": "dle point model and developed a\nmodified version of the Learning-aware APD algorithm to address it. This extension achieves a\n√\nconvergence rate of O(1/ K), highlighting the robustnessand flexibilityof our approachin handling\nmore complex learning-optimization interactions.",
+      "size": 274,
+      "sentences": 2
+    },
+    {
+      "id": 233,
+      "content": "obustnessand flexibilityof our approachin handling\nmore complex learning-optimization interactions. Overall, our contributions provide new algorithmic frameworks and theoretical guarantees for jointly\nsolving optimization and learning problems under parameter misspecification, representing a novel\ndirection in the study of saddle point methods. A Supporting Lemmas\nIn Lemma A.1, we restate Lemma 7.1 in [21] along with its proof for the sake of completeness. Lemma A.1.",
+      "size": 471,
+      "sentences": 4
+    },
+    {
+      "id": 234,
+      "content": "mma A.1, we restate Lemma 7.1 in [21] along with its proof for the sake of completeness. Lemma A.1. Let X be a finite-dimensional normed space equipped with norm ∥·∥ . Consider a\nX\nclosed convex function f : X → R∪{+∞} that is µ-strongly convex with respect to ∥·∥ , for some\nX\nµ ≥ 0. Let D : X ×X → R denote the Bregman distance associated with a strictly convex and\n+\ndifferentiable function ϕ : X → R, where ϕ is differentiable on an open domain containing domf.",
+      "size": 465,
+      "sentences": 5
+    },
+    {
+      "id": 235,
+      "content": "d\n+\ndifferentiable function ϕ : X → R, where ϕ is differentiable on an open domain containing domf. For any x ∈ domf and t > 0, define\nx+ = argmin{f(x)+tD(x,x)}. (36)\nx∈X\nThen, for any x ∈ X, the following inequality holds:\nµ\nf(x)+tD(x,x) ≥ f(x+)+tD(x+,x)+tD(x,x+)+ ∥x−x+∥2 . (37)\n2 X\nProof. See Lemma 7.1 in [21]. B Proof of Theorem 3.1\nProof. In this scenario, the parameter θ is updated after the variables x,y are updated.",
+      "size": 426,
+      "sentences": 7
+    },
+    {
+      "id": 236,
+      "content": "heorem 3.1\nProof. In this scenario, the parameter θ is updated after the variables x,y are updated. Hence, we\ncan define:\nq ≜ ∇ Φ(x ,y ;θ )−∇ Φ(x ,y ;θ ),\nk y k k k y k−1 k−1 k\ns ≜ ∇ Φ(x ,y ;θ )+η q .",
+      "size": 200,
+      "sentences": 3
+    },
+    {
+      "id": 237,
+      "content": "ence, we\ncan define:\nq ≜ ∇ Φ(x ,y ;θ )−∇ Φ(x ,y ;θ ),\nk y k k k y k−1 k−1 k\ns ≜ ∇ Φ(x ,y ;θ )+η q . k y k k k k k\nIn case of having the optimal parameter θ∗, we can obtain the following bounds:\n∥q ∥ ≤ ∥∇ Φ(x ,y ;θ )−∇ Φ(x ,y ;θ∗)∥ +∥∇ Φ(x ,y ;θ∗)\nk Y∗ y k k k y k k Y∗ y k k\n−∇ Φ(x ,y ;θ∗)∥ +∥∇ Φ(x ,y ;θ∗)−∇ Φ(x ,y ;θ )∥\ny k−1 k−1 Y∗ y k−1 k−1 y k−1 k−1 k Y∗\n≤ ∥∇ Φ(x ,y ;θ∗)−∇ Φ(x ,y ;θ∗)∥ +2LΦ ∥θ −θ∗∥ ,\ny k k y k−1 k−1 Y∗ yθ k Θ\n(cid:124) (cid:123)(cid:122) (cid:125)\n≜q∗\nk\n30\n===  31 ===\nwhere the last inequality is obtained using the triangle inequality and Assumption 2.1.",
+      "size": 580,
+      "sentences": 2
+    },
+    {
+      "id": 238,
+      "content": "===  31 ===\nwhere the last inequality is obtained using the triangle inequality and Assumption 2.1. Based on the θ updating step in the Naive Approach in Algorithm 1, and Lemma A.1 for the y-\nand x-subproblems in Algorithm 1, we obtain the following two inequalities that hold for any y ∈ Y\nand x ∈ X:\nh(y )−⟨s ,y −y⟩\nk+1 k k+1\n1 (cid:104) (cid:105)\n≤ h(y)+ D (y,y )−D (y,y )−D (y ,y ) , (38)\nY k Y k+1 Y k+1 k\nσ\nk\nf(x )+⟨∇ Φ(x ,y ;θ ),x −x⟩\nk+1 x k k+1 k k+1\n1 (cid:104) (cid:105)\n≤ f(x)+ D (x,x )−D (x,x )−D (x ,x ) .",
+      "size": 519,
+      "sentences": 2
+    },
+    {
+      "id": 239,
+      "content": "+⟨∇ Φ(x ,y ;θ ),x −x⟩\nk+1 x k k+1 k k+1\n1 (cid:104) (cid:105)\n≤ f(x)+ D (x,x )−D (x,x )−D (x ,x ) . (39)\nX k X k+1 X k+1 k\nτ\nk\n(cid:104) (cid:105) (cid:104)\nFor all k ≥ 0, let A ≜ 1 D (y,y )−D (y,y )−D (y ,y ) and B ≜ 1 D (x,x )−\nk+1 σ Y k Y k+1 Y k+1 k k+1 τ X k\nk k\n(cid:105)\nD (x,x )−D (x ,x ) . In order to see the effect of replacing θ∗ with θ in (38), we need to\nX k+1 X k+1 k k\nfind a bound for ⟨s ,y −y⟩.",
+      "size": 412,
+      "sentences": 3
+    },
+    {
+      "id": 240,
+      "content": "e the effect of replacing θ∗ with θ in (38), we need to\nX k+1 X k+1 k k\nfind a bound for ⟨s ,y −y⟩. Suppose s∗ ≜ ∇ Φ(x ,y ;θ∗)+η q∗, then\nk k+1 k y k k k k\n⟨s ,y −y⟩ = ⟨s +s∗ −s∗,y −y⟩\nk k+1 k k k k+1\n= ⟨s∗,y −y⟩+⟨s −s∗,y −y⟩.",
+      "size": 226,
+      "sentences": 2
+    },
+    {
+      "id": 241,
+      "content": "η q∗, then\nk k+1 k y k k k k\n⟨s ,y −y⟩ = ⟨s +s∗ −s∗,y −y⟩\nk k+1 k k k k+1\n= ⟨s∗,y −y⟩+⟨s −s∗,y −y⟩. k k+1 k k k+1\nUsing Cauchy-Schwarz inequality and Assumption 2.1, we can obtain\n⟨s ,y −y⟩\nk k+1\n≤ ⟨s∗,y −y⟩+∥s −s∗∥ ∥y −y∥\nk k+1 k k Y∗ k+1 Y\n≤ ⟨s∗,y −y⟩+∥∇ Φ(x ,y ;θ )+η q −∇ Φ(x ,y ;θ∗)−η q∗∥ ∥y −y∥\nk k+1 y k k k k k y k k k k Y∗ k+1 Y\n≤ ⟨s∗,y −y⟩+∥∇ Φ(x ,y ;θ )−∇ Φ(x ,y ;θ∗)\nk k+1 y k k k y k k\n(cid:16)\n+η ∇ Φ(x ,y ;θ )−∇ Φ(x ,y ;θ∗)+∇ Φ(x ,y ;θ∗)\nk y k k k y k k y k−1 k−1\n(cid:17)\n−∇ Φ(x ,y ;θ ) ∥ ∥y −y∥\ny k−1 k−1 k Y∗ k+1 Y\n(cid:16)\n≤ ⟨s∗,y −y⟩+ ∥∇ Φ(x ,y ;θ )−∇ Φ(x ,y ;θ∗)∥ +η ∥∇ Φ(x ,y ;θ )\nk k+1 y k k k y k k Y∗ k y k k k\n−∇ Φ(x ,y ;θ∗)∥ +η ∥∇ Φ(x ,y ;θ∗)\ny k k Y∗ k y k−1 k−1\n(cid:17)\n−∇ Φ(x ,y ;θ )∥ ∥y −y∥\ny k−1 k−1 k Y∗ k+1 Y\n(cid:16) (cid:17)\n≤ LΦ ∥θ −θ∗∥ +η LΦ ∥θ −θ∗∥ +η LΦ ∥θ −θ∗∥ ∥y −y∥\nyθ k Θ k yθ k Θ k yθ k Θ k+1 Y\n+⟨s∗,y −y⟩\nk k+1\n(cid:16) (cid:17)\n≤ ⟨s∗,y −y⟩+ (2η +1)LΦ ∥θ −θ∗∥ ∥y −y∥ .",
+      "size": 915,
+      "sentences": 2
+    },
+    {
+      "id": 242,
+      "content": "k yθ k Θ k yθ k Θ k+1 Y\n+⟨s∗,y −y⟩\nk k+1\n(cid:16) (cid:17)\n≤ ⟨s∗,y −y⟩+ (2η +1)LΦ ∥θ −θ∗∥ ∥y −y∥ . (40)\nk k+1 k yθ k Θ k+1 Y\n(cid:124) (cid:123)(cid:122) (cid:125)\n≜Ek\n1\nNext, to find the upper-bound for ⟨∇ Φ(x ,y ;θ ),x −x⟩ in (39), we have\nx k k+1 k k+1\n⟨∇ Φ(x ,y ;θ ),x −x⟩\nx k k+1 k k+1\n= ⟨∇ Φ(x ,y ;θ )+∇ Φ(x ,y ;θ∗)−∇ Φ(x ,y ;θ∗),x −x⟩\nx k k+1 k x k k+1 x k k+1 k+1\n= ⟨∇ Φ(x ,y ;θ∗),x −x⟩+⟨∇ Φ(x ,y ;θ )−∇ Φ(x ,y ;θ∗),x −x⟩.",
+      "size": 430,
+      "sentences": 2
+    },
+    {
+      "id": 243,
+      "content": ";θ∗),x −x⟩\nx k k+1 k x k k+1 x k k+1 k+1\n= ⟨∇ Φ(x ,y ;θ∗),x −x⟩+⟨∇ Φ(x ,y ;θ )−∇ Φ(x ,y ;θ∗),x −x⟩. x k k+1 k+1 x k k+1 k x k k+1 k+1\n31\n===  32 ===\nUsing Cauchy-Schwarz inequality and Assumption 2.1, we can obtain\n⟨∇ Φ(x ,y ;θ ),x −x⟩\nx k k+1 k k+1\n≥ ⟨∇ Φ(x ,y ;θ∗),x −x⟩\nx k k+1 k+1\n−∥∇ Φ(x ,y ;θ )−∇ Φ(x ,y ;θ∗)∥ ∥x −x∥\nx k k+1 k x k k+1 X∗ k+1 X\n≥ ⟨∇ Φ(x ,y ;θ∗),x −x⟩−LΦ ∥θ −θ∗∥ ∥x −x∥ .",
+      "size": 392,
+      "sentences": 2
+    },
+    {
+      "id": 244,
+      "content": ",y ;θ )−∇ Φ(x ,y ;θ∗)∥ ∥x −x∥\nx k k+1 k x k k+1 X∗ k+1 X\n≥ ⟨∇ Φ(x ,y ;θ∗),x −x⟩−LΦ ∥θ −θ∗∥ ∥x −x∥ . (41)\nx k k+1 k+1 xθ k Θ k+1 X\n(cid:124) (cid:123)(cid:122) (cid:125)\n≜Ek\n2\nNow, based on the results obtained in (40) and (41), we will update (38) and (39) inequalities as\nh(y )−⟨s∗,y −y⟩−Ek∥y −y∥\nk+1 k k+1 1 k+1 Y\n1 (cid:104) (cid:105)\n≤ h(y)+ D (y,y )−D (y,y )−D (y ,y ) , (42)\nY k Y k+1 Y k+1 k\nσ\nk\nf(x )+⟨∇ Φ(x ,y ;θ∗),x −x⟩−Ek∥x −x∥\nk+1 x k k+1 k+1 2 k+1 X\n1 (cid:104) (cid:105)\n≤ f(x)+ D (x,x )−D (x,x )−D (x ,x ) .",
+      "size": 522,
+      "sentences": 2
+    },
+    {
+      "id": 245,
+      "content": ",x −x⟩−Ek∥x −x∥\nk+1 x k k+1 k+1 2 k+1 X\n1 (cid:104) (cid:105)\n≤ f(x)+ D (x,x )−D (x,x )−D (x ,x ) . (43)\nX k X k+1 X k+1 k\nτ\nk\nThe inner product in (43) can be lower bounded using the convexity of Φ(x,y ;θ∗) in x as\nk+1\n⟨∇ Φ(x ,y ;θ∗),x −x⟩\nx k k+1 k+1\n≥ Φ(x ,y ;θ∗)−Φ(x,y ;θ∗)+⟨∇ Φ(x ,y ;θ∗),x −x ⟩.",
+      "size": 300,
+      "sentences": 2
+    },
+    {
+      "id": 246,
+      "content": "y ;θ∗) in x as\nk+1\n⟨∇ Φ(x ,y ;θ∗),x −x⟩\nx k k+1 k+1\n≥ Φ(x ,y ;θ∗)−Φ(x,y ;θ∗)+⟨∇ Φ(x ,y ;θ∗),x −x ⟩. (44)\nk k+1 k+1 x k k+1 k+1 k\nUsing this inequality after adding Φ(x ,y ;θ∗) to both sides of (43), we can get\nk+1 k+1\nf(x )+Φ(x ,y ;θ∗)\nk+1 k+1 k+1\n≤ f(x)+Φ(x,y ;θ∗)+Ek∥x −x∥ +B +Λ∗, (45)\nk+1 2 k+1 X k+1 k\nwhere Λ∗ ≜ Φ(x ,y ;θ∗) − Φ(x ,y ;θ∗) − ⟨∇ Φ(x ,y ;θ∗),x − x ⟩, for k ≥ 0.",
+      "size": 379,
+      "sentences": 2
+    },
+    {
+      "id": 247,
+      "content": "∗, (45)\nk+1 2 k+1 X k+1 k\nwhere Λ∗ ≜ Φ(x ,y ;θ∗) − Φ(x ,y ;θ∗) − ⟨∇ Φ(x ,y ;θ∗),x − x ⟩, for k ≥ 0. For\nk k+1 k+1 k k+1 x k k+1 k+1 k\nk ≥ 0, summing (42) and (45) and rearranging the terms lead to\nL(x ,y;θ∗)−L(x,y ;θ∗)\nk+1 k+1\n= f(x )+Φ(x ,y;θ∗)−h(y)−f(x)−Φ(x,y ;θ∗)+h(y )\nk+1 k+1 k+1 k+1\n≤ Φ(x ,y;θ∗)−Φ(x ,y ;θ∗)+⟨s∗,y −y⟩+Ek∥y −y∥\nk+1 k+1 k+1 k k+1 1 k+1 Y\n+Ek∥x −x∥ +Λ∗ +A +B\n2 k+1 X k k+1 k+1\n≤ −⟨q∗ ,y −y⟩+η ⟨q∗,y −y⟩+Ek∥y −y∥\nk+1 k+1 k k k+1 1 k+1 Y\n+Ek∥x −x∥ +Λ∗ +A +B , (46)\n2 k+1 X k k+1 k+1\nwhere in the last inequality we use the concavity of Φ(x ,·;θ∗).",
+      "size": 565,
+      "sentences": 2
+    },
+    {
+      "id": 248,
+      "content": "+Λ∗ +A +B , (46)\n2 k+1 X k k+1 k+1\nwhere in the last inequality we use the concavity of Φ(x ,·;θ∗). k+1\nTo obtain a telescoping sum later, by adding and subtracting η q y , we can rewrite the bound in\nk k k\n(46) as\nL(x ,y;θ∗)−L(x,y ;θ∗)\nk+1 k+1\n(cid:104) 1 1 (cid:105)\n≤ D (x,x )+ D (y,y )+η ⟨q∗,y −y⟩\nτ X k σ Y k k k k\nk k\n(cid:104) 1 1 (cid:105)\n− D (x,x )+ D (y,y )+⟨q∗ ,y −y⟩\nτ X k+1 σ Y k+1 k+1 k+1\nk k\n+Λ∗ +Ek∥y −y∥ +Ek∥x −x∥\nk 1 k+1 Y 2 k+1 X\n1 1\n− D (x ,x )− D (y ,y )+η ⟨q∗,y −y ⟩.",
+      "size": 490,
+      "sentences": 2
+    },
+    {
+      "id": 249,
+      "content": "k+1 k+1 k+1\nk k\n+Λ∗ +Ek∥y −y∥ +Ek∥x −x∥\nk 1 k+1 Y 2 k+1 X\n1 1\n− D (x ,x )− D (y ,y )+η ⟨q∗,y −y ⟩. (47)\nτ X k+1 k σ Y k+1 k k k k+1 k\nk k\n32\n===  33 ===\nTo bound ⟨q∗,y−y ⟩ for any given y ∈ Y, Let define p∗x ≜ ∇ Φ(x ,y ;θ∗)−∇ Φ(x ,y ;θ∗) and\nk k k y k k y k−1 k\np∗y ≜ ∇ Φ(x ,y ;θ∗)−∇ Φ(x ,y ;θ∗) which imply that q∗ = p∗x+p∗y. Moreover, for any\nk y k−1 k y k−1 k−1 k k k\ny ∈ Y, y′ ∈ Y∗, and a > 0, we have |⟨y′,y⟩| ≤ a∥y∥2 + 1 ∥y′∥2 .",
+      "size": 434,
+      "sentences": 3
+    },
+    {
+      "id": 250,
+      "content": ", for any\nk y k−1 k y k−1 k−1 k k k\ny ∈ Y, y′ ∈ Y∗, and a > 0, we have |⟨y′,y⟩| ≤ a∥y∥2 + 1 ∥y′∥2 . Therefore, we can obtain for all\n2 Y 2a Y∗\nk ≥ 0:\n1 1\n|⟨q∗,y−y ⟩| ≤ α D (y,y )+ ∥p∗x∥2 +β D (y,y )+ ∥p∗y∥2 , (48)\nk k k Y k 2α k Y∗ k Y k 2β k Y∗\nk k\nwhich holds for any α ,β > 0.",
+      "size": 279,
+      "sentences": 2
+    },
+    {
+      "id": 251,
+      "content": "∥p∗x∥2 +β D (y,y )+ ∥p∗y∥2 , (48)\nk k k Y k 2α k Y∗ k Y k 2β k Y∗\nk k\nwhich holds for any α ,β > 0. Therefore, using (48) within (47), we can show for k ≥ 0\nk k\nL(x ,y;θ∗)−L(x,y ;θ∗)\nk+1 k+1\n≤ Ek∥y −y∥ +Ek∥x −x∥ +Q∗(z)−R∗ (z)+E∗, (49a)\n1 k+1 Y 2 k+1 X k k+1 k\n1 1 η\nQ∗(z) ≜ D (x,x )+ D (y,y )+η ⟨q∗,y −y⟩+ k ∥p∗x∥2\nk τ X k σ Y k k k k 2α k Y∗\nk k k\nη\n+ k ∥p∗y∥2 , (49b)\n2β k Y∗\nk\n1 1 1\nR∗ (z) ≜ D (x,x )+ D (y,y )+⟨q∗ ,y −y⟩+ ∥p∗x ∥2\nk+1 τ X k+1 σ Y k+1 k+1 k+1 2α k+1 Y∗\nk k k+1\n1\n+ ∥p∗y ∥2 , (49c)\n2β k+1 Y∗\nk+1\n1 1 1\nE∗ ≜ Λ∗ + ∥p∗x ∥2 − D (x ,x )+ ∥p∗y ∥2\nk k 2α k+1 Y∗ τ X k+1 k 2β k+1 Y∗\nk+1 k k+1\n(cid:16) 1 (cid:17)\n− −η (α +β ) D (y ,y ), (49d)\nk k k Y k+1 k\nσ\nk\nwhere all the derivations in (49a)-(49d) hold for any Bregman distance functions D and D .",
+      "size": 761,
+      "sentences": 2
+    },
+    {
+      "id": 252,
+      "content": "+1 k\nσ\nk\nwhere all the derivations in (49a)-(49d) hold for any Bregman distance functions D and D . X Y\nBy multiplying both sides by t > 0, summing over k = 0 to K − 1, and then using Jensen’s\nk\ninequality, we obtain\nT (L(x ,y;θ∗)−L(x,y ;θ∗))\nK K K\nK−1\n(cid:88) (cid:16) (cid:17)\n≤ t Q∗(z)−R∗ (z)+E∗+Ek∥y −y∥ +Ek∥x −x∥ ,\nk k k+1 k 1 k+1 Y 2 k+1 X\nk=0\nK−1 K−1\n(cid:88) (cid:88)\n≤ t Q∗(z)−t R∗ (z)+ t E∗+ t Ek∥y −y∥\n0 0 K−1 K k k k 1 k+1 Y\nk=0 k=0\nK−1\n(cid:88)\n+ t Ek∥x −x∥ , (50)\nk 2 k+1 X\nk=0\nwhere T =\n(cid:80)K−1t\nand the last inequality follows from the step-size conditions in Assumption\nK k=0 k\n2.2-(ii), which imply that t Q∗ (z)−t R∗ (z) ≤ 0 for k = 0 to K −2.",
+      "size": 667,
+      "sentences": 2
+    },
+    {
+      "id": 253,
+      "content": "onditions in Assumption\nK k=0 k\n2.2-(ii), which imply that t Q∗ (z)−t R∗ (z) ≤ 0 for k = 0 to K −2. k+1 k+1 k k+1\nBy descent lemma, using Assumption 2.1, and Definition 2.1, for any k ≥ 0, and (x,y) ∈ X ×Y, we\n33\n===  34 ===\nobtain\nLΦ\nΦ(x,y;θ∗)−Φ(x ,y;θ∗)−⟨∇ Φ(x ,y;θ∗),x−x ⟩ ≤ xx∥x−x ∥2 ≤ LΦ D (x,x ),\nk x k k 2 k X xx X k\n1 (LΦ )2\n∥∇ Φ(x,y;θ∗)−∇ Φ(x ,y;θ∗)∥2 ≤ yx ∥x−x ∥2 ≤ (LΦ )2D (x,x ),\n2 y y k Y∗ 2 k X yx X k\n1 (LΦ )2\n∥∇ Φ(x ,y;θ∗)−∇ Φ(x ,y ;θ∗)∥2 ≤ yy ∥y−y ∥2 ≤ (LΦ )2D (y,y ).",
+      "size": 485,
+      "sentences": 2
+    },
+    {
+      "id": 254,
+      "content": ",x ),\n2 y y k Y∗ 2 k X yx X k\n1 (LΦ )2\n∥∇ Φ(x ,y;θ∗)−∇ Φ(x ,y ;θ∗)∥2 ≤ yy ∥y−y ∥2 ≤ (LΦ )2D (y,y ). 2 y k y k k Y∗ 2 k Y yy Y k\nBy evaluating the above inequality at (x,y;θ) = (x ,y ;θ∗), and using Assumption 2.3 along\nk+1 k+1\nwith the nonnegativity of Bregman functions, we can show\nE∗ ≜ E∗(x ,y ;θ∗) ≤ (cid:0) (LΦ yx )2 +LΦ − 1 (cid:1) D (x ,x )\nk k k+1 k+1 α xx τ X k+1 k\nk+1 k\n(cid:0) (LΦ yy )2 1 (cid:1)\n+ +η (α +β )− D (y ,y ).",
+      "size": 433,
+      "sentences": 2
+    },
+    {
+      "id": 255,
+      "content": ":1) D (x ,x )\nk k k+1 k+1 α xx τ X k+1 k\nk+1 k\n(cid:0) (LΦ yy )2 1 (cid:1)\n+ +η (α +β )− D (y ,y ). k k k Y k+1 k\nβ σ\nk+1 k\nTherefore,accordingtoAssumption2.3,τ ,σ andη arechosensuchthatE∗ ≤ 0fork = 0,...,K−1;\nk k k k\nthen (50) implies that\nT (L(x ,y;θ∗)−L(x,y ;θ∗))\nK K K\nK−1 K−1\n(cid:88) (cid:88)\n≤ t Q∗(z)−t R∗ (z)+ t Ek∥y −y∥ + t Ek∥x −x∥ ,\n0 0 K−1 K k 1 k+1 Y k 2 k+1 X\nk=0 k=0\nt t\n≤ 0 D (x,x )+ 0 D (y,y )+t η ⟨q∗ ,y−y ⟩\nτ X 0 σ Y 0 K K K K\n0 0\n−t (cid:2) 1 D (x,x )+ 1 D (y,y )+ η K ∥p∗x∥2\nK τ X K σ Y K 2α K Y∗\nK K K\nK−1 K−1\n+ η K ∥p∗y∥2 (cid:3) + (cid:88) t Ek∥y −y∥ + (cid:88) t Ek∥x −x∥ , (51)\n2β K Y∗ k 1 k+1 Y k 2 k+1 X\nK\nk=0 k=0\nwhere in the last inequality we use t Q∗ (z) ≤ t R∗ (z) and q∗ = p∗x = p∗y = 0.",
+      "size": 722,
+      "sentences": 2
+    },
+    {
+      "id": 256,
+      "content": "k 2 k+1 X\nK\nk=0 k=0\nwhere in the last inequality we use t Q∗ (z) ≤ t R∗ (z) and q∗ = p∗x = p∗y = 0. By using (48)\nK K K−1 K 0 0 0\nto bound ⟨q∗ ,y−y ⟩ and dividing both sides of (51) by T , we can get\nK K K\nL(x ,y;θ∗)−L(x,y ;θ∗)\nK K\n1 (cid:16) 1 1 (cid:17) t (cid:104) 1 (cid:16) 1\nK\n≤ D (x,x )+ D (y,y ) − D (x,x )+\nX 0 Y 0 X K\nT τ σ T τ σ\nK 0 0 K K K\nK−1\n(cid:17) (cid:105) 1 (cid:16) (cid:88)\n−η (α +β ) D (y,y ) + t Ek∥y −y∥\nK K K Y K T k 1 k+1 Y\nK\nk=0\nK−1\n(cid:88) (cid:17)\n+ t Ek∥x −x∥ .",
+      "size": 492,
+      "sentences": 2
+    },
+    {
+      "id": 257,
+      "content": ")\n−η (α +β ) D (y,y ) + t Ek∥y −y∥\nK K K Y K T k 1 k+1 Y\nK\nk=0\nK−1\n(cid:88) (cid:17)\n+ t Ek∥x −x∥ . (52)\nk 2 k+1 X\nk=0\nBy applying sup to both sides of the inequality (52) and using Definition 2.3, we obtain the desired\nresult in (4). 34\n===  35 ===\nC Proof of Theorem 4.2\nProof.",
+      "size": 279,
+      "sentences": 3
+    },
+    {
+      "id": 258,
+      "content": "g Definition 2.3, we obtain the desired\nresult in (4). 34\n===  35 ===\nC Proof of Theorem 4.2\nProof. Based on Algorithm 4, we can define the following:\nqy ≜ ∇ g (x ,y )−∇ g (x ,y ),\nk y 2 k k y 2 k−1 k−1\nsy ≜ ∇ g (x ,y )+η qy,\nk y 2 k k k k\nqθ ≜ (∇ g (x ,θ )−w ∇ℓ(θ ))−(∇ g (x ,θ )−w ∇ℓ(θ )),\nk θ 1 k k k k θ 1 k−1 k−1 k−1 k−1\nsθ ≜ (∇ g (x ,θ )−w ∇ℓ(θ ))+η qθ,\nk θ 1 k k k k k k\nwhere qy and qθ are the momentum parameters.",
+      "size": 422,
+      "sentences": 3
+    },
+    {
+      "id": 259,
+      "content": "−1\nsθ ≜ (∇ g (x ,θ )−w ∇ℓ(θ ))+η qθ,\nk θ 1 k k k k k k\nwhere qy and qθ are the momentum parameters. For k ≥ 0, using Lemma A.1 for the y-, x-, θ-\nk k\nand w- subproblems in Algorithm 4, we get the following two inequalities that hold for any y ∈ Y,\nx ∈ X, θ ∈ Θ, and w ∈ W:\nh(y )−⟨sy,y −y⟩\nk+1 k k+1\n1 (cid:104) (cid:105)\n≤ h(y)+ D (y,y )−D (y,y )−D (y ,y ) , (53)\nY k Y k+1 Y k+1 k\nσ\nk\nf(x )+⟨∇ g (x ,θ )+∇ g (x ,y ),x −x⟩\nk+1 x 1 k k+1 x 2 k k+1 k+1\n1 (cid:104) (cid:105)\n≤ f(x)+ D (x,x )−D (x,x )−D (x ,x ) , (54)\nX k X k+1 X k+1 k\nτ\nk\n−⟨sθ,θ −θ⟩\nk k+1\n1 (cid:104) (cid:105)\n≤ D (θ,θ )−D (θ,θ )−D (θ ,θ ) , (55)\nΘ k Θ k+1 Θ k+1 k\nσ\nk\n−⟨ℓ(θ )−ℓ −ϵ,w −w⟩\nk+1 k+1 k+1\n1 (cid:104) (cid:105)\n≤ D (w,w )−D (w,w )−D (w ,w ) .",
+      "size": 720,
+      "sentences": 2
+    },
+    {
+      "id": 260,
+      "content": "+1 Θ k+1 k\nσ\nk\n−⟨ℓ(θ )−ℓ −ϵ,w −w⟩\nk+1 k+1 k+1\n1 (cid:104) (cid:105)\n≤ D (w,w )−D (w,w )−D (w ,w ) . (56)\nW k W k+1 W k+1 k\nτ\nk\n(cid:104) (cid:105) (cid:104)\nFor all k ≥ 0, let a ≜ 1 D (y,y )−D (y,y )−D (y ,y ) , b ≜ 1 D (x,x )−\nk+1 σ Y k Y k+1 Y k+1 k k+1 τ X k\nk k\n(cid:105) (cid:104) (cid:105)\nD (x,x ) − D (x ,x ) , c ≜ 1 D (θ,θ ) − D (θ,θ ) − D (θ ,θ ) and d ≜\nX k+1 X k+1 k k+1 σ Θ k Θ k+1 Θ k+1 k k+1\nk\n(cid:104) (cid:105)\n1 D (w,w )−D (w,w )−D (w ,w ) .",
+      "size": 460,
+      "sentences": 2
+    },
+    {
+      "id": 261,
+      "content": "d ≜\nX k+1 X k+1 k k+1 σ Θ k Θ k+1 Θ k+1 k k+1\nk\n(cid:104) (cid:105)\n1 D (w,w )−D (w,w )−D (w ,w ) . By adding and subtracting ∇ g (x ,θ )x and\nτ W k W k+1 W k+1 k x 1 k k+1 k\nk\n∇ g (x ,y )x , the inner product in (54) can be lower bounded using convexity of g (x ,θ )\nx 2 k k+1 k 1 k k+1\nand g (x ,y ) as follows:\n2 k k+1\n⟨∇ g (x ,θ )+∇ g (x ,y ),x −x⟩\nx 1 k k+1 x 2 k k+1 k+1\n= ⟨∇ g (x ,θ )+∇ g (x ,y ),x −x⟩\nx 1 k k+1 x 2 k k+1 k\n+⟨∇ g (x ,θ )+∇ g (x ,y ),x −x ⟩,\nx 1 k k+1 x 2 k k+1 k+1 k\n≥ g (x ,θ )−g (x,θ )+g (x ,y )−g (x,y )\n1 k k+1 1 k+1 2 k k+1 2 k+1\n+⟨∇ g (x ,θ )+∇ g (x ,y ),x −x ⟩.",
+      "size": 593,
+      "sentences": 2
+    },
+    {
+      "id": 262,
+      "content": "g (x ,θ )−g (x,θ )+g (x ,y )−g (x,y )\n1 k k+1 1 k+1 2 k k+1 2 k+1\n+⟨∇ g (x ,θ )+∇ g (x ,y ),x −x ⟩. (57)\nx 1 k k+1 x 2 k k+1 k+1 k\nUsing this inequality after adding g (x ,θ ) and g (x ,y ) to both sides of (54), we can\n1 k+1 k+1 2 k+1 k+1\nget\nf(x )+g (x ,θ )+g (x ,y )\nk+1 1 k+1 k+1 2 k+1 k+1\n≤ f(x)+g (x,θ )+g (x,y )+b +Λ¯ , (58)\n1 k+1 2 k+1 k+1 k\n35\n===  36 ===\nwhere Λ¯ ≜ g (x ,θ ) + g (x ,y ) − (g (x ,θ )+g (x ,y )) − ⟨∇ g (x ,θ ) +\nk 1 k+1 k+1 2 k+1 k+1 1 k k+1 2 k k+1 x 1 k k+1\n∇ g (x ,y ),x − x ⟩, for k ≥ 0.",
+      "size": 518,
+      "sentences": 2
+    },
+    {
+      "id": 263,
+      "content": ")) − ⟨∇ g (x ,θ ) +\nk 1 k+1 k+1 2 k+1 k+1 1 k k+1 2 k k+1 x 1 k k+1\n∇ g (x ,y ),x − x ⟩, for k ≥ 0. For k ≥ 0, summing (53), (55), (56) and (58) and re-\nx 2 k k+1 k+1 k\narranging the terms lead to\nL(x ,w ,y,θ;ℓ )−L(x,w,y ,θ ;ℓ )\nk+1 k+1 k+1 k+1 k+1 k+1\n= f(x )+g (x ,θ)+g (x ,y)−⟨w ,ℓ(θ)−ℓ −ϵ⟩−h(y)\nk+1 1 k+1 2 k+1 k+1 k+1\n−f(x)−g (x,θ )−g (x,y )+⟨w,ℓ(θ )−ℓ −ϵ⟩+h(y )\n1 k+1 2 k+1 k+1 k+1 k+1\n≤ −⟨qy ,y −y⟩+η ⟨qy,y −y⟩−⟨qθ ,θ −θ⟩+η ⟨qθ,θ −θ⟩\nk+1 k+1 k k k+1 k+1 k+1 k k k+1\n+Λ¯ +a +b +c +d , (59)\nk k+1 k+1 k+1 k+1\nwhere in the last inequality we use the concavity of g (x ,·) and g (x ,·), and the convexity of\n1 k+1 2 k+1\nℓ(·) along with adding and subtracting ⟨w ∇ℓ(θ ),θ−θ ⟩.",
+      "size": 678,
+      "sentences": 2
+    },
+    {
+      "id": 264,
+      "content": "g (x ,·), and the convexity of\n1 k+1 2 k+1\nℓ(·) along with adding and subtracting ⟨w ∇ℓ(θ ),θ−θ ⟩. k+1 k+1 k+1\nTo obtain a telescoping sum later, by adding and subtracting η qyy and η qθθ , we can rewrite the\nk k k k k k\nbound in (59) as\nL(x ,w ,y,θ;ℓ )−L(x,w,y ,θ ;ℓ )\nk+1 k+1 k+1 k+1 k+1 k+1\n(cid:104) 1 1 1 1\n≤ D (x,x )+ D (w,w )+ D (y,y )+ D (θ,θ )+η ⟨qy,y −y⟩\nτ X k τ W k σ Y k σ Θ k k k k\nk k k k\n(cid:105)\n+η ⟨qθ,θ −θ⟩\nk k k\n(cid:104) 1 1 1 1\n− D (x,x )+ D (w,w )+ D (y,y )+ D (θ,θ )\nX k+1 W k+1 Y k+1 Θ k+1\nτ τ σ σ\nk k k k\n(cid:105)\n+⟨qy ,y −y⟩+⟨qθ ,θ −θ⟩\nk+1 k+1 k+1 k+1\n1 1 1 1\n+Λ¯ − D (x ,x )− D (w ,w )− D (y ,y )− D (θ ,θ )\nk X k+1 k W k+1 k Y k+1 k Θ k+1 k\nτ τ σ σ\nk k k k\n+η ⟨qy,y −y ⟩+η ⟨qθ,θ −θ ⟩.",
+      "size": 714,
+      "sentences": 2
+    },
+    {
+      "id": 265,
+      "content": "D (y ,y )− D (θ ,θ )\nk X k+1 k W k+1 k Y k+1 k Θ k+1 k\nτ τ σ σ\nk k k k\n+η ⟨qy,y −y ⟩+η ⟨qθ,θ −θ ⟩. (60)\nk k k+1 k k k k+1 k\nOne can bound ⟨qy,y−y ⟩ and ⟨qθ,θ−θ ⟩ for any given y ∈ Y and θ ∈ Θ, respectively, as follows. k k k k\nLet py1 ≜ ∇ g (x ,y )−∇ g (x ,y ), and py2 ≜ ∇ g (x ,y )−∇ g (x ,y ) which imply\nk y 2 k k y 2 k−1 k k y 2 k−1 k y 2 k−1 k−1\nthat qy = py1 +py2.",
+      "size": 371,
+      "sentences": 3
+    },
+    {
+      "id": 266,
+      "content": "∇ g (x ,y )−∇ g (x ,y ) which imply\nk y 2 k k y 2 k−1 k k y 2 k−1 k y 2 k−1 k−1\nthat qy = py1 +py2. Moreover, let pθ1 = ∇ g (x ,θ )−∇ g (x ,θ ), pθ2 = ∇ g (x ,θ )−\nk k k k θ 1 k k θ 1 k−1 k k θ 1 k−1 k\n∇ g (x ,θ ), pw1 = −w ∇ℓ(θ )+w ∇ℓ(θ ), and pw2 = −w ∇ℓ(θ )+w ∇ℓ(θ ) which\nθ 1 k−1 k−1 k k k k−1 k k k−1 k k−1 k−1\nimply that qθ = pθ1 +pθ2 +pw1 +pw2.",
+      "size": 351,
+      "sentences": 2
+    },
+    {
+      "id": 267,
+      "content": "w ∇ℓ(θ )+w ∇ℓ(θ ) which\nθ 1 k−1 k−1 k k k k−1 k k k−1 k k−1 k−1\nimply that qθ = pθ1 +pθ2 +pw1 +pw2. Using Young’s inequality, we obtain for all k ≥ 0:\nk k k k k\n1 1\n|⟨qy,y−y ⟩| ≤ α D (y,y )+ ∥py1∥2 +β D (y,y )+ ∥py2∥2 , (61)\nk k k Y k 2α k Y∗ k Y k 2β k Y∗\nk k\n1 1\n|⟨qθ,θ−θ ⟩| ≤ α D (θ,θ )+ ∥pθ1 +pθ2∥2 +β D (θ,θ )+ ∥pw1 +pw2∥2 , (62)\nk k k Θ k 2α k k Θ∗ k Θ k 2β k k Θ∗\nk k\n36\n===  37 ===\nwhich holds for any α ,β > 0.",
+      "size": 419,
+      "sentences": 2
+    },
+    {
+      "id": 268,
+      "content": "+pw2∥2 , (62)\nk k k Θ k 2α k k Θ∗ k Θ k 2β k k Θ∗\nk k\n36\n===  37 ===\nwhich holds for any α ,β > 0. Therefore, using (61) and (62) within (60), we can show for k ≥ 0\nk k\nL(x ,w ,y,θ;ℓ )−L(x,w,y ,θ ;ℓ ) ≤ Q¯ (z)−R¯ (z)+E¯ , (63a)\nk+1 k+1 k+1 k+1 k+1 k+1 k k+1 k\n1 1 1 1\nQ¯ (z) ≜ D (x,x )+ D (w,w )+ D (y,y )+ D (θ,θ )+η ⟨qy,y −y⟩\nk τ X k τ W k σ Y k σ Θ k k k k\nk k k k\nη η η\n+η ⟨qθ,θ −θ⟩+ k ∥py1∥2 + k ∥py2∥2 + k ∥pθ1 +pθ2∥2\nk k k 2α k Y∗ 2β k Y∗ 2α k k Θ∗\nk k k\nη\n+ k ∥pw1 +pw2∥2 , (63b)\n2β k k Θ∗\nk\n1 1 1 1\nR¯ (z) ≜ D (x,x )+ D (w,w )+ D (y,y )+ D (θ,θ )\nk+1 X k+1 W k+1 Y k+1 Θ k+1\nτ τ σ σ\nk k k k\n1 1\n+⟨qy ,y −y⟩+⟨qθ ,θ −θ⟩+ ∥py1 ∥2 + ∥py2 ∥2\nk+1 k+1 k+1 k+1 2α k+1 Y∗ 2β k+1 Y∗\nk+1 k+1\n1 1\n+ ∥pθ1 +pθ2 ∥2 + ∥pw1 +pw2 ∥2 , (63c)\n2α k+1 k+1 Θ∗ 2β k+1 k+1 Θ∗\nk+1 k+1\n1 1 1\nE¯ ≜ Λ¯ + ∥py1 ∥2 + ∥py2 ∥2 + ∥pθ1 +pθ2 ∥2\nk k 2α k+1 Y∗ 2β k+1 Y∗ 2α k+1 k+1 Θ∗\nk+1 k+1 k+1\n1 (cid:16) 1 (cid:17)\n+ ∥pw1 +pw2 ∥2 − −η (α +β ) (D (y ,y )+D (θ ,θ ))\n2β k+1 k+1 Θ∗ σ k k k Y k+1 k Θ k+1 k\nk+1 k\n1 1\n− D (x ,x )− D (w ,w ).",
+      "size": 1010,
+      "sentences": 2
+    },
+    {
+      "id": 269,
+      "content": "+β ) (D (y ,y )+D (θ ,θ ))\n2β k+1 k+1 Θ∗ σ k k k Y k+1 k Θ k+1 k\nk+1 k\n1 1\n− D (x ,x )− D (w ,w ). (63d)\nX k+1 k W k+1 k\nτ τ\nk k\nConsidering that the objective function L(x,w,y,θ;ℓ∗) is Lipschitz continuous with respect to the\nparameter ℓ∗ with constant L (see (29), we can show\nℓ\n|L(x ,w ,y,θ;ℓ )−L(x ,w ,y,θ;ℓ∗)| ≤ L ∥ℓ −ℓ∗∥ ,\nk+1 k+1 k+1 k+1 k+1 ℓ k+1 2\n|L(x,w,y ,θ ;ℓ )−L(x,w,y ,θ ;ℓ∗)| ≤ L ∥ℓ −ℓ∗∥ .",
+      "size": 404,
+      "sentences": 2
+    },
+    {
+      "id": 270,
+      "content": ",y,θ;ℓ∗)| ≤ L ∥ℓ −ℓ∗∥ ,\nk+1 k+1 k+1 k+1 k+1 ℓ k+1 2\n|L(x,w,y ,θ ;ℓ )−L(x,w,y ,θ ;ℓ∗)| ≤ L ∥ℓ −ℓ∗∥ . k+1 k+1 k+1 k+1 k+1 ℓ k+1 2\nFor ℓ∗,ℓ we can show\nk+1\nL(x ,w ,y,θ;ℓ∗)−L(x,w,y ,θ ;ℓ∗)\nk+1 k+1 k+1 k+1\n= L(x ,w ,y,θ;ℓ∗)−L(x ,w ,y,θ;ℓ )+L(x ,w ,y,θ;ℓ )\nk+1 k+1 k+1 k+1 k+1 k+1 k+1 k+1\n−L(x,w,y ,θ ;ℓ )+L(x,w,y ,θ ;ℓ )−L(x,w,y ,θ ;ℓ∗).",
+      "size": 332,
+      "sentences": 2
+    },
+    {
+      "id": 271,
+      "content": ")+L(x ,w ,y,θ;ℓ )\nk+1 k+1 k+1 k+1 k+1 k+1 k+1 k+1\n−L(x,w,y ,θ ;ℓ )+L(x,w,y ,θ ;ℓ )−L(x,w,y ,θ ;ℓ∗). k+1 k+1 k+1 k+1 k+1 k+1 k+1 k+1\nThen, using the triangle inequality, we can obtain\nL(x ,w ,y,θ;ℓ∗)−L(x,w,y ,θ ;ℓ∗)\nk+1 k+1 k+1 k+1\n≤ |L(x ,w ,y,θ;ℓ∗)−L(x ,w ,y,θ;ℓ )|+L(x ,w ,y,θ;ℓ )\nk+1 k+1 k+1 k+1 k+1 k+1 k+1 k+1\n−L(x,w,y ,θ ;ℓ )+|L(x,w,y ,θ ;ℓ )−L(x,w,y ,θ ;ℓ∗)|\nk+1 k+1 k+1 k+1 k+1 k+1 k+1 k+1\n≤ Q¯ (z)−R¯ (z)+E¯ +2L ∥ℓ −ℓ∗∥ , (64)\nk k+1 k ℓ k+1 2\nwhere the inequality in (64) is obtained by using (29) in (63a).",
+      "size": 516,
+      "sentences": 2
+    },
+    {
+      "id": 272,
+      "content": "+2L ∥ℓ −ℓ∗∥ , (64)\nk k+1 k ℓ k+1 2\nwhere the inequality in (64) is obtained by using (29) in (63a). Next, multiplying both sides by t > 0, summing over k = 0 to K −1, and then using Jensen’s\nk\n37\n===  38 ===\ninequality, we obtain\nT (L(x ,w ,y,θ;ℓ∗)−L(x,w,y ,θ ;ℓ∗))\nK K K K K\nK−1\n(cid:88) (cid:16) (cid:17)\n≤ t Q¯ (z)−R¯ (z)+E¯ +2L ∥ℓ −ℓ∗∥ ,\nk k k+1 k ℓ k+1 2\nk=0\nK−1 K−1\n(cid:88) (cid:88)\n≤ t Q¯ (z)−t R¯ (z)+ t E¯ +2L t ∥ℓ −ℓ∗∥ , (65)\n0 0 K−1 K k k ℓ k k+1 2\nk=0 k=0\nwhere T =\n(cid:80)K−1t\nand the last inequality follows from the step-size conditions in Assumption\nK k=0 k\n4.3-(ii), which imply that t Q¯ (z)−t R¯ (z) ≤ 0 for k = 0 to K −2.",
+      "size": 643,
+      "sentences": 2
+    },
+    {
+      "id": 273,
+      "content": "onditions in Assumption\nK k=0 k\n4.3-(ii), which imply that t Q¯ (z)−t R¯ (z) ≤ 0 for k = 0 to K −2. k+1 k+1 k k+1\nAccording to Assumption 4.3, τ ,σ and η are chosen such that E¯ ≤ 0 for k = 0,...,K −1; then\nk k k k\n(65) implies that\nT (L(x ,w ,y,θ;ℓ∗)−L(x,w,y ,θ ;ℓ∗))\nK K K K K\nK−1\n(cid:88)\n≤ t Q¯ (z)−t R¯ (z)+2L t ∥ℓ −ℓ∗∥ ,\n0 0 K−1 K ℓ k k+1 2\nk=0\nt t t t\n≤ 0 D (x,x )+ 0 D (w,w )+ 0 D (y,y )+ 0 D (θ,θ )+t η ⟨qy ,y−y ⟩\nτ X 0 τ W 0 σ Y 0 σ Θ 0 K K K K\n0 0 0 0\n+t η ⟨qθ ,θ−θ ⟩−t (cid:2) 1 D (x,x )+ 1 D (w,w )+ 1 D (y,y )\nK K K K K τ X K τ W K σ Y K\nK K K\n1 η η η\n+ D (θ,θ )+ K ∥py1∥2 + K ∥py2∥2 + K ∥pθ1 +pθ2∥2\nσ Θ K 2α K Y∗ 2β K Y∗ 2α K K Θ∗\nK K K K\nK−1\n+ η K ∥pw1 +pw2∥2 (cid:3) +2L (cid:88) t ∥ℓ −ℓ∗∥ , (66)\n2β K K Θ∗ ℓ k k+1 2\nK\nk=0\nwhere in the last inequality we use t Q¯ (z) ≤ t R¯ (z) and qy,qθ,py1,py2,pθ1,pθ2,pw1,pw2 = 0.",
+      "size": 834,
+      "sentences": 2
+    },
+    {
+      "id": 274,
+      "content": "k=0\nwhere in the last inequality we use t Q¯ (z) ≤ t R¯ (z) and qy,qθ,py1,py2,pθ1,pθ2,pw1,pw2 = 0. K K K−1 K 0 0 0 0 0 0 0 0\nUsing (61) and (62) to bound ⟨qy ,y−y ⟩ and ⟨qθ ,θ−θ ⟩ and dividing both sides of (66) by T ,\nK K K K K\nwe can get\nL(x ,w ,y,θ;ℓ∗)−L(x,w,y ,θ ;ℓ∗)\nK K K K\n1 (cid:16) 1 1 1 1 (cid:17)\n≤ D (x,x )+ D (w,w )+ D (y,y )+ D (θ,θ )\nX 0 W 0 Y 0 Θ 0\nT τ τ σ σ\nK 0 0 0 0\nK−1\n+ 2L ℓ (cid:88) t ∥ℓ −ℓ∗∥ − t K (cid:104) 1 D (x,x )+ 1 D (w,w )\nk k+1 2 X K W K\nT T τ τ\nK K K K\nk=0\n(cid:16) 1 (cid:17)(cid:16) (cid:17)(cid:105)\n+ −η (α +β ) D (y,y )+D (θ,θ ) .",
+      "size": 568,
+      "sentences": 2
+    },
+    {
+      "id": 275,
+      "content": "T T τ τ\nK K K K\nk=0\n(cid:16) 1 (cid:17)(cid:16) (cid:17)(cid:105)\n+ −η (α +β ) D (y,y )+D (θ,θ ) . (67)\nK K K Y K Θ K\nσ\nK\nBy applying sup to both sides of the inequality (67) and using Definition 4.2, we obtain the desired\nresult in (30). 38\n===  39 ===\nReferences\n[1] Hesam Ahmadi, Necdet Serhat Aybat, and Uday V Shanbhag. On the rate analysis of inexact\naugmented lagrangian schemes for convex optimization problems with misspecified constraints.",
+      "size": 449,
+      "sentences": 4
+    },
+    {
+      "id": 276,
+      "content": "nexact\naugmented lagrangian schemes for convex optimization problems with misspecified constraints. In 2016 American Control Conference (ACC), pages 4841–4846. IEEE, 2016. [2] Hesam Ahmadi and Uday V Shanbhag. Data-driven first-order methods for misspecified convex\noptimization problems: Global convergence and rate estimates. In 53rd IEEE Conference on\nDecision and Control, pages 4228–4233. IEEE, 2014. [3] Hesam Ahmadi and Uday V Shanbhag.",
+      "size": 443,
+      "sentences": 8
+    },
+    {
+      "id": 277,
+      "content": "ference on\nDecision and Control, pages 4228–4233. IEEE, 2014. [3] Hesam Ahmadi and Uday V Shanbhag. On the resolution of misspecified convex optimization\nand monotone variational inequality problems. Computational Optimization and Applications,\n77(1):125–161, 2020. [4] Necdet Serhat Aybat, Hesam Ahmadi, and Uday V Shanbhag. On the analysis of inexact\naugmented lagrangian schemes for misspecified conic convex programs. IEEE Transactions on\nAutomatic Control, 67(8):3981–3996, 2021.",
+      "size": 484,
+      "sentences": 8
+    },
+    {
+      "id": 278,
+      "content": "misspecified conic convex programs. IEEE Transactions on\nAutomatic Control, 67(8):3981–3996, 2021. [5] Aharon Ben-Tal, Arkadi Nemirovski, and Laurent El Ghaoui. Robust optimization. 2009. [6] Dimitri P Bertsekas. Nonlinear programming. Journal of the Operational Research Society,\n48(3):334–334, 1997. [7] Dimitris Bertsimas and David B Brown. Constrained stochastic lqc: a tractable approach. IEEE Transactions on automatic control, 52(10):1826–1841, 2007.",
+      "size": 457,
+      "sentences": 11
+    },
+    {
+      "id": 279,
+      "content": "ochastic lqc: a tractable approach. IEEE Transactions on automatic control, 52(10):1826–1841, 2007. [8] Dimitris Bertsimas, David B Brown, and Constantine Caramanis. Theory and applications of\nrobust optimization. SIAM review, 53(3):464–501, 2011. [9] Dimitris Bertsimas, Vishal Gupta, and Nathan Kallus. Data-driven robust optimization. Mathematical Programming, 167:235–292, 2018. [10] Dimitris Bertsimas and Dessislava Pachamanova.",
+      "size": 434,
+      "sentences": 9
+    },
+    {
+      "id": 280,
+      "content": "n. Mathematical Programming, 167:235–292, 2018. [10] Dimitris Bertsimas and Dessislava Pachamanova. Robust multiperiod portfolio management in\nthe presence of transaction costs. Computers & Operations Research, 35(1):3–17, 2008. [11] Stephen P Boyd and Lieven Vandenberghe. Convex optimization. Cambridge university press,\n2004. [12] Renato Bruni, Francesco Cesarone, Andrea Scozzari, and Fabio Tardella.",
+      "size": 404,
+      "sentences": 8
+    },
+    {
+      "id": 281,
+      "content": "university press,\n2004. [12] Renato Bruni, Francesco Cesarone, Andrea Scozzari, and Fabio Tardella. Real-world datasets\nfor portfolio selection and solutions of some stochastic dominance portfolio models. Data in\nbrief, 8:858, 2016. [13] Mathias Bu¨rger, Giuseppe Notarstefano, and Frank Allg¨ower. A polyhedral approximation\nframework for convex and robust distributed optimization. IEEE Transactions on Automatic\nControl, 59(2):384–395, 2013. [14] Antonin Chambolle and Thomas Pock.",
+      "size": 484,
+      "sentences": 8
+    },
+    {
+      "id": 282,
+      "content": "EEE Transactions on Automatic\nControl, 59(2):384–395, 2013. [14] Antonin Chambolle and Thomas Pock. On the ergodic convergence rates of a first-order\nprimal–dual algorithm. Mathematical Programming, 159(1-2):253–287, 2016. [15] Stephan Dempe and Alain Zemkoho. Bilevel optimization. In Springer optimization and its\napplications, volume 161. Springer, 2020. 39\n===  40 ===\n[16] Francisco Facchinei and Jong-Shi Pang. Finite-dimensional variational inequalities and comple-\nmentarity problems.",
+      "size": 492,
+      "sentences": 10
+    },
+    {
+      "id": 283,
+      "content": "inei and Jong-Shi Pang. Finite-dimensional variational inequalities and comple-\nmentarity problems. Springer, 2003. [17] Guillermo Gallego and Ilkyeong Moon. The distribution free newsboy problem: review and\nextensions. Journal of the Operational Research Society, 44(8):825–834, 1993. [18] Soham Ghosh, Mamta Sahare, and Sujay Mukhoti. A new generalized newsvendor model with\nrandom demand and cost misspecification.",
+      "size": 417,
+      "sentences": 8
+    },
+    {
+      "id": 284,
+      "content": "and Sujay Mukhoti. A new generalized newsvendor model with\nrandom demand and cost misspecification. In Strategic Management, Decision Theory, and\nDecision Science: Contributions to Policy Issues, pages 211–245. Springer, 2021. [19] Philip E Gill, Walter Murray, and Margaret H Wright. Practical optimization. SIAM, 2019. [20] Donald Goldfarb and Garud Iyengar. Robust portfolio selection problems. Mathematics of\noperations research, 28(1):1–38, 2003.",
+      "size": 451,
+      "sentences": 10
+    },
+    {
+      "id": 285,
+      "content": "Iyengar. Robust portfolio selection problems. Mathematics of\noperations research, 28(1):1–38, 2003. [21] Erfan Yazdandoost Hamedani and Necdet Serhat Aybat. A primal-dual algorithm with line\nsearch for general convex-concave saddle point problems. SIAM Journal on Optimization,\n31(2):1299–1329, 2021. [22] Nam Ho-Nguyen and Fatma Kılınc¸-Karzan. Exploiting problem structure in optimization under\nuncertainty via online convex optimization. Mathematical Programming, 177(1):113–147, 2019.",
+      "size": 488,
+      "sentences": 9
+    },
+    {
+      "id": 286,
+      "content": "n under\nuncertainty via online convex optimization. Mathematical Programming, 177(1):113–147, 2019. [23] Yuanhanqing Huang and Jianghai Hu. Distributed stochastic nash equilibrium learning in\nlocally coupled network games with unknown parameters. In Learning for Dynamics and\nControl Conference, pages 342–354. PMLR, 2022. [24] GerritKJanssensandKatrienMRamaekers. Alinearprogrammingformulationforaninventory\nmanagement decision problem with a service constraint.",
+      "size": 463,
+      "sentences": 8
+    },
+    {
+      "id": 287,
+      "content": "Alinearprogrammingformulationforaninventory\nmanagement decision problem with a service constraint. Expert Systems with Applications,\n38(7):7929–7934, 2011. [25] Hao Jiang and Uday V Shanbhag. On the solution of stochastic optimization problems in\nimperfect information regimes. In 2013 Winter Simulations Conference (WSC), pages 821–832. IEEE, 2013. [26] Hao Jiang and Uday V Shanbhag. On the solution of stochastic optimization and variational\nproblems in imperfect information regimes.",
+      "size": 487,
+      "sentences": 8
+    },
+    {
+      "id": 288,
+      "content": "the solution of stochastic optimization and variational\nproblems in imperfect information regimes. SIAM Journal on Optimization, 26(4):2394–2429,\n2016. [27] Hao Jiang, Uday V Shanbhag, and Sean P Meyn. Learning equilibria in constrained nash-\ncournot games with misspecified demand functions. In 2011 50th IEEE Conference on Decision\nand Control and European Control Conference, pages 1018–1023. IEEE, 2011. [28] Hao Jiang, Uday V Shanbhag, and Sean P Meyn.",
+      "size": 457,
+      "sentences": 7
+    },
+    {
+      "id": 289,
+      "content": "Control Conference, pages 1018–1023. IEEE, 2011. [28] Hao Jiang, Uday V Shanbhag, and Sean P Meyn. Distributed computation of equilibria\nin misspecified convex stochastic nash games. IEEE Transactions on Automatic Control,\n63(2):360–371, 2017. [29] Ruiwei Jiang, Jianhui Wang, and Yongpei Guan. Robust unit commitment with wind power\nand pumped storage hydro. IEEE Transactions on Power Systems, 27(2):800–810, 2011. [30] Ruiwei Jiang, Muhong Zhang, Guang Li, and Yongpei Guan.",
+      "size": 477,
+      "sentences": 9
+    },
+    {
+      "id": 290,
+      "content": "on Power Systems, 27(2):800–810, 2011. [30] Ruiwei Jiang, Muhong Zhang, Guang Li, and Yongpei Guan. Two-stage network constrained\nrobust unit commitment problem. European Journal of Operational Research, 234(3):751–762,\n2014. 40\n===  41 ===\n[31] Cheng Jie, LA Prashanth, Michael Fu, Steve Marcus, and Csaba Szepesv´ari. Stochastic\noptimization in a cumulative prospect theory framework. IEEE Transactions on Automatic\nControl, 63(9):2867–2882, 2018. [32] Jinlong Lei and Uday V Shanbhag.",
+      "size": 487,
+      "sentences": 8
+    },
+    {
+      "id": 291,
+      "content": "EEE Transactions on Automatic\nControl, 63(9):2867–2882, 2018. [32] Jinlong Lei and Uday V Shanbhag. Asynchronous schemes for stochastic and misspecified\npotential games and nonconvex optimization. Operations Research, 68(6):1742–1766, 2020. [33] Harry Markowitz. Portfolio selection. The Journal of finance (New York), 7(1):77–91, 1952. [34] Hongseok Namkoong and John C Duchi. Stochastic gradient methods for distributionally\nrobust optimization with f-divergences.",
+      "size": 466,
+      "sentences": 9
+    },
+    {
+      "id": 292,
+      "content": "n C Duchi. Stochastic gradient methods for distributionally\nrobust optimization with f-divergences. Advances in neural information processing systems, 29,\n2016. [35] Angelia Nedic and Asuman Ozdaglar. 10 cooperative distributed multi-agent optimization. Convex optimization in signal processing and communications, page 340, 2010. [36] Arkadi Nemirovski.",
+      "size": 354,
+      "sentences": 7
+    },
+    {
+      "id": 293,
+      "content": "onvex optimization in signal processing and communications, page 340, 2010. [36] Arkadi Nemirovski. Prox-method with rate of convergence o (1/t) for variational inequalities\nwithlipschitzcontinuousmonotoneoperatorsandsmoothconvex-concavesaddlepointproblems. SIAM Journal on Optimization, 15(1):229–251, 2004. [37] Yurii Nesterov. A method for solving the convex programming problem with convergence rate\no (1/k2). In Dokl akad nauk Sssr, volume 269, page 543, 1983. [38] Yurii Nesterov.",
+      "size": 486,
+      "sentences": 8
+    },
+    {
+      "id": 294,
+      "content": "convergence rate\no (1/k2). In Dokl akad nauk Sssr, volume 269, page 543, 1983. [38] Yurii Nesterov. Dual extrapolation and its applications to solving variational inequalities and\nrelated problems. Mathematical Programming, 109(2):319–344, 2007. [39] Yurii Nesterov. Introductory lectures on convex optimization: A basic course, volume 87. Springer Science & Business Media, 2013.",
+      "size": 380,
+      "sentences": 8
+    },
+    {
+      "id": 295,
+      "content": "ectures on convex optimization: A basic course, volume 87. Springer Science & Business Media, 2013. [40] Yuyuan Ouyang, Yunmei Chen, Guanghui Lan, and Eduardo Pasiliao Jr. An accelerated\nlinearized alternating direction method of multipliers. SIAM Journal on Imaging Sciences,\n8(1):644–681, 2015. [41] Meng Qi, Paul Grigas, and Zuo-Jun Max Shen. Integrated conditional estimation-optimization. arXiv preprint arXiv:2110.12351, 2021.",
+      "size": 432,
+      "sentences": 7
+    },
+    {
+      "id": 296,
+      "content": "un Max Shen. Integrated conditional estimation-optimization. arXiv preprint arXiv:2110.12351, 2021. [42] Lukas Ruff, Robert Vandermeulen, Nico Goernitz, Lucas Deecke, Shoaib Ahmed Siddiqui,\nAlexander Binder, Emmanuel Mu¨ller, and Marius Kloft. Deep one-class classification. In\nInternational conference on machine learning, pages 4393–4402. PMLR, 2018. [43] Chao Shang, Xiaolin Huang, and Fengqi You. Data-driven robust optimization based on kernel\nlearning.",
+      "size": 458,
+      "sentences": 9
+    },
+    {
+      "id": 297,
+      "content": "hao Shang, Xiaolin Huang, and Fengqi You. Data-driven robust optimization based on kernel\nlearning. Computers & Chemical Engineering, 106:464–479, 2017. [44] Alexander Shapiro, Darinka Dentcheva, and Andrzej Ruszczynski. Lectures on stochastic\nprogramming: modeling and theory. SIAM, 2021. [45] Lingqing Shen, Nam Ho-Nguyen, and Fatma Kılın¸c-Karzan. An online convex optimization-\nbasedframeworkforconvexbileveloptimization. Mathematical Programming, 198(2):1519–1582,\n2023.",
+      "size": 475,
+      "sentences": 9
+    },
+    {
+      "id": 298,
+      "content": "tion-\nbasedframeworkforconvexbileveloptimization. Mathematical Programming, 198(2):1519–1582,\n2023. [46] Eunhye Song and Uday V Shanbhag. Stochastic approximation for simulation optimization\nunder input uncertainty with streaming data. In 2019 Winter Simulation Conference (WSC),\npages 3597–3608. IEEE, 2019. 41\n===  42 ===\n[47] David MJ Tax and Robert PW Duin. Support vector data description. Machine learning,\n54(1):45–66, 2004. [48] Andreas Thorsen and Tao Yao.",
+      "size": 465,
+      "sentences": 10
+    },
+    {
+      "id": 299,
+      "content": "ort vector data description. Machine learning,\n54(1):45–66, 2004. [48] Andreas Thorsen and Tao Yao. Robust inventory control under demand and lead time\nuncertainty. Annals of Operations Research, 257:207–236, 2017. [49] Stanislav Uryasev and Panos M Pardalos. Stochastic optimization: algorithms and applications,\nvolume 54. Springer Science & Business Media, 2013. [50] Craig Wilson, Venugopal V Veeravalli, and Angelia Nedi´c. Adaptive sequential stochastic\noptimization.",
+      "size": 473,
+      "sentences": 10
+    },
+    {
+      "id": 300,
+      "content": "ig Wilson, Venugopal V Veeravalli, and Angelia Nedi´c. Adaptive sequential stochastic\noptimization. IEEE Transactions on Automatic Control, 64(2):496–509, 2018. [51] Lingzhou Xue, Shiqian Ma, and Hui Zou. Positive-definite 1-penalized estimation of large\ncovariance matrices. Journal of the American Statistical Association, 107(500):1480–1491, 2012. [52] ShuoguangYang,EthanXFang,andUdayVShanbhag.Data-drivencompositionaloptimization\nin misspecified regimes.",
+      "size": 459,
+      "sentences": 7
+    },
+    {
+      "id": 301,
+      "content": "guangYang,EthanXFang,andUdayVShanbhag.Data-drivencompositionaloptimization\nin misspecified regimes. Operations Research, 73(3):1395–1411, 2025. [53] Shuoguang Yang, Xudong Li, and Guanghui Lan. Data-driven minimax optimization with\nexpectation constraints. Operations Research, 2024. [54] Yaqun Yang and Jinlong Lei. Analysis of coupled distributed stochastic approximation for\nmisspecified optimization. Neurocomputing, 622:129310, 2025. [55] Chaoyue Zhao and Yongpei Guan.",
+      "size": 474,
+      "sentences": 9
+    },
+    {
+      "id": 302,
+      "content": "or\nmisspecified optimization. Neurocomputing, 622:129310, 2025. [55] Chaoyue Zhao and Yongpei Guan. Unified stochastic and robust unit commitment. IEEE\nTransactions on Power Systems, 28(3):3353–3361, 2013. 42",
+      "size": 208,
+      "sentences": 6
+    }
+  ]
+}

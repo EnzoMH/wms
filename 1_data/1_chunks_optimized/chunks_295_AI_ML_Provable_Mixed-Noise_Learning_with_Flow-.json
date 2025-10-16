@@ -1,0 +1,909 @@
+{
+  "source": "ArXiv",
+  "filename": "295_AI_ML_Provable_Mixed-Noise_Learning_with_Flow-.pdf",
+  "domain": "AI",
+  "total_chars": 47099,
+  "total_chunks": 150,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\nProvable Mixed-Noise Learning with Flow-Matching\nPaul Hagemann∗§ Robert Gruhlke† Bernhard Stankewitz‡\nClaudia Schillings† Gabriele Steidl∗\nAugust 26, 2025\n+\nAbstract\nWe study Bayesian inverse problems with mixed noise, modeled as a combination of\nadditive and multiplicative Gaussian components.",
+      "size": 306,
+      "sentences": 1
+    },
+    {
+      "id": 2,
+      "content": "lems with mixed noise, modeled as a combination of\nadditive and multiplicative Gaussian components. While traditional inference methods\noften assume fixed or known noise characteristics, real-world applications, particularly\nin physics and chemistry, frequently involve noise with unknown and heterogeneous\nstructure.",
+      "size": 317,
+      "sentences": 2
+    },
+    {
+      "id": 3,
+      "content": "ularly\nin physics and chemistry, frequently involve noise with unknown and heterogeneous\nstructure. Motivated by recent advances in flow-based generative modeling, we propose\na novel inference framework based on conditional flow matching embedded within an\nExpectation-Maximization (EM) algorithm to jointly estimate posterior samplers and\nnoise parameters.",
+      "size": 357,
+      "sentences": 2
+    },
+    {
+      "id": 4,
+      "content": "xpectation-Maximization (EM) algorithm to jointly estimate posterior samplers and\nnoise parameters. To enable high-dimensional inference and improve scalability, we\nuse simulation-free ODE-based flow matching as the generative model in the E-step\nof the EM algorithm. We prove that, under suitable assumptions, the EM updates\nconverge to the true noise parameters in the population limit of infinite observations.",
+      "size": 413,
+      "sentences": 3
+    },
+    {
+      "id": 5,
+      "content": "EM updates\nconverge to the true noise parameters in the population limit of infinite observations. Our numerical results illustrate the effectiveness of combining EM inference with flow\nmatching for mixed-noise Bayesian inverse problems. 1 Introduction\nBayesian inverse problems aim to infer an unknown variable X ∈ Rd from indirect and noisy\nobservations Y ∈ Rn.",
+      "size": 363,
+      "sentences": 3
+    },
+    {
+      "id": 6,
+      "content": "verse problems aim to infer an unknown variable X ∈ Rd from indirect and noisy\nobservations Y ∈ Rn. The relationship is typically modeled as\nY = F(X)+η ,\nθ θ\nwhere F: Rm → Rn is a known possibly nonlinear forward operator and η represents\nθ\nrandom noise depending on parameters θ.",
+      "size": 280,
+      "sentences": 2
+    },
+    {
+      "id": 7,
+      "content": "nown possibly nonlinear forward operator and η represents\nθ\nrandom noise depending on parameters θ. In many real-world settings, the noise is not\n∗InstituteofMathematics,TechnischeUniversitätBerlin,Straßedes17.Juni136,10623Berlin,Germany,\n{hagemann, steidl}@math.tu-berlin.de, http://tu.berlin/imageanalysis\n†Institute of Mathematics, Freie Universität Berlin, Arnimallee 6, 14195 Berlin, Germany, {r.gruhlke,\nc.schillings}@fu-berlin.de, https://www.mi.fu-berlin.de/math/groups/naspde/index.html\n‡U Potsdam\n§Bundesanstalt für Materialforschung und Prüfung (BAM), paul.hagemann@bam.de\n1\n5202\nguA\n52\n]GL.sc[\n1v22181.8052:viXra\n===  2 ===\nknown, but depends on auxiliary noise parameters θ, which are in our case to scalars (a,b).",
+      "size": 727,
+      "sentences": 2
+    },
+    {
+      "id": 8,
+      "content": "2 ===\nknown, but depends on auxiliary noise parameters θ, which are in our case to scalars (a,b). We focus on so-called mixed noise, which is a sum of additive and multiplicative Gaussian\nnoise, i.e.,\nη ∼ N (cid:0) 0,a2+b2diag(F(x)2) (cid:1) . θ\nAsmanyphysicalphenomena(orapproximationsthereof)donotusuallyexhibitGaussian\nerrors, this often yields a more flexible modelling approach. It is present in optics [14, 13]\nand also biology [22].",
+      "size": 439,
+      "sentences": 4
+    },
+    {
+      "id": 9,
+      "content": "yields a more flexible modelling approach. It is present in optics [14, 13]\nand also biology [22]. In [11], an iterative procedure was introduced to jointly update normalizing flows and\nnoise parameters, formulated within the Expectation-Maximization (EM) framework [8]. This approach can be interpreted as a conditional extension of the DeepGEM algorithm\n[9]. However, the only convergence guarantee provided was the non-decreasing behavior\nof the marginal log-likelihood across iterations.",
+      "size": 491,
+      "sentences": 5
+    },
+    {
+      "id": 10,
+      "content": "uarantee provided was the non-decreasing behavior\nof the marginal log-likelihood across iterations. Moreover, the method relies on discrete\nnormalizing flows [23], which have recently been surpassed in performance and scalability\nby ODE-based normalizing flows [6], particularly those trained in a simulation-free manner\nvia flow matching [18, 20].",
+      "size": 348,
+      "sentences": 2
+    },
+    {
+      "id": 11,
+      "content": "izing flows [6], particularly those trained in a simulation-free manner\nvia flow matching [18, 20]. Flow Matching has shown great success, in particular in image\ngeneration and regularization [21], and is a variant of score-based diffusion [24] which does\nnot rely on a standard Gaussian latent. This enables interesting applications [26]. Further,\nwe can also make the latent distribution dependent on the data distribution, which yields\noptimal transport inspired flow matching approaches [5, 29].",
+      "size": 499,
+      "sentences": 4
+    },
+    {
+      "id": 12,
+      "content": "on the data distribution, which yields\noptimal transport inspired flow matching approaches [5, 29]. In this work, we build on and extend the line of research in [11].",
+      "size": 166,
+      "sentences": 2
+    },
+    {
+      "id": 13,
+      "content": "low matching approaches [5, 29]. In this work, we build on and extend the line of research in [11]. Specifically, we\n• formulate an EM algorithm where the E-step is realized via conditional flow matching,\na modern generative modeling technique based on score-based ODEs;\n• replace discrete flows with simulation-free, continuous-time flows [18] to enhance\nscalability and enable high-dimensional inference;\n• establish consistency guarantees: in the population limit of infinitely many measure-\nments generated under a true noise parameter θ∗, the EM procedure converges to θ∗\nunder suitable regularity assumptions.",
+      "size": 615,
+      "sentences": 3
+    },
+    {
+      "id": 14,
+      "content": "a true noise parameter θ∗, the EM procedure converges to θ∗\nunder suitable regularity assumptions. Notation\nWe denote by X ∈ Rm the latent random variable, by Y ∈ Rn the observation and Θ ⊂ Rd\na nonempty, compact and convex parameter space. We denote by ∥·∥ the Euclidean norm\non Rd. For a function Q: Θ×Θ → R we denote by ∇ , the gradient with respect to the\n1\nfirst input of a function with two arguments, e.g. ∇ Q. 1\nAssuming existence (cp.",
+      "size": 443,
+      "sentences": 6
+    },
+    {
+      "id": 15,
+      "content": "respect to the\n1\nfirst input of a function with two arguments, e.g. ∇ Q. 1\nAssuming existence (cp. [27]), we denote by p the density of the marginal likelihood\nY\nθ\nof Y given θ, by p the corresponding posterior density and by p the joint density. X|Y θ =y X,Y θ\nThe corresponding distributions are distinguished using capitalization, e.g. P for the\nX|Y =y\nθ\n2\n===  3 ===\nposterior distribution.",
+      "size": 394,
+      "sentences": 6
+    },
+    {
+      "id": 16,
+      "content": "re distinguished using capitalization, e.g. P for the\nX|Y =y\nθ\n2\n===  3 ===\nposterior distribution. We denote by pdf(Rd) the set of all Lebesgue densities on Rd, i.e.,\n(cid:26) (cid:12) (cid:90) (cid:27)\npdf(Rd) := q: Rd → [0,∞) (cid:12) (cid:12) q(x)dx = 1 ,\n(cid:12) Rd\nwhere the integral is taken with respect to the Lebesgue measure.",
+      "size": 337,
+      "sentences": 3
+    },
+    {
+      "id": 17,
+      "content": "(cid:12) q(x)dx = 1 ,\n(cid:12) Rd\nwhere the integral is taken with respect to the Lebesgue measure. For two probability\nmeasures µ and ν on a measurable space (Ω,B), the Kullback–Leibler (KL) divergence is\ndefined by\n(cid:90) (cid:18) (cid:19)\ndµ\nKL(µ∥ν) := log (x) dµ(x),\ndν\nΩ\nwhenever µ is absolutely continuous with respect to ν. For measures µ and ν on Rd with\nLebesque densities f,g ∈ pdf(Rd) we may use abuse of notation and define\nKL(f∥g) := KL(µ∥ν).",
+      "size": 457,
+      "sentences": 3
+    },
+    {
+      "id": 18,
+      "content": "d with\nLebesque densities f,g ∈ pdf(Rd) we may use abuse of notation and define\nKL(f∥g) := KL(µ∥ν). For probability measures with finite first moments, the Wasserstein-1 distance is defined\nas\n(cid:90)\nW (µ,ν) := inf ∥x−y∥dπ(x,y),\n1\nπ∈Π(µ,ν) Ω×Ω\nwhere Π(µ,ν) denotes the set of all distributions on Ω×Ω with marginals µ and ν. Outline. The manuscript on hand is organized as follows.",
+      "size": 383,
+      "sentences": 4
+    },
+    {
+      "id": 19,
+      "content": "stributions on Ω×Ω with marginals µ and ν. Outline. The manuscript on hand is organized as follows. We start giving the relevant\nbackground information on the general EM algorithm and Flow Matching in Section 2.1\nand Section 2.2 respectively. Next, we recall the convergence analysis of the so-called\npopulation EM operator in Section 3 and extend the theory in the follow up subsections\nSection 3.3 and Section 3.4.",
+      "size": 416,
+      "sentences": 5
+    },
+    {
+      "id": 20,
+      "content": "erator in Section 3 and extend the theory in the follow up subsections\nSection 3.3 and Section 3.4. Then, we will verify the new framework for a class of mixed\nnoise models in Section 4. Finally, we illustrate the proposed method of mixed-noise learning\nwith flow-matching in the numerical section for MNIST denoising in Section 5.1 and for a\nreconstruction task with underlying partial differential equation (PDE) in Section 5.2.",
+      "size": 430,
+      "sentences": 3
+    },
+    {
+      "id": 21,
+      "content": "1 and for a\nreconstruction task with underlying partial differential equation (PDE) in Section 5.2. 2 Background\nOur goal is to recover the true noise parameters from observed data in a mathematically\nprecise framework. To this end, we consider N independent measurements y ,...,y\n1 N\ndrawn from a data-generating process corresponding to some unknown but fixed noise\nparameter θ∗ ∈ Θ.",
+      "size": 385,
+      "sentences": 3
+    },
+    {
+      "id": 22,
+      "content": "rawn from a data-generating process corresponding to some unknown but fixed noise\nparameter θ∗ ∈ Θ. Under standard regularity conditions, the maximum likelihood estimator\nis consistent, and in the limit of infinitely many observations, we may recover θ∗ by solving\nN\n(cid:88)\nargmax logp (y ), (1)\nY i\nθ\nθ∈Θ\ni=1\n3\n===  4 ===\nwhere p denotes the marginal likelihood of Y under noise parameter θ.\nY\nθ\nIn practice, however, the marginal density p (y) is typically intractable, as it involves a\nY\nθ\nhigh-dimensional integral of the form\n(cid:90)\np (y) = p (y)p (x)dx.",
+      "size": 563,
+      "sentences": 2
+    },
+    {
+      "id": 23,
+      "content": "ractable, as it involves a\nY\nθ\nhigh-dimensional integral of the form\n(cid:90)\np (y) = p (y)p (x)dx. Y θ Y θ |X=x X\nA standard approach in variational inference and machine learning [15, 9, 11] is to introduce\na tractable surrogate by maximizing a lower bound on the log-likelihood, typically the so-\ncalled evidence lower bound (ELBO). This idea naturally leads to the EM framework, which\nalternates between estimating the latent posterior and optimizing the noise parameters.",
+      "size": 476,
+      "sentences": 3
+    },
+    {
+      "id": 24,
+      "content": "work, which\nalternates between estimating the latent posterior and optimizing the noise parameters. 2.1 EM Algorithm\nFollowing the approach in [11], we begin by observing that the marginal log-likelihood can\nbe bounded below via Jensen’s inequality. Let q ∈ pdf(Rd).",
+      "size": 266,
+      "sentences": 3
+    },
+    {
+      "id": 25,
+      "content": "ing that the marginal log-likelihood can\nbe bounded below via Jensen’s inequality. Let q ∈ pdf(Rd). Assuming q(x) > 0 wherever\np (x,y) > 0, we obtain\nX,Y\nθ\n(cid:18)(cid:90) (cid:19)\nlog(p (y)) = log p (x,y)dx\nY X,Y\nθ θ\nRd\n(cid:18)(cid:90)\np (x,y)\n(cid:19)\nX,Y\n= log θ q(x)dx\nq(x)\nRd\n(cid:90) (cid:18) p (x,y) (cid:19)\nX,Y\n≥ log θ q(x)dx =: F(q,θ | y),\nq(x)\nRd\nwhere F(q,θ | y) is known as the evidence lower bound (ELBO).",
+      "size": 421,
+      "sentences": 3
+    },
+    {
+      "id": 26,
+      "content": "≥ log θ q(x)dx =: F(q,θ | y),\nq(x)\nRd\nwhere F(q,θ | y) is known as the evidence lower bound (ELBO). This variational formulation\nmotivates an iterative EM-type algorithm that alternates between approximating the\nposterior and updating the noise parameters.",
+      "size": 256,
+      "sentences": 2
+    },
+    {
+      "id": 27,
+      "content": "pe algorithm that alternates between approximating the\nposterior and updating the noise parameters. More precisely, given current parameter estimate θ(k), each iteration consists of the\nfollowing steps:\nE-step: q (k+1) = argmin KL(q∥p ), i = 1,...,N, (2)\ni\nq∈pdf(Rd)\nX|Y θ(k) =yi\nN\nM-step: θ(k+1) = argmax (cid:88) F(q (k+1) ,θ | y ), (3)\ni i\nθ∈Θ\ni=1\nwhere we have used the identity\nlogp (y) = KL(q∥p )+F(q,θ | y),\nY θ X|Y θ =y\nfrom [4] which justifies the E-step as minimizing the KL divergence to the true posterior\nand the M-step as maximizing a lower bound on the marginal log-likelihood.",
+      "size": 592,
+      "sentences": 2
+    },
+    {
+      "id": 28,
+      "content": "ce to the true posterior\nand the M-step as maximizing a lower bound on the marginal log-likelihood. 4\n===  5 ===\nThe concrete realization of this EM framework depends on how the posterior approxi-\nmations q and the M-step optimization are performed. In [11], the M-step was addressed\ni\nvia a nested EM loop. Here, we instead use gradient-based optimization with automatic\ndifferentiation (autograd), which proves to be effective in practice, as demonstrated in\nSection 5.",
+      "size": 471,
+      "sentences": 4
+    },
+    {
+      "id": 29,
+      "content": "differentiation (autograd), which proves to be effective in practice, as demonstrated in\nSection 5. For the E-step, classical approaches include MCMC-based posterior sampling. However,\nsuch methodsare computationally demanding, especially when repeated for each observation. Alternatively, we adopt a conditional generative modeling perspective, where a single shared\nmodelistrainedtoapproximatetheposteriordistributionforallobservations.",
+      "size": 438,
+      "sentences": 4
+    },
+    {
+      "id": 30,
+      "content": "ctive, where a single shared\nmodelistrainedtoapproximatetheposteriordistributionforallobservations. Thisamortized\nsetup enables efficient inference across the dataset and allows parameter sharing across\ndifferent y . While [11] relied on conditional normalizing flows in the spirit of [9], we employ\ni\nconditional flow matching as introduced in [1, 18, 19], which provides improved stability\nand scalability in high-dimensional settings.",
+      "size": 437,
+      "sentences": 3
+    },
+    {
+      "id": 31,
+      "content": "ced in [1, 18, 19], which provides improved stability\nand scalability in high-dimensional settings. 2.2 Flow Matching\nWe now detail the concrete realization of the E-step in our EM algorithm using conditional\nflow matching. E-step via Conditional Flow Matching. The E-step aims to approximate the posterior\ndistributions\n(k+1)\nq = argmin KL(q,p ),\ni\nq∈pdf(Rd)\nX|Y θ(k) =yi\nfor each observation y , given current parameter estimates θ(k).",
+      "size": 437,
+      "sentences": 4
+    },
+    {
+      "id": 32,
+      "content": "KL(q,p ),\ni\nq∈pdf(Rd)\nX|Y θ(k) =yi\nfor each observation y , given current parameter estimates θ(k). In [11], these posteriors\ni\nwere approximated using conditional normalizing flows, extending the DeepGEM framework\n[9] to the case of unknown noise parameters. In this work, we instead propose to use conditional flow matching [1, 19, 20, 18], which\nconstructsposteriorsamplesbylearningavelocityfieldthatgeneratesapproximatetransport\nmaps from a reference distribution to the target posterior.",
+      "size": 492,
+      "sentences": 3
+    },
+    {
+      "id": 33,
+      "content": "yfieldthatgeneratesapproximatetransport\nmaps from a reference distribution to the target posterior. Note that the term \"conditional\"\nherereferstotheBayesianconditioningonobservationsy,whichdiffersfromtheconditioning\nused in [18]. The central idea is to learn a measurement-conditional velocity field v (x,y) that trans-\nt\nports a simple reference distribution P to the posterior distribution P , for all values\nZ X|Y=y\nof y in the data distribution.",
+      "size": 449,
+      "sentences": 3
+    },
+    {
+      "id": 34,
+      "content": "tribution P to the posterior distribution P , for all values\nZ X|Y=y\nof y in the data distribution. To this end, we define a linear interpolation path in the joint\nspace of observations and latent variables:\n(X ,Y ) := t·(X,Y)+(1−t)·(Z,Y), t ∈ [0,1],\nt t\nwhich starts at (Z,Y) at time t = 0 and ends at (X,Y) at time t = 1.",
+      "size": 323,
+      "sentences": 2
+    },
+    {
+      "id": 35,
+      "content": "Y)+(1−t)·(Z,Y), t ∈ [0,1],\nt t\nwhich starts at (Z,Y) at time t = 0 and ends at (X,Y) at time t = 1. This construction\nkeeps the observation Y fixed along the path, i.e.,\n∂ (X ,Y ) = (X −Z,0) ≈ (v (X ,Y),0),\nt t t t t\n5\n===  6 ===\nso the velocity field only needs to act in the latent x-direction. We denote by P = P the distribution of (X ,Y ) = (X ,Y). Although this\nXt,Yt Xt,Y t t t\nformulationaboveisformal,itcanbemaderigoroususingcontinuityequationsandtransport\nmaps (see, e.g., [5, 30]).",
+      "size": 492,
+      "sentences": 4
+    },
+    {
+      "id": 36,
+      "content": "ionaboveisformal,itcanbemaderigoroususingcontinuityequationsandtransport\nmaps (see, e.g., [5, 30]). The velocity field v (x,y) is parameterized by a neural network\nt\nwith parameters w and trained to minimize the loss\n(cid:104) (cid:105)\nL(w) = E ∥v (x ,y)−(x −x )∥2 ,\n(xt,y,t)∼PXt,Y⊗U[0,1] t t 1 0\nwhich penalizes deviations from the idealized interpolation velocity.",
+      "size": 367,
+      "sentences": 2
+    },
+    {
+      "id": 37,
+      "content": "(xt,y,t)∼PXt,Y⊗U[0,1] t t 1 0\nwhich penalizes deviations from the idealized interpolation velocity. This objective also\ncontrols distributional discrepancies between the true posterior and the learned flow-based\napproximation, as shown in [3]. Once the velocity field is trained, samples from the approximate posterior p are\nX|Y=y\nobtained by solving the associated neural ODE with fixed observation y:\n∂ X = v (X ,y), X = Z,\nt t t t 0\nwhere Z ∼ P is a latent sample from the base distribution.",
+      "size": 494,
+      "sentences": 3
+    },
+    {
+      "id": 38,
+      "content": "tion y:\n∂ X = v (X ,y), X = Z,\nt t t t 0\nwhere Z ∼ P is a latent sample from the base distribution. Z\n3 Convergence Analysis of the Population EM Operator\nWe start by recalling the convergence results for the population EM algorithm from [2]. For θ ∈ Θ consider a parametric family of distributions P with density p . We assume\nY Y\nθ θ\nthat the observed data are generated according to a distribution P = P with density\nθ∗ Y θ∗\np = p corresponding to a true but unknown parameter θ∗ ∈ Θ.",
+      "size": 487,
+      "sentences": 4
+    },
+    {
+      "id": 39,
+      "content": "distribution P = P with density\nθ∗ Y θ∗\np = p corresponding to a true but unknown parameter θ∗ ∈ Θ. More precisely, we\nθ∗ Y θ∗\nassume that θ∗ is the unique maximizer of the population log-likelihood\nθ∗ = argmax E [logp (y)]. y∼p θ∗ Y θ\nθ∈Θ\nDefine the population-level complete-data objective, the so-called Q-function, by\nQ(θ,θˆ) := E E [logp (x,y)].",
+      "size": 350,
+      "sentences": 3
+    },
+    {
+      "id": 40,
+      "content": "population-level complete-data objective, the so-called Q-function, by\nQ(θ,θˆ) := E E [logp (x,y)]. y∼p θ∗ x∼p X|Y θˆ=y X,Y θ\nThis function evaluates the expected complete-data log-likelihood under the posterior\nassociated with θˆ, and plays a central role in the EM framework. It is known [2] that the population maximum θ∗ satisfies the self-consistency condition\nθ∗ = argmax Q(θ,θ∗).",
+      "size": 386,
+      "sentences": 3
+    },
+    {
+      "id": 41,
+      "content": "wn [2] that the population maximum θ∗ satisfies the self-consistency condition\nθ∗ = argmax Q(θ,θ∗). θ∈Θ\nWe define the population EM operator M: Θ → Θ as\nM(θˆ) := argmax Q(θ,θˆ),\nθ∈Θ\n6\n===  7 ===\nassuming uniqueness of the maximizer for θˆ ∈ Θ, so that the population EM iteration\nbecomes\nθ(k+1) = M(θ(k)). A gradient-based variant is given by\nθ(k+1) := θ(k)+τ∇ 1 Q(θ,θ(k)) (cid:12) (cid:12) θ=θ(k) , k ∈ N 0 , (4)\nwhere τ > 0 is a step size.",
+      "size": 441,
+      "sentences": 3
+    },
+    {
+      "id": 42,
+      "content": "θ(k+1) := θ(k)+τ∇ 1 Q(θ,θ(k)) (cid:12) (cid:12) θ=θ(k) , k ∈ N 0 , (4)\nwhere τ > 0 is a step size. In the following, we assume that θ∗ is in the interior of Θ and\nthat ε > 0 is chosen so small that B (θ∗) := {θ ∈ Θ | ∥θ−θ∗∥ < ε} is contained in Θ.\nε\nLocal Strong Concavity. We say that Q(·,θ∗) is locally λ-strongly concave for some\nλ > 0, if there exists ε > 0 such that\nλ\nQ(θ ,θ∗)−Q(θ ,θ∗)−⟨∇ Q(θ ,θ∗),θ −θ ⟩ ≤ − ∥θ −θ ∥2,\n1 2 1 2 1 2 1 2\n2\nfor all θ ,θ ∈ B (θ∗).",
+      "size": 465,
+      "sentences": 3
+    },
+    {
+      "id": 43,
+      "content": "that\nλ\nQ(θ ,θ∗)−Q(θ ,θ∗)−⟨∇ Q(θ ,θ∗),θ −θ ⟩ ≤ − ∥θ −θ ∥2,\n1 2 1 2 1 2 1 2\n2\nfor all θ ,θ ∈ B (θ∗). If Q is twice continuously differentiable, this is equivalent to\n1 2 ε\n∇2Q(θ,θ∗) ≤ −λI , ∀θ ∈ B (θ∗). θ d ε\nFirst-Order Stability (FOS). We say that Q(·,θ∗) satisfies the first-order stability\ncondition FOS(γ) on B (θ∗), for some γ ≥ 0, if\nε\n∥∇ Q(M(θ),θ∗)−∇ Q(M(θ),θ)∥ ≤ γ∥θ−θ∗∥, ∀θ ∈ B (θ∗). 1 1 ε\nNote that in general ∇ Q(M(θ),θ) ̸= 0 due to the constrained maximization over Θ.",
+      "size": 479,
+      "sentences": 5
+    },
+    {
+      "id": 44,
+      "content": "θ ∈ B (θ∗). 1 1 ε\nNote that in general ∇ Q(M(θ),θ) ̸= 0 due to the constrained maximization over Θ. 1\nTheorem 1 (Convergence of Population EM [2]). Let ε > 0, and suppose that Q(·,θ∗) is\nlocally λ-strongly concave, and that the FOS(γ) condition holds on B (θ∗) with 0 ≤ γ < λ.\nε\nThen the EM operator M is a contraction on B (θ∗), i.e.,\nε\nγ\n∥M(θ)−θ∗∥ ≤ ∥θ−θ∗∥, ∀θ ∈ B (θ∗). ε\nλ\nIn particular, for any θ(0) ∈ B (θ∗), the sequence satisfies linear convergence\nε\n(cid:16)γ(cid:17)r\n∥θ(r)−θ∗∥ ≤ ∥θ(0)−θ∗∥.",
+      "size": 500,
+      "sentences": 5
+    },
+    {
+      "id": 45,
+      "content": "(0) ∈ B (θ∗), the sequence satisfies linear convergence\nε\n(cid:16)γ(cid:17)r\n∥θ(r)−θ∗∥ ≤ ∥θ(0)−θ∗∥. λ\nGradient Descent Variant. The previous result assumes access to the exact maximizer\nM(θˆ). To relax this, a gradient descent version was proposed in [2]. Define\n• Q is locally γ-gradient smooth on B (θ∗) if\nε\n∥∇ Q(θ,θ∗)−∇ Q(θ,θ)∥ ≤ γ∥θ−θ∗∥ ∀θ ∈ B (θ∗),\n1 1 ε\n7\n===  8 ===\n• Q is locally µ-smooth if\nµ\nQ(θ ,θ∗)−Q(θ ,θ∗)−⟨∇ Q(θ ,θ∗),θ −θ ⟩ ≥ − ∥θ −θ ∥2 ∀θ ,θ ∈ B (θ∗).",
+      "size": 468,
+      "sentences": 5
+    },
+    {
+      "id": 46,
+      "content": "===\n• Q is locally µ-smooth if\nµ\nQ(θ ,θ∗)−Q(θ ,θ∗)−⟨∇ Q(θ ,θ∗),θ −θ ⟩ ≥ − ∥θ −θ ∥2 ∀θ ,θ ∈ B (θ∗). 1 2 1 2 1 2 1 2 1 2 ε\n2\nThen we have the following theorem. Theorem 2 (Convergence of Gradient Descent EM [2]). Assume that Q is locally λ-strongly\nconcave, µ-smooth, and γ-gradient smooth on B (θ∗) with 0 ≤ γ < λ ≤ µ. Let θ(0) ∈ B (θ∗),\nε ε\nand consider the updates (4) with step size τ = 2 . Then the iterates satisfy\nµ+λ\n(cid:18)\n2(λ−γ)\n(cid:19)k\n∥θ(k)−θ∗∥ ≤ 1− ∥θ(0)−θ∗∥.",
+      "size": 474,
+      "sentences": 6
+    },
+    {
+      "id": 47,
+      "content": "step size τ = 2 . Then the iterates satisfy\nµ+λ\n(cid:18)\n2(λ−γ)\n(cid:19)k\n∥θ(k)−θ∗∥ ≤ 1− ∥θ(0)−θ∗∥. µ+λ\nThis result does no longer require the FOS(γ) condition and relies instead on smoothness\nproperties of the Q-function.",
+      "size": 222,
+      "sentences": 3
+    },
+    {
+      "id": 48,
+      "content": "longer require the FOS(γ) condition and relies instead on smoothness\nproperties of the Q-function. 3.1 Sufficient Assumptions\nIn this subsection, we are interested to derive sufficient conditions that yield locally strong\nconcavity and first order stability on one hand for the case of population EM iteration to\nimply Theorem 1 and locally strong concavity, γ-gradient smoothness and µ-smoothness for\nthe case of gradient-ascent based iteration to imply Theorem 2.",
+      "size": 465,
+      "sentences": 2
+    },
+    {
+      "id": 49,
+      "content": "ent smoothness and µ-smoothness for\nthe case of gradient-ascent based iteration to imply Theorem 2. To this end, we formulate five assumptions:\n(A1) (Smoothness and Integrability of Log-Likelihood) The map θ (cid:55)→ logp is two times\nX,Y\nθ\ncontinuously differentiable in B (θ∗) for all (x,y) ∈ Rm×n and some ε > 0 and there\nε\nexist functions G,H : Rm×n → R such that for all (x,y) ∈ Rm×n and all θ ∈ B (θ∗)\nε\nit holds\n∥∇ θ logp X,Y θ (x,y)∥ ≤ G(x,y), (cid:13) (cid:13)∇2 θ logp X,Y θ (x,y) (cid:13) (cid:13) ≤ H(x,y)\nwith\n(cid:90) (cid:90)\nG(x,y)p p dx dy < C, H(x,y)p p dx dy < C.\nX|Y =y θ∗ X|Y =y θ∗\nθ θ\nRm×n Rm×n\n(A2) (Local identifiability of θ∗) The Fisher information\nI(θ∗) := −E [∇ θ2logp ]\nx,y 1 X,Y θ∗\nsatisfies I(θ∗) ≥ λ I , for some λ > 0 and further also satisfies I(θ∗) ≤ λ I for a\n∗ d ∗ 2 d\nλ > 0.",
+      "size": 813,
+      "sentences": 2
+    },
+    {
+      "id": 50,
+      "content": "atisfies I(θ∗) ≥ λ I , for some λ > 0 and further also satisfies I(θ∗) ≤ λ I for a\n∗ d ∗ 2 d\nλ > 0. 2\n8\n===  9 ===\n(A3) The map θ (cid:55)→ p is locally L(y)- Lipschitz in the Wasserstein-1 distance, i.e. for\nX|Y =y\nθ\nall (x,y) ∈ Rm×n\n(cid:16) (cid:17)\nW P ,p ≤ L(y)∥θ −θ ∥ ∀θ ,θ ∈ B (θ∗)\n1 X|Y =y X|Y =y 1 2 1 2 ε\nθ1 θ2\n(A4) The map x (cid:55)→ ∇ logp (x,y) is L (y,θ)-Lipschitz in x, i.e. θ X,Y θ g\n∥∇ logp (x ,y)−∇ logp (x ,y)∥ ≤ L (y,θ)∥x −x ∥ ∀y ∈ Rn.",
+      "size": 456,
+      "sentences": 4
+    },
+    {
+      "id": 51,
+      "content": ") is L (y,θ)-Lipschitz in x, i.e. θ X,Y θ g\n∥∇ logp (x ,y)−∇ logp (x ,y)∥ ≤ L (y,θ)∥x −x ∥ ∀y ∈ Rn. θ X,Y θ 1 θ X,Y θ 2 g 1 2\n(A5) There exists ε¯> 0 such that for each ε < ε¯, we have\nγ = γ(ε) = sup E [L(y)L (θ,y)] < ∞. y∼p θ∗ g\nθ∈Bε(θ∗)\n(A5F) There exists ε¯> 0 such that for each ε < ε¯, we have\nγ = γ(ε) = sup E [L(y)L (M(θ),y)] < ∞. y∼p θ∗ g\nθ∈Bε(θ∗)\n3.2 FOS Framework\nIn this section, we show that (A1)-(A4) and (A5F) are indeed sufficient for the assumptions\nof Theorem 1.",
+      "size": 479,
+      "sentences": 5
+    },
+    {
+      "id": 52,
+      "content": "s section, we show that (A1)-(A4) and (A5F) are indeed sufficient for the assumptions\nof Theorem 1. Proposition 3 (Strong Concavity). Let (A1) and (A2) be fulfilled. Then there exist ε > 0\nand λ = λ(ε,λ∗) > 0 such that Q(·,θ∗) is strong λ-concave on B (θ∗). ε\nProof. Under regularity assumptions of (A1) we can switch the following differentiation and\nintegration, and applying subsequently (A2), we get\n∇2Q(θ∗,θ∗) = E E (cid:2) ∇2logp (x,y) (cid:3) = −I(θ∗) ≤ −λ I .",
+      "size": 467,
+      "sentences": 6
+    },
+    {
+      "id": 53,
+      "content": "applying subsequently (A2), we get\n∇2Q(θ∗,θ∗) = E E (cid:2) ∇2logp (x,y) (cid:3) = −I(θ∗) ≤ −λ I . (5)\n1 y∼p θ∗ x∼P X|Yθ∗=y θ X,Y θ∗ ∗ d\nBy (A1) the map ∇2Q(·,θ∗) is continuous on B (θ∗). Hence for ε > 0 small enough, we\n1 ε\nhave that\n∇2Q(θ,θ∗) < −λI , ∀θ ∈ B (θ∗) (6)\nθ d ε\nfor some λ = λ(ε,λ∗) > 0, which yields the strong λ-concavity Q(·,θ∗). Proposition 4 (FOS Condition). Let (A1), (A3),(A4) and (A5F) be fulfilled. Then Q\nsatisfies a FOS(γ) condition with γ from (A5F). Proof.",
+      "size": 482,
+      "sentences": 7
+    },
+    {
+      "id": 54,
+      "content": "1), (A3),(A4) and (A5F) be fulfilled. Then Q\nsatisfies a FOS(γ) condition with γ from (A5F). Proof. By the Kantorovich-Rubenstein duality characterization of Wasserstein-1 metric we\nhave\n1\nW (µ,ν) = sup E [ϕ(x)]−E [ϕ(y)]. 1 x∼µ y∼ν\nK\nϕisK-Lip\n9\n===  10 ===\nLet ϕ (x) := ∇ logp (x,y) which is L (y,θ)-Lipschitz by (A4).",
+      "size": 318,
+      "sentences": 5
+    },
+    {
+      "id": 55,
+      "content": "]. 1 x∼µ y∼ν\nK\nϕisK-Lip\n9\n===  10 ===\nLet ϕ (x) := ∇ logp (x,y) which is L (y,θ)-Lipschitz by (A4). Then, under the\ny,θ 1 X,Y θ g\nregularity assumptions of (A1), we have\n(cid:104)\n∇ Q(θ,θˆ)−∇ Q(θ,θ∗) = E E [∇ logp (x,y)]\n1 1 y∼p θ∗ x∼P X|Y θˆ=y θ X,Y θ\n(cid:105)\n−E [∇ logp (x,y)]\nx∼P X|Yθ∗=y θ X,Y θ\n(cid:104) (cid:105)\n= E E [ϕ (x)]−E [ϕ (x)] .",
+      "size": 346,
+      "sentences": 3
+    },
+    {
+      "id": 56,
+      "content": "X,Y θ\n(cid:105)\n−E [∇ logp (x,y)]\nx∼P X|Yθ∗=y θ X,Y θ\n(cid:104) (cid:105)\n= E E [ϕ (x)]−E [ϕ (x)] . y∼p θ∗ x∼P X|Y θˆ=y y,θ x∼P X|Yθ∗=y y,θ\nHence for µ = µ(y,θˆ) = P and ν = ν(y,θ∗) = P , we have\nX|Y\nθˆ\n=y X|Y θ∗=y\n∥E [ϕ (x)]−E [ϕ (x)]∥\nx∼P y,θ x∼P y,θ\nX|Y θˆ=y X|Yθ∗=y\n= sup |⟨E [ϕ (x)]−E [ϕ (x)],v⟩|\nx∼P y,θ x∼P y,θ\n∥v∥≤1\nX|Y θˆ=y X|Yθ∗=y\n= sup |E [⟨ϕ (x),v⟩]−E [⟨ϕ (x),v⟩]|\nx∼P y,θ x∼P y,θ\n∥v∥≤1\nX|Y θˆ=y X|Yθ∗=y\n≤ L (y,θ)W (µ(y,θˆ),ν(y,θ∗))\ng 1\n≤ L(y)L (θ,y)∥θˆ−θ∗∥.",
+      "size": 470,
+      "sentences": 2
+    },
+    {
+      "id": 57,
+      "content": ",v⟩]|\nx∼P y,θ x∼P y,θ\n∥v∥≤1\nX|Y θˆ=y X|Yθ∗=y\n≤ L (y,θ)W (µ(y,θˆ),ν(y,θ∗))\ng 1\n≤ L(y)L (θ,y)∥θˆ−θ∗∥. g\nIntegrating over y ∼ p , we obtain\nθ∗\n(cid:13) (cid:13)\n(cid:13)∇ Q(θ,θˆ)−∇ Q(θ,θ∗)(cid:13) ≤ E [L(y)L (θ,y)]∥θˆ−θ∗∥. (cid:13) 1 1 (cid:13) y∼p θ∗ g\nInserting θ = M(θˆ), we obtain with (A5F) that\n(cid:13) (cid:13)\n(cid:13)∇ Q(M(θˆ),θˆ)−∇ Q(M(θˆ),θ∗)(cid:13) ≤ E [L(y)L (M(θˆ),y)]∥θˆ−θ∗∥\n(cid:13) 1 1 (cid:13) y∼p θ∗ g\n≤ γ∥θˆ−θ∗∥. Remark 5.",
+      "size": 441,
+      "sentences": 4
+    },
+    {
+      "id": 58,
+      "content": "M(θˆ),θ∗)(cid:13) ≤ E [L(y)L (M(θˆ),y)]∥θˆ−θ∗∥\n(cid:13) 1 1 (cid:13) y∼p θ∗ g\n≤ γ∥θˆ−θ∗∥. Remark 5. The main line of argument also works if we replace Wasserstein by the total\nvariation distance. It is defined as\n(cid:90)\n1\nTV(P,Q) = |p(x)−q(x)|dx\n2\nfor two probability measures P,Q which admit densities p and q. This also has a dual\nformulation, which is given by\n(cid:90)\nTV(P,Q) = sup fd(P −Q).",
+      "size": 398,
+      "sentences": 5
+    },
+    {
+      "id": 59,
+      "content": "ities p and q. This also has a dual\nformulation, which is given by\n(cid:90)\nTV(P,Q) = sup fd(P −Q). ∥f∥∞≤1\nHence, we get slightly different assumptions: The score ∇ logp now only needs to\nθ X,Y θ\nbe L∞, whereas the Lipschitz continuity bound is a bit harder to satisfy. 10\n===  11 ===\nNote that in order to apply the convergence theorem, we must assume that 0 ≤ γ < λ.",
+      "size": 368,
+      "sentences": 4
+    },
+    {
+      "id": 60,
+      "content": "10\n===  11 ===\nNote that in order to apply the convergence theorem, we must assume that 0 ≤ γ < λ. However, there are two main reasons why we prefer the following gradient-based framework\nover the classical EM convergence theory relying on the FOS condition. First, the FOS\ncondition involves the population EM operator M, whose analytical form is often intractable\nand difficult to estimate numerically, especially in complex models.",
+      "size": 434,
+      "sentences": 3
+    },
+    {
+      "id": 61,
+      "content": "ical form is often intractable\nand difficult to estimate numerically, especially in complex models. Second, Lemma 8\nprovides a slightly improved convergence guarantee: instead of requiring γ < λ, it suffices\nto assume γ < c, where c is the strong convexity constant of the Q-function. This is a\nstrictly weaker condition in non-degenerate cases. Therefore, we adopt the gradient-based\nframework,whichisbothmorenaturalforourapproximateM-stepandyieldsmoreaccessible\nconvergence criteria.",
+      "size": 485,
+      "sentences": 4
+    },
+    {
+      "id": 62,
+      "content": "ramework,whichisbothmorenaturalforourapproximateM-stepandyieldsmoreaccessible\nconvergence criteria. 3.3 Gradient Descent Based Framework\nSince we already verified the λ-concavity, we only need to verify γ-gradient smoothness and\nµ-smoothness, which we do in the following propositions. Proposition 6 (Gradient Smoothness Condition). Let (A1), (A3), (A4) and (A5) be\nfulfilled. Then Q satisfies the γ-gradient smoothness condition with γ from (A5). Proof.",
+      "size": 454,
+      "sentences": 6
+    },
+    {
+      "id": 63,
+      "content": "nd (A5) be\nfulfilled. Then Q satisfies the γ-gradient smoothness condition with γ from (A5). Proof. The proof follows exactly the same lines as those of Proposition 4 with Q(θ,θˆ)\nreplaced by Q(θ,θ) and just (A5) applied in the final step. Proposition 7 (µ-Smoothness). Let (A1) and (A2) be fulfilled. Then there exists µ > 0\nsuch that Q(·,θ∗) is strongly µ-smooth on B (θ∗). ε\nProof.",
+      "size": 384,
+      "sentences": 8
+    },
+    {
+      "id": 64,
+      "content": "2) be fulfilled. Then there exists µ > 0\nsuch that Q(·,θ∗) is strongly µ-smooth on B (θ∗). ε\nProof. Under regularity assumptions of (A1) we can switch the following differentiation and\nintegration, and applying subsequently (A2), we get\n∇2Q(θ∗,θ∗) = E E (cid:2) ∇2logp (x,y) (cid:3) ≥ −λ Id. (7)\n1 y∼p θ∗ x∼P X|Yθ∗=y θ X,Y θ∗ 2\nBy (A1) the map ∇2Q(·,θ∗) is continuous on B (θ∗). Hence, for ε > 0 small enough,\n1 ε\nµ-smoothness follows.",
+      "size": 435,
+      "sentences": 6
+    },
+    {
+      "id": 65,
+      "content": "the map ∇2Q(·,θ∗) is continuous on B (θ∗). Hence, for ε > 0 small enough,\n1 ε\nµ-smoothness follows. 3.4 Step Size Choice Revisited\nThe result in Theorem 2, in particular the constraint to γ < λ stems from the a prior choice\nof the step size which is optimal in the classic gradient descent mechanism for λ-strong\nconvex and µ-smooth objectives. Alternatively, we can choose the step-size later and hence\nrelax the assumptions slightly. This is the goal of this subsection.",
+      "size": 472,
+      "sentences": 5
+    },
+    {
+      "id": 66,
+      "content": "the step-size later and hence\nrelax the assumptions slightly. This is the goal of this subsection. As a classic result for a (local) λ-strong concave and µ-smooth function q with unique\nmaximizer θ∗, the gradient ascent iterates\nθ(k+1) = θ(k)+τ∇q(θ(k)),\n11\n===  12 ===\nsatisfy\n(cid:18) (cid:19)\n2µλ\n∥θ(k+1)−θ∗∥2 ≤ 1− τ ∥θ(k)−θ∗∥2. µ+λ\nLet Q be locally γ-gradient smooth.",
+      "size": 370,
+      "sentences": 4
+    },
+    {
+      "id": 67,
+      "content": "tisfy\n(cid:18) (cid:19)\n2µλ\n∥θ(k+1)−θ∗∥2 ≤ 1− τ ∥θ(k)−θ∗∥2. µ+λ\nLet Q be locally γ-gradient smooth. Then, we have for q(θ) := Q(θ,θ∗) that the EM-iterates\nθ(k) fulfill\n∥θ(k+1)−θ∗∥ = ∥θ(k)+τ∇ 1 Q(θ,θ(k)) (cid:12) (cid:12) θ=θ(k) −θ∗∥\n≤ ∥θ(k)+τ∇q(θ(k))−θ∗∥+τ∥∇ 1 Q(θ,θ(k)) (cid:12) (cid:12) θ=θ(k) −∇q(θ(k))∥\n(cid:32)(cid:115) (cid:33)\n2µλ\n≤ 1− τ +τγ ∥θ(k)−θ∗∥. µ+λ\nConsequently, convergence can be assured if we find a step size τ > 0 such that\n√ 2µλ\n0 < 1−τc+τγ < 1, c := .",
+      "size": 473,
+      "sentences": 4
+    },
+    {
+      "id": 68,
+      "content": "ly, convergence can be assured if we find a step size τ > 0 such that\n√ 2µλ\n0 < 1−τc+τγ < 1, c := . (8)\nλ+µ\nWe have the following lemma. Lemma 8. For any µ,λ > 0 and γ such that 0 ≤ γ < c = 2µλ, there exists a step size\nµ+λ\nτ ∈ (0,c−1) such the gradient ascent iterates in the EM-Algorithm convergence to θ∗. Proof. Since τ < c−1, the square root is in (0,1). For γ = 0 we are done. Assume that\nγ > 0.",
+      "size": 401,
+      "sentences": 8
+    },
+    {
+      "id": 69,
+      "content": "to θ∗. Proof. Since τ < c−1, the square root is in (0,1). For γ = 0 we are done. Assume that\nγ > 0. Then (8) implies immediately τ < γ−1 so that τ < min{c−1,γ−1} and then\n2γ −c\n(1−τc) < (1−τγ)2 ⇔ < τ.\nγ2\nHence to get a non-empty set of step sizes, we need\n2γ −c\n< min\n(cid:8) c−1,γ−1(cid:9)\n. γ2\nWhile 2γ−c < 1 is always fulfilled for c ̸= γ, the condition 2γ−c < 1 holds true if and only if\nγ2 c γ2 γ\nγ < c.\nIf we additionally assume µ ≥ λ, then c ≥ λ, with equality if and only if µ = λ.",
+      "size": 489,
+      "sentences": 7
+    },
+    {
+      "id": 70,
+      "content": "f\nγ2 c γ2 γ\nγ < c.\nIf we additionally assume µ ≥ λ, then c ≥ λ, with equality if and only if µ = λ. In\nparticular in the case µ > λ, we can relax the constraints on γ from [2], i.e. 0 ≤ γ < λ,\nfor convergence to the range 0 ≤ γ < c with c from (8). The resulting improvement is\nillustrated in Figure 1.",
+      "size": 302,
+      "sentences": 4
+    },
+    {
+      "id": 71,
+      "content": "gence to the range 0 ≤ γ < c with c from (8). The resulting improvement is\nillustrated in Figure 1. 12\n===  13 ===\nFigure 1: Comparison of c = 2µλ and λ for fixed values of λ = 0.2,1,2 for a range of µ > λ.\nµ+λ\n4 Verification of Assumptions for Mixed Noise Model\nHere, we verify the assumptions of our mixed noise error model, in order to apply our\nproposed theory.",
+      "size": 365,
+      "sentences": 3
+    },
+    {
+      "id": 72,
+      "content": "e, we verify the assumptions of our mixed noise error model, in order to apply our\nproposed theory. Throughout the analysis, we impose the following additional assumptions\nto ensure well-posedness of the model and validity of the theoretical results:\n• Regularity and growth of the forward model: Each component f\ni\n: Rdx → R is\ncontinuously differentiable and satisfies the bounded gradient conditions:\n∥∇f (x)∥ ≤ C for all x ∈ Rdx.",
+      "size": 433,
+      "sentences": 2
+    },
+    {
+      "id": 73,
+      "content": "nuously differentiable and satisfies the bounded gradient conditions:\n∥∇f (x)∥ ≤ C for all x ∈ Rdx. i f′\n• Moment bounds: Existence of first and second moment in Y-space under the joint\ndistribution. • Prior regularity: Thepriordensityp isLipschitzcontinuousandhasfinitemoments\nX\nup to order 4:\nE [∥x∥4] < ∞.",
+      "size": 308,
+      "sentences": 3
+    },
+    {
+      "id": 74,
+      "content": "egularity: Thepriordensityp isLipschitzcontinuousandhasfinitemoments\nX\nup to order 4:\nE [∥x∥4] < ∞. x∼pX\n• Compact parameter domain: The parameter space Θ ⊂ R2 is compact with\nstrictly positive lower bounds\na2 ∈ [a ,a ], b2 ∈ [b ,b ], with a ,b > 0.\nmin max min max min min\n• Non-degeneracy of the forward map: For at least one i, the map f is non-\ni\nconstant on the support of p , ensuring identifiability of the noise components and\nX\nstrict positivity of the Fisher information matrix.",
+      "size": 488,
+      "sentences": 2
+    },
+    {
+      "id": 75,
+      "content": "g identifiability of the noise components and\nX\nstrict positivity of the Fisher information matrix. 13\n===  14 ===\nWe consider the space\nΘ := {θ = (a2,b2) : a2 ∈ [a ,a ],b2 ∈ [b ,b ]}\nmin max min max\nwhere a ,b > 0.",
+      "size": 215,
+      "sentences": 2
+    },
+    {
+      "id": 76,
+      "content": "e consider the space\nΘ := {θ = (a2,b2) : a2 ∈ [a ,a ],b2 ∈ [b ,b ]}\nmin max min max\nwhere a ,b > 0. Defining for F = (f ,...,f )T and y = (y ,...,y )T the functions\nmin min 1 n 1 n\nσ (x) := a2+b2f (x)2, r (x) := r (x,y) = y −f (x)\ni i i i i i\nthe log likelihood is given (up to an additive constant) by\nlogp (y) = logN (cid:0) y|(F(x),a2I +b2diag(F(x)2(cid:1)\nY |X=x n\nθ\n1 (cid:32) (cid:88) n r i (x,y)2 (cid:33)\n= − logσ (x)+ .",
+      "size": 428,
+      "sentences": 2
+    },
+    {
+      "id": 77,
+      "content": "(F(x),a2I +b2diag(F(x)2(cid:1)\nY |X=x n\nθ\n1 (cid:32) (cid:88) n r i (x,y)2 (cid:33)\n= − logσ (x)+ . i\n2 σ (x)\ni\ni=1\nAssumption (A1) To verify assumption (A1), we calculate the derivatives of the log-\nlikelihood\n1 (cid:88)\nn (cid:18)\nr i\n(x,y)2(cid:19)\nlogp (y) = − logσ (x)+ ,\nY θ |X=x 2 i σ (x)\ni\ni=1\nwhere r (x,y) := y −f (x) and σ (x) := a2+b2f (x)2.",
+      "size": 353,
+      "sentences": 2
+    },
+    {
+      "id": 78,
+      "content": "gp (y) = − logσ (x)+ ,\nY θ |X=x 2 i σ (x)\ni\ni=1\nwhere r (x,y) := y −f (x) and σ (x) := a2+b2f (x)2. Then:\ni i i i i\n1 (cid:88)\nn (cid:18)\n1 r i\n(x,y)2(cid:19)\n∂ logp (y) = − − ,\na2 Y θ |X=x 2 σ (x) σ (x)2\ni i\ni=1\n∂ logp (y) = − 1 (cid:88)\nn\nf (x)2\n(cid:18)\n1 − r i\n(x,y)2(cid:19)\n.",
+      "size": 281,
+      "sentences": 2
+    },
+    {
+      "id": 79,
+      "content": "θ |X=x 2 σ (x) σ (x)2\ni i\ni=1\n∂ logp (y) = − 1 (cid:88)\nn\nf (x)2\n(cid:18)\n1 − r i\n(x,y)2(cid:19)\n. b2 Y θ |X=x 2 i σ (x) σ (x)2\ni i\ni=1\nFor the second-order partial derivatives (Hessian), we obtain:\n∂2 logp (y) = 1 (cid:88)\nn (cid:18)\n1 − 2r i\n(x,y)2(cid:19)\n,\na2 Y θ |X=x 2 σ (x)2 σ (x)3\ni i\ni=1\n∂ ∂ logp (y) = 1 (cid:88)\nn\nf (x)2\n(cid:18)\n1 − 2r i\n(x,y)2(cid:19)\n,\na2 b2 Y θ |X=x 2 i σ (x)2 σ (x)3\ni i\ni=1\n∂2 logp (y) = 1 (cid:88)\nn\nf (x)4\n(cid:18)\n1 − 2r i\n(x,y)2(cid:19)\n.",
+      "size": 476,
+      "sentences": 2
+    },
+    {
+      "id": 80,
+      "content": "|X=x 2 i σ (x)2 σ (x)3\ni i\ni=1\n∂2 logp (y) = 1 (cid:88)\nn\nf (x)4\n(cid:18)\n1 − 2r i\n(x,y)2(cid:19)\n. b2 Y θ |X=x 2 i σ (x)2 σ (x)3\ni i\ni=1\nWe assume hat the required moments exist under the distribution p p . X|Y =y θ∗\nθ\nSince the log-likelihood is smooth in θ ∈ Θ, and the derivatives involve rational expres-\nsions in f (x), r (x,y), and σ (x), all of which are smooth functions of x and y, the gradient\ni i i\nand Hessian are continuous.",
+      "size": 438,
+      "sentences": 3
+    },
+    {
+      "id": 81,
+      "content": "σ (x), all of which are smooth functions of x and y, the gradient\ni i i\nand Hessian are continuous. Furthermore, under moment bounds on y, the gradient and\nHessian norms are integrable, since all involved components are uniformly bounded in x as\nrational polynomials in f (x) with nominator of degree larger or equal to the nominators. i\nTherefore,theconditionsofAssumption(A1)—namely,differentiabilityofθ (cid:55)→ logp (x,y)\nX,Y\nθ\nand integrable bounds on its gradient and Hessian—are satisfied.",
+      "size": 497,
+      "sentences": 3
+    },
+    {
+      "id": 82,
+      "content": "lityofθ (cid:55)→ logp (x,y)\nX,Y\nθ\nand integrable bounds on its gradient and Hessian—are satisfied. 14\n===  15 ===\nAssumption (A2)\nExistence of λ > 0: We derive conditions to ensure the existence of a uniform lower\n∗\nbound λ > 0 for the Fisher information matrix.",
+      "size": 263,
+      "sentences": 2
+    },
+    {
+      "id": 83,
+      "content": "ditions to ensure the existence of a uniform lower\n∗\nbound λ > 0 for the Fisher information matrix. ∗\nRecall that the likelihood under the mixed noise model is given by\n(cid:89)\nn (cid:18)\n1\n(cid:20)\n(y i −f i\n(x))2(cid:21)(cid:19)\n(cid:89)\nn\n1\n(cid:18)\n1(y i −f i\n(x))2(cid:19)\np (y) ∝ exp − logσ (x)+ = exp − ,\nY|X=x i=1 2 i σ i (x) i=1 (cid:112) σ i (x) 2 σ i (x)\nwhere we define σ (x) := a2+b2f (x)2 and r (x,y) := y −f (x).",
+      "size": 428,
+      "sentences": 2
+    },
+    {
+      "id": 84,
+      "content": "i (x) i=1 (cid:112) σ i (x) 2 σ i (x)\nwhere we define σ (x) := a2+b2f (x)2 and r (x,y) := y −f (x). Consequently,\ni i i i i\np (y) = N(f(x),Σ(x)), f(x) = (f (x))n , Σ(x) = diag(σ (x),...,σ (x)). Y|X=x i i=1 1 n\nFrom this, we obtain\nE [r (x,y)] = 0, E [r (x,y)2] = σ (x). Y|X=x i Y|X=x i i\nNow consider the joint density p (y,x | θ) = p (y | θ)p (x).",
+      "size": 348,
+      "sentences": 4
+    },
+    {
+      "id": 85,
+      "content": "[r (x,y)2] = σ (x). Y|X=x i Y|X=x i i\nNow consider the joint density p (y,x | θ) = p (y | θ)p (x). Since the prior p\nY,X Y|X=x X X\nis independent of θ, the Fisher information matrix becomes\nI(θ) := −E [∇2logp (x,y)] = −E (cid:2)E [∇2logp (y)] (cid:3) . X,Y θ X,Y θ X Y|X=x θ Y θ |X=x\nUsing the derivatives computed in the verification of Assumption (A1), we obtain:\n1 (cid:88)\nn (cid:90)\n1\n(cid:18)\n1 f\n(x)2(cid:19)\nI(θ) = i p (x)dx.",
+      "size": 433,
+      "sentences": 4
+    },
+    {
+      "id": 86,
+      "content": "of Assumption (A1), we obtain:\n1 (cid:88)\nn (cid:90)\n1\n(cid:18)\n1 f\n(x)2(cid:19)\nI(θ) = i p (x)dx. 2 σ (x)2 f (x)2 f (x)4 X\ni=1\nRdx i i i\nDefine for each i:\n(cid:90) 1 (cid:90) f (x)2 (cid:90) f (x)4\ni i\nA := p (x)dx, B := p (x)dx, C := p (x)dx,\ni σ (x)2 X i σ (x)2 X i σ (x)2 X\ni i i\nand set\nn n n\n(cid:88) (cid:88) (cid:88)\nA = A , B = B , C = C . i i i\ni=1 i=1 i=1\nThen the Fisher information matrix becomes:\n(cid:18) (cid:19)\n1 A B\nI(θ) = .",
+      "size": 444,
+      "sentences": 3
+    },
+    {
+      "id": 87,
+      "content": "C . i i i\ni=1 i=1 i=1\nThen the Fisher information matrix becomes:\n(cid:18) (cid:19)\n1 A B\nI(θ) = . 2 B C\nA symmetric 2×2 matrix is positive definite if and only if its leading principal minors\nare positive:\nA > 0 and AC −B2 > 0. 15\n===  16 ===\n1. Positivity of A: Since a2+b2f (x)2 > 0 for all x (because a2 > 0 and b2 ≥ 0), we\ni\nhave 1/σ (x)2 > 0. If p has full support and (a2,b2) ∈ Θ is bounded away from zero\ni X\n(i.e., a > 0), then each A > 0, hence A > 0.\nmin i\n2.",
+      "size": 470,
+      "sentences": 6
+    },
+    {
+      "id": 88,
+      "content": "and (a2,b2) ∈ Θ is bounded away from zero\ni X\n(i.e., a > 0), then each A > 0, hence A > 0.\nmin i\n2. Strict positivity of AC −B2: Apply the Cauchy–Schwarz inequality to each i:\n(cid:18)(cid:90) f (x)2 (cid:19)2 (cid:18)(cid:90) 1 (cid:19)(cid:18)(cid:90) f (x)4 (cid:19)\nB2 = i p (x)dx ≤ p (x)dx i p (x)dx = A C ,\ni σ (x)2 X σ (x)2 X σ (x)2 X i i\ni i i\nwithequalityifandonlyiff (x) ≡ const.",
+      "size": 389,
+      "sentences": 2
+    },
+    {
+      "id": 89,
+      "content": "x)dx i p (x)dx = A C ,\ni σ (x)2 X σ (x)2 X σ (x)2 X i i\ni i i\nwithequalityifandonlyiff (x) ≡ const. SummingoveriandapplyingCauchy–Schwarz\ni\nagain:\n(cid:32) (cid:33)2 (cid:32) (cid:33)2\n(cid:88) (cid:88)(cid:112)\nB2 = B ≤ A C ≤ AC,\ni i i\ni i\nwith strict inequality if f ̸≡ const for at least one i. This is generically satisfied in\ni\ninverse problems, as constant f would prevent identifiability of noise components.",
+      "size": 415,
+      "sentences": 3
+    },
+    {
+      "id": 90,
+      "content": "y satisfied in\ni\ninverse problems, as constant f would prevent identifiability of noise components. Continuity: Since the entries of the Fisher matrix depend continuously on θ via σ (x) =\ni\na2+b2f (x)2, and both a2 and b2 are bounded away from zero on the compact domain Θ,\ni\nthe mapping θ (cid:55)→ ∇2logp (x,y) is continuous on Θ.\nθ X,Y θ\nAssumption (A3) To verify Assumption (A3), we follow the stability result in [25, Theo-\nrem 14], which gives Lipschitz continuity of the posterior θ (cid:55)→ P in the Wasserstein-1\nX|Y =y\nθ\ndistance.",
+      "size": 541,
+      "sentences": 2
+    },
+    {
+      "id": 91,
+      "content": "h gives Lipschitz continuity of the posterior θ (cid:55)→ P in the Wasserstein-1\nX|Y =y\nθ\ndistance. The key requirement is to bound the difference between log-likelihoods, i.e.,\n(cid:13) (cid:13)\n(cid:13)logp (y)−logp (y)(cid:13) :=\n(cid:13) Y θ1 |X=x Y θ2 |X=x (cid:13) Lp(PX)\n(cid:18)(cid:90) (cid:12) (cid:12)p (cid:19)1/p\n(cid:12)logp (y)−logp (y)(cid:12) p (x)dx\nRd\n(cid:12) Y θ1 |X=x Y θ2 |X=x (cid:12) X\nfor p = 1,2.",
+      "size": 423,
+      "sentences": 2
+    },
+    {
+      "id": 92,
+      "content": "p\n(cid:12)logp (y)−logp (y)(cid:12) p (x)dx\nRd\n(cid:12) Y θ1 |X=x Y θ2 |X=x (cid:12) X\nfor p = 1,2. To estimate this, we first define a bound on the derivatives as\n(cid:8)(cid:12) (cid:12) (cid:12) (cid:12)(cid:9)\nmaxgrad l(x,y) := max (cid:12)∂\na2\nlogp\nY\nθ\n|X=x\n(y)(cid:12),(cid:12)∂\nb2\nlogp\nY\nθ\n|X=x\n(y)(cid:12) .",
+      "size": 315,
+      "sentences": 2
+    },
+    {
+      "id": 93,
+      "content": "xgrad l(x,y) := max (cid:12)∂\na2\nlogp\nY\nθ\n|X=x\n(y)(cid:12),(cid:12)∂\nb2\nlogp\nY\nθ\n|X=x\n(y)(cid:12) . Since a2 > 0, there exists C = C (y ,a2,b2) > 0 such that for all z ∈ R,\na2 a2 i\n0 ≤ (cid:12) (cid:12) (cid:12) (cid:12)(a2+ 1 b2z2) − (a ( 2 y + i − b2 z z ) 2 2 )2 (cid:12) (cid:12) (cid:12) (cid:12) < C a2 (y i ,a2,b2)\nand\n0 ≤ (cid:12) (cid:12) (cid:12) (cid:12) z2 (cid:18) (a2+ 1 b2z2) − (a ( 2 y + i − b2 z z ) 2 2 )2 (cid:19)(cid:12) (cid:12) (cid:12) (cid:12) < C b2 (y i ,a2,b2),\n16\n===  17 ===\nwhere we used the fact that each denominator is a polynomials in z of order higher or equal\nthen the polynomial in the nominator.",
+      "size": 633,
+      "sentences": 2
+    },
+    {
+      "id": 94,
+      "content": "ch denominator is a polynomials in z of order higher or equal\nthen the polynomial in the nominator. Consequently, independent of x we can bound\nn\n1 (cid:88)\nmaxgrad l(x,y) ≤ sup max{C (y ,a2,b2),C (y ,a2,b2)} =: C (y). 2\na2 i b2 i grad\nθ\ni=1\nHence, by the mean value theorem in parameter space\n(cid:12) (cid:12)\n(cid:12)logp (y)−logp (y)(cid:12) ≤ C (y)·∥θ −θ ∥.",
+      "size": 362,
+      "sentences": 3
+    },
+    {
+      "id": 95,
+      "content": "lue theorem in parameter space\n(cid:12) (cid:12)\n(cid:12)logp (y)−logp (y)(cid:12) ≤ C (y)·∥θ −θ ∥. (cid:12) Y θ1 |X=x Y θ2 |X=x (cid:12) grad 1 2\nAs a result,\n(cid:13) (cid:13)\n(cid:13)logp (y)−logp (y)(cid:13) ≤ L(y)∥θ −θ ∥,\n(cid:13) Y θ1 |X=x Y θ2 |X=x (cid:13) Lp(PX) 1 2\nfor p = 1,2, and some constant L(y) depending polynomial of degree 2 on ∥y∥.",
+      "size": 352,
+      "sentences": 2
+    },
+    {
+      "id": 96,
+      "content": "=x (cid:13) Lp(PX) 1 2\nfor p = 1,2, and some constant L(y) depending polynomial of degree 2 on ∥y∥. Moreover, by [25, Proposition 6], the normalization constants Z ,Z of the posterior\n1 2\ndensities are bounded from below\n(cid:18) (cid:13) (cid:13) (cid:19)\nmin(Z ,Z ) ≥ Cexp −(cid:13)logp (y)−logp (y)(cid:13) .",
+      "size": 311,
+      "sentences": 2
+    },
+    {
+      "id": 97,
+      "content": "om below\n(cid:18) (cid:13) (cid:13) (cid:19)\nmin(Z ,Z ) ≥ Cexp −(cid:13)logp (y)−logp (y)(cid:13) . 1 2 (cid:13) Y θ1 |X=x Y θ2 |X=x (cid:13) L1(PX)\nTherefore, all assumptions of [25, Theorem 14] are satisfied under the moment and regularity\nconditions and we conclude\nW (P ,P ) ≤ L(y)∥θ −θ ∥,\n1 X|Y =y X|Y =y 1 2\nθ1 θ2\ni.e., the posterior is locally Lipschitz in theWasserstein-1distance with a constant depending\non the observation y. This verifies Assumption (A3).",
+      "size": 467,
+      "sentences": 3
+    },
+    {
+      "id": 98,
+      "content": "asserstein-1distance with a constant depending\non the observation y. This verifies Assumption (A3). Assumption (A4) We establish a Lipschitz bound on the gradient of the complete-data\nlog-likelihood ∇ logp (y,x) with respect to the data variable x ∈ Rdx . θ X,Y θ\nDifference in ∂ Terms. Let\na2\n1 r (x)2\ng (x) := − i , with r (x) := y −f (x).",
+      "size": 341,
+      "sentences": 5
+    },
+    {
+      "id": 99,
+      "content": "ble x ∈ Rdx . θ X,Y θ\nDifference in ∂ Terms. Let\na2\n1 r (x)2\ng (x) := − i , with r (x) := y −f (x). i σ (x) σ (x)2 i i i\ni i\nThen,\n|∂ logp (x ,y)−∂ logp (x ,y)|\na2 X,Y θ 1 a2 X,Y θ 2\n(cid:12) (cid:12)\n≤ (cid:12)∂\na2\nlogp\nY\nθ\n|X=x1\n(y)−∂\na2\nlogp\nY\nθ\n|X=x2\n(y)(cid:12)+|logp\nX\n(x\n1\n)−logp\nX\n(x\n2\n)|\nn\n1 (cid:88)\n≤ |g (x )−g (x )|+|logp (x )−logp (x )|. i 1 i 2 X 1 X 2\n2\ni=1\n17\n===  18 ===\nTo bound |g (x )−g (x )|, apply the mean value theorem.",
+      "size": 443,
+      "sentences": 5
+    },
+    {
+      "id": 100,
+      "content": "(x )|. i 1 i 2 X 1 X 2\n2\ni=1\n17\n===  18 ===\nTo bound |g (x )−g (x )|, apply the mean value theorem. The gradient reads:\ni 1 i 2\n2b2f (x) 4b2f (x)r (x)2 2r (x)\ni i i i\n∇ g (x) = − ∇ f (x)+ ∇ f (x)+ ∇ f (x)\nx i σ (x)2 x i σ (x)3 x i σ (x)2 x i\ni i i\n(cid:20) 2b2f (x) 4b2f (x)r (x)2 2r (x) (cid:21)\ni i i i\n= − + + ∇ f (x).",
+      "size": 321,
+      "sentences": 3
+    },
+    {
+      "id": 101,
+      "content": "(x)3 x i σ (x)2 x i\ni i i\n(cid:20) 2b2f (x) 4b2f (x)r (x)2 2r (x) (cid:21)\ni i i i\n= − + + ∇ f (x). σ (x)2 σ (x)3 σ (x)2 x i\ni i i\nLet f (x) = z and define\ni\n2b2z 4b2z(y −z)2 2(y −z)\ni i\nh(z) = − + +\n(a2+b2z2)2 (a2+b2z2)3 (a2+b2z2)2\nIt holds a2+b2z2 ≥ a > 0 for all z ∈ R and |h(z)| → 0 for |z| → ∞. Consequently h(z)\nmin\nattains a finite maximum, i.e.",
+      "size": 352,
+      "sentences": 3
+    },
+    {
+      "id": 102,
+      "content": "> 0 for all z ∈ R and |h(z)| → 0 for |z| → ∞. Consequently h(z)\nmin\nattains a finite maximum, i.e. there exists C = C (a2,b2,y ) > 0 with |h(z)| ≤ C < ∞ for\nh h i h\nall z ∈ R. Together with the uniform bound assumption on ∇ f (x), we obtain\nx i\n||∇ g (x)|| ≤ C (a2,b2,y )C =: C (y ,θ). x i h i f′ i,1 i\nDifference in ∂ Terms. Let\nb2\nh (x) := f (x)2·g (x). i i i\nThen we get\nn\n1 (cid:88)\n|∂ logp (x ,y)−∂ logp (x ,y)| ≤ |h (x )−h (x )|+|logp (x )−logp (x )|.",
+      "size": 457,
+      "sentences": 6
+    },
+    {
+      "id": 103,
+      "content": "i i\nThen we get\nn\n1 (cid:88)\n|∂ logp (x ,y)−∂ logp (x ,y)| ≤ |h (x )−h (x )|+|logp (x )−logp (x )|. b2 X,Y θ 1 b2 X,Y θ 2 2 i 1 i 2 X 1 X 2\ni=1\nLet again f (x) = z, then g (x) = 1 − (yi−z)2 . We bound |h (x )−h (x )| with\ni i a2+b2z2 (a2+b2z2)2 i 1 i 2\nmean value theorem and therefore define\n(cid:18) 1 (y −z)2 (cid:19)\nH(z) = z2 − i .",
+      "size": 336,
+      "sentences": 3
+    },
+    {
+      "id": 104,
+      "content": "+b2z2)2 i 1 i 2\nmean value theorem and therefore define\n(cid:18) 1 (y −z)2 (cid:19)\nH(z) = z2 − i . a2+b2z2 (a2+b2z2)2\nThen\n(cid:18) 1 (y −z)2 (cid:19) (cid:18) −2b2z 2(y −z) 4b2z(y −z)2(cid:19)\nH′(z) = 2z − i +z2 + i + i\na2+b2z2 (a2+b2z2)2 (a2+b2z2)2 (a2+b2z2)2 (a2+b2z2)3\nand we conclude |H′(z)| ∈ O(|z|−1) for |z| → ∞. Hence we have |H′(z)| ≤ C (y ,θ) for a\ni,2 i\nconstant C > 0 independent of z = f (x) and in particular of x. This yields\ni,2 i\n|h (x )−h (x )| ≤ C (y ,θ)∥x −x ∥.",
+      "size": 483,
+      "sentences": 4
+    },
+    {
+      "id": 105,
+      "content": "dependent of z = f (x) and in particular of x. This yields\ni,2 i\n|h (x )−h (x )| ≤ C (y ,θ)∥x −x ∥. i 1 i 2 i,2 i 1 2\n18\n===  19 ===\nCombining both terms. Now, the gradient difference satisfies\n∥∇ logp (x ,y)−∇ logp (x ,y)∥2 = |∂ ·|2+|∂ ·|2\nθ X,Y θ 1 θ X,Y θ 2 a2 b2\n(cid:32) n (cid:33)2\n1 (cid:88)\n≤ C (y ,θ)∥x −x ∥+|logp (x )−logp (x )|\ni,1 i 1 2 X 1 X 2\n2\ni=1\n(cid:32) n (cid:33)2\n1 (cid:88)\n+ C (y ,θ)∥x −x ∥+|logp (x )−logp (x )| .",
+      "size": 436,
+      "sentences": 4
+    },
+    {
+      "id": 106,
+      "content": "|\ni,1 i 1 2 X 1 X 2\n2\ni=1\n(cid:32) n (cid:33)2\n1 (cid:88)\n+ C (y ,θ)∥x −x ∥+|logp (x )−logp (x )| . i,2 i 1 2 X 1 X 2\n2\ni=1\nAssume that logp is Lipschitz with constant L . Then it holds\nX 0\n|logp (x )−logp (x )| ≤ L ∥x −x ∥. X 1 X 2 0 1 2\nWe define\n(cid:32) n (cid:33)2 (cid:32) n (cid:33)2\n(cid:88) 1 (cid:88) 1\nC (y,θ) := C (y ,θ)+L + C (y ,θ)+L . total i,1 i 0 i,2 i 0\n2 2\ni=1 i=1\nThen we obtain the Lipschitz bound\n(cid:112)\n∥∇ logp (x ,y)−∇ logp (x ,y)∥ ≤ C (y,θ)∥x −x ∥.",
+      "size": 476,
+      "sentences": 5
+    },
+    {
+      "id": 107,
+      "content": "=1 i=1\nThen we obtain the Lipschitz bound\n(cid:112)\n∥∇ logp (x ,y)−∇ logp (x ,y)∥ ≤ C (y,θ)∥x −x ∥. θ X,Y θ 1 θ X,Y θ 2 total 1 2\nThis verifies Assumption (A4). Assumption (A5) From the discussion of (A3) and (A4) we have\nL(y) ≤ C (1+∥y∥2) and L (θ,y) ≤ C (1+∥y∥2)\n1 g 2\nuniformly over θ ∈ B (θ∗). Combining these two relations results in\nε\nL(y)·L (θ,y) ≤ C(1+∥y∥2)2.\ng\nWe now verify integrability of this upper bound under the marginal distribution p .",
+      "size": 453,
+      "sentences": 4
+    },
+    {
+      "id": 108,
+      "content": "≤ C(1+∥y∥2)2.\ng\nWe now verify integrability of this upper bound under the marginal distribution p . Note\nθ∗\nthat\nY = F(X)+η, η ∼ N (cid:0) 0,a2I +b2diag(F(X)2) (cid:1) . Conditioned on X = x, the distribution Y | X = x is Gaussian, i.e.,\nY | X = x ∼ N(F(x),a2I +b2diag(F(x)2)). Each component Y | X = x has variance at least a2 and by the linear growth of f we get\ni i\nVar(Y | X = x) ≤ a2+b2C′2∥x∥2.",
+      "size": 399,
+      "sentences": 4
+    },
+    {
+      "id": 109,
+      "content": "x has variance at least a2 and by the linear growth of f we get\ni i\nVar(Y | X = x) ≤ a2+b2C′2∥x∥2. i f\n19\n===  20 ===\nThis implies that Y | X = x has sub-Gaussian tails with variance proxy growing at most\nquadratically in ∥x∥. Since X ∼ p has finite moments (e.g., Gaussian), the marginal\nX\nY ∼ p has finite fourth moment\nθ∗\n(cid:90)\nE [∥y∥4] = ∥y∥4 dp (y) dp (x) < ∞. y∼p θ∗ Y\nθ\n∗|X=x X\nTherefore,\nE [(1+∥y∥2)2] < ∞,\ny∼p θ∗\nand hence γ(ε) < ∞. Remark 9.",
+      "size": 454,
+      "sentences": 5
+    },
+    {
+      "id": 110,
+      "content": ") dp (x) < ∞. y∼p θ∗ Y\nθ\n∗|X=x X\nTherefore,\nE [(1+∥y∥2)2] < ∞,\ny∼p θ∗\nand hence γ(ε) < ∞. Remark 9. With similar arguments and assumptions in 3.1 to [27, 25] one can also show\nlocal Lipschitz continuity for the total variation distance. Then (A4) is changed, that we\nneed boundedness of the score ∇ logp instead of Lipschitz. θ X,Y θ\nRemark 10. While we outlined now conditions under which the convergence is satisfied, it\nis not clear in practice for which inverse problems they are satisfied.",
+      "size": 494,
+      "sentences": 7
+    },
+    {
+      "id": 111,
+      "content": "onvergence is satisfied, it\nis not clear in practice for which inverse problems they are satisfied. However, preliminary\nexperiments suggest, that the condition γ < c can be satisfied in the total variation case. Unfortunately, an analytical study of when this is satisfied is out of reach, due to the non-\nGaussianity of the posteriors, as soon as b > 0.",
+      "size": 355,
+      "sentences": 3
+    },
+    {
+      "id": 112,
+      "content": "this is satisfied is out of reach, due to the non-\nGaussianity of the posteriors, as soon as b > 0. A detailed comparison of the tightness of\nthese analytical bounds of TV and Wasserstein, and the comparison to the true γ of the\nQ-function is left for future work. 5 Numerical Examples\nIn this section, we aim to show that the resulting algorithm works remarkably well in\nhigh dimensions, i.e., on imaging examples.",
+      "size": 415,
+      "sentences": 3
+    },
+    {
+      "id": 113,
+      "content": "w that the resulting algorithm works remarkably well in\nhigh dimensions, i.e., on imaging examples. For this, we modify the algorithm from [11]\nby replacing their conditional normalizing flows with flow matching. The flow matching\nframework [18] has been shown to be very efficient.",
+      "size": 282,
+      "sentences": 3
+    },
+    {
+      "id": 114,
+      "content": "ing flows with flow matching. The flow matching\nframework [18] has been shown to be very efficient. First, we modify the algorithm of [11] in two ways, namely that we replace the learning\nin the E-step by flow matching and further, the learning of the noise parameters (a,b) that\nwas done by another EM in [11] by a gradient descent based scheme. The algorithm is\nsummarized in Alg. 1. 5.1 MNIST Denoising\nWe apply our flow matching noise estimation algorithm to MNIST denoising.",
+      "size": 479,
+      "sentences": 6
+    },
+    {
+      "id": 115,
+      "content": "g. 1. 5.1 MNIST Denoising\nWe apply our flow matching noise estimation algorithm to MNIST denoising. For this we\nchoose a = 0.1 and b = 0.3 and rescale the MNIST images to [−1,1]. We generate\ntrue true\n16 noisy measurements, as can be seen on the left of Fig. 2. Then we iterate between the\nflow matching algorithm for the current estimates of (a,b) and then estimate (a,b) based on\nthe measurements.",
+      "size": 399,
+      "sentences": 6
+    },
+    {
+      "id": 116,
+      "content": "ing algorithm for the current estimates of (a,b) and then estimate (a,b) based on\nthe measurements. For the final flow matching model, one can see the posterior (aka clean)\nsamples of the flow matching model on the right of Fig. 2. We show the convergence of a\nand b over the epochs in Fig. 3. Here, a decreases towards the true value and b increases\ntowards the true value. The initial estimation was both for a and b at 1. 2\n20\n===  21 ===\nFigure 2: Conditions and resulting flow matching samples.",
+      "size": 499,
+      "sentences": 8
+    },
+    {
+      "id": 117,
+      "content": "s both for a and b at 1. 2\n20\n===  21 ===\nFigure 2: Conditions and resulting flow matching samples. Figure 3: Convergence of a and b for the MNIST denoising imaging example.",
+      "size": 173,
+      "sentences": 3
+    },
+    {
+      "id": 118,
+      "content": "ng flow matching samples. Figure 3: Convergence of a and b for the MNIST denoising imaging example. 21\n===  22 ===\nAlgorithm 1 EM Algorithm (Mixed Noise Estimation via Flow Matching)\nInput: y˜∈ Rn and initial estimate θ by some initial guess (a,b)\n0\nfor r = 0,1,...,R do\nE-Step: Simulate x ∼ P , and y ∼ P\nX Y |X=x\nθr\ntrain the velocity field on the loss L(w) = E [∥v (y,x )−(x−z)∥2]\nz,x,y,t t t\nM-Step: Simulate from the current velocity ODE samples x ∼ P for the\nX|Y=y˜\nobservation y˜\ncalculate the loss L˜(θ) = E (cid:2) −logp (y˜) (cid:3) and update θ using some gradi-\nx∼P X|Yθr Y θ |X=x\nent descent based scheme, i.e., set θ(r+1) = θ(r)−η∇ L˜(θ).",
+      "size": 652,
+      "sentences": 3
+    },
+    {
+      "id": 119,
+      "content": "θ using some gradi-\nx∼P X|Yθr Y θ |X=x\nent descent based scheme, i.e., set θ(r+1) = θ(r)−η∇ L˜(θ). θ\nend for\n5.2 Reaction-Diffusion PDE\nIn this example, we consider the forward model of a reaction diffusion equation. The forward\noperator is the solution of the PDE between time 50 and 100. The initial distribution of the\ndata at t = 0 is Gaussian.",
+      "size": 348,
+      "sentences": 4
+    },
+    {
+      "id": 120,
+      "content": "tion of the PDE between time 50 and 100. The initial distribution of the\ndata at t = 0 is Gaussian. The reaction diffusion equation has two components (u,v) and\nreads as\n∂ u = α ∂ u+α ∂ u+R (u,v),\nt u x,x u y,y u\n∂ v = α ∂ v+α ∂ v+R (u,v),\nt v x,x v y,y v\nwhere α and α are the diffusion coefficients and R (u,v) = u−u3−k−v, R (u,v) = u−v\nu v u v\nand β are reaction functions [28].",
+      "size": 381,
+      "sentences": 3
+    },
+    {
+      "id": 121,
+      "content": "usion coefficients and R (u,v) = u−u3−k−v, R (u,v) = u−v\nu v u v\nand β are reaction functions [28]. v\nWe approximate the forward operator based on the PDE bench dataset as provided in\n[28] using a Fourier Neural Operator [17, 16]. Further, our velocity field in the flow matching\nframework is also parameterized by an FNO, see also [12]. We train our flow matching algorithm in conjunction with the (a,b) estimation for 30000\noptimizer steps, where we update (a,b) every 200 steps.",
+      "size": 481,
+      "sentences": 4
+    },
+    {
+      "id": 122,
+      "content": "unction with the (a,b) estimation for 30000\noptimizer steps, where we update (a,b) every 200 steps. We only consider a single image\nfrom a validation dataset as the condition, which is the second from left in Fig. 4. One can\nsee that the posterior mean and ground truth (first and third image) match quite well. The\nposterior standard deviation seems a bit noisy, but is larger where the forward operator is\nlarge. Similarly, the convergence of a and b can be observed in Fig. 5.",
+      "size": 479,
+      "sentences": 7
+    },
+    {
+      "id": 123,
+      "content": "ere the forward operator is\nlarge. Similarly, the convergence of a and b can be observed in Fig. 5. Here, the convergence\nseems more stochastic than in the MNIST example, which we attribute to the larger images\nand therefore worse posterior approximation.",
+      "size": 255,
+      "sentences": 4
+    },
+    {
+      "id": 124,
+      "content": "MNIST example, which we attribute to the larger images\nand therefore worse posterior approximation. 6 Conclusions\nIn this work, we conducted a detailed analysis of a mixed-noise error model frequently\nencountered in physical and chemical applications, and established a convergence result\n22\n===  23 ===\n(a) Ground truth u (b) Measurement u (c) Posterior mean u (d) Posterior std. u\n(e) Ground truth v (f) Measurement v (g) Posterior mean v (h) Posterior std.",
+      "size": 459,
+      "sentences": 3
+    },
+    {
+      "id": 125,
+      "content": "u (d) Posterior std. u\n(e) Ground truth v (f) Measurement v (g) Posterior mean v (h) Posterior std. v\nFigure 4: Ground truth, measurement, posterior mean and standard deviations of the model\nprovided for the u- and v-component. Figure 5: Convergence of a and b for the PDE example. 23\n===  24 ===\nunder idealized but interpretable conditions. Compared to the general conditions in [2], we\nderived alternative criteria that are easier to verify and tailored to the structure of our noise\nmodel.",
+      "size": 493,
+      "sentences": 6
+    },
+    {
+      "id": 126,
+      "content": "ed alternative criteria that are easier to verify and tailored to the structure of our noise\nmodel. In other words, we rephrased the conditions in a more Bayesian language. Still, as outlined in remark 10, a fruitful future research direction is to sharpen the\nbounds, so that the convergence condition γ < c can be guaranteed.",
+      "size": 327,
+      "sentences": 3
+    },
+    {
+      "id": 127,
+      "content": "arch direction is to sharpen the\nbounds, so that the convergence condition γ < c can be guaranteed. Moreover, we extended the EM algorithm to high-dimensional inverse problems by\nincorporating the flow matching framework, enabling efficient posterior approximation and\nparameter estimation in imaging settings.",
+      "size": 310,
+      "sentences": 2
+    },
+    {
+      "id": 128,
+      "content": "framework, enabling efficient posterior approximation and\nparameter estimation in imaging settings. We hope that our analysis contributes to a\nbetter theoretical understanding of mixed-noise models and supports the development of\nconvergence guarantees in simulation-based inference methods [7, 10].",
+      "size": 299,
+      "sentences": 2
+    },
+    {
+      "id": 129,
+      "content": "d supports the development of\nconvergence guarantees in simulation-based inference methods [7, 10]. Acknowledgments\nPH and GS are grateful for funding within the DFG-SPP 2298 ”Theoretical Foundations of\nDeep Learning” (Project: STE 571/17-1) and RG, CS, GS for the support from MATH+\nproject AA5-5, funded by DFG under Germany’s Excellence Strategy – The Berlin Mathe-\nmatics Research Center MATH+ (EXC-2046/1, project ID: 390685689 ).",
+      "size": 435,
+      "sentences": 2
+    },
+    {
+      "id": 130,
+      "content": "nce Strategy – The Berlin Mathe-\nmatics Research Center MATH+ (EXC-2046/1, project ID: 390685689 ). References\n[1] M. S. Albergo and E. Vanden-Eijnden, Building normalizing flows with stochastic\ninterpolants, in The Eleventh International Conference on Learning Representations,\n2023. [2] S. Balakrishnan, M. J. Wainwright, and B. Yu, Statistical guarantees for the\nEM algorithm: From population to sample-based analysis, The Annals of Statistics, 45\n(2014), pp. 77–120.",
+      "size": 470,
+      "sentences": 4
+    },
+    {
+      "id": 131,
+      "content": "gorithm: From population to sample-based analysis, The Annals of Statistics, 45\n(2014), pp. 77–120. [3] J. Benton, G. Deligiannidis, and A. Doucet, Error bounds for flow matching\nmethods, Transactions on Machine Learning Research, (2024). [4] C. M. Bishop, Pattern Recognition and Machine Learning (Information Science and\nStatistics), Springer-Verlag, Berlin, Heidelberg, 2006.",
+      "size": 378,
+      "sentences": 4
+    },
+    {
+      "id": 132,
+      "content": "d Machine Learning (Information Science and\nStatistics), Springer-Verlag, Berlin, Heidelberg, 2006. [5] J. Chemseddine, P. Hagemann, G. Steidl, and C. Wald, Conditional Wasser-\nstein distances with applications in Bayesian OT flow matching, arXiv preprint\narXiv:2403.18705, (2025).",
+      "size": 281,
+      "sentences": 2
+    },
+    {
+      "id": 133,
+      "content": "distances with applications in Bayesian OT flow matching, arXiv preprint\narXiv:2403.18705, (2025). [6] R. T. Q. Chen, Y. Rubanova, J. Bettencourt, and D. K. Duvenaud, Neural\nordinary differential equations, in Advances in Neural Information Processing Systems,\nS. Bengio, H. Wallach, H. Larochelle, K. Grauman, N. Cesa-Bianchi, and R. Garnett,\neds., vol. 31, Curran Associates, Inc., 2018.",
+      "size": 389,
+      "sentences": 3
+    },
+    {
+      "id": 134,
+      "content": "ochelle, K. Grauman, N. Cesa-Bianchi, and R. Garnett,\neds., vol. 31, Curran Associates, Inc., 2018. 24\n===  25 ===\n[7] K. Cranmer, J. Brehmer, and G. Louppe, The frontier of simulation-based\ninference, Proceedings of the National Academy of Sciences, 117 (2020), pp. 30055–\n30062. [8] A. P. Dempster, N. M. Laird, and D. B. Rubin, Maximum likelihood from\nincomplete data via the EM algorithm, Journal of the Royal Statistical Society. Series B\n(Methodological), 39 (1977), pp. 1–38.",
+      "size": 482,
+      "sentences": 7
+    },
+    {
+      "id": 135,
+      "content": "lgorithm, Journal of the Royal Statistical Society. Series B\n(Methodological), 39 (1977), pp. 1–38. [9] A. F. Gao, J. C. Castillo, Y. Yue, Z. E. Ross, and K. L. Bouman, Deep-\nGEM: Generalized expectation-maximization for blind inversion, in Advances in Neural\nInformation Processing Systems, vol. 35, 2021.",
+      "size": 306,
+      "sentences": 5
+    },
+    {
+      "id": 136,
+      "content": "imization for blind inversion, in Advances in Neural\nInformation Processing Systems, vol. 35, 2021. [10] M. Gloeckler, M. Deistler, C. D. Weilbach, F. Wood, and J. H. Macke, All-\nin-one simulation-based inference, in Proceedings of the 41st International Conference\non Machine Learning, R. Salakhutdinov, Z. Kolter, K. Heller, A. Weller, N. Oliver,\nJ. Scarlett, and F. Berkenkamp, eds., vol. 235 of Proceedings of Machine Learning\nResearch, PMLR, 21–27 Jul 2024, pp. 15735–15766.",
+      "size": 479,
+      "sentences": 5
+    },
+    {
+      "id": 137,
+      "content": "eds., vol. 235 of Proceedings of Machine Learning\nResearch, PMLR, 21–27 Jul 2024, pp. 15735–15766. [11] P. Hagemann, J. Hertrich, M. Casfor, S. Heidenreich, and G. Steidl, Mixed\nnoise and posterior estimation with conditional deepGEM, Machine Learning: Science\nand Technology, 5 (2024), p. 035001.",
+      "size": 297,
+      "sentences": 4
+    },
+    {
+      "id": 138,
+      "content": "estimation with conditional deepGEM, Machine Learning: Science\nand Technology, 5 (2024), p. 035001. [12] P. Hagemann, S. Mildenberger, L. Ruthotto, G. Steidl, and N. T. Yang,\nMultilevel diffusion: Infinite dimensional score-based diffusion models for image genera-\ntion, SIAM Journal on Data Science, (2025).",
+      "size": 308,
+      "sentences": 2
+    },
+    {
+      "id": 139,
+      "content": "ensional score-based diffusion models for image genera-\ntion, SIAM Journal on Data Science, (2025). [13] S. Heidenreich, H. Gross, and M. Bär, Bayesian approach to the statistical inverse\nproblem of scatterometry: Comparison of three surrogate models, International Journal\nof Uncertainty Quantification, 5 (2015), pp. 511–524.",
+      "size": 327,
+      "sentences": 3
+    },
+    {
+      "id": 140,
+      "content": "three surrogate models, International Journal\nof Uncertainty Quantification, 5 (2015), pp. 511–524. [14] A. F. Herrero, M. Pflüger, J. Puls, F. Scholze, and V. Soltwisch, Un-\ncertainties in the reconstruction of nanostructures in euv scatterometry and grazing\nincidence small-angle X-ray scattering, Optics Express, 29 (2021), pp. 35580–35591. [15] D. P. Kingma and M. Welling, Auto-encoding variational bayes, arXiv preprint\narXiv:1312.6114.",
+      "size": 442,
+      "sentences": 5
+    },
+    {
+      "id": 141,
+      "content": "[15] D. P. Kingma and M. Welling, Auto-encoding variational bayes, arXiv preprint\narXiv:1312.6114. [16] J. Kossaifi, N. Kovachki, Z. Li, D. Pitt, M. Liu-Schiaffini, R. J. George,\nB. Bonev, K. Azizzadenesheli, J. Berner, and A. Anandkumar, A library for\nlearning neural operators, arXiv preprint arXiv:2412.10354, (2024).",
+      "size": 320,
+      "sentences": 2
+    },
+    {
+      "id": 142,
+      "content": "nd A. Anandkumar, A library for\nlearning neural operators, arXiv preprint arXiv:2412.10354, (2024). [17] Z. Li, N. B. Kovachki, K. Azizzadenesheli, B. liu, K. Bhattacharya, A. Stu-\nart, and A. Anandkumar, Fourier neural operator for parametric partial differential\nequations, in International Conference on Learning Representations, 2021.",
+      "size": 338,
+      "sentences": 2
+    },
+    {
+      "id": 143,
+      "content": "tric partial differential\nequations, in International Conference on Learning Representations, 2021. 25\n===  26 ===\n[18] Y. Lipman, R. T. Q. Chen, H. Ben-Hamu, M. Nickel, and M. Le, Flow\nmatching for generative modeling, inTheEleventhInternationalConferenceonLearning\nRepresentations, 2023. [19] Q. Liu, Rectified flow: A marginal preserving approach to optimal transport, arXiv\npreprint arXiv:2209.14577, (2022).",
+      "size": 412,
+      "sentences": 3
+    },
+    {
+      "id": 144,
+      "content": "flow: A marginal preserving approach to optimal transport, arXiv\npreprint arXiv:2209.14577, (2022). [20] X. Liu, C. Gong, and Q. Liu, Flow straight and fast: Learning to generate and\ntransfer data with rectified flow, in The Eleventh International Conference on Learning\nRepresentations, 2023. [21] S. Martin, A. Gagneaux, P. Hagemann, and G. Steidl, PnP-Flow: Plug-and-\nplay image restoration with flow matching, ICLR, (2025).",
+      "size": 427,
+      "sentences": 3
+    },
+    {
+      "id": 145,
+      "content": "gemann, and G. Steidl, PnP-Flow: Plug-and-\nplay image restoration with flow matching, ICLR, (2025). [22] D. M. Rocke and B. Durbin, A model for measurement error for gene expression\narrays, Journal of Computational Biology, 8 (2001), pp. 557–569. [23] L. Ruthotto and E. Haber, An introduction to deep generative modeling, GAMM-\nMitteilungen, 44 (2021), p. e202100008. [24] Y.",
+      "size": 376,
+      "sentences": 5
+    },
+    {
+      "id": 146,
+      "content": "An introduction to deep generative modeling, GAMM-\nMitteilungen, 44 (2021), p. e202100008. [24] Y. Song, J. Sohl-Dickstein, D. P. Kingma, A. Kumar, S. Ermon, and\nB. Poole, Score-based generative modeling through stochastic differential equations, in\nInternational Conference on Learning Representations, 2021. [25] B. Sprungk, On the local Lipschitz stability of Bayesian inverse problems, Inverse\nProblems, 36 (2020), p. 055015.",
+      "size": 429,
+      "sentences": 4
+    },
+    {
+      "id": 147,
+      "content": "the local Lipschitz stability of Bayesian inverse problems, Inverse\nProblems, 36 (2020), p. 055015. [26] H. Stark, B. Jing, C. Wang, G. Corso, B. Berger, R. Barzilay, and\nT. Jaakkola, Dirichlet flow matching with applications to DNA sequence design,\nin Forty-first International Conference on Machine Learning, 2024. [27] A. M. Stuart, Inverse problems: A Bayesian perspective, Acta Numerica, 19 (2010),\np. 451–559.",
+      "size": 415,
+      "sentences": 3
+    },
+    {
+      "id": 148,
+      "content": "[27] A. M. Stuart, Inverse problems: A Bayesian perspective, Acta Numerica, 19 (2010),\np. 451–559. [28] M. Takamoto, T. Praditia, R. Leiteritz, D. MacKinlay, F. Alesiani,\nD. Pflüger, and M. Niepert, PDEBench: An extensive benchmark for scien-\ntific machine learning, in Thirty-sixth Conference on Neural Information Processing\nSystems Datasets and Benchmarks Track, 2022.",
+      "size": 371,
+      "sentences": 2
+    },
+    {
+      "id": 149,
+      "content": "irty-sixth Conference on Neural Information Processing\nSystems Datasets and Benchmarks Track, 2022. [29] A. Tong, K. FATRAS, N. Malkin, G. Huguet, Y. Zhang, J. Rector-Brooks,\nG. Wolf, and Y. Bengio, Improving and generalizing flow-based generative models\nwith minibatch optimal transport, Transactions on Machine Learning Research, (2024). Expert Certification.",
+      "size": 361,
+      "sentences": 3
+    },
+    {
+      "id": 150,
+      "content": "nibatch optimal transport, Transactions on Machine Learning Research, (2024). Expert Certification. 26\n===  27 ===\n[30] C. Wald and G. Steidl, Flow Matching: Markov kernels, stochastic processes and\ntransport plans, in Variational and Information Flows in Machine Learning and Optimal\nTransport, Oberwolfach Seminars. Vol. 56, Birkhäuser, 2025, pp. 185–254. 27",
+      "size": 360,
+      "sentences": 7
+    }
+  ]
+}

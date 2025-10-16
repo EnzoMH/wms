@@ -1,0 +1,813 @@
+{
+  "source": "ArXiv",
+  "filename": "232_AI_ML_Distributionally_Robust_Federated_Learni.pdf",
+  "domain": "AI",
+  "total_chars": 48946,
+  "total_chunks": 134,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\nDistributionallyRobustFederatedLearningwith\nOutlierResilience\nZifanWanga,XinleiYib,XeniaKontic,MichaelM.Zavlanosc,KarlH.Johanssona\naDivisionofDecisionandControlSystems,SchoolofElectricalEngineeringandComputerScience,KTHRoyalInstituteof\nTechnology,Stockholm,Sweden\nbDepartmentofControlScienceandEngineering,CollegeofElectronicsandInformationEngineering,TongjiUniversity,\nShanghai,China\ncMechanicalEngineeringandMaterialScience,DukeUniversity,Durham,USA\nAbstract\nFederatedlearning(FL)enablescollaborativemodeltrainingwithoutdirectdatasharing,butitsperformancecandegradesig-\nnificantlyinthepresenceofdatadistributionperturbations.Distributionallyrobustoptimization(DRO)providesaprincipled\nframeworkforhandlingthisbyoptimizingperformanceagainsttheworst-casedistributionswithinaprescribedambiguityset.",
+      "size": 807,
+      "sentences": 1
+    },
+    {
+      "id": 2,
+      "content": "rhandlingthisbyoptimizingperformanceagainsttheworst-casedistributionswithinaprescribedambiguityset. However, existing DRO-based FL methods often overlook the detrimental impact of outliers in local datasets, which can dis-\nproportionatelybiasthelearnedmodels.Inthiswork,westudydistributionallyrobustfederatedlearningwithexplicitoutlier\nresilience.WeintroduceanovelambiguitysetbasedontheunbalancedWassersteindistance,whichjointlycapturesgeomet-\nric distributional shifts and incorporates a non-geometric Kullback–Leibler penalization to mitigate the influence of outliers.",
+      "size": 571,
+      "sentences": 2
+    },
+    {
+      "id": 3,
+      "content": "d incorporates a non-geometric Kullback–Leibler penalization to mitigate the influence of outliers. This formulation naturally leads to a challenging min–max–max optimization problem. To enable decentralized training, we\nreformulate the problem as a tractable Lagrangian penalty optimization, which admits robustness certificates.",
+      "size": 330,
+      "sentences": 3
+    },
+    {
+      "id": 4,
+      "content": "e the problem as a tractable Lagrangian penalty optimization, which admits robustness certificates. Building on\nthis reformulation, we propose the distributionally outlier-robust federated learning algorithm and establish its convergence\nguarantees.Extensiveexperimentsonbothsyntheticandreal-worlddatasetsdemonstratetheeffectivenessofourapproach. Keywords: Federatedlearning,distributionallyrobustoptimization,outlierresilience\n1 Introduction geneous data distributions.",
+      "size": 470,
+      "sentences": 3
+    },
+    {
+      "id": 5,
+      "content": "ing,distributionallyrobustoptimization,outlierresilience\n1 Introduction geneous data distributions. Moreover, these local data\ndistributionsoftenexperiencecovariantshiftsovertime\n[4].",
+      "size": 183,
+      "sentences": 2
+    },
+    {
+      "id": 6,
+      "content": "distributions. Moreover, these local data\ndistributionsoftenexperiencecovariantshiftsovertime\n[4]. This data heterogeneity, together with distribution\nFederated learning (FL) has emerged as a promising\nshifts,posessignificantchallengestoFL,particularlyfor\nparadigm for collaborative model training in privacy-\nrobustnessandmodelgeneralizationtounseendistribu-\nsensitive domains, such as mobile devices, healthcare\ntions.",
+      "size": 420,
+      "sentences": 3
+    },
+    {
+      "id": 7,
+      "content": "ndmodelgeneralizationtounseendistribu-\nsensitive domains, such as mobile devices, healthcare\ntions. networks,andindustrialIoTsystems[1–3].InFL,mul-\ntiple clients compute model updates locally on private\ndata,whileacentralserveraggregatestheseupdatesto\nToenhancethegeneralizationperformance,researchers\ntrainasharedmodelwithoutexchangingrawdata.How-\nhave turned to distributionally robust optimization\never,client-specificvariationstypicallyresultinhetero-\n(DRO) [5–7].",
+      "size": 468,
+      "sentences": 2
+    },
+    {
+      "id": 8,
+      "content": "ibutionally robust optimization\never,client-specificvariationstypicallyresultinhetero-\n(DRO) [5–7]. The core idea of DRO is to optimize\nmodel performance against the worst-case distribution\n⋆\nThis work was supported in part by Swedish Re- within a prescribed set of distributions, known as the\nsearch Council Distinguished Professor Grant 2017-01078, ambiguity set.",
+      "size": 365,
+      "sentences": 2
+    },
+    {
+      "id": 9,
+      "content": "distributions, known as the\nsearch Council Distinguished Professor Grant 2017-01078, ambiguity set. The construction of this ambiguity set\nKnutandAliceWallenbergFoundation,WallenbergScholar\nis crucial in the development of DRO methods, as it\nGrant, Swedish Strategic Research Foundation SUCCESS\ndetermines the type of distribution perturbations the\nGrantFUS21-0026,andAFOSRunderaward#FA9550-19-\nmodel is robust to.",
+      "size": 414,
+      "sentences": 2
+    },
+    {
+      "id": 10,
+      "content": "of distribution perturbations the\nGrantFUS21-0026,andAFOSRunderaward#FA9550-19-\nmodel is robust to. A common choice is to define the\n1-0169.\nambiguity set using the Kullback–Leibler (KL) diver-\nEmailaddresses: zifanw@kth.se(ZifanWang),\ngence due to its computational benefits [8,9].",
+      "size": 282,
+      "sentences": 2
+    },
+    {
+      "id": 11,
+      "content": "KL) diver-\nEmailaddresses: zifanw@kth.se(ZifanWang),\ngence due to its computational benefits [8,9]. Since\nxinleiyi@tongji.edu.cn(XinleiYi),\npolyxeni.konti@duke.edu(XeniaKonti), the KL divergence does not consider the geometry of a\nmichael.zavlanos@duke.edu(MichaelM.Zavlanos), distribution’s support, KL-based DRO methods are ef-\nkallej@kth.se(KarlH.Johansson).",
+      "size": 361,
+      "sentences": 2
+    },
+    {
+      "id": 12,
+      "content": "elM.Zavlanos), distribution’s support, KL-based DRO methods are ef-\nkallej@kth.se(KarlH.Johansson). fectiveformodelingprobabilityreweightingbutareless\nPreprintsubmittedtoAutomatica 30September2025\n5202\npeS\n92\n]GL.sc[\n1v26442.9052:viXra\n===  2 ===\nsuited for capturing shifts with geometric features. An arbitrarymixturesofclientdistributionsandgeometric\nalternative is to construct the ambiguity set using the perturbations.",
+      "size": 424,
+      "sentences": 3
+    },
+    {
+      "id": 13,
+      "content": "entdistributionsandgeometric\nalternative is to construct the ambiguity set using the perturbations. While these methods address geometric\nWassersteindistance,whichnaturallycapturesgeomet- distributionshiftsandclientheterogeneity,theyassume\nricshiftsinthefeaturespace.TheresultingWasserstein thatlocaldatasetsarecleanandthereforeremainvulner-\nDRO problem has been extensively studied and is sup- abletooutliercontamination.Inthepresenceofextreme\nported by strong finite-sample guarantees under mild orcorruptedsamples,theambiguitysetsintheseformu-\nassumptions[10–12].Ithasbeensuccessfullyappliedto lations can be heavily distorted, leading to overly con-\navarietyofmachinelearningproblems,includinglinear servative models or degraded accuracy.",
+      "size": 742,
+      "sentences": 2
+    },
+    {
+      "id": 14,
+      "content": "verly con-\navarietyofmachinelearningproblems,includinglinear servative models or degraded accuracy. Consequently,\nregression[13]andlogisticregression[14]. theseapproachescannotbeappliedhere. Inmanypracticalscenarios,theobserveddatamaycon- This paper is also related to Byzantine-robust FL [28,\ntainoutliersarisingfromadversarialattacks,sensorfail- 29],whichdefendsagainstadversarialclientsbytreating\nures,labelingerrors,orrarebutlegitimateevents.Clas- entire client updates as potential outliers.",
+      "size": 496,
+      "sentences": 4
+    },
+    {
+      "id": 15,
+      "content": "ng\nures,labelingerrors,orrarebutlegitimateevents.Clas- entire client updates as potential outliers. This setting\nsicalDROmethodsarenotsuitedforhandlingthisissue, differs fundamentally from ours, as we address sample-\nasevenasmallfractionofoutlierscangreatlydistortthe level outliers within each client’s dataset rather than\nconstructed ambiguity set and impede robust decision- client-levelcorruption.Anotherrelevantlineofresearch\nmaking[15].InFL,wheredatasetsremaindecentralized isreweightedFL[30,31],whichadjuststheaggregation\nand private, outliers are especially problematic.",
+      "size": 578,
+      "sentences": 2
+    },
+    {
+      "id": 16,
+      "content": "isreweightedFL[30,31],whichadjuststheaggregation\nand private, outliers are especially problematic. Due to weightofeachclienttoimproverobustnessagainsthet-\nclient-specificheterogeneity,datapointsconsiderednor- erogeneous data quality. In contrast, our approach per-\nmal for one client may act as outliers for others [16], forms sample-level reweighting to directly downweight\ndependingonthetaskcontext.Forexample,inafeder- suspected data.",
+      "size": 437,
+      "sentences": 3
+    },
+    {
+      "id": 17,
+      "content": "l reweighting to directly downweight\ndependingonthetaskcontext.Forexample,inafeder- suspected data. Perhaps most closely related is [19],\natedmedicaldiagnosistask,physiologicalmeasurements whichstudiesoutlier-robustoptimizationinthecentral-\nfromhealthyyoungadultsmaybenormalforanathletic izedsetting.Comparedto[19],weprovideformalrobust-\ncohort but flagged as outliers for a client representing ness certificates and, more importantly, extend the for-\nelderly patients.",
+      "size": 469,
+      "sentences": 2
+    },
+    {
+      "id": 18,
+      "content": "or a client representing ness certificates and, more importantly, extend the for-\nelderly patients. This task-dependent variability makes mulationtothefederatedsetting.Thisextensiontrans-\noutlier removal ineffective, as samples discarded by one formstheoptimizationproblemfromamin–maxstruc-\nclientcouldrepresentvaluablerarecasesforanother.",
+      "size": 339,
+      "sentences": 2
+    },
+    {
+      "id": 19,
+      "content": "one formstheoptimizationproblemfromamin–maxstruc-\nclientcouldrepresentvaluablerarecasesforanother. turetoamorechallengingmin–max–maxstructure,re-\nquiring new algorithmic design and analysis to enable\nIn this paper, we introduce distributionally outlier- efficientdecentralizedtraining. robustfederatedlearning(DOR-FL),thefirstFLframe-\nwork to jointly address data heterogeneity, distribution\nThe remainder of this paper is organized as follows.",
+      "size": 444,
+      "sentences": 3
+    },
+    {
+      "id": 20,
+      "content": "intly address data heterogeneity, distribution\nThe remainder of this paper is organized as follows. shifts, and outlier contamination within a unified DRO\nIn Section 2, we introduce our outlier-robust federated\nformulation [17,18]. Our approach utilizes the unbal-\nlearning framework.",
+      "size": 284,
+      "sentences": 3
+    },
+    {
+      "id": 21,
+      "content": "outlier-robust federated\nformulation [17,18]. Our approach utilizes the unbal-\nlearning framework. Section 3 presents a tractable La-\nanced Wasserstein (UW) [19] distance, which replaces\ngrangian penalty reformulation of the proposed prob-\nthe hard constraints with soft penalization, thereby\nlem.InSection4,wedevelopthelearningalgorithmand\nreducing the influence of outliers. Using the UW dis-\nestablish its convergence guarantees.",
+      "size": 432,
+      "sentences": 4
+    },
+    {
+      "id": 22,
+      "content": "ithmand\nreducing the influence of outliers. Using the UW dis-\nestablish its convergence guarantees. Section 5 reports\ntance, we define a novel ambiguity set that captures\nexperimental results on both synthetic and real-world\nboth cross-client distribution shifts and robustness to\ndatasets to validate the effectiveness of our approach. outliers. The resulting DRO problem has a challenging\nFinally,Section6concludesthepaper. min–max–max structure.",
+      "size": 448,
+      "sentences": 6
+    },
+    {
+      "id": 23,
+      "content": "e resulting DRO problem has a challenging\nFinally,Section6concludesthepaper. min–max–max structure. To make it computationally\ntractable, we introduce a Lagrangian penalty reformu-\nlation that enables decentralized training. Moreover, 2 ProblemStatement\nwe show that this reformulation preserves robustness\nsupported by a robustness certificate.",
+      "size": 345,
+      "sentences": 4
+    },
+    {
+      "id": 24,
+      "content": "atement\nwe show that this reformulation preserves robustness\nsupported by a robustness certificate. Then, we design\n2.1 DistributionallyRobustOptimization\na federated averaging–based algorithm with provable\nconvergence guarantees under standard assumptions. Experiments on both synthetic and real-world datasets Considerthestochasticoptimizationproblem\nconfirm the effectiveness of DOR-FL, showing substan-\ntialimprovementsoverexistingbaselines.",
+      "size": 445,
+      "sentences": 3
+    },
+    {
+      "id": 25,
+      "content": "roblem\nconfirm the effectiveness of DOR-FL, showing substan-\ntialimprovementsoverexistingbaselines. minE P∗ [l(θ,ξ)]\nθ∈Θ\nMost closely related to our study is distributionally ro-\nbust FL [20–27].",
+      "size": 195,
+      "sentences": 2
+    },
+    {
+      "id": 26,
+      "content": "es. minE P∗ [l(θ,ξ)]\nθ∈Θ\nMost closely related to our study is distributionally ro-\nbust FL [20–27]. For example, [20] introduced agnostic wheretherandomsamplesξ ∈Ξaredrawnfromafixed\nfederatedlearning(AFL),whichformulatesFLasamin- distribution P∗ ∈ P(Ξ), P(Ξ) is the set of distributions\nimaxoptimizationproblemtoensuregoodperformance onthesupportΞ,θ ∈Θisthedecisionvariable,andlis\nacross all possible mixtures of client distributions. [24] the loss function.",
+      "size": 458,
+      "sentences": 4
+    },
+    {
+      "id": 27,
+      "content": "cisionvariable,andlis\nacross all possible mixtures of client distributions. [24] the loss function. In many applications, the true distri-\ninstead incorporates a Wasserstein-basedambiguityset\nbutionofinterest,P∗,isnotexplicitlyknown.Adataset\nto enable robustness to geometric perturbations cen-\ncomprisingfinitesamplesindependentlydrawnfromP∗\ntered at a fixed mixture of client distributions.",
+      "size": 392,
+      "sentences": 3
+    },
+    {
+      "id": 28,
+      "content": "-\ncomprisingfinitesamplesindependentlydrawnfromP∗\ntered at a fixed mixture of client distributions. [27] fur- areoftenavailable,whichyieldanempiricaldistribution\nther proposes a unified framework that addresses both estimate Pˆ. However, the empirical data distribution Pˆ\n2\n===  3 ===\noften fail to reliably approximate the true distribution Lemma1 ForanyprobabilityP¯ ∈P(Ξ),wehave\nP∗,especiallyinthepresenceofdistributionshifts. UW(P∗||Pˆ)≤W(P∗,P¯)+βD (P¯||Pˆ).",
+      "size": 463,
+      "sentences": 4
+    },
+    {
+      "id": 29,
+      "content": "ityP¯ ∈P(Ξ),wehave\nP∗,especiallyinthepresenceofdistributionshifts. UW(P∗||Pˆ)≤W(P∗,P¯)+βD (P¯||Pˆ). (3)\nKL\nTo address distribution shifts, Wasserstein DRO opti-\nmizes the worst-case performance over all distributions\nwithin an ambiguity set, which is constructed around Suppose that Pˆ denotes the clean distribution ob-\nthe empirical distribution. The ambiguity set aims to clean\ntained from Pˆ after removing all outliers.",
+      "size": 424,
+      "sentences": 4
+    },
+    {
+      "id": 30,
+      "content": "empirical distribution. The ambiguity set aims to clean\ntained from Pˆ after removing all outliers. Based on\ninclude highly probable distributions P∗ to ensure ro-\nLemma1,wehave\nbustness while excluding less probable distributions to\nreduce conservatism. Specifically, it is defined as {P :\nW(P,Pˆ)≤r},wherer istheprescribedradius,andthe UW(P∗||Pˆ)≤W(P∗,Pˆ clean )+βD KL (Pˆ clean ||Pˆ). Wassersteindistanceisdefinedas\nIntuitively, the UW distance between P∗ and Pˆ is de-\nW(P,Pˆ)= inf E [c(ξ,ζ)].",
+      "size": 497,
+      "sentences": 5
+    },
+    {
+      "id": 31,
+      "content": "ndistanceisdefinedas\nIntuitively, the UW distance between P∗ and Pˆ is de-\nW(P,Pˆ)= inf E [c(ξ,ζ)]. composed into two components: a Wasserstein distance\nγ∈Γ(P,Pˆ) (ξ,ζ)∼γ betweenP∗ andPˆ\nclean\n,andaKLpenalizationcostthat\nquantifies the mismatch between Pˆ and Pˆ. Since\nclean\nHere,Γ(P,Pˆ)denotesthesetofjointdistributionswhose the KL divergence measures only relative differences,\nmarginal distributions are P and Pˆ, respectively, and D KL (Pˆ clean ||Pˆ) remains small.",
+      "size": 471,
+      "sentences": 3
+    },
+    {
+      "id": 32,
+      "content": "erences,\nmarginal distributions are P and Pˆ, respectively, and D KL (Pˆ clean ||Pˆ) remains small. As a result, a small ra-\nc(ξ,ζ)representsthetransportationcostfromsampleξ dius r in (1) can effectively include the distributions of\ntosampleζ. interest.",
+      "size": 253,
+      "sentences": 3
+    },
+    {
+      "id": 33,
+      "content": "tioncostfromsampleξ dius r in (1) can effectively include the distributions of\ntosampleζ. interest. Inpractice,thedatasetsusuallycontainoutliers[15,32], 2.2 Outlier-RobustFederatedLearning\nwhosetransportationtonormaldataincursalargecost\nof C. In such cases, Wasserstein DRO must adopt a We consider a federated learning (FL) setting in which\nlargeradiusrtoensurethatthetruedistributionP∗lies N clientscollaborativelytrainacommonmodelparam-\nwithin the ambiguity set, as W(P,P∗) becomes large in eterized by θ.",
+      "size": 508,
+      "sentences": 3
+    },
+    {
+      "id": 34,
+      "content": "ativelytrainacommonmodelparam-\nwithin the ambiguity set, as W(P,P∗) becomes large in eterized by θ. Each client i ∈ {1,...,N} possesses a\nthe presence of outliers. However, this large radius also local empirical data distribution Pˆ . For a given set of\ni\nadmitsmanyunlikelydistributions,therebymakingthe nonnegative client weights λ = (λ ,...,λ ) satisfying\n1 N\nmodeloverlyconservative. (cid:80)N\nλ = 1, the aggregated empirical distribution is\ni=1 i\ndefinedasPˆ = (cid:80) λ Pˆ .",
+      "size": 481,
+      "sentences": 5
+    },
+    {
+      "id": 35,
+      "content": "tive. (cid:80)N\nλ = 1, the aggregated empirical distribution is\ni=1 i\ndefinedasPˆ = (cid:80) λ Pˆ . To deal with outliers, inspired by [19], we consider the λ i i i\nfollowingambiguityset\nInthepresenceofdistributionshiftsandoutliers,Pˆ of-\nλ\ntenprovidesapoorapproximationofthetrueunderlying\nA={P:UW(P||Pˆ)≤r}, (1)\ndistribution.Toaddressthis,weconstructanambiguity\nsetbasedontheUWdistance(2).TheUWdistancere-\nwheretheunbalancedWassersteindistanceisdefinedas\nlaxesthehardmarginalconstraint,therebyallowingthe\nambiguity set to contain a broader set of distributions,\n(cid:110) (cid:111)\nUW(P||Pˆ)= inf E [c(ξ,ζ)]+βD (P¯||Pˆ) .",
+      "size": 622,
+      "sentences": 3
+    },
+    {
+      "id": 36,
+      "content": "contain a broader set of distributions,\n(cid:110) (cid:111)\nUW(P||Pˆ)= inf E [c(ξ,ζ)]+βD (P¯||Pˆ) . including clean distributions. However, this ambiguity\n(ξ,ζ)∼γ KL\nP¯,γ∈Γ(P,P¯) set also includes contaminated distributions that are\n(2) closetoPˆ undertheUW distance.Suchcontaminated\nλ\ndistributionscanbedetrimentaltomodelperformance.",
+      "size": 334,
+      "sentences": 3
+    },
+    {
+      "id": 37,
+      "content": ") closetoPˆ undertheUW distance.Suchcontaminated\nλ\ndistributionscanbedetrimentaltomodelperformance. Here, c is the transportation cost function as defined To mitigate this issue, we incorporate prior knowledge\nin the Wasserstein distance, β is a weight scalar, and about potential outliers, which is necessary to design a\nΓ(P,P¯) denotes the set of joint distributions whose provablymodelselectionasdiscussedin[33,34].Specif-\nmarginal distributions are P and P¯, respectively.",
+      "size": 476,
+      "sentences": 2
+    },
+    {
+      "id": 38,
+      "content": "ovablymodelselectionasdiscussedin[33,34].Specif-\nmarginal distributions are P and P¯, respectively. Com- ically,weintroduceanoutlierscoringfunctionh(ξ)that\npared to the traditional Wasserstein distance, this for- assignslargervaluestosamplessuspectedtobeoutliers. mulationintroducesflexibilitybyallowingthemarginal\ndistribution Pˆ to adjust to P¯.",
+      "size": 347,
+      "sentences": 3
+    },
+    {
+      "id": 39,
+      "content": "edtobeoutliers. mulationintroducesflexibilitybyallowingthemarginal\ndistribution Pˆ to adjust to P¯. This adjustment is not Thedesignofh(ξ)isapplication-dependentandmaybe\nfree and induces a penalization cost based on the KL informedbydomainexpertiseorstatisticaldiagnostics. divergence.",
+      "size": 285,
+      "sentences": 4
+    },
+    {
+      "id": 40,
+      "content": "a penalization cost based on the KL informedbydomainexpertiseorstatisticaldiagnostics. divergence. Since the KL divergence is not sensitive to Forexample,inmedicalapplications,h(ξ)couldencode\nthe support of distributions, it is the key to mitigating thresholds for biomarker values outside physiologically\nthe influence of outliers. The penalization cost is then plausible ranges.",
+      "size": 380,
+      "sentences": 4
+    },
+    {
+      "id": 41,
+      "content": "outside physiologically\nthe influence of outliers. The penalization cost is then plausible ranges. Alternatively, h(ξ) may capture spe-\naggregated with the Wasserstein cost between P and cificfeaturecharacteristicsreflectiveofthetargettesting\nP¯. With the following lemma, we show that the UW distribution.Forexample,whentrainingamedicalclas-\ndistance between the true distribution P∗ and contam- sificationmodelintendedforyoungindividuals,samples\ninated distribution Pˆ can be effectively bounded.",
+      "size": 498,
+      "sentences": 4
+    },
+    {
+      "id": 42,
+      "content": "ficationmodelintendedforyoungindividuals,samples\ninated distribution Pˆ can be effectively bounded. The from older individuals that exhibit distinct physiologi-\nproofisgivenintheAppendix. calpatternsmaybetreatedasoutliers.Inthiscase,h(ξ)\n3\n===  4 ===\nstraintintheDROformulation(4)withasoftpenaliza-\nP tion,leadingtotheLagrangianpenaltyform\n4\nminmaxsupE ξ∼P[L(θ,ξ)]−ρUW(P||Pˆ\nλ\n). (5)\nP 5 θ λ∈Λ P\nwhere ρ > 0 is a penalty coefficient.",
+      "size": 433,
+      "sentences": 4
+    },
+    {
+      "id": 43,
+      "content": "yform\n4\nminmaxsupE ξ∼P[L(θ,ξ)]−ρUW(P||Pˆ\nλ\n). (5)\nP 5 θ λ∈Λ P\nwhere ρ > 0 is a penalty coefficient. We note that (5)\nP 3 still has a min−max−max structure and continues to\ncapturedataheterogeneity,distributionshifts,andout-\nlier resilience. However, it is simplified because the in-\nnermostmaximizationbecomesunconstrained.Inwhat\nP P\n1 2 follows,weestablishstrongdualityfor(5)andshowthat\nit enables decentralized training. The proof is provided\nFig. 1.",
+      "size": 452,
+      "sentences": 6
+    },
+    {
+      "id": 44,
+      "content": "lishstrongdualityfor(5)andshowthat\nit enables decentralized training. The proof is provided\nFig. 1. Illustration of the ambiguity set for the considered intheAppendix. problem(4). Proposition1 The problem formulation (5) is equiva-\nlentto\ncouldbedesignedtocaptureage-relatedcharacteristics,\nassigning larger values to samples that lie outside the (cid:88) (cid:104) (cid:105)\ntargetedagerange. m θ inm λ∈ a Λ x λ i E ζ∼Pˆ i esup ξ {L(θ,ξ)−ρc(ζ,ξ)}/(ρβ) .",
+      "size": 454,
+      "sentences": 7
+    },
+    {
+      "id": 45,
+      "content": "(cid:104) (cid:105)\ntargetedagerange. m θ inm λ∈ a Λ x λ i E ζ∼Pˆ i esup ξ {L(θ,ξ)−ρc(ζ,ξ)}/(ρβ) . (6)\ni\nWethenconsiderthefollowingoptimizationproblem\nWe observe that the expression in (6) decomposes as\nmin sup E ξ∼P[L(θ,ξ)], a weighted sum of client-specific terms, making it nat-\nθ P:UW(P||Pˆ λ)≤r urally amenable to distributed training in FL environ-\nments. where L(θ,ξ) = l(θ,ξ)−h(ξ).",
+      "size": 389,
+      "sentences": 4
+    },
+    {
+      "id": 46,
+      "content": "||Pˆ λ)≤r urally amenable to distributed training in FL environ-\nments. where L(θ,ξ) = l(θ,ξ)−h(ξ). For any distribution P\nthat contains outliers, E ξ∼P[h(ξ)] is large and thus P is Althoughtheformulation(5)regulatesthedegreeofro-\nlesslikelytoattainthesupremum. bustness through the penalty coefficient ρ, we show in\nthefollowingpropositionthatitstillprovidesrobustness\nAs shown in [20], using a fixed value of λ may result in certificates.",
+      "size": 440,
+      "sentences": 4
+    },
+    {
+      "id": 47,
+      "content": "hatitstillprovidesrobustness\nAs shown in [20], using a fixed value of λ may result in certificates. amodelthatisbiasedtowardcertainclients.Therefore,\nwe refine the above formulation to the following opti- Proposition2 Fixρ>0andλ.Let\nmizationproblem:\nminmax sup E ξ∼P[L(θ,ξ)], (4)\nP∗\nλ\n=argmax\nP\n{E ξ∼P[L(θ,ξ)]−ρUW(P||Pˆ\nλ\n)},\nθ λ∈Λ P:UW(P||Pˆ λ)≤r anddefinerˆ =UW(P∗||Pˆ ).Then,wehave\nλ λ λ\nwhere Λ = {λ : λ i ≥ 0,\n(cid:80)N\ni=1 λ i = 1}.",
+      "size": 438,
+      "sentences": 2
+    },
+    {
+      "id": 48,
+      "content": "|Pˆ λ)≤r anddefinerˆ =UW(P∗||Pˆ ).Then,wehave\nλ λ λ\nwhere Λ = {λ : λ i ≥ 0,\n(cid:80)N\ni=1 λ i = 1}. Geometri- sup E ξ∼P[L(θ,ξ)]\nc\na\na\ns\nll\nt\ny\nh\n,\ne\nth\nM\ne\ni\no\nn\nv\nk\ne\no\nr\nw\nal\ns\nl\nk\na\ni\nm\nsu\nb\nm\nigu\no\ni\nf\nty\nth\nse\ne\nt\nU\nin\nW\n(4\na\n)\nm\nca\nb\nn\nig\nb\nu\ne\nit\ni\ny\nnt\ns\ne\ne\nr\nt\np\ns\nre\n{\nt\nP\ned\n:\nP:UW(P||Pˆ λ)≤rˆλ\n≤ρrˆ +ρβlogE [ef(θ,ζ)/(ρβ)]\nU tr W ati ( o P n ∥ . Pˆ λ )≤r} over all λ∈Λ. See Fig.",
+      "size": 390,
+      "sentences": 4
+    },
+    {
+      "id": 49,
+      "content": "UW(P||Pˆ λ)≤rˆλ\n≤ρrˆ +ρβlogE [ef(θ,ζ)/(ρβ)]\nU tr W ati ( o P n ∥ . Pˆ λ )≤r} over all λ∈Λ. See Fig. 1 for an illus- =E P λ ∗ [L(θ,ξ)], ζ∼Pˆ λ (7)\nλ\nTheformulation(4)capturesdataheterogeneity,distri- wheref(θ,ζ):=sup L(θ,ξ)−ρc(ζ,ξ). ξ∈Ξ\nbutionshifts,andoutlierresilience.Ourgoalinthispa-\nperistosolve(4)inadecentralizedmannersuitablefor Proposition2impliesthatforanyρ>0,themaximizer\nFL.",
+      "size": 385,
+      "sentences": 5
+    },
+    {
+      "id": 50,
+      "content": "peristosolve(4)inadecentralizedmannersuitablefor Proposition2impliesthatforanyρ>0,themaximizer\nFL. P∗ of the Lagrangian penalty problem also maximizes\nλ\nthe original DRO problem over the ambiguity set {P :\nUW(P∥Pˆ ) ≤ rˆ }, where rˆ is determined by P∗. In\nλ λ λ λ\n3 TractableReformulation particular,solving (5)ensuresdistributionalrobustness\nwithrespecttothisinducedambiguityset.",
+      "size": 381,
+      "sentences": 3
+    },
+    {
+      "id": 51,
+      "content": "ulation particular,solving (5)ensuresdistributionalrobustness\nwithrespecttothisinducedambiguityset. Theproblem(4)exhibitsamin−max−maxstructure,\nwhere the innermost maximization is carried out over\n4 Algorithm\na constrained set of probability measures in an infinite-\ndimensionalspace,makingthedecentralizedtrainingin-\ntractable.",
+      "size": 328,
+      "sentences": 2
+    },
+    {
+      "id": 52,
+      "content": "probability measures in an infinite-\ndimensionalspace,makingthedecentralizedtrainingin-\ntractable. Motivated by [35], we replace the hard con- 4.1 AlgorithmDesign\n4\n===  5 ===\nAlgorithm 1 Distributionally Outlier-Robust Feder- Each client i then broadcasts θ , gλ to the server.",
+      "size": 278,
+      "sentences": 2
+    },
+    {
+      "id": 53,
+      "content": "orithm 1 Distributionally Outlier-Robust Feder- Each client i then broadcasts θ , gλ to the server. i,t+1 i,t\natedLearning Theserverupdatestheglobalparameters:\nRequire: Sampling distribution Pˆ, constraint sets Θ\nN\nandΛ,stepsizeη andη (cid:88)\nθ λ θ =Proj ( λ θ ), (12)\n1: Serverbroadcaststhefunctionhtoeachclient t+1 Θ i,t i,t+1\n2: fort=1,...,T do i=1\n3: forclienti=1,...,N do\nand\n4:\nSampleζˆ fromPˆ\ni,t i\n5: Find an ϵ-approximate maximizer z of (cid:16) (cid:17)\ni,t λ =Proj λ +η gλ , (13)\nargmax L(θ ,ξ)−ρc(ξ,ζˆ ) t+1 Λ t λ t\nξ∈Ξ t i,t\n6: Constructgradientestimategθ by (9)\ni,t where gλ = (gλ ,...,gλ ), and η is the step size for\n7: Constructgradientestimategλ by (11) t 1,t N,t λ\ni,t updatingλ.Theupdated(θ ,λ )arethenbroadcast\nt+1 t+1\n8: Updateθ by (10)\ni,t+1 toallclients.",
+      "size": 779,
+      "sentences": 2
+    },
+    {
+      "id": 54,
+      "content": ",t λ\ni,t updatingλ.Theupdated(θ ,λ )arethenbroadcast\nt+1 t+1\n8: Updateθ by (10)\ni,t+1 toallclients. 9: Clientisendsθ ,gλ backtoserver\ni,t+1 i,t\n10: endfor\n4.2 ConvergenceAnalysis\n11: Serverupdatesθ by (12)\nt+1\n12: Serverupdatesλ by (13)\nt+1\nIn this section, we provide the convergence analysis for\n13: Serverbroadcastsθ andλ toeachclient\nt+1 t+1\ntheproposedalgorithm.Forconvenience,define\n14: endfor\n(cid:104) (cid:105)\nTosolvetheproblem (6),weproposetheDistribution- H(θ,λ)=E ζ∼Pˆ\nλ\nef(θ,ζ)/(ρβ) .",
+      "size": 498,
+      "sentences": 2
+    },
+    {
+      "id": 55,
+      "content": "(cid:104) (cid:105)\nTosolvetheproblem (6),weproposetheDistribution- H(θ,λ)=E ζ∼Pˆ\nλ\nef(θ,ζ)/(ρβ) . ally Outlier-Robust Federated Learning (DOR-FL) al-\ngorithm, summarized in Algorithm 1. We assume that Ourconvergenceanalysisrequiresthefollowingassump-\ntheserverspecifiestheoutlierscoringfunctionh(ξ)and tions. broadcastsittoallclients.Eachclientthenparticipates\nin training the common model through iterative com- Assumption1 L(θ,ξ) is convex in θ for every ξ ∈ Ξ\nmunicationwiththeserver.",
+      "size": 488,
+      "sentences": 4
+    },
+    {
+      "id": 56,
+      "content": "l through iterative com- Assumption1 L(θ,ξ) is convex in θ for every ξ ∈ Ξ\nmunicationwiththeserver. andconcaveinξ. Specifically, at each time step t, each client i draws a Assumption2 The domains are bounded such that\nsampleζˆ fromitsempiricaldistributionPˆ andsolves max ∥θ −θ ∥ ≤ D , max ∥λ −λ ∥ ≤\ni,t i θ1,θ2∈Θ 1 2 θ λ1,λ2∈Λ 1 2\nD . λ\nargmax L(θ ,ξ)−ρc(ξ,ζˆ ), (8)\nξ∈Ξ t i,t Assumption3 The loss function L satisfies that\n|L(θ,ξ)|≤B and∥∇ L(θ,ξ)∥≤B .",
+      "size": 453,
+      "sentences": 4
+    },
+    {
+      "id": 57,
+      "content": "c(ξ,ζˆ ), (8)\nξ∈Ξ t i,t Assumption3 The loss function L satisfies that\n|L(θ,ξ)|≤B and∥∇ L(θ,ξ)∥≤B . obtaining an approximate maximizer z such that 1 θ 2\ni,t\ndist(z ,X∗ )≤ϵ,wheredistdenotesthedistancefrom\ni,t i,t Assumption4 c(ξ,ζ)isstronglyconvexinξ. apointtotheset,andX∗ denotesthesetofexactmax-\ni,t\nimizers.",
+      "size": 309,
+      "sentences": 3
+    },
+    {
+      "id": 58,
+      "content": "t Assumption4 c(ξ,ζ)isstronglyconvexinξ. apointtotheset,andX∗ denotesthesetofexactmax-\ni,t\nimizers. This can be achieved efficiently via gradient-\nAssumption5 ∇ L(θ,ξ) is L -Lipschitz continuous\nbased methods when L(θ,ξ) is concave in ξ and c(ξ,ζ) θ θξ\ninξ,andL(θ,ξ)−ρc(ξ,ζ)isdifferentiableandL -smooth\nis(strongly)convexinξ.Givenz ,clienticomputesa ξ\ni,t inξ foreveryζ ∈Ξ.",
+      "size": 373,
+      "sentences": 3
+    },
+    {
+      "id": 59,
+      "content": "isdifferentiableandL -smooth\nis(strongly)convexinξ.Givenz ,clienticomputesa ξ\ni,t inξ foreveryζ ∈Ξ. stochasticgradientestimatorwithrespecttoθ:\n(cid:32) (cid:33) Assumption1iswidelyusedinbothDROandFLliter-\ngθ =exp L(θ t ,z i,t )−ρc(z i,t ,ζˆ i,t ) ∇ θ L(θ t ,z i,t ) , ature [20,21]. Assumptions 2 and 3 are standard in FL\ni,t ρβ ρβ studies[20].Assumption4holdsinmanycases,suchas\nthe quadratic transportation cost c(ξ,ζ) = 1∥ξ −ζ∥2. (9) 2 2\nAssumption 5 is also standard in the DRO literature\n[21,35].",
+      "size": 500,
+      "sentences": 4
+    },
+    {
+      "id": 60,
+      "content": "tation cost c(ξ,ζ) = 1∥ξ −ζ∥2. (9) 2 2\nAssumption 5 is also standard in the DRO literature\n[21,35]. andupdateslocallyvia\nWenowpresenttheconvergenceanalysisofAlgorithm1,\nθ =θ −η gθ , (10)\ni,t+1 t θ i,t summarizedinthefollowingtheorem.Thedetailedproof\nisprovidedintheAppendix. where η is the step size for updating θ. Similarly, it\nθ\ncomputesagradientestimatorwithrespecttoλ:\nTheorem1 Let Assumptions 1-5 hold.",
+      "size": 408,
+      "sentences": 5
+    },
+    {
+      "id": 61,
+      "content": "ing θ. Similarly, it\nθ\ncomputesagradientestimatorwithrespecttoλ:\nTheorem1 Let Assumptions 1-5 hold. Select η =\nλ\n(cid:32) L(θ ,z )−ρc(z ,ζˆ ) (cid:33)\nη\nθ\n= √1\nT\n.Then,Algorithm1satisfies\ngλ =exp t i,t i,t i,t . (11)\ni,t ρβ maxH(θ¯,λ)−minmaxH(θ,λ)=O(T−1/2+ϵ), (14)\nλ∈Λ θ∈Θ λ∈Λ\n5\n===  6 ===\nwhereθ¯= 1 (cid:80)T θ .",
+      "size": 314,
+      "sentences": 4
+    },
+    {
+      "id": 62,
+      "content": ")\ni,t ρβ maxH(θ¯,λ)−minmaxH(θ,λ)=O(T−1/2+ϵ), (14)\nλ∈Λ θ∈Θ λ∈Λ\n5\n===  6 ===\nwhereθ¯= 1 (cid:80)T θ . T t=1 t\nThe parameter ϵ is the accuracy of solving the inner\nmax problem (8), and it contributes a constant offset\nto the optimization accuracy , which is independent of\nthetotalnumberofstepsT.TheO(T−1/2)convergence\nrate in Theorem 1 aligns with standard federated mini-\nmax optimization results [20,21].",
+      "size": 404,
+      "sentences": 2
+    },
+    {
+      "id": 63,
+      "content": "onvergence\nrate in Theorem 1 aligns with standard federated mini-\nmax optimization results [20,21]. The convergence rate\nof the algorithm is independent of the specific choice of\ntheoutlierscoringfunctionh(ξ),providedthestatedas-\nsumptionsaresatisfied. Fig.2.Visualizationofthesyntheticdataset. 5 Experiments\nTable1\nClassificationaccuracyonsyntheticdatasets. Inthissection,weevaluatetheperformanceofthepro-\nMethod Overall Group1 Group2 Group3\nposedmethodinbothsyntheticandreal-worlddatasets.",
+      "size": 491,
+      "sentences": 5
+    },
+    {
+      "id": 64,
+      "content": "manceofthepro-\nMethod Overall Group1 Group2 Group3\nposedmethodinbothsyntheticandreal-worlddatasets. AFL[20] 61.5 61.9 64.1 60.4\n5.1 SyntheticData WAFL[24] 77.1 69.2 74.0 79.9\nGDRFL[27] 74.5 67.0 73.8 76.3\nWe begin by assessing the proposed distributionally\nDOR-FL 95.4 84.6 91.3 99.2\nrobust FL framework using synthetically generated\ndatasets. We consider a FL environment with N = 3\n3,respectively,arereplacedwithcontaminatedsamples.",
+      "size": 434,
+      "sentences": 3
+    },
+    {
+      "id": 65,
+      "content": "atasets. We consider a FL environment with N = 3\n3,respectively,arereplacedwithcontaminatedsamples. clients.Forclienti∈{1,2,3},thefeaturevectorsx∈R5\nThecontaminationfactors,whichcontrolthemagnitude\nare drawn independently from a Gaussian distribution\noftheartificiallyinjectedextremevalues,are(7,8,9)for\nN(µ ,I ),whereI istheidentitymatrixandthemean\ni 5 5 the three clients.",
+      "size": 374,
+      "sentences": 3
+    },
+    {
+      "id": 66,
+      "content": "dextremevalues,are(7,8,9)for\nN(µ ,I ),whereI istheidentitymatrixandthemean\ni 5 5 the three clients. The Wasserstein shift perturbations\nvectorsaregivenby\nare implemented by adding translation vectors of mag-\nnitude (1.0,−0.5,0.6) in the first feature coordinate of\nµ 1 =(0.0,0.0,0.0,0.0,0.0), therespectiveclients’datasets.Thedatasetisvisualized\nµ =(1.0,1.0,0.0,0.0,0.0), inFig.2. 2\nµ =(2.0,2.0,0.5,1.0,2.0).",
+      "size": 408,
+      "sentences": 3
+    },
+    {
+      "id": 67,
+      "content": "ents’datasets.Thedatasetisvisualized\nµ =(1.0,1.0,0.0,0.0,0.0), inFig.2. 2\nµ =(2.0,2.0,0.5,1.0,2.0). 3\nFor model training, we adopt logistic regression with a\nThe conditional distribution of the label y ∈ {−1,1} maximum of 1000 gradient descent iterations. The ex-\nis given by Prob(y|x) = [1+exp(−y(θ ⊺ x))]−1, where perimental results in Table 1 demonstrate that DOR-\n∗\nθ ∈R5 isafixedparametervector.",
+      "size": 400,
+      "sentences": 4
+    },
+    {
+      "id": 68,
+      "content": "x))]−1, where perimental results in Table 1 demonstrate that DOR-\n∗\nθ ∈R5 isafixedparametervector. FLconsistentlyoutperformsAgnosticFL(AFL)in[20],\n∗\nWassersteinFL(WAFL)in[24],andgroupdistribution-\nToemulateheterogeneousandcontaminatedclientdata, ally robust FL (GDRFL) [27] on the overall dataset as\nweintroducetwotypesofperturbations:contamination wellasoneachclient’slocaldataset.WhileAFL,WAFL\nperturbations, where a ε fraction of each client’s data and GDRFL suffer from excessive conservatism in the\ni\npoints are multiplied by contamination factors to gen- presence of outliers, DOR-FL maintains high accuracy.",
+      "size": 614,
+      "sentences": 2
+    },
+    {
+      "id": 69,
+      "content": "e multiplied by contamination factors to gen- presence of outliers, DOR-FL maintains high accuracy. erate extreme values modeling corrupted observations; TheseresultsshowthatourDOR-FLeffectivelyaddress\nandWassersteinshifts,wheretheremainingsamplesare bothgeometricshiftsandcontaminationperturbations. perturbed by adding a small translation vector to sim-\nulate covariate shifts.",
+      "size": 379,
+      "sentences": 3
+    },
+    {
+      "id": 70,
+      "content": "nationperturbations. perturbed by adding a small translation vector to sim-\nulate covariate shifts. The clean test set is obtained by To further evaluate the sensitivity of DOR-FL to the\npoolinguncontaminatedsamplesfromallclients,repre- choice of the prior mean ξ¯, we vary the estimated value\nsentingthenominalglobaldistribution.",
+      "size": 330,
+      "sentences": 3
+    },
+    {
+      "id": 71,
+      "content": "epre- choice of the prior mean ξ¯, we vary the estimated value\nsentingthenominalglobaldistribution. ofξ¯overawiderangeandmeasuretheresultingclassifi-\ncationaccuracy.Fig.3showsthattheaccuracyofDOR-\nWe consider prior knowledge on the mean of the clean FLremainsconsistentlyhighacrossoffsetsofupto±5\ndistribution, denoted as ξ¯, and design the function standarddeviationsfromthetrueclean-datamean.This\nh(ξ) = ρ 2 (cid:13) (cid:13)ξ−ξ¯(cid:13) (cid:13) 2 .",
+      "size": 452,
+      "sentences": 2
+    },
+    {
+      "id": 72,
+      "content": "ndarddeviationsfromthetrueclean-datamean.This\nh(ξ) = ρ 2 (cid:13) (cid:13)ξ−ξ¯(cid:13) (cid:13) 2 . The value of ξ¯is determined by a i c n a s t e e n s s t it h i a v t it D y O to R m -F o L de d r o a e te s n or ot ev re e l n y l o a n rg a e d h e ig v h ia ly tio a n c s cu i r n a d t i e -\ncheappreprocessingstep,sameasin[19,34]. specificationofh(ξ)tomaintainstrongperformance. The experimental setup is as follows.",
+      "size": 426,
+      "sentences": 4
+    },
+    {
+      "id": 73,
+      "content": "easin[19,34]. specificationofh(ξ)tomaintainstrongperformance. The experimental setup is as follows. The local sam-\n5.2 Real-WorldData\nple sizes for the three clients are fixed at 100, 200, and\n500 observations, respectively.",
+      "size": 224,
+      "sentences": 4
+    },
+    {
+      "id": 74,
+      "content": "orldData\nple sizes for the three clients are fixed at 100, 200, and\n500 observations, respectively. The outlier contamina-\ntion levels are set to ε = (0.1,0.05,0.1), meaning that We further evaluate the proposed methods on the UCI\n10%, 5%, and 10% of the data from Clients 1, 2, and AdultIncomedataset[36],whichcontainsdemographic\n6\n===  7 ===\n0.8\n0.6\n0.4\n0.2\n15 10 5 0 5 10\nOffset of estimated from true mean (× , variance=1)\nycaruccA\nGroup-wise Excess Risk\n0.835 ERM\nBlack\nAFL\nWAFL\n0.578\nDOR-FL with different GDRFL\nDOR-FL\nAFL 0.322\nWAFL\nGDRFL 0.065\nWhite\nOther\nFig.3.ClassificationaccuracyofDOR-FLunderdifferentoff-\nsetsbetweentheestimatedξ¯andthetrueclean-datamean,\nexpressedinmultiplesofthestandarddeviation(variance=\nFig.",
+      "size": 727,
+      "sentences": 2
+    },
+    {
+      "id": 75,
+      "content": "entheestimatedξ¯andthetrueclean-datamean,\nexpressedinmultiplesofthestandarddeviation(variance=\nFig. 5. Radar plot of group-wise excess risk. DOR-FL ex-\n1). hibits the innermost triangle, indicating the lowest excess\nriskacrossallgroups. Table2\nClassificationaccuracyandexcessriskforadultincomepre-\nwepartitionthedatasetintothreeclientsbasedonrace:\ndictionontheoverallUCIdataset\nWhite, Black, and Other. The clients have the sample\nMethod Accuracy%↑ Excessrisk↓ sizesof29249,3269,1670,respectively.",
+      "size": 497,
+      "sentences": 7
+    },
+    {
+      "id": 76,
+      "content": "her. The clients have the sample\nMethod Accuracy%↑ Excessrisk↓ sizesof29249,3269,1670,respectively. ERM 83.1 0.37 Wefocusonthecapitalgainfeatureasapotentialsource\nAFL 81.7 0.44 of outliers. Empirically, most records with extremely\nhighcapital gainvalues(above$20K)arestronglyas-\nWAFL 76.7 0.64\nsociatedwithhigh-incomeindividuals(income>$50K).",
+      "size": 342,
+      "sentences": 4
+    },
+    {
+      "id": 77,
+      "content": "gainvalues(above$20K)arestronglyas-\nWAFL 76.7 0.64\nsociatedwithhigh-incomeindividuals(income>$50K). GDRFL 79.5 0.61 However, we observe a small but notable set of sam-\nDOR-FL 84.6 0.34 pleswherecapital gainexceedsthisthreshold,yetthe\nreported income label is y = −1, i.e., ≤ $50K.",
+      "size": 280,
+      "sentences": 2
+    },
+    {
+      "id": 78,
+      "content": ".34 pleswherecapital gainexceedsthisthreshold,yetthe\nreported income label is y = −1, i.e., ≤ $50K. These\ncases deviate markedly from typical patterns and are\ntherefore treated as potential outliers in our robust op-\nGroup-wise Accuracy\nERM timizationframework.Inparticular,wedesignthefunc-\nBlack 90%\nAFL tion h(ξ) that assigns larger values to samples whose\nWAFL\nfeatures are highly indicative of high income but are\nGDRFL\n80% DOR-FL labeled as low income.",
+      "size": 457,
+      "sentences": 2
+    },
+    {
+      "id": 79,
+      "content": "WAFL\nfeatures are highly indicative of high income but are\nGDRFL\n80% DOR-FL labeled as low income. Let g(ξ) be the standardized\ncapital gainfeature,Dthestandardizedthresholdfor\n$20K, and I the indicator function.",
+      "size": 212,
+      "sentences": 2
+    },
+    {
+      "id": 80,
+      "content": "e standardized\ncapital gainfeature,Dthestandardizedthresholdfor\n$20K, and I the indicator function. The ideal penalty\n70% White is ρ I{y = −1 ∧ g(ξ) > D}, where ρ > 0 controls\n2 2\nthepenaltyscale.Toenablesmoothoptimization,were-\nplacetheindicatorwithasigmoidapproximation,which\nleadsto\n(cid:18) (cid:19)\ng(ξ)−D\nOther h(ξ)=ρ 2 I{y =−1}σ s ,\nwheres>0isasoftnessparameter.Byincorporatingh\nFig. 4. Radar plot of group-wise classification accuracy.",
+      "size": 443,
+      "sentences": 4
+    },
+    {
+      "id": 81,
+      "content": "es>0isasoftnessparameter.Byincorporatingh\nFig. 4. Radar plot of group-wise classification accuracy. DOR-FL exhibits the outermost triangle, indicating the into the distributionally robust objective, we explicitly\nhighestaccuracyacrossallgroups. reduce the influence of these suspected outlier points\nduringmodeltraining.",
+      "size": 320,
+      "sentences": 5
+    },
+    {
+      "id": 82,
+      "content": "ccuracyacrossallgroups. reduce the influence of these suspected outlier points\nduringmodeltraining. and financial attributes of individuals along with a bi- Performanceismeasuredusingtestaccuracyandexcess\nnaryincomelabelindicatingwhethertheannualincome risk.WecompareourmethodDOR-FLwiththreestan-\nexceeds$50K.Thedatasetconsistsof32,561samplesin dard FL algorithms: ERM [37], AFL [20], and WAFL\nthetrainingsplitand16,281samplesinthetestingsplit. [24].",
+      "size": 450,
+      "sentences": 4
+    },
+    {
+      "id": 83,
+      "content": "L algorithms: ERM [37], AFL [20], and WAFL\nthetrainingsplitand16,281samplesinthetestingsplit. [24]. All methods are implemented with the same logis-\nEach record includes 14 attributes, of which 6 are nu- ticregressionmodelandtunedoptimally.",
+      "size": 240,
+      "sentences": 3
+    },
+    {
+      "id": 84,
+      "content": "logis-\nEach record includes 14 attributes, of which 6 are nu- ticregressionmodelandtunedoptimally. merical(age,finalweight,educationyears,capitalgain,\ncapital loss, and hours worked per week) and the re- The overall accuracy and excess risk of all methods are\nmainderarecategorical.TosimulateaFLenvironment, presentedinTable2.WeobservethatDOR-FLachieves\n7\n[  ]\n\n===  8 ===\n(cid:104) (cid:105)\nt\no\nh\nu\ne\ntp\nh\ne\ni\nr\ng\nf\nh\no\ne\nr\ns\nm\nt\ni\no\nn\nv\ng\ne\na\nra\nll\nll\nth\na\ne\ncc\nb\nu\na\nr\ns\na\ne\nc\nli\ny\nne\nan\nm\nd\net\nt\nh\nh\no\ne\nd\nlo\ns.\nw\nT\nes\nh\nt\ne\ne\ng\nx\nr\nc\no\ne\nu\ns\np\ns\n-\nr\nw\nis\nis\nk\ne\n, ⇔m\nλ\naxρβlogE ζ∼Pˆ\nλ\nesup ξ {L(θ,ξ)−ρc(ζ,ξ)}/(ρβ)\n(cid:104) (cid:105)\na\nsi\nc\ns\nc\nt\nu\nen\nra\ntl\nc\ny\ny\na\nre\nc\ns\nh\nu\nie\nlt\nv\ns\ne\na\ns\nr\nt\ne\nh\ns\ne\nh\nb\now\nes\nn\nt\ni\np\nn\ne\nF\nrf\ni\no\ng\nr\n.",
+      "size": 747,
+      "sentences": 2
+    },
+    {
+      "id": 85,
+      "content": "c\nt\nu\nen\nra\ntl\nc\ny\ny\na\nre\nc\ns\nh\nu\nie\nlt\nv\ns\ne\na\ns\nr\nt\ne\nh\ns\ne\nh\nb\now\nes\nn\nt\ni\np\nn\ne\nF\nrf\ni\no\ng\nr\n. m\n4,\na\nw\nn\nh\nce\ner\na\ne\nc\nD\nro\nO\nss\nR\na\n-F\nll\nL\nra\nc\nc\no\ni\nn\na\n-\nl\n⇔m\nλ\naxE ζ∼Pˆ\nλ\nesup ξ {L(θ,ξ)−ρc(ζ,ξ)}/(ρβ)\n(cid:88) (cid:104) (cid:105)\ng\nth\nro\ne\nu\nm\nps\na\n. jo\nW\nrit\nh\ny\nile\ngr\nE\nou\nR\np\nM\n(W\nsh\nh\no\ni\nw\nte\ns\n),\nre\nit\na\ns\nso\np\nn\ne\na\nrf\nb\no\nl\nr\ne\nm\np\na\ne\nn\nr\nc\nfo\ne\nr\no\nm\nn\na\nt\nn\nh\nc\ne\ne\nm\nfo\ni\nr\n-\n⇔m\nλ\nax λ i E ζ∼Pˆ\ni\nesup ξ {L(θ,ξ)−ρc(ζ,ξ)}/(ρβ) . i\nnority group (Other) is worse.",
+      "size": 483,
+      "sentences": 4
+    },
+    {
+      "id": 86,
+      "content": "e\ne\nm\nfo\ni\nr\n-\n⇔m\nλ\nax λ i E ζ∼Pˆ\ni\nesup ξ {L(θ,ξ)−ρc(ζ,ξ)}/(ρβ) . i\nnority group (Other) is worse. DOR-FL narrows this\ngap, improving minority group accuracy without sacri- Theproofends. ficingoverallperformance.Thegroup-wiseexcessriskis\npresented in Fig. 5, which further confirms that DOR-\n6.3 ProofofProposition2\nFL not only reduces disparity between groups but also\nimproves the overall performance.",
+      "size": 404,
+      "sentences": 5
+    },
+    {
+      "id": 87,
+      "content": "roposition2\nFL not only reduces disparity between groups but also\nimproves the overall performance. In summary, these\nresults demonstrate that incorporating outlier mitiga- ByvirtueofLemma1in[19],thefollowingweakduality\ntion into distributionally robust FL substantially im- holds:\nproves both global performance and fairness across de-\nmographicgroups.",
+      "size": 353,
+      "sentences": 2
+    },
+    {
+      "id": 88,
+      "content": "FL substantially im- holds:\nproves both global performance and fairness across de-\nmographicgroups. sup E ξ∼P[L(θ,ξ)]\nP:UW(P||Pˆ λ)≤rˆλ\n6 Conclusion ≤\nα\nin\n≥\nf\n0\n(cid:8) αrˆ λ +αβlogE ζ∼Pˆ\nλ\n[ef(θ,ζ)/(αβ)] (cid:9)\n≤ρrˆ +ρβlogE [ef(θ,ζ)/(ρβ)], (15)\nIn this work, we proposed a distributionally robust λ ζ∼Pˆ\nλ\nFL framework that explicitly accounts for distribution\nshiftsandoutliercontaminationthroughanunbalanced where the last inequality is obtained by setting α = ρ.\nWassersteindistance.Theoretically,weestablishedboth The first inequality is proved.",
+      "size": 552,
+      "sentences": 2
+    },
+    {
+      "id": 89,
+      "content": "setting α = ρ.\nWassersteindistance.Theoretically,weestablishedboth The first inequality is proved. For the equality, we use\nconvergence guarantees and robustness certificates for thestrongdualityfromTheorem2in[19]:\nDOR-FL. Practical experiments on synthetic and real-\nworlddatasetsdemonstratedthatDOR-FLconsistently supE ξ∼P[L(θ,ξ)]−ρUW(P||Pˆ\nλ\n)\noutperforms existing robust FL baselines, achieving P\n(cid:104) (cid:105)\nhigheroverallaccuracy,lowerexcessrisk,andimproved =ρβlogE ef(θ,ζ)/(ρβ) .",
+      "size": 493,
+      "sentences": 3
+    },
+    {
+      "id": 90,
+      "content": "ving P\n(cid:104) (cid:105)\nhigheroverallaccuracy,lowerexcessrisk,andimproved =ρβlogE ef(θ,ζ)/(ρβ) . (16)\nfairnessacrossdemographicgroups. ζ∼Pˆ\nλ\nFutureresearchdirectionsincludedevelopingcommunication-Since P∗\nλ\n= argmax\nP\n{E ξ∼P[L(θ,ξ)]−ρUW(P||Pˆ\nλ\n)}, we\nefficient variants of DOR-FL to further reduce trans- have\nmission overhead in large-scale networks and exploring\nscalablealgorithmsforhigh-dimensionalapplications.",
+      "size": 420,
+      "sentences": 3
+    },
+    {
+      "id": 91,
+      "content": "n overhead in large-scale networks and exploring\nscalablealgorithmsforhigh-dimensionalapplications. supE ξ∼P[L(θ,ξ)]−ρUW(P||Pˆ\nλ\n)\nP\nAppendix =E ξ∼P∗ [L(θ,ξ)]−ρUW(P∗ λ ||Pˆ λ )\nλ\n=E ξ∼P∗ [L(θ,ξ)]−ρrˆ λ . (17)\nλ\n6.1 ProofofLemma1\nFollowingthedefinitionin(2),wehave Combining (16)and(17),wehave\nUW(P∗||Pˆ) (cid:104) (cid:105)\n= inf (cid:110) E [c(ξ,ζ)]+βD (P¯||Pˆ) (cid:111) E ξ∼P∗ λ [L(θ,ξ)]=ρrˆ λ +ρβlogE ζ∼Pˆ λ ef(θ,ζ)/(ρβ) . (ξ,ζ)∼γ KL\nP¯,γ∈Γ(P∗,P¯)\nTheproofiscomplete.",
+      "size": 471,
+      "sentences": 4
+    },
+    {
+      "id": 92,
+      "content": "E ξ∼P∗ λ [L(θ,ξ)]=ρrˆ λ +ρβlogE ζ∼Pˆ λ ef(θ,ζ)/(ρβ) . (ξ,ζ)∼γ KL\nP¯,γ∈Γ(P∗,P¯)\nTheproofiscomplete. (cid:110) (cid:111)\n≤ inf E [c(ξ,ζ)]+βD (P¯||Pˆ)\n(ξ,ζ)∼γ KL\nγ∈Γ(P∗,P¯)\n6.4 ProofofTheorem1\n=W(P∗,P¯)+βD (P¯||Pˆ). KL\nSinceH(θ,λ)isconvexinθ andconcaveinλ,andΛ,Θ\nTheproofiscomplete. areconvexcompactsets,bythegeneralminmaxtheorem\n[38],wehave\n6.2 ProofofProposition1\nmaxH(θ¯,λ)−minmaxH(θ,λ)\nThe proof follows directly from Theorem 2 in [19].",
+      "size": 437,
+      "sentences": 5
+    },
+    {
+      "id": 93,
+      "content": "6.2 ProofofProposition1\nmaxH(θ¯,λ)−minmaxH(θ,λ)\nThe proof follows directly from Theorem 2 in [19]. We\nλ∈Λ θ∈Θ λ∈Λ\nhave =maxH(θ¯,λ)−maxminH(θ,λ)\nλ∈Λ λ∈Λ θ∈Θ\nmaxsupE ξ∼P[L(θ,ξ)]−ρUW(P||Pˆ\nλ\n) ≤maxH(θ¯,λ)−minH(θ,λ¯)\nλ P λ∈Λ θ∈Θ\n8\n===  9 ===\n= λ∈ m Λ, a θ x ∈Θ (cid:110) H(θ¯,λ)−H(θ,λ¯) (cid:111) ≤ ∥θ 1 −θ∥2 + η θ (cid:88) T (cid:13) (cid:13) (cid:13) (cid:88) N λ gθ (cid:13) (cid:13) (cid:13) 2\n2η 2 (cid:13) i,t i,t(cid:13)\n= λ∈ m Λ, a θ x ∈Θ (cid:110) H(θ¯,λ)− T 1 (cid:88) t= T 1 H(θ,λ t ) (cid:111) ≤ 2 D η θ 2 + θ η 2 θ (cid:88) T (cid:16)(cid:88) t N =1 λ (cid:13) i, i t = (cid:13) (cid:13) 1 g i θ ,t (cid:13) (cid:13) (cid:17)2 (cid:13)\n(cid:110)1 (cid:88) T 1 (cid:88) T (cid:111) θ t=1 i=1\n≤ λ∈ m Λ, a θ x ∈Θ T H(θ t ,λ)− T H(θ,λ t ) ≤ D θ 2 + η θ TC 0 2 , (22)\nt=1 t=1 2η 2\nθ\nT\n1 (cid:110)(cid:88)(cid:16) (cid:17)(cid:111)\n= max H(θ ,λ)−H(θ,λ ) , (18)\nT λ∈Λ,θ∈Θ t t where the third inequality follows from Assump-\nt=1 tion 2.",
+      "size": 937,
+      "sentences": 2
+    },
+    {
+      "id": 94,
+      "content": "ax H(θ ,λ)−H(θ,λ ) , (18)\nT λ∈Λ,θ∈Θ t t where the third inequality follows from Assump-\nt=1 tion 2. The last inequality follows since (cid:13) (cid:13)gθ (cid:13) (cid:13) =\ni,t\n(cid:13) (cid:16) (cid:17) (cid:13)\nwhere third equality follows since H(θ,λ) is linear in (cid:13)exp (L(θ¯,z )−ρc(z ,ξˆ ))/(ρβ) 1 ∇ L(θ¯,z )(cid:13)≤\n(cid:13) t i,t i,t i,t ρβ θ t i,t (cid:13)\nλ, and the last inequality follows from the convexity of\nH(θ,λ)inθ.Itfollowsthat B ρβ 2e B ρβ 1 :=C 0 .",
+      "size": 476,
+      "sentences": 2
+    },
+    {
+      "id": 95,
+      "content": "nd the last inequality follows from the convexity of\nH(θ,λ)inθ.Itfollowsthat B ρβ 2e B ρβ 1 :=C 0 . H(θ ,λ)−H(θ,λ )\nt t Since L(θ,ξ) − ρc(ξ,ζ) is differentiable and strongly\n=H(θ ,λ)−H(θ ,λ )+H(θ ,λ )−H(θ,λ )\nt t t t t t concave in ξ, it follows from Danskin’s theorem\n≤⟨λ−λ t ,∇ λ H(θ t ,λ t )⟩+⟨θ t −θ,∇ θ H(θ t ,λ t )⟩ [39] that f(θ,ζ) is convex and differentiable in θ.",
+      "size": 373,
+      "sentences": 2
+    },
+    {
+      "id": 96,
+      "content": "t ,∇ λ H(θ t ,λ t )⟩+⟨θ t −θ,∇ θ H(θ t ,λ t )⟩ [39] that f(θ,ζ) is convex and differentiable in θ. =\n(cid:10)\nλ−λ\n,gλ(cid:11)\n+\n(cid:10)\nλ−λ ,∇ H(θ ,λ\n)−gλ(cid:11) Moreover, the gradient of f(θ,ζ) with respect to\nt t t λ t t t θ is given by ∇ f(θ,ζ) = ∇ L(θ,ξ∗(ζ)), where\n+\n(cid:10)\nθ t −θ,g t\nθ(cid:11)\n+\n(cid:10)\nθ t −θ,∇ θ H(θ t ,λ t )−g t\nθ(cid:11)\n.",
+      "size": 354,
+      "sentences": 2
+    },
+    {
+      "id": 97,
+      "content": "(θ,ξ∗(ζ)), where\n+\n(cid:10)\nθ t −θ,g t\nθ(cid:11)\n+\n(cid:10)\nθ t −θ,∇ θ H(θ t ,λ t )−g t\nθ(cid:11)\n. (19) ξ∗(ζ)=argmax L\nθ\n(θ,ξ)−ρc(ξ,ζ)\nθ\n.Therefore,wehave\nξ∈Ξ\n(cid:104) 1 (cid:105)\nSubstituting (19)into(18),wehave ∇\nθ\nH(θ\nt\n,λ\nt\n)=E\nζ∼Pˆ λt\nef(θt,ζ)/(ρβ)\nρβ\n∇\nθ\nf(θ\nt\n,ζ)\nmaxH(θ¯,λ)−minmaxH(θ,λ)\nN\n≤\nλ∈Λ\n1(cid:16)\nmax\n(cid:88) T\nθ\n(cid:10)\n∈\nθ\nΘ\n−\nλ∈\nθ\nΛ\n,gθ(cid:11)\n+max\n(cid:88) T (cid:10)\nλ−λ\n,gλ(cid:11)\n= (cid:88)\ni=1\nλ\ni,t\nE\nζ∼Pˆ i\n(cid:104) ef(θt,ζ)/(ρβ)\nρ\n1\nβ\n∇\nθ\nf(θ\nt\n,ζ) (cid:105) .",
+      "size": 494,
+      "sentences": 2
+    },
+    {
+      "id": 98,
+      "content": "λ\n,gλ(cid:11)\n= (cid:88)\ni=1\nλ\ni,t\nE\nζ∼Pˆ i\n(cid:104) ef(θt,ζ)/(ρβ)\nρ\n1\nβ\n∇\nθ\nf(θ\nt\n,ζ) (cid:105) . T θ∈Θ t t λ∈Λ t t\nT\nt=1 t=1 Define Gθ\ni,t\n(ζ) = ef(θt,ζ)/(ρβ)\nρ\n1\nβ\n∇\nθ\nf(θ\nt\n,ζ). Gθ\ni,t\n(ζˆ\ni,t\n) is\n+max (cid:88)(cid:10) θ −θ,∇ H(θ ,λ )−gθ(cid:11) an unbiased estimate of the gradient for client i. The\nt θ t t t\nθ∈Θ gradient gθ of each client is biased and we define the\nt=1 i,t\nbiaserroras\nT\n+max\n(cid:88)(cid:10)\nλ−λ ,∇ H(θ ,λ\n)−gλ(cid:11)(cid:17)\n. (20)\nt λ t t t\nλ∈Λ eθ =gθ −Gθ (ζˆ ).",
+      "size": 493,
+      "sentences": 5
+    },
+    {
+      "id": 99,
+      "content": "s\nT\n+max\n(cid:88)(cid:10)\nλ−λ ,∇ H(θ ,λ\n)−gλ(cid:11)(cid:17)\n. (20)\nt λ t t t\nλ∈Λ eθ =gθ −Gθ (ζˆ ). t=1 i,t i,t i,t i,t\nWe deal with the terms one by one.",
+      "size": 154,
+      "sentences": 3
+    },
+    {
+      "id": 100,
+      "content": "d:17)\n. (20)\nt λ t t t\nλ∈Λ eθ =gθ −Gθ (ζˆ ). t=1 i,t i,t i,t i,t\nWe deal with the terms one by one. By virtue of the\nDenote by z∗ the unique maximizer of L(θ ,ξ) −\nupdaterule(12),foranyθ ∈Θ,wehave i,t t\nρc(ξ,ζˆ ),sowehavef(θ ,ζˆ )=L(θ ,z∗ )−ρc(z∗ ,ζˆ )\ni,t t i,t t i,t i,t i,t\n∥θ t+1 −θ∥2 and∇ θ f(θ t ,ζˆ i,t )=∇ θ L(θ t ,z i ∗ ,t ).Itfollowsthat\n(cid:13) (cid:13)2\n(cid:13) (cid:88) N (cid:13)\n≤(cid:13)\n(cid:13)\nθ\nt\n−η\nθ\nλ\ni,t\ng\ni\nθ\n,t\n−θ(cid:13)\n(cid:13)\n(cid:13) (cid:13)eθ\ni,t\n(cid:13)\n(cid:13)\n(cid:13) (cid:13)\ni=1 (cid:13) 1 (cid:16)L(θ ,z )−ρc(z ,ζˆ )(cid:17)\n=∥θ −θ∥2+η2 (cid:13) (cid:13) (cid:13) (cid:88) N λ gθ (cid:13) (cid:13) (cid:13) 2 −2η (cid:42) θ −θ, (cid:88) N λ gθ (cid:43) , =(cid:13) (cid:13)ρβ exp t i,t ρβ i,t i,t ∇ θ L(θ t ,z i,t )\nt θ(cid:13) i,t i,t(cid:13) θ t i,t i,t\n(cid:13) i=1 (cid:13) i=1 − 1 exp (cid:16)L(θ t ,z i ∗ ,t )−ρc(z i ∗ ,t ,ζˆ i,t )(cid:17) ∇ L(θ ,z∗ ) (cid:13) (cid:13)\n(21) ρβ ρβ θ t i,t (cid:13)\nwhere the first inequality follows since the projection ≤ 1 (cid:13) (cid:13)exp (cid:16)L(θ t ,z i,t )−ρc(z i,t ,ζˆ i,t )(cid:17)\noperatorisnon-expansive.Itfollowsthat ρβ(cid:13) ρβ\n(cid:13)\n× (cid:0) ∇ L(θ ,z )−∇ L(θ ,z∗ ) (cid:1)(cid:13)\nT θ t i,t θ t i,t (cid:13)\n(cid:88)(cid:10)\nθ t −θ,g t\nθ(cid:11)\n+ 1 (cid:13) (cid:13)∇ L(θ ,z∗ ) (cid:16) exp (cid:16)L(θ t ,z i,t )−ρc(z i,t ,ζˆ i,t )(cid:17)\nt=1 ρβ(cid:13) θ t i,t ρβ\n(cid:13) (cid:13)2\n≤ 2 1 η θ (cid:88) T (cid:16) ∥θ t −θ∥2−∥θ t+1 −θ∥2+η θ 2 (cid:13) (cid:13) (cid:13) (cid:13) (cid:88) N λ i,t g i θ ,t (cid:13) (cid:13) (cid:13) (cid:13) (cid:17) −exp (cid:16)L(θ t ,z i ∗ ,t )− ρβ ρc(z i ∗ ,t ,ζˆ i,t )(cid:17)(cid:17)(cid:13) (cid:13) (cid:13)\nt=1 i=1\n9\n===  10 ===\n≤ ρ 1 β exp( B ρβ 1)L θξ (cid:13) (cid:13)z i,t −z i ∗ ,t (cid:13) (cid:13) o T f ak (2 in 4 g ), t w he e e h x a p v e e ctationwithrespecttoζˆ i,t onbothsides\nB (cid:13) (cid:16)L(θ ,z )−ρc(z ,ζˆ )(cid:17)\n+ ρβ 2(cid:13) (cid:13) exp t i,t ρβ i,t i,t E (cid:34) max (cid:88) T (cid:10) θ −θ,∇ H(θ ,λ )−gθ(cid:11) (cid:35)\n(cid:16)L(θ ,z∗ )−ρc(z∗ ,ζˆ )(cid:17)(cid:13) θ∈Θ t θ t t t\n−exp t i,t i,t i,t (cid:13) t=1\nρβ (cid:13) (cid:34) T (cid:42) N (cid:43)(cid:35)\n≤ ρ 1 β exp( B ρβ 1)L θξ (cid:13) (cid:13)z i,t −z i ∗ ,t (cid:13) (cid:13)+ B ρβ 2 exp( B ρβ 1)× ≤E m θ∈ a Θ x (cid:88) t=1 −θ,∇ θ H(θ t ,λ t )− (cid:88) i=1 λ i,t Gθ i,t (ζˆ i,t )\n(cid:13) (cid:13) (cid:13) L(θ t ,z i ∗ ,t )− ρβ ρc(z i ∗ ,t ,ζˆ i,t ) − L(θ t ,z i,t )− ρβ ρc(z i,t ,ζˆ i,t )(cid:13) (cid:13) (cid:13) ≤ + D T E D (cid:13) (cid:13) (cid:13) θ (cid:88) ( T C 1 (cid:0) ϵ ∇ + H C 2 ( ϵ θ 2) ,λ )− (cid:88) N λ Gθ (ζˆ ) (cid:1) (cid:13) (cid:13) (cid:13)\n≤ L ρ θ β ξ exp( B ρβ 1) (cid:13) (cid:13)z i,t −z i ∗ ,t (cid:13) (cid:13)+ ρ B 2β 2 2 exp( B ρβ 1)L ξ (cid:13) (cid:13)z i,t −z i ∗ ,t (cid:13) (cid:13) 2 + θ TD (cid:13) (cid:13) t ( = C 1 ϵ+ θ C ϵ2 t ) t i=1 i,t i,t i,t (cid:13) (cid:13)\nθ 1 2\nL B B B\n≤ ρ θ β ξ exp( ρβ 1)ϵ+ ρ2β 2 2 exp( ρβ 1)L ξ ϵ2 ≤D (cid:118) (cid:117) (cid:117) (cid:116)E (cid:13) (cid:13) (cid:13) (cid:88) T (cid:0) ∇ H(θ ,λ )− (cid:88) N λ Gθ (ζˆ ) (cid:1) (cid:13) (cid:13) (cid:13) 2\n=C ϵ+C ϵ2, (23) θ (cid:13) θ t t i,t i,t i,t (cid:13)\n1 2 (cid:13) (cid:13)\nt=1 i=1\n+TD (C ϵ+C ϵ2)\nwherewedefineC 1 = L ρ θ β ξ exp(B ρβ 1)andC 2 = ρ B 2β 2 2 exp(B ρβ 1)L ξ .",
+      "size": 3259,
+      "sentences": 4
+    },
+    {
+      "id": 101,
+      "content": "t=1 i=1\n+TD (C ϵ+C ϵ2)\nwherewedefineC 1 = L ρ θ β ξ exp(B ρβ 1)andC 2 = ρ B 2β 2 2 exp(B ρβ 1)L ξ . (cid:118) θ 1 2\nT ity he of fir m st ax, in t e h q e ua s li e t c y on f d oll i o n w eq s ua f l r i o ty m fo t l h lo e ws su f b r a o d m dit A iv s- - =D θ (cid:117) (cid:117) (cid:116)E (cid:88) T (cid:13) (cid:13) (cid:13) (cid:13) (cid:0) ∇ θ H(θ t ,λ t )− (cid:88) N λ i,t Gθ i,t (ζˆ i,t ) (cid:1) (cid:13) (cid:13) (cid:13) (cid:13) 2\nsumptions 3 and 5, the third inequality follows since t=1 (cid:13) i=1 (cid:13)\n|ex −ey| ≤ eB|x−y| when x,y < B.",
+      "size": 561,
+      "sentences": 2
+    },
+    {
+      "id": 102,
+      "content": "nd 5, the third inequality follows since t=1 (cid:13) i=1 (cid:13)\n|ex −ey| ≤ eB|x−y| when x,y < B. The fourth in- +TD (C ϵ+C ϵ2)\nθ 1 2\nequalityfollowsfromAssumption5.Thelastinequality √\n≤D 2TC +TD (C ϵ+C ϵ2), (25)\nfollowssincez isϵ-approximatemaximizer.",
+      "size": 254,
+      "sentences": 2
+    },
+    {
+      "id": 103,
+      "content": "Assumption5.Thelastinequality √\n≤D 2TC +TD (C ϵ+C ϵ2), (25)\nfollowssincez isϵ-approximatemaximizer. θ 0 θ 1 2\ni,t\nwhere the third inequality follows from the Jensen’s in-\nUsing,wehave\nequality.Thefourthinequalityfollowssince\nT\nm θ∈ a Θ x (cid:88) t=1 (cid:10) θ t −θ,∇ θ H(θ t ,λ t )−g t θ(cid:11) E (cid:42) (cid:88) N λ i,t Gθ i,t (ζˆ i,t )]−∇ θ H(θ t ,λ t ),\nT (cid:42) N (cid:43) i=1\n=m θ∈ a Θ x (cid:88) t=1 θ t −θ,∇ θ H(θ t ,λ t )− (cid:88) i=1 λ i,t Gθ i,t (ζˆ i,t ) (cid:88) N λ i,k Gθ i,k (ζˆ i,k )−∇ θ H(θ k ,λ k ) (cid:43) =0,\nT (cid:42) N N (cid:43) i=1\n+ (cid:88) θ −θ, (cid:88) λ Gθ (ζˆ )− (cid:88) λ gθ\nt i,t i,t i,t i,t i,t whent̸=k.Thelastinequalityfollowssince∇ H(θ ,λ )≤\nθ t t\nt=1 i=1 i=1\n≤max (cid:88) T (cid:42) θ −θ,∇ H(θ ,λ )− (cid:88) N λ Gθ (ζˆ ) (cid:43) B ρβ 2e B ρβ 1 =C 0 andGθ i,t (ζˆ i,k )≤C 0 .",
+      "size": 826,
+      "sentences": 2
+    },
+    {
+      "id": 104,
+      "content": "d:42) θ −θ,∇ H(θ ,λ )− (cid:88) N λ Gθ (ζˆ ) (cid:43) B ρβ 2e B ρβ 1 =C 0 andGθ i,t (ζˆ i,k )≤C 0 . t θ t t i,t i,t i,t\nθ∈Θ\nt=1 i=1 Similarly,by virtue ofthe update rule(13), forany λ∈\n(cid:13) (cid:13)\n(cid:88) T (cid:13)(cid:88) N (cid:13) Λ,wehave\n+ D (cid:13) λ eθ (cid:13)\nθ(cid:13) i,t i,t(cid:13)\nt=1 T (cid:42) (cid:13) i=1 (cid:13) N (cid:43) ∥λ t+1 −λ∥2 ≤ (cid:13) (cid:13)λ t +η λ g t λ−λ (cid:13) (cid:13)\n≤max (cid:88) −θ,∇ θ H(θ t ,λ t )− (cid:88) λ i,t Gθ i,t (ζˆ i,t ) =∥λ t −λ∥2+η λ 2(cid:13) (cid:13)g t λ(cid:13) (cid:13) 2 +2η λ ⟨λ t −λ,g t λ⟩.",
+      "size": 564,
+      "sentences": 2
+    },
+    {
+      "id": 105,
+      "content": ",t Gθ i,t (ζˆ i,t ) =∥λ t −λ∥2+η λ 2(cid:13) (cid:13)g t λ(cid:13) (cid:13) 2 +2η λ ⟨λ t −λ,g t λ⟩. (26)\nθ∈Θ\nt=1 i=1\n(cid:42) N (cid:43) Itfollowsthat\n+ θ ,∇ H(θ ,λ )− (cid:88) λ Gθ (ζˆ )\nt θ t t i,t i,t i,t\nT\ni=1 (cid:88)\n⟨λ−λ ,gλ⟩\n+TD (C ϵ+C ϵ2), (24) t t\nθ 1 2\nt=1\nT\nw (cid:13) (cid:13) (cid:13) (cid:80) he N i r = e 1 t λ h i e ,t l e a θ i s ,t t (cid:13) (cid:13) (cid:13) in ≤ eq (cid:80) ua N i l = it 1 y λ f i o ,t ll (cid:13) (cid:13) o e w θ i, s t (cid:13) (cid:13) sin ≤ ce C (cid:80) 1 ϵ N i + =1 C λ 2 i, ϵ t 2.",
+      "size": 528,
+      "sentences": 2
+    },
+    {
+      "id": 106,
+      "content": "(cid:13) (cid:13) o e w θ i, s t (cid:13) (cid:13) sin ≤ ce C (cid:80) 1 ϵ N i + =1 C λ 2 i, ϵ t 2. =1and ≤ 2η 1 λ (cid:88) t=1 (cid:16) ∥λ t −λ∥2−∥λ t+1 −λ∥2+η λ 2(cid:13) (cid:13)g t λ(cid:13) (cid:13) 2(cid:17)\n≤ D λ 2 + η λ (cid:88) T (cid:13) (cid:13)gλ(cid:13) (cid:13) 2\nNotethatE[ (cid:80)N i=1 λ i,t Gθ i,t (ζˆ i,t )]=∇ θ H(θ t ,λ t ).Besides, 2η λ 2 t=1 t\n10\n===  11 ===\n≤ D λ 2 + η λ TNC 3 2 , (27) (30)yields\n2η 2\nλ\nT\nwhere the las √ t inequality follows since (cid:13) (cid:13)g i λ ,t (cid:13) (cid:13) ≤ e B ρβ 1 := E (cid:104) m λ∈ a Λ x (cid:88) t=1 (cid:10) λ−λ t ,∇ λ H(θ t ,λ t )−g t λ(cid:11)(cid:105)\nC andgλ ≤ NC .",
+      "size": 637,
+      "sentences": 2
+    },
+    {
+      "id": 107,
+      "content": "104) m λ∈ a Λ x (cid:88) t=1 (cid:10) λ−λ t ,∇ λ H(θ t ,λ t )−g t λ(cid:11)(cid:105)\nC andgλ ≤ NC . 3 t 3 ≤E (cid:104) max (cid:88) T (cid:88) N (cid:68) λ −λ ,∇ H(θ ,λ )−Gλ (ζˆ ) (cid:69)(cid:105)\nDefineGλ\ni,t\n(ζ)=ef(θt,ζ)/(ρβ).Notethat λ∈Λ\nt=1 i=1\ni i,t λi t t i,t i,t\n+TNC ϵ2\n4\n(cid:104) (cid:105)\n∇ λi H(θ t ,λ t )=E ζ∼Pˆ i ef(θt,ζ)/(ρβ) =E ζ∼Pˆ i [Gλ i,t (ζ)].",
+      "size": 365,
+      "sentences": 2
+    },
+    {
+      "id": 108,
+      "content": "i,t\n+TNC ϵ2\n4\n(cid:104) (cid:105)\n∇ λi H(θ t ,λ t )=E ζ∼Pˆ i ef(θt,ζ)/(ρβ) =E ζ∼Pˆ i [Gλ i,t (ζ)]. =E (cid:104) max (cid:88) T (cid:88) N (cid:68) λ ,∇ H(θ ,λ )−Gλ (ζˆ ) (cid:69)(cid:105)\nλ∈Λ\ni λi t t i,t i,t\nt=1 i=1\nAgain, g i λ ,t is a biased estimate of the gradient with re- +TNC 4 ϵ2\nspecttoλ withthebiaserrordefinedby\ni ≤E (cid:34) (cid:88) N (cid:13) (cid:13) (cid:13) (cid:88) T (cid:0) ∇ H(θ ,λ )−Gλ (ζˆ ) (cid:1) (cid:13) (cid:13) (cid:13) (cid:35) +TNC ϵ2\neλ i,t =g i λ ,t −Gλ i,t (ζˆ i,t ) (28) √i=1 (cid:13) (cid:13) t=1 λi t t i,t i,t (cid:13) (cid:13) 4\n≤N 2TC +TNC ϵ2, (31)\n3 4\nRecall that z∗ is the unique maximizer of L(θ ,ξ) −\ni,t t\nρc(ξ,ζˆ ).Itfollowsthat where the last inequality follows from the Jensen’s in-\ni,t\n(cid:13) (cid:13)eλ (cid:13) (cid:13) a\neq\nn\nu\nd\na\nG\nlit\nλ\ny\n(\na\nζˆ\nnd\n)\nt\n≤\nhe\nC\nfa\n.",
+      "size": 822,
+      "sentences": 2
+    },
+    {
+      "id": 109,
+      "content": "en’s in-\ni,t\n(cid:13) (cid:13)eλ (cid:13) (cid:13) a\neq\nn\nu\nd\na\nG\nlit\nλ\ny\n(\na\nζˆ\nnd\n)\nt\n≤\nhe\nC\nfa\n. cts that ∇ λi H(θ t ,λ t ) ≤ e B ρβ 1 = C 3\ni,t i,t i,t 3\n(cid:12) (cid:32) (cid:33)\n(cid:12) L(θ ,z )−ρc(z ,ζˆ )\n=(cid:12)exp t i,t i,t i,t Substituting(22),(25),(27)and(31)into(20),wehave\n(cid:12) ρβ\n(cid:12)\n(cid:32) L(θ ,z∗ )−ρc(z∗ ,ζˆ ) (cid:33)(cid:12) (cid:12) E (cid:104) maxH(θ¯,λ)−minmaxH(θ,λ) (cid:105)\n−exp t i,t ρβ i,t i,t (cid:12) (cid:12) λ∈Λ θ∈Θ λ√∈Λ\n(cid:12) D2 η C2 D 2C\n≤e B ρβ 1 (cid:12) (cid:12) (cid:12) (cid:12) (cid:12) L(θ t ,z i,t )− ρβ ρc(z i,t ,ζˆ i,t ) − L(θ t ,z i ∗ ,t )− ρβ ρc(z i ∗ ,t ,ζˆ i,t ) (cid:12) (cid:12) (cid:12) (cid:12) (cid:12) ≤ + 2η θ θ D T λ 2 + + θ 2 η λ 0 N + C 3 2 + θ√ T N √ √ 0 2 + C 3 D + θ ( N C 1 C ϵ+ ϵ2 C .",
+      "size": 764,
+      "sentences": 2
+    },
+    {
+      "id": 110,
+      "content": "cid:12) ≤ + 2η θ θ D T λ 2 + + θ 2 η λ 0 N + C 3 2 + θ√ T N √ √ 0 2 + C 3 D + θ ( N C 1 C ϵ+ ϵ2 C . 2 ϵ2) (32)\n≤ ρ 1 β exp( B ρβ 1)L ξ (cid:13) (cid:13)z i,t −z i ∗ ,t (cid:13) (cid:13) 2 2η λ T 2 T 4\n≤ 1 exp( B 1)L ϵ2 =C ϵ2, (29) Substituting η λ = η θ = √1 T into (32) completes the\nρβ ρβ ξ 4 proof. wherewedefineC\n4\n=\nρ\n1\nβ\nexp(B\nρβ\n1)L\nξ\n.Thefirstinequality References\nholds since |ex −ey| ≤ eB|x−y| when x,y < B, the\nsecond inequality follows from Assumption 5.",
+      "size": 466,
+      "sentences": 3
+    },
+    {
+      "id": 111,
+      "content": "ences\nholds since |ex −ey| ≤ eB|x−y| when x,y < B, the\nsecond inequality follows from Assumption 5. Then, we [1] Brendan McMahan, Eider Moore, Daniel Ramage, Seth\nHampson, and Blaise Aguera y Arcas. Communication-\nhave\nefficientlearningofdeepnetworksfromdecentralizeddata.In\nArtificialIntelligenceandStatistics,pages1273–1282,2017.",
+      "size": 331,
+      "sentences": 3
+    },
+    {
+      "id": 112,
+      "content": "ningofdeepnetworksfromdecentralizeddata.In\nArtificialIntelligenceandStatistics,pages1273–1282,2017. T\nmax\n(cid:88)(cid:10)\nλ−λ ,∇ H(θ ,λ\n)−gλ(cid:11) [2] Peter Kairouz, H Brendan McMahan, Brendan Avent,\nt λ t t t Aur´elienBellet,MehdiBennis,ArjunNitinBhagoji,Kallista\nλ∈Λ\nt=1 Bonawitz, Zachary Charles, Graham Cormode, Rachel\nT N Cummings,etal. Advancesandopenproblemsinfederated\n=max\n(cid:88)(cid:88)(cid:68)\nλ −λ ,∇ H(θ ,λ )−Gλ (ζˆ )\n(cid:69)\nlearning.",
+      "size": 454,
+      "sentences": 3
+    },
+    {
+      "id": 113,
+      "content": "dopenproblemsinfederated\n=max\n(cid:88)(cid:88)(cid:68)\nλ −λ ,∇ H(θ ,λ )−Gλ (ζˆ )\n(cid:69)\nlearning. Foundations and Trends in Machine Learning,\nλ∈Λ\ni i,t λi t t i,t i,t\n14(1–2):1–210,2021. t=1 i=1\n[3] Tian Li, Anit Kumar Sahu, Ameet Talwalkar, and Virginia\nT N\n+ (cid:88)(cid:88)(cid:68) λ −λ ,Gλ (ζˆ )−gλ (cid:69) Smith. Federatedlearning:Challenges,methods,andfuture\ni i,t i,t i,t i,t directions. IEEE Signal Processing Magazine, 37(3):50–60,\nt=1 i=1 2020.",
+      "size": 458,
+      "sentences": 5
+    },
+    {
+      "id": 114,
+      "content": "andfuture\ni i,t i,t i,t i,t directions. IEEE Signal Processing Magazine, 37(3):50–60,\nt=1 i=1 2020. T N\n≤m\nλ∈\na\nΛ\nx\n(cid:88)(cid:88)(cid:68)\nλ i −λ i,t ,∇ λi H(θ t ,λ t )−Gλ i,t (ζˆ i,t )\n(cid:69) [4] J\nD\no\ni\nh\nst\nn\nri\nD\nbu\nu\nt\nc\ni\nh\no\ni\nn\n,\na\nT\nl\na\nly\nts\nr\nu\no\nn\nb\no\nu\nr\ns\ni\nt\nH\nl\na\no\ns\ns\nh\ns\ni\ne\nm\ns\no\nfo\nto\nr\n,\nl\na\na\nn\nte\nd\nn\nH\nt\no\nc\nn\no\ng\nv\ns\na\ne\nr\no\nia\nk\nte\nNa\nm\nm\nix\nk\nt\no\nu\no\nr\nn\ne\ng\ns\n. . t=1 i=1 OperationsResearch,71(2):649–664,2023. +TNC ϵ2. (30) [5] Erick Delage and Yinyu Ye.",
+      "size": 488,
+      "sentences": 7
+    },
+    {
+      "id": 115,
+      "content": "g\ns\n. . t=1 i=1 OperationsResearch,71(2):649–664,2023. +TNC ϵ2. (30) [5] Erick Delage and Yinyu Ye. Distributionally robust\n4\noptimization under moment uncertainty with application to\ndata-driven problems. Operations research, 58(3):595–612,\nTaking expectation with respect to ζˆ i,t on both sides of 2010. 11\n===  12 ===\n[6] Daniel Kuhn, Soroosh Shafiee, and Wolfram Wiesemann. [21]Yuyang Deng, Mohammad Mahdi Kamani, and Mehrdad\nDistributionally robust optimization. Acta Numerica, Mahdavi.",
+      "size": 492,
+      "sentences": 10
+    },
+    {
+      "id": 116,
+      "content": "g, Mohammad Mahdi Kamani, and Mehrdad\nDistributionally robust optimization. Acta Numerica, Mahdavi. Distributionally robust federated averaging. In\n34:579–804,2025. Advances in Neural Information Processing Systems, pages\n15111–15122,2020. [7] DanielLevy,YairCarmon,JohnCDuchi,andAaronSidford. Large-scalemethodsfordistributionallyrobustoptimization. [22]YaodongYu,SaiPraneethKarimireddy,YiMa,andMichaelI\nAdvancesinneuralinformationprocessingsystems,33:8847– Jordan.",
+      "size": 466,
+      "sentences": 8
+    },
+    {
+      "id": 117,
+      "content": "iPraneethKarimireddy,YiMa,andMichaelI\nAdvancesinneuralinformationprocessingsystems,33:8847– Jordan. Scaff-pd: Communication efficient fair and robust\n8860,2020. federatedlearning. arXivpreprintarXiv:2307.13381,2023. [8] Zhaolin Hu and L Jeff Hong. Kullback-leibler divergence [23]Lijun Zhang, Peng Zhao, Zhen-Hua Zhuang, Tianbao Yang,\nconstrained distributionally robust optimization. Available andZhi-HuaZhou.",
+      "size": 410,
+      "sentences": 6
+    },
+    {
+      "id": 118,
+      "content": "a Zhuang, Tianbao Yang,\nconstrained distributionally robust optimization. Available andZhi-HuaZhou. Stochasticapproximationapproachesto\natOptimizationOnline,1(2):9,2013. group distributionally robust optimization. In Advances in\n[9] John C Duchi and Hongseok Namkoong. Learning NeuralInformationProcessingSystems,pages52490–52522,\nmodelswithuniformperformanceviadistributionallyrobust 2023.\noptimization.",
+      "size": 404,
+      "sentences": 5
+    },
+    {
+      "id": 119,
+      "content": "Systems,pages52490–52522,\nmodelswithuniformperformanceviadistributionallyrobust 2023.\noptimization. The Annals of Statistics, 49(3):1378–1406, [24]Tung-Anh Nguyen, Tuan Dung Nguyen, Long Tan Le,\n2021. Canh T Dinh, and Nguyen H Tran. On the generalization\n[10]Rui Gao and Anton Kleywegt. Distributionally of Wasserstein robust federated learning. arXiv preprint\nrobust stochastic optimization with wasserstein distance. arXiv:2206.01432,2022. MathematicsofOperationsResearch,48(2):603–655,2023.",
+      "size": 493,
+      "sentences": 8
+    },
+    {
+      "id": 120,
+      "content": "th wasserstein distance. arXiv:2206.01432,2022. MathematicsofOperationsResearch,48(2):603–655,2023. [25]Yang Jiao, Kai Yang, and Dongjin Song. Federated\n[11]PeymanMohajerinEsfahaniandDanielKuhn. Data-driven distributionally robust optimization with non-convex\ndistributionally robust optimization using the Wasserstein objectives: Algorithm and analysis. arXiv preprint\nmetric:Performanceguaranteesandtractablereformulations. arXiv:2307.14364,2023. MathematicalProgramming,171(1):115–166,2018.",
+      "size": 493,
+      "sentences": 9
+    },
+    {
+      "id": 121,
+      "content": "teesandtractablereformulations. arXiv:2307.14364,2023. MathematicalProgramming,171(1):115–166,2018. [26]Xenia Konti, Hans Riess, Manos Giannopoulos, Yi Shen,\n[12]Jose Blanchet and Karthyek Murthy. Quantifying Michael J Pencina, Nicoleta J Economou-Zavlanos, and\ndistributionalmodelriskviaoptimaltransport.Mathematics Michael M Zavlanos. Distributionally robust clustered\nofOperationsResearch,44(2):565–600,2019. federatedlearning:Acasestudyinhealthcare.arXivpreprint\narXiv:2410.07039,2024.",
+      "size": 489,
+      "sentences": 7
+    },
+    {
+      "id": 122,
+      "content": "h,44(2):565–600,2019. federatedlearning:Acasestudyinhealthcare.arXivpreprint\narXiv:2410.07039,2024. [13]Ruidi Chen and Ioannis Ch Paschalidis. A robust learning\napproach for regression models based on distributionally [27]Xenia Konti, Yi Shen, Zifan Wang, Karl Henrik Johansson,\nrobustoptimization. JournalofMachineLearningResearch, Michael J Pencina, Nicoleta J Economou-Zavlanos, and\n19(13):1–48,2018. MichaelMZavlanos.",
+      "size": 421,
+      "sentences": 6
+    },
+    {
+      "id": 123,
+      "content": "gResearch, Michael J Pencina, Nicoleta J Economou-Zavlanos, and\n19(13):1–48,2018. MichaelMZavlanos. Groupdistributionallyrobustmachine\n[14]Soroosh learning under group level distributional uncertainty. arXiv\nShafieezadeh Abadeh, Peyman M Mohajerin Esfahani, and preprintarXiv:2509.08942,2025. Daniel Kuhn. Distributionally robust logistic regression. In [28]Peva Blanchard, El Mahdi El Mhamdi, Rachid Guerraoui,\nAdvances in Neural Information Processing Systems, pages and Julien Stainer.",
+      "size": 488,
+      "sentences": 7
+    },
+    {
+      "id": 124,
+      "content": "mdi, Rachid Guerraoui,\nAdvances in Neural Information Processing Systems, pages and Julien Stainer. Machine learning with adversaries:\n1576–1584,2015. Byzantine tolerant gradient descent. In Advances in neural\n[15]AndrewHHughes,DavidHorrocks,CurtisLeung,MelissaB informationprocessingsystems,2017. Richardson, Ann M Sheehy, and Charles FS Locke.",
+      "size": 345,
+      "sentences": 5
+    },
+    {
+      "id": 125,
+      "content": "isLeung,MelissaB informationprocessingsystems,2017. Richardson, Ann M Sheehy, and Charles FS Locke. The [29]Banghua Zhu, Lun Wang, Qi Pang, Shuai Wang, Jiantao\nincreasing impact of length of stay “outliers” on length of Jiao, Dawn Song, and Michael I Jordan. Byzantine-\nstay at an urban academic hospital. BMC Health Services robust federated learning with optimal statistical rates. Research,21:1–7,2021.",
+      "size": 405,
+      "sentences": 6
+    },
+    {
+      "id": 126,
+      "content": "BMC Health Services robust federated learning with optimal statistical rates. Research,21:1–7,2021. In International Conference on Artificial Intelligence and\n[16]Fred M. Kusumoto, Mark H. Schoenfeld, Coletta Barrett, Statistics,pages3151–3178,2023. James R. Edgerton, Kenneth A. Ellenbogen, Michael R. [30]Zexi Li, Tao Lin, Xinyi Shang, and Chao Wu.",
+      "size": 350,
+      "sentences": 4
+    },
+    {
+      "id": 127,
+      "content": "ames R. Edgerton, Kenneth A. Ellenbogen, Michael R. [30]Zexi Li, Tao Lin, Xinyi Shang, and Chao Wu. Revisiting\nGold, Nora F. Goldschlager, Robert M. Hamilton, Jos´e A. weighted aggregation in federated learning with neural\nJoglar, Robert J. Kim, Richard Lee, Joseph E. Marine, networks.InInternationalConferenceonMachineLearning,\nChristopher J. McLeod, Keith R. Oken, Kristen K. Patton, pages19767–19788,2023. Cara N. Pellegrini, Kimberly A. Selzman, Annemarie\nThompson,andPaulD.Varosy.",
+      "size": 486,
+      "sentences": 3
+    },
+    {
+      "id": 128,
+      "content": "pages19767–19788,2023. Cara N. Pellegrini, Kimberly A. Selzman, Annemarie\nThompson,andPaulD.Varosy. 2018acc/aha/hrsguideline [31]Mingwei Xu, Xiaofeng Cao, Ivor W Tsang, and James T\non the evaluation and management of patients with Kwok. Aggregation weighting of federated learning\nbradycardia and cardiac conduction delay: A report of the via generalization bound estimation.",
+      "size": 375,
+      "sentences": 4
+    },
+    {
+      "id": 129,
+      "content": "ning\nbradycardia and cardiac conduction delay: A report of the via generalization bound estimation. arXiv preprint\namerican college of cardiology/american heart association arXiv:2311.05936,2023.\ntaskforceonclinicalpracticeguidelinesandtheheartrhythm [32]P Naga Jyothi, D Rajya Lakshmi, and KVSN Rao. A\nsociety. Circulation,140(8):e382–e482,2019. supervised approach for detection of outliers in healthcare\n[17]Peter J Huber. Robust statistics. In International claims data.",
+      "size": 474,
+      "sentences": 7
+    },
+    {
+      "id": 130,
+      "content": "ction of outliers in healthcare\n[17]Peter J Huber. Robust statistics. In International claims data. Journal of Engineering Science & Technology\nencyclopediaofstatisticalscience,pages1248–1251.Springer, Review,13:204–213,2020. 2011. [33]Runtian Zhai, Chen Dan, Zico Kolter, and Pradeep\n[18]LennartLjung. Systemidentification. InSignalanalysisand Ravikumar. Doro: Distributional and outlier robust\nprediction,pages163–173.Springer,1998. optimization.",
+      "size": 448,
+      "sentences": 10
+    },
+    {
+      "id": 131,
+      "content": "kumar. Doro: Distributional and outlier robust\nprediction,pages163–173.Springer,1998. optimization. In International Conference on Machine\nLearning,pages12345–12355.PMLR,2021. [19]Zifan Wang, Yi Shen, Michael M Zavlanos, and\nKarl Henrik Johansson. Outlier-robust distributionally [34]Sloan Nietert, Ziv Goldfeld, and Soroosh Shafiee. Outlier-\nrobust optimization via unbalanced optimal transport. robust Wasserstein DRO.",
+      "size": 420,
+      "sentences": 8
+    },
+    {
+      "id": 132,
+      "content": "osh Shafiee. Outlier-\nrobust optimization via unbalanced optimal transport. robust Wasserstein DRO. Advances in Neural Information\nIn Annual Conference on Neural Information Processing ProcessingSystems,36,2024. Systems,2024. [35]Aman Sinha, Hongseok Namkoong, Riccardo Volpi, and\n[20]Mehryar Mohri, Gary Sivek, and Ananda Theertha Suresh. John Duchi. Certifying some distributional robustness with\nAgnosticfederatedlearning. InInternationalConferenceon principled adversarial training.",
+      "size": 486,
+      "sentences": 9
+    },
+    {
+      "id": 133,
+      "content": "stness with\nAgnosticfederatedlearning. InInternationalConferenceon principled adversarial training. In International Conference\nMachineLearning,pages4615–4625.PMLR,2019. onLearningRepresentations,2018. 12\n===  13 ===\n[36]Barry Becker and\nRonny Kohavi. Adult. UCI Machine Learning Repository,\n1996. DOI:https://doi.org/10.24432/C5XW20. [37]Vladimir Naumovich Vapnik. Statistical Learning Theory. WileyNewYork,1998. [38]MauriceSion.Ongeneralminimaxtheorems.PacificJournal\nofMathematics,8:171–176,1958.",
+      "size": 499,
+      "sentences": 12
+    },
+    {
+      "id": 134,
+      "content": "NewYork,1998. [38]MauriceSion.Ongeneralminimaxtheorems.PacificJournal\nofMathematics,8:171–176,1958. [39]DimitriPBertsekas. Nonlinearprogramming. Journalofthe\nOperationalResearchSociety,48(3),1997. 13",
+      "size": 199,
+      "sentences": 6
+    }
+  ]
+}

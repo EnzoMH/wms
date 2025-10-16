@@ -1,0 +1,1227 @@
+{
+  "source": "ArXiv",
+  "filename": "228_AI_ML_FedMuon__Federated_Learning_with_Bias-co.pdf",
+  "domain": "AI",
+  "total_chars": 75917,
+  "total_chunks": 203,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\nPreprint\nFEDMUON: FEDERATED LEARNING WITH BIAS-\nCORRECTED LMO-BASED OPTIMIZATION\nYukiTakezawa AnastasiaKoloskova XiaowenJiang\nKyotoUniversity,OIST UniversityofZurich CISPA,SaarlandUniversity\nSebastianU.Stich\nCISPA\nABSTRACT\nRecently, a new optimization method based on the linear minimization oracle\n(LMO), called Muon, has been attracting increasing attention since it can train\nneuralnetworksfasterthanexistingadaptiveoptimizationmethods,suchasAdam.",
+      "size": 461,
+      "sentences": 1
+    },
+    {
+      "id": 2,
+      "content": "ttention since it can train\nneuralnetworksfasterthanexistingadaptiveoptimizationmethods,suchasAdam. Inthispaper,westudyhowMuoncanbeutilizedinfederatedlearning. Wefirst\nshowthatstraightforwardlyusingMuonasthelocaloptimizerofFedAvgdoes\nnotconvergetothestationarypointsincetheLMOisabiasedoperator. Wethen\npropose FEDMUON that can mitigate this issue.",
+      "size": 347,
+      "sentences": 4
+    },
+    {
+      "id": 3,
+      "content": "hestationarypointsincetheLMOisabiasedoperator. Wethen\npropose FEDMUON that can mitigate this issue. We also analyze how solving\ntheLMOapproximatelyaffectstheconvergencerateandfindthat,surprisingly,\nFEDMUON canconvergeforanynumberofNewton-Schulziterations, whileit\ncanconvergefasteraswesolvetheLMOmoreaccurately. Throughexperiments,\nwe demonstrated that FEDMUON can outperform the state-of-the-art federated\nlearningmethods.",
+      "size": 423,
+      "sentences": 4
+    },
+    {
+      "id": 4,
+      "content": "iments,\nwe demonstrated that FEDMUON can outperform the state-of-the-art federated\nlearningmethods. 1 INTRODUCTION\nFederatedlearning,whichcantrainneuralnetworksinparallelacrossmanyclients,hasbeenattracting\nmuchattention(Kairouzetal.,2021;McMahanetal.,2017;Karimireddyetal.,2020). Infederated\nlearning,eachclienthasitsowntrainingdatasetsandupdatesitsparametersusingalocaloptimizer,\nsuchasSGD.Thecentralservercollectstheparametersfromtheclientsandaggregatesthem.",
+      "size": 460,
+      "sentences": 3
+    },
+    {
+      "id": 5,
+      "content": "ingalocaloptimizer,\nsuchasSGD.Thecentralservercollectstheparametersfromtheclientsandaggregatesthem. Since\nclientsdonotneedtosharetheirlocaltrainingdatasetswithothers,federatedlearninginherently\npreservesdataprivacy. For training neural networks efficiently, using an appropriate stepsize is one of the most critical\nfactors. Ifthestepsizeistoolarge,thetrainingcollapses,whereasifthestepsizeistoosmall,the\ntrainingrequiresahugenumberofiterations.",
+      "size": 445,
+      "sentences": 4
+    },
+    {
+      "id": 6,
+      "content": "ge,thetrainingcollapses,whereasifthestepsizeistoosmall,the\ntrainingrequiresahugenumberofiterations. Toadjustthestepsizeontheflyduringthetraining,\nusingadaptiveoptimizationmethods,suchasAdaGrad(Duchietal.,2011),Adam(Kingma&Ba,\n2017),Shampoo(Guptaetal.,2018),andothermethods(Loshchilov&Hutter,2019;Vyasetal.,\n2025),havelongbeenregardedasthedefactostandardfortrainingneuralnetworks. Recently, Muon (Liu et al., 2025a) has emerged as a promising alternative, attracting significant\nattention.",
+      "size": 488,
+      "sentences": 3
+    },
+    {
+      "id": 7,
+      "content": "Muon (Liu et al., 2025a) has emerged as a promising alternative, attracting significant\nattention. ManypapersevaluatedtheperformanceofMuonanddemonstratedthatMuoncantrain\nneuralnetworksfasterandachievehigheraccuracythantheexistingoptimizationmethods,suchas\nAdamW(Liuetal.,2025a;Semenovetal.,2025). Roughlyspeaking,Muonprojectsthemomentum\nintheMomentumSGDontothespaceoforthogonalmatrices.",
+      "size": 386,
+      "sentences": 3
+    },
+    {
+      "id": 8,
+      "content": "l.,2025). Roughlyspeaking,Muonprojectsthemomentum\nintheMomentumSGDontothespaceoforthogonalmatrices. Muoniscloselyrelatedtovarious\noptimizationmethods: itcanbeinterpretedasasimplifiedversionofShampoo(Guptaetal.,2018),\ninwhichacertainmomentumaccumulationisdisabled(Liuetal.,2025a), andasaninstanceof\noptimizers with linear minimization oracle (LMO) under a specific norm (Pethick et al., 2025). Kovalev(2025)alsoshowedthatMuonisaspecialinstanceofthetrust-regionoptimizationmethod.",
+      "size": 478,
+      "sentences": 4
+    },
+    {
+      "id": 9,
+      "content": "t al., 2025). Kovalev(2025)alsoshowedthatMuonisaspecialinstanceofthetrust-regionoptimizationmethod. TouseMuonforthelarge-scaletraining,developingthedistributedversionofMuonisimportant. However,MuonrequiresustosolvetheLMOeveryiteration,whichmakesitdifficulttostraight-\nforwardlyuseMuoninadistributedenvironment. Ahnetal. (2025)proposedamethodtosolve\ntheLMOinadistributedmanner,althoughtheirmethoddoesnotsupportmultiplelocalstepsand\nincursahugecommunicationcost. Thérienetal.",
+      "size": 473,
+      "sentences": 7
+    },
+    {
+      "id": 10,
+      "content": "r,althoughtheirmethoddoesnotsupportmultiplelocalstepsand\nincursahugecommunicationcost. Thérienetal. (2025)proposedMuLoCo,whichextendsMuon\n1\n5202\npeS\n03\n]GL.sc[\n1v73362.9052:viXra\n===  2 ===\nPreprint\nbyallowingclientstoupdatetheparametersmultipletimesbyMuonasinLocalSGD(Stich,2019;\nWoodworthetal.,2020). AlthoughThérienetal. (2025)demonstratedthatMuLoCoperformswell\nwhenallclientssharethesametrainingdataset,theirmethodislimitedtohomogeneoussettingsand\nlackstheoreticalguarantees.",
+      "size": 479,
+      "sentences": 5
+    },
+    {
+      "id": 11,
+      "content": "harethesametrainingdataset,theirmethodislimitedtohomogeneoussettingsand\nlackstheoreticalguarantees. AsweshowinSection3,MuLoCofailstoconvergewhenclientshave\ndifferentdatasets,whichisafundamentalcharacteristicoffederatedlearning. Inthispaper,westudythefederatedlearningmethodswiththeLMOandproposeFEDMUON. (i)\nFirst,weshowthatstraightforwardlyusingMuonasthelocaloptimizerinFedAvgfailedtoconverge\ntothestationarypointsincetheLMOisabiasedoperator.",
+      "size": 442,
+      "sentences": 4
+    },
+    {
+      "id": 12,
+      "content": "ngMuonasthelocaloptimizerinFedAvgfailedtoconverge\ntothestationarypointsincetheLMOisabiasedoperator. Weformallyanalyzethelowerboundof\nthisstraightforwardmethod,showingthatitdoesnotconvergetothestationarypoint,especiallyin\ntheheterogeneoussetting. (ii)WethenproposeFEDMUON,whichcanmitigatethebiascausedby\ntheLMOandcanprovablyconvergetothestationarypoint. (iii)Furthermore,wederiveanovel\nanalysisandrevealhowtheinexactLMOaffectstheconvergencebehaviorof FEDMUON.",
+      "size": 458,
+      "sentences": 4
+    },
+    {
+      "id": 13,
+      "content": "urthermore,wederiveanovel\nanalysisandrevealhowtheinexactLMOaffectstheconvergencebehaviorof FEDMUON. Since\nsolvingtheLMOexactlyiscomputationallyexpensive,wesolvetheLMOapproximatelybyrunning\ntheNewton-Schulziteration(Schulz,1933)severaltimesinpractice.",
+      "size": 250,
+      "sentences": 2
+    },
+    {
+      "id": 14,
+      "content": "e,wesolvetheLMOapproximatelybyrunning\ntheNewton-Schulziteration(Schulz,1933)severaltimesinpractice. Thereweremanypapersthat\nanalyzedtheconvergencebehaviorofMuon(Riabininetal.,2025;Liuetal.,2025a;Shenetal.,\n2025),whilemostofthemassumedthattheLMOissolvedexactlyandignoredtheeffectcausedby\ntheinexactLMO.WeanalyzetheimpactofinexactsolutionstotheLMOontheconvergencerate.We\ndiscoverthatforanynumberofNewton-Schulziterations,FEDMUONcanconvergetothestationary\npointandcanconvergefasterbyuptoafactorproportionaltothesquarerootofthedimensionofthe\nparametersaswesolvetheLMOmoreaccurately.",
+      "size": 578,
+      "sentences": 2
+    },
+    {
+      "id": 15,
+      "content": "yuptoafactorproportionaltothesquarerootofthedimensionofthe\nparametersaswesolvetheLMOmoreaccurately. Weexperimentallydemonstratedtheeffectiveness\nofFEDMUON,showingthatFEDMUONcanachievehigheraccuracythanthestate-of-the-artadaptive\nfederatedlearningoptimizationmethods. Ourcontributionsaresummarizedasfollows:\n• WeshowthatdirectlypluggingMuonintoFedAvgasthelocaloptimizerdoesnotconvergetothe\nstationarypointsincetheLMOisabiasedoperator.",
+      "size": 433,
+      "sentences": 3
+    },
+    {
+      "id": 16,
+      "content": "gMuonintoFedAvgasthelocaloptimizerdoesnotconvergetothe\nstationarypointsincetheLMOisabiasedoperator. • WeproposeFEDMUON,whichmitigatestheaboveissuebythebiascorrectionmechanismand\ncanconvergetothestationarypoint. • WeanalyzetheconvergencerateofFEDMUONwiththeinexactLMO.Then,weshowthatforany\nnumberofNewton-Schulziterations,FEDMUONcanconverge,revealinghowtheNewton-Schulz\niterationaffectstheconvergencerate.",
+      "size": 404,
+      "sentences": 3
+    },
+    {
+      "id": 17,
+      "content": "chulziterations,FEDMUONcanconverge,revealinghowtheNewton-Schulz\niterationaffectstheconvergencerate. • Throughtheexperiments,wedemonstratedthatFEDMUONcanoutperformthestate-of-the-art\nfederatedlearningmethods. Notation: Weuse∥·∥todenoteanarbitrarynorm,anditsdualnormisdenotedby∥·∥ . When\n⋆\nwe refer to a specific norm, we explicitly use the notation ∥·∥ , ∥·∥ , ∥·∥ , and ∥·∥ to\np F sp trace\ndenotetheSchattenp-norm,Frobeniusnorm,spectralnorm,andtracenorm,respectively.",
+      "size": 467,
+      "sentences": 4
+    },
+    {
+      "id": 18,
+      "content": "d ∥·∥ to\np F sp trace\ndenotetheSchattenp-norm,Frobeniusnorm,spectralnorm,andtracenorm,respectively. Wedenote\n[n]={1,2,...,n}foranyn∈N. 2 PRELIMINARY\nInthissection,webrieflyintroducefederatedlearningandMuon. Thedetaileddiscussionaboutthe\nrelatedworksisdeferredtoSectionB.",
+      "size": 270,
+      "sentences": 4
+    },
+    {
+      "id": 19,
+      "content": "yintroducefederatedlearningandMuon. Thedetaileddiscussionaboutthe\nrelatedworksisdeferredtoSectionB. FederatedLearning: Weconsiderthefollowingproblemwherethelossfunctionsaredistributed\namongnclients:\n(cid:34) n (cid:35)\n1 (cid:88)\nmin f(X):= f (X) , f (X):=E [F (X;ξ )],\nX∈X n i i ξi∼Di i i\ni=1\nwhereX istheparameterspace(e.g.,RdorRd1×d2),X isthemodelparameter,D\ni\nisthetraining\nthatclientiholds,andf :X →Risthelossfunctionofclienti.",
+      "size": 432,
+      "sentences": 3
+    },
+    {
+      "id": 20,
+      "content": "×d2),X isthemodelparameter,D\ni\nisthetraining\nthatclientiholds,andf :X →Risthelossfunctionofclienti. i\nThemostfundamentalalgorithmforfederatedlearningisFederatedAveraging(FedAvg)(McMahan\net al., 2017). In FedAvg, each client updates the parameter by using its own loss function, and\nthenthecentralserveraggregatestheparameterssentfromtheclients.",
+      "size": 344,
+      "sentences": 3
+    },
+    {
+      "id": 21,
+      "content": "by using its own loss function, and\nthenthecentralserveraggregatestheparameterssentfromtheclients. TheupdateruleofFedAvg\nisdescribedinSectionC.TheoriginalFedAvgusesSGDasthelocaloptimizer, while, asinthe\nnon-distributed learning, it is important to use adaptive optimization methods for stable and fast\n2\n===  3 ===\nPreprint\ntraining.",
+      "size": 333,
+      "sentences": 2
+    },
+    {
+      "id": 22,
+      "content": "important to use adaptive optimization methods for stable and fast\n2\n===  3 ===\nPreprint\ntraining. Manypapersproposedfederatedlearningmethodsthatusemoresophisticatedoptimizers,\nsuch as Momentum SGD (Lin et al., 2021), Adam (Reddi et al., 2021), and the Newton method\n(Elgablietal.,2022).Reddietal. (2021)proposedageneralframeworkandanalyzedtheconvergence\nratewithvariousoptimizers.",
+      "size": 381,
+      "sentences": 3
+    },
+    {
+      "id": 23,
+      "content": "022).Reddietal. (2021)proposedageneralframeworkandanalyzedtheconvergence\nratewithvariousoptimizers. Optimizer with Linear Minimization Oracle: Recently, optimizers with linear minimization\noracle(LMO)havebeenattractingalotofattention(Liuetal.,2025a;Pethicketal.,2025;Riabinin\netal.,2025). LMOisdefinedasfollows:\nlmo(X;D):=argmin⟨X,Y⟩,\nY∈D\n(cid:80)\nwhereDistheconvexsetand⟨X,Y⟩:= X Y .",
+      "size": 384,
+      "sentences": 4
+    },
+    {
+      "id": 24,
+      "content": "5). LMOisdefinedasfollows:\nlmo(X;D):=argmin⟨X,Y⟩,\nY∈D\n(cid:80)\nwhereDistheconvexsetand⟨X,Y⟩:= X Y . Originally,theLMOhasbeenusedtosolve\ni,j ij ij\ntheconvexconstrainedproblemsintheFrank-Wolfealgorithm(Frank&Wolfe,1956;Jaggi,2013). Recently,Jordanetal. (2024)proposedMuon,whichusesLMOfortrainingneuralnetworks,which\nisanunconstrainedoptimizationproblem.",
+      "size": 351,
+      "sentences": 5
+    },
+    {
+      "id": 25,
+      "content": "2024)proposedMuon,whichusesLMOfortrainingneuralnetworks,which\nisanunconstrainedoptimizationproblem. TheyshowedthatMuoncantrainneuralnetworksfaster\nthanAdamW(Loshchilov&Hutter,2019)andShampoo(Guptaetal.,2018;Shietal.,2023),which\narethemostcommonlyusedoptimizersthesedays. Specifically, the optimizers with LMO choose the unit ball as the constraint set D, measured in\nanychosennorm∥·∥. Withaslightabuseofnotation,weuselmo(·)torepresentlmo(·;D)with\nD :={Y ∈X |∥Y∥≤1},i.e.,\nlmo(X):= argmin ⟨X,Y⟩.",
+      "size": 493,
+      "sentences": 4
+    },
+    {
+      "id": 26,
+      "content": "htabuseofnotation,weuselmo(·)torepresentlmo(·;D)with\nD :={Y ∈X |∥Y∥≤1},i.e.,\nlmo(X):= argmin ⟨X,Y⟩. Y∈{Y∈X|∥Y∥≤1}\nThen,theupdaterulesaregivenby:\nM(r+1) =(1−α)M(r)+α∇F(X(r);ξ(r)),\nX(r+1) =X(r)+ηlmo(M(r+1))). Byvaryingthenorm,wecanrecoverdifferentpopularoptimizers. Specifically,ifparameterspace\nisavectorwhenwechoosetheEuclideannormandmaxnorm,wecanrecoverNormalizedSGD\nwith momentum (Cutkosky & Mehta, 2020) and Sign SGD with momentum (Sun et al., 2023),\nrespectively.",
+      "size": 467,
+      "sentences": 4
+    },
+    {
+      "id": 27,
+      "content": "with momentum (Cutkosky & Mehta, 2020) and Sign SGD with momentum (Sun et al., 2023),\nrespectively. Then,iftheparameterspaceisRd1×d2 andweusethespectralnormfortheLMO,we\ncanobtainMuon(Jordanetal.,2024). Notethattheparameterspaceneedstobethespaceofd ×d\n1 2\nmatricesforMuon. Eachlayeristakenintoaccountseparately. Forinstance,theparameterofthe\nconvolutionallayerisout_channel×in_channel×h×wmatrix. WhenweuseMuon,weconsider\nd =out_channelandd =in_channel×h×w.",
+      "size": 455,
+      "sentences": 6
+    },
+    {
+      "id": 28,
+      "content": "yerisout_channel×in_channel×h×wmatrix. WhenweuseMuon,weconsider\nd =out_channelandd =in_channel×h×w. Theremainingscalarandvectorparametersinthe\n1 2\nneuralnetworkaretrainedbyotheroptimizationmethods,suchasSGDorAdam. Fortheremainderofthepaper,wewillnottakeseparatelayersintoaccountandrepresentallthe\nmodelparametersasasinglematrixforsimplicityofpresentation. WerefertoRiabininetal. (2025)\nforanexplanationofhowtotakeintoaccounteverylayerseparatelyintheanalysisofMuon.",
+      "size": 464,
+      "sentences": 6
+    },
+    {
+      "id": 29,
+      "content": "Riabininetal. (2025)\nforanexplanationofhowtotakeintoaccounteverylayerseparatelyintheanalysisofMuon. 3 LOCALMUON DOES NOT ALWAYS CONVERGE\nFirst,weprovidealowerboundshowingthatstraightforwardlyusingtheoptimizerwiththeLMO\nasthelocaloptimizerinFedAvgdoesnotalwaysconverge. Forsimplicity,weconsiderthesetting\nwhereallclientsparticipateineveryroundandperformexactlyonelocalupdate.",
+      "size": 374,
+      "sentences": 4
+    },
+    {
+      "id": 30,
+      "content": "plicity,weconsiderthesetting\nwhereallclientsparticipateineveryroundandperformexactlyonelocalupdate. Straightforwardly\napplyingtheoptimizerwiththeLMOtoFedAvgyieldsthefollowingupdaterules:\nM(r+1) =(1−α)M(r)+α∇F (X(r),ξ(r)), (1)\ni i i i\n(cid:16) (cid:17)\nX(r+1) =X(r)+ηlmo M(r+1) , (2)\ni i i\nn\nX(r+1) = 1 (cid:88) X(r+1). (3)\nn i\ni=1\nWerefertotheabovealgorithmasLOCALMUON(seeSectionCforLOCALMUONwithmultiple\nlocalstepsandpartialparticipation).",
+      "size": 440,
+      "sentences": 3
+    },
+    {
+      "id": 31,
+      "content": "heabovealgorithmasLOCALMUON(seeSectionCforLOCALMUONwithmultiple\nlocalstepsandpartialparticipation). However,theabovestraightforwardmethodfailstoreacha\n3\n===  4 ===\nPreprint\nstationary point due to the bias introduced by the LMO, and the optimization process stagnates. Specifically,theLMOisbiased,sinceingeneralwehave\nn (cid:32) n (cid:33)\n1 (cid:88) lmo (cid:16) M(r+1) (cid:17) ̸=lmo 1 (cid:88) M(r+1) .",
+      "size": 405,
+      "sentences": 3
+    },
+    {
+      "id": 32,
+      "content": "neralwehave\nn (cid:32) n (cid:33)\n1 (cid:88) lmo (cid:16) M(r+1) (cid:17) ̸=lmo 1 (cid:88) M(r+1) . n i n i\ni=1 i=1\nThemomentumM istheestimationofthegradient∇f (X),whilethequantityof 1 (cid:80)n lmo(M )\ni i n i=1 i\nisbiasedanddoesnotalignwiththegradient∇f(X). ThisintuitivelyshowswhyLOCALMUON\ncannotconvergetothestationarypoint,especiallywhenclientshavedifferentlossfunctions. The\nfollowingtheoremformalizesthisfailure,withtheproofdeferredtoSectionD. Theorem1.",
+      "size": 460,
+      "sentences": 5
+    },
+    {
+      "id": 33,
+      "content": "tlossfunctions. The\nfollowingtheoremformalizesthisfailure,withtheproofdeferredtoSectionD. Theorem1. Forsimplicity,weconsidertheinitializationM(0) =0. Thereexistconvexfunctions\ni\n{f\ni\n}n\ni=1\nsuchthatforanyr ≥1rounds,theoutputof LOCALMUON(Eqs. (1)to(3))isthesameas\ntheinitialparameteranddoesnotconvergetotheoptimalsolutionandsatisfiesthefollowing:\n∥∇f(X(r))∥2 ≥Ω(ζ2),\n⋆\nwhereζ2 := 1 (cid:80)n ∥∇f (X⋆)∥2andX⋆ :=argminf(X).",
+      "size": 420,
+      "sentences": 6
+    },
+    {
+      "id": 34,
+      "content": "ndsatisfiesthefollowing:\n∥∇f(X(r))∥2 ≥Ω(ζ2),\n⋆\nwhereζ2 := 1 (cid:80)n ∥∇f (X⋆)∥2andX⋆ :=argminf(X). ⋆ n i=1 i\nNotethatLOCALMUONisasimplifiedversionofMuLoCo(Thérienetal.,2025),wherethemo-\nmentumatthecentralserverisdisabled. WeformallyanalyzeonlyLOCALMUON,whileTheorem1\nshowsthattheparameterstaysattheinitialparametersanddoesnotconvergetothestationarypoint.",
+      "size": 355,
+      "sentences": 3
+    },
+    {
+      "id": 35,
+      "content": "ileTheorem1\nshowsthattheparameterstaysattheinitialparametersanddoesnotconvergetothestationarypoint. ThisindicatesthatMuLoCoalsosuffersfromthesameissue,asaddingthemomentumatthecentral\nserverdoesnotpreventtheparameterfromremainingatitsinitialvalue. 4 FEDMUON\nIntheprevioussection,weshowedthatduetothebiascausedbytheLMO, LOCALMUON does\nalwaysconverge. Inthissection,inAlgorithm1weproposeFEDMUON,whichmitigatesthisissue\nandprovablyconvergestothestationarypoint.",
+      "size": 457,
+      "sentences": 4
+    },
+    {
+      "id": 36,
+      "content": "tion,inAlgorithm1weproposeFEDMUON,whichmitigatesthisissue\nandprovablyconvergestothestationarypoint. Instead of applying the LMO to the momentum alone, we apply the LMO to the bias corrected\nversionofthemomentum(line8)inAlgorithm1. SimilarlytoSCAFFOLD(Karimireddyetal.,\n2020) we introduce control variates C(r) and C(r) to estimate the directions of the local client\ni\nAlgorithm1FEDMUON\n1: Input: totalnumberofclientsn,numberofsampledclientsS,andthenumberoflocalstepsK.",
+      "size": 468,
+      "sentences": 3
+    },
+    {
+      "id": 37,
+      "content": "lgorithm1FEDMUON\n1: Input: totalnumberofclientsn,numberofsampledclientsS,andthenumberoflocalstepsK. 2: forr ∈{0,1,··· ,R−1}do(attheserver)\n3: sampleS clientsS r ⊂[n]. 4: sendX(r)andC(r)tothesampledclients. 5: fori∈S r do(attheclients)\n6:\nX(r,0) ←X(r)andM(r,0) ←M(r−1,K)\ni i i\n7: fork =0,1,··· ,K−1do\n8: M i (r,k+1) ←(1−α)M i (r,k)+α∇F i (X i (r,k);ξ i (r,k)). (cid:16) (cid:17)\n9: X(r,k+1) ←X(r,k)+ηlmo M(r,k+1)−C(r)+C(r) .",
+      "size": 423,
+      "sentences": 5
+    },
+    {
+      "id": 38,
+      "content": "(r,k)+α∇F i (X i (r,k);ξ i (r,k)). (cid:16) (cid:17)\n9: X(r,k+1) ←X(r,k)+ηlmo M(r,k+1)−C(r)+C(r) . i i i i\n10: endfor\n11:\nC(r+1) ←M(r,K)\ni i\n12:\nsendX(r,K)andC(r+1)tothecentralserver. i i\n13: endfor(endclients,backtotheserver)\n14: fori∈[n]\\S r do\n15:\nC(r+1) ←C(r)andM(r,K) ←M(r−1,K). i i i i\n16: endfor\n(cid:16) (cid:17)\n17: C(r+1) ←C(r)+ 1 (cid:80) C(r+1)−C(r) . N i∈Sr i i\n18: X(r+1) ← n−SX(r)+ 1 (cid:80) X(r,K).",
+      "size": 415,
+      "sentences": 6
+    },
+    {
+      "id": 39,
+      "content": ":17)\n17: C(r+1) ←C(r)+ 1 (cid:80) C(r+1)−C(r) . N i∈Sr i i\n18: X(r+1) ← n−SX(r)+ 1 (cid:80) X(r,K). n n i∈Sr i\n19: endfor\n4\n===  5 ===\nPreprint\ngradients∇f (X(r))andtheglobalgradient∇f(X(r)),respectively.Giventhatthelocalmomentum\ni\nparametersM(r,k+1)estimatelocalgradients∇f (X(r,k)),thecorrectedupdate,M(r,k+1)−C(r)+\ni i i i\nC(r)isagoodestimationofthefullgradient∇f(X(r,k)),mitigatingtheissueoflocalbias. When\nweremovetheLMOandsetα=1,FEDMUONrecoversvanillaSCAFFOLD(Karimireddyetal.,\n2020).",
+      "size": 490,
+      "sentences": 4
+    },
+    {
+      "id": 40,
+      "content": "ueoflocalbias. When\nweremovetheLMOandsetα=1,FEDMUONrecoversvanillaSCAFFOLD(Karimireddyetal.,\n2020). ItisimportanttonotethatthereareseveralpapersthatapplythemomentumtoSCAFFOLD\n(Chengetal.,2024;Karimireddyetal.,2021),howeverallofthemincorporatemomentumatthe\ncentralserver,differingfromourproposedFEDMUON. 5 CONVERGENCE ANALYSIS\n5.1 ASSUMPTIONS\nWefirstsummarizetheassumptionsthatweuseinourtheoreticalresults.",
+      "size": 405,
+      "sentences": 4
+    },
+    {
+      "id": 41,
+      "content": "ONVERGENCE ANALYSIS\n5.1 ASSUMPTIONS\nWefirstsummarizetheassumptionsthatweuseinourtheoreticalresults. Asiscommonintheprior\nliteratureanalyzingoptimizerswithLMO(Pethicketal.,2025;Riabininetal.,2025),weusethe\nfollowingsmoothnessassumption. NotethatthenormhereisthesameastheoneusedintheLMO. Assumption1. ThereexistsL≥0sothatitholdsforanyX,Y ∈X\n∥∇f (X)−∇f (Y)∥ ≤L∥X−Y∥.",
+      "size": 363,
+      "sentences": 5
+    },
+    {
+      "id": 42,
+      "content": "astheoneusedintheLMO. Assumption1. ThereexistsL≥0sothatitholdsforanyX,Y ∈X\n∥∇f (X)−∇f (Y)∥ ≤L∥X−Y∥. i i ⋆\nSinceweconsidernon-Euclideannorms,wemeasuregradientdifferencesinthedualnorm,while\nparameterdifferencesaremeasuredintheprimalnorm(cf.Nesterov,2018;Xie&Li,2024).However,\nas shown in Remark 1, any two norms are equivalent in finite dimensions, and thus the class of\nfunctionssatisfyingAssumption1andtheconventionalsmoothnessassumptions(formulatedfor\nEuclideannorms)isthesame(seeRemark2).",
+      "size": 490,
+      "sentences": 4
+    },
+    {
+      "id": 43,
+      "content": "umption1andtheconventionalsmoothnessassumptions(formulatedfor\nEuclideannorms)isthesame(seeRemark2). Remark1((Conway,2019,Theorem3.1)). IfX isafinite-dimensionalvectorspaceoverF,then\nforanytwonorms∥·∥ and∥·∥ ,thereexistc,C ≥0suchthatc∥X∥ ≤∥X∥ ≤C∥X∥ for\np q p q p\nallX ∈X. Remark 2. If it holds that ∥∇f (X) − ∇f (Y)∥ ≤ CL∥X − Y∥ for any X,Y ∈ X, then\ni i\nf satisfies Assumption 1 where C := sup ∥X∥⋆.",
+      "size": 399,
+      "sentences": 5
+    },
+    {
+      "id": 44,
+      "content": "f (X) − ∇f (Y)∥ ≤ CL∥X − Y∥ for any X,Y ∈ X, then\ni i\nf satisfies Assumption 1 where C := sup ∥X∥⋆. If f satisfies Assumption 1, it holds that\ni X∈X ∥X∥ i\n∥∇f (X)−∇f (Y)∥≤ L∥X−Y∥foranyX,Y ∈X wherec:=sup ∥X∥ . i i c X∈X ∥X∥⋆\nFortheanalysisof FEDMUON,weoftenusethetracenormandFrobeniusnorm. Thefollowing\ninequalityholdsbetweentheFrobeniusnormandthetracenorm. Example1. ForanyX ∈Rd1×d2,itholdsthat∥X∥\nF\n≤∥X∥\ntrace\n≤ (cid:112) min{d\n1\n,d\n2\n}∥X∥\nF\n.",
+      "size": 444,
+      "sentences": 6
+    },
+    {
+      "id": 45,
+      "content": "etracenorm. Example1. ForanyX ∈Rd1×d2,itholdsthat∥X∥\nF\n≤∥X∥\ntrace\n≤ (cid:112) min{d\n1\n,d\n2\n}∥X∥\nF\n. Forthestochasticgradientnoise,weusethefollowingassumption,whichisquitecommoninthe\noptimizationliterature,e.g.,(Bubeck,2015). Assumption2. Thestochasticgradientisunbiased,i.e.,E[∇F (X;ξ )]=∇f (X)foranyX ∈X. i i i\nThen,thereexistsσ ≥0sothatitholdsforanyX ∈X\nE ∥∇F (X;ξ )−∇f (X)∥2 ≤σ2. ξi∼Di i i i F\n5.2 CONVERGENCERESULT\nWeprovidetheconvergencerateofFEDMUONinTheorem2.",
+      "size": 466,
+      "sentences": 8
+    },
+    {
+      "id": 46,
+      "content": ")−∇f (X)∥2 ≤σ2. ξi∼Di i i i F\n5.2 CONVERGENCERESULT\nWeprovidetheconvergencerateofFEDMUONinTheorem2. Forsimplicity,wepresenttheresults\nforthespecialcaseS =n,whereallclientsparticipateduringthetraining. Thegeneralcasewith\narbitraryS isprovidedinLemma11inSectionE.TheproofisdeferredtoSectionE. Theorem 2. Consider Algorithm 1. We define X(r,k) = 1 (cid:80)n X(r,k). Note that X(r+1) =\nn i=1 i\nX(r,K).",
+      "size": 397,
+      "sentences": 8
+    },
+    {
+      "id": 47,
+      "content": "2. Consider Algorithm 1. We define X(r,k) = 1 (cid:80)n X(r,k). Note that X(r+1) =\nn i=1 i\nX(r,K). Suppose that n = S and Assumptions 1 and 2 hold, C(0) := M(0,0) and C(0) :=\ni i\n1 (cid:80)n C(0),thereexistsηandαsothatitsatisfies\nn i=1 i\n1 R (cid:88) −1K (cid:88) −1 E (cid:13) (cid:13)∇f(X(r,k)) (cid:13) (cid:13) ≤O (cid:32)(cid:18) Lr 0 σ˜2(cid:19)1 4 + (cid:18) L √ r 0 σ˜ (cid:19)1 3 + (cid:18) Lr 0 (cid:19)1 2\nRK (cid:13) (cid:13) ⋆ nRK R K R\nr=0 k=0\n(cid:34) 1 (cid:18) σ˜2K (cid:19)1 2 (cid:18) σ˜2K2 (cid:19) 3 1(cid:35)(cid:33)\n+σ˜ + + ,\n0 R Lr Rn Lr R2\n0 0\n5\n===  6 ===\nPreprint\nwhere r := f(X(0)) − f⋆,ρ := sup ∥X∥⋆,σ˜ := ρσ, σ˜ := ρσ , and σ2 :=\n0 X∈X ∥X∥F 0 0 0\n1 (cid:80)n E∥M(0,0)−∇f (X(0))∥2.",
+      "size": 710,
+      "sentences": 5
+    },
+    {
+      "id": 48,
+      "content": "f⋆,ρ := sup ∥X∥⋆,σ˜ := ρσ, σ˜ := ρσ , and σ2 :=\n0 X∈X ∥X∥F 0 0 0\n1 (cid:80)n E∥M(0,0)−∇f (X(0))∥2. n i=1 i i F\nDiscussion: UnlikeLOCALMUON,Theorem2showsthatFEDMUONcanmitigatetheissuethatthe\nLMOisabiasedoperatorandcanconvergetothestationarypoint. ThedominanttermisO(Lr0σ˜2 )1 4,\nnRK\nwhichisalmostthesameasthetermsappearingintherateofFedAvgandSCAFFOLD(Karimireddy\netal.,2020),andtheconvergencerateisimprovedasthenumberofclientsnincreases.",
+      "size": 436,
+      "sentences": 3
+    },
+    {
+      "id": 49,
+      "content": "gandSCAFFOLD(Karimireddy\netal.,2020),andtheconvergencerateisimprovedasthenumberofclientsnincreases. Theonly\ndifferenceisthattheconvergencerateofFEDMUONdependsonρ,whilethisisbecauseTheorem2\nanalyzesthedualnormofthegradient. Forinstance,whenthenormistheFrobeniusnorm,thedual\nnormisalsotheFrobeniusnormandρ=1. Thelastthreetermsarisefromtheinitialerrorσ ,which\n0\ndiminishfasterthantheothertermsasthenumberofroundsRincreases.",
+      "size": 420,
+      "sentences": 4
+    },
+    {
+      "id": 50,
+      "content": "rmsarisefromtheinitialerrorσ ,which\n0\ndiminishfasterthantheothertermsasthenumberofroundsRincreases. We consider the case where the parameter space is X = Rd1×d2 and the spectral norm is used,\nas in Muon (Liu et al., 2025a). Since the dual of the spectral norm is the trace norm, we have\n∥∇f(X)∥\nF\n≤∥∇f(X)∥\ntrace\n. Consequently,FEDMUONcanconvergefasterthanSCAFFOLDin\ncertaincases.",
+      "size": 379,
+      "sentences": 4
+    },
+    {
+      "id": 51,
+      "content": "e have\n∥∇f(X)∥\nF\n≤∥∇f(X)∥\ntrace\n. Consequently,FEDMUONcanconvergefasterthanSCAFFOLDin\ncertaincases. Forinstance,ifthestochasticnoiseσissufficientlysmall,FEDMUONconvergesas:\n1 R (cid:88) −1K (cid:88) −1 E (cid:13) (cid:13)∇f(X(r,k)) (cid:13) (cid:13) ≤O (cid:32)(cid:18) r 0 L (cid:19)1 2 (cid:33) ,\nRK (cid:13) (cid:13) trace R\nr=0 k=0\nandSCAFFOLDconvergesasfollows(seeTheorem3in(Karimireddyetal.,2020)):\n1 R (cid:88) −1K (cid:88) −1 E (cid:13) (cid:13)∇f(X(r,k)) (cid:13) (cid:13) ≤O (cid:32)(cid:18) r 0 L F (cid:19)1 2 (cid:33) .",
+      "size": 532,
+      "sentences": 3
+    },
+    {
+      "id": 52,
+      "content": "E (cid:13) (cid:13)∇f(X(r,k)) (cid:13) (cid:13) ≤O (cid:32)(cid:18) r 0 L F (cid:19)1 2 (cid:33) . RK (cid:13) (cid:13) F R\nr=0 k=0\nwhere L refers to the smoothness of f with respect to the Frobenius norm. Thus, when L =\nF i\nsup ⟨U,∇2f (X)U⟩ ≈ L ,i.e.,whentheHessianshaveafewdominantsingular\ni∈[n],X,∥U∥sp≤1 i F\nvalues—equivalently,whentheyareapproximatelylow-rank,thenFEDMUONcanconvergefaster\nthan SCAFFOLD.",
+      "size": 408,
+      "sentences": 3
+    },
+    {
+      "id": 53,
+      "content": "F\nvalues—equivalently,whentheyareapproximatelylow-rank,thenFEDMUONcanconvergefaster\nthan SCAFFOLD. More precisely, the terms on the right-hand side are the same, and the only\ndifferenceisthechoiceofthenorm. WestressthatTheorem2doesnotclaimFEDMUONalways\nconvergesfaster, butitdoessuggestthatincertaincases FEDMUON canoutperform. Thishelps\nexplainthestrongempiricalperformanceofMuonandFEDMUON.",
+      "size": 391,
+      "sentences": 4
+    },
+    {
+      "id": 54,
+      "content": "certaincases FEDMUON canoutperform. Thishelps\nexplainthestrongempiricalperformanceofMuonandFEDMUON. 6 FEDMUON WITH INEXACT LMO\nIntheprevioussection,weconsideredthegeneralcasewithanarbitrarynormandexactLMO.Here,\nwefocusonthespectralnorm,asinMuon(Liuetal.,2025a),andanalyze FEDMUON whenthe\nLMOisonlyapproximatelysolvedviatheNewton–Schulziteration.",
+      "size": 345,
+      "sentences": 3
+    },
+    {
+      "id": 55,
+      "content": "iuetal.,2025a),andanalyze FEDMUON whenthe\nLMOisonlyapproximatelysolvedviatheNewton–Schulziteration. Then,thankstothespecial\npropertyofspectralnormandNewton-Schulziteration,werevealthatFEDMUONcanconvergeto\nthestationarypointregardlessofhowaccuratelywesolvetheLMO. Withthespectralnorm,theLMOtakesthefollowingform:\nlmo (X):= argmin ⟨X,Y⟩,\nmuon\nY∈{Y∈Rd1×d2|∥Y∥sp≤1}\nLetthesingularvaluedecompositionofX beUΣV. ThentheLMOoutputis−UV,butcomputing\nthisexactlyiscomputationallyexpensive.",
+      "size": 478,
+      "sentences": 4
+    },
+    {
+      "id": 56,
+      "content": "uedecompositionofX beUΣV. ThentheLMOoutputis−UV,butcomputing\nthisexactlyiscomputationallyexpensive. Toaddressthis,Liuetal. (2025a)proposedapproximating\ntheLMOviaafixednumberofNewton–Schulziterations(e.g.,5). TheupdateruleoftheNewton-\nSchulziterationisdescribedinAlgorithm2. Sincetheprocedureinvolvesonlymatrixmultiplications,\nAlgorithm2Newton-Schulziteration\n1: Input: matrixGandhyperparametersa,b,c∈R. 2: G(0) ← G .",
+      "size": 416,
+      "sentences": 7
+    },
+    {
+      "id": 57,
+      "content": "cations,\nAlgorithm2Newton-Schulziteration\n1: Input: matrixGandhyperparametersa,b,c∈R. 2: G(0) ← G . ∥G∥F\n3: fort∈{0,1,··· ,T −1}do\n4: G(t+1) ←aG(t)+b(G(t)G(t)⊤ )G(t)+c(G(t)G(t)⊤ )2G(t). 5: endfor\n6: Retern−G(T)\n6\n===  7 ===\nPreprint\nitcanbeefficientlyexecutedonaGPU.Inthefollowing,weanalyzetheconvergenceofFEDMUON\nwhen the LMO is solved approximately using Newton–Schulz iterations and characterize how\ninexactnessimpactsconvergence.",
+      "size": 433,
+      "sentences": 4
+    },
+    {
+      "id": 58,
+      "content": "ed approximately using Newton–Schulz iterations and characterize how\ninexactnessimpactsconvergence. UnderthesameassumptionasinTheorem2,weprovidetheconvergenceratewhenwerunNewton-\nSchulziterationT timestosolvetheLMOapproximatelyandshowhowT affectsconvergence. For\nsimplicity,wesetn = S andweusea = 15,b = −5 andc = 3 fortheNewton-Schulziteration,\n8 4 8\nfollowing the hyperparameter setting mentioned in Amsel et al. (2025). For the general case of\narbitraryS werefertoLemma14inSectionF. Theorem3.",
+      "size": 495,
+      "sentences": 6
+    },
+    {
+      "id": 59,
+      "content": "ed in Amsel et al. (2025). For the general case of\narbitraryS werefertoLemma14inSectionF. Theorem3. ConsiderAlgorithm1withthespectralnormandsupposethattheLMOinline8is\nsolved approximately using Algorithm 2 with a = 15,b = −5, and c = 3. We define X(r,k) =\n8 4 8\n1 (cid:80)n X(r,k). NotethatX(r+1) =X(r,K).",
+      "size": 305,
+      "sentences": 7
+    },
+    {
+      "id": 60,
+      "content": "with a = 15,b = −5, and c = 3. We define X(r,k) =\n8 4 8\n1 (cid:80)n X(r,k). NotethatX(r+1) =X(r,K). Supposethatn=S andAssumptions1and2hold,\nn i=1 i\nC(0) :=M(0,0)andC(0) := 1 (cid:80)n C(0).Then,foranynumberofNewton-SchulziterationT ≥0,\ni i n i=1 i\nthereexistsηandαsothatitsatisfies\n1 R (cid:88) −1K (cid:88) −1 E (cid:13) (cid:13)∇f(X(r,k)) (cid:13) (cid:13) ≤O (cid:32)(cid:18) Lr 0 σ˜2(cid:19)1 4 + (cid:18) L √ r 0 σ˜ (cid:19)1 3 + (cid:18) Lr 0 (cid:19)1 2\nRK (cid:13) (cid:13) p nRK R K R\nr=0 k=0\n(cid:34) 1 (cid:18) σ˜2K (cid:19)1 2 (cid:18) σ˜2K2 (cid:19)1 3 (cid:35)(cid:33)\n+σ˜ + + ,\n0 R Lr Rn Lr R2\n0 0\n(cid:112)\nwhere r := f(X(0)) − f⋆,ρ := min{d ,d },σ˜ := ρσ, σ˜ := ρσ , and σ2 :=\n0 1 2 0 0 0\n1 (cid:80)n E∥M(0,0)−∇f (X(0))∥2.",
+      "size": 739,
+      "sentences": 4
+    },
+    {
+      "id": 61,
+      "content": ") − f⋆,ρ := min{d ,d },σ˜ := ρσ, σ˜ := ρσ , and σ2 :=\n0 1 2 0 0 0\n1 (cid:80)n E∥M(0,0)−∇f (X(0))∥2. Then,pisdefinedasfollows:\nn i=1 i i F\n(cid:16) (cid:17)\nlog 1−(1−κ)1.5T\np:=1+ ,\nlogκ\ns\nκ:= min j,i,r,k (>0),\n(cid:113)\nj,i,r,k (cid:80) s2\nj′ j′,i,r,k\nwhere{s } arenon-zerosingularvaluesofM(r,k+1)−C(r)+C(r). j,i,r,k j i i\nRemark3. WhenT =0,p=2. AsT increase,pmonotonicallydecreasesto1foranyκ>0. Remark4. Recallthat∥·∥ istheSchattenp-norm. Forany1≤p≤q,wehave∥A∥ ≤∥A∥ .",
+      "size": 467,
+      "sentences": 8
+    },
+    {
+      "id": 62,
+      "content": "allydecreasesto1foranyκ>0. Remark4. Recallthat∥·∥ istheSchattenp-norm. Forany1≤p≤q,wehave∥A∥ ≤∥A∥ . p q p\nThen,∥A∥ becomes∥A∥ and∥A∥ whenp=1andp=2,respectively.",
+      "size": 160,
+      "sentences": 5
+    },
+    {
+      "id": 63,
+      "content": "enp-norm. Forany1≤p≤q,wehave∥A∥ ≤∥A∥ . p q p\nThen,∥A∥ becomes∥A∥ and∥A∥ whenp=1andp=2,respectively. p trace F\nDiscussion: Surprisingly,theabovetheoremshowsthatFEDMUONconvergestothestationary\npoint,regardlessofhowmanytimesweruntheNewton-Schulziteration.Theonlydifferencebetween\nthecasewhenwesolvetheLMOexactly,i.e.,Theorem2,andthecasewhenwesolvetheLMO\napproximately,i.e.,Theorem3,isthatTheorem2establishestheconvergenceinthetracenormof\nthegradient∥∇f(X)∥ (= ∥∇f(X)∥ ),1 whileTheorem3establishestheconvergenceinthe\ntrace 1\nSchattenp-norm∥∇f(X)∥ .",
+      "size": 544,
+      "sentences": 4
+    },
+    {
+      "id": 64,
+      "content": "t∥∇f(X)∥ (= ∥∇f(X)∥ ),1 whileTheorem3establishestheconvergenceinthe\ntrace 1\nSchattenp-norm∥∇f(X)∥ . WerecovertheconvergencerateofTheorem2bysettingT → ∞,\np\nand therefore have p → 1. Since we have ∥A∥ ≤ ∥A∥ when 1 ≤ p ≤ q, Theorem 3 implies\nq p\nthatFEDMUONcanconvergefasterwhenweincreasethenumberofNewton-SchulziterationsT. (cid:112)\nMore specifically, since it holds that ∥A∥ ≤ min{d ,d }∥A∥ , solving the LMO accurately\n1 1 2 2\n(cid:112)\ncanimprovetheconvergenceratebyuptoafactorof min{d ,d }.",
+      "size": 493,
+      "sentences": 4
+    },
+    {
+      "id": 65,
+      "content": "olving the LMO accurately\n1 1 2 2\n(cid:112)\ncanimprovetheconvergenceratebyuptoafactorof min{d ,d }. Inourexperiments,wewill\n1 2\ndemonstratethatFEDMUONcantrainneuralnetworksevenifT =0,whileFEDMUONcanachieve\nhigheraccuracyasT increases(seeSection7.2). TheseobservationsareconsistentwithTheorem3. Thequantityof(1−κ)1.5T inthedefinitionofpmeasureshowfasttheNewton-Schulziteration\nconverges.Ifweconsidertheworstcase,κcouldbearbitrarilyclosetozero,andthusalargeT would\nberequiredtosufficientlydecreasep.",
+      "size": 497,
+      "sentences": 4
+    },
+    {
+      "id": 66,
+      "content": "theworstcase,κcouldbearbitrarilyclosetozero,andthusalargeT would\nberequiredtosufficientlydecreasep. However,themainimplicationofTheorem3isthatincreasing\nT leadstoanimprovedconvergencerate. Indeed,ourexperimentsshowthatevenincreasingT from\n0to1dramaticallyimprovesaccuracy(seeSection7.2). 1When∥·∥isthespectralnorm,itsdualnormisthetracenorm.",
+      "size": 340,
+      "sentences": 4
+    },
+    {
+      "id": 67,
+      "content": "o1dramaticallyimprovesaccuracy(seeSection7.2). 1When∥·∥isthespectralnorm,itsdualnormisthetracenorm. 7\n===  8 ===\nPreprint\nComparisonwithExistingAnalysiswithInexactLMO: Therearemanypapersthatanalyzed\ntheconvergencerateofMuon,whilemostofthemassumedthattheLMOisexactlysolved(Pethick\netal.,2025;Riabininetal.,2025;Shenetal.,2025). Theonlystudyanalyzingtheratewithaninexact\nLMOisRefaeletal.(2025).",
+      "size": 392,
+      "sentences": 5
+    },
+    {
+      "id": 68,
+      "content": "abininetal.,2025;Shenetal.,2025). Theonlystudyanalyzingtheratewithaninexact\nLMOisRefaeletal.(2025). However,theyalsoassumedthatwerunNewton-Schulziterationsa\ncertainnumberoftimes(seeLemma3.3andRemark3.6in(Refaeletal.,2025)). Comparedwith\ntheseprioranalyses,ournovelanalysisprovidesastrongerclaimthatFEDMUONcanconvergeto\nthestationarypointforanynumberoftheNewton-SchulziterationsT ≥0. Furthermore,itisfirst\nobservedbyTheorem3thatthedifferentnormsofthegradientareboundeddependingonT.",
+      "size": 480,
+      "sentences": 5
+    },
+    {
+      "id": 69,
+      "content": ". Furthermore,itisfirst\nobservedbyTheorem3thatthedifferentnormsofthegradientareboundeddependingonT. ProofSketch: Inthefollowing,weprovideanintuitionforwhyFEDMUONcanconvergeforany\nT ≥0. IfwesolvetheLMOexactly,wehave\n⟨G,lmo (G)⟩=−∥G∥ , ∥lmo (G)∥ ≤1. (4)\nmuon trace muon sp\nThefirstequalityholdsfromthedefinitionofthedualnorm(seeLemma1),andthesecondinequality\nholdssincethesolutionoftheLMOsatisfiestheconstraint.",
+      "size": 409,
+      "sentences": 5
+    },
+    {
+      "id": 70,
+      "content": "fthedualnorm(seeLemma1),andthesecondinequality\nholdssincethesolutionoftheLMOsatisfiestheconstraint. Then,theoutputoftheNewton-Schulz\niterationsatisfiesthefollowing(seeLemma12):\n(cid:13) (cid:13)\n−∥G∥ ≤⟨G,−G(T)⟩≤−∥G∥ , (cid:13)−G(T)(cid:13) ≤1.",
+      "size": 243,
+      "sentences": 2
+    },
+    {
+      "id": 71,
+      "content": "tisfiesthefollowing(seeLemma12):\n(cid:13) (cid:13)\n−∥G∥ ≤⟨G,−G(T)⟩≤−∥G∥ , (cid:13)−G(T)(cid:13) ≤1. (5)\ntrace p (cid:13) (cid:13)\nsp\nThe above inequality indicates that even if we run the Newton-Schulz iteration only a few times\ntosolvetheLMOapproximately, theoutputoftheNewton-Schulziterationisaproperdirection\ntominimizethelossfunction,and FEDMUON canconvergetothestationarypoint.",
+      "size": 382,
+      "sentences": 2
+    },
+    {
+      "id": 72,
+      "content": "ziterationisaproperdirection\ntominimizethelossfunction,and FEDMUON canconvergetothestationarypoint. Forinstance,\nwhenT =0,theoutputofNewton-Schulziterationis− G ,whichcorrespondstothenormalized\n∥G∥F\ngradient,anditisnaturalthatFEDMUONcanconvergetothestationarypointwhenT =0. Then,if\nweruntheNewton-SchulziterationT times,theoutputoftheNewton-Schulziterationcomesclose\ntotheexactsolutionofLMOandremainsaproperdirectiontominimizethelossfunction.",
+      "size": 442,
+      "sentences": 3
+    },
+    {
+      "id": 73,
+      "content": "hulziterationcomesclose\ntotheexactsolutionofLMOandremainsaproperdirectiontominimizethelossfunction. Thanks\ntothisproperty,FEDMUONcanconvergetothestationarypointforanynumberofNewton-Schulz\niterationsT. 7 EXPERIMENT\n7.1 FEDERATEDLEARNINGTASKS\nSetup: WeusedFashionMNIST(Xiaoetal.,2017)andCIFAR-10(Krizhevsky,2009)astraining\ndatasets,andusedLeNet(Lecunetal.,1998)forFashionMNISTandResNet-18(Heetal.,2016)for\nCIFAR-10.",
+      "size": 413,
+      "sentences": 3
+    },
+    {
+      "id": 74,
+      "content": "aining\ndatasets,andusedLeNet(Lecunetal.,1998)forFashionMNISTandResNet-18(Heetal.,2016)for\nCIFAR-10. Followingthepriorpaper(Hsiehetal.,2020),weusedGroupNormalization(Wu&He,\n2018)insteadofBatchNormalization(Ioffe&Szegedy,2015)forResNet-18. Wesetthenumberof\nclientsnto16andsampledS =8clientseveryround. WesetthenumberoflocalstepsK to5and\nsetthenumberofepochsto100and200forFashionMNISTandCIFAR-10,respectively.",
+      "size": 406,
+      "sentences": 4
+    },
+    {
+      "id": 75,
+      "content": "enumberoflocalstepsK to5and\nsetthenumberofepochsto100and200forFashionMNISTandCIFAR-10,respectively. Following\nthepriorpaper(Hsuetal.,2019),wedistributedthetrainingdatasettoclientsbyusingDirichlet\ndistributionswithhyperparameterβ. Asβ approacheszero,eachclientscometohaveadifferent\ntrainingdataset. Wetunedthestepsizebygridsearch. SeeSectionGfordetails. Theexperiments\nwererepeatedwithtwodifferentseedvalues,andwereportedtheaverage.",
+      "size": 431,
+      "sentences": 6
+    },
+    {
+      "id": 76,
+      "content": "eSectionGfordetails. Theexperiments\nwererepeatedwithtwodifferentseedvalues,andwereportedtheaverage. ComparisonMethods: Wecomparedthefollowingmethods: (1)FedAvg(McMahanetal.,2017):\nWeusedMomentumSGDastheoptimizer. (2)FedAvg(Adam): WeusedAdamastheoptimizerof\nFedAvg. (3)SCAFFOLD(Karimireddyetal.,2020): WeusedMomentumSGDastheoptimizer. (4) SCAFFOLD (Adam): We used Adam as the optimizer of SCAFFOLD. (5) FEDMUON: Our\nproposedmethod. FollowingthesuggestionofLiuetal.",
+      "size": 463,
+      "sentences": 8
+    },
+    {
+      "id": 77,
+      "content": "dam as the optimizer of SCAFFOLD. (5) FEDMUON: Our\nproposedmethod. FollowingthesuggestionofLiuetal. (2025a),wechangedthescaleofthestepsize\nperlayer,dependingonthedimension. Results: WeshowtheresultsinFig.1. TheresultsindicatethatFEDMUONcanperformthebestfor\nallsettings. BycomparingFEDMUONwithFedAvg(Adam)andSCAFFOLD(Adam),FEDMUON\nachievedthehighestaccuracy,whichcandemonstratethatMuonisalsobeneficialinthefederated\nlearningsetting.",
+      "size": 431,
+      "sentences": 7
+    },
+    {
+      "id": 78,
+      "content": "hievedthehighestaccuracy,whichcandemonstratethatMuonisalsobeneficialinthefederated\nlearningsetting. BycomparingFEDMUONandLOCALMUON,LOCALMUONperformedwellinthe\nhomogeneoussetting,butdidnotmatchtheperformanceofFEDMUONintheheterogeneoussetting. ThisobservationisconsistentwiththediscussioninSection3,whereweshowthatLOCALMUON\ndoes not converge to the stationary point in the heterogeneous setting. These observations were\nconsistentwithTheorem1.",
+      "size": 441,
+      "sentences": 4
+    },
+    {
+      "id": 79,
+      "content": "the stationary point in the heterogeneous setting. These observations were\nconsistentwithTheorem1. 8\n===  9 ===\nPreprint\n0.9\n0.8\n0.7\n0.6\n0.5\n0 500 1000 1500 2000\nRound\nycaruccA\nFashionMNIST\n0.8\n0.6\n0.4\n0.2\n0 1000 2000 3000\nRound\nycaruccA\nCIFAR-10\nLocalMuon\nFedMuon\nFedAvg\nFedAvg (Adam)\nSCAFFOLD\nSCAFFOLD (Adam)\n(a)HomogeneousCase(β =10.0)\n0.9\n0.8\n0.7\n0.6\n0.5\n0 500 1000 1500 2000\nRound\nycaruccA\nFashionMNIST\n0.8\n0.6\n0.4\n0.2\n0 1000 2000 3000\nRound\nycaruccA\nCIFAR-10\nLocalMuon\nFedMuon\nFedAvg\nFedAvg (Adam)\nSCAFFOLD\nSCAFFOLD (Adam)\n(b)HeterogeneousCase(β =0.1)\nFigure1:Trainingcurvesofvariousmethods.Forallsettings,FEDMUONcanachievehighertestaccuracythan\nothermethods.",
+      "size": 665,
+      "sentences": 3
+    },
+    {
+      "id": 80,
+      "content": "Trainingcurvesofvariousmethods.Forallsettings,FEDMUONcanachievehighertestaccuracythan\nothermethods. 0.90\n0.85\n0.80\n0 500 1000 1500 2000\nRound\nycaruccA\n=10.0\n0.90\n0.85\n0.80\n0.75\n0 500 1000 1500 2000\nRound\nycaruccA\n=0.1\nFedMuon (T=0)\nFedMuon (T=1)\nFedMuon (T=2)\nFedMuon (T=4)\nFigure2:TrainingcurvesofFEDMUONwithvariousnumberofNewton-Schulziterations.WeusedFashionM-\nNISTandLeNet. 7.2 EFFECTOFINEXACTLMO\nNext,weevaluatehowthenumberofNewton-SchulziterationsT affectstheperformance.",
+      "size": 477,
+      "sentences": 3
+    },
+    {
+      "id": 81,
+      "content": "7.2 EFFECTOFINEXACTLMO\nNext,weevaluatehowthenumberofNewton-SchulziterationsT affectstheperformance. Figure2\nshowsthetrainingcurvesofFEDMUONwithdifferentT. Inthehomogeneoussetting,thehighest\naccuracy was achieved when T = 4, and in the heterogeneous setting, the highest accuracy was\nachieved when T = 2. Thus, we can observe that solving the LMO accurately can improve the\nperformance. Notably,FEDMUONalreadyworkedwithT =0,butincreasingT from0to1ledtoa\nsignificantimprovementinaccuracy.",
+      "size": 486,
+      "sentences": 5
+    },
+    {
+      "id": 82,
+      "content": "otably,FEDMUONalreadyworkedwithT =0,butincreasingT from0to1ledtoa\nsignificantimprovementinaccuracy. TheseobservationswereconsistentwithTheorem3,which\nshowsthatFEDMUONcanconvergeforanyT andconvergefasterasT increases. 8 CONCLUSION\nInthispaper,westudythefederatedlearningmethodswiththeLMOandproposeFEDMUON.",
+      "size": 304,
+      "sentences": 3
+    },
+    {
+      "id": 83,
+      "content": "increases. 8 CONCLUSION\nInthispaper,westudythefederatedlearningmethodswiththeLMOandproposeFEDMUON. We\nfirst propose directly plugging the optimization methods with the LMO into FedAvg, which we\nreferredtoasLOCALMUON,andshowthatLOCALMUONcannotconvergetothestationarypoint\n9\n===  10 ===\nPreprint\nsincetheLMOisabiasedoperator. WethenproposeFEDMUONtosolvethisissueandshowthat\nFEDMUON canconvergetothestationarypoint.",
+      "size": 412,
+      "sentences": 4
+    },
+    {
+      "id": 84,
+      "content": "doperator. WethenproposeFEDMUONtosolvethisissueandshowthat\nFEDMUON canconvergetothestationarypoint. Weanalyzetheconvergencerateof FEDMUON\nandrevealhowtheapproximatesolutionoftheLMOaffectstheconvergencebehavior. Notably,we\nshowthatFEDMUONcanconvergeforanynumberofNewton-Schulziterations,andFEDMUONcan\nconvergefasteraswesolvetheLMOmoreaccurately. Throughouttheexperiments,wedemonstrated\ntheeffectivenessofFEDMUONandverifiedourtheoreticaldiscovery.",
+      "size": 445,
+      "sentences": 5
+    },
+    {
+      "id": 85,
+      "content": "hroughouttheexperiments,wedemonstrated\ntheeffectivenessofFEDMUONandverifiedourtheoreticaldiscovery. REFERENCES\nKwangjunAhn,ByronXu,NatalieAbreu,YingFan,GagikMagakyan,PratyushaSharma,Zheng\nZhan,andJohnLangford. Dion: Distributedorthonormalizedupdates. InarXiv,2025. DanAlistarh,DemjanGrubic,JerryLi,RyotaTomioka,andMilanVojnovic. Qsgd: Communication-\nefficientSGDviagradientquantizationandencoding. InAdvancesinNeuralInformationProcess-\ningSystems,2017. Shun-ichiAmari.",
+      "size": 468,
+      "sentences": 8
+    },
+    {
+      "id": 86,
+      "content": "ientquantizationandencoding. InAdvancesinNeuralInformationProcess-\ningSystems,2017. Shun-ichiAmari. Naturalgradientworksefficientlyinlearning. InNeuralComputation,1998. NoahAmsel,DavidPersson,ChristopherMusco,andRobertM.Gower. Thepolarexpress: Optimal\nmatrixsignmethodsandtheirapplicationtothemuonalgorithm. InarXiv,2025. SébastienBubeck. Convexoptimization: Algorithmsandcomplexity. InFoundationsandTrendsin\nMachineLearning,2015. WenlinChen,SamuelHorváth,andPeterRichtárik.",
+      "size": 474,
+      "sentences": 12
+    },
+    {
+      "id": 87,
+      "content": "plexity. InFoundationsandTrendsin\nMachineLearning,2015. WenlinChen,SamuelHorváth,andPeterRichtárik. Optimalclientsamplingforfederatedlearning. InTransactionsonMachineLearningResearch,2022. ZihengCheng,XinmengHuang,PengfeiWu,andKunYuan. Momentumbenefitsnon-iidfederated\nlearningsimplyandprovably. InInternationalConferenceonLearningRepresentations,2024. JohnB.Conway. Acourseinfunctionalanalysis. InSpringer.2019. Ashok Cutkosky and Harsh Mehta. Momentum improves normalized SGD.",
+      "size": 478,
+      "sentences": 13
+    },
+    {
+      "id": 88,
+      "content": "ctionalanalysis. InSpringer.2019. Ashok Cutkosky and Harsh Mehta. Momentum improves normalized SGD. In International\nConferenceonMachineLearning,2020. GeorgeE.Dahl, FrankSchneider,ZacharyNado,NamanAgarwal, ChandramouliShamaSastry,\nPhilippHennig,SourabhMedapati,RunaEschenhagen,PriyaKasimbeg,DanielSuo,JuhanBae,\nJustinGilmer,AbelL.Peirson,BilalKhan,RohanAnil,MikeRabbat,ShankarKrishnan,Daniel\nSnider,EhsanAmid,KongtaoChen,ChrisJ.Maddison,RakshithVasudev,MichalBadura,Ankush\nGarg,andPeterMattson.",
+      "size": 494,
+      "sentences": 6
+    },
+    {
+      "id": 89,
+      "content": "der,EhsanAmid,KongtaoChen,ChrisJ.Maddison,RakshithVasudev,MichalBadura,Ankush\nGarg,andPeterMattson. Benchmarkingneuralnetworktrainingalgorithms. InarXiv,2025. Aaron Defazio, Xingyu Alice Yang, Ahmed Khaled, Konstantin Mishchenko, Harsh Mehta, and\nAshokCutkosky. Theroadlessscheduled. InAdvancesinNeuralInformationProcessingSystems,\n2024. JohnDuchi,EladHazan,andYoramSinger. Adaptivesubgradientmethodsforonlinelearningand\nstochasticoptimization. InJournalofMachineLearningResearch,2011.",
+      "size": 485,
+      "sentences": 9
+    },
+    {
+      "id": 90,
+      "content": "radientmethodsforonlinelearningand\nstochasticoptimization. InJournalofMachineLearningResearch,2011. AnisElgabli, ChaoukiBenIssaid, AmritSinghBedi, KetanRajawat, MehdiBennis, andVaneet\nAggarwal. FedNew: Acommunication-efficientandprivacy-preservingNewton-typemethodfor\nfederatedlearning. InInternationalConferenceonMachineLearning,2022. M Frank and P Wolfe. An algorithm for quadratic programming. In Naval Research Logistics\nQuarterly,1956. YuanGao,RustemIslamov,andSebastianUStich.",
+      "size": 482,
+      "sentences": 9
+    },
+    {
+      "id": 91,
+      "content": "programming. In Naval Research Logistics\nQuarterly,1956. YuanGao,RustemIslamov,andSebastianUStich. EControl: Fastdistributedoptimizationwith\ncompressionanderrorcontrol. InInternationalConferenceonLearningRepresentations,2024. EkaterinaGrishina,MatveySmirnov,andMaximRakhuba. Acceleratingnewton-schulziterationfor\northogonalizationviachebyshev-typepolynomials. InarXiv,2025. XinranGu, KaixuanHuang,JingzhaoZhang,andLongboHuang. Fastfederatedlearninginthe\npresenceofarbitrarydeviceunavailability.",
+      "size": 494,
+      "sentences": 10
+    },
+    {
+      "id": 92,
+      "content": "g,JingzhaoZhang,andLongboHuang. Fastfederatedlearninginthe\npresenceofarbitrarydeviceunavailability. InAdvancesinNeuralInformationProcessingSystems,\n2021. 10\n===  11 ===\nPreprint\nVineetGupta,TomerKoren,andYoramSinger. Shampoo: Preconditionedstochastictensoroptimiza-\ntion. InInternationalConferenceonMachineLearning,2018. Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun. Deep residual learning for image\nrecognition. InIEEE/CVFComputerVisionandPatternRecognitionConference,2016.",
+      "size": 483,
+      "sentences": 9
+    },
+    {
+      "id": 93,
+      "content": "idual learning for image\nrecognition. InIEEE/CVFComputerVisionandPatternRecognitionConference,2016. Yutong He, Xinmeng Huang, and Kun Yuan. Unbiased compression saves communication in\ndistributedoptimization: Whenandhowmuch? InAdvancesinNeuralInformationProcessing\nSystems,2023. KevinHsieh,AmarPhanishayee,OnurMutlu,andPhillipGibbons. Thenon-IIDdataquagmireof\ndecentralizedmachinelearning. InInternationalConferenceonMachineLearning,2020. Tzu-MingHarryHsu,HangQi,andMatthewBrown.",
+      "size": 479,
+      "sentences": 9
+    },
+    {
+      "id": 94,
+      "content": "learning. InInternationalConferenceonMachineLearning,2020. Tzu-MingHarryHsu,HangQi,andMatthewBrown. Measuringtheeffectsofnon-identicaldata\ndistributionforfederatedvisualclassification. InarXiv,2019. SergeyIoffeandChristianSzegedy. Batchnormalization: Acceleratingdeepnetworktrainingby\nreducinginternalcovariateshift. InInternationalConferenceonMachineLearning,2015. SatokiIshikawaandRyoKarakida. Ontheparameterizationofsecond-orderoptimizationeffective\ntowardstheinfinitewidth.",
+      "size": 477,
+      "sentences": 10
+    },
+    {
+      "id": 95,
+      "content": "waandRyoKarakida. Ontheparameterizationofsecond-orderoptimizationeffective\ntowardstheinfinitewidth. InInternationalConferenceonLearningRepresentations,2024. RustemIslamov,MherSafaryan,andDanAlistarh.AsGrad:Asharpunifiedanalysisofasynchronous-\nSGDalgorithms. InInternationalConferenceonArtificialIntelligenceandStatistics,2024. MartinJaggi. RevisitingFrank-Wolfe: Projection-freesparseconvexoptimization. InInternational\nConferenceonMachineLearning,2013.",
+      "size": 453,
+      "sentences": 8
+    },
+    {
+      "id": 96,
+      "content": "k-Wolfe: Projection-freesparseconvexoptimization. InInternational\nConferenceonMachineLearning,2013. XiaowenJiang,AntonRodomanov,andSebastianU.Stich. Stabilizedproximal-pointmethodsfor\nfederatedoptimization. InAdvancesinNeuralInformationProcessingSystems,2024a. XiaowenJiang, AntonRodomanov, andSebastianU.Stich. Federatedoptimizationwithdoubly\nregularizeddriftcorrection. InInternationalConferenceonMachineLearning,2024b.",
+      "size": 421,
+      "sentences": 8
+    },
+    {
+      "id": 97,
+      "content": "ptimizationwithdoubly\nregularizeddriftcorrection. InInternationalConferenceonMachineLearning,2024b. KellerJordan,YuchenJin,VladoBoza,YouJiacheng,FranzCesista,LakerNewhouse,andJeremy\nBernstein. Muon: An optimizer for hidden layers in neural networks, 2024. URL https:\n//kellerjordan.github.io/posts/muon/. PeterKairouz,H.BrendanMcMahan,BrendanAvent,AurélienBellet,MehdiBennis,ArjunNitin\nBhagoji,KallistaBonawitz,ZacharyCharles,GrahamCormode,RachelCummings,RafaelG.L.",
+      "size": 465,
+      "sentences": 6
+    },
+    {
+      "id": 98,
+      "content": "diBennis,ArjunNitin\nBhagoji,KallistaBonawitz,ZacharyCharles,GrahamCormode,RachelCummings,RafaelG.L. D’Oliveira, HubertEichner, SalimElRouayheb, DavidEvans, JoshGardner, ZacharyGarrett,\nAdrià Gascón, Badih Ghazi, Phillip B. Gibbons, Marco Gruteser, Zaid Harchaoui, Chaoyang\nHe,LieHe,ZhouyuanHuo,BenHutchinson,JustinHsu,MartinJaggi,TaraJavidi,GauriJoshi,\nMikhail Khodak, Jakub Konecný, Aleksandra Korolova, Farinaz Koushanfar, Sanmi Koyejo,\nTancrèdeLepoint,YangLiu,PrateekMittal,MehryarMohri,RichardNock,AyferÖzgür,Rasmus\nPagh,HangQi,DanielRamage,RameshRaskar,MarianaRaykova,DawnSong,WeikangSong,\nSebastianU.Stich,ZitengSun,AnandaTheerthaSuresh,FlorianTramèr,PraneethVepakomma,\nJianyuWang,LiXiong,ZhengXu,QiangYang,FelixX.Yu,HanYu,andSenZhao.",
+      "size": 740,
+      "sentences": 2
+    },
+    {
+      "id": 99,
+      "content": "h,FlorianTramèr,PraneethVepakomma,\nJianyuWang,LiXiong,ZhengXu,QiangYang,FelixX.Yu,HanYu,andSenZhao. Advances\nandopenproblemsinfederatedlearning. InFoundationsandTrendsinMachineLearning,2021. SaiPraneethKarimireddy,QuentinRebjock,SebastianStich,andMartinJaggi. Errorfeedbackfixes\nsignsgdandothergradientcompressionschemes. InInternationalconferenceonmachinelearning,\n2019. Sai Praneeth Karimireddy, Satyen Kale, Mehryar Mohri, Sashank Reddi, Sebastian Stich, and\nAnandaTheerthaSuresh.",
+      "size": 483,
+      "sentences": 7
+    },
+    {
+      "id": 100,
+      "content": "Karimireddy, Satyen Kale, Mehryar Mohri, Sashank Reddi, Sebastian Stich, and\nAnandaTheerthaSuresh. SCAFFOLD:Stochasticcontrolledaveragingforfederatedlearning. In\nInternationalConferenceonMachineLearning,2020. SaiPraneethKarimireddy,MartinJaggi,SatyenKale,MehryarMohri,SashankJ.Reddi,SebastianU\nStich,andAnandaTheerthaSuresh. Breakingthecentralizedbarrierforcross-devicefederated\nlearning. InAdvancesinNeuralInformationProcessingSystems,2021. DiederikP.KingmaandJimmyBa.",
+      "size": 469,
+      "sentences": 7
+    },
+    {
+      "id": 101,
+      "content": "ederated\nlearning. InAdvancesinNeuralInformationProcessingSystems,2021. DiederikP.KingmaandJimmyBa. Adam: Amethodforstochasticoptimization. InInternational\nConferenceonLearningRepresentations,2017. 11\n===  12 ===\nPreprint\nAnastasiaKoloskova,NicolasLoizou,SadraBoreiri,MartinJaggi,andSebastianStich. Aunified\ntheoryofdecentralizedSGDwithchangingtopologyandlocalupdates.InInternationalConference\nonMachineLearning,2020. Anastasia Koloskova, Sebastian U Stich, and Martin Jaggi.",
+      "size": 475,
+      "sentences": 8
+    },
+    {
+      "id": 102,
+      "content": "ationalConference\nonMachineLearning,2020. Anastasia Koloskova, Sebastian U Stich, and Martin Jaggi. Sharper convergence guarantees for\nasynchronousSGDfordistributedandfederatedlearning. InAdvancesinNeuralInformation\nProcessingSystems,2022. Dmitry Kovalev. Understanding gradient orthogonalization for deep learning via non-euclidean\ntrust-regionoptimization. InarXiv,2025. AlexKrizhevsky. Learningmultiplelayersoffeaturesfromtinyimages. InTechnicalReport,2009.",
+      "size": 460,
+      "sentences": 10
+    },
+    {
+      "id": 103,
+      "content": "arXiv,2025. AlexKrizhevsky. Learningmultiplelayersoffeaturesfromtinyimages. InTechnicalReport,2009. Y. Lecun, L. Bottou, Y. Bengio, and P. Haffner. Gradient-based learning applied to document\nrecognition. InIEEE,1998. TaoLin,SaiPraneethKarimireddy,SebastianStich,andMartinJaggi. Quasi-globalmomentum:\nAcceleratingdecentralizeddeeplearningonheterogeneousdata. InInternationalConferenceon\nMachineLearning,2021.",
+      "size": 408,
+      "sentences": 10
+    },
+    {
+      "id": 104,
+      "content": "tingdecentralizeddeeplearningonheterogeneousdata. InInternationalConferenceon\nMachineLearning,2021. JingyuanLiu,JianlinSu,XingchengYao,ZhejunJiang,GuokunLai,YulunDu,YidaoQin,Weixin\nXu, Enzhe Lu, Junjie Yan, Yanru Chen, Huabin Zheng, Yibo Liu, Shaowei Liu, Bohong Yin,\nWeiranHe,HanZhu,YuzhiWang,JianzhouWang,MengnanDong,ZhengZhang,Yongsheng\nKang,HaoZhang,XinranXu,YutaoZhang,YuxinWu,XinyuZhou,andZhilinYang. Muonis\nscalableforllmtraining. InarXiv,2025a.",
+      "size": 452,
+      "sentences": 5
+    },
+    {
+      "id": 105,
+      "content": ",XinranXu,YutaoZhang,YuxinWu,XinyuZhou,andZhilinYang. Muonis\nscalableforllmtraining. InarXiv,2025a. LimingLiu,ZhenghaoXu,ZixuanZhang,HaoKang,ZichongLi,ChenLiang,WeizhuChen,and\nTuoZhao. Cosmos: Ahybridadaptiveoptimizerformemory-efficienttrainingofllms. InarXiv,\n2025b. IlyaLoshchilovandFrankHutter. Decoupledweightdecayregularization. InInternationalConfer-\nenceonLearningRepresentations,2019. ChaoMa,WenboGong,MeyerScetbon,andEdwardMeeds.",
+      "size": 438,
+      "sentences": 10
+    },
+    {
+      "id": 106,
+      "content": "ernationalConfer-\nenceonLearningRepresentations,2019. ChaoMa,WenboGong,MeyerScetbon,andEdwardMeeds. Swan: SGDwithnormalizationand\nwhiteningenablesstatelessllmtraining. InarXiv,2025. Brendan McMahan, Eider Moore, Daniel Ramage, Seth Hampson, and Blaise Aguera y Arcas. Communication-EfficientLearningofDeepNetworksfromDecentralizedData. InInternational\nConferenceonArtificialIntelligenceandStatistics,2017. KonstantinMishchenko,FrancisBach,MathieuEven,andBlakeWoodworth.",
+      "size": 469,
+      "sentences": 8
+    },
+    {
+      "id": 107,
+      "content": "cialIntelligenceandStatistics,2017. KonstantinMishchenko,FrancisBach,MathieuEven,andBlakeWoodworth. AsynchronousSGD\nbeats minibatch SGD under arbitrary delays. In Advances in Neural Information Processing\nSystems,2022. Angelia Nedic´, Alex Olshevsky, and Wei Shi. Achieving geometric convergence for distributed\noptimizationovertime-varyinggraphs. InSIAMJournalonOptimization,2017. YuriiNesterov. Lecturesonconvexoptimization. InSpringer,2018.",
+      "size": 443,
+      "sentences": 10
+    },
+    {
+      "id": 108,
+      "content": "hs. InSIAMJournalonOptimization,2017. YuriiNesterov. Lecturesonconvexoptimization. InSpringer,2018. Thomas Pethick, Wanyun Xie, Kimon Antonakopoulos, Zhenyu Zhu, Antonio Silveti-Falls, and\nVolkanCevher. Trainingdeeplearningmodelswithnorm-constrainedLMOs. InInternational\nConferenceonMachineLearning,2025. SashankJ.Reddi,ZacharyCharles,ManzilZaheer,ZacharyGarrett,KeithRush,JakubKonecˇný,\nSanjivKumar,andHughBrendanMcMahan. Adaptivefederatedoptimization.",
+      "size": 453,
+      "sentences": 10
+    },
+    {
+      "id": 109,
+      "content": "yGarrett,KeithRush,JakubKonecˇný,\nSanjivKumar,andHughBrendanMcMahan. Adaptivefederatedoptimization. InInternational\nConferenceonLearningRepresentations,2021. YehonathanRefael,GuySmorodinsky,TomTirer,andOfirLindenbaum. Sumo: Subspace-aware\nmoment-orthogonalizationforacceleratingmemory-efficientllmtraining. InarXiv,2025. ArtemRiabinin,EgorShulgin,KajaGruntkowska,andPeterRichtárik. Gluon: Makingmuon&\nsciongreatagain! (bridgingtheoryandpracticeofLMO-basedoptimizersforLLMs). InarXiv,\n2025.",
+      "size": 489,
+      "sentences": 10
+    },
+    {
+      "id": 110,
+      "content": "akingmuon&\nsciongreatagain! (bridgingtheoryandpracticeofLMO-basedoptimizersforLLMs). InarXiv,\n2025. 12\n===  13 ===\nPreprint\nAntonRodomanov,XiaowenJiang,andSebastianUStich. Universalityofadagradstepsizesfor\nstochasticoptimization:Inexactoracle,accelerationandvariancereduction. InAdvancesinNeural\nInformationProcessingSystems,2024. GüntherSchulz.Iterativeberechungderreziprokenmatrix.InZeitschriftfürAngewandteMathematik\nundMechanik,1933. AndreiSemenov,MatteoPagliardini,andMartinJaggi.",
+      "size": 485,
+      "sentences": 8
+    },
+    {
+      "id": 111,
+      "content": "eitschriftfürAngewandteMathematik\nundMechanik,1933. AndreiSemenov,MatteoPagliardini,andMartinJaggi. Benchmarkingoptimizersforlargelanguage\nmodelpretraining. InarXiv,2025. WeiShen,RuichuanHuang,MinhuiHuang,CongShen,andJiaweiZhang. Ontheconvergence\nanalysisofmuon. InarXiv,2025. Hao-JunMichaelShi,Tsung-HsienLee,ShintaroIwasaki,JoseGallego-Posada,ZhijingLi,Kaushik\nRangadurai,DheevatsaMudigere,andMichaelRabbat.",
+      "size": 409,
+      "sentences": 8
+    },
+    {
+      "id": 112,
+      "content": "ShintaroIwasaki,JoseGallego-Posada,ZhijingLi,Kaushik\nRangadurai,DheevatsaMudigere,andMichaelRabbat. Adistributeddata-parallelpytorchimple-\nmentationofthedistributedshampoooptimizerfortrainingneuralnetworksat-scale. InarXiv,\n2023. SebastianU.Stich. LocalSGDconvergesfastandcommunicateslittle. InarXiv,2019. SebastianUStich, Jean-BaptisteCordonnier, andMartinJaggi. Sparsifiedsgdwithmemory. In\nAdvancesinneuralinformationprocessingsystems,2018. Tao Sun, Qingsong Wang, Dongsheng Li, and Bao Wang.",
+      "size": 494,
+      "sentences": 10
+    },
+    {
+      "id": 113,
+      "content": "ancesinneuralinformationprocessingsystems,2018. Tao Sun, Qingsong Wang, Dongsheng Li, and Bao Wang. Momentum ensures convergence of\nSIGNSGDunderweakerassumptions. InInternationalConferenceonMachineLearning,2023. YukiTakezawa,HanBao,KentaNiwa,RyomaSato,andMakotoYamada. Momentumtracking:\nMomentumaccelerationfordecentralizeddeeplearningonheterogeneousdata. InTransactions\nonMachineLearningResearch,2023. HanlinTang,ShaoduoGan,CeZhang,TongZhang,andJiLiu.",
+      "size": 452,
+      "sentences": 8
+    },
+    {
+      "id": 114,
+      "content": "a. InTransactions\nonMachineLearningResearch,2023. HanlinTang,ShaoduoGan,CeZhang,TongZhang,andJiLiu. Communicationcompressionfor\ndecentralizedtraining. InAdvancesinNeuralInformationProcessingSystems,2018a. Hanlin Tang, Xiangru Lian, Ming Yan, Ce Zhang, and Ji Liu. d2: Decentralized training over\ndecentralizeddata. InInternationalConferenceonMachineLearning,2018b. BenjaminThérien,XiaolongHuang,IrinaRish,andEugeneBelilovsky. Muloco: Muonisapractical\ninneroptimizerfordiloco. InarXiv,2025.",
+      "size": 489,
+      "sentences": 10
+    },
+    {
+      "id": 115,
+      "content": "uang,IrinaRish,andEugeneBelilovsky. Muloco: Muonisapractical\ninneroptimizerfordiloco. InarXiv,2025. ThijsVogels,SaiPraneethKarimireddy,andMartinJaggi. PowerSGD:Practicallow-rankgradient\ncompressionfordistributedoptimization. InAdvancesinNeuralInformationProcessingSystems,\n2019. NikhilVyas,DepenMorwani,RosieZhao,ItaiShapira,DavidBrandfonbrener,LucasJanson,and\nShamM.Kakade. SOAP:Improvingandstabilizingshampoousingadamforlanguagemodeling. InInternationalConferenceonLearningRepresentations,2025.",
+      "size": 496,
+      "sentences": 9
+    },
+    {
+      "id": 116,
+      "content": "lizingshampoousingadamforlanguagemodeling. InInternationalConferenceonLearningRepresentations,2025. RachelWard,XiaoxiaWu,andLeonBottou. Adagradstepsizes: Sharpconvergenceovernonconvex\nlandscapes. InJournalofMachineLearningResearch,2020. BlakeWoodworth,KumarKshitijPatel,SebastianStich,ZhenDai,BrianBullins,BrendanMcmahan,\nOhadShamir, andNathanSrebro. IslocalSGDbetterthanminibatchSGD? InInternational\nConferenceonMachineLearning,2020. YuxinWuandKaimingHe. Groupnormalization. InarXiv,2018.",
+      "size": 489,
+      "sentences": 11
+    },
+    {
+      "id": 117,
+      "content": "ernational\nConferenceonMachineLearning,2020. YuxinWuandKaimingHe. Groupnormalization. InarXiv,2018. HanXiao,KashifRasul,andRolandVollgraf. Fashion-mnist: Anovelimagedatasetforbenchmark-\ningmachinelearningalgorithms. InarXiv,2017. ShuoXieandZhiyuanLi. Implicitbiasofadamw: ℓ -normconstrainedoptimization. InInterna-\n∞\ntionalConferenceonMachineLearning,2024. ManzilZaheer,SashankReddi,DevendraSachan,SatyenKale,andSanjivKumar. Adaptivemethods\nfornonconvexoptimization.",
+      "size": 466,
+      "sentences": 12
+    },
+    {
+      "id": 118,
+      "content": "er,SashankReddi,DevendraSachan,SatyenKale,andSanjivKumar. Adaptivemethods\nfornonconvexoptimization. InAdvancesinNeuralInformationProcessingSystems,2018. 13\n===  14 ===\nPreprint\nJianyiZhang,AngLi,MinxueTang,JingweiSun,XiangChen,FanZhang,ChangyouChen,Yiran\nChen, andHaiLi. Fed-CBS:Aheterogeneity-awareclientsamplingmechanismforfederated\nlearningviaclass-imbalancereduction. InInternationalConferenceonMachineLearning,2023.",
+      "size": 420,
+      "sentences": 6
+    },
+    {
+      "id": 119,
+      "content": "mforfederated\nlearningviaclass-imbalancereduction. InInternationalConferenceonMachineLearning,2023. JuntangZhuang,TommyTang,YifanDing,SekharTatikonda,NichaC.Dvornek,XenophonPa-\npademetris, and James S. Duncan. Adabelief optimizer: Adapting stepsizes by the belief in\nobservedgradients. InAdvancesinNeuralInformationProcessingSystems,2020. 14\n===  15 ===\nPreprint\nA LLM USAGE\nWeusedLLMforproofreading,anditdidnotcontributetothecontentofthepaperitself.",
+      "size": 450,
+      "sentences": 6
+    },
+    {
+      "id": 120,
+      "content": "==\nPreprint\nA LLM USAGE\nWeusedLLMforproofreading,anditdidnotcontributetothecontentofthepaperitself. B RELATED WORK\nFederatedLearning: ThesimplestalgorithmforfederatedlearningisFedAvg(McMahanetal.,\n2017;Stich,2019). Themainchallengeoffederatedlearningisreducingcommunicationbetween\nthecentralserverandclients.",
+      "size": 308,
+      "sentences": 3
+    },
+    {
+      "id": 121,
+      "content": "019). Themainchallengeoffederatedlearningisreducingcommunicationbetween\nthecentralserverandclients. Varioustechniquessuchasclientsampling(Guetal.,2021;Chen\netal.,2022;Zhangetal.,2023),multiplelocalsteps(Woodworthetal.,2020;Koloskovaetal.,2020;\nJiang et al., 2024a;b), and communication compression (Alistarh et al., 2017; Stich et al., 2018;\nKarimireddyetal.,2019;Vogelsetal.,2019;Heetal.,2023;Gaoetal.,2024)havebeenstudiedto\nreducethecommunicationcosts.",
+      "size": 454,
+      "sentences": 3
+    },
+    {
+      "id": 122,
+      "content": "al.,2019;Vogelsetal.,2019;Heetal.,2023;Gaoetal.,2024)havebeenstudiedto\nreducethecommunicationcosts. However,FedAvgstillrequiresahugeamountofcommunication\nwhen clients have different training datasets. Many papers proposed federated learning methods\nthatarerobusttodataheterogeneity(Karimireddyetal.,2020;Jiangetal.,2024a;b). Theseminal\nworkisSCAFFOLD(Karimireddyetal.,2020),whichcanconvergeregardlessofdataheterogeneity.",
+      "size": 420,
+      "sentences": 4
+    },
+    {
+      "id": 123,
+      "content": "b). Theseminal\nworkisSCAFFOLD(Karimireddyetal.,2020),whichcanconvergeregardlessofdataheterogeneity. Besidesthesemethods,asynchronousmethods(Koloskovaetal.,2022;Mishchenkoetal.,2022;\nIslamovetal.,2024)anddecentralizedmethods(Nedic´ etal.,2017;Tangetal.,2018b;a;Koloskova\netal.,2020;Takezawaetal.,2023)havebeenwidelystudiedtofurtherimprovetheefficiency.",
+      "size": 351,
+      "sentences": 3
+    },
+    {
+      "id": 124,
+      "content": "2018b;a;Koloskova\netal.,2020;Takezawaetal.,2023)havebeenwidelystudiedtofurtherimprovetheefficiency. AdaptiveOptimizationMethods: Usingadaptiveoptimizationmethodsisstandardfortraining\nneuralnetworksefficiently(Amari,1998;Wardetal.,2020;Duchietal.,2011;Kingma&Ba,2017;\nLoshchilov&Hutter,2019;Zaheeretal.,2018;Zhuangetal.,2020;Defazioetal.,2024;Rodomanov\netal.,2024).",
+      "size": 364,
+      "sentences": 2
+    },
+    {
+      "id": 125,
+      "content": ";\nLoshchilov&Hutter,2019;Zaheeretal.,2018;Zhuangetal.,2020;Defazioetal.,2024;Rodomanov\netal.,2024). Overthelastdecade,Adam(Kingma&Ba,2017)andAdamW(Loshchilov&Hutter,\n2019)arethemostwidelyused,butrecently,Shampoo(Guptaetal.,2018)wontheExternalTuning\nTaskofAlgoPerf(Dahletal.,2025)andisattractingconsiderableattention(Shietal.,2023;Vyas\netal.,2025;Ishikawa&Karakida,2024).",
+      "size": 370,
+      "sentences": 2
+    },
+    {
+      "id": 126,
+      "content": "l.,2025)andisattractingconsiderableattention(Shietal.,2023;Vyas\netal.,2025;Ishikawa&Karakida,2024). Muon(Liuetal.,2025a)canberegardedasthesimplified\nversionofShampoo,andmanypapershavedemonstratedthatMuoncantrainneuralnetworksfaster\nthanAdam,AdamW,andShampoo(Liuetal.,2025a;Pethicketal.,2025;Amseletal.,2025;Liu\netal.,2025b;Maetal.,2025;Amseletal.,2025;Grishinaetal.,2025). UsingMuonindistributed\nenvironmentsisoneofthepopulartopics(Thérienetal.,2025;Ahnetal.,2025).",
+      "size": 465,
+      "sentences": 3
+    },
+    {
+      "id": 127,
+      "content": "2025). UsingMuonindistributed\nenvironmentsisoneofthepopulartopics(Thérienetal.,2025;Ahnetal.,2025). Specifically,Ahn\netal.(2025)proposedamethodtosolvetheLMOinadistributedway,andThérienetal. (2025)\nproposedMuLoCo,whichextendsMuonbyallowingclientstoperformseveralstepsbeforeaveraging\ntheparametersasinLOCALMUON. However,sincetheyconsidersettingswhereallclientshavethe\nsamedataset,theirobjectivediffersfromours.",
+      "size": 408,
+      "sentences": 5
+    },
+    {
+      "id": 128,
+      "content": "However,sincetheyconsidersettingswhereallclientshavethe\nsamedataset,theirobjectivediffersfromours. AsweexplainedinSection3,becausetheLMOisa\nbiasedoperator,biascorrectionmechanismsusedinFEDMUONarenecessaryinfederatedlearning,\ninwhichclientshavedifferenttrainingdatasets. 15\n===  16 ===\nPreprint\nC PSEUDO CODE\nAlgorithm3FedAvg(McMahanetal.,2017)\n1: Input: thetotalnumberofclientsn,thenumberofsampledclientsS,andthenumberoflocal\nstepsK. 2: fort∈{0,1,··· ,T}do(attheserver)\n3: sampleS clientsS r ⊂[n].",
+      "size": 497,
+      "sentences": 4
+    },
+    {
+      "id": 129,
+      "content": "lientsS,andthenumberoflocal\nstepsK. 2: fort∈{0,1,··· ,T}do(attheserver)\n3: sampleS clientsS r ⊂[n]. 4: fori∈S r do (attheclients)\n5: X(r,0) ←X(r). i\n6: fork =0,1,··· ,K−1do\n7: X i (r,k+1) ←X i (r,k)−η∇F i (X i (r,k);ξ i (r,k)). 8: endfor\n9: endfor(endclients,backtotheserver)\n10: X(r+1) ← n−SX(r)+ 1 (cid:80) X(r,K). n n i∈Sr i\n11: endfor\nAlgorithm4LocalMuon\n1: Input: thetotalnumberofclientsn,thenumberofsampledclientsS,andthenumberoflocal\nstepsK.",
+      "size": 448,
+      "sentences": 6
+    },
+    {
+      "id": 130,
+      "content": "LocalMuon\n1: Input: thetotalnumberofclientsn,thenumberofsampledclientsS,andthenumberoflocal\nstepsK. 2: forr ∈{0,1,··· ,R−1}do(attheserver)\n3: sampleS clientsS r ⊂[n]. 4: fori∈S r do (attheclients)\n5:\nX(r,0) ←X(r)andM(r,0) ←M(r−1,K)\ni i i\n6: fork =0,1,··· ,K−1do\n7: M i (r,k+1) ←(1−α)M i (r,k)+α∇F i (X i (r,k);ξ i (r,k)). (cid:16) (cid:17)\n8: X(r,k+1) ←X(r,k)+ηlmo M(r,k+1) . i i i\n9: endfor\n10:\nC(r+1) ←M(r,K)\ni i\n11: endfor\n12: fori∈[n]\\S r do\n13:\nM(r,K) ←M(r−1,K).",
+      "size": 467,
+      "sentences": 5
+    },
+    {
+      "id": 131,
+      "content": ",k+1) . i i i\n9: endfor\n10:\nC(r+1) ←M(r,K)\ni i\n11: endfor\n12: fori∈[n]\\S r do\n13:\nM(r,K) ←M(r−1,K). i i\n14: endfor(endclients,backtotheserver)\n15: X(r+1) ← n−SX(r)+ 1 (cid:80) X(r,K). n n i∈Sr i\n16: endfor\n16\n===  17 ===\nPreprint\nD PROOF OF THEOREM 1\nProof. Weconsiderthesettingwheren=2,d=1,andthenormistheEuclideannorm. Inthiscase,\nwehave\nx\nlmo(x)= . |x|\nThen,weconsiderthecasewheref andf aredefinedasfollows:\n1 2\nx2\nf (x):= ,\n1 2\n(x+a)2\nf (x):= .",
+      "size": 448,
+      "sentences": 7
+    },
+    {
+      "id": 132,
+      "content": ". |x|\nThen,weconsiderthecasewheref andf aredefinedasfollows:\n1 2\nx2\nf (x):= ,\n1 2\n(x+a)2\nf (x):= . 2 2\nWhenM(0) =0andX(0) =−a,wehave\ni 4\nαa\nM(1) =− ,\n1 4\n3αa\nM(1) = ,\n2 4\nlmo(M(1))+lmo(M(1))=0,\n1 2\nwhereweuseα∈(0,1]. Thus,theparameterdoesnotchange,i.e.,X(1) =X(0). Forthenextround,wehave\na\nM(2) =− (α+α(1−α)),\n1 4\n3a\nM(2) = (α+α(1−α)). 2 4\nThen,sinceitholdsthefollowingasinthefirstround:\nlmo(M(2))+lmo(M(2))=0. 1 2\nTheparameterdoesnotchange.",
+      "size": 441,
+      "sentences": 7
+    },
+    {
+      "id": 133,
+      "content": "en,sinceitholdsthefollowingasinthefirstround:\nlmo(M(2))+lmo(M(2))=0. 1 2\nTheparameterdoesnotchange. Duetotheabovediscussion,theparameterdoesnotchangeforany\nr. Now,wehave\na2\n∥∇f(X(r))∥2 = . (6)\n16\nThen,using 1(cid:80)2 ∥∇f(X⋆)∥2 = 5a2 ,weobtainthedesiredresult. 2 i=1 16\n17\n===  18 ===\nPreprint\nE PROOF OF THEOREM 2\nE.1 NOTATION\nInthissection,weusethefollowingnotation.",
+      "size": 368,
+      "sentences": 5
+    },
+    {
+      "id": 134,
+      "content": "17\n===  18 ===\nPreprint\nE PROOF OF THEOREM 2\nE.1 NOTATION\nInthissection,weusethefollowingnotation. X(r,k) = n−S X(r)+ 1 (cid:88) X(r,k), (7)\nn n i\ni∈Sr\nG(r,k+1) =M(r,k+1)−C(r)+C(r), (8)\ni i i\n(cid:16) (cid:17)\nD(r,k+1) =lmo G(r,k+1) . (9)\ni i\nE.2 USEFULLEMMA\nLemma1. ForanyX ∈X,wehave\n⟨X,lmo(X)⟩=−∥X∥ . ⋆\nProof. Fromthedefinitionoflmo(·),wehave\n⟨X,lmo(X)⟩= min ⟨X,Y⟩\nY∈{Y∈X|∥Y∥≤1}\n=− max ⟨−X,Y⟩\nY∈{Y∈X|∥Y∥≤1}\n=−∥−X∥\n⋆\n=−∥X∥ . ⋆\nLemma2. Foranyk ≥0,R≥0andα∈(0,1],wehave\nR\n(cid:88) 1\nk(1−α)kr ≤ +k.",
+      "size": 495,
+      "sentences": 8
+    },
+    {
+      "id": 135,
+      "content": "∈{Y∈X|∥Y∥≤1}\n=−∥−X∥\n⋆\n=−∥X∥ . ⋆\nLemma2. Foranyk ≥0,R≥0andα∈(0,1],wehave\nR\n(cid:88) 1\nk(1−α)kr ≤ +k. α\nr=0\nProof. Wehave\nR\n(cid:88) k\nk(1−α)kr ≤ . 1−(1−α)k\nr=0\nThen,using(1−α)k ≤e−αk ≤ 1 ,weobtainthedesiredresult. 1+αk\nLemma3. ForanyA,B ∈X,wehave\n⟨A,B⟩≤∥A∥∥B∥ . ⋆\nProof. Wehave\n(cid:28) (cid:29)\nA\n⟨A,B⟩=∥A∥ ,B ≤∥A∥∥B∥ . ∥A∥ ⋆\nLemma4. SupposethatAssumption1holds. Then,itholdsthatforanyX,Y ∈X,\nL\nf (X)≤f (Y)+⟨∇f (Y),X−Y⟩+ ∥X−Y∥. (10)\ni i i 2\n18\n===  19 ===\nPreprint\nProof.",
+      "size": 471,
+      "sentences": 14
+    },
+    {
+      "id": 136,
+      "content": "ldsthatforanyX,Y ∈X,\nL\nf (X)≤f (Y)+⟨∇f (Y),X−Y⟩+ ∥X−Y∥. (10)\ni i i 2\n18\n===  19 ===\nPreprint\nProof. UsingtheFundamentalTheoremofCalculus,wehave\n(cid:90) 1\nf(X)=f(Y)+ ⟨∇f(Y +t(X−Y)),X−Y⟩dt\nt=0\n(cid:90) 1\n=f(Y)+⟨∇f(Y),Y −X⟩+ ⟨∇f(Y +t(X−Y))−∇f(Y),X−Y⟩dt\nt=0\n(cid:90) 1\n≤f(Y)+⟨∇f(Y),Y −X⟩+ ∥∇f(Y +t(X−Y))−∇f(Y)∥ ∥X−Y∥dt\n⋆\nt=0\n(cid:90) 1\n≤f(Y)+⟨∇f(Y),Y −X⟩+ Lt∥X−Y∥2dt\nt=0\nL\n=f(Y)+⟨∇f(Y),Y −X⟩+ ∥X−Y∥2,\n2\nwhereweuseLemma3andAssumption1forthefirstandsecondinequalities,respectively. E.3 MAINPROOF\nLemma5.",
+      "size": 498,
+      "sentences": 4
+    },
+    {
+      "id": 137,
+      "content": "whereweuseLemma3andAssumption1forthefirstandsecondinequalities,respectively. E.3 MAINPROOF\nLemma5. Supposethatbothr =r′andk ≥k′hold,orr >r′holds. Then,wehave\n(cid:13) (cid:13) ηS\n(cid:13)X(r,k)−X(r′,k′)(cid:13)≤ ((r−r′)K+k−k′)\n(cid:13) (cid:13) n\nProof.",
+      "size": 253,
+      "sentences": 4
+    },
+    {
+      "id": 138,
+      "content": "ave\n(cid:13) (cid:13) ηS\n(cid:13)X(r,k)−X(r′,k′)(cid:13)≤ ((r−r′)K+k−k′)\n(cid:13) (cid:13) n\nProof. FromtheupdateruleofX(r,k)andX(r′,k′),wehave\nX(r,k) = n−S X(r)+ 1 (cid:88) X(r,k)\nn n i\ni∈Sr\nk\n=X(r)+ η (cid:88) (cid:88) D(r,k′′)\nn i\ni∈Srk′′=1\nk r−1 K\n=X(r′)+ η (cid:88) (cid:88) D(r,k′′)+ η (cid:88) (cid:88) (cid:88) D(r′′,k′′),\nn i n i\ni∈Srk′′=1 r′′=r′i∈S r′′k′′=1\nk′\nX(r′,k′) =X(r′)+ η (cid:88) (cid:88) D(r′,k′′).",
+      "size": 418,
+      "sentences": 2
+    },
+    {
+      "id": 139,
+      "content": "D(r′′,k′′),\nn i n i\ni∈Srk′′=1 r′′=r′i∈S r′′k′′=1\nk′\nX(r′,k′) =X(r′)+ η (cid:88) (cid:88) D(r′,k′′). n i\ni∈S r′k′′=1\nThus,wehave\n(cid:13) (cid:13)\n(cid:13) (cid:13) (cid:13) X(r,k)−X(r′,k′) (cid:13) (cid:13) (cid:13) = (cid:13) (cid:13) (cid:13) (cid:13)n η (cid:88) (cid:88) k D i (r,k′′)+ n η (cid:88) r−1 (cid:88) (cid:88) K D i (r′′,k′′)+ n η (cid:88) (cid:88) K D i (r′,k′′) (cid:13) (cid:13) (cid:13) (cid:13)\n(cid:13) i∈Srk′′=1 r′′=r′+1i∈S r′′k′′=1 i∈S r′k′′=k′+1 (cid:13)\nηS\n≤ ((r−r′)K+k−k′),\nn\nwhereweuse∥D(r,k)∥=1foranyrandk.",
+      "size": 534,
+      "sentences": 2
+    },
+    {
+      "id": 140,
+      "content": "′′=r′+1i∈S r′′k′′=1 i∈S r′k′′=k′+1 (cid:13)\nηS\n≤ ((r−r′)K+k−k′),\nn\nwhereweuse∥D(r,k)∥=1foranyrandk. i\nLemma6. Supposethatbothr =r′andk ≥k′hold,orr >r′holds. Then,wehave\n(cid:13) (cid:13)\n(cid:13)X(r,k)−X(r′,k′)(cid:13)≤(r−r′+2)Kη. (cid:13) i i (cid:13)\nProof.",
+      "size": 259,
+      "sentences": 5
+    },
+    {
+      "id": 141,
+      "content": "n,wehave\n(cid:13) (cid:13)\n(cid:13)X(r,k)−X(r′,k′)(cid:13)≤(r−r′+2)Kη. (cid:13) i i (cid:13)\nProof. Wehave\n(cid:13) (cid:13) (cid:13) (cid:13) (cid:13) (cid:13) (cid:13) (cid:13)\n(cid:13)X(r,k)−X(r′,k′)(cid:13)≤(cid:13)X(r,k)−X(r,0)(cid:13)+(cid:13)X(r,0)−X(r′,0)(cid:13)+(cid:13)X(r′,k′)−X(r′,0)(cid:13)\n(cid:13) i i (cid:13) (cid:13) i i (cid:13) (cid:13) i i (cid:13) (cid:13) i i (cid:13)\n(cid:13) (cid:13) (cid:13) (cid:13) (cid:13) (cid:13)\n=(cid:13)X(r,k)−X(r,0)(cid:13)+(cid:13)X(r,0)−X(r′,0)(cid:13)+(cid:13)X(r′,k′)−X(r′,0)(cid:13)\n(cid:13) i i (cid:13) (cid:13) (cid:13) (cid:13) i i (cid:13)\n(cid:13) (cid:13)\n≤η(k+k′)+(cid:13)X(r,0)−X(r′,0)(cid:13).",
+      "size": 662,
+      "sentences": 3
+    },
+    {
+      "id": 142,
+      "content": "(cid:13) (cid:13) (cid:13) i i (cid:13)\n(cid:13) (cid:13)\n≤η(k+k′)+(cid:13)X(r,0)−X(r′,0)(cid:13). (cid:13) (cid:13)\nUsingLemma5,weobtainthedesiredresult. 19\n===  20 ===\nPreprint\nLemma7. SupposethatAssumptions1and2hold.",
+      "size": 219,
+      "sentences": 4
+    },
+    {
+      "id": 143,
+      "content": "ngLemma5,weobtainthedesiredresult. 19\n===  20 ===\nPreprint\nLemma7. SupposethatAssumptions1and2hold. Then,whenr ≥1,wehave\nηS (cid:13) (cid:13) (cid:18) S (cid:19)2\nEf(X(r,k+1))≤Ef(X(r,k))− (cid:13)∇f(X(r,k))(cid:13) +2LK η2\nn (cid:13) (cid:13) ⋆ n\n+2 (cid:18) S (cid:19) ηE (cid:13) (cid:13)∇f(X(r−1,K−1))−C(r) (cid:13) (cid:13) + 2η E (cid:88) (cid:13) (cid:13)M(r,k+1)−C(r) (cid:13) (cid:13) + L (cid:18) S (cid:19) η2.",
+      "size": 420,
+      "sentences": 4
+    },
+    {
+      "id": 144,
+      "content": "id:13) + 2η E (cid:88) (cid:13) (cid:13)M(r,k+1)−C(r) (cid:13) (cid:13) + L (cid:18) S (cid:19) η2. n (cid:13) (cid:13) ⋆ n (cid:13) i i (cid:13) ⋆ 2 n\ni∈Sr\nWhenr =0,wehave\nηS (cid:13) (cid:13) (cid:18) S (cid:19)2\nEf(X(0,k+1))≤Ef(X(0,k))− (cid:13)∇f(X(0,k))(cid:13) +2LK η2\nn (cid:13) (cid:13) ⋆ n\n+\n2η\nE\n(cid:88)(cid:13)\n(cid:13)M(0,k+1)−C(0)\n(cid:13)\n(cid:13) +\nL (cid:18) S (cid:19)\nη2+2\n(cid:18) S (cid:19)\nρσ η.\nn (cid:13) i i (cid:13) ⋆ 2 n n 0\ni∈S0\nProof.",
+      "size": 463,
+      "sentences": 2
+    },
+    {
+      "id": 145,
+      "content": "L (cid:18) S (cid:19)\nη2+2\n(cid:18) S (cid:19)\nρσ η.\nn (cid:13) i i (cid:13) ⋆ 2 n n 0\ni∈S0\nProof. Wehave\nE f(X(r,k+1))\nr,k\n(cid:32) (cid:33)\n=E f X(r,k)+ η (cid:88) D(r,k)\nr,k n i\ni∈Sr\n≤f(X(r,k))+ η E (cid:88) (cid:68) ∇f(X(r,k)),D(r,k) (cid:69) + Lη2 E (cid:88) (cid:13) (cid:13)D(r,k+1) (cid:13) (cid:13) 2\nn r,k i 2n r,k (cid:13) i (cid:13)\ni∈Sr i∈Sr\n≤f(X(r,k))+ η E (cid:88) (cid:68) ∇f(X(r,k))−G(r,k+1),D(r,k+1) (cid:69) + η E (cid:88) (cid:68) G(r,k+1),D(r,k+1) (cid:69) + LSη2\nn r,k i i n r,k i i 2n\ni∈Sr i∈Sr\n≤f(X(r,k))+ η E (cid:88) (cid:13) (cid:13)∇f(X(r,k))−G(r,k+1) (cid:13) (cid:13) + η E (cid:88) (cid:68) G(r,k+1),D(r,k+1) (cid:69) + LSη2 ,\nn r,k (cid:13) i (cid:13) ⋆ n r,k i i 2n\ni∈Sr i∈Sr(cid:124) (cid:123)(cid:122) (cid:125)\nT1\nwhereweuseLemma4,∥D(r,k+1)∥ ≤ 1,andtheCauchy-Schwarzinequalityinthefirst,second,\ni\nandthirdinequalities,andG andD aredefinedinSectionE.1.",
+      "size": 887,
+      "sentences": 2
+    },
+    {
+      "id": 146,
+      "content": "Cauchy-Schwarzinequalityinthefirst,second,\ni\nandthirdinequalities,andG andD aredefinedinSectionE.1. UsingLemma1andthetriangle\ni i\ninequality,wehave\n(cid:13) (cid:13) (cid:13) (cid:13) (cid:13) (cid:13)\nT =−(cid:13)G(r,k+1)(cid:13) ≤−(cid:13)∇f(X(r,k))(cid:13) +(cid:13)∇f(X(r,k))−G(r,k+1)(cid:13) .",
+      "size": 298,
+      "sentences": 2
+    },
+    {
+      "id": 147,
+      "content": "3)\nT =−(cid:13)G(r,k+1)(cid:13) ≤−(cid:13)∇f(X(r,k))(cid:13) +(cid:13)∇f(X(r,k))−G(r,k+1)(cid:13) . 1 (cid:13) i (cid:13) (cid:13) (cid:13) (cid:13) i (cid:13)\n⋆ ⋆ ⋆\nThen,itholds\nE f(X(r,k+1))≤f(X¯(r,k))− ηS (cid:13) (cid:13)∇f(X(r,k)) (cid:13) (cid:13) + 2η E (cid:88) (cid:13) (cid:13)∇f(X(r,k))−G(r,k+1) (cid:13) (cid:13) + LSη2 .",
+      "size": 333,
+      "sentences": 2
+    },
+    {
+      "id": 148,
+      "content": ") (cid:13) (cid:13) + 2η E (cid:88) (cid:13) (cid:13)∇f(X(r,k))−G(r,k+1) (cid:13) (cid:13) + LSη2 . r,k n (cid:13) (cid:13) ⋆ n r,k (cid:13) i (cid:13) ⋆ 2n\ni∈Sr(cid:124) (cid:123)(cid:122) (cid:125)\nT2\nWhenr ≥1,wehave\n(cid:13) (cid:13)\nT =(cid:13)∇f(X(r,k))−M(r,k+1)+C(r)−C(r)(cid:13)\n2 (cid:13) i i (cid:13)\n⋆\n(cid:13) (cid:13) (cid:13) (cid:13) (cid:13) (cid:13)\n≤(cid:13)∇f(X(r,k))−∇f(X(r−1,K−1))(cid:13) +(cid:13)∇f(X(r−1,K−1))−C(r)(cid:13) +(cid:13)M(r,k+1)−C(r)(cid:13)\n(cid:13) (cid:13) (cid:13) (cid:13) (cid:13) i i (cid:13)\n⋆ ⋆ ⋆\n(cid:13) (cid:13) (cid:13) (cid:13) (cid:13) (cid:13)\n≤L(cid:13)X(r,k)−X(r−1,K−1)(cid:13)+(cid:13)∇f(X(r−1,K−1))−C(r)(cid:13) +(cid:13)M(r,k+1)−C(r)(cid:13)\n(cid:13) (cid:13) (cid:13) (cid:13) (cid:13) i i (cid:13)\n⋆ ⋆\nLSKη (cid:13) (cid:13) (cid:13) (cid:13)\n≤ +(cid:13)∇f(X(r−1,K−1))−C(r)(cid:13) +(cid:13)M(r,k+1)−C(r)(cid:13) ,\nn (cid:13) (cid:13) ⋆ (cid:13) i i (cid:13) ⋆\nwhereweuseLemma5inthelastinequality.",
+      "size": 955,
+      "sentences": 2
+    },
+    {
+      "id": 149,
+      "content": ")−C(r)(cid:13) ,\nn (cid:13) (cid:13) ⋆ (cid:13) i i (cid:13) ⋆\nwhereweuseLemma5inthelastinequality. 20\n===  21 ===\nPreprint\nWhenr =0,wehave\n(cid:13) (cid:13)\nT =(cid:13)∇f(X(0,k))−M(0,k+1)+C(0)−C(0)(cid:13)\n2 (cid:13) i i (cid:13)\n⋆\n(cid:13) (cid:13) (cid:13) (cid:13) (cid:13) (cid:13)\n≤(cid:13)∇f(X(0,k))−∇f(X(0,0))(cid:13) +(cid:13)∇f(X(0,0))−C(0)(cid:13) +(cid:13)M(0,k+1)−C(0)(cid:13)\n(cid:13) (cid:13) (cid:13) (cid:13) (cid:13) i i (cid:13)\n⋆ ⋆ ⋆\n(cid:13) (cid:13) (cid:13) (cid:13) (cid:13) (cid:13)\n≤L(cid:13)X(0,k)−X(0,0)(cid:13)+(cid:13)∇f(X(0,0))−C(0)(cid:13) +(cid:13)M(0,k+1)−C(0)(cid:13)\n(cid:13) (cid:13) (cid:13) (cid:13) (cid:13) i i (cid:13)\n⋆ ⋆\nLSKη (cid:13) (cid:13) (cid:13) (cid:13)\n≤ +(cid:13)∇f(X(0,0))−C(0)(cid:13) +(cid:13)M(0,k+1)−C(0)(cid:13)\nn (cid:13) (cid:13) ⋆ (cid:13) i i (cid:13) ⋆\nThen,usingthefollowinginequality:\nE (cid:13) (cid:13)∇f(X(0,0))−C(0) (cid:13) (cid:13) ≤ ρ (cid:88) n (cid:114) E (cid:13) (cid:13)∇f (X(0,0))−C(0) (cid:13) (cid:13) 2 ≤ρσ ,\n(cid:13) (cid:13) ⋆ n (cid:13) i i (cid:13) F 0\ni=1\nweobtainthedesiredresult.",
+      "size": 1069,
+      "sentences": 2
+    },
+    {
+      "id": 150,
+      "content": ":13) (cid:13) 2 ≤ρσ ,\n(cid:13) (cid:13) ⋆ n (cid:13) i i (cid:13) F 0\ni=1\nweobtainthedesiredresult. Lemma8. SupposethatAssumptions1and2hold,C(0) :=M(0,0)andC(0) := 1 (cid:80)n C(0),\ni i n i=1 i\n1 E (cid:88) (cid:13) (cid:13)∇F (X(r−1,K−1))−M(r,0) (cid:13) (cid:13) ≤ Sρσ (cid:18) 1− Sα (cid:19)r−1 + S αρ √ Kσ2+6LKη. n (cid:13) i i i (cid:13) ⋆ n n n\ni∈Sr\nProof. Letc (r−1)bethenumberoftimesthatclientihasbeensampledbyroundr.",
+      "size": 425,
+      "sentences": 5
+    },
+    {
+      "id": 151,
+      "content": ") i i i (cid:13) ⋆ n n n\ni∈Sr\nProof. Letc (r−1)bethenumberoftimesthatclientihasbeensampledbyroundr. Wehave\ni\nM(r,0) =(1−α)ci(r−1)KM(0,0)+α\nci(cid:88) (r−1)K\n(cid:88)\n−1\n(1−α)(ci(r−1)−r′)K+k∇F (X(r′,k′);ξr′,k′ )\ni i i i i\nr′=1 k′=0\nTosimplifythenotation,wedenoter (r′)bythenumberofroundsthatclientiissampledforthe\ni\nr′-thtime.",
+      "size": 325,
+      "sentences": 3
+    },
+    {
+      "id": 152,
+      "content": "k′=0\nTosimplifythenotation,wedenoter (r′)bythenumberofroundsthatclientiissampledforthe\ni\nr′-thtime. Usingthisnotation,wehave\nM(r,0)\ni\n=(1−α)ci(r−1)KM(0,0)+α\nci(r\n(cid:88)\n−1)K\n(1−α)ci(r−1)K−c′ ∇F (X (r′(⌈ K c′ ⌉),c′−K⌈ K c′ ⌉) ;ξ (r′(⌈ K c′ ⌉),c′−K⌈ K c′ ⌉) )\ni i i i\nc′=1\n(cid:16) (cid:17)\n=(1−α)ci(r−1)K ∇F (X(0,0);ξ(0,0))−∇f (X(0,0))\ni i i i i\n+α\nci(r\n(cid:88)\n−1)K\n(1−α)ci(r−1)K−c′\n(cid:18)\n∇F (X\n(r′(⌈\nK\nc′ ⌉),c′−K⌈\nK\nc′ ⌉)\n;ξ\n(r′(⌈\nK\nc′ ⌉),c′−K⌈\nK\nc′ ⌉)\n)−∇f (X\n(r′(⌈\nK\nc′ ⌉),c′−K⌈\nK\nc′ )⌉\n(cid:19)\ni i i i i\nc′=1\n+(1−α)ci(r−1)K∇f (X(0,0))+α\nci(r\n(cid:88)\n−1)K\n(1−α)ci(r−1)K−c′ ∇f (X (r′(⌈ K c′ ⌉),c′−L⌈ K c′ ⌉) ).",
+      "size": 620,
+      "sentences": 2
+    },
+    {
+      "id": 153,
+      "content": "(1−α)ci(r−1)K∇f (X(0,0))+α\nci(r\n(cid:88)\n−1)K\n(1−α)ci(r−1)K−c′ ∇f (X (r′(⌈ K c′ ⌉),c′−L⌈ K c′ ⌉) ). i i i i\nc′=1\n(cid:124) (cid:123)(cid:122) (cid:125)\nT\nUsingα(1−α)m =(1−α)m−(1−α)m+1,wehave\nT =∇f (X(ri(ci(r−1)),K−1))\ni i\n+\nci(r−\n(cid:88)\n1)K−1\n(1−α)ci(r−1)K−c′\n(cid:18)\n∇f (X\n(r′(⌈\nK\nc′ ⌉),c′−L⌈\nK\nc′ ⌉)\n)−∇f (X\n(r′(⌈c′\nK\n+1⌉),c′+1−K⌈c′\nK\n+1⌉)\n)\n(cid:19)\ni i i i\nc′=1\n(cid:16) (cid:17)\n+(1−α)ci(r−1)K ∇f (X(0,,0))−∇f (X(ri(1),0)) .",
+      "size": 432,
+      "sentences": 2
+    },
+    {
+      "id": 154,
+      "content": "K⌈c′\nK\n+1⌉)\n)\n(cid:19)\ni i i i\nc′=1\n(cid:16) (cid:17)\n+(1−α)ci(r−1)K ∇f (X(0,,0))−∇f (X(ri(1),0)) . i i i i\n21\n===  22 ===\nPreprint\nThus,wehave\n(cid:13) (cid:13)\nE(cid:13)M(r,0)−∇f (X(r−1,K−1))(cid:13)\n(cid:13) i i i (cid:13)\n⋆\n≤E(1−α)ci(r−1)Kρσ\n(cid:13) (cid:13)\n+αE\n(cid:13)\n(cid:13) (cid:13) (cid:13)\nci(r\n(cid:88)\n−1)K\n(1−α)ci(r−1)K−c′\n(cid:18)\n∇F i (X i (r′(⌈ K c′ ⌉),c′−K⌈ K c′ ⌉) ;ξ i (r′(⌈ K c′ ⌉),c′−K⌈ K c′ ⌉) )−∇f i (X i (r′(⌈ K c′ ⌉),c′−K⌈ K c′ )⌉\n(cid:19)(cid:13)\n(cid:13) (cid:13) (cid:13)\n(cid:13) c′=1 (cid:13)\n⋆\n(cid:13) (cid:13)\n+E(cid:13)∇f (X(ri(ci(r−1)),K−1))−∇f (X(r−1,K−1))(cid:13)\n(cid:13) i i i i (cid:13)\n⋆\n+E\nci(r−\n(cid:88)\n1)K−1\n(1−α)ci(r−1)K−c′\n(cid:13)\n(cid:13) (cid:13) (cid:13) ∇f i (X i (r′(⌈ K c′ ⌉),c′−L⌈ K c′ ⌉) )−∇f i (X i (r′(⌈c′ K +1⌉),c′+1−K⌈c′ K +1⌉) )\n(cid:13)\n(cid:13) (cid:13) (cid:13)\nc′=1 ⋆\n(cid:13) (cid:13)\n+E(1−α)ci(r−1)K(cid:13)∇f (X(0,,0))−∇f (X(ri(1),0))(cid:13)\n(cid:13) i i i i (cid:13)\n⋆\nUsingAssumption1,wehave\n(cid:13) (cid:13)\nE(cid:13)M(r,0)−∇f (X(r−1,K−1))(cid:13)\n(cid:13) i i i (cid:13)\n√ ⋆\n≤E(1−α)ci(r−1)Kρσ+αρ Kσ2\n(cid:124) (cid:123)(cid:122) (cid:125)\nT1\n+LE\nci(r−\n(cid:88)\n1)K−1\n(1−α)ci(r−1)K−c′\n(cid:13)\n(cid:13) (cid:13)X (r′(⌈ K c′ ⌉),c′−L⌈ K c′ ⌉) −X (r′(⌈c′ K +1⌉),c′+1−K⌈c′ K +1⌉)\n(cid:13)\n(cid:13) (cid:13)\n(cid:13) i i (cid:13)\nc′=1\n(cid:124) (cid:123)(cid:122) (cid:125)\nT2\n(cid:13) (cid:13)\n+LE(1−α)ci(r−1)K(cid:13)X(0,,0)−X(ri(1),0)(cid:13)\n(cid:13) i i (cid:13)\n(cid:124) (cid:123)(cid:122) (cid:125)\nT3\n(cid:13) (cid:13)\n+LE(cid:13)X(ri(ci(r−1)),K−1)−X(r−1,K−1)(cid:13).",
+      "size": 1549,
+      "sentences": 2
+    },
+    {
+      "id": 155,
+      "content": "(cid:123)(cid:122) (cid:125)\nT3\n(cid:13) (cid:13)\n+LE(cid:13)X(ri(ci(r−1)),K−1)−X(r−1,K−1)(cid:13). (cid:13) i i (cid:13)\n(cid:124) (cid:123)(cid:122) (cid:125)\nT4\nThequantityofc (r−1)isthenumberofroundsinwhichclientiissampled,whichfollowsthe\ni\nbinomialdistribution.",
+      "size": 266,
+      "sentences": 2
+    },
+    {
+      "id": 156,
+      "content": "quantityofc (r−1)isthenumberofroundsinwhichclientiissampled,whichfollowsthe\ni\nbinomialdistribution. T ≤ρσ\n(cid:88)\nr−1\n(1−α)Kc′\n(cid:18)\nS\n(cid:19)c′(cid:18)\n1−\nS\n(cid:19)r−1−c′(cid:18)\nr−1\n(cid:19)\n1 n n c′\nc′=0\n(cid:88)\nr−1(cid:18)\nS\n(cid:19)c′(cid:18)\nS\n(cid:19)r−1−c′(cid:18)\nr−1\n(cid:19)\n≤ρσ (1−α) 1−\nn n c′\nc′=0\n(cid:18)\nSα\n(cid:19)r−1\n=ρσ 1− .",
+      "size": 350,
+      "sentences": 2
+    },
+    {
+      "id": 157,
+      "content": "18)\nS\n(cid:19)r−1−c′(cid:18)\nr−1\n(cid:19)\n≤ρσ (1−α) 1−\nn n c′\nc′=0\n(cid:18)\nSα\n(cid:19)r−1\n=ρσ 1− . n\nT ≤ηE ci(r− (cid:88) 1)K−1 (1−α)ci(r−1)K−c′ (cid:18) r (cid:18) ⌈ c′+1 ⌉ (cid:19) −r (cid:18) ⌈ c′ ⌉ (cid:19)(cid:19)\n2 i K i K\nc′=1\n=ηE ci(r− (cid:88) 1)K−1 (1−α)c′′ (cid:18) r (cid:18) ⌈ c′(r−1)K−c′′+1 ⌉ (cid:19) −r (cid:18) ⌈ c′(r−1)K−c′′+1 ⌉ (cid:19)(cid:19) .",
+      "size": 366,
+      "sentences": 2
+    },
+    {
+      "id": 158,
+      "content": "′ (cid:18) r (cid:18) ⌈ c′(r−1)K−c′′+1 ⌉ (cid:19) −r (cid:18) ⌈ c′(r−1)K−c′′+1 ⌉ (cid:19)(cid:19) . i K i K\nc′′=1\n(cid:124) (cid:123)(cid:122) (cid:125)\nT5\nThequantityofT isthenumberofroundsfromthetimeclineiwassampledtothenextsampling,\n5\nwhichfollowsageometricdistributionwithexpectation n. Thus,wehave\nS\nKnη\nT ≤\n2 S\n22\n===  23 ===\nPreprint\nUsingLemma6,wehave\n(cid:13) (cid:13) (cid:13) (cid:13) ηS\nT ≤E(cid:13)X(0,0)−X(ri(1),0)(cid:13) =E(cid:13)X(0,0)−X(ri(1),0)(cid:13) ≤ KEr (1),\n3 (cid:13) i i (cid:13) ⋆ (cid:13) (cid:13) ⋆ n i\nwhereweuseLemma5inthelastinequality.",
+      "size": 570,
+      "sentences": 2
+    },
+    {
+      "id": 159,
+      "content": ") ≤ KEr (1),\n3 (cid:13) i i (cid:13) ⋆ (cid:13) (cid:13) ⋆ n i\nwhereweuseLemma5inthelastinequality. Thequantityofr (1)istheroundinwhichclientiis\ni\nsampledforthefirsttime,whichfollowsageometricdistribution. Thus,wehave\nT ≤Kη. 3\nUsingLemma6,wehave\nT =Kη(E(r−1−r (c (r−1))+2)). 4 i i\nSincethequantityofr (c (r−1))istheroundsinwhichclientiissampledforthelasttime,wehave\ni i\n(cid:18)\nS\n(cid:19)r\n(cid:88)\nr (cid:18)\nS\n(cid:19)r′\nS 2n\nE(r−1−r (c (r−1)))=(r−1) 1− + r′ 1− ≤ .",
+      "size": 468,
+      "sentences": 5
+    },
+    {
+      "id": 160,
+      "content": "(cid:18)\nS\n(cid:19)r\n(cid:88)\nr (cid:18)\nS\n(cid:19)r′\nS 2n\nE(r−1−r (c (r−1)))=(r−1) 1− + r′ 1− ≤ . i i n n n S\nr′=0\nThus,itholdsthat\n4Knη\nT ≤ . 4 S\nBycombiningtheaboveinequalities,weobtainthedesiredresult. Lemma9. SupposethatAssumptions1and2holds.",
+      "size": 247,
+      "sentences": 5
+    },
+    {
+      "id": 161,
+      "content": "Bycombiningtheaboveinequalities,weobtainthedesiredresult. Lemma9. SupposethatAssumptions1and2holds. Whenr ≥1,itholdsthat\n1 E (cid:88) (cid:13) (cid:13)M(r,k+1)−C(r) (cid:13) (cid:13) ≤2α (cid:18) S (cid:19) ρ √ Kσ2+9KLη+ (cid:18) S (cid:19) ρσ (cid:18) 1− Sα (cid:19)r−1 ,\nn (cid:13) i i (cid:13) ⋆ n n 0 n\ni∈Sr\nwhereρ:=sup ∥X∥⋆ andσ2 := 1 (cid:80)n E∥∇f (X(0))−C(0)∥2.",
+      "size": 369,
+      "sentences": 4
+    },
+    {
+      "id": 162,
+      "content": ",\nn (cid:13) i i (cid:13) ⋆ n n 0 n\ni∈Sr\nwhereρ:=sup ∥X∥⋆ andσ2 := 1 (cid:80)n E∥∇f (X(0))−C(0)∥2. X∈X ∥X∥F 0 n i=1 i i i F\nThen,whenr =0,wehave\n1\nE\n(cid:88)(cid:13)\n(cid:13)M(0,k+1)−C(0)\n(cid:13)\n(cid:13) ≤α\n(cid:18) S (cid:19)\nρ\n√\nKσ2+LKη+\n(cid:18) S (cid:19)\nρσ . n (cid:13) i i (cid:13) ⋆ n n 0\ni∈S0\nProof. Wehave\nk\nM(r,k+1) =(1−α)k+1M(r,0)+α (cid:88) (1−α)k−k′ ∇F (X(r,k′);ξ(r,k′)).",
+      "size": 387,
+      "sentences": 4
+    },
+    {
+      "id": 163,
+      "content": "3) ⋆ n n 0\ni∈S0\nProof. Wehave\nk\nM(r,k+1) =(1−α)k+1M(r,0)+α (cid:88) (1−α)k−k′ ∇F (X(r,k′);ξ(r,k′)). i i i i i\nk′=0\nSincewehaveC(r) =M(r,0),wehave\ni i\n(cid:13) (cid:13)\nE (cid:88) (cid:13) (cid:13)M(r,k+1)−C(r) (cid:13) (cid:13) =αE (cid:88) (cid:13) (cid:13) (cid:88) k (1−α)k−k′ (cid:16) ∇F (X(r,k′);ξ(r,k′))−M(r,0) (cid:17)(cid:13) (cid:13) .",
+      "size": 344,
+      "sentences": 3
+    },
+    {
+      "id": 164,
+      "content": ":13) (cid:13) (cid:88) k (1−α)k−k′ (cid:16) ∇F (X(r,k′);ξ(r,k′))−M(r,0) (cid:17)(cid:13) (cid:13) . (cid:13) i i (cid:13) (cid:13) i i i i (cid:13)\n⋆ (cid:13) (cid:13)\ni∈Sr i∈Sr k′=0 ⋆\n23\n===  24 ===\nPreprint\nWhenr ≥1,wehave\n(cid:13) (cid:13)\nE (cid:88) (cid:13) (cid:13)M(r,k+1)−C(r) (cid:13) (cid:13) ≤αE (cid:88) (cid:13) (cid:13) (cid:88) k (1−α)k−k′ (cid:16) ∇F (X(r,k′);ξ(r,k′))−∇f (X(r,k′ ) (cid:17)(cid:13) (cid:13)\n(cid:13) i i (cid:13) (cid:13) i i i i i (cid:13)\n⋆ (cid:13) (cid:13)\ni∈Sr i∈Sr k′=0 ⋆\n(cid:13) (cid:13)\n+αE (cid:88) (cid:13) (cid:13) (cid:88) k (1−α)k−k′ (cid:16) ∇f (X(r,k′ )−∇f (X(r−1,K−1) (cid:17)(cid:13) (cid:13)\n(cid:13) i i i i (cid:13)\n(cid:13) (cid:13)\ni∈Sr k′=0 ⋆\n(cid:13) (cid:13)\n+αE (cid:88) (cid:13) (cid:13) (cid:88) k (1−α)k−k′ (cid:16) ∇f (X(r−1,K−1)−M(r,0) (cid:17)(cid:13) (cid:13)\n(cid:13) i i i (cid:13)\n(cid:13) (cid:13)\ni∈Sr k′=0 ⋆\n(cid:13) (cid:13)\n≤αE (cid:88) (cid:13) (cid:13) (cid:88) k (1−α)k−k′ (cid:16) ∇F (X(r,k′);ξ(r,k′))−∇f (X(r,k′ ) (cid:17)(cid:13) (cid:13)\n(cid:13) i i i i i (cid:13)\n(cid:13) (cid:13)\ni∈Sr k′=0 ⋆\n(cid:13) (cid:13)\n+αE (cid:88) (cid:13) (cid:13) (cid:88) k (1−α)k−k′ (cid:16) ∇f (X(r,k′ )−∇f (X(r−1,K−1) (cid:17)(cid:13) (cid:13)\n(cid:13) i i i i (cid:13)\n(cid:13) (cid:13)\ni∈Sr k′=0 ⋆\n+E (cid:88) (cid:13) (cid:13)∇f (X(r−1,K−1))−M(r,0) (cid:13) (cid:13) .",
+      "size": 1338,
+      "sentences": 2
+    },
+    {
+      "id": 165,
+      "content": "id:13) (cid:13)\ni∈Sr k′=0 ⋆\n+E (cid:88) (cid:13) (cid:13)∇f (X(r−1,K−1))−M(r,0) (cid:13) (cid:13) . (cid:13) i i i (cid:13)\n⋆\ni∈Sr\nThefirsttermisboundedfromaboveasfollows:\n(cid:13) (cid:13)\nE (cid:13) (cid:13) (cid:88) k (1−α)k−k′ (cid:16) ∇F (X(r,k′);ξ(r,k′))−∇f (X(r,k′ ) (cid:17)(cid:13) (cid:13)\n(cid:13) i i i i i (cid:13)\n(cid:13) (cid:13)\nk′=0 ⋆\n(cid:118)\n≤ (cid:117) (cid:117) (cid:116)E (cid:13) (cid:13) (cid:13) (cid:88) k (1−α)k−k′ (cid:16) ∇F (X(r,k′);ξ(r,k′))−∇f (X(r,k′ ) (cid:17) (cid:13) (cid:13) (cid:13) 2\n(cid:13) i i i i i (cid:13)\n(cid:13) (cid:13)\nk′=0 ⋆\n(cid:118)\n= (cid:117) (cid:117) (cid:116) (cid:88) k (1−α)2(k−k′)E (cid:13) (cid:13)∇F (X(r,k′);ξ(r,k′))−∇f (X(r,k′ ) (cid:13) (cid:13) 2\n(cid:13) i i i i i (cid:13)\n⋆\nk′=0\n√\n≤ρ Kσ2,\nwhereweusedJensen’sinequalityinthefirstinequality.",
+      "size": 811,
+      "sentences": 2
+    },
+    {
+      "id": 166,
+      "content": ") 2\n(cid:13) i i i i i (cid:13)\n⋆\nk′=0\n√\n≤ρ Kσ2,\nwhereweusedJensen’sinequalityinthefirstinequality. Thesecondtermisboundedasfollows:\n(cid:13) (cid:13)\n(cid:13) (cid:13) (cid:88) k (1−α)k−k′ (cid:16) ∇f (X(r,k′))−∇f (X(r−1,K−1) (cid:17)(cid:13) (cid:13)\n(cid:13) i i i i (cid:13)\n(cid:13) (cid:13)\nk′=0 ⋆\n≤ (cid:88) k (1−α)k−k′ (cid:13) (cid:13)∇f (X(r,k′))−∇f (X(r−1,K−1) (cid:13) (cid:13)\n(cid:13) i i i i (cid:13)\n⋆\nk′=0\n≤L (cid:88) k (1−α)k−k′ (cid:13) (cid:13)X(r,k′)−X(r−1,K−1) (cid:13) (cid:13)\n(cid:13) i i (cid:13)\nk′=0\n3LKη\n≤ ,\nα\nwhereweuseLemma6inthelastinequality.",
+      "size": 575,
+      "sentences": 2
+    },
+    {
+      "id": 167,
+      "content": "1,K−1) (cid:13) (cid:13)\n(cid:13) i i (cid:13)\nk′=0\n3LKη\n≤ ,\nα\nwhereweuseLemma6inthelastinequality. Then,usingLemma8,weobtainthedesiredresult\nwhenr ≥1.",
+      "size": 151,
+      "sentences": 2
+    },
+    {
+      "id": 168,
+      "content": "3LKη\n≤ ,\nα\nwhereweuseLemma6inthelastinequality. Then,usingLemma8,weobtainthedesiredresult\nwhenr ≥1. 24\n===  25 ===\nPreprint\nWhenr =0,wehave\n(cid:13) (cid:13)\nE (cid:88)(cid:13) (cid:13)M(0,k+1)−C(0) (cid:13) (cid:13) =αE (cid:88) (cid:13) (cid:13) (cid:88) k (1−α)k−k′ (cid:16) ∇F (X(r,k′);ξ(r,k′))−M(r,0) (cid:17)(cid:13) (cid:13)\n(cid:13) i i (cid:13) (cid:13) i i i i (cid:13)\n⋆ (cid:13) (cid:13)\ni∈S0 i∈Sr k′=0 ⋆\n(cid:13) (cid:13)\n≤αE (cid:88)(cid:13) (cid:13) (cid:88) k (1−α)k−k′ (cid:16) ∇F (X(0,k′);ξ(0,k′))−∇f (X(0,k′)) (cid:17)(cid:13) (cid:13)\n(cid:13) i i i i i (cid:13)\n(cid:13) (cid:13)\ni∈S0 k′=0 ⋆\n(cid:13) (cid:13)\n+αE (cid:88)(cid:13) (cid:13) (cid:88) k (1−α)k−k′ (cid:16) ∇f (X(0,k′))−∇f (X(0,0)) (cid:17)(cid:13) (cid:13)\n(cid:13) i i i i (cid:13)\n(cid:13) (cid:13)\ni∈S0 k′=0 ⋆\n(cid:13) (cid:13)\n+αE (cid:88)(cid:13) (cid:13) (cid:88) k (1−α)k−k′ (cid:16) ∇f (X(0,0))−M(0,0) (cid:17)(cid:13) (cid:13)\n(cid:13) i i i (cid:13)\n(cid:13) (cid:13)\ni∈S0 k′=0 ⋆\n√ (cid:13) (cid:13)\n≤αSρ Kσ2+LKSη+SρE(cid:13)∇f (X(0,0))−C(0)(cid:13) ,\n(cid:13) i i i (cid:13)\nF\nwhereweuseAssumptions1and2andC(0) =M(r,0)inthelastinequality.",
+      "size": 1134,
+      "sentences": 3
+    },
+    {
+      "id": 169,
+      "content": ")(cid:13) ,\n(cid:13) i i i (cid:13)\nF\nwhereweuseAssumptions1and2andC(0) =M(r,0)inthelastinequality. Dividingbothsidesby\ni i\nn,weobtainthedesiredresult. Lemma10. SupposethatAssumptions1and2hold,C(0) := M(0,0) andC(0) := 1 (cid:80)n C(0),\ni i n i=1 i\nwehave\n(cid:13) (cid:13) ρS (cid:114) ασ2 4nLη 6LKnη (cid:18) Sα (cid:19)r−1\nE(cid:13)∇f(X(r−1,K−1))−C(r)(cid:13) ≤ + + +ρσ 1− . (cid:13) (cid:13) ⋆ n S αS S n\nProof. Letc (r−1)bethenumberoftimesthatclientihasbeensampledbyroundr.",
+      "size": 478,
+      "sentences": 6
+    },
+    {
+      "id": 170,
+      "content": "cid:13) (cid:13) ⋆ n S αS S n\nProof. Letc (r−1)bethenumberoftimesthatclientihasbeensampledbyroundr. Wedenote\ni\nr (r′)bythenumberofroundsthatclientiissampledforther′-thtime. Usingthisnotation,wehave\ni\nn\nC(r) = 1 (cid:88) M(ri(ci(r−1)),K).",
+      "size": 237,
+      "sentences": 4
+    },
+    {
+      "id": 171,
+      "content": "atclientiissampledforther′-thtime. Usingthisnotation,wehave\ni\nn\nC(r) = 1 (cid:88) M(ri(ci(r−1)),K). n i\ni=1\nThen,wehave\nM(r−1,K−1) =(1−α)ci(r−1)KM(0,0)+α\nci(cid:88) (r−1)K\n(cid:88)\n−1\n(1−α)(ci(r−1)−r′)K+k∇F (X(r′,k′);ξr′,k′ )\ni i i i i\nr′=1 k′=0\n(cid:16) (cid:17)\n=(1−α)ci(r−1)K M(0,0)−∇f (X(0,0))\ni i\n+α\nci(cid:88) (r−1)K\n(cid:88)\n−1\n(1−α)(ci(r−1)−r′)K+k (cid:16)\n∇F\n(X(r′,k′);ξr′,k′\n)−∇f\n(X(r′,k′)) (cid:17)\ni i i i i\nr′=1 k′=0\n(cid:124) (cid:123)(cid:122) (cid:125)\nT1\n+(1−α)ci(r−1)K∇f (X(0,0))+α\nci(cid:88) (r−1)K\n(cid:88)\n−1\n(1−α)(ci(r−1)−r′)K+k∇f (X(r′,k′)).",
+      "size": 564,
+      "sentences": 3
+    },
+    {
+      "id": 172,
+      "content": "25)\nT1\n+(1−α)ci(r−1)K∇f (X(0,0))+α\nci(cid:88) (r−1)K\n(cid:88)\n−1\n(1−α)(ci(r−1)−r′)K+k∇f (X(r′,k′)). i i i\nr′=1 k′=0\n(cid:124) (cid:123)(cid:122) (cid:125)\nT2\nWecanrewriteT andT asfollows:\n1 2\nr−1 K\nT =α (cid:88) (cid:88) 1 (1−α)(ci(r−1)−r′+1)K−k′ (cid:16) ∇F (X(r′,k′);ξ(r′,k′))−∇f (X(r′,k′)) (cid:17) .",
+      "size": 303,
+      "sentences": 2
+    },
+    {
+      "id": 173,
+      "content": "cid:88) (cid:88) 1 (1−α)(ci(r−1)−r′+1)K−k′ (cid:16) ∇F (X(r′,k′);ξ(r′,k′))−∇f (X(r′,k′)) (cid:17) . 1 i∈S r′ i i i i i\nr′=0k′=1\n25\n===  26 ===\nPreprint\nT =(1−α)ci(r−1)K∇f (X(0,0))+α\nci(r\n(cid:88)\n−1)K\n(1−α)ci(r−1)K−c′ ∇f (X (ri(⌈ K c′ ⌉),c′−K⌈ K c′ ⌉) )\n2 i i i\nc′=1\n=∇f (X(ri(ci(r−1)),K−1))\ni i\n+α\nci(r−\n(cid:88)\n1)K−1\n(1−α)ci(r−1)K−c′\n(cid:18)\n∇f (X\n(ri(⌈\nK\nc′ ⌉),c′−K⌈\nK\nc′ ⌉)\n)−∇f (X\n(ri(⌈c′\nK\n+1⌉),c′+1−K⌈c′\nK\n+1⌉)\n)\n(cid:19)\ni i i i\nc′=1\n(cid:16) (cid:17)\n+(1−α)ci(r−1)K ∇f (X(0,0)−∇f (X(ri(1),0)) .",
+      "size": 505,
+      "sentences": 2
+    },
+    {
+      "id": 174,
+      "content": "1−K⌈c′\nK\n+1⌉)\n)\n(cid:19)\ni i i i\nc′=1\n(cid:16) (cid:17)\n+(1−α)ci(r−1)K ∇f (X(0,0)−∇f (X(ri(1),0)) . i i i\nThus,wehave\n(cid:13) (cid:13)\nE(cid:13)M(r−1,K−1)−∇f(X(r−1,K−1))(cid:13)\n(cid:13) (cid:13)\n⋆\n(cid:13) (cid:13)\n≤E(1−α)ci(r−1)K (cid:13) (cid:13) 1 (cid:88) n (cid:16) ∇f (X(0,0);ξ(0,0))−∇f (X(0,0)) (cid:17)(cid:13) (cid:13)\n(cid:13)n i i i (cid:13)\n(cid:13) (cid:13)\ni=1 ⋆\n(cid:124) (cid:123)(cid:122) (cid:125)\nT3\n(cid:13) (cid:13)\n+αE (cid:13) (cid:13) 1 (cid:88) n (cid:88) r−1 (cid:88) K 1 (1−α)(ci(r−1)−r′+1)K−k′ (cid:16) ∇F (X(r′,k′);ξ(r′,k′))−∇f (X(r′,k′)) (cid:17)(cid:13) (cid:13)\n(cid:13)n i∈S r′ i i i i i (cid:13)\n(cid:13) (cid:13)\ni=1r′=0k′=1 ⋆\n(cid:124) (cid:123)(cid:122) (cid:125)\nT4\n+ 1 (cid:88) n E (cid:13) (cid:13)∇f (X(ri(ci(r−1)),K−1))−∇f (X(r−1,K−1) (cid:13) (cid:13)\nn (cid:13) i i i (cid:13) ⋆\ni=1(cid:124) (cid:123)(cid:122) (cid:125)\nT5\n+ n 1 (cid:88)\nn\nE\nci(r−\n(cid:88)\n1)K−1\n(1−α)ci(r−1)K−c′\n(cid:13)\n(cid:13) (cid:13) (cid:13) ∇f i (X i (ri(⌈ K c′ ⌉),c′−K⌈ K c′ ⌉) )−∇f i (X i (ri(⌈c′ K +1⌉),c′+1−K⌈c′ K +1⌉) )\n(cid:13)\n(cid:13) (cid:13) (cid:13)\ni=1 c′=1 ⋆\n(cid:124) (cid:123)(cid:122) (cid:125)\nT6\n+ 1 (cid:88) n E(1−α)ci(r−1)K (cid:13) (cid:13)∇f (X(0,0)−∇f (X(ri(1),0)) (cid:13) (cid:13) .",
+      "size": 1229,
+      "sentences": 2
+    },
+    {
+      "id": 175,
+      "content": "5)\nT6\n+ 1 (cid:88) n E(1−α)ci(r−1)K (cid:13) (cid:13)∇f (X(0,0)−∇f (X(ri(1),0)) (cid:13) (cid:13) . n (cid:13) i i i (cid:13) ⋆\ni=1(cid:124) (cid:123)(cid:122) (cid:125)\nT7\nT ≤E(1−α)ci(r−1)Kρσ\n3\nThequantityofc (r−1)isthenumberofroundsinwhichclientiissampled,whichfollowsthe\ni\nbinomialdistribution.",
+      "size": 297,
+      "sentences": 2
+    },
+    {
+      "id": 176,
+      "content": "quantityofc (r−1)isthenumberofroundsinwhichclientiissampled,whichfollowsthe\ni\nbinomialdistribution. T ≤ρσ\n(cid:88)\nr−1\n(1−α)Kc′\n(cid:18)\nS\n(cid:19)c′(cid:18)\n1−\nS\n(cid:19)r−1−c′(cid:18)\nr−1\n(cid:19)\n3 n n c′\nc′=0\n(cid:88)\nr−1(cid:18)\nS\n(cid:19)c′(cid:18)\nS\n(cid:19)r−1−c′(cid:18)\nr−1\n(cid:19)\n≤ρσ (1−α) 1−\nn n c′\nc′=0\n(cid:18)\nSα\n(cid:19)r−1\n=ρσ 1−\nn\n(cid:13) (cid:13)\n(cid:13)r−1 K (cid:13)\nT 4 = n\n1 E(cid:13)\n(cid:13) (cid:13)\n(cid:88) (cid:88) (cid:88) (1−α)(ci(r−1)−r′+1)K−k′ (cid:16)\n∇F i (X i\n(r′,k′);ξ\ni\n(r′,k′))−∇f\ni (X i\n(r′,k′)) (cid:17)(cid:13)\n(cid:13) (cid:13)\n(cid:13)r′=0k′=1i∈S r′ (cid:13) ⋆\n(cid:115)\nρS σ2\n≤ .",
+      "size": 628,
+      "sentences": 2
+    },
+    {
+      "id": 177,
+      "content": "i\n(r′,k′)) (cid:17)(cid:13)\n(cid:13) (cid:13)\n(cid:13)r′=0k′=1i∈S r′ (cid:13) ⋆\n(cid:115)\nρS σ2\n≤ . n S(1−(1−α)2)\n26\n===  27 ===\nPreprint\n(cid:13) (cid:13)\nT =E(cid:13)∇f (X(ri(ci(r−1)),K−1))−∇f (X(r−1,K−1))(cid:13)\n5 (cid:13) i i i (cid:13)\n⋆\n(cid:13) (cid:13)\n≤LE(cid:13)X(ri(ci(r−1)),K−1)−X(r−1,K−1)(cid:13)\n(cid:13) i (cid:13)\n(cid:13) (cid:13) (cid:13) (cid:13)\n≤LE(cid:13)X(ri(ci(r−1)),K−1)−X(ri(ci(r−1)),0)(cid:13)+LE(cid:13)X(ri(ci(r−1)),0)−X(r−1,K−1)(cid:13)\n(cid:13) i i (cid:13) (cid:13) (cid:13)\nLSη\n≤Lη(K−1)+ E(((r−1−r (c (r−1)))K+K−1).",
+      "size": 549,
+      "sentences": 2
+    },
+    {
+      "id": 178,
+      "content": "(r−1,K−1)(cid:13)\n(cid:13) i i (cid:13) (cid:13) (cid:13)\nLSη\n≤Lη(K−1)+ E(((r−1−r (c (r−1)))K+K−1). n i i\nSincethequantityofr (c (r−1))istheroundsinwhichclientiissampledforthelasttime,wehave\ni i\n(cid:18)\nS\n(cid:19)r\n(cid:88)\nr (cid:18)\nS\n(cid:19)r′\nS 2n\nE(r−1−r (c (r−1)))=(r−1) 1− + r′ 1− ≤ . i i n n n S\nr′=0\nThus,wehave\nT ≤2LKη.",
+      "size": 331,
+      "sentences": 3
+    },
+    {
+      "id": 179,
+      "content": "18)\nS\n(cid:19)r′\nS 2n\nE(r−1−r (c (r−1)))=(r−1) 1− + r′ 1− ≤ . i i n n n S\nr′=0\nThus,wehave\nT ≤2LKη. 5\nT 6 ≤LE\nci(r−\n(cid:88)\n1)K−1\n(1−α)ci(r−1)K−c′\n(cid:13)\n(cid:13) (cid:13) (cid:13) X i (ri(⌈ K c′ ⌉),c′−K⌈ K c′ ⌉) −X i (ri(⌈c′ K +1⌉),c′+1−K⌈c′ K +1⌉)\n(cid:13)\n(cid:13) (cid:13) (cid:13)\nc′=1\n=LE ci(cid:88) (r−1)K (cid:88) −2 (1−α)(ci(r−1)−c′′)K−k′ (cid:13) (cid:13)X(ri(c′′),k′+1)−X(ri(c′′),k′) (cid:13) (cid:13)\n(cid:13) i i (cid:13)\nc′′=1 k′=0\n+LE\nci(cid:88) (r−1)\n(1−α)(ci(r−1)−c′′)K+1\n(cid:13)\n(cid:13)X(ri(c′′−1),0)−X(ri(c′′),K−1)\n(cid:13)\n(cid:13)\n(cid:13) i i (cid:13)\nc′′=1\n≤+LE\nci(cid:88) (r−1)K\n(cid:88)\n−2\n(1−α)(ci(r−1)−c′′)K−k′\nc′′=1 k′=0\n+LηE\nci(r\n(cid:88)\n−1)−1\n(1−α)(ci(r−1)−c′′)K+1(r (c′′+1)−r (c′′)+2)\ni i\nc′′=1\n≤ Lη +LηE\nci(r\n(cid:88)\n−1)−1\n(1−α)(ci(r−1)−c′′)K+1(r (c′′+1)−r (c′′)+2).",
+      "size": 805,
+      "sentences": 3
+    },
+    {
+      "id": 180,
+      "content": "′+1)−r (c′′)+2)\ni i\nc′′=1\n≤ Lη +LηE\nci(r\n(cid:88)\n−1)−1\n(1−α)(ci(r−1)−c′′)K+1(r (c′′+1)−r (c′′)+2). α i i\nc′′=1\nThequantityr (c′′+1)−r (c′′)followsthegeometricdistribution,whichhastheexpectationof n.\ni i S\nUsingLemma2,weobtain\n4nLη 3nLKη\nT ≤ + . 6 αS S\n(cid:13) (cid:13)\nT ≤LE(1−α)ci(r−1)K(cid:13)X(0,0)−X(ri(1),0)(cid:13)≤LKηE(r (1)+2),\n7 (cid:13) i i (cid:13) i\nwhereweusedLemma6inthelastinequality.",
+      "size": 401,
+      "sentences": 3
+    },
+    {
+      "id": 181,
+      "content": ")−X(ri(1),0)(cid:13)≤LKηE(r (1)+2),\n7 (cid:13) i i (cid:13) i\nwhereweusedLemma6inthelastinequality. Thequantityofr (1)istheroundinwhichclientiis\ni\nsampledforthefirsttime,whichfollowsageometricdistribution. Thus,wehave\n3nLKη\nT ≤\n7 S\nLemma11.",
+      "size": 240,
+      "sentences": 3
+    },
+    {
+      "id": 182,
+      "content": "iis\ni\nsampledforthefirsttime,whichfollowsageometricdistribution. Thus,wehave\n3nLKη\nT ≤\n7 S\nLemma11. SupposethatAssumptions1and2hold,C(0) := M(0,0) andC(0) := 1 (cid:80)n C(0),\ni i n i=1 i\nthereexistsηandαsuchthatwehave\n1 R (cid:88) −1K (cid:88) −1 E (cid:13) (cid:13)∇f(X(r,k)) (cid:13) (cid:13) ≤O (cid:32)(cid:18) Lr 0 ρ2σ2(cid:19)1 4 + (cid:18)(cid:16)n(cid:17)2 Lr √0 ρσ (cid:19)1 3 + (cid:18) Lr 0 (cid:16)n(cid:17)2 (cid:19)1 2 + ρσ 0 (cid:16)n(cid:17)\nRK (cid:13) (cid:13) ⋆ SRK S R K R S R S\nr=0 k=0\n(cid:18) ρ2σ2KS (cid:19)1 2 (cid:18)(cid:16)n(cid:17)ρ2σ2K2(cid:19)1 3 (cid:33)\n+ρσ +ρσ\n0 Lr Rn2 0 S Lr R2\n0 0\n27\n===  28 ===\nPreprint\nProof.",
+      "size": 649,
+      "sentences": 3
+    },
+    {
+      "id": 183,
+      "content": "6)n(cid:17)ρ2σ2K2(cid:19)1 3 (cid:33)\n+ρσ +ρσ\n0 Lr Rn2 0 S Lr R2\n0 0\n27\n===  28 ===\nPreprint\nProof. CombiningLemmas7,9and10,whenr ≥1,itholds\n(cid:18) S (cid:19)(cid:13) (cid:13)\nEf(X(r,k+1))≤Ef(X(r,k))−η (cid:13)∇f(X(r,k))(cid:13)\nn (cid:13) (cid:13) ⋆\n(cid:18) S (cid:19)2(cid:114) ασ2 8Lη2 (cid:18) S (cid:19)√\n+2ρη + +33LKη2+4αρη Kσ2\nn S α n\n(cid:18)\nS\n(cid:19) (cid:18)\nSα\n(cid:19)r−1\n+4ρη σ 1− .",
+      "size": 400,
+      "sentences": 2
+    },
+    {
+      "id": 184,
+      "content": "S (cid:19)√\n+2ρη + +33LKη2+4αρη Kσ2\nn S α n\n(cid:18)\nS\n(cid:19) (cid:18)\nSα\n(cid:19)r−1\n+4ρη σ 1− . n 0 n\nWhenr =0,wehave\nηS (cid:13) (cid:13)\nEf(X(0,k+1))≤Ef(X(0,k))− (cid:13)∇f(X(0,k))(cid:13)\nn (cid:13) (cid:13) ⋆\n(cid:18)\nS\n(cid:19)√ (cid:18)\nS\n(cid:19)\n+5LKη2+2αρη Kσ2+4ρη σ .",
+      "size": 281,
+      "sentences": 2
+    },
+    {
+      "id": 185,
+      "content": ",k))(cid:13)\nn (cid:13) (cid:13) ⋆\n(cid:18)\nS\n(cid:19)√ (cid:18)\nS\n(cid:19)\n+5LKη2+2αρη Kσ2+4ρη σ . n n 0\nSumminguptheabovetwoinequalities,weobtain\n1 R (cid:88) −1K (cid:88) −1 E (cid:13) (cid:13)∇f(X(r,k)) (cid:13) (cid:13) ≤ (cid:16)n(cid:17) r 0 +2ρ (cid:18) S (cid:19)(cid:114) ασ2 + 8Lη (cid:16)n(cid:17) +33LK (cid:16)n(cid:17) η\nRK (cid:13) (cid:13) ⋆ S RKη n S α S S\nr=0 k=0\n+4αρ √ Kσ2+ 4ρσ 0 R (cid:88) −1(cid:18) 1− Sα (cid:19)r−1 + 4ρσ 0\nR n R\nr=1\n(cid:16)n(cid:17) r (cid:18) S (cid:19)(cid:114) ασ2 8Lη (cid:16)n(cid:17) (cid:16)n(cid:17)\n≤ 0 +2ρ + +33LK η\nS RKη n S α S S\n√ 8ρσ (cid:16)n(cid:17)\n+4αρ Kσ2+ 0 .",
+      "size": 623,
+      "sentences": 2
+    },
+    {
+      "id": 186,
+      "content": "n(cid:17) (cid:16)n(cid:17)\n≤ 0 +2ρ + +33LK η\nS RKη n S α S S\n√ 8ρσ (cid:16)n(cid:17)\n+4αρ Kσ2+ 0 . Rα S\nThen,usingthefollowinghyperparameters\n(cid:26)(cid:114) (cid:114) (cid:27)\nαr 1 r\nη =min 0 , 0 ,\n8LRK K 33LR\nα=min (cid:40) 1, (cid:16)n(cid:17)2 (cid:115) 8Lr 0 S , (cid:18) 2Lr 0 (cid:16)n(cid:17)2 (cid:19)1 3 (cid:41) ,\nS RLρ2σ2 RK2ρ2σ2 S\nweobtainthedesiredresult. 28\n===  29 ===\nPreprint\nF PROOF OF THEOREM 3\nLemma12. LetGand−G(T) betheinputandoutputofAlgorithm2witha= 15,b=−5,and\n8 4\nc= 3.",
+      "size": 499,
+      "sentences": 4
+    },
+    {
+      "id": 187,
+      "content": "ROOF OF THEOREM 3\nLemma12. LetGand−G(T) betheinputandoutputofAlgorithm2witha= 15,b=−5,and\n8 4\nc= 3. ForanynumberofiterationsT,wehave\n8\n⟨G,−G(T)⟩≤−∥G∥ ,\np\nwherepisdefinedasfollows:\n(cid:16) (cid:17)\nlog 1−(1−κ)1.5T\np:=1+ ,\nlogκ\ns\nκ:=min i (>0),\n(cid:113)\ni (cid:80) s2\nj j\nands isthenon-zerosingularvalueofG. i\nProof. LetthesingularvaluedecompositionofGbeUΣV.",
+      "size": 358,
+      "sentences": 5
+    },
+    {
+      "id": 188,
+      "content": "d:80) s2\nj j\nands isthenon-zerosingularvalueofG. i\nProof. LetthesingularvaluedecompositionofGbeUΣV. Then,theoutput−G(T)canbewritten\nasfollows:\n−G(T) =−UΣ(T)V,\nwhereΣ(T)isdefinedasfollows:\n(cid:18) (cid:18) (cid:18) (cid:19)(cid:19)(cid:19)\nΣ\nΣ(T) :=ϕ ϕ ···ϕ ii . ii ∥G∥\nF\n(cid:124) (cid:123)(cid:122) (cid:125)\nTtimes\nSinceϕ(x)>x,wehave\nΣ\nΣ(T) ≥ ii . ii ∥G∥\nF\nUsingtheaboveinequality,wehave\n(cid:68) (cid:69)\n⟨G,−G(T)⟩=− UΣV,UΣ(T)V\n=− (cid:88) Σ (cid:16) 1− (cid:16) 1−Σ(T) (cid:17)(cid:17) .",
+      "size": 492,
+      "sentences": 6
+    },
+    {
+      "id": 189,
+      "content": "id:68) (cid:69)\n⟨G,−G(T)⟩=− UΣV,UΣ(T)V\n=− (cid:88) Σ (cid:16) 1− (cid:16) 1−Σ(T) (cid:17)(cid:17) . ii ii\ni\nWhena= 15,b=−5 andc= 3,wehave\n8 4 8\n3 3 1\n0≤1−ϕ(x)=(1−x)2(− x3− x2+ x+1)≤(1−x)1.5\n8 4 8\nThus,itholdsthat\n 1.5T\n(cid:18)\nΣ\n(cid:19)1.5T\nΣ\n1−Σ(T) ≤ 1− ii ≤1− ii  ,\nii ∥G∥  (cid:16) (cid:17)1 \nF (cid:80) Σp p\nj jj\nforany1≤p≤2. Usingtheaboveinequalityandthedefinitionofpandκweget\n(cid:32) (cid:33)1\np\n(cid:88)\n⟨G,−G(T)⟩≤− Σp . ii\ni\nLemma13. SupposethatAssumptions1and2hold.",
+      "size": 483,
+      "sentences": 5
+    },
+    {
+      "id": 190,
+      "content": "weget\n(cid:32) (cid:33)1\np\n(cid:88)\n⟨G,−G(T)⟩≤− Σp . ii\ni\nLemma13. SupposethatAssumptions1and2hold. Then,whenr ≥1,wehave\nηS (cid:13) (cid:13) (cid:18) S (cid:19)2\nEf(X(r,k+1))≤Ef(X(r,k))− (cid:13)∇f(X(r,k))(cid:13) +2LK η2\nn (cid:13) (cid:13) p n\n+2 (cid:18) S (cid:19) ηE (cid:13) (cid:13)∇f(X(r−1,K−1))−C(r) (cid:13) (cid:13) + 2η E (cid:88) (cid:13) (cid:13)M(r,k+1)−C(r) (cid:13) (cid:13) + L (cid:18) S (cid:19) η2,\nn (cid:13) (cid:13) trace n (cid:13) i i (cid:13) trace 2 n\ni∈Sr\n29\n===  30 ===\nPreprint\nwherepisdefinedasfollows:\n(cid:16) (cid:17)\nlog 1−(1−κ)1.5T\np:=1+ ,\nlogκ\ns\nκ:= min j,i,r,k (>0),\n(cid:113)\nj,i,r,k (cid:80) s2\nj′ j′,i,r,k\nand{s } arenon-zerosingularvaluesofM(r,k+1)−C(r)+C(r).",
+      "size": 703,
+      "sentences": 4
+    },
+    {
+      "id": 191,
+      "content": "),\n(cid:113)\nj,i,r,k (cid:80) s2\nj′ j′,i,r,k\nand{s } arenon-zerosingularvaluesofM(r,k+1)−C(r)+C(r). j,r,k j i i\nWhenr =0,wehave\nηS (cid:13) (cid:13) (cid:18) S (cid:19)2\nEf(X(0,k+1))≤Ef(X(0,k))− (cid:13)∇f(X(0,k))(cid:13) +2LK η2\nn (cid:13) (cid:13) p n\n+\n2η\nE\n(cid:88)(cid:13)\n(cid:13)M(0,k+1)−C(0)\n(cid:13)\n(cid:13) +\nL (cid:18) S (cid:19)\nη2+2\n(cid:18) S (cid:19)\nρσ η.\nn (cid:13) i i (cid:13) trace 2 n n 0\ni∈S0\nProof.",
+      "size": 422,
+      "sentences": 2
+    },
+    {
+      "id": 192,
+      "content": "cid:18) S (cid:19)\nη2+2\n(cid:18) S (cid:19)\nρσ η.\nn (cid:13) i i (cid:13) trace 2 n n 0\ni∈S0\nProof. Wehave\nE f(X(r,k+1))\nr,k\n(cid:32) (cid:33)\n=E f X(r,k)+ η (cid:88) D(r,k)\nr,k n i\ni∈Sr\n≤f(X(r,k))+ η E (cid:88) (cid:68) ∇f(X(r,k)),D(r,k) (cid:69) + Lη2 E (cid:88) (cid:13) (cid:13)D(r,k+1) (cid:13) (cid:13) 2\nn r,k i 2n r,k (cid:13) i (cid:13) sp\ni∈Sr i∈Sr\n≤f(X(r,k))+ η E (cid:88) (cid:68) ∇f(X(r,k))−G(r,k+1),D(r,k+1) (cid:69) + η E (cid:88) (cid:68) G(r,k+1),D(r,k+1) (cid:69) + LSη2\nn r,k i i n r,k i i 2n\ni∈Sr i∈Sr\n≤f(X(r,k))+ η E (cid:88) (cid:13) (cid:13)∇f(X(r,k))−G(r,k+1) (cid:13) (cid:13) + η E (cid:88) (cid:68) G(r,k+1),D(r,k+1) (cid:69) + LSη2 ,\nn r,k (cid:13) i (cid:13) trace n r,k i i 2n\ni∈Sr i∈Sr(cid:124) (cid:123)(cid:122) (cid:125)\nT1\nwhereweuseLemma4,∥D(r,k+1)∥ ≤1,andtheLemma3inthefirst,second,andthirdinequalities.",
+      "size": 840,
+      "sentences": 2
+    },
+    {
+      "id": 193,
+      "content": "22) (cid:125)\nT1\nwhereweuseLemma4,∥D(r,k+1)∥ ≤1,andtheLemma3inthefirst,second,andthirdinequalities. i sp\nUsingLemma12,thedefinitionofp,andthetriangleinequality,wehave\n(cid:13) (cid:13)\nT ≤−(cid:13)G(r,k+1)(cid:13)\n1 (cid:13) i (cid:13)\np\n(cid:13) (cid:13) (cid:13) (cid:13)\n≤−(cid:13)∇f(X(r,k))(cid:13) +(cid:13)∇f(X(r,k))−G(r,k+1)(cid:13)\n(cid:13) (cid:13) (cid:13) i (cid:13)\np p\n(cid:13) (cid:13) (cid:13) (cid:13)\n≤−(cid:13)∇f(X(r,k))(cid:13) +(cid:13)∇f(X(r,k))−G(r,k+1)(cid:13) ,\n(cid:13) (cid:13) (cid:13) i (cid:13)\np trace\nwhereweusethefactthatp≥1and∥A∥ ≤∥A∥ foranyA.",
+      "size": 576,
+      "sentences": 2
+    },
+    {
+      "id": 194,
+      "content": "id:13) ,\n(cid:13) (cid:13) (cid:13) i (cid:13)\np trace\nwhereweusethefactthatp≥1and∥A∥ ≤∥A∥ foranyA. Then,itholds\np trace\nE f(X(r,k+1))≤f(X¯(r,k))− ηS (cid:13) (cid:13)∇f(X(r,k)) (cid:13) (cid:13) + 2η E (cid:88) (cid:13) (cid:13)∇f(X(r,k))−G(r,k+1) (cid:13) (cid:13) + LSη2 .",
+      "size": 275,
+      "sentences": 2
+    },
+    {
+      "id": 195,
+      "content": ") (cid:13) (cid:13) + 2η E (cid:88) (cid:13) (cid:13)∇f(X(r,k))−G(r,k+1) (cid:13) (cid:13) + LSη2 . r,k n (cid:13) (cid:13) p n r,k (cid:13) i (cid:13) trace 2n\ni∈Sr(cid:124) (cid:123)(cid:122) (cid:125)\nT2\nWhenr ≥1,wehave\n(cid:13) (cid:13)\nT =(cid:13)∇f(X(r,k))−M(r,k+1)+C(r)−C(r)(cid:13)\n2 (cid:13) i i (cid:13)\ntrace\n(cid:13) (cid:13) (cid:13) (cid:13) (cid:13) (cid:13)\n≤(cid:13)∇f(X(r,k))−∇f(X(r−1,K−1))(cid:13) +(cid:13)∇f(X(r−1,K−1))−C(r)(cid:13) +(cid:13)M(r,k+1)−C(r)(cid:13)\n(cid:13) (cid:13) (cid:13) (cid:13) (cid:13) i i (cid:13)\ntrace trace trace\n(cid:13) (cid:13) (cid:13) (cid:13) (cid:13) (cid:13)\n≤L(cid:13)X(r,k)−X(r−1,K−1)(cid:13) +(cid:13)∇f(X(r−1,K−1))−C(r)(cid:13) +(cid:13)M(r,k+1)−C(r)(cid:13)\n(cid:13) (cid:13) (cid:13) (cid:13) (cid:13) i i (cid:13)\nsp trace trace\nLSKη (cid:13) (cid:13) (cid:13) (cid:13)\n≤ +(cid:13)∇f(X(r−1,K−1))−C(r)(cid:13) +(cid:13)M(r,k+1)−C(r)(cid:13) ,\nn (cid:13) (cid:13) trace (cid:13) i i (cid:13) trace\n30\n===  31 ===\nPreprint\nwhereweuseLemma5inthelastinequality.",
+      "size": 1019,
+      "sentences": 2
+    },
+    {
+      "id": 196,
+      "content": ":13) trace (cid:13) i i (cid:13) trace\n30\n===  31 ===\nPreprint\nwhereweuseLemma5inthelastinequality. Whenr =0,wehave\n(cid:13) (cid:13)\nT =(cid:13)∇f(X(0,k))−M(0,k+1)+C(0)−C(0)(cid:13)\n2 (cid:13) i i (cid:13)\ntrace\n(cid:13) (cid:13) (cid:13) (cid:13) (cid:13) (cid:13)\n≤(cid:13)∇f(X(0,k))−∇f(X(0,0))(cid:13) +(cid:13)∇f(X(0,0))−C(0)(cid:13) +(cid:13)M(0,k+1)−C(0)(cid:13)\n(cid:13) (cid:13) (cid:13) (cid:13) (cid:13) i i (cid:13)\ntrace trace trace\n(cid:13) (cid:13) (cid:13) (cid:13) (cid:13) (cid:13)\n≤L(cid:13)X(0,k)−X(0,0)(cid:13) +(cid:13)∇f(X(0,0))−C(0)(cid:13) +(cid:13)M(0,k+1)−C(0)(cid:13)\n(cid:13) (cid:13) (cid:13) (cid:13) (cid:13) i i (cid:13)\nsp trace trace\nLSKη (cid:13) (cid:13) (cid:13) (cid:13)\n≤ +(cid:13)∇f(X(0,0))−C(0)(cid:13) +(cid:13)M(0,k+1)−C(0)(cid:13) .",
+      "size": 777,
+      "sentences": 2
+    },
+    {
+      "id": 197,
+      "content": ":13) (cid:13) (cid:13) (cid:13)\n≤ +(cid:13)∇f(X(0,0))−C(0)(cid:13) +(cid:13)M(0,k+1)−C(0)(cid:13) . n (cid:13) (cid:13) trace (cid:13) i i (cid:13) trace\nThen,usingthefollowinginequality:\nE (cid:13) (cid:13)∇f(X(0,0))−C(0) (cid:13) (cid:13) ≤ ρ (cid:88) n (cid:114) E (cid:13) (cid:13)∇f (X(0,0))−C(0) (cid:13) (cid:13) 2 ≤ρσ ,\n(cid:13) (cid:13) ⋆ n (cid:13) i i (cid:13) F 0\ni=1\nweobtainthedesiredresult. Lemma14.",
+      "size": 414,
+      "sentences": 3
+    },
+    {
+      "id": 198,
+      "content": ":13) 2 ≤ρσ ,\n(cid:13) (cid:13) ⋆ n (cid:13) i i (cid:13) F 0\ni=1\nweobtainthedesiredresult. Lemma14. SupposethatAssumptions1and2hold,C(0) := M(0,0) andC(0) := 1 (cid:80)n C(0),\ni i n i=1 i\nthereexistsηandαsuchthatwehave\n1 R (cid:88) −1K (cid:88) −1 E (cid:13) (cid:13)∇f(X(r,k)) (cid:13) (cid:13) ≤O (cid:32)(cid:18) Lr 0 ρ2σ2(cid:19)1 4 + (cid:18)(cid:16)n(cid:17)2 Lr √0 ρσ (cid:19)1 3 + (cid:18) Lr 0 (cid:16)n(cid:17)2 (cid:19)1 2 + ρσ 0 (cid:16)n(cid:17)\nRK (cid:13) (cid:13) p SRK S R K R S R S\nr=0 k=0\n(cid:18) ρ2σ2KS (cid:19)1 2 (cid:18)(cid:16)n(cid:17)ρ2σ2K2(cid:19)1 3 (cid:33)\n+ρσ +ρσ ,\n0 Lr Rn2 0 S Lr R2\n0 0\nThen,pisdefinedasfollows:\n(cid:16) (cid:17)\nlog 1−(1−κ)1.5T\np:=1+ ,\nlogκ\ns\nκ:= min j,i,r,k (>0),\n(cid:113)\nj,i,r,k (cid:80) s2\nj′ j′,i,r,k\nwhere{s } arenon-zerosingularvaluesofM(r,k+1)−C(r)+C(r).",
+      "size": 816,
+      "sentences": 3
+    },
+    {
+      "id": 199,
+      "content": "(cid:113)\nj,i,r,k (cid:80) s2\nj′ j′,i,r,k\nwhere{s } arenon-zerosingularvaluesofM(r,k+1)−C(r)+C(r). j,i,r,k j i i\nProof. EvenifwesolvetheLMOapproximately,thestatementsofLemmas9and10hold. Thus,\ncombiningLemmas9,10and13andtuningthehyperparametersasinLemma11,weobtainthe\ndesiredresult. 31\n===  32 ===\nPreprint\nG HYPERPARAMETER TUNING STRATEGY\nInourexperiments,thehyperparametersweretunedindividuallyforeachcombinationofmethod,\ndataset,andrandomseed. Table1:Hyperparametertuningstrategyforeachmethod.",
+      "size": 495,
+      "sentences": 6
+    },
+    {
+      "id": 200,
+      "content": "oreachcombinationofmethod,\ndataset,andrandomseed. Table1:Hyperparametertuningstrategyforeachmethod. FedAvg Stepsize Gridsearchover{0.1,0.01,0.001}\nFedAvg(Adam) Stepsize Gridsearchover{0.1,0.01,0.001}\nSCAFFOLD Stepsize Gridsearchover{0.1,0.01,0.001}\nSCAFFOLD(Adam) Stepsize Gridsearchover{0.1,0.01,0.001}\nStepsizeofMuon Gridsearchover{0.001,0.0001}\nLocalMuon\nStepsizeofMomentumSGD Gridsearchover{0.1,0.01}\nStepsizeofMuon Gridsearchover{0.001,0.0001}\nFedMuon\nStepsizeofMomentumSGD Gridsearchover{0.1,0.01}\nInthefollowingtables,welistthehyperparameterstunedbythegridsearch.",
+      "size": 570,
+      "sentences": 3
+    },
+    {
+      "id": 201,
+      "content": "ntumSGD Gridsearchover{0.1,0.01}\nInthefollowingtables,welistthehyperparameterstunedbythegridsearch. Thereportedhyper-\nparameters correspond to the values selected from two independent trials with different random\nseeds. Table2:HyperparameterstunedforFashionMNIST.",
+      "size": 263,
+      "sentences": 3
+    },
+    {
+      "id": 202,
+      "content": "rom two independent trials with different random\nseeds. Table2:HyperparameterstunedforFashionMNIST. β =10.0 β =0.1\nFedAvg {0.1,0.1} {0.1,0.1}\nFedAvg(Adam) {0.1,0.1} {0.01,0.01}\nSCAFFOLD {0.1,0.1} {0.1,0.1}\nSCAFFOLD(Adam) {0.001,0.001} {0.001,0.001}\nLocalMuon {(0.001,0.1),(0.001,0.01)} {(0.001,0.1),(0.001,0.1)}\nFedMuon {(0.001,0.01),(0.001,0.01)} {(0.001,0.01),(0.001,0.01)}\nTable3:HyperparameterstunedforCIFAR-10.",
+      "size": 415,
+      "sentences": 3
+    },
+    {
+      "id": 203,
+      "content": "uon {(0.001,0.01),(0.001,0.01)} {(0.001,0.01),(0.001,0.01)}\nTable3:HyperparameterstunedforCIFAR-10. β =10.0 β =0.1\nFedAvg {0.1,0.1} {0.1,0.1}\nFedAvg(Adam) {0.001,0.001} {0.01,0.001}\nSCAFFOLD {0.1,0.1} {0.1,0.1}\nSCAFFOLD(Adam) {0.001,0.001} {0.001,0.001}\nLocalMuon {(0.001,0.01),(0.001,0.01)} {(0.001,0.01),(0.001,0.01)}\nFedMuon {(0.001,0.01),(0.001,0.01)} {(0.001,0.01),(0.001,0.01)}\n32",
+      "size": 386,
+      "sentences": 2
+    }
+  ]
+}

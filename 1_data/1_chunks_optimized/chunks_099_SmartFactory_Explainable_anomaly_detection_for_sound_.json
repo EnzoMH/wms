@@ -1,0 +1,723 @@
+{
+  "source": "ArXiv",
+  "filename": "099_SmartFactory_Explainable_anomaly_detection_for_sound_.pdf",
+  "domain": "SmartFactory",
+  "total_chars": 38053,
+  "total_chunks": 119,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\nExplainable anomaly detection for sound\nspectrograms using pooling statistics with\nquantile differences\nNicolas Thewesa, Philipp Steinhauerb, Patrick Tramperta, Markus Paulyb,c and Georg Schneidera\na Artificial Intelligence Lab, ZF Friedrichshafen AG, Scheer Tower II, Uni-Campus Nord, Geb.",
+      "size": 301,
+      "sentences": 1
+    },
+    {
+      "id": 2,
+      "content": "eidera\na Artificial Intelligence Lab, ZF Friedrichshafen AG, Scheer Tower II, Uni-Campus Nord, Geb. D5 2\n66123 Saarbrücken, Germany\nb Department of Statistics, TU Dortmund University, 44227 Dortmund\nc Research Center for Trustworthy Data Science and Security, UA Ruhr, 44227 Dortmund\n1 Introduction\nAnomaly detection is the task of identifying rarely occurring (i.e. anormal or anomalous) samples that\ndiffer from almost all other samples in a dataset.",
+      "size": 452,
+      "sentences": 3
+    },
+    {
+      "id": 3,
+      "content": "curring (i.e. anormal or anomalous) samples that\ndiffer from almost all other samples in a dataset. As the patterns of anormal samples are usually not\nknown a priori, this task is highly challenging. Consequently, anomaly detection lies between semi-\nand unsupervised learning. The detection of anomalies in sound data, often called ‘ASD’ (Anomalous Sound Detection), is a sub-\nfield that deals with the identification of new and yet unknown effects in acoustic recordings.",
+      "size": 473,
+      "sentences": 5
+    },
+    {
+      "id": 4,
+      "content": "ub-\nfield that deals with the identification of new and yet unknown effects in acoustic recordings. It is of\ngreat importance for various applications in Industry 4.0. Here, vibrational or acoustic data are\ntypically obtained from standard sensor signals used for predictive maintenance. Examples cover\nmachine condition monitoring or quality assurance to track the state of components or products. However, the use of intelligent algorithms remains a controversial topic.",
+      "size": 472,
+      "sentences": 5
+    },
+    {
+      "id": 5,
+      "content": "f components or products. However, the use of intelligent algorithms remains a controversial topic. Management generally aims\nfor cost-reduction and automation, while quality and maintenance experts emphasize the need for\nhuman expertise and comprehensible solutions. The importance of sound data for industrial\napplications is also reflected in the current literature.",
+      "size": 369,
+      "sentences": 4
+    },
+    {
+      "id": 6,
+      "content": "e importance of sound data for industrial\napplications is also reflected in the current literature. For example, the specifically designed MIMII\nDataset (Sound Dataset for Malfunctioning Industrial Machine Investigation and Inspection) serves as\na benchmark for sound-based anomaly detection [1]. Moreover, the DCASE (Detection and\nClassification of Acoustic Scenes and Events) community offers ASD challenges since 2016, see e.g. [7], [8],[21].",
+      "size": 445,
+      "sentences": 4
+    },
+    {
+      "id": 7,
+      "content": "of Acoustic Scenes and Events) community offers ASD challenges since 2016, see e.g. [7], [8],[21]. In this work, we present an anomaly detection approach specifically designed for spectrograms. The\napproach is based on statistical evaluations and is theoretically motivated. In addition, it features\nintrinsic explainability, making it particular suitable for applications in industrial settings.",
+      "size": 396,
+      "sentences": 5
+    },
+    {
+      "id": 8,
+      "content": "es\nintrinsic explainability, making it particular suitable for applications in industrial settings. Thus, this algorithm is of relevance for applications in which black-box algorithms are unwanted or\nunsuitable. ===  2 ===\n2 Related Work\nThe detection of anomalies is a broad, extensively researched field. A general introduction to outlier\ndetection can be found in [2], [3] or [4].",
+      "size": 383,
+      "sentences": 4
+    },
+    {
+      "id": 9,
+      "content": "vely researched field. A general introduction to outlier\ndetection can be found in [2], [3] or [4]. In recent years, deep learning techniques are more and more\napplied in the field of anomaly detection by making use of the intrinsic feature-learning ability of\ndeep learning methods, see e.g. [5] and [6] for a more specific review. In the following, we provide a\nshort overview on publications in the ASD field.",
+      "size": 412,
+      "sentences": 5
+    },
+    {
+      "id": 10,
+      "content": "re specific review. In the following, we provide a\nshort overview on publications in the ASD field. In contrast to our approach, most methods that have\nbeen applied for ASD are based on machine learning techniques, as the results of the DCASE\nchallenges of the last two years [7], [8] show. Autoencoder (AE) architectures are a frequently applied deep learning technique for ASD, see, e.g. [9], [10], [11], [12], [13] or [14]. They are used in different flavors. In two recent publications Coelho\net.",
+      "size": 500,
+      "sentences": 7
+    },
+    {
+      "id": 11,
+      "content": "[11], [12], [13] or [14]. They are used in different flavors. In two recent publications Coelho\net. al. [9], [10] compare different AE architectures, like dense, CNN, and LSTM, on machine condition\nmonitoring as well as on a cough classification task in an in-vehicle setting. Their results show that\ncombining the three architectures leads to enhanced results when mel-spectrogram sound pre-\nprocessing was applied.",
+      "size": 416,
+      "sentences": 6
+    },
+    {
+      "id": 12,
+      "content": "ree architectures leads to enhanced results when mel-spectrogram sound pre-\nprocessing was applied. Kapka [11] proposed an AE with an additional affine transformation of the\nlatent vector based on some metadata classification of a sample, e.g. the ID of an industrial machine.",
+      "size": 276,
+      "sentences": 3
+    },
+    {
+      "id": 13,
+      "content": "ent vector based on some metadata classification of a sample, e.g. the ID of an industrial machine. Using reconstruction error as anomaly score on the DCASE 2020 Task 2 dataset, the author shows\nthat this addition, on average, leads to an improved anomaly detection performance as compared to\nstandard autoencoder approaches. Yet, the results vary strongly for different types of machines.",
+      "size": 389,
+      "sentences": 4
+    },
+    {
+      "id": 14,
+      "content": "to\nstandard autoencoder approaches. Yet, the results vary strongly for different types of machines. Although ASD is, by definition, an unsupervised learning problem, different approaches use so-called\nproxy outliers from related domains to improve differentiation between normal and anormal\nsamples in the original domain, see [12], [13], [14], [15]. Koizumi et al.",
+      "size": 365,
+      "sentences": 4
+    },
+    {
+      "id": 15,
+      "content": "tween normal and anormal\nsamples in the original domain, see [12], [13], [14], [15]. Koizumi et al. [12] use AE generated\nanomalous sounds to train another AE for anomaly detection and utilize the generated anomalies to\nincrease the true-positive rate directly rather than implicitly when using only normal samples for\nautoencoder training. Kuroyanagi et al.",
+      "size": 358,
+      "sentences": 4
+    },
+    {
+      "id": 16,
+      "content": "y rather than implicitly when using only normal samples for\nautoencoder training. Kuroyanagi et al. in [13] use the DCASE 2020 Task 2 dataset to show that\nproxy-outliers that come from other machine IDs and machine types can be applied to perform\nanomaly detection on a specific machine ID.",
+      "size": 290,
+      "sentences": 3
+    },
+    {
+      "id": 17,
+      "content": "machine IDs and machine types can be applied to perform\nanomaly detection on a specific machine ID. In their approach, which is like [16], they simultaneously\ntrain a neural network using cross-entropy loss for multiclass-classification as well as for producing\ncompact representations in feature space for the normal class.",
+      "size": 324,
+      "sentences": 2
+    },
+    {
+      "id": 18,
+      "content": "ssification as well as for producing\ncompact representations in feature space for the normal class. This enables to produce features that\nimprove anomaly detection by increasing inter-class distance for normal samples and anormal\nsamples and simultaneously optimizing for low intra-class distance of normal samples in feature\nspace. In a similar, but simpler, approach Primus et al.",
+      "size": 382,
+      "sentences": 3
+    },
+    {
+      "id": 19,
+      "content": "lass distance of normal samples in feature\nspace. In a similar, but simpler, approach Primus et al. [14] use proxy outliers, which were carefully\nselected from DCASE 2020 Task 2 from different machines and machine IDs and only train a\nclassification network on the normal samples and proxy-outliers. That way they achieve significant\nimprovements over the baseline while showing that the selection of the ‘correct’ outliers is key.",
+      "size": 431,
+      "sentences": 4
+    },
+    {
+      "id": 20,
+      "content": "t\nimprovements over the baseline while showing that the selection of the ‘correct’ outliers is key. Another approach, which is used by [15], is to use features from pretrained deep neural networks to\nperform anomaly detection using classic anomaly detection methods such as One-Class Support\nVector Machines [18] or Isolation Forests [19]. Müller et al.",
+      "size": 353,
+      "sentences": 3
+    },
+    {
+      "id": 21,
+      "content": "ion methods such as One-Class Support\nVector Machines [18] or Isolation Forests [19]. Müller et al. [15] use the MIMII-Dataset [1] to show\nthat features extracted from Neural Networks pretrained on ImageNet in combination with non-deep\nlearning anomaly detection models lead to superior results as compared to an end-to-end trained AE. In particular, they find that ResNet [17] features in combination with Gaussian Mixture Models give\nthe best results.",
+      "size": 453,
+      "sentences": 4
+    },
+    {
+      "id": 22,
+      "content": "y find that ResNet [17] features in combination with Gaussian Mixture Models give\nthe best results. Finally, we want to mention an older approach, as it shares basic ideas with our work: Hazan et al. [20] use log-periodograms, obtain a mask by taking the maximum values of half of the training\ndataset and subsequently determine the values in the second half of the dataset that excess this\nmask. Those excess values are then modeled using a specific distribution.",
+      "size": 464,
+      "sentences": 4
+    },
+    {
+      "id": 23,
+      "content": "dataset that excess this\nmask. Those excess values are then modeled using a specific distribution. Finally, anomaly detection\nis performed by using the distribution of excess values to calculate the probability of normality of\ntest samples. ===  3 ===\n3 Methods\n3.1 Intuition\nA spectrogram is basically an ordered matrix, where each entry gives the energy (or amplitude)\nof a certain frequency in a certain time interval.",
+      "size": 421,
+      "sentences": 4
+    },
+    {
+      "id": 24,
+      "content": "where each entry gives the energy (or amplitude)\nof a certain frequency in a certain time interval. Hence, if a standardized measurement protocol is\napplied, different spectrograms can be compared entry-wise. A simple anomaly detection\napproach could be as follows:\n1. Assume a single entry is anormal if its value is higher than expected, i.e., higher than most\nvalues at that frequency/time point. 2.",
+      "size": 402,
+      "sentences": 5
+    },
+    {
+      "id": 25,
+      "content": "f its value is higher than expected, i.e., higher than most\nvalues at that frequency/time point. 2. For each entry calculate statistical measures based on a training data set, which contains\nideally only normal samples. Examples are quantiles or mean values and standard deviations. The result of this step is a matrix with the same dimension as the training data spectrograms,\nwhich we refer to as reference-spectrogram, see Figure 1 a). 3.",
+      "size": 441,
+      "sentences": 6
+    },
+    {
+      "id": 26,
+      "content": "as the training data spectrograms,\nwhich we refer to as reference-spectrogram, see Figure 1 a). 3. Subsequently, an entry-wise anomaly detection can be applied using similar heuristics as in\nSix Sigma one-sided process control charts [25], such as: ’values outside the 99%-quantile are\nanormal’, compare Figure 1 b). Figure 1: Schematic explanation of our proposed approach.",
+      "size": 374,
+      "sentences": 4
+    },
+    {
+      "id": 27,
+      "content": "antile are\nanormal’, compare Figure 1 b). Figure 1: Schematic explanation of our proposed approach. a) Given many spectrograms, where almost all belong to the\nnormal class a reference-spectrogram can be calculated by using ‘entry-wise’ statistics, e.g. a 99% quantile. b) Based on the\ncalculated reference, abnormality can be accessed on a single entry-level, by detecting the entries that have a higher value\nthan their corresponding entry in the reference-spectrogram, e.g.",
+      "size": 475,
+      "sentences": 5
+    },
+    {
+      "id": 28,
+      "content": "entries that have a higher value\nthan their corresponding entry in the reference-spectrogram, e.g. by taking the difference between test spectrogram and\nreference. By adding the assumption of entry-wise independence a theoretically founded anomaly detection\nalgorithm can be deduced. 3.2 Theoretical foundations\nIn this section a pre-stage of the anomaly detection algorithm is described to highlight the theoretical\nfoundation of our approach.",
+      "size": 444,
+      "sentences": 4
+    },
+    {
+      "id": 29,
+      "content": "e anomaly detection algorithm is described to highlight the theoretical\nfoundation of our approach. ===  4 ===\nAssume a set of N spectrograms that belong (mostly) to the normal class. Further, each spectrogram\nconsists of n entries. Let ((cid:4)) denote the j-th entry of the i-th spectrogram with i = 1, …, N and j = 1, …,\n(cid:1)\n(cid:2)\nn. Then for every entry j the z-quantile is calculated over all spectrograms N, e.g. from a training set.",
+      "size": 445,
+      "sentences": 5
+    },
+    {
+      "id": 30,
+      "content": "n for every entry j the z-quantile is calculated over all spectrograms N, e.g. from a training set. This results in\n((cid:22)) ((cid:25))\n(cid:6) ∶= (cid:10)−(cid:6)(cid:12)(cid:13)(cid:14)(cid:15)(cid:16)(cid:17)(cid:18) (cid:19)(cid:20) (cid:21)(cid:1) ,...,(cid:1) (cid:26) (cid:27)(cid:16)(cid:15)ℎ (cid:10) ∈ (cid:30)0,1!, \" = 1,…,(cid:14). (cid:2) (cid:2) (cid:2)\nThese n quantiles make up the reference spectrogram denoted as .",
+      "size": 434,
+      "sentences": 4
+    },
+    {
+      "id": 31,
+      "content": ",(cid:14). (cid:2) (cid:2) (cid:2)\nThese n quantiles make up the reference spectrogram denoted as . $ = ((cid:6) ,...,(cid:6) )\n% (cid:22) &\nConsider a randomly selected spectrogram of a test set. Using the entry-wise anomaly detection\nbased on a z-quantile reference spectrogram outlined in the previous section, the probability of any\nentry in the test spectrogram to have a higher value than the respective quantile is 1-z.",
+      "size": 426,
+      "sentences": 4
+    },
+    {
+      "id": 32,
+      "content": "ty of any\nentry in the test spectrogram to have a higher value than the respective quantile is 1-z. Assuming\nentry-wise independence and given the spectrograms under inspection have n entries in total, the\nnumber k of entries lying above their respective quantile follows a binomial distribution.",
+      "size": 296,
+      "sentences": 2
+    },
+    {
+      "id": 33,
+      "content": "tal, the\nnumber k of entries lying above their respective quantile follows a binomial distribution. With that,\nthe probability that a test spectrogram does not belong to the training set distribution, which means\nit is an anomaly, can be calculated by counting the number of entries that lie outside their\ncorresponding z-quantile:\n(cid:14)\n’ (-)= (cid:21) (cid:26)⋅(1−(cid:10))/ ⋅(cid:10) (&0/)\n(&)*+(,\n-\nThis approach already works reasonably well but one simple extension can make it much more\neffective.",
+      "size": 507,
+      "sentences": 2
+    },
+    {
+      "id": 34,
+      "content": "is approach already works reasonably well but one simple extension can make it much more\neffective. The binomial distribution approach does not consider by how much a certain entry rises\nabove its z-quantile. However, the absolute height of a value can be of great importance when trying\nto find anormal spectrograms. A small number of large deviations might be much more suspicious\nthan many small deviations, especially in the presence of random noise.",
+      "size": 454,
+      "sentences": 4
+    },
+    {
+      "id": 35,
+      "content": "ght be much more suspicious\nthan many small deviations, especially in the presence of random noise. 3.3 Proposed algorithm\nLet be the entries of a test spectrogram W. Given a reference spectrogram Q that was\n((cid:27) ,...(cid:27) )\n(cid:22) &\ncalculated as described above, we define the difference spectrogram as:\n1\n2\n1 = 3(cid:13)(cid:1)(0,4−$)\n2\n= 53(cid:13)(cid:1)(0,(cid:27) −(cid:6) ),3(cid:13)(cid:1)(0,(cid:27) −(cid:6) ),…,3(cid:13)(cid:1)(0,(cid:27) −(cid:6) )7\n(cid:22) (cid:22) 6 6 & &\n= (8 ,8 ,...,8 ).",
+      "size": 516,
+      "sentences": 2
+    },
+    {
+      "id": 36,
+      "content": "7) −(cid:6) ),…,3(cid:13)(cid:1)(0,(cid:27) −(cid:6) )7\n(cid:22) (cid:22) 6 6 & &\n= (8 ,8 ,...,8 ). (cid:22) 6 &\nThe difference spectrogram can then be used to calculate an anomaly score of W with different\n(cid:13)\n2\nmetrics. In this work we propose four deviation metrics:\n• Counting – The anomaly score is represented by counting how many entries k in the\ndifference spectrogram D are larger than zero:\n(cid:13) = - ∶=\n∑&\n:\n. (cid:4)A(cid:22) {<=>?}",
+      "size": 452,
+      "sentences": 4
+    },
+    {
+      "id": 37,
+      "content": "n the\ndifference spectrogram D are larger than zero:\n(cid:13) = - ∶=\n∑&\n:\n. (cid:4)A(cid:22) {<=>?} • Sum – Sum over all entries larger than zero:\n(cid:13) =\n∑&\n8 ∙:\n. (cid:4)A(cid:22) (cid:4) {<=>?} • Mean – Mean of all entries that are larger than zero:\n(cid:13) =\n(cid:22) ∑&\n8 ∙:\n. / (cid:4)A(cid:22) (cid:4) {<=>?} • Binomial – Using binomial distribution: (cid:13) = 5 & 7⋅(1−(cid:10))/ ⋅(cid:10) (&0/).",
+      "size": 409,
+      "sentences": 7
+    },
+    {
+      "id": 38,
+      "content": "4) {<=>?} • Binomial – Using binomial distribution: (cid:13) = 5 & 7⋅(1−(cid:10))/ ⋅(cid:10) (&0/). /\nTo sum up, we introduce a new anomaly detection model for sound spectrograms that is based on an\nentry-wise pooling via quantiles with two hyperparameters: The quantile used for pooling and the\nmetric used to calculate the deviation between a reference and a test spectrogram. In the next\nsection we evaluate the performance of the proposed algorithm using the MIMII dataset [1].",
+      "size": 481,
+      "sentences": 4
+    },
+    {
+      "id": 39,
+      "content": "the next\nsection we evaluate the performance of the proposed algorithm using the MIMII dataset [1]. ===  5 ===\n4 Experiments\n4.1 Dataset\nTo test the performance of our proposed algorithm, we use the MIMII dataset [1]. This dataset\nconsists of normal and anormal sounds of four different machine types (fan, pump, valve and\nslider/slide rail) with four individual machine IDs (0,2,4,6).",
+      "size": 385,
+      "sentences": 3
+    },
+    {
+      "id": 40,
+      "content": "machine types (fan, pump, valve and\nslider/slide rail) with four individual machine IDs (0,2,4,6). Data was recorded using a microphone\narray of eight microphones resulting in eight channel recordings where each recording has a length\nof 10 seconds sampled with 16 kHz. To better reflect the intrinsic challenges of an industrial setting\nadditional background noise was captured and mixed with the sound recordings using different\nsignal-to-noise ratios (-6 dB, 0 dB, 6 dB).",
+      "size": 474,
+      "sentences": 3
+    },
+    {
+      "id": 41,
+      "content": "red and mixed with the sound recordings using different\nsignal-to-noise ratios (-6 dB, 0 dB, 6 dB). We start with the 0 dB data for comparison to the MIMII\nbaseline, then we show the results of experiments with the three different noise levels and end by\ncomparing our results on the -6 dB data with the anomaly detection procedure recently published in\n[15]. In the following we give a detailed description of our preprocessing, hyperparameter tuning,\nand evaluation.",
+      "size": 468,
+      "sentences": 3
+    },
+    {
+      "id": 42,
+      "content": "llowing we give a detailed description of our preprocessing, hyperparameter tuning,\nand evaluation. 4.2 Preprocessing\nEach sample of the MIMII dataset is provided as a WAVE file. To transform the acoustic data into\nfrequency space we use the python package librosa [22]. Spectrograms are calculated using short-\nterm-Fourier-transformation by using the librosa ‘stft’ method with a window size of 2048, window\ntype ‘hann’, and constant padding.",
+      "size": 444,
+      "sentences": 4
+    },
+    {
+      "id": 43,
+      "content": "ing the librosa ‘stft’ method with a window size of 2048, window\ntype ‘hann’, and constant padding. Subsequently, spectrograms are converted to DB-scale using the\n===  6 ===\n‘amplitude_to_db’ method. For the following steps we save the spectrograms as numpy arrays [23]. Sample normal and anormal spectrograms for two machines are displayed in Figure 2. Figure 2: Sample spectrograms calculated as described in 4.2.",
+      "size": 415,
+      "sentences": 5
+    },
+    {
+      "id": 44,
+      "content": "o machines are displayed in Figure 2. Figure 2: Sample spectrograms calculated as described in 4.2. For two machines (type/ID) three normal and anormal\nspectrograms are displayed, the y-axis displays the frequency axis ranging from 0 to 8 kHz, the x-axis displays the\nmeasurement time ranging from 0 to 10 s.\n4.3 Evaluation\nTo get results that are comparable with other results in the literature, we use area under the curve\n(AUC) of the receiver operating characteristic (ROC), abbreviated AUC in the following.",
+      "size": 512,
+      "sentences": 3
+    },
+    {
+      "id": 45,
+      "content": "r the curve\n(AUC) of the receiver operating characteristic (ROC), abbreviated AUC in the following. This metric is\nstandard for the evaluation of anomaly detection approaches. AUC was also used to score the\nbaseline algorithm that has been published alongside the dataset by the authors of the MIMII\ndataset. In short, AUC evaluates how well an anomaly score can separate normal samples from\n===  7 ===\nanormal samples [24].",
+      "size": 424,
+      "sentences": 4
+    },
+    {
+      "id": 46,
+      "content": "aluates how well an anomaly score can separate normal samples from\n===  7 ===\nanormal samples [24]. To tune hyperparameters and get an unbiased estimate of the final performance we split the data of\neach machine ID into training, validation for hyperparameter estimation, and test set by\n1. splitting the anormal samples by 50 percent for validation 50 percent for test and\n2. adding the same number of normal samples to each of the anormal sample portions.",
+      "size": 457,
+      "sentences": 2
+    },
+    {
+      "id": 47,
+      "content": "nt for test and\n2. adding the same number of normal samples to each of the anormal sample portions. That way we get two separate balanced datasets for hyperparameter tuning and final testing. This\nprocedure is repeated five times using different random seeds. For each combination of training,\nvalidation, and test data, we tune hyperparameters on the validation set and subsequently calculate\nthe test set AUC.",
+      "size": 411,
+      "sentences": 4
+    },
+    {
+      "id": 48,
+      "content": "st data, we tune hyperparameters on the validation set and subsequently calculate\nthe test set AUC. The final estimate is then calculated by averaging the five test set estimates per\nmachine ID. Table 1 summarizes the number of normal and anormal samples for two machines.",
+      "size": 272,
+      "sentences": 3
+    },
+    {
+      "id": 49,
+      "content": "mates per\nmachine ID. Table 1 summarizes the number of normal and anormal samples for two machines. Machine type Machine ID Split #normal #anormal\nFan 0 Training 604 0\nFan 0 Validation 203 203\nFan 0 Test 204 204\nSlide rail 4 Training 356 0\nSlide rail 4 Validation 89 89\nSlide rail 4 Test 89 89\nTable 1: Number of normal and anormal samples per data split for two exemplary machine types/IDs. For a full view on the\nnumber of samples, see [1].",
+      "size": 442,
+      "sentences": 4
+    },
+    {
+      "id": 50,
+      "content": "data split for two exemplary machine types/IDs. For a full view on the\nnumber of samples, see [1]. 4.4 Hyperparameter-Tuning\nOur algorithmic approach features two hyperparameters. The first one is the method to calculate the\nreference spectrogram from the training set spectrograms. Here we use quantiles as distribution\nindicators, thus, we restrict our search to the quantile z-value and search through the following\nvalues: 0.5, 0.6, 0.7, 0.8, 0.9, 0.95, 0.99.",
+      "size": 463,
+      "sentences": 5
+    },
+    {
+      "id": 51,
+      "content": "the quantile z-value and search through the following\nvalues: 0.5, 0.6, 0.7, 0.8, 0.9, 0.95, 0.99. The second hyperparameter is the metric used to calculate\nthe deviation score based on a difference spectrogram. Possible choices in this case are Counting,\nSum, Mean, and Binomial. We perform a grid search to find the optimal hyperparameter\ncombination. Table 2 shows representative results of the hyperparameter tuning, i.e.",
+      "size": 425,
+      "sentences": 5
+    },
+    {
+      "id": 52,
+      "content": "hyperparameter\ncombination. Table 2 shows representative results of the hyperparameter tuning, i.e. the best AUC\non the respective validation dataset, for two machines and the corresponding five splits.",
+      "size": 202,
+      "sentences": 3
+    },
+    {
+      "id": 53,
+      "content": "best AUC\non the respective validation dataset, for two machines and the corresponding five splits. [  ]\n\n===  8 ===\nMachine type Machine ID # split z-quantile deviation- AUC on\nmetric validation\nSlide rail 4 1 0.99 Mean 1.0\nSlide rail 4 2 0.95 Mean 1.0\nSlide rail 4 3 0.95 Mean 1.0\nSlide rail 4 4 0.95 Mean 1.0\nSlide rail 4 5 0.99 Mean 1.0\nFan 6 1 0.9 Mean 0.65\nFan 6 2 0.9 Mean 0.59\nFan 6 3 0.995 Mean 0.61\nFan 6 4 0.9 Mean 0.61\nFan 6 5 0.995 Sum 0.62\nTable 2: Exemplary results of hyperparameter tuning for two machines.",
+      "size": 522,
+      "sentences": 2
+    },
+    {
+      "id": 54,
+      "content": "n 0.61\nFan 6 5 0.995 Sum 0.62\nTable 2: Exemplary results of hyperparameter tuning for two machines. For each split we show the hyperparameter\ncombination that results in the best validation AUC. Based on our hyperparameter tuning, we can state that for the MIMII dataset our model favors\nquantiles above 0.9 and “mean” as deviation metric. In the next section we compare our results against the baseline that has been published alongside\nthe MIMII dataset.",
+      "size": 456,
+      "sentences": 4
+    },
+    {
+      "id": 55,
+      "content": "on we compare our results against the baseline that has been published alongside\nthe MIMII dataset. 5 Results\nIn the following subsections we present and discuss our results and compare them to the AE based\nbaseline published alongside the MIMII dataset [1]. At that point we want to emphasize that our\napproach is setup directly on sound spectrograms. These are the output of a fast-Fourier\ntransformation without further processing as described in Section 4.2.",
+      "size": 462,
+      "sentences": 4
+    },
+    {
+      "id": 56,
+      "content": "the output of a fast-Fourier\ntransformation without further processing as described in Section 4.2. [  ]\n\n===  9 ===\n5.1 Test set results\nFigure 3: AUC results for our approach and the autoencoder baseline approach for the four different machine types (fan,\npump, valve and slider). Figure 3 shows that based on our experiments our approach is on par or better than the provided\nbaseline in 12 out of 16 machines based on AUC values.",
+      "size": 433,
+      "sentences": 3
+    },
+    {
+      "id": 57,
+      "content": "proach is on par or better than the provided\nbaseline in 12 out of 16 machines based on AUC values. Averaged on machine level, we surpass the\nbaseline approach in 3 out of 4 cases. For machine ID 2 and 4 of valve and machine ID 0 and 4 of slide\nrail our model almost perfectly separates normal and anormal cases. Interestingly, for machine type\nfan the performance of our model is worse than the baseline in most cases and worse compared to\nall other machine types.",
+      "size": 465,
+      "sentences": 4
+    },
+    {
+      "id": 58,
+      "content": "f our model is worse than the baseline in most cases and worse compared to\nall other machine types. In the next section we show that our model can intrinsically produce an explainability output, which\ncan be used to understand anomaly properties on a single sample level. With this we take a closer\nlook on the results of our model for machine ID 2 of machine type valve and machine ID 6 of machine\ntype fan to provide further insights towards benefits and limitations of our approach.",
+      "size": 485,
+      "sentences": 3
+    },
+    {
+      "id": 59,
+      "content": "6 of machine\ntype fan to provide further insights towards benefits and limitations of our approach. 5.2 Explainability\nAs described in Section 3.3 our approach is based on calculating the difference between a reference\nspectrogram Q and a test spectrogram W. Thereby, the resulting difference D is a direct visualization\nof the positions in the test spectrogram, usually energies or amplitudes, that surpass the value of – in\nthe case of a 99%-quantile as pooling statistics – 99% of the values of the training spectrograms at\n===  10 ===\nthat exact position.",
+      "size": 559,
+      "sentences": 2
+    },
+    {
+      "id": 60,
+      "content": "ing statistics – 99% of the values of the training spectrograms at\n===  10 ===\nthat exact position. Figure 4 shows an anormal and a normal spectrogram alongside its explainability\noutput. The explainability output of the normal spectrogram in the lower row shows rather randomly\ndistributed points. Yet, the explainability output of the anormal spectrogram in the upper row shows\nhigher excitations on different points that resemble structures in the original spectrogram.",
+      "size": 472,
+      "sentences": 4
+    },
+    {
+      "id": 61,
+      "content": "shows\nhigher excitations on different points that resemble structures in the original spectrogram. Firstly,\nthere are significant bright spots at 4 kHz that show up periodically, secondly, we find straight\nhorizontal excitations below 1 kHz. For an engineer familiar with the machine at hand, those findings\ncan be extremely valuable to identify the root cause of the current problem. Additionally, the\nexplainability output can be used as input for downstream classification models.",
+      "size": 483,
+      "sentences": 4
+    },
+    {
+      "id": 62,
+      "content": "Additionally, the\nexplainability output can be used as input for downstream classification models. Figure 4: Exemplary explainability spectrograms (right) and the corresponding original spectrograms (left). Upper row shows\nan anormal spectrogram, lower row a normal one. This example is from slider ID 4 and the explainability output was\ngenerated using a 99%-quantile approach.",
+      "size": 378,
+      "sentences": 4
+    },
+    {
+      "id": 63,
+      "content": "mple is from slider ID 4 and the explainability output was\ngenerated using a 99%-quantile approach. 5.3 In-depth evaluation of results\nTo gain a deeper understanding of our approach and its applicability we perform an in-depth analysis\nof the valve ID 2 and fan ID 6 results. We chose those as they represent cases where our model\noutperforms the baseline (valve ID 2) and vice versa (fan ID 6).",
+      "size": 395,
+      "sentences": 3
+    },
+    {
+      "id": 64,
+      "content": "ey represent cases where our model\noutperforms the baseline (valve ID 2) and vice versa (fan ID 6). 5.3.1 Valve ID 2\nFor machine type valve and machine ID 2, our approach generates an anomaly score that induces an\nalmost perfect split between normal and anormal samples, the AUC is 0.994(7). Figure 5 shows three\nrandomly chosen anormal spectrograms on the left and three randomly chosen normal spectrograms\nfrom a test set alongside their explainability output.",
+      "size": 462,
+      "sentences": 3
+    },
+    {
+      "id": 65,
+      "content": "nd three randomly chosen normal spectrograms\nfrom a test set alongside their explainability output. While it is hard to see a significant difference\nbetween the two classes by eye in the spectrograms, the explainability output clearly shows that the\nvertical lines in the spectrograms, which may relate to opening and closing the valve, show\nsignificantly higher excitations for the anormal spectrograms.",
+      "size": 404,
+      "sentences": 2
+    },
+    {
+      "id": 66,
+      "content": "opening and closing the valve, show\nsignificantly higher excitations for the anormal spectrograms. ===  11 ===\nFigure 5: Three anormal spectrograms (a) and three normal spectrograms alongside (b) their explainability output, each\nchosen randomly from a test set. The spectrograms belong the machine type valve and machine ID 2. Next, we display three normal spectrograms that have been assigned a relatively high anomaly score,\ncf. Figure 6.",
+      "size": 441,
+      "sentences": 5
+    },
+    {
+      "id": 67,
+      "content": "ay three normal spectrograms that have been assigned a relatively high anomaly score,\ncf. Figure 6. The vertical lines visible in the explainability output doesn’t seem to be higher than in\nthe case of the randomly chosen normal spectrograms in Figure 5, however, in addition horizontal\nlines are visible over the whole measurement time.",
+      "size": 337,
+      "sentences": 3
+    },
+    {
+      "id": 68,
+      "content": "ams in Figure 5, however, in addition horizontal\nlines are visible over the whole measurement time. At that point, a human expert could enter the\nloop to identify if this excitation is the result of an anormal behaving machine or other non-failure\nindicating reasons like background noise. ===  12 ===\nFigure 6: Three spectrograms of class normal (left) that have been assigned high anomaly scores with their respective\nexplainability spectrograms (right).",
+      "size": 456,
+      "sentences": 3
+    },
+    {
+      "id": 69,
+      "content": "t have been assigned high anomaly scores with their respective\nexplainability spectrograms (right). The spectrograms belong to machine type valve with machine ID 2. 5.3.2 Fan ID 6\nFor machine type fan and machine ID 6 our approach achieves an AUC of 0.62(3) as compared to 0.97\nwith the baseline model. Hence, the AE approach can learn patterns that are largely inaccessible to\nour statistics-based approach. Figure 7 shows three normal and anormal samples with high anomaly\nscores.",
+      "size": 482,
+      "sentences": 5
+    },
+    {
+      "id": 70,
+      "content": "tatistics-based approach. Figure 7 shows three normal and anormal samples with high anomaly\nscores. For each class the scores are in the same range. For the normal samples, it is striking that the\nexcitations highlighted by our approach that led to the high anomaly score, show almost no specific\nstructure but are rather distributed across the whole spectrogram. The same is true for the last one\nof the anormal samples and most other anormal spectrogram, which are not shown here.",
+      "size": 482,
+      "sentences": 5
+    },
+    {
+      "id": 71,
+      "content": "r the last one\nof the anormal samples and most other anormal spectrogram, which are not shown here. Figure 8\nshows the three spectrograms with the lowest anomaly score for normal and anormal class. Again,\nfor both classes the score is in the same range and no obvious difference between normal and\nanormal samples can be identified by eye, neither in the original spectrograms nor in the explanation\noutputs.",
+      "size": 408,
+      "sentences": 3
+    },
+    {
+      "id": 72,
+      "content": "ples can be identified by eye, neither in the original spectrograms nor in the explanation\noutputs. A detailed investigation of the differences between normal and anormal samples for that machine,\nwhich would also include human experts, could help to understand the weak performance of our\nmodel but is beyond the scope of this study. Basically, as our approach intrinsically depends on the assumption that anormal spectrograms\ncontain excitations higher than what is normally observed.",
+      "size": 486,
+      "sentences": 3
+    },
+    {
+      "id": 73,
+      "content": "the assumption that anormal spectrograms\ncontain excitations higher than what is normally observed. A possible explanation could be that, for\nthis machine, anomalies are caused by excitations that are too low rather than too high or due to\nother features, which we cannot (yet) include in our model. Expanding our approach in these\ndirections is a future task. ===  13 ===\nFigure 7: Normal spectrograms with high anomaly scores (a) and anormal ones with high anomaly scores (b).",
+      "size": 478,
+      "sentences": 4
+    },
+    {
+      "id": 74,
+      "content": "7: Normal spectrograms with high anomaly scores (a) and anormal ones with high anomaly scores (b). Samples\nbelong to machine type fan and machine ID 6. ===  14 ===\nFigure 8: As Figure 7 but with normal (a) and anormal (b) spectrograms that our approach assigns low anomaly scores, too. 5.4 Influence of noise\nIn industrial settings, noise is an omnipresent source of difficulties when it comes to dealing with\nsound data.",
+      "size": 421,
+      "sentences": 4
+    },
+    {
+      "id": 75,
+      "content": "settings, noise is an omnipresent source of difficulties when it comes to dealing with\nsound data. For the task of anomaly detection, noisy environments can lead to false positives or\nmight mask patterns that are important for anomaly detection models. Hence, results of algorithmic\nanomaly detection are usually worse the noisier sound recordings are [1]. The MIMII-dataset\nprovides sound recordings with three different noise levels, -6 dB, 0 dB and 6 dB.",
+      "size": 457,
+      "sentences": 4
+    },
+    {
+      "id": 76,
+      "content": "he MIMII-dataset\nprovides sound recordings with three different noise levels, -6 dB, 0 dB and 6 dB. Figure 9 shows the\nresults of the anomaly detection with our algorithm on all three noise levels of the MIMII dataset. In\ngeneral, we see decreasing detection performance for increasing noise levels.",
+      "size": 299,
+      "sentences": 3
+    },
+    {
+      "id": 77,
+      "content": "the MIMII dataset. In\ngeneral, we see decreasing detection performance for increasing noise levels. However, the severity\nof this effect varies strongly for different machines, as for example we see a huge influence of the\nnoise level for machine type fan, whereas almost no influence can be measured for machine type\nslider. ===  15 ===\nFigure 9: Results of our anomaly detection algorithm for different noise levels of the MIMII dataset.",
+      "size": 439,
+      "sentences": 4
+    },
+    {
+      "id": 78,
+      "content": "gure 9: Results of our anomaly detection algorithm for different noise levels of the MIMII dataset. To provide further placement in recent literature, we compare our results on the -6 dB data against\nthe approach recently published by R. Müller et. al. [15].",
+      "size": 258,
+      "sentences": 4
+    },
+    {
+      "id": 79,
+      "content": "re our results on the -6 dB data against\nthe approach recently published by R. Müller et. al. [15]. They use state-of-art CNN architectures\npretrained on image net to calculate feature vectors that subsequently serve as input to classic\nanomaly detection algorithms like One-Class Support vector machine, Kernel Density Estimation, and\nthe like.",
+      "size": 345,
+      "sentences": 4
+    },
+    {
+      "id": 80,
+      "content": "etection algorithms like One-Class Support vector machine, Kernel Density Estimation, and\nthe like. In Figure 10 we compare the results of our algorithm to the best and second-best result of\nthe paper “Acoustic Anomaly Detection for Machine Sounds based on Image Transfer Learning” [15]. In general, the results of our model and of the Image-Transfer-Learning (ITL) approach [15] vary\nstrongly for different machines.",
+      "size": 417,
+      "sentences": 3
+    },
+    {
+      "id": 81,
+      "content": "model and of the Image-Transfer-Learning (ITL) approach [15] vary\nstrongly for different machines. As for the 0 dB data, our approach performs weaker than the deep\nlearning-based approach for machine type fan. For the other three machine types, our approach is\non a par for pump and performs better on slider and valve than the ITL approach.",
+      "size": 341,
+      "sentences": 3
+    },
+    {
+      "id": 82,
+      "content": "s, our approach is\non a par for pump and performs better on slider and valve than the ITL approach. ===  16 ===\nFigure 10: Comparison of our approach and the approach published in the paper „Acoustic Anomaly Detection for Machine\nSounds based on Image Transfer Learning” (ITL)) [15]. Anomaly detection results are evaluated using AUC and experiments\nare performed using the -6 dB noise level of the MIMII dataset [1].",
+      "size": 417,
+      "sentences": 3
+    },
+    {
+      "id": 83,
+      "content": "uated using AUC and experiments\nare performed using the -6 dB noise level of the MIMII dataset [1]. 6 Relation to binomial distribution\nIn Section 3.1. we outlined the intuition of our approach with relation to the binomial\ndistribution. In this section we investigate this relation by comparing experimentally obtained\ndeviation counts with the corresponding theory based on the binomial distribution.",
+      "size": 402,
+      "sentences": 3
+    },
+    {
+      "id": 84,
+      "content": "entally obtained\ndeviation counts with the corresponding theory based on the binomial distribution. To obtain a\nstatistically relevant number of samples we conduct this experiment using acoustic data\nprovided by a ZF Friedrichshafen AG production side. More specifically we use data from\nacoustic testing of passenger car transmissions. Each spectrogram consists of N=56942 ‘pixels’.",
+      "size": 383,
+      "sentences": 4
+    },
+    {
+      "id": 85,
+      "content": "rom\nacoustic testing of passenger car transmissions. Each spectrogram consists of N=56942 ‘pixels’. We perform the following steps for five different train/test splits and average the results:\n• Take 50000 spectrograms from acoustic testing. • Split the spectrograms into training and test sets using an 80:20 ratio. • Calculate a reference spectrogram as described in Section 3.3. using quantiles with z-\nvalues of 0.5, 0.75, 0.9, 0.95, and 0.99.",
+      "size": 447,
+      "sentences": 5
+    },
+    {
+      "id": 86,
+      "content": "gram as described in Section 3.3. using quantiles with z-\nvalues of 0.5, 0.75, 0.9, 0.95, and 0.99. • For each spectrogram in the test set, count the number of ‘pixels’ exceeding the\ncorresponding value from the reference. • Calculate the mean of the deviation and compare to the binomial distribution, given by\n(1-z) * N.\n===  17 ===\nIn Figure 11, we present the relative deviation between the expected value and the\nexperimentally observed means.",
+      "size": 448,
+      "sentences": 3
+    },
+    {
+      "id": 87,
+      "content": "we present the relative deviation between the expected value and the\nexperimentally observed means. Figure 11: Relative deviation between the number of `pixel‘ larger than the corresponding reference value and the expected\nvalue based on binomial distribution. Each point denotes the mean and standard deviation of the relative deviation\naveraged over five different splits.",
+      "size": 374,
+      "sentences": 3
+    },
+    {
+      "id": 88,
+      "content": "otes the mean and standard deviation of the relative deviation\naveraged over five different splits. The experimentally determined values deviate from the expected values (based on binomial\ndistribution) by slightly less than one percent for each z-quantile value considered. Interestingly\nwe observe substantially larger standard deviations between experiments and theory (not\nshown here), with larger standard deviations for the experimental setting.",
+      "size": 451,
+      "sentences": 3
+    },
+    {
+      "id": 89,
+      "content": "eriments and theory (not\nshown here), with larger standard deviations for the experimental setting. We believe that this\narises from the violation of the i.i.d. assumption in the experimental setting: neighboring\nfrequencies and time windows are, of course, highly correlated. Incorpoarting theoretical\napproaches that account for the non-i.i.d. nature of observations in machine sound spectrograms\nwill be an important future direction of our research.",
+      "size": 453,
+      "sentences": 5
+    },
+    {
+      "id": 90,
+      "content": "f observations in machine sound spectrograms\nwill be an important future direction of our research. 7 Conclusion\nIn this work we presented a novel approach for identifying anormal spectrograms in machine\nsound data. Our approach is based on the entry-wise statistical evaluation of spectrograms and\ncan be theoretically motivated. Additionally, the proposed algorithm offers intrinsic\nexplainability making it particular suitable for applications that involve or require human\nsupervision.",
+      "size": 489,
+      "sentences": 4
+    },
+    {
+      "id": 91,
+      "content": "inability making it particular suitable for applications that involve or require human\nsupervision. Applied to the MIMII dataset we achieved AUC scores of more than 0.8 for 11 out of 16 machines\nand more than 0.97 for four machines, which means an almost perfect split between normal and\nanormal samples. On average we outperformed the AE baseline for three out of four machine\ntypes. Interestingly, for machine type fan our model performed much weaker as compared to\nslide rail, pump, and valve.",
+      "size": 496,
+      "sentences": 4
+    },
+    {
+      "id": 92,
+      "content": "y, for machine type fan our model performed much weaker as compared to\nslide rail, pump, and valve. ===  18 ===\nConsistent with the baseline results, our approach is affected by noise levels with decreasing\ndetection performance for increasing noise. However, this general pattern does not apply to\nevery machine. For high noise levels of -6 dB, we compared the results of our model to the\nresults of the deep learning-based approach published in [15].",
+      "size": 452,
+      "sentences": 4
+    },
+    {
+      "id": 93,
+      "content": "ared the results of our model to the\nresults of the deep learning-based approach published in [15]. Here, even though our approach\nis much less complex it achieves a detection performance comparable to that of [15]. At that point, we like to highlight two central observations anomalous sound detection:\n1. The noisier the sound recordings are, the more difficult it becomes to detect anomalies.",
+      "size": 395,
+      "sentences": 4
+    },
+    {
+      "id": 94,
+      "content": "ection:\n1. The noisier the sound recordings are, the more difficult it becomes to detect anomalies. Hence, from a data-centric perspective, efforts should primarily focus on obtaining low\nnoise recordings. 2. Anomaly detection performance varies vastly between different machine types and even\nindividual machines of the same type (e.g., even machine IDs). Currently, there is no one-\nsize-fits all method for ASD.",
+      "size": 414,
+      "sentences": 6
+    },
+    {
+      "id": 95,
+      "content": "f the same type (e.g., even machine IDs). Currently, there is no one-\nsize-fits all method for ASD. Hence, in practical applications, the granularity, at which\nalgorithms and hyperparameters are tuned and then applied must be determined\nexperimentally, taking into account the specific technical conditions.",
+      "size": 307,
+      "sentences": 3
+    },
+    {
+      "id": 96,
+      "content": "n applied must be determined\nexperimentally, taking into account the specific technical conditions. In summary, we propose a new algorithmic approach for anomalous sound detection that is\ntheoretically founded, easy to implement, exhibits good to very good performance, and an\nintrinsic explainability. For three out of four machines in the MIMII dataset, the algorithm\nshowed comparable or better detection performance even if compared to deep learning-based\napproaches.",
+      "size": 471,
+      "sentences": 3
+    },
+    {
+      "id": 97,
+      "content": "owed comparable or better detection performance even if compared to deep learning-based\napproaches. That is why the algorithm described in this work is used productively for detecting\nanormal behavior of ZF products during vibration quality tests, also called NVH tests. Those\ntests include human supervision and inspection. Therefore, and because the tested products are\nusually expensive, an algorithm that can explain why it assigned a high anomaly score to a\nproduct is of utmost importance.",
+      "size": 495,
+      "sentences": 4
+    },
+    {
+      "id": 98,
+      "content": "gorithm that can explain why it assigned a high anomaly score to a\nproduct is of utmost importance. Additionally, we experience a higher acceptance of algorithms\nin production settings if the basic idea behind the algorithm is easily explainable also to non-\nmachine learning experts. Furthermore, this can pave the way towards the usage of more\ncomplex and sometimes better performing machine learning algorithms at a later stage.",
+      "size": 431,
+      "sentences": 3
+    },
+    {
+      "id": 99,
+      "content": "usage of more\ncomplex and sometimes better performing machine learning algorithms at a later stage. We believe that our algorithm has the potential to serve as standard starting point for\nanomalous sound detection in industrial applications.",
+      "size": 241,
+      "sentences": 2
+    },
+    {
+      "id": 100,
+      "content": "ntial to serve as standard starting point for\nanomalous sound detection in industrial applications. In the future, we plan to evaluate a two-\nsided version of our method and want to adopt more enhanced quantile regression as well as\nmultivariate quantile-based approaches that account for the strong correlations between\nneighboring values in sound spectrograms.",
+      "size": 362,
+      "sentences": 2
+    },
+    {
+      "id": 101,
+      "content": "proaches that account for the strong correlations between\nneighboring values in sound spectrograms. References\n[1] H. Purohit et al., “MIMII Dataset: Sound Dataset for Malfunctioning Industrial Machine\nInvestigation and Inspection,” arXiv:1909.09347 [cs, eess, stat], Sep. 2019, Accessed: Dec. 21, 2021. [Online]. Available: http://arxiv.org/abs/1909.09347\n[2] C. C. Aggarwal, “An Introduction to Outlier Analysis,” in Outlier Analysis, C. C. Aggarwal, Ed.",
+      "size": 456,
+      "sentences": 4
+    },
+    {
+      "id": 102,
+      "content": "[2] C. C. Aggarwal, “An Introduction to Outlier Analysis,” in Outlier Analysis, C. C. Aggarwal, Ed. Cham:\nSpringer International Publishing, 2017, pp. 1–34. doi: 10.1007/978-3-319-47578-3_1. [3] V. Chandola, A. Banerjee, and V. Kumar, “Anomaly detection: A survey,” ACM Comput. Surv., vol. 41, no. 3, p. 15:1-15:58, Jul. 2009, doi: 10.1145/1541880.1541882. [4] M. A. F. Pimentel, D. A. Clifton, L. Clifton, and L. Tarassenko, “A review of novelty detection,”\nSignal Processing, vol. 99, pp.",
+      "size": 490,
+      "sentences": 11
+    },
+    {
+      "id": 103,
+      "content": "on, L. Clifton, and L. Tarassenko, “A review of novelty detection,”\nSignal Processing, vol. 99, pp. 215–249, Jun. 2014, doi: 10.1016/j.sigpro.2013.12.026. ===  19 ===\n[5] R. Chalapathy and S. Chawla, “Deep Learning for Anomaly Detection: A Survey,” arXiv:1901.03407\n[cs, stat], Jan. 2019, Accessed: Jan. 15, 2021. [Online]. Available: http://arxiv.org/abs/1901.03407\n[6] G. Pang, C. Shen, L. Cao, and A. V. D. Hengel, “Deep Learning for Anomaly Detection: A Review,”\nACM Comput. Surv., vol. 54, no.",
+      "size": 498,
+      "sentences": 9
+    },
+    {
+      "id": 104,
+      "content": "d A. V. D. Hengel, “Deep Learning for Anomaly Detection: A Review,”\nACM Comput. Surv., vol. 54, no. 2, p. 38:1-38:38, Mar. 2021, doi: 10.1145/3439950. [7] N. Ono et al., Proceedings of the 5th Workshop on Detection and Classication of Acoustic Scenes\nand Events (DCASE 2020). Zenodo, 2020. doi: 10.5281/zenodo.4061782.",
+      "size": 318,
+      "sentences": 7
+    },
+    {
+      "id": 105,
+      "content": "Classication of Acoustic Scenes\nand Events (DCASE 2020). Zenodo, 2020. doi: 10.5281/zenodo.4061782. [8] F. Font, A. Mesaros, D. P. W. Ellis, E. Fonseca, M. Fuentes, and B. Elizalde, Proceedings of the 6th\nWorkshop on Detection and Classication of Acoustic Scenes and Events (DCASE 2021). Barcelona,\nSpain: Music Technology Group - Universitat Pompeu Fabra, 2021. doi: 10.5281/zenodo.5770113.",
+      "size": 391,
+      "sentences": 4
+    },
+    {
+      "id": 106,
+      "content": "elona,\nSpain: Music Technology Group - Universitat Pompeu Fabra, 2021. doi: 10.5281/zenodo.5770113. [9] G. Coelho, L. M. Matos, P. J. Pereira, A. Ferreira, A. Pilastri, and P. Cortez, “Deep autoencoders for\nacoustic anomaly detection: experiments with working machine and in-vehicle audio,” Neural\nComput & Applic, May 2022, doi: 10.1007/s00521-022-07375-2.",
+      "size": 357,
+      "sentences": 2
+    },
+    {
+      "id": 107,
+      "content": "g machine and in-vehicle audio,” Neural\nComput & Applic, May 2022, doi: 10.1007/s00521-022-07375-2. [10] G. Coelho et al., “Deep Dense and Convolutional Autoencoders for Machine Acoustic Anomaly\nDetection,” in Artificial Intelligence Applications and Innovations, Cham, 2021, pp. 337–348. doi:\n10.1007/978-3-030-79150-6_27. [11] S. Kapka, “ID-Conditioned Auto-Encoder for Unsupervised Anomaly Detection,”\narXiv:2007.05314 [cs, eess], Nov. 2020, doi: 10.5281/zenodo.4061782.",
+      "size": 473,
+      "sentences": 5
+    },
+    {
+      "id": 108,
+      "content": "supervised Anomaly Detection,”\narXiv:2007.05314 [cs, eess], Nov. 2020, doi: 10.5281/zenodo.4061782. [12] Y. Koizumi, S. Saito, H. U. Y. Kawachi, and N. Harada, “Unsupervised Detection of Anomalous\nSound based on Deep Learning and the Neyman-Pearson Lemma,” IEEE/ACM Trans. Audio Speech\nLang. Process., vol. 27, no. 1, pp. 212–224, Jan. 2019, doi: 10.1109/TASLP.2018.2877258.",
+      "size": 374,
+      "sentences": 7
+    },
+    {
+      "id": 109,
+      "content": "dio Speech\nLang. Process., vol. 27, no. 1, pp. 212–224, Jan. 2019, doi: 10.1109/TASLP.2018.2877258. [13] I. Kuroyanagi, T. Hayashi, K. Takeda, and T. Toda, “Anomalous Sound Detection Using a Binary\nClassification Model and Class Centroids,” in 2021 29th European Signal Processing Conference\n(EUSIPCO), Aug. 2021, pp. 1995–1999. doi: 10.23919/EUSIPCO54536.2021.9616198.",
+      "size": 369,
+      "sentences": 8
+    },
+    {
+      "id": 110,
+      "content": "Processing Conference\n(EUSIPCO), Aug. 2021, pp. 1995–1999. doi: 10.23919/EUSIPCO54536.2021.9616198. [14] P. Primus, V. Haunschmid, P. Praher, and G. Widmer, “Anomalous Sound Detection as a Simple\nBinary Classification Problem with Careful Selection of Proxy Outlier Examples,” arXiv:2011.02949 [cs,\neess], Nov. 2020, Accessed: Oct. 18, 2021. [Online].",
+      "size": 351,
+      "sentences": 5
+    },
+    {
+      "id": 111,
+      "content": "Proxy Outlier Examples,” arXiv:2011.02949 [cs,\neess], Nov. 2020, Accessed: Oct. 18, 2021. [Online]. Available: http://arxiv.org/abs/2011.02949\n[15] R. Müller, F. Ritz, S. Illium, and C. Linnhoff-Popien, “Acoustic Anomaly Detection for Machine\nSounds based on Image Transfer Learning,” Aug. 2022, pp. 49–56. Accessed: Aug. 22, 2022. [Online].",
+      "size": 341,
+      "sentences": 6
+    },
+    {
+      "id": 112,
+      "content": "Sounds based on Image Transfer Learning,” Aug. 2022, pp. 49–56. Accessed: Aug. 22, 2022. [Online]. Available: https://www.scitepress.org/Link.aspx?doi=10.5220/0010185800490056\n[16] P. Perera and V. M. Patel, “Learning Deep Features for One-Class Classification,” IEEE\nTransactions on Image Processing, vol. 28, no. 11, pp. 5450–5463, Nov. 2019, doi:\n10.1109/TIP.2019.2917862. [17] K. He, X. Zhang, S. Ren, and J. Sun, “Deep Residual Learning for Image Recognition,” 2016, pp. 770–778.",
+      "size": 484,
+      "sentences": 11
+    },
+    {
+      "id": 113,
+      "content": "e, X. Zhang, S. Ren, and J. Sun, “Deep Residual Learning for Image Recognition,” 2016, pp. 770–778. Accessed: Aug. 23, 2022. [Online]. Available:\nhttps://openaccess.thecvf.com/content_cvpr_2016/html/He_Deep_Residual_Learning_CVPR_2016_\npaper.html\n[18] B. Schölkopf, R. C. Williamson, A. Smola, J. Shawe-Taylor, and J. Platt, “Support Vector Method\nfor Novelty Detection,” in Advances in Neural Information Processing Systems, 1999, vol. 12. Accessed: Aug. 23, 2022. [Online].",
+      "size": 475,
+      "sentences": 9
+    },
+    {
+      "id": 114,
+      "content": "dvances in Neural Information Processing Systems, 1999, vol. 12. Accessed: Aug. 23, 2022. [Online]. Available:\nhttps://proceedings.neurips.cc/paper/1999/hash/8725fb777f25776ffa9076e44fcfd776-Abstract.html\n===  20 ===\n[19] F. T. Liu, K. M. Ting, and Z.-H. Zhou, “Isolation Forest,” in 2008 Eighth IEEE International\nConference on Data Mining, Dec. 2008, pp. 413–422. doi: 10.1109/ICDM.2008.17.",
+      "size": 392,
+      "sentences": 7
+    },
+    {
+      "id": 115,
+      "content": "th IEEE International\nConference on Data Mining, Dec. 2008, pp. 413–422. doi: 10.1109/ICDM.2008.17. [20] A. Hazan, J. Lacaille, and K. K. Madani, “Extreme value statistics for vibration spectra outlier\ndetection,” in International Conference on Condition Monitoring and Machinery Failure Prevention\nTechnologies, Londres, United Kingdom, Jun. 2012, p. p.1. Accessed: Dec. 22, 2021. [Online].",
+      "size": 391,
+      "sentences": 7
+    },
+    {
+      "id": 116,
+      "content": "ention\nTechnologies, Londres, United Kingdom, Jun. 2012, p. p.1. Accessed: Dec. 22, 2021. [Online]. Available: https://hal.archives-ouvertes.fr/hal-00681045\n[21] “DCASE2020 Challenge - DCASE.” https://dcase.community/challenge2020/ (accessed Sep. 19,\n2022). [22] B. McFee et al., “librosa: Audio and Music Signal Analysis in Python,” Proceedings of the 14th\nPython in Science Conference, pp. 18–24, 2015, doi: 10.25080/Majora-7b98e3ed-003.",
+      "size": 439,
+      "sentences": 7
+    },
+    {
+      "id": 117,
+      "content": "dings of the 14th\nPython in Science Conference, pp. 18–24, 2015, doi: 10.25080/Majora-7b98e3ed-003. [23] C. R. Harris et al., “Array programming with NumPy,” Nature, vol. 585, no. 7825, Art. no. 7825,\nSep. 2020, doi: 10.1038/s41586-020-2649-2. [24] Provost, Foster J., et al. The case against accuracy estimation for comparing induction\nalgorithms. in: ICML. 1998. S. 445-453. [25] (2000). SHEWHART CONTROL CHARTS . In: Swamidass, P.M. (eds) Encyclopedia of Production\nand Manufacturing Management.",
+      "size": 498,
+      "sentences": 15
+    },
+    {
+      "id": 118,
+      "content": "CONTROL CHARTS . In: Swamidass, P.M. (eds) Encyclopedia of Production\nand Manufacturing Management. Springer, Boston, MA. https://doi.org/10.1007/1-4020-0612-\n8_874. [26] R. Koenker, V. Chernozhukov, X. He and L. Peng, (Eds.). (2017). Handbook of quantile regression. [27] M. Ditzhaus, R. Fried and M. Pauly, QANOVA: quantile-based permutation methods for general\nfactorial designs. TEST, 2021, 30(4), 960-979.",
+      "size": 410,
+      "sentences": 10
+    },
+    {
+      "id": 119,
+      "content": "NOVA: quantile-based permutation methods for general\nfactorial designs. TEST, 2021, 30(4), 960-979. [28] M. Baumeister, M. Ditzhaus and M. Pauly, Quantile-based MANOVA: A new tool for inferring\nmultivariate data in factorial designs. Journal of Multivariate Analysis, 2024, 199, 105246.",
+      "size": 286,
+      "sentences": 4
+    }
+  ]
+}

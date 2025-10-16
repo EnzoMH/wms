@@ -1,0 +1,1791 @@
+{
+  "source": "ArXiv",
+  "filename": "162_SmartFactory_AssetOpsBench__Benchmarking_AI_Agents_fo.pdf",
+  "domain": "SmartFactory",
+  "total_chars": 99412,
+  "total_chunks": 297,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\n5202\nnuJ\n4\n]IA.sc[\n1v82830.6052:viXra\nAssetOpsBench: Benchmarking AI Agents for Task\nAutomation in Industrial Asset Operations and\nMaintenance\nDhavalPatel1∗ ShuxinLin1∗ JamesRayfield1∗ NianjunZhou1∗\nRomanVaculin1 NataliaMartinez1 FearghalO’donncha2 JayantKalagnanam1\n1IBMResearch-Yorktown 2IBMResearch-Ireland\npateldha@us.ibm.com, shuxin.lin@ibm.com, jtray@ibm.com, jzhou@us.ibm.com,\nvaculin@us.ibm.com, Natalia.Martinez.Gil@ibm.com, feardonn@ie.ibm.com,\njayant@us.ibm.com\n*Equalcontribution\nAbstract\nAI for Industrial Asset Lifecycle Management aims to automate complex oper-\national workflows—such as condition monitoring, maintenance planning, and\ninterventionscheduling—toreducehumanworkloadandminimizesystemdown-\ntime.",
+      "size": 734,
+      "sentences": 1
+    },
+    {
+      "id": 2,
+      "content": "maintenance planning, and\ninterventionscheduling—toreducehumanworkloadandminimizesystemdown-\ntime. Traditional AI/ML approaches have primarily tackled these problems in\nisolation,solvingnarrowtaskswithinthebroaderoperationalpipeline. Incontrast,\ntheemergenceofAIagentsandlargelanguagemodels(LLMs)introducesanext-\ngeneration opportunity: enabling end-to-end automation across the entire asset\nlifecycle.",
+      "size": 402,
+      "sentences": 3
+    },
+    {
+      "id": 3,
+      "content": "cesanext-\ngeneration opportunity: enabling end-to-end automation across the entire asset\nlifecycle. ThispaperenvisionsafuturewhereAIagentsautonomouslymanage\ntasksthatpreviouslyrequireddistinctexpertiseandmanualcoordination. Tothis\nend, we introduce AssetOpsBench—a unified framework and environment de-\nsignedtoguidethedevelopment,orchestration,andevaluationofdomain-specific\nagents tailored for Industry 4.0 applications.",
+      "size": 422,
+      "sentences": 3
+    },
+    {
+      "id": 4,
+      "content": "lopment,orchestration,andevaluationofdomain-specific\nagents tailored for Industry 4.0 applications. We outline the key requirements\nforsuchholisticsystemsandprovideactionableinsightsintobuildingagentsthat\nintegrateperception,reasoning,andcontrolforreal-worldindustrialoperations. Thesoftwareisavailableathttps://github.com/IBM/AssetOpsBench.",
+      "size": 341,
+      "sentences": 3
+    },
+    {
+      "id": 5,
+      "content": "rolforreal-worldindustrialoperations. Thesoftwareisavailableathttps://github.com/IBM/AssetOpsBench. 1 Introduction\nIndustrialassetssuchasdatacenterchillers[20]andwindfarms[18]arecomplex,multi-component\nsystems that generate vast amounts of multi-modal data—including time-series sensor readings,\ntextualinspectionandworkorderrecords,operationallogs,andimages—throughouttheirlifecycle.",
+      "size": 384,
+      "sentences": 3
+    },
+    {
+      "id": 6,
+      "content": "readings,\ntextualinspectionandworkorderrecords,operationallogs,andimages—throughouttheirlifecycle. The ability to monitor and interpret this heterogeneous data from diverse sources such as IoT\nSCADA(SupervisoryControlandDataAcquisition)sensors,operationalKPIs,failuremodelibraries,\nmaintenanceworkorders,andtechnicalmanualsisakeyforeffectiveAssetLifecycleManagement\n(ALM).However,subjectmatterexpertssuchasmaintenanceengineers,siteoperators,andplant\nmanagersfaceconsiderablechallengesinsynthesizinginsightsfromthesedisparatedatastreamsto\nsupporttimelyandcondition-awaredecisions.",
+      "size": 579,
+      "sentences": 2
+    },
+    {
+      "id": 7,
+      "content": "ngesinsynthesizinginsightsfromthesedisparatedatastreamsto\nsupporttimelyandcondition-awaredecisions. Thescale,asset’ssemanticdiversity,andapplication-\nspecificcontextsoftenrendertraditionalmonitoringandmanagementsystemsinadequate. Toaddressthesechallenges,theresearchandindustrialcommunitiesareincreasinglyturningtoAI\nagents—autonomous,goal-drivensystemscapableofintegratingdataacrosssilos,reasoningover\ncomplexconditions,andtriggeringactions.",
+      "size": 442,
+      "sentences": 3
+    },
+    {
+      "id": 8,
+      "content": "vensystemscapableofintegratingdataacrosssilos,reasoningover\ncomplexconditions,andtriggeringactions. AIagentsareparticularlypromisinginthecontextof\nIndustry4.0,wheretheconfluenceofreal-timeIoTtelemetry,enterpriseassetmanagement(EAM)\nsystems(e.g.,IBMMaximo[10]),andreliabilityengineeringframeworksnecessitatesscalableand\nPreprint. ===  2 ===\nFigure1: ComplexIndustrialAsset-DataCentersmanagingChillerandAirHandlingUnits(AHUs)\nintelligentautomation.",
+      "size": 446,
+      "sentences": 3
+    },
+    {
+      "id": 9,
+      "content": ": ComplexIndustrialAsset-DataCentersmanagingChillerandAirHandlingUnits(AHUs)\nintelligentautomation. Theseagentspromisetosupportawiderangeofindustrialworkflows,from\nanomaly detection to maintenance scheduling, by bridging the gap between raw sensor data and\nbusiness-levelinsights.",
+      "size": 280,
+      "sentences": 2
+    },
+    {
+      "id": 10,
+      "content": "to maintenance scheduling, by bridging the gap between raw sensor data and\nbusiness-levelinsights. Despite recent advances in agent-based systems—such as ReAct[29], HuggingGPT[22],\nChameleon[16],andGeneralistAgents[5,17]—agapremainsinadaptingtheseinnovationsforreal-\nworldindustrialsettings.Mostrecentdomainandapplicationspecificbenchmarks(e.g.,ITBench[11],\nSWE-bench[2],CustomerSupportBenchmarks)aretailoredtowardmachinelearning,ITorcustomer-\nservicedomainsanddonotaddresstheuniquechallengesofindustrialapplications,suchasdata\nmodalitydiversity,businessobjectcomplexity(e.g.,failuremode,workorders,assethierarchies),\nandtaskcollaborationacrossmultipleoperationalpersonas(reliabilitymodelingbyexpertandtime\nseriesmodelingbasedondatascientist).",
+      "size": 743,
+      "sentences": 2
+    },
+    {
+      "id": 11,
+      "content": "multipleoperationalpersonas(reliabilitymodelingbyexpertandtime\nseriesmodelingbasedondatascientist). This paper introduces AssetOpsBench, the first benchmark framework designed to evaluate AI\nagentsforreal-worldindustrialassetmanagementtasks. AssetOpsBenchoffersaprincipled,domain-\ngroundedapproachtodeveloping,evaluating,andcomparingmulti-agentsystemsoperatingacross\ndiverseindustrialdataenvironments.",
+      "size": 401,
+      "sentences": 3
+    },
+    {
+      "id": 12,
+      "content": "eloping,evaluating,andcomparingmulti-agentsystemsoperatingacross\ndiverseindustrialdataenvironments. Itincludes:\n• Acatalogofdomain-specificAIagents,includinganIoTagent,failuremodetosensor\nmapping(FMSR)agent,afoundationmodel-driventimeseriesanalyst(TSFM)agent,anda\nworkorder(WO)agent-eachtargetingspecificmodalitiesandtasks\n• Acurateddatasetof140+human-authorednaturallanguagequeries,groundedinreal\nindustrialscenarios,coveringtaskssuchassensor-querymapping,anomalyexplanation,\nandfailurediagnosis.",
+      "size": 497,
+      "sentences": 2
+    },
+    {
+      "id": 13,
+      "content": "industrialscenarios,coveringtaskssuchassensor-querymapping,anomalyexplanation,\nandfailurediagnosis. • AsimulatedindustrialenvironmentbasedonaCouchDB-backedIoTtelemetrysystem\nandmulti-sourcedataset,enablingend-to-endbenchmarkingofmulti-agentworkflows. • Anautomatedevaluationframeworkwithaprescriptionofsixevaluationmetrics(e.g.,task\ncompletness,retrievalaccuracy,resultverification,correctsequences,clarityandjustification\n• Acomparativeanalysisofarchitecturalparadigms—Tool-As-Agentvs.",
+      "size": 486,
+      "sentences": 3
+    },
+    {
+      "id": 14,
+      "content": "ctsequences,clarityandjustification\n• Acomparativeanalysisofarchitecturalparadigms—Tool-As-Agentvs. Plan-Executor\n—highlightingtradeoffsbetweeninterleaveddecompositionordecomposition-first\n• Asystematicprocedurefortheautomateddiscoveryofemergingfailuremodesinmulti-\nagentsystems,extendingbeyondfixedtaxonomies.",
+      "size": 310,
+      "sentences": 2
+    },
+    {
+      "id": 15,
+      "content": "fortheautomateddiscoveryofemergingfailuremodesinmulti-\nagentsystems,extendingbeyondfixedtaxonomies. Akeyinsightfromourstudyisthatdomaincomplexityinindustrialsettingsnecessitatesamulti-\nagentapproach—wherespecializedagentsaredevelopedforisolatedtasks,thenorchestratedto\nsolvecompositeproblems. Forexample,sensordatamaybehandledbyaIoTagent,whilefault\nhistoryismanagedbyafailurestrategylibraryagent. Theseagentsmustcollaborateintelligently\ntoansweruserquerieslike“Whyisthechillerefficiencydropping?",
+      "size": 495,
+      "sentences": 4
+    },
+    {
+      "id": 16,
+      "content": "Theseagentsmustcollaborateintelligently\ntoansweruserquerieslike“Whyisthechillerefficiencydropping? \"—queriesthatblendphysical\nreasoning, historical correlation, and operational semantics. Furthermore, the design of agent\nworkflows must respect the natural language and intent patterns used by industrial end users. UnlikeITusers,operatorsandengineersoftenrefertoassetsinphysicaloroperationalterms(e.g.,\n“chillerperformance,\"“oiltemperaturespike\")ratherthandatabasefieldsorontologies.",
+      "size": 483,
+      "sentences": 4
+    },
+    {
+      "id": 17,
+      "content": "ationalterms(e.g.,\n“chillerperformance,\"“oiltemperaturespike\")ratherthandatabasefieldsorontologies. Crafting\nrobustbenchmarksrequirescapturingthisdomain-specificlinguisticvariance,ensuringagentsnot\nonlyretrievecorrectanswersbutalsofollowreasoningpatternsalignedwithdomainexpectations. 2\n===  3 ===\n2 RelatedWork\nGeneralistAgents.Thedevelopmentofgeneralistagentscapableoforchestratingmultiplesub-agents\ntoaccomplishcomplextaskshasemergedasaprominentresearchdirection.",
+      "size": 466,
+      "sentences": 3
+    },
+    {
+      "id": 18,
+      "content": "eoforchestratingmultiplesub-agents\ntoaccomplishcomplextaskshasemergedasaprominentresearchdirection. Thisparadigmisevident\nacrossvariousdomains:web-basedsystemssuchasMagentic[5]andCUGA[17],multimodalagents\nlikeGEA[25],andsoftwareengineeringplatformsincludingHyperAgent[9],ChatDev[21],and\nMetaGPT[6].Theseagentstypicallyemploypredefinedsetsofsub-agents—e.g.,terminals,browsers,\ncodeeditors,fileexplorers—eachassignedspecificfunctionalrolestofacilitatetaskdecomposition\nandplanning.",
+      "size": 479,
+      "sentences": 2
+    },
+    {
+      "id": 19,
+      "content": "editors,fileexplorers—eachassignedspecificfunctionalrolestofacilitatetaskdecomposition\nandplanning. Whilethisarchitectureenablestargetedintegrationandtaskspecialization,itoften\nlacksflexibility. Mostsystemsadopthard-codedreasoningparadigmssuchasPlan-Execute,ReAct\nor Reflect, limiting the capacity to support new agent types, adapt to novel task distributions, or\nexperimentwithalternativecoordinationstrategiessuchasAOP[15],Prospector[12]. Domain-Specific Agents.",
+      "size": 464,
+      "sentences": 4
+    },
+    {
+      "id": 20,
+      "content": "xperimentwithalternativecoordinationstrategiessuchasAOP[15],Prospector[12]. Domain-Specific Agents. Solving specialized tasks often requires domain-specific capabilities,\npromptingthedevelopmentoftailoredbenchmarkssuchasMLEBench[2]andMLAgentBench[8]\nArena. These frameworks evaluate agents on a diverse set of machine learning prob-\nlems—classification,regression,andothers—acrossmultiplemodalitiesincludingtabularandimage\ndata.",
+      "size": 428,
+      "sentences": 4
+    },
+    {
+      "id": 21,
+      "content": "ob-\nlems—classification,regression,andothers—acrossmultiplemodalitiesincludingtabularandimage\ndata. They simulate end-to-end workflows, from resolving GitHub issues to automating model\ntrainingandevaluationpipelines. Inthiscontext,theconceptoftheAIResearchAgenthasgained\ntraction,referringtoagentsbuiltforscientificdiscoveryanditerativeexperimentation. Anotable\nexampleisMLGym[19],amodularbenchmarkfordevelopingandevaluatingresearchagentsin\nmachinelearningworkflows.",
+      "size": 466,
+      "sentences": 4
+    },
+    {
+      "id": 22,
+      "content": "leisMLGym[19],amodularbenchmarkfordevelopingandevaluatingresearchagentsin\nmachinelearningworkflows. However, mostcurrentbenchmarkslacksupportfortemporaldata\nmodalitiessuchastimeseries,whicharecriticalindomainslikeforecasting,anomalydetection,and\nassethealthmonitoring. Application-SpecificAgents. Agent-basedautomationisalsoadvancinginoperationalsettings,such\nasIToperationsandcompliancemonitoring.",
+      "size": 398,
+      "sentences": 4
+    },
+    {
+      "id": 23,
+      "content": "ent-basedautomationisalsoadvancinginoperationalsettings,such\nasIToperationsandcompliancemonitoring. FrameworksdevelopedunderinitiativeslikeITBench\n[11]andAIOpsLab[4]aimtoreplicatereal-worldscenariosinvolvingsitereliabilityengineering,\ndiagnostics,andsystemauditing. Thesesystemsreinforcetheimportanceofapplication-specific\nbenchmarks,cateredtowardpersona,thatnotonlyevaluateagentsacrossstructuredtasksbutalso\nexposecapabilitygapsanddriveinnovationinreasoningandorchestrationstrategies.",
+      "size": 485,
+      "sentences": 3
+    },
+    {
+      "id": 24,
+      "content": "structuredtasksbutalso\nexposecapabilitygapsanddriveinnovationinreasoningandorchestrationstrategies. Nevertheless,\ncurrentbenchmarksinthisspacetendtobenarrowinscope,lackingthegeneralityandcomposability\nrequiredtoassessagentperformanceacrossdiverse,multi-agentenvironments—especiallythose\ninvolvingcross-modalreasoningordomain-specifictoolusage. Fine-Tuned and Compact Models. Complementary to architectural advances, recent work has\nfocusedonimprovingagentperformanceviafine-tunedlanguagemodels.",
+      "size": 494,
+      "sentences": 4
+    },
+    {
+      "id": 25,
+      "content": "hitectural advances, recent work has\nfocusedonimprovingagentperformanceviafine-tunedlanguagemodels. So-calledLargeAction\nModels(LAMs) aredesigned toexecutestructured actionswithin environments, oftentrainedon\nlarge-scale datasets to support planning, sequencing, and low-level execution. Systems such as\nTaskBench[23],xLAM[31],AgentGen[7],AgentBank[24],AgentRM[28],FireAct[3],andAc-\ntionStudio[30]exemplifythistrend.",
+      "size": 416,
+      "sentences": 3
+    },
+    {
+      "id": 26,
+      "content": ",xLAM[31],AgentGen[7],AgentBank[24],AgentRM[28],FireAct[3],andAc-\ntionStudio[30]exemplifythistrend. Thesemodelsarefrequentlytrainedingroundedsettings—e.g.,\nWindows-basedenvironments[26]—andevaluatedacrossdiversetaskcategoriesincludingarithmetic,\nprogramming,andweb-basedinteraction. Whileeffective,theseapproachesaretypicallylimitedto\ntextualorsimulatedwebenvironmentsandhavenotyetdemonstratedbroadapplicabilitytomore\ncomplexorindustrialautomationtasksinvolvinghybridagentcompositions.",
+      "size": 485,
+      "sentences": 3
+    },
+    {
+      "id": 27,
+      "content": "stratedbroadapplicabilitytomore\ncomplexorindustrialautomationtasksinvolvinghybridagentcompositions. OpenChallenges. Despitetheseadvances,severalgapsremain. First,thereisalackofbenchmark\ndatasetstargetingindustrialassetdomains,particularlythoseinvolvingcondition-basedmonitoring,\npredictivemaintenance,andautomateddiagnostics. Second,time-seriesdata—whichplaysacentral\nroleinindustrialandinfrastructure-relatedapplications—remainsunderrepresentedinexistingagentic\nbenchmarks.",
+      "size": 474,
+      "sentences": 5
+    },
+    {
+      "id": 28,
+      "content": "ndustrialandinfrastructure-relatedapplications—remainsunderrepresentedinexistingagentic\nbenchmarks. Finally,fewsystemssupportorchestrationacrossheterogeneousagents,includingthose\nbased on text, code, or simulations, nor do they offer modular reasoning strategies adaptable to\ncomplex,multi-agentworkflows. Addressingthesegapsisessentialtoadvancegeneral-purposeagent\nintelligenceinhigh-stakes,real-worlddomains.",
+      "size": 410,
+      "sentences": 3
+    },
+    {
+      "id": 29,
+      "content": "ssingthesegapsisessentialtoadvancegeneral-purposeagent\nintelligenceinhigh-stakes,real-worlddomains. 3 ProblemDefinition: IntelligentAgent-BasedAssetOperations\nAssetOpsBenchaimstoestablishageneralistagentframeworkformanagingthelifecycleofphysical\nassets,integratingmultipledomain-specificagentsandasuiteofapplication-specifictasksforsys-\ntematicevaluation.",
+      "size": 355,
+      "sentences": 2
+    },
+    {
+      "id": 30,
+      "content": "egratingmultipledomain-specificagentsandasuiteofapplication-specifictasksforsys-\ntematicevaluation. Itencompassesacomprehensivesetofoperationalandanalyticaltasksthatarise\n3\n===  4 ===\nFigure2: ArchitectureoftheMulti-AgentSystem: TimeSeriesFoundationModel(TSFM)Agent,\nFailureModeSensorRelations(FMSR)Agent,WorkOrder(WO)Agent\n. acrosstheassetlifecycle.",
+      "size": 350,
+      "sentences": 3
+    },
+    {
+      "id": 31,
+      "content": "del(TSFM)Agent,\nFailureModeSensorRelations(FMSR)Agent,WorkOrder(WO)Agent\n. acrosstheassetlifecycle. Theinitialreleaseofthebenchmarkfocusesonscenarioscommonlyposed\nbydomainexperts—suchasmaintenanceengineers,reliabilityspecialists,andfacilityplanners—who\ntranslate operational needs into data-driven actions. These scenarios cover key tasks including\nanomalydetection,rootcauseanalysis,faultexplanation,predictivemaintenanceplanning,work\norderbundling,andservicerequestinitiation.",
+      "size": 478,
+      "sentences": 4
+    },
+    {
+      "id": 32,
+      "content": "ysis,faultexplanation,predictivemaintenanceplanning,work\norderbundling,andservicerequestinitiation. Forexample,ausermightrequest: “Helpconfigure\nananomalydetectionmodeltomonitorpowerconsumptionofCUXP.Triggeralertswhenusageis\nprojectedtoexceed8Watts above the maximum deviation observed overthepast30days”. Such\ntaskenablestimelycorrectiveactionssuchas“servicerequestcreation”tomitigatepotentialissues.",
+      "size": 401,
+      "sentences": 3
+    },
+    {
+      "id": 33,
+      "content": "s”. Such\ntaskenablestimelycorrectiveactionssuchas“servicerequestcreation”tomitigatepotentialissues. Figure2illustratesthefoundationalcomponentsofourproposedframeworkforintelligentagent-\nbasedassetoperations,drawinginspirationfromrecentadvancesingeneralistagentsaspreviously\ndiscussedinrelatedwork. AtthecoreistheAssetOpsAgent,whichfunctionsasaglobalcoordinator.",
+      "size": 361,
+      "sentences": 4
+    },
+    {
+      "id": 34,
+      "content": "spreviously\ndiscussedinrelatedwork. AtthecoreistheAssetOpsAgent,whichfunctionsasaglobalcoordinator. Itinterpretshigh-leveluserqueriesexpressedinnaturallanguage,decomposesthemintostructured\nsubtasks, delegates these to specialized functional sub-agents (IoT, TSFM, etc), and integrates\ntheiroutputsintocoherentresponses.",
+      "size": 319,
+      "sentences": 3
+    },
+    {
+      "id": 35,
+      "content": "ecialized functional sub-agents (IoT, TSFM, etc), and integrates\ntheiroutputsintocoherentresponses. Thearchitecturesupportson-demandinstantiationofagents,\ndynamic task planning, and reactive execution—capabilities essential for operating in complex,\nvariableindustrialenvironments.",
+      "size": 281,
+      "sentences": 2
+    },
+    {
+      "id": 36,
+      "content": "reactive execution—capabilities essential for operating in complex,\nvariableindustrialenvironments. Formally,givenaqueryortaskτ ∈T,theobjectiveistogeneratea\nvalidplanπ ∈Π,leveragememoryM topropagaterelevantcontext,coordinateappropriateagents\nA ∈ Afortaskfulfillment,andproduceanoutputo ∈ O thatalignswiththeintendedgoaland\ni\noperationalconstraints. Forbrevity,theAppendixA.1discussthemathematicformulationofagent\norientedplanningandA.2givesframeworkdetail.",
+      "size": 456,
+      "sentences": 3
+    },
+    {
+      "id": 37,
+      "content": "ty,theAppendixA.1discussthemathematicformulationofagent\norientedplanningandA.2givesframeworkdetail. Inthispaper,weintroducedastructuredtasktaxonomyalignedwiththestagesoftheassetmanage-\nmentlifecycle. Suchtaxonomyenablesconsistentandscalablescenariogenerationforbenchmarking.",
+      "size": 274,
+      "sentences": 3
+    },
+    {
+      "id": 38,
+      "content": "etmanage-\nmentlifecycle. Suchtaxonomyenablesconsistentandscalablescenariogenerationforbenchmarking. As illustrated in Figure 3, the taxonomy begins\nwith Asset Configuration, encompassing activities\nsuch as retrieving Failure Mode and Effects Analy-\nsis(FMEA)documentationandselectingperformance\nKPIs—typicallycarriedoutbyreliabilityengineers.",
+      "size": 342,
+      "sentences": 3
+    },
+    {
+      "id": 39,
+      "content": "naly-\nsis(FMEA)documentationandselectingperformance\nKPIs—typicallycarriedoutbyreliabilityengineers. It\nprogresses to Model Selection and Analysis, where\ndata scientists apply anomaly detection models (e.g.,\nTimeSeriesFoundationModel,MLModels)anduse\nLLM-powered retrieval to surface relevant historical\nfailures. IntheMonitoringandExecutionphase,oper-\nations teams manage live telemetry, refine detection\nmodels, and enforce safety guardrails.",
+      "size": 442,
+      "sentences": 3
+    },
+    {
+      "id": 40,
+      "content": "e,oper-\nations teams manage live telemetry, refine detection\nmodels, and enforce safety guardrails. Finally, the\nMaintenanceandResponsephasefocusesonaction-\nFigure3: ExemplarAssetOpsTaskHi-\nableoutputs: generatingworkorders,summarizingsys-\nerarchy: Detailedhierarchyisgivenin\ntemhealth,andprioritizinginterventions—taskstypi-\nAppendixB. callyhandledbymaintenanceengineers.",
+      "size": 372,
+      "sentences": 3
+    },
+    {
+      "id": 41,
+      "content": "in\ntemhealth,andprioritizinginterventions—taskstypi-\nAppendixB. callyhandledbymaintenanceengineers. 4\n===  5 ===\n4 AssetOpsBench\nAssetOpsBenchcomprisesarealisticmulti-sourcesdataset,over140+manuallyconstructedtask\nscenarios,andabenchmarkingenvironmentthatincludesthedesignoftaskspecificAIagentsand\nevaluationframework. Eachtaskscenarioreflectsessentialday-to-daycapabilitiesexpectedofagents\noperatinginrealisticindustrialsettings(seeSection4.2).",
+      "size": 445,
+      "sentences": 4
+    },
+    {
+      "id": 42,
+      "content": "entialday-to-daycapabilitiesexpectedofagents\noperatinginrealisticindustrialsettings(seeSection4.2). Thesetaskstypicallyrequireaccessing\ndomain-or-task-specificdata,whichwebrieflydiscussinSection4.1. Finally,wedescribethedesign\nofagentsandtoolsthatenableseamlesscommunicationwithinanargenticframework. 4.1 Multi-SourceDataset\nAkeydistinguishingfeatureofAssetOpsBenchisitsintegrationofrichlystructured,expert-curated\nmulti-sourcedatathatreflectsthecomplexityofreal-worldindustrialassetoperations.",
+      "size": 494,
+      "sentences": 4
+    },
+    {
+      "id": 43,
+      "content": "ured,expert-curated\nmulti-sourcedatathatreflectsthecomplexityofreal-worldindustrialassetoperations. Asshown\ninTable1,thebenchmarkincludesover2.3millionsensordatapointsacross6assets(4Chillers\nand2AHUs),capturingtime-seriessignalssuchaschillerreturntemperature,loadpercentage,and\ncondenserwaterflow.",
+      "size": 297,
+      "sentences": 2
+    },
+    {
+      "id": 44,
+      "content": "s),capturingtime-seriessignalssuchaschillerreturntemperature,loadpercentage,and\ncondenserwaterflow. Thestructuredfailuremodels,derivedfromFailureModeEffectsAnalysis\n(FMEA)records,encompass53failureentriesacrossthreeequipmentassets.FMEAprovidesprovide\ndetailedinsightsintothephysicallocationsoffailures,degradationmechanisms(suchaswearand\nerosion),andtheinfluencingfactors(includingruntime,fluidconditions,andshockloading)that\ncontributetoeachfailure.",
+      "size": 450,
+      "sentences": 2
+    },
+    {
+      "id": 45,
+      "content": "heinfluencingfactors(includingruntime,fluidconditions,andshockloading)that\ncontributetoeachfailure. Workorderhistoriesspan4.2Krecordsacross10+assetsandincorporate\nISO-standardfailurecodes,eventtimestamps,andlinkagestoalertsanddetectedanomalies. Table1:KeyDataModalitiesintheAssetOpsBenchDatasetwith3ExampleFields:\n*SensorData-dataset-level\nmetadataisincludedinCroissantfileduetolimitationofCroissant\nDataSource Field Description\nSensorData* ChillerReturnTemp.",
+      "size": 459,
+      "sentences": 3
+    },
+    {
+      "id": 46,
+      "content": "CroissantfileduetolimitationofCroissant\nDataSource Field Description\nSensorData* ChillerReturnTemp. Measurestemperatureofwaterreturningtochiller\n#IndustrialAssets:6 Chiller%Loaded Indicatescurrentloadasafractionofthemaximum\nQuantity:2.3Mpoints CondenserWaterFlow Indicatesthecurrentflowratethroughthecondenser\nFMEA FailureLocation/Comp.",
+      "size": 336,
+      "sentences": 2
+    },
+    {
+      "id": 47,
+      "content": "points CondenserWaterFlow Indicatesthecurrentflowratethroughthecondenser\nFMEA FailureLocation/Comp. Subsystem/partwherefailureoccurs(e.g.,bearings,)\n#IndustrialAssets:3 DegradationMechanism Physicalprocessdrivingfailure(e.g.,wear,erosion)\nQuantity:53records DegradationInfluences Stressorslikeruntime,fluidquality,orshockloading\nWorkOrders ISOFailureCode Standardizedclassificationofthefailurecategory.",
+      "size": 402,
+      "sentences": 2
+    },
+    {
+      "id": 48,
+      "content": "uidquality,orshockloading\nWorkOrders ISOFailureCode Standardizedclassificationofthefailurecategory. #IndustrialAssets:10+ EventLogTimestamp Time-markedentryrecordinganoperationalevent\nQuantity:4.2Krecords LinkedAnomaly/Alert Referencestoalertsoranomaliestiedtoworkorder\nAdditionally, the operational system generates a temporal sequence of alarm logs and leverages\ndomain-specifictechnicalrules,enablingcontextualgroundingofoperationalanomalies.",
+      "size": 445,
+      "sentences": 2
+    },
+    {
+      "id": 49,
+      "content": "logs and leverages\ndomain-specifictechnicalrules,enablingcontextualgroundingofoperationalanomalies. Thisdiverse\ndatafoundationfacilitatesacomprehensiveevaluationofdecision-making,toolusage,andmulti-hop\nreasoninginindustrialenvironments. FullschemadetailsareprovidedinAppendixD. 4.2 ScenarioDesignandCoverage\nEachscenarioinAssetOpsBenchrepresentsastructuredoperationalquerygroundedinthelifecycle-\nalignedtasktaxonomy(Figure3)andasset-specificdatasets(Table1).",
+      "size": 458,
+      "sentences": 4
+    },
+    {
+      "id": 50,
+      "content": "rationalquerygroundedinthelifecycle-\nalignedtasktaxonomy(Figure3)andasset-specificdatasets(Table1). Eachscenarioisformalized\nas:\nP =⟨id,type,text,category,form⟩\nwhereidisauniqueidentifier;typespecifiesthetasktype(e.g.,knowledgeretrieval,analytical);text\nisthenaturallanguagequery;categorydenotestheoperationaldomain(e.g.,anomalydetection);and\nformdefinestheexpectedoutput(e.g.,explanation,APIcall,actionplan).",
+      "size": 409,
+      "sentences": 2
+    },
+    {
+      "id": 51,
+      "content": "omain(e.g.,anomalydetection);and\nformdefinestheexpectedoutput(e.g.,explanation,APIcall,actionplan). Scenariosareclassified\nintotwotypes: (1)single-agentutterances,whichtargetaspecificagent(e.g.,IoT,TSFM,FMSR),\nand(2)multi-agenttasks,whichspanmultipleagentsandrequirecoordinatedreasoning. AsshowninTable2,AssetOpsBenchincludesatotalof141scenarioswith99single-agentscenarios\nand 42 multi-agent scenarios.",
+      "size": 402,
+      "sentences": 3
+    },
+    {
+      "id": 52,
+      "content": ",AssetOpsBenchincludesatotalof141scenarioswith99single-agentscenarios\nand 42 multi-agent scenarios. The goal is to test an agent’s ability across four capability dimen-\nsions: (cid:229)Tool-Centric(e.g.,toolandAPIinteraction),jSkill-Centric(e.g.,analyticalreasoning),\n5\n===  6 ===\nTable2: ExamplesofScenariowiththeirSubtypes(AlignedwithTaskTaxonomy-Figure3)\nAgentGroup Subtype TaskDescriptions Capability\nForecasting PredictfutureKPItrendsovertimewindows (cid:243)\nModelTuning Selectorrefinetimeseriesmodelsforaccuracy (cid:229)\nTSFMAgent\nAnomalyDetection Identifydeviationsinoperationalbehavior (cid:243)\n#Scenarios:23\nHybridTasks Combinepredictionwithanomalyevaluation j\nModelCapabilities QueryTSFMmodellimitsandconfigurations (cid:229)\nRetrieval&Filter Filterworkordersbyasset,location,ortime (cid:229)\nWorkOrder EventSummary Summarizelogsoralertsovertimewindows (cid:243)\nAgent Scheduling Recommendoroptimizeworkordersequences j\n#Scenarios:36 RCA&AlertReview Performrootcauseoralertlogicreview j\nKPI-basedReco.",
+      "size": 1014,
+      "sentences": 2
+    },
+    {
+      "id": 53,
+      "content": "kordersequences j\n#Scenarios:36 RCA&AlertReview Performrootcauseoralertlogicreview j\nKPI-basedReco. LinkalertsorKPItrendstoworkorders (cid:243)\nKnowledgeQuery Tasksinvolvinganomalydetectionorforecasting (cid:128)\nMulti-Agent\nFailureReasoning Usesdegradationmodelsandcausallogic j\n(End-to-End)\nSensorMapping Mapsfailuremodestosensors (cid:229)\nTasks\nSensorInventory Retrievesinstalledsensorsonanasset (cid:229)\n#Scenarios:42\nOther Multi-stepinferenceordecision-making (cid:128)\n(cid:243) Domain-Centric (e.g., context-aware decision-making), and (cid:128) LLM-Centric (e.g., language-\nbased generalization across tasks).",
+      "size": 619,
+      "sentences": 2
+    },
+    {
+      "id": 54,
+      "content": "re decision-making), and (cid:128) LLM-Centric (e.g., language-\nbased generalization across tasks). Each scenario is associated with an utterance to complete a\ntask. Table 2summarizesthedistributionofscenariosubtypesandtheir alignment withthetask\ntaxonomy. Utterance-507representsan(cid:128)LLM-Centricscenario,wheretheagentmustrecognize\nthatforecastingtaskisredundantinthepresenceofazero-valuedsensorreading—indicatingthat\nthemachinemaynotbeoperating.",
+      "size": 452,
+      "sentences": 4
+    },
+    {
+      "id": 55,
+      "content": "taskisredundantinthepresenceofazero-valuedsensorreading—indicatingthat\nthemachinemaynotbeoperating. Theagentisexpectedtobypassunnecessarycomputationand\nrecommendhaltingdiagnosticstoaddresstherootissuedirectly. Incontrast,Utterance-511exempli-\nfiesajSkill-Centrictask,requiringtheagenttocorrelateenergyconsumptionwithapowerinput\nvariableandconstructacorrespondingmodel. Thisscenarioteststheagent’sanalyticalreasoning\novertelemetrydatatouncoverfunctionalrelationships.",
+      "size": 466,
+      "sentences": 4
+    },
+    {
+      "id": 56,
+      "content": ". Thisscenarioteststheagent’sanalyticalreasoning\novertelemetrydatatouncoverfunctionalrelationships. DetailforotherscenarioisinAppendixC. 4.3 Agent-CentricEvaluationandToolingDesign\nAssetOpsBenchemploysbaselinereasoningstrategiessuchasReAct[29]andCodeReAct[27]to\nimplementdomain-specificagentsincludingTSFM,IoT,WO,andFMSR.Eachagentisequipped\nwith a tailored set of tools—for example, the IoT agent uses seven specialized tools.",
+      "size": 426,
+      "sentences": 4
+    },
+    {
+      "id": 57,
+      "content": "entisequipped\nwith a tailored set of tools—for example, the IoT agent uses seven specialized tools. A global\ncoordinator,AssetOpsAgent,enablescollaborationamongtheseagentsandcanbeinstantiatedusing\nReActoraPlan-Executestrategy. Theframeworksupportsflexibleexperimentationwithalternative\nreasoningstrategieslikeRAFAtoexplorebothsingle-agentefficiencyandmulti-agentcoordination.",
+      "size": 375,
+      "sentences": 3
+    },
+    {
+      "id": 58,
+      "content": "ternative\nreasoningstrategieslikeRAFAtoexplorebothsingle-agentefficiencyandmulti-agentcoordination. Tofurtherenhanceperformance,weintroduceanoutputaugmentationmechanismthatgenerates\nsemanticallyenriched,self-descriptiveoutputs. Thisenablesagentstotriggerfollow-upactions,ask\nclarifyingquestions,andmakeinformeddecisions. Listing 1showsanexampleoutputforTSFM\nForecastingtool.",
+      "size": 374,
+      "sentences": 4
+    },
+    {
+      "id": 59,
+      "content": "clarifyingquestions,andmakeinformeddecisions. Listing 1showsanexampleoutputforTSFM\nForecastingtool. Suchstandardizedenrichedoutputspromoteinteroperability,allowingLLMagents\ntoreasonovermulti-modaldatawithoutcustomintegration.Wehavealsodesignedsimilarmessaging\npatternacrossagents. FullschemaspecificationsareprovidedinAppendixE. Listing1: Structuredoutputfromthetsfm_forecastingtool.",
+      "size": 383,
+      "sentences": 5
+    },
+    {
+      "id": 60,
+      "content": "lschemaspecificationsareprovidedinAppendixE. Listing1: Structuredoutputfromthetsfm_forecastingtool. {\n\"type\": \"metadata\",\n\"status\": 1,\n\"error_message\": \"\",\n\"toolname\": \"tsfm_forecasting\",\n\"datastructure\": \"dataframe\",\n\"datamodel\": \"time series\",\n\"results\": \"target_prediction,...\",\n\"results_file\": \"...\"\n}\n6\n[  ]\n\n===  7 ===\n5 ExperimentsandLeaderboard\nWediscusstheautomaticevaluationprotocolusedtobuildaninitialleaderboard.",
+      "size": 424,
+      "sentences": 3
+    },
+    {
+      "id": 61,
+      "content": "5 ExperimentsandLeaderboard\nWediscusstheautomaticevaluationprotocolusedtobuildaninitialleaderboard. Eachscenarioin\nAssetOpsBenchispairedwithacharacteristicform—astructuredspecificationthatdefinesboth\nthe expected final output and the intermediate reasoning or procedural steps required to reach it. Thisformactsasthegroundtruthforassessingagentbehaviorandsupportsrubric-basedscoring\nperformedeitherbyanautomatedevaluationagentorLLMasajudge[1,14,26].",
+      "size": 449,
+      "sentences": 3
+    },
+    {
+      "id": 62,
+      "content": "orandsupportsrubric-basedscoring\nperformedeitherbyanautomatedevaluationagentorLLMasajudge[1,14,26]. Theevaluation\nagenttakesthetrajectoryoutput,theoriginalquestion,andthecharacteristicformasinputtoproduce\nasix-dimensionalqualitativescore. Thesesixqualitativemetricsarederivedbasedonexperimental\nobservationsandcommonsenseprinciples.",
+      "size": 332,
+      "sentences": 3
+    },
+    {
+      "id": 63,
+      "content": "core. Thesesixqualitativemetricsarederivedbasedonexperimental\nobservationsandcommonsenseprinciples. Wedefinetheevaluationagentasascoringfunction:\nf :(Q,T,C)→y=(y ,y ,...,y ,y ,y )\n1 2 6 text skip\nwhere:\n• Qistheoriginaltaskquery,\n• T istheagent’strajectoryoutput(includingintermediatereasoningandfinaloutput),\n• C isthecharacteristicform(ground-truthspecification),\n• (y ,...,y )∈[0,1]6arerubric-basedscalarscorescorrespondingtothefollowingqualita-\n1 6\ntivedimensions:\n– y : TaskCompleteness–Areallrequiredstepsandsub-taskscompleted?",
+      "size": 533,
+      "sentences": 3
+    },
+    {
+      "id": 64,
+      "content": "lowingqualita-\n1 6\ntivedimensions:\n– y : TaskCompleteness–Areallrequiredstepsandsub-taskscompleted? 1\n– y : DataRetrievalAccuracy–Wasthecorrectdataretrievedandused? 2\n– y : ResultVerification–Isthefinalresultlogicallyandfactuallycorrect? 3\n– y : Agent Sequence – Does the agent follow a coherent and logical sequence of\n4\nactions? – y :ClarityandJustification–Istheexplanationclearandthereasoningwelljustified? 5\n– y : Hallucinations–Doestheoutputavoidfabricatedorirrelevantinformation?",
+      "size": 486,
+      "sentences": 6
+    },
+    {
+      "id": 65,
+      "content": "reasoningwelljustified? 5\n– y : Hallucinations–Doestheoutputavoidfabricatedorirrelevantinformation? 6\n• y ∈Tisfree-formnaturallanguagefeedback(e.g.,suggestionsorrationale),\ntext\n• y ∈{0,1}isabinaryflagindicatingwhetherevaluationwasskippedduetomissingor\nskip\ninvalidinput. Toquantifyagenteffectivenessforscenarioevaluations,weemploythePassk metric.",
+      "size": 347,
+      "sentences": 4
+    },
+    {
+      "id": 66,
+      "content": "ngor\nskip\ninvalidinput. Toquantifyagenteffectivenessforscenarioevaluations,weemploythePassk metric. Incontrastto\nthemorewidelyusedPass@k—whichmeasuresthelikelihoodthatatleastoneofk independent\nattempts is successful—Passk estimates the probability that an agent succeeds on all k attempts. Thismorestringentcriterionbetterreflectsthereliabilityrequirementsofindustrialapplications,\nwhereretryingfailedattemptsmaybeinfeasibleandconsistentbehavioriscriticalforproduction\nsystems[13].",
+      "size": 481,
+      "sentences": 4
+    },
+    {
+      "id": 67,
+      "content": "whereretryingfailedattemptsmaybeinfeasibleandconsistentbehavioriscriticalforproduction\nsystems[13]. Inourbenchmark,wereportPass1bydefault,asagentsareexecutedonlyoncepertask\ninstancebutevaluationagentisexecuted5timestoextractouttheaboveperformancemetrics. We\nhavesetthesamplingtemperaturetozerowhileexecutingtheAgentOpsAgentand0.3forexecuting\ntheevaluationagent. Allreportedresultsinthisworkfollowthisconfiguration.",
+      "size": 414,
+      "sentences": 4
+    },
+    {
+      "id": 68,
+      "content": "OpsAgentand0.3forexecuting\ntheevaluationagent. Allreportedresultsinthisworkfollowthisconfiguration. 5.1 AssetOpsBenchLeaderboard\nWeconductedaseriesofbenchmarkexperimentstoevaluateadiversesetoflanguagemodels,includ-\ningclosed-sourcemodels(e.g.,gpt-4.1),frontieropen-sourcemodels(e.g.,llama-4-maverick,\nllama-4-scout, mistral-large, llama-3-405b), and medium-to-small open-source models\n(e.g., llama-3-70b, granite-3-8b).",
+      "size": 419,
+      "sentences": 3
+    },
+    {
+      "id": 69,
+      "content": "ral-large, llama-3-405b), and medium-to-small open-source models\n(e.g., llama-3-70b, granite-3-8b). At present, we evaluated two different agentic strategies:\nTool-as-AgentandPlan-and-Execute. Tools-As-Agents Result. Figure 4 show that gpt-4.1 leads across nearly all metrics. llama-4-maverickalsoperformscompetitively,particularlyinresultverification(60%)andclarity\n(78%), with a low hallucination rate (11%).",
+      "size": 410,
+      "sentences": 5
+    },
+    {
+      "id": 70,
+      "content": "itively,particularlyinresultverification(60%)andclarity\n(78%), with a low hallucination rate (11%). In contrast, smaller models such as granite-3-8b\nandllama-3-3-70bunderperformacrossmostdimensions. Thecomparativelylowerbaselineof\nsmallermodelshighlightsthepotentialoftargetedfine-tuningapproaches—suchasthoseadoptedin\nLAMframework—tosignificantlyenhancetheircapabilities. OurdefaultapproachisTool-as-Agent. Plan-and-ExecuteResult.",
+      "size": 431,
+      "sentences": 5
+    },
+    {
+      "id": 71,
+      "content": "tosignificantlyenhancetheircapabilities. OurdefaultapproachisTool-as-Agent. Plan-and-ExecuteResult. Figure5showsthatmistral-largeleadsoverall,achievingthehighest\nscoresintaskcompletion(46.5%),actionsequencing(58.1%),andcompetitiveperformanceacross\n7\n===  8 ===\nFigure4: AssetOpsBenchLeaderboard: ModelPerformanceforAgent-As-ToolApproach\nFigure5: AssetOpsBenchLeaderboard: ModelPerformanceforPlan-ExecuteApproach\notherdimensions.",
+      "size": 428,
+      "sentences": 4
+    },
+    {
+      "id": 72,
+      "content": "pproach\nFigure5: AssetOpsBenchLeaderboard: ModelPerformanceforPlan-ExecuteApproach\notherdimensions. llama-4-maverickdemonstratesbalancedperformance,particularlyinclarity\nandjustification(57%)andresultverification(44%),whilemaintainingamoderatehallucination\nrate(47%). Incontrast,modelslikegranite-3-8bandllama-3-70bshowlowerscoresacross\nmostmetrics,especiallyinactionsequenceplanningandfactualconsistency,withhallucinationrates\nexceeding63%.",
+      "size": 441,
+      "sentences": 3
+    },
+    {
+      "id": 73,
+      "content": "etrics,especiallyinactionsequenceplanningandfactualconsistency,withhallucinationrates\nexceeding63%. Interestingly,gpt-4.1achievesconsistentmid-rangeperformanceacrossallaxes,\nsuggestingreliabilitybutnotleadership. Theseresultsunderscorethechallengesoflong-horizon\nreasoningandsequencinginplan-and-executesettings,whereevenfrontiermodelsexhibitsignificant\nroomforimprovement. Additionalobservationaboutrun-timeisincludedinAppendixF.1.",
+      "size": 432,
+      "sentences": 4
+    },
+    {
+      "id": 74,
+      "content": "lsexhibitsignificant\nroomforimprovement. Additionalobservationaboutrun-timeisincludedinAppendixF.1. HumanValidation.ToassessthereliabilityofusingLLMsasautomaticevaluatorsforbenchmarking\ntasks,wecomparemodel-generatedjudgmentsagainsthumanannotationsonasampleof40tasks. Eachtaskisevaluatedalongsixdimensionsbyfourdomainexperts,alloperatingunderthesame\ninformation constraints as the LLMs.",
+      "size": 386,
+      "sentences": 4
+    },
+    {
+      "id": 75,
+      "content": "alongsixdimensionsbyfourdomainexperts,alloperatingunderthesame\ninformation constraints as the LLMs. Among the candidate models, llama-4-maverick shows\nthestrongestalignmentwithhumanannotations,achieving75%accuracyandaCohen’sKappa\nscoreof 0.55, outperforminggpt-4.1(69%accuracy, 0.44Kappa). Based onthishighlevelof\nmoderateagreementwithexpertjudgments,weadoptllama-4-maverickastheLLMtobeused\nforevaluationagentforourbenchmark(seeAppendixF.2). 8\n===  9 ===\nAblationStudy.",
+      "size": 469,
+      "sentences": 4
+    },
+    {
+      "id": 76,
+      "content": "rickastheLLMtobeused\nforevaluationagentforourbenchmark(seeAppendixF.2). 8\n===  9 ===\nAblationStudy. WeperformedablationexperimentsusingTool-as-Agentmethod: (1)Weinjected\n10out-of-domaindistractors(e.g.,SREAgent,EchoAgent)intosystemandevaluated99single-agent\nscenarios. Surprisingly,modelperformanceimprovedinthepresenceofdistractors—enhancingtask\ncompletion,accuracy,andreasoningscores—suggestingthatdistractorsmaytriggermoredeliberate\nreasoningorrobustattentionstrategiesinLLMs.",
+      "size": 479,
+      "sentences": 4
+    },
+    {
+      "id": 77,
+      "content": "cores—suggestingthatdistractorsmaytriggermoredeliberate\nreasoningorrobustattentionstrategiesinLLMs. (2)Weremovedallin-contextexamplesandre-ran\n65single-agenttasks(IoT+FMSR+TSFM)forboththebest-performingmodel(gpt-4.1)andthe\nworst-performingmodel(granite-3-8b). Performanceplummetedfrom80%to34%forgpt-4.1\nandfrom60%to3%forgranite-3-8b,indicatingthatin-contextexamplesarecriticalforenabling\nReAct-styleagentstocoordinateandreasoneffectively. DetailanalysisisinAppendixF.4.",
+      "size": 469,
+      "sentences": 4
+    },
+    {
+      "id": 78,
+      "content": "iticalforenabling\nReAct-styleagentstocoordinateandreasoneffectively. DetailanalysisisinAppendixF.4. 5.2 FailureModesofAssetOpsAgent\nJustasindustrialassetsarepronetofailure,recentresearchhasbeguntosystematicallycategorize\nfailuremodesofmulti-agentsystems[1]. AssetOpsBenchextendsthislineofworkbysupporting\ncontinuous monitoring and proactive identification of failure modes in LLM-driven agents. Our\nanalysisdrawson881executiontrajectoriesgeneratedbyAgents-as-Toolapproach.",
+      "size": 472,
+      "sentences": 5
+    },
+    {
+      "id": 79,
+      "content": "in LLM-driven agents. Our\nanalysisdrawson881executiontrajectoriesgeneratedbyAgents-as-Toolapproach. Weadopted\nthepaperrecommendationtousegpt-4.1todiscoverthedistributionof14failuremodesdefinedin\ntheframework[1]. Figure6showsthesystemdesignleadstomanyfailures. Toallowfordiscovery\nbeyondtheexistingtaxonomy,theweadjustedthesystemprompttoself-discoveruptotwonovel\nfailuremodespertraceifpresent. Thisenabledthedetectionofemergentandcompoundfailure\nbehaviorsthatarenotfullycapturedbyfixedtaxonomies.",
+      "size": 495,
+      "sentences": 6
+    },
+    {
+      "id": 80,
+      "content": "senabledthedetectionofemergentandcompoundfailure\nbehaviorsthatarenotfullycapturedbyfixedtaxonomies. Figure6: Distributionofthe14failuremodesonAssetOpsBench\nAmongthe881trajectoriesanalyzed,185includedonenovelfailuremodebeyondthecurrenttaxon-\nomy,while164exhibitedtwodistinctemergentissues. Thisrevealstheneedforextensibleevaluation\nframeworkstocapturethenuancedbehaviorsofreal-worldLLM-basedagents.",
+      "size": 397,
+      "sentences": 3
+    },
+    {
+      "id": 81,
+      "content": "lstheneedforextensibleevaluation\nframeworkstocapturethenuancedbehaviorsofreal-worldLLM-basedagents. Frequentlyobserved\nemergentfailuresinclude: OverstatementofTaskCompletion(122cases,23.8%);Extraneousor\nAmbiguousOutputFormatting(110cases,21.4%);andIneffectiveErrorRecovery(160cases). Theseobservationsunderscoretheimportanceofadaptivetaxonomiesthatevolvealongsidemodel\nbehaviors. AppendixF.5providesanalgorithmicprocedurefornewfailuremodediscovery.",
+      "size": 448,
+      "sentences": 4
+    },
+    {
+      "id": 82,
+      "content": "volvealongsidemodel\nbehaviors. AppendixF.5providesanalgorithmicprocedurefornewfailuremodediscovery. 6 LimitationsandFutureWork\nThispaperintroducesaformalizedframeworkforAIagentsforIndustrialAssets,encompassing\na comprehensive taxonomy, over 140 diverse scenarios derived from multi-source data, and a\nstandardizedevaluationmethodology. TheTools-As-Agentparadigmoffersapromisingapproachfor\norchestratingmulti-agentinteractions.",
+      "size": 426,
+      "sentences": 4
+    },
+    {
+      "id": 83,
+      "content": "odology. TheTools-As-Agentparadigmoffersapromisingapproachfor\norchestratingmulti-agentinteractions. However,ourcurrentsetupassumesthatAPIaccesstothe\nenvironmentiscost-freeandunconstrained.Infuturework,weplantointroducerealisticenvironment\nconstraints—suchascomputelimitationsandAPIusagecosts—tobetterreflectindustrialsettings\nandimprovetherobustnessandefficiencyofagentbehavior.",
+      "size": 378,
+      "sentences": 3
+    },
+    {
+      "id": 84,
+      "content": "PIusagecosts—tobetterreflectindustrialsettings\nandimprovetherobustnessandefficiencyofagentbehavior. 9\n===  10 ===\nReferences\n[1] CEMRI,M.,PAN,M.Z.,YANG,S.,AGRAWAL,L.A.,CHOPRA,B.,TIWARI,R.,KEUTZER,\nK.,PARAMESWARAN,A.,KLEIN,D.,RAMCHANDRAN,K.,ETAL. Whydomulti-agentllm\nsystemsfail? arXivpreprintarXiv:2503.13657(2025).",
+      "size": 315,
+      "sentences": 4
+    },
+    {
+      "id": 85,
+      "content": "KLEIN,D.,RAMCHANDRAN,K.,ETAL. Whydomulti-agentllm\nsystemsfail? arXivpreprintarXiv:2503.13657(2025). [2] CHAN,J.S.,CHOWDHURY,N.,JAFFE,O.,AUNG,J.,SHERBURN,D.,MAYS,E.,STARACE,\nG., LIU, K., MAKSIN, L., PATWARDHAN, T., MADRY, A., AND WENG, L. MLE-bench:\nEvaluating machine learning agents on machine learning engineering. In The Thirteenth\nInternationalConferenceonLearningRepresentations(2025).",
+      "size": 390,
+      "sentences": 5
+    },
+    {
+      "id": 86,
+      "content": "ine learning engineering. In The Thirteenth\nInternationalConferenceonLearningRepresentations(2025). [3] CHEN, B., SHU, C., SHAREGHI, E., COLLIER, N., NARASIMHAN, K. R., AND YAO, S.\nFireact: Towardlanguageagentfinetuning,2024. [4] CHEN, Y., SHETTY, M., SOMASHEKAR, G., MA, M., SIMMHAN, Y., MACE, J., BANSAL,\nC.,WANG,R.,ANDRAJMOHAN,S. Aiopslab: Aholisticframeworktoevaluateaiagentsfor\nenablingautonomousclouds,2025.",
+      "size": 413,
+      "sentences": 5
+    },
+    {
+      "id": 87,
+      "content": ",R.,ANDRAJMOHAN,S. Aiopslab: Aholisticframeworktoevaluateaiagentsfor\nenablingautonomousclouds,2025. [5] FOURNEY, A., BANSAL, G., MOZANNAR, H., TAN, C., SALINAS, E., ERKANG, ZHU,\nNIEDTNER, F., PROEBSTING, G., BASSMAN, G., GERRITS, J., ALBER, J., CHANG, P.,\nLOYND,R.,WEST,R.,DIBIA,V.,AWADALLAH,A.,KAMAR,E.,HOSN,R.,ANDAMERSHI,\nS. Magentic-one: Ageneralistmulti-agentsystemforsolvingcomplextasks,2024. [6] HONG,S.,ZHUGE,M.,CHEN,J.,ZHENG,X.,CHENG,Y.,WANG,J.,ZHANG,C.,WANG,\nZ.,YAU,S.",
+      "size": 477,
+      "sentences": 4
+    },
+    {
+      "id": 88,
+      "content": "gcomplextasks,2024. [6] HONG,S.,ZHUGE,M.,CHEN,J.,ZHENG,X.,CHENG,Y.,WANG,J.,ZHANG,C.,WANG,\nZ.,YAU,S. K.S.,LIN,Z., ZHOU,L., RAN,C., XIAO,L., WU,C.,ANDSCHMIDHUBER,\nJ. MetaGPT:Metaprogrammingforamulti-agentcollaborativeframework. InTheTwelfth\nInternationalConferenceonLearningRepresentations(2024). [7] HU, M., ZHAO, P., XU, C., SUN, Q., LOU, J.-G., LIN, Q., LUO, P., AND RAJMOHAN, S.\nAgentgen: Enhancingplanningabilitiesforlargelanguagemodelbasedagentviaenvironment\nand task generation.",
+      "size": 483,
+      "sentences": 5
+    },
+    {
+      "id": 89,
+      "content": "ntgen: Enhancingplanningabilitiesforlargelanguagemodelbasedagentviaenvironment\nand task generation. In Proceedings of the 31st ACM SIGKDD Conference on Knowledge\nDiscovery and Data Mining V.1 (New York, NY, USA, 2025), KDD ’25, Association for\nComputingMachinery,p.496–507. [8] HUANG,Q.,VORA,J.,LIANG,P.,ANDLESKOVEC,J. Benchmarkinglargelanguagemodels\nasAIresearchagents,2024. [9] HUY,P.N.,NGUYEN,T.N.,ANDBUI,N.D.Q. Hyperagent:Generalistsoftwareengineering\nagentstosolvecodingtasksatscale,2025.",
+      "size": 493,
+      "sentences": 6
+    },
+    {
+      "id": 90,
+      "content": "N,T.N.,ANDBUI,N.D.Q. Hyperagent:Generalistsoftwareengineering\nagentstosolvecodingtasksatscale,2025. [10] IBM. IBMMaximoApplicationSuite. Accessed: May13,2025. [11] JHA, S., ARORA, R., WATANABE, Y., YANAGAWA, T., CHEN, Y., CLARK, J., BHAVYA,\nB., VERMA, M.,KUMAR, H.,KITAHARA, H.,ZHEUTLIN, N.,TAKANO, S.,PATHAK, D.,\nGEORGE,F., WU,X., TURKKAN,B.",
+      "size": 342,
+      "sentences": 6
+    },
+    {
+      "id": 91,
+      "content": ", VERMA, M.,KUMAR, H.,KITAHARA, H.,ZHEUTLIN, N.,TAKANO, S.,PATHAK, D.,\nGEORGE,F., WU,X., TURKKAN,B. O.,VANLOO,G., NIDD,M., DAI,T., CHATTERJEE,\nO.,GUPTA,P.,SAMANTA,S.,AGGARWAL,P.,LEE,R.,MURALI,P.,WOOKAHN,J.,KAR,\nD., RAHANE, A., FONSECA, C., PARADKAR, A., DENG, Y., MOOGI, P., MOHAPATRA, P.,\nABE,N.,NARAYANASWAMI,C.,XU,T.,VARSHNEY,L.R.,MAHINDRU,R.,SAILER,A.,\nSHWARTZ, L., SOW, D., FULLER, N. C. M., AND PURI, R. Itbench: Evaluatingaiagents\nacrossdiversereal-worlditautomationtasks,2025.",
+      "size": 484,
+      "sentences": 2
+    },
+    {
+      "id": 92,
+      "content": ", N. C. M., AND PURI, R. Itbench: Evaluatingaiagents\nacrossdiversereal-worlditautomationtasks,2025. [12] KIM, B., JANG, Y., LOGESWARAN, L., KIM, G.-H., KIM, Y. J., LEE, H., AND LEE, M.\nProspector: ImprovingLLMagentswithself-askingandtrajectoryranking,2024. [13] LANGCHAIN. Agentevaluationmetric,March2025. Accessed: 2025-05-12. [14] LANGCHAIN. Benchmarkingsingleagentperformance,February2025. Accessed: 2025-05-12.",
+      "size": 414,
+      "sentences": 8
+    },
+    {
+      "id": 93,
+      "content": "2025-05-12. [14] LANGCHAIN. Benchmarkingsingleagentperformance,February2025. Accessed: 2025-05-12. [15] LI, A., XIE, Y., LI, S., TSUNG, F., DING, B., AND LI, Y. Agent-oriented planning in\nmulti-agentsystems. InTheThirteenthInternationalConferenceonLearningRepresentations\n(2025). [16] LU,P.,PENG,B.,CHENG,H.,GALLEY,M.,CHANG,K.-W.,WU,Y.N.,ZHU,S.-C.,AND\nGAO,J. Chameleon: Plug-and-playcompositionalreasoningwithlargelanguagemodels,2023.",
+      "size": 434,
+      "sentences": 8
+    },
+    {
+      "id": 94,
+      "content": "N.,ZHU,S.-C.,AND\nGAO,J. Chameleon: Plug-and-playcompositionalreasoningwithlargelanguagemodels,2023. 10\n===  11 ===\n[17] MARREED, S., OVED, A., YAELI, A., SHLOMOV, S., LEVY, I., SELA, A., ADI, A., AND\nMASHKIF,N. Towardsenterprise-readycomputerusinggeneralistagent,2025. [18] MONROC, C. B., BUSIC, A., DUBUC, D., AND ZHU, J. WFCRL:Amulti-agentreinforce-\nmentlearningbenchmarkforwindfarmcontrol. InTheThirty-eightConferenceonNeural\nInformationProcessingSystemsDatasetsandBenchmarksTrack(2024).",
+      "size": 490,
+      "sentences": 6
+    },
+    {
+      "id": 95,
+      "content": ". InTheThirty-eightConferenceonNeural\nInformationProcessingSystemsDatasetsandBenchmarksTrack(2024). [19] NATHANI, D., MADAAN, L., ROBERTS, N., BASHLYKOV, N., MENON, A., MOENS, V.,\nBUDHIRAJA, A., MAGKA, D., VOROTILOV, V., CHAURASIA, G., HUPKES, D., CABRAL,\nR. S., SHAVRINA, T., FOERSTER, J., BACHRACH, Y., WANG, W. Y., AND RAILEANU, R.\nMlgym: Anewframeworkandbenchmarkforadvancingairesearchagents,2025.",
+      "size": 401,
+      "sentences": 3
+    },
+    {
+      "id": 96,
+      "content": "., WANG, W. Y., AND RAILEANU, R.\nMlgym: Anewframeworkandbenchmarkforadvancingairesearchagents,2025. [20] NAUG, A., GUILLEN, A., LUNA, R., GUNDECHA, V., BASH, C., GHORBANPOUR, S.,\nMOUSAVI,S.,BABU,A.R.,MARKOVIKJ,D.,KASHYAP,L.D.,RENGARAJAN,D.,AND\nSARKAR, S. Sustaindc: Benchmarkingforsustainabledatacentercontrol. InAdvancesin\nNeuralInformationProcessingSystems(2024),A.Globerson,L.Mackey,D.Belgrave,A.Fan,\nU.Paquet,J.Tomczak,andC.Zhang,Eds.,vol.37,CurranAssociates,Inc.,pp.100630–100669.",
+      "size": 485,
+      "sentences": 3
+    },
+    {
+      "id": 97,
+      "content": "D.Belgrave,A.Fan,\nU.Paquet,J.Tomczak,andC.Zhang,Eds.,vol.37,CurranAssociates,Inc.,pp.100630–100669. [21] QIAN, C., LIU, W., LIU, H., CHEN, N., DANG, Y., LI, J., YANG, C., CHEN, W., SU, Y.,\nCONG, X., XU, J., LI, D., LIU, Z., AND SUN, M. ChatDev: Communicative agents for\nsoftware development.",
+      "size": 291,
+      "sentences": 2
+    },
+    {
+      "id": 98,
+      "content": "G, X., XU, J., LI, D., LIU, Z., AND SUN, M. ChatDev: Communicative agents for\nsoftware development. In Proceedings of the 62nd Annual Meeting of the Association for\nComputationalLinguistics(Volume1:LongPapers)(Bangkok,Thailand,Aug.2024),L.-W.Ku,\nA.Martins,andV.Srikumar,Eds.,AssociationforComputationalLinguistics,pp.15174–15186. [22] SHEN,Y., SONG,K., TAN,X., LI,D., LU,W.,ANDZHUANG,Y. Hugginggpt: Solvingai\ntaskswithchatgptanditsfriendsinhuggingface,2023.",
+      "size": 457,
+      "sentences": 4
+    },
+    {
+      "id": 99,
+      "content": "., LI,D., LU,W.,ANDZHUANG,Y. Hugginggpt: Solvingai\ntaskswithchatgptanditsfriendsinhuggingface,2023. [23] SHEN, Y., SONG, K., TAN, X., ZHANG, W., REN, K., YUAN, S., LU, W., LI, D., AND\nZHUANG, Y. Taskbench: Benchmarking large language models for task automation. In\nAdvancesinNeuralInformationProcessingSystems(2024),A.Globerson,L.Mackey,D.Bel-\ngrave,A.Fan, U.Paquet,J.Tomczak,andC.Zhang,Eds.,vol.37,CurranAssociates,Inc.,\npp.4540–4574.",
+      "size": 435,
+      "sentences": 4
+    },
+    {
+      "id": 100,
+      "content": ",D.Bel-\ngrave,A.Fan, U.Paquet,J.Tomczak,andC.Zhang,Eds.,vol.37,CurranAssociates,Inc.,\npp.4540–4574. [24] SONG,Y.,XIONG,W.,ZHAO,X.,ZHU,D.,WU,W.,WANG,K.,LI,C.,PENG,W.,AND\nLI, S. Agentbank: Towards generalized llm agents via fine-tuning on 50000+ interaction\ntrajectories,2024. [25] SZOT,A.,MAZOURE,B.,ATTIA,O.,TIMOFEEV,A.,AGRAWAL,H.,HJELM,D.,GAN,Z.,\nKIRA,Z., ANDTOSHEV,A. Frommultimodalllmstogeneralistembodiedagents: Methods\nandlessons,2024.",
+      "size": 440,
+      "sentences": 4
+    },
+    {
+      "id": 101,
+      "content": "AN,Z.,\nKIRA,Z., ANDTOSHEV,A. Frommultimodalllmstogeneralistembodiedagents: Methods\nandlessons,2024. [26] WANG,L.,YANG,F.,ZHANG,C.,LU,J.,QIAN,J.,HE,S.,ZHAO,P.,QIAO,B.,HUANG,\nR.,QIN,S.,SU,Q.,YE,J.,ZHANG,Y.,LOU,J.-G.,LIN,Q.,RAJMOHAN,S.,ZHANG,D.,\nANDZHANG,Q. Largeactionmodels: Frominceptiontoimplementation,2025. [27] WANG, X., CHEN, Y., YUAN, L., ZHANG, Y., LI, Y., PENG, H., AND HENG, J. Codeact:\nYourllmagentactsbetterwhengeneratingcode. InICML(2024).",
+      "size": 451,
+      "sentences": 6
+    },
+    {
+      "id": 102,
+      "content": "Y., LI, Y., PENG, H., AND HENG, J. Codeact:\nYourllmagentactsbetterwhengeneratingcode. InICML(2024). [28] XIA, Y., FAN, J., CHEN, W., YAN, S., CONG, X., ZHANG, Z., LU, Y., LIN, Y., LIU, Z.,\nANDSUN,M. Agentrm: Enhancingagentgeneralizationwithrewardmodeling,2025. [29] YAO,S.,ZHAO,J.,YU,D.,DU,N.,SHAFRAN,I.,NARASIMHAN,K.,ANDCAO,Y. React:\nSynergizingreasoningandactinginlanguagemodels,2023.",
+      "size": 386,
+      "sentences": 6
+    },
+    {
+      "id": 103,
+      "content": "DU,N.,SHAFRAN,I.,NARASIMHAN,K.,ANDCAO,Y. React:\nSynergizingreasoningandactinginlanguagemodels,2023. [30] ZHANG, J., HOANG, T., ZHU, M., LIU, Z., WANG, S., AWALGAONKAR, T., PRABHAKAR,\nA., CHEN, H., YAO, W., LIU, Z., TAN, J., NIEBLES, J. C., HEINECKE, S., WANG, H.,\nSAVARESE,S.,ANDXIONG,C. Actionstudio: Alightweightframeworkfordataandtraining\noflargeactionmodels,2025.",
+      "size": 367,
+      "sentences": 4
+    },
+    {
+      "id": 104,
+      "content": "RESE,S.,ANDXIONG,C. Actionstudio: Alightweightframeworkfordataandtraining\noflargeactionmodels,2025. [31] ZHANG, J., LAN, T., ZHU, M., LIU, Z., HOANG, T. Q., KOKANE, S., YAO, W., TAN, J.,\nPRABHAKAR,A.,CHEN,H.,LIU,Z.,FENG,Y.,AWALGAONKAR,T.M.,RN, R.,CHEN,\nZ., XU, R., NIEBLES, J. C., HEINECKE, S., WANG, H., SAVARESE, S., AND XIONG, C.\nxLAM:AfamilyoflargeactionmodelstoempowerAIagentsystems.",
+      "size": 388,
+      "sentences": 3
+    },
+    {
+      "id": 105,
+      "content": ", S., WANG, H., SAVARESE, S., AND XIONG, C.\nxLAM:AfamilyoflargeactionmodelstoempowerAIagentsystems. InProceedingsofthe\n11\n===  12 ===\n2025ConferenceoftheNationsoftheAmericasChapteroftheAssociationforComputational\nLinguistics: Human Language Technologies (Volume 1: Long Papers) (Albuquerque, New\nMexico,Apr.2025),L.Chiruzzo,A.Ritter,andL.Wang,Eds.,AssociationforComputational\nLinguistics,pp.11583–11597.",
+      "size": 403,
+      "sentences": 2
+    },
+    {
+      "id": 106,
+      "content": "pr.2025),L.Chiruzzo,A.Ritter,andL.Wang,Eds.,AssociationforComputational\nLinguistics,pp.11583–11597. 12\n===  13 ===\nA AgentsDefinition\nThisappendixprovidesadetailedexpositionofthecontentintroducedinSection3. Inparticular,\nwefocusonthemathematicalformulationoftheagentarchitecture,followedbyabriefoverview\noftheproposedframework. Thegoalistoformalizetheagent’soperationalcomponentsandoffer\nfoundationalcontextforreadersinterestedintheunderlyingdesignprinciples.",
+      "size": 459,
+      "sentences": 4
+    },
+    {
+      "id": 107,
+      "content": "erationalcomponentsandoffer\nfoundationalcontextforreadersinterestedintheunderlyingdesignprinciples. A.1 Agent-OrientedTaskAutomationProblem-AOP\nWeformalizetheAgent-OrientedProblem(AOP)asatuple:\nAOP=⟨A,T,Π,M,O⟩\nwhere each component defines a core capability of a modular, agent-based reasoning and action\nsystem:\n• A={A ,A ,...,A }denotesthesetofavailableagents.",
+      "size": 361,
+      "sentences": 2
+    },
+    {
+      "id": 108,
+      "content": "modular, agent-based reasoning and action\nsystem:\n• A={A ,A ,...,A }denotesthesetofavailableagents. EachagentA ischaracterized\n1 2 n i\nby its reasoning capabilities, task specialization, internal memory, and communication\ninterfaces,enablingautonomousorcooperativeexecutionofassignedsubtasks. • T = {τ ,τ ,...,τ } is the set of tasks.",
+      "size": 334,
+      "sentences": 3
+    },
+    {
+      "id": 109,
+      "content": "ablingautonomousorcooperativeexecutionofassignedsubtasks. • T = {τ ,τ ,...,τ } is the set of tasks. Each task τ is described by a triple ⟨g,M,C⟩,\n1 2 k\nwheregdenotesthetaskgoal(e.g.,faultdetectionormaintenanceplanning),Mspecifies\ntherequiredinputmodalities(e.g.,time-seriestelemetry,FMEAdocuments,structuredmeta-\ndata),andC capturesanydomain-specificoroperationalconstraints(e.g.,timewindows,\nassettype,orsafetyrequirements). • Π is the hierarchical plan space.",
+      "size": 461,
+      "sentences": 4
+    },
+    {
+      "id": 110,
+      "content": "lconstraints(e.g.,timewindows,\nassettype,orsafetyrequirements). • Π is the hierarchical plan space. A plan π ∈ Π is an ordered sequence of task-agent\nassignments:\nπ =[⟨τ ,A ⟩,⟨τ ,A ⟩,...]\n1 i 2 j\nwhere each subtask is delegated to an appropriate agent for execution, potentially with\ndependenciesamongsteps. • M denotesthememorysystem,consistingofbothagent-localandsharedglobalcompo-\nnents.",
+      "size": 390,
+      "sentences": 4
+    },
+    {
+      "id": 111,
+      "content": "nciesamongsteps. • M denotesthememorysystem,consistingofbothagent-localandsharedglobalcompo-\nnents. Itismodeledasadynamickey-valuestoreM ={(k ,v )}m ,supportingcontext\ni i i=1\npersistence,lookup,andupdatesthroughouttheplanningandexecutionprocess. • Orepresentstheoutputspace. Eachoutputo∈Oisthestructuredorunstructuredresultof\nexecutingaplan. Outputsmayincludediagnostics,actionrecommendations,summaries,or\ncontroltriggers,dependingonthetaskanddomain.",
+      "size": 451,
+      "sentences": 6
+    },
+    {
+      "id": 112,
+      "content": "yincludediagnostics,actionrecommendations,summaries,or\ncontroltriggers,dependingonthetaskanddomain. A.2 FrameworkIntroduction\nAssetOpsBenchusestheReActframework[29]inanend-to-endagentdesignthatintegratesaReview\nAgenttoverifythefinalanswer. Figure7illustratesthefullarchitecture. Figure7: ReActusedtobuildindividualagent\n13\n===  14 ===\nTheReActagentexecutesaThink-Act-Observeloop,solvingtasksiterativelywhiledetectingand\nrecoveringfromrepetitiveorineffectiveactions.",
+      "size": 465,
+      "sentences": 4
+    },
+    {
+      "id": 113,
+      "content": "-Observeloop,solvingtasksiterativelywhiledetectingand\nrecoveringfromrepetitiveorineffectiveactions. TheReviewagentvalidateswhethertheReAct\nagenthassuccessfullycompletedthetask,ensuringoutputquality. Subsequentsectionspresentthe\narchitectureindetail,highlightingthedistinctionbetweentwoarchitecturalparadigms—Agents-As-\nTool(SeeSectionA.3)andPlan-Execute(SeeSectionA.4).",
+      "size": 369,
+      "sentences": 3
+    },
+    {
+      "id": 114,
+      "content": "ctionbetweentwoarchitecturalparadigms—Agents-As-\nTool(SeeSectionA.3)andPlan-Execute(SeeSectionA.4). A.3 Agent(s)-As-Tools/Tool-As-Agents\nFortheAgents-As-ToolsparadigmasshowninFigure8,weimplementedthefollowingcomponents:\nFigure8: Agents-As-Tool\n• AstandardReAct(Think–Act–Observe)agentloopusingopensourceframework. Inthe\ninitialsetup,thenumberofreflectionswassettoone—effectivelydisablingreflection.",
+      "size": 398,
+      "sentences": 3
+    },
+    {
+      "id": 115,
+      "content": "urceframework. Inthe\ninitialsetup,thenumberofreflectionswassettoone—effectivelydisablingreflection. We\nhaveextendedversionofReActXen,andinfuture,wewillconductexperimentstoenable\nmulti-stepreflectionwithinReActXen. • Acuratedlistoftools,themajorityofwhicharestubinterfacesthatdelegatefunctionality\ntospecializedsub-agents. TheonlystandaloneutilitytoolinthissetwastheJSONReader,\nwhichreadsaJSONobjectfromafileandreturnsitscontentsasthetool’sdirectresponse.",
+      "size": 454,
+      "sentences": 5
+    },
+    {
+      "id": 116,
+      "content": "ssetwastheJSONReader,\nwhichreadsaJSONobjectfromafileandreturnsitscontentsasthetool’sdirectresponse. Thesub-agentstubswereintentionallydesignedtobeminimal. Eachstubacceptedasingleinput\nparameter—astringcalled\"request\"—andreturnedastructuredJSONoutput. TheoutputJSON\nobjectincludedthefollowingfields:\n• answer–theprimaryanswerreturnedbythesub-agent,representedasaplainstring. • review–anestedJSONobjectcapturingareviewoftheresponse,typicallyincludingfields\nsuchasstatus,reasoning,andsuggestions.",
+      "size": 493,
+      "sentences": 5
+    },
+    {
+      "id": 117,
+      "content": "objectcapturingareviewoftheresponse,typicallyincludingfields\nsuchasstatus,reasoning,andsuggestions. • summary – a brief description of the JSON object’s structure and semantics, useful for\ninterpretabilityorchainingwithdownstreamtools. TheReActagentwasinitializedwithastandardpromptthatincludes:\n• Examples for In-Context Learning – A small number of sample interactions for each\nsub-agentwereprovidedtoguidebehavior.",
+      "size": 417,
+      "sentences": 3
+    },
+    {
+      "id": 118,
+      "content": "ext Learning – A small number of sample interactions for each\nsub-agentwereprovidedtoguidebehavior. TheseexamplesfollowedthestandardReAct\nformatofThink–Act–Observe,illustratinghowtoinvoketoolsandinterprettheirresponses. Arepresentativeexampleisshownbelow:\n• ToolDemonstrations–Thesesamplecallswereconcatenatedtoformacomprehensive\nsetofdemonstrationsforalltoolsavailabletotheagent,effectivelyseedingitwithusage\npatterns.",
+      "size": 419,
+      "sentences": 3
+    },
+    {
+      "id": 119,
+      "content": "rehensive\nsetofdemonstrationsforalltoolsavailabletotheagent,effectivelyseedingitwithusage\npatterns. 14\n===  15 ===\nListing2: ExampleReActPromptforIoTAgent\nQuestion: download asset history for CU02004 at SiteX\nfrom 2016-07-14T20:30:00-04:00 to 2016-07-14T23:30:00-04:00\nfor \"CHILLED WATER LEAVING TEMP\" and\n\"CHILLED WATER RETURN TEMP\"\nAction 1: IoTAgent\nAction Input 1: request=download asset history for CU02004\nat SiteX from 2016-07-14T20:30:00-04:00 to\n2016-07-14T23:30:00-04:00 for \"CHILLED WATER LEAVING TEMP\"\nand \"CHILLED WATER RETURN TEMP\"\nObservation 1: {\n\"site_name\": \"SiteX\",\n\"assetnum\": \"CU02004\",\n\"total_observations\": 25,\n\"start\": \"2025-03-26T00:00:00.000000+00:00\",\n\"final\": \"2025-04-02T00:00:00.000000+00:00\",\n\"file_path\": \"/var/folders/fz/.../cbmdir/c328516a-643f-40e6\n(cid:44)→ -8701-e875b1985c38.json\",\n\"message\": \"found 25 observations.",
+      "size": 854,
+      "sentences": 2
+    },
+    {
+      "id": 120,
+      "content": "../cbmdir/c328516a-643f-40e6\n(cid:44)→ -8701-e875b1985c38.json\",\n\"message\": \"found 25 observations. file_path contains a JSON\n(cid:44)→ array of Observation data\"\n}\nThesamplecallsforallthetoolsareconcatenatedtoformtheexamples. • question-thequestioninputtoReAct\n• toolnames-thelistofsub-agenttoolnames(plusJSONReader)\n• tooldescriptions-descriptionsofthesub-agents\nExecution Framework.",
+      "size": 385,
+      "sentences": 3
+    },
+    {
+      "id": 121,
+      "content": "-agenttoolnames(plusJSONReader)\n• tooldescriptions-descriptionsofthesub-agents\nExecution Framework. The ReAct engine is reinitialized for each question and executed un-\ntil either (a) successful completion—as determined by the Review component using an LLM-as-\njudge—or(b)amaximumofteniterations. Theframeworkiteratesthroughalistofmodels(e.g.,\nmistralai/mistral-large)andacorrespondinglistofutterancestoexecuteforeachmodel. The\nsystem supports retries for failed executions.",
+      "size": 474,
+      "sentences": 4
+    },
+    {
+      "id": 122,
+      "content": "respondinglistofutterancestoexecuteforeachmodel. The\nsystem supports retries for failed executions. After each ReAct run, the complete trajectory and\nassociatedevaluationmetricsarestored. Therecordedmetricsinclude:\n• Question: theinputquerybeingprocessed\n• Totalexecutiontime: durationoftheentireReActloop\n• NumberofReActsteps: countofaction-observationcycles\n• Reviewstatus: successorfailuredeterminedbytheLLM-basedreviewer\nA.4 Plan-and-Execute\nPlan-and-Execute.",
+      "size": 463,
+      "sentences": 4
+    },
+    {
+      "id": 123,
+      "content": "viewstatus: successorfailuredeterminedbytheLLM-basedreviewer\nA.4 Plan-and-Execute\nPlan-and-Execute. Plan-and-Execute is a widely used architectural paradigm for multi-agent\nsystems. Figure9depictstheimplementationadoptedinourwork. Theprocessinitiateswhena\nusersubmitsaquery,whichisfirstprocessedbythePlanner. ThePlannerdecomposesthequery\ninto discrete, executable tasks. These tasks are then vetted by a Reviewer component to ensure\nquality,completeness,andrelevance.",
+      "size": 467,
+      "sentences": 6
+    },
+    {
+      "id": 124,
+      "content": "s. These tasks are then vetted by a Reviewer component to ensure\nquality,completeness,andrelevance. Uponapproval,theOrchestratorassignsthetaskstothemost\nappropriateagents. Each agentindependentlyexecutesitsassignedtask andreturnsastructured\nresponse. TheseresponsesarethenaggregatedbytheSummarizationmodule,whichsynthesizes\nthemintoacoherentfinaloutputthatisreturnedtotheuser. Thisarchitecturesupportsmodularity,\nrobustness,andinterpretabilityacrossthetasklifecycle.",
+      "size": 466,
+      "sentences": 5
+    },
+    {
+      "id": 125,
+      "content": "otheuser. Thisarchitecturesupportsmodularity,\nrobustness,andinterpretabilityacrossthetasklifecycle. 15\n[  ]\n\n===  16 ===\nFigure9: Plan-ExecuteMulti-AgentSystem\nA.5 ExampleDemo\nInthefollowingFigures10-12,weprovideafewimagestoshowcaseworkingofAgents-As-Tool\napproachforasingleend-to-endutterance. Figure10: ExecutionisInitiatedwithaninputquery.",
+      "size": 342,
+      "sentences": 4
+    },
+    {
+      "id": 126,
+      "content": "ents-As-Tool\napproachforasingleend-to-endutterance. Figure10: ExecutionisInitiatedwithaninputquery. Figure11: TheFinalstepoftheexecution\nB DetailedAssetOpsHierarchy\nThis appendix presents the structured task taxonomy used in AssetOpsBench, which organizes\nbenchmarkscenariosbasedonkeystagesintheindustrialassetlifecycle.",
+      "size": 320,
+      "sentences": 3
+    },
+    {
+      "id": 127,
+      "content": "in AssetOpsBench, which organizes\nbenchmarkscenariosbasedonkeystagesintheindustrialassetlifecycle. Thetaxonomyisdesigned\ntosupportthecreationofrealistic,diverse,androle-specificevaluationtasksforintelligentagents\noperatingincomplexenvironments,asshowninFigure13forthetasksrelatedtotheindustrialasset\nmanagement.",
+      "size": 311,
+      "sentences": 2
+    },
+    {
+      "id": 128,
+      "content": "operatingincomplexenvironments,asshowninFigure13forthetasksrelatedtotheindustrialasset\nmanagement. Toillustratehowthestructuredtasktaxonomyguidesagentdevelopmentandevaluation,wehigh-\nlightfourrepresentativeagents: theIoTAgent,theFMSRAgent(FailureModeSensorRelations\nAgent), TSFM(TimeSeriesFoundationModel)Agent, andtheWOAgent(WorkOrderAgent). 16\n===  17 ===\nFigure12: AnomalyDetection: FinalOutput\nFigure13: RepresentativeRoutinetasksinAssetLifecycleManagement.",
+      "size": 461,
+      "sentences": 3
+    },
+    {
+      "id": 129,
+      "content": "re12: AnomalyDetection: FinalOutput\nFigure13: RepresentativeRoutinetasksinAssetLifecycleManagement. Amongthese,twoagents—FMSRAgentandWOAgent—areparticularlyusefulfortheirdomain\nspecializationandintegrationdepthwithinAssetOpsBench. AppendixB.2presentstherationale\nforFMSRAgent,emphasizingitsroleinbridgingrawtelemetrywithdiagnosticreasoningthrough\nsensor–failuremapping.",
+      "size": 369,
+      "sentences": 3
+    },
+    {
+      "id": 130,
+      "content": "Agent,emphasizingitsroleinbridgingrawtelemetrywithdiagnosticreasoningthrough\nsensor–failuremapping. AppendixB.4focusesontheWOAgent,whichoperationalizesmaintenance\nplanningandhistoricalanalysisbyretrieving,filtering,andcorrelatingworkorderrecordswithasset\nconditions. Together,theseexamplesdemonstratehowhigh-leveltaskcategories—suchasfailure\nmodealignment,anomalyresponse,andinterventionprioritization—aretranslatedintogrounded,\ndata-drivenagentbehaviors.",
+      "size": 455,
+      "sentences": 3
+    },
+    {
+      "id": 131,
+      "content": "anomalyresponse,andinterventionprioritization—aretranslatedintogrounded,\ndata-drivenagentbehaviors. ThisalignmentreinforcesAssetOpsBench’semphasisontransparency,\ndomainspecialization,andend-to-endtaskautomation.",
+      "size": 211,
+      "sentences": 2
+    },
+    {
+      "id": 132,
+      "content": "treinforcesAssetOpsBench’semphasisontransparency,\ndomainspecialization,andend-to-endtaskautomation. 17\n===  18 ===\nFigure14: MappingExampleinternallyusedbyFMSRAgent\nB.1 RationaleforIoTAgentoverApplication\nTheIoTAgentplaysafoundationalroleinsupportingAssetConfigurationtaskswithintheAssetOps\nframework,asillustratedinFigure13.Itenablesstructuredaccesstoreal-timeandhistoricaltelemetry\ndata, asset metadata, and site configurations.",
+      "size": 430,
+      "sentences": 2
+    },
+    {
+      "id": 133,
+      "content": "lesstructuredaccesstoreal-timeandhistoricaltelemetry\ndata, asset metadata, and site configurations. Specifically, it allows users to query available IoT-\nenabledsites,listallassetswithinagivensite(e.g.,MAINfacility),andretrievedetailedmetadata\nforspecificassetssuchaschillersandairhandlingunits(AHUs). Additionally,itprovidesaccessto\ntime-seriessensordata—suchaspowerinput,temperature,flowrate,andsystemtonnage—across\ncustomizable time windows.",
+      "size": 444,
+      "sentences": 3
+    },
+    {
+      "id": 134,
+      "content": "sensordata—suchaspowerinput,temperature,flowrate,andsystemtonnage—across\ncustomizable time windows. These data queries form the backbone for monitoring tasks, model\ninputs,andanalyticsperformedbydownstreamagentslikeTSFMAgentandWOAgent. Although the IoT Agent does not perform anomaly detection or failure analysis directly, it is a\ncriticalenablerbydeliveringhigh-fidelity,time-alignedtelemetryrequiredforadvancedapplications\n(suchasthoseusingTSFMAgent).",
+      "size": 454,
+      "sentences": 3
+    },
+    {
+      "id": 135,
+      "content": "ringhigh-fidelity,time-alignedtelemetryrequiredforadvancedapplications\n(suchasthoseusingTSFMAgent). Forexample,userscanretrievethetonnagedataforChiller6\nduringaspecificweek,downloadmetadataforChiller9,oraccesssensorvaluesrecordedduring\naknownoperationalevent. Thesecapabilitiesalignwiththeearly-phaseneedsofassetlifecycle\nmanagement—specificallyselectingdatasourcesandconfiguringmetricsofinterest—ensuringall\ndownstreamdecision-makingisgroundedinaccurate, context-richoperationaldata.",
+      "size": 484,
+      "sentences": 3
+    },
+    {
+      "id": 136,
+      "content": "sofinterest—ensuringall\ndownstreamdecision-makingisgroundedinaccurate, context-richoperationaldata. Theagent’s\nflexiblequeryinterfaceandknowledgeanddataretrievalsupportallowittoseamlesslyintegrateinto\nautomatedpipelinesforassetmonitoring,diagnostics,andperformancetracking. B.2 RationaleforFMSRAgentoverApplication\nThesensor–failurealignmentgeneration(SeeFigure14)isacriticalcomponentoftheAssetOps-\nBenchbenchmark,servingmultiplerolesinbothdatasetunderstandingandintelligentsystemdesign.",
+      "size": 487,
+      "sentences": 3
+    },
+    {
+      "id": 137,
+      "content": "eAssetOps-\nBenchbenchmark,servingmultiplerolesinbothdatasetunderstandingandintelligentsystemdesign. Itsinclusionismotivatedbythefollowingkeyfactors:\n18\n===  19 ===\n1. BridgingRawDataandDiagnosticInsight: Thetableexplicitlymapssensorvariablesto\nrelevantfailuremodes,establishingadirectlinkbetweenlow-leveltelemetryandhigh-level\nmaintenancereasoning. Thissupportstaskssuchasfaultdetection,rootcauseanalysis,and\nfeatureselectionforlearning-basedsystems. 2.",
+      "size": 453,
+      "sentences": 5
+    },
+    {
+      "id": 138,
+      "content": "upportstaskssuchasfaultdetection,rootcauseanalysis,and\nfeatureselectionforlearning-basedsystems. 2. AlignmentwithFMEAMethodology: Bystructuringfailureexplanationsaccordingto\ntheprinciplesofFailureModesandEffectsAnalysis(FMEA),thetableoffersaformalized,\ninterpretableviewofassethealth. Eachsensor’sdiagnosticroleiscontextualizedthrough\nfailurecauses,effects,anddetectionimplications. 3. SupportingExplainabilityandSafety: Inindustrialenvironments,operationaldecisions\nrequiretransparency.",
+      "size": 487,
+      "sentences": 6
+    },
+    {
+      "id": 139,
+      "content": "pportingExplainabilityandSafety: Inindustrialenvironments,operationaldecisions\nrequiretransparency. Thealignmenttableenhancessystemexplainabilitybyclarifyingwhy\nagivensignalisrelevant,howitrelatestoequipmenthealth,andwhatoperationalrisksit\nmayindicate. 4. ImprovingDatasetTransparency: TheAssetOpsBenchdatasetincludesawiderangeof\nsensorsacrossmultipledevices.",
+      "size": 359,
+      "sentences": 4
+    },
+    {
+      "id": 140,
+      "content": "ovingDatasetTransparency: TheAssetOpsBenchdatasetincludesawiderangeof\nsensorsacrossmultipledevices. Thistablefunctionsasadocumentationlayerthatimproves\nusability,reproducibility,andunderstandingforresearchersandpractitionersengagingwith\nthebenchmark. 5.",
+      "size": 253,
+      "sentences": 3
+    },
+    {
+      "id": 141,
+      "content": "ability,reproducibility,andunderstandingforresearchersandpractitionersengagingwith\nthebenchmark. 5. GuidingModelandRuleDevelopment: Whetherdesigningrule-basedsystems,hybrid\nAIarchitectures,orphysics-informedmachinelearningmodels,awell-definedmappingof\nsensorstofailuremechanismsisfoundational.Itinformstheconstructionofrobustdetection\nlogicandcontributestogeneralizablereasoningstrategies.",
+      "size": 389,
+      "sentences": 3
+    },
+    {
+      "id": 142,
+      "content": "al.Itinformstheconstructionofrobustdetection\nlogicandcontributestogeneralizablereasoningstrategies. In sum, the sensor–failure alignment table plays a central role in transforming raw operational\ntelemetry into structured, actionable insight. It provides the semantic grounding necessary for\ndevelopinginterpretable,reliable,andeffectiveAIagentsforreal-worldindustrialmaintenancetasks. Table3providesanextensiveexampleforsensor-failuremoderelationforachillersystem.",
+      "size": 465,
+      "sentences": 4
+    },
+    {
+      "id": 143,
+      "content": "almaintenancetasks. Table3providesanextensiveexampleforsensor-failuremoderelationforachillersystem. Table3: SensorInterpretationandFailureModeRelevanceinChillerSystems-Illustrative\nSensor Explanation ImpactonChillerHealth/FailureMode\nRelevance\nCondenser Leaving Temperature of water Indicates heat rejection efficiency; abnor-\nTemp leavingthecondenser malreadingsmaysignalfoulingorreduced\nflow—potentialheatexchangefailure.",
+      "size": 423,
+      "sentences": 3
+    },
+    {
+      "id": 144,
+      "content": "r-\nTemp leavingthecondenser malreadingsmaysignalfoulingorreduced\nflow—potentialheatexchangefailure. VFDOutputVoltage VoltageoutputfromVari- Instabilitymayaffectfan/compressoroper-\nableFrequencyDrive ation—linkedtoelectricaldrivefailureor\nloadimbalance. CHWSTSP in Free Chilled water setpoint Misconfigurationcanleadtoenergyineffi-\nMode duringfreecoolingmode ciency—relatedtocontrollogicfailure.",
+      "size": 394,
+      "sentences": 3
+    },
+    {
+      "id": 145,
+      "content": "configurationcanleadtoenergyineffi-\nMode duringfreecoolingmode ciency—relatedtocontrollogicfailure. CyclingCode Indicatescompressorcy- Frequent cycles may indicate load mis-\nclingstate match,sensorerror,orcompressorstress. ReadyStatus Indicatesifchillerisina Persistentunavailabilitymayreflectcontrol\nreadystate override, interlock failure, or alarm lock-\nout. ManualStart/Stop Overridesformanualop- Maycauseunscheduledruntimeorsafety\neration overrideconditions.",
+      "size": 462,
+      "sentences": 4
+    },
+    {
+      "id": 146,
+      "content": "nualStart/Stop Overridesformanualop- Maycauseunscheduledruntimeorsafety\neration overrideconditions. Chilled Water Leav- Temperature leaving Deviationmaysuggestcapacitylossorim-\ningTemp evaporator properloadconditions. CondenserFlow Water flow through con- Low flow may cause high pressure shut-\ndenserloop downorheatrejectionfailure. VFDInputPower PowerinputtoVFD Spikes may indicate motor inefficiency,\noverload,orharmonicdistortion.",
+      "size": 434,
+      "sentences": 4
+    },
+    {
+      "id": 147,
+      "content": "FDInputPower PowerinputtoVFD Spikes may indicate motor inefficiency,\noverload,orharmonicdistortion. CNWFlowHiAlarm High flow setpoint for Mayindicatebypassvalveissuesorover-\nSP condenserloop pumping. Watt/Ton Coolingefficiencymetric Risingratiosuggestsenergyinefficiencyor\ncomponentdegradation. 19\n===  20 ===\nSensor Explanation ImpactonChillerHealth/FailureMode\nRelevance\nChilledWaterFlow Waterflowthroughevap- Maypointtopumpfailure,valveissues,or\norator airlocks.",
+      "size": 465,
+      "sentences": 4
+    },
+    {
+      "id": 148,
+      "content": "evance\nChilledWaterFlow Waterflowthroughevap- Maypointtopumpfailure,valveissues,or\norator airlocks. MotorRunStatus Compressormotoropera- Discrepanciescouldsignalfalsestarts,sen-\ntionalstate sorerror,orruntimemisreporting. VibrationPoint#1SP Vibrationsensorsetpoint Mayindicatebearingfailure,imbalance,or\n(location#1) mechanicallooseness. CHWValvePosition Positionofchilledwater Out-of-rangepositionmayimplyvalveac-\nvalve tuatorfaultorcontrolmisbehavior.",
+      "size": 453,
+      "sentences": 4
+    },
+    {
+      "id": 149,
+      "content": "Positionofchilledwater Out-of-rangepositionmayimplyvalveac-\nvalve tuatorfaultorcontrolmisbehavior. CHW Differential Pressure drop across Suggests clogging, filter fouling, or flow\nPressure(D/P) chilledwaterloop resistance. CHWFlowHiAlarm Alarm setpoint for high Triggeredbypumpoverspeed,valveover-\nSP CHWflow shoot,orcontrolissues. Condenser Return Watertemperaturereturn- Importantforthermalloadcalculationand\nTemp ingtothecondenser monitoringefficiency.",
+      "size": 455,
+      "sentences": 4
+    },
+    {
+      "id": 150,
+      "content": "mperaturereturn- Importantforthermalloadcalculationand\nTemp ingtothecondenser monitoringefficiency. AverageAmps Averagemotorcurrent Highcurrentmayindicateoverload,bear-\ningdrag,orelectricalfaults. CHW Valve Close Control signal to close Improperfunctionmaycauseflowissuesor\nControl CHWvalve unmetloads. CNW Differential Pressure drop in con- Indicatesscaling,fouling,orpumpdegra-\nPressure(D/P) denserloop dation.",
+      "size": 412,
+      "sentences": 4
+    },
+    {
+      "id": 151,
+      "content": "ential Pressure drop in con- Indicatesscaling,fouling,orpumpdegra-\nPressure(D/P) denserloop dation. VFD Internal Ambi- Internal temperature of High temps may trigger thermal trips or\nentTemp VFD shortenVFDlifespan. FreonTemp Refrigeranttemperature Abnormal values may suggest charge is-\nsues, expansion valve faults, or heat ex-\nchangefailure. Compressor Oil Oilsumptemperature Hightemperaturemaysignalbearingwear\nSumpTemp orinsufficientcooling.",
+      "size": 445,
+      "sentences": 4
+    },
+    {
+      "id": 152,
+      "content": "mpressor Oil Oilsumptemperature Hightemperaturemaysignalbearingwear\nSumpTemp orinsufficientcooling. ChilledWaterReturn Return water temp to Usedforcoolingloadanddelta-Tanalysis. Temp evaporator\nMotor Run Status Reportedmotorruncon- Mismatchsuggestssensor/controlerror. RPT firmation\nVFD Inverter Link CurrentthroughVFDin- HighcurrentmayindicateoverloadorVFD\nCurrent verterlink stress. CHWSTSP in Part Setpoint in partial load Improper configuration can cause energy\nMode mode wasteorloadmismatch.",
+      "size": 496,
+      "sentences": 5
+    },
+    {
+      "id": 153,
+      "content": "art Setpoint in partial load Improper configuration can cause energy\nMode mode wasteorloadmismatch. VFD Phase A/B/C PhasecurrentsfromVFD Usedtodetectimbalances,shorts,orphase\nCurrent loss. VFDConverterHeat VFD heat sink tempera- Elevatedtempsreducecomponentlifeand\nSinkTemp ture cancausefailure. CompressorOilPres- Oilpressureincompres- Lowpressureriskslubricationfailureand\nsure sor componentdamage. Failure(statusflag) Directfailureindicator Usedasgroundtruthlabelforfaultevalua-\ntion.",
+      "size": 487,
+      "sentences": 5
+    },
+    {
+      "id": 154,
+      "content": "onentdamage. Failure(statusflag) Directfailureindicator Usedasgroundtruthlabelforfaultevalua-\ntion. VFDSetpoint Speed or torque com- Affects energy usage, response time, and\nmand coolingcapacity. CHW Flow High Highflowwarningflag Mayindicatesystemcontrolfaultsorover-\nAlarm sizedflowcomponents. VFDDCBusVoltage DC voltage level inside Instabilitycanreflectpowerqualityissues.",
+      "size": 375,
+      "sentences": 5
+    },
+    {
+      "id": 155,
+      "content": "zedflowcomponents. VFDDCBusVoltage DC voltage level inside Instabilitycanreflectpowerqualityissues. VFD\n20\n===  21 ===\nSensor Explanation ImpactonChillerHealth/FailureMode\nRelevance\nCNW Flow High High condenser water Mayreflectvalvemispositionorenergyin-\nAlarm flowwarning efficiency. CNW Flow Low Lowflowalarmthreshold Indicatesriskofoverheatingorshutdown\nAlarmSP duetopoorheatrejection. WarningCode Non-criticalwarningsta- Helpfulforearlydiagnosticsortrenddetec-\ntus tion.",
+      "size": 474,
+      "sentences": 5
+    },
+    {
+      "id": 156,
+      "content": "eatrejection. WarningCode Non-criticalwarningsta- Helpfulforearlydiagnosticsortrenddetec-\ntus tion. Vibration Points Additional vibration set- Detect imbalance, wear, or mechanical\n#2/#3SP points degradation. B.3 RationaleforTSFMAgentoverApplication\nTheTSFMAgentispurpose-builttosupportcriticaltaskswithintheAssetOpsworkflow,asoutlined\nin Figure 2.",
+      "size": 348,
+      "sentences": 4
+    },
+    {
+      "id": 157,
+      "content": "TheTSFMAgentispurpose-builttosupportcriticaltaskswithintheAssetOpsworkflow,asoutlined\nin Figure 2. Within Model Selection and Analysis, TSFM Agent enables forecasting of key\nperformanceindicators(KPIs)usinglightweight,pre-trainedfoundationmodelssuchasTTM1.Its\nadaptiveanomalydetectionframework,basedonpost-hocconformalprediction,supportscalibrated\nandinterpretableanomalyscores,providinghighutilityforbothMonitoringandExecutionand\nMaintenanceandResponse.",
+      "size": 454,
+      "sentences": 2
+    },
+    {
+      "id": 158,
+      "content": "rpretableanomalyscores,providinghighutilityforbothMonitoringandExecutionand\nMaintenanceandResponse. Specifically,theTSFMAgentcanexecuteandrefinemodels,classifyanomaliesbasedonhistorical\ndeviations,andsupportoperationalguardrailsbysimulatingexpectedtrendsundernormalconditions. Indownstreamapplications,theagent’soutputscanbeusedtosummarizeoverallsystemhealthby\ntrackingthefrequencyofanomaliesacrossselectedKPIs.",
+      "size": 411,
+      "sentences": 3
+    },
+    {
+      "id": 159,
+      "content": "outputscanbeusedtosummarizeoverallsystemhealthby\ntrackingthefrequencyofanomaliesacrossselectedKPIs. Theseanomaliesserveasafoundation\nformaintenancerecommendations,enablingpreventiveandreactiveworkordergeneration. TSFM\nAgentfacilitatesreal-time,data-drivendecision-makingthroughouttheassetlifecycle. B.4 RationaleforWOAgentoverApplication\nTheWOAgent,acodebasedReAct,inAssetOpsBenchisdesignedtoenableintelligentinteraction\nwithstructuredandunstructuredmaintenancerecordsthroughamodulardatamodel.",
+      "size": 493,
+      "sentences": 4
+    },
+    {
+      "id": 160,
+      "content": "ableintelligentinteraction\nwithstructuredandunstructuredmaintenancerecordsthroughamodulardatamodel. Itoperatesover\nasetofBusinessObjects(BOs)thatrepresentworkorders,alerts,anomalies,failurecodes,andasset\nmetadata. TheseBOsarecategorizedintofivefunctionalgroupsthatcollectivelysupporttheWO\nAgent’sdecision-makingcapabilities. ToreasonovertheseBOs,theWOAgentisequippedwithacollectionofanalyticfunctionsthat\nallowittoretrieve,interpret,andactuponhistoricalandreal-timedata.",
+      "size": 470,
+      "sentences": 4
+    },
+    {
+      "id": 161,
+      "content": "collectionofanalyticfunctionsthat\nallowittoretrieve,interpret,andactuponhistoricalandreal-timedata. Theagent’scapabilitiesare\nstructuredasfollows:\n1. HistoricalReasoningviaContentObjectsandKnowledgeExtraction: TheWOAgent\naccessesrawmaintenancedatasuchasWorkOrders,Events,includingWorkorders,alerts,\nandanomalyEvents. Knowledgeextractionfunctionsenabletheagenttoretrieveandfilter\nthisdatabydate,asset,andworkordertype,allowingtargetedanalysisandretrospective\ndiagnostics. 2.",
+      "size": 473,
+      "sentences": 5
+    },
+    {
+      "id": 162,
+      "content": "lter\nthisdatabydate,asset,andworkordertype,allowingtargetedanalysisandretrospective\ndiagnostics. 2. Standardized Interpretation with Meta/Profile Objects: BOs like ISO Failure Code,\nAlertRule,andEquipmentprovidestructuredclassificationschemes. Theseallowtheagent\nto categorize failures, apply semantic filters, and maintain compatibility with domain\nconventions—criticalforaligningalertsandanomalieswithactionablecategories. 3.",
+      "size": 427,
+      "sentences": 5
+    },
+    {
+      "id": 163,
+      "content": "atibility with domain\nconventions—criticalforaligningalertsandanomalieswithactionablecategories. 3. Temporal and Causal Reasoning via Statistical Functions: Leveraging relationship\nBOssuchasAlert-RuleMappingandAnomalyMapping,theWOAgentappliesstatistical\nfunctions(e.g.,Allen’sIntervalAlgebra)todetecttemporalpatterns—suchaswhenalerts\nconsistently precede failures. It also detects repeated work order cycles, helping align\nmaintenancewithactualdegradationpatternsinsteadoffixedschedules. 4.",
+      "size": 490,
+      "sentences": 5
+    },
+    {
+      "id": 164,
+      "content": "ork order cycles, helping align\nmaintenancewithactualdegradationpatternsinsteadoffixedschedules. 4. PredictiveandPrescriptiveIntelligencethroughDecisionSupportFunctions: Using\ntheWorkOrderRecommendationBO,theagentforecastsfutureworkorders,recommends\n1https://huggingface.co/ibm-granite/granite-timeseries-ttm-r1\n21\n===  22 ===\nmaintenancebasedonalertsorKPIanomalies,andidentifiesopportunitiesforbundling\nrelatedtasks.",
+      "size": 417,
+      "sentences": 3
+    },
+    {
+      "id": 165,
+      "content": "22 ===\nmaintenancebasedonalertsorKPIanomalies,andidentifiesopportunitiesforbundling\nrelatedtasks. Thesedecisionsupportfunctionsenableproactiveschedulingandoptimize\nresourceuseacrosstheassetlifecycle. 5. Persona-AlignedInteractionandQueryResolution: TheWOAgentinterfacesnaturally\nwithdomainpersonas. Maintenanceengineerscanexplorepastinterventionsforagiven\nfailure,whileplannerscanqueryupcomingworkorderdemandsorseekopportunitiesto\nconsolidatetasks.",
+      "size": 448,
+      "sentences": 5
+    },
+    {
+      "id": 166,
+      "content": "agiven\nfailure,whileplannerscanqueryupcomingworkorderdemandsorseekopportunitiesto\nconsolidatetasks. Thesecapabilitiesarebackedbymodularfunctionsthatsupportflexible\nqueryingandplanninglogic. Insummary,theWOAgentisahybridreasoninganddecision-supportagentbuiltatopstructured\nbusiness objects and analytic functions. It connects historical insight with predictive planning,\nenablinglifecycle-awaremaintenanceinterventionsgroundedintransparent,data-drivenlogic.",
+      "size": 456,
+      "sentences": 4
+    },
+    {
+      "id": 167,
+      "content": "ve planning,\nenablinglifecycle-awaremaintenanceinterventionsgroundedintransparent,data-drivenlogic. Table4: WOAgentSummaryofBusinessObjects,Source,Role,andNumberofRecords\nBusiness Ob- Source Role Count\nject\nContentObjects\nWorkOrder WorkOrderMan- Tracks scheduled and unscheduled mainte- 4392\nager nancetasks,categorizedaspreventiveorcor-\nrective. Event Aggregated by Consolidates event logs for tracking and 6929\nAuthors decision-making.",
+      "size": 437,
+      "sentences": 3
+    },
+    {
+      "id": 168,
+      "content": "rective. Event Aggregated by Consolidates event logs for tracking and 6929\nAuthors decision-making. AlertEvents IoTRepository Logsreal-timealertstriggeredbyIoTsensors 1995\nbasedonpredefinedconditions. Anomaly MLGenerated DetectsKPIdeviationsusingmachinelearning 542\nEvents forpredictivemaintenance. Meta/ProfileObjects\nISO Failure DevelopedbyAu- Standardizes failure classification for struc- 137\nCode thors turedmaintenanceanalysis.",
+      "size": 433,
+      "sentences": 5
+    },
+    {
+      "id": 169,
+      "content": "elopedbyAu- Standardizes failure classification for struc- 137\nCode thors turedmaintenanceanalysis. ISO Primary DevelopedbyAu- Defines primary failure categories and links 68\nFailure_Code thors relatedsecondarycodes. AlertRule SMEProvided Specifiesconditionsfortriggeringalertsbased 77\nonsystembehaviors. Equipment SMEProvided Represents industrial assets, including status 22\nandspecifications.",
+      "size": 395,
+      "sentences": 4
+    },
+    {
+      "id": 170,
+      "content": "haviors. Equipment SMEProvided Represents industrial assets, including status 22\nandspecifications. RelationshipCausalityObjects\nAlert-Rule Relationship Linksalertrulestofailurecodesforautomated 46\nMapping Causality diagnostics. Anomaly Relationship Associatesanomalieswithfailurecodesforpre- 12\nMapping Causality dictiveinsights. RecommendationObjects\nWorkOrder Recommendation Suggestsmaintenanceactionsbasedonhistori- N/A\nRecommenda- calpatterns.",
+      "size": 448,
+      "sentences": 5
+    },
+    {
+      "id": 171,
+      "content": "cts\nWorkOrder Recommendation Suggestsmaintenanceactionsbasedonhistori- N/A\nRecommenda- calpatterns. tion\nNote:Thedesignandstructureofthebusinessobjectsandcorrespondinganalysisinthissectionarevalidfor\notherindustrialassettypes,suchasstandbygenerators. C ScenarioCreationPrinciples\nThescenariosinAssetOpsBencharecraftedtoevaluateabroadspectrumofcapabilitiesexpected\nfrom autonomous agents in industrial settings.",
+      "size": 410,
+      "sentences": 3
+    },
+    {
+      "id": 172,
+      "content": "raftedtoevaluateabroadspectrumofcapabilitiesexpected\nfrom autonomous agents in industrial settings. Each scenario is designed to challenge specific\ndimensions of reasoning, tool use, data interpretation, communication, and decision-making, as\noutlinedbelow:\n22\n===  23 ===\n• ReasoningandToolUse: Assessesdomain-specificreasoningsuchastimeandschema\noperations, appropriate tool invocation, and structured command generation. Common\nfailuremodesincludeprematurehaltsormisuseoftools.",
+      "size": 480,
+      "sentences": 3
+    },
+    {
+      "id": 173,
+      "content": "cation, and structured command generation. Common\nfailuremodesincludeprematurehaltsormisuseoftools. • DataHandlingandForecasting: Evaluatestheagent’sabilitytointerprettelemetry,detect\nanomalies,andconfigureappropriateforecastingoranomalydetectionmodels. Tasksoften\nrequiretranslatingdomainknowledgeintoMLconfigurationsteps(e.g.,modelselection,\nfine-tuning). • AgentCommunicationandCoordination: Testsmulti-agentworkflowsinvolvingtargeted\nquestion-asking,summarization,andcollaborativedecision-making.",
+      "size": 500,
+      "sentences": 5
+    },
+    {
+      "id": 174,
+      "content": "ulti-agentworkflowsinvolvingtargeted\nquestion-asking,summarization,andcollaborativedecision-making. Scenariosmimichow\nagentsmaydelegateorescalatetasksinrealsettings. • WorkflowOrchestrationandDecision-Making: Measurestheagent’sabilitytoplanand\nmanagedependentsubtasks,reasonunderuncertainty,andterminateappropriatelywhen\nfacedwithambiguityormissingdata. C.1 Examples\nWeincludetwoexamples(Table5andTable6)thatshowcasedistinctbehaviorsofagentoutputs.",
+      "size": 448,
+      "sentences": 4
+    },
+    {
+      "id": 175,
+      "content": "ata. C.1 Examples\nWeincludetwoexamples(Table5andTable6)thatshowcasedistinctbehaviorsofagentoutputs. Readerscanobservethatthecharacteristicformvariesevenforproblemsthatappearsimilaronthe\nsurface. Table5: ExampleKnowledgeQuery: EnergyPredictionforChiller9\nField Description\nID 507\nType KnowledgeQuery\nText WhatisthepredictedenergyconsumptionforChiller9intheweekof\n2020-04-27basedondatafromtheMAINsite?",
+      "size": 399,
+      "sentences": 4
+    },
+    {
+      "id": 176,
+      "content": "ext WhatisthepredictedenergyconsumptionforChiller9intheweekof\n2020-04-27basedondatafromtheMAINsite? CharacteristicForm Theexpectedresponseshouldconfirmthesuccessfulexecutionofall\nrequired actions, ensuring that the correct asset (Chiller 9), location\n(MAIN), and time range (week of 2020-04-27) were used for data\nretrieval and analysis.",
+      "size": 337,
+      "sentences": 2
+    },
+    {
+      "id": 177,
+      "content": "9), location\n(MAIN), and time range (week of 2020-04-27) were used for data\nretrieval and analysis. It should specify that the agent identified the\nsensor name (power input sensor) and retrieved the historical energy\nconsumptiondataforChiller9duringthespecifiedtimeperiod.",
+      "size": 272,
+      "sentences": 2
+    },
+    {
+      "id": 178,
+      "content": "sensor) and retrieved the historical energy\nconsumptiondataforChiller9duringthespecifiedtimeperiod. Theresponsemustalsoexplainthattheagentattemptedtoanalyzethe\ndata for energy consumption prediction, but was unable to do so due\nto insufficient data, as the power input for Chiller 9 was consistently\n0.0from2020-04-20to2020-04-25,indicatingthatthechillerwasnot\noperating.",
+      "size": 371,
+      "sentences": 2
+    },
+    {
+      "id": 179,
+      "content": "Chiller 9 was consistently\n0.0from2020-04-20to2020-04-25,indicatingthatthechillerwasnot\noperating. D DatasetsforAssetOpsBenchandUtilizationbyAgents\nInthispart,asextensionofSection4.1,wewillzoomintothedatasetsutilizedbythevariousagents\nofAssetOpsBench(Moredetailsoftherolesoftheagentsintheassetlifetimemanagementcanbe\nfoundatAppendixB).",
+      "size": 335,
+      "sentences": 2
+    },
+    {
+      "id": 180,
+      "content": "fAssetOpsBench(Moredetailsoftherolesoftheagentsintheassetlifetimemanagementcanbe\nfoundatAppendixB). D.1 SensorTelemetryDatasetforIoTAgentandTSFMAgent\nBothIoTAgentandTSFMAgent(Figure2)leveragetheSensorTelemetryDataset,whichcomprises\nsensortelemetrycollectedfromBuildingManagementSystems(BMS)andtheSkySparkanalytics\nplatform.Thisdatasetcapturesfifteen-minuteintervaloperationaldatafromindustrialHVACsystems,\nspecificallyafleetofchillers.",
+      "size": 435,
+      "sentences": 2
+    },
+    {
+      "id": 181,
+      "content": "pturesfifteen-minuteintervaloperationaldatafromindustrialHVACsystems,\nspecificallyafleetofchillers. Eachchillerunit(e.g.,Chiller4,Chiller14)isinstrumentedwitha\nstandardizedsuiteofphysicalsensorsthatmonitorkeyoperationalparametersinreal-time. Arepresentativesubset ofthesesensors issummarizedin Table7. Thesesensors recordvarious\nkinematic,dynamic,thermodynamic,electrical,andoperationalmetricsessentialtoassessingthe\nperformanceandhealthofchillersystems.",
+      "size": 454,
+      "sentences": 4
+    },
+    {
+      "id": 182,
+      "content": "namic,electrical,andoperationalmetricsessentialtoassessingthe\nperformanceandhealthofchillersystems. Measurementsincludewaterandrefrigeranttemperatures,\n23\n===  24 ===\nTable6: ExampleKnowledgeQuery: PredictingEnergyUsageforChiller9\nField Description\nID 511\nType KnowledgeQuery\nText CanyoupredictChiller9’senergyusagefornextweekbasedondata\nfromtheweekof2020-04-27atMAIN?",
+      "size": 368,
+      "sentences": 2
+    },
+    {
+      "id": 183,
+      "content": "eQuery\nText CanyoupredictChiller9’senergyusagefornextweekbasedondata\nfromtheweekof2020-04-27atMAIN? CharacteristicForm Theexpectedresponseshouldconfirmthesuccessfulexecutionofall\nrequiredactions,ensuringthatthecorrectasset(Chiller9)andlocation\n(MAINsite)wereusedfordataretrievalandanalysis. Itshouldspecify\nthattheagentfirstidentifiedthesensorsforChiller9,thenselectedthe\nChiller9PowerInputsensor,andsuccessfullyretrievedtheenergyusage\ndataforthespecifiedtimeperiod.",
+      "size": 466,
+      "sentences": 3
+    },
+    {
+      "id": 184,
+      "content": "dthe\nChiller9PowerInputsensor,andsuccessfullyretrievedtheenergyusage\ndataforthespecifiedtimeperiod. Theresponseshouldconfirmthattheagentprovidedthefilepathwhere\nthe data is stored. Additionally, it should mention that although the\nagentinitiallyencounterederrorswhileanalyzingthedataandmaking\npredictions,itsuccessfullycorrecteditsmistakesandfinetunedaTime\nSeriesForecastingmodelusingtheprovideddata.",
+      "size": 400,
+      "sentences": 3
+    },
+    {
+      "id": 185,
+      "content": "ons,itsuccessfullycorrecteditsmistakesandfinetunedaTime\nSeriesForecastingmodelusingtheprovideddata. Theagentshould\nhaveusedthefinetunedmodeltogeneratepredictionsforthenextweek,\nwiththeresultsbeingstoredinthespecifiedfile. power consumption, cooling capacity (tonnage), flow rates, and system setpoints. Additionally,\ncomputedmetricssuchaschillerefficiencyandloadpercentageserveasvaluablereal-timeindicators\nofsystemperformance.",
+      "size": 427,
+      "sentences": 4
+    },
+    {
+      "id": 186,
+      "content": "ricssuchaschillerefficiencyandloadpercentageserveasvaluablereal-timeindicators\nofsystemperformance. Table7: RepresentativeSensorsintheAssetOpsBenchDataset\nSensorName Description\nChillerReturnTemperature Temperatureofwaterreturningtothechiller\nSupplyTemperature Temperatureofwaterexitingthechiller\nPowerInput Electricalpowerconsumption\nTonnage Heatextractionrate(coolingcapacity)\nCondenser Water Supply to Temperatureofwatersuppliedtothecondenser\nChillerTemperature\nChillerEfficiency Instantaneousperformancemetric\nChiller%Loaded Currentloadasapercentageofthemaximum\nCondenserWaterFlow Flowratethroughthecondenser\nLiquid Refrigerant Evaporator Temperatureofrefrigerantintheevaporator\nTemperature\nRunStatus Binaryindicatorofwhetherthechilleriscurrentlyoperat-\ning\nSetpointTemperature Currentsetpointforchilleroperation\nEach sensor stream is accompanied by rich metadata, including sensor type, measurement units,\nphysicallocation,andstructureddevicetagsthatdefinedeviceassociations.",
+      "size": 980,
+      "sentences": 2
+    },
+    {
+      "id": 187,
+      "content": "nsor type, measurement units,\nphysicallocation,andstructureddevicetagsthatdefinedeviceassociations. Thedatasetcaptures\nrealisticoperationalvariability,encompassingnoise,missingdata,andseasonalpatterns. Assuch,\nit provides a robust foundation for developing and benchmarking models that require temporal\nreasoning,faultdetection,anddecision-makingunderuncertainty. Asillustration,Figure15presentslayeredtimeseriessubplotsforkeychillersensorsoveraselected\nsnapshotperiodinJune2020forChiller6.",
+      "size": 490,
+      "sentences": 4
+    },
+    {
+      "id": 188,
+      "content": "entslayeredtimeseriessubplotsforkeychillersensorsoveraselected\nsnapshotperiodinJune2020forChiller6. Eachsubplotcorrespondstoonesensorvariable,enabling\naclearviewoftemporaldynamicsandinter-variablebehavior. Thisfigureprovidesinsightintothe\noperationalprofileofasinglechillerunitduringreal-worldusage. 24\n===  25 ===\nFigure 15: Snapshot of time series data from Chiller 6 for June 2020. Each subplot shows an\nindividualsensor’strendovertime.",
+      "size": 439,
+      "sentences": 5
+    },
+    {
+      "id": 189,
+      "content": "me series data from Chiller 6 for June 2020. Each subplot shows an\nindividualsensor’strendovertime. TheIoTAgentinteractswiththistelemetrydatathroughstructuredutterances. Byleveragingthe\nstandardized data provided by AssetOpsBench, the agent enables detailed, query-driven access\ntooperationalinformationacrossHVACassetssuchaschillersandairhandlingunits(AHUs)at\nIoT-enabledsitesliketheMAINfacility.",
+      "size": 397,
+      "sentences": 4
+    },
+    {
+      "id": 190,
+      "content": "ationacrossHVACassetssuchaschillersandairhandlingunits(AHUs)at\nIoT-enabledsitesliketheMAINfacility. Throughtheseutterances,userscanrequestbothreal-time\nandhistoricaldata,retrievemetadata,anddownloadsensorreadingsforspecifictimeframes. This\nfunctionalitysupportsknowledgeanddataqueries,facilitatingasset-leveldiagnostics,performance\nmonitoring,andintelligentdecision-making,eveninnoisyorincompletedata.",
+      "size": 401,
+      "sentences": 3
+    },
+    {
+      "id": 191,
+      "content": "-leveldiagnostics,performance\nmonitoring,andintelligentdecision-making,eveninnoisyorincompletedata. Ontheotherhand,theTSFMAgentoperatesonsensortelemetrydata—eitherretrievedviatheIoT\nAgentoraccesseddirectlyfromthesensorrepository—toperformadvancedtimeseriesanalysis\nacrossHVACsystems. Itsupportsarangeofanalyticaltasks, includingmultivariateforecasting,\nandtimeseriesanomalydetection. Atitscore,theagentutilizespre-trainedtime-seriesfoundation\nmodels,suchasTTMvariants(seefootnote2).",
+      "size": 482,
+      "sentences": 4
+    },
+    {
+      "id": 192,
+      "content": "Atitscore,theagentutilizespre-trainedtime-seriesfoundation\nmodels,suchasTTMvariants(seefootnote2). TTM(TinyTime-seriesMixture)isalightweight,\npre-trainedtime-seriesfoundationmodeldesignedforefficientmultivariateforecasting. Foranomaly\ndetection, the TSFM Agent applies a model-agnostic, post-hoc adaptive conformal method that\nrequiresnoadditionalfine-tuningdata,makingithighlypracticalforreal-world,resource-constrained\ndeployments.",
+      "size": 433,
+      "sentences": 3
+    },
+    {
+      "id": 193,
+      "content": "snoadditionalfine-tuningdata,makingithighlypracticalforreal-world,resource-constrained\ndeployments. By learning dynamic weighting strategies from prediction histories, it can detect\ndistributionalshiftsandmaintaincalibrated,interpretableanomalyscoresalignedwithuser-defined\nfalsealarmrates. Throughstructuredutterances,userscaninvokeforecastingonspecificvariables\n(e.g.,“Chiller9CondenserWaterFlow”),fine-tunemodelswithminimaldata,ordetectanomaliesin\nhistoricaltrends—allwithminimalconfiguration.",
+      "size": 496,
+      "sentences": 3
+    },
+    {
+      "id": 194,
+      "content": "”),fine-tunemodelswithminimaldata,ordetectanomaliesin\nhistoricaltrends—allwithminimalconfiguration. Thisseamlessintegrationofpre-trainedmodels,\nadaptiveanalytics,anduser-guidedqueriesenablestransparent,robust,andimmediatelydeployable\nmonitoringsolutionstailoredforcriticalindustrialsystems.",
+      "size": 290,
+      "sentences": 2
+    },
+    {
+      "id": 195,
+      "content": "ransparent,robust,andimmediatelydeployable\nmonitoringsolutionstailoredforcriticalindustrialsystems. D.2 FailureModeDatasetsforFMSRAgent\nThefailuremodedatasetsinAssetOpsBencharemodeledusingtheprinciplesofFailureModes\nand Effects Analysis (FMEA), a structured framework used in reliability engineering to identify\nfailurerisks,assessrootcausesandeffects,andinformcondition-basedmaintenancestrategies.",
+      "size": 398,
+      "sentences": 2
+    },
+    {
+      "id": 196,
+      "content": "to identify\nfailurerisks,assessrootcausesandeffects,andinformcondition-basedmaintenancestrategies. Each\n2https://huggingface.co/ibm-granite/granite-timeseries-ttm-r2\n25\n===  26 ===\nfailureisdefinedbyitsmode,degradationmechanism,detectionopportunity,andoperationalimpact,\nenablingstructuredreasoningforbothrule-baseddiagnosticsandmachinelearning. Failures in the dataset are annotated at the asset and subsystem levels, with a primary focus on\ncentrifugalchillers.",
+      "size": 463,
+      "sentences": 3
+    },
+    {
+      "id": 197,
+      "content": "taset are annotated at the asset and subsystem levels, with a primary focus on\ncentrifugalchillers. Thesefailuresreflectrealisticdegradationpathwaysandoperationalstressors\nderivedfromfieldexperience. Eachrecordinthefailuremodelincludes:\n• FailureLocationandComponent: Thesubsystemorpartwherefailureoccurs,suchas\nbearings,gearboxes,impellers,orlubricationsystems.",
+      "size": 362,
+      "sentences": 3
+    },
+    {
+      "id": 198,
+      "content": "ent: Thesubsystemorpartwherefailureoccurs,suchas\nbearings,gearboxes,impellers,orlubricationsystems. • DegradationMechanism: Theunderlyingphysicalprocessdrivingthefailure,including\nwear,erosion,oildegradation,vibration-inducedfatigue,andmisalignment. • DegradationInfluences: Externalorinternalstressorssuchasruntime,two-phaseprocess\nfluid,personnelerror,orshockloading. • FunctionalFailureMode: Theresultingoperationaldefect,suchasdecreasedoilpressure,\naudiblenoise,lowheadpressure,orcapacityloss.",
+      "size": 497,
+      "sentences": 4
+    },
+    {
+      "id": 199,
+      "content": "resultingoperationaldefect,suchasdecreasedoilpressure,\naudiblenoise,lowheadpressure,orcapacityloss. • DetectionOpportunities: Observableprecursorsorsymptoms,includingsensorreadings\n(e.g.,oilsampling,vibrationsignals),condition-basedalarms,orinspectionresults. • RepairTimeandCriticality: Estimateddowntimeandclassificationoffailurerisk,sup-\nportingcost-basedprioritizationandscheduling.",
+      "size": 386,
+      "sentences": 3
+    },
+    {
+      "id": 200,
+      "content": "Estimateddowntimeandclassificationoffailurerisk,sup-\nportingcost-basedprioritizationandscheduling. • PreventiveTaskType: Associatedmaintenanceactivity, suchasoilanalysis, vibration\nanalysis,orvisualinspection,taggedwitheffectivenessratingsandinterventionintervals. Forexample,bearingwear—arecurringfailureacrosschillersubsystems—mayarisefromlubrication\nfailure,misalignment,orfluidshockloading.",
+      "size": 394,
+      "sentences": 3
+    },
+    {
+      "id": 201,
+      "content": "ingfailureacrosschillersubsystems—mayarisefromlubrication\nfailure,misalignment,orfluidshockloading. Thisdegradationisdetectableviaacombinationofoil\nanalysisandvibrationmonitoring,withfailuresymptomsincludingincreasedvibration,reducedoil\npressure,andaudibleanomalies. Similarly,impellererosionislinkedtoagingandtwo-phasefluid\nexposure,typicallypresentingasreducedcapacityandlowerheadpressure. Eachmaintenancetaskinthedatasetismappedtoitsdetectionmechanismandactiontype(e.g.,con-\nditionmonitoringvs.",
+      "size": 497,
+      "sentences": 4
+    },
+    {
+      "id": 202,
+      "content": "intenancetaskinthedatasetismappedtoitsdetectionmechanismandactiontype(e.g.,con-\nditionmonitoringvs. correctiverepair),alongwithdocumentationontaskcontentandrecommended\nfrequency. Thesestructuredrecordsnotonlysupportearlyfaultdetectionanddiagnosticsbutalso\nfacilitatebenchmarkingofintelligentagents’reasoningoverreal-worlddegradationpatternsand\nmaintenancedecisions. Failuresaretemporallyalignedwithtelemetry,enablingthestudyofdegradationtrajectoriesand\npre-failure conditions.",
+      "size": 476,
+      "sentences": 4
+    },
+    {
+      "id": 203,
+      "content": "temporallyalignedwithtelemetry,enablingthestudyofdegradationtrajectoriesand\npre-failure conditions. This integrated design makes the dataset suitable for supervised learning,\ncausalinference, andevaluationofdigitaltwinsorpredictivemaintenanceagentsunderrealistic\noperatinguncertainty.",
+      "size": 284,
+      "sentences": 2
+    },
+    {
+      "id": 204,
+      "content": "rence, andevaluationofdigitaltwinsorpredictivemaintenanceagentsunderrealistic\noperatinguncertainty. To utilize the failure modes and their association with the sensors, we design FMSR (Failure\nModeSensorRelations)tointerpretfailuremodedatasetswithintheAssetOpsBenchframework,\nleveragingstructuredFMEA(FailureModesandEffectsAnalysis)principlestolinksensortelemetry\nwithdegradationmechanismsandoperationalfailures.",
+      "size": 412,
+      "sentences": 2
+    },
+    {
+      "id": 205,
+      "content": "andEffectsAnalysis)principlestolinksensortelemetry\nwithdegradationmechanismsandoperationalfailures. Usingannotatedfailurerecordsforassets\nsuchascentrifugalchillers,theFMSRAgentbuildsknowledgegraphsandreasoningmodelsthat\nconnectspecificfailuremodes—likecompressoroverheating,evaporatorfouling,orrefrigerantvalve\nfailure—totheirunderlyingcausesanddetectablesymptoms.",
+      "size": 364,
+      "sentences": 2
+    },
+    {
+      "id": 206,
+      "content": "rheating,evaporatorfouling,orrefrigerantvalve\nfailure—totheirunderlyingcausesanddetectablesymptoms. Thesefailuremodesaremappedto\navailablesensormeasurements(e.g.,supplytemperature,powerinput,vibration,flowrate)toidentify\nobservableprecursors. Forexample,compressoroverheatingmaybemonitoredthroughtrendsin\npowerinput,chillerefficiency,andevaporatortemperature,whilecondenserfoulingcanmanifest\ninabnormalreturntemperaturesandflowratedeviations.",
+      "size": 442,
+      "sentences": 3
+    },
+    {
+      "id": 207,
+      "content": "atortemperature,whilecondenserfoulingcanmanifest\ninabnormalreturntemperaturesandflowratedeviations. Throughstructuredutterances,userscan\nquerywhichfailuremodesareassociatedwithspecificsensors,whicharecriticalfordetectinga\ngivenfailure,orevenconstructmachinelearningrecipesforpredictivemodeling—suchasanomaly\nmodelsforchillertripsorexcessivepurging. Theagentleveragesthisdatatoperformrule-based\ndiagnostics,supportcausalanalysis,andassistincondition-basedmaintenanceplanning.",
+      "size": 474,
+      "sentences": 3
+    },
+    {
+      "id": 208,
+      "content": "operformrule-based\ndiagnostics,supportcausalanalysis,andassistincondition-basedmaintenanceplanning. Byaligning\ntemporalsensorpatternswithknownfailuresignatures,theFMSRAgentenablesexplainablefault\ndetectionandrootcauseinference,ultimatelyenhancingreliability,maintainability,andtransparency\ninHVACoperations. 26\n===  27 ===\nTable8: WorkOrderEventSchemaDefinition\nFieldName Type Description\nwo_id String Uniqueidentifierfortheworkorder.",
+      "size": 434,
+      "sentences": 3
+    },
+    {
+      "id": 209,
+      "content": "OrderEventSchemaDefinition\nFieldName Type Description\nwo_id String Uniqueidentifierfortheworkorder. Exam-\nple: \"L247402\"\nwo_description String Descriptionoftheworkbeingdone. Exam-\nple: \"CHILLER COMP OIL ANALYSIS\"\ncollection String Broad group or system the work relates to. Example: \"compressor\"\ncomponents String Specific part or component being serviced. Example: \"compressor\"\nprimary_code String Code representing the main type of work. Example: \"MT010\"\nprimary_code_desc.",
+      "size": 475,
+      "sentences": 6
+    },
+    {
+      "id": 210,
+      "content": "r\"\nprimary_code String Code representing the main type of work. Example: \"MT010\"\nprimary_code_desc. String Description of the primary work code. Ex-\nample: \"Oil Analysis\"\nsecondary_code String Sub-codeundertheprimarycategory. Exam-\nple: \"MT010b\"\nsecondary_code_desc. String Descriptionofthesecondarycode. Example:\n\"Routine Oil Analysis\"\nequipment_id String Unique ID of the equipment. Example:\n\"CU02013\"\nequipment_name String Human-readablenameoftheequipment.",
+      "size": 459,
+      "sentences": 8
+    },
+    {
+      "id": 211,
+      "content": "que ID of the equipment. Example:\n\"CU02013\"\nequipment_name String Human-readablenameoftheequipment. Ex-\nample: \"Chiller 13\"\npreventive Boolean Indicates if this is preventive maintenance. Example: TRUE\nwork_priority Integer Prioritylevelofthework(e.g.,1–5). Exam-\nple: 5\nactual_finish DateTime Dateandtimewhentheworkwascompleted. Example: \"4/6/16 14:00\"\nduration Duration Total job time. Format: HH:MM. Example:\n\"0:00\"\nactual_labor_hours Duration Actuallabortimespent.",
+      "size": 468,
+      "sentences": 8
+    },
+    {
+      "id": 212,
+      "content": "on Total job time. Format: HH:MM. Example:\n\"0:00\"\nactual_labor_hours Duration Actuallabortimespent. Format: HH:MM.Ex-\nample: \"0:00\"\nTable9: AlertEventSchemaDefinition\nFieldName Type Description\nequipment_id String Uniqueidentifierfortheequipmentthattrig-\ngeredthealert. Example: \"CWC04701\"\nequipment_name String Human-readablenameoftheequipment. Ex-\nample: \"Chiller 1\"\nrule_id String Identifierfortheruleorconditionthattrig-\ngeredthealert.",
+      "size": 439,
+      "sentences": 6
+    },
+    {
+      "id": 213,
+      "content": "ment. Ex-\nample: \"Chiller 1\"\nrule_id String Identifierfortheruleorconditionthattrig-\ngeredthealert. Example: \"RUL0021\"\nstart_time DateTime Timestamp when the alert or event started. Example: \"11/24/20 19:00\"\nend_time DateTime Timestamp when the alert or event ended. Example: \"11/24/20 23:59\"\nD.3 WorkOrderDatasetsforWOAgent\nTable4providethesummaryofdatasets(asbusinessobjects)andthesizeforeachdataset.",
+      "size": 402,
+      "sentences": 5
+    },
+    {
+      "id": 214,
+      "content": "derDatasetsforWOAgent\nTable4providethesummaryofdatasets(asbusinessobjects)andthesizeforeachdataset. Those\nworkorderdatasetsinAssetOpsBenchprovideastructuredviewofmaintenanceactivityacross\nindustrialassets,encompassingbothpreventiveandcorrectiveinterventionsusingworkorders. Each\n27\n===  28 ===\nTable10: AnomalyEventSchemaDefinition\nFieldName Type Description\ntimestamp DateTime Thedateandtimewhentheanomalyevent\nwasrecorded.",
+      "size": 424,
+      "sentences": 3
+    },
+    {
+      "id": 215,
+      "content": "nition\nFieldName Type Description\ntimestamp DateTime Thedateandtimewhentheanomalyevent\nwasrecorded. Example: \"4/26/20 14:14\"\nKPI String Thekeyperformanceindicatorbeingmoni-\ntored(e.g.,\"Cooling Load\"). asset_name String The name of the asset or equipment being\nmeasured. Example: \"chiller 9\"\nvalue Numeric TheactualmeasuredvalueoftheKPIatthe\ngiventimestamp. Example: 25978710\nupper_bound Numeric TheupperthresholdfortheKPI.Exceeding\nthismayindicateananomaly.",
+      "size": 457,
+      "sentences": 5
+    },
+    {
+      "id": 216,
+      "content": "xample: 25978710\nupper_bound Numeric TheupperthresholdfortheKPI.Exceeding\nthismayindicateananomaly. lower_bound Numeric ThelowerthresholdfortheKPI.Fallingbe-\nlowthismayindicateananomaly. anomaly_score Float Ascoreindicatinghowlikelythedatapoint\nisananomaly(typically0to1). Table11: MappingTable: KPIAnomaliestoFailureCodes\nFieldName Type Example Description\nkpi_name String CoolingLoad Name of the key perfor-\nmance indicator exhibiting\nanomaly.",
+      "size": 445,
+      "sentences": 4
+    },
+    {
+      "id": 217,
+      "content": "Description\nkpi_name String CoolingLoad Name of the key perfor-\nmance indicator exhibiting\nanomaly. anomaly_type String High Indicatesthedirectionorna-\nture of the anomaly (e.g.,\nHigh,Low,Spike). category String OperationalFailures Broad class of the failure\n(e.g.,ControlSystem,Struc-\ntural,External,Human). primary_code String OP004 Primaryfailurecodeassoci-\natedwiththeanomaly. pri._code_des.String Incorrect Cooling Explanation of the primary\nZoneOperation failurecode.",
+      "size": 473,
+      "sentences": 5
+    },
+    {
+      "id": 218,
+      "content": "omaly. pri._code_des.String Incorrect Cooling Explanation of the primary\nZoneOperation failurecode. seco._code String OP004c Morespecificsub-coderefin-\ningtherootcause. seco._code_des.String Improperly Con- Descriptionofthesecondary\ntrolled or Shut Off failurecode. Zones\nworkorderisassociatedwithrichcontextualdataincludingequipmentmetadata,failureclassification\ncodes(e.g.,ISOFailureCode,ISOPrimaryFailureCode),eventlogs,sensor-triggeredalerts,and\nmachine-generatedanomalies.",
+      "size": 477,
+      "sentences": 5
+    },
+    {
+      "id": 219,
+      "content": "FailureCode,ISOPrimaryFailureCode),eventlogs,sensor-triggeredalerts,and\nmachine-generatedanomalies. Theserecordsarelinkedtemporallyandcausally,allowingagentsto\nreasonaboutassethistory,detectrecurringfailurepatterns,andrecommendactionsbasedonpast\ninterventions. Thegroupofdatasetsdistinguishesbetweencorecontentobjects(e.g.,WorkOrders,Alerts,Events,\nAnomalies),metadataprofiles,andrelationalstructuresthatmapalertsandanomaliestofailurecodes.",
+      "size": 440,
+      "sentences": 3
+    },
+    {
+      "id": 220,
+      "content": "Events,\nAnomalies),metadataprofiles,andrelationalstructuresthatmapalertsandanomaliestofailurecodes. Theindividualeventtables—workorders(Table8), alertevents(Table9), andanomalyevents\n(Table10)—capturedifferentbutcomplementarysignalsrelatedtoequipmentconditionandbehavior.",
+      "size": 271,
+      "sentences": 2
+    },
+    {
+      "id": 221,
+      "content": "malyevents\n(Table10)—capturedifferentbutcomplementarysignalsrelatedtoequipmentconditionandbehavior. Toenableintegratedanalysisandcausalreasoning,theseeventsareunifiedintoacommonevent\ntableschema(Table12),allowingtemporalalignmentandcross-typerelationshipdiscoverybetween\nmaintenanceactions,systemwarnings,andperformanceanomalies.",
+      "size": 329,
+      "sentences": 2
+    },
+    {
+      "id": 222,
+      "content": "ndcross-typerelationshipdiscoverybetween\nmaintenanceactions,systemwarnings,andperformanceanomalies. 28\n===  29 ===\nTable12: UnifiedEventTableSchemaDefinition\nFieldName Type Description\nevent_id String Uniqueidentifierfortheevent(canbework\norderID,alertID,anomalyID,etc.). Exam-\nple: \"WO-16170\"\nevent_group String High-level classification of the event\nsource (e.g., \"WORK_ORDER\", \"ALERT\",\n\"ANOMALY\").",
+      "size": 400,
+      "sentences": 3
+    },
+    {
+      "id": 223,
+      "content": "roup String High-level classification of the event\nsource (e.g., \"WORK_ORDER\", \"ALERT\",\n\"ANOMALY\"). event_category String Sub-classification such as preventive main-\ntenance (\"PM\"), corrective maintenance\n(\"CM\"),etc. event_type String Specific code/type of the event (e.g.,\n\"MT001\",\"RUL0021\"). description String Human-readable description of the event. Example: \"Vibration Analysis\" or\n\"Refrigerant Leak\". equipment_id String UniqueIDoftheequipmentinvolvedinthe\nevent.",
+      "size": 469,
+      "sentences": 6
+    },
+    {
+      "id": 224,
+      "content": "ion Analysis\" or\n\"Refrigerant Leak\". equipment_id String UniqueIDoftheequipmentinvolvedinthe\nevent. Example: \"CWC04701\"\nequipment_name String Name of the equipment. Example:\n\"Chiller 1\"\nevent_time DateTime Timestampwhentheeventoccurredorwas\nlogged.",
+      "size": 248,
+      "sentences": 4
+    },
+    {
+      "id": 225,
+      "content": "the equipment. Example:\n\"Chiller 1\"\nevent_time DateTime Timestampwhentheeventoccurredorwas\nlogged. Format: YYYY-MM-DD HH:MM:SS\nnote String Additionaldescriptionforthiseventifneces-\nsary\nTable13: MappingTable: AlertRuletoFailureCode\nFieldName Type Example Description\nrule_id String RUL0012 Identifier for the alert rule\ntriggered by a monitoring\nsystem. rule_name String Chiller-LowSupply Descriptivenameofthealert\nTemperature rulelogicorthresholdcondi-\ntion.",
+      "size": 459,
+      "sentences": 4
+    },
+    {
+      "id": 226,
+      "content": "ame String Chiller-LowSupply Descriptivenameofthealert\nTemperature rulelogicorthresholdcondi-\ntion. primary_code String CS005 ISO failure code associated\nwiththelikelyrootcause. primary_code_ String ControlSystemMal- Human-readableexplanation\nfunction ofthefailurecode. Inaddition,tosupportthelinkageoffailurecodeovertheevents,weprovidetwomappingtables:\nonethatconnectsalertrulestolikelyfailurecodes,andanotherthatmapsKPI-basedanomaliesto\nstructuredfailurecategories(Tablesof13and11).",
+      "size": 484,
+      "sentences": 4
+    },
+    {
+      "id": 227,
+      "content": "lyfailurecodes,andanotherthatmapsKPI-basedanomaliesto\nstructuredfailurecategories(Tablesof13and11). Thesemappingsenableagentstoinferprobable\nrootcausesfromreal-timesignalsandintegratedata-driveninsightswithexpertfailuretaxonomies. This help us to develop WO agent to support grounded evaluation of diagnostic reasoning, task\ngeneration,andrepairrecommendation. Moreparticularly,theWOagentanalyzehistoricalwork\norderstoidentifyrepeatedmaintenanceissuesandimprovetaskscheduling.",
+      "size": 476,
+      "sentences": 4
+    },
+    {
+      "id": 228,
+      "content": ",theWOagentanalyzehistoricalwork\norderstoidentifyrepeatedmaintenanceissuesandimprovetaskscheduling. Itprocessedhistorical\nworkorder,alerts(fromIoTAgent)andanomalies(fromTSFMagent)event,linkingthemtofailure\ncodestosupportpredictivemaintenancerecommendations. Inthepotentialindustrialapplications,\nWOagentcancompletetotasksofautomatingtheinterpretationofmaintenancedata,predicting\nfutureworkorders,andbundlingrelatedtaskstoreduceoperationaldowntime.",
+      "size": 447,
+      "sentences": 3
+    },
+    {
+      "id": 229,
+      "content": "onofmaintenancedata,predicting\nfutureworkorders,andbundlingrelatedtaskstoreduceoperationaldowntime. 29\n===  30 ===\nE AssetOpAgentDesign-Orchestra\nAppendixA.2alreadydiscussedhowweimplementedthetwoapproachesfororchestrarole: Tool-\nas-Agent and Plan-Executor. In this appendix, we provide additional detail on how we enable\ncommunication. Listing3outlineshowtheFMSRagentpackagesitsreasoningoutputintoastructuredmessagefor\ndownstream agents or evaluators.",
+      "size": 451,
+      "sentences": 4
+    },
+    {
+      "id": 230,
+      "content": "howtheFMSRagentpackagesitsreasoningoutputintoastructuredmessagefor\ndownstream agents or evaluators. The custom_json function formats the response to include the\nfinalanswer,apeerreviewsection(comprisingstatus,reasoning,andsuggestions),andareflection\nfield. Additionally,anaturallanguagemessageissynthesizedtosummarizetheexecutionresult,\nenhancingtransparencyandinterpretabilityinmulti-agentsettings.",
+      "size": 399,
+      "sentences": 3
+    },
+    {
+      "id": 231,
+      "content": "esizedtosummarizetheexecutionresult,\nenhancingtransparencyandinterpretabilityinmulti-agentsettings. Thisoutputactsasacompact\nyetcomprehensivecommunicationprotocolforreasoningagentscollaboratinginacomplextask\npipeline.",
+      "size": 217,
+      "sentences": 2
+    },
+    {
+      "id": 232,
+      "content": "ompact\nyetcomprehensivecommunicationprotocolforreasoningagentscollaboratinginacomplextask\npipeline. Listing3: FormattedresponsemessagefromFMSRAgent\ndef custom_json(obj):\nif isinstance(obj, FMSRResponse):\nreturn {\n\"answer\": obj.answer,\n\"review\": {\n\"status\": obj.review[\"status\"],\n\"reasoning\": obj.review[\"reasoning\"],\n\"suggestions\": obj.review[\"suggestions\"],\n},\n\"reflection\": obj.reflection,\n\"message\": (\n\"I am FMSR Agent, and I have completed my task. \"",
+      "size": 454,
+      "sentences": 2
+    },
+    {
+      "id": 233,
+      "content": "\"],\n},\n\"reflection\": obj.reflection,\n\"message\": (\n\"I am FMSR Agent, and I have completed my task. \" f\"The status of my execution is ’{obj.review[’\n(cid:44)→ status’]}’. \" f\"I also received a review from the reflection\n(cid:44)→ agent; \"\nf\"suggestions are included in the review field for\n(cid:44)→ further insights.\"",
+      "size": 316,
+      "sentences": 3
+    },
+    {
+      "id": 234,
+      "content": "(cid:44)→ agent; \"\nf\"suggestions are included in the review field for\n(cid:44)→ further insights.\" ),\n}\nraise TypeError(f\"Cannot serialize object of type {type(obj)}\"\n(cid:44)→ )\nF AdditionalExperiments\nF.1 AssetOpsBench: ExecutionEfficiency\nIn this section, we analyze AssetOpsBench execution efficiency of 7 LLMs, complementing the\nLeaderboardresultsinSection5.1. Tables14and15presentresultsfromtwomulti-agentimple-\nmentations.",
+      "size": 429,
+      "sentences": 3
+    },
+    {
+      "id": 235,
+      "content": "the\nLeaderboardresultsinSection5.1. Tables14and15presentresultsfromtwomulti-agentimple-\nmentations. Metricsincludetheaveragenumberofstepstakenpertaskandtheaverageruntime(in\nseconds)pertask. IntheAgents-as-Toolsexecutionmode,mostmodelsdemonstraterelativelystableplanningbehavior\nacrossbothsingle-agentandmulti-agenttasks. Comparedtotheplan-and-executesetting,models\nheregenerallytakemorestepsbutoperatewithgreaterruntimeefficiency.",
+      "size": 430,
+      "sentences": 5
+    },
+    {
+      "id": 236,
+      "content": "theplan-and-executesetting,models\nheregenerallytakemorestepsbutoperatewithgreaterruntimeefficiency. gpt-4.1againexhibits\nstrongperformance,balancingahighernumberofstepswithmoderateruntime,indicatingprecise\ncontrolovertoolinvocation. Interestingly,llama-3-70b-instructshowscompetitiveefficiency,\nachievingthelowestruntimeinbothtaskcategoriesdespiteslightlyfewersteps,suggestingquicker\ntoolusageorloweroverheadperstep.",
+      "size": 416,
+      "sentences": 3
+    },
+    {
+      "id": 237,
+      "content": "imeinbothtaskcategoriesdespiteslightlyfewersteps,suggestingquicker\ntoolusageorloweroverheadperstep. Ontheotherhand,mistral-largeexhibitsextremeruntime\nvariability,skewedbyapathologicalcaseinvolvingprolongedJSONReadercallsoverlargedatasets. Theseresultssuggestthatwhiletool-basedexecutionbenefitsfrommoredirectactioncontrol,its\nefficiencyishighlysensitivetotheinvokedtoolsanddatavolume.",
+      "size": 385,
+      "sentences": 3
+    },
+    {
+      "id": 238,
+      "content": "nbenefitsfrommoredirectactioncontrol,its\nefficiencyishighlysensitivetotheinvokedtoolsanddatavolume. InthePlan-and-Executesetting,thenumberofstepsrequiredforsingle-agenttaskscloselymirrors\nthose of multi-agent tasks, indicating a tendency among LLMs to over-plan even for relatively\n30\n[  ]\n\n===  31 ===\nTable14: ExecutionStatisticsforAgents-As-Tools: AverageStepsandRuntimePerTask\nSingle-AgentTasks Multi-AgentTasks\nModel\nSteps Runtime(sec) Steps Runtime(sec)\ngpt-4.1 6.0±2.4 104±178 6.4±2.5 218±371\nmistral-large 4.9±2.6 347±19871 5.2±2.2 289±443\nllama-3-405b-instruct 4.8±2.5 250±773 5.6±2.2 255±248\nllama-3-70b-instruct 3.9±1.6 101±107 4.3±2.1 151±220\nllama-4-maverick-17b-128e-instruct 4.3±1.5 120±258 4.5±1.7 137±175\nllama-4-scout-17b-16e-instruct 4.4±2.0 101±87 5.8±2.9 178±157\ngranite-3-3-8b 5.3±3.1 197±240 6.6±3.6 228±256\n1 Highstandarddeviationisduetooneoutliertaskrequiringnearly5hours.",
+      "size": 897,
+      "sentences": 2
+    },
+    {
+      "id": 239,
+      "content": "5.3±3.1 197±240 6.6±3.6 228±256\n1 Highstandarddeviationisduetooneoutliertaskrequiringnearly5hours. Itrepeatedlyinvokedthe\nJSONReadertooltoprocesstwoyearsofhistoricaldata. simpleobjectives. Thispatternreflectslimitedsensitivitytotaskcomplexityduringtheplanning\nphase. Among all evaluated models, gpt-4.1 consistently outperforms others, demonstrating\nboth minimal average steps and lowest runtime, particularly in multi-agent tasks.",
+      "size": 431,
+      "sentences": 5
+    },
+    {
+      "id": 240,
+      "content": "rs, demonstrating\nboth minimal average steps and lowest runtime, particularly in multi-agent tasks. This suggests\nthat gpt-4.1 leverages more effective internal representations and decision strategies, enabling\nefficient decomposition and execution of plans. In contrast, models like granite-3-3-8b and\nllama-3-70b-instructshowpronouncedinefficiency,oftenexecutingsignificantlymoresteps\nandincurringhighercomputationalcosts.",
+      "size": 424,
+      "sentences": 3
+    },
+    {
+      "id": 241,
+      "content": "owpronouncedinefficiency,oftenexecutingsignificantlymoresteps\nandincurringhighercomputationalcosts. Theseresultshighlightacriticaltrade-offinplan-execute\nagents:whilethearchitectureenforcestaskstructure,itseffectivenessheavilydependsonthemodel’s\nreasoningefficiency. Modelslackingstrongplanningpriorsorexecutionalignmenttendtogenerate\nunnecessarilylongorsuboptimalactionsequences,especiallyinlow-complexitysettings.",
+      "size": 415,
+      "sentences": 3
+    },
+    {
+      "id": 242,
+      "content": "menttendtogenerate\nunnecessarilylongorsuboptimalactionsequences,especiallyinlow-complexitysettings. Table15: ExecutionStatisticsofPlan-and-ExecuteAgents: AverageStepsandRuntimeperTask\nSingle-AgentTasks Multi-AgentTasks\nModel\nSteps Runtime(sec) Steps Runtime(sec)\ngpt-4.1 2.6±1.0 93.3±105.6 2.9±1.5 180.2±122.6\nmistral-large 2.7±1.3 186.9±206.9 3.0±1.4 209.7±139.1\nllama-3-405b-instruct 3.1±1.9 208.3±176.5 4.0±1.5 224.4±99.7\nllama-3-70b-instruct 6.7±1.5 381.8±240.2 6.5±0.9 369.6±151.9\nllama-4-maverick-17b-128e-instruct 4.0±1.9 384.6±611.6 3.9±1.2 376.8±281.0\nllama-4-scout-17b-16e-instruct 3.9±2.0 172.1±114.7 4.4±1.5 218.1±105.4\ngranite-3-3-8b 5.2±1.4 413.3±418.2 5.1±1.3 432.9±294.7\nConclusion.",
+      "size": 698,
+      "sentences": 2
+    },
+    {
+      "id": 243,
+      "content": "172.1±114.7 4.4±1.5 218.1±105.4\ngranite-3-3-8b 5.2±1.4 413.3±418.2 5.1±1.3 432.9±294.7\nConclusion. WhilethePlan-and-Executearchitecturedemonstratesgreaterefficiency—requiring\nfewerstepsandexhibitinglowerruntimevariabilityacrosstasks—ourevaluationshowsthatAgents-\nas-Tools significantly outperform in task performance metrics.",
+      "size": 325,
+      "sentences": 2
+    },
+    {
+      "id": 244,
+      "content": "stasks—ourevaluationshowsthatAgents-\nas-Tools significantly outperform in task performance metrics. For example, gpt-4.1 achieves\n65% task completion, 77% data retrieval accuracy, and a hallucination rate as low as 6% in the\nAgents-as-Tools setting, compared to only 38–44% on most metrics in Plan-and-Execute. Simi-\nlarly, llama-4-maverick-17b-128e-instructexcelsinbothsetupsbutscoresnotablyhigher\ninAgents-as-Tools,achieving59–78%oncoreperformancemetricsversus 45–57%inPlan-and-\nExecute.",
+      "size": 489,
+      "sentences": 3
+    },
+    {
+      "id": 245,
+      "content": "lyhigher\ninAgents-as-Tools,achieving59–78%oncoreperformancemetricsversus 45–57%inPlan-and-\nExecute. This pattern is consistent across most models: Agents-as-Tools incur higher execution costs but\ndeliver better reasoning fidelity, clearer justifications, and lower hallucination rates. Conversely,\nPlan-and-Executeagents—whilefasterandmorestructured—oftenstrugglewithcomplexretrieval,\nverification,andconsistencytasks.",
+      "size": 418,
+      "sentences": 3
+    },
+    {
+      "id": 246,
+      "content": "s—whilefasterandmorestructured—oftenstrugglewithcomplexretrieval,\nverification,andconsistencytasks. Thesefindingssuggestafundamentaltrade-off: Plan-and-Execute\noffersprocessefficiency,whileAgents-as-Toolsyieldhigherend-taskquality—acrucialinsightfor\nselectingagentarchitecturesbasedonapplicationgoalssuchasthroughputvs. correctness.",
+      "size": 332,
+      "sentences": 3
+    },
+    {
+      "id": 247,
+      "content": "rucialinsightfor\nselectingagentarchitecturesbasedonapplicationgoalssuchasthroughputvs. correctness. 31\n===  32 ===\nF.1.1 DeepInvestigationofAgents-As-ToolPerformance\nToevaluatethecapabilitiesofvariouslargelanguagemodels(LLMs)acrossarangeofindustrial-\nrelevanttaskcategories,wepresentaradarchart(SeeFigure16)comparisoncoveringfivekeydimen-\nsions: IoT-focusedreasoning,FailureModeandSensorReasoning(FMSR),TimeSeriesandFault\nModeling(TSFM),WorkOrder(WO)understanding,andEnd-to-Endtaskintegration.",
+      "size": 493,
+      "sentences": 3
+    },
+    {
+      "id": 248,
+      "content": "ng(FMSR),TimeSeriesandFault\nModeling(TSFM),WorkOrder(WO)understanding,andEnd-to-Endtaskintegration. Thechartillus-\ntratesnormalizedperformancescoresforeachmodelbasedontask-specificbenchmarks,withhigher\nvaluesindicatingstrongertaskalignment. Amongthemodelscompared, gpt-4.1-2025-04-14\ndemonstratesthemostconsistentandwell-roundedperformance,achievingnear-saturationinFMSR\n(100%)andstrongresultsinEnd-to-Endintegration.",
+      "size": 417,
+      "sentences": 3
+    },
+    {
+      "id": 249,
+      "content": "ll-roundedperformance,achievingnear-saturationinFMSR\n(100%)andstrongresultsinEnd-to-Endintegration. Incontrast,granite-3-3-8b-instructand\nllama-3-3-70b-instruct perform well in TSFM andFMSR but underperformin WO-related\ntasks,whichareparticularlychallengingduetotheirdependenceonstructureddocumentcomprehen-\nsionandtaskplanning. Notably,thellama-4-maverickmodelshowspromisingresultsinWOand\nEnd-to-Endintegration,indicatingapotentialoptimizationforcross-domaincontextualreasoning.",
+      "size": 479,
+      "sentences": 3
+    },
+    {
+      "id": 250,
+      "content": "tsinWOand\nEnd-to-Endintegration,indicatingapotentialoptimizationforcross-domaincontextualreasoning. Thisvisualizationprovidesaholisticviewofmodelstrengthsandtrade-offs,offeringinsightsfor\nselectingandfine-tuningLLMsincomplex,multimodalindustrialapplications. Figure16: TaskwisedistributionoftheAccomplishedTasks. F.2 HumanValidation\nWe conducted human validation tests using Google Forms.",
+      "size": 388,
+      "sentences": 4
+    },
+    {
+      "id": 251,
+      "content": "oftheAccomplishedTasks. F.2 HumanValidation\nWe conducted human validation tests using Google Forms. As shown in Screenshots 17, each\ndomain experts are presented with the original task description, the agent’s reasoning and final\nanswer,andachecklistofsixevaluationdimensions. Eachdimensionwasassessedusingbinary\njudgments(True/False),allowingforstructuredcomparisonbetweenhumanandmodelevaluations.",
+      "size": 398,
+      "sentences": 4
+    },
+    {
+      "id": 252,
+      "content": "edusingbinary\njudgments(True/False),allowingforstructuredcomparisonbetweenhumanandmodelevaluations. 32\n===  33 ===\nFigure17: GoogleForms: questionnairetodomainexpertsforhumanvalidation\nWedistributed4formswhereeachformconsistsof10samplesandeventuallycollect240datapoints. WereporttheresultsinSection5.1.",
+      "size": 302,
+      "sentences": 3
+    },
+    {
+      "id": 253,
+      "content": "swhereeachformconsistsof10samplesandeventuallycollect240datapoints. WereporttheresultsinSection5.1. 33\n===  34 ===\nYou are a critical reviewer tasked with evaluating the effectiveness and accuracy of an AI agent’s\nresponsetoagiventask.Yourgoalistodeterminewhethertheagenthassuccessfullyaccomplishedthe\ntaskcorrectlybasedontheexpectedorcharacteristicbehavior.",
+      "size": 358,
+      "sentences": 3
+    },
+    {
+      "id": 254,
+      "content": "thertheagenthassuccessfullyaccomplishedthe\ntaskcorrectlybasedontheexpectedorcharacteristicbehavior. EvaluationCriteria:\n1.TaskCompletion:\n- Verify if the agent executed all necessary actions (e.g., using the correct tools, retrieving data,\nperformingtherequiredanalysis). -Theagent’sresponseshouldalignwiththepredefinedexpectedbehaviorfortaskcompletion. 2.DataRetrieval&Accuracy:\n-Ensurethatthecorrectasset,location,timeperiod,andsensor(ifapplicable)wereused.",
+      "size": 459,
+      "sentences": 4
+    },
+    {
+      "id": 255,
+      "content": "Retrieval&Accuracy:\n-Ensurethatthecorrectasset,location,timeperiod,andsensor(ifapplicable)wereused. -Verifyifthetaskperformedwasrelatedtothecorrectassetandsensor,andensuretheresultcorresponds\ntothecorrecttimeperiod. -Checkiftheagentretrievedtherequireddataandiftheforecasting,anomalydetection,orotherresults\narecorrect. 3.GeneralizedResultVerification:\n-TaskTypeVerification: Basedonthetasktype(forecasting,anomalydetection,classification,etc. ),\nverifyiftheagenthasreturnedtheexpectedresults.",
+      "size": 493,
+      "sentences": 5
+    },
+    {
+      "id": 256,
+      "content": "(forecasting,anomalydetection,classification,etc. ),\nverifyiftheagenthasreturnedtheexpectedresults. -Forforecastingtasks:Ensurethattheagentgeneratedaforecastforthespecifiedfutureperiod. - For anomaly detection tasks: Verify that anomalies are detected as expected (if anomalies were\nanticipated). -Forothertasks(e.g.,classification),ensurethetaskresultmatchestheexpectedformatandvalue.",
+      "size": 385,
+      "sentences": 5
+    },
+    {
+      "id": 257,
+      "content": "icipated). -Forothertasks(e.g.,classification),ensurethetaskresultmatchestheexpectedformatandvalue. - Comparison with Expected Output: Check if the result matches the expected format, values, or\noutcomesasoutlinedinthecharacteristicanswer. -DataIntegrity:Ensurethatthecorrectdata(e.g.,sensor,timeperiod)wasusedinthetask,andthatitis\nconsistentwiththeexpectedformatandstructure.",
+      "size": 376,
+      "sentences": 4
+    },
+    {
+      "id": 258,
+      "content": "ta(e.g.,sensor,timeperiod)wasusedinthetask,andthatitis\nconsistentwiththeexpectedformatandstructure. 4.AgentSequence&Order:\n-Ensuretheagentswerecalledinthecorrectorderandthatallactionsalignwiththeexpectedbehavior\nforagentinteractions. -Ifthecharacteristicanswerspecifiescertainagents(e.g.,IoTAgent,TSFMAgent),verifythatthese\nwereusedandinthecorrectsequence. 5.ClarityandJustification:\n-Ensuretheagent’sresponseisclearandjustifiedwithadequateexplanationsorevidencetosupportthe\nclaimsmade.",
+      "size": 486,
+      "sentences": 4
+    },
+    {
+      "id": 259,
+      "content": "suretheagent’sresponseisclearandjustifiedwithadequateexplanationsorevidencetosupportthe\nclaimsmade. -Thereshouldbenocontradictionsbetweentheagent’sreasoningandtheexpectedbehavioroutlinedin\nthecharacteristicanswer. 6.HallucinationCheck:\n-Identifyiftheagentclaimssuccesswithoutperformingthenecessaryactionsorwithoutgenerating\nmeaningfulresults. -Iftheagentprovidesafabricatedresponseorclaimssuccesswhereactionsaremissing,markthisasa\nhallucination.",
+      "size": 445,
+      "sentences": 4
+    },
+    {
+      "id": 260,
+      "content": "theagentprovidesafabricatedresponseorclaimssuccesswhereactionsaremissing,markthisasa\nhallucination. Question:{question}\nCharacteristicAnswer(ExpectedBehavior):{characteristic_answer}\nAgent’sThinking:{agent_think}\nAgent’sFinalResponse:{agent_response}\nOutputFormat:\nYourreviewmustalwaysbeinJSONformat.DonotincludeanyadditionalformattingorMarkdownin\nyourresponse.",
+      "size": 361,
+      "sentences": 2
+    },
+    {
+      "id": 261,
+      "content": "t:\nYourreviewmustalwaysbeinJSONformat.DonotincludeanyadditionalformattingorMarkdownin\nyourresponse. {\n\"task_completion\":true/false,\n\"data_retrieval_accuracy\":true/false,\n\"generalized_result_verification\":true/false,\n\"agent_sequence_correct\":true/false,\n\"clarity_and_justification\":true/false,\n\"hallucinations\":true/false,\n\"suggestions\":\"Optional.Actionsorimprovementsforrectifyingtheresponseifapplicable.\" }\n(ENDOFRESPONSE)\nPleaseprovideyourreviewbasedonthegivencriteria.",
+      "size": 471,
+      "sentences": 3
+    },
+    {
+      "id": 262,
+      "content": "ctifyingtheresponseifapplicable.\" }\n(ENDOFRESPONSE)\nPleaseprovideyourreviewbasedonthegivencriteria. Table16: PromptinstructiontoLLM-as-a-judgeevaluationagent\n34\n===  35 ===\nF.3 LLM-as-a-judgeEvaluationAgent\nBasedonthehumanvalidationresultsshowninSection5.1,llama-4-maverickisselectedtobe\nthe LLM of evaluation agent.",
+      "size": 316,
+      "sentences": 3
+    },
+    {
+      "id": 263,
+      "content": "humanvalidationresultsshowninSection5.1,llama-4-maverickisselectedtobe\nthe LLM of evaluation agent. Table 16 is the prompt instruction to the evaluation agent, which\noutlinesthespecificevaluationdimensions,constraints,andresponseformattingguidelinesthatthe\nmodelfollowswhenscoringtaskoutputs. Theevaluationcriteriaisalsoprovidedtohumanjudges\nwhichensuresconsistencyacrossevaluations. F.4 AblationExperiment\nInthissection,wepresentthedetailedreportoftheablationstudy.",
+      "size": 466,
+      "sentences": 4
+    },
+    {
+      "id": 264,
+      "content": "rossevaluations. F.4 AblationExperiment\nInthissection,wepresentthedetailedreportoftheablationstudy. WefixedtheTools-As-Agents\nparadigm,andconductboththesetofexperiments. F.4.1 DistractorAgentsDetail\nWehaveintroduced10distractoragentstointentionallyincreasethecomplexityandambiguityfor\nglobalagents. Table17categorizestheseagentsbasedontheirrespectivedomainsandfunctional\nroles.",
+      "size": 377,
+      "sentences": 5
+    },
+    {
+      "id": 265,
+      "content": "ityfor\nglobalagents. Table17categorizestheseagentsbasedontheirrespectivedomainsandfunctional\nroles. Thesetincludesbothgeneral-purposeagents,suchasthoseforechoinginputsorhandling\noff-topicqueries,anddomain-specificagentsfocusedontaskslikepredictivemaintenance,sensor\ndatasummarization,andedgeMLdeployment. Thistaxonomyenhancestherealismofmulti-agent\nenvironmentsbysupportingmodularintegrationandintroducingcontrolledconfusion.",
+      "size": 425,
+      "sentences": 4
+    },
+    {
+      "id": 266,
+      "content": "herealismofmulti-agent\nenvironmentsbysupportingmodularintegrationandintroducingcontrolledconfusion. Table17: AgentTypesandTheirRoles\nAgentName Domain Description\nEcho\nAgent General Repeatstheinputverbatim; usefulforde-\nbuggingandtestinginput-outputcoherence. OffTopic\nAgent General Provides unrelated facts or trivia when a\nqueryisoff-topicornotrecognized. Customer\nSupportAgent SupportOperations Handlescustomer-relatedissueslikepass-\nwordresets,loginerrors,andserviceavail-\nability.",
+      "size": 484,
+      "sentences": 4
+    },
+    {
+      "id": 267,
+      "content": "tOperations Handlescustomer-relatedissueslikepass-\nwordresets,loginerrors,andserviceavail-\nability. SRE\nAgent SiteReliability Diagnoses performance degradation, sys-\ntemdowntime,andinfrastructureissues. Frontend\nDevAgent SoftwareEngineering AssistswithfrontendUI/UXconcerns,Re-\nact,JavaScriptframeworks,andrendering\nbugs. HRPolicy\nAgent HumanResources AnswersHR-relatedquerieslikeleavepol-\nicy,benefits,andcompliancerules.",
+      "size": 422,
+      "sentences": 4
+    },
+    {
+      "id": 268,
+      "content": "RPolicy\nAgent HumanResources AnswersHR-relatedquerieslikeleavepol-\nicy,benefits,andcompliancerules. SensorData\nSummarizer IndustrialIoT Summarizestime-seriesdatafromsensors,\nhighlightingtrendsandanomalies. Historical\nTrendsAgent Analytics Extractsandinterpretshistoricalassetdata\ntoidentifyfailurepatternsoroptimization\nopportunities. EdgeML\nAgent EdgeComputing Recommends tools and strategies for de-\nployingMLmodelsonedgehardwarewith\nlimitedresources.",
+      "size": 453,
+      "sentences": 4
+    },
+    {
+      "id": 269,
+      "content": "mputing Recommends tools and strategies for de-\nployingMLmodelsonedgehardwarewith\nlimitedresources. RULPredictor\nAgent PredictiveMaintenance Estimatestheremainingusefullife(RUL)\nofassetsusingsensordataanddegradation\nmodels. 35\n===  36 ===\nF.4.2 Impactofin-contextexamples\nTable18providesadetailedcomparisonofgpt-4.1andgranite-3-3-8bwithandwithoutin-context\nexamplesonasubsetofsingle-agentbenchmarktasks.",
+      "size": 403,
+      "sentences": 3
+    },
+    {
+      "id": 270,
+      "content": "onofgpt-4.1andgranite-3-3-8bwithandwithoutin-context\nexamplesonasubsetofsingle-agentbenchmarktasks. Consistentwithourmainfindings,in-context\nexampleswerecriticalforenablingeffectivereasoningandcoordination. Table18: Comparisonofgpt-4.1andgranite-3-3-8bWith/WithoutIn-ContextExamples(#ofTasks\n=65)\nModel Ctx Task Data Verif. Seq. Clar. Hall.",
+      "size": 340,
+      "sentences": 6
+    },
+    {
+      "id": 271,
+      "content": "nite-3-3-8bWith/WithoutIn-ContextExamples(#ofTasks\n=65)\nModel Ctx Task Data Verif. Seq. Clar. Hall. gpt-4.1 Yes 52 57 55 41 62 2\ngranite-3-3-8b Yes 40 44 41 48 51 9\ngpt-4.1 No 22 21 24 21 29 35\ngranite-3-3-8b No 2 3 3 2 7 40\nKeyResults: Removingin-contextexamplesledtoadramaticdropinperformanceforbothmodels. gpt-4.1 dropped from an average of 80% (with context) to 33% (without), while granite-3-3-8b\nfellfrom60%tojust3%(SectionF.4).",
+      "size": 434,
+      "sentences": 6
+    },
+    {
+      "id": 272,
+      "content": "erage of 80% (with context) to 33% (without), while granite-3-3-8b\nfellfrom60%tojust3%(SectionF.4). Hallucinationsalsoincreasedsignificantlywhencontext\nwas removed, especially for granite-3-3-8b. Interestingly, gpt-4.1 outperformed granite-3-3-8b\nacrossallmetricsexceptagentsequenceaccuracyunderin-contextsettings, wheregranitehada\nslightadvantage. Theseresultsreinforcetheconclusionthatin-contextexamplesareessentialfor\nReAct-stylereasoninginLLM-basedagents.",
+      "size": 459,
+      "sentences": 4
+    },
+    {
+      "id": 273,
+      "content": "sreinforcetheconclusionthatin-contextexamplesareessentialfor\nReAct-stylereasoninginLLM-basedagents. WedidnotselecttasksfromWOandE2Esincetheir\nperformanceisalreadypoor. F.5 AlgorithmicProcedureforNewEmergingFailureModeDiscovery\nTosupportadaptiveevaluationofmulti-agentLLMsystems,thisappendixoutlinestheimplementation\ndetailsbehindthefailurediscoveryprocessreferencedinSection5.2.",
+      "size": 378,
+      "sentences": 3
+    },
+    {
+      "id": 274,
+      "content": "hisappendixoutlinestheimplementation\ndetailsbehindthefailurediscoveryprocessreferencedinSection5.2. Whilethemaintextpresents\ntheempiricaldistributionoffailuretypes—includingemergentpatterns—thisappendixfocuseson\nthestructuredmethodologyusedtoextractandclusternovelfailurebehaviorsbeyondtheMAST\n(Multi-AgentSystemFailureTaxonomy)[1]. Theevaluationspanned881multi-agenttrajectories,\ndrawnfromdiverselanguagemodelconfigurations.",
+      "size": 425,
+      "sentences": 3
+    },
+    {
+      "id": 275,
+      "content": "y)[1]. Theevaluationspanned881multi-agenttrajectories,\ndrawnfromdiverselanguagemodelconfigurations. Trajectorydistributionbymodelisasfollows:\n• mistral-large: 145trajectories\n• llama-3-405b-instruct: 145trajectories\n• llama-3-3-70b-instruct: 145trajectories\n• llama-4-maverick-17b-128e-instruct-fp8: 125trajectories\n• llama-4-scout-17b-16e-instruct: 111trajectories\n• gpt-4.1-2025-04-14: 105trajectories\n• granite-3-3-8b-instruct: 105trajectories\nAmong the 881 utterance execution trajectories analyzed using an LLM-as-a-judge framework\n(selectedLLMjudgemodel-openai-azure/gpt-4.1-2025-04-14astheLLMjudge)toidentifythe\ncauses of multi-agent AI failures, we found that—beyond the existing MAST categories—185\ntrajectories exhibited one additional failure reason, while 164 trajectories contained two distinct\nadditionalfailurereasons.",
+      "size": 833,
+      "sentences": 3
+    },
+    {
+      "id": 276,
+      "content": "additional failure reason, while 164 trajectories contained two distinct\nadditionalfailurereasons. Thishighlightstheempiricalnecessityoftaxonomyexpansiontocapture\ncompoundandemergentfailurepatternsinreal-worlddeployments. ToextendtheoriginalMAST\ntaxonomy,weconductedastructuredanalysisofnovelmulti-agentsystemfailuresobservedinrecent\ninteraction traces. This subsection details our identification methodology and explains how the\nresultingfailuremodesalignwiththeMASTframework.",
+      "size": 477,
+      "sentences": 4
+    },
+    {
+      "id": 277,
+      "content": "our identification methodology and explains how the\nresultingfailuremodesalignwiththeMASTframework. F.5.1 AlgorithmforEmergingFailureModesClustering\nTo systematically identify and normalize emerging failure modes observed in multi-agent LLM\nsysteminteractions,weintroduceastructuredalgorithmicframeworkbasedonsemanticembedding\n36\n===  37 ===\nandunsupervisedclustering. Thisprocessabstractsunanticipatedfailurepatternsintorepresentative\ncategoriesthateitheralignwithorextendthepredefinedMASTtaxonomy.",
+      "size": 499,
+      "sentences": 3
+    },
+    {
+      "id": 278,
+      "content": "edfailurepatternsintorepresentative\ncategoriesthateitheralignwithorextendthepredefinedMASTtaxonomy. DefinitionsandNotation. Let:\n• T ={t ,...,t }: Setofmulti-agentexecutiontrajectories. 1 n\n• M: ThepredefinedMASTtaxonomyoffailuretypes. • F = {f ,f ,...,f }: Set of emerging failure mode descriptions not covered by M,\n1 2 m\nextractedfromLLM-as-a-judgeevaluations. • ϕ:S →Rd: Sentenceembeddingfunction(e.g.,Sentence-BERT). • E=[ϕ(f ),...,ϕ(f )]⊤ ∈Rm×d: Matrixofembeddedfailuredescriptions.",
+      "size": 488,
+      "sentences": 7
+    },
+    {
+      "id": 279,
+      "content": "ingfunction(e.g.,Sentence-BERT). • E=[ϕ(f ),...,ϕ(f )]⊤ ∈Rm×d: Matrixofembeddedfailuredescriptions. 1 m\n• C ={C ,...,C }: PartitionofF intokclusters,eachwithcentroidµ . 1 k j\nStep1: EmergingFailureModeExtraction. Eachtrajectoryt ∈T isevaluatedbyanLLM-as-a-\ni\njudgetoidentify:\n• LabeledfailuretypesfromtheMASTtaxonomyM. • Uptotwoemergingfailuredescriptionsf ,f ∈/ M.\ni1 i2\nThefullsetofnoveldescriptionsisaggregatedas:\nn\n(cid:91)\nF = {f ,f }\\NULL\ni1 i2\ni=1\nStep 2: Semantic Embedding.",
+      "size": 482,
+      "sentences": 6
+    },
+    {
+      "id": 280,
+      "content": "fnoveldescriptionsisaggregatedas:\nn\n(cid:91)\nF = {f ,f }\\NULL\ni1 i2\ni=1\nStep 2: Semantic Embedding. Each emerging failure mode f ∈ F is transformed into a d-\ni\ndimensionalvector:\ne =ϕ(f ), ∀f ∈F\ni i i\nϕ(f )⊤\n1\nϕ(f 2 )⊤ \nE=\n . . \n\n∈Rm×d\n . \nϕ(f )⊤\nm\nStep 3: Optimal Clustering via K-Means. To discover latent groups of semantically similar\nfailuredescriptions,weapplyK-MeansclusteringovertheembeddingsE.",
+      "size": 412,
+      "sentences": 6
+    },
+    {
+      "id": 281,
+      "content": "tent groups of semantically similar\nfailuredescriptions,weapplyK-MeansclusteringovertheembeddingsE. Thesilhouettescorefora\ngivenpointiis:\nb(i)−a(i)\ns(i)=\nmax{a(i),b(i)}\nWhere:\n• a(i): Meandistancefrome tootherpointsinthesamecluster. i\n• b(i): Minimummeandistancefrome topointsinadifferentcluster. i\nTheoptimalnumberofclustersisselectedas:\nk∗ =argmaxSilhouetteScore(k)\nk\nStep4: ClusterCenterSelection.",
+      "size": 400,
+      "sentences": 4
+    },
+    {
+      "id": 282,
+      "content": "eoptimalnumberofclustersisselectedas:\nk∗ =argmaxSilhouetteScore(k)\nk\nStep4: ClusterCenterSelection. Forinterpretability,weselectarepresentativef∗ fromeach\nj\nclusterC asthemostcentrallylocatedfailuremode:\nj\nf∗ =arg min ∥ϕ(f )−µ ∥\nj i j 2\nfi∈Cj\n37\n===  38 ===\nFigure18: Silhouetteanalysisshowingoptimalnumberofclustersk∗ =6. Step5: TaxonomyAlignment.",
+      "size": 348,
+      "sentences": 3
+    },
+    {
+      "id": 283,
+      "content": "38 ===\nFigure18: Silhouetteanalysisshowingoptimalnumberofclustersk∗ =6. Step5: TaxonomyAlignment. Eachrepresentativefailuremodef∗isreviewedandmappedto\nj\noneormoreMASTcategories:\n• SpecificationFailures\n• Inter-AgentFailures\n• TaskVerificationFailures\nFailuresthatexhibitcharacteristicsofmultiplecategoriesaremarkedascompoundorintersectional,\nsuggestingtheneedforextensionstothebasetaxonomy. Outputs. Thealgorithmyields:\n• AclusteredtaxonomyC ={C ,...,C }ofemergingfailuremodes.",
+      "size": 477,
+      "sentences": 5
+    },
+    {
+      "id": 284,
+      "content": "asetaxonomy. Outputs. Thealgorithmyields:\n• AclusteredtaxonomyC ={C ,...,C }ofemergingfailuremodes. 1 k∗\n• Canonicalrepresentatives{f∗,...,f∗ }foreachcluster. 1 k∗\n• Categorymappingsfortaxonomyrefinementorextension. • Frequencystatisticsperfailuretypeforprioritization.",
+      "size": 269,
+      "sentences": 6
+    },
+    {
+      "id": 285,
+      "content": "gorymappingsfortaxonomyrefinementorextension. • Frequencystatisticsperfailuretypeforprioritization. F.5.2 Methodology: SemanticClusteringofEmergentFailures\nBuildingontheformalclusteringalgorithmoutlinedabove,weimplementedapracticalinstantiation\nof the pipeline to organize the large volume of emerging failure mode descriptions identified by\nthe LLM-as-a-judge. We found lots of new and different behaviors when we first looked.",
+      "size": 428,
+      "sentences": 4
+    },
+    {
+      "id": 286,
+      "content": "dentified by\nthe LLM-as-a-judge. We found lots of new and different behaviors when we first looked. But a\ncloserlookshowedthatmanyofthemwereeitherjustrepeatingthesameideaorwereonlyslightly\ndifferentversionsofthesamecoreproblems. Todistilltheseintointerpretablecategories,weapplied\nasemanticclusteringmethodologygroundedinhigh-dimensionallanguagerepresentations. Eachemergingfailuredescriptionwasmanuallyorprogrammaticallysummarizedintoaconcise\nlabel and explanatory text.",
+      "size": 471,
+      "sentences": 5
+    },
+    {
+      "id": 287,
+      "content": "ngfailuredescriptionwasmanuallyorprogrammaticallysummarizedintoaconcise\nlabel and explanatory text. These summaries were then embedded into a semantic vector space\nusingtheall-MiniLM-L6-v2modelfromtheSentenceTransformerlibrary,yieldingasetofdense,\ncomparableembeddingssuitableforclustering. WeappliedtheKMeansalgorithmtogrouptheseembeddingsintosemanticallycoherentclusters.",
+      "size": 373,
+      "sentences": 3
+    },
+    {
+      "id": 288,
+      "content": "leforclustering. WeappliedtheKMeansalgorithmtogrouptheseembeddingsintosemanticallycoherentclusters. To\ndeterminetheoptimalnumberofclusters,wecomputedsilhouettescoresforvaluesofkrangingfrom\n2to7andselectedthevaluethatmaximizedmeansilhouettescore(seeFigure18). Thisanalysis\nyieldedanoptimalconfigurationofk∗ =6clusters. 38\n===  39 ===\nFor interpretability, each cluster was assigned a canonical label derived from the failure mode\ndescriptionclosesttotheclustercentroid.",
+      "size": 468,
+      "sentences": 5
+    },
+    {
+      "id": 289,
+      "content": "as assigned a canonical label derived from the failure mode\ndescriptionclosesttotheclustercentroid. Thisprocessproducedsixrepresentativecategoriesof\nemergingfailuremodes,summarizedbelow:\n• Cluster0: LackofErrorHandlingforToolFailure(53cases,10.3%)\nAgentsfailtodetectorappropriatelyrespondtotoolinvocationerrors. • Cluster1: FailuretoIncorporateFeedback(41cases,8.0%)\nAgentsignoreorinadequatelyadjusttofeedbackfromotheragentsortools.",
+      "size": 432,
+      "sentences": 3
+    },
+    {
+      "id": 290,
+      "content": "IncorporateFeedback(41cases,8.0%)\nAgentsignoreorinadequatelyadjusttofeedbackfromotheragentsortools. • Cluster2: InvalidActionFormatting(27cases,5.3%)\nOutputincludessyntacticorstructuralerrorsthatpreventexecution. • Cluster3: OverstatementofTaskCompletion(122cases,23.8%)\nAgentsclaimcompletionwithoutsatisfyingtaskcriteriaorproducingvalidoutcomes. • Cluster4: ExtraneousorConfusingOutputFormatting(110cases,21.4%)\nResponsescontainunnecessaryverbosity,ambiguousstructure,ormisleadingformatting.",
+      "size": 492,
+      "sentences": 4
+    },
+    {
+      "id": 291,
+      "content": "ing(110cases,21.4%)\nResponsescontainunnecessaryverbosity,ambiguousstructure,ormisleadingformatting. • Cluster5: IneffectiveErrorRecovery(160cases,31.2%)\nAgentsfailtoresolvepriormistakesorrestartworkflowseffectivelyafterfailure. These cluster-derived failure modes serve as canonical extensions to the base MAST taxonomy,\nrevealingpreviouslyunclassifiedbehaviorsthatfrequentlyariseinmulti-agentLLMinteractions.",
+      "size": 409,
+      "sentences": 3
+    },
+    {
+      "id": 292,
+      "content": "taxonomy,\nrevealingpreviouslyunclassifiedbehaviorsthatfrequentlyariseinmulti-agentLLMinteractions. Theiremergenceunderscoresthevalueofinductive,embedding-basedclusteringforscalablefailure\nmodediscoveryandtaxonomyrefinement. F.5.3 TaxonomicAlignmentwithMASTofEmergentFailures\nTheseemergentfailuremodesrevealbothalignmentandtensionwiththeoriginalMASTtaxonomy.",
+      "size": 357,
+      "sentences": 3
+    },
+    {
+      "id": 293,
+      "content": "EmergentFailures\nTheseemergentfailuremodesrevealbothalignmentandtensionwiththeoriginalMASTtaxonomy. EachclustercanbemappedtooneormoreofMAST’sthreecorefailurecategories,butmanystraddle\nboundariesorrevealoverlappingfailuredynamics:\n• SpecificationFailures:\n– OverstatementofTaskCompletionandExtraneousOutputFormattingreflectunclear\nsuccesscriteria,misunderstoodtaskscopes,orambiguousoutputspecifications.",
+      "size": 402,
+      "sentences": 2
+    },
+    {
+      "id": 294,
+      "content": "utFormattingreflectunclear\nsuccesscriteria,misunderstoodtaskscopes,orambiguousoutputspecifications. • Inter-AgentFailures:\n– FailuretoIncorporateFeedbackandLackofErrorHandlingforToolFailureindicate\ncoordinationbreakdownsorlimitedadaptivityindynamicenvironments. • TaskVerificationFailures:\n– InvalidActionFormattingandIneffectiveErrorRecoveryhighlightfailuresinruntime\nexecutionmonitoring,verification,andcorrectionprocedures.",
+      "size": 426,
+      "sentences": 3
+    },
+    {
+      "id": 295,
+      "content": "veErrorRecoveryhighlightfailuresinruntime\nexecutionmonitoring,verification,andcorrectionprocedures. Several emergent failure types cut across multiple categories, underscoring the complexity and\ninterdependence of failure dynamics in real-world multi-agent systems. These findings motivate\nfuturerefinementofMASTtosupportcross-categoryfailurerepresentationandcompoundbehavior\ntracking. Thisfailuremodeanalysiscontributesbothmethodologicallyandsubstantivelytomulti-agentsystem\nevaluation.",
+      "size": 487,
+      "sentences": 4
+    },
+    {
+      "id": 296,
+      "content": "isfailuremodeanalysiscontributesbothmethodologicallyandsubstantivelytomulti-agentsystem\nevaluation. Methodologically, it introduces a scalable pipeline for inductively discovering and\nstructuringnewfailurebehaviorsusingLLM-judgedoutputsandsemanticclustering. Substantively,\nitextendstheempiricalcoverageoftheMASTtaxonomybysurfacingnuanced,real-worldfailure\npatternsthatreflecttheincreasingcomplexityofautonomousagentcollaboration.",
+      "size": 430,
+      "sentences": 3
+    },
+    {
+      "id": 297,
+      "content": "nuanced,real-worldfailure\npatternsthatreflecttheincreasingcomplexityofautonomousagentcollaboration. Theseinsightsnotonlyvalidatetheneedforflexibletaxonomicframeworksbutalsopointtothe\nimportanceofdiagnosticsthatevolvewithmodelbehavior. AsLLM-basedagentscontinuetoscale\nincapabilityanddeploymentscope,theabilitytodetectemergent,intersectionalfailuresbecomesa\nfoundationalrequirementforreliablemulti-agentorchestration. 39",
+      "size": 419,
+      "sentences": 4
+    }
+  ]
+}

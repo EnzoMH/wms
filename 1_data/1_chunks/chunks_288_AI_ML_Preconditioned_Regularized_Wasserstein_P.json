@@ -1,0 +1,1713 @@
+{
+  "source": "ArXiv",
+  "filename": "288_AI_ML_Preconditioned_Regularized_Wasserstein_P.pdf",
+  "domain": "AI",
+  "total_chars": 93775,
+  "total_chunks": 284,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\nPreconditioned Regularized Wasserstein Proximal Sampling Methods\nHong Ye Tan∗, Stanley Osher†, and Wuchen Li†\nAbstract. We consider sampling from a Gibbs distribution by evolving finitely many particles. We propose a\npreconditionedversionofarecentlyproposednoise-freesamplingmethod,governedbyapproximating\nthescorefunctionwiththenumericallytractablescoreofaregularizedWassersteinproximaloperator.",
+      "size": 407,
+      "sentences": 3
+    },
+    {
+      "id": 2,
+      "content": "ximating\nthescorefunctionwiththenumericallytractablescoreofaregularizedWassersteinproximaloperator. This is derived by a Cole–Hopf transformation on coupled anisotropic heat equations, yielding a\nkernel formulation for the preconditioned regularized Wasserstein proximal. The diffusion component\nof the proposed method is also interpreted as a modified self-attention block, as in transformer\narchitectures.",
+      "size": 407,
+      "sentences": 3
+    },
+    {
+      "id": 3,
+      "content": "sed method is also interpreted as a modified self-attention block, as in transformer\narchitectures. For quadratic potentials, we provide a discrete-time non-asymptotic convergence\nanalysisandexplicitlycharacterizethebias,whichisdependentonregularizationandindependentof\nstep-size.",
+      "size": 280,
+      "sentences": 2
+    },
+    {
+      "id": 4,
+      "content": "nalysisandexplicitlycharacterizethebias,whichisdependentonregularizationandindependentof\nstep-size. Experiments demonstrate acceleration and particle-level stability on various log-concave\nand non-log-concave toy examples to Bayesian total-variation regularized image deconvolution, and\ncompetitive/better performance on non-convex Bayesian neural network training when utilizing\nvariable preconditioning matrices. Key words.",
+      "size": 425,
+      "sentences": 3
+    },
+    {
+      "id": 5,
+      "content": "onvex Bayesian neural network training when utilizing\nvariable preconditioning matrices. Key words. Sampling, Cole-Hopf, regularized Wasserstein proximal, preconditioning, kernel formula, score\napproximation, MCMC\nMSC codes. 65C05, 62G07\n1. Introduction. We are interested in sampling from a Gibbs distribution\n(1.1) π(x) ∝ exp(−βV(x)),\nwhereV : Rd → RissomeC1 potential, andβ > 0isaconstant.",
+      "size": 392,
+      "sentences": 6
+    },
+    {
+      "id": 6,
+      "content": "ibbs distribution\n(1.1) π(x) ∝ exp(−βV(x)),\nwhereV : Rd → RissomeC1 potential, andβ > 0isaconstant. Suchproblemsarisefrequently\nin data science, such as uncertainty quantification in imaging [28], Bayesian statistical inference\n[12], inverse problems [42], and computational physics [25].",
+      "size": 288,
+      "sentences": 2
+    },
+    {
+      "id": 7,
+      "content": "g [28], Bayesian statistical inference\n[12], inverse problems [42], and computational physics [25]. Methods for sampling have also\nbeen connected to recent machine learning methods, such as simulating stochastic differential\nequations (SDEs) for diffusion models [40], unsupervised learning [44], and Bayesian neural\nnetworks [31].",
+      "size": 331,
+      "sentences": 2
+    },
+    {
+      "id": 8,
+      "content": "ns (SDEs) for diffusion models [40], unsupervised learning [44], and Bayesian neural\nnetworks [31]. Current popular sampling methods to solve this are Monte Carlo Markov chain (MCMC)\nmethods, which bypass the usual difficulty arising from the intractability of the normalizing\n(cid:82)\nconstant exp(−βV(x))dx.",
+      "size": 309,
+      "sentences": 2
+    },
+    {
+      "id": 9,
+      "content": "sual difficulty arising from the intractability of the normalizing\n(cid:82)\nconstant exp(−βV(x))dx. There is a wide variety of Monte Carlo methods each with\nRd\ndifferent convergence rates and conditions on the potential V. Notable examples include\nthe unadjusted Langevin algorithm and the Metropolis-adjusted Langevin algorithm [36, 10],\nwith recent algorithms considering proximal operators and Moreau–Yosida envelopes [11],\nsubgradients [16], and annealed Moreau regularization [15].",
+      "size": 486,
+      "sentences": 2
+    },
+    {
+      "id": 10,
+      "content": "ators and Moreau–Yosida envelopes [11],\nsubgradients [16], and annealed Moreau regularization [15]. The theoretical core of MCMC is\nto construct a Markov chain with some invariant distribution πˆ that approximates the target\ndistribution π. To construct such a Markov chain, a crucial theoretical component is exponential or\ngeometric ergodicity of the chain. In typical Langevin methods, this is given by the Wiener\ndiffusion term, which adds random noise at every step of the chain [35].",
+      "size": 489,
+      "sentences": 4
+    },
+    {
+      "id": 11,
+      "content": "his is given by the Wiener\ndiffusion term, which adds random noise at every step of the chain [35]. These chains can\n∗Department of Mathematics, University of California, Los Angeles, 90095 (hyt35,sjo@math.ucla.edu).",
+      "size": 216,
+      "sentences": 2
+    },
+    {
+      "id": 12,
+      "content": "∗Department of Mathematics, University of California, Los Angeles, 90095 (hyt35,sjo@math.ucla.edu). †Department of Mathematics, University of South Carolina, Columbia, SC 29208 (wuchen@mailbox.sc.edu)\n1\n5202\npeS\n1\n]LM.tats[\n1v58610.9052:viXra\n===  2 ===\n2 H. Y. TAN, S. OSHER, AND W. LI\nbe interpreted as particular discretizations of SDEs, such as Euler–Maruyama in the case of\nthe unadjusted Langevin algorithm.",
+      "size": 413,
+      "sentences": 2
+    },
+    {
+      "id": 13,
+      "content": "r discretizations of SDEs, such as Euler–Maruyama in the case of\nthe unadjusted Langevin algorithm. These SDEs correspond to Fokker–Planck equations [34],\nwhich are ODEs in density space, which in turn correspond to score-based particle evolutions\nbased on Liouville equations [26]. Here, the score function is defined by the gradient of the log\ndensity. Deviating from MCMC methods, score-based methods which crucially require knowledge\nof the score of the distribution at any given time-step.",
+      "size": 494,
+      "sentences": 4
+    },
+    {
+      "id": 14,
+      "content": "methods which crucially require knowledge\nof the score of the distribution at any given time-step. The difficulty manifests as at each\ntime step, only an empirical measure is known, from which the score has to be approximated. Various methods of score approximation include kernel density estimation [6, 49], adaptive\nkernels [50, 47, 5], and approximation using neural networks [4, 8, 32]. However, many such\nmethods suffer from mode collapse and parameter/initialization sensitivity [41, 30, 14].",
+      "size": 498,
+      "sentences": 4
+    },
+    {
+      "id": 15,
+      "content": "many such\nmethods suffer from mode collapse and parameter/initialization sensitivity [41, 30, 14]. Recently, [45] proposed a noise-free sampling based on the regularized Wasserstein proximal\noperator (RWPO), called the backwards regularized Wasserstein proximal (BRWP) method. In this case, the score is approximated using the score of the RWPO, which is shown to\ncorrespond to a semi-implicit discretization of a Fokker–Planck equation.",
+      "size": 437,
+      "sentences": 3
+    },
+    {
+      "id": 16,
+      "content": "e RWPO, which is shown to\ncorrespond to a semi-implicit discretization of a Fokker–Planck equation. Similarly to the\nunadjusted Langevin algorithm (ULA), and unlike Langevin algorithms involving Metropolis\nsteps (such as the Metropolis-adjusted Langevin algorithm MALA), BRWP can be shown to\npreserve the Gaussianity of a distribution at each iteration for quadratic target potentials.",
+      "size": 385,
+      "sentences": 2
+    },
+    {
+      "id": 17,
+      "content": "wn to\npreserve the Gaussianity of a distribution at each iteration for quadratic target potentials. In\nparticular, in continuous time, the mixing time dependency on dimension d in the Gaussian\ncase scales only as O(log(d)), whereas ULA scales as O(d3) and MALA as O(d2). For low\ndimensional distributions, the particles evolved through BRWP were found to be structured,\nwith the outermost particles appearing to lie on level-set contours.",
+      "size": 438,
+      "sentences": 3
+    },
+    {
+      "id": 18,
+      "content": "P were found to be structured,\nwith the outermost particles appearing to lie on level-set contours. The BRWP method has also been extended with tensor-train techniques [19], as well as\nto the non-smooth Bayesian LASSO problem by using L1-splittings based on the Laplace\napproximation [18]. On the theoretical side, [45] originally demonstrate linear convergence\nin total variation for quadratic potentials in the continuous case.",
+      "size": 429,
+      "sentences": 3
+    },
+    {
+      "id": 19,
+      "content": "demonstrate linear convergence\nin total variation for quadratic potentials in the continuous case. [17] further extend this to\nstrongly log-concave distributions and smooth initial distributions, showing that the BRWP\niterations with equal regularization parameter and time-step indeed form a first-order method\nfor the Fokker–Planck equation. In this work, we aim to accelerate convergence of BRWP by utilizing preconditioners. The\ncontributions of this work are as follows:\n1.",
+      "size": 478,
+      "sentences": 4
+    },
+    {
+      "id": 20,
+      "content": "convergence of BRWP by utilizing preconditioners. The\ncontributions of this work are as follows:\n1. In Section 3, we derive the coupled PDE system that we wish to subsequently discretize. Utilizing similar techniques to [29], we demonstrate that the Laplacian regularizations\nin the Benamou–Brenier formulation of the Wasserstein proximal may be suitably\nreplaced with second-order terms involving the preconditioning matrix.",
+      "size": 425,
+      "sentences": 4
+    },
+    {
+      "id": 21,
+      "content": "ein proximal may be suitably\nreplaced with second-order terms involving the preconditioning matrix. This is derived\nusing a Cole–Hopf transform on a pair of forward-backward anisotropic heat equations. 2. In Section 4 we propose the preconditioned BRWP (PBRWP) method in Algorithm 1. This is given by taking a backwards Euler discretization on the Fokker–Planck compo-\nnent of the PDE derived in the previous section. This yields a semi-implicit discretiza-\ntion of the Liouville equation.",
+      "size": 489,
+      "sentences": 6
+    },
+    {
+      "id": 22,
+      "content": "ed in the previous section. This yields a semi-implicit discretiza-\ntion of the Liouville equation. We provide expressions for the score approximation in\nthe case of finitely many particles as an interacting particle system. Subsection 4.1\ninterprets the interactions as a modified self-attention block, which implicitly allows\nfor efficient parallel computation using common GPU libraries. 3.",
+      "size": 393,
+      "sentences": 5
+    },
+    {
+      "id": 23,
+      "content": "on block, which implicitly allows\nfor efficient parallel computation using common GPU libraries. 3. In the case of Gaussian initial and target measures (corresponding to the infinite-\n===  3 ===\nPRECONDITIONED REGULARIZED WASSERSTEIN PROXIMAL SAMPLING METHODS 3\nparticle limit), Section 5 provides a non-asymptotic analysis of the convergence rate\nin the discrete step-size regime. This characterizes the convergence rates in terms of\nthe regularization parameter and the preconditioning matrix.",
+      "size": 495,
+      "sentences": 4
+    },
+    {
+      "id": 24,
+      "content": "izes the convergence rates in terms of\nthe regularization parameter and the preconditioning matrix. We additionally provide\nvarious properties such as maximum allowable regularization parameters, Wasserstein\ncontraction, a mean-variance contraction-diffusion inequality, and a maximum norm\nbound based on the number of particles. 4. In Section 6, the proposed PBRWP method is compared on a variety of toy examples,\na Bayesian imaging problem, and Bayesian neural network training.",
+      "size": 480,
+      "sentences": 4
+    },
+    {
+      "id": 25,
+      "content": "red on a variety of toy examples,\na Bayesian imaging problem, and Bayesian neural network training. We additionally\nintroduce some heuristic modifications to improve the performance of PBRWP in high\ndimension scenarios, corresponding to scaling laws in attention-based models. We\nobserve in low dimensions that the proposed method converges faster and stably in\nKL divergence and maintains the structured particle phenomenon of BRWP.",
+      "size": 433,
+      "sentences": 3
+    },
+    {
+      "id": 26,
+      "content": "verges faster and stably in\nKL divergence and maintains the structured particle phenomenon of BRWP. We find\nrapid convergence to the MAP estimator in while maintaining deviations between\nparticles for Bayesian image deconvolution, and convergence to better trained networks\ncompared to other score-based MCMC methods. 2. Background and Notation.",
+      "size": 345,
+      "sentences": 4
+    },
+    {
+      "id": 27,
+      "content": "to better trained networks\ncompared to other score-based MCMC methods. 2. Background and Notation. This section covers some basic definitions, including\nWasserstein spaces, the Benamou–Brenier PDE formulation, and the non-preconditioned\nregularized Wasserstein proximal. Throughout, M ∈ Rd×d is a symmetric positive definite matrix M ∈ Sym (Rd). We\n++\ndefine the scaled norms and inner product on Rd as\n(2.1) ⟨u,v⟩ = u⊤M−1v, ∥·∥2 = ⟨·,·⟩ . M M M\nDefinition 2.1 ([39]).",
+      "size": 468,
+      "sentences": 7
+    },
+    {
+      "id": 28,
+      "content": "norms and inner product on Rd as\n(2.1) ⟨u,v⟩ = u⊤M−1v, ∥·∥2 = ⟨·,·⟩ . M M M\nDefinition 2.1 ([39]). Let P (Rd) be the of probability densities with finite second moment. 2\nFor µ,ν ∈ P (Rd), the Wasserstein-2 distance W (µ,ν) is\n2 2\n(cid:90)\n(2.2) W (µ,ν) = inf ∥x−y∥2dπ(x,y),\n2\nπ∈Γ(µ,ν)\nwhere the infimum is taken over couplings π ∈ Γ(µ,ν), i.e. probability measures on Rd×Rd\nsatisfying\n(cid:90) (cid:90)\n(2.3) π(x,y)dy = µ(x), π(x,y)dx = ν(y).",
+      "size": 443,
+      "sentences": 5
+    },
+    {
+      "id": 29,
+      "content": "probability measures on Rd×Rd\nsatisfying\n(cid:90) (cid:90)\n(2.3) π(x,y)dy = µ(x), π(x,y)dx = ν(y). Rd Rd\nConsider a probability density ρ ∈ P (Rd) and V ∈ C1(Rd) be a bounded potential function. 0 2\nFor a scalar T > 0, the Wasserstein proximal of ρ is defined as\n0\n(cid:90) W(ρ ,q)2\n(2.4) WProx (ρ ) := argmin V(x)q(x)dx+ 0 . T,V 0\n2T\nq∈P2(Rd) Rd\nThe Wasserstein proximal can be equivalently reformulated as a coupled PDE system,\nsometimes known as the Benamou–Brenier or dynamical formulation [2].",
+      "size": 498,
+      "sentences": 4
+    },
+    {
+      "id": 30,
+      "content": "lated as a coupled PDE system,\nsometimes known as the Benamou–Brenier or dynamical formulation [2]. Using this, [29]\n===  4 ===\n4 H. Y. TAN, S. OSHER, AND W. LI\ndefines the regularized Wasserstein proximal by adding a diffusive term to the continuity\nequation of the Benamou–Brenier formulation.",
+      "size": 295,
+      "sentences": 2
+    },
+    {
+      "id": 31,
+      "content": "proximal by adding a diffusive term to the continuity\nequation of the Benamou–Brenier formulation. The resulting mean-field control problem is\n(cid:90) T (cid:90) 1 (cid:90)\n(2.5a) inf ∥v(t,x)∥2ρ(t,x)dxdt+ V(x)q(x)dx,\nρ,v,q 0 Rd 2 Rd\n(2.5b) ∂ ρ(t,x)+∇·(ρ(t,x)v(t,x)) = β−1∆ρ(t,x), ρ(0,x) = ρ (x), ρ(T,x) = q(x). t 0\nFrom this problem, the regularized Wasserstein proximal operator (RWPO) WProx is\nT,V\ndefined as the solution density function ρ of (2.5).",
+      "size": 453,
+      "sentences": 3
+    },
+    {
+      "id": 32,
+      "content": "serstein proximal operator (RWPO) WProx is\nT,V\ndefined as the solution density function ρ of (2.5). Taking the regularization parameter β = 0\nrecovers the Wasserstein proximal (2.4) through the Benamou–Brenier formulation of the\nWasserstein distance.",
+      "size": 250,
+      "sentences": 2
+    },
+    {
+      "id": 33,
+      "content": "the Wasserstein proximal (2.4) through the Benamou–Brenier formulation of the\nWasserstein distance. The RWPO admits the following coupled PDE formulation, consisting\nof a forward-time Fokker-Planck equation in ρ, and a backward-time viscous Hamilton-Jacobi\nequation in a dual variable Φ,\n(2.6a)  ∂ ρ(t,x)+∇ ·(ρ(t,x)∇ Φ(t,x)) = β−1∆ ρ(t,x),\n t x x x\n\n 1\n(2.6b) ∂ Φ(t,x)+ ∥∇ Φ(t,x)∥2 = −β−1∆ Φ(t,x),\nt x x\n 2\n\n\n(2.6c) ρ(0,x) = ρ (x), Φ(T,x) = −V(x).",
+      "size": 454,
+      "sentences": 2
+    },
+    {
+      "id": 34,
+      "content": "1\n(2.6b) ∂ Φ(t,x)+ ∥∇ Φ(t,x)∥2 = −β−1∆ Φ(t,x),\nt x x\n 2\n\n\n(2.6c) ρ(0,x) = ρ (x), Φ(T,x) = −V(x). 0\nConsider the Cole–Hopf transformation\n(cid:40) (cid:40)\nη(t,x) = eβΦ(t,x)/2 Φ(t,x) = 2β−1logη(t,x)\n⇔\nηˆ(t,x) = ρ(t,x)e−βΦ(t,x)/2 ρ(t,x) = η(t,x)ηˆ(t,x).",
+      "size": 254,
+      "sentences": 2
+    },
+    {
+      "id": 35,
+      "content": "0)\nη(t,x) = eβΦ(t,x)/2 Φ(t,x) = 2β−1logη(t,x)\n⇔\nηˆ(t,x) = ρ(t,x)e−βΦ(t,x)/2 ρ(t,x) = η(t,x)ηˆ(t,x). This transforms the coupled PDEs (2.6) to the coupled forward-backward heat equations\n\n∂ ηˆ(t,x) = β−1∆ηˆ(t,x),\n t\n\n(2.7) ∂ η(t,x) = −β−1∆η(t,x),\nt\n\nη(0,x)ηˆ(0,x) = ρ (x), η(T,x) = eβΦ(T,x)/2 = e−βV(x)/2,\n0\nwhich may be solved using the heat kernel [29]\nG t (x,y) = 1 e−β∥x− 4t y∥2 , η(t,x) = G T−t ∗η T = G T−t ∗e−βV/2.",
+      "size": 425,
+      "sentences": 2
+    },
+    {
+      "id": 36,
+      "content": "olved using the heat kernel [29]\nG t (x,y) = 1 e−β∥x− 4t y∥2 , η(t,x) = G T−t ∗η T = G T−t ∗e−βV/2. (4πβ−1t)d/2\nTranslating back, the terminal solution t = T to the coupled PDEs (2.6) is given by\n(cid:90)\n(2.8) ρ(T,x) = K(x,y)ρ (y)dy,\n0\nRd\n(cid:16) (cid:17)\nexp −β(V(x)+ ∥x−y∥2 )\n2 2T\n(2.9) K(x,y) = . (cid:16) (cid:17)\n(cid:82) exp −β(V(z)+ ∥z−y∥2 ) dz\nRd 2 2T\n3. Preconditioned Regularized Wasserstein Proximal.",
+      "size": 413,
+      "sentences": 4
+    },
+    {
+      "id": 37,
+      "content": "d:17)\n(cid:82) exp −β(V(z)+ ∥z−y∥2 ) dz\nRd 2 2T\n3. Preconditioned Regularized Wasserstein Proximal. We have seen that the regularized\nWasserstein proximal is a particular Laplacian regularization of the Benamou–Brenier formula-\ntion, corresponding to coupled heat equations and computable using a kernel formula [29].",
+      "size": 317,
+      "sentences": 3
+    },
+    {
+      "id": 38,
+      "content": "formula-\ntion, corresponding to coupled heat equations and computable using a kernel formula [29]. In\n===  5 ===\nPRECONDITIONED REGULARIZED WASSERSTEIN PROXIMAL SAMPLING METHODS 5\nthis section, we define a geometry-aware elliptic regularization to the Benamou–Brenier formu-\nlation, corresponding to coupled anisotropic heat equations under a Cole–Hopf transformation. This manifests as computation with a scaled heat kernel, allowing for more generality in the\nproximal operator.",
+      "size": 480,
+      "sentences": 3
+    },
+    {
+      "id": 39,
+      "content": "ts as computation with a scaled heat kernel, allowing for more generality in the\nproximal operator. Fromhereonwards,letM ∈ Rd×d beasymmetricpositivedefinitematrixM ∈ Sym (Rd). ++\nDefine the anisotropic heat kernel\n(3.1) G t,M (x,y) :=\n1 e−β(x−y)⊤M\n4t\n−1(x−y)\n. (4πβ−1t)d/2|M|1/2\nThis is a scaled version of the standard heat kernel, and it is also a Green’s function for an\nanisotropic heat equation. Proposition 3.1.",
+      "size": 417,
+      "sentences": 5
+    },
+    {
+      "id": 40,
+      "content": "d heat kernel, and it is also a Green’s function for an\nanisotropic heat equation. Proposition 3.1. The anisotropic kernel G is a Green’s function for the following PDE:\nt,M\n(cid:40)\n∂ u−β−1∇·(M∇u) = 0,\nt\nu(0,x) = δ(y). Proof. This is from a direct computation. The boundary condition arises from a change of\nvariables with the standard heat kernel. The derivation can be found in A.1.",
+      "size": 385,
+      "sentences": 7
+    },
+    {
+      "id": 41,
+      "content": "rises from a change of\nvariables with the standard heat kernel. The derivation can be found in A.1. WenowdefinethepreconditionedregularizedWassersteinproximaloperatorastheterminal\ntime solution to a particular set of PDEs. Then, we show that it is equivalently a convolution\ninvolving another inhomogeneous kernel, with the kernel itself defined as a convolution with\nthe anisotropic heat kernel. Definition 3.2.",
+      "size": 412,
+      "sentences": 5
+    },
+    {
+      "id": 42,
+      "content": ", with the kernel itself defined as a convolution with\nthe anisotropic heat kernel. Definition 3.2. For a symmetric positive definite matrix M, define the preconditioned\nregularized Wasserstein proximal operator (PRWPO) WProxM : ρ (cid:55)→ ρ to be the terminal\nT,V 0 T\ndensity of the following PDE system\n\n∂ ρ(t,x)+∇·(ρ(t,x)∇Φ(t,M−1x)) = β−1∇·(M∇ρ)(t,x),\n t\n\n(3.2) ∂ Φ(t,M−1x)+ 1∥∇Φ(t,M−1x)∥2 = −β−1Tr (cid:0) M−1(∇2Φ)(t,M−1x) (cid:1) ,\nt 2 M\n\nρ(0,x) = ρ (x), Φ(T,M−1x) = −V(x).",
+      "size": 484,
+      "sentences": 3
+    },
+    {
+      "id": 43,
+      "content": "Φ(t,M−1x)∥2 = −β−1Tr (cid:0) M−1(∇2Φ)(t,M−1x) (cid:1) ,\nt 2 M\n\nρ(0,x) = ρ (x), Φ(T,M−1x) = −V(x). 0\nEquivalently, the density of WProxM ρ is given by\nT,V 0\n(cid:90)\n(3.3) ρ(T,x) = K(x,y,β,M,T,V)ρ(0,y)dy,\nRd\nwhere the normalized kernel is given by\ne−β\n2\n(V(x)+ ∥x−\n2\ny\nT\n∥2 M)\nK(x,y,β,M,T,V) := . (cid:82)\nRd\ne−β\n2\n(V(z)+ ∥z−\n2\ny\nT\n∥2 M)dz\nCompared to (2.9), the preconditioned kernel replaces the Euclidean norm ∥x−y∥2 with the\nscaled norm ∥x−y∥2 , which is by construction.",
+      "size": 476,
+      "sentences": 3
+    },
+    {
+      "id": 44,
+      "content": "d kernel replaces the Euclidean norm ∥x−y∥2 with the\nscaled norm ∥x−y∥2 , which is by construction. We show that the terminal density and the\nM\nkernel formula are equivalent in the following section. ===  6 ===\n6 H. Y. TAN, S. OSHER, AND W. LI\n3.1. Proof of equivalence. Like in [29], the kernel formula (3.3) arises from a Cole–Hopf\ntransformation to the underlying coupled PDE system.",
+      "size": 386,
+      "sentences": 5
+    },
+    {
+      "id": 45,
+      "content": "e kernel formula (3.3) arises from a Cole–Hopf\ntransformation to the underlying coupled PDE system. We consider the following coupled\nforward-backward anisotropic heat equations, which admit the kernel G ,\nt,M\n\n∂ ηˆ(t,x) = β−1∇·(M∇ηˆ(t,x)),\n t\n\n(3.4) ∂ η(t,x) = −β−1∇·(M∇η(t,x)),\nt\n\nη(0,x)ηˆ(0,x) = ρ (x), η(T,x) = eβΦ(T,x)/2 = e−βV(x)/2.",
+      "size": 343,
+      "sentences": 2
+    },
+    {
+      "id": 46,
+      "content": "t\n\n(3.4) ∂ η(t,x) = −β−1∇·(M∇η(t,x)),\nt\n\nη(0,x)ηˆ(0,x) = ρ (x), η(T,x) = eβΦ(T,x)/2 = e−βV(x)/2. 0\nWe now transformthis backintoa set ofcoupled PDEswith thefollowingCole–Hopf transform,\n(cid:40) (cid:40)\nη(t,x) = eβΦ(t,M−1x)/2 Φ(t,x) = 2β−1logη(t,Mx)\n(3.5) ⇔ . ηˆ(t,x) = ρ(t,x)e−βΦ(t,M−1x)/2 ρ(t,x) = η(t,x)ηˆ(t,x)\nThe boundary conditions transform to yield the desired ρ(0,x) = ρ (x), Φ(T,M−1x) = −V(x).",
+      "size": 407,
+      "sentences": 3
+    },
+    {
+      "id": 47,
+      "content": "x)ηˆ(t,x)\nThe boundary conditions transform to yield the desired ρ(0,x) = ρ (x), Φ(T,M−1x) = −V(x). 0\nWe first compute the second (backwards) heat equation, dealing solely in the dual variable Φ:\nβ\n∂ η(t,x) = ∂\nΦ(t,M−1x)eβΦ(t,M−1x)/2,\nt t\n2\nβ\n∇η(t,x) =\nM−1∇Φ(t,M−1x)eβΦ(t,M−1x)/2. 2\nThe RHS of the second heat equation yields\n∇·(M∇η(t,x))\n(cid:18) (cid:19)\nβ\n= ∇·\n∇Φ(t,M−1x)eβΦ(t,M−1x)/2\n2\n= (cid:18) β Tr (cid:0) M−1∇2Φ(t,M−1x) (cid:1) + β2 ∇Φ(t,M−1x)⊤M−1∇Φ(t,M−1x) (cid:19) eβΦ(t,M−1x)/2.",
+      "size": 490,
+      "sentences": 3
+    },
+    {
+      "id": 48,
+      "content": "(cid:18) β Tr (cid:0) M−1∇2Φ(t,M−1x) (cid:1) + β2 ∇Φ(t,M−1x)⊤M−1∇Φ(t,M−1x) (cid:19) eβΦ(t,M−1x)/2. 2 4\nTherefore the backwards heat equation evolving from time t = T to t = 0\n∂ η(t,x) = −β−1∇·(M∇η(t,x))\nt\nbecomes a PDE in the dual variable\n(3.6) ∂ Φ(t,M−1x)+ 1 ∥∇Φ(t,M−1x)∥2 = −β−1Tr (cid:0) M−1(∇2Φ)(t,M−1x) (cid:1) . t 2 M\nThis is the desired Hamilton–Jacobi equation in (3.2).",
+      "size": 379,
+      "sentences": 3
+    },
+    {
+      "id": 49,
+      "content": "1Tr (cid:0) M−1(∇2Φ)(t,M−1x) (cid:1) . t 2 M\nThis is the desired Hamilton–Jacobi equation in (3.2). Now computing the transformation for\nthe forward heat equation ηˆ:\n(cid:18) (cid:19)\nβ\n∂ ηˆ(t,x) = ∂ ρ− ρ∂ Φ(t,M−1x) e−βΦ(t,M−1x)/2,\nt t t\n2\n(cid:18) (cid:19)\nβ\n∇ηˆ(t,x) = ∇ρ− ρM−1∇Φ(t,M−1x) e−βΦ(t,M−1x)/2.",
+      "size": 306,
+      "sentences": 3
+    },
+    {
+      "id": 50,
+      "content": "Φ(t,M−1x) e−βΦ(t,M−1x)/2,\nt t t\n2\n(cid:18) (cid:19)\nβ\n∇ηˆ(t,x) = ∇ρ− ρM−1∇Φ(t,M−1x) e−βΦ(t,M−1x)/2. 2\n===  7 ===\nPRECONDITIONED REGULARIZED WASSERSTEIN PROXIMAL SAMPLING METHODS 7\nThe RHS can be computed as\n∇·(M∇ηˆ(t,x)) =\n∇·(M∇ρ)e−βΦ(t,M−1x)/2−β∇ρ⊤∇Φ(t,M−1x)e−βΦ(t,M−1x)/2\n− β ρTr (cid:0) M−1∇2Φ(t,M−1x) (cid:1) e−βΦ(t,M−1x)/2\n2\nβ2\n+\nρ∇Φ(t,M−1x)⊤M−1∇Φ(t,M−1x)e−βΦ(t,M−1x)/2.",
+      "size": 375,
+      "sentences": 2
+    },
+    {
+      "id": 51,
+      "content": "β ρTr (cid:0) M−1∇2Φ(t,M−1x) (cid:1) e−βΦ(t,M−1x)/2\n2\nβ2\n+\nρ∇Φ(t,M−1x)⊤M−1∇Φ(t,M−1x)e−βΦ(t,M−1x)/2. 4\nApplying the transformation to the forward heat equation in ηˆ yields\nβ\n∂ ρ− ρ∂ Φ(t,M−1x) = β−1∇·(M∇ρ)−⟨∇ρ,∇Φ(t,M−1x)⟩\nt t\n2\n− 1 ρTr (cid:0) M−1∇2Φ(t,M−1x) (cid:1) + β ρ∥∇Φ(t,M−1x)∥ . M\n2 4\nSimplifying with the Hamilton–Jacobi equation for Φ (3.6), we obtain\n∂ ρ+⟨∇ρ,∇Φ(t,M−1x)⟩+ρTr (cid:0) M−1∇2Φ(t,M−1x) (cid:1) = β−1∇·(M∇ρ)\nt\n⇒ ∂ ρ+∇·(ρ(t,x)∇Φ(t,M−1x)) = β−1∇·(M∇ρ).",
+      "size": 471,
+      "sentences": 3
+    },
+    {
+      "id": 52,
+      "content": "t,M−1x)⟩+ρTr (cid:0) M−1∇2Φ(t,M−1x) (cid:1) = β−1∇·(M∇ρ)\nt\n⇒ ∂ ρ+∇·(ρ(t,x)∇Φ(t,M−1x)) = β−1∇·(M∇ρ). t\nThis is the desired (modified) Fokker–Planck equation in (3.2). We have demonstrated that the\nCole–Hopf transformation (3.5) transforms the coupled anisotropic heat equations (3.4) into a\ndiffusive coupled PDE system: a forward-time Fokker–Planck equation, and a backward-time\nHamilton–Jacobi equation.",
+      "size": 404,
+      "sentences": 3
+    },
+    {
+      "id": 53,
+      "content": "ed PDE system: a forward-time Fokker–Planck equation, and a backward-time\nHamilton–Jacobi equation. Going backwards, we may infer that the coupled system admits a\nkernel solution corresponding to the anisotropic heat equation, and showing equivalence in\nDefinition 3.2. We summarize this in the following proposition. Proposition 3.3.",
+      "size": 334,
+      "sentences": 4
+    },
+    {
+      "id": 54,
+      "content": "ing equivalence in\nDefinition 3.2. We summarize this in the following proposition. Proposition 3.3. The coupled PDE system\n\n∂ ρ(t,x)+∇·(ρ(t,x)∇Φ(t,M−1x)) = β−1∇·(M∇ρ)(t,x),\n t\n\n(3.7) ∂ Φ(t,M−1x)+ 1∥∇Φ(t,M−1x)∥2 = −β−1Tr (cid:0) M−1(∇2Φ)(t,M−1x) (cid:1) ,\nt 2 M\n\nρ(0,x) = ρ (x), Φ(T,M−1x) = −V(x),\n0\nadmits the following kernel formulation, where G (x,y) is given in (3.1):\nt,M\n(cid:40) ρ(t,x) = (cid:0) G ∗e−βV/2(cid:1) (x)· (cid:16) G ∗ ρ0 (cid:17) (x),\n(3.8) T−t,M t,M (GT,M∗e−βV/2)\nΦ(t,x) = 2β−1log (cid:0) G ∗e−βV/2(cid:1) (Mx).",
+      "size": 537,
+      "sentences": 4
+    },
+    {
+      "id": 55,
+      "content": "G ∗ ρ0 (cid:17) (x),\n(3.8) T−t,M t,M (GT,M∗e−βV/2)\nΦ(t,x) = 2β−1log (cid:0) G ∗e−βV/2(cid:1) (Mx). T−t,M\nProof. The PDEs under the change of variables (3.5) becomes the decoupled anisotropic\nheat equations (3.4). Using the Green’s function, the solutions are given by\nη(t,x) = G ∗η = (G ∗e−βV/2)(x). T−t,M T T−t,M\nFrom the initial boundary conditions,\nρ (x)\n0\nηˆ(0,x) = .",
+      "size": 371,
+      "sentences": 5
+    },
+    {
+      "id": 56,
+      "content": "x) = G ∗η = (G ∗e−βV/2)(x). T−t,M T T−t,M\nFrom the initial boundary conditions,\nρ (x)\n0\nηˆ(0,x) = . (G ∗e−βV/2)(x)\nT,M\n===  8 ===\n8 H. Y. TAN, S. OSHER, AND W. LI\nFrom the Green’s function again,\n(cid:18) (cid:19)\nρ\n0\nηˆ(t,x) = G ∗ (x). t,M\n(G ∗e−βV/2)\nT,M\nSince ρ = ηηˆ from (3.5),\n(cid:18) (cid:19)\n(cid:16) (cid:17) ρ\n(3.9) ρ(t,x) = G ∗e−βV/2 (x)· G ∗ 0 (x).",
+      "size": 361,
+      "sentences": 4
+    },
+    {
+      "id": 57,
+      "content": "ρ = ηηˆ from (3.5),\n(cid:18) (cid:19)\n(cid:16) (cid:17) ρ\n(3.9) ρ(t,x) = G ∗e−βV/2 (x)· G ∗ 0 (x). T−t,M t,M\n(G ∗e−βV/2)\nT,M\nIn particular, plugging in t = T, we have the following kernel formula for the PRWPO which\nis defined as the terminal solution. Corollary 3.4.",
+      "size": 267,
+      "sentences": 3
+    },
+    {
+      "id": 58,
+      "content": "he following kernel formula for the PRWPO which\nis defined as the terminal solution. Corollary 3.4. The preconditioned regularized Wasserstein proximal admits the kernel for-\nmula:\n(cid:90) G (y,x)ρ (y)\nWProxM ρ (x) = e−βV(x)/2 T,M 0 dy\nT,V 0 Rd (G T,M ∗e−βV/2)(y)\n(cid:90)\n(3.10) = K(x,y,β,M,T,V)ρ(0,y)dy,\nRd\nwhere\ne−β\n2\n(V(x)+ ∥x−\n2\ny\nT\n∥2 M)\n(3.11) K(x,y,β,M,T,V) := . (cid:82)\nRd\ne−β\n2\n(V(z)+ ∥z−\n2\ny\nT\n∥2 M)dz\nNote that the PRWPO operator is well defined.",
+      "size": 460,
+      "sentences": 4
+    },
+    {
+      "id": 59,
+      "content": ",T,V) := . (cid:82)\nRd\ne−β\n2\n(V(z)+ ∥z−\n2\ny\nT\n∥2 M)dz\nNote that the PRWPO operator is well defined. The parabolic heat equations given by the\nCole–Hopf transform are well defined for all time. Therefore, any probability density will map\nto a unique output, and moreover the mapping is continuous according to the regularity of the\nheat equations. For notation purposes, we shorten the kernel (3.11) to K (x,y).",
+      "size": 410,
+      "sentences": 5
+    },
+    {
+      "id": 60,
+      "content": "e regularity of the\nheat equations. For notation purposes, we shorten the kernel (3.11) to K (x,y). We may interpret K\nM M\n(cid:82)\nas a Markov kernel: for any y, K (x,y)dx = 1, and moreover K is measurable. This is\nx M M\nuseful to determine how each particle affects the score, given by applying K to a Dirac mass. M\n4. Preconditioned Backwards Regularized Wasserstein Proximal Method.",
+      "size": 386,
+      "sentences": 6
+    },
+    {
+      "id": 61,
+      "content": "applying K to a Dirac mass. M\n4. Preconditioned Backwards Regularized Wasserstein Proximal Method. Equipped\nwith a preconditioned version of the regularized Wasserstein proximal operator, we can proceed\nlike in [45] and devise a sampling algorithm based on the Fokker–Planck component of the\ncoupled PDEs.",
+      "size": 305,
+      "sentences": 4
+    },
+    {
+      "id": 62,
+      "content": "e in [45] and devise a sampling algorithm based on the Fokker–Planck component of the\ncoupled PDEs. The Fokker–Planck component can be written as\n(4.1) ∂ ρ(t,x)+∇· (cid:0) ρ(t,x)∇Φ(t,M−1x)−β−1Mρ∇(logρ)(t,x) (cid:1) = 0.\nt\nUsing Liouville’s equation with the Hamiltonian ∇Φ(t,M−1x)−β−1M∇(logρ)(x), the corre-\nsponding particle formulation with density satisfying (4.1) is\ndX\n(4.2) = ∇Φ(t,M−1X)−β−1M∇logρ(t,X).",
+      "size": 408,
+      "sentences": 2
+    },
+    {
+      "id": 63,
+      "content": "ponding particle formulation with density satisfying (4.1) is\ndX\n(4.2) = ∇Φ(t,M−1X)−β−1M∇logρ(t,X). dt\n===  9 ===\nPRECONDITIONED REGULARIZED WASSERSTEIN PROXIMAL SAMPLING METHODS 9\nThis can be seen to approximate the original Liouville equation since ∇Φ(t,M−1x) ≈\n−MV(x).",
+      "size": 271,
+      "sentences": 2
+    },
+    {
+      "id": 64,
+      "content": "ETHODS 9\nThis can be seen to approximate the original Liouville equation since ∇Φ(t,M−1x) ≈\n−MV(x). Performing a backwards Euler discretization on this ODE, we define the following\npreconditioned backward regularized Wasserstein proximal (PBRWP) method:\n(4.3) X = X +η (cid:0) −M∇V(X )−β−1M∇logWProxM ρ (X ) (cid:1) ,\nk+1 k k T,V k k\nwhere WProxM ρ is the PRWPO of the distribution of X as given in (3.7). As in [45], this\nT,V k k\ncan be evaluated using the kernel formula (3.11).",
+      "size": 480,
+      "sentences": 3
+    },
+    {
+      "id": 65,
+      "content": "of X as given in (3.7). As in [45], this\nT,V k k\ncan be evaluated using the kernel formula (3.11). Note that the formal limit as T → 0 and η → 0 is the score-based ODE with potential V,\ndX\n(4.4) = −M∇V(X)−β−1M∇logρ(X),\ndt\nwhich has a stationary solution π ∝ exp(−βV). Based on (4.3) and the kernel formulation (3.11), we proceed as in [45] and consider the\ncase where the input ρ to the regularized Fokker–Planck equation is given by an empirical\nk\nmeasure.",
+      "size": 457,
+      "sentences": 4
+    },
+    {
+      "id": 66,
+      "content": "ase where the input ρ to the regularized Fokker–Planck equation is given by an empirical\nk\nmeasure. This arises when updating a collection of points that together approximate the\nunderlying distribution. (k) (k)\nSuppose that ρ is a uniform mixture of Dirac masses at points {x ,...,x }.",
+      "size": 286,
+      "sentences": 3
+    },
+    {
+      "id": 67,
+      "content": "ng distribution. (k) (k)\nSuppose that ρ is a uniform mixture of Dirac masses at points {x ,...,x }. From the\nk 1 N\nkernel formulation (3.11), we have the following expressions to compute the score (dropping\nthe k superscripts):\nN N exp (cid:104) −β (cid:16) V(x )+ ∥xi−xj∥2 M (cid:17)(cid:105)\n1 (cid:88) 1 (cid:88) 2 i 2T\n(4.5a) WProxM ρ (x ) = K (x ,x ) = ,\nT,V k i N M i j N Z(x )\nj\nj=1 j=1\n(4.5b)\nN (cid:16) −β (cid:16) ∇V(x )+M−1xi−xj (cid:17)(cid:17) exp (cid:104) −β (cid:16) V(x )+ ∥xi−xj∥2 M (cid:17)(cid:105)\n1 (cid:88) 2 i T 2 i 2T\n∇WProxM ρ (x ) = ,\nT,V k i N Z(x )\nj\nj=1\n(4.5c) Z(x j ) := (cid:90) e−β 2 (V(z)+ ∥z− 2 x T j∥2 M)dz.",
+      "size": 643,
+      "sentences": 3
+    },
+    {
+      "id": 68,
+      "content": "WProxM ρ (x ) = ,\nT,V k i N Z(x )\nj\nj=1\n(4.5c) Z(x j ) := (cid:90) e−β 2 (V(z)+ ∥z− 2 x T j∥2 M)dz. Rd\nWe may observe the score ∇logρ = ∇ρ as a particular weighted sum. Recall the definition\nρ\nof the softmax function: for a vector v ∈ Rd, the softmax is the vector given by\n(cid:32) (cid:33)\nexp(v )\ni\nsoftmax(v) = ,\n(cid:80)d\nexp(v )\nj=1 j i=1,...,d\n(cid:80)\nsatisfying softmax(v) = 1.",
+      "size": 386,
+      "sentences": 3
+    },
+    {
+      "id": 69,
+      "content": ":33)\nexp(v )\ni\nsoftmax(v) = ,\n(cid:80)d\nexp(v )\nj=1 j i=1,...,d\n(cid:80)\nsatisfying softmax(v) = 1. We may rewrite the score in terms of the softmax function,\nj j\n===  10 ===\n10 H. Y. TAN, S. OSHER, AND W. LI\nwhich makes it clear that it acts as an inter-particle diffusive term:\n∇WProxM ρ\n∇logWProxM ρ (x ) = T,V k (x )\nT,V k i WProxM ρ i\nT,V k\n(cid:80)N\n(cid:16) −β\n2\n(cid:16) ∇V(xi)+M−1xi−\nT\nxj (cid:17)(cid:17) exp (cid:20) −β\n2\n(cid:18) V(xi)+ ∥xi−\n2\nx\nT\nj∥2 M (cid:19)(cid:21)\n=\nj=1 Z(xj)\n(cid:80)N\nexp (cid:20) −β\n2\n(cid:18) V(xi)+ ∥xi−\n2\nx\nT\nj∥2 M (cid:19)(cid:21)\nj=1 Z(xj)\n= − β∇V(x i ) − β M−1x + βM−1 (cid:88) N softmax(U ) x ,\ni i,· j j\n2 2T 2T\nj=1\nwhere we define the interaction kernel U = U (x ,...,x ) as the matrix\ni,j i,j 1 N\nβ (cid:18) ∥x −x ∥2 (cid:19)\n(4.6) U = − V(x )+ i j M −logZ(x ).",
+      "size": 809,
+      "sentences": 2
+    },
+    {
+      "id": 70,
+      "content": ",...,x ) as the matrix\ni,j i,j 1 N\nβ (cid:18) ∥x −x ∥2 (cid:19)\n(4.6) U = − V(x )+ i j M −logZ(x ). i,j i j\n2 2T\nFrom (4.3) we can write the particle-wise PBRWP iterations\n(cid:16) (cid:17)\nx (k+1) = x (k) +η −M∇V(x (k) )−β−1M∇logWProxM ρ (x (k) )\ni i i T,V k i\n \nN\n(k) η (k) η (k) (cid:88) (k) (k)\n= x i − 2 M∇V(x i )+ 2T x i − softmax(U i,· ) j x j \nj=1\n \nN\n(k) η (k) η (cid:88) (k) (k) (k)\n= x i − 2 M∇V(x i )+ 2T  softmax(U i,· ) j (x i −x j ).",
+      "size": 456,
+      "sentences": 2
+    },
+    {
+      "id": 71,
+      "content": "=1\n \nN\n(k) η (k) η (cid:88) (k) (k) (k)\n= x i − 2 M∇V(x i )+ 2T  softmax(U i,· ) j (x i −x j ). j=1\nWe note that since U is only used in the softmax function, it is possible to add a constant\ni,j\nfor each column without changing the dynamics. In particular, we define a simpler matrix\nW such that\ni,j\nsoftmax(U ) = softmax(W ) ,\ni,· j i,· j\ndefined by adding constants depending only on the row i:\nβV(x )\nW := U + i\ni,j i,j\n2\n∥x −x ∥2\n(4.7) = −β i j M −logZ(x ).",
+      "size": 466,
+      "sentences": 3
+    },
+    {
+      "id": 72,
+      "content": "tants depending only on the row i:\nβV(x )\nW := U + i\ni,j i,j\n2\n∥x −x ∥2\n(4.7) = −β i j M −logZ(x ). j\n4βT\nThis has the advantage of avoiding one computation of V, which is already implicitly used in\nthe normalizing constants Z. To further simplify, let X be the matrix of particles\nX = (cid:2) x ... x (cid:3) ∈ Rd×N.",
+      "size": 317,
+      "sentences": 3
+    },
+    {
+      "id": 73,
+      "content": "stants Z. To further simplify, let X be the matrix of particles\nX = (cid:2) x ... x (cid:3) ∈ Rd×N. 1 N\n===  11 ===\nPRECONDITIONED REGULARIZED WASSERSTEIN PROXIMAL SAMPLING METHODS 11\nThe above iteration can thus be written as\nη η (cid:16) (cid:17)\n(4.8) X(k+1) = X(k)− M∇V(X(k))+ X(k)−X(k)softmax(W(k))⊤ ,\n2 2T\n(cid:2) (cid:3)\nwhere ∇V(X) = ∇V(x ) ... ∇V(x ) , W is defined in (4.7), and softmax(W) =\n1 N i,j\nsoftmax(W ) is a row-stochastic matrix (and therefore, softmax(W)⊤ is a column-stochastic\ni,· j\nmatrix).",
+      "size": 514,
+      "sentences": 3
+    },
+    {
+      "id": 74,
+      "content": "ax(W ) is a row-stochastic matrix (and therefore, softmax(W)⊤ is a column-stochastic\ni,· j\nmatrix). Thisformulationhastheadvantageofbeingeasilyparallelizable(orseriallycomputed,\ndepending on memory restrictions), assuming that the normalizing constant can be easily\ncomputed. Summarizing, the PBRWP update is given in Algorithm 1, which details the steps\nused in practice.",
+      "size": 372,
+      "sentences": 3
+    },
+    {
+      "id": 75,
+      "content": "d. Summarizing, the PBRWP update is given in Algorithm 1, which details the steps\nused in practice. Algorithm 1:PBRWP:PreconditionedBackwardsRegularizedWassersteinProximal\nData: Initial points x (1) ,...,x (1) ∈ Rd, potential V : Rd → R, preconditioner\n1 N\nM ∈ Sym (Rd), regularization parameter T > 0, diffusion β > 0, step-size\n++\nη > 0, iteration count K.\n(cid:104) (cid:105)\nResult: X(K) = x (K) ... x (K) sampling from exp(−βV)\n1 N\n(cid:104) (cid:105)\n1 Tensorize X(1) = x (1) ... x (1) ∈ Rd×N;\n1 N\n2 for k = 1,...,K do\n(k)\n3 Approximate normalizing constants Z(x ), i = 1,...,N using Monte\ni\nCarlo/Laplace method;\n4 Compute interaction matrix W i,j = −β\n∥xi−\n4\nx\nT\nj∥2\nM −logZ(x j );\n5 Compute row-wise softmax interaction matrix softmax(W) i,j = softmax(W i,· ) j ;\n(cid:16) (cid:17)\n6 Evolve X(k+1) = X(k)− ηM∇V(X(k))+ η X(k)−X(k)softmax(W(k))⊤ ;\n2 2T\n7 end\nRemark 4.1.",
+      "size": 877,
+      "sentences": 2
+    },
+    {
+      "id": 76,
+      "content": "16) (cid:17)\n6 Evolve X(k+1) = X(k)− ηM∇V(X(k))+ η X(k)−X(k)softmax(W(k))⊤ ;\n2 2T\n7 end\nRemark 4.1. Thecorrespondinglimitof (4.3)asη → 0satisfiesthemodifiedFokker–Planck\nequation\n(cid:32) (cid:33)\nWProxM (ρ)\n(4.9) ∂ ρ = β−1∇· ρM∇log T,V . t\nexp(−βV)\nA stationary solution is πˆ satisfies WProxM (πˆ) ∝ exp(−βV).",
+      "size": 311,
+      "sentences": 3
+    },
+    {
+      "id": 77,
+      "content": ") ∂ ρ = β−1∇· ρM∇log T,V . t\nexp(−βV)\nA stationary solution is πˆ satisfies WProxM (πˆ) ∝ exp(−βV). This is a semi-implicit dis-\nT,V\ncretization of (4.1), where ρ∇logρ(t,x) is replaced with ρ∇logWProxM (ρ), and the dual\nT,V\nvariable Φ is also replaced with the terminal condition Φ(T,M−1x) = −V(x). 4.1. Transformer reformulation.",
+      "size": 330,
+      "sentences": 5
+    },
+    {
+      "id": 78,
+      "content": "e Φ is also replaced with the terminal condition Φ(T,M−1x) = −V(x). 4.1. Transformer reformulation. We may connect (4.8) to self-attention mechanisms,\nwhich are commonly employed in transformers [48], and have recently attracted interpretations\nas particle evolutions [38, 18].",
+      "size": 277,
+      "sentences": 4
+    },
+    {
+      "id": 79,
+      "content": "in transformers [48], and have recently attracted interpretations\nas particle evolutions [38, 18]. Recall that an attention block takes the following form: for\n===  12 ===\n12 H. Y. TAN, S. OSHER, AND W. LI\nqueries Q ∈ Rd×N, keys K ∈ Rd×N and values V ∈ RdV×N of the prescribed dimensions1,\n(cid:18) Q⊤K (cid:19)⊤\n(4.10) Attn(Q;K,V) = Vsoftmax √ ∈ RdV×N. d\nWe may connect this with the softmax term in (4.8).",
+      "size": 407,
+      "sentences": 3
+    },
+    {
+      "id": 80,
+      "content": "19)⊤\n(4.10) Attn(Q;K,V) = Vsoftmax √ ∈ RdV×N. d\nWe may connect this with the softmax term in (4.8). The argument of the softmax (4.7) is\n∥x −x ∥2\nW = −β i j M −logZ(x )\ni,j j\n4T\nx⊤M−1x ∥x ∥2 +∥x ∥2\n= β i j −logZ(x )−β i M j M.\nj\n2T 4T\n√\nDiscarding the d scaling2 of (4.10) and the constant-in-j term ∥x ∥2 , the diffusion term\ni M\nX(K)softmax(W(k))⊤ for N particles takes the form of masked attention\n(cid:16) (cid:17)⊤\n(4.11) Vsoftmax Q⊤K −1z⊤ ,\nwhere Q⊤K = β X⊤M−1X, z ∈ RN is the vector of normalizing constants z = logZ(x )+\n2T j j\nβ\n∥xj∥2\nM, and V = X.",
+      "size": 557,
+      "sentences": 3
+    },
+    {
+      "id": 81,
+      "content": "β X⊤M−1X, z ∈ RN is the vector of normalizing constants z = logZ(x )+\n2T j j\nβ\n∥xj∥2\nM, and V = X. 4T\nFor an input H ∈ Rd×N, the self-attention framework imposes the particular forms\nV = W\nV\nH, K = W\nK\nH, V = W\nV\nH, whereW\nV\n,W\nK\n∈ Rd×d, W\nV\n∈ RdV×d aresomeadmissible\nmatrices. By taking H = X, the preconditioning arises as W⊤W = M−1, and W = I,\nV K V\nmaking the diffusion in PBRWP interpretable as a modified self-attention. Remark 4.2.",
+      "size": 438,
+      "sentences": 4
+    },
+    {
+      "id": 82,
+      "content": "W = I,\nV K V\nmaking the diffusion in PBRWP interpretable as a modified self-attention. Remark 4.2. In the other direction, modeling transformers as interacting particle systems,\n[38]considerself-attentiontransformerswithsymmetricinteractionandanadditionalcondition\nW⊤W = W⊤W = −W , demonstratingthattransformerscanbeinterpretedasaparticular\nQ K K Q V\nWasserstein gradient flow, converging to a nonlinear PDE.",
+      "size": 408,
+      "sentences": 3
+    },
+    {
+      "id": 83,
+      "content": "rscanbeinterpretedasaparticular\nQ K K Q V\nWasserstein gradient flow, converging to a nonlinear PDE. [13] consider transformers acting\non the sphere Sd−1 in the special case W = W = I, presenting various conditions on\nQ K\nthe dimension, number of particles, and temperature such that particles will cluster. [7]\ndemonstrate well-posedness of the induced PDE for various forms of self-attention, as well as\na continuous-time analysis of the Gaussian-preserving properties.",
+      "size": 470,
+      "sentences": 3
+    },
+    {
+      "id": 84,
+      "content": "rms of self-attention, as well as\na continuous-time analysis of the Gaussian-preserving properties. These works consider the\ncontinuous limit of the transformers to obtain these links. 5. Analysis in Gaussian distributions. In the particular case where V(x) =\nx⊤Σ−1x,\ni.e. 2\nthe target distribution is N(0,β−1Σ), the PRWPO and PBRWP iterations can be computed\nin closed form.",
+      "size": 375,
+      "sentences": 6
+    },
+    {
+      "id": 85,
+      "content": "he target distribution is N(0,β−1Σ), the PRWPO and PBRWP iterations can be computed\nin closed form. Suppose M is now such that cM ⪯ Σ ⪯ CM, where 0 < c ≤ C < ∞, and\nT < c. For Gaussian distributions, the PRWPO admits a closed form as follows. Proposition 5.1.",
+      "size": 259,
+      "sentences": 3
+    },
+    {
+      "id": 86,
+      "content": "and\nT < c. For Gaussian distributions, the PRWPO admits a closed form as follows. Proposition 5.1. For a Gaussian density ρ = N(µ ,Σ ) and the quadratic potential V(x) =\nk k k\nx⊤Σ−1x/2, the PRWPO operator satisfies\n(5.1) WProxM (ρ ) = N(µ˜ ,Σ˜ ),\nT,V k k k\n1The matrices are transposed compared to the literature in order to be consistent with the convention in\n(cid:16) (cid:17)\nthis work. The usual form is Attn(Q;K,V)=softmax\nQ√K⊤\nV, where the softmax is taken row-wise as in\nd\nthis work.",
+      "size": 491,
+      "sentences": 4
+    },
+    {
+      "id": 87,
+      "content": "he usual form is Attn(Q;K,V)=softmax\nQ√K⊤\nV, where the softmax is taken row-wise as in\nd\nthis work. Both forms are equivalent. 2This will be reintroduced in Subsection 6.4 as a heuristic modification in high dimensions. ===  13 ===\nPRECONDITIONED REGULARIZED WASSERSTEIN PROXIMAL SAMPLING METHODS 13\nwhere µ˜ ,Σ˜ are given by\nk k\n(5.2) µ˜ = (I +TMΣ−1)−1µ ,\nk k\n(5.3) Σ˜ = 2β−1T (cid:0) TΣ−1+M−1(cid:1)−1 + (cid:0) TΣ−1+M−1(cid:1)−1 M−1Σ M−1(cid:0) TΣ−1+M−1(cid:1)−1 .",
+      "size": 467,
+      "sentences": 4
+    },
+    {
+      "id": 88,
+      "content": "˜ = 2β−1T (cid:0) TΣ−1+M−1(cid:1)−1 + (cid:0) TΣ−1+M−1(cid:1)−1 M−1Σ M−1(cid:0) TΣ−1+M−1(cid:1)−1 . k k\nMoreover, the kernel K (x,y) in (3.11) takes the form of a Gaussian density\nM\n(cid:32) (cid:33)\n(cid:18) Σ−1 M−1(cid:19)−1 M−1 (cid:18) βΣ−1 βM−1(cid:19)−1\n(5.4) K (·,y) ∼ N + y, + . M\n2 2T 2T 2β 2T\nProof Sketch. The kernel formula can be computed in closed form for Gaussians, and the\nproduct of two Gaussian densities is again proportional to a Gaussian density. The full proof\nis given in B.2.",
+      "size": 500,
+      "sentences": 5
+    },
+    {
+      "id": 89,
+      "content": "two Gaussian densities is again proportional to a Gaussian density. The full proof\nis given in B.2. Since the PRWPO maps Gaussian distributions to Gaussian distributions, the score function\nis linear, and the PBRWP iterations also preserve Gaussianity. Corollary 5.2. For a Gaussian density ρ = N(0,Σ ), the PBRWP iteration satisfies the\nk k\nupdate ρ = N(0,Σ ), where\nk+1 k+1\n(5.5) Σ = (I −ηMΣ−1+ηβ−1MΣ˜−1)Σ (I −ηMΣ−1+ηβ−1MΣ˜−1)⊤. k+1 k k k\nProof.",
+      "size": 447,
+      "sentences": 6
+    },
+    {
+      "id": 90,
+      "content": "ρ = N(0,Σ ), where\nk+1 k+1\n(5.5) Σ = (I −ηMΣ−1+ηβ−1MΣ˜−1)Σ (I −ηMΣ−1+ηβ−1MΣ˜−1)⊤. k+1 k k k\nProof. Follows from using Proposition 5.1 in the PBRWP update (4.3). Now that we have shown that the PBRWP iteration preserves Gaussianity, we wish to\nconsider the convergence for discrete time-steps. In the case where the initial and target\ndistributions are both Gaussian, we can show that the distributions generated by PBRWP\nwith discrete step-sizes converge to a Gaussian.",
+      "size": 469,
+      "sentences": 5
+    },
+    {
+      "id": 91,
+      "content": "can show that the distributions generated by PBRWP\nwith discrete step-sizes converge to a Gaussian. Moreover, the terminal distributions are\nindependent of step-size, only depending on T, the terminal Gaussian and the preconditioner. The following result extends the result of [45] from continuous time to discrete time, as well\nas adding generality by working in the preconditioned setting.",
+      "size": 391,
+      "sentences": 3
+    },
+    {
+      "id": 92,
+      "content": "nuous time to discrete time, as well\nas adding generality by working in the preconditioned setting. We consider the zero-mean\ninitialization case for brevity, as the covariances do not depend on the mean; moreover, it can\nbe shown that the means of the iterates converge linearly to the target mean. Theorem 5.3. Suppose V(x) = x⊤Σ−1x/2, and fix a β > 0. For the target distribution\nπ = N(0,β−1Σ) and positive definite preconditioner M, let c,C > 0 be such that cM ⪯ Σ ⪯\nCM.",
+      "size": 474,
+      "sentences": 5
+    },
+    {
+      "id": 93,
+      "content": "ibution\nπ = N(0,β−1Σ) and positive definite preconditioner M, let c,C > 0 be such that cM ⪯ Σ ⪯\nCM. Let T ∈ (0,c) so that the inverse PRWPO is well-defined. Then there exists a stationary\ndistribution to the discrete-time PBRWP iterations, and it is Gaussian πˆ = N(0,Σˆ), satisfying\nWProxM πˆ = π. Moreover, it is unique within distributions with sufficiently decaying Fourier\nT,V\ntransforms.",
+      "size": 393,
+      "sentences": 4
+    },
+    {
+      "id": 94,
+      "content": "= π. Moreover, it is unique within distributions with sufficiently decaying Fourier\nT,V\ntransforms. Suppose further that the initial Gaussian distribution ρ = N(0,Σ ) has its covariance\n0 0\ncommuting with Σ. Let ρ be the iterations generated by PBRWP, and let ρ˜ = WProxM (ρ ). k k T,V k\n√ √\n−1 −1\nFurther let λ be such that M Σ M are uniformly bounded below by some λ (which\nk\nholds as Σ → Σ).",
+      "size": 394,
+      "sentences": 5
+    },
+    {
+      "id": 95,
+      "content": "−1\nFurther let λ be such that M Σ M are uniformly bounded below by some λ (which\nk\nholds as Σ → Σ). Let the step-size η be bounded by\nk\nηβ−1 ≤ min((max|λ (Ξ˜−1−Ξ˜−1)|)−1/2,3λ (Ξ˜ )/32)\ni k ∞ min k\ni\n===  14 ===\n14 H. Y. TAN, S. OSHER, AND W. LI\nThen the exact discrete-time PBRWP method has the following decay in KL divergence:\n(5.6) D (ρ˜ ∥π)−D (ρ˜ ∥π)\nKL k+1 KL k\nη\n≤ − D (ρ˜ ∥π). 2C[β +2 T(1+TC−1)−1(1+Tc−1)2λ−1] KL k\nSketch Proof.",
+      "size": 435,
+      "sentences": 3
+    },
+    {
+      "id": 96,
+      "content": "(ρ˜ ∥π)−D (ρ˜ ∥π)\nKL k+1 KL k\nη\n≤ − D (ρ˜ ∥π). 2C[β +2 T(1+TC−1)−1(1+Tc−1)2λ−1] KL k\nSketch Proof. From the condition, there exists a (Gaussian) distribution N(0,Σˆ) such that\nWProxM (N(0,Σˆ)) = N(0,β−1Σ). Uniqueness comes from the closed-form kernel (5.4) and\nT,V\nthe invertibility of Gaussian convolution on the range of WProxM . Moreover, the PBRWP\nT,V\niterations generate Gaussian distributions, with closed-form covariance updates.",
+      "size": 436,
+      "sentences": 5
+    },
+    {
+      "id": 97,
+      "content": "ver, the PBRWP\nT,V\niterations generate Gaussian distributions, with closed-form covariance updates. The KL\ndivergence between two Gaussians has a closed form in terms of the means and covariances,\nfrom which the decay comes using a Taylor expansion. The full proof is given in B.3. 5.1. Additional properties. We briefly list some properties of the PRWPO and PBRWP,\nand refer to appendix C for more detailed statements and proofs. 1. Conditions for PRWPO invertibility.",
+      "size": 469,
+      "sentences": 8
+    },
+    {
+      "id": 98,
+      "content": "refer to appendix C for more detailed statements and proofs. 1. Conditions for PRWPO invertibility. For a density ρ, there exists a unique distribution\nρ suchthatρ = WProxM ρ ifandonlyifρ(x)eβV(x)/2 hasFouriertransformdecaying\n0 T,V 0\natleastasfastthane−Tβ−1ξ⊤Mξ. IntheGaussiancaseV = x⊤Σ−1x/2,thisisequivalent\nto Σ ⪰ TM. 2. The regularized Wasserstein proximal is a W contraction. For quadratic V, let\n2\nζ := (C−1 + 1 )−1( 1 ) < 1, where C is as in Theorem 5.3.",
+      "size": 462,
+      "sentences": 8
+    },
+    {
+      "id": 99,
+      "content": "s a W contraction. For quadratic V, let\n2\nζ := (C−1 + 1 )−1( 1 ) < 1, where C is as in Theorem 5.3. For any µ,ν in Wasserstein-\n2 2T 2T\n2 space,\n(5.7) W (WProxM µ,WProxM ν) ≤ ζW (µ,ν). 2 T,V T,V 2\n3. Mean-variance tradeoff. For strongly convex V and any β > 0, the particles move\ntogether towards the minimizer, at a rate balanced between the inter-particle variance\nand the distances to the minimizer.",
+      "size": 402,
+      "sentences": 6
+    },
+    {
+      "id": 100,
+      "content": "nimizer, at a rate balanced between the inter-particle variance\nand the distances to the minimizer. In particular, let xˆ be the minimizer of V, and\nlet Xˆ = (cid:2) xˆ ... xˆ (cid:3) = xˆ1⊤ ∈ Rd×N. In particular, suppose V is µ-relatively strongly\nN\nconvex with respect to M. Then for any X ∈ Rd×N,\n⟨∆,M−1(X−Xˆ)⟩\nFrob\n(cid:32) √ (cid:33)\nµ (1+ N) 1\n≤ ∥X−Xˆ∥ − ∥X−Xˆ∥ + ∥X− X1 1⊤∥ . 2,M 2 2,M 2T N N N 2,M\n4. Diffusion is bounded based on number of particles.",
+      "size": 459,
+      "sentences": 5
+    },
+    {
+      "id": 101,
+      "content": "∥X−Xˆ∥ + ∥X− X1 1⊤∥ . 2,M 2 2,M 2T N N N 2,M\n4. Diffusion is bounded based on number of particles. For quadratic V = x⊤Σ−1x/2,\nsuppose M = Σ (and T < 1). Suppose that x is an exterior point of the convex hull\n1\nof {x }, and further that δ > 0 is such that for all j ̸= 1,\ni\n(5.8) x⊤M−1x ≤ x⊤M−1x −δ∥x ∥ .",
+      "size": 304,
+      "sentences": 5
+    },
+    {
+      "id": 102,
+      "content": "ull\n1\nof {x }, and further that δ > 0 is such that for all j ̸= 1,\ni\n(5.8) x⊤M−1x ≤ x⊤M−1x −δ∥x ∥ . 1 j 1 1 1 M\nThen, if x has sufficiently large norm, in particular assuming,\n1\n(cid:18) (cid:19)\n2(N −1)\n(5.9) δ∥x ∥ ≥ 2β−1T log ,\n1 M\nT\n(k+1) (k)\nthen for small step-size, the updated point satisfies ∥x ∥ < ∥x ∥ . In other\n1 M 1 M\nwords, the norm of the outermost particle scales at most as O(logN).",
+      "size": 399,
+      "sentences": 3
+    },
+    {
+      "id": 103,
+      "content": "∥x ∥ < ∥x ∥ . In other\n1 M 1 M\nwords, the norm of the outermost particle scales at most as O(logN). ===  15 ===\nPRECONDITIONED REGULARIZED WASSERSTEIN PROXIMAL SAMPLING METHODS 15\nIterations 1Iter 1 1I0ter 10 2I0ter 20 10Ite0r 100\n0.8 0.8 0.8 0.8\n0.6 0.6 0.6 0.6\n0.4 0.4 0.4 0.4\n0.2 0.2 0.2 0.2\nFigure 1. Evolution of the preconditioned regularized Wasserstein proximal WProxI for the 2-\nT=0.2,I\ndimensional standard Gaussian, done with 5 particles and step-size of η=0.1.",
+      "size": 472,
+      "sentences": 4
+    },
+    {
+      "id": 104,
+      "content": "oxI for the 2-\nT=0.2,I\ndimensional standard Gaussian, done with 5 particles and step-size of η=0.1. The bandwidth is automatically\ndetermined by the regularization. As suggested by theory, the PRWPO of the particles approaches the standard\nGaussian. 6. Experiments.",
+      "size": 265,
+      "sentences": 5
+    },
+    {
+      "id": 105,
+      "content": "s suggested by theory, the PRWPO of the particles approaches the standard\nGaussian. 6. Experiments. In this section, we present various two-dimensional toy examples to\ndemonstrate the effects of adding a preconditioning matrix on the sampling behavior, followed\nby high-dimensional Bayesian total-variation regularized image deconvolution, and Bayesian\nneural network training.",
+      "size": 377,
+      "sentences": 4
+    },
+    {
+      "id": 106,
+      "content": "nal Bayesian total-variation regularized image deconvolution, and Bayesian\nneural network training. We compare against the MCMC-based baselines ULA, MALA and\nthe mirror Langevin algorithm (MLA) [21, 23] for the low-dimensional examples, and various\nkernel-based methods to be detailed for the Bayesian neural network experiment. Throughout,\nwe fix β = 1. 6.1. Gaussian low particle regime.",
+      "size": 389,
+      "sentences": 5
+    },
+    {
+      "id": 107,
+      "content": "he Bayesian neural network experiment. Throughout,\nwe fix β = 1. 6.1. Gaussian low particle regime. We first consider the evolution of (P)BRWP for the\ntwo-dimensional standard Gaussian N(0,I ), with the identity preconditioner M = I. In\n2\nthis case, for a fixed T ∈ (0,1), Theorem 5.3 gives that the RWPO (with parameter T) of\nthe iterated distributions should approach N(0,I ). Moreover, the RWPO for this quadratic\n2\ndistribution is given by the closed-form Gaussian kernel (5.4).",
+      "size": 482,
+      "sentences": 7
+    },
+    {
+      "id": 108,
+      "content": "over, the RWPO for this quadratic\n2\ndistribution is given by the closed-form Gaussian kernel (5.4). In particular, each point gets\nmapped into a Gaussian with covariance (1 + 1 )−1I. 2 2T\nFigure 1 demonstrates the density evolution of the RWPO of the (P)BRWP iterations,\nevaluatedwith5particles, regularizationT = 0.2andstep-sizeη = 0.1. Weobserveasexpected\nfrom Theorem 5.3 that the RWPO converges to that of the standard Gaussian, even in the\nfinite particle setting.",
+      "size": 469,
+      "sentences": 4
+    },
+    {
+      "id": 109,
+      "content": "5.3 that the RWPO converges to that of the standard Gaussian, even in the\nfinite particle setting. Figure 2 demonstrates the effect of the number of particles from 3 to 6,\nevaluated at convergence at iteration 100 and with the same parameters above. In particular,\nwe observe that the contours of the RWPO are initially triangular, then square and pentagonal,\ngradually becoming smoother and better approximating the standard Gaussian.",
+      "size": 435,
+      "sentences": 3
+    },
+    {
+      "id": 110,
+      "content": "square and pentagonal,\ngradually becoming smoother and better approximating the standard Gaussian. We observe\nas well in the 6-particle case that while the contour is pentagonal, the density is more rounded\nat the origin, indicating that there is one particle there surrounded by 5 other particles. 6.2. Bimodal distribution.",
+      "size": 325,
+      "sentences": 4
+    },
+    {
+      "id": 111,
+      "content": "cating that there is one particle there surrounded by 5 other particles. 6.2. Bimodal distribution. As a non-convex potential, we consider the two-moons bimodal\ndistribution as given in [50, 45],\np(x) ∝ exp\n(cid:0) −2(∥x∥−3)2(cid:1)(cid:2)\nexp\n(cid:0)\n−2(x\n−3)2(cid:1)\n+exp\n(cid:0)\n−2(x\n+3)2(cid:1)(cid:3)\n.",
+      "size": 307,
+      "sentences": 4
+    },
+    {
+      "id": 112,
+      "content": "cid:0) −2(∥x∥−3)2(cid:1)(cid:2)\nexp\n(cid:0)\n−2(x\n−3)2(cid:1)\n+exp\n(cid:0)\n−2(x\n+3)2(cid:1)(cid:3)\n. 1 1\nThis is generated by the potential V with corresponding gradient ∇V as follows:\n(6.1a) V(x) = 2(∥x∥−3)2−2log (cid:2) exp (cid:0) −2(x −3)2(cid:1) +exp (cid:0) −2(x +3)2(cid:1)(cid:3) ,\n1 1\n(∥x∥−3)x 4(x −3)exp\n(cid:0)\n−2(x\n−3)2(cid:1)\n+4(x +3)exp\n(cid:0)\n−2(x\n+3)2(cid:1)\n1 1 1 1\n(6.1b) ∇V(x) = 4 + e ,\n∥x∥ exp(−2(x −3)2)+exp(−2(x +3)2) 1\n1 1\n[  ]\n\n===  16 ===\n16 H. Y. TAN, S. OSHER, AND W. LI\nParticles 3Iter 100 4Iter 100 5Iter 100 6Iter 100\n0.8 1.0\n0.6 0.6 0.6 0.8\n0.4 0.4 0.4 0.6\n0.4\n0.2 0.2 0.2 0.2\nFigure 2.",
+      "size": 617,
+      "sentences": 2
+    },
+    {
+      "id": 113,
+      "content": "4Iter 100 5Iter 100 6Iter 100\n0.8 1.0\n0.6 0.6 0.6 0.8\n0.4 0.4 0.4 0.6\n0.4\n0.2 0.2 0.2 0.2\nFigure 2. Densities of the PRWPO WProxI for the 2-dimensional standard Gaussian at iteration 100,\n0.2I\ndone with n∈{3,4,5,6} particles and a step-size of η=0.1. We observe that the density of the Wasserstein\nproximal gradually becomes more spherical and Gaussian-like. 101\n100\n10 1\n0 25 50 75 100 125 150 175 200\nIteration\n)\n,k\n(LK\nBimodal KL distance\nULA\nMALA\nMLA\nBRWP\nPBRWP\nFigure 3.",
+      "size": 475,
+      "sentences": 4
+    },
+    {
+      "id": 114,
+      "content": "50 75 100 125 150 175 200\nIteration\n)\n,k\n(LK\nBimodal KL distance\nULA\nMALA\nMLA\nBRWP\nPBRWP\nFigure 3. Evolution of the KL divergence between baselines and BRWP-based methods for the bimodal\ndistribution. Applied with 100 particleswith initial distribution N(0,I), fixed step-size η=0.1 and regularization\nparameter T =0.05. We observe that the BRWP-based methods converge more smoothly even in later iterations,\nand the particles better approximate the target distribution.",
+      "size": 470,
+      "sentences": 4
+    },
+    {
+      "id": 115,
+      "content": "re smoothly even in later iterations,\nand the particles better approximate the target distribution. where e is the first standard basis vector. We consider a low-variance initialization and a\n1\nhigh-variance initialization. For the low-variance initialization, we consider the same setup as\n[45], where the particles are initially distributed as N(0,I); for the high-variance setup, the\ninitial distribution is N(0,6I).",
+      "size": 419,
+      "sentences": 4
+    },
+    {
+      "id": 116,
+      "content": "initially distributed as N(0,I); for the high-variance setup, the\ninitial distribution is N(0,6I). Figure 3 demonstrates that in this case, adding preconditioning\nhas minimal effect on the convergence rate of BRWP and PBRWP, and indeed leads to a\nslightly higher bias. The bias can be seen qualitatively in Figure 4, which demonstrates that\nthe particles retain the same structured behavior at convergence, but takes a different path at\nsmall iterations.",
+      "size": 454,
+      "sentences": 3
+    },
+    {
+      "id": 117,
+      "content": "retain the same structured behavior at convergence, but takes a different path at\nsmall iterations. We observe a different compression phenomenon with the high-variance initialization, when\nthe samples are initially distributed around the modes instead of between the modes. Figure 5\n[  ]\n\n===  17 ===\nPRECONDITIONED REGULARIZED WASSERSTEIN PROXIMAL SAMPLING METHODS 17\nULA MALA MLA BRWP PBRWP\nFigure 4.",
+      "size": 403,
+      "sentences": 3
+    },
+    {
+      "id": 118,
+      "content": "ECONDITIONED REGULARIZED WASSERSTEIN PROXIMAL SAMPLING METHODS 17\nULA MALA MLA BRWP PBRWP\nFigure 4. Evolution of the various methods for the bimodal distribution at different iterations, with initial\ndistribution N(0,I), which is contained between the moons. Evaluated with 100 particles, at iterations 2, 5 and\n10 in the top, middle, and bottom rows respectively. Observe the stable behavior of BRWP and PBRWP, as\nopposed to the randomness of the Langevin methods.",
+      "size": 465,
+      "sentences": 4
+    },
+    {
+      "id": 119,
+      "content": "bserve the stable behavior of BRWP and PBRWP, as\nopposed to the randomness of the Langevin methods. demonstrates that in this case, the preconditioning has a significant acceleration effect, where\nthe KL divergence decreases faster than BRWP. Moreover, Figure 6 demonstrates that PBRWP\nparticles are less noisy than BRWP particles at low iterations. 6.3. Annulus.",
+      "size": 363,
+      "sentences": 5
+    },
+    {
+      "id": 120,
+      "content": "monstrates that PBRWP\nparticles are less noisy than BRWP particles at low iterations. 6.3. Annulus. Consider the two-dimensional annulus defined with the potential\n(cid:13)(cid:18) (cid:19) (cid:13)\n(cid:13) 1 0 (cid:13)\n(cid:18)(cid:13) (cid:13) (cid:18) 1 0 (cid:19) (cid:13) (cid:13) (cid:19)2 (cid:13) (cid:13) 0 2 x(cid:13) (cid:13) −3 (cid:18) 1 0 (cid:19)2\n(6.2) V(x) = (cid:13) (cid:13) 0 2 x(cid:13) (cid:13) −3 , ∇V(x) = 2 (cid:13) (cid:13) (cid:18) 1 0 (cid:19) (cid:13) (cid:13) 0 2 x.",
+      "size": 497,
+      "sentences": 4
+    },
+    {
+      "id": 121,
+      "content": "x(cid:13) (cid:13) −3 , ∇V(x) = 2 (cid:13) (cid:13) (cid:18) 1 0 (cid:19) (cid:13) (cid:13) 0 2 x. (cid:13) x(cid:13)\n(cid:13) 0 2 (cid:13)\nWe consider M = diag([4,1]), which takes into account the scaling of the annulus in\nboth directions. The initialization is taken to be the off-center Gaussian N((2,2),I), and\nthe particles should diffuse along the elliptical potential well. Figure 7 shows the evolution\nof various methods from this initialization, evaluated with 100 particles.",
+      "size": 484,
+      "sentences": 4
+    },
+    {
+      "id": 122,
+      "content": "re 7 shows the evolution\nof various methods from this initialization, evaluated with 100 particles. We observe that\nthe preconditioned methods MLA and PBRWP are able to diffuse faster than their non-\npreconditioned counterparts, namely covering the annulus at iteration 50. Figure 8 verifies\nthis quantitatively, where the PBRWP particles converge significantly faster than BRWP, and\nto a lower minimum than the Langevin methods. 6.4. High dimensional examples and modifications.",
+      "size": 479,
+      "sentences": 5
+    },
+    {
+      "id": 123,
+      "content": "and\nto a lower minimum than the Langevin methods. 6.4. High dimensional examples and modifications. In high dimensions, approximating\nthe normalizing constant with a Monte Carlo integral is highly inaccurate [45]. This manifests\nempirically as non-interaction between particles, or excessive interaction leading to diverging\nparticles.",
+      "size": 335,
+      "sentences": 5
+    },
+    {
+      "id": 124,
+      "content": "ally as non-interaction between particles, or excessive interaction leading to diverging\nparticles. Therefore, we require another approximation using Laplace’s method [3], similarly to\n===  18 ===\n18 H. Y. TAN, S. OSHER, AND W. LI\n100\n10 1\n0 5 10 15 20 25\nIteration\n)\n,k\n(LK\nBimodal KL distance\nULA\nMALA\nMLA\nBRWP\nPBRWP\nFigure 5. Evolution of the KL divergence between baselines and BRWP-based methods for the bimodal\ndistribution, initialized with large variance N(0,6I).",
+      "size": 471,
+      "sentences": 3
+    },
+    {
+      "id": 125,
+      "content": "lines and BRWP-based methods for the bimodal\ndistribution, initialized with large variance N(0,6I). Applied with 100 particles, fixed step-size η = 0.1 and\nregularization parameter T =0.05. In this case, the preconditioning accelerates the convergence. ULA MALA MLA BRWP PBRWP\nFigure 6. Evolution of the various methods for the bimodal distribution, with large initial variance N(0,6I),\nwhich surrounds the moons.",
+      "size": 413,
+      "sentences": 5
+    },
+    {
+      "id": 126,
+      "content": "thods for the bimodal distribution, with large initial variance N(0,6I),\nwhich surrounds the moons. Evaluated with 100 particles, at iterations 2, 5 and 10 in the top to bottom rows\nrespectively. We observe again the structure behavior at convergence of the noise-free BRWP and PBRWP\nmethods. Moreover, the preconditioning affects the empirical covariance of the particles in different directions,\nwhich can be seen in the semicircular artifacts between the modes at low iterations.",
+      "size": 482,
+      "sentences": 4
+    },
+    {
+      "id": 127,
+      "content": "nt directions,\nwhich can be seen in the semicircular artifacts between the modes at low iterations. [  ]\n\n===  19 ===\nPRECONDITIONED REGULARIZED WASSERSTEIN PROXIMAL SAMPLING METHODS 19\nULA MALA MLA BRWP PBRWP\nFigure7. Evolutionofthevariousmethodsforthescaledannulus. Evaluatedwith100particles,atiterations\n10, 50, and 200 from top to bottom respectively. We observe that PBRWP and MLA diffuse faster than their\nnon-preconditioned counterparts.",
+      "size": 444,
+      "sentences": 5
+    },
+    {
+      "id": 128,
+      "content": "pectively. We observe that PBRWP and MLA diffuse faster than their\nnon-preconditioned counterparts. Moreover, PBRWP retains a similar level-set structure to BRWP. [18, 17]. This approximation has also been used in the other direction, e.g. [46] using integrals\nto approximate infimal convolutions. Laplace’s method consists of the following approximation: for a C2 function f and a\ncontinuous function g, assume that f has a unique global minimizer x∗ and satisfies some\ncoercivity condition.",
+      "size": 492,
+      "sentences": 7
+    },
+    {
+      "id": 129,
+      "content": "function g, assume that f has a unique global minimizer x∗ and satisfies some\ncoercivity condition. Then, we have the following approximation:\n(cid:112)\nexp(f(x∗)/T) (cid:90)\n(6.3) det(∇2f(x∗)) g(x)exp(−f(x)/T)dx → g(x∗) as T → 0+.",
+      "size": 231,
+      "sentences": 2
+    },
+    {
+      "id": 130,
+      "content": "oximation:\n(cid:112)\nexp(f(x∗)/T) (cid:90)\n(6.3) det(∇2f(x∗)) g(x)exp(−f(x)/T)dx → g(x∗) as T → 0+. (2πT)d/2\nRd\nApplying this with f(x) = β∥x − x ∥2 /4 and g(x) = exp(−βV(x)/2), we obtain the\nj M\napproximation\n(cid:90) (cid:18) β (cid:18) ∥z−x ∥2 (cid:19)(cid:19)\n(6.4) Z(x ) = exp − V(z)− j M dz\nj\n2 2T\nRd\n√ (cid:18) β (cid:19)\n(6.5) ≈ detM exp − V(x ) C(β,T),\nj\n2\nwhere C = C(β,T) is a constant independent of x .",
+      "size": 415,
+      "sentences": 2
+    },
+    {
+      "id": 131,
+      "content": ") β (cid:19)\n(6.5) ≈ detM exp − V(x ) C(β,T),\nj\n2\nwhere C = C(β,T) is a constant independent of x . We note that actually only a H¨older\nj\ntype condition is required for a similar asymptotic to hold, albeit with a different normalizing\nfactor [46, Thm. 2]. Using this, the logZ(x ) term may be approximated by −βV(x )/2+\nj j\nlogC(β,T)+ 1 logdetM. For constant M, the latter two terms will disappear in the softmax. 2\nWe refer to this as the Laplace approximation in the following section.",
+      "size": 488,
+      "sentences": 6
+    },
+    {
+      "id": 132,
+      "content": "disappear in the softmax. 2\nWe refer to this as the Laplace approximation in the following section. In high dimensions, the matching term ∥x −x ∥ can be large for i ̸= j, leading to the\ni j M\ninteraction matrix softmax(U ) being close to identity. Similarly to the seminal work on\ni,· j\ntransformers [48], we additionally propose to set the diffusion parameter as β = d−1/2, which\nincreases the diffusion. We refer to this as scaling in the following section.",
+      "size": 459,
+      "sentences": 5
+    },
+    {
+      "id": 133,
+      "content": "as β = d−1/2, which\nincreases the diffusion. We refer to this as scaling in the following section. ===  20 ===\n20 H. Y. TAN, S. OSHER, AND W. LI\n100\n10 1\n0 25 50 75 100 125 150 175 200\nIteration\n)\n,k\n(LK\nAnnulus KL distance\nULA\nMALA\nMLA\nBRWP\nPBRWP\nFigure8. EvolutionoftheKLdivergencebetweenbaselinesandBRWP-basedmethodsforthescaledannulus. Applied with 100 particles, fixed step-size η=0.1 and regularization parameter T =0.05. We observe that the\nBRWP-based methods converge more smoothly.",
+      "size": 490,
+      "sentences": 6
+    },
+    {
+      "id": 134,
+      "content": "nd regularization parameter T =0.05. We observe that the\nBRWP-based methods converge more smoothly. The resulting modified iteration using scaling and the Laplace approximation is as follows,\nwhere β = d−1/2,\nη η (cid:16) (cid:17)\n(6.6a) X(k+1) = X(k)− M∇V(X(k))+ X(k)−X(k)softmax(W(k))⊤ ,\n2 2T\n∥x (k) −x (k) ∥2 β\n(k) i j M (k)\n(6.6b) W = −β + V(x ). i,j 4T 2 j\n6.5. High-dimensional Gaussian distributions.",
+      "size": 407,
+      "sentences": 5
+    },
+    {
+      "id": 135,
+      "content": "∥2 β\n(k) i j M (k)\n(6.6b) W = −β + V(x ). i,j 4T 2 j\n6.5. High-dimensional Gaussian distributions. We demonstrate the effect of taking β =\nd−1/2 instead of β = 1, as well as the Laplace approximation in Figure 9. We test on a 50-\ndimensional Gaussian with diagonal covariance Σ = diag(0.1,0.2,...,5) and condition number\n50. We let M = Σ be the preconditioner as before, and plot the particles projected onto the\nfirst and last dimensions in the horizontal and vertical directions respectively.",
+      "size": 494,
+      "sentences": 6
+    },
+    {
+      "id": 136,
+      "content": "rojected onto the\nfirst and last dimensions in the horizontal and vertical directions respectively. Recall that in\nthe Gaussian case, the normalizing constant can be computed exactly in the finite particle\nsetting. We compare PBRWP with step-size η = 0.1, T = 0.02,0.2,0.9, with and without both\nthe scaling and Laplace approximation after convergence at 1000 iteration.",
+      "size": 370,
+      "sentences": 3
+    },
+    {
+      "id": 137,
+      "content": "9, with and without both\nthe scaling and Laplace approximation after convergence at 1000 iteration. We observe that the Laplace approximation does not seem to qualitatively affect the\ndiffusion behavior of the particles, with or without the β = d−1/2 scaling modification. However, the scaling is able to counter the mode-collapse phenomenon that comes with high\ndimensions. By reducing the scale of the interaction matrix, the particles are able to repel\neach other from further away.",
+      "size": 485,
+      "sentences": 4
+    },
+    {
+      "id": 138,
+      "content": "the scale of the interaction matrix, the particles are able to repel\neach other from further away. Motivated by this, we use the scaling for high dimensions to\navoid mode collapse. [  ]\n\n===  21 ===\nPRECONDITIONED REGULARIZED WASSERSTEIN PROXIMAL SAMPLING METHODS 21\nβ = 1 β = d−1/2 β = 1, Laplace β = d−1/2, Laplace\nFigure 9. Evolution of the high-dimensional modifications for the 50-dimensional Gaussian, at convergence\nin 1000 iterations.",
+      "size": 442,
+      "sentences": 4
+    },
+    {
+      "id": 139,
+      "content": "high-dimensional modifications for the 50-dimensional Gaussian, at convergence\nin 1000 iterations. Evaluated with 50 particles, step-size η =0.1 and regularizations T =0.02,0.2,0.9 in the\ntop, middle and bottom rows respectively. We observe little difference when using the Laplace approximation\ncompared to the ground-truth, suggesting this is reasonable. The β =d−1/2 scaling increases the diffusion, which\nis crucial for reducing mode-collapse in high dimensions. 6.6. Deconvolution.",
+      "size": 486,
+      "sentences": 6
+    },
+    {
+      "id": 140,
+      "content": "the diffusion, which\nis crucial for reducing mode-collapse in high dimensions. 6.6. Deconvolution. We consider the Bayesian problem corresponding to the (convex)\ntotal-variation regularized (TV) objective [37],\n1\n(6.7) V(x) = ∥Ax−y∥2+λTV(x),\n2σ2 2\nwhere A is a convolution operator, y is a corrupted image, and TV(x) = ∥Dx∥ denotes the\n1\ndiscrete total variation functional.",
+      "size": 374,
+      "sentences": 4
+    },
+    {
+      "id": 141,
+      "content": "erator, y is a corrupted image, and TV(x) = ∥Dx∥ denotes the\n1\ndiscrete total variation functional. For image deconvolution, the forward operator A takes the\nform A = F∗ΛF, where F is the (complex, unitary) matrix of the discrete Fourier transform,\nF∗ is its inverse, and Λ is a diagonal matrix. In this case, the Hessian of the first term takes\nthe simple form σ−2A∗A = σ−2F∗Λ∗ΛF.",
+      "size": 381,
+      "sentences": 3
+    },
+    {
+      "id": 142,
+      "content": "gonal matrix. In this case, the Hessian of the first term takes\nthe simple form σ−2A∗A = σ−2F∗Λ∗ΛF. Similarly to SALSA [1], we may use a regularized\nversion as a preconditioner M = (A∗A+τI)−1, where τ > 0 is some constant, taken to be\nτ = 0.5. We note that sampling from the distribution N(0,M) is possible using the equation\n√\nM = F∗(Λ∗Λ+τI)−1/2F, which allows for the use of MLA.",
+      "size": 381,
+      "sentences": 4
+    },
+    {
+      "id": 143,
+      "content": "ution N(0,M) is possible using the equation\n√\nM = F∗(Λ∗Λ+τI)−1/2F, which allows for the use of MLA. We further note that using the\nregularized Hessian (σ2A∗A+τI)−1 does not provide adequate preconditioning for PBRWP\nor MLA, likely due to the ill-conditioning of the TV term with respect to this metric. We compare the mean and (norm of the channel-wise) standard deviation of the TV-\nregularized objective.",
+      "size": 406,
+      "sentences": 3
+    },
+    {
+      "id": 144,
+      "content": "ompare the mean and (norm of the channel-wise) standard deviation of the TV-\nregularized objective. In addition, we compute the PSNR of the finite-particle posterior mean\n===  22 ===\n22 H. Y. TAN, S. OSHER, AND W. LI\nULA MYULA BRWP MLA PBRWP\nFigure 10. Standard deviations for TV-regularized deconvolution. Run with 40 particles, and evaluated\nat iterations 20, 200 and 2000 in the top, middle and bottom rows respectively.",
+      "size": 423,
+      "sentences": 4
+    },
+    {
+      "id": 145,
+      "content": "cles, and evaluated\nat iterations 20, 200 and 2000 in the top, middle and bottom rows respectively. We observe that the pixelwise\nvariance of the noise-free methods BRWP and PBRWP are lower than their Langevin counterparts. In the 200\niteration regime, we see that the features of the noise-free BRWP and PBRWP methods have more constrast and\nlower variances in the piecewise constant areas.",
+      "size": 391,
+      "sentences": 3
+    },
+    {
+      "id": 146,
+      "content": "ree BRWP and PBRWP methods have more constrast and\nlower variances in the piecewise constant areas. to the true TV-regularized solution, equivalent to running a fixed number of parallel chains for\nthe Langevin methods. We do this to compare the small-particle behavior of the noise-free\nmethods versus the Langevin methods. The minimizer of the objective (6.7) is computed using\nsubgradient descent for 30,000 iterations, applied with decreasing step-sizes 1e−{4,5,6} for\n10,000 iterations each.",
+      "size": 495,
+      "sentences": 4
+    },
+    {
+      "id": 147,
+      "content": "nt for 30,000 iterations, applied with decreasing step-sizes 1e−{4,5,6} for\n10,000 iterations each. The image considered is the butterfly image from the set3c dataset,\nwhich has a dimension of 3×256×256. WecompareagainstULA,MLA,andMYULA[11]. Wenotethattheacceptanceprobability\nfor MALA is almost degenerate for this high-dimensional problem and requires extremely small\nstep-sizes, and is thus omitted due to slow convergence.",
+      "size": 426,
+      "sentences": 4
+    },
+    {
+      "id": 148,
+      "content": "ional problem and requires extremely small\nstep-sizes, and is thus omitted due to slow convergence. MYULA takes the following form: for\na composite potential of the form exp(−f(x)+g(x)), a step-size τ > 0 and a regularization\nparameter θ > 0,\n(cid:16) τ(cid:17) τ √\n(MYULA) X = 1− X −τ∇f(X )+ prox (X )+ 2τZ ,\nk+1 θ k k θ θg k k+1\nwhere Z are independent standard Gaussians.",
+      "size": 374,
+      "sentences": 2
+    },
+    {
+      "id": 149,
+      "content": "= 1− X −τ∇f(X )+ prox (X )+ 2τZ ,\nk+1 θ k k θ θg k k+1\nwhere Z are independent standard Gaussians. This is the unadjusted Langevin algorithm,\nk+1\napplied to the regularized potential where g is replaced by its Moreau–Yosida regularization\nwithparameterθ. Appliedtothedeconvolutionpotential(6.7),weidentifyf(x) = 1 ∥Ax−y∥2\n2σ2\nand g(x) = λTV(x).",
+      "size": 344,
+      "sentences": 3
+    },
+    {
+      "id": 150,
+      "content": "rameterθ. Appliedtothedeconvolutionpotential(6.7),weidentifyf(x) = 1 ∥Ax−y∥2\n2σ2\nand g(x) = λTV(x). The proximal of g is computed using the Chambolle–Pock algorithm [9]\nusing the implementation in the DeepInverse Python library [43], and the parameter is fixed\nas θ = 1e−4. The step-sizes for the baseline methods are chosen with a grid-search such that the PSNR\nis maximized after 2000 iterations, and can be found in the appendix.",
+      "size": 432,
+      "sentences": 4
+    },
+    {
+      "id": 151,
+      "content": "rid-search such that the PSNR\nis maximized after 2000 iterations, and can be found in the appendix. We compare with\n40 particles due to GPU memory limitations from the O(N2) scaling of fully parallelized\n===  23 ===\nPRECONDITIONED REGULARIZED WASSERSTEIN PROXIMAL SAMPLING METHODS 23\nTable 1\nPSNR (in dB) of the mean of 40 particles compared to the MAP estimate for the deconvolution problem.",
+      "size": 392,
+      "sentences": 2
+    },
+    {
+      "id": 152,
+      "content": "SNR (in dB) of the mean of 40 particles compared to the MAP estimate for the deconvolution problem. We observe that the preconditioned methods converge to the neighborhood of the MAP faster than their non-\npreconditioned counterparts, indicated by the values at 20 and 200 iterations. Moreover, the noise-free methods\nare muchmore tightlyconcentratedaround the MAPestimate. However, the particlemeansofthe preconditioned\nmethods are slightly further away from the posterior mean at high iterations.",
+      "size": 498,
+      "sentences": 4
+    },
+    {
+      "id": 153,
+      "content": "softhe preconditioned\nmethods are slightly further away from the posterior mean at high iterations. Iteration ULA MYULA BRWP MLA PBRWP\n20 23.28 23.53 23.52 23.86 24.27\n200 25.43 25.79 27.81 25.78 29.90\n2000 26.07 26.38 38.38 26.00 37.35\nPBRWP3. The experimental setting differs from typical settings as follows, to highlight the difference\nbetween Langevin methods and the noise-free methods BRWP and PBRWP:\n1. Low sample count.",
+      "size": 428,
+      "sentences": 4
+    },
+    {
+      "id": 154,
+      "content": "difference\nbetween Langevin methods and the noise-free methods BRWP and PBRWP:\n1. Low sample count. Langevin algorithms usually run many iterations (around 1e5) of\nthe Markov chain to construct an estimate of the posterior mean. In our case, since the\nsamples are approximately convergent for high iterations, taking means over iterations\nis not insightful, and we replace it with the mean over particles. The particles for\nLangevin methods can be computed using parallel chains. 2.",
+      "size": 482,
+      "sentences": 6
+    },
+    {
+      "id": 155,
+      "content": "e mean over particles. The particles for\nLangevin methods can be computed using parallel chains. 2. Short “burn-in” phase. While typical Bayesian imaging methods run burn-in periods\nfor up to 1e6 iterations, the noise-free methods again do not benefit from these long\niterations. As our objective is rapid convergence, we consider only methods that are\nable to converge in the short iteration regime. 3. Comparison with MAP estimate.",
+      "size": 433,
+      "sentences": 8
+    },
+    {
+      "id": 156,
+      "content": "y methods that are\nable to converge in the short iteration regime. 3. Comparison with MAP estimate. In high dimensions, computing the posterior mean is\nintractable, and is usually estimated. While it is possible to consider the convergence of\nthe algorithm to the posterior mean by applying a Metropolis–Hastings correction step\n[16], this would compare the algorithms against an estimator with a-priori unknown\nuncertainty.",
+      "size": 424,
+      "sentences": 5
+    },
+    {
+      "id": 157,
+      "content": "tep\n[16], this would compare the algorithms against an estimator with a-priori unknown\nuncertainty. We choose the MAP estimate instead as it is computable up to arbitrary\naccuracy for this convex task, and to compare the mode concentration of the algorithms. Table 1 plots the peak signal-to-noise ratio (PSNR) of the particle means, compared to the\nMAPestimate(6.7)(equivalently,theminimizerofthepotential).",
+      "size": 408,
+      "sentences": 3
+    },
+    {
+      "id": 158,
+      "content": ") of the particle means, compared to the\nMAPestimate(6.7)(equivalently,theminimizerofthepotential). WeobservethatbothBRWP\nand PBRWP converge to much higher values of PSNR, indicating better concentration around\ntheMAP.Moreover,PBRWPhashigherPSNRatloweriterations,indicatingfasterconvergence. The lower PSNR of the preconditioned methods compared to the non-preconditioned methods\ncan be explained by the differing noise and diffusion scales.",
+      "size": 441,
+      "sentences": 3
+    },
+    {
+      "id": 159,
+      "content": "red to the non-preconditioned methods\ncan be explained by the differing noise and diffusion scales. Figure 10 plots the pixel-wise\nstandard deviation of the particles at various iteration counts. We observe again that PBRWP\nhas higher contrast compared to BRWP at low iterations, indicating faster convergence. Moreover, the noise-free methods have very low noise outside the edges. This low-rank\nphenomenon arises since diffusion comes from inter-particle interactions.",
+      "size": 470,
+      "sentences": 5
+    },
+    {
+      "id": 160,
+      "content": "the edges. This low-rank\nphenomenon arises since diffusion comes from inter-particle interactions. 3It is possible to remove some parallelization by computing the interaction matrix column-wise, yielding\nO(N) memory constraint. ===  24 ===\n24 H. Y. TAN, S. OSHER, AND W. LI\n6.7. Bayesian neural networks. In this section, we empirically investigate the possibility\nof a variable preconditioning matrix M, applied to a high-dimensional non-convex potential.",
+      "size": 456,
+      "sentences": 6
+    },
+    {
+      "id": 161,
+      "content": "ibility\nof a variable preconditioning matrix M, applied to a high-dimensional non-convex potential. Recall the PBRWP iteration (4.8) for particles {x }N :\ni i=1\nη η (cid:16) (cid:17)\nX(k+1) = X(k)− M∇V(X(k))+ X(k)−X(k)softmax(W(k))⊤ ,\n2 2T\n∥x (k) −x (k) ∥2\n(k) i j M (k)\nW = −β −logZ(x ). i,j 4T j\nIn the normalizing term, we empirically propose to replace the term ∥x (k) −x (k) ∥2 with a j-\ni j M\nand k-dependent scaling ∥x (k) −x (k) ∥2 .",
+      "size": 441,
+      "sentences": 3
+    },
+    {
+      "id": 162,
+      "content": "ose to replace the term ∥x (k) −x (k) ∥2 with a j-\ni j M\nand k-dependent scaling ∥x (k) −x (k) ∥2 . Using Laplace’s approximation, we have\ni j M(k)\nj\n(6.8) Z(x ;M ) =\n(cid:90)\nexp\n(cid:32)\n−\nβ\n(V(z)+\n∥z−x j ∥2 Mj) (cid:33)\ndz\nj j\n2 2T\nRd\n(cid:18) (cid:19)\n(cid:112) β\n(6.9) ≈ C(β,T) detM exp − V(x ) .",
+      "size": 301,
+      "sentences": 2
+    },
+    {
+      "id": 163,
+      "content": "−x j ∥2 Mj) (cid:33)\ndz\nj j\n2 2T\nRd\n(cid:18) (cid:19)\n(cid:112) β\n(6.9) ≈ C(β,T) detM exp − V(x ) . j j\n2\nSimplifying, the variable-preconditioner version of PBRWP takes the following form:\nη η (cid:16) (cid:17)\n(6.10) X(k+1) = X(k)− M(k)∇V(X(k))+ X(k)−X(k)softmax(W(k))⊤ ,\n2 2T\n∥x (k) −x (k) ∥2\n(6.11) W (k) = −β i j M j (k) − 1 logdet (cid:16) M (k) (cid:17) + β V(x ),\ni,j 4T 2 j 2 j\n(cid:104) (cid:105)\nwhere M(k)∇V(X(k)) := M (k) ∇V(x ) ... M (k) ∇V(x ) .",
+      "size": 460,
+      "sentences": 2
+    },
+    {
+      "id": 164,
+      "content": "+ β V(x ),\ni,j 4T 2 j 2 j\n(cid:104) (cid:105)\nwhere M(k)∇V(X(k)) := M (k) ∇V(x ) ... M (k) ∇V(x ) . 1 1 N N\nFor a neural network, the choice of preconditioner is a-priori unclear. For our experiments,\nwe choose the diagonal preconditioner corresponding to the Adam optimizer [24], with exact\nimplementation given in E. This has recently been linked to a diagonal approximation to the\nempirical Fisher information matrix [27, 22].",
+      "size": 429,
+      "sentences": 3
+    },
+    {
+      "id": 165,
+      "content": "cently been linked to a diagonal approximation to the\nempirical Fisher information matrix [27, 22]. The diagonal form of the preconditioning matrix\nin this case makes it particularly amenable for the log-determinant in (6.11). To test, we train neural networks on various regression datasets, with N = 10 particles\nas in [45, 50]. The potential V is given by the mean-squared error on the training dataset. Table2showstheroot-mean-squareerrorofthetrainednetworksusingPBRWPagainstvarious\nbaselines.",
+      "size": 497,
+      "sentences": 5
+    },
+    {
+      "id": 166,
+      "content": "dataset. Table2showstheroot-mean-squareerrorofthetrainednetworksusingPBRWPagainstvarious\nbaselines. For the Adam baseline [24], we directly train from the initializations, where the\nstep-size is chosen with a grid search to minimize the test RMSE. We observe that PBRWP is\nable to uniformly outperform BRWP on such a task, and is more competitive with kernel-based\nmethods. This is analogous to Adam being empirically better than SGD for training neural\nnetworks. 7. Conclusion.",
+      "size": 478,
+      "sentences": 7
+    },
+    {
+      "id": 167,
+      "content": "is analogous to Adam being empirically better than SGD for training neural\nnetworks. 7. Conclusion. ThisworkproposesthePreconditionedBackwardsRegularizedWasserstein\nProximal (PBRWP) method Algorithm 1, a method of sampling without Langevin noise.",
+      "size": 246,
+      "sentences": 4
+    },
+    {
+      "id": 168,
+      "content": "arizedWasserstein\nProximal (PBRWP) method Algorithm 1, a method of sampling without Langevin noise. Deriving the Cole–Hopf transform from a pair of anisotropic forward-backward heat equations,\nwe obtain a coupled forward-time Fokker–Planck equation and backward-time Hamilton–Jacobi\nequation, both regularized with (elliptic) second-order differential operators.",
+      "size": 362,
+      "sentences": 2
+    },
+    {
+      "id": 169,
+      "content": "ime Hamilton–Jacobi\nequation, both regularized with (elliptic) second-order differential operators. By applying a\n===  25 ===\nPRECONDITIONED REGULARIZED WASSERSTEIN PROXIMAL SAMPLING METHODS 25\nTable 2\nTest root-mean-square-error (RMSE) on test datasets on various Bayesian neural network tasks. Bold\nindicates smallest in row. We observe that the adaptive Fisher preconditioned BRWP uniformly outperforms\nBRWP on each of the BNN tasks.",
+      "size": 436,
+      "sentences": 4
+    },
+    {
+      "id": 170,
+      "content": "e that the adaptive Fisher preconditioned BRWP uniformly outperforms\nBRWP on each of the BNN tasks. Adam and the noise-free methods both generally exhibit high variance in this\nsetting, which may be due to the relatively small neural network architecture and sensitivity to initialization. We\nmay further interpret the high variance of these methods as being able to find better trained models.",
+      "size": 394,
+      "sentences": 3
+    },
+    {
+      "id": 171,
+      "content": "y further interpret the high variance of these methods as being able to find better trained models. Dataset Adam PBRWP BRWP AIG WGF SVGD\nBoston 3.350 2.866 3.309 2.871 3.077 222...777777555\n±8.33e−1 ±5.94e−1 ±5.31e−1 ±3.41e−3 ±5.52e−3 ±±±333...777888eee−−−333\nCombined 3.971 333...999222555 3.975 4.067 4.077 4.070\n±1.79e−1 ±±±111...555222eee−−−111 ±3.94e−2 ±9.27e−1 ±3.85e−4 ±2.02e−4\nConcrete 4.698 444...333888777 4.478 4.440 4.883 4.888\n±4.85e−1 ±±±444...888888eee−−−111 ±2.05e−1 ±1.34e−1 ±1.93e−1 ±1.39e−1\nKin8nm 0.089 000...000888777 0.089 0.094 0.096 0.095\n±2.72e−3 ±±±222...666777eee−−−333 ±6.06e−6 ±5.56e−6 ±3.36e−5 ±1.32e−5\nWine 0.629 0.612 0.623 0.606 0.614 000...666000444\n±4.01e−2 ±4.17e−2 ±1.35e−3 ±1.40e−5 ±3.48e−4 ±±±999...888999eee−−−555\nsimilar semi-implicit discretization to [45], we obtain particle swarm dynamics, interpretable\nas a self-attention mechanism.",
+      "size": 879,
+      "sentences": 2
+    },
+    {
+      "id": 172,
+      "content": "retization to [45], we obtain particle swarm dynamics, interpretable\nas a self-attention mechanism. A discrete-time non-asymptotic convergence analysis is given in\nthe case of quadratic potentials. Experiments demonstrate faster convergence with slightly\nmore empirical bias, consistent with preconditioned Langevin methods.",
+      "size": 324,
+      "sentences": 3
+    },
+    {
+      "id": 173,
+      "content": "ter convergence with slightly\nmore empirical bias, consistent with preconditioned Langevin methods. While a fixed preconditioner M has be shown to provide acceleration for some simple\nvariational problems, the experiments in Subsection 6.7 empirically demonstrate that it is\nalso possible to have variable preconditioners, such as that approximating the empirical\nFisher information matrix.",
+      "size": 390,
+      "sentences": 2
+    },
+    {
+      "id": 174,
+      "content": "have variable preconditioners, such as that approximating the empirical\nFisher information matrix. Future work would consider rigorous justification of variable\npreconditioners M = M(x), such as those arising from inhomogeneous heat equations, or from\nBregman divergences, similarly to mirror descent methods. Given that the PBRWP may be\nconsidered as a self-attention framework, future work may consider the converse implication. Additional theoretical analysis is also important.",
+      "size": 481,
+      "sentences": 4
+    },
+    {
+      "id": 175,
+      "content": "ture work may consider the converse implication. Additional theoretical analysis is also important. One part is the continuous-time convergence\nof the modified Fokker–Planck type equation (4.9), which is not amenable to standard energy\nmethods due to the variable kernel. The other is the discretization error from working with\nfinitely many particles.",
+      "size": 352,
+      "sentences": 4
+    },
+    {
+      "id": 176,
+      "content": "e variable kernel. The other is the discretization error from working with\nfinitely many particles. While this arises from central limit and ergodicity results for standard\nLangevin methods, the final iteration approximation to the desired measure is less clear in the\nnoiseless setting due to the per-particle convergence.",
+      "size": 323,
+      "sentences": 3
+    },
+    {
+      "id": 177,
+      "content": "to the desired measure is less clear in the\nnoiseless setting due to the per-particle convergence. REFERENCES\n[1] M.V.Afonso,J.M.Bioucas-Dias,andM.A.Figueiredo,Fastimagerecoveryusingvariablesplitting\nand constrained optimization, IEEE transactions on image processing, 19 (2010), pp. 2345–2356. [2] J.-D. Benamou and Y. Brenier, A computational fluid mechanics solution to the Monge-Kantorovich\nmass transfer problem, Numerische Mathematik, 84 (2000), pp. 375–393.",
+      "size": 464,
+      "sentences": 5
+    },
+    {
+      "id": 178,
+      "content": "tion to the Monge-Kantorovich\nmass transfer problem, Numerische Mathematik, 84 (2000), pp. 375–393. [3] N. Bleistein and R. A. Handelsman, Asymptotic expansions of integrals, Ardent Media, 1975. [4] S.Bond-Taylor,A.Leach,Y.Long,andC.G.Willcocks,Deepgenerativemodelling: Acomparative\nreview of VAEs, GANs, normalizing flows, energy-based and autoregressive models, IEEE transactions\non pattern analysis and machine intelligence, (2021).",
+      "size": 435,
+      "sentences": 4
+    },
+    {
+      "id": 179,
+      "content": "and autoregressive models, IEEE transactions\non pattern analysis and machine intelligence, (2021). [5] Z. I. Botev, J. F. Grotowski, and D. P. Kroese, Kernel density estimation via diffusion, Annals of\nStatistics, 38 (2010), pp. 2916–2957. [6] J. A. Carrillo, K. Craig, and F. S. Patacchini, A blob method for diffusion, Calculus of Variations\nand Partial Differential Equations, 58 (2019), pp. 1–53. [7] V. Castin, P. Ablin, J.",
+      "size": 428,
+      "sentences": 7
+    },
+    {
+      "id": 180,
+      "content": "of Variations\nand Partial Differential Equations, 58 (2019), pp. 1–53. [7] V. Castin, P. Ablin, J. A. Carrillo, and G. Peyre´, A unified perspective on the dynamics of deep\n===  26 ===\n26 H. Y. TAN, S. OSHER, AND W. LI\ntransformers, arXiv preprint arXiv:2501.18322, (2025). [8] R. T. Chen, Y. Rubanova, J. Bettencourt, and D. K. Duvenaud, Neural ordinary differential\nequations, Advances in neural information processing systems, 31 (2018).",
+      "size": 440,
+      "sentences": 5
+    },
+    {
+      "id": 181,
+      "content": "ural ordinary differential\nequations, Advances in neural information processing systems, 31 (2018). [9] L. Condat, A primal–dual splitting method for convex optimization involving Lipschitzian, proximable\nand linear composite terms, Journal of optimization theory and applications, 158 (2013), pp. 460–479. [10]\nA.DurmusandE´.Moulines,High-dimensionalBayesianinferenceviatheunadjustedLangevinalgorithm,\nBernoulli, 25 (2019), pp. 2854–2882.",
+      "size": 439,
+      "sentences": 5
+    },
+    {
+      "id": 182,
+      "content": "dimensionalBayesianinferenceviatheunadjustedLangevinalgorithm,\nBernoulli, 25 (2019), pp. 2854–2882. [11] A. Durmus, E. Moulines, and M. Pereyra, Efficient Bayesian computation by proximal Markov\nchain Monte Carlo: when Langevin meets Moreau, SIAM Journal on Imaging Sciences, 11 (2018),\npp. 473–506. [12] A. Gelman, J. B. Carlin, H. S. Stern, and D. B. Rubin, Bayesian data analysis, Chapman and\nHall/CRC, 1995.",
+      "size": 411,
+      "sentences": 6
+    },
+    {
+      "id": 183,
+      "content": "an, J. B. Carlin, H. S. Stern, and D. B. Rubin, Bayesian data analysis, Chapman and\nHall/CRC, 1995. [13] B. Geshkovski, C. Letrouit, Y. Polyanskiy, and P. Rigollet, A mathematical perspective on\ntransformers, Bulletin of the American Mathematical Society, 62 (2025), pp. 427–479. [14] A. Gramacki, Nonparametric kernel density estimation and its computational aspects, vol. 37, Springer,\n2018.",
+      "size": 393,
+      "sentences": 6
+    },
+    {
+      "id": 184,
+      "content": "ki, Nonparametric kernel density estimation and its computational aspects, vol. 37, Springer,\n2018. [15] A. Habring, A. Falk, and T. Pock, Diffusion at absolute zero: Langevin sampling using successive\nMoreau envelopes,in2025IEEEStatisticalSignalProcessingWorkshop(SSP),IEEE,2025,pp.61–65. [16] A. Habring, M. Holler, and T. Pock, Subgradient langevin methods for sampling from nonsmooth\npotentials, SIAM Journal on Mathematics of Data Science, 6 (2024), pp. 897–925.",
+      "size": 467,
+      "sentences": 5
+    },
+    {
+      "id": 185,
+      "content": "ling from nonsmooth\npotentials, SIAM Journal on Mathematics of Data Science, 6 (2024), pp. 897–925. [17] F.Han,S.Osher,andW.Li,Convergenceofnoise-freesamplingalgorithmswithregularizedWasserstein\nproximals, arXiv preprint arXiv:2409.01567, (2024). [18] F. Han, S. Osher, and W. Li, Splitting regularized Wasserstein proximal algorithms for nonsmooth\nsampling problems, arXiv preprint arXiv:2502.16773, (2025).",
+      "size": 408,
+      "sentences": 4
+    },
+    {
+      "id": 186,
+      "content": "stein proximal algorithms for nonsmooth\nsampling problems, arXiv preprint arXiv:2502.16773, (2025). [19] F. Han, S. Osher, and W. Li, Tensor train based sampling algorithms for approximating regularized\nWassersteinproximaloperators,SIAM/ASAJournalonUncertaintyQuantification,13(2025),pp.775–\n804. [20] J.R.HersheyandP.A.Olsen,ApproximatingtheKullbackLeiblerdivergencebetweenGaussianmixture\nmodels,in2007IEEEInternationalConferenceonAcoustics,SpeechandSignalProcessing-ICASSP’07,\nvol.",
+      "size": 483,
+      "sentences": 3
+    },
+    {
+      "id": 187,
+      "content": "xture\nmodels,in2007IEEEInternationalConferenceonAcoustics,SpeechandSignalProcessing-ICASSP’07,\nvol. 4, IEEE, 2007, pp. IV–317. [21] Y.-P. Hsieh, A. Kavis, P. Rolland, and V. Cevher,Mirrored Langevin dynamics,AdvancesinNeural\nInformation Processing Systems, 31 (2018). [22] D. Hwang, Fadam: Adam is a natural gradient optimizer using diagonal empirical Fisher information,\narXiv preprint arXiv:2405.12807, (2024).",
+      "size": 412,
+      "sentences": 5
+    },
+    {
+      "id": 188,
+      "content": "ent optimizer using diagonal empirical Fisher information,\narXiv preprint arXiv:2405.12807, (2024). [23] Q. Jiang, Mirror Langevin Monte Carlo: the case under isoperimetry, Advances in Neural Information\nProcessing Systems, 34 (2021), pp. 715–725. [24] D. P. Kingma and J. Ba, Adam: A method for stochastic optimization, arXiv preprint arXiv:1412.6980,\n(2014). [25] W. Krauth, Statistical mechanics: algorithms and computations, vol. 13, OUP Oxford, 2006.",
+      "size": 455,
+      "sentences": 6
+    },
+    {
+      "id": 189,
+      "content": "14). [25] W. Krauth, Statistical mechanics: algorithms and computations, vol. 13, OUP Oxford, 2006. [26] R. Kubo, Stochastic Liouville equations, Journal of Mathematical Physics, 4 (1963), pp. 174–183. [27] F. Kunstner, P. Hennig, and L. Balles, Limitations of the empirical fisher approximation for natural\ngradient descent, Advances in neural information processing systems, 32 (2019).",
+      "size": 387,
+      "sentences": 6
+    },
+    {
+      "id": 190,
+      "content": "imation for natural\ngradient descent, Advances in neural information processing systems, 32 (2019). [28] R. Laumont, V. D. Bortoli, A. Almansa, J. Delon, A. Durmus, and M. Pereyra, Bayesian\nimaging using plug & play priors: when Langevin meets Tweedie, SIAM Journal on Imaging Sciences,\n15 (2022), pp. 701–737. [29] W. Li, S. Liu, and S. Osher, A kernel formula for regularized Wasserstein proximal operators, Research\nin the Mathematical Sciences, 10 (2023), p. 43.",
+      "size": 466,
+      "sentences": 4
+    },
+    {
+      "id": 191,
+      "content": "egularized Wasserstein proximal operators, Research\nin the Mathematical Sciences, 10 (2023), p. 43. [30] W. Li, W. Liu, J. Chen, L. Wu, P. D. Flynn, W. Ding, and P. Chen, Reducing mode collapse\nwith Monge–Kantorovich optimal transport for generative adversarial networks, IEEE Transactions on\nCybernetics, (2023).",
+      "size": 313,
+      "sentences": 2
+    },
+    {
+      "id": 192,
+      "content": "ch optimal transport for generative adversarial networks, IEEE Transactions on\nCybernetics, (2023). [31] D. J. MacKay, Bayesian neural networks and density networks, Nuclear Instruments and Methods in\nPhysics Research Section A: Accelerators, Spectrometers, Detectors and Associated Equipment, 354\n(1995), pp. 73–80.",
+      "size": 316,
+      "sentences": 3
+    },
+    {
+      "id": 193,
+      "content": "Section A: Accelerators, Spectrometers, Detectors and Associated Equipment, 354\n(1995), pp. 73–80. [32] E. Nijkamp, R. Gao, P. Sountsov, S. Vasudevan, B. Pang, S.-C. Zhu, and Y. N. Wu, MCMC\n===  27 ===\nPRECONDITIONED REGULARIZED WASSERSTEIN PROXIMAL SAMPLING METHODS 27\nshould mix: learning energy-based model with neural transport latent space MCMC., in International\nConference on Learning Representations (ICLR 2022)., 2022.",
+      "size": 427,
+      "sentences": 3
+    },
+    {
+      "id": 194,
+      "content": "ort latent space MCMC., in International\nConference on Learning Representations (ICLR 2022)., 2022. [33] K. B. Petersen, M. S. Pedersen, et al., The matrix cookbook, Technical University of Denmark, 7\n(2008), p. 510. [34] H. Risken,Fokker-Planck equation,inTheFokker-Planckequation: methodsofsolutionandapplications,\nSpringer, 1989, pp. 63–95. [35] G. O. Roberts and R. L. Tweedie,Exponential convergence of Langevin distributions and their discrete\napproximations, Bernoulli, (1996), pp. 341–363.",
+      "size": 497,
+      "sentences": 6
+    },
+    {
+      "id": 195,
+      "content": "rgence of Langevin distributions and their discrete\napproximations, Bernoulli, (1996), pp. 341–363. [36] P. J. Rossky, J. D. Doll, and H. L. Friedman, Brownian dynamics as smart Monte Carlo simulation,\nThe Journal of Chemical Physics, 69 (1978), pp. 4628–4633. [37] L. I. Rudin, S. Osher, and E. Fatemi,Nonlineartotalvariationbasednoiseremovalalgorithms,Physica\nD: nonlinear phenomena, 60 (1992), pp. 259–268.",
+      "size": 409,
+      "sentences": 6
+    },
+    {
+      "id": 196,
+      "content": "artotalvariationbasednoiseremovalalgorithms,Physica\nD: nonlinear phenomena, 60 (1992), pp. 259–268. [38] M. E. Sander, P. Ablin, M. Blondel, and G. Peyre´, Sinkformers: Transformers with doubly\nstochastic attention, in International Conference on Artificial Intelligence and Statistics, PMLR, 2022,\npp. 3515–3530. [39] F. Santambrogio, Optimal transport for applied mathematicians, vol. 87, Springer, 2015. [40] Y.",
+      "size": 414,
+      "sentences": 7
+    },
+    {
+      "id": 197,
+      "content": "39] F. Santambrogio, Optimal transport for applied mathematicians, vol. 87, Springer, 2015. [40] Y. Song, J. Sohl-Dickstein, D. P. Kingma, A. Kumar, S. Ermon, and B. Poole, Score-based\ngenerative modeling through stochastic differential equations, in International Conference on Learning\nRepresentations, 2021.",
+      "size": 310,
+      "sentences": 4
+    },
+    {
+      "id": 198,
+      "content": "h stochastic differential equations, in International Conference on Learning\nRepresentations, 2021. [41] A. Srivastava, L. Valkov, C. Russell, M. U. Gutmann, and C. Sutton, Veegan: Reducing mode\ncollapse in GANs using implicit variational learning, Advances in neural information processing\nsystems, 30 (2017). [42] A. M. Stuart, Inverse problems: a Bayesian perspective, Acta numerica, 19 (2010), pp. 451–559.",
+      "size": 410,
+      "sentences": 4
+    },
+    {
+      "id": 199,
+      "content": "[42] A. M. Stuart, Inverse problems: a Bayesian perspective, Acta numerica, 19 (2010), pp. 451–559. [43] J. Tachella, M. Terris, S. Hurault, A. Wang, D. Chen, M.-H. Nguyen, M. Song, T. Davies,\nL. Davy, J. Dong, et al., Deepinverse: A python package for solving imaging inverse problems with\ndeep learning, arXiv preprint arXiv:2505.20160, (2025). [44] H. Y. Tan, Z. Cai, M. Pereyra, S. Mukherjee, J. Tang, and C.-B.",
+      "size": 415,
+      "sentences": 4
+    },
+    {
+      "id": 200,
+      "content": "rint arXiv:2505.20160, (2025). [44] H. Y. Tan, Z. Cai, M. Pereyra, S. Mukherjee, J. Tang, and C.-B. Scho¨nlieb, Unsupervised\ntrainingofconvexregularizersusingmaximumlikelihoodestimation,TransactionsonMachineLearning\nResearch, (2024). [45] H. Y. Tan, S. Osher, and W. Li, Noise-free sampling algorithms via regularized Wasserstein proximals,\nResearch in the Mathematical Sciences, 11 (2024), p. 65.",
+      "size": 397,
+      "sentences": 4
+    },
+    {
+      "id": 201,
+      "content": "hms via regularized Wasserstein proximals,\nResearch in the Mathematical Sciences, 11 (2024), p. 65. [46] R.J.Tibshirani,S.W.Fung,H.Heaton,andS.Osher,LaplacemeetsMoreau: Smoothapproximation\nto infimal convolutions using Laplace’s method, Journal of Machine Learning Research, 26 (2025),\npp. 1–36. [47] P. Van Kerm, Adaptive kernel density estimation, The Stata Journal, 3 (2003), pp. 148–156. [48] A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, L(cid:32).",
+      "size": 479,
+      "sentences": 6
+    },
+    {
+      "id": 202,
+      "content": "p. 148–156. [48] A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, L(cid:32). Kaiser, and\nI. Polosukhin, Attention is all you need, Advances in neural information processing systems, 30\n(2017). [49] M. P. Wand and M. C. Jones, Kernel smoothing, CRC press, 1994. [50] Y. Wang and W. Li, Accelerated information gradient flow, Journal of Scientific Computing, 90 (2022),\npp. 1–47. ===  28 ===\n28 H. Y. TAN, S. OSHER, AND W. LI\nAppendix A. Proofs. A.1.",
+      "size": 471,
+      "sentences": 9
+    },
+    {
+      "id": 203,
+      "content": "puting, 90 (2022),\npp. 1–47. ===  28 ===\n28 H. Y. TAN, S. OSHER, AND W. LI\nAppendix A. Proofs. A.1. Anisotropic Green’s function. Recall (3.1):\n(A.1) G t,M (x,y) :=\n1 e−β(x−y)⊤M\n4t\n−1(x−y)\n. (4πβ−1t)d/2|M|1/2\nProposition A.1. The anisotropic kernel G (x,y) is a Green’s function for the following\nt,M\nPDE:\n(cid:40)\n∂ u−β−1∇·(M∇u) = 0,\nt\nu(0,x) = δ(y). Proof.",
+      "size": 358,
+      "sentences": 10
+    },
+    {
+      "id": 204,
+      "content": "a Green’s function for the following\nt,M\nPDE:\n(cid:40)\n∂ u−β−1∇·(M∇u) = 0,\nt\nu(0,x) = δ(y). Proof. (cid:18) d (x−y)⊤M−1(x−y) (cid:19)\n∂ G (x,y) = − +β G (x,y)\nt t,M 2t 4t2 t,M\nβM−1(x−y)\n∇ G (x,y) = − G (x,y)\nx t,M t,M\n2t\n(cid:18) (cid:19)\nβ(x−y)\n∇ ·(MG (x,y)) = ∇ · − G (x,y)\nx t,m x t,M\n2t\n(cid:18) dβ (x−y)⊤M−1(x−y) (cid:19)\n= − +β2 G (x,y)\n2t 4t2 t,M\nTherefore ∂ G = β−1∇·(M∇G ). The boundary condition follows from a change of\nt t,M t,m\nvariables with the standard heat kernel. Appendix B.",
+      "size": 493,
+      "sentences": 5
+    },
+    {
+      "id": 205,
+      "content": "y condition follows from a change of\nt t,M t,m\nvariables with the standard heat kernel. Appendix B. Proofs for Gaussian analysis. Recall that we wish to sample from some\ndistributionexp(−βV(x)),asinSection5. HerewefocusonthetargetdistributionN(0,β−1Σ),\ncorresponding to potential V(x) = x⊤Σ−1x/2. For a fixed preconditioning matrix M ≻ 0, we\nwill find it convenient to work in a rotated basis. For any covariance matrix Σ, we define a\n√ √\n−1 −1\ncorresponding (positive definite) Ξ as Ξ = M Σ M .",
+      "size": 495,
+      "sentences": 7
+    },
+    {
+      "id": 206,
+      "content": "r any covariance matrix Σ, we define a\n√ √\n−1 −1\ncorresponding (positive definite) Ξ as Ξ = M Σ M . Recall from (3.11) the normalized kernel\nexp (cid:16) −β(V(x)+ ∥x−y∥2 M) (cid:17)\n2 2T\n(B.1) K (x,y) = .",
+      "size": 204,
+      "sentences": 2
+    },
+    {
+      "id": 207,
+      "content": "l from (3.11) the normalized kernel\nexp (cid:16) −β(V(x)+ ∥x−y∥2 M) (cid:17)\n2 2T\n(B.1) K (x,y) = . M (cid:82) exp (cid:16) −β(V(z)+ ∥z−y∥2 M) (cid:17) dz\nRd 2 2T\n===  29 ===\nPRECONDITIONED REGULARIZED WASSERSTEIN PROXIMAL SAMPLING METHODS 29\nWe may compute for a fixed y, noting K (x,y) is a Gaussian density in x,\nM\n(cid:18) β (cid:18) x⊤Σ−1x (x−y)⊤M−1(x−y) (cid:19)(cid:19)\nK (x,y) ∝ exp − +\nM\n2 2 2T\n(cid:18) 1 (cid:20) (cid:18) βΣ−1 βM−1(cid:19) βM−1 βM−1 (cid:21)(cid:19)\n= exp − x⊤ + x−y⊤ x−x⊤ y+...\n2 2 2T 2T 2T\n(cid:18) 1 (cid:20)\n(cid:32)\n(cid:18) Σ−1 M−1(cid:19)−1 M−1\n(cid:33)⊤(cid:18)\nβΣ−1 βM−1(cid:19)\n∝ exp − x− + y +\n2 2 2T 2T 2 2T\n(cid:32) (cid:33)\n(cid:18) Σ−1 M−1(cid:19)−1 M−1 (cid:21)(cid:19)\nx− + y\n2 2T 2T\nWe therefore have that\n(cid:32) (cid:33)\n(cid:18) Σ−1 M−1(cid:19)−1 M−1 (cid:18) βΣ−1 βM−1(cid:19)−1\n(B.2) K (·,y) ∼ N + y, + .",
+      "size": 856,
+      "sentences": 2
+    },
+    {
+      "id": 208,
+      "content": "32) (cid:33)\n(cid:18) Σ−1 M−1(cid:19)−1 M−1 (cid:18) βΣ−1 βM−1(cid:19)−1\n(B.2) K (·,y) ∼ N + y, + . M\n2 2T 2T 2 2T\n(cid:82)\nUtilizing that K (x,y)dx = 1, the kernel can be written explicitly as\nM\n1 (cid:18) 1 (cid:20)\n(cid:32)\n(cid:18) Σ−1 M−1(cid:19)−1 M−1\n(cid:33)⊤(cid:18)\nβΣ−1 βM−1(cid:19)\n(B.3) K (x,y) = exp − x− + y +\nM\nB 2 2 2T 2T 2 2T\n(cid:32) (cid:33)\n(cid:18) Σ−1 M−1(cid:19)−1 M−1 (cid:21)(cid:19)\nx− + y ,\n2 2T 2T\n(cid:32)\n(cid:18) βΣ−1 βM−1(cid:19)−1\n(cid:33)1/2\n(B.4) B = (2π)d/2det + .",
+      "size": 501,
+      "sentences": 2
+    },
+    {
+      "id": 209,
+      "content": "cid:19)\nx− + y ,\n2 2T 2T\n(cid:32)\n(cid:18) βΣ−1 βM−1(cid:19)−1\n(cid:33)1/2\n(B.4) B = (2π)d/2det + . 2 2T\nB.1. Additional definitions. Consider the scaled Fisher information\n(cid:90)\nρ(x) ρ(x)\n(B.5) IM(ρ) = ⟨∇log ,M∇log ⟩ρ(x)dx.",
+      "size": 227,
+      "sentences": 4
+    },
+    {
+      "id": 210,
+      "content": "ions. Consider the scaled Fisher information\n(cid:90)\nρ(x) ρ(x)\n(B.5) IM(ρ) = ⟨∇log ,M∇log ⟩ρ(x)dx. π π(x) π(x)\nSupposing that the terminal distribution π satisfies the scaled log-Sobolev inequality,\nstating that for every locally Lipschitz function g, that\n(cid:90) (cid:90) (cid:18)(cid:90) (cid:19) (cid:18)(cid:90) (cid:19)\n2\n(B.6) ∥∇g(x)∥2 dπ ≥ g2logg2dπ− g2dπ log g2dπ ,\nc M−1\n(cid:112)\napplying with g(x) = dρ/dπ yields for any appropriate density\n(cid:90)\nρ(x) 1\n(B.7) D (ρ∥π) = ρ(x)log dx ≤ IM(ρ).",
+      "size": 506,
+      "sentences": 3
+    },
+    {
+      "id": 211,
+      "content": "g(x) = dρ/dπ yields for any appropriate density\n(cid:90)\nρ(x) 1\n(B.7) D (ρ∥π) = ρ(x)log dx ≤ IM(ρ). KL π(x) 2c π\nWe note that by the Bakry–Emery criterion, a distribution exp(−U(x)) satisfies the scaled\nlog-Sobolev inequality with parameter κ if ∇2U ⪰ κM−1. ===  30 ===\n30 H. Y. TAN, S. OSHER, AND W. LI\nFrom [23, Prop. 1], if π satisfies the scaled log-Sobolev inequality, we have exponential\nconvergence D (ρ ||π) ≤ exp(−2κt)D (ρ ∥π).",
+      "size": 436,
+      "sentences": 4
+    },
+    {
+      "id": 212,
+      "content": "s the scaled log-Sobolev inequality, we have exponential\nconvergence D (ρ ||π) ≤ exp(−2κt)D (ρ ∥π). Moreover, we have the following expression,\nKL t KL 0\nwhich may be derived by direct computation,\nIM (N(0,Σ )) = Tr (cid:0) Σ (Σ−1−Σ−1)M(Σ−1−Σ−1) (cid:1)\nN(0,Σ∞) t t ∞ t ∞ t\n= Tr\n(cid:0)\nΞ\n(Ξ−1−Ξ−1)2(cid:1)\n,\nt ∞ t\n√ √ √ √\n−1 −1 −1 −1\nwhere we denote Ξ = M Σ M , Ξ = M Σ M . t t ∞ ∞\nB.2. Regularized Wasserstein proximal of Gaussian. Proposition B.1.",
+      "size": 450,
+      "sentences": 5
+    },
+    {
+      "id": 213,
+      "content": "Ξ = M Σ M , Ξ = M Σ M . t t ∞ ∞\nB.2. Regularized Wasserstein proximal of Gaussian. Proposition B.1. For a distribution ρ ∼ N(µ ,Σ ), the Wasserstein proximal satisfies\nk k k\nWProxM ρ ∼ N(µ˜ ,Σ˜ ), where\nT,V k k k\n(B.8) µ˜ = (I +TMΣ−1)−1µ ,\nk k\n(B.9) Σ˜ = 2β−1T (cid:0) TΣ−1+M−1(cid:1)−1 + (cid:0) TΣ−1+M−1(cid:1)−1 M−1Σ M−1(cid:0) TΣ−1+M−1(cid:1)−1 . k k\nProof.",
+      "size": 361,
+      "sentences": 6
+    },
+    {
+      "id": 214,
+      "content": "cid:0) TΣ−1+M−1(cid:1)−1 + (cid:0) TΣ−1+M−1(cid:1)−1 M−1Σ M−1(cid:0) TΣ−1+M−1(cid:1)−1 . k k\nProof. We compute the closed-form update from a distribution ρ ∼ N(µ ,Σ ) from the\nk k k\nupdate equation\n(cid:90)\n(B.10a) WProxM ρ = ρ˜ ∝ K (x,y)ρ (y)dy,\nT,V k k M k\nRd\nexp (cid:16) −β(V(x)+ ∥x−y∥2 M) (cid:17)\n2 2T\n(B.10b) K (x,y) = . M (cid:82) exp (cid:16) −β(V(z)+ ∥z−y∥2 M) (cid:17) dz\nRd 2 2T\nWe have from (B.3) that\n(B.11) K (x,·) ∝ N((I +TMΣ−1)x,2β−1TM(TΣ−1+M−1)M).",
+      "size": 465,
+      "sentences": 4
+    },
+    {
+      "id": 215,
+      "content": "2 M) (cid:17) dz\nRd 2 2T\nWe have from (B.3) that\n(B.11) K (x,·) ∝ N((I +TMΣ−1)x,2β−1TM(TΣ−1+M−1)M). M\nFrom [33], we have that the product of two Gaussian densities is again a Gaussian density,\nmultiplied by a desired normalizing constant that is given by\n(B.12) N (µ ,Σ +2β−1TM(TΣ−1+M−1)M). (I+TMΣ−1)x k k\nWe abuse the subscript notation to denote the Gaussian density evaluated at the subscript.",
+      "size": 396,
+      "sentences": 3
+    },
+    {
+      "id": 216,
+      "content": "−1)x k k\nWe abuse the subscript notation to denote the Gaussian density evaluated at the subscript. The integral of the Gaussian density appears in both the numerator and denominator and is\nremoved from the expression. We thus have that\n(cid:90)\nρ˜ ∝ K (x,y)ρ (y)dy\nk M k\nRd\n∝ N (µ ,Σ +2β−1TM(TΣ−1+M−1)M)\n(I+TMΣ−1)x k k\n∝ N ((I +TMΣ−1)−1µ ,\nx k\n(I +TMΣ−1)−1[Σ +2β−1TM(TΣ−1+M−1)M](I +TMΣ−1)−⊤). k\nManipulating yields the desired expressions for µ˜ and Σ˜ .",
+      "size": 455,
+      "sentences": 4
+    },
+    {
+      "id": 217,
+      "content": "1[Σ +2β−1TM(TΣ−1+M−1)M](I +TMΣ−1)−⊤). k\nManipulating yields the desired expressions for µ˜ and Σ˜ . k k\n===  31 ===\nPRECONDITIONED REGULARIZED WASSERSTEIN PROXIMAL SAMPLING METHODS 31\nB.3. Proof of discrete time convergence for Gaussians. Here we prove Theorem 5.3. We\nrestate it here for convenience. Theorem B.2. Suppose V(x) = x⊤Σ−1x/2, and fix a β > 0. For the target distribution\nπ = N(0,β−1Σ) and positive definite preconditioner M, let c,C > 0 be such that cM ⪯ Σ ⪯\nCM.",
+      "size": 476,
+      "sentences": 9
+    },
+    {
+      "id": 218,
+      "content": "ibution\nπ = N(0,β−1Σ) and positive definite preconditioner M, let c,C > 0 be such that cM ⪯ Σ ⪯\nCM. Let T ∈ (0,c) so that the inverse PRWPO is well-defined. Then there exists a stationary\ndistribution to the discrete-time PBRWP iterations, and it is Gaussian πˆ = N(0,Σˆ), satisfying\nWProxM (N(0,Σˆ)) = N(0,β−1Σ). Moreover, it is unique within distributions with sufficiently\nT,V\ndecaying Fourier transforms, specifically as given in Subsection C.1.",
+      "size": 449,
+      "sentences": 4
+    },
+    {
+      "id": 219,
+      "content": "butions with sufficiently\nT,V\ndecaying Fourier transforms, specifically as given in Subsection C.1. Suppose further that the initial Gaussian distribution ρ = N(0,Σ ) has covariance com-\n0 0\nmuting with Σ, let ρ be the iterations generated by PBRWP, and let ρ˜ = WProxM (ρ ). k k T,V k\n√ √\n−1 −1\nLet λ be such that M Σ M are uniformly bounded below by some λ (which holds as\nk\nΣ → Σ).",
+      "size": 384,
+      "sentences": 3
+    },
+    {
+      "id": 220,
+      "content": "√ √\n−1 −1\nLet λ be such that M Σ M are uniformly bounded below by some λ (which holds as\nk\nΣ → Σ). Let the step-size η be bounded by\nk\nηβ−1 ≤ min((max|λ (Ξ˜−1−Ξ˜−1)|)−1/2,3λ (Ξ˜ )/32)\ni k ∞ min k\ni\nthen the exact discrete-time PBRWP method has the following decay in KL divergence:\n(B.13) D (ρ˜ ∥π)−D (ρ˜ ∥π)\nKL k+1 KL k\nη\n≤ − D (ρ˜ ∥π). 2C[β +2T(1+TC−1)−1(1+Tc−1)2λ−1] KL k\nProof. Weshowconvergenceratesandexistencefirst.",
+      "size": 422,
+      "sentences": 4
+    },
+    {
+      "id": 221,
+      "content": "≤ − D (ρ˜ ∥π). 2C[β +2T(1+TC−1)−1(1+Tc−1)2λ−1] KL k\nProof. Weshowconvergenceratesandexistencefirst. LetusdefineΣ˜ = β−1Σ, motivated\n∞\nby the fact that the PRWPO of the stationary covariance is the target covariance. Further\nrecall that Σ˜ is the covariance of the PRWPO of N(0,Σ ), in closed form in Proposition 5.1.\nk k\nRecall the discrete covariance update for PBRWP from Corollary 5.2:\n(B.14) Σ = (I −ηMΣ−1+ηβ−1MΣ˜−1)Σ (I −ηMΣ−1+ηβ−1MΣ˜−1)⊤.",
+      "size": 444,
+      "sentences": 5
+    },
+    {
+      "id": 222,
+      "content": "riance update for PBRWP from Corollary 5.2:\n(B.14) Σ = (I −ηMΣ−1+ηβ−1MΣ˜−1)Σ (I −ηMΣ−1+ηβ−1MΣ˜−1)⊤. k+1 k k k\n√ √ √ √\nIn terms of the M-conjugated matrices Ξ = M −1 Σ M −1 , Ξ˜ = M −1 Σ˜ M −1 , this\nk k k k\nbecomes\n(B.15) Ξ = (I −ηβ−1Ξ˜−1+ηβ−1Ξ˜−1)Ξ (I −ηβ−1Ξ˜−1+ηβ−1Ξ˜−1). k+1 ∞ k k ∞ k\nWe define the following auxiliary matrix expressions for convenience.",
+      "size": 357,
+      "sentences": 3
+    },
+    {
+      "id": 223,
+      "content": "Ξ˜−1+ηβ−1Ξ˜−1). k+1 ∞ k k ∞ k\nWe define the following auxiliary matrix expressions for convenience. √ √ √ √\n(B.16) K := I +T MΣ−1 M, K := I −T MΣ−1 M.\n+ −\n√ √\nThen, the (conjugated) covariance of the Wasserstein proximal Ξ˜ = M −1 Σ˜ M −1 , Σ˜ =\nk k k\nCov(WProxM N(0,Σ )) has the following iterations\nT,V k\n(B.17) Ξ˜ = 2β−1TK−1+K−1Ξ K−1. k + + k +\nAt the stationary point, we can compute the inverse PRWPO as\n√ √\n(B.18) Ξ = K Ξ˜ K = K Ξ˜ K , Ξ˜ = β−1 M −1 Σ M −1 .",
+      "size": 464,
+      "sentences": 4
+    },
+    {
+      "id": 224,
+      "content": "point, we can compute the inverse PRWPO as\n√ √\n(B.18) Ξ = K Ξ˜ K = K Ξ˜ K , Ξ˜ = β−1 M −1 Σ M −1 . ∞ − ∞ + + ∞ − ∞\n===  32 ===\n32 H. Y. TAN, S. OSHER, AND W. LI\nThey satisfy the following:\n(B.19) Ξ˜ −Ξ˜ = K−1(Ξ −Ξ )K−1,\nk ∞ + k ∞ +\n(B.20) Ξ˜ = K−1(Ξ +2β−1TK )K−1. k + k + +\nThe update of the Ξ˜ can be written as follows, using (B.15) and (B.20),\nΞ˜ = K−1(Ξ +2β−1TK )K−1\nk+1 + k+1 + +\n(cid:104) (cid:105)\n(B.21) = K−1 (I −ηβ−1Ξ˜−1+ηβ−1Ξ˜−1)Ξ (I −ηβ−1Ξ˜−1+ηβ−1Ξ˜−1)+2β−1TK K−1. + ∞ k k ∞ k + +\nClaim.",
+      "size": 499,
+      "sentences": 4
+    },
+    {
+      "id": 225,
+      "content": "105)\n(B.21) = K−1 (I −ηβ−1Ξ˜−1+ηβ−1Ξ˜−1)Ξ (I −ηβ−1Ξ˜−1+ηβ−1Ξ˜−1)+2β−1TK K−1. + ∞ k k ∞ k + +\nClaim. We will show that Ξ˜ → Ξ˜ , and accordingly that Ξ → Ξ . k ∞ k ∞\nBy the assumption that Σ commutes with Σ, we have that Ξ , Ξ˜ , K , Ξ˜−1 all commute. 0 k k ± ∞\nWe recall a useful Taylor expansion first. Proposition B.3. Let A be square with eigenvalues λ ≥ 0. Then\ni\n(B.22) logdet(I +A) = Tr(A)+R\nwhere\n(cid:88) (cid:88)\nλ2\n(cid:88)\n(B.23) 0 ≥ R = (log(λ +1)−λ ) ≥ − i ≥ − λ2.",
+      "size": 477,
+      "sentences": 8
+    },
+    {
+      "id": 226,
+      "content": "det(I +A) = Tr(A)+R\nwhere\n(cid:88) (cid:88)\nλ2\n(cid:88)\n(B.23) 0 ≥ R = (log(λ +1)−λ ) ≥ − i ≥ − λ2. i i 1+λ i\ni\ni i\nThe inequalities other than the last one also hold for λ > −1. i\n(cid:81) (cid:80)\nProof. Using det(A) = λ and Tr(A) = λ . i i i i\nRecall that for Gaussians, the KL divergence to π ∼ N(0,β−1Σ) = N(0,Σ˜ ) takes the\n∞\nparticular form [20]:\n(cid:90)\nρ˜ (x)\nk\nD (ρ˜ ∥π) = ρ˜ (x)log dx\nKL k k\nπ(x)\n1 (cid:104) (cid:16) (cid:17)(cid:105)\n= logdetΣ˜ −logdetΣ˜ −d+Tr Σ˜−1Σ˜ .",
+      "size": 483,
+      "sentences": 5
+    },
+    {
+      "id": 227,
+      "content": "ρ˜ (x)log dx\nKL k k\nπ(x)\n1 (cid:104) (cid:16) (cid:17)(cid:105)\n= logdetΣ˜ −logdetΣ˜ −d+Tr Σ˜−1Σ˜ . 2 ∞ k ∞ k\nThe difference between two consecutive iterations is\nD (ρ˜ ∥π)−D (ρ˜ ∥π)\nKL k+1 KL k\n(cid:34) (cid:35)\n1 |Σ˜ | (cid:16) (cid:17)\n= log k +Tr Σ˜−1(Σ˜ −Σ˜ )\n2 |Σ˜ | ∞ k+1 k\nk+1\n(cid:34) (cid:35)\n1 |Ξ˜ | (cid:16) (cid:17)\n(B.24) = log k +Tr Ξ˜−1(Ξ˜ −Ξ˜ ) .",
+      "size": 363,
+      "sentences": 2
+    },
+    {
+      "id": 228,
+      "content": "2 |Σ˜ | ∞ k+1 k\nk+1\n(cid:34) (cid:35)\n1 |Ξ˜ | (cid:16) (cid:17)\n(B.24) = log k +Tr Ξ˜−1(Ξ˜ −Ξ˜ ) . 2 |Ξ˜ | ∞ k+1 k\nk+1\nApplying the Taylor expansion to the first term,\n|Ξ˜ | |Ξ˜ |\nk k\nlog = log\n|Ξ˜ | |Ξ˜ +(Ξ˜ −Ξ˜ )|\nk+1 k k+1 k\n= −log|I +(Ξ˜ −Ξ˜ )Ξ˜−1|\nk+1 k k\n(cid:16) (cid:17)\n(B.25) = −Tr (Ξ˜ −Ξ˜ )Ξ˜−1 −R ,\nk+1 k k 1\n===  33 ===\nPRECONDITIONED REGULARIZED WASSERSTEIN PROXIMAL SAMPLING METHODS 33\nwhere\n(cid:88)(cid:104) (cid:16) (cid:17) (cid:105)\n(B.26) R = log 1+λ ((Ξ˜ −Ξ˜ )Ξ˜−1) −λ ((Ξ˜ −Ξ˜ )Ξ˜−1) .",
+      "size": 508,
+      "sentences": 2
+    },
+    {
+      "id": 229,
+      "content": "id:88)(cid:104) (cid:16) (cid:17) (cid:105)\n(B.26) R = log 1+λ ((Ξ˜ −Ξ˜ )Ξ˜−1) −λ ((Ξ˜ −Ξ˜ )Ξ˜−1) . 1 i k+1 k k i k+1 k k\ni\nTherefore we have\n1 (cid:104) (cid:16) (cid:17) (cid:105)\n(B.27) D (ρ˜ ∥π)−D (ρ˜ ∥π) = Tr (Ξ˜−1−Ξ˜−1)(Ξ˜ −Ξ˜ ) −R . KL k+1 KL k 2 ∞ k k+1 k 1\nTo bound R , we need to control the eigenvalues of (Ξ˜ −Ξ˜ )Ξ˜−1. Since all the matrices in\n1 k+1 k k\nquestion commute, from (B.21), we have\n(B.28) Ξ˜ −Ξ˜ = (2ηβ−1(Ξ˜−1−Ξ˜−1)Ξ +η2β−2(Ξ˜−1−Ξ˜−1)2Ξ )K−2.",
+      "size": 467,
+      "sentences": 4
+    },
+    {
+      "id": 230,
+      "content": "question commute, from (B.21), we have\n(B.28) Ξ˜ −Ξ˜ = (2ηβ−1(Ξ˜−1−Ξ˜−1)Ξ +η2β−2(Ξ˜−1−Ξ˜−1)2Ξ )K−2. k+1 k k ∞ k k ∞ k +\nWe now control the first term of (B.27).",
+      "size": 160,
+      "sentences": 2
+    },
+    {
+      "id": 231,
+      "content": "(Ξ˜−1−Ξ˜−1)Ξ +η2β−2(Ξ˜−1−Ξ˜−1)2Ξ )K−2. k+1 k k ∞ k k ∞ k +\nWe now control the first term of (B.27). This expression is\n(cid:16) (cid:17)\nTr (Ξ˜−1−Ξ˜−1)(Ξ˜ −Ξ˜ )\n∞ k k+1 k\n(cid:16) (cid:104) (cid:105)(cid:17)\n= ηβ−1Tr (Ξ˜−1−Ξ˜−1)K−2 2(Ξ˜−1−Ξ˜−1)Ξ +ηβ−1(Ξ˜−1−Ξ˜−1)Ξ (Ξ˜−1−Ξ˜−1)\n∞ k + k ∞ k k ∞ k k ∞\n(cid:16) (cid:17) (cid:16) (cid:17)\n= −2ηβ−1Tr (Ξ˜−1−Ξ˜−1)2K−2Ξ +η2β−2Tr (Ξ˜−1−Ξ˜−1)3K−2Ξ ,\nk ∞ + k k ∞ + k\nwhere we use (B.19), (B.15), and finally collect terms.",
+      "size": 461,
+      "sentences": 3
+    },
+    {
+      "id": 232,
+      "content": "+η2β−2Tr (Ξ˜−1−Ξ˜−1)3K−2Ξ ,\nk ∞ + k k ∞ + k\nwhere we use (B.19), (B.15), and finally collect terms. To control all of (B.27), we use the\nsum-form of trace, and are required to upper-bound the expressions\n(cid:16) (cid:17) (cid:16) (cid:17)\nλ (Ξ˜−1−Ξ˜−1)(Ξ˜ −Ξ˜ ) −log 1+λ ((Ξ˜ −Ξ˜ )Ξ˜−1) +λ ((Ξ˜ −Ξ˜ )Ξ˜−1). i ∞ k k+1 k i k+1 k k i k+1 k k\nSumming this expression over i yields (B.27). Step-size condition: assume ηβ−1 ≤ (max |λ (Ξ˜−1 −Ξ˜−1)|)−1/2.",
+      "size": 448,
+      "sentences": 4
+    },
+    {
+      "id": 233,
+      "content": "his expression over i yields (B.27). Step-size condition: assume ηβ−1 ≤ (max |λ (Ξ˜−1 −Ξ˜−1)|)−1/2. We abuse notation\ni i k ∞\nnow to write λ as the eigenvalue of a matrix with respect to the i-th shared eigenvector v . i i\nCase 1: suppose the eigenvalue of (Ξ˜−1 −Ξ˜−1) is positive.",
+      "size": 282,
+      "sentences": 4
+    },
+    {
+      "id": 234,
+      "content": "to the i-th shared eigenvector v . i i\nCase 1: suppose the eigenvalue of (Ξ˜−1 −Ξ˜−1) is positive. Using (B.28), we have that\nk ∞\nλ ((Ξ˜ −Ξ˜ )Ξ˜−1) > 0, so we can control\ni k+1 k k\n(cid:16) (cid:17)\nlog 1+λ ((Ξ˜ −Ξ˜ )Ξ˜−1) −λ ((Ξ˜ −Ξ˜ )Ξ˜−1)\ni k+1 k k i k+1 k k\n≥ −λ2((Ξ˜ −Ξ˜ )Ξ˜−1)\ni k+1 k k\n= −λ ((Ξ˜−1−Ξ˜−1)2K−4Ξ2Ξ˜−2)[2ηβ−1+η2β−2λ (Ξ˜−1−Ξ˜−1)]2.\ni k ∞ + k k i k ∞\n===  34 ===\n34 H. Y. TAN, S. OSHER, AND W. LI\nTherefore\n(cid:16) (cid:17)\nλ ((Ξ˜−1−Ξ˜−1)(Ξ˜ −Ξ˜ ))−log 1+λ ((Ξ˜ −Ξ˜ )Ξ˜−1) +λ ((Ξ˜ −Ξ˜ )Ξ˜−1)\ni ∞ k k+1 k i k+1 k k i k+1 k k\n≤ λ ((Ξ˜−1−Ξ˜−1)2K−2Ξ )\ni k ∞ + k\n(cid:104) (cid:105)\n· −2ηβ−1+η2β−2λ (Ξ˜−1−Ξ˜−1)+λ (K−2Ξ Ξ˜−2)[2ηβ−1+η2β−2λ (Ξ˜−1−Ξ˜−1)]2\ni k ∞ i + k k i k ∞\n≤ λ ((Ξ˜−1−Ξ˜−1)2K−2Ξ )\ni k ∞ + k\n(cid:104) (cid:105)\n· −2ηβ−1+η2β−2λ (Ξ˜−1−Ξ˜−1)+λ (Ξ˜−1)[2ηβ−1+η2β−2λ (Ξ˜−1−Ξ˜−1)]2\ni k ∞ i k i k ∞\n≤ λ ((Ξ˜−1−Ξ˜−1)2K−2Ξ )\ni k ∞ + k\n(cid:20) (cid:21)\n1\n· −2ηβ−1+η2β−2λ (Ξ˜−1−Ξ˜−1)+ βT−1(1+Tc−1)η2β−2[2+ηβ−1λ (Ξ˜−1−Ξ˜−1)]2 ,\ni k ∞ 2 i k ∞\nwhere we use that Ξ˜ ⪰ K−2Ξ in the second inequality, and then that Ξ˜ ⪰ 2β−1TK−1 ⪰\nk + k k +\n2β−1T(1+Tc−1)−1I in the third inequality.",
+      "size": 1093,
+      "sentences": 3
+    },
+    {
+      "id": 235,
+      "content": "econd inequality, and then that Ξ˜ ⪰ 2β−1TK−1 ⪰\nk + k k +\n2β−1T(1+Tc−1)−1I in the third inequality. Case 2: the eigenvalue of (Ξ˜−1−Ξ˜−1) is negative.",
+      "size": 150,
+      "sentences": 2
+    },
+    {
+      "id": 236,
+      "content": "k k +\n2β−1T(1+Tc−1)−1I in the third inequality. Case 2: the eigenvalue of (Ξ˜−1−Ξ˜−1) is negative. Then\nk ∞\n(cid:16) (cid:17)\nlog 1+λ ((Ξ˜ −Ξ˜ )Ξ˜−1) −λ ((Ξ˜ −Ξ˜ )Ξ˜−1)\ni k+1 k k i k+1 k k\nλ2((Ξ˜ −Ξ˜ )Ξ˜−1)\n≥ − i k+1 k k\n1+λ ((Ξ˜ −Ξ˜ )Ξ˜−1)\ni k+1 k k\n(cid:104) (cid:105)\nλ2 (2ηβ−1(Ξ˜−1−Ξ˜−1)Ξ +η2β−2(Ξ˜−1−Ξ˜−1)2Ξ )K−2Ξ˜−1\ni k ∞ k k ∞ k + k\n= −\n(cid:104) (cid:105)\n1+λ (2ηβ−1(Ξ˜−1−Ξ˜−1)Ξ +η2β−2(Ξ˜−1−Ξ˜−1)2Ξ )K−2Ξ˜−1\ni k ∞ k k ∞ k + k\n(cid:104) (cid:105)\nλ2 (2ηβ−1(Ξ˜−1−Ξ˜−1)Ξ )K−2Ξ˜−1\ni k ∞ k + k\n≥ − ,\n(cid:104) (cid:105)\n1+λ (2ηβ−1(Ξ˜−1−Ξ˜−1)Ξ +η2β−2(Ξ˜−1−Ξ˜−1)2Ξ )K−2Ξ˜−1\ni k ∞ k k ∞ k + k\nwhere we use the step-size condition to make sure the denominator is positive, then discard the\nsecondorderterminthenumerator.",
+      "size": 719,
+      "sentences": 3
+    },
+    {
+      "id": 237,
+      "content": "condition to make sure the denominator is positive, then discard the\nsecondorderterminthenumerator. Thisuses(B.17), whichgivesthecontrolλ (Ξ K−2Ξ˜−1) ≤\ni k + k\nλ (Ξ˜ Ξ˜−1) = 1.",
+      "size": 176,
+      "sentences": 2
+    },
+    {
+      "id": 238,
+      "content": "derterminthenumerator. Thisuses(B.17), whichgivesthecontrolλ (Ξ K−2Ξ˜−1) ≤\ni k + k\nλ (Ξ˜ Ξ˜−1) = 1. Using the step-size condition on ηβ−1 again and the quadratic structure, the\ni k k\ndenominator is at least 1/4, and we have\n(cid:16) (cid:17)\nlog 1+λ ((Ξ˜ −Ξ˜ )Ξ˜−1) −λ ((Ξ˜ −Ξ˜ )Ξ˜−1)\ni k+1 k k i k+1 k k\n(cid:104) (cid:105)\n≥ −4λ2 (2ηβ−1(Ξ˜−1−Ξ˜−1)Ξ )K−2Ξ˜−1\ni k ∞ k + k\nTherefore\n(cid:16) (cid:17)\nλ ((Ξ˜−1−Ξ˜−1)(Ξ˜ −Ξ˜ ))−log 1+λ ((Ξ˜ −Ξ˜ )Ξ˜−1) +λ ((Ξ˜ −Ξ˜ )Ξ˜−1)\ni ∞ k k+1 k i k+1 k k i k+1 k k\n(cid:104) (cid:105)\n≤ λ ((Ξ˜−1−Ξ˜−1)2K−2Ξ ) −2ηβ−1+η2β−2λ (Ξ˜−1−Ξ˜−1)+4λ (Ξ K−2Ξ˜−2)(2ηβ−1)2\ni k ∞ + k i k ∞ i k + k\n(cid:104) (cid:105)\n≤ λ ((Ξ˜−1−Ξ˜−1)2K−2Ξ ) −2ηβ−1+4λ (Ξ˜−1)(2ηβ−1)2\ni k ∞ + k i k\n===  35 ===\nPRECONDITIONED REGULARIZED WASSERSTEIN PROXIMAL SAMPLING METHODS 35\nTaking ηβ−1 ≤ min((max |λ (Ξ˜−1−Ξ˜−1)|)−1/2,3λ (Ξ˜ )/32), we have in\ni i k ∞ min k\nCase 1:\n(cid:16) (cid:17)\nλ ((Ξ˜−1−Ξ˜−1)(Ξ˜ −Ξ˜ )−log 1+λ ((Ξ˜ −Ξ˜ )Ξ˜−1) +λ ((Ξ˜ −Ξ˜ )Ξ˜−1))\ni ∞ k k+1 k i k+1 k k i k+1 k k\n≤ λ ((Ξ˜−1−Ξ˜−1)2K−2Ξ )\ni k ∞ + k\n(cid:104) (cid:105)\n· −2ηβ−1+η2β−2λ (Ξ˜−1−Ξ˜−1)+λ (Ξ˜−1)[2ηβ−1+η2β−2λ (Ξ˜−1−Ξ˜−1)]2\ni k ∞ i k i k ∞\n(cid:34) (cid:35)\n(cid:18)\n5\n(cid:19)2\n3\n≤ ηβ−1λ ((Ξ˜−1−Ξ˜−1)2K−2Ξ ) −2+1/2+ ·\ni k ∞ + k 2 32\n1\n≤ − ηβ−1λ ((Ξ˜−1−Ξ˜−1)2K−2Ξ )\n2 i k ∞ + k\nCase 2:\n(cid:16) (cid:17)\nλ ((Ξ˜−1−Ξ˜−1)(Ξ˜ −Ξ˜ ))−log 1+λ ((Ξ˜ −Ξ˜ )Ξ˜−1) +λ ((Ξ˜ −Ξ˜ )Ξ˜−1)\ni ∞ k k+1 k i k+1 k k i k+1 k k\n(cid:104) (cid:105)\n≤ λ ((Ξ˜−1−Ξ˜−1)2K−2Ξ ) −2ηβ−1+4λ (Ξ˜−1)(2ηβ−1)2\ni k ∞ + k i k\n(cid:20) (cid:21)\n3\n≤ ηβ−1λ ((Ξ˜−1−Ξ˜−1)2K−2Ξ ) −2+16·\ni k ∞ + k 32\n1\n= − ηβ−1λ ((Ξ˜−1−Ξ˜−1)2K−2Ξ )\n2 i k ∞ + k\nIn either case we have that\n(cid:16) (cid:17)\n(B.29) λ ((Ξ˜−1−Ξ˜−1)(Ξ˜ −Ξ˜ ))−log 1+λ ((Ξ˜ −Ξ˜ )Ξ˜−1) +λ ((Ξ˜ −Ξ˜ )Ξ˜−1)\ni ∞ k k+1 k i k+1 k k i k+1 k k\n1\n(B.30) ≤ − ηβ−1λ ((Ξ˜−1−Ξ˜−1)2K−2Ξ )\n2 i k ∞ + k\nand summing over i we have\nD (ρ˜ ∥π)−D (ρ˜ ∥π)\nKL k+1 KL k\n(cid:20)\n1 (cid:88)\n= λ ((Ξ˜−1−Ξ˜−1)(Ξ˜ −Ξ˜ ))\n2 i ∞ k k+1 k\ni\n(cid:21)\n(cid:16) (cid:17)\n−log 1+λ ((Ξ˜ −Ξ˜ )Ξ˜−1) +λ ((Ξ˜ −Ξ˜ )Ξ˜−1)\ni k+1 k k i k+1 k k\n1 (cid:16) (cid:17)\n≤ − ηβ−1Tr (Ξ˜−1−Ξ˜−1)2K−2Ξ\n4 k ∞ + k\n1 (cid:16) (cid:17)\n≤ − ηβ−1λ (K−2Ξ Ξ˜−1)Tr (Ξ˜−1−Ξ˜−1)2Ξ˜\n4 min + k k k ∞ k\n1\n= − ηβ−1λ (K−2Ξ Ξ˜−1)IM(ρ˜ )\n4 min + k k π k\n1\n≤ − ηβ−1λ (K−2Ξ Ξ˜−1)D (ρ˜ ∥π).",
+      "size": 2214,
+      "sentences": 3
+    },
+    {
+      "id": 239,
+      "content": "4 min + k k k ∞ k\n1\n= − ηβ−1λ (K−2Ξ Ξ˜−1)IM(ρ˜ )\n4 min + k k π k\n1\n≤ − ηβ−1λ (K−2Ξ Ξ˜−1)D (ρ˜ ∥π). 2C min + k k KL k\n===  36 ===\n36 H. Y. TAN, S. OSHER, AND W. LI\n√ √\nwhere we use that the log-Sobolev constant of Ξ˜ = M −1 Σ M −1 is C−1 as in Appendix B.1.",
+      "size": 256,
+      "sentences": 2
+    },
+    {
+      "id": 240,
+      "content": "W. LI\n√ √\nwhere we use that the log-Sobolev constant of Ξ˜ = M −1 Σ M −1 is C−1 as in Appendix B.1. ∞\nFinally note that\nλ (K−2Ξ )\nλ (K−2Ξ Ξ˜−1) ≥ min + k\nmin + k k 2β−1T(1+TC−1)−1+λ (K−2Ξ )\nmin + k\n(1+Tc−1)−2λ (Ξ )\nmin k\n≥\n2β−1T(1+TC−1)−1+(1+Tc−1)−2λ (Ξ )\nmin k\n1\n= ,\n1+2β−1T(1+TC−1)−1(1+Tc−1)2λ (Ξ )−1\nmin k\nwhere in the second inequality, we use that x/(c + x) is increasing and λ (K−2Ξ ) ≥\nmin + k\n(1+Tc−1)−2λ (Ξ ).",
+      "size": 418,
+      "sentences": 2
+    },
+    {
+      "id": 241,
+      "content": "he second inequality, we use that x/(c + x) is increasing and λ (K−2Ξ ) ≥\nmin + k\n(1+Tc−1)−2λ (Ξ ). min k\nUniqueness: now we have established existence of a stationary solution as the Gaussian\nN(0,Σ ) satisfying WProxM (N(0,Σ )) = N(0,β−1Σ). From the modified Fokker–Planck\n∞ T,V ∞\nequation (4.9), stationarity at a distribution ν is equivalent to satisfying WProxM ν ∝\nT,V\nexp(−βV) = N(0,β−1Σ).",
+      "size": 395,
+      "sentences": 3
+    },
+    {
+      "id": 242,
+      "content": ", stationarity at a distribution ν is equivalent to satisfying WProxM ν ∝\nT,V\nexp(−βV) = N(0,β−1Σ). Consider the definition of the regularized Wasserstein proximal as\nthe coupled Fokker–Planck and Hamilton–Jacobi equation, plus the Cole–Hopf transformation. Since the forward- and backwards- anisotropic heat equations are well defined and are injective,\nthe inverse of the Wasserstein proximal is unique. Appendix C. Additional results. C.1. Sufficient conditions for a unique inverse proximal.",
+      "size": 495,
+      "sentences": 6
+    },
+    {
+      "id": 243,
+      "content": "s unique. Appendix C. Additional results. C.1. Sufficient conditions for a unique inverse proximal. We wish to find sufficient\nconditions on a distribution ρ such that the PRWPO (3.10) is invertible, that is, there exists a\nuniquedistributionρ forwhichρ = WProxM ρ isthepreconditionedregularizedWasserstein\n0 T,V 0\nproximal. Equivalently,from(3.4),wefindsufficientconditionsthatthebackwardheatequation\nfor ηˆ from time T to 0 is well defined. The forward heat equation is always well defined.",
+      "size": 492,
+      "sentences": 7
+    },
+    {
+      "id": 244,
+      "content": "equation\nfor ηˆ from time T to 0 is well defined. The forward heat equation is always well defined. Recall that the solution to the anisotropic (forward) heat equation\n∂ f = β−1∇·(M∇f)\nt\nis given in Fourier space by\n(cid:90)\n(C.1) f(t,x) =\nfˆ(ξ)ei⟨ξ,x⟩−tβ−1ξ⊤Mξdξ. Rd\nIn order for f(−T,x) to be well defined by Plancherel’s theorem, we simply need that the\nFourier transform fˆ(ξ) decays faster than e−Tβ−1ξ⊤Mξ.",
+      "size": 411,
+      "sentences": 4
+    },
+    {
+      "id": 245,
+      "content": "lancherel’s theorem, we simply need that the\nFourier transform fˆ(ξ) decays faster than e−Tβ−1ξ⊤Mξ. Since the terminal condition for ηˆ\nis ηˆ(T,x) = ρ(x)e−βΦ(T,M−1x)/2 = ρ(T,x)eβV(x)/2, which evolves through the backward heat\nequation, we want ρ(x)eβV(x)/2 to have Fourier transform decaying (at least) faster than\ne−Tβ−1ξ⊤Mξ. C.1.1.",
+      "size": 333,
+      "sentences": 3
+    },
+    {
+      "id": 246,
+      "content": ", we want ρ(x)eβV(x)/2 to have Fourier transform decaying (at least) faster than\ne−Tβ−1ξ⊤Mξ. C.1.1. Application: maximum value of T. Consider the quadratic potential case where\nV = x⊤Σ−1x/2, and we wish to find ρ whose regularized Wasserstein proximal is proportional\n0\nto exp(−βV). The Fourier transform of a normal distribution ρ ∼ N(µ,Σ) (up to some factors\n√\nof 2π) is\n(cid:104) (cid:105)\n(C.2) ρˆ= E x∼ρ e−i⟨ξ,x⟩ = ei⟨ξ,µ⟩− 2 1ξ⊤Σξ.",
+      "size": 437,
+      "sentences": 4
+    },
+    {
+      "id": 247,
+      "content": "Σ) (up to some factors\n√\nof 2π) is\n(cid:104) (cid:105)\n(C.2) ρˆ= E x∼ρ e−i⟨ξ,x⟩ = ei⟨ξ,µ⟩− 2 1ξ⊤Σξ. ===  37 ===\nPRECONDITIONED REGULARIZED WASSERSTEIN PROXIMAL SAMPLING METHODS 37\nIn this case, ρexp(βV/2) ∝ exp(−βV/2) is proportional to a Gaussian with covariance\n2β−1Σ, and thus the decay of the Fourier transform is ∼ e−β−1ξ⊤Σξ. This is at least faster\nthan e−Tβ−1ξ⊤Mξ if and only if Σ ⪰ TM. C.2. Regularized Wasserstein proximal is a Wasserstein-2 contraction.",
+      "size": 463,
+      "sentences": 5
+    },
+    {
+      "id": 248,
+      "content": "−1ξ⊤Mξ if and only if Σ ⪰ TM. C.2. Regularized Wasserstein proximal is a Wasserstein-2 contraction. From (5.4) or\n(B.11), we have that K is a composition of the Gaussian convolution Markov kernel δ (cid:55)→\nM y\nN(y,(βΣ−1 +βM−1 )−1)withthe(linear)mapω : Rd → Rd,definedasy (cid:55)→ (Σ−1 +M−1 )−1M−1 y. 2 2T 2 2T 2T\nSince c−1M−1 ⪰ Σ−1 ⪰ C−1M−1, we have that βΣ−1 + βM−1 ⪰ (βC−1 + β )M−1.",
+      "size": 387,
+      "sentences": 5
+    },
+    {
+      "id": 249,
+      "content": "+M−1 )−1M−1 y. 2 2T 2 2T 2T\nSince c−1M−1 ⪰ Σ−1 ⪰ C−1M−1, we have that βΣ−1 + βM−1 ⪰ (βC−1 + β )M−1. Therefore\n2 2T 2 2T\nthe eigenvalues of the scaling matrix satisfy\n(cid:32) (cid:33)\nM−1 (cid:18) Σ−1 M−1(cid:19)−2 M−1 (cid:18) C−1 1 (cid:19)−2(cid:18) 1 (cid:19)2\nλ + ≤ + < 1.\ni\n2T 2 2T 2T 2 2T 2T\nIn particular, the scaling map ω is contractive with constant ζ := (C−1 + 1 )−1( 1 ) < 1. 2 2T 2T\nLet µ,ν ∈ P (Rd) be any probability measures with finite second moment, and let γ ∈\n2\nΠ(µ,ν).",
+      "size": 490,
+      "sentences": 4
+    },
+    {
+      "id": 250,
+      "content": "2T 2T\nLet µ,ν ∈ P (Rd) be any probability measures with finite second moment, and let γ ∈\n2\nΠ(µ,ν). We wish to bound\nW (WProxM µ,WProxM ν). 2 T,V T,V\nNote that WProxM µ = N(0,(βΣ−1 + βM−1 )−1)∗ω µ. Since ω is a contractive map with\nT,V 2 2T #\nconstant ζ, we have that\n(C.3) W (ω µ,ω ν) ≤ ζW (µ,ν). 2 # # 2\nFrom [39, Lem.",
+      "size": 320,
+      "sentences": 5
+    },
+    {
+      "id": 251,
+      "content": "e map with\nT,V 2 2T #\nconstant ζ, we have that\n(C.3) W (ω µ,ω ν) ≤ ζW (µ,ν). 2 # # 2\nFrom [39, Lem. 5.2], since the kernel given by the pdf of N(0,(βΣ−1 + βM−1 )−1) is even,\n2 2T\nwe have moreover that for any µ,ν probability measures with finite second moment, that\n(C.4)\n(cid:32) (cid:32) (cid:33) (cid:32) (cid:33) (cid:33)\n(cid:18) βΣ−1 βM−1(cid:19)−1 (cid:18) βΣ−1 βM−1(cid:19)−1\nW N 0, + ∗µ,N 0, + ∗ν ≤ W (µ,ν).",
+      "size": 416,
+      "sentences": 3
+    },
+    {
+      "id": 252,
+      "content": "(cid:33)\n(cid:18) βΣ−1 βM−1(cid:19)−1 (cid:18) βΣ−1 βM−1(cid:19)−1\nW N 0, + ∗µ,N 0, + ∗ν ≤ W (µ,ν). 2 2\n2 2T 2 2T\nTherefore, we have that for quadratic V, and any µ,ν in Wasserstein-2 space, that\n(C.5) W (WProxM µ,WProxM ν) ≤ ζW (µ,ν). 2 T·V T·V 2\nThis also holds for any p ∈ [1,∞). C.3. Mean reversion from high variance initialization. We list some simple definitions\nand properties before stating the inequality Proposition C.4. We fix β = 1 for simplicity.",
+      "size": 460,
+      "sentences": 7
+    },
+    {
+      "id": 253,
+      "content": "initions\nand properties before stating the inequality Proposition C.4. We fix β = 1 for simplicity. Definition C.1 (Relative Smoothness/Convexity). Let Ψ : X → R be a differentiable convex\nfunction, defined on a convex set X (with non-empty interior), which will be used as a reference. Let f : X → R be another differentiable convex function. f is L-smooth relative to Ψ if for any x,y ∈ int(X),\n(C.6) f(y) ≤ f(x)+⟨∇f(x),y−x⟩+LB (y,x).",
+      "size": 436,
+      "sentences": 6
+    },
+    {
+      "id": 254,
+      "content": "ction. f is L-smooth relative to Ψ if for any x,y ∈ int(X),\n(C.6) f(y) ≤ f(x)+⟨∇f(x),y−x⟩+LB (y,x). Ψ\n===  38 ===\n38 H. Y. TAN, S. OSHER, AND W. LI\nf is µ-strongly-convex relative to Ψ if for any x,y ∈ int(X),\n(C.7) f(y) ≥ f(x)+⟨∇f(x),y−x⟩+µB (y,x). Ψ\nIn the special case where Ψ(x) = 1x⊤Ax for some (positive definite) symmetric A, we write\n2\nthat f is L-smooth relative to A and µ-strongly-convex relative to A respectively. In particular,\nwe have that B (x,y) = 1(x−y)⊤A(x−y).",
+      "size": 479,
+      "sentences": 5
+    },
+    {
+      "id": 255,
+      "content": "µ-strongly-convex relative to A respectively. In particular,\nwe have that B (x,y) = 1(x−y)⊤A(x−y). Ψ 2\nProposition C.2 (Control on spectral radius). For a row- (or column-) stochastic matrix\nA ∈ Rn×n, the spectral norm ∥A∥ equals its largest singular value σ (A), and moreover\n√ 2 1\nsatisfies ∥A∥ ≤ n.\n2\n√ √\nProof. ∥A∥ ≤ n∥A∥ = n,where∥·∥ istheinduced∞-norm,equaltothemaximum\n2 ∞ ∞\nabsolute row sum. Proposition C.3.",
+      "size": 416,
+      "sentences": 6
+    },
+    {
+      "id": 256,
+      "content": "∥ ≤ n∥A∥ = n,where∥·∥ istheinduced∞-norm,equaltothemaximum\n2 ∞ ∞\nabsolute row sum. Proposition C.3. A function f : Rn → R is µ-strongly convex relative to A if and only if\nfor all x,y ∈ Rn,\n(C.8) ⟨∇f(x)−∇f(y),x−y⟩ ≥ µ⟨A(x−y),x−y⟩. Proof. Note that µ-relative strong convexity is equivalent to f −µΨ being convex. Hence,\nf being µ-strongly convex relative to 1x⊤Ax is equivalent to the following by the monotone\n2\ngradient condition,\n⟨∇(f −µΨ)(x)−∇(f −µΨ)(y),x−y⟩ ≥ 0.",
+      "size": 467,
+      "sentences": 6
+    },
+    {
+      "id": 257,
+      "content": "quivalent to the following by the monotone\n2\ngradient condition,\n⟨∇(f −µΨ)(x)−∇(f −µΨ)(y),x−y⟩ ≥ 0. ⇔ ⟨∇f(x)−∇f(y),x−y⟩ ≥ µ⟨∇Ψ(x)−∇Ψ(y),x−y⟩ = µ⟨A(x−y),x−y⟩. Proposition C.4 (Contraction-diffusion inequality). Suppose that V is µ-strongly convex\nrelative to M−1, and that V is minimized at xˆ ∈ Rd.",
+      "size": 298,
+      "sentences": 4
+    },
+    {
+      "id": 258,
+      "content": "equality). Suppose that V is µ-strongly convex\nrelative to M−1, and that V is minimized at xˆ ∈ Rd. Then the following holds for any X:\n(C.9)\n(cid:32) √ (cid:33)\nµ (1+ N) 1\n⟨∆,M−1(X−Xˆ)⟩ ≤ ∥X−Xˆ∥ − ∥X−Xˆ∥ + ∥X− X1 1⊤∥ ,\nFrob 2,M 2 2,M 2T N N N 2,M\nwhere Xˆ is the tensorized minimizer\nXˆ = (cid:2) xˆ ... xˆ (cid:3) = xˆ1⊤ ∈ Rd×N. N\nProof. Let ∆ = ∆(X(k)) be the descent direction defined as follows\n1 1\n(C.10) ∆ = − M∇V(X)+ (X−Xsoftmax(W)⊤).",
+      "size": 442,
+      "sentences": 5
+    },
+    {
+      "id": 259,
+      "content": "∆ = ∆(X(k)) be the descent direction defined as follows\n1 1\n(C.10) ∆ = − M∇V(X)+ (X−Xsoftmax(W)⊤). 2 2T\nsuch that the PBRWP iteration (4.8) becomes X(k+1) = X(k)−η∆.",
+      "size": 165,
+      "sentences": 2
+    },
+    {
+      "id": 260,
+      "content": "∆ = − M∇V(X)+ (X−Xsoftmax(W)⊤). 2 2T\nsuch that the PBRWP iteration (4.8) becomes X(k+1) = X(k)−η∆. ===  39 ===\nPRECONDITIONED REGULARIZED WASSERSTEIN PROXIMAL SAMPLING METHODS 39\nCompute, noting that Xˆsoftmax(W)⊤ = Xˆ since 1 is a left-eigenvector of softmax(W)⊤\nN\nof eigenvalue 1:\n1\n⟨∆,M−1(X−Xˆ)⟩ = − ⟨M∇V(X)−M∇V(Xˆ),M−1(X−Xˆ)⟩\nFrob Frob\n2\n1\n+ ⟨(X−Xˆ)(I −softmax(W)⊤),M−1(X−Xˆ)⟩\nN×N Frob\n2T\nN\n1 (cid:88)\n= − ⟨∇V(x )−∇V(xˆ),x −xˆ⟩\ni i\n2\ni=1\n1\n+ ⟨(X−Xˆ)(I −softmax(W)⊤),M−1(X−Xˆ)⟩\nN×N Frob\n2T\nwhere in the second equality, we use that ⟨AX,Y⟩ = ⟨X,A⊤Y⟩ .",
+      "size": 553,
+      "sentences": 3
+    },
+    {
+      "id": 261,
+      "content": "I −softmax(W)⊤),M−1(X−Xˆ)⟩\nN×N Frob\n2T\nwhere in the second equality, we use that ⟨AX,Y⟩ = ⟨X,A⊤Y⟩ . To control the second\nFrob Frob\nterm we utilize Proposition C.2 for the column-stochastic matrix softmax(W)⊤. We have,\nrecalling Xˆ = xˆ1⊤, and 1⊤softmax(W)⊤ = 1⊤,\nN N N\n1 1\nX−Xˆ = (X− X1 1⊤)+ X1 1⊤ +xˆ1⊤\nN N N N N N N\n1\n⇒ (X−Xˆ)(I −softmax(W)⊤) = (X− X1 1⊤)(I −softmax(W)⊤).",
+      "size": 375,
+      "sentences": 3
+    },
+    {
+      "id": 262,
+      "content": "Xˆ = (X− X1 1⊤)+ X1 1⊤ +xˆ1⊤\nN N N N N N N\n1\n⇒ (X−Xˆ)(I −softmax(W)⊤) = (X− X1 1⊤)(I −softmax(W)⊤). N×N N N N N×N\n⟨(X−Xˆ)(I −softmax(W)⊤),M−1(X−Xˆ)⟩\nN×N Frob\n1\n= ⟨M−1/2(X− X1 1⊤)(I −softmax(W)⊤),M−1/2(X−Xˆ)⟩\nN N N N×N Frob\n1\n≤ ∥M−1/2(X− X1 1⊤)(I −softmax(W)⊤)∥ ∥M−1/2(X−Xˆ)∥\nN N N N×N 2 2\n√ 1\n≤ (1+ N)∥M−1/2(X− X1 1⊤)∥ ∥M−1/2(X−Xˆ)∥\nN N N 2 2\nWe use Proposition C.2 to control the spectral norm (induced 2-norm) of softmax(W)⊤.",
+      "size": 427,
+      "sentences": 2
+    },
+    {
+      "id": 263,
+      "content": "Xˆ)∥\nN N N 2 2\nWe use Proposition C.2 to control the spectral norm (induced 2-norm) of softmax(W)⊤. In\naddition, we use the tracial matrix H¨older inequality |⟨A,B⟩ | = |Tr (cid:0) A⊤B (cid:1) | ≤ ∥A∥ ∥B∥\nFrob p q\nwith p−1+q−1 = 1, and ∥A∥ is the p-Schatten norm (equal to the Frobenius norm for p = 2). p\nFrom the assumption on V and Proposition C.3, we have control on the other term as well:\n⟨∇V(x)−∇V(y),x−y⟩ ≥ µ∥x−y∥2 .",
+      "size": 424,
+      "sentences": 3
+    },
+    {
+      "id": 264,
+      "content": "on V and Proposition C.3, we have control on the other term as well:\n⟨∇V(x)−∇V(y),x−y⟩ ≥ µ∥x−y∥2 . M\nPutting everything together, we have\n(C.11) ⟨∆,M−1(X−Xˆ)⟩\nFrob\n√\nN\nµ (cid:88) (1+ N) 1\n(C.12) ≤ − ∥x −xˆ∥2 + ∥M−1/2(X− X1 1⊤)∥ ∥M−1/2(X−Xˆ)∥\n2 i M 2T N N N 2 2\ni=1\n(cid:32) √ (cid:33)\nµ (1+ N) 1\n(C.13) = ∥X−Xˆ∥ − ∥X−Xˆ∥ + ∥X− X1 1⊤∥\n2,M 2 2,M 2T N N N 2,M\n===  40 ===\n40 H. Y. TAN, S. OSHER, AND W. LI\n101\n102\n103\n0 20 40 60 80 100\nIteration\n2N/ix\ni\n101\n102\n103\n0 50 100 150 200 250 300\nIteration\n(a) N =6,η=0.1\n2N/ix\ni\n101\n102\n103\n0 250 500 750 1000 1250 1500 1750 2000\nIteration\n(b) N =100,η=0.1\n2N/ix\ni\n(c) N =100,η=0.02\nFigure 11.",
+      "size": 635,
+      "sentences": 2
+    },
+    {
+      "id": 265,
+      "content": "50 500 750 1000 1250 1500 1750 2000\nIteration\n(b) N =100,η=0.1\n2N/ix\ni\n(c) N =100,η=0.02\nFigure 11. Plot of the norm of the average of the points ∥1 (cid:80) x ∥ with respect to iteration, for the target\nN i i\ndistribution N(0,I ) and identity preconditioner, T =2, and various choices of N and step-size. The mean does\n2\nnot converge linearly, and instead has two separate regimes.",
+      "size": 382,
+      "sentences": 3
+    },
+    {
+      "id": 266,
+      "content": "es of N and step-size. The mean does\n2\nnot converge linearly, and instead has two separate regimes. where for a positive definite symmetric matrix M ∈ Rd×d, we define the scaled (2,M) norm of\na d×N matrix by\n(cid:16) (cid:17)\n(C.14) ∥A∥2 := ∥M−1/2A∥2 = Tr A⊤M−1A . 2,M 2\nInterpretation: iftheparticlesarefarfromtheminimizerandhavesmallstandarddeviation,\nthen they will flow together (on average) to the minimizer.",
+      "size": 413,
+      "sentences": 4
+    },
+    {
+      "id": 267,
+      "content": "minimizerandhavesmallstandarddeviation,\nthen they will flow together (on average) to the minimizer. We note that we do not use the\nactual values of the interaction matrix W.\nFigure 11 demonstrates the change of regime that occurs from a high variance initial\ndistribution. The target distribution is the two-dimensional standard Gaussian with M = I.\nC.4. Particle diffusion boundedness. We refer back to the Gaussian case where the target\ndistribution is N(0,β−1Σ). Proposition C.5.",
+      "size": 482,
+      "sentences": 6
+    },
+    {
+      "id": 268,
+      "content": "ss. We refer back to the Gaussian case where the target\ndistribution is N(0,β−1Σ). Proposition C.5. Suppose M = Σ (and T < 1), and that x is an exterior point of the\n1\nconvex hull of {x }. Suppose δ > 0 is such that for all j ̸= 1,\ni\n(C.15) x⊤M−1x ≤ x⊤M−1x −δ∥x ∥ ,\n1 j 1 1 1 M\nThen, if x has sufficiently large norm, in particular assuming,\n1\n(cid:18) (cid:19)\n2(N −1)\n(C.16) δ∥x ∥ ≥ 2β−1T log ,\n1 M\nT\n(k+1) (k)\nthen for small step-size, the updated point satisfies ∥x ∥ < ∥x ∥ . 1 M 1 M\nProof.",
+      "size": 495,
+      "sentences": 6
+    },
+    {
+      "id": 269,
+      "content": "1 M\nT\n(k+1) (k)\nthen for small step-size, the updated point satisfies ∥x ∥ < ∥x ∥ . 1 M 1 M\nProof. Recall the particle evolution\n(cid:32) N (cid:33)\n(k+1) (k) η (k) η (cid:88) (k) (k) (k)\nx = x − M∇V(x )+ softmax(W ) (x −x ) ,\ni i 2 i 2T i,· j i j\nk=1\nwhere in the Gaussian case, the interaction weight matrix W takes the special form\nβ (cid:16) (cid:17)\n(C.17) W = 2x⊤M−1x −x⊤(M +TMΣ−1M)−1x .",
+      "size": 393,
+      "sentences": 3
+    },
+    {
+      "id": 270,
+      "content": "n weight matrix W takes the special form\nβ (cid:16) (cid:17)\n(C.17) W = 2x⊤M−1x −x⊤(M +TMΣ−1M)−1x . ij 4T i j j j\n[  ]\n\n===  41 ===\nPRECONDITIONED REGULARIZED WASSERSTEIN PROXIMAL SAMPLING METHODS 41\nWe control the values of W . In this case M = Σ we have\n1j\nβ (cid:16) (cid:17)\nW = 2x⊤M−1x −(1+T)−1x⊤M−1x\nij 4T i j j j\nwhich controls\nβ\nW = (2−(1+T)−1)∥x ∥2\n11 4T 1 M\nand for j ̸= 1,\nβ\n(C.18) W ≤ (2∥x ∥2 −(1+T)−1∥x ∥2 −2δ∥x ∥ )\n1j 4T 1 M 1 M 1 M\nδβ\n(C.19) = W − ∥x ∥ .",
+      "size": 469,
+      "sentences": 3
+    },
+    {
+      "id": 271,
+      "content": "d for j ̸= 1,\nβ\n(C.18) W ≤ (2∥x ∥2 −(1+T)−1∥x ∥2 −2δ∥x ∥ )\n1j 4T 1 M 1 M 1 M\nδβ\n(C.19) = W − ∥x ∥ . 11 1 M\n2T\nWe have that\nN\n(cid:88)\n(C.20) exp(W ) ≤ exp(W )[1+(N −1)exp(−δβ∥x ∥ /(2T))]\n1j 11 1 M\ni=1\n(k+1) (k) (k)\nConsidering ⟨x −x ,x ⟩ , we want to show it is negative for big R. Then the norm of\n1 1 1 M\nthe iteration decreases.",
+      "size": 331,
+      "sentences": 2
+    },
+    {
+      "id": 272,
+      "content": ",x ⟩ , we want to show it is negative for big R. Then the norm of\n1 1 1 M\nthe iteration decreases. The iteration takes the form\n1\n(k+1) (k) (k)\n(C.21) ⟨x −x ,x ⟩\nη 1 1 1 M\nN\n1 1 (cid:88)\n(C.22) = − ∥x ∥2 + softmax(W ) ⟨x −x ,x ⟩\n2 1 M 2T 1· j 1 j 1 M\nj=2\nBy maximality we have\n(cid:40)\n∥x ∥2 −δ2/2, ⟨x ,x ⟩ > 0;\n(C.23) 0 < ⟨x −x ,x ⟩ < 1 M 1 j M\n1 j 1 M\n2∥x ∥2 , ⟨x ,x ⟩ < 0.",
+      "size": 375,
+      "sentences": 2
+    },
+    {
+      "id": 273,
+      "content": "(cid:40)\n∥x ∥2 −δ2/2, ⟨x ,x ⟩ > 0;\n(C.23) 0 < ⟨x −x ,x ⟩ < 1 M 1 j M\n1 j 1 M\n2∥x ∥2 , ⟨x ,x ⟩ < 0. 1 M 1 j M\nIf (cid:80)N softmax(W ) ≤ T, then naturally\nj=2 1· j 2\nN\n1 1 (cid:88)\n− ∥x ∥2 + softmax(W ) ⟨x −x ,x ⟩\n2 1 M 2T 1· j 1 j 1 M\nj=2\n1 1 T\n< − ∥x ∥2 + 2∥x ∥2 = 0.",
+      "size": 268,
+      "sentences": 2
+    },
+    {
+      "id": 274,
+      "content": "1 (cid:88)\n− ∥x ∥2 + softmax(W ) ⟨x −x ,x ⟩\n2 1 M 2T 1· j 1 j 1 M\nj=2\n1 1 T\n< − ∥x ∥2 + 2∥x ∥2 = 0. 2 1 M 2T 2 1 M\nSo we wish to find a sufficient condition on ∥x ∥ such that (cid:80)N softmax(W ) ≤ T. It\n1 M j=2 1· j 2\nis sufficient that softmax(W ) ≥ 1−T/2, which is satisfied if\n1· 1\nT\n(C.24) [1+(N −1)exp(−δβ∥x ∥ /(2T))]−1 ≥ 1−\n1 M\n2\nT\n(C.25) ⇔ [1+exp(−δβ∥x ∥ /(2T)+log(N −1))]−1 ≥ 1−\n1 M\n2\n===  42 ===\n42 H. Y. TAN, S. OSHER, AND W. LI\nNote (1+x)−1 > 1−x, so it is sufficient that\nT\nexp(−δβ∥x ∥ /(2T)+log(N −1)) ≤\n1 M\n2\n(cid:18) (cid:19)\n2(N −1)\n⇔ δ∥x ∥ ≥ 2β−1T log .",
+      "size": 572,
+      "sentences": 2
+    },
+    {
+      "id": 275,
+      "content": "ficient that\nT\nexp(−δβ∥x ∥ /(2T)+log(N −1)) ≤\n1 M\n2\n(cid:18) (cid:19)\n2(N −1)\n⇔ δ∥x ∥ ≥ 2β−1T log . 1 M\nT\nAppendix D. Sensitivity to hyperparameters for imaging experiment. Tables 3 and 4\nplot the deconvolution reconstructions using PBRWP and BRWP respectively over a variety\nof choices of T and step-size. Both methods are run with 40 particles up to 5000 iterations.",
+      "size": 368,
+      "sentences": 4
+    },
+    {
+      "id": 276,
+      "content": "ariety\nof choices of T and step-size. Both methods are run with 40 particles up to 5000 iterations. We observe that both methods are not particularly sensitive to the choice of T except for an\nintermediate choice of T = 10−2, for which we observe more variance.",
+      "size": 261,
+      "sentences": 3
+    },
+    {
+      "id": 277,
+      "content": "the choice of T except for an\nintermediate choice of T = 10−2, for which we observe more variance. This can be explained\nby variance reduction phenomena: by the regularization of the Wasserstein proximal for large\nT, and by the finite number of particles for small T. For the smallest step-size η = 10−5, 5000\niterations are insufficient to reach convergence and therefore the performance is worse.",
+      "size": 398,
+      "sentences": 2
+    },
+    {
+      "id": 278,
+      "content": "10−5, 5000\niterations are insufficient to reach convergence and therefore the performance is worse. Table 3\nPSNR (in dB) of the mean of 40 particles computed using PBRWP, taken with respect the MAP estimate\nfor the deconvolution problem. Taken at iteration 5000, at which stepsizes 1e-3 and 5e-4 have converged.",
+      "size": 311,
+      "sentences": 3
+    },
+    {
+      "id": 279,
+      "content": "he deconvolution problem. Taken at iteration 5000, at which stepsizes 1e-3 and 5e-4 have converged. Step-size\n1e-3 5e-4 2e-4 1e-4 1e-5\nT\n1e-4 30.28 34.22 39.53 43.34 31.30\n1e-3 30.28 34.24 39.45 42.76 31.29\n1e-2 30.30 33.95 37.88 39.37 30.97\n0.5 30.29 34.22 39.53 43.37 31.30\n10 30.28 34.22 39.52 43.37 31.30\nTable 4\nPSNR (in dB) of the mean of 40 particles computed using BRWP, taken with respect the MAP estimate\nfor the deconvolution problem.",
+      "size": 445,
+      "sentences": 3
+    },
+    {
+      "id": 280,
+      "content": "0 particles computed using BRWP, taken with respect the MAP estimate\nfor the deconvolution problem. Taken at iteration 5000, at which stepsizes 1e-3, 5e-4 and 2e-4 have converged. Step-size\n1e-3 5e-4 2e-4 1e-4 1e-5\nT\n1e-4 34.22 38.20 43.36 42.75 28.59\n1e-3 34.22 38.20 43.08 42.47 28.59\n1e-2 34.18 37.69 40.82 39.99 28.53\n0.5 34.22 38.20 43.36 42.72 28.58\n10 34.22 38.20 43.37 42.76 28.59\nAppendix E. Choice of variable preconditioner for BNNs.",
+      "size": 444,
+      "sentences": 3
+    },
+    {
+      "id": 281,
+      "content": "2.72 28.58\n10 34.22 38.20 43.37 42.76 28.59\nAppendix E. Choice of variable preconditioner for BNNs. To compute the diagonal\nvariable preconditioner, we use the second moment estimates of Adam [24], which are used to\nprecondition a moving average of the gradient. We discard the first moment estimate since we\n===  43 ===\nPRECONDITIONED REGULARIZED WASSERSTEIN PROXIMAL SAMPLING METHODS 43\nare not optimizing using Adam directly.",
+      "size": 428,
+      "sentences": 3
+    },
+    {
+      "id": 282,
+      "content": "TIONED REGULARIZED WASSERSTEIN PROXIMAL SAMPLING METHODS 43\nare not optimizing using Adam directly. Algorithm 2 details how pointwise gradient estimates\n(corresponding to each particle) give rise to the variable preconditioning matrices M(k). By\napplying this algorithm to each particle x , which are updated according to PBRWP, we get\nj\n(k)\ntheir corresponding preconditioning matrices M .",
+      "size": 390,
+      "sentences": 3
+    },
+    {
+      "id": 283,
+      "content": "which are updated according to PBRWP, we get\nj\n(k)\ntheir corresponding preconditioning matrices M . j\nAlgorithm 2: Adam-based Preconditioner\nData: Objective function f, exponential decay rates β = 0.999, point sequence\n2\n(x(l)) , epsilon ϵ = 0.001.\nl≥1\nResult: Preconditioners M(k), where M(k) = M(k)(x(1),...,x(k)).",
+      "size": 316,
+      "sentences": 2
+    },
+    {
+      "id": 284,
+      "content": "e\n2\n(x(l)) , epsilon ϵ = 0.001.\nl≥1\nResult: Preconditioners M(k), where M(k) = M(k)(x(1),...,x(k)). 1 v 0 ← 0; // initialize second moment vector\n2 for k = 1,...,K do\n3 g k ← ∇f(x(k)) ; // compute gradient\n4 v k ← β 2 v k−1 +(1−β 2 )g k 2 ; // update second moment estimate\n5 vˆ k ← v k /(1−β 2 k √ ) ; // bias correction\n6 M(k) = diag(1/( vˆ k +ϵ)) ; // construct preconditioning matrix\n7 end\n8 return (M(k))K . k=1",
+      "size": 416,
+      "sentences": 3
+    }
+  ]
+}

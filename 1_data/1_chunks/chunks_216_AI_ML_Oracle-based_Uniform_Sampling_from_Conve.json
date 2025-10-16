@@ -1,0 +1,1143 @@
+{
+  "source": "ArXiv",
+  "filename": "216_AI_ML_Oracle-based_Uniform_Sampling_from_Conve.pdf",
+  "domain": "AI",
+  "total_chars": 61755,
+  "total_chunks": 189,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\nOracle-based Uniform Sampling from Convex Bodies\nThanh Dang ∗ Jiaming Liang †\nOctober 3, 2025\nAbstract\nWe propose new Markov chain Monte Carlo algorithms to sample a uniform distribution on\na convex body K. Our algorithms are based on the Alternating Sampling Framework/proximal\nsampler, which uses Gibbs sampling on an augmented distribution and assumes access to the\nso-called restricted Gaussian oracle (RGO).",
+      "size": 423,
+      "sentences": 1
+    },
+    {
+      "id": 2,
+      "content": "on an augmented distribution and assumes access to the\nso-called restricted Gaussian oracle (RGO). The key contribution of this work is the efficient\nimplementationofRGOforuniformsamplingonK viarejectionsamplingandaccesstoeithera\nprojectionoracleoraseparationoracleonK. Inbothoraclecases,weestablishnon-asymptotic\ncomplexitiestoobtainunbiasedsampleswheretheaccuracyismeasuredinR´enyidivergenceor\nχ2-divergence. Key words.",
+      "size": 421,
+      "sentences": 4
+    },
+    {
+      "id": 3,
+      "content": "tiestoobtainunbiasedsampleswheretheaccuracyismeasuredinR´enyidivergenceor\nχ2-divergence. Key words. Uniform sampling, Markov chain Monte Carlo, Alternating Sampling Frame-\nwork, restricted Gaussian oracle, projection oracle, separation oracle, rejection sampling. 1 Introduction\nSampling points from convex bodies in high dimension is a classical and central problem in compu-\ntational geometry, probability, statistics, and optimization.",
+      "size": 438,
+      "sentences": 4
+    },
+    {
+      "id": 4,
+      "content": "assical and central problem in compu-\ntational geometry, probability, statistics, and optimization. Given a convex body K ⊆ Rd, one likes\nto generate samples according to some distributions defined on K. Past and recent works in the\narea of constrained sampling in high dimension include [52, 12, 30, 4, 3, 31, 36, 21, 44, 35, 19, 66,\n28, 1, 47, 58, 46, 24, 23]; and many others. In this paper, we will focus on uniform sampling on K\nwhich can be viewed as the most fundamental case.",
+      "size": 483,
+      "sentences": 3
+    },
+    {
+      "id": 5,
+      "content": "his paper, we will focus on uniform sampling on K\nwhich can be viewed as the most fundamental case. It is closely related to the problem of efficiently\ncomputing the volume of K, which is a important problem in computer science for the last few\ndecades (see [13] and the references therein). Moreover, uniform sampling also has a connection\nto Bayesian inference.",
+      "size": 363,
+      "sentences": 3
+    },
+    {
+      "id": 6,
+      "content": "nd the references therein). Moreover, uniform sampling also has a connection\nto Bayesian inference. If one takes the Gaussian distribution N(0,σ2I ), restricts it to K and\nd\nlets σ becomes sufficiently large, then this truncated Gaussian distribution resembles the uniform\ndistribution on K. At the same time, truncated Gaussian distribution has been used extensively\nin Bayesian statistical models with probit regression and censored data, see [25, 2, 10, 26, 59].",
+      "size": 465,
+      "sentences": 3
+    },
+    {
+      "id": 7,
+      "content": "y\nin Bayesian statistical models with probit regression and censored data, see [25, 2, 10, 26, 59]. Due\nto its importance, many works have been devoted to develop algorithms for this problem.",
+      "size": 191,
+      "sentences": 2
+    },
+    {
+      "id": 8,
+      "content": "6, 59]. Due\nto its importance, many works have been devoted to develop algorithms for this problem. The\nseminal work by [16] proposes the first algorithm to approximate the volume of any convex K in\npolynomial time and also introduces the celebrated Ball walk to generate samples uniformly on K.\nAssuming a membership oracle, an iteration of the Ball walk works as follows:\n• pick a uniform random point y from the ball of radius δ centered at the current point x;\n∗Department of Computer Science, University of Rochester, Rochester, NY 14620.",
+      "size": 543,
+      "sentences": 3
+    },
+    {
+      "id": 9,
+      "content": "the current point x;\n∗Department of Computer Science, University of Rochester, Rochester, NY 14620. (email:\ntdang9@ur.rochester.edu). †Goergen Institute for Data Science and Artificial Intelligence (GIDS-AI) and Department of Computer Science,\nUniversity of Rochester, Rochester, NY 14620 (email: jiaming.liang@rochester.edu). This work was partially\nsupported by GIDS-AI seed funding and AFOSR grant FA9550-25-1-0182.",
+      "size": 418,
+      "sentences": 4
+    },
+    {
+      "id": 10,
+      "content": "r.edu). This work was partially\nsupported by GIDS-AI seed funding and AFOSR grant FA9550-25-1-0182. 1\n5202\ntcO\n3\n]SD.sc[\n1v38920.0152:viXra\n===  2 ===\n• if y is in K, go to y; otherwise stay at the current point x. Other algorithms that can be used for uniform sampling from convex K are the Hit-and-Run walk\nin [57, 53, 51], the coordinate Hit-and-Run walk [60, 14, 15], the Dikin walk in [31], the Geodesic\nwalk in [43], and diffusion-based samplers in [4, 3, 24, 5], among others.",
+      "size": 483,
+      "sentences": 4
+    },
+    {
+      "id": 11,
+      "content": "lk in [31], the Geodesic\nwalk in [43], and diffusion-based samplers in [4, 3, 24, 5], among others. More details on these\nalgorithms are provided in Appendix C.\nRelated works. In [42], Lee, Shen, and Tian develop a Gibbs sampling scheme for log-\nconcave sampling in high dimension. They name it Alternating Sampling Framework (ASF), which\nis also referred to as the proximal sampler due to its connection to the proximal point method\nin optimization.",
+      "size": 450,
+      "sentences": 4
+    },
+    {
+      "id": 12,
+      "content": "rred to as the proximal sampler due to its connection to the proximal point method\nin optimization. Each iteration of the scheme consists of an initial Gaussian step followed by a\nproximal-type sampling step. The ASF is interesting to study in several ways. First, it is at\nthe intersection of sampling and optimization. Second, it is a high-accuracy/non-biased sampler\n(compared to Langevin Monte Carlo/Underdamped Langevin Monte Carlo, which are known to\nbe biased).",
+      "size": 468,
+      "sentences": 5
+    },
+    {
+      "id": 13,
+      "content": "(compared to Langevin Monte Carlo/Underdamped Langevin Monte Carlo, which are known to\nbe biased). Finally, thanks to the discovery in [8], the ASF as a discrete-time Markov chain can\nbe viewed through the lens of Itˆo diffusion processes and analyzed using tools from stochastic\ncalculus. For these reasons, the ASF/proximal sampler inspires many follow-up works such as\n[22, 7, 54, 63, 65, 64, 48, 18, 49] among others.",
+      "size": 421,
+      "sentences": 3
+    },
+    {
+      "id": 14,
+      "content": "mal sampler inspires many follow-up works such as\n[22, 7, 54, 63, 65, 64, 48, 18, 49] among others. In [39], Kook, Vempala, and Zhang propose the In-and-Out algorithm to perform uniform\nsamplingfromconvexK.",
+      "size": 206,
+      "sentences": 2
+    },
+    {
+      "id": 15,
+      "content": ", Kook, Vempala, and Zhang propose the In-and-Out algorithm to perform uniform\nsamplingfromconvexK. TheiralgorithmisbasedontheASFandtheyemployacleversmoothing\nargument to adapt the proof technique in [8] to the case of the uniform distribution from K. In\nparticular, their implementation of the RGO step is via a membership oracle: they sample x\nfrom a Gaussian distribution until x ∈ K up to a certain number of maximum attempts N, at\nwhich point the algorithm halts and declares failure.",
+      "size": 489,
+      "sentences": 2
+    },
+    {
+      "id": 16,
+      "content": "to a certain number of maximum attempts N, at\nwhich point the algorithm halts and declares failure. Then they carefully analyze the condition\non step size and N to make sure the failure probability is small. Subsequent works using ASF for\nuniform sampling on K and more general log-concave sampling by reducing it to the problem of\nexponential sampling from convex bodies have been carried out in [38, 37, 34].",
+      "size": 410,
+      "sentences": 3
+    },
+    {
+      "id": 17,
+      "content": "it to the problem of\nexponential sampling from convex bodies have been carried out in [38, 37, 34]. In particular, [34] is\nable to get rid of the failure probability in the In-and-Out algorithm by introducing a restart step:\nif one cannot generate x that is in K from a Gaussian distribution after N attempts in the second\nstep of the ASF, then restart by returning to the first step of the ASF. Our contributions.",
+      "size": 414,
+      "sentences": 3
+    },
+    {
+      "id": 18,
+      "content": "second\nstep of the ASF, then restart by returning to the first step of the ASF. Our contributions. We develop efficient algorithms to perform uniform sampling on the\nconvex body K. Our algorithms are also based on the ASF/proximal sampler like the In-and-out\nalgorithm in [39], however, our goal is to explore beyond the membership oracle employed in\n[39] and to consider other common oracles in convex optimization and computer science, which\nare projection oracles and separation oracles.",
+      "size": 490,
+      "sentences": 3
+    },
+    {
+      "id": 19,
+      "content": "s in convex optimization and computer science, which\nare projection oracles and separation oracles. More specifically, each iteration of the proximal\nsamplerconsistsofaninitialGaussianstepfollowedbyaproximal-typesamplingstep. Thelatteris\nknown as the Restricted Gaussian Oracle (RGO) and is the primary challenge of applying the ASF. We propose Algorithm 3 and Algorithm 4 as implementations of the RGO via rejection sampling.",
+      "size": 426,
+      "sentences": 4
+    },
+    {
+      "id": 20,
+      "content": "e ASF. We propose Algorithm 3 and Algorithm 4 as implementations of the RGO via rejection sampling. They respectively require a projection oracle and a separation oracle on K. An advantage\nof our algorithms is that our RGO implementations are unbiased and the outputs of our RGO\nimplementations belong to the feasible set K almost surely (see Remark 3).",
+      "size": 353,
+      "sentences": 3
+    },
+    {
+      "id": 21,
+      "content": "d the outputs of our RGO\nimplementations belong to the feasible set K almost surely (see Remark 3). Therefore, we are able\nto avoid the failure probability encountered in [39, 38, 37] and thus offer another alternative to the\nrestart procedure in [34]. More specifically, in Section 3, we assume the convex set K satisfies B(0,1) ⊆ K ⊆ B(0,R) and\ntheinitialdistributionµ oftheASF(Algorithm2)satisfiesawarm-startassumption: dµ /dπ ≤ M\n0 0\nwhere π ∼ 1 .",
+      "size": 451,
+      "sentences": 3
+    },
+    {
+      "id": 22,
+      "content": "itialdistributionµ oftheASF(Algorithm2)satisfiesawarm-startassumption: dµ /dπ ≤ M\n0 0\nwhere π ∼ 1 . Moreover, the RGO implementation is via Algorithm 3 which uses a projection\nK\noracle on K and rejection sampling. Then per our Theorem 3.4, to achieve an ϵ-accuracy in R´enyi\n2\n===  3 ===\ndivergence R , Algorithm 2 combined with Algorithm 3 needs at most\nq\n(cid:18) (cid:18) (cid:19)(cid:19)\nlogM\nO d2C qlog 2 . (1)\nLSI\nϵ\niterations.",
+      "size": 433,
+      "sentences": 4
+    },
+    {
+      "id": 23,
+      "content": "ithm 3 needs at most\nq\n(cid:18) (cid:18) (cid:19)(cid:19)\nlogM\nO d2C qlog 2 . (1)\nLSI\nϵ\niterations. C astheLSIconstantoftheuniformdistributiononK isoftheorderO(D2)whereD\nLSI\nis the diameter of K. Our result therefore matches the iteration complexity (in term of dimension\ndependence and step size dependence) of the In-and-out algorithm [39, Theorem 27] and that of\nthe Ball walk (see our Appendix C).",
+      "size": 401,
+      "sentences": 3
+    },
+    {
+      "id": 24,
+      "content": "dence) of the In-and-out algorithm [39, Theorem 27] and that of\nthe Ball walk (see our Appendix C). Moreover, under the additional assumption that the step size\nη of the ASF equals 1/d2, Theorem 3.4 also says that each iteration of the ASF makes one query to\n√\nthe projection oracle on K and has at most an average of M( 2πe+1) rejections for the rejection\nsampling. Finally, Theorem 3.4 also offers similar results in χ2-divergence.",
+      "size": 433,
+      "sentences": 3
+    },
+    {
+      "id": 25,
+      "content": "ions for the rejection\nsampling. Finally, Theorem 3.4 also offers similar results in χ2-divergence. In Section 4, in the absence of a projection oracle on K, we implement the RGO via Algo-\nrithm 4 which uses a separation oracle on K and rejection sampling. We assume the same condi-\ntions about K as in the previous paragraph. Then Theorem 4.3 says that the number of iterations\nof the ASF (Algorithm 2) to reach ϵ-accuracy in R´enyi divergence R does not exceed the value at\nq\n(cid:16) (cid:17)\n(1).",
+      "size": 500,
+      "sentences": 5
+    },
+    {
+      "id": 26,
+      "content": "2) to reach ϵ-accuracy in R´enyi divergence R does not exceed the value at\nq\n(cid:16) (cid:17)\n(1). In particular, each iteration of the ASF makes O dlog dγ queries to the separation oracle\nα\nonK, whereγ = R/minwidth(K), minwidth(K) = min (cid:0) max aTy−min aTy (cid:1) , andthe\n∥a∥=1 y∈K y∈K\n(cid:16) (cid:17)\nconstant α ∈ (0,1) is not too small (in the sense that it satisfies Pr (cid:0) α ≤ 2 (cid:1) ≤ 4exp −d2R2 ).",
+      "size": 420,
+      "sentences": 2
+    },
+    {
+      "id": 27,
+      "content": "α ∈ (0,1) is not too small (in the sense that it satisfies Pr (cid:0) α ≤ 2 (cid:1) ≤ 4exp −d2R2 ). √ d37R2 8\nIn addition, the average number of rejections is M 2πexp\n(cid:0)13\n+\n20(cid:1)\n+ M exp\n(cid:0)9\n+\n12(cid:1)\nfor the\n4 d 4 d\nrejection sampling. Finally, Theorem 4.3 also provides similar results in χ2-divergence.",
+      "size": 322,
+      "sentences": 3
+    },
+    {
+      "id": 28,
+      "content": "he\n4 d 4 d\nrejection sampling. Finally, Theorem 4.3 also provides similar results in χ2-divergence. 2 Preliminaries\n2.1 Notation, definitions, and assumptions\nRegarding notation, ∥·∥ denotes the Euclidean norm on Rd, ∥·∥ denotes the matrix operator\nop\nnorm, and I denotes the identity matrix of size d×d. The expression x = O(a) means there exists\nd\na universal constant C > 0 such that x ≤ Ca. The notation O˜(a) is used similarly, but allows\nadditional logarithmic factors. Absolute continuity.",
+      "size": 496,
+      "sentences": 6
+    },
+    {
+      "id": 29,
+      "content": "e notation O˜(a) is used similarly, but allows\nadditional logarithmic factors. Absolute continuity. Assume µ,ν are two measures on a probability space (E,F). We\nsay µ is absolutely continuous with respect to ν, denoted by µ ≪ ν, if there exists a function\nf : E → R such that for any A ∈ F, we have µ(A) = (cid:82) f(x)dν(x). The function f is called the\nA\nRadon-Nikodym derivative of µ with respect to ν, and is denoted as dµ. dν\nMetric.",
+      "size": 438,
+      "sentences": 6
+    },
+    {
+      "id": 30,
+      "content": "f is called the\nA\nRadon-Nikodym derivative of µ with respect to ν, and is denoted as dµ. dν\nMetric. Assume that ϕ is a convex function R → R with ϕ(1) = 0 and that µ,ν are two\n≥0\nprobabilitymeasuresonaprobabilityspace(E,F)satisfyingµ ≪ ν, thentheϕ-divergencebetween\nµ and ν on Rd is defined as\n(cid:90) (cid:18) (cid:19)\ndµ\nD (µ||ν) = ϕ dν. ϕ\ndν\nE\nWhen ϕ(x) = xlogx, this is the Kullback-Leiber divergence and when ϕ(x) = x2 −1, this is the\nχ2-divergence.",
+      "size": 455,
+      "sentences": 4
+    },
+    {
+      "id": 31,
+      "content": ") = xlogx, this is the Kullback-Leiber divergence and when ϕ(x) = x2 −1, this is the\nχ2-divergence. Moreover, for q > 0, the q-R´enyi divergence is\n1\nR (µ||ν) = log(χq(µ||ν)+1). q\nq−1\nFinally, the relative Fisher information is defined as\n(cid:90) (cid:13) (cid:13) dµ (cid:13) (cid:13) 2\nFI(µ||ν) = (cid:13)∇log (cid:13) dµ. (cid:13) dν(cid:13)\nE\n3\n===  4 ===\nIsoperimetricinequalitiesandisoperimetricconstants.",
+      "size": 412,
+      "sentences": 4
+    },
+    {
+      "id": 32,
+      "content": "(cid:13) dµ. (cid:13) dν(cid:13)\nE\n3\n===  4 ===\nIsoperimetricinequalitiesandisoperimetricconstants. Regardingisoperimetricinequal-\nities, we say ν satisfies the log-Sobolev inequality (LSI) with constant C if for all µ ≪ ν,\nLSI\nC\nLSI\nKL(µ||ν) ≤ FI(µ||ν). 2\nMeanwhile, we say ν satisfies the Poincar´e inequality (PI) with constant C if for any smooth\nPI\nbounded function ψ,\n(cid:104) (cid:105)\nVar (ψ) ≤ C E ∥∇ψ∥2 .",
+      "size": 415,
+      "sentences": 4
+    },
+    {
+      "id": 33,
+      "content": "with constant C if for any smooth\nPI\nbounded function ψ,\n(cid:104) (cid:105)\nVar (ψ) ≤ C E ∥∇ψ∥2 . ν PI ν\nIn [39, Appendix C], the authors provide a nice summary of studies on isoperimetric constants\nin [6, 29, 45, 9, 33, 32].",
+      "size": 226,
+      "sentences": 2
+    },
+    {
+      "id": 34,
+      "content": "the authors provide a nice summary of studies on isoperimetric constants\nin [6, 29, 45, 9, 33, 32]. A consequence of the aforementioned studies is the following result about\nLSI and PI constants of the uniform distribution on convex K. We note that a probability measure\nπ on K is isotropic if for a random vector (X ,...,X ) distributed as π, we have EX = 0 and\n1 d i\nEX X = 1 for all 1 ≤ i,j ≤ d.\ni j i=j\nLemma 2.1 [39, Lemma 18] Let π be the uniform distribution over K and K ⊂ Rd be a convex\n(cid:16) (cid:17)\nbody with diameter D, where D = max ∥x−y∥.",
+      "size": 556,
+      "sentences": 2
+    },
+    {
+      "id": 35,
+      "content": "ribution over K and K ⊂ Rd be a convex\n(cid:16) (cid:17)\nbody with diameter D, where D = max ∥x−y∥. Then we have C (π) = O ∥Cov(π)∥ logd\nx,y∈K PI op\nand C (π) = O\n(cid:0) D2(cid:1)\n. LSI\nIn particular, if π is isotropic, then C (π) = O(logd) and C (π) = O(D). PI LSI\nOracles.",
+      "size": 275,
+      "sentences": 4
+    },
+    {
+      "id": 36,
+      "content": "d:1)\n. LSI\nIn particular, if π is isotropic, then C (π) = O(logd) and C (π) = O(D). PI LSI\nOracles. For any query point x ∈ Rd, a membership oracle on K provides the correct\nanswer to whether x ∈ K. Meanwhile, for any query point x ∈ Rd, a separation oracle on K\neither confirms x ∈ K or if x ∈/ K, returns g : Rd (cid:55)→ Rd satisfying for every y ∈ K,\n⟨g(x),x−y⟩ ≥ 0. One can immediately see that a separation oracle assumes a membership oracle.",
+      "size": 448,
+      "sentences": 5
+    },
+    {
+      "id": 37,
+      "content": "∈ K,\n⟨g(x),x−y⟩ ≥ 0. One can immediately see that a separation oracle assumes a membership oracle. Finally, a\nprojection oracle on K provides the vector proj (y) = argmin{∥x−y∥2 : x ∈ K} for any query\nK\npoint y ∈ Rd. Clearly, proj (y) = y if y ∈ K.\nK\nVolumes. Let vol(K) and vol (∂K) respectively denote the volumes of K ⊆ Rd and the\nd−1\nboundary set ∂K ⊆ Rd−1. Warmness. Given probability measures µ,ν on Rd and M > 0, we says µ is M-warm with\nrespect ν if µ ≪ ν and dµ(x) ≤ M,∀x ∈ Rd.",
+      "size": 486,
+      "sentences": 7
+    },
+    {
+      "id": 38,
+      "content": "ty measures µ,ν on Rd and M > 0, we says µ is M-warm with\nrespect ν if µ ≪ ν and dµ(x) ≤ M,∀x ∈ Rd. In both Algorithm 3 and Algorithm 4 of the paper,\ndν\nwe will assume a warm start assumption: the starting distribution µ is M-warm with respect to\n0\nthe uniform distribution on K.\nStanding assumptions for the paper.",
+      "size": 315,
+      "sentences": 2
+    },
+    {
+      "id": 39,
+      "content": "on µ is M-warm with respect to\n0\nthe uniform distribution on K.\nStanding assumptions for the paper. In both Sections 3 and 4, we assume the following\nhold:\n(A1) K is a non-empty, closed, and convex set in Rd such that B(0,1) ⊆ K ⊆ B(0,R) for some\nR > 1, where B(0,R) denotes the Euclidean ball centered at the origin with radius R.\n(A2) the initial distribution µ is M-warm with respect to the uniform distribution on K, i.e.,\n0\ndµ0 ≤ M where π ∼ 1 (warm-start assumption).",
+      "size": 473,
+      "sentences": 2
+    },
+    {
+      "id": 40,
+      "content": "with respect to the uniform distribution on K, i.e.,\n0\ndµ0 ≤ M where π ∼ 1 (warm-start assumption). dπ K\n2.2 Alternating sampling framework\nASF is first proposed in [42] to sample log-concave distribution in Rd. It is closely related to the\nproximal point method in optimization and is therefore also known as the proximal sampler.",
+      "size": 331,
+      "sentences": 3
+    },
+    {
+      "id": 41,
+      "content": "d to the\nproximal point method in optimization and is therefore also known as the proximal sampler. Given\n4\n===  5 ===\nastepsizeη > 0,itaimstosamplethetargetdistributionπX(x) ∼ exp(−f(x))byperformingGibbs\nsampling for the augmented distribution πX,Y(x,y) ∼ exp\n(cid:16)\n−f(x)−\n∥x−y∥2(cid:17)\nwhose X-marginal is\n2η\nthe target πX. This idea of sampling from a joint distribution to obtain the marginal distribution\nhas been observed in earlier references, for example [12].",
+      "size": 472,
+      "sentences": 3
+    },
+    {
+      "id": 42,
+      "content": "tion to obtain the marginal distribution\nhas been observed in earlier references, for example [12]. Each ASF iteration alternates between\ntwo steps:\nAlgorithm 1 Alternating Sampling Framework [42]\n1. Sample y ∼ πY|X(y|x ) ∝ exp(− 1 ∥x −y∥2);\nk k 2η k\n2. Sample x ∼ πX|Y(x | y ) ∝ exp(−f(x)− 1 ∥x−y ∥2).",
+      "size": 302,
+      "sentences": 4
+    },
+    {
+      "id": 43,
+      "content": "ple y ∼ πY|X(y|x ) ∝ exp(− 1 ∥x −y∥2);\nk k 2η k\n2. Sample x ∼ πX|Y(x | y ) ∝ exp(−f(x)− 1 ∥x−y ∥2). k+1 k 2η k\nWhile [42] proposes ASF for log-concave sampling, [8] extends the assumption of log-concave\ndistributions to distributions satisfying common isoperimetric inequalities such as Log-Sobolev\ninequality or Poincar´e inequality.",
+      "size": 334,
+      "sentences": 3
+    },
+    {
+      "id": 44,
+      "content": "atisfying common isoperimetric inequalities such as Log-Sobolev\ninequality or Poincar´e inequality. The crucial observation by [8] is that while ASF is a Markov\nchain, each iteration of this chain can be viewed as a pair of forward and backward diffusion steps\nwhere probabilistic tools for Itˆo diffusion processes can be applied.",
+      "size": 331,
+      "sentences": 2
+    },
+    {
+      "id": 45,
+      "content": "and backward diffusion steps\nwhere probabilistic tools for Itˆo diffusion processes can be applied. For the ASF, i.e., Algorithm 1,\nthe first step is generating a Gaussian sample and thus can be easily done, while the second step is\nnon-trivial and is called the Restricted Gaussian Oracle (RGO). In both [42] and [8], the authors\neither assume they have exact access to the RGO, or that f is smooth so that RGO can be easily\ndone via rejection sampling.",
+      "size": 454,
+      "sentences": 3
+    },
+    {
+      "id": 46,
+      "content": "exact access to the RGO, or that f is smooth so that RGO can be easily\ndone via rejection sampling. Novel realizations of the RGO to either reduce its cost or to relax the\nsmoothness assumption have been investigated in [48, 22, 18, 65, 49, 50] among others. The uniform distribution on K has density proportional to 1 , where 1 (x) equals 1 on K\nK K\nand 0 otherwise.",
+      "size": 367,
+      "sentences": 3
+    },
+    {
+      "id": 47,
+      "content": "rm distribution on K has density proportional to 1 , where 1 (x) equals 1 on K\nK K\nand 0 otherwise. In the context of the ASF introduced above, if we take f(x) = I (x) where the\nK\nindicator function I (x) equals 0 if x ∈ K and equals +∞ otherwise, then the target of the ASF\nK\nwill be the uniform distribution on K. In particular, we have\n(cid:18) (cid:19)\n1\nπX ∝ exp(−I (x)) = 1 (x), πX,Y(x,y) ∝ exp − ∥x−y∥2 1 (x).",
+      "size": 416,
+      "sentences": 2
+    },
+    {
+      "id": 48,
+      "content": "n particular, we have\n(cid:18) (cid:19)\n1\nπX ∝ exp(−I (x)) = 1 (x), πX,Y(x,y) ∝ exp − ∥x−y∥2 1 (x). (2)\nK K K\n2η\nMoreover, denote N(y,ηI )| the Gaussian distribution N(y ,ηI ) restricted to K, i.e.,\nd K k d\n(cid:18) (cid:19) (cid:18) (cid:19)\n1 1\nN(y,ηI )| ∝ exp − ∥x−y∥2−I (x) = exp − ∥x−y∥2 1 (x). (3)\nd K K K\n2η 2η\nThen, Algorithm 1 for uniform sampling on K turns into\nAlgorithm 2 ASF for the uniform distribution on K\n1. Generate y ∼ πY|X(y|x ) = N (x ,ηI );\nk k k d\n2.",
+      "size": 474,
+      "sentences": 4
+    },
+    {
+      "id": 49,
+      "content": "gorithm 2 ASF for the uniform distribution on K\n1. Generate y ∼ πY|X(y|x ) = N (x ,ηI );\nk k k d\n2. Generate x ∼ πX|Y(x | y ) = N(y ,ηI )| . k+1 k k d K\nThe upcoming result is about contractivity in R´enyi divergence and χ2-divergence of Algo-\nrithm2.",
+      "size": 251,
+      "sentences": 4
+    },
+    {
+      "id": 50,
+      "content": "The upcoming result is about contractivity in R´enyi divergence and χ2-divergence of Algo-\nrithm2. Viaacleversmoothingargument, theauthorsof[39]areabletoadapttheprooftechnique\nin [8] to the case of uniform sampling from convex K. In particular, as pointed out in [39], the\nupcoming result does not require convexity of K.\nTheorem 2.2 ([39, Theorem 23]) Let µX be the law of the k-th output of Algorithm 2 (ASF).",
+      "size": 411,
+      "sentences": 2
+    },
+    {
+      "id": 51,
+      "content": "ity of K.\nTheorem 2.2 ([39, Theorem 23]) Let µX be the law of the k-th output of Algorithm 2 (ASF). k\nDenote C and C respectively the Poincar´e constant and the log Sobolev constant of the uniform\nPI LSI\ndistribution πX on K whose asymptotics are provided in Lemma 2.1. Then for any q ≥ 1,\nR\n(cid:0) µX||πX(cid:1) χ2(cid:0) µX||πX(cid:1)\nR (cid:0) µX||πX(cid:1) ≤ q 0 , χ2(cid:0) µX||πX(cid:1) ≤ 0 .",
+      "size": 399,
+      "sentences": 3
+    },
+    {
+      "id": 52,
+      "content": "µX||πX(cid:1) χ2(cid:0) µX||πX(cid:1)\nR (cid:0) µX||πX(cid:1) ≤ q 0 , χ2(cid:0) µX||πX(cid:1) ≤ 0 . (4)\nq k (1+η/C )2k/q k (1+η/C )2k\nLSI PI\n5\n===  6 ===\nPer Theorem 2.2, we can immediately deduce the iteration complexity of Algorithm 2 under the\nassumption that the RGO implementation has no cost. The proof is deferred to Appendix A.",
+      "size": 335,
+      "sentences": 3
+    },
+    {
+      "id": 53,
+      "content": "under the\nassumption that the RGO implementation has no cost. The proof is deferred to Appendix A. Note\nthat we assume K is convex in the upcoming result to be able to cite known asymptotics of the PI\nconstant and the LSI constant of the uniform distribution on K (Lemma 2.1). Corollary 2.3 Let K ⊂ Rd be a convex set. Assume Algorithm 2 starts from an M-warm distri-\nbution µX, i.e., dµ0 ≤ M. Let ϵ > 0.",
+      "size": 404,
+      "sentences": 5
+    },
+    {
+      "id": 54,
+      "content": "a convex set. Assume Algorithm 2 starts from an M-warm distri-\nbution µX, i.e., dµ0 ≤ M. Let ϵ > 0. Denote C and C respectively the Poincar´e constant and\n0 dπX PI LSI\nthe log Sobolev constant of the uniform distribution πX on K. Then,\na) with respect to the R´enyi divergence R and q ≥ 1, the algorithm can achieve ϵ-accuracy\nq\nwithin\n(cid:18) (cid:18) (cid:19)(cid:19)\nlogM\nk∗ = O d2C qlog 2 (5)\nLSI\nϵ\niterations, where, in view of Lemma 2.1, C = O(D2) in general and C = O(D) if πX is\nLSI LSI\nisotropic;\nb) with respect to the χ2-divergence, the algorithm can achieve ϵ-accuracy within\n(cid:18) (cid:18) M2+1 (cid:19)(cid:19)\nk∗∗ = O d2C log 2 (6)\nPI\nϵ\n(cid:16) (cid:17)\niterations, where, in view of Lemma 2.1, C (π) = O ∥Cov(π)∥ logd in general and\nPI op\nC (π) = O(logd) if πX is isotropic.",
+      "size": 795,
+      "sentences": 3
+    },
+    {
+      "id": 55,
+      "content": "view of Lemma 2.1, C (π) = O ∥Cov(π)∥ logd in general and\nPI op\nC (π) = O(logd) if πX is isotropic. PI\nThe iteration complexities provided in Corollary 2.3 have not taken into account methods to im-\nplement the RGO (Step 2 in Algorithm 2) and the costs associated with them.",
+      "size": 274,
+      "sentences": 2
+    },
+    {
+      "id": 56,
+      "content": "account methods to im-\nplement the RGO (Step 2 in Algorithm 2) and the costs associated with them. Our method for the\nRGO implementation in the upcoming sections is based on rejection sampling, which requires the\nconstruction of a suitable sampling proposal that is close to the target πX|Y(x|y) = N(y,ηI )| in\nd K\nAlgorithm 2.",
+      "size": 327,
+      "sentences": 2
+    },
+    {
+      "id": 57,
+      "content": "a suitable sampling proposal that is close to the target πX|Y(x|y) = N(y,ηI )| in\nd K\nAlgorithm 2. We will see that one can construct quite natural proposals if given access to either a\nprojection oracle or a separation oracle on K.\nRemark: We observe here a few basic facts. First, via (2) and Lemma A.1(a), one immediately\ngets\nπY(y) = (cid:82) Rd πX,Y(x,y)dx ( = 2) 1 (cid:90) exp (cid:18) − 1 ∥x−y∥2 (cid:19) dx.",
+      "size": 416,
+      "sentences": 3
+    },
+    {
+      "id": 58,
+      "content": "diately\ngets\nπY(y) = (cid:82) Rd πX,Y(x,y)dx ( = 2) 1 (cid:90) exp (cid:18) − 1 ∥x−y∥2 (cid:19) dx. (7)\n(cid:82) (cid:82)\nπX,Y(x,y)dxdy vol(K)(2πη)d/2 2η\nRd Rd K\nFurthermore, the warm start condition (A2) implies that the same warmness holds between πY\nand µ , which is the output of µ after the first step of Algorithm 2, i.e.,\nη 0\ndµ\nη\n≤ M. (8)\ndπY\nIndeed, assume any U ⊆ Rd. For y ∈ Rd, set U −y := {x ∈ Rd : x+y ∈ U}. Denote γ(·) the\ndensity of N(0,ηI ).",
+      "size": 458,
+      "sentences": 4
+    },
+    {
+      "id": 59,
+      "content": "assume any U ⊆ Rd. For y ∈ Rd, set U −y := {x ∈ Rd : x+y ∈ U}. Denote γ(·) the\ndensity of N(0,ηI ). Then, by dµ /dπX ≤ M, µ = µ ∗γ, and πY = πX ∗γ, we have\nd 0 η 0\n(cid:90) (cid:90) (cid:90)\ndµ\nµ (U) = µ (U −y)γ(y)dy = 0 (t)dπX(t)γ(y)dy\nη 0 dπX\nRd Rd U−y\n(cid:90)\n≤ M πX(U −y)γ(y)dy = MπY(U). Rd\nConsequently, this shows (8) holds, and further the warmness holds for every step of Algorithm 2.",
+      "size": 393,
+      "sentences": 5
+    },
+    {
+      "id": 60,
+      "content": "d\nConsequently, this shows (8) holds, and further the warmness holds for every step of Algorithm 2. 6\n===  7 ===\n3 Projection oracle-based proximal sampling\nThis section aims to implement the RGO step, i.e., Step 2 in Algorithm 2, via rejection sampling\nand the projection oracle of K. At the k-th iteration, Step 1 in Algorithm 2 generates from\nN(x ,ηI ) a point y := y , which is fixed in RGO. Then the RGO step is supposed to sample\nk d k\nfrom the truncated Gaussian N(y,ηI )| .",
+      "size": 481,
+      "sentences": 3
+    },
+    {
+      "id": 61,
+      "content": "fixed in RGO. Then the RGO step is supposed to sample\nk d k\nfrom the truncated Gaussian N(y,ηI )| . To implement RGO by rejection sampling, we need to\nd K\nconstruct a proposal that is both easier to sample than N(y,ηI )| and also reasonably close to\nd K\nN(y,ηI )| in order to ensure the acceptance probability is high, or equivalently, the number of\nd K\nrejections is low.",
+      "size": 372,
+      "sentences": 3
+    },
+    {
+      "id": 62,
+      "content": "to ensure the acceptance probability is high, or equivalently, the number of\nd K\nrejections is low. Examining the equivalent formulas of N(y,ηI )| in (3), one can easily figure\nd K\nout that N(y,ηI )| concentrates at\nd K\n(cid:26) (cid:27)\n1\nargmin Θη,K(x) := I (x)+ ∥x−y∥2 , (9)\ny K 2η\nx∈Rd\nwhich is precisely the projection of y onto K, i.e., proj (y). Inspired by this observation, the\nK\nproposal we choose for the rejection sampling is the Gaussian distribution N(proj (y),ηI ).",
+      "size": 480,
+      "sentences": 3
+    },
+    {
+      "id": 63,
+      "content": ", the\nK\nproposal we choose for the rejection sampling is the Gaussian distribution N(proj (y),ηI ). K d\nBelow is our implementation of RGO via the projection oracle proj and rejection sampling. K\nU[0,1] will denote the uniform distribution on [0,1]. Algorithm 3 Projection oracle-based implementation of RGO\n1. Generate X ∼ N (proj (y),ηI ) and U ∼ U[0,1]. K d\n2. If\n(cid:18) (cid:19)\n1\nU ≤ exp − ⟨X −proj (y),proj (y)−y⟩ 1 (X), (10)\nη K K K\nthen accept X; otherwise, reject X and go to step 1.",
+      "size": 494,
+      "sentences": 7
+    },
+    {
+      "id": 64,
+      "content": "− ⟨X −proj (y),proj (y)−y⟩ 1 (X), (10)\nη K K K\nthen accept X; otherwise, reject X and go to step 1. Remark: Per Lemma A.3 (which can be found in Appendix A), the sample X generated by\nAlgorithm 3 follows the distribution πX|Y, and therefore our RGO implementation is unbiased. Moreover,theacceptancecondition(10)inAlgorithm3guaranteesthattheoutputofthealgorithm\nisinK almostsurely(i.e., theoutputisafeasiblepoint).",
+      "size": 414,
+      "sentences": 3
+    },
+    {
+      "id": 65,
+      "content": "lgorithm3guaranteesthattheoutputofthealgorithm\nisinK almostsurely(i.e., theoutputisafeasiblepoint). Indeed, whenX ∈/ K, 1 (X) = 0andthe\nK\nright hand side of (10) equals 0, so that the probability that X is not in K while being accepted\nequals to Pr(U ≤ 0) = 0. We will see later in Section 4 another RGO implementation via a\nseparation oracle on K and rejection sampling that also guarantees the accepted X ∈ K almost\nsurely.",
+      "size": 425,
+      "sentences": 3
+    },
+    {
+      "id": 66,
+      "content": "eparation oracle on K and rejection sampling that also guarantees the accepted X ∈ K almost\nsurely. As a comparison, the In-and-Out algorithm by [39] samples x ∼ πX|Y(x|y) = N(y,ηI )| by\nd K\nsamplingx ∼ N(y,ηI )uptoN = O˜(d2)times(see[39, Remark2])untilonefindsapointx ∈ K;\ni d i\notherwisethealgorithmstopsanddeclaresfailure.",
+      "size": 325,
+      "sentences": 2
+    },
+    {
+      "id": 67,
+      "content": "imes(see[39, Remark2])untilonefindsapointx ∈ K;\ni d i\notherwisethealgorithmstopsanddeclaresfailure. Whilethisonlyrequiresamembership oracle,\nrepeatedly sampling x ∼ N(y,ηI ) does not encourage the desired scenario that x ∈ K for some\ni d i\ni ≤ N, and thus some failure probability of their algorithm is to be expected. We note that the\naforementioned failure probability is removed in [34] with an introduction of the restart procedure\ntherein.",
+      "size": 444,
+      "sentences": 3
+    },
+    {
+      "id": 68,
+      "content": "ioned failure probability is removed in [34] with an introduction of the restart procedure\ntherein. Here, we are offering an alternative to the restart procedure by using either a projection\noracle or a separation oracle on K.\nNext, we want to make sure the right hand side of (10) is no more than 1 for the acceptance/re-\njection condition (10) to be well-defined. In addition, we also introduce a new function P that will\n1\nnaturally appear later in the analysis of the rejection sampling.",
+      "size": 491,
+      "sentences": 3
+    },
+    {
+      "id": 69,
+      "content": "duce a new function P that will\n1\nnaturally appear later in the analysis of the rejection sampling. Lemma 3.1 For every x ∈ Rd, we have\n1\n−I (x)− ⟨x−proj (y),proj (y)−y⟩ ≤ 0, (11)\nK η K K\n7\n===  8 ===\nand hence the acceptance test (10) is well-defined. Moreover, (10) is equivalent to\nU ≤ exp(P (x)−Θη,K(x)), (12)\n1 y\nwhere Θη,K is as in (9) and\ny\n1 1\nP (x) = ∥x−proj (y)∥2+ ∥proj (y)−y∥2.",
+      "size": 389,
+      "sentences": 3
+    },
+    {
+      "id": 70,
+      "content": "xp(P (x)−Θη,K(x)), (12)\n1 y\nwhere Θη,K is as in (9) and\ny\n1 1\nP (x) = ∥x−proj (y)∥2+ ∥proj (y)−y∥2. (13)\n1 2η K 2η K\nProof: It follows from the convexity of K that ⟨x−proj (y),proj (y)−y⟩ ≥ 0, and hence that\nK K\n(11) holds. In view of (9) and (13), we observe that the RHS of (10) is equivalent to\n(cid:18) (cid:19)\n1\nexp −I (x)− ⟨x−proj (y),proj (y)−y⟩ = exp(P (x)−Θη,K(x)). K η K K 1 y\nHence, the proof is completed. The following lemma is one of the key technical contributions of the paper.",
+      "size": 494,
+      "sentences": 5
+    },
+    {
+      "id": 71,
+      "content": "the proof is completed. The following lemma is one of the key technical contributions of the paper. It will allow us to\nbound the average number of rejections of Algorithm 3 in Proposition 3.3, and also the average\nnumber of rejections of Algorithm 4 in Proposition 4.2.",
+      "size": 270,
+      "sentences": 3
+    },
+    {
+      "id": 72,
+      "content": "3 in Proposition 3.3, and also the average\nnumber of rejections of Algorithm 4 in Proposition 4.2. Lemma 3.2 Let τ ≥ 0 be given and assume condition (A1) holds, then we have\n(cid:32) (cid:33)\n(cid:90) (∥proj (y)−y∥−τ)2 (cid:20) (cid:18) ηd2 (cid:19) (cid:112) (cid:18) τ2(cid:19)(cid:21)\nexp − K dy ≤ vol(K) exp +τd 2πηd2+exp − . 2η 2 2η\nRd\nProof: Since proj (y) = y for y ∈ K, it follows that\nK\n(cid:32) (cid:33)\n(cid:90) (∥proj (y)−y∥−τ)2 (cid:18) τ2(cid:19)\nexp − K dy = vol(K)exp − .",
+      "size": 487,
+      "sentences": 3
+    },
+    {
+      "id": 73,
+      "content": "that\nK\n(cid:32) (cid:33)\n(cid:90) (∥proj (y)−y∥−τ)2 (cid:18) τ2(cid:19)\nexp − K dy = vol(K)exp − . (14)\n2η 2η\nK\nNext, let us set K = {x ∈ Rd : d(x,K) ≤ δ} where d(x,K) denotes the distance from x to K.\nδ\nThen, by the co-area formula, we can write\n(cid:32) (cid:33) (cid:32) (cid:33)\n(cid:90) (∥proj (y)−y∥−τ)2 (cid:90) (d(y,K)−τ)2\nexp − K dy = exp − dy\n2η 2η\nKc Kc\n(cid:32) (cid:33)\n(cid:90) ∞ (δ−τ)2\n= exp − vol (∂K )dδ.",
+      "size": 421,
+      "sentences": 2
+    },
+    {
+      "id": 74,
+      "content": "y,K)−τ)2\nexp − K dy = exp − dy\n2η 2η\nKc Kc\n(cid:32) (cid:33)\n(cid:90) ∞ (δ−τ)2\n= exp − vol (∂K )dδ. (15)\nd−1 δ\n2η\n0\nIt follows from B(0,1) ⊆ K in condition (A1) that K = K +δB(0,1) ⊆ (1+δ)K. This relation,\nδ\nthe fact that (1+δ)d−1 ≤ exp(δd), and Lemma A.2 together imply that\n(19)\nvol (∂K ) ≤ vol (∂((1+δ)K)) ≤ (1+δ)d−1vol (∂K) ≤ eδddvol(K).",
+      "size": 341,
+      "sentences": 2
+    },
+    {
+      "id": 75,
+      "content": "and Lemma A.2 together imply that\n(19)\nvol (∂K ) ≤ vol (∂((1+δ)K)) ≤ (1+δ)d−1vol (∂K) ≤ eδddvol(K). d−1 δ d−1 d−1\nPlugging this inequality into (15), we obtain\n(cid:32) (cid:33) (cid:32) (cid:33)\n(cid:90) (∥proj (y)−y∥−τ)2 (cid:90) ∞ (δ−τ)2\nexp − K dy ≤ dvol(K) exp − +δd dδ\n2η 2η\nKc 0\n(cid:18) ηd2 (cid:19)(cid:90) ∞ (cid:18) 1 (cid:19)\n=dvol(K)exp +τd exp − (δ−τ −ηd)2 dδ\n2 2η\n0\n(cid:18) ηd2 (cid:19)(cid:90) ∞ (cid:18) a2(cid:19) (cid:18) ηd2 (cid:19)\n(cid:112)\n=dvol(K)exp +τd exp − da ≤ vol(K)exp +τd 2πηd2,\n2 2η 2\n−ηd−τ\n8\n===  9 ===\nwhere a = δ−τ −ηd.",
+      "size": 557,
+      "sentences": 2
+    },
+    {
+      "id": 76,
+      "content": "d:112)\n=dvol(K)exp +τd exp − da ≤ vol(K)exp +τd 2πηd2,\n2 2η 2\n−ηd−τ\n8\n===  9 ===\nwhere a = δ−τ −ηd. The lemma finally follows from combining the above inequality and (14). Next, weareabletodeducetheaveragenumberofrejectionsinAlgorithm3foreachiterationof\nthe ASF (Algorithm 2). Our step size η = 1/d2 implies that the average numbers of rejections is of\nthe order O(1) and matches the dimension dependence of the chosen step size in [39, Theorem 27].",
+      "size": 449,
+      "sentences": 4
+    },
+    {
+      "id": 77,
+      "content": "of\nthe order O(1) and matches the dimension dependence of the chosen step size in [39, Theorem 27]. Proposition 3.3 Assume conditions (A1) and (A2) hold, and consider Algorithm 2 with step size\n√\nη = 1/d2. Then, the average number of rejections in Algorithm 3 is bounded by M( 2πe+1). Proof: Denote µ the distribution of y = y for the first step of Algorithm 2. Per Lemma A.3, the\nη k\naverage number of rejections is E [n ] where n is defined in (21).",
+      "size": 451,
+      "sentences": 5
+    },
+    {
+      "id": 78,
+      "content": "orithm 2. Per Lemma A.3, the\nη k\naverage number of rejections is E [n ] where n is defined in (21). The fact that dµ /dπY ≤ M\nµη y y η\nfrom (8) implies\nE [n ] ≤ ME [n ],\nµη y πY y\nand hence we will focus on bounding E [n ]. In view of (21), the latter expression becomes\nπY y\n(cid:90) (cid:82) exp(−P (x))dx\nE [n ] = Rd 1 πY(y)dy.",
+      "size": 330,
+      "sentences": 4
+    },
+    {
+      "id": 79,
+      "content": "of (21), the latter expression becomes\nπY y\n(cid:90) (cid:82) exp(−P (x))dx\nE [n ] = Rd 1 πY(y)dy. πY y Rd (cid:82) exp (cid:16) − 1 ∥x−y∥2 (cid:17) dx\nK 2η\nVia Lemma A.1(a), it is easy to compute that\n(cid:90) (cid:18) (cid:19)\n1\nexp(−P (x))dx = (2πη)d/2exp − ∥proj (y)−y∥2 . 1 2η K\nRd\nThe above two identities and (7) yield\n(cid:16) (cid:17)\n(cid:82) exp − 1 ∥proj (y)−y∥2 dy\nRd 2η K\nE [n ] = .",
+      "size": 396,
+      "sentences": 3
+    },
+    {
+      "id": 80,
+      "content": "two identities and (7) yield\n(cid:16) (cid:17)\n(cid:82) exp − 1 ∥proj (y)−y∥2 dy\nRd 2η K\nE [n ] = . πY y\nvol(K)\nFinally, it follows from Lemma 3.2 with τ = 0 that\n(cid:18) ηd2(cid:19)\n(cid:112)\n(cid:18) ηd2(cid:19)\n(cid:112)\nE [n ] ≤ exp 2πηd2+1 and E [n ] ≤ M exp 2πηd2+M. πY y\n2\nµη y\n2\nThe conclusion immediately follows by taking η = 1/d2. This completes the proof. Finally, we are ready to present the main result of Section 3 by putting together Corollary 2.3\nand Proposition 3.3.",
+      "size": 485,
+      "sentences": 5
+    },
+    {
+      "id": 81,
+      "content": "eady to present the main result of Section 3 by putting together Corollary 2.3\nand Proposition 3.3. Theorem 3.4 Assume conditions (A1), (A2) and the step size η = 1/d2. Consider Algorithm 2\nwith the RGO implementation via a projection oracle and rejection sampling (Algorithm 3). Let\nϵ > 0.",
+      "size": 290,
+      "sentences": 4
+    },
+    {
+      "id": 82,
+      "content": "ith the RGO implementation via a projection oracle and rejection sampling (Algorithm 3). Let\nϵ > 0. Denote C and C respectively the Poincar´e constant and the log Sobolev constant of the\nPI LSI\nuniform distribution πX on K, whose asymptotics are provided in Lemma 2.1.\na) To reach ϵ-accuracy in R´enyi divergence R , the ASF (i.e., Algorithm 2) takes at most\nq\n(cid:16) (cid:16) (cid:17)(cid:17)\nO d2C qlog 2logM iterations.",
+      "size": 424,
+      "sentences": 3
+    },
+    {
+      "id": 83,
+      "content": "(i.e., Algorithm 2) takes at most\nq\n(cid:16) (cid:16) (cid:17)(cid:17)\nO d2C qlog 2logM iterations. In each iteration, Algorithm 3 as the RGO implemen-\nLSI ϵ\ntation makes one query to the projection oracle on K. Moreover, the average number of\n√\nrejections for the rejection sampling in each iteration is no more than M( 2πe+1). (cid:16) (cid:16) (cid:17)(cid:17)\nb) To reach ϵ-accuracy in χ2-divergence, the ASF takes at most O d2C log 2M2+1 itera-\nPI ϵ\ntions.",
+      "size": 461,
+      "sentences": 3
+    },
+    {
+      "id": 84,
+      "content": ")\nb) To reach ϵ-accuracy in χ2-divergence, the ASF takes at most O d2C log 2M2+1 itera-\nPI ϵ\ntions. In each iteration, the number of projection oracle queries and average number of\nrejection for the rejection sampling are the same as those in Part a.",
+      "size": 250,
+      "sentences": 2
+    },
+    {
+      "id": 85,
+      "content": "queries and average number of\nrejection for the rejection sampling are the same as those in Part a. 9\n===  10 ===\n4 Separation oracle-based proximal sampling\nInSection3,undertheassumptionthataprojection oracleisavailable,onegetsanexactsolution\nto argmin Θη,K(x) as proj (y), and the Gaussian proposal for the rejection sampling can thus\nx∈Rd y K\nbe centered at proj (y). However, what happens if a projection oracle is not available?",
+      "size": 433,
+      "sentences": 3
+    },
+    {
+      "id": 86,
+      "content": "us\nx∈Rd y K\nbe centered at proj (y). However, what happens if a projection oracle is not available? In\nK\nthat scenarios, we propose to use a state-of-the-art Cutting Plane method by [27], which uses a\nseparation oracle on K to find an approximate solution xˆ of argmin Θη,K(x). From there,\nx∈Rd y\none can once again implement rejection sampling to complete the RGO step. After finding a suitable xˆ, we still need to construct a proposal for the rejection sampling.",
+      "size": 465,
+      "sentences": 5
+    },
+    {
+      "id": 87,
+      "content": "tep. After finding a suitable xˆ, we still need to construct a proposal for the rejection sampling. The\nproposal we choose is\n(cid:32) (cid:32) (cid:114) (cid:33)(cid:33)\n1 2η\nν(x) ∝ exp − ∥x−xˆ∥2−2 ∥x−xˆ∥ . 2η d\nCompared to the Gaussian proposal N (proj (y),ηI ) in Section 3, one can see the above proposal\nK d\nfollows a similar spirit in the sense that it is centered at a high-concentration point xˆ. It should be\nnoted that ν(x) is no longer a Gaussian distribution.",
+      "size": 471,
+      "sentences": 5
+    },
+    {
+      "id": 88,
+      "content": "t a high-concentration point xˆ. It should be\nnoted that ν(x) is no longer a Gaussian distribution. Generating a sample for this non-Gaussian\nproposal turns out to be simple as it can be transformed into a one-dimensional sampling problem,\nas Lemma B.3 in the Appendix B will show. Below are our implementation of the RGO under the assumption that we have access to a\nseparation oracle on K. As before, U[0,1] denotes the uniform distribution on [0,1].",
+      "size": 452,
+      "sentences": 4
+    },
+    {
+      "id": 89,
+      "content": "ve access to a\nseparation oracle on K. As before, U[0,1] denotes the uniform distribution on [0,1]. Algorithm 4 Implementation of the RGO with separation oracle\n1. Generate a (1/d)-solution xˆ of argmin Θη,K(x) using the Cutting Plane method by [27],\nx∈Rd y\nwhich employs a separation oracle on K.\n2. Via Algorithm 5 in Appendix B.4, generate X ∼ ν(x). Also, generate U ∼ U[0,1]. 3. If\n(cid:16) (cid:17)\nexp −Θη,K(X)\ny\nU ≤ , (16)\nexp(−P (X))\n2\nthen accept X; otherwise, reject X and go to step 2.",
+      "size": 496,
+      "sentences": 7
+    },
+    {
+      "id": 90,
+      "content": "id:17)\nexp −Θη,K(X)\ny\nU ≤ , (16)\nexp(−P (X))\n2\nthen accept X; otherwise, reject X and go to step 2. The function P is defined in (17). 2\nIn particular, Lemma B.2 in Appendix B.1 provides the number of separation oracle calls for\nthe Cutting Plane method to generate xˆ in Step 1, while Lemma A.3 in Appendix A states that the\nsample X generated by Algorithm 4 follows the distribution πX|Y, thus ensuring that the rejection\nsampling is unbiased. ThefollowingresultisanalogoustoLemma3.1.",
+      "size": 486,
+      "sentences": 4
+    },
+    {
+      "id": 91,
+      "content": "|Y, thus ensuring that the rejection\nsampling is unbiased. ThefollowingresultisanalogoustoLemma3.1. Theacceptancetestat(16)iswell-definedonly\nif the right hand side of (16) is no more than 1, which means we need to show Θη,K(x) ≥ P (x),∀x. y 2\nThe idea is to show P ≥ P (where P is defined in (13)) and combine it with Lemma 3.1 which\n1 2 1\nsays Θη,K ≥ P . The proof of the next result is deferred to Appendix B.2.",
+      "size": 414,
+      "sentences": 5
+    },
+    {
+      "id": 92,
+      "content": "ith Lemma 3.1 which\n1 2 1\nsays Θη,K ≥ P . The proof of the next result is deferred to Appendix B.2. y 1\nLemma 4.1 Define\n(cid:32) (cid:114) (cid:33)\n1 2η 12η\nP (x) := ∥x−xˆ∥2+∥xˆ−y∥2−2 (∥x−xˆ∥+∥xˆ−y∥)− . (17)\n2\n2η d d\nRecall Θη,K and P defined in (9) and (13), respectively. Then, we have for every x ∈ Rd,\ny 1\nΘη,K(x) ≥ P (x) ≥ P (x). y 1 2\n10\n===  11 ===\nIn particular, the fact that Θη,K ≥ P ensures the acceptance test at (16) is well-defined.",
+      "size": 447,
+      "sentences": 6
+    },
+    {
+      "id": 93,
+      "content": "11 ===\nIn particular, the fact that Θη,K ≥ P ensures the acceptance test at (16) is well-defined. y 2\nNext, we are able to deduce the average number of rejections in Algorithm 4 for each iteration\nof the ASF (Algorithm 2). The proof of the upcoming result is deferred to Appendix B.3. Proposition 4.2 Assume conditions (A1), (A2), and the step size η = 1/d2. Then the average\n√\nnumber of rejections in Algorithm 4 is no more than 2πM exp\n(cid:0)13\n+\n20(cid:1)\n+M exp\n(cid:0)9\n+\n12(cid:1)\n.",
+      "size": 489,
+      "sentences": 5
+    },
+    {
+      "id": 94,
+      "content": "jections in Algorithm 4 is no more than 2πM exp\n(cid:0)13\n+\n20(cid:1)\n+M exp\n(cid:0)9\n+\n12(cid:1)\n. 4 d 4 d\nThefollowingtheorempresentsthemainresultofSection4. Weomittheproofasitimmediately\nfollows after putting together Corollary 2.3 for the iteration complexity of the outer loops of the\nASF (Algorithm 2), Proposition 4.2 for the average number of rejections of an inner loop, and\nLemma B.2 for the number of separation oracle queries of an inner loop.",
+      "size": 455,
+      "sentences": 3
+    },
+    {
+      "id": 95,
+      "content": "tions of an inner loop, and\nLemma B.2 for the number of separation oracle queries of an inner loop. Theorem 4.3 Assume conditions (A1), (A2), and the step size η = 1/d2. Consider Algorithm 2\nwith the implementation via a separation oracle and rejection sampling (Algorithm 4).",
+      "size": 276,
+      "sentences": 3
+    },
+    {
+      "id": 96,
+      "content": "r Algorithm 2\nwith the implementation via a separation oracle and rejection sampling (Algorithm 4). Denote\nC and C respectively the Poincar´e constant and the log Sobolev constant of the uniform distri-\nPI LSI\nbution πX on K whose asymptotics are provided in Lemma 2.1.\na) To reach ϵ-accuracy in R´enyi divergence R , the ASF, i.e., Algorithm 2, takes at most\nq\n(cid:16) (cid:16) (cid:17)(cid:17)\nO d2C qlog 2logM iterations.",
+      "size": 425,
+      "sentences": 2
+    },
+    {
+      "id": 97,
+      "content": "i.e., Algorithm 2, takes at most\nq\n(cid:16) (cid:16) (cid:17)(cid:17)\nO d2C qlog 2logM iterations. In each iteration, Algorithm 4 as the RGO implementa-\nLSI ϵ\n(cid:16) (cid:17)\ntion makes O dlog dγ queries to the separation oracle on K, where\nα\n(cid:18) (cid:19)\nR\nγ = , minwidth(K) = min maxaTy−minaTy , (18)\nminwidth(K) ∥a∥=1 y∈K y∈K\nand α ∈ (0,1) satisfies the concentration inequality\n(cid:18)\n2\n(cid:19) (cid:18) d2R2(cid:19)\nPr α ≤ ≤ 4exp − .",
+      "size": 448,
+      "sentences": 2
+    },
+    {
+      "id": 98,
+      "content": "satisfies the concentration inequality\n(cid:18)\n2\n(cid:19) (cid:18) d2R2(cid:19)\nPr α ≤ ≤ 4exp − . d37R2 8\nMoreover, the average number of rejections for the rejection sampling in each iteration is no\n√\nmore than 2πM exp\n(cid:0)13\n+\n20(cid:1)\n+M exp\n(cid:0)9\n+\n12(cid:1)\n. 4 d 4 d\n(cid:16) (cid:16) (cid:17)(cid:17)\nb) To reach ϵ-accuracy in χ2-divergence, the ASF takes at most O d2C log 2M2+1 itera-\nPI ϵ\ntions.",
+      "size": 413,
+      "sentences": 3
+    },
+    {
+      "id": 99,
+      "content": ")\nb) To reach ϵ-accuracy in χ2-divergence, the ASF takes at most O d2C log 2M2+1 itera-\nPI ϵ\ntions. Per an iteration of the ASF, the number of separation oracle queries and the average\nnumber of rejections for the rejection sampling are the same as those in Part a. 5 Concluding remarks\nIn this paper, we propose algorithms for uniform sampling from a convex body K based on the\nASF/proximal sampler.",
+      "size": 400,
+      "sentences": 3
+    },
+    {
+      "id": 100,
+      "content": "we propose algorithms for uniform sampling from a convex body K based on the\nASF/proximal sampler. We explore the use of either the projection oracle on K or the separation\noracle on K for the RGO implementation (Algorithm 3 and Algorithm 4, respectively). Our RGO\nimplementationsareexactandthereforeouralgorithmsdonothaveanyfailureprobability. Inboth\ncases, the algorithms perform O(d2) RGO steps. With a projection oracle, each RGO queries one\nprojection and has at most O(1) expected rejections.",
+      "size": 498,
+      "sentences": 5
+    },
+    {
+      "id": 101,
+      "content": "With a projection oracle, each RGO queries one\nprojection and has at most O(1) expected rejections. With a separation oracle, each RGO queries\nO(dlogd) separations and has at most O(1) expected rejections. We finally discuss some possible extensions of the paper.",
+      "size": 263,
+      "sentences": 3
+    },
+    {
+      "id": 102,
+      "content": "and has at most O(1) expected rejections. We finally discuss some possible extensions of the paper. First, a natural question to ask\nbeyond uniform sampling on K is general log-concave sampling on K. Both uniform sampling\non K and log-concave sampling on Rd have benefited from using ASF as a generic framework in\n11\n===  12 ===\nrecentyears; asaconsequence, itisinterestingtoinvestigatealgorithmsbasedonASFforsampling\nexp(−f(x)) on K. Second, for the purpose of uniform sampling on K, the RGO implementations\nin this paper (i.e., Algorithm 3 and Algorithm 4) and those in [39, 37, 34] all require a small\nstep size η = 1/d2 so that RGO implementations within ASF remain efficient.",
+      "size": 680,
+      "sentences": 3
+    },
+    {
+      "id": 103,
+      "content": "34] all require a small\nstep size η = 1/d2 so that RGO implementations within ASF remain efficient. In contrast, for\nsampling from exp(−f(x)) on Rd, under the assumption that f satisfies an (L ,α)-semi-smooth\nα\ncondition for some α ∈ [0,1], the step size condition can be relaxed to η = O˜(d−α/(α+1)) in [18]. In\n√\nparticular, this improves the dimension dependence from O(d) to O( d) when f is smooth (i.e.,\nα = 1).",
+      "size": 416,
+      "sentences": 3
+    },
+    {
+      "id": 104,
+      "content": "rticular, this improves the dimension dependence from O(d) to O( d) when f is smooth (i.e.,\nα = 1). However, techniques in [18] cannot be directly applied to uniform sampling on K, since\nthe log-density (i.e., the indicator function I (x)) is discontinuous and hence lacks a smoothness\nK\nnotion. Therefore, reducing the dimension dependence for uniform sampling on K still remains a\nchallenging yet meaningful question. Acknowledgement\nWe thank Yunbum Kook for the helpful discussions.",
+      "size": 485,
+      "sentences": 4
+    },
+    {
+      "id": 105,
+      "content": "llenging yet meaningful question. Acknowledgement\nWe thank Yunbum Kook for the helpful discussions. References\n[1] Kwangjun Ahn and Sinho Chewi. Efficient constrained sampling via the mirror-langevin al-\ngorithm. Advances in Neural Information Processing Systems, 34:28405–28418, 2021. [2] JamesHAlbertandSiddharthaChib. Bayesiananalysisofbinaryandpolychotomousresponse\ndata. Journal of the American statistical Association, 88(422):669–679, 1993.",
+      "size": 447,
+      "sentences": 8
+    },
+    {
+      "id": 106,
+      "content": "polychotomousresponse\ndata. Journal of the American statistical Association, 88(422):669–679, 1993. [3] Nicolas Brosse, Alain Durmus, E´ric Moulines, and Marcelo Pereyra. Sampling from a log-\nconcave distribution with compact support with proximal langevin monte carlo. In Conference\non learning theory, pages 319–342. PMLR, 2017. [4] S´ebastien Bubeck, Ronen Eldan, and Joseph Lehec. Sampling from a log-concave distribution\nwith projected langevin monte carlo.",
+      "size": 462,
+      "sentences": 8
+    },
+    {
+      "id": 107,
+      "content": "an, and Joseph Lehec. Sampling from a log-concave distribution\nwith projected langevin monte carlo. Discrete & Computational Geometry, 59(4):757–783,\n2018. [5] Apostolos Chalkis, Vissarion Fisikopoulos, Marios Papachristou, and Elias Tsigaridas. Trun-\ncated log-concave sampling for convex bodies with reflective hamiltonian monte carlo. ACM\nTransactions on Mathematical Software, 49(2):1–25, 2023. [6] Jeff Cheeger. A lower bound for the smallest eigenvalue of the laplacian.",
+      "size": 476,
+      "sentences": 8
+    },
+    {
+      "id": 108,
+      "content": "re, 49(2):1–25, 2023. [6] Jeff Cheeger. A lower bound for the smallest eigenvalue of the laplacian. In Problems in\nanalysis, pages 195–200. Princeton University Press, 2015. [7] Xiaoyu Chen, Zongchen Chen, Yitong Yin, and Xinyuan Zhang. Rapid mixing at the unique-\nness threshold. In Proceedings of the 57th Annual ACM Symposium on Theory of Computing,\npages 879–890, 2025. [8] Yongxin Chen, Sinho Chewi, Adil Salim, and Andre Wibisono. Improved analysis for a prox-\nimal algorithm for sampling.",
+      "size": 495,
+      "sentences": 10
+    },
+    {
+      "id": 109,
+      "content": "o Chewi, Adil Salim, and Andre Wibisono. Improved analysis for a prox-\nimal algorithm for sampling. In Po-Ling Loh and Maxim Raginsky, editors, Proceedings of\nThirty Fifth Conference on Learning Theory, volume 178 of Proceedings of Machine Learning\nResearch, pages 2984–3014. PMLR, 02–05 Jul 2022. [9] Yuansi Chen. An almost constant lower bound of the isoperimetric coefficient in the kls\nconjecture. Geometric and Functional Analysis, 31(1):34–61, 2021. 12\n===  13 ===\n[10] Siddhartha Chib.",
+      "size": 492,
+      "sentences": 8
+    },
+    {
+      "id": 110,
+      "content": "jecture. Geometric and Functional Analysis, 31(1):34–61, 2021. 12\n===  13 ===\n[10] Siddhartha Chib. Bayes inference in the tobit censored regression model. Journal of Econo-\nmetrics, 51(1-2):79–99, 1992. [11] BenCousinsandSantoshVempala. Apracticalvolumealgorithm. Mathematical Programming\nComputation, 8(2):133–160, 2016. [12] Ben Cousins and Santosh Vempala. Gaussian cooling and oˆ*(nˆ3) algorithms for volume and\ngaussian volume. SIAM Journal on Computing, 47(3):1237–1273, 2018.",
+      "size": 483,
+      "sentences": 11
+    },
+    {
+      "id": 111,
+      "content": "*(nˆ3) algorithms for volume and\ngaussian volume. SIAM Journal on Computing, 47(3):1237–1273, 2018. [13] Benjamin Cousins. Efficient high-dimensional sampling and integration. PhD thesis, 2017. [14] Persi Diaconis, Kshitij Khare, and Laurent Saloff-Coste. Gibbs sampling, conjugate priors and\ncoupling. Sankhya A, 72(1):136–169, 2010. [15] Persi Diaconis, Gilles Lebeau, and Laurent Michel. Gibbs/metropolis algorithms on a convex\npolytope. Mathematische Zeitschrift, 272(1):109–129, 2012.",
+      "size": 489,
+      "sentences": 11
+    },
+    {
+      "id": 112,
+      "content": "Gibbs/metropolis algorithms on a convex\npolytope. Mathematische Zeitschrift, 272(1):109–129, 2012. [16] Martin Dyer, Alan Frieze, and Ravi Kannan. A random polynomial-time algorithm for ap-\nproximating the volume of convex bodies. Journal of the ACM (JACM), 38(1):1–17, 1991. [17] IoannisZEmirisandVissarionFisikopoulos. Efficientrandom-walkmethodsforapproximating\npolytopevolume.InProceedingsofthethirtiethannualsymposiumonComputationalgeometry,\npages 318–327, 2014.",
+      "size": 467,
+      "sentences": 7
+    },
+    {
+      "id": 113,
+      "content": "ytopevolume.InProceedingsofthethirtiethannualsymposiumonComputationalgeometry,\npages 318–327, 2014. [18] Jiaojiao Fan, Bo Yuan, and Yongxin Chen. Improved dimension dependence of a proximal\nalgorithm for sampling. In The Thirty Sixth Annual Conference on Learning Theory, pages\n1473–1521. PMLR, 2023. [19] KhashayarGatmiry, JonathanKelner,andSantoshSVempala. Samplingwithbarriers: Faster\nmixing via lewis weights. arXiv preprint arXiv:2303.00480, 2023. [20] Walter R Gilks and Pascal Wild.",
+      "size": 489,
+      "sentences": 9
+    },
+    {
+      "id": 114,
+      "content": "xing via lewis weights. arXiv preprint arXiv:2303.00480, 2023. [20] Walter R Gilks and Pascal Wild. Adaptive rejection sampling for gibbs sampling. Journal of\nthe Royal Statistical Society: Series C (Applied Statistics), 41(2):337–348, 1992. [21] Mark Girolami and Ben Calderhead. Riemann manifold langevin and hamiltonian monte carlo\nmethods. Journal of the Royal Statistical Society Series B: Statistical Methodology, 73(2):123–\n214, 2011. [22] Sivakanth Gopi, Yin Tat Lee, and Daogao Liu.",
+      "size": 491,
+      "sentences": 9
+    },
+    {
+      "id": 115,
+      "content": "B: Statistical Methodology, 73(2):123–\n214, 2011. [22] Sivakanth Gopi, Yin Tat Lee, and Daogao Liu. Private convex optimization via exponential\nmechanism. In Po-Ling Loh and Maxim Raginsky, editors, Proceedings of Thirty Fifth Con-\nference on Learning Theory, volume 178 of Proceedings of Machine Learning Research, pages\n1948–1989. PMLR, 02–05 Jul 2022. [23] Sivakanth Gopi, Yin Tat Lee, Daogao Liu, Ruoqi Shen, and Kevin Tian.",
+      "size": 428,
+      "sentences": 6
+    },
+    {
+      "id": 116,
+      "content": "89. PMLR, 02–05 Jul 2022. [23] Sivakanth Gopi, Yin Tat Lee, Daogao Liu, Ruoqi Shen, and Kevin Tian. Algorithmic aspects\nofthelog-laplacetransformandanon-euclideanproximalsampler. InThe Thirty Sixth Annual\nConference on Learning Theory, pages 2399–2439. PMLR, 2023. [24] Mert Gu¨rbu¨zbalaban, Yuanhan Hu, and Lingjiong Zhu. Penalized overdamped and under-\ndamped langevin monte carlo algorithms for constrained sampling. J. Mach. Learn. Res.,\n25(1), January 2024.",
+      "size": 462,
+      "sentences": 11
+    },
+    {
+      "id": 117,
+      "content": "angevin monte carlo algorithms for constrained sampling. J. Mach. Learn. Res.,\n25(1), January 2024. [25] Leonhard Held and Chris C. Holmes. Bayesian auxiliary variable models for binary and multi-\nnomial regression. Bayesian Analysis, 1(1), March 2006. 13\n===  14 ===\n[26] Kosuke Imai and David A Van Dyk. A bayesian analysis of the multinomial probit model\nusing marginal data augmentation. Journal of econometrics, 124(2):311–334, 2005.",
+      "size": 438,
+      "sentences": 10
+    },
+    {
+      "id": 118,
+      "content": "omial probit model\nusing marginal data augmentation. Journal of econometrics, 124(2):311–334, 2005. [27] Haotian Jiang, Yin Tat Lee, Zhao Song, and Sam Chiu-wai Wong. An improved cutting plane\nmethod for convex optimization, convex-concave games, and its applications. In Proceedings\nof the 52nd Annual ACM SIGACT Symposium on Theory of Computing, pages 944–953, 2020. [28] Qijia Jiang. Mirror langevin monte carlo: the case under isoperimetry.",
+      "size": 444,
+      "sentences": 7
+    },
+    {
+      "id": 119,
+      "content": "g, pages 944–953, 2020. [28] Qijia Jiang. Mirror langevin monte carlo: the case under isoperimetry. Advances in Neural\nInformation Processing Systems, 34:715–725, 2021. [29] RaviKannan, L´aszl´oLov´asz,andMikl´osSimonovits. Isoperimetricproblemsforconvexbodies\nand a localization lemma. Discrete & Computational Geometry, 13(3):541–559, 1995. [30] Ravi Kannan, L´aszl´o Lov´asz, and Mikl´os Simonovits. Random walks and an o*(n5) volume\nalgorithm for convex bodies.",
+      "size": 465,
+      "sentences": 9
+    },
+    {
+      "id": 120,
+      "content": "l´o Lov´asz, and Mikl´os Simonovits. Random walks and an o*(n5) volume\nalgorithm for convex bodies. Random Structures & Algorithms, 11(1):1–50, 1997. [31] Ravi Kannan and Hariharan Narayanan. Random walks on polytopes and an affine interior\npointmethodforlinearprogramming. InProceedings of the forty-first annual ACM symposium\non Theory of computing, pages 561–570, 2009. [32] Bo’az Klartag. Logarithmic bounds for isoperimetry and slices of convex sets. arXiv preprint\narXiv:2303.14938, 2023.",
+      "size": 494,
+      "sentences": 9
+    },
+    {
+      "id": 121,
+      "content": "garithmic bounds for isoperimetry and slices of convex sets. arXiv preprint\narXiv:2303.14938, 2023. [33] Bo’azKlartagandJosephLehec. Bourgain’sslicingproblemandklsisoperimetryuptopolylog. Geometric and functional analysis, 32(5):1134–1159, 2022. [34] Yunbum Kook. Zeroth-order log-concave sampling. arXiv preprint arXiv:2507.18021, 2025. [35] Yunbum Kook, Yin Tat Lee, Ruoqi Shen, and Santosh Vempala.",
+      "size": 401,
+      "sentences": 9
+    },
+    {
+      "id": 122,
+      "content": "iv preprint arXiv:2507.18021, 2025. [35] Yunbum Kook, Yin Tat Lee, Ruoqi Shen, and Santosh Vempala. Condition-number-\nindependent convergence rate of riemannian hamiltonian monte carlo with numerical integra-\ntors. In The Thirty Sixth Annual Conference on Learning Theory, pages 4504–4569. PMLR,\n2023. [36] Yunbum Kook and Santosh S Vempala. Gaussian cooling and dikin walks: The interior-\npoint method for logconcave sampling.",
+      "size": 427,
+      "sentences": 7
+    },
+    {
+      "id": 123,
+      "content": "sh S Vempala. Gaussian cooling and dikin walks: The interior-\npoint method for logconcave sampling. In The Thirty Seventh Annual Conference on Learning\nTheory, pages 3137–3240. PMLR, 2024. [37] Yunbum Kook and Santosh S Vempala. Faster logconcave sampling from a cold start in high\ndimension. arXiv preprint arXiv:2505.01937, 2025. [38] Yunbum Kook and Santosh S Vempala. Sampling and integration of logconcave functions\nby algorithmic diffusion.",
+      "size": 446,
+      "sentences": 9
+    },
+    {
+      "id": 124,
+      "content": "k and Santosh S Vempala. Sampling and integration of logconcave functions\nby algorithmic diffusion. In Proceedings of the 57th Annual ACM Symposium on Theory of\nComputing, pages 924–932, 2025. [39] Yunbum Kook, Santosh S Vempala, and Matthew S Zhang. In-and-out: Algorithmic diffusion\nfor sampling convex bodies. Advances in Neural Information Processing Systems, 37:108354–\n108388, 2024. [40] AditiLaddhaandSantoshSVempala. Convergenceofgibbssampling: Coordinatehit-and-run\nmixes fast.",
+      "size": 486,
+      "sentences": 8
+    },
+    {
+      "id": 125,
+      "content": ". [40] AditiLaddhaandSantoshSVempala. Convergenceofgibbssampling: Coordinatehit-and-run\nmixes fast. Discrete & Computational Geometry, 70(2):406–425, 2023. [41] Michel Ledoux and Michel Talagrand. Probability in Banach Spaces: isoperimetry and pro-\ncesses. Springer Science & Business Media, 2013. 14\n===  15 ===\n[42] Yin Tat Lee, Ruoqi Shen, and Kevin Tian. Structured logconcave sampling with a restricted\ngaussian oracle.",
+      "size": 424,
+      "sentences": 9
+    },
+    {
+      "id": 126,
+      "content": "Lee, Ruoqi Shen, and Kevin Tian. Structured logconcave sampling with a restricted\ngaussian oracle. In Mikhail Belkin and Samory Kpotufe, editors, Proceedings of Thirty Fourth\nConference on Learning Theory, volume 134 of Proceedings of Machine Learning Research,\npages 2993–3050. PMLR, 15–19 Aug 2021. [43] Yin Tat Lee and Santosh S Vempala. Geodesic walks in polytopes. In Proceedings of the 49th\nAnnual ACM SIGACT Symposium on theory of Computing, pages 927–940, 2017.",
+      "size": 469,
+      "sentences": 7
+    },
+    {
+      "id": 127,
+      "content": "In Proceedings of the 49th\nAnnual ACM SIGACT Symposium on theory of Computing, pages 927–940, 2017. [44] Yin TatLee and Santosh S Vempala. Convergence rate of riemannian hamiltonian monte carlo\nand faster polytope volume computation. In Proceedings of the 50th Annual ACM SIGACT\nSymposium on Theory of Computing, pages 1115–1121, 2018. [45] Yin Tat Lee and Santosh S Vempala. Eldan’s stochastic localization and the kls conjecture:\nIsoperimetry, concentration and mixing.",
+      "size": 471,
+      "sentences": 6
+    },
+    {
+      "id": 128,
+      "content": "la. Eldan’s stochastic localization and the kls conjecture:\nIsoperimetry, concentration and mixing. Annals of Mathematics, 199(3):1043–1092, 2024. [46] Joseph Lehec. The langevin monte carlo algorithm in the non-smooth log-concave case. The\nAnnals of Applied Probability, 33(6A):4858–4874, 2023. [47] RuilinLi, MoleiTao, SantoshSVempala, andAndreWibisono. Themirrorlangevinalgorithm\nconverges with vanishing bias. In International Conference on Algorithmic Learning Theory,\npages 718–742. PMLR, 2022.",
+      "size": 500,
+      "sentences": 10
+    },
+    {
+      "id": 129,
+      "content": "ishing bias. In International Conference on Algorithmic Learning Theory,\npages 718–742. PMLR, 2022. [48] Jiaming Liang and Yongxin Chen. A proximal algorithm for sampling from non-smooth po-\ntentials. In 2022 Winter Simulation Conference (WSC), pages 3229–3240. IEEE, 2022. [49] Jiaming Liang and Yongxin Chen. A proximal algorithm for sampling. Transactions on\nMachine Learning Research, 2023. [50] Jiaming Liang and Yongxin Chen. Proximal oracles for optimization and sampling.",
+      "size": 479,
+      "sentences": 12
+    },
+    {
+      "id": 130,
+      "content": "esearch, 2023. [50] Jiaming Liang and Yongxin Chen. Proximal oracles for optimization and sampling. arXiv\npreprint arXiv:2404.02239, 2024. [51] L´aszl´o Lov´asz. Hit-and-run mixes fast. Mathematical programming, 86(3):443–461, 1999. [52] L´aszl´o Lov´asz and Mikl´os Simonovits. The mixing rate of markov chains, an isoperimetric\ninequality, and computing the volume. In Proceedings [1990] 31st annual symposium on foun-\ndations of computer science, pages 346–354. IEEE, 1990.",
+      "size": 476,
+      "sentences": 11
+    },
+    {
+      "id": 131,
+      "content": "dings [1990] 31st annual symposium on foun-\ndations of computer science, pages 346–354. IEEE, 1990. [53] L´aszl´o Lov´asz and Mikl´os Simonovits. Random walks in a convex body and an improved\nvolume algorithm. Random structures & algorithms, 4(4):359–412, 1993. [54] Siddharth Mitra and Andre Wibisono. Fast convergence of ϕ-divergence along the unadjusted\nlangevin algorithm and proximal sampler.",
+      "size": 397,
+      "sentences": 7
+    },
+    {
+      "id": 132,
+      "content": "ono. Fast convergence of ϕ-divergence along the unadjusted\nlangevin algorithm and proximal sampler. In Gautam Kamath and Po-Ling Loh, editors,\nProceedings of The 36th International Conference on Algorithmic Learning Theory, volume\n272 of Proceedings of Machine Learning Research, pages 846–869. PMLR, 24–27 Feb 2025. [55] Mervin E Muller. A note on a method for generating points uniformly on n-dimensional\nspheres. Communications of the ACM, 2(4):19–20, 1959.",
+      "size": 460,
+      "sentences": 7
+    },
+    {
+      "id": 133,
+      "content": "generating points uniformly on n-dimensional\nspheres. Communications of the ACM, 2(4):19–20, 1959. [56] Hariharan Narayanan and Piyush Srivastava. On the mixing time of coordinate hit-and-run. Combinatorics, Probability and Computing, 31(2):320–332, 2022. [57] RL Smith. Efficient monte carlo procedures for generating random feasible solutions over\nbounded regions. Operations Research, 32:1296–1308, 1984. 15\n===  16 ===\n[58] Vishwak Srinivasan, Andre Wibisono, and Ashia Wilson.",
+      "size": 481,
+      "sentences": 9
+    },
+    {
+      "id": 134,
+      "content": "arch, 32:1296–1308, 1984. 15\n===  16 ===\n[58] Vishwak Srinivasan, Andre Wibisono, and Ashia Wilson. Fast sampling from constrained\nspacesusingthemetropolis-adjustedmirrorlangevinalgorithm. InThe Thirty Seventh Annual\nConference on Learning Theory, pages 4593–4635. PMLR, 2024. [59] James Tobin. Estimation of relationships for limited dependent variables. Econometrica:\njournal of the Econometric Society, pages 24–36, 1958. [60] Valentin F Turchin.",
+      "size": 449,
+      "sentences": 9
+    },
+    {
+      "id": 135,
+      "content": "bles. Econometrica:\njournal of the Econometric Society, pages 24–36, 1958. [60] Valentin F Turchin. On the computation of multidimensional integrals by the monte-carlo\nmethod. Theory of Probability & Its Applications, 16(4):720–724, 1971. [61] Santosh Vempala. Geometric random walks: a survey. Combinatorial and computational\ngeometry, 52(573-612):2, 2005. [62] Santosh S Vempala. Recent progress and open problems in algorithmic convex geometry.",
+      "size": 447,
+      "sentences": 10
+    },
+    {
+      "id": 136,
+      "content": ":2, 2005. [62] Santosh S Vempala. Recent progress and open problems in algorithmic convex geometry. In\nIARCS Annual Conference on Foundations of Software Technology and Theoretical Computer\nScience(FSTTCS2010),pages42–64.SchlossDagstuhl–Leibniz-Zentrumfu¨rInformatik,2010. [63] Andre Wibisono. Mixing time of the proximal sampler in relative fisher information via strong\ndata processing inequality. arXiv preprint arXiv:2502.05623, 2025. [64] Bo Yuan, Jiaojiao Fan, Jiaming Liang, and Yongxin Chen.",
+      "size": 499,
+      "sentences": 8
+    },
+    {
+      "id": 137,
+      "content": "arXiv preprint arXiv:2502.05623, 2025. [64] Bo Yuan, Jiaojiao Fan, Jiaming Liang, and Yongxin Chen. Proximal sampler with adaptive\nstep size. In The 28th International Conference on Artificial Intelligence and Statistics, 2025. [65] Bo Yuan, Jiaojiao Fan, Jiaming Liang, Andre Wibisono, and Yongxin Chen. On a class of\ngibbs sampling over networks. In The Thirty Sixth Annual Conference on Learning Theory,\npages 5754–5780. PMLR, 2023.",
+      "size": 435,
+      "sentences": 8
+    },
+    {
+      "id": 138,
+      "content": "er networks. In The Thirty Sixth Annual Conference on Learning Theory,\npages 5754–5780. PMLR, 2023. [66] Kelvin Shuangjian Zhang, Gabriel Peyr´e, Jalal Fadili, and Marcelo Pereyra. Wasserstein\ncontrol of mirror langevin monte carlo. In Conference on learning theory, pages 3814–3841. PMLR, 2020. 16\n===  17 ===\nAppendices to Oracle-based Uniform Sampling from Convex\nBodies\nThe Appendices are organized as follows. • Appendix A contains some technical lemmas and short proofs.",
+      "size": 476,
+      "sentences": 9
+    },
+    {
+      "id": 139,
+      "content": "Appendices are organized as follows. • Appendix A contains some technical lemmas and short proofs. • Appendix B contains results that are relevant to Algorithm 4, for example the Cutting Plane\nmethod by [27]. • Appendix C provides a brief summary of some algorithms for uniform sampling from convex\nbodies. A Technical lemmas and proofs\nFirst, we have some results about Gaussian integrals.",
+      "size": 390,
+      "sentences": 5
+    },
+    {
+      "id": 140,
+      "content": "convex\nbodies. A Technical lemmas and proofs\nFirst, we have some results about Gaussian integrals. Lemma A.1 The following statements hold for any η > 0, c ∈ Rd and b ∈ R.\n(cid:16) (cid:17)\n(a) (cid:82) exp − 1 ∥x−c∥2 dx = (2πη)d/2;\nRd 2η\n(cid:16) (cid:17) (cid:16) (cid:17)\n(b) (cid:82) exp − 1 (∥x−c∥−b)2 dx ≤ exp 1 + db2 (2πη)d/2. Rd 2η 4 η\nProof: The formula in Part a is a well-known fact about Gaussian integrals and thus the proof is\nomitted. Regarding Part b, let r := ∥x−c∥.",
+      "size": 483,
+      "sentences": 5
+    },
+    {
+      "id": 141,
+      "content": "nown fact about Gaussian integrals and thus the proof is\nomitted. Regarding Part b, let r := ∥x−c∥. It holds for any θ ∈ (0,1] that 2cb ≤ θc2+ b2 , which\nθ\nimplies\n1−θ\n(r−b)2 ≥ (1−θ)r2− b2. θ\nThis combined with the formula in Part a lead to\n(cid:90) (cid:18) (cid:19) (cid:18) (cid:19)\n1 1−θ\nexp − (∥x−c∥−b)2 dx ≤ (1−θ)−d/2exp b2 (2πη)d/2.",
+      "size": 339,
+      "sentences": 4
+    },
+    {
+      "id": 142,
+      "content": "(cid:90) (cid:18) (cid:19) (cid:18) (cid:19)\n1 1−θ\nexp − (∥x−c∥−b)2 dx ≤ (1−θ)−d/2exp b2 (2πη)d/2. 2η 2θη\nRd\nWith the choice θ = 1/(1+2d), we obtain\n(cid:90) (cid:18)\n1\n(cid:19) (cid:18)\n1\n(cid:19)d/2 (cid:18)\nd\n(cid:19)\nexp − (∥x−c∥−b)2 dx ≤ 1+ exp b2 (2πη)d/2,\n2η 2d η\nRd\nwhich gives the desired result by noting that (1+1/2d)d/2 ≤ e1/4. The following result is applied in the proof of Lemma 3.2. Lemma A.2 Denote ∂K the boundary set of K and assume condition (A1) holds.",
+      "size": 473,
+      "sentences": 4
+    },
+    {
+      "id": 143,
+      "content": "the proof of Lemma 3.2. Lemma A.2 Denote ∂K the boundary set of K and assume condition (A1) holds. Then, we have\nvol (∂K) ≤ dvol(K). (19)\nd−1\nProof: Consideranydirectionv ∈ Rd,anddenotethelengthfrom0to∂K alongv asL = L(v) > 0.",
+      "size": 226,
+      "sentences": 4
+    },
+    {
+      "id": 144,
+      "content": "l(K). (19)\nd−1\nProof: Consideranydirectionv ∈ Rd,anddenotethelengthfrom0to∂K alongv asL = L(v) > 0. Let V(L) = vol(K) and A(L) = vol (∂K), then by the co-area formula, we have\nd−1\n(cid:90) L\nvol(K) = V(L) = A(r)dr.\n0\n17\n===  18 ===\nDifferentiating both sides of the equation yields\nV(L)\nA(L) = V′(L) = V(1)dLd−1 = d ,\nL\nwhere the last two identities use the fact that V(L) = V(1)Ld.",
+      "size": 382,
+      "sentences": 3
+    },
+    {
+      "id": 145,
+      "content": "(L)\nA(L) = V′(L) = V(1)dLd−1 = d ,\nL\nwhere the last two identities use the fact that V(L) = V(1)Ld. Now using V(L) = vol(K) and\nA(L) = vol (∂K), we arrive at\nd−1\nvol(K)\nvol (∂K) = d ≤ dvol(K),\nd−1\nL\nwhere the inequality follows from B(0,1) ⊆ K and L = L(v) ≥ 1 for any direction v.\nNext, we provide the proof of Corollary 2.3 based on the contraction result in Theorem 2.2. Proof of Corollary 2.3: The M-warm start assumption implies R (cid:0) µX||πX(cid:1) ≤ q logM.",
+      "size": 467,
+      "sentences": 3
+    },
+    {
+      "id": 146,
+      "content": "2.2. Proof of Corollary 2.3: The M-warm start assumption implies R (cid:0) µX||πX(cid:1) ≤ q logM. Then\nq 0 q−1\nvia the first part of (4) in Theorem 2.2, we can solve for\nq logM (4)\nq−1\n≤ ϵ\n(1+η/C )2k/q\nLSI\nto get\n(cid:16) (cid:17)\nlog q logM (cid:18) (cid:19)\nq q−1 ϵ q q logM C LSI\nk ≥ ≥ log . 2log(1+1/C )η 2 q−1 ϵ η\nLSI\nTherefore, we can set k ≥ k∗ where k∗ is defined in (5). The calculation for χ2 divergence is along\nthe same line with the use of the second part of (4) in Theorem 2.2.",
+      "size": 492,
+      "sentences": 5
+    },
+    {
+      "id": 147,
+      "content": "ion for χ2 divergence is along\nthe same line with the use of the second part of (4) in Theorem 2.2. This completes the proof. ThefollowinglemmapresentsbasicpropertiesofAlgorithm3and4. Weverifytheunbiasedness\nof the rejection sampling and also provide formulas for the number of rejections. Lemma A.3 The sample generated by Algorithm 3 and the sample generated by Algorithm 4 both\nfollow the distribution πX|Y = N(y,ηI )| .",
+      "size": 423,
+      "sentences": 5
+    },
+    {
+      "id": 148,
+      "content": "Algorithm 3 and the sample generated by Algorithm 4 both\nfollow the distribution πX|Y = N(y,ηI )| . d K\nIn particular, we have that\n• For given y ∈ Rd, let S denote the event that (10) happens. Then, the acceptance rate in\nAlgorithm 3 is\n(cid:16) (cid:17)\n(cid:82) exp − 1 ∥x−y∥2 dx\nK 2η\np = Pr(S) = , (20)\ny (cid:82)\nexp(−P (x))dx\nRd 1\nwhere P is as in (13), and the number of rejections is\n1\n(cid:82)\n1 exp(−P (x))dx\nn = =\nRd 1\n.",
+      "size": 431,
+      "sentences": 3
+    },
+    {
+      "id": 149,
+      "content": "Rd 1\nwhere P is as in (13), and the number of rejections is\n1\n(cid:82)\n1 exp(−P (x))dx\nn = =\nRd 1\n. (21)\ny p y (cid:82) exp (cid:16) − 1 ∥x−y∥2 (cid:17) dx\nK 2η\n• For given y ∈ Rd, let T be the event that (16) happens. Then the acceptance rate in Algo-\nrithm 4 is\n(cid:16) (cid:17)\n(cid:82) exp − 1 ∥x−y∥2 dx\nK 2η\nPr(T) = . (22)\n(cid:82)\nexp(−P (x))dx\nRd 2\nwhere P is as in (17), and the number of rejections is\n2\n(cid:82)\nexp(−P (x))dx\nn =\nRd 2\n.",
+      "size": 447,
+      "sentences": 4
+    },
+    {
+      "id": 150,
+      "content": ")dx\nRd 2\nwhere P is as in (17), and the number of rejections is\n2\n(cid:82)\nexp(−P (x))dx\nn =\nRd 2\n. (23)\ny (cid:82) exp (cid:16) − 1 ∥x−y∥2 (cid:17) dx\nK 2η\n18\n===  19 ===\nProof: Let k(x|S) denote the conditional density of X given S and q(x) =\nexp(−P1(x))\ndenote\n(cid:82)\nRd\nexp(−P1(x))dx\nthe density of N(proj (y),ηI ). By Bayes’ rule and (12), we have\nK d\n(cid:16) (cid:17)\nexp −I (x)− 1 ∥x−y∥2\nPr(S|X = x)q(x) (12) K 2η\nk(x|S) = , Pr(S|X = x) = .",
+      "size": 450,
+      "sentences": 3
+    },
+    {
+      "id": 151,
+      "content": "ave\nK d\n(cid:16) (cid:17)\nexp −I (x)− 1 ∥x−y∥2\nPr(S|X = x)q(x) (12) K 2η\nk(x|S) = , Pr(S|X = x) = . Pr(S) exp(−P (x))\n1\nThus, we obtain\n(cid:16) (cid:17)\n(cid:90) (cid:82) exp −I (x)− 1 ∥x−y∥2 dx\nRd K 2η\nPr(S) = Pr(S|X = x)q(x)dx = ,\n(cid:82)\nexp(−P (x))dx\nRd 1\nwhich yields (20).",
+      "size": 280,
+      "sentences": 2
+    },
+    {
+      "id": 152,
+      "content": ")− 1 ∥x−y∥2 dx\nRd K 2η\nPr(S) = Pr(S|X = x)q(x)dx = ,\n(cid:82)\nexp(−P (x))dx\nRd 1\nwhich yields (20). It further leads to\n(cid:16) (cid:17)\nexp −I (x)− 1 ∥x−y∥2\nPr(S|X = x)q(x) K 2η\nk(x|S) = = = πX|Y(x|y),\n(cid:16) (cid:17)\nPr(S) (cid:82) exp −I (x)− 1 ∥x−y∥2 dx\nRd K 2η\nwhere πX|Y(x|y) is the truncated Gaussian N(y,ηI )| . Therefore, we have verified X ∼ πX|Y. d K\nFinally, (21) holds in view of E[Z] = 1/p for Z ∼ Geom(p ) (geometric distribution).",
+      "size": 449,
+      "sentences": 4
+    },
+    {
+      "id": 153,
+      "content": "X ∼ πX|Y. d K\nFinally, (21) holds in view of E[Z] = 1/p for Z ∼ Geom(p ) (geometric distribution). y y\nVerifying (22), (23) and the fact that the sample generated by Algorithm 4 follows the distri-\nbution πX|Y are similar to the above arguments and hence omitted. B Supplementary materials for Section 4\nB.1 Results about the Cutting Plane method by [27]\nWe first restate [27, Theorem C.1], which is about the iteration complexity and running time of\nthe Cutting Plane method by [27].",
+      "size": 484,
+      "sentences": 4
+    },
+    {
+      "id": 154,
+      "content": "C.1], which is about the iteration complexity and running time of\nthe Cutting Plane method by [27]. Theorem B.1 ([27, Theorem C.1]) Let f be a convex function on Rd. K is a convex set that\ncontains a minimizer of f and K ⊆ B (0,R), where B (0,R) denotes a ball of radius R in ℓ\n∞ ∞ ∞\nnorm, i.e., ∥x∥ = sup |x |.",
+      "size": 311,
+      "sentences": 3
+    },
+    {
+      "id": 155,
+      "content": "f and K ⊆ B (0,R), where B (0,R) denotes a ball of radius R in ℓ\n∞ ∞ ∞\nnorm, i.e., ∥x∥ = sup |x |. ∞ 1≤i≤d i\nSuppose we have a subgradient oracle for f with cost T and a separation oracle for K with\ncost S. Using B (0,R) as the initial polytope for our Cutting Plane Method, for any 0 < α < 1,\n∞\nwe can compute xˆ ∈ K such that\n(cid:18) (cid:19)\nf(xˆ)−minf(x) ≤ α maxf(x)−minf(x) . (24)\nx∈K x∈K x∈K\n(cid:16) (cid:17)\nwith a running time of O T ·dlog dγ +S ·dlog dγ +d3log dγ .",
+      "size": 476,
+      "sentences": 3
+    },
+    {
+      "id": 156,
+      "content": "x) . (24)\nx∈K x∈K x∈K\n(cid:16) (cid:17)\nwith a running time of O T ·dlog dγ +S ·dlog dγ +d3log dγ . In particular, the number of sub-\nα α α\ngradient oracle calls and the number of separation oracle calls are of the order\n(cid:18) (cid:19)\ndγ\nO dlog ,\nα\nwhere γ is as in (18). Next, we apply the above theorem to find a (1/d)-solution to argmin 1 ∥x−y∥2, a sub-\nx∈K2η\nproblem that appears in Algorithm 4.",
+      "size": 403,
+      "sentences": 4
+    },
+    {
+      "id": 157,
+      "content": "orem to find a (1/d)-solution to argmin 1 ∥x−y∥2, a sub-\nx∈K2η\nproblem that appears in Algorithm 4. Since the iteration complexity involves the constant α to be\nchosen below, we also provide a concentration inequality to show α does not adversely affect the\niteration complexity in high probability. 19\n===  20 ===\nLemma B.2 Assume condition (A1) holds. For given y ∈ Rd, set\n2\nα = (25)\nd3(R2+2R∥proj (y)−y∥)\nK\nand γ as in (18).",
+      "size": 428,
+      "sentences": 4
+    },
+    {
+      "id": 158,
+      "content": "me condition (A1) holds. For given y ∈ Rd, set\n2\nα = (25)\nd3(R2+2R∥proj (y)−y∥)\nK\nand γ as in (18). Moreover, assume there is a separation oracle for K. Then the Cutting Plane\n(cid:16) (cid:17)\nmethod by [27] makes O dlog dγ separation oracle calls to generate a (1/d)-solution xˆ ∈ K\nα\nto the optimization problem min 1 ∥x−y∥2. In addition, we provide the following bound on α\nx∈K 2η\nwith high probability\n(cid:18)\n2\n(cid:19) (cid:18) −R2(cid:19)\nPr α ≤ ≤ 4exp .",
+      "size": 463,
+      "sentences": 4
+    },
+    {
+      "id": 159,
+      "content": "ng bound on α\nx∈K 2η\nwith high probability\n(cid:18)\n2\n(cid:19) (cid:18) −R2(cid:19)\nPr α ≤ ≤ 4exp . (26)\nd37R2 8η\nProof: Since K is closed per condition (A1), K contains a minimizer of f. Moreover, the fact that\nK is contained the Euclidean ball B(0,R) per condition (A1) implies K is also contain in the ball\nB (0,R). Then to be able to apply Theorem B.1, we need to verify that\n∞\n2\n0 ≤ α = < 1 (27)\nd3(R2+2R∥proj (y)−y∥)\nK\nand that\n(cid:18) (cid:19)\nα maxf(x)−minf(x) ≤ 1/d.",
+      "size": 476,
+      "sentences": 3
+    },
+    {
+      "id": 160,
+      "content": "at\n∞\n2\n0 ≤ α = < 1 (27)\nd3(R2+2R∥proj (y)−y∥)\nK\nand that\n(cid:18) (cid:19)\nα maxf(x)−minf(x) ≤ 1/d. (28)\nx∈K x∈K\nThen Theorem B.1 guarantees that the Cutting Plane method by [27] produces a (1/d)-solution\n(cid:16) (cid:17)\nwith O dlog dγ separation oracle calls. α\nSince B(0,1) ⊆ K ⊆ B(0,R), we have α = 2 ≤ 2 ≤ 2 < 1, and thus\nd3(R2+2R∥proj (y)−y∥) d3R2 d3\nK\n(27) is true. Next, let us set x∗ = max 1 ∥x−y∥2.",
+      "size": 409,
+      "sentences": 4
+    },
+    {
+      "id": 161,
+      "content": "≤ 2 < 1, and thus\nd3(R2+2R∥proj (y)−y∥) d3R2 d3\nK\n(27) is true. Next, let us set x∗ = max 1 ∥x−y∥2. Then, using the triangle inequality, we have\nx∈K 2η\n(cid:18) (cid:19)\nα maxf(x)−minf(x) = α (cid:0) ∥x∗−y∥2−∥proj (y)−y∥2(cid:1)\nx∈K x∈K 2η K\n≤ α (cid:2) (∥x∗−proj (y)∥+∥proj (y)−y∥)2−∥proj (y)−y∥2(cid:3)\n2η K K K\n≤ α (R2+2R∥proj (y)−y∥) ( = 25) 1 ,\n2η K d\nwhere the last identity follows from η = 1/d2 and the definition of α in (25). Hence, (28) is true.",
+      "size": 456,
+      "sentences": 4
+    },
+    {
+      "id": 162,
+      "content": "where the last identity follows from η = 1/d2 and the definition of α in (25). Hence, (28) is true. Regarding the concentration inequality, recall that y is the output of step 1 in the ASF (Al-\n√\ngorithm 2) and satisfies y = y = x + ηZ, where Z ∼ N(0,I) and k denotes some iterate of\nk k−1\nASF. Then, we can write\n√\n∥proj (y)−y∥ = ∥proj (y)−x − ηZ∥\nK K k−1\n√ √\n≤ ∥proj (y)∥+∥x ∥+ η∥Z∥ ≤ 2R+ η∥Z∥.",
+      "size": 396,
+      "sentences": 4
+    },
+    {
+      "id": 163,
+      "content": "en, we can write\n√\n∥proj (y)−y∥ = ∥proj (y)−x − ηZ∥\nK K k−1\n√ √\n≤ ∥proj (y)∥+∥x ∥+ η∥Z∥ ≤ 2R+ η∥Z∥. K k−1\nThe last inequality is due to B(0,R) ⊃ K and proj (y),x ∈ K. Combining with the Gaussian\nK k−1\nconcentration inequality from [41, Equation (3.5)] to get\nPr(∥proj (y)−y∥ > 3R) ≤ Pr(∥Z∥ ≥ R/ √ η) ≤ 4exp (cid:0) −R2/(8η) (cid:1) . K\nThis together with α in (25) implies that (26) holds and completes the proof.",
+      "size": 413,
+      "sentences": 3
+    },
+    {
+      "id": 164,
+      "content": "−R2/(8η) (cid:1) . K\nThis together with α in (25) implies that (26) holds and completes the proof. 20\n===  21 ===\nB.2 Proof of Lemma 4.1\nIn view of Lemma 3.1, the fact that Θη,K(x) ≥ P (x) for every x ∈ Rd immediately holds, so what\ny 1\nremains is to show P (x) ≥ P (x).",
+      "size": 270,
+      "sentences": 3
+    },
+    {
+      "id": 165,
+      "content": "t Θη,K(x) ≥ P (x) for every x ∈ Rd immediately holds, so what\ny 1\nremains is to show P (x) ≥ P (x). 1 2\nRecall that xˆ, the (1/d)-solution to min {f(x) := ∥x−y∥2/(2η)}, obtained by the Cutting\nx∈K\nPlane method by [27] belongs to K. Since f is η−1-strongly convex and K is a convex set, we have\n(cid:114)\n(cid:112) 2η\n∥xˆ−proj (y)∥ ≤ 2η(f(xˆ)−f(proj (y))) ≤ . (29)\nK K d\nThis inequality and the triangle inequality imply that\n(cid:114)\n2η\n∥x−xˆ∥ ≤ ∥x−proj (y)∥+∥proj (y)−xˆ∥ ≤ ∥x−proj (y)∥+ .",
+      "size": 491,
+      "sentences": 3
+    },
+    {
+      "id": 166,
+      "content": "e triangle inequality imply that\n(cid:114)\n2η\n∥x−xˆ∥ ≤ ∥x−proj (y)∥+∥proj (y)−xˆ∥ ≤ ∥x−proj (y)∥+ . (30)\nK K K d\nIt follows that\n(cid:114)\n2η 2η\n∥x−xˆ∥2 ≤ ∥x−proj (y)∥2+2∥x−proj (y)∥ +\nK K d d\n(cid:114)\n2η 2η\n≤ ∥x−proj (y)∥2+2(∥x−xˆ∥+∥xˆ−proj (y)∥) +\nK K d d\n(cid:114)\n(29) 2η 6η\n≤ ∥x−proj (y)∥2+2∥x−xˆ∥ + ,\nK d d\nThe above inequality can be rearranged as\n(cid:114)\n2η 6η\n∥x−xˆ∥2−2∥x−xˆ∥ − ≤ ∥x−proj (y)∥2. (31)\nd d K\nSimilarly,\n(cid:114)\n2η 6η\n∥y−xˆ∥2−2∥y−xˆ∥ − ≤ ∥y−proj (y)∥2.",
+      "size": 479,
+      "sentences": 3
+    },
+    {
+      "id": 167,
+      "content": "2∥x−xˆ∥ − ≤ ∥x−proj (y)∥2. (31)\nd d K\nSimilarly,\n(cid:114)\n2η 6η\n∥y−xˆ∥2−2∥y−xˆ∥ − ≤ ∥y−proj (y)∥2. (32)\nd d K\nCombining (31) and (32) leads to the desired conclusion that P (x) ≥ P (x). 1 2\nB.3 Proof of Proposition 4.2\nThe upcoming argument is similar to the proof of Proposition 3.3. Denote µ the distribution of\nη\ny at any iteration of the Algorithm 2. The average number of rejections is E [n ] where n is\nµη y y\ndefined in (21).",
+      "size": 433,
+      "sentences": 6
+    },
+    {
+      "id": 168,
+      "content": "n of the Algorithm 2. The average number of rejections is E [n ] where n is\nµη y y\ndefined in (21). The fact that dµ /dπY ≤ M from (8) implies\nη\nE [n ] ≤ ME [n ], (33)\nµη y πY y\nand hence we will focus on bounding E [n ]. In view of (23), the latter expression becomes\nπY y\n(cid:90) (cid:82) exp(−P (x))dx\nE [n ] = Rd 2 πY(y)dy. πY y Rd (cid:82) exp (cid:16) − 1 ∥x−y∥2 (cid:17) dx\nK 2η\nUsing the formula for πY in (7), we get\n(cid:90) (cid:90)\n1\nE [n ] ≤ exp(−P (x))dxdy.",
+      "size": 472,
+      "sentences": 5
+    },
+    {
+      "id": 169,
+      "content": "d:17) dx\nK 2η\nUsing the formula for πY in (7), we get\n(cid:90) (cid:90)\n1\nE [n ] ≤ exp(−P (x))dxdy. πY y vol(K)(2πη)d/2\nRd Rd\n2\n21\n===  22 ===\nLet us define an auxiliary function\n \n(cid:32) (cid:114) (cid:33)2 (cid:32) (cid:114) (cid:33)2\n1 2η 2η 32η\nP 3 (x) := 2η  ∥x−xˆ∥− d + ∥y−proj K (y)∥−2 d − d . (34)\nWe can easily show at the end of this proof that P (x) ≥ P (x), which leads to\n2 3\n(cid:90) (cid:90)\n1\nE [n ] ≤ exp(−P (x))dxdy.",
+      "size": 440,
+      "sentences": 3
+    },
+    {
+      "id": 170,
+      "content": "of this proof that P (x) ≥ P (x), which leads to\n2 3\n(cid:90) (cid:90)\n1\nE [n ] ≤ exp(−P (x))dxdy. (35)\nπY y vol(K)(2πη)d/2\nRd Rd\n3\nThe definition of P in (34) and Part b of Lemma A.1 imply\n3\n(cid:90)\nexp(−P (x))dx\n3\nRd\n( = 34) exp (cid:32) − (∥proj K (y)−y∥−2 (cid:112) 2η/d)2 + 16 (cid:33) (cid:90) exp (cid:32) − (∥x−xˆ∥− (cid:112) 2η/d)2 (cid:33) dx\n2η d 2η\nRd\n \n(cid:32) (cid:114) (cid:33)2\nLemmaA.1,b 1 2η 16 9\nd\n≤ exp−\n2η\n∥proj\nK\n(y)−y∥−2\nd\n+\nd\n+\n4\n(2πη)2.",
+      "size": 467,
+      "sentences": 2
+    },
+    {
+      "id": 171,
+      "content": "(cid:32) (cid:114) (cid:33)2\nLemmaA.1,b 1 2η 16 9\nd\n≤ exp−\n2η\n∥proj\nK\n(y)−y∥−2\nd\n+\nd\n+\n4\n(2πη)2. (36)\n(cid:112)\nNext, we combine the previous calculations and Lemma 3.2 with τ = 2 2η/d to get\n \n(35),(36) 1\n(cid:18)\n16 9\n(cid:19)(cid:90)\n1\n(cid:32) (cid:114)\n2η\n(cid:33)2\nE\nπY\n[n\ny\n] ≤\nvol(K)\nexp\nd\n+\n4\nexp−\n2η\n∥proj\nK\n(y)−y∥−2\nd\ndy\nRd\nLemma3.2 (cid:18) 9 16 (cid:19) (cid:18) ηd2 (cid:112) (cid:19) (cid:112) (cid:18) 9 12 (cid:19)\n≤ exp + exp +2 2ηd 2πηd2+exp + .",
+      "size": 470,
+      "sentences": 2
+    },
+    {
+      "id": 172,
+      "content": ") (cid:18) ηd2 (cid:112) (cid:19) (cid:112) (cid:18) 9 12 (cid:19)\n≤ exp + exp +2 2ηd 2πηd2+exp + . 4 d 2 4 d\nPlugging η = 1/d2 into the above formula yields\n(cid:18) 9 16 (cid:19) (cid:32) 1 (cid:114) 2 (cid:33) √ (cid:18) 9 12 (cid:19)\nE [n ] ≤ exp + exp +2 2π+exp +\nπY y\n4 d 2 d 4 d\n√ (cid:18) 13 20 (cid:19) (cid:18) 9 12 (cid:19)\n≤ 2πexp + +exp + ,\n4 d 4 d\n(cid:112)\nwhere we use the fact that 2 2/d ≤ 1/2+4/d in the last inequality.",
+      "size": 438,
+      "sentences": 2
+    },
+    {
+      "id": 173,
+      "content": "exp + +exp + ,\n4 d 4 d\n(cid:112)\nwhere we use the fact that 2 2/d ≤ 1/2+4/d in the last inequality. Consequently, applying (33)\ngives us the desired bound on the average number of rejections, i.e.,\n√ (cid:18) 13 20 (cid:19) (cid:18) 9 12 (cid:19)\nE [n ] ≤ 2πM exp + +M exp + . µη y\n4 d 4 d\nAs the final part of this proof, let us show that\nP (x) ≥ P (x),∀x ∈ Rd\n2 3\nwhere P and P are respectively defined at (17) and (34). The proof follows the argument showing\n2 3\nP ≥ P in Lemma 4.1.",
+      "size": 485,
+      "sentences": 4
+    },
+    {
+      "id": 174,
+      "content": "spectively defined at (17) and (34). The proof follows the argument showing\n2 3\nP ≥ P in Lemma 4.1. Similar to (31), using the triangle inequality and (29), we get\n1 2\n(cid:114)\n2η 6η\n∥y−proj (y)∥2−2∥y−proj (y)∥ − ≤ ∥y−xˆ∥2. (37)\nK K d d\n22\n===  23 ===\nMoreover, similar to (30), we obtain\n(cid:114)\n2η\n−∥y−proj (y)∥− ≤ −∥y−xˆ∥.",
+      "size": 328,
+      "sentences": 4
+    },
+    {
+      "id": 175,
+      "content": "K K d d\n22\n===  23 ===\nMoreover, similar to (30), we obtain\n(cid:114)\n2η\n−∥y−proj (y)∥− ≤ −∥y−xˆ∥. (38)\nK d\nIn view of the definition of P in (17), combining (37) and (38) yields\n2\n(cid:18) (cid:114)\n(17) 1 2η 6η\nP (x) ≥ ∥x−xˆ∥2+∥y−proj (y)∥2−2 ∥y−proj (y)∥−\n2 2η K d K d\n(cid:114) (cid:32) (cid:114) (cid:33) (cid:19)\n2η 2η 12η (34)\n−2 ∥x−xˆ∥+∥y−proj (y)∥+ − = P (x). d K d d 3\nThis completes the proof.",
+      "size": 404,
+      "sentences": 3
+    },
+    {
+      "id": 176,
+      "content": ":33) (cid:19)\n2η 2η 12η (34)\n−2 ∥x−xˆ∥+∥y−proj (y)∥+ − = P (x). d K d d 3\nThis completes the proof. B.4 Further explanation for Algorithm 5\n(cid:18) (cid:18) (cid:113) (cid:19)(cid:19)\nWhileexp − 1 ∥x−xˆ∥2−2 2η∥x−xˆ∥ isnotproportionaltoaGaussiandensity,generating\n2η d\noneofitssamplesisstraightforwardsinceitcanbeturnedintoaone-dimensionalsamplingproblem. Westatehereagenericprocedureforthissamplingproblem. AnexplanationisgiveninLemmaB.3\nbelow.",
+      "size": 445,
+      "sentences": 5
+    },
+    {
+      "id": 177,
+      "content": "gproblem. Westatehereagenericprocedureforthissamplingproblem. AnexplanationisgiveninLemmaB.3\nbelow. (cid:18) (cid:18) (cid:113) (cid:19)(cid:19)\nAlgorithm 5 Sample X ∼ exp − 1 ∥x−xˆ∥2−2 2η∥x−xˆ∥ in Algorithm 4\n2η d\n1. Generate W ∼ N(0,I) and set θ = W/∥W∥;\n(cid:16) (cid:17)\n2. Generate r ∝ rd−1exp − (r−b)2 by Adaptive Rejection Sampling for one-dimensional log-\n2η\nconcave distribution in [20]. 3. Output X = xˆ+rθ.",
+      "size": 417,
+      "sentences": 8
+    },
+    {
+      "id": 178,
+      "content": "e Rejection Sampling for one-dimensional log-\n2η\nconcave distribution in [20]. 3. Output X = xˆ+rθ. Lemma B.3 Algorithm 5 generates\n(cid:32) (cid:32) (cid:114) (cid:33)(cid:33)\n1 2η\nX ∼ exp − ∥x−xˆ∥2−2 ∥x−xˆ∥ . 2η d\nProof: By completing the square, we can see that\n \n(cid:32) (cid:114) (cid:33)2\n1 2η\nX ∼ ρ(x) ∝ exp− ∥x−xˆ∥− . 2η d\n(cid:113)\nLet us rewrite ρ(x) in polar coordinate. Set r = ∥x−xˆ∥ and b = 2η.",
+      "size": 413,
+      "sentences": 7
+    },
+    {
+      "id": 179,
+      "content": "exp− ∥x−xˆ∥− . 2η d\n(cid:113)\nLet us rewrite ρ(x) in polar coordinate. Set r = ∥x−xˆ∥ and b = 2η. Since dx = rd−1drdσ(θ)\nd\nwhere dσ(θ) is the surface measure of the unit sphere, we have for r ≥ 0 and θ ∈ Sd−1,\n(cid:18) (r−b)2(cid:19)\nρ(x) = p(r,θ) ∝ rd−1exp − . 2η\n(cid:16) (cid:17)\nNotice the first marginal of p is p (r) ∝ rd−1exp − (r−b)2 .",
+      "size": 345,
+      "sentences": 5
+    },
+    {
+      "id": 180,
+      "content": ",θ) ∝ rd−1exp − . 2η\n(cid:16) (cid:17)\nNotice the first marginal of p is p (r) ∝ rd−1exp − (r−b)2 . Due to the fact that logp (r) =\nr 2η r\n(d−1)logr− (r−b)2 +const and d2 logp (r) = −d−1 − 1 < 0, p is a one-dimensional log-concave\n2η dr2 r r2 η r\ndensity. 23\n===  24 ===\nPer the previous paragraphs, one can use any standard one-dimensional log-concave sampler\n(for instance [20]) to sample r ∼ p .",
+      "size": 398,
+      "sentences": 4
+    },
+    {
+      "id": 181,
+      "content": "one can use any standard one-dimensional log-concave sampler\n(for instance [20]) to sample r ∼ p . Then one performs uniform sampling on the d-dimensional\nr\nunit sphere by sampling W ∼ N(0,I) and set θ = W/∥W∥ [55]. Finally, one outputs X = xˆ+rθ\nas the sample for p(r,θ) = ρ(x).",
+      "size": 279,
+      "sentences": 3
+    },
+    {
+      "id": 182,
+      "content": "W ∼ N(0,I) and set θ = W/∥W∥ [55]. Finally, one outputs X = xˆ+rθ\nas the sample for p(r,θ) = ρ(x). C Algorithms for uniform sampling on convex bodies\nContinuing the discussion in Section 1, we mention here several algorithms for uniform sampling\nfrom convex K. We refer to the survey [61, 62] and the dissertation [13] for additional details.",
+      "size": 342,
+      "sentences": 3
+    },
+    {
+      "id": 183,
+      "content": "ng\nfrom convex K. We refer to the survey [61, 62] and the dissertation [13] for additional details. • Assuming a membership oracle, the Ball walk introduced by [16] works as follows: pick a\nuniform random point y from the ball of radius δ centered at the current point x; if y is in K,\ngo to y, otherwise stay at the current point x.",
+      "size": 333,
+      "sentences": 2
+    },
+    {
+      "id": 184,
+      "content": "us δ centered at the current point x; if y is in K,\ngo to y, otherwise stay at the current point x. Per [53, 61], assuming the starting distribution\nis M-warm, the number of steps of the Ball walk to reach ϵ-accuracy in the total variation\n(cid:16) (cid:17)\ndistance is of the order O d2C M2 log M . LSI ϵ2 ϵ\n• The Hit-and-Run walk is first introduced in [57] and rigorously investigated in Lov´asz and\nSimonovits in [53].",
+      "size": 422,
+      "sentences": 3
+    },
+    {
+      "id": 185,
+      "content": "Run walk is first introduced in [57] and rigorously investigated in Lov´asz and\nSimonovits in [53]. Also assuming a membership oracle on K and in the special case of\nuniform sampling, the Hit-and-Run walk is: choose a uniform direction over the unit sphere\nand find a line segment in that direction that intersects K at two endpoints but still belong\nto K; then go to a uniform random point on that line segment.",
+      "size": 412,
+      "sentences": 2
+    },
+    {
+      "id": 186,
+      "content": "s K at two endpoints but still belong\nto K; then go to a uniform random point on that line segment. [51] shows the its iteration\n(cid:16) (cid:17)\ncomplexity in total variance is of the order O d2C M2 . LSI ϵ2\n• The coordinate Hit-and-Run walk [60, 14, 15] is similar to the Hit-and-Run walk, with the\ndifference being it picks a coordinate axis uniformly instead of considering all directions in\na unit sphere.",
+      "size": 411,
+      "sentences": 3
+    },
+    {
+      "id": 187,
+      "content": "being it picks a coordinate axis uniformly instead of considering all directions in\na unit sphere. Although there have been experimental results in [11, 17] which show the\ncoordinate Hit-and-Run walk to mix faster than the original version in certain settings, the\nstate-of-the-artupperboundsontheiterationcomplexityofthecoordinateHit-and-Runwalk\nin [40, 56] are worse than that of the original Hit-and-Run walk.",
+      "size": 412,
+      "sentences": 2
+    },
+    {
+      "id": 188,
+      "content": "ityofthecoordinateHit-and-Runwalk\nin [40, 56] are worse than that of the original Hit-and-Run walk. • The In-and-Out algorithm by [39] is the ASF/proximal sampler by [42], where the RGO\nimplentation is via a membership oracle: sample x from a Gaussian distribution until\nx ∈ K up to a certain number of maximum attempts N, at which point the algorithm halts\nand declares failure.",
+      "size": 379,
+      "sentences": 2
+    },
+    {
+      "id": 189,
+      "content": "to a certain number of maximum attempts N, at which point the algorithm halts\nand declares failure. Their iteration complexities in R´enyi divergence and χ2-divergence are\nthe same as those in our Corollary 2.3 in Section 2, except that they derive their iteration\ncomplexities via the PI constant of the uniform distribution while we use both PI and LSI\nconstants. 24",
+      "size": 368,
+      "sentences": 3
+    }
+  ]
+}

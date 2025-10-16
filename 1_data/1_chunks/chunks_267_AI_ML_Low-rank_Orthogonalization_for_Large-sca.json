@@ -1,0 +1,1179 @@
+{
+  "source": "ArXiv",
+  "filename": "267_AI_ML_Low-rank_Orthogonalization_for_Large-sca.pdf",
+  "domain": "AI",
+  "total_chars": 67487,
+  "total_chunks": 195,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\nLow-rank orthogonalization for large-scale matrix optimization with\napplications to foundation model training\nChuan He∗ Zhanwang Deng† Zhaosong Lu‡\nSeptember 16, 2025\nAbstract\nNeural network (NN) training is inherently a large-scale matrix optimization problem, yet the\nmatrix structure of NN parameters has long been overlooked.",
+      "size": 340,
+      "sentences": 1
+    },
+    {
+      "id": 2,
+      "content": "le matrix optimization problem, yet the\nmatrix structure of NN parameters has long been overlooked. Recently, the optimizer Muon [28],\nwhich explicitly exploits this structure, has gained significant attention for its strong performance in\nfoundationmodeltraining. AkeycomponentcontributingtoMuon’ssuccessismatrixorthogonalization. In this paper, we propose low-rank orthogonalization, which explicitly leverages the low-rank nature of\ngradients during NN training.",
+      "size": 465,
+      "sentences": 4
+    },
+    {
+      "id": 3,
+      "content": "orthogonalization, which explicitly leverages the low-rank nature of\ngradients during NN training. Building on this, we propose low-rank matrix-signed gradient descent\nand a low-rank variant of Muon. Our numerical experiments demonstrate the superior performance\nof low-rank orthogonalization, with the low-rank Muon achieving promising results in GPT-2 and\nLLaMA pretraining—surpassing the performance of the carefully tuned vanilla Muon.",
+      "size": 439,
+      "sentences": 3
+    },
+    {
+      "id": 4,
+      "content": "ults in GPT-2 and\nLLaMA pretraining—surpassing the performance of the carefully tuned vanilla Muon. Theoretically,\nwe establish the iteration complexity of the low-rank matrix-signed gradient descent for finding an\napproximatestationarysolution, aswellasthatoflow-rankMuonforfindinganapproximatestochastic\nstationary solution under heavy-tailed noise.",
+      "size": 351,
+      "sentences": 2
+    },
+    {
+      "id": 5,
+      "content": "asthatoflow-rankMuonforfindinganapproximatestochastic\nstationary solution under heavy-tailed noise. Keywords: Orthogonalization, Muon, foundation model training, iteration complexity, heavy-tailed noise\nMathematics Subject Classification: 49M37, 90C30, 90C90\n1 Introduction\nTraining neural networks (NNs) [32], particularly recent foundation models [8], has consistently posed\nchallenging large-scale optimization problems.",
+      "size": 423,
+      "sentences": 2
+    },
+    {
+      "id": 6,
+      "content": "recent foundation models [8], has consistently posed\nchallenging large-scale optimization problems. Over the past decade, NN training has been dominated by\nvector-variate optimization methods—including SGD [9], AdaGrad [18], RMSprop [25], Adadelta [55],\nAdam [29], and AdamW [37].",
+      "size": 280,
+      "sentences": 2
+    },
+    {
+      "id": 7,
+      "content": "on methods—including SGD [9], AdaGrad [18], RMSprop [25], Adadelta [55],\nAdam [29], and AdamW [37]. Nonetheless, these methods disregard the inherent matrix structure of NN\nparameters—such as those in multi-layer perceptrons [45], convolutional layers [33], and the query, key,\nand value projections in attention mechanisms [52].",
+      "size": 329,
+      "sentences": 2
+    },
+    {
+      "id": 8,
+      "content": "convolutional layers [33], and the query, key,\nand value projections in attention mechanisms [52]. Recently, a shift has taken place: optimization methods that exploit matrix structure are receiving\nincreasing attention and have begun to demonstrate strong performance in foundation model training\n[28, 35, 41]. These methods focus on solving the matrix optimization problem:\nmin f(X). (1)\nX∈Rm×n\n∗Department of Mathematics, Link¨oping University, Sweden (email: chuan.he@liu.se).",
+      "size": 480,
+      "sentences": 4
+    },
+    {
+      "id": 9,
+      "content": "(X). (1)\nX∈Rm×n\n∗Department of Mathematics, Link¨oping University, Sweden (email: chuan.he@liu.se). The work of Chuan He was\npartially supported by the Wallenberg AI, Autonomous Systems and Software Program (WASP) funded by the Knut and\nAlice Wallenberg Foundation. †Academy for Advanced Interdisciplinary Studies, Peking University, Beijing, People’s Republic of China (email:\ndzw opt2022@stu.pku.edu.cn).",
+      "size": 406,
+      "sentences": 4
+    },
+    {
+      "id": 10,
+      "content": "tudies, Peking University, Beijing, People’s Republic of China (email:\ndzw opt2022@stu.pku.edu.cn). ‡Department of Industrial and Systems Engineering, University of Minnesota, USA (email: zhaosong@umn.edu).",
+      "size": 206,
+      "sentences": 2
+    },
+    {
+      "id": 11,
+      "content": "ment of Industrial and Systems Engineering, University of Minnesota, USA (email: zhaosong@umn.edu). 1\n5202\npeS\n51\n]GL.sc[\n1v38911.9052:viXra\n===  2 ===\nIn particular, Shampoo, developed in [5, 21], applies left and right preconditioning matrices as follows:\nXk+1 = Xk −η (Lk)−1/4Gk(Rk)−1/4, (2)\nk\nwhere η > 0 is the step size, Gk ∈ Rm×n denotes the (stochastic) gradient of f at Xk, and Lk ∈ Rm×m\nk\nand Rk ∈ Rn×n are the left and right preconditioning matrices, respectively.",
+      "size": 475,
+      "sentences": 2
+    },
+    {
+      "id": 12,
+      "content": "at Xk, and Lk ∈ Rm×m\nk\nand Rk ∈ Rn×n are the left and right preconditioning matrices, respectively. Shampoo updates the left\nand right preconditioners {Lk} and {Rk} using the second-order statistics of the accumulated gradients,\nsimilarly to AdaGrad, and has demonstrated comparable performance to popular vector-variate optimizers\nsuch as Adam and AdamW on foundation model training.",
+      "size": 384,
+      "sentences": 2
+    },
+    {
+      "id": 13,
+      "content": "rformance to popular vector-variate optimizers\nsuch as Adam and AdamW on foundation model training. Following Shampoo, other matrix-variate\noptimizers that use two-sided preconditioners, such as CASPR [19] and SOAP [53], were also developed. A preconditioned Riemannian gradient descent method was developed in [7] for low-rank matrix recovery,\nwhich adopts only the diagonal part of the Shampoo preconditioners. Moreover, one-sided preconditioned\nvariants of Shampoo were developed in [4, 54].",
+      "size": 494,
+      "sentences": 4
+    },
+    {
+      "id": 14,
+      "content": "preconditioners. Moreover, one-sided preconditioned\nvariants of Shampoo were developed in [4, 54]. In addition to Shampoo and its variants, another matrix-variate optimizer, Muon [28], has attracted\nsignificant attention for outperforming standard optimizers such as Adam and AdamW in foundation\nmodel training [3, 35].",
+      "size": 319,
+      "sentences": 3
+    },
+    {
+      "id": 15,
+      "content": "for outperforming standard optimizers such as Adam and AdamW in foundation\nmodel training [3, 35]. At each iteration, Muon performs the update:\nMk = (1−θ )Mk−1+θ G(Xk;ξk), Xk+1 = Xk −η msgn(Mk), (3)\nk−1 k−1 k\nwhere G(·;ξ) is the stochastic gradient of f(·), and msgn(Mk) = Uk(Vk)T denotes the matrix sign of\nMk, with Uk and Vk being the left and right singular vectors of Mk, respectively.",
+      "size": 389,
+      "sentences": 2
+    },
+    {
+      "id": 16,
+      "content": "he matrix sign of\nMk, with Uk and Vk being the left and right singular vectors of Mk, respectively. The matrix sign\ncomputation is often referred to as matrix orthogonalization, because calculating msgn(M) is equivalent\nto finding the (semi-)orthogonal matrix closest to M with respect to the Frobenius norm (see, e.g., [6,\nProposition 4]).",
+      "size": 340,
+      "sentences": 2
+    },
+    {
+      "id": 17,
+      "content": ")orthogonal matrix closest to M with respect to the Frobenius norm (see, e.g., [6,\nProposition 4]). Muon’s empirical success has sparked significant research interest, including efforts to\nunderstand its relationship with other algorithms, establish its convergence guarantees, and propose\nnew variants (see, e.g., [4, 14, 15, 20, 30, 31, 34, 36, 38, 41, 43, 46, 47, 48]).",
+      "size": 372,
+      "sentences": 2
+    },
+    {
+      "id": 18,
+      "content": "ees, and propose\nnew variants (see, e.g., [4, 14, 15, 20, 30, 31, 34, 36, 38, 41, 43, 46, 47, 48]). A popular interpretation of\nMuon is from the perspective of a linear minimization oracle with respect to the spectral norm (e.g., see\n[6, 14, 20, 30, 31, 43]). That is, the matrix sign computation in (3) can be recast as:\n−msgn(Mk) = argmin{⟨Mk,∆⟩},\n∥∆∥≤1\nwhere ∥·∥ denotes spectral norm.",
+      "size": 388,
+      "sentences": 3
+    },
+    {
+      "id": 19,
+      "content": "utation in (3) can be recast as:\n−msgn(Mk) = argmin{⟨Mk,∆⟩},\n∥∆∥≤1\nwhere ∥·∥ denotes spectral norm. Based on this interpretation, algorithmic designs leveraging general\nmatrix-induced norms ∥·∥ have been discussed in [6, 14, 20, 43]. In addition, Muon is also connected\np→q\nto earlier algorithms and can be viewed as a special case of Shampoo, despite not explicitly using\npreconditioners.",
+      "size": 389,
+      "sentences": 3
+    },
+    {
+      "id": 20,
+      "content": "ithms and can be viewed as a special case of Shampoo, despite not explicitly using\npreconditioners. As discussed in [28], by taking Lk = Gk(Gk)T and Rk = (Gk)TGk in (2), the Shampoo\nupdates reduce to the matrix-signed update: Xk+1 = Xk − η msgn(Gk).",
+      "size": 249,
+      "sentences": 2
+    },
+    {
+      "id": 21,
+      "content": "k = (Gk)TGk in (2), the Shampoo\nupdates reduce to the matrix-signed update: Xk+1 = Xk − η msgn(Gk). Furthermore, convergence\nk\nguarantees for Muon have been extensively studied (e.g., see [4, 15, 30, 34, 43, 46, 47, 48]), and numerous\nnew variants—such as SWAN [38], Scion [41], Gluon [43], PolarGrad [31], Dion [1, 2], and AdaMuon\n[49]—have been proposed.",
+      "size": 356,
+      "sentences": 2
+    },
+    {
+      "id": 22,
+      "content": "WAN [38], Scion [41], Gluon [43], PolarGrad [31], Dion [1, 2], and AdaMuon\n[49]—have been proposed. Beyondapplyingorthogonalization,akeyinnovationofMuonistheuseofamoreGPU-friendlymethod—\nspecifically, Newton-Schulz iterations (typically with five steps)—to perform inexact orthogonalization,\nwhich makes Muon well-suited for modern foundation model training.",
+      "size": 358,
+      "sentences": 2
+    },
+    {
+      "id": 23,
+      "content": "rform inexact orthogonalization,\nwhich makes Muon well-suited for modern foundation model training. In fact, several earlier methods,\nincluding spectral gradient descent [10, 11, 12] and orthogonalized gradient descent [51], have applied\northogonalization using SVD to matrix optimization problems. However, since SVD is not computationally\nefficient in GPU environments, these methods fail to scale to foundation model training.",
+      "size": 429,
+      "sentences": 3
+    },
+    {
+      "id": 24,
+      "content": "tationally\nefficient in GPU environments, these methods fail to scale to foundation model training. Inspired by Muon and its orthogonalization subroutine, we aim at developing a faster, lightweight\northogonalization method to be implemented in Muon and its variants. Specifically, our design leverages\nthe widely observed phenomenon that the gradient matrices of NN parameters are often low-rank (see, e.g.,\n2\n===  3 ===\n[23, 26, 39, 57]).",
+      "size": 439,
+      "sentences": 3
+    },
+    {
+      "id": 25,
+      "content": "e gradient matrices of NN parameters are often low-rank (see, e.g.,\n2\n===  3 ===\n[23, 26, 39, 57]). To exploit this low-rank property, we propose performing low-rank orthogonalization by\nincorporating well-known matrix approximation techniques for low-rank matrices [16, 22]. Our approach\nfirst constructs a low-rank projection of the gradient matrix using QR decomposition on a sketched matrix,\nand then performs orthogonalization on the projected matrix by leveraging its structure.",
+      "size": 484,
+      "sentences": 3
+    },
+    {
+      "id": 26,
+      "content": "ed matrix,\nand then performs orthogonalization on the projected matrix by leveraging its structure. Our proposed\nlow-rank orthogonalization offers two main advantages over common orthogonalization:\n• Computational efficiency: Orthogonalization can be seen as computing the polar factor of a given\nfull matrix. In contrast, our low-rank orthogonalization first computes the Q factor of a smaller\nsketched matrix, followed by the polar factor of a projected matrix constructed using the Q factor.",
+      "size": 494,
+      "sentences": 3
+    },
+    {
+      "id": 27,
+      "content": "sketched matrix, followed by the polar factor of a projected matrix constructed using the Q factor. Since both the QR decomposition and polar decomposition are performed on much smaller matrices,\nour low-rank approach enjoys substantial computational savings for large-scale problems. • Noise robustness: In the presence of noise, singular vectors associated with small singular values\noften vary significantly, leading to instability in orthogonalization via Newton–Schulz iterations.",
+      "size": 485,
+      "sentences": 3
+    },
+    {
+      "id": 28,
+      "content": "often vary significantly, leading to instability in orthogonalization via Newton–Schulz iterations. By contrast, our low-rank orthogonalization method clips these singular vectors to eliminate\nunstable estimates of singular vectors associated with small singular values, thereby stabilizing the\northogonalization process and yielding a robust estimate of the matrix sign. These advantages will be illustrated in detail in Sections 3.1 and 4.",
+      "size": 441,
+      "sentences": 3
+    },
+    {
+      "id": 29,
+      "content": "estimate of the matrix sign. These advantages will be illustrated in detail in Sections 3.1 and 4. Based on low-rank orthogonalization,\nwe develop low-rank matrix-signed gradient descent and a low-rank variant of Muon. We also establish\ntheir complexity guarantees under mild assumptions. Our main contributions are highlighted below. • Weproposelow-rankorthogonalizationtobeincorporatedintomatrix-variateoptimizationalgorithms\nsuch as Muon.",
+      "size": 441,
+      "sentences": 6
+    },
+    {
+      "id": 30,
+      "content": "poselow-rankorthogonalizationtobeincorporatedintomatrix-variateoptimizationalgorithms\nsuch as Muon. It can be efficiently executed on GPUs and serves as a lightweight substitute for\nexisting orthogonalization methods such as Newton-Schulz iterations. • Under mild assumptions, we establish the iteration complexity of low-rank matrix-signed gradient\ndescent and a low-rank variant of Muon, respectively.",
+      "size": 403,
+      "sentences": 3
+    },
+    {
+      "id": 31,
+      "content": "complexity of low-rank matrix-signed gradient\ndescent and a low-rank variant of Muon, respectively. To the best of our knowledge, our complexity\nanalysis of low-rank Muon provides the first result for Muon-type algorithms—including vanilla\nMuon—under heavy-tailed noise. The remainder of this paper is organized as follows. In Section 2, we introduce the notation and\nassumptionsusedthroughoutthepaper.",
+      "size": 402,
+      "sentences": 4
+    },
+    {
+      "id": 32,
+      "content": "rganized as follows. In Section 2, we introduce the notation and\nassumptionsusedthroughoutthepaper. InSection3, weproposelow-rankorthogonalizationand, basedon\nit, develop low-rank matrix-sign gradient descent and low-rank Muon. In Section 4, we present numerical\nresults. Finally, we provide the proofs of the main results and concluding remarks in Sections 5 and 6,\nrespectively.",
+      "size": 380,
+      "sentences": 5
+    },
+    {
+      "id": 33,
+      "content": "we provide the proofs of the main results and concluding remarks in Sections 5 and 6,\nrespectively. 2 Notation and assumptions\nThroughout this paper, we use Rm×n to denote the Euclidean space of m×n real matrices, and Z to\n+\ndenote the set of all nonnegative integers.",
+      "size": 268,
+      "sentences": 2
+    },
+    {
+      "id": 34,
+      "content": "te the Euclidean space of m×n real matrices, and Z to\n+\ndenote the set of all nonnegative integers. We use ∥·∥ to denote the Euclidean norm of a vector or the\nspectral norm of a matrix; ∥·∥ and ∥·∥ to denote the nuclear norm and the Frobenius norm of a\n∗ F\nmatrix, respectively; and ⟨·,·⟩ to denote the trace inner product for matrices. For any M ∈ Rm×n, we\nuse rank(M) to denote its rank, and [M] to denote its best rank-k approximation with respect to ∥·∥ .",
+      "size": 459,
+      "sentences": 3
+    },
+    {
+      "id": 35,
+      "content": "e rank(M) to denote its rank, and [M] to denote its best rank-k approximation with respect to ∥·∥ . k F\nWe define the matrix sign of any nonzero matrix M ∈ Rm×n as msgn(M) = UVT, where U ∈ Rm×r and\nV ∈ Rn×r are column-orthogonal matrices obtained from the reduced SVD of M. We let ϱ := min{m,n}. In addition, we use O(cid:101)(·) to denote O(·) with logarithmic factors omitted. We now make the following assumption throughout this paper. 3\n===  4 ===\nAssumption 1.",
+      "size": 465,
+      "sentences": 5
+    },
+    {
+      "id": 36,
+      "content": "ors omitted. We now make the following assumption throughout this paper. 3\n===  4 ===\nAssumption 1. (a) There exists a finite f such that f(X) ≥ f for all X ∈ Rm×n. low low\n(b) There exists an L > 0 such that ∥∇f(X)−∇f(Y)∥ ≤ L ∥X −Y∥ for all X,Y ∈ Rm×n. ∗ ∗ ∗\nAssumption 1(a) is standard. Assumption 1(b) is natural in the analysis of Muon-type algorithms and\nhas been used previously (e.g., see [15, 43, 48]). It follows from Assumption 1(b) that\nL\nf(Y) ≤ f(X)+⟨∇f(X),Y −X⟩+ ∗ ∥Y −X∥2 ∀X,Y ∈ Rm×n.",
+      "size": 498,
+      "sentences": 8
+    },
+    {
+      "id": 37,
+      "content": ", 43, 48]). It follows from Assumption 1(b) that\nL\nf(Y) ≤ f(X)+⟨∇f(X),Y −X⟩+ ∗ ∥Y −X∥2 ∀X,Y ∈ Rm×n. (4)\n2\nWe next provide a definition for approximate stationary points of problem (1). Definition 1. For any ϵ ∈ (0,1), we say that X ∈ Rm×n is an ϵ-nuclear norm stationary point (NSP)\nof problem (1) if it satisfies ∥∇f(X)∥ ≤ ϵ, and that it is an ϵ-stochastic nuclear norm stationary point\n∗\n(SNSP) of problem (1) if it satisfies E[∥∇f(X)∥ ] ≤ ϵ.",
+      "size": 444,
+      "sentences": 5
+    },
+    {
+      "id": 38,
+      "content": "ϵ-stochastic nuclear norm stationary point\n∗\n(SNSP) of problem (1) if it satisfies E[∥∇f(X)∥ ] ≤ ϵ. ∗\n3 Matrix optimization with low-rank orthogonalization\nIn this section, we propose algorithms with low-rank orthogonalization for solving (1). In particular, we\nfirst propose low-rank orthogonalization in Section 3.1, which serves as a subroutine in matrix-variate\noptimizationalgorithms.",
+      "size": 389,
+      "sentences": 3
+    },
+    {
+      "id": 39,
+      "content": "gonalization in Section 3.1, which serves as a subroutine in matrix-variate\noptimizationalgorithms. Then,weproposelow-rankmatrix-signedgradientdescentmethodsinSection3.2,\nand a low-rank variant of Muon in Section 3.3. 3.1 Low-rank orthogonalization\nOrthogonalization has attracted increasing attention in recent optimizer designs, as it has shown strong\nempirical promise in foundation model training (e.g., see [6, 28, 31, 51]).",
+      "size": 429,
+      "sentences": 3
+    },
+    {
+      "id": 40,
+      "content": "as it has shown strong\nempirical promise in foundation model training (e.g., see [6, 28, 31, 51]). In this subsection, we develop a\nlow-rank orthogonalization method, leveraging low-rank matrix approximation techniques, that serves as\na lightweight substitute for the orthogonalization subroutine used in matrix-variate optimizers. Specifically, our low-rank orthogonalization method, presented in Algorithm 1, is based on Gaussian\nsketching [22].",
+      "size": 447,
+      "sentences": 3
+    },
+    {
+      "id": 41,
+      "content": "r low-rank orthogonalization method, presented in Algorithm 1, is based on Gaussian\nsketching [22]. This method first draws a Gaussian random matrix G ∈ Rn×r with r ≪ ϱ, and performs\na QR decomposition on MG to obtain a column-orthogonal Q factor Q ∈ Rm×r. Then, it computes\nmsgn(QTM) ∈ Rr×n and returns M = Qmsgn(QTM) as a low-rank approximation for msgn(M).",
+      "size": 359,
+      "sentences": 3
+    },
+    {
+      "id": 42,
+      "content": "n, it computes\nmsgn(QTM) ∈ Rr×n and returns M = Qmsgn(QTM) as a low-rank approximation for msgn(M). As\nO\nwill be shown in Theorem 1, M represents the matrix sign of QQTM, which is a low-rank approximation\nO\nof M. Its proof is deferred to Section 5.1. Algorithm 1 A low-rank orthogonalization method\nInput: matrix M ∈ Rm×n, rank trial r ∈ Z ∩[1,ϱ]. +\nOutput: approximate matrix sign M ∈ Rm×n. O\nDraw a Gaussian random matrix G ∈ Rn×r.",
+      "size": 433,
+      "sentences": 5
+    },
+    {
+      "id": 43,
+      "content": "r ∈ Z ∩[1,ϱ]. +\nOutput: approximate matrix sign M ∈ Rm×n. O\nDraw a Gaussian random matrix G ∈ Rn×r. Perform a QR decomposition on MG to obtain a column-orthogonal Q factor Q ∈ Rm×r. Return M = Qmsgn(QTM). (On GPUs, msgn(QTM) is recommended to be estimated via Newton-\nO\nSchulz iterations.) Theorem 1. Consider Algorithm 1 with inputs M ∈ Rm×n and r ∈ Z ∩[1,ϱ], where ϱ := min{m,n}. +\nLet Q ∈ Rm×r be generated by Algorithm 1.",
+      "size": 425,
+      "sentences": 9
+    },
+    {
+      "id": 44,
+      "content": "inputs M ∈ Rm×n and r ∈ Z ∩[1,ϱ], where ϱ := min{m,n}. +\nLet Q ∈ Rm×r be generated by Algorithm 1. Then, for any r satisfying 2 ≤ r ≤ r−2, it holds that\n∗ ∗\n(cid:16) r (cid:17)1/2\nE[∥(I −QQT)M∥ ] ≤ 1+ ∗ ∥M −[M] ∥ . (5)\nF\nr−r −1\nr∗ F\n∗\n4\n===  5 ===\nMoreover, we have\nmsgn(QQTM) = Qmsgn(QTM). (6)\nRemark 1. The relation (5) is adapted from [22, Theorem 10.5], where additional guarantees—such as\nthose involving different matrix norms and those providing high-probability bounds—can also be found.",
+      "size": 495,
+      "sentences": 6
+    },
+    {
+      "id": 45,
+      "content": "ose involving different matrix norms and those providing high-probability bounds—can also be found. In addition, low-rank matrix approximation based on column selection (e.g., see [16, 17]) can also be used\nto develop a low-rank orthogonalization method. However, since its approximation guarantee is more\ncomplicated than that of the Gaussian sketching-based approach, we defer the column-selection-based\nlow-rank orthogonalization method to Algorithm 5 in Appendix A.",
+      "size": 469,
+      "sentences": 3
+    },
+    {
+      "id": 46,
+      "content": "we defer the column-selection-based\nlow-rank orthogonalization method to Algorithm 5 in Appendix A. Next, we illustrate two major advantages of our low-rank orthogonalization method, namely, computa-\ntional efficiency and noise robustness, through synthetic experiments on randomly generated matrices.",
+      "size": 301,
+      "sentences": 2
+    },
+    {
+      "id": 47,
+      "content": "onal efficiency and noise robustness, through synthetic experiments on randomly generated matrices. Computational efficiency: We compare the computation time on GPUs for calculating inexact matrix\nsign of high-dimensional matrices using Newton-Schulz iterations, low-rank orthogonalization based on\nGaussian sketching (Algorithm 1) and column selection (Algorithm 5), and truncated SVD.",
+      "size": 386,
+      "sentences": 2
+    },
+    {
+      "id": 48,
+      "content": "on based on\nGaussian sketching (Algorithm 1) and column selection (Algorithm 5), and truncated SVD. For each n ∈ {1000,2000,5000,10000}, we generate 50 random matrices M ∈ Rn×n, with each entry\nfollowing the standard Gaussian distribution. We then apply all competing orthogonalization methods to\nestimate msgn(M). We implement Newton-Schulz iterations as provided in Muon [28] with 5 iterations.",
+      "size": 396,
+      "sentences": 4
+    },
+    {
+      "id": 49,
+      "content": "estimate msgn(M). We implement Newton-Schulz iterations as provided in Muon [28] with 5 iterations. Forourlow-rankorthogonalizationmethods, wesetr = 0.1nastheinputrankparameter, weusecommand\ntorch.linalg.qr to compute the Q factor, and apply 5 iterations of Newton-Schulz scheme following\nMuon [28] to compute the matrix sign of QTM. In addition, we use command torch.pca lowrank for\nefficiently performing truncated SVD, setting the rank to 0.1n for the truncation.",
+      "size": 466,
+      "sentences": 4
+    },
+    {
+      "id": 50,
+      "content": ".pca lowrank for\nefficiently performing truncated SVD, setting the rank to 0.1n for the truncation. Figure 1: Left: Comparison of GPU computation time across Newton-Schulz iterations (NS), our low-rank\northogonalization with Gaussian sketching (GS) and column selection (CS), and truncated SVD (TSVD). Right: Speedup ratios of our low-rank orthogonalization methods compared to Newton-Schulz iterations.",
+      "size": 403,
+      "sentences": 3
+    },
+    {
+      "id": 51,
+      "content": "ght: Speedup ratios of our low-rank orthogonalization methods compared to Newton-Schulz iterations. We present a comparison of the computation time on GPUs for all competing methods in Figure 1,\nand the time distribution of our low-rank orthogonalization method with Gaussian sketching in Figure 2. From Figure 1, we observe that our low-rank orthogonalization method significantly reduces computation\ntime compared to Newton-Schulz iterations and truncated SVD.",
+      "size": 462,
+      "sentences": 3
+    },
+    {
+      "id": 52,
+      "content": "thod significantly reduces computation\ntime compared to Newton-Schulz iterations and truncated SVD. Although both truncated SVD and our\nlow-rank orthogonalization exploit low-rank structure for computation, truncated SVD is not well-suited\nto GPU environments and is therefore slower than the Newton-Schulz iterations.",
+      "size": 318,
+      "sentences": 2
+    },
+    {
+      "id": 53,
+      "content": "D is not well-suited\nto GPU environments and is therefore slower than the Newton-Schulz iterations. From Figure 2, we\nobserve that in our low-rank orthogonalization method with Gaussian sketching, the QR decomposition\naccounts for approximately half of the total time, while the Newton-Schulz iterations and other operations\n(such as generating Gaussian random matrices and performing matrix multiplications) each make up\nroughly half of the remaining time.",
+      "size": 457,
+      "sentences": 2
+    },
+    {
+      "id": 54,
+      "content": "om matrices and performing matrix multiplications) each make up\nroughly half of the remaining time. 5\n===  6 ===\nFigure 2: Time distribution for low-rank orthogonalization with Gaussian sketching, including the QR\ndecomposition, the Newton-Schulz iterations for computing the matrix sign, and other computations.",
+      "size": 312,
+      "sentences": 2
+    },
+    {
+      "id": 55,
+      "content": "decomposition, the Newton-Schulz iterations for computing the matrix sign, and other computations. Noise robustness: In addition to reducing computation time, our low-rank orthogonalization methods\nalso produce more robust estimates of the matrix sign for low-rank matrices in the presence of noise. This\nrobustness is particularly important in foundation model training, where gradients often exhibit low-rank\nstructure.",
+      "size": 421,
+      "sentences": 3
+    },
+    {
+      "id": 56,
+      "content": "ticularly important in foundation model training, where gradients often exhibit low-rank\nstructure. We now compare the performance of Newton–Schulz iterations and our low-rank methods in\nestimating the matrix sign of noisy, low-rank matrices.",
+      "size": 242,
+      "sentences": 2
+    },
+    {
+      "id": 57,
+      "content": "hulz iterations and our low-rank methods in\nestimating the matrix sign of noisy, low-rank matrices. For each n ∈ {1000,2000,5000,10000}, we first randomly generate 10 nearly low-rank matrices\nM ∈ Rn×n following strategy: the top 0.1n singular values are set to 1, the remaining singular values are\nset to 10−4, and the singular vectors are randomly generated orthogonal vectors.",
+      "size": 378,
+      "sentences": 2
+    },
+    {
+      "id": 58,
+      "content": "ingular values are\nset to 10−4, and the singular vectors are randomly generated orthogonal vectors. For each M, we generate\n50 noise matrices N ∈ Rn×n, with each entry drawn from a Gaussian distribution with mean zero and\nvariance σ2 ∈ {0.1,1,10}, and construct noisy matrices M = M +N.",
+      "size": 286,
+      "sentences": 2
+    },
+    {
+      "id": 59,
+      "content": "an distribution with mean zero and\nvariance σ2 ∈ {0.1,1,10}, and construct noisy matrices M = M +N. We next apply Newton-Schulz\nN\niterations, and our low-rank orthogonalization method based on Gaussian sketching (Algorithm 1), using\nan input rank parameter 0.1n, to estimate msgn(M ).1 For each M, we compute the trace of the\nN\nempirical covariance matrix of the estimates of msgn(M ) produced by both Newton-Schulz iterations\nN\nand Algorithm 1.",
+      "size": 445,
+      "sentences": 2
+    },
+    {
+      "id": 60,
+      "content": "ce matrix of the estimates of msgn(M ) produced by both Newton-Schulz iterations\nN\nand Algorithm 1. Both methods are implemented in the same way as in the above synthetic experiments\nto illustrate the computational efficiency. Figure 3: Comparison of variance levels in matrix sign estimation across Newton-Schulz iterations (NS),\nand our low-rank orthogonalization methods using Gaussian sketching (GS), applied to nearly low-rank\nmatrices in the presence of noise.",
+      "size": 466,
+      "sentences": 3
+    },
+    {
+      "id": 61,
+      "content": "ethods using Gaussian sketching (GS), applied to nearly low-rank\nmatrices in the presence of noise. Figure 3 presents a comparison of the average trace of the covariance matrices across all competing\nmethods for matrix sign estimation. From this figure, we observe that compared to applying the Newton-\nSchulz iterations to the full matrix, our low-rank orthogonalization method yields matrix sign estimates\nthat are significantly less sensitive to noise.",
+      "size": 455,
+      "sentences": 3
+    },
+    {
+      "id": 62,
+      "content": "thogonalization method yields matrix sign estimates\nthat are significantly less sensitive to noise. This is because singular vectors associated with small singular\nvalues are more sensitive to noise than those corresponding to large singular values. As a result, our\n1Weomitlow-rankorthogonalizationwithcolumnselection(Algorithm5)becauseitsperformanceissimilartothatofthe\nversion with Gaussian sketching.",
+      "size": 404,
+      "sentences": 3
+    },
+    {
+      "id": 63,
+      "content": "lumnselection(Algorithm5)becauseitsperformanceissimilartothatofthe\nversion with Gaussian sketching. 6\n===  7 ===\nlow-rank method provides a more stable and robust estimate of the matrix sign function, particularly for\nnearly low-rank matrices. 3.2 Low-rank matrix-signed gradient descent\nIn this subsection, we propose low-rank matrix-signed gradient descent methods, including a fixed-rank\nvariant and a safeguarded variant with adaptive ranks.",
+      "size": 445,
+      "sentences": 3
+    },
+    {
+      "id": 64,
+      "content": "ient descent methods, including a fixed-rank\nvariant and a safeguarded variant with adaptive ranks. Both variants use low-rank orthogonalization as a\nsubroutine. Algorithm 2 Low-rank matrix-signed gradient descent\nInput: starting point X0 ∈ Rm×n, rank parameter r ∈ Z ∩[1,ϱ], step sizes {η } ⊂ (0,∞). + k\nfor k = 0,1,2,... do\nCall Algorithm 1 (see Section 3.1) with (M,r) = (∇f(Xk),r) to obtain an approximate matrix sign\nMk, such that Mk = msgn(Mk), where Mk is a low-rank approximation for ∇f(Xk).",
+      "size": 499,
+      "sentences": 4
+    },
+    {
+      "id": 65,
+      "content": "proximate matrix sign\nMk, such that Mk = msgn(Mk), where Mk is a low-rank approximation for ∇f(Xk). O O Q Q\nUpdate the next iterate:\nXk+1 = Xk −η Mk. k O\nend for\nAt each iteration k ≥ 0, the fixed-rank variant invokes Algorithm 1 to compute Mk = msgn(Mk),\nO Q\nwhere Mk is a low-rank approximation of ∇f(Xk). Then, the next iterate Xk+1 is obtained by performing\nQ\na line search update from Xk along the matrix-signed direction −Mk with a suitable step size.",
+      "size": 457,
+      "sentences": 4
+    },
+    {
+      "id": 66,
+      "content": "ing\nQ\na line search update from Xk along the matrix-signed direction −Mk with a suitable step size. Details of\nO\nthis method are presented in Algorithm 2. The following theorem provides a convergence guarantee for Algorithm 2, whose proof is deferred to\nSection 5.2. Theorem 2. Suppose that Assumption 1 holds. Let {(Xk,Mk)} be the sequence generated by Algorithm 2\nO\nwith Mk = msgn(Mk) for all k ≥ 0 and step sizes {η } given by\nO Q k\n1\nη = ∀k ≥ 0.",
+      "size": 449,
+      "sentences": 6
+    },
+    {
+      "id": 67,
+      "content": "by Algorithm 2\nO\nwith Mk = msgn(Mk) for all k ≥ 0 and step sizes {η } given by\nO Q k\n1\nη = ∀k ≥ 0. (7)\nk\n(k+1)1/2\nThen, it holds that for all K ≥ 3,\nmin {∥∇f(Xk)∥} ≤ f(X0)−f low +L ∗ lnK + 2 K (cid:88) −1 ∥∇f(Xk)−M Q k∥ ∗ , (8)\n0≤k≤K−1 K1/2 K1/2 (k+1)1/2\nk=0\nwhere L are defined in Assumption 1. ∗\nRemark 2.",
+      "size": 307,
+      "sentences": 3
+    },
+    {
+      "id": 68,
+      "content": "(Xk)−M Q k∥ ∗ , (8)\n0≤k≤K−1 K1/2 K1/2 (k+1)1/2\nk=0\nwhere L are defined in Assumption 1. ∗\nRemark 2. From Theorem 2, we observe that when {(Xk,Mk)} satisfies (cid:80)K−1∥∇f(Xk)−Mk∥ (k+\nQ k=0 Q ∗\n1)−1/2 = O(cid:101)(1), it holds that min\n0≤k≤K−1\n{∥∇f(Xk)∥\n∗\n} = O(cid:101)(K−1/2), which matches, up to a logarithmic\nfactor, the well-established optimal convergence rate for nonconvex optimization (e.g., see [13]).",
+      "size": 412,
+      "sentences": 3
+    },
+    {
+      "id": 69,
+      "content": "factor, the well-established optimal convergence rate for nonconvex optimization (e.g., see [13]). Moreover,\nif the gradients {∇f(Xk)} have low rank when k sufficiently large (as is often the case during deep neural\nnetwork training [57]), we can tune the rank parameter r such that it is close to the effective rank of the\ngradients, making the sequence {∥∇f(Xk)−Mk∥ } to remain close to zero.",
+      "size": 394,
+      "sentences": 2
+    },
+    {
+      "id": 70,
+      "content": "to the effective rank of the\ngradients, making the sequence {∥∇f(Xk)−Mk∥ } to remain close to zero. Q ∗\nWe next describe a safeguarded low-rank matrix-signed gradient descent method with adaptively\nupdated ranks. At each iteration k ≥ 0, this method invokes Algorithm 1 with (M,r) = (∇f(Xk),r ) to\nk\nobtain Mk = msgn(Mk), where Mk is a low-rank approximation of ∇f(Xk) such that the approximation\nO Q Q\n7\n===  8 ===\nerror satisfies (9).",
+      "size": 436,
+      "sentences": 3
+    },
+    {
+      "id": 71,
+      "content": "ow-rank approximation of ∇f(Xk) such that the approximation\nO Q Q\n7\n===  8 ===\nerror satisfies (9). Then, the next iterate Xk+1 is obtained by performing a line search update from Xk\nalong the matrix-signed direction −Mk, with a suitable step size. Details of this method are provided in\nO\nAlgorithm 3. It is noteworthy that the approximation error in (9) holds for some r ≤ ϱ because when r = ϱ, the\nk k\nerror ∥Mk −∇f(Xk)∥ is zero.",
+      "size": 432,
+      "sentences": 4
+    },
+    {
+      "id": 72,
+      "content": "oximation error in (9) holds for some r ≤ ϱ because when r = ϱ, the\nk k\nerror ∥Mk −∇f(Xk)∥ is zero. When the matrix is low-rank or has a small effective rank, r can be chosen\nQ k\nto be much smaller than ϱ. In practice, one can gradually increase the trial ranks to find r such that (9)\nk\nholds.",
+      "size": 294,
+      "sentences": 3
+    },
+    {
+      "id": 73,
+      "content": "er than ϱ. In practice, one can gradually increase the trial ranks to find r such that (9)\nk\nholds. Algorithm 3 Safeguarded low-rank matrix-signed gradient descent\nInput: starting point X0 ∈ Rm×n, initial rank trial r ∈ Z ∩[1,ϱ], step sizes {η } ⊂ (0,∞), control\n0 + k\nerrors {δ } ⊂ (0,∞)\nk\nfor k = 0,1,2,... do\nCall Algorithm 1 (see Section 3.1) with (M,r) = (∇f(Xk),r ) to obtain an approximate matrix sign\nk\nMk such that Mk = msgn(Mk) and\nO O Q\n∥∇f(Xk)−Mk∥ ≤ δ .",
+      "size": 465,
+      "sentences": 3
+    },
+    {
+      "id": 74,
+      "content": "),r ) to obtain an approximate matrix sign\nk\nMk such that Mk = msgn(Mk) and\nO O Q\n∥∇f(Xk)−Mk∥ ≤ δ . (9)\nQ ∗ k\nUpdate the next iterate:\nXk+1 = Xk −η Mk. k O\nend for\nThe following theorem establishes an iteration complexity of Algorithm 3, whose proof is deferred to\nSection 5.2. Theorem 3. Suppose that Assumption 1 holds. Let f and L be given in Assumption 1, and define\nlow ∗\nU := f(X0)−f +L +4.",
+      "size": 396,
+      "sentences": 6
+    },
+    {
+      "id": 75,
+      "content": "that Assumption 1 holds. Let f and L be given in Assumption 1, and define\nlow ∗\nU := f(X0)−f +L +4. (10)\ngd low ∗\nLet {Xk} be generated by Algorithm 3 with input parameters {(η ,δ )} given by\nk k\n1\nη = δ = ∀k ≥ 0. (11)\nk k (k+1)1/2\nThen, for any ϵ ∈ (0,1), it holds that min {∥∇f(Xk)∥ } ≤ ϵ for all K satisfying\n0≤k≤K−1 ∗\n(cid:110)(cid:16)4U (cid:16)4U (cid:17)(cid:17)2 (cid:111)\ngd gd\nK ≥ max ln ,3 . ϵ ϵ\nRemark 3.",
+      "size": 416,
+      "sentences": 5
+    },
+    {
+      "id": 76,
+      "content": "−1 ∗\n(cid:110)(cid:16)4U (cid:16)4U (cid:17)(cid:17)2 (cid:111)\ngd gd\nK ≥ max ln ,3 . ϵ ϵ\nRemark 3. From Theorem 3, we observe that Algorithm 3 achieves an iteration complexity of O(cid:101)(ϵ−2)\nfor finding an ϵ-NSP of (1). This complexity bound matches, up to a polylogarithmic factor, the lower\ncomplexity bound as established in [13]. 3.3 Low-rank Muon\nIn this subsection, we propose a low-rank variant of Muon [28], and analyze its iteration complexity under\nheavy-tailed noise.",
+      "size": 483,
+      "sentences": 5
+    },
+    {
+      "id": 77,
+      "content": "ose a low-rank variant of Muon [28], and analyze its iteration complexity under\nheavy-tailed noise. This method follows a framework similar to Muon [28], but instead of directly computing the matrix\nsign of the momentum update, it computes only its low-rank approximation. Specifically, this method\ngenerates three sequences {Xk}, {Mk}, and {Mk}.",
+      "size": 346,
+      "sentences": 3
+    },
+    {
+      "id": 78,
+      "content": "s low-rank approximation. Specifically, this method\ngenerates three sequences {Xk}, {Mk}, and {Mk}. At each iteration k ≥ 0, it first performs a momentum\nO\n8\n===  9 ===\nupdate to generate Mk by aggregating stochastic gradients of f evaluated at X0,...,Xk. Then, Algorithm\n1 is invoked to obtain Mk = msgn(Mk), where Mk is a low-rank approximation of ∇f(Xk) such that the\nO Q Q\napproximation error satisfies (13).",
+      "size": 412,
+      "sentences": 4
+    },
+    {
+      "id": 79,
+      "content": "re Mk is a low-rank approximation of ∇f(Xk) such that the\nO Q Q\napproximation error satisfies (13). The next iterate Xk+1 is obtained by performing a line search update\nfrom Xk along the matrix-signed direction −Mk with a suitable step size. Details of this method are\nO\ngiven in Algorithm 4. Before analyzing the complexity of Algorithm 4 for computing an approximate solution to (1), we\nmake the following heavy-tailed noise assumption regarding the stochastic gradient G(·;ξ). Assumption 2.",
+      "size": 493,
+      "sentences": 5
+    },
+    {
+      "id": 80,
+      "content": "the following heavy-tailed noise assumption regarding the stochastic gradient G(·;ξ). Assumption 2. The stochastic gradient estimator G : Rm×n×Ξ → Rm×n satisfies\nE[G(X;ξ)] = ∇f(X), E[∥G(X;ξ)−∇f(X)∥α] ≤ σα\nF\nfor some σ > 0 and α ∈ (1,2]. Algorithm 4 Low-rank Muon\nInput: starting point X0 ∈ Rm×n, initial rank trial r ∈ Z ∩[1,ϱ], step sizes {η } ⊂ (0,∞), weighting\n0 + k\nparameters {θ } ⊂ (0,1], control errors {δ } ⊂ (0,∞).",
+      "size": 423,
+      "sentences": 4
+    },
+    {
+      "id": 81,
+      "content": ",ϱ], step sizes {η } ⊂ (0,∞), weighting\n0 + k\nparameters {θ } ⊂ (0,1], control errors {δ } ⊂ (0,∞). k k\nInitialize: M−1 = 0 and θ = 1.\nm×n −1\nfor k = 0,1,2,... do\nCompute the full-rank search direction:\nMk = (1−θ )Mk−1+θ G(Xk;ξk). (12)\nk−1 k−1\nCall Algorithm 1 (see Section 3.1) with (M,r) = (Mk,r ) to obtain an approximate matrix sign\nk\nMk such that Mk = msgn(Mk) and\nO O Q\n∥Mk −Mk∥ ≤ δ . (13)\nQ ∗ k\nUpdate the next iterate:\nXk+1 = Xk −η Mk.",
+      "size": 443,
+      "sentences": 4
+    },
+    {
+      "id": 82,
+      "content": "ch that Mk = msgn(Mk) and\nO O Q\n∥Mk −Mk∥ ≤ δ . (13)\nQ ∗ k\nUpdate the next iterate:\nXk+1 = Xk −η Mk. (14)\nk O\nend for\nThe following theorem establishes the iteration complexity of Algorithm 4, whose proof is deferred to\nSection 5.3. Theorem 4. Suppose that Assumptions 1 and 2 hold. Let f and L be given in Assumption 1, and σ\nlow ∗\nand α be given in Assumption 2, and define\nU := f(X0)−f +σα+2L +4+2(α−1)(2ϱ1/2/α)α/(α−1)+6Lα+4σα.",
+      "size": 429,
+      "sentences": 6
+    },
+    {
+      "id": 83,
+      "content": "∗\nand α be given in Assumption 2, and define\nU := f(X0)−f +σα+2L +4+2(α−1)(2ϱ1/2/α)α/(α−1)+6Lα+4σα. (15)\nmn low ∗ ∗\nLet {Xk} be generated by Algorithm 4 with input parameters {(η ,θ ,δ )} given by\nk k k\n1 1 1\nη = , θ = , δ = ∀k ≥ 0.",
+      "size": 232,
+      "sentences": 2
+    },
+    {
+      "id": 84,
+      "content": "ated by Algorithm 4 with input parameters {(η ,θ ,δ )} given by\nk k k\n1 1 1\nη = , θ = , δ = ∀k ≥ 0. (16)\nk (k+1)(2α−1)/(3α−2) k (k+1)α/(3α−2) k (k+1)(α−1)/(3α−2)\nThen, for any ϵ ∈ (0,1), it holds that E[∥∇f(XιK)∥\n∗\n] ≤ ϵ for all K satisfying\n(cid:110)(cid:16)2(3α−2)U (cid:16)2(3α−2)U (cid:17)(cid:17)(3α−2)/(α−1) (cid:111)\nmn mn\nK ≥ max ln ,3 ,\n(α−1)ϵ (α−1)ϵ\nwhere ι is uniformly drawn from {0,...,K −1}. K\n9\n===  10 ===\nRemark 4.",
+      "size": 431,
+      "sentences": 3
+    },
+    {
+      "id": 85,
+      "content": "≥ max ln ,3 ,\n(α−1)ϵ (α−1)ϵ\nwhere ι is uniformly drawn from {0,...,K −1}. K\n9\n===  10 ===\nRemark 4. From Theorem 4, one can observe that Algorithm 4 achieves an iteration complexity of\nO(cid:101)(ϵ−(3α−2)/(α−1)) for finding an ϵ-SNSP of problem (1), which matches the optimal dependence on ϵ in\nthe complexity results for vector-variate stochastic first-order methods under heavy-tailed noise (see, e.g.,\n[24, 56]).",
+      "size": 415,
+      "sentences": 3
+    },
+    {
+      "id": 86,
+      "content": "s for vector-variate stochastic first-order methods under heavy-tailed noise (see, e.g.,\n[24, 56]). To the best of our knowledge, our result is the first to show that the Muon-type algorithm can\nachieve an iteration complexity with optimal dependence on ϵ when applied to matrix-variate optimization\nunder heavy-tailed noise.",
+      "size": 325,
+      "sentences": 2
+    },
+    {
+      "id": 87,
+      "content": "with optimal dependence on ϵ when applied to matrix-variate optimization\nunder heavy-tailed noise. 4 Numerical experiments\nIn this section, we present numerical experiments to evaluate the performance of low-rank Muon (Algo-\nrithm 4) and compare our method with vanilla Muon, AdamW, and SGD. The experiments are conducted\non a synthetic matrix regression problem (Section 4.1) and foundation model pretraining with GPT-2\n(Section 4.2) and LLaMA (Section 4.3).",
+      "size": 459,
+      "sentences": 3
+    },
+    {
+      "id": 88,
+      "content": "em (Section 4.1) and foundation model pretraining with GPT-2\n(Section 4.2) and LLaMA (Section 4.3). All experiments are executed on a server with two NVIDIA A100\nGPUs (80 GB). 4.1 Matrix regression\nIn this subsection, we consider the matrix regression problem:\n(cid:110) 1 (cid:111)\nmin f(X) = ∥AXB−C∥2 , (17)\nX∈Rn×n 2 F\nwhere A ∈ Rp×n, B ∈ Rn×p, and C ∈ Rp×p are given data matrices. We simulate low-rank structure for\nthe gradients ∇f(X) by choosing n ≫ p = 100.",
+      "size": 464,
+      "sentences": 4
+    },
+    {
+      "id": 89,
+      "content": "iven data matrices. We simulate low-rank structure for\nthe gradients ∇f(X) by choosing n ≫ p = 100. For each n ∈ {103,5×103,104}, we set A = U Σ VT\nA A A\nand B = U Σ VT, where Σ = Σ = Diag([2,...,2p]), and U , V , U , and V are randomly generated\nB B B A B A A B B\ncolumn-orthogonal matrices.",
+      "size": 292,
+      "sentences": 3
+    },
+    {
+      "id": 90,
+      "content": "..,2p]), and U , V , U , and V are randomly generated\nB B B A B A A B B\ncolumn-orthogonal matrices. We also generate a ground truth solution X∗ with all entries independently\ndrawn from the standard Gaussian distribution, and set C = AXB+10−3E, where all entries of E are\nindependently drawn from the standard Gaussian distribution. Figure 4: Objective values (top row) and gradient Frobenius norms (bottom row) for all methods during\nthe first 2×104 iterations.",
+      "size": 462,
+      "sentences": 3
+    },
+    {
+      "id": 91,
+      "content": "p row) and gradient Frobenius norms (bottom row) for all methods during\nthe first 2×104 iterations. Results for n = 103, 5×103, and 104 are shown in the left, middle, and right\ncolumns, respectively. The computation times on GPUs are displayed in the legend for each plot. 10\n===  11 ===\nWe apply low-rank Muon, Muon, AdamW, and SGD to solve (17). We implement two low-rank Muon\nvariants with rank parameters 50 and 100, abbreviated as LR-Muon50 and LR-Muon100, respectively.",
+      "size": 475,
+      "sentences": 5
+    },
+    {
+      "id": 92,
+      "content": "on\nvariants with rank parameters 50 and 100, abbreviated as LR-Muon50 and LR-Muon100, respectively. All\nmethods are implemented with full-batch (deterministic) gradients and initialized from the zero matrix. We compare their performance based on the objective values and the Frobenius norm of the gradient for\nproblem (17), evaluated over the first 2×104 iterations. The algorithmic parameters are selected to suit\neach method well in terms of computational performance.",
+      "size": 470,
+      "sentences": 4
+    },
+    {
+      "id": 93,
+      "content": "algorithmic parameters are selected to suit\neach method well in terms of computational performance. For each n, we plot the objective values and the gradient Frobenius norms in Figure 4 to illustrate the\nconvergence behavior of all methods. Figure 4 demonstrates that our low-rank Muon achieves performance\ncomparabletovanillaMuoniniterationcount,whilesignificantlyoutperformingbothSGDandAdamW.In\naddition,SGDfailstoconvergeeffectivelyforproblem(17).",
+      "size": 450,
+      "sentences": 3
+    },
+    {
+      "id": 94,
+      "content": "esignificantlyoutperformingbothSGDandAdamW.In\naddition,SGDfailstoconvergeeffectivelyforproblem(17). Furthermore,ourlow-rankMuondemonstrates\nsignificantly faster computation times on GPUs compared to other variants, highlighting the advantages\nof our low-rank orthogonalization procedures for computational efficiency.",
+      "size": 317,
+      "sentences": 2
+    },
+    {
+      "id": 95,
+      "content": "hlighting the advantages\nof our low-rank orthogonalization procedures for computational efficiency. Figure 5: Singular value distributions of the Q, K, and V matrices: across layers at iteration 300 (top\nrow) and over training iterations at layer 16 (bottom row) during GPT-2 pretraining. 4.2 GPT-2 pretraining\nInthissubsection,weconsiderpretrainingGPT-2[42],atransformer-basedlanguagemodel.",
+      "size": 391,
+      "sentences": 3
+    },
+    {
+      "id": 96,
+      "content": "GPT-2 pretraining\nInthissubsection,weconsiderpretrainingGPT-2[42],atransformer-basedlanguagemodel. Weexperiment\nwith GPT-2 models of sizes 60M, 135M, 350M, and 1B on the same three datasets tested in the Muon\nGitHub repository [28]: FineWeb10B, FineWeb100B, and FineWebEdu10B. We apply low-rank Muon, Muon, AdamW, and SGD with momentum (SGDM) for GPT-2 pretraining. We implement two low-rank Muon variants with rank parameters 100 and 200, abbreviated as LR-\nMuon100 and LR-Muon200, respectively.",
+      "size": 496,
+      "sentences": 4
+    },
+    {
+      "id": 97,
+      "content": "variants with rank parameters 100 and 200, abbreviated as LR-\nMuon100 and LR-Muon200, respectively. Following the experiments in [27, 31], we use AdamW to train\nthe embedding and head layers for Muon and low-rank Muon. We initialize all methods with the same\nweights from pretrained GPT-2 models, and terminate all methods after one training epoch, consisting of\n5000 iterations.",
+      "size": 379,
+      "sentences": 3
+    },
+    {
+      "id": 98,
+      "content": "ed GPT-2 models, and terminate all methods after one training epoch, consisting of\n5000 iterations. We compare all methods using validation perplexity, a standard metric in foundation\nmodel training (e.g., [42, 50, 52]), which is defined as the exponential of the validation loss and serves to\namplify performance differences. The algorithmic parameters are carefully tuned to suit each method well\nin terms of computational performance.",
+      "size": 437,
+      "sentences": 3
+    },
+    {
+      "id": 99,
+      "content": "hmic parameters are carefully tuned to suit each method well\nin terms of computational performance. More details about the experimental setups including algorithm\nand GPT-2 model parameters are deferred to Appendix B. 11\n===  12 ===\nFigure 6: Comparison of validation perplexity versus computational time for all competing methods in\ntraining GPT-2 models. 12\n===  13 ===\nTable 1: Comparison of validation perplexity and computational time for all competing methods on GPT-2\npretraining.",
+      "size": 487,
+      "sentences": 4
+    },
+    {
+      "id": 100,
+      "content": "son of validation perplexity and computational time for all competing methods on GPT-2\npretraining. Validation Perplexity Computational Time\nDataset Method\n60M 135M 350M 1B 60M 135M 350M 1B\nSGDM 48.85 48.85 31.54 27.86 2.51e3 7.08e3 1.20e4 2.70e5\nAdamW 43.56 43.56 25.72 21.58 2.52e3 7.08e3 1.21e4 2.69e5\nFineWeb10B Muon 32.89 32.99 28.48 20.99 2.76e3 7.57e3 1.32e4 3.04e5\nLR-Muon100 35.21 28.83 27.32 21.70 2.69e3 7.49e3 1.25e4 2.90e5\nLR-Muon200 33.98 27.34 25.64 20.69 2.79e3 7.54e3 1.26e4 2.91e5\nSGDM 51.48 51.48 77.50 29.75 2.69e3 7.25e3 1.04e4 2.52e5\nAdamW 43.52 43.51 27.47 23.53 2.70e3 7.21e3 1.05e4 2.56e5\nFineWeb100B Muon 34.04 33.02 32.76 20.75 2.79e3 7.70e3 1.19e4 3.09e5\nLR-Muon100 35.78 30.19 27.59 21.76 2.77e3 7.62e3 1.09e4 2.87e5\nLR-Muon200 34.02 28.31 25.86 20.45 2.80e3 7.69e3 1.10e4 2.91e5\nSGDM 50.92 77.50 31.54 25.49 2.56e3 7.09e3 1.20e4 2.53e5\nAdamW 43.56 26.45 21.01 22.45 2.59e3 7.09e3 1.20e4 2.56e5\nFineWebEdu10B Muon 32.88 23.89 22.23 19.54 2.80e3 7.63e3 1.33e4 3.05e5\nLR-Muon100 35.60 23.50 22.39 19.97 2.74e3 7.53e3 1.26e4 2.85e5\nLR-Muon200 33.93 22.37 20.96 18.85 2.83e3 7.59e3 1.29e4 2.87e5\nWe visualize the top 100 singular values of the momentum updates {Mk} associated with the Q, K,\nand V matrices for a 350M GPT-2 model trained by Muon on the FineWeb100B dataset in Figure 5.",
+      "size": 1310,
+      "sentences": 2
+    },
+    {
+      "id": 101,
+      "content": "Q, K,\nand V matrices for a 350M GPT-2 model trained by Muon on the FineWeb100B dataset in Figure 5. The\nfirst and second rows of the figure display the top 100 singular values across different training iterations\nand neural network layers, respectively. This visualization partly supports the low-rank nature of the\nmomentum updates. We present a comparison of the validation perplexity and computational time in Table 1.",
+      "size": 421,
+      "sentences": 4
+    },
+    {
+      "id": 102,
+      "content": "um updates. We present a comparison of the validation perplexity and computational time in Table 1. From this\ntable, we observe that for GPT-2 with a model size of 60M, our low-rank Muon achieves validation\nperplexity worse than Muon but better than AdamW and SGDM. For GPT-2 models with larger sizes,\nour low-rank Muon achieves better validation perplexity than all other competing methods.",
+      "size": 391,
+      "sentences": 4
+    },
+    {
+      "id": 103,
+      "content": "er sizes,\nour low-rank Muon achieves better validation perplexity than all other competing methods. We also\nobserve that the computational time of our low-rank Muon improves upon that of vanilla Muon, though all\nMuon-type methods remain slower than SGDM and AdamW. These observations show that our low-rank\northogonalization enables obtaining more generalizable GPT-2 models when the model size is large, but\nmay be less effective for smaller models.",
+      "size": 450,
+      "sentences": 3
+    },
+    {
+      "id": 104,
+      "content": "eralizable GPT-2 models when the model size is large, but\nmay be less effective for smaller models. In addition, our low-rank orthogonalization saves computational\ntime compared to orthogonalization by Newton-Schulz iterations, but the gain is not as significant as\nthose discussed in Sections 3.1 and 4.1, since the forward and backward passes of neural networks account\nfor the majority of the computational time.",
+      "size": 415,
+      "sentences": 2
+    },
+    {
+      "id": 105,
+      "content": "forward and backward passes of neural networks account\nfor the majority of the computational time. We plot the convergence behavior of validation perplexity versus training iterations in Figure 6. From\nthis figure, we observe that for each model size, the competing methods exhibit similar performance\npatterns across the three datasets.",
+      "size": 337,
+      "sentences": 3
+    },
+    {
+      "id": 106,
+      "content": "h model size, the competing methods exhibit similar performance\npatterns across the three datasets. For the model size of 60M, we observe that all Muon-type methods\nconsistently outperforms AdamW and SGDM, while our low-rank Muon performs slightly worse than\nthe vanilla Muon. For the 135M model size, we observe that our low-rank Muon outperforms the vanilla\nMuon and other training methods. The vanilla Muon performs similarly to AdamW, and all methods\nshow a large improvement compared to SGDM.",
+      "size": 497,
+      "sentences": 4
+    },
+    {
+      "id": 107,
+      "content": "anilla Muon performs similarly to AdamW, and all methods\nshow a large improvement compared to SGDM. For the model size of 350M, we see that our low-rank\nMuon has slightly better performance than AdamW, while outperforming Muon and SGDM by a larger\nmargin. These observations support that our low-rank Muon improves upon Muon in GPT-2 training and\n13\n[  ]\n\n===  14 ===\nis more effective for models with larger sizes.",
+      "size": 415,
+      "sentences": 3
+    },
+    {
+      "id": 108,
+      "content": "pon Muon in GPT-2 training and\n13\n[  ]\n\n===  14 ===\nis more effective for models with larger sizes. With all the above observations and discussions, we conclude that our low-rank Muon is a viable\nalternative to existing training methods and is particularly more effective than other methods for training\nGPT-2 models with larger sizes. 4.3 LLaMA pretraining\nIn this subsection, we consider pretraining LLaMA [50], a transformer-based language model with a more\nrefined architecture than GPT-2.",
+      "size": 493,
+      "sentences": 3
+    },
+    {
+      "id": 109,
+      "content": "raining LLaMA [50], a transformer-based language model with a more\nrefined architecture than GPT-2. We experiment with LLaMA models of sizes 60M, 135M, 350M, and 1B\non the same three datasets tested in the Muon GitHub repository [28]: FineWeb10B, FineWeb100B, and\nFineWebEdu10B. Figure 7: Singular value distributions of the Q, K, and V matrices: across layers at iteration 300 (top\nrow) and over training iterations at layer 16 (bottom row) during LLaMA pretraining.",
+      "size": 467,
+      "sentences": 3
+    },
+    {
+      "id": 110,
+      "content": "ation 300 (top\nrow) and over training iterations at layer 16 (bottom row) during LLaMA pretraining. We apply low-rank Muon, Muon, AdamW, and SGD with momentum (SGDM) for pretraining LLaMA. Similar to Section 4.2, we implement two versions of low-rank Muon with rank parameters 100 and 200,\nand we use AdamW to train the embedding and head layers for Muon and low-rank Muon.",
+      "size": 373,
+      "sentences": 3
+    },
+    {
+      "id": 111,
+      "content": "rs 100 and 200,\nand we use AdamW to train the embedding and head layers for Muon and low-rank Muon. We initialize\nall methods with the same weights from pretrained LLaMA models, and terminate all methods after one\ntraining epoch, consisting of 5000 iterations. We compare all methods using validation perplexity. The\nalgorithmicparametersarecarefullytunedtosuiteachmethodwellintermsofcomputationalperformance.",
+      "size": 409,
+      "sentences": 4
+    },
+    {
+      "id": 112,
+      "content": "y. The\nalgorithmicparametersarecarefullytunedtosuiteachmethodwellintermsofcomputationalperformance. MoredetailsabouttheexperimentalsetupsincludingalgorithmandLLaMAmodelparametersaredeferred\nto Appendix B. We visualize the top 100 singular values of the momentum updates {Mk} associated with the Q, K,\nand V matrices for a 350M LLaMA model trained by Muon on the FineWeb100B dataset in Figure 7.",
+      "size": 394,
+      "sentences": 4
+    },
+    {
+      "id": 113,
+      "content": "Q, K,\nand V matrices for a 350M LLaMA model trained by Muon on the FineWeb100B dataset in Figure 7. The\nfirst and second rows of the figure display the top 100 singular values across different training iterations\nand neural network layers, respectively. This visualization partly supports the low-rank nature of the\nmomentum updates. We present a comparison of the validation perplexity and computational time in Table 2.",
+      "size": 421,
+      "sentences": 4
+    },
+    {
+      "id": 114,
+      "content": "um updates. We present a comparison of the validation perplexity and computational time in Table 2. From this\ntable, we observe that our low-rank Muon consistently achieves better validation perplexity compared to\nMuon for the majority of model sizes and tested datasets, while vastly improving upon the validation\n14\n===  15 ===\nTable 2: Comparison of validation perplexity and computational time for all competing methods on\nLLaMA pretraining.",
+      "size": 445,
+      "sentences": 3
+    },
+    {
+      "id": 115,
+      "content": "son of validation perplexity and computational time for all competing methods on\nLLaMA pretraining. Validation Perplexity Computational Time\nDataset Method\n60M 135M 350M 1B 60M 135M 350M 1B\nSGDM 94.90 86.99 86.49 44.71 2.49e3 5.27e3 1.20e4 2.77e5\nAdamW 50.51 40.17 35.76 24.14 2.46e3 5.27e3 1.21e4 2.78e5\nFineWeb10B Muon 36.68 37.96 36.43 20.99 2.59e3 5.69e3 1.35e4 3.18e5\nLR-Muon100 37.33 34.08 33.54 21.70 2.69e3 5.66e3 1.28e4 2.79e5\nLR-Muon200 36.05 34.37 32.37 20.69 2.70e3 5.70e3 1.30e4 2.91e5\nSGDM 81.59 77.50 87.49 37.56 2.60e3 5.44e3 1.05e4 2.65e5\nAdamW 41.49 40.54 35.47 23.89 2.61e3 5.47e3 1.06e4 2.69e5\nFineWeb100B Muon 38.49 37.66 36.66 21.76 2.58e3 5.63e3 1.07e4 3.16e5\nLR-Muon100 37.68 34.58 33.71 22.86 2.63e3 5.55e3 1.10e4 2.79e5\nLR-Muon200 36.26 34.20 32.73 20.98 2.75e3 5.69e3 1.11e4 2.88e5\nSGDM 82.63 73.48 73.48 47.56 2.57e3 5.27e3 1.20e4 2.76e5\nAdamW 41.82 32.96 29.12 22.54 2.60e3 5.29e3 1.20e4 2.78e5\nFineWebEdu10B Muon 28.57 30.72 29.47 22.67 2.68e3 5.84e3 1.33e4 3.25e5\nLR-Muon100 30.52 27.72 27.24 21.36 2.72e3 5.66e3 1.24e4 2.88e5\nLR-Muon200 29.29 27.65 26.87 19.54 2.81e3 5.70e3 1.26e4 2.98e5\nFigure 8: Comparison of validation perplexity and computational time for all competing methods in\ntraining LLaMA models.",
+      "size": 1241,
+      "sentences": 2
+    },
+    {
+      "id": 116,
+      "content": "of validation perplexity and computational time for all competing methods in\ntraining LLaMA models. 15\n[  ]\n\n===  16 ===\nperplexity achieved by AdamW and SGDM. We also observe that the computational time of our low-\nrank Muon improves upon that of vanilla Muon, though all Muon-type methods remain slower than\nSGDM and AdamW. These observations demonstrate that our low-rank orthogonalization produces more\ngeneralizableLLaMAmodelsacrossalltestedmodelsizesanddatasets.",
+      "size": 468,
+      "sentences": 4
+    },
+    {
+      "id": 117,
+      "content": "-rank orthogonalization produces more\ngeneralizableLLaMAmodelsacrossalltestedmodelsizesanddatasets. Moreover,itreducescomputational\ntime compared to the Newton-Schulz iterations for orthogonalization, although the improvement is less\nsignificant than the gains discussed in Sections 3.1 and 4.1. This is because most of the computational\ntime is dominated by the forward and backward passes of the neural networks.",
+      "size": 414,
+      "sentences": 3
+    },
+    {
+      "id": 118,
+      "content": "t of the computational\ntime is dominated by the forward and backward passes of the neural networks. We plot the convergence behavior of validation perplexity versus training iterations in Figure 8. From\nthis figure, we observe that for the model size of 60M, we observe that all Muon-type methods significantly\noutperforms AdamW and SGDM, while our low-rank Muon has similar performance compared to the\nvanilla Muon.",
+      "size": 416,
+      "sentences": 3
+    },
+    {
+      "id": 119,
+      "content": "forms AdamW and SGDM, while our low-rank Muon has similar performance compared to the\nvanilla Muon. For the 135M and 350M model size, we observe that our low-rank Muon significantly\noutperforms the vanilla Muon and other training methods. These observations support that our low-rank\nMuon consistently outperforms all other methods for training LLaMA models.",
+      "size": 358,
+      "sentences": 3
+    },
+    {
+      "id": 120,
+      "content": "upport that our low-rank\nMuon consistently outperforms all other methods for training LLaMA models. Based on the above observations, we conclude that our low-rank Muon improves upon existing methods\nfor training LLaMA models across the model sizes and datasets we tested. 5 Proof of the main results\nIn this section, we provide the proofs of our main results presented in Section 3, specifically Theorems 1\nto 4.",
+      "size": 412,
+      "sentences": 3
+    },
+    {
+      "id": 121,
+      "content": "on, we provide the proofs of our main results presented in Section 3, specifically Theorems 1\nto 4. We first provide three technical lemmas, whose proofs can be found in [24, Lemmas 1 to 3] and are\ntherefore omitted here. The next lemma provides an expansion for the α-power of the Frobenius norm,\ngeneralizing the well-known identity ∥U +V∥2 = ∥U∥2 +2⟨U,V⟩+∥V∥2 and inequality ∥U +V∥2 ≤\nF F F F\n(1+c)∥U∥2 +(1+1/c)∥V∥2 for all U,V ∈ Rm×n and c > 0. F F\nLemma 1.",
+      "size": 461,
+      "sentences": 4
+    },
+    {
+      "id": 122,
+      "content": "and inequality ∥U +V∥2 ≤\nF F F F\n(1+c)∥U∥2 +(1+1/c)∥V∥2 for all U,V ∈ Rm×n and c > 0. F F\nLemma 1. For any α ∈ (1,2], it holds that\n∥U +V∥α ≤ ∥U∥α +α∥U∥α−2⟨U,V⟩+2∥V∥α ∀U,V ∈ Rm×n, (18)\nF F F F\n∥U +V∥α ≤ (1+c)∥U∥α +(2+(α−1)α−1c1−α)∥V∥α ∀U,V ∈ Rm×n,c > 0. (19)\nF F F\nThe next lemma provides an estimation of the partial sums of series. Lemma 2. Let ζ(·) be a convex univariate function. Then we have\n(cid:80)b\nζ(r) ≤\n(cid:82)b+1/2\nζ(τ)dτ for any\nr=a a−1/2\nintegers a,b satisfying [a−1/2,b+1/2] ⊂ domζ.",
+      "size": 499,
+      "sentences": 7
+    },
+    {
+      "id": 123,
+      "content": "id:80)b\nζ(r) ≤\n(cid:82)b+1/2\nζ(τ)dτ for any\nr=a a−1/2\nintegers a,b satisfying [a−1/2,b+1/2] ⊂ domζ. Consequently, one has\n(cid:88) b 1 (cid:40) ln (cid:0) b+ 2 1(cid:1) −ln (cid:0) a− 1 2 (cid:1) if β = 1,\n≤ (20)\nrβ 1 (cid:0)(cid:0) b+ 1(cid:1)1−β − (cid:0) a− 1(cid:1)1−β(cid:1) if β ∈ (0,1)∪(1,+∞). r=a 1−β 2 2\nWe next give a lemma that will be used to derive complexity bounds for our methods. Lemma 3. Let β ∈ (0,1) and u ∈ (0,e−1) be given.",
+      "size": 445,
+      "sentences": 5
+    },
+    {
+      "id": 124,
+      "content": "used to derive complexity bounds for our methods. Lemma 3. Let β ∈ (0,1) and u ∈ (0,e−1) be given. Then, it holds that v−βlnv ≤ 2uβ−1 for all\nv ≥ (u−1ln(u−1))1/β. We next establish a descent property for f along a matrix-signed direction. Lemma 4. Suppose that Assumption 1 holds. Let X,M ∈ Rm×n and η > 0 be given, and let X+ =\nX −ηmsgn(M). Then we have\nL η2\nf(X+) ≤ f(X)−η∥∇f(X)∥ +2η∥∇f(X)−M∥ + ∗ , (21)\n∗ ∗\n2\nwhere L is given in Assumption 1. ∗\n16\n===  17 ===\nProof.",
+      "size": 469,
+      "sentences": 10
+    },
+    {
+      "id": 125,
+      "content": "X)−η∥∇f(X)∥ +2η∥∇f(X)−M∥ + ∗ , (21)\n∗ ∗\n2\nwhere L is given in Assumption 1. ∗\n16\n===  17 ===\nProof. Bythedefinitionofthematrix-signfunction, onehas∥msgn(M)∥ ≤ 1, and⟨M,msgn(M)⟩ = ∥M∥ .",
+      "size": 184,
+      "sentences": 3
+    },
+    {
+      "id": 126,
+      "content": "17 ===\nProof. Bythedefinitionofthematrix-signfunction, onehas∥msgn(M)∥ ≤ 1, and⟨M,msgn(M)⟩ = ∥M∥ . ∗\nIt then follows from these and (4) with Y = X+ that\n(4) L\nf(X+) ≤ f(X)+⟨∇f(X),X+−X⟩+ ∗ ∥X+−X∥2\n2\nL\n= f(X)+⟨M,X+−X⟩+⟨∇f(X)−M,X+−X⟩+ ∗ ∥X+−X∥2\n2\nL η2\n≤ f(X)−η⟨M,msgn(M)⟩+η∥∇f(X)−M∥ ∥msgn(M)∥+ ∗ ∥msgn(M)∥2\n∗\n2\nL η2\n∗\n= f(X)−η∥M∥ +η∥∇f(X)−M∥ +\n∗ ∗\n2\nL η2\n∗\n≤ f(X)−η∥∇f(X)∥ +2η∥∇f(X)−M∥ + ,\n∗ ∗\n2\nwhere the second inequality is due to X+ = X −ηmsgn(M) and the trace H¨older inequality, the second\nequality is due to ∥msgn(M)∥ ≤ 1 and ⟨M,msgn(M)⟩ = ∥M∥ , and the last inequality follows from the\n∗ ∗\ntriangular inequality.",
+      "size": 617,
+      "sentences": 3
+    },
+    {
+      "id": 127,
+      "content": "M)∥ ≤ 1 and ⟨M,msgn(M)⟩ = ∥M∥ , and the last inequality follows from the\n∗ ∗\ntriangular inequality. Hence, the conclusion (21) holds as desired. 5.1 Proof of the main results in Section 3.1\nIn this subsection, we prove Theorem 1. Proof of Theorem 1. The proof of (5) can be found in [22, Theorem 10.5]. Next, we prove (6). Let\nQTM = U ΣVT be the reduced SVD of QTM and U , V, and Q have orthogonal columns, and Σ\nQ Q\nis diagonal. Denote U = QU .",
+      "size": 445,
+      "sentences": 8
+    },
+    {
+      "id": 128,
+      "content": "reduced SVD of QTM and U , V, and Q have orthogonal columns, and Σ\nQ Q\nis diagonal. Denote U = QU . Since Q and U have orthogonal columns, we obtain that U also\nQ Q\nhas orthogonal columns; thus, QQTM = UΣVT is a reduced SVD of QQTM. Therefore, we have\nmsgn(QQTM) = UVT = QU VT = Qmsgn(QTM). Q\n5.2 Proof of the main results in Section 3.2\nIn this subsection, we provide proofs of Theorems 2 and 3. Proof of Theorem 2. Recall from Algorithm 2 that Mk = msgn(Mk) for all k ≥ 0.",
+      "size": 474,
+      "sentences": 7
+    },
+    {
+      "id": 129,
+      "content": "of Theorems 2 and 3. Proof of Theorem 2. Recall from Algorithm 2 that Mk = msgn(Mk) for all k ≥ 0. Using this and\nO Q\nLemma 4 with (X,X+,M,η) = (Xk,Xk+1,Mk,η ), we obtain that for all k ≥ 0,\nQ k\nL η2\nf(Xk+1) ≤ f(Xk)−η ∥∇f(Xk)∥ +2η ∥∇f(Xk)−Mk∥ + ∗ k. (22)\nk ∗ k Q ∗ 2\nSumming (22) over k = 0,...,K −1 and using f(XK) ≥ f , we obtain that for all K ≥ 1,\nlow\nf ≤ f(XK) ( ≤ 22) f(X0)− K (cid:88) −1 η ∥∇f(Xk)∥ + K (cid:88) −1 (cid:16) 2η ∥∇f(Xk)−Mk∥ + L ∗ η k 2(cid:17)\nlow k ∗ k Q ∗ 2\nk=0 k=0\n≤ f(X0)−η K (cid:88) −1 ∥∇f(Xk)∥ + K (cid:88) −1 (cid:16) 2η ∥∇f(Xk)−Mk∥ + L ∗ η k 2(cid:17) , (23)\nK−1 ∗ k Q ∗ 2\nk=0 k=0\nwhere the last inequality is due to the fact that {η } is nonincreasing.",
+      "size": 684,
+      "sentences": 4
+    },
+    {
+      "id": 130,
+      "content": "(23)\nK−1 ∗ k Q ∗ 2\nk=0 k=0\nwhere the last inequality is due to the fact that {η } is nonincreasing. Rearranging this inequality and\nk\nusing (7), we obtain that for all K ≥ 3,\n1 K (cid:88) −1 ∥∇f(Xk)∥ ( ≤ 23) f(X0)−f low + 1 K (cid:88) −1 (cid:16) 2η ∥∇f(Xk)−Mk∥ + L ∗ η k 2(cid:17)\nK ∗ Kη Kη k Q ∗ 2\nK−1 K−1\nk=0 k=0\n17\n===  18 ===\n(7) f(X0)−f low 1 K (cid:88) −1 (cid:16)2∥∇f(Xk)−M Q k∥ ∗ L ∗ (cid:17)\n= + +\nK1/2 K1/2 (k+1)1/2 2(k+1)\nk=0\nf(X0)−f low +L ∗ lnK 2 K (cid:88) −1 ∥∇f(Xk)−M Q k∥ ∗\n≤ + ,\nK1/2 K1/2 (k+1)1/2\nk=0\nwhere the last inequality follows from\n(cid:80)K−11/(k+1)\n≤ ln(2K +1) ≤ 2lnK for all K ≥ 3 due to (20).",
+      "size": 624,
+      "sentences": 2
+    },
+    {
+      "id": 131,
+      "content": "e the last inequality follows from\n(cid:80)K−11/(k+1)\n≤ ln(2K +1) ≤ 2lnK for all K ≥ 3 due to (20). k=0\nHence, the conclusion (8) holds as desired. Proof of Theorem 3.",
+      "size": 167,
+      "sentences": 3
+    },
+    {
+      "id": 132,
+      "content": "2lnK for all K ≥ 3 due to (20). k=0\nHence, the conclusion (8) holds as desired. Proof of Theorem 3. Using (9), (10), (11), and the same arguments as for proving (8), we obtain that\nfor all K ≥ 3,\nmin {∥∇f(Xk)∥} (8 ≤ )(9) (f(X0)−f low +L ∗ )lnK + 2 K (cid:88) −1 δ k\n0≤k≤K−1 K1/2 K1/2 (k+1)1/2\nk=0\n(11) (f(X0)−f low +L ∗ )lnK 2 K (cid:88) −1 1\n= +\nK1/2 K1/2 k+1\nk=0\n(f(X0)−f low +L ∗ +4)lnK (10) U gd lnK\n≤ = , (24)\nK1/2 K1/2\nwhere the last inequality follows from\n(cid:80)K−11/(k+1)\n≤ ln(2K +1) ≤ 2lnK for all K ≥ 3 due to (20).",
+      "size": 528,
+      "sentences": 4
+    },
+    {
+      "id": 133,
+      "content": "e the last inequality follows from\n(cid:80)K−11/(k+1)\n≤ ln(2K +1) ≤ 2lnK for all K ≥ 3 due to (20). k=0\nIn addition, by Lemma 3 with (β,u,v) = (1/2,ϵ/(4U ),K), one can see that\ngd\nϵ (cid:16)4U (cid:16)4U (cid:17)(cid:17)2\nK−1/2lnK ≤ ∀K ≥ gd ln gd ,\nU ϵ ϵ\ngd\nwhich along with (24) implies that Theorem 3 holds. 5.3 Proof of the main results in Section 3.3\nIn this subsection, we begin by establishing some technical lemmas and use them to prove Theorem 4.",
+      "size": 454,
+      "sentences": 3
+    },
+    {
+      "id": 134,
+      "content": "In this subsection, we begin by establishing some technical lemmas and use them to prove Theorem 4. For convenience, we define a sequence of potentials for Algorithm 4 as follows:\nP := f(Xk)+p ∥∇f(Xk)−Mk∥α ∀k ≥ 0, (25)\nk k F\nwhere the sequence {(Xk,Mk)} is generated by Algorithm 4, and {p } is a sequence of positive scalars that\nk\nwill be specified separately later.",
+      "size": 368,
+      "sentences": 2
+    },
+    {
+      "id": 135,
+      "content": "Algorithm 4, and {p } is a sequence of positive scalars that\nk\nwill be specified separately later. The following lemma presents a recurrence relation for the estimation\nerror of the gradient estimators {Mk} generated by Algorithm 4. Lemma 5. Suppose that Assumptions 1 and 2 hold. Let {(Xk,Mk)} be generated by Algorithm 4 with\ninput parameters {(η ,θ )}.",
+      "size": 355,
+      "sentences": 5
+    },
+    {
+      "id": 136,
+      "content": "ssumptions 1 and 2 hold. Let {(Xk,Mk)} be generated by Algorithm 4 with\ninput parameters {(η ,θ )}. Then we have\nk k\nE [∥Mk+1−∇f(Xk+1)∥α] ≤ (1−θ )∥Mk −∇f(Xk)∥α +3Lαθ1−αηα+2σαθα ∀k ≥ 0, (26)\nξk+1 F k F ∗ k k k\nwhere L is given in Assumption 1, and σ and α are given in Assumption 2. ∗\nProof. Fix any k ≥ 0. It follows from (12) that\nMk+1−∇f(Xk+1) ( = 12) (1−θ )Mk +θ G(Xk+1;ξk+1)−∇f(Xk+1)\nk k\n= (1−θ )(Mk −∇f(Xk))+(1−θ )(∇f(Xk)−∇f(Xk+1))+θ (G(Xk+1;ξk+1)−∇f(Xk+1)).",
+      "size": 463,
+      "sentences": 6
+    },
+    {
+      "id": 137,
+      "content": "θ G(Xk+1;ξk+1)−∇f(Xk+1)\nk k\n= (1−θ )(Mk −∇f(Xk))+(1−θ )(∇f(Xk)−∇f(Xk+1))+θ (G(Xk+1;ξk+1)−∇f(Xk+1)). (27)\nk k k\n18\n===  19 ===\nNoticefrom(13)thatMk = msgn(Mk),whichalongwith(14)impliesthat∥Xk+1−Xk∥ = η ∥msgn(Mk)∥ ≤\nO Q k Q\nη . Also,itfollowsfromAssumption1thatE [G(Xk+1;ξk+1)−∇f(Xk+1)] = 0,E [∥G(Xk+1;ξk+1)−\nk ξk+1 ξk+1\n∇f(Xk+1)∥α] ≤ σα, and ∥∇f(Xk)−∇f(Xk+1)∥ ≤ ∥∇f(Xk)−∇f(Xk+1)∥ ≤ L η .",
+      "size": 386,
+      "sentences": 3
+    },
+    {
+      "id": 138,
+      "content": "0,E [∥G(Xk+1;ξk+1)−\nk ξk+1 ξk+1\n∇f(Xk+1)∥α] ≤ σα, and ∥∇f(Xk)−∇f(Xk+1)∥ ≤ ∥∇f(Xk)−∇f(Xk+1)∥ ≤ L η . Using these, (18),\nF F ∗ ∗ k\n(19), and (27), we obtain that for all c > 0,\nE [∥Mk+1−∇f(Xk+1)∥α]\nξk+1 F\n( = 27) E [∥(1−θ )(Mk −∇f(Xk))+(1−θ )(∇f(Xk)−∇f(Xk+1))+θ (G(Xk+1;ξk+1)−∇f(Xk+1))∥α]\nξk+1 k k k F\n(18)\n≤ ∥(1−θ )(Mk −∇f(Xk))+(1−θ )(∇f(Xk)−∇f(Xk+1))∥α +2E [∥θ (G(Xk+1;ξk+1)−∇f(Xk+1))∥α]\nk k F ξk+1 k F\n(19)\n≤ (1+c)(1−θ )α∥Mk −∇f(Xk)∥α +(2+(α−1)α−1c1−α)(1−θ )α∥∇f(Xk)−∇f(Xk+1)∥α +2σαθα\nk F k F k\n≤ (1+c)(1−θ )α∥Mk −∇f(Xk)∥α +Lα(2+(α−1)α−1c1−α)(1−θ )αηα+2σαθα, (28)\nk F ∗ k k k\nwherethefirstinequalityisdueto(18)andE [G(Xk+1;ξk+1)−∇f(Xk+1)] = 0, thesecondinequalityis\nξk+1\ndue to (19) and E [∥G(Xk+1;ξk+1)−∇f(Xk+1)∥α] ≤ σα, and the last inequality is due to ∥∇f(Xk)−\nξk+1 F\n∇f(Xk+1)∥ ≤ L η .",
+      "size": 790,
+      "sentences": 2
+    },
+    {
+      "id": 139,
+      "content": "∥G(Xk+1;ξk+1)−∇f(Xk+1)∥α] ≤ σα, and the last inequality is due to ∥∇f(Xk)−\nξk+1 F\n∇f(Xk+1)∥ ≤ L η . F ∗ k\nWhen θ = 1, (26) clearly holds. For θ ∈ (0,1), letting c = (1−θ )1−α−1 in (28), and using the fact\nk k k\nthat α ∈ (1,2], we have\n(cid:16) 1 (cid:17)1−α (cid:16) 1 (cid:17)1−α\nc1−α = ((1−θ )1−α−1)1−α = −1 ≤ −1\nk (1−θ )α−1 1−(α−1)θ\nk k\n(cid:16)1−(α−1)θ (cid:17)α−1\n= k ≤ ((α−1)θ )1−α,\nk\n(α−1)θ\nk\nwhere the first inequality follows from (1−τ)β ≤ 1−βτ for all τ ∈ (−∞,1) and β ∈ [0,1].",
+      "size": 487,
+      "sentences": 3
+    },
+    {
+      "id": 140,
+      "content": "k\n(α−1)θ\nk\nwhere the first inequality follows from (1−τ)β ≤ 1−βτ for all τ ∈ (−∞,1) and β ∈ [0,1]. Combining\nthis inequality with (28), one has\nE [∥Mk+1−∇f(Xk+1)∥α] ≤ (1−θ )∥Mk −∇f(Xk)∥α +Lα(2+θ1−α)(1−θ )αηα+2σαθα,\nξk+1 F k F ∗ k k k k\nwhich along with θ ∈ (0,1] and α ∈ (1,2] implies that (26) holds as desired. k\nThe following lemma establishes a descent property for the potential sequence {P } defined below. k\nLemma 6. Suppose that Assumptions 1 and 2 hold.",
+      "size": 462,
+      "sentences": 5
+    },
+    {
+      "id": 141,
+      "content": "ty for the potential sequence {P } defined below. k\nLemma 6. Suppose that Assumptions 1 and 2 hold. Let {(Xk,Mk)} be generated by Algorithm 4 with\ninput parameters {(η ,θ ,δ )}, L be given in Assumption 1, σ and α be given in Assumption 2, and\nk k k ∗\nϱ := min{m,n}, and let {P } be defined in (25) for {(Xk,Mk)} and any nonincreasing positive sequence\nk\n{p }. Then, it holds that\nk\nL η2\nE [P ] ≤ P −η ∥∇f(Xk)∥ +2η δ + ∗ k\nξk+1 k+1 k k ∗ k k\n2\n(α−1)(2ϱ1/2η )α/(α−1)\n+ k +3Lαθ1−αηαp +2σαθαp ∀k ≥ 0.",
+      "size": 497,
+      "sentences": 5
+    },
+    {
+      "id": 142,
+      "content": "−η ∥∇f(Xk)∥ +2η δ + ∗ k\nξk+1 k+1 k k ∗ k k\n2\n(α−1)(2ϱ1/2η )α/(α−1)\n+ k +3Lαθ1−αηαp +2σαθαp ∀k ≥ 0. (29)\nαα/(α−1)(θ p )1/(α−1) ∗ k k k k k\nk k\nProof. Fix any k ≥ 0. Recall from Algorithm 4 that Mk = msgn(Mk) and ∥Mk −Mk∥ ≤ δ .",
+      "size": 225,
+      "sentences": 4
+    },
+    {
+      "id": 143,
+      "content": "∗ k k k k k\nk k\nProof. Fix any k ≥ 0. Recall from Algorithm 4 that Mk = msgn(Mk) and ∥Mk −Mk∥ ≤ δ . Using\nO Q Q ∗ k\nthese and (21) with (X+,X,M,η) = (Xk+1,Xk,Mk,η ), we obtain that\nQ k\nL η2\nf(Xk+1) ≤ f(Xk)−η ∥∇f(Xk)∥ +2η ∥∇f(Xk)−Mk∥ + ∗ k\nk ∗ k Q ∗ 2\nL η2\n≤ f(Xk)−η ∥∇f(Xk)∥ +2η ∥∇f(Xk)−Mk∥ +2η δ + ∗ k. (30)\nk ∗ k ∗ k k\n2\n19\n===  20 ===\nCombining this with (25) and (26), we obtain that\nE [P ] ( = 25) E [f(Xk+1)+p ∥∇f(Xk+1)−Mk+1∥α]\nξk+1 k+1 ξk+1 k+1 F\n(26)(30) L η2\n≤ f(Xk)−η ∥∇f(Xk)∥ +2η ∥∇f(Xk)−Mk∥ +2η δ + ∗ k\nk ∗ k ∗ k k\n2\n+(1−θ )p ∥Mk −∇f(Xk)∥α +3Lαθ1−αηαp +2σαθαp\nk k+1 F ∗ k k k+1 k k+1\nL η2\n≤ f(Xk)−η ∥∇f(Xk)∥ +2η ϱ1/2∥∇f(Xk)−Mk∥ +2η δ + ∗ k\nk ∗ k F k k\n2\n+(1−θ )p ∥Mk −∇f(Xk)∥α +3Lαθ1−αηαp +2σαθαp , (31)\nk k F ∗ k k k k k\nwhere the second inequality follows from ∥U∥ ≤ ϱ1/2∥U∥ for all U ∈ Rm×n, and the fact that {p } is\n∗ F k\nnonincreasing.",
+      "size": 853,
+      "sentences": 4
+    },
+    {
+      "id": 144,
+      "content": "quality follows from ∥U∥ ≤ ϱ1/2∥U∥ for all U ∈ Rm×n, and the fact that {p } is\n∗ F k\nnonincreasing. In addition, letting α′ = α/(α−1) and using the Young’s inequality, we obtain that\n(cid:0) (αθ p )1/α∥∇f(Xk)−Mk∥ (cid:1)α (2ϱ1/2η /(αθ p )1/α)α′\n2η ϱ1/2∥∇f(Xk)−Mk∥ ≤ k k F + k k k\nk F α α′\n(α−1)(2ϱ1/2η )α/(α−1)\n= θ p ∥∇f(Xk)−Mk∥α + k .",
+      "size": 335,
+      "sentences": 2
+    },
+    {
+      "id": 145,
+      "content": ")1/α)α′\n2η ϱ1/2∥∇f(Xk)−Mk∥ ≤ k k F + k k k\nk F α α′\n(α−1)(2ϱ1/2η )α/(α−1)\n= θ p ∥∇f(Xk)−Mk∥α + k . k k F αα/(α−1)(θ p )1/(α−1)\nk k\nThis along with (31) implies that\nL η2\nE [P ] ≤ f(Xk)+p ∥∇f(Xk)−Mk∥α −η ∥∇f(Xk)∥ +2η δ + ∗ k\nξk+1 k+1 k F k ∗ k k 2\n(α−1)(2ϱ1/2η )α/(α−1)\n+ k +3Lαθ1−αηαp +2σαθαp . αα/(α−1)(θ p )1/(α−1) ∗ k k k k k\nk k\nThe conclusion (29) then follows from this and (25). We are now ready to prove Theorem 4. Proof of Theorem 4.",
+      "size": 442,
+      "sentences": 5
+    },
+    {
+      "id": 146,
+      "content": "sion (29) then follows from this and (25). We are now ready to prove Theorem 4. Proof of Theorem 4. Let {(Xk,Mk)} be generated by Algorithm 4 with {(η ,θ ,δ )} given in (16),\nk k k\nand {P } be defined in (25) with such {(Xk,Mk)} and the following {p }:\nk k\np =\n(k+1)(α2−3α+2)/(3α−2)\n∀k ≥ 0. (32)\nk\nSince α ∈ (1,2], one can see that {p } is nonincreasing. Also, observe from (16) that {η } ⊂ (0,1] and\nk k\n{θ } ⊂ (0,1]. Hence, {(η ,θ ,p )} satisfies the assumptions in Lemma 6 and Algorithm 4.",
+      "size": 492,
+      "sentences": 7
+    },
+    {
+      "id": 147,
+      "content": ",1] and\nk k\n{θ } ⊂ (0,1]. Hence, {(η ,θ ,p )} satisfies the assumptions in Lemma 6 and Algorithm 4. In addition, by\nk k k k\n(25) and (32), one has that\nE[P ] = f(X0)+p E[∥M0−∇f(X0)∥α] = f(X0)+E[∥G(X0;ξ0)−∇f(X0)∥α] ≤ f(X0)+σα, (33)\n0 0 F F\nE[P ] = E[f(XK)+p ∥MK −∇f(XK)∥α] ≥ E[f(XK)] ≥ f .",
+      "size": 288,
+      "sentences": 3
+    },
+    {
+      "id": 148,
+      "content": "0)+E[∥G(X0;ξ0)−∇f(X0)∥α] ≤ f(X0)+σα, (33)\n0 0 F F\nE[P ] = E[f(XK)+p ∥MK −∇f(XK)∥α] ≥ E[f(XK)] ≥ f . (34)\nK K F low\nTaking expectation on both sides of (29) with respect to {ξi}k+1, we have\ni=0\nE[P ] ≤ E[P ]−η E[∥∇f(Xk)∥ ]\nk+1 k k ∗\nL η2 (α−1)(2ϱ1/2η )α/(α−1)\n+2η δ + ∗ k + k +3Lαθ1−αηαp +2σαθαp ∀k ≥ 0.\nk k 2 αα/(α−1)(θ p )1/(α−1) ∗ k k k k k\nk k\nSumming up this inequality over k = 0,...,K −1, and using (33) and (34), we obtain that for all K ≥ 1,\n(34)\nf ≤ E[P ]\nlow K\n20\n===  21 ===\nK−1\n(cid:88)\n≤ E[P ]− η E[∥∇f(Xk)∥ ]\n0 k ∗\nk=0\n+ K (cid:88) −1 (cid:16) 2η δ + L ∗ η k 2 + (α−1)(2ϱ1/2η k )α/(α−1) +3Lαθ1−αηαp +2σαθαp (cid:17)\nk k 2 αα/(α−1)(θ p )1/(α−1) ∗ k k k k k\nk k\nk=0\nK−1\n(33) (cid:88)\n≤ f(X0)+σα−η E[∥∇f(Xk)∥ ]\nK−1 ∗\nk=0\n+ K (cid:88) −1 (cid:16) 2η δ + L ∗ η k 2 + (α−1)(2ϱ1/2η k )α/(α−1) +3Lαθ1−αηαp +2σαθαp (cid:17) , (35)\nk k 2 αα/(α−1)(θ p )1/(α−1) ∗ k k k k k\nk k\nk=0\nwhere the last inequality follows from (33) and the fact that {η } is nonincreasing.",
+      "size": 968,
+      "sentences": 2
+    },
+    {
+      "id": 149,
+      "content": "k k k\nk k\nk=0\nwhere the last inequality follows from (33) and the fact that {η } is nonincreasing. Rearranging the terms\nk\nin (35), and using (15), (16), and (32), we obtain that for all K ≥ 3,\n1 K (cid:88) −1 E[∥∇f(Xk)∥ ] ( ≤ 35) f(X0)−f low +σα\n∗\nK Kη\nK−1\nk=0\n+ 1 K (cid:88) −1 (cid:16) 2η δ + L ∗ η k 2 + (α−1)(2ϱ1/2/α)α/(α−1)η k α/(α−1) +3Lαθ1−αηαp +2σαθαp (cid:17)\nKη k k 2 (θ p )1/(α−1) ∗ k k k k k\nK−1 k k\nk=0\n(16)(32)\nf(X0)−f\nlow\n+σα\n=\nK(α−1)/(3α−2)\n+ 1 K (cid:88) −1 (cid:16) L ∗ + 2+(α−1)(2ϱ1/2/α)α/(α−1)+3Lα ∗ +2σα(cid:17)\nK(α−1)/(3α−2) 2(k+1)2(2α−1)/(3α−2) k+1\nk=0\n≤ (f(X0)−f low +σα+2L ∗ +4+2(α−1)(2ϱ1/2/α)α/(α−1)+6Lα ∗ +4σα)lnK ( = 15) U mn lnK ,\nK(α−1)/(3α−2) K(α−1)/(3α−2)\nwherethesecondinequalityfollowsfrom\n(cid:80)K−11/(k+1)\n≤ 2lnK dueto(20)andK ≥ 3,and\n(cid:80)K−11/(k+\nk=0 k=0\n1)2(2α−1)/(3α−2) ≤ (3α−2)2α/(3α−2)/α < 4 due to (20) and (3α−2)/α ∈ (1,2].",
+      "size": 872,
+      "sentences": 2
+    },
+    {
+      "id": 150,
+      "content": "(cid:80)K−11/(k+\nk=0 k=0\n1)2(2α−1)/(3α−2) ≤ (3α−2)2α/(3α−2)/α < 4 due to (20) and (3α−2)/α ∈ (1,2]. Recall that ι is uniformly\nK\nselected from {0,...,K −1}. It then follows from this and the above inequality that\nK−1\nE[∥∇f(XιK)∥ ] = 1 (cid:88) E[∥∇f(Xk)∥ ] ≤ U mn lnK ∀K ≥ 3.",
+      "size": 275,
+      "sentences": 3
+    },
+    {
+      "id": 151,
+      "content": "m this and the above inequality that\nK−1\nE[∥∇f(XιK)∥ ] = 1 (cid:88) E[∥∇f(Xk)∥ ] ≤ U mn lnK ∀K ≥ 3. (36)\n∗ ∗\nK K(α−1)/(3α−2)\nk=0\nIn addition, by Lemma 3 with (β,u,v) = ((α−1)/(3α−2),(α−1)ϵ/(2(3α−2)U ),K), one can see that\nmn\nϵ (cid:16)2(3α−2)U (cid:16)2(3α−2)U (cid:17)(cid:17)(3α−2)/(α−1)\nK−(α−1)/(3α−2)lnK ≤ ∀K ≥ mn ln mn ,\nU (α−1)ϵ (α−1)ϵ\nmn\nwhich together with (36) implies that Theorem 4 holds.",
+      "size": 399,
+      "sentences": 2
+    },
+    {
+      "id": 152,
+      "content": "α−2)lnK ≤ ∀K ≥ mn ln mn ,\nU (α−1)ϵ (α−1)ϵ\nmn\nwhich together with (36) implies that Theorem 4 holds. 6 Concluding remarks\nIn this paper, we introduce a new low-rank orthogonalization approach as a lightweight substitute for the\npopularorthogonalizationapproachbyNewton-Schulziterations. Basedonthislow-rankorthogonalization,\nweproposelow-rankMuonandillustrateitsadvantagesoverexistingtrainingmethodsthroughexperiments\non GPT-2 and LLaMA pretraining.",
+      "size": 448,
+      "sentences": 3
+    },
+    {
+      "id": 153,
+      "content": "llustrateitsadvantagesoverexistingtrainingmethodsthroughexperiments\non GPT-2 and LLaMA pretraining. Theoretically, we also establish complexity bounds for the proposed\nlow-rank Muon under heavy-tailed noise. A key ingredient of our low-rank orthogonalization is the construction of a column-orthogonal matrix\nQ, inspired by low-rank matrix approximation techniques. A valuable future research direction is to\nexplore alternative strategies for constructing Q.",
+      "size": 459,
+      "sentences": 4
+    },
+    {
+      "id": 154,
+      "content": "ques. A valuable future research direction is to\nexplore alternative strategies for constructing Q. Some such alternatives are presented in Appendix A. 21\n===  22 ===\nReferences\n[1] K. Ahn and B. Xu. Dion: A communication-efficient optimizer for large models. arXiv preprint\narXiv:2504.05295, 2025. [2] K. Ahn, B. Xu, N. Abreu, and J. Langford. Dion: Distributed orthonormalized updates. arXiv\npreprint arXiv:2504.05295, 2025.",
+      "size": 426,
+      "sentences": 9
+    },
+    {
+      "id": 155,
+      "content": "and J. Langford. Dion: Distributed orthonormalized updates. arXiv\npreprint arXiv:2504.05295, 2025. [3] E. AI, I. Shah, A. M. Polloreno, K. Stratos, P. Monk, A. Chaluvaraju, A. Hojel, A. Ma, A. Thomas,\nA. Tanwer, D. J. Shah, K. Nguyen, K. Smith, M. Callahan, M. Pust, M. Parmar, P. Rushton,\nP. Mazarakis, R. Kapila, S. Srivastava, S. Singla, T. Romanski, Y. Vanjani, and A. Vaswani. Practical\nefficiency of Muon for pretraining. arXiv preprint arXiv:2505.02222, 2025.",
+      "size": 466,
+      "sentences": 6
+    },
+    {
+      "id": 156,
+      "content": "nd A. Vaswani. Practical\nefficiency of Muon for pretraining. arXiv preprint arXiv:2505.02222, 2025. [4] K. An, Y. Liu, R. Pan, S. Ma, D. Goldfarb, and T. Zhang. ASGO: Adaptive structured gradient\noptimization. arXiv preprint arXiv:2503.20762, Mar. 2025. Preprint. [5] R. Anil, V. Gupta, T. Koren, K. Regan, and Y. Singer. Scalable second order optimization for deep\nlearning. arXiv preprint arXiv:2002.09018, 2020. [6] J. Bernstein and L. Newhouse. Old optimizer, new norm: An anthology.",
+      "size": 487,
+      "sentences": 14
+    },
+    {
+      "id": 157,
+      "content": "nt arXiv:2002.09018, 2020. [6] J. Bernstein and L. Newhouse. Old optimizer, new norm: An anthology. arXiv preprint\narXiv:2409.20325, 2024. [7] F. Bian, J.-F. Cai, and R. Zhang. A preconditioned Riemannian gradient descent algorithm for\nlow-rank matrix recovery. SIAM Journal on Matrix Analysis and Applications, 45(4):2075–2103,\n2024.",
+      "size": 334,
+      "sentences": 7
+    },
+    {
+      "id": 158,
+      "content": "low-rank matrix recovery. SIAM Journal on Matrix Analysis and Applications, 45(4):2075–2103,\n2024. [8] R. Bommasani, D. A. Hudson, E. Adeli, R. Altman, S. Arora, S. von Arx, M. S. Bernstein, J. Bohg,\nA. Bosselut, E. Brunskill, E. Brynjolfsson, S. Buch, D. Card, R. Castellon, N. Chatterji, A. Chen,\nK.Creel,J.Q.Davis,D.Demszky,C.Donahue,M.Doumbouya,E.Durmus,S.Ermon,J.Etchemendy,\nK.Ethayarajh,L.Fei-Fei,C.Finn,T.Gale,L.Gillespie,K.Goel,N.Goodman,S.Grossman,N.Guha,\nT. Hashimoto, P. Henderson, J. Hewitt, D. E. Ho, J. Hong, K. Hsu, J. Huang, T. Icard, S. Jain,\nD. Jurafsky, P. Kalluri, S. Karamcheti, G. Keeling, F. Khani, O. Khattab, P. W. Koh, M. Krass,\nR. Krishna, R. Kuditipudi, A. Kumar, F. Ladhak, M. Lee, T. Lee, J. Leskovec, I. Levent, X. L.\nLi, X. Li, T. Ma, A. Malik, C. D. Manning, S. Mirchandani, E. Mitchell, Z. Munyikwa, S. Nair,\nA. Narayan, D. Narayanan, B. Newman, A. Nie, J. C. Niebles, H. Nilforoshan, J. Nyarko, G. Ogut,\nL. Orr, I. Papadimitriou, J. S. Park, C. Piech, E. Portelance, C. Potts, A. Raghunathan, R. Reich,\nH. Ren, F. Rong, Y. Roohani, C. Ruiz, J. Ryan, C. R´e, D. Sadigh, S. Sagawa, K. Santhanam, A. Shih,\nK. Srinivasan, A. Tamkin, R. Taori, A. W. Thomas, F. Tram`er, R. E. Wang, W. Wang, B. Wu, J. Wu,\nY. Wu, S. M. Xie, M. Yasunaga, J.",
+      "size": 1268,
+      "sentences": 3
+    },
+    {
+      "id": 159,
+      "content": "ori, A. W. Thomas, F. Tram`er, R. E. Wang, W. Wang, B. Wu, J. Wu,\nY. Wu, S. M. Xie, M. Yasunaga, J. You, M. Zaharia, M. Zhang, T. Zhang, X. Zhang, Y. Zhang,\nL. Zheng, K. Zhou, and P. Liang. On the opportunities and risks of foundation models. arXiv preprint\narXiv:2108.07258, 2021. [9] L. Bottou. Large-scale machine learning with stochastic gradient descent. In International Conference\non Computational Statistics, pages 177–186. Springer, 2010. [10] D. Carlson, V. Cevher, and L. Carin.",
+      "size": 489,
+      "sentences": 9
+    },
+    {
+      "id": 160,
+      "content": "Computational Statistics, pages 177–186. Springer, 2010. [10] D. Carlson, V. Cevher, and L. Carin. Stochastic spectral descent for restricted Boltzmann machines. In International Conference on Artificial Intelligence and Statistics, pages 111–119, 2015. [11] D. Carlson, Y.-P. Hsieh, E. Collins, L. Carin, and V. Cevher. Stochastic spectral descent for discrete\ngraphical models. IEEE Journal of Selected Topics in Signal Processing, 10(2):296–311, 2015.",
+      "size": 454,
+      "sentences": 8
+    },
+    {
+      "id": 161,
+      "content": "screte\ngraphical models. IEEE Journal of Selected Topics in Signal Processing, 10(2):296–311, 2015. 22\n===  23 ===\n[12] D. E. Carlson, E. Collins, Y.-P. Hsieh, L. Carin, and V. Cevher. Preconditioned spectral descent for\ndeep learning. In Advances in neural information processing systems, volume 28, 2015. [13] Y. Carmon, J. C. Duchi, O. Hinder, and A. Sidford. Lower bounds for finding stationary points I. Mathematical Programming, 184(1):71–120, 2020. [14] F. L. Cesista.",
+      "size": 475,
+      "sentences": 10
+    },
+    {
+      "id": 162,
+      "content": "for finding stationary points I. Mathematical Programming, 184(1):71–120, 2020. [14] F. L. Cesista. Muon and a selective survey on steepest descent in Riemannian and non-Riemannian\nmanifolds, 2025. [15] L. Chen, J. Li, and Q. Liu. Muon optimizes under spectral norm constraints. arXiv preprint\narXiv:2506.15054, 2025. [16] P. Drineas, R. Kannan, and M. W. Mahoney. Fast Monte Carlo algorithms for matrices I: Approxi-\nmating matrix multiplication. SIAM Journal on Computing, 36(1):132–157, 2006.",
+      "size": 495,
+      "sentences": 10
+    },
+    {
+      "id": 163,
+      "content": "matrices I: Approxi-\nmating matrix multiplication. SIAM Journal on Computing, 36(1):132–157, 2006. [17] P. Drineas, R. Kannan, and M. W. Mahoney. Fast Monte Carlo algorithms for matrices II: Computing\na low-rank approximation to a matrix. SIAM Journal on Computing, 36(1):158–183, 2006. [18] J. Duchi, E. Hazan, and Y. Singer. Adaptive subgradient methods for online learning and stochastic\noptimization. Journal of Machine Learning Research, 12(7), 2011.",
+      "size": 455,
+      "sentences": 9
+    },
+    {
+      "id": 164,
+      "content": "for online learning and stochastic\noptimization. Journal of Machine Learning Research, 12(7), 2011. [19] S. S. S. Duvvuri, F. Devvrit, R. Anil, C. Hsieh, and I. S. Dhillon. Combining axes preconditioners\nthrough Kronecker approximation for deep learning. In International Conference on Learning\nRepresentations, 2024. [20] A. Glentis, J. Li, A. Han, and M. Hong. A minimalist optimizer design for LLM pretraining. arXiv\npreprint arXiv:2506.16659, 2025. [21] V. Gupta, T. Koren, and Y. Singer.",
+      "size": 492,
+      "sentences": 10
+    },
+    {
+      "id": 165,
+      "content": "for LLM pretraining. arXiv\npreprint arXiv:2506.16659, 2025. [21] V. Gupta, T. Koren, and Y. Singer. Shampoo: Preconditioned stochastic tensor optimization. In\nInternational Conference on Machine Learning, pages 1842–1850, 2018. [22] N. Halko, P.-G. Martinsson, and J. A. Tropp. Finding structure with randomness: Probabilistic\nalgorithms for constructing approximate matrix decompositions. SIAM Review, 53(2):217–288, 2011. [23] Y. Hao, Y. Cao, and L. Mou.",
+      "size": 456,
+      "sentences": 11
+    },
+    {
+      "id": 166,
+      "content": "proximate matrix decompositions. SIAM Review, 53(2):217–288, 2011. [23] Y. Hao, Y. Cao, and L. Mou. Flora: Low-rank adapters are secretly gradient compressors. In\nInternational Conference on Machine Learning, 2024. [24] C. He, Z. Lu, D. Sun, and Z. Deng. Complexity of normalized stochastic first-order methods with\nmomentum under heavy-tailed noise. arXiv preprint arXiv:2506.11214, 2025. [25] G. Hinton, N. Srivastava, and K. Swersky.",
+      "size": 436,
+      "sentences": 9
+    },
+    {
+      "id": 167,
+      "content": "tailed noise. arXiv preprint arXiv:2506.11214, 2025. [25] G. Hinton, N. Srivastava, and K. Swersky. Neural networks for machine learning lecture 6a overview\nof mini-batch gradient descent. 14(8):2, 2012. [26] E. J. Hu, Y. Shen, P. Wallis, Z. Allen-Zhu, Y. Li, S. Wang, L. Wang, W. Chen, et al. Lora: Low-rank\nadaptation of large language models. International Conference on Learning Representations, 1(2):3,\n2022.",
+      "size": 413,
+      "sentences": 8
+    },
+    {
+      "id": 168,
+      "content": "ation of large language models. International Conference on Learning Representations, 1(2):3,\n2022. [27] K. Jordan, J. Bernstein, B. Rappazzo, @fernbear.bsky.social, B. Vlado, Y. Jiacheng, F. Cesista,\nB. Koszarsky, and @Grad62304977. modded-nanogpt: Speedrunning the nanogpt baseline, 2024. [28] K. Jordan, Y. Jin, V. Boza, Y. Jiacheng, F. Cecista, L. Newhouse, and J. Bernstein. Muon: An\noptimizer for hidden layers in neural networks. URL https://kellerjordan. github. io/posts/muon.",
+      "size": 485,
+      "sentences": 9
+    },
+    {
+      "id": 169,
+      "content": "An\noptimizer for hidden layers in neural networks. URL https://kellerjordan. github. io/posts/muon. 23\n===  24 ===\n[29] D. P. Kingma and J. Ba. Adam: A method for stochastic optimization. In International Conference\non Learning Representations, 2015. [30] D.Kovalev. Understandinggradientorthogonalizationfordeeplearningvianon-Euclideantrust-region\noptimization. arXiv preprint arXiv:2503.12645, 2025. [31] T. T.-K. Lau, Q. Long, and W. Su.",
+      "size": 440,
+      "sentences": 12
+    },
+    {
+      "id": 170,
+      "content": "-region\noptimization. arXiv preprint arXiv:2503.12645, 2025. [31] T. T.-K. Lau, Q. Long, and W. Su. PolarGrad: A class of matrix-gradient optimizers from a unifying\npreconditioning perspective. arXiv preprint arXiv:2505.21799, 2025. [32] Y. LeCun, Y. Bengio, and G. Hinton. Deep learning. Nature, 521(7553):436–444, 2015. [33] Y. LeCun, B. Boser, J. Denker, D. Henderson, R. Howard, W. Hubbard, and L. Jackel. Backpropaga-\ntion applied to handwritten zip code recognition.",
+      "size": 472,
+      "sentences": 11
+    },
+    {
+      "id": 171,
+      "content": ". Howard, W. Hubbard, and L. Jackel. Backpropaga-\ntion applied to handwritten zip code recognition. Neural Computation, 1(4):541–551, 1989. [34] J. Li and M. Hong. A note on the convergence of Muon and further. arXiv e-prints, pages arXiv–2502,\n2025. [35] J. Liu, J. Su, X. Yao, Z. Jiang, G. Lai, Y. Du, Y. Qin, W. Xu, E. Lu, J. Yan, Y. Chen, H. Zheng,\nY. Liu, S. Liu, B. Yin, W. He, H. Zhu, Y. Wang, J. Wang, M. Dong, Z. Zhang, Y. Kang, H. Zhang,\nX. Xu, Y. Zhang, Y. Wu, X. Zhou, and Z. Yang.",
+      "size": 493,
+      "sentences": 9
+    },
+    {
+      "id": 172,
+      "content": "Wang, J. Wang, M. Dong, Z. Zhang, Y. Kang, H. Zhang,\nX. Xu, Y. Zhang, Y. Wu, X. Zhou, and Z. Yang. Muon is scalable for LLM training. arXiv preprint\narXiv:2502.16982, 2025. [36] L. Liu, Z. Xu, Z. Zhang, H. Kang, Z. Li, C. Liang, W. Chen, and T. Zhao. COSMOS: A hybrid\nadaptive optimizer for memory-efficient training of LLMs. arXiv preprint arXiv:2502.17410, 2025. [37] I. Loshchilov and F. Hutter. Decoupled weight decay regularization.",
+      "size": 437,
+      "sentences": 8
+    },
+    {
+      "id": 173,
+      "content": "nt arXiv:2502.17410, 2025. [37] I. Loshchilov and F. Hutter. Decoupled weight decay regularization. In International Conference on\nLearning Representations, 2019. [38] C. Ma, W. Gong, M. Scetbon, and E. Meeds. SWAN: Preprocessing SGD enables Adam-level\nperformance on LLM training with significant memory reduction. arXiv e-prints, pages arXiv–2412,\n2024. [39] S. Malladi, T. Gao, E. Nichani, A. Damian, J. D. Lee, D. Chen, and S. Arora. Fine-tuning language\nmodels with just forward passes.",
+      "size": 491,
+      "sentences": 9
+    },
+    {
+      "id": 174,
+      "content": "A. Damian, J. D. Lee, D. Chen, and S. Arora. Fine-tuning language\nmodels with just forward passes. In Advances in Neural Information Processing Systems, volume 36,\npages 53038–53075, 2023. [40] P.-G. Martinsson. Randomized methods for matrix computations. arXiv preprint arXiv:1607.01649,\n2016. [41] T. Pethick, W. Xie, K. Antonakopoulos, Z. Zhu, A. Silveti-Falls, and V. Cevher. Training deep\nlearning models with norm-constrained LMOs. arXiv preprint arXiv:2502.07529, 2025.",
+      "size": 476,
+      "sentences": 9
+    },
+    {
+      "id": 175,
+      "content": "r. Training deep\nlearning models with norm-constrained LMOs. arXiv preprint arXiv:2502.07529, 2025. [42] A.Radford,J.Wu,R.Child,D.Luan,D.Amodei,andI.Sutskever. Languagemodelsareunsupervised\nmultitask learners. 2019. [43] A.Riabinin, E.Shulgin, K.Gruntkowska, andP.Richta´rik. Gluon: MakingMuon&Sciongreatagain! (bridging theory and practice of LMO-based optimizers for LLMs). arXiv preprint arXiv:2505.13416,\n2025. [44] V. Rokhlin, A. Szlam, and M. Tygert.",
+      "size": 456,
+      "sentences": 10
+    },
+    {
+      "id": 176,
+      "content": "imizers for LLMs). arXiv preprint arXiv:2505.13416,\n2025. [44] V. Rokhlin, A. Szlam, and M. Tygert. A randomized algorithm for principal component analysis. SIAM Journal on Matrix Analysis and Applications, 31(3):1100–1124, 2010. 24\n===  25 ===\n[45] F. Rosenblatt. The perceptron: A probabilistic model for information storage and organization in\nthe brain. Psychological Review, 65(6):386, 1958. [46] N. Sato, H. Naganuma, and H. Iiduka. Analysis of Muon’s convergence and critical batch size.",
+      "size": 494,
+      "sentences": 10
+    },
+    {
+      "id": 177,
+      "content": ". [46] N. Sato, H. Naganuma, and H. Iiduka. Analysis of Muon’s convergence and critical batch size. arXiv\npreprint arXiv:2507.01598, 2025. [47] M.-E. Sfyraki and J.-K. Wang. Lions and Muons: Optimization via stochastic Frank-Wolfe. arXiv\npreprint arXiv:2506.04192, 2025. [48] W. Shen, R. Huang, M. Huang, C. Shen, and J. Zhang. On the convergence analysis of Muon. arXiv\npreprint arXiv:2505.23737, 2025. [49] C.Si,D.Zhang,andW.Shen. AdaMuon: AdaptiveMuonoptimizer.",
+      "size": 464,
+      "sentences": 12
+    },
+    {
+      "id": 178,
+      "content": "arXiv\npreprint arXiv:2505.23737, 2025. [49] C.Si,D.Zhang,andW.Shen. AdaMuon: AdaptiveMuonoptimizer. arXiv preprint arXiv:2507.11005,\n2025. [50] H. Touvron, T. Lavril, G. Izacard, X. Martinet, M.-A. Lachaux, T. Lacroix, B. Rozi`ere, N. Goyal,\nE. Hambro, F. Azhar, et al. LLaMA: Open and efficient foundation language models. arXiv preprint\narXiv:2302.13971, 2023. [51] M. Tuddenham, A. Pru¨gel-Bennett, and J. Hare. Orthogonalising gradients to speed up neural\nnetwork optimisation.",
+      "size": 481,
+      "sentences": 10
+    },
+    {
+      "id": 179,
+      "content": "A. Pru¨gel-Bennett, and J. Hare. Orthogonalising gradients to speed up neural\nnetwork optimisation. arXiv preprint arXiv:2202.07052, 2022. [52] A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, L(cid:32) . Kaiser, and I. Polosukhin. Attention is all you need. In Advances in neural information processing systems, volume 30, 2017. [53] N. Vyas, D. Morwani, R. Zhao, I. Shapira, D. Brandfonbrener, L. Janson, and S. M. Kakade.",
+      "size": 447,
+      "sentences": 8
+    },
+    {
+      "id": 180,
+      "content": "017. [53] N. Vyas, D. Morwani, R. Zhao, I. Shapira, D. Brandfonbrener, L. Janson, and S. M. Kakade. SOAP:\nImproving and stabilizing Shampoo using Adam for language modeling. In International Conference\non Learning Representations, 2025. [54] S.Xie,T.Wang,S.J.Reddi,S.Kumar,andZ.Li. Structuredpreconditionersinadaptiveoptimization:\nA unified analysis. arXiv preprint arXiv:2503.10537, 2025. [55] M. D. Zeiler. Adadelta: An adaptive learning rate method. arXiv preprint arXiv:1212.5701, 2012.",
+      "size": 490,
+      "sentences": 10
+    },
+    {
+      "id": 181,
+      "content": "55] M. D. Zeiler. Adadelta: An adaptive learning rate method. arXiv preprint arXiv:1212.5701, 2012. [56] J. Zhang, S. P. Karimireddy, A. Veit, S. Kim, S. Reddi, S. Kumar, and S. Sra. Why are adaptive\nmethods good for attention models? In Advances in Neural Information Processing Systems,\nvolume 33, pages 15383–15393, 2020. [57] J. Zhao, Z. Zhang, B. Chen, Z. Wang, A. Anandkumar, and Y. Tian. GaLore: Memory-efficient LLM\ntraining by gradient low-rank projection.",
+      "size": 465,
+      "sentences": 8
+    },
+    {
+      "id": 182,
+      "content": "A. Anandkumar, and Y. Tian. GaLore: Memory-efficient LLM\ntraining by gradient low-rank projection. In International Conference on Machine Learning, volume\n235, pages 61121–61143, 2024. A Low-rank orthogonalization procedures\nIn this part, we introduce two new low-rank orthogonalization methods as alternatives to Algorithm 1. We first describe a low-rank orthogonalization method based on column selection. This method is\nbased on the low-rank matrix approximation techniques developed in [16, 17].",
+      "size": 499,
+      "sentences": 6
+    },
+    {
+      "id": 183,
+      "content": "ection. This method is\nbased on the low-rank matrix approximation techniques developed in [16, 17]. For any given M ∈ Rm×n, it\nfirst performs column subsampling on M to select r columns, with r ≪ ϱ, based on the size of each column,\nto construct a matrix C ∈ Rm×r. Then, this method performs a QR decomposition on C to obtain a\ncolumn-orthogonalmatrixQ ∈ Rm×r,andcomputesmsgn(QTM). Finally,itreturnsM = Qmsgn(QTM)\nO\nas a low-rank approximation for msgn(M).",
+      "size": 456,
+      "sentences": 5
+    },
+    {
+      "id": 184,
+      "content": "×r,andcomputesmsgn(QTM). Finally,itreturnsM = Qmsgn(QTM)\nO\nas a low-rank approximation for msgn(M). Following the same arguments for proving (6), M is the\nO\n25\n===  26 ===\nmatrix sign of QQTM, which is a low-rank approximation of M. Details of this method are provided in\nAlgorithm 5. The following theorem, adapted from [17, Theorem 4], provides the approximation error of QQTM. Theorem 5. Consider Algorithm 5 with inputs M ∈ Rm×n and r ∈ Z ∩[1,ϱ], where ϱ := min{m,n}.",
+      "size": 471,
+      "sentences": 6
+    },
+    {
+      "id": 185,
+      "content": "f QQTM. Theorem 5. Consider Algorithm 5 with inputs M ∈ Rm×n and r ∈ Z ∩[1,ϱ], where ϱ := min{m,n}. +\nLet Q ∈ Rm×r be generated by Algorithm 5. Then, it holds that\nE[∥(I −QQT)M∥2] ≤ ∥M −[M] ∥2 +2∥M∥2. F r F F\nAlgorithm 5 A low-rank orthogonalization method based on column selection\nInput: matrix M ∈ Rm×n, rank trial r ∈ Z ∩[1,ϱ]. +\nOutput: approximate matrix sign M ∈ Rm×n.",
+      "size": 375,
+      "sentences": 7
+    },
+    {
+      "id": 186,
+      "content": "ection\nInput: matrix M ∈ Rm×n, rank trial r ∈ Z ∩[1,ϱ]. +\nOutput: approximate matrix sign M ∈ Rm×n. O\nCompute sampling probabilities {p }n as p = ∥M ∥2/∥M∥2 for i = 1,...,n.\ni i=1 i (i) F\nfor t = 1,2,...,r do\nChoose i ∈ {1,...,n} with probability P(i = i) = p for i = 1,...,n.\nt t i\n√\nSet C = M / rp . (i) (it) it\nend for\nPerform a QR decomposition on C to get a column-orthogonal Q factor Q ∈ Rm×r. Return M = Qmsgn(QTM).",
+      "size": 422,
+      "sentences": 5
+    },
+    {
+      "id": 187,
+      "content": "erform a QR decomposition on C to get a column-orthogonal Q factor Q ∈ Rm×r. Return M = Qmsgn(QTM). O\nWe next propose a low-rank orthogonalization method based on power iterations. This method is\nbased on the low-rank matrix approximation techniques developed in [22, 44]. Similar to Algorithm 1, this\nmethod also uses a Gaussian random matrix G ∈ Rm×r with r ≪ ϱ, and performs a QR decomposition\non (MMT)qMG for some q ≥ 0 to obtain a column-orthogonal matrix Q ∈ Rm×r.",
+      "size": 470,
+      "sentences": 5
+    },
+    {
+      "id": 188,
+      "content": "rforms a QR decomposition\non (MMT)qMG for some q ≥ 0 to obtain a column-orthogonal matrix Q ∈ Rm×r. The method then\ncomputesmsgn(QTM) ∈ Rr×n andreturnsM = Qmsgn(QTM)asalow-rankapproximationofmsgn(M). O\nFollowing the same arguments used to prove (6), M represents the matrix sign of QQTM, which is a\nO\nlow-rank approximation of M. Details of this method are provided in Algorithm 6, and it can be seen\nthat the method reduces to Algorithm 1 when q = 0.",
+      "size": 451,
+      "sentences": 3
+    },
+    {
+      "id": 189,
+      "content": "are provided in Algorithm 6, and it can be seen\nthat the method reduces to Algorithm 1 when q = 0. Algorithm 6 A low-rank orthogonalization procedure based on power iterations\nInput: matrix M ∈ Rm×n, rank trial r ∈ Z ∩[1,ϱ], exponent q ∈ Z . + +\nOutput: approximate matrix sign M ∈ Rm×n. O\nGenerate a Gaussian random matrix G ∈ Rn×r. Perform a QR decomposition on (MMT)qMG to get a column-orthogonal Q factor Q ∈ Rm×r. Return M = Qmsgn(QTM).",
+      "size": 441,
+      "sentences": 6
+    },
+    {
+      "id": 190,
+      "content": "a QR decomposition on (MMT)qMG to get a column-orthogonal Q factor Q ∈ Rm×r. Return M = Qmsgn(QTM). O\nThe following theorem, adapted from [40, Section 8.2], provides the approximation error of QQTM. Theorem 6. Consider Algorithm 6 with inputs M ∈ Rm×n, r ∈ Z ∩ [1,ϱ], and q ∈ Z , where\n+ +\nϱ := min{m,n}. Let Q ∈ Rm×r be generated by Algorithm 5.",
+      "size": 346,
+      "sentences": 6
+    },
+    {
+      "id": 191,
+      "content": "Rm×n, r ∈ Z ∩ [1,ϱ], and q ∈ Z , where\n+ +\nϱ := min{m,n}. Let Q ∈ Rm×r be generated by Algorithm 5. Then, for any r ≤ r−2, it holds that\n∗\n(cid:18) (cid:114) r (cid:114) r √ (cid:19)1/(2q+1)\nE[∥(I −QQT)M∥2] ≤ 1+ ∗ +e · ϱ−r σ ,\nr−r −1 r−r\n∗ r∗+1\n∗ ∗\nwhere σ is the (r +1)th largest singular value of M.\nr∗+1 ∗\nB Experimental details\nIn this part, we present the details for our experiments on pretraining GPT-2 and LLaMA models.",
+      "size": 427,
+      "sentences": 3
+    },
+    {
+      "id": 192,
+      "content": "ils\nIn this part, we present the details for our experiments on pretraining GPT-2 and LLaMA models. 26\n===  27 ===\nTable 3 presents the hyperparameter configurations for the GPT-2 and LLaMA models. We employ\nhyperparameters aligned with those used in [28, 57]. In addition, we set the maximum training sequence\nlength to 65,536 tokens, the maximum validation sequence length to 262,144 tokens, and the validation\ndataset size to 10,485,760 tokens.",
+      "size": 447,
+      "sentences": 4
+    },
+    {
+      "id": 193,
+      "content": "validation sequence length to 262,144 tokens, and the validation\ndataset size to 10,485,760 tokens. Table 3: Hyperparameter configurations for GPT-2 and LLaMA models. # Parameters Hidden Dimension Intermediate Dimension # Heads # Layers\n60M 512 1376 8 8\n130M 768 2048 12 12\n350M 1024 2736 16 24\n1B 2048 5461 24 32\nWe present the algorithmic hyperparameter search grids for each method in Table 4, following a\nsimilar choice as in [28, 31].",
+      "size": 439,
+      "sentences": 3
+    },
+    {
+      "id": 194,
+      "content": "hyperparameter search grids for each method in Table 4, following a\nsimilar choice as in [28, 31]. The best numerical performance for each training method across the grids is\npresented in Section 4. In addition, we apply a warm-up schedule for the learning rate during the first\n70% of the training iterations, followed by a cosine annealing schedule that reduces the learning rate to\n10% of its initial value. Table 4: Algorithmic hyperparameters. Here, ‘NS’ stands for Newton-Schulz.",
+      "size": 485,
+      "sentences": 5
+    },
+    {
+      "id": 195,
+      "content": "0% of its initial value. Table 4: Algorithmic hyperparameters. Here, ‘NS’ stands for Newton-Schulz. Method Hyperparameters Values\nbatch size 2\nSGDM learning rate {1e-4, 1e-3, 1e-2}\nweight decay {0, 1e-3, 1e-2}\nbatch size 2\nAdamW learning rate {1e-4, 1e-3, 1e-2}\nweight decay {0, 1e-3, 1e-2}\nbatch size 2\nlearning rate {1e-2, 2.5e-2, 5e-2, 1e-3}\nMuon\n# NS steps {5, 10, 20}\nweight decay 0\nbatch size 2\nlearning rate {1e-2, 2.5e-2, 5e-2, 1e-3}\nLow rank Muon rank {100, 200}\n# NS steps {5, 10, 20}\nweight decay 0\n27",
+      "size": 512,
+      "sentences": 4
+    }
+  ]
+}

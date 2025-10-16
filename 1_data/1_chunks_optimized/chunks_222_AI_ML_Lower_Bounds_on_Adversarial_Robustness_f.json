@@ -1,0 +1,1653 @@
+{
+  "source": "ArXiv",
+  "filename": "222_AI_ML_Lower_Bounds_on_Adversarial_Robustness_f.pdf",
+  "domain": "AI",
+  "total_chars": 86222,
+  "total_chunks": 274,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\nLower Bounds on Adversarial Robustness for Multiclass\nClassification with General Loss Functions\nCamilo Andrés García Trillos\nDepartment of Mathematics, University College London\ncamilo.garcia@ucl.ac.uk\nNicolás García Trillos\nDepartment of Statistics, University of Wisconsin Madison\ngarciatrillo@wisc.edu\nOctober 3, 2025\nAbstract\nWe consider adversarially robust classification in a multiclass setting under arbitrary loss functions\nand derive dual and barycentric reformulations of the corresponding learner-agnostic robust risk mini-\nmization problem.",
+      "size": 565,
+      "sentences": 1
+    },
+    {
+      "id": 2,
+      "content": "arycentric reformulations of the corresponding learner-agnostic robust risk mini-\nmization problem. We provide explicit characterizations for important cases such as the cross-entropy\nloss,lossfunctionswithapowerform,andthequadraticloss,extendinginthiswayavailableresultsfor\nthe0-1loss. Thesereformulationsenableefficientcomputationofsharplowerboundsforadversarialrisks\nandfacilitatethedesignofrobustclassifiersbeyondthe0-1losssetting.",
+      "size": 435,
+      "sentences": 3
+    },
+    {
+      "id": 3,
+      "content": "arplowerboundsforadversarialrisks\nandfacilitatethedesignofrobustclassifiersbeyondthe0-1losssetting. Ourpaperuncoversinteresting\nconnections between adversarial robustness, α-fair packing problems, and generalized barycenter prob-\nlems for arbitrary positive measures where Kullback-Leibler and Tsallis entropies are used as penalties. Ourtheoreticalresultsareaccompaniedwithillustrativenumericalexperimentswhereweobtaintighter\nlower bounds for adversarial risks with the cross-entropy loss function.",
+      "size": 499,
+      "sentences": 3
+    },
+    {
+      "id": 4,
+      "content": "imentswhereweobtaintighter\nlower bounds for adversarial risks with the cross-entropy loss function. 1 Introduction\nIn this paper, we study a class of minmax problems of the form\nmin max R(µ˜,f)−C(µ,µ˜), (1)\nf∈Fµ˜∈P(Z)\nwhere R is the risk functional\nZ\nR(µ˜,f):= ℓ(f(x),y)dµ˜(x˜,y˜)\nX×Y\nassociated to a loss functions ℓ, and where C is a cost function between pairs of probability distributions µ\nandµ˜overtheproductspaceZ =X×Y.",
+      "size": 426,
+      "sentences": 2
+    },
+    {
+      "id": 5,
+      "content": "e C is a cost function between pairs of probability distributions µ\nandµ˜overtheproductspaceZ =X×Y. Hereandinthesequel,wewillthinkofX asafeaturespace,which\nwe assume has the structure of a Polish metric space with distance function d, and of Y as a (finite) set of\nlabels.",
+      "size": 272,
+      "sentences": 2
+    },
+    {
+      "id": 6,
+      "content": "structure of a Polish metric space with distance function d, and of Y as a (finite) set of\nlabels. Problem(1)canbeinterpretedasatwo-playergame,playedbetweenalearnerandanadversary,that\ncaptures the learner’s desire to build classification models that are robust against adversarial perturbations\nofacleandatadistribution,hererepresentedbyµ.",
+      "size": 339,
+      "sentences": 2
+    },
+    {
+      "id": 7,
+      "content": "dels that are robust against adversarial perturbations\nofacleandatadistribution,hererepresentedbyµ. Inthisinterpretation,thesetF in(11)isafamilyofsoft\nclassification models (i.e., measurable maps f :X →∆ , for ∆ the probability simplex over Y) accessible\nY Y\nto the learner, and µ˜ is the new data distribution that is selected by the adversary. C(µ,µ˜) is the cost\nthat the adversary must pay to modify the clean data distribution µ and rearrange it as µ˜.",
+      "size": 457,
+      "sentences": 3
+    },
+    {
+      "id": 8,
+      "content": "he cost\nthat the adversary must pay to modify the clean data distribution µ and rearrange it as µ˜. This function\nimplicitly determines the types of attacks that are feasible for the adversary. Throughout the paper, we will mostly focus on a special and important choice for the cost function C\nandthefamilyofclassificationmodelsF.",
+      "size": 331,
+      "sentences": 3
+    },
+    {
+      "id": 9,
+      "content": "ocus on a special and important choice for the cost function C\nandthefamilyofclassificationmodelsF. First, weassumethatC hasthestructureofanoptimaltransport\n1\n5202\ntcO\n2\n]GL.sc[\n1v96910.0152:viXra\n===  2 ===\nproblem\nZ\nC(µ,µ˜):= inf c ((x,y),(x˜,y˜))dπ((x,y),(x˜,y˜)) (2)\nZ\nπ∈Γ(µ,µ˜) Z×Z\nfor a marginal cost function c :Z×Z →R ∪{∞} satisfying\nZ +\n(\nc(x,x˜), if y =y˜,\nc ((x,y),(x˜,y˜)):= (3)\nZ\n∞, else.",
+      "size": 401,
+      "sentences": 2
+    },
+    {
+      "id": 10,
+      "content": "cost function c :Z×Z →R ∪{∞} satisfying\nZ +\n(\nc(x,x˜), if y =y˜,\nc ((x,y),(x˜,y˜)):= (3)\nZ\n∞, else. This specific form for c forces the adversary to respect labels when perturbing arbitrary data points.",
+      "size": 202,
+      "sentences": 2
+    },
+    {
+      "id": 11,
+      "content": "s specific form for c forces the adversary to respect labels when perturbing arbitrary data points. In\nZ\nmathematical terms,\nunder this cost function problem 1 can be rewritten as\nZ\nX X\ninf sup ℓ(f(x˜),i)dµ˜ (x˜)− C(µ ,µ˜ ), (4)\ni i i\nf∈F{µ˜i}i∈Yi∈Y X i∈Y\nwhere in the above and in the sequel we abuse the notation introduced earlier and set\nZ\nC(µ ,µ˜ ):= inf c(x,x˜)dπ (x,x˜);\ni i i\nπi∈Γ(µi,µ˜i) X×X\nhere, for a fixed i∈Y we use µ (or µ˜ ) to denote the positive measures over X (not necessarily normalized)\ni i\nP\ndefined as µ (A) = µ(A×{i}) for A a (Borel) measurable subset of X (note that µ (X) = 1).",
+      "size": 604,
+      "sentences": 2
+    },
+    {
+      "id": 12,
+      "content": "ed)\ni i\nP\ndefined as µ (A) = µ(A×{i}) for A a (Borel) measurable subset of X (note that µ (X) = 1). As an\ni i∈Y i\nexample of the types of cost function c : X ×X 7→ R ∪{∞} that are of interest in the literature, we may\n+\nconsider the 0-∞ cost given by\n(\n0 if d(x,x˜)≤ε\nc (x,x˜):= (5)\nε\n∞ else,\nfor ε a positive parameter often referred in the literature as adversarial budget.",
+      "size": 375,
+      "sentences": 2
+    },
+    {
+      "id": 13,
+      "content": ":= (5)\nε\n∞ else,\nfor ε a positive parameter often referred in the literature as adversarial budget. In this context, ε represents\nthe maximum size of data perturbations that the adversary may deploy around any given clean data point. For this cost function, problem (4) can be seen to reduce to\nZ\nX\ninf sup ℓ(f(x˜),i)dµ (x), (6)\ni\nf∈F i∈Y X x˜∈Bε(x)\namodelthatintheliteratureisknownasadversarial training; seeAppendixAforsomeinformaldiscussion\nof this equivalence.",
+      "size": 464,
+      "sentences": 3
+    },
+    {
+      "id": 14,
+      "content": "literatureisknownasadversarial training; seeAppendixAforsomeinformaldiscussion\nof this equivalence. Regarding the family of classification models F, we will focus on the agnostic-learner setting, which\ncorresponds to the choice F =F given by\nall\nF :={f :X →∆ Borel}. (7)\nall Y\nIn words, F is the set of all measurable soft classifiers from the feature space X into the set of labels\nall\nY.",
+      "size": 389,
+      "sentences": 3
+    },
+    {
+      "id": 15,
+      "content": "s the set of all measurable soft classifiers from the feature space X into the set of labels\nall\nY. In addition to being important for theoretical reasons (e.g., a minimizer of the agnostic robust risk\nminimization problem can be interpreted as a robust Bayes classifier), when we select F = F in (4) we\nall\nobtain a fundamental lower bound for the value of problem (4) with any other subfamily F of measurable\nsoft classifiers.",
+      "size": 428,
+      "sentences": 2
+    },
+    {
+      "id": 16,
+      "content": "lower bound for the value of problem (4) with any other subfamily F of measurable\nsoft classifiers. Precisely, we have\nZ\nX X\ninf sup ℓ(f(x˜),i)dµ˜ (x˜)− C(µ ,µ˜ )\ni i i\nf∈Fall{µ˜i}i∈Yi∈Y X i∈Y\n(8)\nZ\nX X\n≤ inf sup ℓ(f(x˜),i)dµ˜ (x˜)− C(µ ,µ˜ ),\ni i i\nf∈F{µ˜i}i∈Yi∈Y X i∈Y\nregardless of the choice of F (families of neural networks, kernel machines, etc).",
+      "size": 353,
+      "sentences": 2
+    },
+    {
+      "id": 17,
+      "content": "µ˜i}i∈Yi∈Y X i∈Y\nregardless of the choice of F (families of neural networks, kernel machines, etc). This lower bound, which,\nas we suggest throughout the paper, can be computed more efficiently than the right-hand side of (8), is a\n2\n===  3 ===\nuseful benchmark for training robust learning models in practical settings, when F is typically assumed to\nbe some rich parametric family of classifiers.",
+      "size": 398,
+      "sentences": 2
+    },
+    {
+      "id": 18,
+      "content": "n practical settings, when F is typically assumed to\nbe some rich parametric family of classifiers. For a cost function C as above and for the family of learning models F = F , if the loss function\nall\nℓ:∆ ×Y →R is chosen to be the 0-1 loss defined as\nY\nℓ (v,i):=1−v , i∈Y, v ∈∆ ,1 (9)\n01 i Y\nit has been shown in [15] that the agnostic-learner version of (4) (i.e., the case F =F ) is equivalent to the\nall\noptimization problem\nZ\nX\nsup g (x )dµ (x ),\ni i i i\n{gi}i∈Y i∈Y X (10)\nX\ns.t.",
+      "size": 485,
+      "sentences": 2
+    },
+    {
+      "id": 19,
+      "content": "equivalent to the\nall\noptimization problem\nZ\nX\nsup g (x )dµ (x ),\ni i i i\n{gi}i∈Y i∈Y X (10)\nX\ns.t. g (x )≤1+c (x ), ∀x ∈spt(µ ), ∀A⊆Y,\ni i A A A A\ni∈A\nwhere\nX\nc (x ):= inf c(x ,x˜)\nA A i\nx˜∈X\ni∈A\nand spt(µ ) denotes the support of the product measure ⊗ µ . Another equivalent reformulation of (4),\nA i∈A i\nin the form of a generalized barycenter problem for the measures {µ } , was also derived in [15]:\ni i∈Y\n( )\nX\ninf λ(X)+ C(µ ,µ˜ ):µ˜ ≤λ for all i∈Y .",
+      "size": 456,
+      "sentences": 3
+    },
+    {
+      "id": 20,
+      "content": "r the measures {µ } , was also derived in [15]:\ni i∈Y\n( )\nX\ninf λ(X)+ C(µ ,µ˜ ):µ˜ ≤λ for all i∈Y . (11)\ni i i\nλ,{µ˜i}i∈Y\ni∈Y\nHere,theinfrangesovercollectionsoffinitepositivemeasuresoverX,andtheconstraintµ˜ ≤λisunderstood\ni\nin the sense of measures (i.e., µ˜ (A) ≤ λ(A) for all Borel measurable A ⊆ X). Precisely, [15] shows that\ni\nthe infimum in problem (4) with F = F and ℓ = ℓ is equal to 1−(10) = 1−(11).",
+      "size": 408,
+      "sentences": 3
+    },
+    {
+      "id": 21,
+      "content": "ely, [15] shows that\ni\nthe infimum in problem (4) with F = F and ℓ = ℓ is equal to 1−(10) = 1−(11). These equivalent\nall 01\nreformulations of problem (4) for the 0-1 loss have facilitated the development of computational algorithms\nto obtain lower bounds for the adversaria risk of arbitrary models trained with this loss function.",
+      "size": 331,
+      "sentences": 2
+    },
+    {
+      "id": 22,
+      "content": "to obtain lower bounds for the adversaria risk of arbitrary models trained with this loss function. These\nmethods exploit the aforementioned equivalences and in particular take advantage of the many tools in the\nliteratureofcomputationaloptimaltransportthathavebeendevelopedinthepastdecade;seethediscussion\nin section 3 below and in [9,16,24].",
+      "size": 343,
+      "sentences": 2
+    },
+    {
+      "id": 23,
+      "content": "transportthathavebeendevelopedinthepastdecade;seethediscussion\nin section 3 below and in [9,16,24]. It is not surprising that optimal transport techniques can be used to\nsolve these problems since, after all, problem (10) is the dual of a problem closely related to multimarginal\noptimal transport (MMOT) and (11) has the form of a generalized barycenter problem in the space of\npositive measures. Further, solutions of such problems can be leveraged to recover optimal (agnostic) robust\nclassifiers.",
+      "size": 500,
+      "sentences": 3
+    },
+    {
+      "id": 24,
+      "content": "ther, solutions of such problems can be leveraged to recover optimal (agnostic) robust\nclassifiers. Indeed, we can use the solution to (10) to construct a solution f∗ : X → ∆ to problem (4) by\nY\nusing the formula\nf∗(x˜)=max{−gc(x˜),0}, i∈Y,2 (12)\ni i\nwhere\ngc(x˜):= inf {c(x,x˜)−g (x)} (13)\ni i\nx∈spt(µi)\nis the so-called c-transform of g 3.",
+      "size": 341,
+      "sentences": 2
+    },
+    {
+      "id": 25,
+      "content": "(12)\ni i\nwhere\ngc(x˜):= inf {c(x,x˜)−g (x)} (13)\ni i\nx∈spt(µi)\nis the so-called c-transform of g 3. We reiterate that, given the agnostic nature of the problem we have\ni\nposed, (12) produces the minimal (robust) risk achievable by any classifier when the risk used to quantify\ndata mismatch is the one associated to the 0-1 loss, in accordance with (8).",
+      "size": 353,
+      "sentences": 2
+    },
+    {
+      "id": 26,
+      "content": "risk used to quantify\ndata mismatch is the one associated to the 0-1 loss, in accordance with (8). Although the above is a compelling story on how to study adversarial robustness through the lens of\ntheoretical and computational tools in optimal transport, this rich framework has been restricted, to our\n1Thislinearfunctionisanaturalextensionofthestandard0-1lossforhardclassifierstosoftclassifiers, andwethusrefer\ntoitas0-1loss.",
+      "size": 429,
+      "sentences": 2
+    },
+    {
+      "id": 27,
+      "content": "uralextensionofthestandard0-1lossforhardclassifierstosoftclassifiers, andwethusrefer\ntoitas0-1loss. 2The Borel measurability of this function depends on the cost function c. It is guaranteed, for example, when the cost\nfunction c is continuous. Some care must be taken when considering cost functions like cε in (5); see [17] for a discussion of\nthesemeasurabilityissues. 3Thenotionofc-transformconsideredinthispaperusestheinfimumoverthesupportofthemeasuresµionly.",
+      "size": 464,
+      "sentences": 4
+    },
+    {
+      "id": 28,
+      "content": "ssues. 3Thenotionofc-transformconsideredinthispaperusestheinfimumoverthesupportofthemeasuresµionly. Inparticular,\nwhentheµi areconcentratedoverfinitelymanypoints,(13)optimizesoverfinitelymanyxandonlythevaluesofgi atthose\npointsareimportantforthedefinitionofgc atanarbitraryx˜. i\n3\n===  4 ===\nknowledge,tothe0-1losssettingdescribedabove.",
+      "size": 336,
+      "sentences": 4
+    },
+    {
+      "id": 29,
+      "content": "ntforthedefinitionofgc atanarbitraryx˜. i\n3\n===  4 ===\nknowledge,tothe0-1losssettingdescribedabove. Inparticular,therehasnotbeenmuchdiscussiononhow\ntocomputesharp agnosticlowerboundslike(8)formoregenerallossfunctionsℓ(suchasthecross-entropy),\ndespite the fact that there are more popular loss functions used in practical settings than the 0-1 loss. Our\ngoal in this paper is to fill this gap and develop analogous results for more general loss functions.",
+      "size": 454,
+      "sentences": 4
+    },
+    {
+      "id": 30,
+      "content": "al in this paper is to fill this gap and develop analogous results for more general loss functions. Obtaining analogous results for the cross-entropy loss function was one of the main motivations for\nthis paper, given that the majority of training routines used in data science are performed under this\nloss function. However, our analysis will allow us to cover other important and interesting cases.",
+      "size": 401,
+      "sentences": 3
+    },
+    {
+      "id": 31,
+      "content": "loss function. However, our analysis will allow us to cover other important and interesting cases. Indeed,\nthroughouranalysiswewillrevealinterestingconnectionsbetweentheadversarialmodel(4)forquitegeneral\nloss functions ℓ, a problem in the optimization literature known as α-fair packing (see Appendix D), and\ngeneralizations of the barycenter problem in spaces of measures appearing in (11) that use Tsallis entropies\nto relax the hard constraints in (11).",
+      "size": 456,
+      "sentences": 3
+    },
+    {
+      "id": 32,
+      "content": "ces of measures appearing in (11) that use Tsallis entropies\nto relax the hard constraints in (11). These connections, in turn, open the door to the use of a wide range\nof optimization tools to solve the adversarial problem (4). As an application of our main results, in the final\nsection of our paper we obtain sharper lower bounds for adversarial training (AT) with the cross-entropy\nloss function in simple practical settings, which is a significant extension of the results in [15] and [16].",
+      "size": 495,
+      "sentences": 3
+    },
+    {
+      "id": 33,
+      "content": "ion in simple practical settings, which is a significant extension of the results in [15] and [16]. Indeed, as discussed above, the results and experiments in those papers were restricted to the 0-1 loss case. We compare the lower bounds obtained for the 0-1 and cross-entropy loss functions, illustrating the gain of\nobtaining sharper lower bounds for the adversarial risk of models trained with the cross-entropy loss. This\ndiscussion is presented in section 3 below.",
+      "size": 469,
+      "sentences": 4
+    },
+    {
+      "id": 34,
+      "content": "isk of models trained with the cross-entropy loss. This\ndiscussion is presented in section 3 below. 1.1 Main results\nOur first result deduces an equivalent formulation for problem (4) that is analogous to (10) but that applies\nfor quite general convex loss functions ℓ. The precise assumptions that we impose on the loss function ℓ and\nthe cost function c are presented next. Assumption 1. We assume that, for every i ∈ Y, the function ℓ(·,i) : ∆ → R ∪{∞} is convex.",
+      "size": 466,
+      "sentences": 6
+    },
+    {
+      "id": 35,
+      "content": "ed next. Assumption 1. We assume that, for every i ∈ Y, the function ℓ(·,i) : ∆ → R ∪{∞} is convex. Also,\nY +\nwe assume that there is v ∈∆ such that ℓ(v ,i)̸=∞ for all i∈Y. 0 Y 0\nAssumption 2. The function c:X ×X →R ∪{∞} is assumed to be lower-semicontinuous and to satisfy\n+\nc(x,x)=0 for all x∈X.",
+      "size": 297,
+      "sentences": 6
+    },
+    {
+      "id": 36,
+      "content": "unction c:X ×X →R ∪{∞} is assumed to be lower-semicontinuous and to satisfy\n+\nc(x,x)=0 for all x∈X. Furthermore, we assume one of the following two conditions:\n1. csatisfiesthefollowingcompactnessandcoercivitycondition: if{x˜ n } n∈N isaboundedsequenceinX\nand {x n } ∈N is another sequence for which sup n∈N c(x n ,x˜ n )<∞, then {(x n ,x˜ n )} n∈N is precompact\nin X ×X (with the product topology).",
+      "size": 399,
+      "sentences": 2
+    },
+    {
+      "id": 37,
+      "content": "sup n∈N c(x n ,x˜ n )<∞, then {(x n ,x˜ n )} n∈N is precompact\nin X ×X (with the product topology). 2. c is of the form c=min{c ,B} for some scalar B >0 and some cost function c ≥0 satisfying the\n0 0\nabove compactness and coercivity condition. Note that Assumption 2 on the cost function c is the same as in [15]. As discussed there, for the cost\nfunction (5) to satisfy Assumptions 2, X needs to be assumed to be a locally compact space (e.g., Euclidean\nspace, or a finite dimensional manifold).",
+      "size": 496,
+      "sentences": 4
+    },
+    {
+      "id": 38,
+      "content": "be assumed to be a locally compact space (e.g., Euclidean\nspace, or a finite dimensional manifold). We are ready to present our first main result. Theorem 3. Under Assumption 1 on the loss function ℓ and Assumption 2 on the cost function c, problem\n(4) with F =F has the same value as the problem\nall\nZ\nX\ninf − ϕ (x )dµ (x ),\ni i i i\n{ϕi}i∈Y⊆G i∈Y X\n( ) (14)\nX\ns.t.",
+      "size": 365,
+      "sentences": 4
+    },
+    {
+      "id": 39,
+      "content": "the same value as the problem\nall\nZ\nX\ninf − ϕ (x )dµ (x ),\ni i i i\n{ϕi}i∈Y⊆G i∈Y X\n( ) (14)\nX\ns.t. 0≥ sup m ϕ (x )+ℓ (m )−c (x ,m ) , ∀x ∈spt(µ ), ∀A⊆Y,\ni i i A A A A A A A\nmA∈∆A\ni∈A\nwhen G is taken to be C (X), the space of bounded continuous functions on X. Here and in the sequel, we\nb\nuse spt(µ ) to denote the support of the product measure µ =⊗ µ and ∆ to represent the probability\nA A i∈A i A\nsimplex on the elements of the subset A of Y.",
+      "size": 445,
+      "sentences": 3
+    },
+    {
+      "id": 40,
+      "content": "µ =⊗ µ and ∆ to represent the probability\nA A i∈A i A\nsimplex on the elements of the subset A of Y. The scalar functions ℓ and c are defined according to\nA A\nX X\nℓ (m ):= inf ℓ(v,i)m , c (x ,m ):= inf c(x ,x˜)m .",
+      "size": 212,
+      "sentences": 2
+    },
+    {
+      "id": 41,
+      "content": "nctions ℓ and c are defined according to\nA A\nX X\nℓ (m ):= inf ℓ(v,i)m , c (x ,m ):= inf c(x ,x˜)m . A A i A A A i i\nv∈∆Yi∈A x˜∈X\ni∈A\n4\n===  5 ===\nMoreover, if {ϕ∗} is a solution to problem (14) for a set G containing C (X), then a Borel measurable\ni i∈Y b\nfunction f∗ :X →∆ satisfying\nY\nX\nf∗(x˜)∈arg min max (ℓ(v,i)−ϕ∗c(x˜))m , ∀x˜∈X, (15)\ni i\nv∈∆Ym∈∆Yi∈Y\nisasolutiontoproblem (4), i.e., itisanoptimalrobustclassifierfortheadversarialmodel (4)withF =F . all\nRemark 4.",
+      "size": 467,
+      "sentences": 3
+    },
+    {
+      "id": 42,
+      "content": "oproblem (4), i.e., itisanoptimalrobustclassifierfortheadversarialmodel (4)withF =F . all\nRemark 4. Just as with problem (10) for the 0-1 loss setting, problem (14) is a very advantageous refor-\nmulation of (4) for computational and analytical purposes.",
+      "size": 253,
+      "sentences": 3
+    },
+    {
+      "id": 43,
+      "content": "oblem (14) is a very advantageous refor-\nmulation of (4) for computational and analytical purposes. Indeed, problem (14) with G =C (X) reduces to\nb\na finite-dimensional convex problem when the clean data distribution µ is an empirical measure over finitely\nmany observations (i.e., the most important setting in applications), while the original formulation (4) does\nnot a priori suggest this form. Moreover, problem (14) lends itself to natural relaxations with improved com-\nputational complexity.",
+      "size": 499,
+      "sentences": 3
+    },
+    {
+      "id": 44,
+      "content": "oreover, problem (14) lends itself to natural relaxations with improved com-\nputational complexity. Indeed, a possible computational strategy, explored in [16] and in [9], is to consider\na truncation of class interactions in (14) and, for example, restrict the constraints to subsets A of Y with\ncardinality smaller than a certain fixed (smaller than |Y|) value; conveniently, truncations of this form will\ncontinue to produce valid lower bounds for the original adversarial problem (4), even if they are not nec-\nessarily sharp.",
+      "size": 529,
+      "sentences": 2
+    },
+    {
+      "id": 45,
+      "content": "id lower bounds for the original adversarial problem (4), even if they are not nec-\nessarily sharp. From an analytical perspective, we note that the expression (15) for f∗ will typically imply\nsome regularity estimates for optimal robust classifiers in terms of the regularity of the cost function c; see,\nfor example, Remark 9 below. Remark 5.",
+      "size": 344,
+      "sentences": 3
+    },
+    {
+      "id": 46,
+      "content": "iers in terms of the regularity of the cost function c; see,\nfor example, Remark 9 below. Remark 5. From our proofs in section 2.1 it is apparent that the equivalence of (14) with (4) holds for any\nfamily G of Borel measurable functions containing C (X) with the following property: for any element ϕ∈G,\nb\nϕc isBorelmeasurable.",
+      "size": 327,
+      "sentences": 3
+    },
+    {
+      "id": 47,
+      "content": "unctions containing C (X) with the following property: for any element ϕ∈G,\nb\nϕc isBorelmeasurable. Whenthecostciscontinuous,thelatterconditionisautomaticallysatisfiedasinthat\ncase the c-transform of any Borel measurable function is upper-semicontinuous (hence Borel measurable). Likewise, when the measures µ are concentrated on finitely many points, c-transforms of Borel measurable\ni\nfunctions are always Borel measurable. Remark 6.",
+      "size": 435,
+      "sentences": 4
+    },
+    {
+      "id": 48,
+      "content": "ly many points, c-transforms of Borel measurable\ni\nfunctions are always Borel measurable. Remark 6. We emphasize that the measurability of f∗ in Theorem 3 is an assumed condition. Indeed,\nwhile Borel measurability follows from continuity of the cost function c, more care is needed to deduce the\nexistence of solutions to (4) for more irregular cost functions such as the one in (5); we refer the interested\nreader to [17], where some of these issues are discussed for the case of loss 0-1.",
+      "size": 490,
+      "sentences": 4
+    },
+    {
+      "id": 49,
+      "content": "r the interested\nreader to [17], where some of these issues are discussed for the case of loss 0-1. Regarding the uniqueness\nof solutions, we remark that this may depend on both the cost function c as well as on the loss function ℓ. Indeed, even when the loss function is the cross-entropy loss, which is a strictly convex function, problem\n(4) may not have unique solutions for cost functions like the one in (5).",
+      "size": 414,
+      "sentences": 3
+    },
+    {
+      "id": 50,
+      "content": "convex function, problem\n(4) may not have unique solutions for cost functions like the one in (5). This is because, in that setting,\nthe objective function in (4) does not penalize the values of a classifier outside the set of points that lie\nwithin distance ε from the support of the clean data distribution µ.",
+      "size": 311,
+      "sentences": 2
+    },
+    {
+      "id": 51,
+      "content": "ide the set of points that lie\nwithin distance ε from the support of the clean data distribution µ. Other, more general notions like the\none investigated in [12] for binary classification would need to be considered in order to deduce a form of\nuniqueness of solutions for the problems studied in this paper. Problem (14)canbeunderstoodasanequivalentreformulationof (4)fromthelearner’sperspective.",
+      "size": 397,
+      "sentences": 3
+    },
+    {
+      "id": 52,
+      "content": "his paper. Problem (14)canbeunderstoodasanequivalentreformulationof (4)fromthelearner’sperspective. On\nthe other hand, it is possible to derive another general purpose reformulation of (4) that is analogous to the\ngeneralized barycenter problem (11) for the 0-1 loss and that can be understood as a problem solved by the\nadversary. This is expressed in the following theorem, where we make additional structural assumptions on\nthe loss function ℓ for interpretability. Theorem 7.",
+      "size": 479,
+      "sentences": 5
+    },
+    {
+      "id": 53,
+      "content": "e we make additional structural assumptions on\nthe loss function ℓ for interpretability. Theorem 7. Suppose that the cost function c satisfies Assumption 2 and let ℓ be a loss function satisfying\nAssumption 1, with the additional structure\nℓ(v,i)=β(v ), v ∈∆ , i∈Y,\ni Y\nfor a convex and non-increasing function β :R →R∪{∞}. Let φ be the function defined according to\n+\nφ(s):=−inf{β(t)s+t}.",
+      "size": 389,
+      "sentences": 4
+    },
+    {
+      "id": 54,
+      "content": "-increasing function β :R →R∪{∞}. Let φ be the function defined according to\n+\nφ(s):=−inf{β(t)s+t}. (16)\nt>0\nThen (4) with F =F is equal to:\nall\n− inf ( λ(X)+ X Z φ (cid:18) dµ˜ i (cid:19) dλ+ X C(µ ,µ˜ ) ) , (17)\n(µ˜i)i∈Y,λ∈M+(X) i∈Y X dλ i∈Y i i\n5\n===  6 ===\nwhere the inf ranges over positive finite measures {µ˜ } ,λ over X, and where we implicitly assume µ˜ ≪λ\ni i∈Y i\nfor all i∈Y (for otherwise we interpret the objective function as equal to +∞).",
+      "size": 453,
+      "sentences": 3
+    },
+    {
+      "id": 55,
+      "content": "ssume µ˜ ≪λ\ni i∈Y i\nfor all i∈Y (for otherwise we interpret the objective function as equal to +∞). Problem(7)isanotherformofgeneralizedbarycenterproblemoverpositivemeasures,butwithapenalty\n(cid:16) (cid:17)\nterm R φ dµ˜i dλ that (in general) replaces the hard constraints µ˜ ≤λ in (11).",
+      "size": 287,
+      "sentences": 2
+    },
+    {
+      "id": 56,
+      "content": "y\n(cid:16) (cid:17)\nterm R φ dµ˜i dλ that (in general) replaces the hard constraints µ˜ ≤λ in (11). For the cross-entropy loss\nX dλ i\n(see (18) for a precise definition), we can interpret the resulting problem (17) as a generalized barycenter\nproblem with a Kullback-Leibler type penalization, which relaxes the hard constraint µ˜ ≤ Λ in (11).",
+      "size": 343,
+      "sentences": 2
+    },
+    {
+      "id": 57,
+      "content": "roblem with a Kullback-Leibler type penalization, which relaxes the hard constraint µ˜ ≤ Λ in (11). For\ni\ncertain loss functions with a power form that we will refer to as α-logarithmic losses, the reformulation\n(17) becomes a generalized barycenter problem with a suitable Tsallis relative entropy penalization (see 27\nbelow). Othernotionsofbarycenterproblemsforunbalancedmeasureshavebeenrecentlyexploredinpapers\nlike [14,18,19,20].",
+      "size": 433,
+      "sentences": 3
+    },
+    {
+      "id": 58,
+      "content": "otionsofbarycenterproblemsforunbalancedmeasureshavebeenrecentlyexploredinpapers\nlike [14,18,19,20]. 1.2 Main results for some examples of loss functions\nAfter presenting our main results in a general but somewhat abstract way, we make our results concrete\nby discussing more explicit forms for Theorems 3 and 7 for some important examples of loss functions. We\nstate each result in the form of a corollary and provide a brief discussion of its implications.",
+      "size": 457,
+      "sentences": 3
+    },
+    {
+      "id": 59,
+      "content": "We\nstate each result in the form of a corollary and provide a brief discussion of its implications. The proofs of\nthe results enunciated in this section are presented in section 2.2 below. 1.2.1 Cross-entropy loss\nRecall that the cross-entropy loss function is defined as\nℓ (v,i):=−log(v ), v ∈∆ , i∈Y, (18)\nce i Y\nwhichclearlysatisfiesAssumption1. Inthefollowingcorollary,weprovideanexplicitformulafortheoptimal\nrobust classifier f∗ in (15) when ℓ=ℓ .",
+      "size": 452,
+      "sentences": 4
+    },
+    {
+      "id": 60,
+      "content": "efollowingcorollary,weprovideanexplicitformulafortheoptimal\nrobust classifier f∗ in (15) when ℓ=ℓ . ce\nCorollary 8 (Form of optimal classifier for the cross-entropy loss). Provided Assumption 2 on the cost\nfunction c is satisfied, if {ϕ∗} is a solution to (14) for ℓ=ℓ , then the optimal classifier f∗ in (15) can\ni i∈Y ce\nbe explicitly written as\nexp(−ϕ∗c(x˜))\nf∗(x˜)= i , i∈Y, (19)\ni P exp (cid:0) −ϕ∗c(x˜) (cid:1)\nj∈Y j\nwhere we recall ϕ∗c is the c-transform of ϕ∗ as introduced in (13).",
+      "size": 490,
+      "sentences": 3
+    },
+    {
+      "id": 61,
+      "content": "(cid:0) −ϕ∗c(x˜) (cid:1)\nj∈Y j\nwhere we recall ϕ∗c is the c-transform of ϕ∗ as introduced in (13). i i\nRemark 9. It is straightforward to show that when c(x,x˜) = 1d(x,x˜) (recall that d is the distance in X),\nτ\neach of the functions f∗ in (19) is 1/τ-Lipschitz. This is a particular instance of the fact that, typically, the\ni\nc transform of a function will directly inherit some regularity from the cost function c.\nWe also consider the formulation (7) for the cross-entropy.",
+      "size": 477,
+      "sentences": 4
+    },
+    {
+      "id": 62,
+      "content": "me regularity from the cost function c.\nWe also consider the formulation (7) for the cross-entropy. Corollary10(Barycenterformulationforthecross-entropyloss). Assumethatthelossℓisthecross-entropy\nloss given in (18). Then the generalized barycenter problem (17) is equivalent to\n( )\nX X\n1− inf λ(X)+ KL(µ˜ |λ)+ C(µ ,µ˜ ) , (20)\ni i i\n(µ˜i)i∈Y,λ∈M+(X)\ni∈Y i∈Y\n(cid:16) (cid:17)\nwhere KL(µ˜ |λ) is equal to R log dµ˜i dµ˜ if µ˜ ≪λ, and +∞ otherwise.",
+      "size": 446,
+      "sentences": 4
+    },
+    {
+      "id": 63,
+      "content": "X)\ni∈Y i∈Y\n(cid:16) (cid:17)\nwhere KL(µ˜ |λ) is equal to R log dµ˜i dµ˜ if µ˜ ≪λ, and +∞ otherwise. i X dλ i i\nNotethat(20)isageneralizedbarycenterproblemwithanadditionalKullback-Leiblerpenalizationterm. We remark that, since λ and µ˜ don’t necessarily have the same total mass, KL(µ˜ |λ) as defined above may\ni i\nP\ntake on negative values.",
+      "size": 340,
+      "sentences": 3
+    },
+    {
+      "id": 64,
+      "content": "necessarily have the same total mass, KL(µ˜ |λ) as defined above may\ni i\nP\ntake on negative values. On the other hand, we can show that, for {µ˜ } with finite cost C(µ ,µ˜ ),\ni i∈Y i∈Y i i\nP\nthe value λ(X) + KL(µ˜ |λ) is always bounded from below by 1 + log(1/k); see Remark 32 in the\ni∈Y i\nAppendix.",
+      "size": 300,
+      "sentences": 2
+    },
+    {
+      "id": 65,
+      "content": "λ(X) + KL(µ˜ |λ) is always bounded from below by 1 + log(1/k); see Remark 32 in the\ni∈Y i\nAppendix. While the above results hold for arbitrary cost functions c satisfying Assumptions 2, there is a further\nsimplification of the problem (14) for specific choices of c. For example, when the cost function is chosen as\nc= c with c as in (5), which, as we discussed earlier, is directly related to the adversarial training model\nε ε\n(6), we have the following result.",
+      "size": 463,
+      "sentences": 2
+    },
+    {
+      "id": 66,
+      "content": "rlier, is directly related to the adversarial training model\nε ε\n(6), we have the following result. 6\n===  7 ===\nCorollary 11 (Cross-entropy loss with 0-∞ cost). Assume that the loss is the cross-entropy loss from (18)\nand suppose, in addition, that the cost function c:X ×X →R ∪{∞} is the 0-∞ cost defined in (5). Then\n+\nthe value of problem (14) is the same as the value of:\nZ\nX\ninf − log(ψ (x ))dµ (x ),\ni i i i\n{ψi}i∈Y⊆G0 i∈Y X (21)\nX \\\ns.t. ψ (x )≤1, ∀x ∈spt(µ ) s.t.",
+      "size": 472,
+      "sentences": 5
+    },
+    {
+      "id": 67,
+      "content": "of:\nZ\nX\ninf − log(ψ (x ))dµ (x ),\ni i i i\n{ψi}i∈Y⊆G0 i∈Y X (21)\nX \\\ns.t. ψ (x )≤1, ∀x ∈spt(µ ) s.t. B (x )̸=∅, ∀A⊆Y,\ni i A A ε i\ni∈A i∈A\nwhere G is the set of functions of the form exp(ϕ) for ϕ ∈ G. Moreover, if {ψ∗} is a solution of (21),\n0 i i∈Y\nthen {ϕ∗ :=log(ψ∗)} is a solution of (14). In particular, it is possible to directly obtain an optimal robust\ni i i∈Y\nclassifier f∗ from a solution of (21) for a G containing C (X).",
+      "size": 429,
+      "sentences": 4
+    },
+    {
+      "id": 68,
+      "content": "ly obtain an optimal robust\ni i i∈Y\nclassifier f∗ from a solution of (21) for a G containing C (X). b\nNote that when G is C (X) or the set of all measurable functions, the two sets G and G coincide. Also,\nb 0\nnotethattheexpression (21)isquitesimilartotheoneforthe0-1lossdiscussedearlierinthisintroduction,\nwith the difference that in the objective function of (21) it is now the logarithms of the variables ψ and\ni\nnot the ψ themselves that appear.",
+      "size": 448,
+      "sentences": 3
+    },
+    {
+      "id": 69,
+      "content": "unction of (21) it is now the logarithms of the variables ψ and\ni\nnot the ψ themselves that appear. This new expression has the form of a minimization problem with a\ni\nlogarithmic objective function subject to linear constraints and is a special case of a α-fair packing problem\n(with α=1); see Appendix D.\nRemark 12.",
+      "size": 317,
+      "sentences": 2
+    },
+    {
+      "id": 70,
+      "content": "onstraints and is a special case of a α-fair packing problem\n(with α=1); see Appendix D.\nRemark 12. As explained before, having certain numerical methods for α-fair packing in mind, the idea of\nthe reformulation (21) is that the non-linearity in the problem appears in the objective function, while the\nconstraints remain linear. Of course, with the change of variables ϕ = log(ψ) it is possible to return to the\nsetting of a linear objective with nonlinear (but convex) constraints.",
+      "size": 483,
+      "sentences": 3
+    },
+    {
+      "id": 71,
+      "content": "is possible to return to the\nsetting of a linear objective with nonlinear (but convex) constraints. 1.2.2 α-logarithmic loss\nNext, we consider a family of loss functions that we will refer to as α-logarithmic losses. Specifically, for a\ngiven α≥0 and α̸=1, the α-logarithmic loss is defined as\nt1−α−1\nℓ (v,i):=−log (v ), log (t):= , t>0. (22)\nα α i α 1−α\nRemark 13.",
+      "size": 365,
+      "sentences": 4
+    },
+    {
+      "id": 72,
+      "content": "arithmic loss is defined as\nt1−α−1\nℓ (v,i):=−log (v ), log (t):= , t>0. (22)\nα α i α 1−α\nRemark 13. Note that, regardless of the specific value of α, the α-logarithm function log is both increasing\nα\nand concave in its domain and thus ℓ satisfies Assumption 1. Also, note that, as α → 1, we recover the\nα\ncross-entropy loss ℓ , while we obtain the 0-1 loss (9) when we set α=0. The family of α-logarithmic losses\nce\n(22) thus interpolates between the 0-1 and cross-entropy loss functions.",
+      "size": 488,
+      "sentences": 5
+    },
+    {
+      "id": 73,
+      "content": "of α-logarithmic losses\nce\n(22) thus interpolates between the 0-1 and cross-entropy loss functions. In economic theory, the functions\nlog are known as isoelastic utilities; see the Appendix for some discussion. α\nRemark 14. For all α ≥ 0 with α ̸= 1, the function log is continuous and strictly increasing and thus\nα\ninvertible over its range.",
+      "size": 343,
+      "sentences": 4
+    },
+    {
+      "id": 74,
+      "content": "̸= 1, the function log is continuous and strictly increasing and thus\nα\ninvertible over its range. In the sequel, we denote its inverse by exp (the α-exponential) and use log and\nα α\nexp to characterize optimal robust classifiers in the setting of the loss function ℓ . In particular, it will be\nα α\nimportantto preciselyspecifylog ’srange, whichdetermines exp ’sdomain.",
+      "size": 370,
+      "sentences": 3
+    },
+    {
+      "id": 75,
+      "content": "n particular, it will be\nα α\nimportantto preciselyspecifylog ’srange, whichdetermines exp ’sdomain. Todo this, we mustdistinguish\nα α\nbetween two separate cases that, as we will soon discuss, induce very different qualitative behaviors on the\ncorresponding adversarial models; see in particular Remark 18 below. First, note that, in case α∈[0,1), the\nrange of log is [− 1 ,∞) and log (0) = − 1 .",
+      "size": 395,
+      "sentences": 3
+    },
+    {
+      "id": 76,
+      "content": "emark 18 below. First, note that, in case α∈[0,1), the\nrange of log is [− 1 ,∞) and log (0) = − 1 . On the other hand, in case α > 1 the function log has\nα 1−α α 1−α α\nrange (−∞,− 1 ) and lim log (t) = −∞. In either case, the function exp is strictly increasing and\n1−α t→0+ α α\nconvex and can be written as\nexp (s)=((1−α)s+1)1/(1−α), (23)\nα\nprovided s belongs to the suitable domain. For the convenience of the reader, in Figure 1 we visualize the\nfunction log in the two cases 0≤α<1 and α>1.",
+      "size": 493,
+      "sentences": 5
+    },
+    {
+      "id": 77,
+      "content": "onvenience of the reader, in Figure 1 we visualize the\nfunction log in the two cases 0≤α<1 and α>1. α\nCorollary 15 (Form of optimal classifier for α-logarithmic loss). Let α≥0, α̸=1.",
+      "size": 182,
+      "sentences": 3
+    },
+    {
+      "id": 78,
+      "content": "s 0≤α<1 and α>1. α\nCorollary 15 (Form of optimal classifier for α-logarithmic loss). Let α≥0, α̸=1. Provided Assumption 2\non the cost function c is satisfied, if {ϕ∗} is a solution to (14) for ℓ =ℓ , then the optimal classifier f∗\ni i∈Y α\nin (15) can be explicitly written as\n(cid:18) (cid:26) (cid:27)(cid:19)\n1\nf∗(x˜)=exp max −ϕ∗c(x˜)−Z(x˜),− , i∈Y, (24)\ni α i 1−α\n7\n===  8 ===\n− 1\n1−α\n− 1\n1−α\nFigure 1: Left: Plot of log when α ∈ [0,1).",
+      "size": 439,
+      "sentences": 4
+    },
+    {
+      "id": 79,
+      "content": "˜),− , i∈Y, (24)\ni α i 1−α\n7\n===  8 ===\n− 1\n1−α\n− 1\n1−α\nFigure 1: Left: Plot of log when α ∈ [0,1). The function cuts the vertical axis at the value − 1 and\nα 1−α\ndiverges to ∞ as the argument of the function gets larger. Right: Plot of log for α>1. The function has a\nα\nhorizontal asymptote at − 1 and a vertical one at 0.",
+      "size": 323,
+      "sentences": 4
+    },
+    {
+      "id": 80,
+      "content": "ght: Plot of log for α>1. The function has a\nα\nhorizontal asymptote at − 1 and a vertical one at 0. For both cases, and regardless of the value of α, the\n1−α\nfunction log cuts the horizontal axis at the value 1.\nα\nin case α∈[0,1), and as\nf∗(x˜)=exp (−ϕ∗c(x˜)−Z(x˜)), i∈Y, (25)\ni α i\nwhen α>1. In either case, Z(x˜) is a “normalization” factor that guarantees that\nX\nf∗(x˜)=1. i\ni∈Y\nWe recall ϕ∗c is the c-transform of ϕ∗ as introduced in (13). i i\nRemark 16.",
+      "size": 458,
+      "sentences": 6
+    },
+    {
+      "id": 81,
+      "content": "that\nX\nf∗(x˜)=1. i\ni∈Y\nWe recall ϕ∗c is the c-transform of ϕ∗ as introduced in (13). i i\nRemark 16. We highlight that the normalization factor Z(x˜) in (24) and (25) can always be found from\nthe values of ϕ∗c(x˜). To see this, let {a } be a collection of real numbers (playing the role of the ϕ∗c(x˜)).",
+      "size": 302,
+      "sentences": 5
+    },
+    {
+      "id": 82,
+      "content": "f ϕ∗c(x˜). To see this, let {a } be a collection of real numbers (playing the role of the ϕ∗c(x˜)). i i i∈Y i\nFor α∈[0,1), we observe that the function\n(cid:18) (cid:26) (cid:27)(cid:19)\nX 1\nZ ∈R7→ exp max −a −Z,−\nα i 1−α\ni∈Y\nis continuous, decreasing, and has limit 0 when Z → ∞, and ∞ when Z → −∞. The intermediate value\ntheorem implies that it is always possible to find Z at which this function takes the value 1. The uniqueness\nof this Z follows from the fact that exp is strictly increasing.",
+      "size": 497,
+      "sentences": 5
+    },
+    {
+      "id": 83,
+      "content": "takes the value 1. The uniqueness\nof this Z follows from the fact that exp is strictly increasing. α\nLikewise, for α>1, we observe that the function\n1 X\nZ ∈( −mina ,∞)7→ exp (−a −Z)\n1−α i∈Y i α i\ni∈Y\nis decreasing and continuous, and has limit 0 when Z →∞, and ∞ when Z → 1 −min a . It is thus\n1−α i∈Y i\npossible to find Z at which this function takes the value 1. The uniqueness of this Z follows, again, from the\nfact that exp is strictly increasing. α\nRemark 17.",
+      "size": 465,
+      "sentences": 6
+    },
+    {
+      "id": 84,
+      "content": "he uniqueness of this Z follows, again, from the\nfact that exp is strictly increasing. α\nRemark 17. In case α=0 (i.e., when ℓ =ℓ ), we have exp (s)=1+s, and the optimal robust classifier\nα 01 α\ncan be written as\nf∗(x˜)=1+max{−ϕc(x˜)−Z(x˜),−1}=max{−ϕc(x˜)+1−Z(x˜),0}. i i i\n8\n===  9 ===\nThis expression has a similar form to (12) (derived in [15] and discussed further in [17]) after we consider\nthe change of variables g =1+ϕ .",
+      "size": 427,
+      "sentences": 4
+    },
+    {
+      "id": 85,
+      "content": "(derived in [15] and discussed further in [17]) after we consider\nthe change of variables g =1+ϕ . The apparent discrepancy in the two formulas is resolved after noticing\ni i\nthat in [17] the f∗ are only assumed to sum to a number smaller than one (which can be directly related to\ni\nthe problem considered here); see Remark 2.2 in [17]. Remark 18.",
+      "size": 348,
+      "sentences": 3
+    },
+    {
+      "id": 86,
+      "content": "which can be directly related to\ni\nthe problem considered here); see Remark 2.2 in [17]. Remark 18. There is a fundamentally different qualitative behavior between the robust classifiers arising\nfrom the α-logarithmic loss model when α∈[0,1) and when α>1. Indeed, when α∈[0,1), f∗ in (24) may\ni\ntake the value f∗ =0, whereas f∗ is guaranteed to be strictly greater than zero when α>1.",
+      "size": 384,
+      "sentences": 4
+    },
+    {
+      "id": 87,
+      "content": "24) may\ni\ntake the value f∗ =0, whereas f∗ is guaranteed to be strictly greater than zero when α>1. This is because\ni i\nthe loss function ℓ blows up at values close to zero in the latter case while it converges to a finite value in\nα\nthe former, according to the discussion in Remark 14. In this sense, the loss functions ℓ for α>1 behave\nα\nlike the cross-entropy loss, while ℓ for α∈[0,1) induces sparsity and behaves more similarly to the 0-1 loss.",
+      "size": 450,
+      "sentences": 3
+    },
+    {
+      "id": 88,
+      "content": "ross-entropy loss, while ℓ for α∈[0,1) induces sparsity and behaves more similarly to the 0-1 loss. α\nNext, we specialize Theorem 7 to the case of the α-logarithmic loss function ℓ . α\nCorollary 19 (Barycenterformulationfortheα-logarithmicloss). Assume that the loss is given by equation\n(22) for some α≥0 different from one.",
+      "size": 325,
+      "sentences": 4
+    },
+    {
+      "id": 89,
+      "content": "α-logarithmicloss). Assume that the loss is given by equation\n(22) for some α≥0 different from one. Then the generalized barycenter problem (17) is equivalent to\n( )\nX X\n1− inf λ(X)+ D (µ˜ |λ)+ C(µ ,µ˜ ) , (26)\nq i i i\n(µ˜i)i∈Y,λ∈M+(X)\ni∈Y i∈Y\nwhere q = 1, and D (µ˜ |λ) is the q-Tsallis relative entropy between µ˜ and λ:\nα q i i\n(cid:16) (cid:17)q−1\nZ dµ˜i −1\ndλ\nD (µ˜ |λ):= dµ˜ , (27)\nq i q−1 i\nX\nif µ˜ ≪Λ, and +∞ otherwise.",
+      "size": 427,
+      "sentences": 3
+    },
+    {
+      "id": 90,
+      "content": "i\n(cid:16) (cid:17)q−1\nZ dµ˜i −1\ndλ\nD (µ˜ |λ):= dµ˜ , (27)\nq i q−1 i\nX\nif µ˜ ≪Λ, and +∞ otherwise. In case α=0, i.e., when q =∞, the above must be interpreted as 0 if µ˜ ≤λ\ni i\nand ∞ otherwise. Similarlytothecross-entropycase, D (µ˜ |λ)asdefinedabovemaytakeonnegativevalues. Ontheother\nq i\nP P\nhand, we can show that, for {µ˜ } with finite cost C(µ ,µ˜ ), the quantity λ(X)+ D (µ˜ |λ) is\ni i∈Y i∈Y i i i∈Y q i\nalways bounded from below by 1+log (1/k); see Remark 32 in the Appendix.",
+      "size": 482,
+      "sentences": 4
+    },
+    {
+      "id": 91,
+      "content": ") is\ni i∈Y i∈Y i i i∈Y q i\nalways bounded from below by 1+log (1/k); see Remark 32 in the Appendix. α\nAs for the case of the cross-entropy, when the cost function c is of the form (5) we can rewrite problem\n(14) for the α-logarithmic loss in the following equivalent form. Corollary 20 (α-logarithmic loss with 0-∞ cost). Assume that the loss is the α-logarithmic loss from (22)\nfor some α ≥ 0 with α ̸= 1.",
+      "size": 406,
+      "sentences": 4
+    },
+    {
+      "id": 92,
+      "content": "ith 0-∞ cost). Assume that the loss is the α-logarithmic loss from (22)\nfor some α ≥ 0 with α ̸= 1. Suppose, in addition, that the cost function c : X ×X → R ∪{∞} is the\n+\n0-∞ cost defined in (5). Finally, let G be any set of measurable functions on X in case α>1, and let G be\na set of measurable functions that is closed under pointwise maximum with a constant (i.e., if ϕ ∈ G, then\nmax{ϕ,a}∈G for any a∈R) in case α∈[0,1).",
+      "size": 425,
+      "sentences": 4
+    },
+    {
+      "id": 93,
+      "content": "er pointwise maximum with a constant (i.e., if ϕ ∈ G, then\nmax{ϕ,a}∈G for any a∈R) in case α∈[0,1). Then the value of problem (14) is the same as the value of\nZ\nX\ninf − log (ψ (x ))dµ (x ),\nα i i i i\n{ψi}i∈Y⊆G0 i∈Y X (28)\nX \\\ns.t. ψ (x )≤1, 0≤ψ (x ), ∀x ∈spt(µ )s.t. B (x )̸=∅, ∀A⊆Y,\ni i i i A A ε i\ni∈A i∈A\nwhere G is the set of functions of the form exp (ϕ) for ϕ∈G. Furthermore, if {ψ∗} is a solution of the\n0 α i i∈Y\nabove problem, then {ϕ∗ :=log (ψ∗)} is a solution of (14).",
+      "size": 479,
+      "sentences": 5
+    },
+    {
+      "id": 94,
+      "content": ", if {ψ∗} is a solution of the\n0 α i i∈Y\nabove problem, then {ϕ∗ :=log (ψ∗)} is a solution of (14). In particular, it is possible to directly obtain\ni α i i∈Y\nan optimal robust classifier f∗ from a solution of (28) when G contains C (X).",
+      "size": 237,
+      "sentences": 2
+    },
+    {
+      "id": 95,
+      "content": "tly obtain\ni α i i∈Y\nan optimal robust classifier f∗ from a solution of (28) when G contains C (X). b\nAs for the cross-entropy case, when G is C (X) or the set of all measurable functions we have G = G.\nb 0\nAlso, note that problem (28) is quite similar to (21), where, instead of having a standard logarithm in the\nobjective, we use an α-logarithm (a power function).",
+      "size": 367,
+      "sentences": 2
+    },
+    {
+      "id": 96,
+      "content": "instead of having a standard logarithm in the\nobjective, we use an α-logarithm (a power function). As for the cross-entropy case, when µ is an empirical\nmeasure problem (28) can be solved using algorithms designed for the α-fair packing problem such as those\npresented in [10]. Remark 21. Sincethe0-1lossℓ ispreciselyℓ withα=0, itisnaturaltoaskwhethertheresultsobtained\n01 α\nin this paper recover the results in [15] and [16] that were discussed earlier in this introduction.",
+      "size": 475,
+      "sentences": 4
+    },
+    {
+      "id": 97,
+      "content": "n this paper recover the results in [15] and [16] that were discussed earlier in this introduction. In Appendix\nE, we show that this is indeed the case. 9\n===  10 ===\n1.2.3 Quadratic loss\nThe last example considered in this paper is the quadratic loss function defined according to\nℓ (v,i):=∥v−e ∥2, v ∈∆ , (29)\nQ i Y\nwhere we identify the label set Y with the set {1,...,K} (for K =|Y|) and e ,...,e is the canonical basis\n1 K\nforRK,forconvenience.",
+      "size": 449,
+      "sentences": 3
+    },
+    {
+      "id": 98,
+      "content": "Y with the set {1,...,K} (for K =|Y|) and e ,...,e is the canonical basis\n1 K\nforRK,forconvenience. Incontrasttothepreviousexamples,ℓ(v,i)dependsonallentriesofv andnotjust\non the i-th entry of v. For concreteness, we only present the form of the optimal classifier (15) in this case. Corollary 22 (Form of optimal classifier for quadratic loss).",
+      "size": 345,
+      "sentences": 3
+    },
+    {
+      "id": 99,
+      "content": "optimal classifier (15) in this case. Corollary 22 (Form of optimal classifier for quadratic loss). Provided Assumption 2 on the cost function c\nis satisfied, if {ϕ∗} is a solution to (3) for ℓ = ℓ , then the optimal classifier f∗ in (15) can be written\ni i∈Y Q\nas follows for a given x˜: after relabeling the indices i∈Y so that ϕ∗c(x˜)≤···≤ϕ∗c(x˜), and defining i∗ and\n1 K\nc∗ according to\ni\nX\ni∗ :=K∧min{i=1,...,K s.t.",
+      "size": 420,
+      "sentences": 3
+    },
+    {
+      "id": 100,
+      "content": "so that ϕ∗c(x˜)≤···≤ϕ∗c(x˜), and defining i∗ and\n1 K\nc∗ according to\ni\nX\ni∗ :=K∧min{i=1,...,K s.t. iϕ∗c (x˜)− ϕ∗c(x˜)>2}\ni+1 j\nj=1\ni∗\n1 X\nc∗ := (2+ ϕ∗c(x˜)),\ni∗ i\ni=1\nwe have\n(\n1(c∗−ϕ∗c(x˜)), ifi≤i∗,\nf∗(x˜):= 2 i (30)\ni 0, else. 1.3 Related literature\nThere is a growing literature on lower bounds in adversarial classification. Architecture-specific results were\nobtained in [27] for linear classifiers; see also [21] for linear classifiers and neural networks.",
+      "size": 462,
+      "sentences": 4
+    },
+    {
+      "id": 101,
+      "content": "obtained in [27] for linear classifiers; see also [21] for linear classifiers and neural networks. An alternative\napproach, based on obtaining classifier-agnostic bounds that hold regardless of model architectures, which\nis the perspective explored in this paper, was pioneered by [3] using optimal transport theory in the setting\nof binary classification and 0-1 loss function.",
+      "size": 378,
+      "sentences": 2
+    },
+    {
+      "id": 102,
+      "content": "y [3] using optimal transport theory in the setting\nof binary classification and 0-1 loss function. This analysis was later extended by [25], where more detailed\nexistenceandcharacterizationresultswereprovided; otherrelatedresultshavebeenestablishedin[2,11,13]. Still in the binary classification setting, the work [7] proves the existence of continuous optimal robust\nclassifiers assuming sufficient regularity of the loss function.",
+      "size": 433,
+      "sentences": 3
+    },
+    {
+      "id": 103,
+      "content": "tence of continuous optimal robust\nclassifiers assuming sufficient regularity of the loss function. In [4], adversarial training was studied through\na geometric perspective, and in [6] the authors studied a related notion of nonlocal perimeter and used\nΓ-convergence techniques to study the behavior of solutions to adversarial training in the small adversarial\nbudget regime.",
+      "size": 376,
+      "sentences": 2
+    },
+    {
+      "id": 104,
+      "content": "to study the behavior of solutions to adversarial training in the small adversarial\nbudget regime. A related paper is [23], where a stronger form of convergence characterizing the asymptotic\nbehavior of robust classifiers in the small adversarial budget regime was considered. We also mention the\nwork[5],whichprovidesadeeperconnectionbetweenadversarialtrainingandgeometricvariationalanalysis.",
+      "size": 393,
+      "sentences": 3
+    },
+    {
+      "id": 105,
+      "content": "he\nwork[5],whichprovidesadeeperconnectionbetweenadversarialtrainingandgeometricvariationalanalysis. For multiclass problems, [17] proved existence of solutions to the learner-agnostic adversarial risk mini-\nmizationproblem,[16]exploitedaconnectiontomultimarginaloptimaltransporttodeducecomputationally\ntractable algorithms to compute lower bounds, while [9] characterized the problem through the notion of\nconflict hypergraph. All these results consider the 0-1 loss.",
+      "size": 467,
+      "sentences": 3
+    },
+    {
+      "id": 106,
+      "content": "zed the problem through the notion of\nconflict hypergraph. All these results consider the 0-1 loss. 1.4 Outline\nThe rest of the paper is organized as follows. Section 2 contains most of the proofs of the theoretical results\nstated in sections 1.1 and 1.2. We begin by proving Theorem 3, and, in the process, we develop other\nequivalent reformulations of the original problem (4) that could potentially be used to design alternative\nmethods to solve it.",
+      "size": 452,
+      "sentences": 5
+    },
+    {
+      "id": 107,
+      "content": "the original problem (4) that could potentially be used to design alternative\nmethods to solve it. In section 2.2, we present the proofs of the results for the cross-entropy, α-logarithmic,\nand quadratic loss functions that we stated in section 1.2. In section 3, we use our theoretical results to\nderive lower bounds for the robust training of learning models in a simple, yet concrete practical setting.",
+      "size": 405,
+      "sentences": 3
+    },
+    {
+      "id": 108,
+      "content": "ower bounds for the robust training of learning models in a simple, yet concrete practical setting. IntheAppendix,wepresentadditionaltechnicalauxiliaryresultsusedintheproofofTheorem3,present\nthe proof of Theorem 7, present a brief discussion of α-fair packing, and provide more details on how the\nresults derived in this paper recover the reformulations of (4) for the 0-1 loss case derived in [15] and [16].",
+      "size": 408,
+      "sentences": 2
+    },
+    {
+      "id": 109,
+      "content": "ved in this paper recover the reformulations of (4) for the 0-1 loss case derived in [15] and [16]. 10\n===  11 ===\nAdditional notation: We use M (X) and M (X ×X) to denote the set of finite positive measures over\n+ +\nX and X ×X, respectively. For a given ν ∈M (X), we use spt(ν) to denote ν’s support and use Γ (ν) to\n+ 1\ndenote the set of measures π ∈ M (spt(ν)×X) whose first marginal is equal to ν.",
+      "size": 401,
+      "sentences": 3
+    },
+    {
+      "id": 110,
+      "content": "nd use Γ (ν) to\n+ 1\ndenote the set of measures π ∈ M (spt(ν)×X) whose first marginal is equal to ν. In the sequel, we may\n+\nuse X to represent the set spt(µ ), especially when notation gets particularly burdensome. i i\nGiven ν,ν˜ ∈ M (X), we use Γ(ν,ν˜) to represent the set of couplings between ν and ν˜, i.e., the set of\n+\nπ ∈ M (X ×X) whose first and second marginals are ν and ν˜, respectively. Note that the set Γ(ν,ν˜) is\n+\nnonempty if and only if ν(X)=ν˜(X).",
+      "size": 465,
+      "sentences": 4
+    },
+    {
+      "id": 111,
+      "content": "nals are ν and ν˜, respectively. Note that the set Γ(ν,ν˜) is\n+\nnonempty if and only if ν(X)=ν˜(X). For a given x ∈ X, we use B (x) to denote the closed ball of radius ε around x. In the sequel, we\nε\nmay identify Y with the set {1,...,K} (where K = |Y|) without further mention. We use u⊙v to denote\nthe Hadamard product (coordinatewise product) between two vectors of the same dimension. The vectors\n⃗0 ,⃗1 are the K-dimensional vectors with all zeroes and all ones, respectively.",
+      "size": 481,
+      "sentences": 6
+    },
+    {
+      "id": 112,
+      "content": "nsion. The vectors\n⃗0 ,⃗1 are the K-dimensional vectors with all zeroes and all ones, respectively. I represents the K ×K\nK K K\nidentity matrix. The symbol ⊗ is used to describe product measures (as in ⊗ µ ) or tensor products\ni∈A i\nbetween two vectors (as in u⊗v); in the latter case, u⊗v is the matrix whose ij entry is u v . No confusion\ni j\nshould arise about the intended use of the symbol ⊗.",
+      "size": 397,
+      "sentences": 5
+    },
+    {
+      "id": 113,
+      "content": "atrix whose ij entry is u v . No confusion\ni j\nshould arise about the intended use of the symbol ⊗. 2 Proofs\nIn this section, we present the proofs of the results stated in the introduction, with the exception of the\nproof of Theorem 7, which is postponed to the Appendix. We begin with the proof of Theorem 3. 2.1 Proof of Theorem 3\nWe first derive some useful inequalities using weak duality arguments. Proposition 23. Suppose that ℓ(·,i) : ∆ → [0,∞] is a continuous function for all i ∈ Y.",
+      "size": 492,
+      "sentences": 7
+    },
+    {
+      "id": 114,
+      "content": "arguments. Proposition 23. Suppose that ℓ(·,i) : ∆ → [0,∞] is a continuous function for all i ∈ Y. Then the value\nY\nof problem (4) for F =F is smaller than or equal to the value of\nall\nZ\nX\ninf − ϕ (x)dµ (x),\ni i\n(ϕi)i∈Y∈G,f∈Fall i∈Y X (31)\ns.t. −ϕ (x)+c(x,x˜)≥ℓ(f(x˜),i), ∀x∈spt(µ ),x˜∈X,i∈Y,\ni i\nprovided G is a set of measurable functions containing C (X). b\nProof. Let f be an arbitrary measurable soft classifier.",
+      "size": 417,
+      "sentences": 7
+    },
+    {
+      "id": 115,
+      "content": "f measurable functions containing C (X). b\nProof. Let f be an arbitrary measurable soft classifier. Observe that\nZ\nX X\nsup ℓ(f(x˜),i)dµ˜ (x˜)− C(µ ,µ˜ )\ni i i\n{µ˜i}i∈Yi∈Y X i∈Y\nZ\nX\n= sup (ℓ(f(x˜),i)−c(x,x˜))dπ (x,x˜),\ni\nπi∈Γ1(µi),i∈Y i∈Y spt(µi)×X\nwhere, recall, Γ (µ ) denotes the collection of π in M (spt(µ )×X) whose first marginal is equal to µ .",
+      "size": 351,
+      "sentences": 4
+    },
+    {
+      "id": 116,
+      "content": "e, recall, Γ (µ ) denotes the collection of π in M (spt(µ )×X) whose first marginal is equal to µ . 1 i + i i\nNow,foraπ ∈M (spt(µ )×X),thenegativeofthecharacteristicfunctionfortheconstraintπ ∈Γ (µ )\ni + i i 1 i\ncan be written as\nZ Z\ninf ϕ (x)dπ (x,x˜)− ϕ (x)dµ (x),\ni i i i\nϕi∈G spt(µi)×X X\ngiven that C (X)⊆G (and C (X) characterizes Borel measures).",
+      "size": 351,
+      "sentences": 2
+    },
+    {
+      "id": 117,
+      "content": "ϕ (x)dµ (x),\ni i i i\nϕi∈G spt(µi)×X X\ngiven that C (X)⊆G (and C (X) characterizes Borel measures). From the above, we deduce that\nb b\nZ\nsup (ℓ(f(x˜),i)−c(x,x˜))dπ (x,x˜)\ni\nπi∈Γ1(µi),i∈Y spt(µi)×X\nis equivalent to\nZ Z\nsup inf − ϕ (x)dµ (x)+ (ℓ(f(x˜),i)−c(x,x˜)+ϕ (x))dπ (x,x˜). i i i i\nπi∈M+(spt(µi)×X)(ϕi)i∈Y∈G X spt(µi)×X\n11\n===  12 ===\nSwapping the sup and the inf, we get the upper bound\nZ Z\ninf sup − ϕ (x)dµ (x)+ (ℓ(f(x˜),i)−c(x,x˜)+ϕ (x))dπ (x,x˜).",
+      "size": 454,
+      "sentences": 3
+    },
+    {
+      "id": 118,
+      "content": "and the inf, we get the upper bound\nZ Z\ninf sup − ϕ (x)dµ (x)+ (ℓ(f(x˜),i)−c(x,x˜)+ϕ (x))dπ (x,x˜). i i i i\n(ϕi)i∈Y∈Gπi∈M+(spt(µi)×X) X spt(µi)×X\nIn turn, for fixed ϕ the inner sup over π ∈M (spt(µ )×X) gives 0 if the constraint ℓ(f(x˜),i)−c(x,x˜)+\ni i + i\nϕ (x) ≤ 0 is satisfied for all x˜ ∈ X and all x ∈ spt(µ ), and is equal to ∞ if not. Inequality (4) ≤ (31)\ni i\nfollows. Proposition 24.",
+      "size": 392,
+      "sentences": 4
+    },
+    {
+      "id": 119,
+      "content": "X and all x ∈ spt(µ ), and is equal to ∞ if not. Inequality (4) ≤ (31)\ni i\nfollows. Proposition 24. Under Assumption 1 on the loss function ℓ, problem\nZ\nX\ninf − ϕ (x)dµ (x), (32)\ni i\n(ϕ1,...,ϕK)∈A i∈Y X\nfor A the admissible set\n( )\nX\nA:= (ϕ ,...,ϕ )∈GKs.t.0≥ min max (ℓ(v,i)−ϕc(x˜))m , ∀x˜∈X ,\n1 K i i\nv∈∆Ym∈∆Yi∈Y\nis equivalent to (31), provided G =C (X). b\nProof. Suppose that {ϕ } and f form a feasible tuple for (31). Then, for all x˜∈X and all i∈Y,\ni i∈Y\nϕc(x˜)= inf {c(x,x˜)−ϕ (x)}≥ℓ(f(x˜),i).",
+      "size": 498,
+      "sentences": 7
+    },
+    {
+      "id": 120,
+      "content": "sible tuple for (31). Then, for all x˜∈X and all i∈Y,\ni i∈Y\nϕc(x˜)= inf {c(x,x˜)−ϕ (x)}≥ℓ(f(x˜),i). i i\nx∈spt(µi)\nHence\n0≥ℓ(f(x˜),i)−ϕc(x˜), ∀x˜∈X ∀i∈Y. i\nIt follows that\nX X\n0≥ max (ℓ(f(x˜),i)−ϕc(x˜))m ≥ min max (ℓ(v,i)−ϕc(x˜))m , ∀x˜∈X,\ni i i i\nm∈∆Yi∈Y v∈∆Ym∈∆Yi∈Y\nfrom where we conclude that (ϕ ,...,ϕ ) ∈ A. In particular, (31) ≥ (32). Note that this part of the\n1 K\nargument holds for any G containing C (X). b\nConversely, let (ϕ ,...,ϕ ) ∈ A for G = C (X).",
+      "size": 462,
+      "sentences": 7
+    },
+    {
+      "id": 121,
+      "content": "the\n1 K\nargument holds for any G containing C (X). b\nConversely, let (ϕ ,...,ϕ ) ∈ A for G = C (X). Since each ϕ is continuous and bounded, it follows\n1 K b i\nfrom Lemma 29 in the Appendix (which relies on Assumption 2 on the cost function c) that ϕc is Borel\ni\nmeasurable for every i∈Y. Now, by definition, for any x˜∈X we have\nX\n0≥ min max (ℓ(v,i)−ϕc(x˜))m . i i\nv∈∆Ym∈∆Yi∈Y\nOur goal is to construct a measurable function f :X 7→∆ such that\nY\nX\nf(x˜)∈arg min max (ℓ(v,i)−ϕc(x˜))m , ∀x˜∈X.",
+      "size": 490,
+      "sentences": 5
+    },
+    {
+      "id": 122,
+      "content": "construct a measurable function f :X 7→∆ such that\nY\nX\nf(x˜)∈arg min max (ℓ(v,i)−ϕc(x˜))m , ∀x˜∈X. i i\nv∈∆Ym∈∆Yi∈Y\nTo do this, first consider the set-valued map\nX\nΞ:(b ,...,b )∈RK 7−→arg min max (ℓ(v,i)−b )m . (33)\n1 K i i\nv∈∆Ym∈∆Yi∈Y\nWe can verify that Ξ satisfies the assumptions in the Kuratowski-Ryll-Nardzewski measurable selection\ntheorem and thus admits a measurable selection ξ :RK 7→∆ .",
+      "size": 395,
+      "sentences": 3
+    },
+    {
+      "id": 123,
+      "content": "ski-Ryll-Nardzewski measurable selection\ntheorem and thus admits a measurable selection ξ :RK 7→∆ . The desired measurable map f can then be\nY\ndefined as f(x˜) := ξ◦⃗b(x˜), where⃗b(x˜) := (ϕc(x˜),...,ϕc (x˜)). For this function, which is Borel measurable\n1 K\ngiven that it is the composition of two Borel measurable maps, we have\nX\n0≥ max (ℓ(f(x˜),j)−ϕc(x˜))m ≥ℓ(f(x˜),i)−ϕc(x˜), ∀i∈Y.",
+      "size": 385,
+      "sentences": 3
+    },
+    {
+      "id": 124,
+      "content": "ition of two Borel measurable maps, we have\nX\n0≥ max (ℓ(f(x˜),j)−ϕc(x˜))m ≥ℓ(f(x˜),i)−ϕc(x˜), ∀i∈Y. j j i\nm∈∆Yj∈Y\n12\n===  13 ===\nUsing the definition of ϕc and then reordering some terms, we obtain\ni\nc(x ,x˜)−ϕ (x )≥ϕc(x˜)≥ℓ(f(x˜),i),\ni i i i\nfor all i ∈ Y, x˜ ∈ X, x ∈ spt(µ ). We conclude that the tuple (ϕ ,...,ϕ ),f is feasible for (31). This\ni i 1 K\nimplies the reverse inequality (32)≥(31). Proposition 25.",
+      "size": 412,
+      "sentences": 5
+    },
+    {
+      "id": 125,
+      "content": ",ϕ ),f is feasible for (31). This\ni i 1 K\nimplies the reverse inequality (32)≥(31). Proposition 25. For any set G of Borel measurable functions on X, problems (32) and (14) are equivalent. Proof. It suffices to show that the condition\n( )\nX\n0≥ sup m ϕ (x )+ℓ (m )−c (x ,m ) , ∀x ∈spt(µ ), ∀A⊆Y, (34)\ni i i A A A A A A A\nmA∈∆A\ni∈A\nis equivalent to (ϕ ,...,ϕ )∈A. 1 K\nTo see this, let us first assume that (ϕ ,...,ϕ ) ∈ A.",
+      "size": 420,
+      "sentences": 7
+    },
+    {
+      "id": 126,
+      "content": "A∈∆A\ni∈A\nis equivalent to (ϕ ,...,ϕ )∈A. 1 K\nTo see this, let us first assume that (ϕ ,...,ϕ ) ∈ A. Then for any given x˜ ∈ X there is v ∈ ∆ such\n1 K Y\nthat\nX\n0≥ (ℓ(v,i)−ϕc(x˜))m , ∀m∈∆ . i i Y\ni∈Y\nBy definition of ϕc(x˜) we have\ni\nϕ (x )+ϕc(x˜)≤c(x ,x˜), ∀x ∈spt(µ ),\ni i i i i i\nand thus also\nX\n0≥ (ℓ(v,i)+ϕ (x )−c(x ,x˜))m , ∀m∈∆ , ∀x ∈spt(µ ), ∀i∈Y. i i i i Y i i\ni∈Y\nIf m is chosen to belong to ∆ for some A⊆Y, the above implies\nA\nX X\n0≥ℓ (m )+ m ϕ (x )− c(x ,x˜)m , ∀x ∈spt(µ ).",
+      "size": 484,
+      "sentences": 5
+    },
+    {
+      "id": 127,
+      "content": "n to belong to ∆ for some A⊆Y, the above implies\nA\nX X\n0≥ℓ (m )+ m ϕ (x )− c(x ,x˜)m , ∀x ∈spt(µ ). A A i i i i i A A\ni∈A i∈A\nInparticular,ifforafixedx ∈spt(µ )wetakethesupremumoftherighthandsideoftheaboveexpression\nA A\nover x˜, we deduce\nX\n0≥ m ϕ (x )+ℓ (m )−c (x ,m ), ∀m ∈∆ . i i i A A A A A A A\ni∈A\nCondition (34) follows. Conversely,supposethat{ϕ } satisfies(34). Fixx˜∈X andconsider{x } withx ∈spt(µ ),i∈Y.",
+      "size": 412,
+      "sentences": 5
+    },
+    {
+      "id": 128,
+      "content": "(34) follows. Conversely,supposethat{ϕ } satisfies(34). Fixx˜∈X andconsider{x } withx ∈spt(µ ),i∈Y. i i∈Y i i∈Y i i\nWe use (34) with the tuple x :={x } to obtain\nY i i∈Y\nX\n0≥ max min{ m (ϕ (x )+ℓ(v,i))−c (x ,m)}\ni i i Y Y\nm∈∆Yv∈∆Y\ni∈Y\nX X\n≥ max min{ m (ϕ (x )+ℓ(v,i))− c(x ,x˜)m }\ni i i i i (35)\nm∈∆Yv∈∆Y\ni∈Y i∈Y\nX X\n= min max { m (ϕ (x )+ℓ(v,i))− c(x ,x˜)m }. i i i i i\nv∈∆Ym∈∆Y\ni∈Y i∈Y\nThe second inequality follows from the definition of c (x ,m).",
+      "size": 450,
+      "sentences": 5
+    },
+    {
+      "id": 129,
+      "content": ",x˜)m }. i i i i i\nv∈∆Ym∈∆Y\ni∈Y i∈Y\nThe second inequality follows from the definition of c (x ,m). In the third line, we can swap the min and\nY Y\nthe max thanks to Assumption 1 (which implies convexity in the v variable) and the linearity (in particular\nconcavity) in the m variable. It follows that for every x˜ and every tuple {x } there is v ∈∆ such that\ni i∈Y Y\nX\n0≥ m (ℓ(v,i)+ϕ (x )−c(x ,x˜)), ∀m∈∆ .",
+      "size": 405,
+      "sentences": 4
+    },
+    {
+      "id": 130,
+      "content": "ery x˜ and every tuple {x } there is v ∈∆ such that\ni i∈Y Y\nX\n0≥ m (ℓ(v,i)+ϕ (x )−c(x ,x˜)), ∀m∈∆ . i i i i Y\ni∈Y\n13\n===  14 ===\nNow,sincex ∈spt(µ ),i∈Y,werearbitrary,wecanconclude,usingthedefinitionofϕc(x˜)andcompactness\ni i i\nof ∆ , that\nY\nX\n0≥ m (ℓ(v,i)−ϕc(x˜)), ∀m∈∆ ,\ni i Y\ni∈Y\nfor some v ∈∆ . In turn, we deduce\nY\nX\n0≥ min max m (ℓ(v,i)−ϕc(x˜)).",
+      "size": 351,
+      "sentences": 3
+    },
+    {
+      "id": 131,
+      "content": "v,i)−ϕc(x˜)), ∀m∈∆ ,\ni i Y\ni∈Y\nfor some v ∈∆ . In turn, we deduce\nY\nX\n0≥ min max m (ℓ(v,i)−ϕc(x˜)). i i\nv∈∆Ym∈∆Yi∈Y\nIn order to close the duality gap between (14) for G = C (X) and (4) for F = F , we use the next\nb all\nproposition that resembles the duality theorem for multimarginal optimal transport (MMOT) but whose\nproof, which we present in Appendix B, requires new constructions and ideas. To enunciate it, we first\nintroduce some notation that we use later on.",
+      "size": 467,
+      "sentences": 4
+    },
+    {
+      "id": 132,
+      "content": "ew constructions and ideas. To enunciate it, we first\nintroduce some notation that we use later on. Given π ∈M (X ×···×X ×∆ ), where, recall, X =spt(µ ), we define P π ∈M (X ) according to\n+ 1 K Y i i i + i\nZ Z\nh(x )dP π(x )= m h(x )dπ(⃗x,m), ∀h∈C (X ). (36)\ni i i i i b i\nXi X1×···×XK×∆Y\nHere and in the sequel, we use ⃗x as shorthand notation to represent an arbitrary tuple (x ,...,x ). 1 K\nProposition 26.",
+      "size": 409,
+      "sentences": 5
+    },
+    {
+      "id": 133,
+      "content": "l, we use ⃗x as shorthand notation to represent an arbitrary tuple (x ,...,x ). 1 K\nProposition 26. Under Assumption 1 on ℓ and Assumption 2 on c, the value of\nZ\n−min (c (⃗x,m)−ℓ (m))dπ(⃗x,m), (37)\nY Y\nπ∈G X1×···×XK×∆Y\nwhere\nG:={π ∈M (X ×···×X ×∆ ) s.t. P π =µ , ∀i∈Y}, (38)\n+ 1 K Y i i\nis the same as the value of problem (14) with G =C (X). We recall that P π was defined in (36). b i\nWe are ready to prove Theorem 3. Proof of Theorem 3.",
+      "size": 439,
+      "sentences": 7
+    },
+    {
+      "id": 134,
+      "content": "). We recall that P π was defined in (36). b i\nWe are ready to prove Theorem 3. Proof of Theorem 3. In view of Propositions 23, 24, and 25 it will be sufficient to prove that\nZ Z\nX X\nsup inf ℓ(f(x˜),i)dπ (x ,x˜)− c(x ,x˜)dπ (x ,x˜)≥(37). (39)\ni i i i i\n(πi)i∈Y s.t. πi∈Γ1(µi)f∈Falli∈Y Xi×X i∈Y Xi×X\nIndeed, assuming the above inequality holds, we can deduce\n(4)≥LHS of (39)≥(37)=(14)≥(4),\nwhich in turn implies that the above quantities are all equal. We thus focus on establishing (39).",
+      "size": 487,
+      "sentences": 8
+    },
+    {
+      "id": 135,
+      "content": "which in turn implies that the above quantities are all equal. We thus focus on establishing (39). Let π ∈G, and define π ∈M (X ×X) according to\ni + i\nZ Z\nh(x ,x˜)dπ (x ,x˜)= m h(x ,T(x,m))dπ(⃗x,m), ∀h∈C (X ×X),\ni i i i i b i\nXi×X X1×···×XK×∆Y\nwhere T :X ×···×X ×∆ →X is a Borel measurable map satisfying\n1 K Y\nX\nT(⃗x,m)∈argmin m c(x ,x˜);\ni i\nx˜∈X\ni∈Y\nexistence of a Borel measurable map satisfying the above property follows from the assumption on c and\nstandard measurable selection theorems.",
+      "size": 495,
+      "sentences": 3
+    },
+    {
+      "id": 136,
+      "content": "ing the above property follows from the assumption on c and\nstandard measurable selection theorems. It follows that π ∈Γ (µ ). i 1 i\n14\n===  15 ===\nNow, notice that for any f ∈F we have\nall\nZ Z\nX X\nℓ(f(x˜),i)dπ (x ,x˜)− c(x ,x˜)dπ (x ,x˜)\ni i i i i\ni∈Y Xi×X i∈Y Xi×X\n! Z\nX X\n= m ℓ(f(T(⃗x,m)),i)− m c(x ,T(⃗x,m)) dπ(⃗x,m)\ni i i\nX1×···×XK×∆Y i∈Y i∈Y\n! Z\nX\n= m ℓ(f(T(⃗x,m)),i)−c (⃗x,m) dπ(⃗x,m)\ni Y\nX1×···×XK×∆Y i∈Y\nZ\n≥ (ℓ (m)−c (⃗x,m))dπ(⃗x,m).",
+      "size": 442,
+      "sentences": 5
+    },
+    {
+      "id": 137,
+      "content": "i∈Y\n! Z\nX\n= m ℓ(f(T(⃗x,m)),i)−c (⃗x,m) dπ(⃗x,m)\ni Y\nX1×···×XK×∆Y i∈Y\nZ\n≥ (ℓ (m)−c (⃗x,m))dπ(⃗x,m). Y Y\nX1×···×XK×∆Y\nSince this is true for every f ∈F and since π ∈G was arbitrary, we deduce (39). This completes the proof\nall\nof the equality (14)=(4) for F =F and G =C (X).",
+      "size": 272,
+      "sentences": 4
+    },
+    {
+      "id": 138,
+      "content": "trary, we deduce (39). This completes the proof\nall\nof the equality (14)=(4) for F =F and G =C (X). all b\nThe final part in the theorem follows from the above argument given that if f∗ is assumed to be Borel\nmeasurable, then (ϕ∗,...,ϕ∗ ),f∗ would be feasible (and in turn optimal) for (31), following the proof of\n1 K\nProposition 24. In addition, since C (X)⊆G, it follows that the value of (31) for G is smaller than or equal\nb\ntothevalueof (31)forC (X).",
+      "size": 455,
+      "sentences": 4
+    },
+    {
+      "id": 139,
+      "content": "X)⊆G, it follows that the value of (31) for G is smaller than or equal\nb\ntothevalueof (31)forC (X). Hence,thevalueof (31)withG isalsoequaltothevalueof (4)withF =F . b all\nFrom the discussion in the proof of Proposition 23, it follows that f∗ is optimal for (4) with F =F . all\n2.2 Proofs of Section 1.2\nWe first state a general result that will be useful in the discussion of the examples considered in section 1.2. Lemma 27. Suppose that ℓ satisfies Assumption 1.",
+      "size": 464,
+      "sentences": 6
+    },
+    {
+      "id": 140,
+      "content": "cussion of the examples considered in section 1.2. Lemma 27. Suppose that ℓ satisfies Assumption 1. Then v∗ ∈∆ is a minimizer of the problem\nY\nX\nmin max (ℓ(v,i)−ϕc(x˜))m (40)\ni i\nv∈∆Ym∈∆Yi∈Y\nif and only if there exist λ ,λ ∈R, γ ,γ ∈RK, and m∗ ∈∆ such that\nv m v m + Y\n1. ⃗0 ∈∂ ⃗ℓ(v∗)m∗+{λ ⃗1 −γ }\nK v v K v\n2. γ ⊙v∗ =⃗0\nv K\n3.",
+      "size": 327,
+      "sentences": 5
+    },
+    {
+      "id": 141,
+      "content": ",γ ∈RK, and m∗ ∈∆ such that\nv m v m + Y\n1. ⃗0 ∈∂ ⃗ℓ(v∗)m∗+{λ ⃗1 −γ }\nK v v K v\n2. γ ⊙v∗ =⃗0\nv K\n3. ⃗ℓ(v∗)−Φ⃗c+λ ⃗1 +γ =⃗0\nm K m K\n4. γ ⊙m∗ =⃗0 ,\nm K\nwhere ⃗ℓ(v) = (ℓ(v,i)) , Φc = (ϕc(x˜)) , and ∂ ⃗ℓ is the matrix whose columns are the subdifferentials of\ni∈Y i i∈Y v\nthe functions ℓ(·,i). Proof of Lemma 27. Theprooffollowsfromthecharacterizationoftheoptimalsolutiontoaminimaxprob-\nlem on a compact set.",
+      "size": 403,
+      "sentences": 5
+    },
+    {
+      "id": 142,
+      "content": "27. Theprooffollowsfromthecharacterizationoftheoptimalsolutiontoaminimaxprob-\nlem on a compact set. Indeed, Ky Fan’s minimax theorem (see Theorem 4.36 in [8]) implies that there is\nno duality gap in (40) and that the minimization and maximization operations can be applied in any order. The desired result follows from the Kuhn-Tucker conditions under the Slater qualification condition and the\nsubdifferential characterization of the optimal. 2.2.1 Cross-entropy loss\nProof of Corollary 8.",
+      "size": 490,
+      "sentences": 5
+    },
+    {
+      "id": 143,
+      "content": "the\nsubdifferential characterization of the optimal. 2.2.1 Cross-entropy loss\nProof of Corollary 8. Thanks to Theorem 3 we may focus on finding solutions to (40) for the choice ℓ =\nℓ and ϕ = ϕ∗. Now, if we take v∗ as in (19) and consider m∗ = v∗, γ = γ = ⃗0 , λ = 1, and\nλ ce =−lo i g (cid:0)P i exp(−ϕc(x˜)) (cid:1) itisstraightforwardtoverifyconditions1-4in v Lemm m a27. K This v impliesthe\nm i∈Y i\noptimality of v∗. 15\n===  16 ===\nRemark 28.",
+      "size": 445,
+      "sentences": 6
+    },
+    {
+      "id": 144,
+      "content": "nditions1-4in v Lemm m a27. K This v impliesthe\nm i∈Y i\noptimality of v∗. 15\n===  16 ===\nRemark 28. We note that the form for the solution of (40) for the cross-entropy loss can be derived\ndirectly from the conditions 1-4 in Lemma 27. Indeed, due to the shape of the cross-entropy loss function\n(in particular, the fact that lim ℓ (t,i) = ∞ ), an optimal v∗ for (40) must lie in the interior of ∆ . t→0+ ce Y\nTherefore, by condition 4 in Lemma 27 we must have γ =0.",
+      "size": 465,
+      "sentences": 6
+    },
+    {
+      "id": 145,
+      "content": "must lie in the interior of ∆ . t→0+ ce Y\nTherefore, by condition 4 in Lemma 27 we must have γ =0. In turn, condition 3 implies that (19) is the\nm\nonly possible form that an optimizer can have. Proof of Corollary 10. In this case, β(t) = −log(t) and a direct calculation reveals that the function φ in\n(16) becomes\nφ(s)=slog(s)−s. P P P\nIn addition, for {µ˜ } for which C(µ ,µ˜ ) is finite we must have µ˜ (X) = µ (X) = 1.\ni i∈Y i∈Y i i i∈Y i i∈Y i\nThe desired result follows from these two facts.",
+      "size": 497,
+      "sentences": 6
+    },
+    {
+      "id": 146,
+      "content": "have µ˜ (X) = µ (X) = 1.\ni i∈Y i∈Y i i i∈Y i i∈Y i\nThe desired result follows from these two facts. Proof of Corollary 11. It suffices to show that, up to a change of variables, the constraint\n( )\nX\n0≥ sup m ϕ (x )+ℓ (m )−c (x ,m ) , (41)\ni i i A A A A A\nmA∈∆A\ni∈A\nfor a given x ={x } ∈spt(µ ) and A⊆Y, reduces to the constraint in (21). A i i∈A A\nTo see this, let us start by denoting by A the collection of subsets A′ of A such that T B (x ) ̸= ∅.",
+      "size": 449,
+      "sentences": 4
+    },
+    {
+      "id": 147,
+      "content": "see this, let us start by denoting by A the collection of subsets A′ of A such that T B (x ) ̸= ∅. i∈A′ ε i\nWith this notation in hand, observe that if m ∈ ∆ is such that the set {i ∈ A s.t. m > 0} is not in\nA A i\nA, then c (x ,m ) = ∞. On the other hand, if the set {i ∈ A s.t. m > 0} is contained in A, then\nA A A i\nc (x ,m )=0.",
+      "size": 330,
+      "sentences": 5
+    },
+    {
+      "id": 148,
+      "content": "= ∞. On the other hand, if the set {i ∈ A s.t. m > 0} is contained in A, then\nA A A i\nc (x ,m )=0. A A A\nObserve, also, that for any m ∈∆ we have\nA A\nX X X\nℓ (m )= inf ℓ (v,i)m = inf ℓ (v,i)m =− log(m )m ,\nA A ce i ce i i i\nv∈∆Yi∈A v∈∆Ai∈A\ni∈A\nwhich follows from the fact that for any v ∈∆ we have\nA\nX X\nℓ (v,i)m =KL(m |v)− log(m )m .",
+      "size": 334,
+      "sentences": 4
+    },
+    {
+      "id": 149,
+      "content": "Ai∈A\ni∈A\nwhich follows from the fact that for any v ∈∆ we have\nA\nX X\nℓ (v,i)m =KL(m |v)− log(m )m . ce i A i i\ni∈A i∈A\nCombining the above observations, we deduce that\n( )\nX\nsup m ϕ (x )+ℓ (m )−c (x ,m )\ni i i A A A A A\nmA∈∆A\ni∈A\n( )\nX X\n= sup sup m ϕ (x )− log(m )m\ni i i i i\nA′∈Am A′∈∆ A′ i∈A′ i∈A′\nX\n= sup log( exp(ϕ (x ))). i i\nA′∈A\ni∈A′\nTherefore, the constraint (41) is equivalent to\nX\nexp(ϕ (x ))≤1, ∀A′ ∈A.",
+      "size": 414,
+      "sentences": 3
+    },
+    {
+      "id": 150,
+      "content": "xp(ϕ (x ))). i i\nA′∈A\ni∈A′\nTherefore, the constraint (41) is equivalent to\nX\nexp(ϕ (x ))≤1, ∀A′ ∈A. i i\ni∈A′\nThe desired result easily follows after applying the change of variables ψ (x ):=exp(ϕ (x )). i i i i\n2.2.2 α-logarithmic loss\nProof of Corollary 15. We split the proof into two cases. Case 1: When α > 1, the situation is very similar to the cross-entropy case and a solution v∗ for (40)\nmust lie in the interior of ∆ . From this fact, we can deduce that an optimal v∗ must take the form 25.",
+      "size": 500,
+      "sentences": 7
+    },
+    {
+      "id": 151,
+      "content": "lie in the interior of ∆ . From this fact, we can deduce that an optimal v∗ must take the form 25. Y\nAs an alternative argument, consider v∗ as in (25) and set m∗ := (v∗)α/( P (v∗)α), γ = γ = ⃗0 ,\ni i j∈Y j v m K\nλ =1/ P (v∗)α, and λ =−Z(x˜) to directly verify 1-4 in Lemma 27.\nv j∈Y j m\n16\n===  17 ===\nCase 2: When α ∈ [0,1), let v∗ be as in (24) and set m∗ := (v∗)α/( P (v∗)α) for every i ∈ Y. Also,\ni i j∈Y j\nlet λ =1/ P (v∗)α and λ =−Z(x˜).",
+      "size": 444,
+      "sentences": 4
+    },
+    {
+      "id": 152,
+      "content": "4) and set m∗ := (v∗)α/( P (v∗)α) for every i ∈ Y. Also,\ni i j∈Y j\nlet λ =1/ P (v∗)α and λ =−Z(x˜). Finally, set\nv j∈Y j m\nγi :=λ\nv v\nfor those i for which v∗ =0, and set γi =0 otherwise. Likewise, define\ni v\n1\nγi :=ϕc(x˜)+Z(x˜)−\nm i 1−α\nfor those i for which v∗ =0, and set γi =0 when v∗ >0. i m i\nNote that γi is greater than or equal to zero for all i ∈ Y because λ > 0.",
+      "size": 373,
+      "sentences": 5
+    },
+    {
+      "id": 153,
+      "content": "γi =0 when v∗ >0. i m i\nNote that γi is greater than or equal to zero for all i ∈ Y because λ > 0. On the other hand, γi ≥ 0\nv v m\nfor all i ∈ Y thanks to the fact that v∗ = 0 if and only if −ϕc(x˜)−Z(x˜) ≤ − 1 , as can be easily verified\ni i 1−α\nfrom the properties of log for α∈[0,1). α\nUsing the fact that log (0) = − 1 , we can directly verify that 1-4 in Lemma 27 hold for the above\nα 1−α\nchoices of parameters. We deduce that v∗ is optimal for (40). Proof of Corollary 19.",
+      "size": 478,
+      "sentences": 6
+    },
+    {
+      "id": 154,
+      "content": "he above\nα 1−α\nchoices of parameters. We deduce that v∗ is optimal for (40). Proof of Corollary 19. In this case β(t) = −log (t) and a direct calculation reveals that the function φ in\nα\n(16) becomes\n(cid:18) sq−1−1 (cid:19)\nφ(s)=s −s,\nq−1\nfor α > 0 and α ̸= 1. When α = 0, we have φ(s) = −s for s ≤ 1 and φ(s) = ∞ for s > 1. In addition, for\nP P P\n{µ˜ } for which C(µ ,µ˜ ) is finite we must have µ˜ (X)= µ (X)=1. The desired result\ni i∈Y i∈Y i i i∈Y i i∈Y i\nfollows from these two facts.",
+      "size": 489,
+      "sentences": 7
+    },
+    {
+      "id": 155,
+      "content": "st have µ˜ (X)= µ (X)=1. The desired result\ni i∈Y i∈Y i i i∈Y i i∈Y i\nfollows from these two facts. Proof of Corollary 20. As for the cross-entropy loss, recall that if the set of i ∈ A for which m > 0 is\ni\ncontained in A (the collection of subsets A′ of A such that T B (x ) ̸= ∅), then c (x ,m ) = 0, while\ni∈A′ ε i A A A\nT\nc (x ,m ) = ∞ otherwise. Thus, as before, we can focus on the case x ∈ spt(µ ) s.t.",
+      "size": 409,
+      "sentences": 5
+    },
+    {
+      "id": 156,
+      "content": "∈A′ ε i A A A\nT\nc (x ,m ) = ∞ otherwise. Thus, as before, we can focus on the case x ∈ spt(µ ) s.t. B (x ) ̸= ∅,\nA A A A A i∈A ε i\nwhere we get\n( ) ( )\nX X\nsup m ϕ (x )+ℓ (m )−c (x ,m ) = sup m ϕ (x )+ℓ (m ) . i i i A A A A A i i i A A\nmA∈∆A\ni∈A\nmA∈∆A\ni∈A\nNow, observe that the right hand side of the above expression can be rewritten as\nX\nsup inf (ℓ (v,i)+ϕ (x ))m , (42)\nα i i i\nmA∈∆A v∈∆Ai∈A\nP P\nusing the fact that ℓ (m ) = inf ℓ (v,i)m = inf ℓ (v,i)m .",
+      "size": 457,
+      "sentences": 4
+    },
+    {
+      "id": 157,
+      "content": "(x ))m , (42)\nα i i i\nmA∈∆A v∈∆Ai∈A\nP P\nusing the fact that ℓ (m ) = inf ℓ (v,i)m = inf ℓ (v,i)m . We can directly adapt\nA A v∈∆Y i∈A α i v∈∆A i∈A α i\nthe analysis in the proof of Corollary 15 and deduce that the pair (m∗,v∗) defined according to\n( (cid:16) n o(cid:17)\nexp max ϕ (x )−Z(x ),− 1 , if α∈[0,1),\nv∗ = α i i A 1−α\ni\nexp (ϕ (x )−Z(x )), if α>1,\nα i i A\n(v∗)α\nm∗ = i ,\ni P (v∗)α\nj∈A j\nfor i∈A, is a saddle for the max-min problem (42); in the above, Z(x ) is a normalization that guarantees\nA\nthat v∗ ∈∆ .",
+      "size": 515,
+      "sentences": 2
+    },
+    {
+      "id": 158,
+      "content": "for the max-min problem (42); in the above, Z(x ) is a normalization that guarantees\nA\nthat v∗ ∈∆ . The value of (42) can thus be written as\nA\nX (−log (v∗)+ϕ (x ))m∗ = P i∈A (−log α (v i ∗)+ϕ i (x i ))(v i ∗)α ,\nα i i i i P (v∗)α\ni∈A j∈A j\nand requiring for (42) to be less than or equal to zero is in turn equivalent to the condition\nX\n(−log (v∗)+ϕ (x ))(v∗)α ≤0. (43)\nα i i i i\ni∈A\n17\n===  18 ===\nThe subsequent analysis is split into two cases.",
+      "size": 447,
+      "sentences": 3
+    },
+    {
+      "id": 159,
+      "content": "ϕ (x ))(v∗)α ≤0. (43)\nα i i i i\ni∈A\n17\n===  18 ===\nThe subsequent analysis is split into two cases. Case 1: In case α > 1, plugging the formula for v∗ in condition (43) we deduce Z(x ) P v∗ ≤ 0,\nA i∈A i\nwhich is equivalent to Z(x )≤0. In turn, this condition is equivalent to\nA\nX X\n1= exp (ϕ (x )−Z(x ))≥ exp (ϕ (x )),\nα i i A α i i\ni∈A i∈A\nthanks to Remark 16. We conclude that problem (14) is equivalent to\nZ\nX\ninf − ϕ (x )dµ (x ),\ni i i i\n{ϕi}i∈Y⊆G i∈Y X\nX \\\ns.t.",
+      "size": 466,
+      "sentences": 5
+    },
+    {
+      "id": 160,
+      "content": "nclude that problem (14) is equivalent to\nZ\nX\ninf − ϕ (x )dµ (x ),\ni i i i\n{ϕi}i∈Y⊆G i∈Y X\nX \\\ns.t. exp (ϕ (x ))≤1 ∀A⊆Y, ∀x ∈spt(µ ) s.t. B (x )̸=∅,\nα i i A A ε i\ni∈A i∈A\nand after the change of variables ψ =exp (ϕ ) we deduce the desired result in the case α>1.",
+      "size": 262,
+      "sentences": 3
+    },
+    {
+      "id": 161,
+      "content": "i∈A i∈A\nand after the change of variables ψ =exp (ϕ ) we deduce the desired result in the case α>1. i α i\nCase 2: In case α∈[0,1), condition (43) can be equivalently written as\nX 1\n0≥ (−max{ϕ (x )−Z(x ),− }+ϕ (x ))(v∗)α\ni i A 1−α i i i\ni∈A\nX\n=Z(x ) (v∗)α\nA i\ni∈As.t.v∗>0\ni\nX\n=Z(x ) (v∗)α,\nA i\ni∈A\nwhereinthesecondlinewehaveusedthefactthatv∗ =0ifandonlyifϕ (x )−Z(x )≤− 1 . Hence,(43)\ni i i A 1−α\nis equivalent to Z(x )≤ 0, just as in the α > 1 case.",
+      "size": 449,
+      "sentences": 3
+    },
+    {
+      "id": 162,
+      "content": "lyifϕ (x )−Z(x )≤− 1 . Hence,(43)\ni i i A 1−α\nis equivalent to Z(x )≤ 0, just as in the α > 1 case. This condition, in turn, can be seen to be equivalent\nA\nto\n(cid:18) (cid:26) (cid:27)(cid:19)\nX 1\n1≥ exp max ϕ (x ),− . α i i 1−α\ni∈A\nWe conclude that problem (14) is equivalent to\nZ\nX\ninf − ϕ (x )dµ (x ),\ni i i i\n{ϕi}i∈Y⊆G i∈Y X\nX 1 \\\ns.t. exp (max{ϕ (x ),− })≤1, ∀A⊆Y, ∀x ∈spt(µ )s.t. B (x )̸=∅.",
+      "size": 397,
+      "sentences": 6
+    },
+    {
+      "id": 163,
+      "content": "µ (x ),\ni i i i\n{ϕi}i∈Y⊆G i∈Y X\nX 1 \\\ns.t. exp (max{ϕ (x ),− })≤1, ∀A⊆Y, ∀x ∈spt(µ )s.t. B (x )̸=∅. α i i 1−α A A ε i\ni∈A i∈A\nNow, for any feasible tuple {ϕ } in the above problem, the new tuple max{ϕ ,− 1 } is feasible and\ni i∈Y i 1−α\nmoreover does not worsen the objective function of the original tuple. Hence, we can assume that the ϕ\ni\ntake values in the domain of exp and then consider the change of variables ψ = exp (ϕ ). The desired\nα i α i\nresult follows immediately.",
+      "size": 477,
+      "sentences": 6
+    },
+    {
+      "id": 164,
+      "content": "then consider the change of variables ψ = exp (ϕ ). The desired\nα i α i\nresult follows immediately. 2.2.3 Quadratic loss\nProof of Corollary 22. ThankstoTheorem3wemayfocusonfindingsolutionsto(40)forthechoiceℓ=ℓ\nQ\nand ϕ =ϕ∗. i i\nFirst, note that, even though ∂ ⃗ℓ(v) is not a diagonal matrix as for the other loss functions already\nv\nconsidered, a direct computation provides the explicit form\n∂ ⃗ℓ(v)=−2I +2v⊗⃗1 .",
+      "size": 412,
+      "sentences": 5
+    },
+    {
+      "id": 165,
+      "content": "unctions already\nv\nconsidered, a direct computation provides the explicit form\n∂ ⃗ℓ(v)=−2I +2v⊗⃗1 . v K K\nFrom this we deduce that, regardless of the value of v ∈∆ , condition 1 in Lemma 27 is satisfied with the\nY\nchoices λ =0, γ =⃗0 , and m=v. With these choices, condition 2 in Lemma 27 is also satisfied.",
+      "size": 307,
+      "sentences": 3
+    },
+    {
+      "id": 166,
+      "content": "the\nY\nchoices λ =0, γ =⃗0 , and m=v. With these choices, condition 2 in Lemma 27 is also satisfied. v v K\n18\n===  19 ===\nOn the other hand, condition 3 is equivalent to\n(|v|2+1)⃗1 −2v−Φc+λ ⃗1 +γ =⃗0 ,\nK m K m K\nor, after simplifications, to\nv = 1(cid:2) (|v|2+1+λ )⃗1 +γ −Φc(cid:3) ,\n2 m K m\nfor some vector γ with non-negative entries and for a scalar λ . To obtain an explicit form for v = v∗,\nm m\nassume, without loss of generality, that ϕc(x˜)≤ϕc(x˜)≤...≤ϕc (x˜).",
+      "size": 467,
+      "sentences": 4
+    },
+    {
+      "id": 167,
+      "content": "n explicit form for v = v∗,\nm m\nassume, without loss of generality, that ϕc(x˜)≤ϕc(x˜)≤...≤ϕc (x˜). With the usual convention min(∅)=\n1 2 K\n∞, let i∗ and c∗ be given by\ni\nX\ni∗ =K∧min{i=1,...,K s.t. iϕc (x˜)− ϕc(x˜)>2},\ni+1 j\nj=1\nand\ni∗\n1 X\nc∗ = (2+ ϕc). i∗ i\ni=1\nLet v∗ be defined as\n(\n1(c∗−ϕc), if i≤i∗,\nv∗ := 2 i\ni 0, else,\nwhich can be seen to satisfy v∗ ∈ ∆ . That the coordinates of v∗ sum to one is straightforward from the\nY\ndefinition of c∗ and i∗.",
+      "size": 456,
+      "sentences": 5
+    },
+    {
+      "id": 168,
+      "content": "∈ ∆ . That the coordinates of v∗ sum to one is straightforward from the\nY\ndefinition of c∗ and i∗. The fact that v∗ ≥0 for i≤i∗ follows from the definition of i∗ and the fact that ϕc\ni i\nis non-decreasing in i. Indeed, if for the sake of contradiction we assumed that v∗ <0 for some i≤i∗, then\ni\nwe would contradict the definition of i∗.",
+      "size": 337,
+      "sentences": 4
+    },
+    {
+      "id": 169,
+      "content": "contradiction we assumed that v∗ <0 for some i≤i∗, then\ni\nwe would contradict the definition of i∗. Finally, we may take\n(\n0, ifi≤i∗,\nγi =\nm ϕc−c∗ else,\ni\nand λ = c∗−|v∗|2−1 and with all these choices verify conditions 3-4 in Lemma 27; note that, from the\nm\ndefinitionofc∗ andthefactthatϕc isnon-decreasingini,itfollowsthatγ indeedhasnon-negativeentries. i m\nWe conclude the desired result.",
+      "size": 390,
+      "sentences": 3
+    },
+    {
+      "id": 170,
+      "content": "snon-decreasingini,itfollowsthatγ indeedhasnon-negativeentries. i m\nWe conclude the desired result. 3 Applications\nIt is straightforward to show that the α-logarithmic losses in (22) are monotonically ordered according to\nℓ (v,i)≤ℓ (v,i)≤ℓ (v,i), v ∈∆ , i∈Y, (44)\nα α′ ce Y\nfor all 0 ≤ α ≤ α′ < 1. Thanks to this and (8), the learner-agnostic lower bounds for a smaller α are\nvalid lower bounds on the adversarial risk of a model trained with the loss function ℓ for a larger α′.",
+      "size": 479,
+      "sentences": 4
+    },
+    {
+      "id": 171,
+      "content": "d lower bounds on the adversarial risk of a model trained with the loss function ℓ for a larger α′. In\nα′\nparticular, solving the agnostic adversarial robustness problem with the 0-1 loss provides a lower bound for\nthe adversarial risk of a model trained with the cross-entropy loss. In what follows, we illustrate in concrete experimental settings the possible gains of using the tighter\nbounds that our theoretical results motivate.",
+      "size": 434,
+      "sentences": 3
+    },
+    {
+      "id": 172,
+      "content": "ntal settings the possible gains of using the tighter\nbounds that our theoretical results motivate. The code used in our experiments is available at\nhttps://github.com/camgt/dual_adversarial_multidim. 3.1 A synthetic example\nTodemonstratethepracticalimplicationsofourtheoreticalresults, wefirstconsideranadversariallyrobust\nclassification problem in a simple synthetic setting.",
+      "size": 377,
+      "sentences": 3
+    },
+    {
+      "id": 173,
+      "content": "results, wefirstconsideranadversariallyrobust\nclassification problem in a simple synthetic setting. We select X ⊂ R2, Y = {0,1,2}, and let µ be concen-\ni\ntrated on 20 points sampled from N(mi,I ), where mi is one of (−2,2),(2,2),(−2,−2); an illustration is\n2\npresented in Figure 2. We consider the 0−∞ cost function defined in (5) using the Euclidean distance. We\nsolve the dual problem (28) using Python and the CVXOPT library for convex and linear optimization.",
+      "size": 463,
+      "sentences": 4
+    },
+    {
+      "id": 174,
+      "content": "solve the dual problem (28) using Python and the CVXOPT library for convex and linear optimization. 19\n===  20 ===\nFigure 2: Left: Position of masses for initial measures (µ ) ; Right: Adversarial risk for different α.\ni i=0,1,2\nAs expected, plots are monotonic with respect to the adversarial budget, and converge to the risk of full\nconfusion between labels. Notice, also, that plots are monotonic in α for a fixed budget. The resulting adversarial risk is shown in Figure 2.",
+      "size": 477,
+      "sentences": 4
+    },
+    {
+      "id": 175,
+      "content": "t plots are monotonic in α for a fixed budget. The resulting adversarial risk is shown in Figure 2. The plots illustrate, as expected, that risk increases\nwith the adversarial budget ε. Indeed, as the adversarial budget increases, points can increasingly interact\nwithotherclasses. Withsufficientadversarialbudget,allpointscanbeperturbedintootherclasses,resulting\nin complete confusion.",
+      "size": 386,
+      "sentences": 5
+    },
+    {
+      "id": 176,
+      "content": "ufficientadversarialbudget,allpointscanbeperturbedintootherclasses,resulting\nin complete confusion. In that regime, the risk approaches −log (1/3), which corresponds to the risk\nα\nassociated to a uniform distribution over the three classes, thanks to the fact that all the µ have the same\ni\nnumber of points. Another aspect clearly illustrated in Figure 2 is that the adversarial risk increases with\nα, in accordance with (44).",
+      "size": 427,
+      "sentences": 3
+    },
+    {
+      "id": 177,
+      "content": "rly illustrated in Figure 2 is that the adversarial risk increases with\nα, in accordance with (44). Itisworthnotingthatthereisaclearreductionincomplexitywhenconsideringdualproblemsinsteadof\ndirect adversarial attacks in the primal problem. Indeed, the original (primal) adversarial risk minimization\nproblem would involve searching for a solution in the space of all couplings supported on balls of radius ε\naround the original clean data.",
+      "size": 439,
+      "sentences": 3
+    },
+    {
+      "id": 178,
+      "content": "lution in the space of all couplings supported on balls of radius ε\naround the original clean data. In contrast, the dual problem in the discrete case requires us to solve only\nfor the dual functions evaluated at the points in the support of the starting measures. Furthermore,weobservedthatinitializingthesolverforagivenαwithasmallperturbationofthesolution\nfromapreviousα˜ <αsignificantlyacceleratesconvergence4,especiallywhenleveragingthesparsityinduced\nby α <1 (recall Remark 18).",
+      "size": 483,
+      "sentences": 3
+    },
+    {
+      "id": 179,
+      "content": "antlyacceleratesconvergence4,especiallywhenleveragingthesparsityinduced\nby α <1 (recall Remark 18). This is particularly useful when dealing with non-sparse losses such as cross-\nentropy. Additional efficiency could be achieved by more intensively distributing some computations, as\nhighlighted in [10].",
+      "size": 303,
+      "sentences": 3
+    },
+    {
+      "id": 180,
+      "content": "iency could be achieved by more intensively distributing some computations, as\nhighlighted in [10]. Concerning the classifiers, we illustrate in Figure 3 the optimal classifiers evaluated at the points in the\nsupports of the original distributions µ 5 for the cases α ∈ {0,1} obtained from (19) and (12). Classifiers\ni\nrespondtotheexpecteddegreeofconfusion,withclearerclassification(i.e.,highervalues)forpointswithina\ngroupastheyarefartherawayfromtheboundarybetweengroups.",
+      "size": 472,
+      "sentences": 3
+    },
+    {
+      "id": 181,
+      "content": "ification(i.e.,highervalues)forpointswithina\ngroupastheyarefartherawayfromtheboundarybetweengroups. Wehavehighlightedsignificantdifferences\n(larger than 0.1) between the optimal classifiers using the 0-1 and cross-entropy losses: All of these appear\nnear the boundary and show that cross-entropy loss seems to give greater importance to the own label of\nthe given points.",
+      "size": 371,
+      "sentences": 2
+    },
+    {
+      "id": 182,
+      "content": "show that cross-entropy loss seems to give greater importance to the own label of\nthe given points. 3.2 Application to an MNIST sample\nFor a more realistic view of the applicability of our results, we turn to the adversarially robust classification\nof a sample of MNIST images. In this example, X = R784 and we consider four groups corresponding to\nnumbers 1,4,7 and 9, with 50 images per class. As before, we consider the 0−∞ cost function defined in (5)\nusing the Euclidean and Chebyshev distances.",
+      "size": 500,
+      "sentences": 4
+    },
+    {
+      "id": 183,
+      "content": "fore, we consider the 0−∞ cost function defined in (5)\nusing the Euclidean and Chebyshev distances. 4Specifically,weinitializethesearchwith(1−ϑ)ψ∗+ϑ⃗1forsmallϑ>0. Therationaleforaddingthisperturbationisthat\nα˜\nitalwaysproducespointsintheinteriorofthefeasibleregionandimprovesstabilityinthesearch. 5Althoughwelimitourselvestothepointsinthedomainofµ,classifierscanbecomputedforotherpointswithinaballof\nradiusεfromanypointinanyofthesupportsoftheµi.",
+      "size": 445,
+      "sentences": 4
+    },
+    {
+      "id": 184,
+      "content": "µ,classifierscanbecomputedforotherpointswithinaballof\nradiusεfromanypointinanyofthesupportsoftheµi. 20\n===  21 ===\nFigure 3: Top left: original data points. Remaining subplots: optimal classifier for each group in the case\nε = 1,α = 1 (i.e. cross-entropy). The value is represented in terms of opaqueness of the interior (higher\nvalue, higher opaqueness). The original group is represented by the edge color.",
+      "size": 408,
+      "sentences": 6
+    },
+    {
+      "id": 185,
+      "content": "he interior (higher\nvalue, higher opaqueness). The original group is represented by the edge color. Arrows highlight significant\ndifferences (>0.1) with optimal classifier with same adversarial budget but α=0 (0-1 loss). The direction\nof the arrow indicates the sign of this difference. 21\n===  22 ===\nFigure 4: Adversarial risk as a function of adversarial budget for the MNIST test\n. Figure 4 shows the results of solving the dual problem for α ∈ {0,0.75,1}.",
+      "size": 460,
+      "sentences": 6
+    },
+    {
+      "id": 186,
+      "content": "get for the MNIST test\n. Figure 4 shows the results of solving the dual problem for α ∈ {0,0.75,1}. We can observe a similar\nbehavior as in the synthetic case, with the risk increasing with the adversarial budget and with α. Here,\nwe cap the number of groups that can interact in the dual to either 2 or 3 (as suggested in Remark 4). As\nexpected, allowingformoreinteractionsproducessharperlowerbounds.",
+      "size": 401,
+      "sentences": 5
+    },
+    {
+      "id": 187,
+      "content": "r 3 (as suggested in Remark 4). As\nexpected, allowingformoreinteractionsproducessharperlowerbounds. Moreimportantly, fromapractical\nperspective, truncating the number of interactions has a small effect for small adversarial budgets. Observe\nthe difference in shape between the two distance functions. Indeed, the Chebyshev case has a staircase\nbehavior corresponding to the fact that, in this metric, points tend to cluster around certain distances from\neach other.",
+      "size": 465,
+      "sentences": 5
+    },
+    {
+      "id": 188,
+      "content": "to the fact that, in this metric, points tend to cluster around certain distances from\neach other. Let us remark that, under the Chebyshev distance, we lack information for α = 1 when the\nadversarial budget is large, given that the optimizer that we used did not converge in the specified number\nofiterations. Thisillustratesthepotentialadvantagesofusingintermediatevaluesofα inobtainingsharper\nlower bounds for a problem with cross-entropy loss than those offered by the 0-1 loss.",
+      "size": 481,
+      "sentences": 3
+    },
+    {
+      "id": 189,
+      "content": "iningsharper\nlower bounds for a problem with cross-entropy loss than those offered by the 0-1 loss. Overall, this example\nillustrates the relevance of our theoretical results and reinforces the insights from our synthetic tests. 4 Conclusions\nWeconsideredadversariallyrobustoptimizationformulticlasssupervisedlearningwithgenerallossfunctions.",
+      "size": 342,
+      "sentences": 3
+    },
+    {
+      "id": 190,
+      "content": "Weconsideredadversariallyrobustoptimizationformulticlasssupervisedlearningwithgenerallossfunctions. We obtained new dual and barycenter formulations for the learner-agnostic adversarial risk minimization\nproblem beyond the 0-1 loss setting, providing in this way sharp lower bounds for adversarial risks under\ngeneral losses. We studied in detail the quadratic and cross-entropy losses, which are of theoretical and\npractical interest.",
+      "size": 435,
+      "sentences": 3
+    },
+    {
+      "id": 191,
+      "content": "in detail the quadratic and cross-entropy losses, which are of theoretical and\npractical interest. We also studied a family of power loss functions that we termed α-logarithmic losses,\nwhichcanbeseentointerpolatebetweenthe0-1andcross-entropylosses.",
+      "size": 248,
+      "sentences": 2
+    },
+    {
+      "id": 192,
+      "content": "hat we termed α-logarithmic losses,\nwhichcanbeseentointerpolatebetweenthe0-1andcross-entropylosses. Thefamilyofα-logarithmiclosses\nhas been used in fairness and economics, has good analytical properties, offers theoretical connections to\nTsallisentropiesandassociateddivergencesthroughourgeneralizedbarycenterresults,andprovidespractical\nflexibilityforclassificationtasks.",
+      "size": 372,
+      "sentences": 2
+    },
+    {
+      "id": 193,
+      "content": "encesthroughourgeneralizedbarycenterresults,andprovidespractical\nflexibilityforclassificationtasks. Ournumericalexperimentsillustratethepromisingpracticalbenefitsofour\n22\n===  23 ===\ndualformulation, includingimprovedconvergenceandthepotentialfordistributedoptimizationtechniques. Futureworkmayexplorethesecomputationalaspectsmoredeeply,includingthedevelopmentofdistributed\nalgorithmsforthedualproblemandthefurtherexploitationofwarm-startstrategiesandsparsityproperties\nto accelerate convergence.",
+      "size": 496,
+      "sentences": 3
+    },
+    {
+      "id": 194,
+      "content": "blemandthefurtherexploitationofwarm-startstrategiesandsparsityproperties\nto accelerate convergence. Acknowledgments\nNGT was supported by the grant NSF-DMS 2236447. The authors would like to thank Jakwang Kim and\nMattWerenskiforprovidingthecodethatfacilitatedtheimplementationofournumericalexamples. Claude\nSonnet 4 was used for code debugging purposes. References\n[1] A.B.Atkinson,Onthemeasurementofinequality,JournalofEconomicTheory,2(1970),pp.244–263.",
+      "size": 453,
+      "sentences": 5
+    },
+    {
+      "id": 195,
+      "content": "eferences\n[1] A.B.Atkinson,Onthemeasurementofinequality,JournalofEconomicTheory,2(1970),pp.244–263. [2] P.Awasthi, N.Frank, andM.Mohri,OntheexistenceoftheadversarialBayesclassifier,Advances\nin Neural Information Processing Systems, 34 (2021), pp. 2978–2990. [3] A. N. Bhagoji, D. Cullina, and P. Mittal, Lower bounds on adversarial robustness from optimal\ntransport, Advances in Neural Information Processing Systems, 32 (2019).",
+      "size": 428,
+      "sentences": 4
+    },
+    {
+      "id": 196,
+      "content": "al robustness from optimal\ntransport, Advances in Neural Information Processing Systems, 32 (2019). [4] L. Bungert, N. García Trillos, and R. Murray, The geometry of adversarial training in binary\nclassification, Information and Inference: A Journal of the IMA, 12 (2023), p. 921–968. [5] L. Bungert, T. Laux, and K. Stinson, A mean curvature flow arising in adversarial training,\nJournal de Mathématiques Pures et Appliquées, 192 (2024), p. 103625.",
+      "size": 449,
+      "sentences": 3
+    },
+    {
+      "id": 197,
+      "content": "ising in adversarial training,\nJournal de Mathématiques Pures et Appliquées, 192 (2024), p. 103625. [6] L. Bungert and K. Stinson, Gamma-convergence of a nonlocal perimeter arising in adversarial\nmachine learning, Calculus of Variations and Partial Differential Equations, 63 (2024), p. 114. [7] G. Carlier and M. Sylvestre, On a class of adversarial classification problems which admit a\ncontinuous solution, ArXiv, (2025).",
+      "size": 424,
+      "sentences": 3
+    },
+    {
+      "id": 198,
+      "content": "On a class of adversarial classification problems which admit a\ncontinuous solution, ArXiv, (2025). [8] F. Clarke, Functional analysis, calculus of variations and optimal control, vol. 264, Springer Science\n& Business Media, 2013.",
+      "size": 230,
+      "sentences": 3
+    },
+    {
+      "id": 199,
+      "content": "sis, calculus of variations and optimal control, vol. 264, Springer Science\n& Business Media, 2013. [9] S. Dai, W. Ding, A. N. Bhagoji, D. Cullina, H. Zheng, B. Zhao, and P. Mittal, Char-\nacterizing the optimal 0-1 loss for multi-class classification with a test-time attacker, in Advances in\nNeural Information Processing Systems, A. Oh, T. Naumann, A. Globerson, K. Saenko, M. Hardt, and\nS. Levine, eds., vol. 36, Curran Associates, Inc., 2023, pp. 49467–49489.",
+      "size": 463,
+      "sentences": 5
+    },
+    {
+      "id": 200,
+      "content": "K. Saenko, M. Hardt, and\nS. Levine, eds., vol. 36, Curran Associates, Inc., 2023, pp. 49467–49489. [10] J. Diakonikolas, M. Fazel, and L. Orecchia, Fair Packing and Covering on a Relative Scale,\nSIAM Journal on Optimization, 30 (2020), pp. 3284–3314. [11] N.FrankandJ.Niles-Weed,Theadversarialconsistencyofsurrogaterisksforbinaryclassification,\nin Thirty-seventh Conference on Neural Information Processing Systems, 2023.",
+      "size": 421,
+      "sentences": 6
+    },
+    {
+      "id": 201,
+      "content": "rbinaryclassification,\nin Thirty-seventh Conference on Neural Information Processing Systems, 2023. [12] N. S. Frank, Adversarial consistency and the uniqueness of the adversarial bayes classifier, European\nJournal of Applied Mathematics, (2025), p. 1–19. [13] N. S. Frank and J. Niles-Weed, Existence and minimax theorems for adversarial surrogate risks in\nbinary classification, Journal of Machine Learning Research, 25 (2024), pp. 1–41.",
+      "size": 439,
+      "sentences": 4
+    },
+    {
+      "id": 202,
+      "content": "urrogate risks in\nbinary classification, Journal of Machine Learning Research, 25 (2024), pp. 1–41. [14] G. Friesecke, D. Matthes, and B. Schmitzer, Barycenters for the hellinger–kantorovich distance\nover rd, SIAM Journal on Mathematical Analysis, 53 (2021), pp. 62–110. [15] N. García Trillos, M. Jacobs, and J. Kim, The multimarginal optimal transport formulation of\nadversarial multiclass classification, Journal of Machine Learning Research, 24 (2023), pp. 1–56.",
+      "size": 466,
+      "sentences": 6
+    },
+    {
+      "id": 203,
+      "content": "f\nadversarial multiclass classification, Journal of Machine Learning Research, 24 (2023), pp. 1–56. 23\n===  24 ===\n[16] N. García Trillos, M. Jacobs, J. Kim, and M. Werenski, An optimal transport approach for\ncomputing adversarial training lower bounds in multiclass classification, Journal of Machine Learning\nResearch, 25 (2024), pp. 1–45.",
+      "size": 341,
+      "sentences": 4
+    },
+    {
+      "id": 204,
+      "content": "wer bounds in multiclass classification, Journal of Machine Learning\nResearch, 25 (2024), pp. 1–45. [17] N. García Trillos, M. Jacobs, and J. Kim, On the existence of solutions to adversarial training\nin multiclass classification, European Journal of Applied Mathematics, (2024), p. 1–21.",
+      "size": 288,
+      "sentences": 3
+    },
+    {
+      "id": 205,
+      "content": "al training\nin multiclass classification, European Journal of Applied Mathematics, (2024), p. 1–21. [18] A. Gramfort, G. Peyré, and M. Cuturi, Fast optimal transport averaging of neuroimaging data,\nin Information Processing in Medical Imaging, S. Ourselin, D. C. Alexander, C.-F. Westin, and M. J.\nCardoso, eds., Cham, 2015, Springer International Publishing, pp. 261–272.",
+      "size": 372,
+      "sentences": 3
+    },
+    {
+      "id": 206,
+      "content": "C.-F. Westin, and M. J.\nCardoso, eds., Cham, 2015, Springer International Publishing, pp. 261–272. [19] F.Heinemann, M.Klatt, andA.Munk,Kantorovich–rubinsteindistanceandbarycenterforfinitely\nsupported measures: Foundations and algorithms, Applied Mathematics & Optimization, 87 (2022).",
+      "size": 285,
+      "sentences": 3
+    },
+    {
+      "id": 207,
+      "content": "tely\nsupported measures: Foundations and algorithms, Applied Mathematics & Optimization, 87 (2022). [20] S. Hundrieser, F. Heinemann, M. Klatt, M. Struleva, and A. Munk,Unbalanced kantorovich-\nrubinstein distance, plan, and barycenter on nite spaces: A statistical perspective, Journal of Machine\nLearning Research, 26 (2025), pp. 1–70. [21] J. Khim and P.-L. Loh, Adversarial risk bounds via function transformation, arXiv preprint\narXiv:1810.09519, (2018). [22] T.-Y.",
+      "size": 469,
+      "sentences": 5
+    },
+    {
+      "id": 208,
+      "content": "sarial risk bounds via function transformation, arXiv preprint\narXiv:1810.09519, (2018). [22] T.-Y. Lin, P. Goyal, R. Girshick, K. He, and P. Dollar,Focal Loss for Dense Object Detection,\nin2017IEEEInternationalConferenceonComputerVision(ICCV),Venice,Oct.2017,IEEE,pp.2999–\n3007. [23] R. Morris and R. Murray, Uniform convergence of adversarially robust classifiers, ArXiv, (2024).",
+      "size": 381,
+      "sentences": 4
+    },
+    {
+      "id": 209,
+      "content": "3] R. Morris and R. Murray, Uniform convergence of adversarially robust classifiers, ArXiv, (2024). [24] M. Penka,Genetic column generation for computing lower bounds for adversarial classification,SIAM\nJournal on Scientific Computing, 47 (2025), pp. C959–C978. [25] M. S. Pydi and V. Jog, The many faces of adversarial risk, in Advances in Neural Information\nProcessing Systems, M. Ranzato, A. Beygelzimer, Y. Dauphin, P. Liang, and J. W. Vaughan, eds.,\nvol. 34, Curran Associates, Inc., 2021, pp.",
+      "size": 498,
+      "sentences": 5
+    },
+    {
+      "id": 210,
+      "content": "elzimer, Y. Dauphin, P. Liang, and J. W. Vaughan, eds.,\nvol. 34, Curran Associates, Inc., 2021, pp. 10000–10012. [26] C. Villani, Topics in optimal transportation, vol. 58 of Graduate Studies in Mathematics, American\nMathematical Society, Providence, RI, 2003. [27] D. Yin, R. Kannan, and P. Bartlett, Rademacher complexity for adversarially robust general-\nization, in Proceedings of the 36th International Conference on Machine Learning, K. Chaudhuri and\nR. Salakhutdinov, eds., vol.",
+      "size": 485,
+      "sentences": 6
+    },
+    {
+      "id": 211,
+      "content": "he 36th International Conference on Machine Learning, K. Chaudhuri and\nR. Salakhutdinov, eds., vol. 97 of Proceedings of Machine Learning Research, PMLR, 09–15 Jun 2019,\npp. 7085–7094. A Adversarial training\nAs discussed in several papers in the literature (see, e.g., [17,25]) there is a close connection between the\nproblem (6) and the problem (4) for the cost function c as in (5).",
+      "size": 384,
+      "sentences": 4
+    },
+    {
+      "id": 212,
+      "content": "s a close connection between the\nproblem (6) and the problem (4) for the cost function c as in (5). We point out, however, that some care is\nneeded to rigorously make a statement about this equivalence given that the function\nx7→ sup ℓ(f(x˜),i),\nx˜∈Bε(x)\nfor B (x) the closed ball of radius ε around x, may not necessarily be Borel measurable if f is only assumed\nε\nto be Borel measurable.",
+      "size": 389,
+      "sentences": 2
+    },
+    {
+      "id": 213,
+      "content": "ε around x, may not necessarily be Borel measurable if f is only assumed\nε\nto be Borel measurable. However, if we put these measurability issues aside, we can provide an informal\nargument suggesting this equivalence. First, for the cost C induced by c , it is straightforward to see that C(µ ,µ˜ ) = 0 if and only if there\nε i i\nexists π ∈ Γ(µ ,µ˜ ) whose support is contained in the set {(x,x˜) s.t. d(x,x˜) ≤ ε}. If the latter condition\ni i i\nis not satisfied, then C(µ ,µ˜ ) = ∞.",
+      "size": 482,
+      "sentences": 5
+    },
+    {
+      "id": 214,
+      "content": "set {(x,x˜) s.t. d(x,x˜) ≤ ε}. If the latter condition\ni i i\nis not satisfied, then C(µ ,µ˜ ) = ∞. From this one should formally deduce that (4) is smaller than (6). i i\nTo motivate the reverse inequality, for a given f ∈ F we can formally consider the mapping x 7→ T (x) ∈\ni\n24\n===  25 ===\nargmax ℓ(f(x˜),i) (note that this map may not be Borel measurable if the only thing known about f\nx˜∈Bε(x)\nis that it is Borel measurable).",
+      "size": 430,
+      "sentences": 5
+    },
+    {
+      "id": 215,
+      "content": "y not be Borel measurable if the only thing known about f\nx˜∈Bε(x)\nis that it is Borel measurable). Intuitively, the idea in this construction is to associate the worst possible\nperturbation to every input x ∈ X.",
+      "size": 212,
+      "sentences": 2
+    },
+    {
+      "id": 216,
+      "content": "the idea in this construction is to associate the worst possible\nperturbation to every input x ∈ X. With these maps, one may then consider the measures µ˜′ := T µ ,\ni i♯ i\ni∈Y, and formally get the inequality\nZ Z\nX X X\nsup ℓ(f(x˜),i)dµ (x)= ℓ(f(x˜),i)dµ˜′(x˜)− C(µ ,µ˜′)\ni i i i\ni∈Y X x˜∈Bε(x) i∈Y X i∈Y\nZ\nX X\n≤ sup ℓ(f(x˜),i)dµ˜ (x˜)− C(µ ,µ˜ ),\ni i i\n{µ˜i}i∈Yi∈Y X i∈Y\nwhich motivates the reverse relation between (4) and (6). B Additional details in the proof of Theorem 3\nLemma 29.",
+      "size": 485,
+      "sentences": 3
+    },
+    {
+      "id": 217,
+      "content": "the reverse relation between (4) and (6). B Additional details in the proof of Theorem 3\nLemma 29. Let c be a cost function satisfying Assumption 2 and let ϕ ∈ C (X). Then ϕc is lower-\ni b i\nsemicontinuous and hence Borel measurable. Proof. It is sufficient to prove the result for cost functions c satisfying the compactness and coercivity\ncondition. First, since ϕ is bounded, it follows that ϕc is bounded from below by a fixed constant.",
+      "size": 440,
+      "sentences": 7
+    },
+    {
+      "id": 218,
+      "content": "condition. First, since ϕ is bounded, it follows that ϕc is bounded from below by a fixed constant. Since X\ni i\nis a metric space, to prove that ϕc is lower semi-continuous it would suffice to prove that it is sequentially\ni\nlower-semicontinuous. Toward that aim, suppose that x˜ →x˜, and for each n∈N let x ∈spt(µ ) be such\nn n i\nthat\n1\nϕc(x˜ )+ ≥c(x ,x˜ )−ϕ (x ). i n n n n i n\nIf liminf c(x ,x˜ ) = ∞, we can immediately deduce liminf ϕc(x˜ ) ≥ ϕc(x˜).",
+      "size": 455,
+      "sentences": 5
+    },
+    {
+      "id": 219,
+      "content": ")−ϕ (x ). i n n n n i n\nIf liminf c(x ,x˜ ) = ∞, we can immediately deduce liminf ϕc(x˜ ) ≥ ϕc(x˜). If not, without the\nn→∞ n n n→∞ i n i\nloss of generality we can assume that sup c(x ,x˜ )<∞. Thanks to Assumption 2 we can then conclude\nn∈N n n\nthat, up to a subsequence that we do not relabel (for simplicity), we must have x → x for some x. Since\nn\nspt(µ ) is always a closed set, the point x must belong to spt(µ ).",
+      "size": 418,
+      "sentences": 5
+    },
+    {
+      "id": 220,
+      "content": "have x → x for some x. Since\nn\nspt(µ ) is always a closed set, the point x must belong to spt(µ ). We can now use the lower-semicontinuity\ni i\nof c and the continuity of ϕ to deduce that\ni\nliminfϕc(x˜ )≥liminf(c(x ,x˜ )−ϕ (x ))≥c(x,x˜)−ϕ (x)≥ϕc(x˜),\ni n n n i n i i\nn→∞ n→∞\ncompleting in this way the proof. Next, we present the proof of Proposition 26. At a high level, the strategy is similar to the proof of the\nKantorovichdualitytheoremappearinginChapter1.1.7in[26].",
+      "size": 470,
+      "sentences": 5
+    },
+    {
+      "id": 221,
+      "content": "the strategy is similar to the proof of the\nKantorovichdualitytheoremappearinginChapter1.1.7in[26]. However,theapproximationargumentsand\nspecific details to make this strategy work are nontrivial adjustments of the ones discussed in [26]. These\nmodifications to these arguments are necessary, given that problem (37) is not a standard MMOT problem.",
+      "size": 348,
+      "sentences": 3
+    },
+    {
+      "id": 222,
+      "content": "fications to these arguments are necessary, given that problem (37) is not a standard MMOT problem. Below, we restate Proposition 26 in a slightly different way, noticing that the constraint in (14) holds if and\nP\nonly if m ϕ (x )≤c (⃗x,m)−ℓ (m) for all x ∈X , i∈Y, and m∈∆ . i∈Y i i i Y Y i i Y\nProposition 30. Let c:X ×···×X ×∆ →R∪{∞} be defined as\n1 K Y\nc(⃗x,m):=c (⃗x,m)−ℓ (m), (45)\nY Y\nfor a cost function c satisfying Assumption 2 and a loss function ℓ satisfying Assumption 1.",
+      "size": 483,
+      "sentences": 4
+    },
+    {
+      "id": 223,
+      "content": "5)\nY Y\nfor a cost function c satisfying Assumption 2 and a loss function ℓ satisfying Assumption 1. Then\nZ\nmin c(⃗x,m)dπ(⃗x,m) (46)\nπ∈G X1×···×XK×∆Y\n(recall G was introduced in (38)) is equal to\nZ\nX\nsup ϕ (x )dµ (x )\ni i i i\n{ϕi}i∈Y⊆Cb(X) i∈Y X (47)\nX\ns.t. m ϕ (x )≤c(x ,...,x ,m), ∀(⃗x,m)∈X ×···×X ×∆ . i i i 1 k 1 K Y\ni∈Y\n25\n===  26 ===\nRemark 31. The functions ϕ in (47) belong to C (X) and are thus assumed to be defined in the whole of\ni b\nX.",
+      "size": 447,
+      "sentences": 5
+    },
+    {
+      "id": 224,
+      "content": ". The functions ϕ in (47) belong to C (X) and are thus assumed to be defined in the whole of\ni b\nX. However, as per Tietze’s extension theorem, we can equivalently consider ϕ ∈ C (X ), i.e., continuous\ni b i\nand bounded functions only defined on X . i\nProof of Proposition 30. We split the proof into several steps. Step 0: Webeginwithaseriesofobservations. First,notethatthecosttensorcislower-semicontinuous\nand bounded from below by a constant.",
+      "size": 446,
+      "sentences": 7
+    },
+    {
+      "id": 225,
+      "content": "ervations. First,notethatthecosttensorcislower-semicontinuous\nand bounded from below by a constant. Indeed, the fact that it is bounded from below follows from the\nfact that c is non-negative and the fact that, thanks to Assumption 1, ℓ is bounded above by a positive\nY\nconstant (e.g., by max ℓ(v ,i)).",
+      "size": 302,
+      "sentences": 3
+    },
+    {
+      "id": 226,
+      "content": "t that, thanks to Assumption 1, ℓ is bounded above by a positive\nY\nconstant (e.g., by max ℓ(v ,i)). The lower-semicontinuity of this cost tensor follows from Assumption 2\ni∈Y 0\nonthecostfunctioncandthefactthatℓ isanuppersemi-continuousfunction(sinceitistheinfimumover\nY\nP\na family of continuous functions).",
+      "size": 306,
+      "sentences": 2
+    },
+    {
+      "id": 227,
+      "content": "atℓ isanuppersemi-continuousfunction(sinceitistheinfimumover\nY\nP\na family of continuous functions). Given that µ is a probability measure over X, it follows that the\ni∈Y i\ndesired strong duality holds if and only if it holds after adding or subtracting a constant to the cost tensor\nc. Because of this, we will implicitly assume that c≥0 throughout the rest of this proof.",
+      "size": 372,
+      "sentences": 2
+    },
+    {
+      "id": 228,
+      "content": "st tensor\nc. Because of this, we will implicitly assume that c≥0 throughout the rest of this proof. Finally, note that\nit is sufficient to prove that (47)≥(46), since the reverse inequality follows easily as when analyzing duality\nin MMOT problems. Step 1: We will first prove the result under the additional assumptions that the sets X ,...,X are\n1 K\ncompact and the cost function c is bounded.",
+      "size": 395,
+      "sentences": 3
+    },
+    {
+      "id": 229,
+      "content": "e additional assumptions that the sets X ,...,X are\n1 K\ncompact and the cost function c is bounded. We seek to apply the Fenchel-Rockafellar duality theorem\n(Theorem 1.9 in [26]) with a suitable choice of spaces and functions. In particular, we consider the Banach\nspace E =C (X ,...,X ×∆ ), whose dual E∗ is M(X ×···×X ×∆ ) (the space of finite signed Borel\nb 1 K Y 1 K Y\nmeasures on X ×...X ×∆ ), thanks to the compactness assumption on the sets X .",
+      "size": 451,
+      "sentences": 3
+    },
+    {
+      "id": 230,
+      "content": "Borel\nb 1 K Y 1 K Y\nmeasures on X ×...X ×∆ ), thanks to the compactness assumption on the sets X . Next, we define the\n1 k Y i\n(convex) functions Θ,Ξ:E →R∪{∞} according to\n(\n0, if Φ(⃗x,m)≥−c(⃗x,m),\nΘ(Φ):=\n∞, else,\n(P R P\nϕ (x )dµ (x ), if Φ(⃗x,m)= m ϕ (x ),\nΞ(Φ):= i∈Y Xi i i i i i∈Y i i i\n∞, else.",
+      "size": 298,
+      "sentences": 2
+    },
+    {
+      "id": 231,
+      "content": "(Φ):=\n∞, else,\n(P R P\nϕ (x )dµ (x ), if Φ(⃗x,m)= m ϕ (x ),\nΞ(Φ):= i∈Y Xi i i i i i∈Y i i i\n∞, else. A direct computation reveals that the Fenchel dual of Θ is\nZ\n(R\ncdπ, if π ∈M (X ×···×X ×∆ ),\nΘ∗(−π)= sup{− Φdπ−Θ(Φ)}= + 1 K Y\n∞, else,\nΦ∈E\nbecause c is lower semi continuous and non-negative (thus it admits a monotone approximation from below\nwith continuous and bounded functions). Also, Ξ’s dual is\n(\nZ 0, if P π =µ , ∀i∈Y,\nΞ∗(π)= sup{ Φdπ−Ξ(Φ)}= i i\n∞, else.",
+      "size": 461,
+      "sentences": 3
+    },
+    {
+      "id": 232,
+      "content": "bounded functions). Also, Ξ’s dual is\n(\nZ 0, if P π =µ , ∀i∈Y,\nΞ∗(π)= sup{ Φdπ−Ξ(Φ)}= i i\n∞, else. Φ∈E\nThe Fenchel-Rockafellar duality theorem gives\ninf {Θ(Φ)+Ξ(Φ)}= max{−Θ∗(−π)−Ξ(π)},\nΦ∈E π∈E∗\nwhich, after rewriting it, is precisely the desired result under the additional assumptions that the sets\nX ,...,X are compact and c is bounded. 1 K\nStep 2: Next,werelaxtheassumptionthatthesetsX ,...,X arecompact,butwecontinuetoassume\n1 K\nthat c is bounded. Let 0<δ < 1.",
+      "size": 464,
+      "sentences": 5
+    },
+    {
+      "id": 233,
+      "content": "eassumptionthatthesetsX ,...,X arecompact,butwecontinuetoassume\n1 K\nthat c is bounded. Let 0<δ < 1. Following the second step in the proof of Theorem 1.3 in [26], we can find\n4\ncompact sets X0 ⊆X and positive measures µ0 concentrated on X0 satisfying:\ni i i i\n1. µ (X \\X0)≤δ for all i∈Y. i i i\n2. (1+δ)µ0(B)≥µ (B)≥(1−δ)µ0(B) for every Borel subset B of X0 and every i∈Y. i i i i\n3. P µ0(X0)=1.",
+      "size": 393,
+      "sentences": 7
+    },
+    {
+      "id": 234,
+      "content": "2. (1+δ)µ0(B)≥µ (B)≥(1−δ)µ0(B) for every Borel subset B of X0 and every i∈Y. i i i i\n3. P µ0(X0)=1. i∈Y i i\n4. min R c(⃗x,m)dπ0(⃗x,m)≥(46)−δ,\nπ0∈G0 X\n1\n0×···×X\nK\n0×∆Y\n26\n===  27 ===\nwhere G is defined as G but with µ0 and X0 in place of µ and X , respectively.",
+      "size": 260,
+      "sentences": 5
+    },
+    {
+      "id": 235,
+      "content": "0×∆Y\n26\n===  27 ===\nwhere G is defined as G but with µ0 and X0 in place of µ and X , respectively. Applying Step 1 to the\n0 i i i i\nmeasuresµ0 (sincetheyareconcentratedonthecompactsetsX0),wecanobtainatuple{ϕ } offunctions\ni i i i∈Y\nϕ ∈C (X0) satisfying\ni b i\nX\nm ϕ (x )≤c(⃗x,m), ∀x ∈X0, i∈Y, m∈∆ , (48)\ni i i i i Y\ni∈Y\nas well as\nZ Z\nX\nϕ (x )dµ0(x )≥ min c(⃗x,m)dπ0(⃗x,m)−δ ≥(46)−2δ.",
+      "size": 383,
+      "sentences": 2
+    },
+    {
+      "id": 236,
+      "content": "0, i∈Y, m∈∆ , (48)\ni i i i i Y\ni∈Y\nas well as\nZ Z\nX\nϕ (x )dµ0(x )≥ min c(⃗x,m)dπ0(⃗x,m)−δ ≥(46)−2δ. (49)\ni i i i\ni∈Y X i 0 π0∈G0 X 1 0×···×X K 0×∆Y\nOur goal now is to use the tuple {ϕ } to construct functions {ϕ˜} , with ϕ˜ ∈ C (X) for every i ∈ Y,\ni i∈Y i i∈Y i b\nthat satisfy\nX m ϕ˜(x )≤c(⃗x,m), ∀x ∈X, i∈Y, m∈∆ , (50)\ni i i i Y\ni∈Y\nas well as\nZ\nX ϕ˜(x )dµ (x )≥(46)−C δ, (51)\ni i i i 0\ni∈Y X\nfor some constant C independent of δ.",
+      "size": 432,
+      "sentences": 2
+    },
+    {
+      "id": 237,
+      "content": "Y\nas well as\nZ\nX ϕ˜(x )dµ (x )≥(46)−C δ, (51)\ni i i i 0\ni∈Y X\nfor some constant C independent of δ. This will be sufficient to deduce the desired duality result under the\n0\nadditional assumption that c is bounded, thanks to the observations we made in Step 0. Wethusfocusonconstructingthefunctionsϕ˜ mentionedabove. Thisconstructioniswhereourargument\ni\ndiffersmoresignificantlyfromtheonepresentedin[26].",
+      "size": 403,
+      "sentences": 4
+    },
+    {
+      "id": 238,
+      "content": "ionedabove. Thisconstructioniswhereourargument\ni\ndiffersmoresignificantlyfromtheonepresentedin[26]. First,observethatifthetupleϕ ,...,ϕ isfeasible\n1 K\nas in (48), then necessarily\nϕ (x )≤∥c∥ , ∀x ∈X0, i∈Y, (52)\ni i ∞ i i\nwhich follows from (48) by just taking m ∈ ∆ with m = 1. Next, we claim that we can assume, without\nY i\nthe loss of generality, that for every i∈Y there is x0 ∈X0 such that\ni i\n2K∥c∥\nϕ (x0)≥− ∞ =:D .",
+      "size": 420,
+      "sentences": 4
+    },
+    {
+      "id": 239,
+      "content": "Y i\nthe loss of generality, that for every i∈Y there is x0 ∈X0 such that\ni i\n2K∥c∥\nϕ (x0)≥− ∞ =:D . i i min µ (X) 0\nj∈Y j\nIndeed, if not, we could take those i for which sup ϕ (x )≤− 2K∥c∥∞ (we will denote this set of i\nxi∈X\ni\n0 i i minj∈Yµj(X)\nby Y ) and consider a number M with M ≥ 2K∥c∥∞ such that the sup of ϕˆ :=ϕ +M is negative but\ns i i minj∈Yµj(X) i i i\ngreater than − K∥c∥∞ . For all other i∈Y, we define ϕˆ :=ϕ −∥c∥ (in case sup ϕ ≥0) and set\nminj∈Yµj(X) i i ∞ xi∈X\ni\n0 i\nϕˆ =ϕ otherwise.",
+      "size": 499,
+      "sentences": 3
+    },
+    {
+      "id": 240,
+      "content": "i∈Y, we define ϕˆ :=ϕ −∥c∥ (in case sup ϕ ≥0) and set\nminj∈Yµj(X) i i ∞ xi∈X\ni\n0 i\nϕˆ =ϕ otherwise. By construction and (52), all ϕˆ are negative and thus satisfy (48). Furthermore, we see\ni i i\nthat\nX X\nM µ0(X0)− ∥c∥ µ0(X0)>0. i i i ∞ i i\ni∈Ys i∈Y\\Ys\nThis means that we could replace the ϕ with the ϕˆ to obtain a larger value on the left hand side of (49). i i\nWe can now proceed to construct the functions ϕ˜ mentioned earlier.",
+      "size": 430,
+      "sentences": 5
+    },
+    {
+      "id": 241,
+      "content": "the left hand side of (49). i i\nWe can now proceed to construct the functions ϕ˜ mentioned earlier. i\nLet us start with i=1 and let ϕ′ be given by\ni\n \n 1 X \nϕ′(x ):= inf (c(x ,x ,m)− m ϕ (x )) ,\ni i xY\\{i},m m i Y\\{i} i j j j \nj̸=i\nwhere the inf ranges over tuples x with x ∈X0, and m∈∆ such that m >0.",
+      "size": 308,
+      "sentences": 3
+    },
+    {
+      "id": 242,
+      "content": ",m m i Y\\{i} i j j j \nj̸=i\nwhere the inf ranges over tuples x with x ∈X0, and m∈∆ such that m >0. Observe that, thanks\nY\\{i} j j y i\nto (48),\nX X\nc(⃗x,m)− m ϕ (x )=c(⃗x,m)+m ϕ (x0)− m ϕ (x′)\nj j j i i i j j j\nj̸=i j∈Y\n≥c(⃗x,m)−c(⃗x′,m)+m ϕ (x0)\ni i i\n=c (⃗x,m)−c (⃗x′,m)+m ϕ (x0)\nY Y i i i\n≥c (⃗x,m)−c (⃗x′,m)+m D ,\nY Y i 0\n27\n===  28 ===\nwhere in the above we used the tuple ⃗x′ defined as x′ =x for all j ̸=i, and x′ =x0.",
+      "size": 425,
+      "sentences": 2
+    },
+    {
+      "id": 243,
+      "content": "27\n===  28 ===\nwhere in the above we used the tuple ⃗x′ defined as x′ =x for all j ̸=i, and x′ =x0. Now, observe that for\nj j i i\nevery x˜∈X we have\nX X X\nm c(x ,x˜)−c (⃗x′,m)≥ m c(x ,x˜)− m c(x′,x˜)\nj j Y j j j j\nj∈Y j∈Y j∈Y\n=m (c(x ,x˜)−c(x0,x˜))\ni i i\n≥−m ∥c∥ . i ∞\nPutting together the above estimates, we deduce\n1 X\n(c(⃗x,m)− m ϕ (x ))≥D −∥c∥ =:D′. m j j j 0 ∞ 0\ni\nj̸=i\nIn particular, the function ϕ′ satisfies\ni\nϕ′(x )≥D′, ∀x ∈X.",
+      "size": 435,
+      "sentences": 4
+    },
+    {
+      "id": 244,
+      "content": "x ))≥D −∥c∥ =:D′. m j j j 0 ∞ 0\ni\nj̸=i\nIn particular, the function ϕ′ satisfies\ni\nϕ′(x )≥D′, ∀x ∈X. (53)\ni i 0 i\nAlso, from the definition of ϕ′ and (48), it follows that\ni\nϕ′(x )≥ϕ (x ), ∀x ∈X0. (54)\ni i i i i i\nFinally,followingasimilarargumentasintheproofofLemma29,wecanprovethatthefunctionϕ′ islower-\ni\nsemicontinuous.",
+      "size": 322,
+      "sentences": 4
+    },
+    {
+      "id": 245,
+      "content": "llowingasimilarargumentasintheproofofLemma29,wecanprovethatthefunctionϕ′ islower-\ni\nsemicontinuous. Since ϕ′ is bounded from below by the constant D′, we can find a function ϕ˜ ∈ C (X)\ni 0 i b\nbounded from below by D′ and from above by ϕ′ for which\n0 i\nZ Z δ\nϕ˜(x )dµ (x )≥ ϕ′(x )dµ (x )− .",
+      "size": 290,
+      "sentences": 2
+    },
+    {
+      "id": 246,
+      "content": "b\nbounded from below by D′ and from above by ϕ′ for which\n0 i\nZ Z δ\nϕ˜(x )dµ (x )≥ ϕ′(x )dµ (x )− . (55)\ni i i i i i i i K\nX0 X0\ni i\nInductively, assuming we have constructed functions ϕ′,...,ϕ′ , and ϕ˜ ,...,ϕ˜ ∈ C (X), we define\n1 i−1 1 i−1 b\nϕ′ according to:\ni\n \nϕ′(x ):= inf  1 (c(x ,x ,m)− X m ϕ˜ (x )− X m ϕ (x ))  ,\ni i xY\\{i},m m i Y\\{i} i\nj<i\nj j j\nj>i\nj j j \nwhere the inf ranges over tuples x with x ∈X for j <i and x ∈X0 for j >i, and m∈∆ such that\nY\\{i} j j j y\nm > 0.",
+      "size": 487,
+      "sentences": 2
+    },
+    {
+      "id": 247,
+      "content": "ranges over tuples x with x ∈X for j <i and x ∈X0 for j >i, and m∈∆ such that\nY\\{i} j j j y\nm > 0. Repeating the argument as for the case i = 1, we can verify that ϕ′ satisfies (53) and (54). Also,\ni i\nwe can find ϕ˜ ∈C (X) bounded from below by D′ and from above by ϕ′ for which (55) holds. i b 0 i\nBy definition of ϕ′ and the fact that ϕ˜ ≤ ϕ′ , it follows that the functions ϕ˜ ,...,ϕ˜ satisfy (50).",
+      "size": 402,
+      "sentences": 4
+    },
+    {
+      "id": 248,
+      "content": "definition of ϕ′ and the fact that ϕ˜ ≤ ϕ′ , it follows that the functions ϕ˜ ,...,ϕ˜ satisfy (50). K K K 1 K\nFurthermore,\nZ Z Z\nX ϕ˜(x )dµ (x )= X ϕ˜(x )dµ (x )+ X ϕ˜(x )dµ (x )\ni i i i i i i i i i i i\ni∈Y Xi i∈Y X i 0 i∈Y Xi\\X i 0\nZ Z\n≥ X ϕ′(x )dµ (x )−δ+ X ϕ˜(x )dµ (x )\ni i i i i i i i\ni∈Y X i 0 i∈Y Xi\\X i 0\nZ\nX\n≥ ϕ (x )dµ (x )−δ−K|D′|δ\ni i i i 0\ni∈Y X i 0\nZ\nX\n≥(1−δ) ϕ (x )dµ0(x )−δ−K|D′|δ\ni i i i 0\ni∈Y X i 0\n≥(46)−(3+∥c∥ +K|D′|)δ. ∞ 0\nThis finishes the proof in this case.",
+      "size": 480,
+      "sentences": 3
+    },
+    {
+      "id": 249,
+      "content": "0(x )−δ−K|D′|δ\ni i i i 0\ni∈Y X i 0\n≥(46)−(3+∥c∥ +K|D′|)δ. ∞ 0\nThis finishes the proof in this case. Step 3: In this final step, we relax the assumption that c is bounded. This, however, is easily accom-\nplished as in step 3 in the proof in [26]. For that we consider the cost functions cN given by\ncN(x,x˜):=min{c(x,x˜),N}, N ∈N,\n28\n===  29 ===\nwhich are lower-semicontinuous and bounded. We let cN and cN be defined as c and c but with respect\nY Y\nto the new cost function cN.",
+      "size": 477,
+      "sentences": 6
+    },
+    {
+      "id": 250,
+      "content": "d bounded. We let cN and cN be defined as c and c but with respect\nY Y\nto the new cost function cN. It is straightforward to see that cN approximates c monotonically from below. Thanks to Step 2, the duality holds for each cN and it remains to follow the same steps as in the last part\nof the proof of Theorem 1.3 in [26] to conclude the desired duality result for c.\nC Proof of Theorem 7\nProof of Theorem 7.",
+      "size": 408,
+      "sentences": 4
+    },
+    {
+      "id": 251,
+      "content": "1.3 in [26] to conclude the desired duality result for c.\nC Proof of Theorem 7\nProof of Theorem 7. From the proof of Theorem 3 we know that (4) (for F =F ) is equal to\nall\nZ\nX X\nsup inf ℓ(f(x˜),i)dµ˜ (x˜)− C(µ ,µ˜ ). i i i\n{µ˜i}i∈Y f∈Falli∈Y X i∈Y\nIt thus suffices to show that the above is equal to (17). To see this, for fixed {µ˜ } we focus on rewriting the minimization problem\ni i∈Y\nZ\nX\ninf β(f (x˜))dµ˜ (x˜).",
+      "size": 414,
+      "sentences": 4
+    },
+    {
+      "id": 252,
+      "content": "is, for fixed {µ˜ } we focus on rewriting the minimization problem\ni i∈Y\nZ\nX\ninf β(f (x˜))dµ˜ (x˜). i i\nf∈Falli∈Y X\nP\nLet Λ = µ˜ and observe that, thanks to the fact that β is non-increasing, we have\n0 i∈Y i\n! inf X Z β(f (x˜))dµ˜ (x˜)= inf Z X β(f (x˜)) dµ˜ i dΛ (x˜)\nf∈Falli∈Y X i i f∈Fall X i∈Y i dΛ 0 0\n! = Z inf X β(v ) dµ˜ i dΛ (x˜)\nX v∈∆Y i∈Y i dΛ 0 0\n! = Z inf X β(v ) dµ˜ i dΛ (x˜)\nX v∈RK + s.t. P i∈Y vi≤1 i∈Y i dΛ 0 0\n= Z sup −a X φ (cid:18) 1 dµ˜ i (cid:19) −a !",
+      "size": 474,
+      "sentences": 6
+    },
+    {
+      "id": 253,
+      "content": ") dµ˜ i dΛ (x˜)\nX v∈RK + s.t. P i∈Y vi≤1 i∈Y i dΛ 0 0\n= Z sup −a X φ (cid:18) 1 dµ˜ i (cid:19) −a ! dΛ (x˜)\nadΛ 0\nX a>0 i∈Y 0\n= sup Z − X φ (cid:18) 1 dµ˜ i (cid:19) −1 ! a(x˜)dΛ (x˜)\na:X→R + Borel X i∈Y a(x˜)dΛ 0 0\n= sup Z − X φ (cid:18) dµ˜ i (cid:19) −1 ! dλ(x˜). dλ\nλ∈M+(X)s.t. µ˜i≪λ,∀i∈Y X i∈Y\nThe desired result now follows. Remark 32. Since the function φ in (16) can be written as the supremum over linear functions, it is\nnecessarily convex.",
+      "size": 450,
+      "sentences": 9
+    },
+    {
+      "id": 254,
+      "content": "function φ in (16) can be written as the supremum over linear functions, it is\nnecessarily convex. In addition, by definition of φ we have the lower bound\nφ(s)≥−β(1/K)s−1/K,\nwhich implies\nλ(X)+ X Z φ (cid:18) dµ˜ i (cid:19) dλ≥−β(1/K) X µ˜ (X)\ndλ i\ni∈Y X i∈Y\nP\nfor any λ,{µ˜ } . If in addition C(µ ,µ˜ )<∞, we have µ (X)=µ˜ (X), and the above bound reduces\ni i∈Y i∈Y i i i i\nto −β(1/K).",
+      "size": 386,
+      "sentences": 3
+    },
+    {
+      "id": 255,
+      "content": "dition C(µ ,µ˜ )<∞, we have µ (X)=µ˜ (X), and the above bound reduces\ni i∈Y i∈Y i i i i\nto −β(1/K). 29\n===  30 ===\nD α-fair packing\nGiven α∈[0,∞), a general α-fair packing problem with linear constraints takes the form\nn\nX\nmax U (z ),\nα l\nz∈Rn\nl=1 (56)\ns.t. Dz ≤1,\n0≤z,\nwhere U (t)=log (t), for log as in (22) for α≥0 and α̸=1, and log the standard natural logarithm log. α α α 1\nProblem (56) has an economic interpretation.",
+      "size": 424,
+      "sentences": 4
+    },
+    {
+      "id": 256,
+      "content": "1, and log the standard natural logarithm log. α α α 1\nProblem (56) has an economic interpretation. Indeed, we can think of the variable z = (z ,...,z ) in (56)\n1 n\nas a possible allocation of a monetary reward among n different parties. When assigned income z , party l\nl\nreceives utility U (z ). The constraint z ≥ 0 captures the fact that incomes are nonnegative numbers, and\nα l\nthe condition Dz ≤ 1 captures specific additional constraints for the allocation.",
+      "size": 464,
+      "sentences": 5
+    },
+    {
+      "id": 257,
+      "content": "numbers, and\nα l\nthe condition Dz ≤ 1 captures specific additional constraints for the allocation. The goal in (56) is to find\nthe allocation of rewards producing the largest possible average utility. Remark 33 (On the form of U ). In economic theory, the family of functions U = log is known as\nα α α\nisoelastic utility functions. The utility functions in this family have several advantageous properties: they are\nincreasing, concave, and smooth.",
+      "size": 448,
+      "sentences": 5
+    },
+    {
+      "id": 258,
+      "content": "ions in this family have several advantageous properties: they are\nincreasing, concave, and smooth. Further, from an economic point of view, each function in the family has\na constant relative risk aversion (equal to α for U ). The relative risk aversion of the function at a point x\nα\nis a normalized measure of the curvature of the function, namely\nx∂ U (x)\n− xx α =α.",
+      "size": 370,
+      "sentences": 3
+    },
+    {
+      "id": 259,
+      "content": "at a point x\nα\nis a normalized measure of the curvature of the function, namely\nx∂ U (x)\n− xx α =α. ∂ U (x)\nx α\nThanks to the above properties and their computational tractability, this family has been used intensively in\nutility theory and finance, and has been used to define inequality measures by Atkins in [1].",
+      "size": 315,
+      "sentences": 2
+    },
+    {
+      "id": 260,
+      "content": "ly in\nutility theory and finance, and has been used to define inequality measures by Atkins in [1]. Inthecontextoflossesinclassification, theparameterαcanbeusedtocontrolhowharshlythelosspenal-\nizes confident misclassifications, which in turn allows users to improve learning for unbalanced distributions\n(as in [22], where the power framework appears) or potentially to reduce sensitivity to outliers.",
+      "size": 401,
+      "sentences": 2
+    },
+    {
+      "id": 261,
+      "content": "s\n(as in [22], where the power framework appears) or potentially to reduce sensitivity to outliers. As discussed in the main body of the paper, when µ= 1 Pn δ is an empirical measure, problems\nn l=1 (xl,yl)\n(21) and (28) can be written in the form (56). We provide more details on this assertion. First, we consider\nthe identification\nz =ψ (x ).",
+      "size": 345,
+      "sentences": 4
+    },
+    {
+      "id": 262,
+      "content": "m (56). We provide more details on this assertion. First, we consider\nthe identification\nz =ψ (x ). l yl l\nT\nNow, for a given A ⊆ Y and x ∈ spt(µ ) with B (x ) ̸= ∅, we associate a row in the matrix\nA A i∈A ε i\nof constraints D in (56), setting to one those entries corresponding to the variables ψ (x ) for the x in\nyl l l\nx = {x } , and setting to zero all other entries. With these identifications, it is clear that, indeed, (21)\nA l l∈A\nand (28) can be written in the form (56).",
+      "size": 482,
+      "sentences": 5
+    },
+    {
+      "id": 263,
+      "content": "e identifications, it is clear that, indeed, (21)\nA l l∈A\nand (28) can be written in the form (56). E Recovering the results for the 0-1 loss in [15]\nIn this appendix, we discuss the equivalence between problem (14) for ℓ = ℓ (equal to ℓ for α = 0) and\n01 α\nthe problem (10) derived in [15] for the 0-1 loss. We start with a lemma. Lemma 34. Let {a } be a finite collection of real numbers.",
+      "size": 390,
+      "sentences": 5
+    },
+    {
+      "id": 264,
+      "content": "for the 0-1 loss. We start with a lemma. Lemma 34. Let {a } be a finite collection of real numbers. Then the maximum in the problem\ni i∈S\nX\nmax{ m a −maxm } (57)\ni i i\nm∈∆S\ni∈S\ni∈S\nis achieved at the uniform measure over a subset of S.\nProof. Withoutthelossofgenerality,wecanassumeS ={1,...,s}.",
+      "size": 294,
+      "sentences": 6
+    },
+    {
+      "id": 265,
+      "content": "the uniform measure over a subset of S.\nProof. Withoutthelossofgenerality,wecanassumeS ={1,...,s}. Westartbyobservingthatthesimplex\n∆ can be written as\nS\n[\n∆ = B ,\nS p\np∈ΠS\n30\n===  31 ===\nwhere Π denotes the set of permutations of the elements in S, and where, for each p ∈ Π , the set B is\nS S p\ngiven by\nB :={m∈∆ : m ≥m ≥···≥m }. p S p(1) p(2) p(s)\nFrom this, it trivially follows that the max in (57) is reached in at least one of the sets B .",
+      "size": 446,
+      "sentences": 4
+    },
+    {
+      "id": 266,
+      "content": "(s)\nFrom this, it trivially follows that the max in (57) is reached in at least one of the sets B . After relabeling\np\nthe indices if necessary, we can assume that the B where the max is reached is the identity permutation,\np\nand from now on we use B to denote this set. P\nObserve that in B the objective function m a −max m is a linear function in m, since, in B,\ni∈S i i i∈S i\nwe have max m = m .",
+      "size": 398,
+      "sentences": 3
+    },
+    {
+      "id": 267,
+      "content": "ctive function m a −max m is a linear function in m, since, in B,\ni∈S i i i∈S i\nwe have max m = m . Therefore, the maximum of this objective function over B is achieved at B’s\ni∈S i 1\nextreme points, which, as we discuss next, is the set of points E = {u1,...,us}, where, for each r ≤ s, we\nhave\n(\n1/r, if j ≤r,\nur :=\nj 0, else. Once we have proved that E is indeed the set of extreme points of B the result will immediately follow.",
+      "size": 432,
+      "sentences": 3
+    },
+    {
+      "id": 268,
+      "content": "we have proved that E is indeed the set of extreme points of B the result will immediately follow. To prove that E is the set of extreme points of B, let us consider an arbitrary element m in B, which\nby definition must satisfy m ≥ m ≥ ··· ≥ m . Let m ...,m denote the nonzero entries of m and set\n1 2 s 1 t\nm :=0 in case t=s. For each r =1,...,t, let α be given by\nt+1 r\nα :=r(m −m ),\nr r r+1\nwhich is a nonnegative number. A straightforward computation reveals that\nt t\nX X\nα = m =1.",
+      "size": 485,
+      "sentences": 5
+    },
+    {
+      "id": 269,
+      "content": "r r r+1\nwhich is a nonnegative number. A straightforward computation reveals that\nt t\nX X\nα = m =1. r r\nr=1 r=1\nMoreover,\nt\nX\nm= α ur. r\nr=1\nWehavethusshownthatanyelementinB canbewrittenasaconvexcombinationoftheelementsinE. At\nthesametime, itisclearthatnoelementinE canbewrittenasaconvexcombinationoftheotherelements\nin E. This shows that E is the set of extreme points of B. Proposition 35. Problem (14) for ℓ = ℓ is equivalent to problem 10.",
+      "size": 443,
+      "sentences": 7
+    },
+    {
+      "id": 270,
+      "content": "the set of extreme points of B. Proposition 35. Problem (14) for ℓ = ℓ is equivalent to problem 10. Precisely, the value of (14) is 1\n01\nminus the value of (10), and {ϕ } is a solution of (14) if and only if {g := 1+ϕ } is a solution of\ni i∈Y i i i∈Y\n(10). Proof. First we prove prove that a tuple {ϕ } satisfies (34) if and only if\ni i∈Y\nX\nϕ (x )≤1−|A|+c (x ), ∀A⊆Y, ∀x ∈spt(µ ),\ni i A A A A\ni∈A\nwhere\nX\nc (x ):= inf c(x ,x˜).",
+      "size": 427,
+      "sentences": 6
+    },
+    {
+      "id": 271,
+      "content": "y if\ni i∈Y\nX\nϕ (x )≤1−|A|+c (x ), ∀A⊆Y, ∀x ∈spt(µ ),\ni i A A A A\ni∈A\nwhere\nX\nc (x ):= inf c(x ,x˜). A A i\nx˜∈X\ni∈A\nObserve that, for a given m ∈∆ ,\nA A\nX X\nℓ (m )= inf ℓ(v,i)m = inf (1−v )m =1−maxm . A A i i i i\nv∈∆Yi∈A v∈∆Yi∈A i∈A\nOn the other hand, using the definition of c (x ,m ) we can write\nA A A\n( )\nX\nsup m ϕ (x )+ℓ (m )−c (x ,m )\ni i i A A A A A\nmA∈∆A\ni∈A\n( )\nX X\n= sup sup m ϕ (x )+ℓ (m )− m c(x ,x˜) .",
+      "size": 413,
+      "sentences": 3
+    },
+    {
+      "id": 272,
+      "content": "m ϕ (x )+ℓ (m )−c (x ,m )\ni i i A A A A A\nmA∈∆A\ni∈A\n( )\nX X\n= sup sup m ϕ (x )+ℓ (m )− m c(x ,x˜) . i i i A A i i\nmA∈∆Ax˜∈X\ni∈A i∈A\n31\n===  32 ===\nSwapping the two sups in the above expression we obtain\n( )\nX X\nsup sup m ϕ (x )+ℓ (m )− m c(x ,x˜)\ni i i A A i i\nx˜∈XmA∈∆A\ni∈A i∈A\n( )\nX X\n= sup sup m ϕ (x )+1−maxm − m c(x ,x˜) .",
+      "size": 327,
+      "sentences": 2
+    },
+    {
+      "id": 273,
+      "content": "ℓ (m )− m c(x ,x˜)\ni i i A A i i\nx˜∈XmA∈∆A\ni∈A i∈A\n( )\nX X\n= sup sup m ϕ (x )+1−maxm − m c(x ,x˜) . i i i i i i\nx˜∈XmA∈∆A\ni∈A\ni∈A\ni∈A\nNow, using Lemma 34 we can restrict the inner sup in the above expression to the m ’s in ∆ that are\nA A\nuniform measures over subsets of A. In particular, the above is equal to\n( )\n1 X 1 1 X\nsup sup ϕ (x )+1− − c(x ,x˜)\n|A′| i i |A′| |A′| i\nx˜∈XA′⊆A\ni∈A′ i∈A′\n( )\n1 X 1 1\n= sup ϕ (x )+1− − c (x ) .",
+      "size": 432,
+      "sentences": 3
+    },
+    {
+      "id": 274,
+      "content": "ϕ (x )+1− − c(x ,x˜)\n|A′| i i |A′| |A′| i\nx˜∈XA′⊆A\ni∈A′ i∈A′\n( )\n1 X 1 1\n= sup ϕ (x )+1− − c (x ) . |A′| i i |A′| |A′| A′ A′\nA′⊆A\ni∈A′\nRequiring that the above is smaller than or equal to zero is equivalent to the requirement\nX\nϕ (x )+|A′|−1−c (x )≤0, ∀A′ ⊆A. i i A′ A′\ni∈A′\nAtthisstage, itsufficestoconsiderthechangeofvariablesg =ϕ +1inordertodeducetheequivalence\ni i\nbetween the two optimization problems. 32",
+      "size": 410,
+      "sentences": 4
+    }
+  ]
+}

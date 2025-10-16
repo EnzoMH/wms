@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  # WMS RAG API 서버 (Transformers 모드)
+  wms-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: wms-rag-api
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - USE_OLLAMA=false
+      - USE_VLLM=false
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./1_data:/app/1_data
+      - ./2_vecdb:/app/2_vecdb
+      - ./_0_1_core:/app/_0_1_core
+      - ./app:/app/app
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - wms-network
+
+  # Ollama 서비스 (선택사항)
+  ollama:
+    image: ollama/ollama:latest
+    container_name: wms-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    networks:
+      - wms-network
+    profiles:
+      - ollama
+
+  # WMS RAG API + Ollama 통합
+  wms-api-ollama:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: wms-rag-api-ollama
+    ports:
+      - "8001:8000"  # 호스트:컨테이너 (고정 매핑 권장)
+    environment:
+      - PORT=8000  # 컨테이너 내부 포트 고정 (권장)
+      # PORT 제거 시: 컨테이너 내부에서 8000부터 자동 탐색
+      - USE_OLLAMA=true
+      - OLLAMA_MODEL=exaone-rag
+      - OLLAMA_URL=http://ollama:11434
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./1_data:/app/1_data
+      - ./2_vecdb:/app/2_vecdb
+      - ./_0_1_core:/app/_0_1_core
+      - ./app:/app/app
+      - ./models:/app/models
+    restart: unless-stopped
+    depends_on:
+      - ollama
+    networks:
+      - wms-network
+    profiles:
+      - ollama
+
+volumes:
+  ollama_data:
+    driver: local
+
+networks:
+  wms-network:
+    driver: bridge

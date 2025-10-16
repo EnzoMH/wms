@@ -1,0 +1,495 @@
+{
+  "source": "ArXiv",
+  "filename": "251_AI_ML_Optimizing_Inference_in_Transformer-Base.pdf",
+  "domain": "AI",
+  "total_chars": 27050,
+  "total_chunks": 81,
+  "chunks": [
+    {
+      "id": 1,
+      "content": "===  1 ===\nOptimizing Inference in Transformer-Based Models\nDanielSchlabig NguyenDuong PrasadGanesan\ndschlabig@gatech.edu nguyen.duong@gatech.edu pganesan8@gatech.edu\nSiuHangHo\nwilliamsiuhang@gatech.edu\nAbstract computationalcomplexityofdeeplearningnetworksbyre-\nmoving less critical layers or increasing parameter spar-\nEfficientinferenceisacriticalchallengeindeepgenera- sity.",
+      "size": 378,
+      "sentences": 1
+    },
+    {
+      "id": 2,
+      "content": "ical layers or increasing parameter spar-\nEfficientinferenceisacriticalchallengeindeepgenera- sity. Unstructured L2 norm pruning [16] removes weights\ntivemodeling,particularlyasdiffusionmodelsgrowinca- withthesmallestL2norms,addingsparsitywithoutaltering\npacityandcomplexity.Whileincreasedcomplexityoftenim- model architecture, making it ideal for fine-grained com-\nprovesaccuracy,itraisescomputecosts,latency,andmem- pressionoflargemodels.",
+      "size": 440,
+      "sentences": 2
+    },
+    {
+      "id": 3,
+      "content": "al for fine-grained com-\nprovesaccuracy,itraisescomputecosts,latency,andmem- pressionoflargemodels. oryrequirements.Thisworkinvestigatestechniquessuchas Quantization. Quantization reduces the precision\npruning, quantization, knowledge distillation, and simpli- of model weights and activations (typically from 32-\nfiedattentiontoreducecomputationaloverheadwithoutim- bit floating-point to 8-bit integers), significantly reducing\npacting performance.",
+      "size": 449,
+      "sentences": 3
+    },
+    {
+      "id": 4,
+      "content": "erheadwithoutim- bit floating-point to 8-bit integers), significantly reducing\npacting performance. The study also explores the Mixture modelsizeandmemoryusagewhileaimingtopreserveper-\nof Experts (MoE) approach to further enhance efficiency. formance. Recentworkshowsthatquantizationtechniques\nThese experiments provide insights into optimizing infer- canbesuccessfullyextendedtolarge-scaletransformerand\nence for state-of-the-art Fast Diffusion Transformer (fast- generative models [3].",
+      "size": 487,
+      "sentences": 4
+    },
+    {
+      "id": 5,
+      "content": "letransformerand\nence for state-of-the-art Fast Diffusion Transformer (fast- generative models [3]. Common approaches include post-\nDiT)model. training quantization (PTQ), which requires no retraining,\nandquantization-awaretraining(QAT),whichincorporates\nquantization during model training [12, 7].",
+      "size": 298,
+      "sentences": 3
+    },
+    {
+      "id": 6,
+      "content": "g,\nandquantization-awaretraining(QAT),whichincorporates\nquantization during model training [12, 7]. Our work fo-\n1.Introduction/Background/Motivation cuses on post-training quantization as a zero-training-cost\napproach to model compression, making it particularly at-\nAlthoughdiffusiontransformers[18]deliverhighaccu- tractive for large diffusion models where retraining is ex-\nracyandimagequality,theirheavycomputationaldemands pensive. impedereal-timeandlow-resourcedeployment.",
+      "size": 479,
+      "sentences": 3
+    },
+    {
+      "id": 7,
+      "content": "cyandimagequality,theirheavycomputationaldemands pensive. impedereal-timeandlow-resourcedeployment. Thispaper Attention.Intransformermodels,scaleddot-productat-\nstudied methods to reduce the computational cost of deep tentioncomplexityscalesquadraticallywithtokensequence\ngenerative models during inference by measuring changes length N and linearly in hidden layer size C (O(N2C))\nin compute cost and quality compared to a selected base [25]. Reducingoreliminatingthequadraticdependenceis\nmodel.",
+      "size": 496,
+      "sentences": 4
+    },
+    {
+      "id": 8,
+      "content": "and quality compared to a selected base [25]. Reducingoreliminatingthequadraticdependenceis\nmodel. the focus of much prior work.",
+      "size": 128,
+      "sentences": 3
+    },
+    {
+      "id": 9,
+      "content": "ected base [25]. Reducingoreliminatingthequadraticdependenceis\nmodel. the focus of much prior work. Methods include neighbor-\nFaster inference is important for diffusion models to hoodorwindow-basedapproachesto’localize’mostatten-\nmake high-quality image generation faster and less ex- tion [8][15], and ”linearizing” methods [6] [19] that seek\npensive, lowering the barriers to deploying advanced im- toavoidmultiplyingQKT,eliminatingtheN2dependency\nage generation in a wide range of applications and indus- bycalculatingKTV firstatO(N2C).",
+      "size": 540,
+      "sentences": 4
+    },
+    {
+      "id": 10,
+      "content": "ependency\nage generation in a wide range of applications and indus- bycalculatingKTV firstatO(N2C). tries, from mobile devices to real-time systems. Applica- Others have applied multiple queries to the same keys\ntions include real-time, interactive media and personalized and values [1] described as grouped-query attention or\nservices, scalable, automated workflows in industry, and multi-query attention (when a single K-V head is used).",
+      "size": 439,
+      "sentences": 3
+    },
+    {
+      "id": 11,
+      "content": "lable, automated workflows in industry, and multi-query attention (when a single K-V head is used). more accessible state-of-the-art models for hobbyists and These methods aim to reduce memory bandwidth in cases\nresearchers, democratizing access across professional and wherememoryistheinferencebottleneck. personalenvironments.",
+      "size": 328,
+      "sentences": 3
+    },
+    {
+      "id": 12,
+      "content": "cratizing access across professional and wherememoryistheinferencebottleneck. personalenvironments. These methods may be less relevant to smaller models\nOurresearchexploresvarioustechniquesformodeland applied to low resolution images, leading us to explore a\ninferenceoptimization,examiningtheirimpactoncompute rangeofattentionsimplificationapproaches. cost and image quality. Prior work for each approach is Knowledge Distillation. Knowledge distillation trans-\nbrieflydiscussedbelow.",
+      "size": 485,
+      "sentences": 6
+    },
+    {
+      "id": 13,
+      "content": "k for each approach is Knowledge Distillation. Knowledge distillation trans-\nbrieflydiscussedbelow. fersknowledgefromalarger”teacher”modeltoasmaller\nPruning. Pruning reduces memory requirements and ”student”model. Thestudentlearnstomimictheteacher’s\n1\n5202\npeS\n32\n]GL.sc[\n2v49871.9052:viXra\n===  2 ===\nbehavior while using fewer parameters and computational num heads=4. We selected S/2 as based model based on\nresources.",
+      "size": 421,
+      "sentences": 6
+    },
+    {
+      "id": 14,
+      "content": "fewer parameters and computational num heads=4. We selected S/2 as based model based on\nresources. Thistechniquehasbeeneffectiveinvariousdo- itproducingreasonablequalityimageswithtractabletrain-\nmains,includingimageclassification[10],naturallanguage ing times for this project. Also, S/2 has a more balanced\nprocessing[22],andmorerecentlyindiffusionmodels[21].",
+      "size": 360,
+      "sentences": 4
+    },
+    {
+      "id": 15,
+      "content": "or this project. Also, S/2 has a more balanced\nprocessing[22],andmorerecentlyindiffusionmodels[21]. tokensequencelength(N=256)andhiddendimensionsize\nBy learning from soft predictions instead of only hard (C=384),whichisclosertotheratioseenwithhighresolu-\nlabels,thestudentgainsrichersupervisionduringtraining. tionimagegenerationusingtheDiTXL/2model. This can improve generalization and enable the student to Pruning.",
+      "size": 417,
+      "sentences": 5
+    },
+    {
+      "id": 16,
+      "content": "egenerationusingtheDiTXL/2model. This can improve generalization and enable the student to Pruning. We applied L2 norm pruning to reduce the\nreachaccuracyclosetothatofthelargerteachermodel. number of attention heads in the S/2 model. For each at-\nMixture of Experts.",
+      "size": 266,
+      "sentences": 5
+    },
+    {
+      "id": 17,
+      "content": "thelargerteachermodel. number of attention heads in the S/2 model. For each at-\nMixture of Experts. Mixture of Experts (MoE) is an tentionlayer, wecomputedtheL2normofeachhead’sQ,\narchitectural optimization technique where for each input, K, and V weight slices, then summed them to calculate a\nonlyasubsetofspecializedexpertsubnetworksisactivated scoreforeachattentionhead. Wethenkeptthetop-k scor-\nbased on token routing.",
+      "size": 422,
+      "sentences": 5
+    },
+    {
+      "id": 18,
+      "content": "tsubnetworksisactivated scoreforeachattentionhead. Wethenkeptthetop-k scor-\nbased on token routing. Instead of evaluating the entire ingheadsandmaskedtherestbysettingtheirweightsand\nmodel for every input, only a few experts process each to- biasestozero. kwasvariedbetween[2,5]. ken, significantly reducing computational cost while pre- Quantization.",
+      "size": 350,
+      "sentences": 5
+    },
+    {
+      "id": 19,
+      "content": "ro. kwasvariedbetween[2,5]. ken, significantly reducing computational cost while pre- Quantization. PyTorch’snativequantizationtoolsonly\nserving or even increasing model capacity and expressive- support CPU inference [20], so we needed an alternative\nness. approach for fair GPU-based comparisons with our base-\nWhen applied to Diffusion Transformers, the MoE linefast-DiTmodels.",
+      "size": 379,
+      "sentences": 5
+    },
+    {
+      "id": 20,
+      "content": "ased comparisons with our base-\nWhen applied to Diffusion Transformers, the MoE linefast-DiTmodels. Toaddressthis,weimplementedTor-\nmechanism typically replaces the standard MLP layers in- chAO’s Int8WeightOnlyConfig() [23], which pro-\nsidetheTransformerblockswithsparseMoElayers. Each videsexperimentalsupportforstaticint8weight-onlyquan-\ntoken is routed by a lightweight gating network to a small tization on CUDA through quantized tensor subclasses.",
+      "size": 452,
+      "sentences": 3
+    },
+    {
+      "id": 21,
+      "content": "ed by a lightweight gating network to a small tization on CUDA through quantized tensor subclasses. number of experts, enabling the model to scale up in to- Only the model weights were quantized; activations re-\ntalparameterswithoutproportionallyincreasingFLOPsor mainedinfloatprecisionduringinference.Thequantization\nmemory usage. This allows larger, more powerful diffu- functionappliesanaffinetransformation:\nsionmodels.",
+      "size": 423,
+      "sentences": 3
+    },
+    {
+      "id": 22,
+      "content": "usage. This allows larger, more powerful diffu- functionappliesanaffinetransformation:\nsionmodels. Forexample,DiT-MoE[5]scalesto16.5bil-\nq =round(x/S)+Z (1)\nlionparameterswhileonlyactivating3.1billionperforward\npass. where S is a scaling factor and Z is a zero-point, to map\nDataset. ImageNet [2] is a large-scale dataset of im-\nreal-valuedweightsinto8-bitintegers. ages organized in a hierarchical ontology.",
+      "size": 408,
+      "sentences": 6
+    },
+    {
+      "id": 23,
+      "content": "cale dataset of im-\nreal-valuedweightsinto8-bitintegers. ages organized in a hierarchical ontology. We used a pre-\nWhile TorchAO enabled successful quantization, its\nprocessedsubsetof540,000256x256imagesgroupedinto\nCUDA backend remains experimental and unoptimized,\n1000 classes from Kaggle [24]. These images had been\nwhich likely explains the observed decrease in throughput\ncropped to square and organized into a flat folder struc-\ndespitetheoreticalefficiencygains.",
+      "size": 469,
+      "sentences": 4
+    },
+    {
+      "id": 24,
+      "content": "ughput\ncropped to square and organized into a flat folder struc-\ndespitetheoreticalefficiencygains. Nonetheless,thequan-\nture by class. For our experiments, we randomly sampled\ntizationprocessintegratedcleanlyintoourtrainingpipeline\n200 classes (350-650 images per class) for approximately\nand enabled efficient model compression across four DiT\n110,000totalimages, eachwithcolororgrayscalecontent\nvariants(S/2,S/4,XS/2,XS/4). and a class label.",
+      "size": 445,
+      "sentences": 4
+    },
+    {
+      "id": 25,
+      "content": "110,000totalimages, eachwithcolororgrayscalecontent\nvariants(S/2,S/4,XS/2,XS/4). and a class label. The data source we used was not split\nAttention.Theself-attentionblocksinDiTdrive40%of\nintotrain-validation-testgroups. However,sinceourexper-\ncomputerequirementsforS/2(2.42outof6.07GFLOPS). iments were generative rather than discriminative (i.e.",
+      "size": 346,
+      "sentences": 5
+    },
+    {
+      "id": 26,
+      "content": "uterequirementsforS/2(2.42outof6.07GFLOPS). iments were generative rather than discriminative (i.e. not\nHowever, especially at late timesteps when the image is\nclassification),wedidnotsplitthedatasetwhentrainingour\nmostlynoise,itisunclearifthereismuchfortheattention\nimages. blocks to ”see”, suggesting they might have excess capac-\nity. Inourbasemodel, hiddenlayerC = 384whiletoken\n2.Approach\nlength N = 256, so we wanted to test modifications that\nBase model selection.",
+      "size": 471,
+      "sentences": 5
+    },
+    {
+      "id": 27,
+      "content": "whiletoken\n2.Approach\nlength N = 256, so we wanted to test modifications that\nBase model selection. We used the fast-DiT [14] re- did not just target the O(N2) dependency. We tested the\nimplementation of DiT as our base diffusion transformer. followingsimplifiedattentionblocks(seealsoFigure1):\nIts improvements over the original DiT include saving\n1. Shallow attention.",
+      "size": 370,
+      "sentences": 5
+    },
+    {
+      "id": 28,
+      "content": "blocks(seealsoFigure1):\nIts improvements over the original DiT include saving\n1. Shallow attention. A naive simplification to halve\nthe latent features of the variational autoencoder (VAE)\ntheheaddimensionbysettingtheprojectionmatrices\nrather than re-computing at each iteration, and quantizing\nW , W and W to shape C ×C/2. This halves the\nq k v\nthe model parameters as fp16 without changing the orig-\nmodel’s attention parameters and attention GFLOPS,\ninal architecture.",
+      "size": 471,
+      "sentences": 4
+    },
+    {
+      "id": 29,
+      "content": "16 without changing the orig-\nmodel’s attention parameters and attention GFLOPS,\ninal architecture. We compared qualitative performance\nthoughBig-Ocomplexityisunchanged. and training speed of published model parameters B/2,\nB/4, S/2, and S/4 (each with depth=12, hidden size=768, 2. Mediated attention. We introduced “mediator to-\nnum heads=12forB,hidden size=384,num heads=6forS, kens” T of dimension h×n×d , where n << N\nh\npatch size=2or4basedonname).",
+      "size": 453,
+      "sentences": 5
+    },
+    {
+      "id": 30,
+      "content": "size=384,num heads=6forS, kens” T of dimension h×n×d , where n << N\nh\npatch size=2or4basedonname). Wealsotrialedasmaller (see Figure 1), as in [19]. T was calculated by adap-\nmodel size we named XS with depth=6, hidden size=256, tiveaveragepoolingfromQ. Attentionwascalculated\n===  3 ===\nin2steps,eachwithcomplexityO(NnC):\n√\nV =softmax(TKT/ d)V (2)\nmed\n√\nAttn=softmax(QTT/ d)V (3)\nmed\nWe trialed n = 4 and n = 16.",
+      "size": 413,
+      "sentences": 4
+    },
+    {
+      "id": 31,
+      "content": "yO(NnC):\n√\nV =softmax(TKT/ d)V (2)\nmed\n√\nAttn=softmax(QTT/ d)V (3)\nmed\nWe trialed n = 4 and n = 16. A depth-wise convo-\nlutionofV wasaddedtotheoutputasasimpleproxy\nforlocalattentiontofeaturesinV. However,wesim-\nplifiedtheimplementationbynotaddingbiastermsto\neachmediatortokenmultiplication. 3. Focused grouped-query / multi-query attention. These methods are a novel approach combining the\nideas of “focused attention” [6] and “grouped query\nattention”[1].",
+      "size": 456,
+      "sentences": 6
+    },
+    {
+      "id": 32,
+      "content": "e a novel approach combining the\nideas of “focused attention” [6] and “grouped query\nattention”[1]. “Focusedattention”usesapolynomial\n‘focusing’ function to project Q and K non-linearly,\nFigure 1: Computation graphs for (left) focused group\nasareplacementforsoftmaxnon-linearity:\nquery attention and (right) mediated attention. ”*” refers\ntomatrixmultiplication,”σ”referstonon-lineartransform,\n||Q|| ||K||\nQ p = ||Qp|| Qp, K p = ||Kp|| Kp (4) inthiscasesoftmax.",
+      "size": 461,
+      "sentences": 3
+    },
+    {
+      "id": 33,
+      "content": "”σ”referstonon-lineartransform,\n||Q|| ||K||\nQ p = ||Qp|| Qp, K p = ||Kp|| Kp (4) inthiscasesoftmax. Inbothcases,keyandvaluearemul-\ntipliedtogetherbeforethequeryisapplied. Wechosep = 3asinthereference. Becausethesoft-\nmax is eliminated and matrix multiplication is com-\nWesetα=0.3tomoderatelyweighttheteacher’sguid-\nmutative,thefirststepincomputationcanbeKTV,as\nance. Lower values bias the model toward learning from\nwith mediated attention (see Figure 1).",
+      "size": 455,
+      "sentences": 5
+    },
+    {
+      "id": 34,
+      "content": "V,as\nance. Lower values bias the model toward learning from\nwith mediated attention (see Figure 1). The resulting\nrawdata,whilehighervaluesshiftemphasistowardrepro-\ncomplexityisO(NC2). Inourcase,becauseC > N,\nducingtheteacher’spredictions. we combined focused attention with a grouped query\nDuringtraining,theteachermodelwaskeptinevaluation\napproach (fewer K and V heads) to reduce the com-\nmode with frozen weights, while only the student model\nputationsrequired.",
+      "size": 464,
+      "sentences": 5
+    },
+    {
+      "id": 35,
+      "content": "heads) to reduce the com-\nmode with frozen weights, while only the student model\nputationsrequired. Withgrouping,thecostofthepro-\nwas updated. For each batch, we computed both losses,\njectionofX tokeysandvaluesisreducedbyafactor\ncombined them according to the weighting formula, and\nof G, and cost of KTV is reduced by G2, for G the\nbackpropagatedthroughthestudentmodel. Wetrainedus-\ngroupingfactor.",
+      "size": 399,
+      "sentences": 4
+    },
+    {
+      "id": 36,
+      "content": "KTV is reduced by G2, for G the\nbackpropagatedthroughthestudentmodel. Wetrainedus-\ngroupingfactor. WetestedG=3andG=6(equiva-\ningtheAdamWoptimizerwithalearningrateof1e-4and\nlenttomulti-queryattention). weight decay of 0. After training, only the student model\nwasretainedforevaluationandinference;theteachermodel\nKnowledge Distillation. We used the DiT-S/2 model\nwasnolongerrequired.",
+      "size": 382,
+      "sentences": 6
+    },
+    {
+      "id": 37,
+      "content": "andinference;theteachermodel\nKnowledge Distillation. We used the DiT-S/2 model\nwasnolongerrequired. (32.7Mparameters,trainedfor200,000steps)astheteacher\nWe loaded the pre-trained teacher model, disabled its\nand the significantly smaller DiT-XS/2 architecture (7.4M\ngradients, and added the distillation loss calculation to the\nparameters,a77%reduction)asthestudent.Ourdistillation\ntrainingloop. Thisapproachallowedustosignificantlyre-\nframework integrated two distinct loss components.",
+      "size": 485,
+      "sentences": 4
+    },
+    {
+      "id": 38,
+      "content": "ingloop. Thisapproachallowedustosignificantlyre-\nframework integrated two distinct loss components. First,\nducemodelsizewhileattemptingtopreservethegenerative\nwe computed the standard diffusion loss (L ) using\ndiffusion\ncapabilitiesofthelargermodel. thedenoisingdiffusionprobabilisticmodelobjective[11]:\nMixture of Experts.",
+      "size": 323,
+      "sentences": 4
+    },
+    {
+      "id": 39,
+      "content": "bilitiesofthelargermodel. thedenoisingdiffusionprobabilisticmodelobjective[11]:\nMixture of Experts. Formally, a Mixture of Experts\nL =E (cid:2) ∥ϵ−ϵ (x ,t,y)∥2(cid:3) (5) layerisdefinedas:\ndiffusion x,ϵ∼N(0,1),t θ t\nE\nSecond, we calculated a distillation loss (L KD ) measur- MoE(x) = (cid:88) g i (x)e i (x) (8)\ningthemeansquarederrorbetweentheteacherandstudent\ni=1\nmodelpredictions[10]:\nwhereg (x)isaroutingfunctionoverexpertse (x).",
+      "size": 434,
+      "sentences": 3
+    },
+    {
+      "id": 40,
+      "content": "betweentheteacherandstudent\ni=1\nmodelpredictions[10]:\nwhereg (x)isaroutingfunctionoverexpertse (x). Each\ni i\nexpert is implemented as a two-layer MLP with a GELU\nL =MSE(ϵ (x ,t,y),ϵ (x ,t,y)) (6)\nKD student t teacher t\nactivation:\nWe combined the two loss terms using a weighting pa- (cid:0) (cid:1)\nMLP(x) = W σ W x (9)\n2 gelu 1\nrameterα∈[0,1]tocontrolthebalance:\nTo further improve expert utilization, DiT-MoE introduces\nL =(1−α)·L +α·L (7) sharedexpertroutingensuringcommonknowledgeiscap-\ntotal diffusion KD\n===  4 ===\nBoth scores measure the distributional similarity between\nreference and sample image sets, with sFID more sensi-\ntivetospatialvariability.",
+      "size": 660,
+      "sentences": 2
+    },
+    {
+      "id": 41,
+      "content": "similarity between\nreference and sample image sets, with sFID more sensi-\ntivetospatialvariability. NotethatFIDisknowntochange\nbasedonsamplesize[13],soourresultsarenotcomparable\ntotheDiTresultsshownin[18]. OtherconcernswithFID\nraisedin[13],e.g.,sometimespoorcorrelationwithhuman-\nperceived quality, are reflected in our results, discussed in\ndetailbelow.",
+      "size": 354,
+      "sentences": 3
+    },
+    {
+      "id": 42,
+      "content": "oorcorrelationwithhuman-\nperceived quality, are reflected in our results, discussed in\ndetailbelow. Profiling used a standardized script that com-\npiled each model for max-autotune optimization, in-\ncluded warm-up, and measured throughput over 50\ninference iterations. Peak memory was tracked via\ntorch.cuda.max memory allocated, and FLOPs\nwere counted using fvcore. Reproducing FLOP counts\nfrom prior work required removing transformer block\nwrappercode[18].",
+      "size": 459,
+      "sentences": 4
+    },
+    {
+      "id": 43,
+      "content": "vcore. Reproducing FLOP counts\nfrom prior work required removing transformer block\nwrappercode[18]. ForaccurateFLOPcounting, attention\nblocksweremodifiedduringprofilingtobypassPyTorch’s\nFigure2:OverviewoftheDiT-MoEarchitecture.DiT-MoE\nCUDA-optimized dot product attention function. Image\nextends the standard DiT by swapping each Transformer\nquality was evaluated qualitatively using 8 pre-defined\nMLPforasparseMixture-of-Expertslayer;theinsetdetails\nclassprompts. ResultsareshowninTable1andFigure3.",
+      "size": 499,
+      "sentences": 5
+    },
+    {
+      "id": 44,
+      "content": "PforasparseMixture-of-Expertslayer;theinsetdetails\nclassprompts. ResultsareshowninTable1andFigure3. howsharedexpertsandtokenroutingareintegrated. [5]\nPruning.Evenasingleprunedattentionhead,asseenin\nthebottomrowofFigure3, introducessignificantartifacts\ntured across experts, and an expert-level balance loss that and deterioration in the model’s ability to represent fine-\nregularizesroutingload: grained details relative to the baseline.",
+      "size": 437,
+      "sentences": 4
+    },
+    {
+      "id": 45,
+      "content": "odel’s ability to represent fine-\nregularizesroutingload: grained details relative to the baseline. This suggests the\ncriticality of the attention heads in the DiT model’s repre-\nn T\n(cid:88) 1 (cid:88) 1 sentationalpower,particularlywitharelativelysmallmodel\nL = α I(t,i) . (10)\nbalance KT (cid:80)T P(t′,i) asS/2,havingonlysixattentionheads.",
+      "size": 343,
+      "sentences": 3
+    },
+    {
+      "id": 46,
+      "content": "ivelysmallmodel\nL = α I(t,i) . (10)\nbalance KT (cid:80)T P(t′,i) asS/2,havingonlysixattentionheads. Whilepruningsuc-\ni=1 t=1 t′=1\ncessfully reduces memory footprint and computational re-\nIn this set of experiments, we evaluate three Sparse quirements,thisdegradationinvisualfidelityrevealsaclear\nMixture-of-Experts variants on our DiT-S/2 backbone (12 quality-efficiencytradeoffthatneedstobeconsideredwhen\nblocks, 384 hidden, patch=2, 6 heads) plus an extra-small deployingprunedmodels. variant.",
+      "size": 495,
+      "sentences": 4
+    },
+    {
+      "id": 47,
+      "content": "deredwhen\nblocks, 384 hidden, patch=2, 6 heads) plus an extra-small deployingprunedmodels. variant. DiT-MoE-S/2-8E2A uses 8 experts with 2 active\nQuantization. We evaluated four DiT model variants\nper token (MoE frequency=1), DiT-MoE-S/2-4E1A uses 4\n(S/2, S/4, XS/2, XS/4) without any fine-tuning or retrain-\nexperts with 1 active (MoE frequency=2), and DiT-MoE-\ningafterquantization.",
+      "size": 384,
+      "sentences": 4
+    },
+    {
+      "id": 48,
+      "content": "fine-tuning or retrain-\nexperts with 1 active (MoE frequency=2), and DiT-MoE-\ningafterquantization. Quantizationreducedpeakmemory\nXS/2-8E2A scales down to 6 blocks, 256 hidden, 4 heads\nusageby10%-68%andcompressedmodelsizebyapproxi-\nwith8expertsand2active(MoEfrequency=1). mately73%acrossallvariants,shrinkingS/2andS/4mod-\nWe chose the 8E2A variant to match the original DiT-\nelsfrom131MBto34MBandXS/2andXS/4modelsfrom\nMoE[5] small model, omitted the 16E2A variant to keep\n30MB to 8MB.",
+      "size": 484,
+      "sentences": 3
+    },
+    {
+      "id": 49,
+      "content": "MBto34MBandXS/2andXS/4modelsfrom\nMoE[5] small model, omitted the 16E2A variant to keep\n30MB to 8MB. This level of compression aligns with ex-\nactivated-parametercountscomparabletothebaseDiT-S/2,\npectations for float32-to-int8 quantization, which yields a\nandaddedahalfsized4E1Avarianttomatchtheactivated 4×reductioninper-weightstorage. parameterswiththebasemodel’s33Mtotalparameters.",
+      "size": 383,
+      "sentences": 3
+    },
+    {
+      "id": 50,
+      "content": "tomatchtheactivated 4×reductioninper-weightstorage. parameterswiththebasemodel’s33Mtotalparameters. However,inferencethroughputdecreasedby17%-24%,\nTheresultingarchitecture(Figure2)combinesthescal-\nlikely due to the experimental nature of TorchAO’s int8\nability of sparse conditional computation with the perfor-\nCUDAkernels,whicharenotfullyoptimized. Despitethe\nmanceofdensediffusionmodels.",
+      "size": 390,
+      "sentences": 4
+    },
+    {
+      "id": 51,
+      "content": "ion with the perfor-\nCUDAkernels,whicharenotfullyoptimized. Despitethe\nmanceofdensediffusionmodels. unexpectedslowdowninthroughput,quantizationachieved\nitsprimaryobjectiveofsubstantialmemoryandmodelcom-\n3.ExperimentsandResults\npressionwithminimalimplementationoverhead. Evaluation methods.",
+      "size": 289,
+      "sentences": 4
+    },
+    {
+      "id": 52,
+      "content": "andmodelcom-\n3.ExperimentsandResults\npressionwithminimalimplementationoverhead. Evaluation methods. FID [9] and spatial FID (sFID) The FID and sFID of the quantized DiT-S/2 model\n[17] were computed using OpenAI’s evaluator ([4]) ap- were 55.70 and 36.28 respectively, higher than the base-\nplied to 10,000 images for the reference batch and sample line S/2 (Table 1). Figure 4 shows minimal visual differ-\nbatch.",
+      "size": 412,
+      "sentences": 4
+    },
+    {
+      "id": 53,
+      "content": "for the reference batch and sample line S/2 (Table 1). Figure 4 shows minimal visual differ-\nbatch. Thereferencebatchwassampledfromourreduced ences,suggestingquantizationachievedeffectivecompres-\ndataset of 200 classes with 50 images chosen at random sion without noticeable quality loss. Notably, the major-\nfromeachclass. Syntheticimagesweresampledwithran- ity of pixel-level deviations appear in regions with high-\ndom class prompts using DiT’s DDP image sampler [18].",
+      "size": 471,
+      "sentences": 5
+    },
+    {
+      "id": 54,
+      "content": "level deviations appear in regions with high-\ndom class prompts using DiT’s DDP image sampler [18]. frequency textures or noise-like details, whereas smooth\n===  5 ===\nModel Params(M) Peakmemory(GB) FID-10K sFID-10K GFLOPS Throughput(it/s)\nS/2-base 32.7 0.267 22.9 38.7 6.07 9.07\nS/4-base 32.7 0.447 - - 1.42 7.4\nXS/2-base 7.5 0.389 110.5 44.6 1.42 8.2\nXS/4-base 7.5 0.431 - - 0.32 7.69\nQuantization\nQ-S/2 32.7 0.24(–10.1%) 55.7 36.3 6.07 6.91(-23.8%)\nQ-S/4 32.7 0.277(-38%) - - 1.42 5.66(-23.5%)\nQ-XS/2 7.5 0.193(-50.4%) - - 1.42 6.81(-17%)\nQ-XS/4 7.5 0.14(-67.2%) - - 0.32 6.08(-20.9%)\nAttention\nS/2-shallow 29.1 0.238 24.9 39.2 4.86 8.88\nS/2-med-4 32.7 0.253 21.5 39.0 5.49 7.70\nS/2-med-16 32.7 0.255 21.4 39.7 5.55 7.97\nS/2-fg-6 29.7 0.233 23.6 39.6 4.80 8.53\nS/2-fg-3 30.3 0.239 22.3 39.2 4.96 7.87\nKnowledgeDistillation\nKD-XS/2 7.5 0.389 110.8 45.1 1.42 8.2\nMixtureofExperts\nMoE-S/2-8E2A 131.9[47] 0.918 42.9 35.3 9.70 4.11\nMoE-S/2-4E1A 53.9[32] 0.469 56.5 36.7 6.07 5.98\nMoE-XS/2-8E2A 29.6[10] 0.280 98.9 42.9 2.23 11.02\nTable1: Quantitativeperformancecomparisonofmodelmemory(params, peak), imagequality(FID,sFID),andcompute\n(GFLOPS,throughput).",
+      "size": 1152,
+      "sentences": 2
+    },
+    {
+      "id": 55,
+      "content": "rmancecomparisonofmodelmemory(params, peak), imagequality(FID,sFID),andcompute\n(GFLOPS,throughput). BracketsindicatethenumberofactivatedparametersactivatedforMoEmodels. S/2-shallow S/2-med-4 S/2-med-16 S/2-fg-6 S/2-fg-3 MoE-S/2-8E2A MoE-S/2-4E1A MoE-XS/2-8E2A\n0.1584 0.1556 0.1552 0.1548 0.1556 0.1444 0.1524 0.1564\nTable2: Finaltraininglosses(200ksteps)foreachoptimizationstrategy. orlow-frequencyareasremainnearlyidenticalbetweenthe modelmemoryrequirementsandcompute.",
+      "size": 469,
+      "sentences": 4
+    },
+    {
+      "id": 56,
+      "content": "ionstrategy. orlow-frequencyareasremainnearlyidenticalbetweenthe modelmemoryrequirementsandcompute. Mediatedatten-\nbaselineandquantizedoutputs.Thissuggeststhatquantiza- tion models see both reduced memory and compute (by a\ntionnoisehasagreaterimpactonfine-grainedvisualdetail modest 8.5-9.5%) and improved FID over base S/2. Fo-\nbut is largely imperceptible in natural, low-complexity re- cused multi-query attention (fg-6) aggressively trims the\ngions.",
+      "size": 453,
+      "sentences": 4
+    },
+    {
+      "id": 57,
+      "content": "ble in natural, low-complexity re- cused multi-query attention (fg-6) aggressively trims the\ngions. model with somewhat worse FID, but the focused group\nqueryattentionwith2key-valueheads(fg-3)achievessim-\nAttention models. Five attention models were trained\nilarFIDtobaseS/2whilereducingGFLOPS18%andwith\nfrom scratch for 200,000 steps. In each model all atten-\n2 million fewer parameters.",
+      "size": 388,
+      "sentences": 4
+    },
+    {
+      "id": 58,
+      "content": "LOPS18%andwith\nfrom scratch for 200,000 steps. In each model all atten-\n2 million fewer parameters. Qualitatively, sampled gener-\ntionblockswerereplacedwithshallowattention,mediated\nated images (see Figure 3) look somewhat different from\nattention with n=4 or 16, or focused group/multi-query at-\nthebase. FIDmightnotbeanaccuratereflectionofhuman-\ntention with G=3 or 6 respectively, enabling us to observe\nperceivedquality. performancetrendsifpresent.",
+      "size": 452,
+      "sentences": 5
+    },
+    {
+      "id": 59,
+      "content": "on with G=3 or 6 respectively, enabling us to observe\nperceivedquality. performancetrendsifpresent. Althoughuptrainingiscom-\nmonlyused(e.g.,[1]),wetrainedfromscratchtobetterun-\nContrastingwiththeresultsfromattentionheadpruning,\nderstand the tradeoffs between model compression, com-\nthese results suggest that there maybe ’excess capacity’ in\nputereductionandimagequality. theattentionblocksofS/2,withevenanaivehalvingofat-\nTable1showsthateachattentionvarianthassimilarFID tentionparameters(i.e.",
+      "size": 495,
+      "sentences": 4
+    },
+    {
+      "id": 60,
+      "content": ",withevenanaivehalvingofat-\nTable1showsthateachattentionvarianthassimilarFID tentionparameters(i.e. shallowattention)producingarea-\nand sFID to the base S/2. Shallow attention reduces com- sonableoutput,butthathavingmultiplelayersofattention\nputedemand(GFLOPS)by20%butwithsomewhatworse matters.",
+      "size": 294,
+      "sentences": 3
+    },
+    {
+      "id": 61,
+      "content": "eoutput,butthathavingmultiplelayersofattention\nputedemand(GFLOPS)by20%butwithsomewhatworse matters. Note that none of the attention models achieved\nFID.Usingmediatedattentionandfocusedgroupqueryat- fasterinferencethroughputthanthebaseS/2,likelybecause\ntention blocks maintains inference quality while reducing thebasemodelusesaCUDA-optimizedattentionfunction\n[  ]\n\n===  6 ===\nwhichwasnotusedforthemodifiedattentioncalculations.",
+      "size": 427,
+      "sentences": 2
+    },
+    {
+      "id": 62,
+      "content": "UDA-optimizedattentionfunction\n[  ]\n\n===  6 ===\nwhichwasnotusedforthemodifiedattentioncalculations. It appears that better hardware performance dominates the\nnumberofcalculationsrequired. Knowledge Distillation. We trained two DiT-XS/2\nmodels to assess distillation: one with a DiT-S/2 teacher\n(200Ksteps)andonewithout. Thedistilledmodelslightly\nunderperformed the non-distilled baseline (Table 1), sug-\ngesting ineffective knowledge transfer for this student-\nteacher pair.",
+      "size": 474,
+      "sentences": 5
+    },
+    {
+      "id": 63,
+      "content": "led baseline (Table 1), sug-\ngesting ineffective knowledge transfer for this student-\nteacher pair. Both DiT-XS/2 variants showed substantially\nhigher FID and sFID scores than the DiT-S/2 base model,\nindicating a degradation in generative quality due to re-\nduced model capacity. While they achieved the expected\nthroughputgains,thiscameatthecostofgenerativeperfor-\nmance.",
+      "size": 372,
+      "sentences": 3
+    },
+    {
+      "id": 64,
+      "content": "acity. While they achieved the expected\nthroughputgains,thiscameatthecostofgenerativeperfor-\nmance. The77%reductioninparameterslikelyintroducedaca-\npacity gap too large for effective knowledge transfer from\nthe DiT-S/2 teacher, despite a distillation loss weight of\nα = 0.3. Future work could explore hyperparameter\nsweepsacrossdifferentαvalues,orapplydistillationtostu-\ndentmodelslikeDiT-S/4orS/8,whichreducecomputevia\nlargerpatchsizeswhileretainingthesameparametercount.",
+      "size": 472,
+      "sentences": 4
+    },
+    {
+      "id": 65,
+      "content": "ntmodelslikeDiT-S/4orS/8,whichreducecomputevia\nlargerpatchsizeswhileretainingthesameparametercount. Alternatively, using wider or deeper student models could\nnarrow the capacity gap and enable better alignment with\ntheteacher. Mixture of Experts. All MoE variants (Table 1) show\nsignificantly worse FID scores than the DiT-S/2 baseline,\nwith our smallest variant (MoE-XS/2-8E2A) quadrupling\nthe S/2-base’s 22.9 FID-10K to 98.9.",
+      "size": 427,
+      "sentences": 4
+    },
+    {
+      "id": 66,
+      "content": "aseline,\nwith our smallest variant (MoE-XS/2-8E2A) quadrupling\nthe S/2-base’s 22.9 FID-10K to 98.9. This degradation\nFigure 3: Selected samples (IDs) of pretzel (31), fireboat likely reflects imbalanced expert utilization despite apply-\n(164),jacamar(185),daisy(149),artichoke(1),mushroom ing a balance loss.",
+      "size": 308,
+      "sentences": 2
+    },
+    {
+      "id": 67,
+      "content": "utilization despite apply-\n(164),jacamar(185),daisy(149),artichoke(1),mushroom ing a balance loss. Interestingly, spatial FID improves\n(16),seaanemone(44),hay(179),generatedwiththesame slightly for MoE-S/2-8E2A (35.3 vs. 38.7), suggesting\nseed,CFGscale,andstepsacrossallmethodsat200K.Or- better local structure capture despite poor global statistics\nder: 1) S/2-base 2) S/2-shallow 3) S/2-med-4 4) S/2-med- (FID).",
+      "size": 413,
+      "sentences": 2
+    },
+    {
+      "id": 68,
+      "content": "ture despite poor global statistics\nder: 1) S/2-base 2) S/2-shallow 3) S/2-med-4 4) S/2-med- (FID). 16 5) S/2-fg-6 6) S/2-fg-3 7) Q-S/2 8) MoE-S/2-8E2A 9) MoElayersincreaseparametercount(32.7Mto131.9M\nMoE-S/2-4E1A 10) MoE-XS/2-8E2A 11) One pruned at- forS/2-8E2A),peakmemory,andGFLOPS(6.07to9.70),\ntentionhead. reducing throughput from 9.07 to 4.11 it/s on S/2-8E2A.",
+      "size": 366,
+      "sentences": 3
+    },
+    {
+      "id": 69,
+      "content": "kmemory,andGFLOPS(6.07to9.70),\ntentionhead. reducing throughput from 9.07 to 4.11 it/s on S/2-8E2A. The XS variant, with only 29.6M total (10M ”activated”)\nparameters, runs faster (11.02 it/s) at very low GFLOPS\n(2.23).OurMoEmodificationssuccessfullyincreasecapac-\nity and arithmetic intensity with sensible runtime scaling,\nbut require further tuning (e.g. routing balance or expert\ncapacity) to recover or surpass baseline generative perfor-\nmance.",
+      "size": 450,
+      "sentences": 4
+    },
+    {
+      "id": 70,
+      "content": "(e.g. routing balance or expert\ncapacity) to recover or surpass baseline generative perfor-\nmance. In Figure 3, larger-capacity MoE variants render richer\nbackgroundsandfinerdetails,withmorecoherenttextures\ncomparedtotheS/2baseline,reflectingtheirhigherparam-\netercounts. Conversely,theXS/2-8E2Amodel,despiteits\nsparse“activated”footprint,appearsunder-provisioned.",
+      "size": 364,
+      "sentences": 4
+    },
+    {
+      "id": 71,
+      "content": "ounts. Conversely,theXS/2-8E2Amodel,despiteits\nsparse“activated”footprint,appearsunder-provisioned. In\nFigure4: Pixel-wisedifferencesbetweenDiT-S/2baseline\nthis case, the bird is distorted and the mushroom stem is\nand quantized outputs; magenta regions shows where the\nmissing,indicatingthatitssmallerexpertcapacitystruggles\nquantizedsamplesdeviatefromthebaseline. tocaptureglobalstructure.",
+      "size": 390,
+      "sentences": 4
+    },
+    {
+      "id": 72,
+      "content": "itssmallerexpertcapacitystruggles\nquantizedsamplesdeviatefromthebaseline. tocaptureglobalstructure. ===  7 ===\nReferences [19] Yifan Pu, Zhuofan Xia, Jiayi Guo, Dongchen Han,\nQixiu Li, Duo Li, Yuhui Yuan, Ji Li, Yizeng Han,\n[1] Joshua Ainslie, James Lee-Thorp, Michiel de Jong, Yury\nShiji Song, Gao Huang, and Xiu Li. Efficient dif-\nZemlyanskiy, Federico Lebro´n, and Sumit Sanghai.",
+      "size": 382,
+      "sentences": 4
+    },
+    {
+      "id": 73,
+      "content": "Shiji Song, Gao Huang, and Xiu Li. Efficient dif-\nZemlyanskiy, Federico Lebro´n, and Sumit Sanghai. Gqa:\nfusion transformer with step-wise dynamic attention\nTraining generalized multi-query transformer models from\nmediators. https://github.com/LeapLabTHU/\nmulti-headcheckpoints,2023. 1,3,5\nAttention-Mediators?tab=readme-ov-file,\n[2] Jia Deng, Wei Dong, Richard Socher, Li-Jia Li, Kai Li, 2024. 1,2\nandLiFei-Fei. Imagenet: Alarge-scalehierarchicalimage\n[20] PyTorch Core Team.",
+      "size": 476,
+      "sentences": 7
+    },
+    {
+      "id": 74,
+      "content": "Li, Kai Li, 2024. 1,2\nandLiFei-Fei. Imagenet: Alarge-scalehierarchicalimage\n[20] PyTorch Core Team. Quantization - pytorch tu-\ndatabase,2009. 2\ntorials. https://pytorch.org/docs/stable/\n[3] Tim Dettmers, Mike Lewis, Younes Belkada, and Luke quantization.html,2025. 2\nZettlemoyer. Llm.int8(): 8-bit matrix multiplication for\n[21] TimSalimansandJonathanHo. Progressivedistillationfor\ntransformersatscale,2022. 1\nfastsamplingofdiffusionmodels,2022. 2\n[4] PrafullaDhariwalandAlexNichol.",
+      "size": 482,
+      "sentences": 11
+    },
+    {
+      "id": 75,
+      "content": "ransformersatscale,2022. 1\nfastsamplingofdiffusionmodels,2022. 2\n[4] PrafullaDhariwalandAlexNichol. Diffusionmodelsbeat\n[22] Victor Sanh, Lysandre Debut, Julien Chaumond, and\ngansonimagesynthesis,2021. 4\nThomasWolf. Distilbert,adistilledversionofbert:smaller,\n[5] ZhengcongFei, MingyuanFan, ChangqianYu, DebangLi, faster,cheaperandlighter,2020. 2\nandJunshiHuang. Scalingdiffusiontransformersto16bil-\n[23] torchaomaintainersandcontributors. torchao: Pytorchna-\nlionparameters,2024.",
+      "size": 480,
+      "sentences": 9
+    },
+    {
+      "id": 76,
+      "content": "ansformersto16bil-\n[23] torchaomaintainersandcontributors. torchao: Pytorchna-\nlionparameters,2024. 2,4\ntivequantizationandsparsityfortrainingandinference,Oct. [6] DongchenHan,XuranPan,YizengHan,ShijiSong,andGao 2024. 2\nHuang. Flatten transformer: Vision transformer using fo-\n[24] Unknown. Classified images dataset (imagenet\ncusedlinearattention,2023. 1,3 256×256). https://www.kaggle.com/datasets/\n[7] Song Han, Huizi Mao, and William J. Dally. Deep com- dimensi0n/imagenet-256/data,2023.",
+      "size": 491,
+      "sentences": 10
+    },
+    {
+      "id": 77,
+      "content": "atasets/\n[7] Song Han, Huizi Mao, and William J. Dally. Deep com- dimensi0n/imagenet-256/data,2023. 2\npression: Compressingdeepneuralnetworkswithpruning,\n[25] AshishVaswani,NoamShazeer,NikiParmar,JakobUszko-\ntrainedquantizationandhuffmancoding,2016. 1\nreit,LlionJones,AidanN.Gomez,LukaszKaiser,andIllia\n[8] Ali Hassani, Steven Walton, Jiachen Li, Shen Li, and Polosukhin. Attentionisallyouneed,2023. 1\nHumphreyShi. Neighborhoodattentiontransformer, 2023.",
+      "size": 454,
+      "sentences": 7
+    },
+    {
+      "id": 78,
+      "content": "and Polosukhin. Attentionisallyouneed,2023. 1\nHumphreyShi. Neighborhoodattentiontransformer, 2023. 1\n[9] Martin Heusel, Hubert Ramsauer, Thomas Unterthiner,\nBernhard Nessler, and Sepp Hochreiter. Gans trained by a\ntwotime-scaleupdateruleconvergetoalocalnashequilib-\nrium,2018. 4\n[10] GeoffreyHinton,OriolVinyals,andJeffDean.Distillingthe\nknowledgeinaneuralnetwork,2015. 2,3\n[11] JonathanHo,AjayJain,andPieterAbbeel. Denoisingdiffu-\nsionprobabilisticmodels,2020.",
+      "size": 461,
+      "sentences": 9
+    },
+    {
+      "id": 79,
+      "content": "k,2015. 2,3\n[11] JonathanHo,AjayJain,andPieterAbbeel. Denoisingdiffu-\nsionprobabilisticmodels,2020. 3\n[12] BenoitJacob,SkirmantasKligys,BoChen,MenglongZhu,\nMatthewTang,AndrewHoward,HartwigAdam,andDmitry\nKalenichenko. Quantizationandtrainingofneuralnetworks\nforefficientinteger-arithmetic-onlyinference,2017. 1\n[13] Sadeep Jayasumana, Srikumar Ramalingam, Andreas Veit,\nDaniel Glasner, Ayan Chakrabarti, and Sanjiv Kumar. Re-\nthinking fid: Towards a better evaluation metric for image\ngeneration,2024.",
+      "size": 500,
+      "sentences": 7
+    },
+    {
+      "id": 80,
+      "content": ", and Sanjiv Kumar. Re-\nthinking fid: Towards a better evaluation metric for image\ngeneration,2024. 4\n[14] Chuanyang Jin and Saining Xie. Fast-dit: Fast diffu-\nsionmodelswithtransformers. https://github.com/\nchuanyangjin/fast-DiT,2024. 2\n[15] Ze Liu, Yutong Lin, Yue Cao, Han Hu, Yixuan Wei,\nZhengZhang, StephenLin, andBainingGuo. Swintrans-\nformer: Hierarchical vision transformer using shifted win-\ndows,2021. 1\n[16] Pavlo Molchanov, Stephan Tyree, Tero Karras, Timo Aila,\nandJanKautz.",
+      "size": 487,
+      "sentences": 8
+    },
+    {
+      "id": 81,
+      "content": "shifted win-\ndows,2021. 1\n[16] Pavlo Molchanov, Stephan Tyree, Tero Karras, Timo Aila,\nandJanKautz. Pruningfiltersforefficientconvnets, 2017.\narXivpreprintarXiv:1611.06440. 1\n[17] CharlieNash,JacobMenick,SanderDieleman,andPeterW. Battaglia. Generating images with sparse representations,\n2021. 4\n[18] WilliamPeeblesandSainingXie. Scalablediffusionmodels\nwithtransformers,2023. 1,4",
+      "size": 380,
+      "sentences": 9
+    }
+  ]
+}
